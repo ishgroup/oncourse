@@ -120,6 +120,10 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
   } = props;
 
   const [lockedTerms, setLockedTerms] = useState(true);
+  
+  const removeShopingCartRow = id => {
+    dispatch(change(form, "abandonedCarts", values.abandonedCarts.filter(c => c.id !== id)));
+  };
 
   const onLockClick = useCallback(e => {
     e.preventDefault();
@@ -232,6 +236,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               component={NestedTable}
               columns={shopingCartColumns}
               onRowDoubleClick={openShopingCartRow}
+              onRowDelete={removeShopingCartRow}
               sortBy={(a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()}
               rerenderOnEveryChange
               calculateHeight

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CourseClass Liability Report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" uuid="ed4753e4-9177-469c-b562-79c04b1158d9">
-	<property name="name" value="Class Prepaid Fees Liability"/>
-	<property name="entity" value="CourseClass"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.CourseClass.prepaidFeesLiability"/>
 	<property name="ish.oncourse.title" value="Prepaid fees liability"/>
 	<property name="ish.oncourse.filePrefix" value="ClassPrepaidFeesLiability"/>
-	<property name="ish.oncourse.description" value="This Report identifies how much of the fees held against the Pre Paid Fees Liability Account are yet to be transferred to the defined Income Account.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="ClassPrepaidFeesLiability.pdf"/>
 	<property name="sortOn" value="startDateTime;course.code;code"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
+
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="ish.math.Money"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>

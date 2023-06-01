@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RoomListReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="e496898b-251e-425d-a413-219f6c7c083a">
-	<property name="name" value="Rooms List"/>
-	<property name="entity" value="Room"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.roomListReport"/>
 	<property name="ish.oncourse.title" value="Rooms List"/>
 	<property name="ish.oncourse.filePrefix" value="RoomsList"/>
-	<property name="ish.oncourse.description" value="List of all rooms and their related sites and seating capacity.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="RoomsList.pdf"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
 	<import value="net.sf.jasperreports.engine.*"/>

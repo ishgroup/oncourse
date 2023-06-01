@@ -114,7 +114,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "title": null,
             "leadId": null,
             "quoteNumber": null,
-            "tags": []
+            "tags": [],
+            "customFields":{}
         }
         """
 
@@ -213,6 +214,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 
@@ -292,6 +294,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 
@@ -371,6 +374,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 
@@ -763,6 +767,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 

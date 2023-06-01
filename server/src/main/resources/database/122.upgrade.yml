@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 122-1
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Checkout
+            columnName: UUID
+      changes:
+        - dropColumn:
+            tableName: Checkout
+            columnName: UUID

@@ -1,0 +1,5 @@
+type: string
+enum:
+  - Office only
+  - Online only
+  - Online and office

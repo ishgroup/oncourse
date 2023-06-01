@@ -884,4 +884,59 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
 
 
+    Scenario: (+) Update custom Export template configs by admin
+
+#       <----->  Add a new entity to update and define its id:
+        * def newExportTemplate =
+        """
+        {
+        "name":"put ExportTemplate01",
+        "keyCode":"500",
+        "entity":"AccountTransaction",
+        "body":"someBody",
+        "status":"Enabled",
+        "variables":[{"name":"varName10", "label":"varLabel10", "type":"Text"}],
+        "options":[{"name":"optName10", "type":"Date time", "value":"2019-01-01T22:00:00.000Z"}],
+        "outputType":"json",
+        "description":"some description"
+        }
+        """
+
+        Given path ishPath
+        And request newExportTemplate
+        When method POST
+        Then status 204
+
+        Given path ishPathList
+        And param entity = 'ExportTemplate'
+        And param columns = 'name'
+        And param offset = 50
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["put ExportTemplate01"])].id
+        * print "id = " + id
+#       <--->
+
+        * def exportTemplateToUpdate =
+        """
+        {
+            "config":'  name: \"Updated Export template\"\n  short:\n  description: \"Updated export template description\"\n  category:\n  sortOn: \"\"\n  visible: true'
+        }
+        """
+
+        Given path ishPath + '/config/' + id
+        And request exportTemplateToUpdate
+        When method PUT
+        Then status 204
+
+        Given path ishPath + '/config/' + id
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: Updated export template description\ndescription: Updated export template description\nname: Updated Export template\nentityClass: AccountTransaction\noutputType: JSON'
+
+#       <--->  Scenario have been finished. Now remove created object from DB:
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
 

@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PayslipReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="6c4daebc-c836-4065-b1b7-c5ca26073025">
-	<property name="name" value="Payslip Report"/>
-	<property name="entity" value="PayLine"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.payslipReport"/>
 	<property name="ish.oncourse.title" value="Payslip Report"/>
 	<property name="ish.oncourse.filePrefix" value="PayslipReport"/>
-	<property name="ish.oncourse.description" value="To create a print out of the list of payslips.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="PayslipReport.pdf"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
 	<import value="java.util.*"/>

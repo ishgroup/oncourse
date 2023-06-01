@@ -203,7 +203,6 @@
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="willowId" type="BIGINT"/>
-		<db-attribute name="UUID" type="VARCHAR" length="30"/>
 		<db-attribute name="shoppingCart" type="CLOB" length="5000"/>
 		<db-attribute name="payerId" type="BIGINT"/>
 		<db-attribute name="totalValue" type="DECIMAL" length="10" scale="2"/>
@@ -501,7 +500,7 @@
 		<db-attribute name="discountType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="hideOnWeb" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="isAvailableOnWeb" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="availabilityType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="limitPreviousEnrolment" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="minEnrolments" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="minValue" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -1887,7 +1886,6 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
-		<obj-attribute name="UUID" type="java.lang.String" db-attribute-path="UUID"/>
 		<obj-attribute name="shoppingCart" type="java.lang.String" db-attribute-path="shoppingCart"/>
 		<obj-attribute name="totalValue" type="ish.math.Money" db-attribute-path="totalValue"/>
 	</obj-entity>
@@ -2183,7 +2181,7 @@
 		<obj-attribute name="discountType" type="ish.common.types.DiscountType" db-attribute-path="discountType"/>
 		<obj-attribute name="hideOnWeb" type="java.lang.Boolean" db-attribute-path="hideOnWeb"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="isAvailableOnWeb" type="java.lang.Boolean" db-attribute-path="isAvailableOnWeb"/>
+		<obj-attribute name="availableFor" type="ish.common.types.DiscountAvailabilityType" db-attribute-path="availabilityType"/>
 		<obj-attribute name="limitPreviousEnrolment" type="java.lang.Boolean" db-attribute-path="limitPreviousEnrolment"/>
 		<obj-attribute name="minEnrolments" type="java.lang.Integer" db-attribute-path="minEnrolments"/>
 		<obj-attribute name="minValue" type="ish.math.Money" db-attribute-path="minValue"/>
@@ -2494,6 +2492,9 @@
 	</obj-entity>
 	<obj-entity name="Invoice" superEntityName="AbstractInvoice" className="ish.oncourse.server.cayenne.Invoice">
 		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.INVOICE]]></qualifier>
+	</obj-entity>
+	<obj-entity name="InvoiceCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.InvoiceCustomField" clientClassName="ish.oncourse.cayenne.InvoiceCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Invoice"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="InvoiceLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.InvoiceLine"/>
 	<obj-entity name="InvoiceAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.InvoiceAttachmentRelation" clientClassName="ish.oncourse.cayenne.InvoiceAttachmentRelation">
@@ -2903,6 +2904,9 @@
 	<obj-entity name="Quote" superEntityName="AbstractInvoice" className="ish.oncourse.server.cayenne.Quote">
 		<qualifier><![CDATA[type = enum:ish.common.types.InvoiceType.QUOTE]]></qualifier>
 	</obj-entity>
+	<obj-entity name="QuoteCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.QuoteCustomField" clientClassName="ish.oncourse.cayenne.QuoteCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Quote"]]></qualifier>
+	</obj-entity>
 	<obj-entity name="QuoteLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.QuoteLine"/>
 
 	<obj-entity name="SavedFind" className="ish.oncourse.server.cayenne.SavedFind" clientClassName="ish.oncourse.cayenne.SavedFind" dbEntityName="SavedFind" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
@@ -3022,6 +3026,9 @@
 		<obj-attribute name="visaType" type="java.lang.String" db-attribute-path="visaType"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="yearSchoolCompleted" type="java.lang.Integer" db-attribute-path="yearSchoolCompleted"/>
+	</obj-entity>
+	<obj-entity name="StudentCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.StudentCustomField" clientClassName="ish.oncourse.cayenne.StudentCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Student"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="StudentAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.StudentAttachmentRelation" clientClassName="ish.oncourse.cayenne.StudentAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "Student"]]></qualifier>
@@ -3189,6 +3196,9 @@
 	</obj-entity>
 	<obj-entity name="TutorAttendanceCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.TutorAttendanceCustomField" clientClassName="ish.oncourse.cayenne.TutorAttendanceCustomField">
 		<qualifier><![CDATA[entityIdentifier = "TutorAttendance"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="TutorCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.TutorCustomField" clientClassName="ish.oncourse.cayenne.TutorCustomField">
+		<qualifier><![CDATA[entityIdentifier = "Tutor"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="UnavailableRule" abstract="true" className="ish.oncourse.server.cayenne.UnavailableRule" clientClassName="ish.oncourse.cayenne.UnavailableRule" dbEntityName="UnavailableRule" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="allDay" type="java.lang.Boolean" db-attribute-path="allDay"/>
@@ -3878,6 +3888,12 @@
 	<db-relationship name="relatedContact" source="CustomField" target="Contact">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
+	<db-relationship name="relatedStudent" source="CustomField" target="Student">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedTutor" source="CustomField" target="Tutor">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
 	<db-relationship name="relatedCourse" source="CustomField" target="Course">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
@@ -3888,6 +3904,9 @@
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedArticle" source="CustomField" target="ProductItem">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="relatedInvoice" source="CustomField" target="Invoice">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="relatedMembership" source="CustomField" target="ProductItem">
@@ -4135,6 +4154,9 @@
 	</db-relationship>
 	<db-relationship name="contact" source="Invoice" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Invoice" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="corporatePassUsed" source="Invoice" target="CorporatePass">
 		<db-attribute-pair source="corporatePassId" target="id"/>
@@ -4781,6 +4803,9 @@
 	<db-relationship name="customFields" source="Survey" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
+	<db-relationship name="customFields" source="Student" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="enrolment" source="Survey" target="Enrolment">
 		<db-attribute-pair source="enrolmentId" target="id"/>
 	</db-relationship>
@@ -4915,6 +4940,9 @@
 	</db-relationship>
 	<db-relationship name="contact" source="Tutor" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="customFields" source="Tutor" target="CustomField" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="markedAttendances" source="Tutor" target="Attendance" toMany="true">
 		<db-attribute-pair source="id" target="markedByTutorId"/>
@@ -5121,6 +5149,8 @@
 	<obj-relationship name="attachedArticle" source="ArticleAttachmentRelation" target="Article" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="attachedMembership" source="MembershipAttachmentRelation" target="Membership" deleteRule="Nullify" db-relationship-path="attachedProductItem"/>
 	<obj-relationship name="relatedObject" source="ContactCustomField" target="Contact" deleteRule="Nullify" db-relationship-path="relatedContact"/>
+	<obj-relationship name="relatedObject" source="StudentCustomField" target="Student" deleteRule="Nullify" db-relationship-path="relatedStudent"/>
+	<obj-relationship name="relatedObject" source="TutorCustomField" target="Tutor" deleteRule="Nullify" db-relationship-path="relatedTutor"/>
 	<obj-relationship name="contactToUpdate" source="ContactDuplicate" target="Contact" deleteRule="Deny" db-relationship-path="contactToUpdate"/>
 	<obj-relationship name="createdByUser" source="ContactDuplicate" target="SystemUser" deleteRule="Deny" db-relationship-path="createdByUser"/>
 	<obj-relationship name="notedContact" source="ContactNoteRelation" target="Contact" deleteRule="Nullify" db-relationship-path="notedContact"/>
@@ -5292,11 +5322,13 @@
 	<obj-relationship name="integrationConfiguration" source="IntegrationProperty" target="IntegrationConfiguration" deleteRule="Nullify" db-relationship-path="integrationConfiguration"/>
 	<obj-relationship name="attachedInvoice" source="InvoiceAttachmentRelation" target="Invoice" deleteRule="Nullify" db-relationship-path="attachedInvoice"/>
 	<obj-relationship name="invoice" source="InvoiceDueDate" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
+	<obj-relationship name="customFields" source="Invoice" target="InvoiceCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 	<obj-relationship name="courseClass" source="InvoiceLine" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="enrolment" source="InvoiceLine" target="Enrolment" deleteRule="Nullify" db-relationship-path="enrolment"/>
 	<obj-relationship name="invoice" source="InvoiceLine" target="Invoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="abstractInvoice" source="AbstractInvoiceLine" target="AbstractInvoice" deleteRule="Nullify" db-relationship-path="invoice"/>
 	<obj-relationship name="invoice" source="AbstractInvoiceLine" target="AbstractInvoice" deleteRule="Nullify" db-relationship-path="invoice"/>
+	<obj-relationship name="relatedObject" source="InvoiceCustomField" target="Invoice" deleteRule="Nullify" db-relationship-path="relatedInvoice"/>
 	<obj-relationship name="invoiceLineDiscounts" source="InvoiceLine" target="InvoiceLineDiscount" deleteRule="Cascade" db-relationship-path="invoiceline_discounts"/>
 	<obj-relationship name="productItems" source="InvoiceLine" target="ProductItem" deleteRule="Deny" db-relationship-path="productItems"/>
 	<obj-relationship name="voucherPaymentIn" source="InvoiceLine" target="VoucherPaymentIn" deleteRule="Deny" db-relationship-path="voucherPaymentIn"/>
@@ -5419,11 +5451,15 @@
 	<obj-relationship name="relatedObject" source="MembershipCustomField" target="Membership" deleteRule="Nullify" db-relationship-path="relatedMembership"/>
 	<obj-relationship name="customFields" source="Voucher" target="VoucherCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
 	<obj-relationship name="relatedObject" source="VoucherCustomField" target="Voucher" deleteRule="Nullify" db-relationship-path="relatedVoucher"/>
+	<obj-relationship name="customFields" source="Student" target="StudentCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+	<obj-relationship name="customFields" source="Tutor" target="TutorCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+
 	<obj-relationship name="certificates" source="Qualification" target="Certificate" deleteRule="Deny" db-relationship-path="certificates"/>
 	<obj-relationship name="courses" source="Qualification" target="Course" deleteRule="Deny" db-relationship-path="courses"/>
 	<obj-relationship name="defaultModules" source="Qualification" target="Module" deleteRule="Deny" db-relationship-path="defaultModules"/>
 	<obj-relationship name="priorLearnings" source="Qualification" target="PriorLearning" deleteRule="Deny" db-relationship-path="priorLearnings"/>
 	<obj-relationship name="trainingPackage" source="Qualification" target="TrainingPackage" deleteRule="Deny" db-relationship-path="trainingPackage"/>
+	<obj-relationship name="relatedObject" source="QuoteCustomField" target="Quote" deleteRule="Nullify" db-relationship-path="relatedInvoice"/>
 	<obj-relationship name="customFields" source="VoucherProduct" target="VoucherProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
 	<obj-relationship name="relatedObject" source="VoucherProductCustomField" target="VoucherProduct" deleteRule="Nullify" db-relationship-path="relatedVoucherProduct"/>
 	<obj-relationship name="customFields" source="ArticleProduct" target="ArticleProductCustomField" deleteRule="Nullify" db-relationship-path="customFields"/>
@@ -5433,6 +5469,7 @@
 
 	<obj-relationship name="contact" source="Quote" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="quoteLines" source="Quote" target="QuoteLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
+	<obj-relationship name="customFields" source="Quote" target="QuoteCustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
 
 
 	<obj-relationship name="contact" source="Invoice" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>

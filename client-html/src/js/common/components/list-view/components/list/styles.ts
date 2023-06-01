@@ -65,7 +65,17 @@ export default (theme: AppTheme) => createStyles({
     },
     "& $draggingCell,&:focus $draggingCell": {
       color: theme.palette.divider
-    }
+    },
+    "&:hover:not($activeRight) $canSort": {
+      transition: theme.transitions.create("padding", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      paddingRight: theme.spacing(3)
+    },
+    "&$activeRight $rightSort": {
+      position: "static"
+    },
   },
   draggableCellItem: {
     position: "relative",
@@ -156,6 +166,14 @@ export default (theme: AppTheme) => createStyles({
     "&$selected $listDots": {
       display: "none",
     },
+    "&:hover $deleteCell, &$selected $deleteCell": {
+      display: "inline-flex",
+    },
+  },
+  deleteCell: {
+    display: "none",
+    fontSize: theme.spacing(2),
+    padding: 6
   },
   oddRow: {
     backgroundColor: alpha(theme.palette.action.hover, 0.03)

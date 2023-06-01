@@ -48,7 +48,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Student extends _Student implements StudentTrait, Queueable, Taggable, AttachableTrait {
+class Student extends _Student implements StudentTrait, Queueable, Taggable, AttachableTrait, ExpandableTrait {
 
 	public static final String CONTACT_KEY = "contact";
 	public static final String OUTCOMES = "outcomes";
@@ -560,5 +560,10 @@ class Student extends _Student implements StudentTrait, Queueable, Taggable, Att
 	@Override
 	String getChecklistsColor() {
 		return contact.getChecklistsColor()
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return StudentCustomField
 	}
 }
