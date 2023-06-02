@@ -17,7 +17,7 @@ import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.CheckoutVoucherDTO
 import ish.oncourse.server.api.v1.model.InvoiceDTO
-import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
+import ish.oncourse.server.api.v1.model.AbstractInvoiceLineDTO
 import ish.oncourse.server.cayenne.Article
 import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.ProductItem
@@ -76,7 +76,7 @@ trait PaymentServiceTrait {
                 dtoInvoice.invoiceNumber = checkout.invoice.invoiceNumber
                 dtoInvoice.amountOwing = checkout.invoice.amountOwing.toBigDecimal()
                 checkout.invoice.invoiceLines.each { invoiceLine ->
-                    dtoInvoice.invoiceLines << new InvoiceInvoiceLineDTO().with { dtoInvoiceLine ->
+                    dtoInvoice.invoiceLines << new AbstractInvoiceLineDTO().with { dtoInvoiceLine ->
                         dtoInvoiceLine.priceEachExTax  = invoiceLine.priceEachExTax?.toBigDecimal()
                         dtoInvoiceLine.taxEach  = invoiceLine.taxEach?.toBigDecimal()
                         dtoInvoiceLine.discountEachExTax = invoiceLine.discountEachExTax?.toBigDecimal()

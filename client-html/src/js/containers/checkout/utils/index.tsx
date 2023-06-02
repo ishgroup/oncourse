@@ -12,7 +12,7 @@ import {
   CheckoutVoucher,
   ContactNode,
   Invoice,
-  InvoiceInvoiceLine,
+  AbstractInvoiceLine,
   InvoicePaymentPlan,
   ProductType
 } from "@api/model";
@@ -358,7 +358,7 @@ export const getInvoiceLineKey = (entity: CheckoutEntity) => {
   }
 };
 
-const getInvoiceLinePrices = (item: CheckoutItem, lines: InvoiceInvoiceLine[], itemOriginal: CheckoutItem) => {
+const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], itemOriginal: CheckoutItem) => {
   const id = item.type === "course" && item.class ? item.class.id : item.id;
   const lineKey = getInvoiceLineKey(item.type);
   const targetLine = lines.find(l => l[lineKey] && (l[lineKey].productId === id || l[lineKey].classId === id));
