@@ -15,17 +15,17 @@ import javax.annotation.Nonnull
 class QuoteLine extends _QuoteLine {
 
     @Override
-    Quote getInvoice() {
-        return super.getQuote()
-    }
-
-    @Override
     Class<Quote> getInvoicePersistentClass() {
         return Quote.class
     }
 
     @Override
-    void setInvoice(AbstractInvoice abstractInvoice) {
+    AbstractInvoice getAbstractInvoice() {
+        return getQuote()
+    }
+
+    @Override
+    void setAbstractInvoice(AbstractInvoice abstractInvoice) {
         super.setQuote((Quote) abstractInvoice)
     }
 

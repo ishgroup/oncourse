@@ -26,7 +26,6 @@ import javax.annotation.Nonnull
 @API
 class InvoiceLine extends _InvoiceLine {
 
-    @Override
     Invoice getInvoice() {
         return super.getInvoice()
     }
@@ -37,6 +36,15 @@ class InvoiceLine extends _InvoiceLine {
     }
 
     @Override
+    AbstractInvoice getAbstractInvoice() {
+        return getInvoice()
+    }
+
+    @Override
+    void setAbstractInvoice(AbstractInvoice abstractInvoice) {
+        setInvoice(abstractInvoice)
+    }
+
     void setInvoice(AbstractInvoice abstractInvoice) {
         abstractInvoice.addToAbstractInvoiceLines(this)
         super.setInvoice((Invoice) abstractInvoice)
