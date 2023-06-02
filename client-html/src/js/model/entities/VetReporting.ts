@@ -16,5 +16,8 @@ export interface VetReport {
   outcome: Outcome;
   selectedEnrolment: {
     id: number;
-  }
+  };
+  selectedOutcome: {
+    id: number;
+  };
 }

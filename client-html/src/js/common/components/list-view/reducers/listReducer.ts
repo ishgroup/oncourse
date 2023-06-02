@@ -94,7 +94,7 @@ class State implements ListState {
 
   fullScreenEditView = false;
 
-  customTableModel = "";
+  customTableModel = null;
 }
 
 export const listReducer = (state: State = new State(), action: IAction<any>): any => {

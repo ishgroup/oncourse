@@ -63,6 +63,7 @@ interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   getFieldName: (name: keyof Outcome) => string;
   clearModules?: any;
   access?: AccessState;
+  noHeader?: boolean;
 }
 
 const deliveryModeValues = Object.keys(DeliveryMode).map(mapSelectItems);
@@ -149,7 +150,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
     isPriorLearningBinded,
     isNew,
     access,
-    priorLearningEditView
+    priorLearningEditView,
+    noHeader
   } = props;
 
   const classes = useStyles();
@@ -215,9 +217,9 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const onLockStartDate = () => {
     setTimeout(() => {
       const newValue = !values.startDateOverridden;
-      dispatch(change(form, "startDateOverridden", newValue));
+      dispatch(change(form, getFieldName("startDateOverridden"), newValue));
       if (!newValue) {
-        dispatch(change(form, "startDate", isNew ? null : values.actualStartDate));
+        dispatch(change(form, getFieldName("startDate"), isNew ? null : values.actualStartDate));
       }
     }, 300);
   };
@@ -225,12 +227,13 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const onLockEndDate = () => {
     setTimeout(() => {
       const newValue = !values.endDateOverridden;
-      dispatch(change(form, "endDateOverridden", newValue));
+      dispatch(change(form, getFieldName("endDateOverridden"), newValue));
       if (!newValue) {
-        dispatch(change(form, "endDate", isNew ? null : values.actualEndDate));
+        dispatch(change(form, getFieldName("endDate"), isNew ? null : values.actualEndDate));
       }
     }, 300);
   };
+
   const onModuleNameChange = useCallback(
     (m: Module) => {
       dispatch(change(form, getFieldName("moduleCode"), m ? m.nationalCode : null));
@@ -250,7 +253,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className={className}>
-      <Grid item xs={12}>
+      {!noHeader && <Grid item xs={12}>
         <FullScreenStickyHeader
           disableInteraction
           twoColumn={twoColumn}
@@ -258,7 +261,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
             <HeaderContactTitle name={values?.studentName} id={values?.contactId} />
           )}
         />
-      </Grid>
+      </Grid>}
+
       
       <Grid container rowSpacing={2} item xs={twoColumn ? 4 : 12}>
         <Grid item xs={12}>
@@ -556,7 +560,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
 
           {fundingUploadAccess && values.id
             && (
-            <Grid item xs={twoColumn ? 4 : 12} className="saveButtonTableOffset mt-1">
+            <Grid item xs={12} className="saveButtonTableOffset mt-1">
               <div className="heading mb-1">Funding Uploads</div>
               {fundingUploads.length
                 ? (

@@ -29,7 +29,7 @@ import ExpandableContainer from "../../../../common/components/layout/expandable
 import EnrolmentSubmissions from "../../enrolments/components/EnrolmentSubmissions";
 import { AssessmentClass, Enrolment, GradingType } from "@api/model";
 
-const VetReportingStudent = (props: EditViewProps<VetReport>) => {
+const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
   const {
     twoColumn,
     values,
@@ -63,17 +63,18 @@ const VetReportingStudent = (props: EditViewProps<VetReport>) => {
     return error;
   }, [gradingTypes]);
 
-  const getCustomSearch = search => `student.contact.id is ${values.student.id} and (courseClass.course.name starts with "${search}" or courseClass.code starts with "${search}")`;
+  // useCallback is needed to prevent infinite loop
+  const getCustomSearch = useCallback(search => `student.contact.id is ${values.student.id} and (courseClass.course.name starts with "${search}" or courseClass.code starts with "${search}")`,
+    [values.student.id]);
 
   const onEnrolmentSelect = en => {
     if (en.id) {
+      dispatch(change(form, 'selectedOutcome', null));
+      dispatch(change(form, 'outcome', null));
+
       getEntityItemById("Enrolment", en.id).then(enrolment => {
         dispatch(change(form, 'enrolment', enrolment));
       });
-
-      if (!expanded.includes(tabIndex)) {
-        setExpanded([...expanded, tabIndex]);
-      }
     }  
   };
 
@@ -91,7 +92,7 @@ const VetReportingStudent = (props: EditViewProps<VetReport>) => {
         type="remoteDataSelect"
         name="selectedEnrolment"
         entity="Enrolment"
-        label="Select en enrolment"
+        label="Select an enrolment"
         returnType="object"
         selectValueMark="id"
         selectLabelMark="courseClass.course.name"
@@ -108,7 +109,7 @@ const VetReportingStudent = (props: EditViewProps<VetReport>) => {
           />
         }
       />
-      <Collapse in={Boolean(values.enrolment.id)}>
+      <Collapse in={Boolean(values.enrolment.id)} mountOnEnter unmountOnExit>
         <FormSection name="enrolment">
           <ExpandableContainer
             expanded={expanded}
@@ -156,5 +157,5 @@ const VetReportingStudent = (props: EditViewProps<VetReport>) => {
 };
 
 export default props => props.values
-  ? <VetReportingStudent {...props}/>
+  ? <VetReportingEnrolment {...props}/>
   : null;

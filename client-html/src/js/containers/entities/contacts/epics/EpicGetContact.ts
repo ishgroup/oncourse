@@ -84,7 +84,7 @@ const request: EpicUtils.Request = {
 
     let editRecord = contact;
     
-    if (s.list.customTableModel === "vetReporting") {
+    if (s.list.customTableModel === "VetReport") {
       editRecord = {
         id: contact.id,
         student: contact,

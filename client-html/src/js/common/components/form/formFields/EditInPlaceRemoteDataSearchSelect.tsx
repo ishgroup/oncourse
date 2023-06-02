@@ -40,14 +40,14 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFie
       onSearchChange("");
       onLoadMoreRows(0);
     }
-  }, [preloadEmpty]);
+  }, [preloadEmpty, getCustomSearch]);
 
   const onInputChange = useCallback(debounce((input: string) => {
     onSearchChange(input);
     if (input || preloadEmpty) {
       onLoadMoreRows(0);
     }
-  }, 800), [preloadEmpty, aqlFilter, aqlColumns, entity]);
+  }, 800), [preloadEmpty, aqlFilter, aqlColumns, getCustomSearch, entity]);
 
   const onLoadMoreRowsOwn = startIndex => {
     if (!rest.loading) {

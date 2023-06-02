@@ -190,7 +190,6 @@ interface Props {
   ShareContainerAlertComponent?: any;
   searchMenuItemsRenderer?: ListAqlMenuItemsRenderer;
   customOnCreate?: any;
-  customOnCreateAction?: any;
   customUpdateAction?: any;
   preformatBeforeSubmit?: AnyArgFunction;
   deleteDisabledCondition?: (props) => boolean;
@@ -1258,13 +1257,26 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
   setListviewMainContentWidth: (value: string) => dispatch(setUserPreference({ key: LISTVIEW_MAIN_CONTENT_WIDTH, value })),
   submitForm: () => dispatch(submit(LIST_EDIT_VIEW_FORM_NAME)),
   closeConfirm: () => dispatch(closeConfirm()),
-  onCreate: (item: any) => dispatch( ownProps.customOnCreateAction
-    ? ownProps.customOnCreateAction(item)
-    : createEntityRecord(item, ownProps.rootEntity)),
-  onDelete: (id: number) => dispatch(deleteEntityRecord(id, ownProps.rootEntity)),
-  onSave: (item: any) => dispatch(updateEntityRecord(item.id, ownProps.rootEntity, item)),
-  getEditRecord: (id: number) => dispatch(getEntityRecord(id, ownProps.rootEntity)),
   findRelatedByFilter: (filter, list) => dispatch(findRelatedByFilter(filter, list))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;
+const mergeProps = (stateToProps, dispatchToProps, ownProps) => {
+  const dispatch = dispatchToProps.dispatch;
+  const entityName = stateToProps.customTableModel || ownProps.rootEntity;
+
+  return {
+    ...stateToProps,
+    ...dispatchToProps,
+    ...ownProps,
+    onCreate: (item: any) => dispatch(createEntityRecord(item, entityName)),
+    onDelete: (id: number) => dispatch(deleteEntityRecord(id, entityName)),
+    onSave: (item: any) => dispatch(updateEntityRecord(item.id, entityName, item)),
+    getEditRecord: (id: number) => dispatch(getEntityRecord(id, entityName)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps)
+(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;

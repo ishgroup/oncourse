@@ -12,7 +12,7 @@ import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
 import { MenuTag } from "../../../../model/tags";
 import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
 import { IAction } from "../../../actions/IshAction";
-import { EntityName } from "../../../../model/entities/common";
+import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 
 // Common list actions
@@ -195,7 +195,7 @@ export const setListEntity = (entity: EntityName) => ({
   payload: entity
 });
 
-export const setListCustomTableModel = (customTableModel: string) => ({
+export const setListCustomTableModel = (customTableModel: CustomTableModelName) => ({
   type: SET_LIST_CUSTOM_TABLE_MODEL,
   payload: customTableModel
 });

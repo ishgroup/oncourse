@@ -8,9 +8,9 @@
 
 // CRUD actions
 import { _toRequestType } from "../../../../common/actions/ActionUtils";
-import { EntityName } from "../../../../model/entities/common";
+import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
 import { getContact } from "../../contacts/actions";
-import { getCourseClass } from "../../courseClasses/actions";
+import { createCourseClass, getCourseClass } from "../../courseClasses/actions";
 import { getSite } from "../../sites/actions";
 
 export const GET_ENTITY_RECORD_REQUEST = _toRequestType("get/entity/record");
@@ -21,9 +21,12 @@ export const UPDATE_ENTITY_RECORD_REQUEST = _toRequestType("update/entity/record
 
 export const DELETE_ENTITY_RECORD_REQUEST = _toRequestType("delete/entity/record");
 
-export const getEntityRecord = (id, entity: EntityName) => {
+type ActionEntity = EntityName | CustomTableModelName;
+
+export const getEntityRecord = (id, entity: ActionEntity) => {
   switch (entity) {
     case "Contact":
+    case "VetReport":
       return getContact(id);
     case "CourseClass":
       return getCourseClass(id);
@@ -37,17 +40,24 @@ export const getEntityRecord = (id, entity: EntityName) => {
   }
 };
 
-export const createEntityRecord = (item: any, entity: EntityName) => ({
-  type: CREATE_ENTITY_RECORD_REQUEST,
-  payload: { item, entity }
-});
+export const createEntityRecord = (item: any, entity: ActionEntity) => {
+  switch (entity) {
+    case "CourseClass":
+      return createCourseClass(item);
+    default:
+      return {
+        type: CREATE_ENTITY_RECORD_REQUEST,
+        payload: { item, entity }
+      };
+  }
+};
 
-export const updateEntityRecord = (id: number, entity: EntityName, item: any) => ({
+export const updateEntityRecord = (id: number, entity: ActionEntity, item: any) => ({
   type: UPDATE_ENTITY_RECORD_REQUEST,
   payload: { id, entity, item }
 });
 
-export const deleteEntityRecord = (id: number, entity: EntityName) => ({
+export const deleteEntityRecord = (id: number, entity: ActionEntity) => ({
   type: DELETE_ENTITY_RECORD_REQUEST,
   payload: { id, entity }
 });

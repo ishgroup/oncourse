@@ -46,6 +46,7 @@ import { getContactFullName } from "../contacts/utils";
 import { VetReport } from "../../../model/entities/VetReporting";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
 import { PreferencesState } from "../../preferences/reducers/state";
+import { fundingUploadsPath } from "../../../constants/Api";
 
 export const ContactInitial: Contact = {
   id: 0,
@@ -306,6 +307,7 @@ const VetReporting: React.FC<VetReportingProps> = props => {
       findRelated={findRelatedItems}
       filterGroupsInitial={filterGroups}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
+      defaultDeleteDisabled
     />
   );
 };
@@ -317,7 +319,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   onMount: () => {
     dispatch(getGradingTypes());
-    dispatch(setListCustomTableModel("vetReporting"));
+    dispatch(setListCustomTableModel("VetReport"));
     dispatch(getPaymentTypes());
     dispatch(getFilters("Contact"));
     dispatch(getContactTags());
@@ -340,6 +342,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" }));
+    dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
   }
 });
 

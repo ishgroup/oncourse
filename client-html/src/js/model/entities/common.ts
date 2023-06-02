@@ -72,6 +72,12 @@ export const ENTITIES = stringLiterals(
   "WaitingList"
 );
 
+export const CUSTOM_TABLE_MODELS = stringLiterals(
+  "VetReport"
+);
+
 export const EntityItems = ENTITIES.map(e => ({ label: e, value: e }));
 
-export type EntityName = StringValueType<typeof ENTITIES>;
+export type EntityName = StringValueType<typeof ENTITIES >;
+
+export type CustomTableModelName = StringValueType<typeof CUSTOM_TABLE_MODELS >;

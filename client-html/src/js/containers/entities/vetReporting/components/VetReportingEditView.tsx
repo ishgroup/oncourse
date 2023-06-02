@@ -6,8 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useState } from "react";
-import { Contact } from "@api/model";
+import React, { useEffect, useMemo, useState } from "react";
 import { EditViewProps } from "../../../../model/common/ListView";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import VetReportingStudent from "./VetReportingStudent";
@@ -15,38 +14,49 @@ import VetReportingEnrolments from "./VetReportingEnrolments";
 import VetReportingOutcomes from "./VetReportingOutcomes";
 import { VetReport } from "../../../../model/entities/VetReporting";
 
-const items: TabsListItem<VetReport>[] = [
-  {
-    label: "Student",
-    labelAdornment: "Contact\nVET",
-    component: props => props.values?.student && <VetReportingStudent {...props} />,
-    expandable: true
-  },
-  {
-    label: "Enrolments",
-    labelAdornment: "VET student loans\nCredit & RPL\nAssessment submissions",
-    component: props => props.values?.enrolment && <VetReportingEnrolments {...props} />,
-    expandable: true
-  },
-  {
-    label: "Outcomes",
-    component: props => props.values?.outcome && <VetReportingOutcomes {...props} />,
-    expandable: true
-  }
-];
+const studentItem = {
+  label: "Student",
+  labelAdornment: "Contact\nVET",
+  component: props => props.values?.student && <VetReportingStudent {...props} />,
+  expandable: true
+};
 
-const VetReportingEditView = ({ onScroll, values, ...rest }: EditViewProps<Contact>) => {
+const enrolmentsItem = {
+  label: "Enrolments",
+  labelAdornment: "VET student loans\nCredit & RPL\nAssessment submissions",
+  component: props => props.values?.student && <VetReportingEnrolments {...props} />,
+  expandable: true
+};
+
+const outcomesItem = {
+  label: "Outcomes",
+  component: props => props.values?.enrolment && <VetReportingOutcomes {...props} />,
+  expandable: true
+};
+
+const VetReportingEditView = ({ onScroll, values, ...rest }: EditViewProps<VetReport>) => {
 
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
+  const [currentItems, setCurrentItems] = useState<TabsListItem<VetReport>[]>([studentItem, enrolmentsItem]);
 
   const usiLocked = useMemo(
-    () => values.student && values.student.usiStatus === "Verified" && usiUpdateLocked,
-    [values.student && values.student.usiStatus, usiUpdateLocked]
+    () => values.student && values.student.student.usiStatus === "Verified" && usiUpdateLocked,
+    [values.student && values.student.student.usiStatus, usiUpdateLocked]
   );
+  
+  useEffect(() => {
+    const hasOutcomeItem = currentItems.find(i => i.label === "Outcomes")
+    if (values.selectedEnrolment && !hasOutcomeItem) {
+      setCurrentItems([studentItem, enrolmentsItem, outcomesItem]);
+    }
+    if (!values.selectedEnrolment && hasOutcomeItem) {
+      setCurrentItems([studentItem, enrolmentsItem]);
+    }
+  }, [values.selectedEnrolment]);
 
   return (
     <TabsList
-      items={items}
+      items={currentItems}
       onParentScroll={onScroll}
       itemProps={{
         setUsiUpdateLocked,
