@@ -28,7 +28,6 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import EnrolmentSubmissions from "../../enrolments/components/EnrolmentSubmissions";
 import { AssessmentClass, Enrolment, GradingType } from "@api/model";
-import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {

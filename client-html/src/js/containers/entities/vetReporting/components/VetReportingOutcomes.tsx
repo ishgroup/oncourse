@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Divider from "@mui/material/Divider";
@@ -27,10 +27,7 @@ const VetReportingOutcome = (props: EditViewProps<VetReport>) => {
     twoColumn,
     form,
     dispatch,
-    values,
-    expanded,
-    tabIndex,
-    setExpanded
+    values
   } = props;
 
   const [outcomeLoading, setOutcomeLoading] = useState(false);

@@ -81,3 +81,6 @@ export const EntityItems = ENTITIES.map(e => ({ label: e, value: e }));
 export type EntityName = StringValueType<typeof ENTITIES >;
 
 export type CustomTableModelName = StringValueType<typeof CUSTOM_TABLE_MODELS >;
+
+export type ListActionEntity = EntityName | CustomTableModelName;
+

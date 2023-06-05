@@ -308,6 +308,7 @@ const VetReporting: React.FC<VetReportingProps> = props => {
       filterGroupsInitial={filterGroups}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
       defaultDeleteDisabled
+      createButtonDisabled
     />
   );
 };
