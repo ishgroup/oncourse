@@ -50,7 +50,7 @@ const enrolmentCreditTotalItems = Object.keys(EnrolmentCreditTotal).map(mapSelec
 
 const enrolmentReportingStatusItems = Object.keys(EnrolmentReportingStatus).map(mapSelectItems);
 
-const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
+const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix?: string }> = (
   {
     twoColumn,
     values,
@@ -58,9 +58,11 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
     dispatch,
     expanded,
     setExpanded,
-    syncErrors
+    syncErrors,
+    namePrefix
   }
 ) => {
+  const getName = (name: string) => namePrefix ? `${namePrefix}.${name}` : name;
 
   const loanData = useMemo(() => {
     let loanFee = 0;
@@ -84,12 +86,12 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
     switch (e) {
       case 'Eligible':
       case 'Not eligible':
-        dispatch(change(form, "feeStatus", null));
-        dispatch(change(form, "feeHelpAmount", 0));
+        dispatch(change(form, getName("feeStatus"), null));
+        dispatch(change(form, getName("feeHelpAmount"), 0));
         break;
       case 'Ongoing':
       case 'Finalized':
-        dispatch(change(form, "feeStatus", enrolmentFeeStatusItems[0].value));
+        dispatch(change(form, getName("feeStatus"), enrolmentFeeStatusItems[0].value));
         break;
       default:
         break;

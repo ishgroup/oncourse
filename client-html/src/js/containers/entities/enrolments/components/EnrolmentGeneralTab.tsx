@@ -162,6 +162,7 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
       </Grid>
 
       <EnrolmentDetails
+        values={values}
         twoColumn={twoColumn}
         contracts={contracts}
       />

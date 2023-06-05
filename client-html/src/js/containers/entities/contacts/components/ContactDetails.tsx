@@ -64,6 +64,7 @@ interface ContactDetailsProps extends EditViewProps<Contact> {
   countries?: any;
   usiLocked?: boolean;
   fullScreenEditView?: boolean;
+  namePrefix?: string;
 }
 
 const ContactDetails: React.FC<ContactDetailsProps> = props => {
@@ -79,7 +80,10 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     countries,
     usiLocked,
     isCompany,
+    namePrefix
   } = props;
+
+  const getName = (name: string) => namePrefix ? `${namePrefix}.${name}` : name;
 
   const [showPostalSettingsMenu, setPostalSettingsMenu] = useState(null);
   const [showSmsSettingsMenu, setSmsSettingsMenu] = useState(null);
@@ -103,15 +107,15 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
   };
 
   const handleUndeliverablePostalCheck = () => {
-    dispatch(change(form, "deliveryStatusPost", isUndeliverablePostal() ? 0 : 6));
+    dispatch(change(form, getName("deliveryStatusPost"), isUndeliverablePostal() ? 0 : 6));
   };
 
   const handleUndeliverableSmsCheck = () => {
-    dispatch(change(form, "deliveryStatusSms", isUndeliverableSms() ? 0 : 6));
+    dispatch(change(form, getName("deliveryStatusSms"), isUndeliverableSms() ? 0 : 6));
   };
 
   const handleUndeliverableEmailCheck = () => {
-    dispatch(change(form, "deliveryStatusEmail", isUndeliverableEmail() ? 0 : 6));
+    dispatch(change(form, getName("deliveryStatusEmail"), isUndeliverableEmail() ? 0 : 6));
   };
 
   const setMarketingLabel = (fieldName = ""): string => {

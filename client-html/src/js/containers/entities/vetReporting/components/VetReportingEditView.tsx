@@ -46,13 +46,13 @@ const VetReportingEditView = ({ onScroll, values, ...rest }: EditViewProps<VetRe
   
   useEffect(() => {
     const hasOutcomeItem = currentItems.find(i => i.label === "Outcomes")
-    if (values.selectedEnrolment && !hasOutcomeItem) {
+    if (values.enrolment.id && !hasOutcomeItem) {
       setCurrentItems([studentItem, enrolmentsItem, outcomesItem]);
     }
-    if (!values.selectedEnrolment && hasOutcomeItem) {
+    if (!values.enrolment.id && hasOutcomeItem) {
       setCurrentItems([studentItem, enrolmentsItem]);
     }
-  }, [values.selectedEnrolment]);
+  }, [values.enrolment.id]);
 
   return (
     <TabsList

@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Divider from "@mui/material/Divider";
@@ -28,6 +28,8 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import EnrolmentSubmissions from "../../enrolments/components/EnrolmentSubmissions";
 import { AssessmentClass, Enrolment, GradingType } from "@api/model";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
   const {
@@ -40,6 +42,8 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
     syncErrors,
     tabIndex
   } = props;
+
+  const [enrolmentLoading, setEnrolmentLoading] = useState(false);
   
   const contracts = useAppSelector(state => state.export.contracts);
   const gradingTypes = useAppSelector(state => state.preferences.gradingTypes);
@@ -69,13 +73,15 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
 
   const onEnrolmentSelect = en => {
     if (en.id) {
+      setEnrolmentLoading(true);
       dispatch(change(form, 'selectedOutcome', null));
       dispatch(change(form, 'outcome', null));
 
       getEntityItemById("Enrolment", en.id).then(enrolment => {
         dispatch(change(form, 'enrolment', enrolment));
+        setEnrolmentLoading(false);
       });
-    }  
+    }
   };
 
   return (
@@ -109,7 +115,10 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
           />
         }
       />
-      <Collapse in={Boolean(values.enrolment.id)} mountOnEnter unmountOnExit>
+
+      {enrolmentLoading
+        ? <CircularProgress />
+        : (<Collapse in={Boolean(values.enrolment.id)} mountOnEnter unmountOnExit>
         <FormSection name="enrolment">
           <ExpandableContainer
             expanded={expanded}
@@ -121,6 +130,7 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
           >
             <Grid container columnSpacing={3} rowSpacing={2}>
               <EnrolmentDetails
+                values={values.enrolment}
                 twoColumn={twoColumn}
                 contracts={contracts}
               />
@@ -128,6 +138,7 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
           </ExpandableContainer>
           <EnrolmentVetStudentLoans
             {...props}
+            namePrefix="enrolment"
             values={values.enrolment}
           />
           {Boolean(values.enrolment?.assessments?.length) && <>
@@ -151,7 +162,8 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
             </ExpandableContainer>
           </>}
         </FormSection>
-      </Collapse>
+      </Collapse>)
+      }
     </div>
   );
 };

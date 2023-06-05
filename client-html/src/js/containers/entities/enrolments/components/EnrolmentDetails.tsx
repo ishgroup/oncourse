@@ -10,22 +10,40 @@ import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { formatFundingSourceId } from "../../common/utils";
 import {
-  validateAssociatedCourseIdentifier, validateCricosConfirmation, validateOutcomeIdTrainingOrg, validateVetClientID,
+  validateAssociatedCourseIdentifier,
+  validateCharacter,
+  validateCricosConfirmation,
+  validateOutcomeIdTrainingOrg,
   validateVetFundingSourceState,
-  validateVetPurchasingContractIdentifier, validateVetTrainingContractID
+  validateVetPurchasingContractIdentifier,
 } from "../../../../common/utils/validation";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Divider from "@mui/material/Divider";
 import FormGroup from "@mui/material/FormGroup";
-import React from "react";
+import React, { useCallback } from "react";
 import { enrolmentExemptionTypeItems, enrolmentStudyReasonItems } from "../constants";
 import { fundingSourceValues } from "../../courseClasses/constants";
 
 const EnrolmentDetails = (
   {
     twoColumn,
-    contracts
+    contracts,
+    values
   }) => {
+
+  const validateVetClientID = useCallback(value => {
+    if (!value && values.vetTrainingContractID) {
+      return "If you enter data in either the Training Contract ID or the Training Contract Client ID, then you must fill out both";
+    }
+    return validateCharacter(value, 10, "Training contract client identifier");
+  }, [values.vetTrainingContractID]);
+
+  const validateVetTrainingContractID = useCallback(value => {
+    if (!value && values.vetClientID) {
+      return "If you enter data in either the Training Contract ID or the Training Contract Client ID, then you must fill out both";
+    }
+    return validateCharacter(value, 10, "Training contract identifier");
+  }, [values.vetClientID]);
 
   return (
     <>

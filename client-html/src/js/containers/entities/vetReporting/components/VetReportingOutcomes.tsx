@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Divider from "@mui/material/Divider";
@@ -18,6 +18,7 @@ import { VetReport } from "../../../../model/entities/VetReporting";
 import { openOutcomeLink, OutcomeSelectItemRenderer, OutcomeSelectValueRenderer } from "../../outcomes/utils";
 import { getEntityItemById } from "../../common/entityItemsService";
 import OutcomeEditFields from "../../outcomes/components/OutcomeEditFields";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const getFieldName = name => `outcome.${name}`;
 
@@ -32,23 +33,32 @@ const VetReportingOutcome = (props: EditViewProps<VetReport>) => {
     setExpanded
   } = props;
 
+  const [outcomeLoading, setOutcomeLoading] = useState(false);
+
   // useCallback is needed to prevent infinite loop
   const getCustomSearch = useCallback(search => `enrolment.id is ${values.selectedEnrolment?.id} and module.id not is null and (module.title starts with "${search}" or module.nationalCode starts with "${search}")`,
   [values.selectedEnrolment?.id]);
 
   const onOutcomeSelect = ou => {
     if (ou.id) {
+      setOutcomeLoading(true);
+
       getEntityItemById("Outcome", ou.id).then(outcome => {
         dispatch(change(form, 'outcome', outcome));
+        setOutcomeLoading(false);
       });
-
-      if (!expanded.includes(tabIndex)) {
-        setExpanded([...expanded, tabIndex]);
-      }
     }
   };
 
-  const searchField = useMemo(() => (
+  return (
+    <div className="pt-1 pl-3 pr-3">
+      <FullScreenStickyHeader
+        isFixed={false}
+        twoColumn={twoColumn}
+        title="Outcomes"
+        disableInteraction
+      />
+      <Divider className="mt-3 mb-3" />
       <FormField
         preloadEmpty
         type="remoteDataSelect"
@@ -71,29 +81,19 @@ const VetReportingOutcome = (props: EditViewProps<VetReport>) => {
           />
         }
       />
-  ),
-  [values.selectedOutcome?.id, values.selectedEnrolment?.id]);
-
-  return (
-    <div className="pt-1 pl-3 pr-3">
-      <FullScreenStickyHeader
-        isFixed={false}
-        twoColumn={twoColumn}
-        title="Outcomes"
-        disableInteraction
-      />
-      <Divider className="mt-3 mb-3" />
-      {searchField}
-      <Collapse in={Boolean(values.outcome)} mountOnEnter unmountOnExit>
-        {Boolean(values.outcome) && <OutcomeEditFields
-          {...props}
-          noHeader
-          className="mt-2"
-          values={values.outcome}
-          getFieldName={getFieldName}
-          isPriorLearningBinded={values.outcome?.isPriorLearning}
-        />}
-      </Collapse>
+      {outcomeLoading
+        ? <CircularProgress />
+        : <Collapse in={Boolean(values.outcome)} mountOnEnter unmountOnExit>
+          {Boolean(values.outcome) && <OutcomeEditFields
+            {...props}
+            noHeader
+            className="mt-2"
+            values={values.outcome}
+            getFieldName={getFieldName}
+            isPriorLearningBinded={values.outcome?.isPriorLearning}
+          />}
+        </Collapse>
+      }
     </div>
   );
 };

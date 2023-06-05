@@ -124,7 +124,7 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   isNested?: boolean;
   nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
-  syncErrors?: FormErrors;
+  syncErrors?: FormErrors<V>;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;

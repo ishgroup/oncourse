@@ -39,12 +39,12 @@ const VetReportingEditView = (props: EditViewProps<VetReport> & { usiLocked: boo
           twoColumn={twoColumn}
           isCompany={values.student.isCompany}
           usiLocked={usiLocked}
-          syncErrors={syncErrors}
+          syncErrors={syncErrors?.student || {}}
         />
       </div>
 
-      <ContactDetails {...props} tabIndex={tabIndex} />
-      <ContactsVET {...props} tabIndex="VET"/>
+      <ContactDetails {...props} namePrefix="student" tabIndex={tabIndex} />
+      <ContactsVET {...props} namePrefix="student" tabIndex="VET"/>
     </FormSection>
   );
 };
