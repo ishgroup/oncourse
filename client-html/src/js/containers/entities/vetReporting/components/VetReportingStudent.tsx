@@ -29,7 +29,7 @@ const VetReportingEditView = (props: EditViewProps<VetReport> & { usiLocked: boo
 
   return (
     <FormSection name="student">
-      <div className="pl-3 pb-1">
+      <div className={ twoColumn ? "pl-3 pb-1" : "pl-3 pt-3" }>
         <ProfileHeading
           isNew={isNew}
           form={form}
