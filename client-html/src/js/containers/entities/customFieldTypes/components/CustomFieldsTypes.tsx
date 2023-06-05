@@ -22,6 +22,7 @@ import {
 import { State } from "../../../../reducers/state";
 import { EntityName } from "../../../../model/entities/common";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import { getDeepValue } from "../../../../common/utils/common";
 
 const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
   const validate = type.mandatory ? validateSingleMandatoryField : undefined;
@@ -218,19 +219,22 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
      entityValues,
      dispatch,
      form,
-  }) => (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
+  }) => {
+    const value = getDeepValue(entityValues, fieldName);
+    
+    return (value && customFieldTypes && customFieldTypes[entityName]
       ? customFieldTypes[entityName].map((type, i) => (
         <Grid key={i} item {...gridItemProps} className="pr-2">
           <CustomField
             type={type}
-            value={entityValues[fieldName][type.fieldKey]}
+            value={value[type.fieldKey]}
             fieldName={fieldName}
             dispatch={dispatch}
             form={form}
           />
-        </Grid>
-      ))
-      : null)
+        </Grid>))
+      : null);
+  }
 );
 
 const mapStateToProps = (state: State) => ({

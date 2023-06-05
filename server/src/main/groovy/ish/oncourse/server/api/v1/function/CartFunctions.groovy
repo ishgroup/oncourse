@@ -28,12 +28,18 @@ import org.apache.cayenne.query.ObjectSelect
 
 import java.time.ZoneOffset
 
+import static java.lang.String.format
+
 class CartFunctions {
+    public static final String CLASSES_KEY = "classes"
+    public static final String WAITING_KEY = "waitingCourses"
+    public static final String PRODUCTS_KEY = "products"
+
     private static Map<String, Class<? extends CayenneDataObject>> classes = new HashMap<String, Class<? extends CayenneDataObject>>() {
         {
-            put("classes", CourseClass.class)
-            put("waitingCourses", WaitingList.class)
-            put("products", Product.class)
+            put(CLASSES_KEY, CourseClass.class)
+            put(WAITING_KEY, WaitingList.class)
+            put(PRODUCTS_KEY, Product.class)
         }
     }
 
@@ -47,12 +53,9 @@ class CartFunctions {
     }
 
     static CartIdsDTO cartDataIdsOf(Checkout checkout) {
-        def cartAsJson = checkout.shoppingCart
-        def cartIds = new CartIdsDTO()
-        if (cartAsJson == null)
-            return cartIds
-
-        def cartAsMap = new JsonSlurper().parseText(cartAsJson) as Map
+        def cartAsMap = cartAsMapOf(checkout)
+        if(cartAsMap == null)
+            return new CartIdsDTO()
 
         new CartIdsDTO().with { it ->
             it.payerId = checkout.payer.getId()
@@ -61,17 +64,50 @@ class CartFunctions {
         }
     }
 
-    private static List<CartContactIdsDTO> cartContactIdsOf(List<Map> cartContacts, ObjectContext context) {
-        return cartContacts.collect { cartContactIdsOf(it, context) }
+    static List<CartContactIdsDTO> contactCartsOf(Checkout checkout, Long contactWillowId, String column) {
+        contactCartsOf(checkout, contactWillowId, Set.of(column))
     }
 
-    private static CartContactIdsDTO cartContactIdsOf(Map cartContact, ObjectContext context) {
+    static List<Long> idsOfCurrentItems(Checkout checkout, Long contactId, String column){
+        def checkoutCart = cartAsMapOf(checkout)
+        def suitableContacts = (checkoutCart.contacts as List<Map>).findAll { parseAsLong(it.contactId) == contactId }
+        return (suitableContacts.collect{(it.getOrDefault(column, new ArrayList<Map>()) as List<Map>)}.flatten() as List<Map>).collect {parseAsLong(it.id) }
+    }
+
+    static List<CartContactIdsDTO> contactCartsOf(Checkout checkout, Long contactId, Set<String> columns = classes.keySet()){
+        def checkoutCart = cartAsMapOf(checkout)
+
+        if (checkoutCart == null)
+            return new ArrayList<CartContactIdsDTO>()
+
+        def suitableContacts = (checkoutCart.contacts as List<Map>).findAll { parseAsLong(it.contactId) == contactId }
+        return cartContactIdsOf(suitableContacts, checkout.getContext(), columns)
+    }
+
+    static Map cartAsMapOf(Checkout checkout){
+        def cartAsJson = checkout.shoppingCart
+        if (cartAsJson == null)
+            return null
+
+        new JsonSlurper().parseText(cartAsJson) as Map
+    }
+
+    private static List<CartContactIdsDTO> cartContactIdsOf(List<Map> cartContacts, ObjectContext context, Set<String> columns = classes.keySet()) {
+        return cartContacts.collect { cartContactIdsOf(it, context, columns) }
+    }
+
+    private static CartContactIdsDTO cartContactIdsOf(Map cartContact, ObjectContext context, Set<String> columns) {
         def cartContactIds = new CartContactIdsDTO()
         cartContactIds.contactId = cayenneObjectFrom(parseAsLong(cartContact.contactId), Contact, context).getId()
 
-        cartContactIds.classIds = mapToCartObjects(cartContact, "classes", context)
-        cartContactIds.productIds = mapToCartObjects(cartContact, "products", context)
-        cartContactIds.waitingCoursesIds = mapToCartObjects(cartContact, "waitingCourses", context)
+        if(columns.contains(CLASSES_KEY))
+            cartContactIds.classIds = mapToCartObjects(cartContact, CLASSES_KEY, context)
+
+        if(columns.contains(PRODUCTS_KEY))
+            cartContactIds.productIds = mapToCartObjects(cartContact, PRODUCTS_KEY, context)
+
+        if(columns.contains(WAITING_KEY))
+            cartContactIds.waitingCoursesIds = mapToCartObjects(cartContact, WAITING_KEY, context)
         cartContactIds
     }
 
@@ -108,5 +144,12 @@ class CartFunctions {
         return ObjectSelect.query(angelClass)
                 .where(willowIdProperty.eq(willowId))
                 .selectOne(context)
+    }
+
+    static List<Checkout> checkoutsByContactId(ObjectContext context, Long contactWillowId){
+        String formattedCartContact = format("\"contactId\":\"%d\"", contactWillowId)
+        return ObjectSelect.query(Checkout.class)
+                .where(Checkout.SHOPPING_CART.contains(formattedCartContact))
+                .select(context)
     }
 }

@@ -349,6 +349,16 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
             />
 
             {values.student && (
+              <CustomFields
+                entityName="Student"
+                fieldName="student.customFields"
+                entityValues={values}
+                form={form}
+                gridItemProps={gridItemProps}
+              />
+            )}
+
+            {values.student && (
               <>
                 <Grid item {...gridItemProps} className="mb-2">
                   <Alert severity="info">
