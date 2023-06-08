@@ -1147,7 +1147,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         And request discountToUpdate
         When method PUT
         Then status 400
-        And match $.errorMessage == "Discount with id:99999 doesn't exist"
+        And match $.errorMessage == "Record with id = '99999' doesn't exist."
 
 
 

@@ -67,6 +67,9 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
     @Inject
     private CourseClassTutorApiService tutorService
 
+    @Inject
+    private DiscountApiService discountApiService
+
     @Override
     Class<ClassCost> getPersistentClass() {
         return ClassCost
@@ -115,7 +118,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
             ccDto.courseClassDiscount = new CourseClassDiscountDTO()
             ccDto.courseClassDiscount.forecast = cayenneModel.discountCourseClass.predictedStudentsPercentage
             ccDto.courseClassDiscount.discountOverride = cayenneModel.discountCourseClass.discountDollar?.toBigDecimal()
-            ccDto.courseClassDiscount.discount = DiscountFunctions.toRestDiscount(cayenneModel.discountCourseClass.discount, false)
+            ccDto.courseClassDiscount.discount = discountApiService.toNotFullRestModel(cayenneModel.discountCourseClass.discount)
             ccDto.actualUsePercent = cayenneModel.discountCourseClass.actualUsePercent
         }
         ccDto
@@ -123,8 +126,6 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
 
     @Override
     ClassCost toCayenneModel(ClassCostDTO dto, ClassCost cayenneModel) {
-
-        boolean
         ObjectContext context = cayenneModel.context
         CourseClass courseClass
         if (dto.courseClassid) {

@@ -16,9 +16,14 @@ import groovy.transform.CompileStatic
 import ish.common.types.EntityRelationCartAction
 import ish.math.Money
 import ish.oncourse.server.CayenneService
-import ish.oncourse.server.api.dao.*
-import ish.oncourse.server.api.service.*
-import ish.oncourse.server.api.v1.function.DiscountFunctions
+import ish.oncourse.server.api.dao.ContactDao
+import ish.oncourse.server.api.dao.CourseDao
+import ish.oncourse.server.api.dao.EntityRelationDao
+import ish.oncourse.server.api.dao.ProductDao
+import ish.oncourse.server.api.service.ContactApiService
+import ish.oncourse.server.api.service.CourseClassApiService
+import ish.oncourse.server.api.service.DiscountApiService
+import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
 import ish.oncourse.server.cayenne.*
@@ -60,6 +65,9 @@ class CheckoutApiImpl implements CheckoutApi {
     @Inject
     CheckoutApiService checkoutApiService
 
+    @Inject
+    DiscountApiService discountApiService
+
     @Override
     CartIdsDTO getCartDataIds(Long checkoutId) {
         def checkout = SelectById.query(ish.oncourse.server.cayenne.Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
@@ -99,7 +107,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 CourseClassDiscountDTO dto = new CourseClassDiscountDTO()
                 dto.forecast = it.predictedStudentsPercentage
                 dto.discountOverride = it.discountDollar?.toBigDecimal()
-                dto.setDiscount(DiscountFunctions.toRestDiscountMinimized(it.discount))
+                dto.setDiscount(discountApiService.toRestDiscountMinimized(it.discount))
                 dto
             }
         }
@@ -154,7 +162,7 @@ class CheckoutApiImpl implements CheckoutApi {
             saleRelation.toItem = new SaleDTO(id: course.id, type: SaleTypeDTO.COURSE)
             saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
             if (relationType.discount) {
-                saleRelation.discount = DiscountFunctions.toRestDiscount(relationType.discount, false)
+                saleRelation.discount = discountApiService.toNotFullRestModel(relationType.discount)
             }
             saleRelation
         }
