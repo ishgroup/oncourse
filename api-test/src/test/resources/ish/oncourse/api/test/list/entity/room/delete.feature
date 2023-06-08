@@ -164,4 +164,4 @@ Feature: Main feature for all DELETE requests with path 'list/entity/room'
         Given path ishPath + '/99999'
         When method DELETE
         Then status 400
-        And match response.errorMessage == "Room with id:99999 doesn't exist"
+        And match response.errorMessage == "Record with id = '99999' doesn't exist."

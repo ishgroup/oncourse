@@ -38,7 +38,6 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocume
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.bidiModuleType
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.*
 import static org.apache.commons.lang3.StringUtils.*
@@ -77,6 +76,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
 
     @Inject
     private IPermissionService permissionService
+
+    @Inject
+    private ModuleApiService moduleApiService
 
     @Override
     Class<Course> getPersistentClass() {
@@ -125,7 +127,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
                     moduleDTO.id = module.id
                     moduleDTO.nationalCode = module.nationalCode
                     moduleDTO.title = module.title
-                    moduleDTO.type = bidiModuleType[module.type]
+                    moduleDTO.type = moduleApiService.bidiModuleType[module.type]
                     moduleDTO.isOffered = module.isOffered
                     moduleDTO.nominalHours = module.nominalHours
                     moduleDTO

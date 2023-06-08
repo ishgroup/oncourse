@@ -14,6 +14,7 @@ package ish.oncourse.server.modules
 import com.google.inject.Binder
 import com.google.inject.Module
 import com.google.inject.Scopes
+import ish.oncourse.server.api.service.AccountApiService
 import ish.oncourse.server.api.service.ApiTokenApiService
 import ish.oncourse.server.api.service.ApplicationApiService
 import ish.oncourse.server.api.service.ArticleProductApiService
@@ -37,10 +38,12 @@ import ish.oncourse.server.api.service.LeadApiService
 import ish.oncourse.server.api.service.LogsApiService
 import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.service.MessageApiService
+import ish.oncourse.server.api.service.ModuleApiService
 import ish.oncourse.server.api.service.NoteApiService
 import ish.oncourse.server.api.service.OutcomeApiService
 import ish.oncourse.server.api.service.PayslipApiService
 import ish.oncourse.server.api.service.PriorLearningApiService
+import ish.oncourse.server.api.service.QualificationApiService
 import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.api.service.RoomApiService
 import ish.oncourse.server.api.service.ScriptApiService
@@ -81,6 +84,7 @@ class ApiServiceModule implements Module {
 
         binder.bind(EntityValidator).in(Scopes.SINGLETON)
 
+        binder.bind(AccountApiService).in(Scopes.SINGLETON)
         binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
         binder.bind(ApplicationApiService).in(Scopes.SINGLETON)
         binder.bind(ArticleProductApiService).in(Scopes.SINGLETON)
@@ -104,6 +108,7 @@ class ApiServiceModule implements Module {
         binder.bind(LogsApiService).in(Scopes.SINGLETON)
         binder.bind(MembershipProductApiService).in(Scopes.SINGLETON)
         binder.bind(MessageApiService).in(Scopes.SINGLETON)
+        binder.bind(ModuleApiService).in(Scopes.SINGLETON)
         binder.bind(NoteApiService).in(Scopes.SINGLETON)
         binder.bind(OutcomeApiService).in(Scopes.SINGLETON)
         binder.bind(PayslipApiService).in(Scopes.NO_SCOPE)
@@ -116,6 +121,7 @@ class ApiServiceModule implements Module {
         binder.bind(WindcavePaymentAPI).in(Scopes.SINGLETON)
         binder.bind(WindcavePaymentService).in(Scopes.SINGLETON)
         binder.bind(PriorLearningApiService).in(Scopes.SINGLETON)
+        binder.bind(QualificationApiService).in(Scopes.SINGLETON)
         binder.bind(ReportApiService).in(Scopes.SINGLETON)
         binder.bind(RoomApiService).in(Scopes.NO_SCOPE)
         binder.bind(ScriptApiService).in(Scopes.SINGLETON)
