@@ -48,6 +48,7 @@ interface Props {
   onAdd?: any;
   classes?: any;
   noDivider?: boolean;
+  className?: string;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -61,7 +62,8 @@ const ExpandableContainer: React.FC<Props> = ({
   setExpanded,
   index,
   noDivider,
-  formErrors
+  formErrors,
+  className
 }) => {
   const [hasErrors, setHasErrors] = useState(false);
 
@@ -121,7 +123,7 @@ const ExpandableContainer: React.FC<Props> = ({
   const clickHandler = hasErrors ? () => animateFormErrors(childrenRef.current) : toggleExpand;
 
   return (
-    <>
+    <div className={className}>
       <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")} />
       <div ref={headerRef}>
         <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
@@ -148,7 +150,7 @@ const ExpandableContainer: React.FC<Props> = ({
           {children}
         </Collapse>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -194,7 +194,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         """
         {
         "id":"#(~~id)",
-        "student":{"id":"#number","countryOfBirth":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},"disabilityType":"Learning","labourForceStatus":"Not stated","englishProficiency":"Well","highestSchoolLevel":"Year 11","indigenousStatus":"Aboriginal","isOverseasClient":true,"isStillAtSchool":true,"language":null,"priorEducationCode":"Certificate II","specialNeeds":"BBBUPD","yearSchoolCompleted":null,"studentNumber":"#number","countryOfResidency":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},"visaNumber":"UPD","visaType":"UPD","visaExpiryDate":"2035-11-12","passportNumber":"3645766","medicalInsurance":"UPD","uniqueLearnerIdentifier":"UPD","usi":"2222222222","usiStatus":"Not supplied","chessn":"UPD","feeHelpEligible":true,"citizenship":"New Zealand citizen","townOfBirth":"bUPD","specialNeedsAssistance":true,"clientIndustryEmployment":"Wholesale Trade (F)","clientOccupationIdentifier":"Manager (1)","waitingLists":[],"concessions":[{"id":"#ignore","number":"50","type":{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2030-01-01","created":null,"modified":null}]},
+        "student":{"id":"#number", "customFields":{},"countryOfBirth":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},"disabilityType":"Learning","labourForceStatus":"Not stated","englishProficiency":"Well","highestSchoolLevel":"Year 11","indigenousStatus":"Aboriginal","isOverseasClient":true,"isStillAtSchool":true,"language":null,"priorEducationCode":"Certificate II","specialNeeds":"BBBUPD","yearSchoolCompleted":null,"studentNumber":"#number","countryOfResidency":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},"visaNumber":"UPD","visaType":"UPD","visaExpiryDate":"2035-11-12","passportNumber":"3645766","medicalInsurance":"UPD","uniqueLearnerIdentifier":"UPD","usi":"2222222222","usiStatus":"Not supplied","chessn":"UPD","feeHelpEligible":true,"citizenship":"New Zealand citizen","townOfBirth":"bUPD","specialNeedsAssistance":true,"clientIndustryEmployment":"Wholesale Trade (F)","clientOccupationIdentifier":"Manager (1)","waitingLists":[],"concessions":[{"id":"#ignore","number":"50","type":{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2030-01-01","created":null,"modified":null}]},
         "tutor":null,
         "abn":"12345678000",
         "birthDate":"1999-06-02",
@@ -530,6 +530,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
             "uniqueLearnerIdentifier":"UPD",
             "usi":"2222222222",
             "usiStatus":"Not supplied",
+            "customFields":{},
             "chessn":"UPD",
             "feeHelpEligible":true,
             "citizenship":"New Zealand citizen",
@@ -720,7 +721,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
             "specialNeedsAssistance":true,
             "clientIndustryEmployment":"Wholesale Trade (F)",
             "clientOccupationIdentifier":"Manager (1)",
-            "concessions":[{"number":"50","type":{"id":2},"expiresOn":"2030-01-01"}]
+            "concessions":[{"number":"50","type":{"id":2},"expiresOn":"2030-01-01"}],
+            "customFields":{}
             },
         "tutor":null,
         "abn":"12345678000",
@@ -903,7 +905,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
             "specialNeedsAssistance":true,
             "clientIndustryEmployment":"Wholesale Trade (F)",
             "clientOccupationIdentifier":"Manager (1)",
-            "concessions":[{"number":"50","type":{"id":2},"expiresOn":"2030-01-01"}]
+            "concessions":[{"number":"50","type":{"id":2},"expiresOn":"2030-01-01"}],
+            "customFields":{},
             },
         "tutor":null,
         "abn":"12345678000",
@@ -1086,7 +1089,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
             "specialNeedsAssistance":true,
             "clientIndustryEmployment":"Wholesale Trade (F)",
             "clientOccupationIdentifier":"Manager (1)",
-            "concessions":[{"number":"50","type":{"id":2},"expiresOn":"2030-01-01"}]
+            "concessions":[{"number":"50","type":{"id":2},"expiresOn":"2030-01-01"}],
+            "customFields":{}
             },
         "tutor":null,
         "abn":"12345678000",
@@ -1376,7 +1380,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"defaultPayType":null,"id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal4UPD","givenNameLegal":"givenNameLegal4UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#(~~tutorId)","dateFinished":"2025-01-05","dateStarted":"2015-02-05","familyNameLegal":"familyNameLegal4UPD","givenNameLegal":"givenNameLegal4UPD","payrollRef":"some payrollRefUPD","resume":"some resume UPD","wwChildrenCheckedOn":"2015-03-05","wwChildrenExpiry":"2025-04-05","wwChildrenRef":"some wwChildrenRefUPD","wwChildrenStatus":"Cleared","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":"12345678000",
         "birthDate":"1995-07-25",
         "country":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},

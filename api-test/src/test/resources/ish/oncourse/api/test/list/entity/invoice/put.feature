@@ -139,7 +139,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "relatedFundingSourceId": null,
           "amountOwing": 300.0,
           "publicNotes": "some public notes upd",
-          "shippingAddress": "shipping address1 upd"
+          "shippingAddress": "shipping address1 upd",
+          "customFields":{}
         }
         """
 
@@ -184,7 +185,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
             ],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -282,7 +284,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "relatedFundingSourceId": null,
           "amountOwing": 300.0,
           "publicNotes": "some public notes upd",
-          "shippingAddress": "shipping address1 upd"
+          "shippingAddress": "shipping address1 upd",
+          "customFields":{}
         }
         """
 
@@ -321,7 +324,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
             ],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -366,7 +370,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
             ],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -401,7 +406,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "paymentPlans":[{"id":11,"date":"2019-07-02","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -433,7 +439,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "paymentPlans":[{"id":11,"date":"2019-07-02","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -467,7 +474,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "paymentPlans":[{"id":11,"date":"2019-07-02","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -565,7 +573,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "relatedFundingSourceId": null,
           "amountOwing": 300.0,
           "publicNotes": "some public notes",
-          "shippingAddress": "shipping address1"
+          "shippingAddress": "shipping address1",
+          "customFields":{}
         }
         """
 
@@ -593,7 +602,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "paymentPlans":[{"id":11,"date":"2019-07-02","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -691,8 +701,9 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "relatedFundingSourceId": null,
           "amountOwing": 300.0,
           "publicNotes": "some public notes",
-          "shippingAddress": "shipping address1"
-        }б
+          "shippingAddress": "shipping address1",
+          "customFields":{}
+        }
         """
 
 
@@ -719,7 +730,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
         "paymentPlans":[{"id":11,"date":"2019-07-02","type":"Invoice office","successful":true,"amount":300.00,"entityName":"Invoice"},{"id":2,"date":"2022-08-10","type":"Payment due","successful":true,"amount":100.00,"entityName":"InvoiceDueDate"},{"id":1,"date":"2022-09-20","type":"Payment due","successful":true,"amount":200.00,"entityName":"InvoiceDueDate"}],
         "source":"office",
         "createdByUser":"admin",
-        "sendEmail":false
+        "sendEmail":false,
+        "customFields":{}
         }
         """
 
@@ -817,7 +829,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/invoice'
           "relatedFundingSourceId": null,
           "amountOwing": 300.0,
           "publicNotes": "some public notes",
-          "shippingAddress": "shipping address1"
+          "shippingAddress": "shipping address1",
+          "customFields":{}
         }
         """
 

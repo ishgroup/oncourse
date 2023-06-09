@@ -282,6 +282,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.visaType = dto.visaType
         cayenneModel.yearSchoolCompleted = dto.yearSchoolCompleted
         updateStudentConcessions(cayenneModel.contact, dto.concessions)
+        updateCustomFields(context, cayenneModel, dto.customFields, cayenneModel.getCustomFieldClass())
         cayenneModel
     }
 
@@ -307,6 +308,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.wwChildrenRef = dto.wwChildrenRef
         cayenneModel.wwChildrenStatus = dto.wwChildrenStatus?.getDbType()
         cayenneModel.payType = dto.defaultPayType?.dbType
+        updateCustomFields(context, cayenneModel, dto.customFields, cayenneModel.getCustomFieldClass())
 
         cayenneModel
     }
@@ -584,6 +586,10 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             student.yearSchoolCompleted = dbStudent.yearSchoolCompleted
             student.waitingLists = dbStudent.waitingLists.collect{ l -> l.course.name }
             student.concessions = dbStudent?.concessions?.collect{ toRestConcession(it) }
+            student.customFields = dbStudent?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!student.customFields)
+                student.customFields = Collections.emptyMap()
+
             student
         }
     }
@@ -616,6 +622,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             tutor.unscheduledClasseCount = count.unscheduledClassesCount
             tutor.passedClasseCount = count.passedClassesCount
             tutor.cancelledClassesCount = count.cancelledClassesCount
+            tutor.customFields = dbTutor?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!tutor.customFields)
+                tutor.customFields = Collections.emptyMap()
 
             tutor
         }

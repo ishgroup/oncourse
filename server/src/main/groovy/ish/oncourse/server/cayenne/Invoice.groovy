@@ -39,7 +39,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Invoice extends _Invoice implements InvoiceInterface {
+class Invoice extends _Invoice implements InvoiceInterface, ExpandableTrait {
 
     @Inject
     private transient IAutoIncrementService autoIncrementService
@@ -287,4 +287,8 @@ class Invoice extends _Invoice implements InvoiceInterface {
         return dueDate
     }
 
+    @Override
+    Class<? extends CustomField> getCustomFieldClass() {
+        return InvoiceCustomField
+    }
 }
