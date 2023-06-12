@@ -202,7 +202,9 @@ const useBudgetAdornmentStyles = makeAppStyles(theme => ({
 const getDiscountedFee = (discount, currentTax, classFee) => {
   const taxOnDiscount = decimalMul(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0, currentTax.rate);
 
-  const decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
+  let decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
+  
+  if (decimal.toNumber() < 0) decimal = new Decimal(0);
 
   return getRoundingByType(discount.courseClassDiscount.discount.rounding, decimal);
 };
@@ -491,7 +493,6 @@ const CourseClassEditView: React.FC<Props> = ({
     },
     [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
   );
-
 
   const classCostTypes = useMemo(
     () =>
