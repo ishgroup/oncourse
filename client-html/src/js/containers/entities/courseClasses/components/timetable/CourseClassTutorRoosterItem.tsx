@@ -147,6 +147,7 @@ interface Props {
   onDeleteTutor: NumberArgFunction;
   setExpanded: NumberArgFunction;
   addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
+  disableExpand: boolean;
 }
 
 const CourseClassTutorRoosterItem = (
@@ -164,7 +165,8 @@ const CourseClassTutorRoosterItem = (
     budget,
     addTutorWage,
     onDeleteTutor,
-    setExpanded
+    setExpanded,
+    disableExpand
   }: Props
 ) => {
   const classes = useStyles();
@@ -321,9 +323,11 @@ const CourseClassTutorRoosterItem = (
         <IconButton size="small" disabled={tutorAttendance.hasPayslip} onClick={() => onDeleteTutor(index)}>
           <DeleteIcon fontSize="inherit" />
         </IconButton>
-        <IconButton size="small" disabled={tutorAttendance.hasPayslip} onClick={() => setExpanded(isExpanded ? null : index)}>
-          <ExpandMore fontSize="inherit" className={clsx(classes.expandIcon, isExpanded && classes.expanded)} />
-        </IconButton>
+        {!disableExpand && (
+          <IconButton size="small" disabled={tutorAttendance.hasPayslip} onClick={() => setExpanded(isExpanded ? null : index)}>
+            <ExpandMore fontSize="inherit" className={clsx(classes.expandIcon, isExpanded && classes.expanded)} />
+          </IconButton>
+        )}
       </div>
     </Card>
   );
