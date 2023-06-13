@@ -2497,7 +2497,9 @@
 	<obj-entity name="InvoiceCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.InvoiceCustomField" clientClassName="ish.oncourse.cayenne.InvoiceCustomField">
 		<qualifier><![CDATA[entityIdentifier = "Invoice"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="InvoiceLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.InvoiceLine"/>
+	<obj-entity name="InvoiceLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.InvoiceLine">
+		<qualifier><![CDATA[invoice.type = enum:ish.common.types.InvoiceType.INVOICE]]></qualifier>
+	</obj-entity>
 	<obj-entity name="InvoiceAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.InvoiceAttachmentRelation" clientClassName="ish.oncourse.cayenne.InvoiceAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier like "Invoice"]]></qualifier>
 	</obj-entity>
@@ -2908,7 +2910,9 @@
 	<obj-entity name="QuoteCustomField" superEntityName="CustomField" className="ish.oncourse.server.cayenne.QuoteCustomField" clientClassName="ish.oncourse.cayenne.QuoteCustomField">
 		<qualifier><![CDATA[entityIdentifier = "Quote"]]></qualifier>
 	</obj-entity>
-	<obj-entity name="QuoteLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.QuoteLine"/>
+	<obj-entity name="QuoteLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.QuoteLine">
+		<qualifier><![CDATA[invoice.type = enum:ish.common.types.InvoiceType.QUOTE]]></qualifier>
+	</obj-entity>
 
 	<obj-entity name="SavedFind" className="ish.oncourse.server.cayenne.SavedFind" clientClassName="ish.oncourse.cayenne.SavedFind" dbEntityName="SavedFind" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="aqlExpressionString" type="java.lang.String" db-attribute-path="aqlExpressionString"/>
