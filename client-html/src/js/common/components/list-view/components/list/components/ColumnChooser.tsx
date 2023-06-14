@@ -8,17 +8,16 @@ import React, {
 } from "react";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
-import ListItem from "@mui/material/ListItem";
 import List from "@mui/material/List";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Popover from "@mui/material/Popover";
 import { CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "../constants";
+import { ListItemButton } from "@mui/material";
 
 const ColumnChooserItem = ({
  classes, column, onHiddenChange
-}) => (<ListItem
-  button
+}) => (<ListItemButton
   classes={{ root: classes.columnChooserListItem }}
 >
   <FormControlLabel
@@ -41,7 +40,7 @@ const ColumnChooserItem = ({
       />
     )}
   />
-</ListItem>);
+</ListItemButton>);
 
 const ColumnChooserOverlay = ({
   columns, target, visible, onHide, classes, onHiddenChange

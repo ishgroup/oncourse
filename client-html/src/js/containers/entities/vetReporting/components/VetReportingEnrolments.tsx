@@ -101,7 +101,7 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
         returnType="object"
         selectValueMark="id"
         selectLabelMark="courseClass.course.name"
-        aqlColumns="courseClass.course.name,courseClass.course.code,courseClass.code,status"
+        aqlColumns="courseClass.course.name,courseClass.course.code,courseClass.code,displayStatus"
         itemRenderer={EnrolmentSelectItemRenderer}
         valueRenderer={EnrolmentSelectValueRenderer}
         getCustomSearch={getCustomSearch}

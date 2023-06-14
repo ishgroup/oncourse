@@ -134,7 +134,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];
 
-const secondaryColumnCondition = row => row.birthDate || "Birthday not specified";
+const secondaryColumnCondition = row => row.email && row.birthDate ? `${row.birthDate}  |  ${row.email}` : row.birthDate || row.email;
 
 const manualLink = getManualLink("contacts");
 
@@ -288,7 +288,7 @@ const VetReporting: React.FC<VetReportingProps> = props => {
       listProps={{
         firstColumnName: "contactType",
         primaryColumn: "fullName",
-        secondaryColumn: "birthDate",
+        secondaryColumn: "email",
         setRowClasses,
         secondaryColumnCondition,
         customColumnFormats
@@ -331,7 +331,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getContactsTaxTypes());
     dispatch(getDefaultInvoiceTerms());
     dispatch(getContactRelationTypes());
-    dispatch(getActiveFundingContracts(true))
+    dispatch(getActiveFundingContracts(true));
   },
   clearListState: () => dispatch(clearListState()),
   getPermissions: () => {
@@ -343,7 +343,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=PaymentIn", method: "GET" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact&bulkConfirmTutorWages=true", method: "POST" }));
     dispatch(checkPermissions({ path: "/a/v1/list/option/payroll?entity=Contact", method: "PUT" }));
-    dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
+    dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }));
   }
 });
 

@@ -32,7 +32,7 @@ export const OutcomeSelectValueRenderer = (content, data, search, parentProps) =
 const OutcomeSelectItem = ({ content, data, search, parentProps }) => {
   const highlightedTitle = useMemo(
     () => getHighlightedPartLabel(data["module.title"], search),
-    [data.code, search]
+    [data, search]
   );
 
   return <div {...parentProps}>

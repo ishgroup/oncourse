@@ -43,8 +43,8 @@ const VetReportingEditView = (props: EditViewProps<VetReport> & { usiLocked: boo
         />
       </div>
 
-      <ContactDetails {...props} namePrefix="student" tabIndex={tabIndex} />
-      <ContactsVET {...props} namePrefix="student" tabIndex="VET"/>
+      <ContactDetails {...props} values={values.student} namePrefix="student" noCustomFields tabIndex={tabIndex} />
+      <ContactsVET {...props} values={values.student} namePrefix="student" tabIndex="VET"/>
     </FormSection>
   );
 };

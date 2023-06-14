@@ -22,7 +22,7 @@ export const EnrolmentSelectValueRenderer = (content, data, search, parentProps)
       ({data["courseClass.course.code"]}-{data["courseClass.code"]})
     </div>
     <Typography variant="caption" component="div" color="inherit">
-      {data.status}
+      {data.displayStatus}
     </Typography>
   </div>
 </MenuItem>);
@@ -30,7 +30,7 @@ export const EnrolmentSelectValueRenderer = (content, data, search, parentProps)
 const EnrolmentSelectItem = ({ content, data, search, parentProps }) => {
   const highlightedCode = useMemo(
     () => getHighlightedPartLabel(`${data["courseClass.course.code"]}-${data["courseClass.code"]}`, search),
-    [data.code, search]
+    [data, search]
   );
 
   return <div {...parentProps}>
@@ -41,7 +41,7 @@ const EnrolmentSelectItem = ({ content, data, search, parentProps }) => {
         ({highlightedCode})
       </div>
       <Typography variant="caption" component="div" color="textSecondary">
-        {data.status}
+        {data.displayStatus}
       </Typography>
     </div>
   </div>;

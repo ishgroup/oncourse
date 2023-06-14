@@ -8,14 +8,13 @@
 
 import Typography from "@mui/material/Typography";
 import React, {
-  useCallback, useMemo, useState
+  useCallback, useState
 } from "react";
 import {
-  ConcessionType,
-  Contact, ContactGender, ContactRelationType, StudentCitizenship, StudentConcession
+  Contact, ContactGender, StudentCitizenship
 } from "@api/model";
 import {
-  arrayInsert, arrayRemove, change
+  change
 } from "redux-form";
 import { connect } from "react-redux";
 import {
@@ -25,19 +24,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import Divider from "@mui/material/Divider";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { getContactFullName } from "../utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
 import { SettingsAdornment } from "../../../../common/components/form/FieldAdornments";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import { MembershipContent, MembershipHeader } from "./MembershipLines";
-import { RelationsContent, RelationsHeader } from "./RelationsLines";
-import { ConcessionsContent, ConcessionsHeader } from "./ConcessionsLines";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { openInternalLink } from "../../../../common/utils/links";
 
@@ -55,6 +48,7 @@ const validateABN = v => (!v || (new RegExp(/^\d+$/)).test(v) ? undefined : "Bus
 interface ContactDetailsProps extends EditViewProps<Contact> {
   classes?: any;
   isStudent?: boolean;
+  noCustomFields?: boolean;
   isTutor?: boolean;
   isCompany?: boolean;
   setIsStudent?: any;
@@ -80,7 +74,8 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     countries,
     usiLocked,
     isCompany,
-    namePrefix
+    namePrefix,
+    noCustomFields
   } = props;
 
   const getName = (name: string) => namePrefix ? `${namePrefix}.${name}` : name;
@@ -340,15 +335,17 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               </>
             ) : null}
 
-            <CustomFields
-              entityName="Contact"
-              fieldName="customFields"
-              entityValues={values}
-              form={form}
-              gridItemProps={gridItemProps}
-            />
+            {!noCustomFields && (
+              <CustomFields
+                entityName="Contact"
+                fieldName="customFields"
+                entityValues={values}
+                form={form}
+                gridItemProps={gridItemProps}
+              />
+            )}
 
-            {values.student && (
+            {values.student && !noCustomFields && (
               <CustomFields
                 entityName="Student"
                 fieldName="student.customFields"
