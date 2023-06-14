@@ -18,5 +18,5 @@ put:
       $ref: './def/entity/TableModel.yaml'
   x-permission:
     mask: view
-    keyCode: LAZY/entity
+    keyCode: LAZY/tableModelIdentifier
     errorMessage: Sorry, you have no permissions to edit this entity. Please contact your administrator

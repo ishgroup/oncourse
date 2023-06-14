@@ -77,7 +77,7 @@ class DefaultUserPreference {
     private static final Integer W300 = 300
     private static final Integer W400 = 400
 
-    private static final String VET_MODEL_NAME = "VetReport"
+    public static final String VET_MODEL_NAME = "VetReport"
 
     private static final TableModelDTO AUDIT_MODEL = new TableModelDTO().with {
         it.columns = [
