@@ -2,16 +2,10 @@
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
 <!-- 2017-06-05T16:50:00 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EnrolmentConfirmation" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="75ec6864-6f4a-415a-a0d3-ffe8ab8e1c48">
-	<property name="name" value="Enrolment Confirmation"/>
-	<property name="entity" value="Enrolment"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.enrolmentConfirmation"/>
 	<property name="ish.oncourse.title" value="Enrolment Confirmation"/>
 	<property name="ish.oncourse.filePrefix" value="enrolmentConfirmation"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
-	<property name="ish.oncourse.description" value="To provide students with details of their class once they have enrolled.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="EnrolmentConfirmation.pdf"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>

@@ -935,3 +935,18 @@
   short: Requires active Kronos integration. Get all TutorAttendances with custom fields 'shiftIdCustomField' and 'scheduleIdCustomField' then these TutorAttendance custom fields will be deleted if Schedule was deleted from Kronos or one of these custom field is null.
   category: Integrations
   tag:
+
+- name: Delete old shopping carts
+  keyCode: ish.script.deleteOldShoppingCarts
+  body: ish.script.deleteOldShoppingCarts.groovy
+  status: ENABLED
+  triggerType: CRON
+  schedule: "@daily-morning"
+  description: Delete shopping carts, which where created more than a value of parameter "expireInterval" ago (1 year by default)
+  short: Delete shopping carts, which where created a time ago
+  category: Finance
+  tag:
+  options:
+    - name: expireInterval
+      value: "1 year"
+      dataType: TEXT

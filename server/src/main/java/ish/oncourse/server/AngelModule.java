@@ -21,8 +21,6 @@ import io.bootique.config.ConfigurationFactory;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
-import ish.oncourse.server.integration.PluginsPrefsService;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.servlet.ApiFilter;
 import ish.oncourse.server.api.servlet.ISessionManager;
@@ -31,10 +29,9 @@ import ish.oncourse.server.api.servlet.SessionManager;
 import ish.oncourse.server.db.AngelCayenneModule;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.lifecycle.ClassPublishListener;
-import ish.oncourse.server.lifecycle.PayslipApprovedListener;
-import ish.oncourse.server.lifecycle.PayslipPaidListener;
-import ish.oncourse.server.lifecycle.ScriptTriggeringCommitListener;
+import ish.oncourse.server.integration.PluginsPrefsService;
+import ish.oncourse.server.jetty.AngelJettyModule;
+import ish.oncourse.server.lifecycle.*;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.GroovyScriptService;
@@ -42,6 +39,7 @@ import ish.oncourse.server.scripting.api.EmailService;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.security.api.IPermissionService;
 import ish.oncourse.server.services.AuditService;
+import ish.oncourse.server.services.ISystemUserService;
 import ish.oncourse.server.servlet.HealthCheckServlet;
 import ish.util.Maps;
 import org.apache.cayenne.commitlog.CommitLogListener;
@@ -59,11 +57,7 @@ import org.quartz.utils.DBConnectionManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarFile;
 
 public class AngelModule extends ConfigModule {
@@ -98,6 +92,12 @@ public class AngelModule extends ConfigModule {
 
     @Singleton
     @Provides
+    AuditCommitListener provideAuditCommitListener(AuditService auditService, ISystemUserService systemUserService) {
+        return new AuditCommitListener(auditService, systemUserService);
+    }
+
+    @Singleton
+    @Provides
     ClassPublishListener provideClassPublishListener(EventService eventService) {
         return new ClassPublishListener(eventService);
     }
@@ -125,8 +125,9 @@ public class AngelModule extends ConfigModule {
     CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener,
                                                  PayslipApprovedListener payslipApprovedListener,
                                                  PayslipPaidListener paidListener,
-                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener) {
-        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener);
+                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener,
+                                                 AuditCommitListener auditCommitListener) {
+        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener, auditCommitListener);
     }
 
     @Override

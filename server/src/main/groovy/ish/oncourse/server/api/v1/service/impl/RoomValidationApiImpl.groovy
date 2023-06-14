@@ -13,10 +13,8 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
-import static ish.oncourse.server.api.function.EntityFunctions.validateEntityExistence
-import static ish.oncourse.server.api.v1.function.RoomFunctions.validateForDelete
+import ish.oncourse.server.api.dao.RoomDao
+import ish.oncourse.server.api.service.RoomApiService
 import ish.oncourse.server.api.v1.service.RoomValidationApi
 import ish.oncourse.server.cayenne.Room
 
@@ -25,11 +23,15 @@ class RoomValidationApiImpl implements RoomValidationApi {
     @Inject
     private ICayenneService cayenneService
 
+    @Inject
+    private RoomApiService roomApiService
+
+    @Inject
+    private RoomDao roomDao
+
     @Override
     void remove(Long id) {
-        Room room = getRecordById(cayenneService.newContext, Room, id)
-
-        checkForBadRequest(validateEntityExistence(id, room))
-        checkForBadRequest(validateForDelete(room))
+        Room room = roomDao.getById(cayenneService.newContext, id)
+        roomApiService.validateModelBeforeRemove(room)
     }
 }

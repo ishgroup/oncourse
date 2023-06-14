@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions;
 
 
 
-public class QulificationApiTest {
+public class QualificationApiTest {
     @Test
     public void test() {
         Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path("classpath:ish/oncourse/api/test/list/entity/qualification").tags("~@ignore").parallel(1);

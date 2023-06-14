@@ -28,7 +28,7 @@ public enum ResourceType {
 
 	EXPORT("Export Template", "exports/", ".*\\.yaml", ExportTemplate.class),
 
-	REPORT("Jasper Report", "reports/", ".*\\.jrxml", Report.class),
+	REPORT("Jasper Report", "reports/", ".*\\.yaml", Report.class),
 
 	SCRIPT("Script", "scripts/", ".*\\.yaml", Script.class),
 
