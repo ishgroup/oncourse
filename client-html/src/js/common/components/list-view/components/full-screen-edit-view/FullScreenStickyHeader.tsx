@@ -37,15 +37,6 @@ const useStyles = makeAppStyles(theme => ({
       color: `${theme.appBar.headerAlternate.color}`,
     }
   },
-  titleWrapper: {
-    minHeight: 51,
-  },
-  hasAvatar: {
-    minHeight: 90,
-  },
-  hasAvatarScrollIn: {
-    marginTop: theme.spacing(0),
-  },
   title: {
     cursor: "text",
     position: "relative",
@@ -100,6 +91,7 @@ interface Props {
   disableInteraction?: boolean,
   opened?: boolean,
   isFixed?: boolean,
+  customStuck?: boolean,
   fields?: any,
   className?: string
 }
@@ -112,7 +104,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     fields,
     twoColumn,
     disableInteraction,
-    isFixed =  true
+    isFixed =  true,
+    customStuck
   } = props;
 
   const classes = useStyles();
@@ -135,6 +128,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   };
 
   const onStickyChange = useCallback(() => {
+    if (typeof customStuck === "boolean") return;
+
     const top = rootRef.current?.getBoundingClientRect().top;
     if (top < APP_BAR_HEIGHT && !isStuck) {
       setIsStuck(true);
@@ -143,7 +138,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
       setIsStuck(false);
     }
     onClickAway();
-  }, [isStuck, isEditing]);
+  }, [isStuck, customStuck]);
 
   useEffect(() => {
     document.addEventListener("scroll", onStickyChange, true);
@@ -152,7 +147,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     };
   }, [onStickyChange]);
 
-  const showTitleOnly = twoColumn && isStuck;
+  const showTitleOnly = twoColumn && (isStuck || customStuck);
 
   const titleExpanded = opened ? false : !isEditing;
 
@@ -170,7 +165,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
           xs={12}
           className={clsx(
             "centeredFlex",
-            twoColumn && !opened && isStuck && classes.fullScreenTitleItem,
+            twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
             !opened && isFixed && twoColumn && classes.isFixed,
           )}
           columnSpacing={3}

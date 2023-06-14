@@ -28,6 +28,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import ProfileHeading from "./ProfileHeading";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import clsx from "clsx";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
@@ -179,7 +180,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   }, [tags, isStudent, isTutor, isCompany]);
 
   return (
-    <div className="pt-3 pl-3 pr-3">
+    <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
       <ProfileHeading
         isFixed
         isNew={isNew}
@@ -192,7 +193,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         usiLocked={usiLocked}
         syncErrors={syncErrors}
       />
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} className="mt-3">
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
             Type

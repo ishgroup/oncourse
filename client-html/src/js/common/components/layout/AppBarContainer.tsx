@@ -89,7 +89,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   actionsWrapper: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    zIndex: theme.zIndex.appBar + 1
   }
 }));
 
@@ -143,7 +144,7 @@ const AppBarContainer = (props: Props) => {
     if (e.target.scrollTop > 0 && !hasScrolling) {
       setScrolling(true);
     }
-    if (e.target.scrollTop < 1 && hasScrolling) {
+    if (e.target.scrollTop <= 0 && hasScrolling) {
       setScrolling(false);
     }
   }, [hasScrolling]);
@@ -191,6 +192,7 @@ const AppBarContainer = (props: Props) => {
                 fields={fields}
                 Avatar={Avatar}
                 disableInteraction={disableInteraction}
+                customStuck={hasScrolling}
                 twoColumn
               />
             )

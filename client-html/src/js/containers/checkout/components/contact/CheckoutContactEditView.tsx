@@ -91,7 +91,6 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
       <form className="flex-column w-100" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <AppBarContainer
           noTitle
-          noScrollSpy
           disabled={invalid || (!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
           invalid={invalid}
           onCloseClick={creatingNew ? onClose : null}

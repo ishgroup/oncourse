@@ -26,7 +26,7 @@ import AppBarHelpMenu from "../../../form/AppBarHelpMenu";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import { LSGetItem } from "../../../../utils/storage";
 import {
-  APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_SCROLL_OFFSET,
+  APPLICATION_THEME_STORAGE_NAME,
   TAB_LIST_SCROLL_TARGET_ID
 } from "../../../../../constants/Config";
 import FullScreenStickyHeader from "./FullScreenStickyHeader";
@@ -125,12 +125,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
   };
 
   onScroll = e => {
-    if (e.target.scrollTop > STICKY_HEADER_SCROLL_OFFSET && !this.state.hasScrolling) {
+    if (e.target.scrollTop > 0 && !this.state.hasScrolling) {
       this.setState({
         hasScrolling: true
       });
     }
-    if (e.target.scrollTop <= STICKY_HEADER_SCROLL_OFFSET && this.state.hasScrolling) {
+    if (e.target.scrollTop <= 0 && this.state.hasScrolling) {
       this.setState({
         hasScrolling: false
       });
