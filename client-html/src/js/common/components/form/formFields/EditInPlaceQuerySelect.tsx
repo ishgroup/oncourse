@@ -221,8 +221,8 @@ const completeSuggestions = (
 
   return variants.map(i => ({
     token,
-    value: i,
-    label: i.replace(/'/g, "")
+    value: i.replace(/[']/g, ""),
+    label: i.replace(/[']/g, "")
   }));
 };
 
