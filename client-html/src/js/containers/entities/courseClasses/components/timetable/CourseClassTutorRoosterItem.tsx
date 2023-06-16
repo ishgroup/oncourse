@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { differenceInMinutes, format } from "date-fns";
+import { addMinutes, differenceInMinutes, format } from "date-fns";
 import { change, Field, WrappedFieldProps } from "redux-form";
 import {
  Card, Collapse, Grid, IconButton, MenuItem, Select, Typography 
@@ -187,8 +187,16 @@ const CourseClassTutorRoosterItem = (
     : ""}`;
 
   const onStartChange = newValue => {
-    const minutesOffset = differenceInMinutes(new Date(tutorAttendance.end), new Date(newValue)) - differenceInMinutes(new Date(tutorAttendance.end), new Date(tutorAttendance.start));
-    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, tutorAttendance.actualPayableDurationMinutes + minutesOffset));
+    const startDate = new Date(newValue);
+    const endDate = addMinutes(startDate, sessionDuration);
+
+    dispatch(
+      change(
+        form,
+        `${fieldsName}.end`,
+        endDate.toISOString()
+      )
+    );
   };
 
   const onEndChange = newValue => {
