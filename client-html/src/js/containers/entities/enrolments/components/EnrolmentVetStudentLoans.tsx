@@ -236,7 +236,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
           </Grid>
         </Grid>
       </ExpandableContainer>
-    </Grid>
+    </>
   );
 };
 

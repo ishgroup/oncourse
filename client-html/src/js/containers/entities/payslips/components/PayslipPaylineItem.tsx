@@ -15,7 +15,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
-import Uneditable from "src/js/common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/Uneditable";
 
 interface Props {
   threeColumn: boolean;
