@@ -90,7 +90,7 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         enrol1.setVetFeeIndicator(false)
         enrol1.setVetIsFullTime(false)
         enrol1.setStatus(EnrolmentStatus.IN_TRANSACTION)
-        enrol1.addToAbstractInvoiceLines(il1)
+        enrol1.addToInvoiceLines(il1)
 
         Enrolment enrol2 = cayenneContext.newObject(Enrolment.class)
         enrol2.setStudent(student2)
@@ -101,7 +101,7 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         enrol2.setVetFeeIndicator(false)
         enrol2.setVetIsFullTime(false)
         enrol2.setStatus(EnrolmentStatus.IN_TRANSACTION)
-        enrol2.addToAbstractInvoiceLines(il2)
+        enrol2.addToInvoiceLines(il2)
 
         cayenneContext.commitChanges()
 
@@ -166,7 +166,7 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         enrol1.setVetFeeIndicator(false)
         enrol1.setVetIsFullTime(false)
         enrol1.setStatus(EnrolmentStatus.SUCCESS)
-        enrol1.addToAbstractInvoiceLines(il1)
+        enrol1.addToInvoiceLines(il1)
 
         cayenneContext.commitChanges()
 
