@@ -1037,6 +1037,13 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return super.getEnrolments()
 	}
 
+	List<AbstractInvoiceLine> getAbstractInvoiceLines(){
+		def abstractInvoiceLines = new ArrayList<AbstractInvoiceLine>()
+		abstractInvoiceLines.addAll(abstractInvoiceLines)
+		abstractInvoiceLines.addAll(quoteLines)
+		abstractInvoiceLines
+	}
+
 	/**
 	 * @return
 	 */
@@ -1053,7 +1060,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+		return super.getInvoiceLines()
 	}
 
 	/**
@@ -1062,7 +1069,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	List<QuoteLine> getQuoteLines() {
-		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
+		return super.getQuoteLines()
 	}
 
 	/**

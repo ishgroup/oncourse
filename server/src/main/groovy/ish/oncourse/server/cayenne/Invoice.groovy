@@ -58,6 +58,13 @@ class Invoice extends _Invoice implements InvoiceInterface, ExpandableTrait {
     }
 
     @Override
+    List<AbstractInvoiceLine> getAbstractInvoiceLines() {
+        new ArrayList<AbstractInvoiceLine>(){{
+            addAll(invoiceLines)
+        }}
+    }
+
+    @Override
     void postAdd() {
         super.postAdd()
         if (getInvoiceNumber() == null) {

@@ -46,7 +46,6 @@ class InvoiceLine extends _InvoiceLine {
     }
 
     void setInvoice(AbstractInvoice abstractInvoice) {
-        abstractInvoice.addToAbstractInvoiceLines(this)
         super.setInvoice((Invoice) abstractInvoice)
     }
 
