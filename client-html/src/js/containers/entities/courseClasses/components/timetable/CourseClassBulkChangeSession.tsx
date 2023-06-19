@@ -294,7 +294,7 @@ const CourseClassBulkChangeSessionForm = props => {
       disableEnforceFocus
       disableRestoreFocus
       maxWidth="md"
-            classes={{
+      classes={{
         paper: classes.paperDialog
       }}
     >
@@ -329,6 +329,7 @@ const CourseClassBulkChangeSessionForm = props => {
                         onAddTutor={onAddTutor}
                         sessionDuration={durationValue}
                         budget={budget}
+                        disableExpand
                       />
                     </div>
                   </BulkItemWrapper>

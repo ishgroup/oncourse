@@ -145,5 +145,5 @@ Feature: Main feature for all GET requests with path 'list/entity/account'
         Given path ishPath + "/9999"
         When method GET
         Then status 400
-        And match $.errorMessage == "Account with id:9999 doesn't exist"
+        And match $.errorMessage == "Record with id = '9999' doesn't exist."
 

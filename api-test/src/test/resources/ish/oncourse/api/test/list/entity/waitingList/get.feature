@@ -58,7 +58,7 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
         Given path ishPath + "/9999"
         When method GET
         Then status 400
-        And match $.errorMessage == "WaitingList with id:9999 doesn't exist"
+        And match $.errorMessage == "Record with id = '9999' doesn't exist."
 
 
     Scenario: (+) Get list of all waitingLists by notadmin with access rights

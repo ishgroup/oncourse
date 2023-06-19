@@ -39,6 +39,10 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 		if (!endDatetime) {
 			endDatetime = session.endDatetime
 		}
+
+		if(endDatetime.before(startDatetime))
+			throw new IllegalArgumentException("Tutor attendance end date is before start date, start: " + startDatetime + " end: " + endDatetime)
+
 		if (actualPayableDurationMinutes == null) {
 			actualPayableDurationMinutes = DurationFormatter.durationInMinutesBetween(startDatetime, endDatetime)
 		}
