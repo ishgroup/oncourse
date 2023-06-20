@@ -1,6 +1,6 @@
 import Decimal from "decimal.js-light";
 
-const currencyFormatter = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2 });
+const currencyFormatter = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export const normalizeNumber = v => (typeof v === "number" ? v : typeof v === "string" && v ? parseFloat(v) : v);
 
