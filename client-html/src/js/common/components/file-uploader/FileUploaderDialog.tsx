@@ -86,9 +86,9 @@ const FileUploaderDialog: React.FC<Props> = (props => {
     }
     return text.join(", ");
   };
-  const backdropUploaderContent = () => (
+  const backdropUploaderContent = (
     <div className={clsx("w-100 h-100", classes.fullScreenFileDropContainer)}>
-      <div {...getRootProps()} className="h-100 outline-none overflow-hidden cursor-pointer">
+      <div className="h-100 outline-none overflow-hidden cursor-pointer">
         <div className="h-100 p-1">
           <input {...getInputProps()} />
         </div>
@@ -96,9 +96,9 @@ const FileUploaderDialog: React.FC<Props> = (props => {
     </div>
   );
 
-  const uploadContent = () => (
+  const uploadContent = (
     <div className={clsx("w-100 overflow-y-auto relative", classes.boxDropContainer, { "zIndex2": isBackdropDragging })}>
-      <div {...getRootProps()} className="h-100 outline-none overflow-hidden cursor-pointer">
+      <div className="h-100 outline-none overflow-hidden cursor-pointer">
         <div className="h-100 p-1">
           <input {...getInputProps()} />
           <div
@@ -138,6 +138,7 @@ const FileUploaderDialog: React.FC<Props> = (props => {
       classes={{
         paper: "w-100"
       }}
+      {...getRootProps()}
     >
       <div>
         {onClose && (
@@ -145,11 +146,11 @@ const FileUploaderDialog: React.FC<Props> = (props => {
             <CloseIcon fontSize="small" />
           </IconButton>
         )}
-        {uploadContent()}
-        {isBackdropDragging && backdropEnabled && backdropUploaderContent()}
+        {uploadContent}
+        {isBackdropDragging && backdropEnabled && backdropUploaderContent}
       </div>
     </Dialog>
-  ) : backdropEnabled ? backdropUploaderContent() : uploadContent();
+  ) : backdropEnabled ? backdropUploaderContent : uploadContent;
 });
 
 export default withStyles(styles)(FileUploaderDialog);
