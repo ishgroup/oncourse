@@ -47,6 +47,7 @@ interface NestedListTableProps {
   columns: any;
   data: any;
   selection: string[];
+  onRowDelete?: any;
   onRowDoubleClick?: any;
   onCheckboxChange?: any;
   onSelectionChangeHangler?: any;
@@ -58,10 +59,11 @@ const Table: React.FC<NestedListTableProps> = ({
   data,
   selection,
   onSelectionChangeHangler,
+  onRowDelete,
   onRowDoubleClick,
   onCheckboxChange,
   calculateHeight
-  }) => {
+}) => {
   
   const [sorting, onSortingChange] = useState<ColumnSort[]>([]);
 
@@ -119,15 +121,26 @@ const Table: React.FC<NestedListTableProps> = ({
                 flex: `${column.getSize()} 0 auto`,
                 width: `${column.getSize()}px`
               }}
-              className={clsx(classes.headerCell, columnDef.cellClass)}
+              className={clsx(
+                classes.headerCell,
+                columnDef.cellClass,
+                {
+                  [classes.rightAlighed]: columnDef.type === "currency",
+                  [classes.activeRight]: columnDef.type === "currency" && column.getIsSorted()
+                }
+              )}
               component="div"
             >
-              <TableSortLabel
+              {columnDef.header && (<TableSortLabel
                 hideSortIcon={!canSort}
                 active={Boolean(direction)}
                 direction={direction || "asc"}
                 classes={{
-                  root: clsx(!canSort && classes.noSort)
+                  root: clsx(
+                    canSort ? classes.canSort : classes.noSort,
+                    "overflow-hidden"
+                  ),
+                  icon: columnDef.type === "currency" && canSort && classes.rightSort
                 }}
                 onClick={canSort
                   ? column.getToggleSortingHandler()
@@ -135,7 +148,7 @@ const Table: React.FC<NestedListTableProps> = ({
                 }
               >
                 {flexRender(columnDef.header, getContext())}
-              </TableSortLabel>
+              </TableSortLabel>)}
             </TableCell>;
           })}
         </TableRow>
@@ -151,6 +164,7 @@ const Table: React.FC<NestedListTableProps> = ({
       classes={classes}
       totalColumnsWidth={table.getCenterTotalSize()}
       onRowSelect={onRowSelect}
+      onRowDelete={onRowDelete}
       onRowDoubleClick={onRowDoubleClick}
       onCheckboxChange={onCheckboxChange}
     />
@@ -198,6 +212,7 @@ export interface NestedListProps {
   onAdd?: any;
   currencySymbol?: string;
   onRowDoubleClick?: any;
+  onRowDelete?: any;
   onCheckboxChange?: AnyArgFunction;
   meta?: any;
   total?: any;
@@ -215,6 +230,7 @@ const ListRoot = React.memo<NestedListProps>(({
     className,
     hideHeader,
     onAdd,
+    onRowDelete,
     onRowDoubleClick,
     onCheckboxChange,
     meta: { invalid, error },
@@ -233,16 +249,23 @@ const ListRoot = React.memo<NestedListProps>(({
   const currencySymbol = useSelector<State, any>(state => state.currency && state.currency.shortCurrencySymbol);
 
   const columnsFormated = useMemo<ColumnDef<Record<any, any>>[]>(
-    () => columns.map(c => ({
-      id: c.name,
-      size: c.width || DEFAULT_COLUMN_WIDTH,
-      header: c.title,
-      accessorFn: row => row[`${c.name}`],
-      cellClass: c.type === "currency" ? "money text-end justify-content-end" : null,
-      enableSorting: !c.disableSort || sortable,
-      ...c
+    () => columns.concat(onRowDelete ? [{
+        name: "delete",
+        type: "delete",
+        cellClass: "p-0 text-center",
+        width: 10
+      }] : [])
+      .map(c => ({
+        id: c.name,
+        size: c.width || DEFAULT_COLUMN_WIDTH,
+        minSize: c.width || DEFAULT_COLUMN_WIDTH,
+        header: c.title,
+        accessorFn: row => row[`${c.name}`],
+        cellClass: c.type === "currency" ? "money text-end justify-content-end" : null,
+        enableSorting: !c.disableSort || sortable,
+        ...c
     })),
-    [columns, sortable]
+    [columns, sortable, onRowDelete]
   );
 
   const rows = useMemo(() => {
@@ -307,6 +330,7 @@ const ListRoot = React.memo<NestedListProps>(({
             columns={columnsFormated}
             data={rows}
             selection={selection}
+            onRowDelete={onRowDelete}
             onRowDoubleClick={onRowDoubleClick}
             onCheckboxChange={onCheckboxChange}
             onSelectionChangeHangler={setSelection}

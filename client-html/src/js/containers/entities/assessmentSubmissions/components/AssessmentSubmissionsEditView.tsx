@@ -30,6 +30,7 @@ const items = [
 const AssessmentSubmissionEditView = props =>
    (
      <TabsList
+       onParentScroll={props.onScroll}
        items={props.values ? items : []}
        itemProps={...props}
      />

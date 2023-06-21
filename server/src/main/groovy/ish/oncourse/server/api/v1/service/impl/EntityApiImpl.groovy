@@ -64,7 +64,7 @@ class EntityApiImpl implements EntityApi {
 
     @Override
     DataResponseDTO getAll(String entity, SearchQueryDTO request) {
-        DataResponseDTO response = createResponse(entity, request.search, request.pageSize, request.offset)
+        DataResponseDTO response = createResponse(entity, request)
         ObjectContext context = cayenneService.newReadonlyContext
 
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
@@ -156,8 +156,8 @@ class EntityApiImpl implements EntityApi {
     }
 
     @Override
-    void updateTableModel(String entity, TableModelDTO tableModel) {
-        preference.setTableModel(entity, tableModel)
+    void updateTableModel(String tableModelIdentifier, TableModelDTO tableModel) {
+        preference.setTableModel(tableModelIdentifier, tableModel)
     }
 
     private static void populateResponce(List<PersistentObject> records, DataResponseDTO response, List<ColumnDTO> columns = null, List<String> stringColumns = null) {
@@ -187,15 +187,14 @@ class EntityApiImpl implements EntityApi {
         }
     }
 
-    private DataResponseDTO createResponse(String entity, String search, BigDecimal pageSize, BigDecimal offset) {
-
+    private DataResponseDTO createResponse(String entity, SearchQueryDTO request) {
         DataResponseDTO dataResponse = new DataResponseDTO()
 
         dataResponse.entity = entity.capitalize()
-        TableModelDTO model = preference.getTableModel(dataResponse.entity)
-        dataResponse.search = search
-        dataResponse.pageSize = pageSize ? pageSize : DEF_PAGE_SIZE
-        dataResponse.offset = offset ? offset : DEF_OFFSET
+        TableModelDTO model = preference.getTableModel(request.customTableModel ? request.customTableModel : dataResponse.entity)
+        dataResponse.search = request.search
+        dataResponse.pageSize = request.pageSize ? request.pageSize : DEF_PAGE_SIZE
+        dataResponse.offset = request.offset ? request.offset : DEF_OFFSET
         dataResponse.sort = model.sortings
         dataResponse.columns = model.columns
         dataResponse.filterColumnWidth = model.filterColumnWidth

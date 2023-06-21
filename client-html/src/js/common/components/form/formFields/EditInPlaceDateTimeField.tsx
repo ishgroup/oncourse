@@ -30,8 +30,7 @@ import { endFieldProcessingAction, startFieldProcessingAction } from "../../../a
 import { EditInPlaceDateTimeFieldProps } from "../../../../model/common/Fields";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
-import { formatInTimeZone } from "date-fns-tz";
-import { appendTimezoneToUTC, appendTimezone } from "../../../utils/dates/formatTimezone";
+import { prependTimezone, appendTimezone } from "../../../utils/dates/formatTimezone";
 import { useAppSelector } from "../../../utils/hooks";
 
 const useStyles = makeAppStyles(theme => ({
@@ -49,8 +48,7 @@ const useStyles = makeAppStyles(theme => ({
     bottom: theme.spacing(-0.5)
   },
   inlineContainer: {
-    display: "inline-flex",
-    margin: theme.spacing(0, 0.5)
+    display: "inline-block",
   }
 }));
 
@@ -91,7 +89,7 @@ const EditInPlaceDateTimeField = (
 
   const classes = useStyles();
 
-  const formatDateInner = (dateObj, timezoneFormat?) => {
+  const formatDateInner = dateObj => {
     if (!dateObj) {
       return "";
     }
@@ -100,28 +98,29 @@ const EditInPlaceDateTimeField = (
 
     switch (type) {
       case "date":
-        return timezoneFormat ? formatInTimeZone(dateObj, timezoneFormat, formatDate || III_DD_MMM_YYYY) : format(dateObj, formatDate || III_DD_MMM_YYYY);
+        return format(dateObj, formatDate || III_DD_MMM_YYYY);
       case "time":
-        return timezoneFormat ? formatInTimeZone(dateObj, timezoneFormat, formatTime || HH_MM_COLONED) : format(dateObj, formatTime || HH_MM_COLONED);
+        return format(dateObj, formatTime || HH_MM_COLONED);
       case "datetime":
-        return timezoneFormat ? formatInTimeZone(dateObj, timezoneFormat, formatDateTime || III_DD_MMM_YYYY_HH_MM) : format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
+        return format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
       default:
         return dateObj.toString();
     }
   };
 
-  const dateValue = useMemo(() => input.value ? new Date(input.value) : null, [input.value]);
-
-  const pickerValue = useMemo(() => input.value
-    ? timezone
-      ? appendTimezone(new Date(input.value), timezone)
-      : new Date(input.value)
-    : null,
-  [input.value, timezone]);
+  const dateValue = useMemo(() => {
+    let base = input.value ? new Date(input.value) : null;
+    
+    if (base && timezone) {
+      base = appendTimezone(base, timezone);
+    }
+    
+    return base;
+  }, [input.value, timezone]);
 
   useEffect(() => {
-    setTextValue(formatDateInner(dateValue, timezone));
-  }, [dateValue, timezone]);
+    setTextValue(formatDateInner(dateValue));
+  }, [dateValue]);
 
   useEffect(() => {
     if (!active && processActionId) {
@@ -140,23 +139,27 @@ const EditInPlaceDateTimeField = (
 
   const onChange = (v: Date) => {
     if (v) {
-      const appended = timezone ? appendTimezoneToUTC(v, timezone) : v;
       let formatted;
       if (formatValue) {
-        formatted = format(appended, formatValue);
+        formatted = format(v, formatValue);
       } else if (type === "date") {
-        if (isValid(appended)) {
-          formatted = format(appended, YYYY_MM_DD_MINUSED);
+        if (isValid(v)) {
+          formatted = format(v, YYYY_MM_DD_MINUSED);
         } else {
           formatted = null;
         }
       } else {
         try {
-          formatted = appended.toISOString();
+          formatted = v.toISOString();
         } catch {
           formatted = null;
         }
       }
+
+      if (timezone && formatted) {
+        formatted = prependTimezone(formatted, timezone)?.toISOString();
+      }
+
       input.onChange(formatted);
       input.onBlur(formatted);
       return;
@@ -172,7 +175,7 @@ const EditInPlaceDateTimeField = (
     if (persistValue && !textValue) {
       input.onChange(input.value);
       input.onBlur(input.value);
-      setTextValue(formatDateInner(dateValue, timezone));
+      setTextValue(formatDateInner(dateValue));
       return;
     }
 
@@ -181,20 +184,24 @@ const EditInPlaceDateTimeField = (
       : null;
 
     if (parsed) {
-      const appended = timezone ? appendTimezoneToUTC(parsed, timezone) : parsed;
       let formatted;
       if (formatValue) {
-        formatted = format(appended, formatValue);
-      } else if (type === "date" && isValid(appended)) {
-        formatted = format(appended, YYYY_MM_DD_MINUSED);
+        formatted = format(parsed, formatValue);
+      } else if (type === "date" && isValid(parsed)) {
+        formatted = format(parsed, YYYY_MM_DD_MINUSED);
       } else {
         try {
-          formatted = appended.toISOString();
+          formatted = parsed.toISOString();
         } catch {
           formatted = null;
         }
       }
-      setTextValue(formatDateInner(appended, timezone));
+      setTextValue(formatDateInner(parsed));
+
+      if (timezone && formatted) {
+        formatted = prependTimezone(formatted, timezone).toISOString();
+      }
+
       input.onChange(formatted);
       input.onBlur(formatted);
     } else {
@@ -229,7 +236,7 @@ const EditInPlaceDateTimeField = (
           type={type}
           toolbarTitle={label}
           open={pickerOpened}
-          value={pickerValue}
+          value={dateValue}
           onChange={onChange}
           onClose={onClose}
           renderInput={() => (

@@ -36,11 +36,15 @@ import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
+import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import ish.common.checkout.gateway.SessionAttributes
 import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
 import org.apache.cayenne.query.ObjectSelect
+
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 
 class CheckoutApiService {
 
@@ -211,14 +215,26 @@ class CheckoutApiService {
 
     private PaymentServiceInterface getPaymentServiceByGatewayType() {
         String gatewayType = preferenceController.getPaymentGatewayType()
-        if (gatewayType.equalsIgnoreCase(PaymentGatewayType.WINDCAVE.getValue())) {
-            return injector.getInstance(WindcavePaymentService.class)
-        } else if (gatewayType.equalsIgnoreCase(PaymentGatewayType.EWAY.getValue())) {
-            return injector.getInstance(EWayPaymentService.class)
-        } else if (gatewayType.equalsIgnoreCase(PaymentGatewayType.EWAY_TEST.getValue())) {
-            return injector.getInstance(EWayTestPaymentService.class)
-        } else {
-            throw new RuntimeException("Preference 'payment.gateway.type' value must be  'WINDCAVE', 'EWAY' or 'EWAY_TEST' to use one of Payment Service implementation.")
+        switch (gatewayType) {
+            case PaymentGatewayType.WINDCAVE.value:
+                return injector.getInstance(WindcavePaymentService.class)
+            case PaymentGatewayType.EWAY.value:
+                return injector.getInstance(EWayPaymentService.class)
+            case PaymentGatewayType.EWAY_TEST.value:
+                return injector.getInstance(EWayTestPaymentService.class)
+            case PaymentGatewayType.OFFLINE.value:
+                return injector.getInstance(OfflinePaymentService.class)
+            default:
+                handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Sorry, you cannot make a purchase. The selected payment method is prohibited for the ${gatewayType} payment system. Please contact the administrator.")])
         }
+    }
+
+    private static void handleError(int status, Object entity = null) {
+        Response response = Response
+                .status(status)
+                .entity(entity)
+                .build()
+
+        throw new ClientErrorException(response)
     }
 }

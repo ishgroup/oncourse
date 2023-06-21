@@ -20,10 +20,6 @@ import { AppTheme } from "../../../../model/common/Theme";
 import Tooltip from "@mui/material/Tooltip";
 
 export const selectStyles = theme => createStyles({
-    root: {},
-    inline: {
-      margin: theme.spacing(0, 0.5)
-    },
     bottomMargin: {
       marginBottom: `${theme.spacing(1) + 1}`
     },
@@ -86,6 +82,32 @@ export const selectStyles = theme => createStyles({
     readonly: {
       fontWeight: 300,
       pointerEvents: "none"
+    },
+    multiple: {},
+    inline: {
+      display: "inline-block",
+      "& .MuiInput-root .MuiInput-input": {
+        padding: 0
+      },
+      "& $inputEndAdornment": {
+        marginBottom: '-8px'
+      }
+    },
+    root: {
+      "& $multiple": {
+        flexWrap: 'wrap'
+      },
+      "& $multiple $inputEndAdornment": {
+        position: 'absolute',
+        right: 0,
+        bottom: 6,
+        height: "auto"
+      }
+    },
+    inputEndAdornment: {
+      marginBottom: "-6px",
+      alignItems: "center",
+      display: "flex",
     },
     inputWrapper: {
       "&:hover $inputEndAdornment": {

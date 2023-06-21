@@ -7,33 +7,18 @@
  */
 
 import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
-import { getRecords, setListSelection } from "../../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { EntityName } from "../../../../model/entities/common";
 import { createEntityItem, createEntityItemByIdErrorHandler } from "../entityItemsService";
-import { executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { CREATE_ENTITY_RECORD_REQUEST } from "../actions";
-import { mapEntityDisplayName } from "../utils";
+import { getListRecordAfterCreateActions } from "../utils";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
-
-export const getProcessDataActions = (entity: EntityName) => [
-  executeActionsQueue(),
-  {
-    type: FETCH_SUCCESS,
-    payload: { message: `${mapEntityDisplayName(entity)} created` }
-  },
-  getRecords({ entity, listUpdate: true }),
-  setListSelection([]),
-  initialize(LIST_EDIT_VIEW_FORM_NAME, null)
-];
 
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: CREATE_ENTITY_RECORD_REQUEST,
   getData: ({ item, entity }) => createEntityItem(entity, item),
   retrieveData: (p, s) => processNotesAsyncQueue(s.actionsQueue.queuedActions),
-  processData: (v, s, { entity }) => getProcessDataActions(entity),
+  processData: (v, s, { entity }) => getListRecordAfterCreateActions(entity),
   processError: (response, { item, entity }) => createEntityItemByIdErrorHandler(response, entity, item)
 };
 

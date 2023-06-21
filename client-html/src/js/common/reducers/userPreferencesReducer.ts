@@ -5,7 +5,7 @@ import { READ_NEWS } from "../../constants/Config";
 import { PreferenceEnum } from "@api/model";
 
 export type UserPreferencesState = {
-  [K in PreferenceEnum]?: K extends "payment.gateway.type" ? "EWAY" | "EWAY_TEST" | "WINDCAVE" | "TEST" | "DISABLED" : string;
+  [K in PreferenceEnum]?: K extends "payment.gateway.type" ? "EWAY" | "EWAY_TEST" | "WINDCAVE" | "TEST" | "DISABLED" | "OFFLINE" : string;
 }
 
 export const userPreferencesReducer = (state: UserPreferencesState = {}, action: IAction<any>): any => {

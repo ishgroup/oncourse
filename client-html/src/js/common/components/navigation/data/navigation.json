@@ -100,6 +100,7 @@
       "key": "accreditation",
       "description": "Automatically create fully compliant certificates for Vocational Education Training (VET), or Certificates of Attendance for non-accredited and professional development course certification. onCourse software produces student certificates with built-in verification that authenticates whether your organisation issued the certificate. Easily export your data for reporting to a funding body.<ul><li>Certificate Automation</li><li>QR Code Support for Accredited Certificate Compliance</li><li>Certificate Customisation</li><li>AVETMISS 8 Export</li><ul>",
       "features": [
+        "vetReporting",
         "assessmentSubmissions",
         "assessmentTasks",
         "certificates",
@@ -638,6 +639,12 @@
       "key": "unitsOfCompetency",
       "link": "/module?filter=@Offered",
       "description": "All of the available units of competency that can be set as course modules. Create new modules if required."
+    },
+    {
+      "title": "VET reporting",
+      "key": "vetReporting",
+      "link": "/vetReporting?filter=@Students",
+      "description": "Manage everything relating to VET reporting for single enrolments and outcomes in the one place"
     },
     {
       "title": "Voucher Types",

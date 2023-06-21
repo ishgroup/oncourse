@@ -7,30 +7,16 @@
  */
 
 import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
-import { getRecords, setListSelection } from "../../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { EntityName } from "../../../../model/entities/common";
 import { deleteEntityItemById, deleteEntityItemByIdErrorHandler, } from "../entityItemsService";
-import { FETCH_SUCCESS } from "../../../../common/actions";
 import { DELETE_ENTITY_RECORD_REQUEST } from "../actions";
-import { mapEntityDisplayName } from "../utils";
-
-export const getProcessDataActions = (entity: EntityName) => [
-  {
-    type: FETCH_SUCCESS,
-    payload: { message: `${mapEntityDisplayName(entity)} deleted` }
-  },
-  getRecords({ entity, listUpdate: true }),
-  setListSelection([]),
-  initialize(LIST_EDIT_VIEW_FORM_NAME, null)
-];
+import { getListRecordAfterDeleteActions } from "../utils";
 
 const request: Request<any, { entity: EntityName, id: number }> = {
   type: DELETE_ENTITY_RECORD_REQUEST,
   getData: ({ entity, id }) => deleteEntityItemById(entity, id),
-  processData: (v, s, { entity }) => getProcessDataActions(entity),
+  processData: (v, s, { entity }) => getListRecordAfterDeleteActions(entity),
   processError: (response, { entity }) => deleteEntityItemByIdErrorHandler(response, entity)
 };
 

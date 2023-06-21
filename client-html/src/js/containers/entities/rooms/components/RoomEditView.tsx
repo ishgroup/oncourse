@@ -42,11 +42,13 @@ const RoomEditView = props => {
     manualLink,
     rootEntity,
     onEditViewScroll,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? items : []}
       itemProps={{
         isNew,

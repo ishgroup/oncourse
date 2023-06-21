@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 119-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Discount
+            columnName: isAvailableOnWeb
+      changes:
+        - renameColumn:
+            columnDataType: smallint(6)
+            newColumnName: availabilityType
+            oldColumnName: isAvailableOnWeb
+            tableName: Discount

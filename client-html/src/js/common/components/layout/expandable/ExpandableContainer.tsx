@@ -18,6 +18,7 @@ import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { FormErrors } from "redux-form";
 import { findDOMNode } from "react-dom";
 import { animateFormErrors } from "../../../utils/highlightFormErrors";
+import { getFirstErrorNodePath } from "../../../utils/validation";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -39,8 +40,8 @@ const styles = (theme: AppTheme) =>
 interface Props {
   children: React.ReactNode;
   header: React.ReactNode;
-  expanded: number[];
-  index: number;
+  expanded: any[];
+  index: any;
   formErrors?: FormErrors;
   setExpanded: (arg: number[]) => void;
   headerAdornment?: React.ReactNode;
@@ -48,6 +49,7 @@ interface Props {
   onAdd?: any;
   classes?: any;
   noDivider?: boolean;
+  className?: string;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -61,7 +63,8 @@ const ExpandableContainer: React.FC<Props> = ({
   setExpanded,
   index,
   noDivider,
-  formErrors
+  formErrors,
+  className
 }) => {
   const [hasErrors, setHasErrors] = useState(false);
 
@@ -102,11 +105,8 @@ const ExpandableContainer: React.FC<Props> = ({
 
       let childrenError = false;
 
-      for (const field of Object.keys(formErrors)) {
-        if (domNode.querySelector(`[id=${field}]`)) {
-          childrenError = true;
-          break;
-        }
+      if (domNode?.querySelector(`[name="${getFirstErrorNodePath(formErrors)}"]`)) {
+        childrenError = true;
       }
       setHasErrors(childrenError);
     }
@@ -121,7 +121,7 @@ const ExpandableContainer: React.FC<Props> = ({
   const clickHandler = hasErrors ? () => animateFormErrors(childrenRef.current) : toggleExpand;
 
   return (
-    <>
+    <div className={className}>
       <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")} />
       <div ref={headerRef}>
         <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
@@ -148,7 +148,7 @@ const ExpandableContainer: React.FC<Props> = ({
           {children}
         </Collapse>
       </div>
-    </>
+    </div>
   );
 };
 

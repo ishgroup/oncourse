@@ -1,0 +1,7 @@
+- name: "Simple Test Report"
+  entityClass: "Site"
+  keyCode: "test.ish.onCourse.simple"
+  report: "resources/schema/referenceData/reports/NonCompilableReport.jrxml"
+  description: "Test descr."
+  sortOn: "testProp"
+  visible: true

@@ -50,7 +50,7 @@ const filterGroups: FilterGroup[] = [
 const Initial: Discount = {
   addByDefault: false,
   code: null,
-  availableOnWeb: true,
+  availableFor: 'Online and office',
   corporatePassDiscounts: [],
   cosAccount: null,
   description: null,

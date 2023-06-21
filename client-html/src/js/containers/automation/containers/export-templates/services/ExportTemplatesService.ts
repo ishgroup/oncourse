@@ -1,5 +1,5 @@
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
-import { ExportTemplateApi, ExportTemplate } from "@api/model";
+import { ExportTemplateApi, ExportTemplate, AutomationConfigs } from "@api/model";
 
 class ExportTemplatesService {
   readonly exportTemplatesApi = new ExportTemplateApi(new DefaultHttpService());
@@ -24,6 +24,14 @@ class ExportTemplatesService {
     return this.exportTemplatesApi.remove(id);
   }
 
+  public getConfigs(id: number): Promise<string> {
+    return this.exportTemplatesApi.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
+    return this.exportTemplatesApi.updateConfigs(id, config);
+  }
+  
   public getHighQualityPreview(id: number): Promise<any> {
     return this.exportTemplatesApi.getHighQualityPreview(id);
   }

@@ -118,9 +118,10 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 
 	/**
 	 * @return amoount of payable hours if this class cost record has "per timetabled hour" or "per student contact" hour repetition type
+	 * If until = null returns payable hours without date limitations
 	 */
 	@API
-	BigDecimal getSessionPayableHours(@Nonnull Date until) {
+	BigDecimal getSessionPayableHours(Date until) {
 		BigDecimal result = BigDecimal.ZERO
 
 		if (ClassCostFlowType.WAGES != getFlowType() || getTutorRole() == null) {
@@ -128,7 +129,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 		}
 
 		for (TutorAttendance ta : getTutorRole().getSessionsTutors()) {
-			if (!ta.getEndDatetime().after(until)) {
+			if (until == null || !ta.getEndDatetime().after(until)) {
 				result = result.add(ta.actualPayableDurationHours)
 			}
 		}

@@ -54,6 +54,7 @@ class EntityService {
     searchQuery.filter = getFiltersString(state.list.filterGroups);
     searchQuery.tagGroups = getTagGroups([...state.list.menuTags, ...state.list.checkedChecklists]);
     searchQuery.uncheckedChecklists = getTagGroups(state.list.uncheckedChecklists);
+    searchQuery.customTableModel = state.list.customTableModel;
 
     return this.entityApi.getAll(entity, searchQuery).then(res => [res, searchQuery]);
   }

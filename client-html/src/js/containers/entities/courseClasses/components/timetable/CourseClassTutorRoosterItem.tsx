@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { differenceInMinutes, format } from "date-fns";
+import { addMinutes, differenceInMinutes, format } from "date-fns";
 import { change, Field, WrappedFieldProps } from "redux-form";
 import {
  Card, Collapse, Grid, IconButton, MenuItem, Select, Typography 
@@ -147,6 +147,7 @@ interface Props {
   onDeleteTutor: NumberArgFunction;
   setExpanded: NumberArgFunction;
   addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
+  disableExpand: boolean;
 }
 
 const CourseClassTutorRoosterItem = (
@@ -164,7 +165,8 @@ const CourseClassTutorRoosterItem = (
     budget,
     addTutorWage,
     onDeleteTutor,
-    setExpanded
+    setExpanded,
+    disableExpand
   }: Props
 ) => {
   const classes = useStyles();
@@ -185,8 +187,16 @@ const CourseClassTutorRoosterItem = (
     : ""}`;
 
   const onStartChange = newValue => {
-    const minutesOffset = differenceInMinutes(new Date(tutorAttendance.end), new Date(newValue)) - differenceInMinutes(new Date(tutorAttendance.end), new Date(tutorAttendance.start));
-    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, tutorAttendance.actualPayableDurationMinutes + minutesOffset));
+    const startDate = new Date(newValue);
+    const endDate = addMinutes(startDate, sessionDuration);
+
+    dispatch(
+      change(
+        form,
+        `${fieldsName}.end`,
+        endDate.toISOString()
+      )
+    );
   };
 
   const onEndChange = newValue => {
@@ -321,9 +331,11 @@ const CourseClassTutorRoosterItem = (
         <IconButton size="small" disabled={tutorAttendance.hasPayslip} onClick={() => onDeleteTutor(index)}>
           <DeleteIcon fontSize="inherit" />
         </IconButton>
-        <IconButton size="small" disabled={tutorAttendance.hasPayslip} onClick={() => setExpanded(isExpanded ? null : index)}>
-          <ExpandMore fontSize="inherit" className={clsx(classes.expandIcon, isExpanded && classes.expanded)} />
-        </IconButton>
+        {!disableExpand && (
+          <IconButton size="small" disabled={tutorAttendance.hasPayslip} onClick={() => setExpanded(isExpanded ? null : index)}>
+            <ExpandMore fontSize="inherit" className={clsx(classes.expandIcon, isExpanded && classes.expanded)} />
+          </IconButton>
+        )}
       </div>
     </Card>
   );

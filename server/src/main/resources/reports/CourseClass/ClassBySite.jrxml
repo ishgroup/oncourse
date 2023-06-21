@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassBySite" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="15753542-6d91-4daf-af88-10ebca3c24e4">
-	<property name="name" value="Class by Site"/>
-	<property name="entity" value="CourseClass"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.classBySiteReport"/>
-	<property name="ish.oncourse.description" value="This report provides a list of all current and future classes assigned to a given site. Information includes, course and class name and code, start and end date, fee charged, enrolments (against target) and statistics on Male Female breakdown. This report prints in Landscape format."/>
-	<property name="sortOn" value="room.site.name"/>
+		<property name="sortOn" value="room.site.name"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>

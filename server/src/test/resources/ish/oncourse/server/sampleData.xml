@@ -3750,23 +3750,23 @@
 
   <Discount CREATEDON="2010-10-12 15:46:45.458" DISCOUNTPERCENT="0.05" MODIFIEDON="2012-05-08 16:39:58.154"
             NAME="College members" ROUNDING="0" ID="240" DISCOUNTTYPE="1" PREDICTEDSTUDENTSPERCENTAGE="0.00"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0"/>
   <Discount CREATEDON="2010-10-12 15:49:19.006" DISCOUNTPERCENT="1.00" MODIFIEDON="2012-05-08 16:40:50.187"
             NAME="Computer Club Members" ROUNDING="0" ID="241" DISCOUNTTYPE="1" PREDICTEDSTUDENTSPERCENTAGE="0.00"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0"/>
   <Discount CREATEDON="2010-10-12 15:51:20.735" DISCOUNTPERCENT="0.30" MODIFIEDON="2012-05-08 16:39:51.019"
             NAME="Industry members" ROUNDING="0" ID="242" DISCOUNTTYPE="1" PREDICTEDSTUDENTSPERCENTAGE="0.00"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0"/>
   <Discount CREATEDON="2007-11-20 09:09:13.447" DISCOUNTPERCENT="0.10" DISCOUNTMAX="10.00"
             MODIFIEDON="2012-05-08 16:40:45.752" NAME="Senior" ROUNDING="0" STUDENTAGE="&lt;" ID="220" DISCOUNTTYPE="1"
-            PREDICTEDSTUDENTSPERCENTAGE="0.00" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1"
+            PREDICTEDSTUDENTSPERCENTAGE="0.00" HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1"
             minValue="0" limitPreviousEnrolment="0"/>
   <Discount CODE="GREEN" CREATEDON="2007-08-08 16:31:26.737" DISCOUNTPERCENT="0.10" MODIFIEDON="2012-05-08 15:55:17.784"
             NAME="From tree to towel rack" ROUNDING="0" ID="200" DISCOUNTTYPE="1" PREDICTEDSTUDENTSPERCENTAGE="0.00"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0"/>
   <Discount_CourseClass COURSECLASSID="448" MODIFIEDON="2012-06-25 10:49:21.814" DISCOUNTID="220" ID="944892805567"/>
   <Discount_CourseClass COURSECLASSID="451" MODIFIEDON="2012-06-25 10:49:21.818" DISCOUNTID="220" ID="944892805570"/>

@@ -64,7 +64,8 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
     taxes,
     access,
     submitSucceeded,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -73,6 +74,7 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? checkedItems : []}
       itemProps={{
         values,

@@ -330,6 +330,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               {Boolean(sessions.length) && (
                 <div className="pb-2 pr-2">
                   Advance class by
+                  {" "}
                   <FormField
                     type="number"
                     name="daysTo"
@@ -338,7 +339,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     onChange={handleDaysToChange}
                     debounced={false}
                     disabled={fetching}
-                    className={classes.daysInput}
                     required
                   />
                   {" "}
@@ -347,12 +347,11 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   <FormField
                     type="date"
                     name="toDate"
-                    className={classes.dateTime}
-                    inline
                     onChange={handleDateChange}
                     debounced={false}
                     disabled={fetching}
-                                        required
+                    required
+                    inline
                   />
                 </div>
               )}
@@ -493,7 +492,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               </Tabs>
 
               <div className={clsx("relative overflow-y-auto flex-fill", classes.timetableContainer)}>
-                <div className={clsx("absolute w-100 h-100", fetching && "centeredFlex justify-content-center")}>
+                <div className={clsx("absolute w-100 h-100 pl-3 pr-3", fetching && "centeredFlex justify-content-center")}>
                   {selectedTab === 0 && <DuplicateCourseClassTimetable months={months} fetching={fetching} />}
                   {selectedTab === 1
                     && (
