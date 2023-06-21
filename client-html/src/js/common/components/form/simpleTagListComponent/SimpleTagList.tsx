@@ -33,15 +33,6 @@ import { TagsFieldProps } from "../../../../model/common/Fields";
 
 const styles = theme =>
   createStyles({
-    inputWrapper: {
-      "&:hover $inputEndAdornment": {
-        visibility: "visible",
-      },
-      "&:hover .placeholderContent": {
-        color: theme.palette.primary.main,
-        opacity: 0.5
-      },
-    },
     inputEndAdornment: {
       visibility: 'hidden',
       display: "flex",
@@ -61,14 +52,6 @@ const styles = theme =>
     },
     listbox: {
       whiteSpace: 'break-spaces'
-    },
-    hasPopup: {
-      "&$root $inputWrapper": {
-        padding: 0
-      },
-      "&$root$hasClear $inputWrapper": {
-        padding: 0
-      }
     },
     invalid: {}
   });

@@ -16,9 +16,9 @@ import NewsRender from "../news/NewsRender";
 import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
-import { useStickyScrollSpy } from "../../utils/hooks";
 import { makeAppStyles } from "../../styles/makeStyles";
 import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
+import { AnyArgFunction } from "../../../model/common/CommonFunctions";
 
 const useStyles = makeAppStyles(theme => ({
   listContainer: {
@@ -37,18 +37,19 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-export interface TabsListItem {
+export interface TabsListItem<E = any> {
   readonly type?: string;
-  component: (props: any) => React.ReactNode;
+  component: (props: EditViewProps<E> & any) => React.ReactNode;
   labelAdornment?: React.ReactNode;
   expandable?: boolean;
   label: string;
 }
 
 interface Props {
+  items: TabsListItem[];
+  onParentScroll: AnyArgFunction;
   classes?: any;
   itemProps?: EditViewProps & any;
-  items: TabsListItem[];
   newsOffset?: string;
 }
 
@@ -62,12 +63,11 @@ const TabsList = React.memo<Props & RouteComponentProps>((
     itemProps = {},
     history, 
     location,
-    newsOffset
+    newsOffset,
+    onParentScroll
   }
 ) => {
-  const { scrollSpy } = useStickyScrollSpy();
   const classes = useStyles();
-
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<HTMLElement[]>([]);
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -148,11 +148,11 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       return;
     }
 
-    scrollSpy(e);
-
     if (e.target.id !== TAB_LIST_SCROLL_TARGET_ID) {
       return;
     }
+
+    onParentScroll(e);
 
     const isScrollingDown = scrolledPX.current < e.target.scrollTop;
 

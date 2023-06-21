@@ -19,18 +19,16 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from '@mui/material/Divider';
-import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import AvatarRenderer from "./AvatarRenderer";
 import { getContactFullName } from "../utils";
 import { openInternalLink } from "../../../../common/utils/links";
 import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { EditViewProps } from "../../../../model/common/ListView";
-import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import ProfileHeading from "./ProfileHeading";
+import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import clsx from "clsx";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
@@ -88,82 +86,6 @@ const filterCompanyTags = (tag: Tag) => {
     return !(requirements.some(r => r.type === "Student") || requirements.some(r => r.type === "Tutor"));
   }
   return true;
-};
-
-interface Props {
-  form: string;
-  dispatch: Dispatch;
-  showConfirm: ShowConfirmCaller;
-  values: Contact;
-  twoColumn: boolean;
-  isCompany: boolean;
-  usiLocked: boolean;
-  syncErrors: any;
-  isNew: boolean;
-}
-
-export const ProfileHeading = (props: Props) => {
-  const {
-    form,
-    dispatch,
-    showConfirm,
-    values,
-    twoColumn,
-    isCompany,
-    usiLocked,
-    syncErrors,
-    isNew
-  } = props;
-  
-  const Avatar = useCallback(aProps => (
-    <Field
-      name="profilePicture"
-      label="Profile picture"
-      component={AvatarRenderer}
-      showConfirm={showConfirm}
-      email={values.email}
-      twoColumn={twoColumn}
-      props={{
-        dispatch,
-        form
-      }}
-      {...aProps}
-    />
-  ), [values.email]);
-
-  return (
-    <FullScreenStickyHeader
-      opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
-      twoColumn={twoColumn}
-      Avatar={Avatar}
-      title={(
-        <>
-          {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
-          {values ? (!isCompany ? getContactFullName(values) : values.lastName) : ""}
-        </>
-      )}
-      fields={(
-        <Grid container item xs={12} rowSpacing={2} columnSpacing={3}>
-          {!isCompany && (
-            <>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="title" label="Title" />
-              </Grid>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
-              </Grid>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="middleName" label="Middle name" />
-              </Grid>
-            </>
-          )}
-          <Grid item xs={isCompany ? 12 : twoColumn ? 2 : 6}>
-            <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
-          </Grid>
-        </Grid>
-      )}
-    />
-  );
 };
 
 const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
@@ -258,8 +180,9 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   }, [tags, isStudent, isTutor, isCompany]);
 
   return (
-    <div className="pt-3 pl-3 pr-3">
+    <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
       <ProfileHeading
+        isFixed
         isNew={isNew}
         form={form}
         dispatch={dispatch}
@@ -270,7 +193,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         usiLocked={usiLocked}
         syncErrors={syncErrors}
       />
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} className="mt-3">
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
             Type

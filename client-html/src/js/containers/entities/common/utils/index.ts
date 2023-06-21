@@ -11,6 +11,13 @@ import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRel
 import { EntityName } from "../../../../model/entities/common";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { State } from "../../../../reducers/state";
+import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
+import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from "../../../../common/components/list-view/actions";
+import { getEntityRecord } from "../actions";
+import { NOTE_ENTITIES } from "../../../../constants/Config";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { initialize } from "redux-form";
 
 export const mapEntityDisplayName = (entity: EntityName) => {
   switch (entity) {
@@ -198,3 +205,46 @@ export const mapRelatedSalables = (s): Sale & { tempId: any } => ({
   entityToId: null,
   relationId: -1
 });
+
+export const getListRecordAfterUpdateActions = (entity: EntityName, state: State, id: number) => [
+  executeActionsQueue(),
+  {
+    type: FETCH_SUCCESS,
+    payload: { message: `${mapEntityDisplayName(entity)} updated` }
+  },
+  getRecords({ entity, listUpdate: true, savedID: id }),
+  ...state.list.fullScreenEditView || state.list.records.layout === "Three column" ? [
+    getEntityRecord(id, entity)
+  ] : []
+];
+
+export const getListRecordAfterGetActions = (item: any, entity: EntityName, state: State) => [
+  {
+    type: SET_LIST_EDIT_RECORD,
+    payload: { editRecord: item, name: mapEntityListDisplayName(entity, item, state) }
+  },
+  ...NOTE_ENTITIES.includes(entity) ? [getNoteItems(entity, item.id, LIST_EDIT_VIEW_FORM_NAME)] : [],
+  initialize(LIST_EDIT_VIEW_FORM_NAME, item),
+  ...(state.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
+];
+
+export const getListRecordAfterDeleteActions = (entity: EntityName) => [
+  {
+    type: FETCH_SUCCESS,
+    payload: { message: `${mapEntityDisplayName(entity)} deleted` }
+  },
+  getRecords({ entity, listUpdate: true }),
+  setListSelection([]),
+  initialize(LIST_EDIT_VIEW_FORM_NAME, null)
+];
+
+export const getListRecordAfterCreateActions = (entity: EntityName) => [
+  executeActionsQueue(),
+  {
+    type: FETCH_SUCCESS,
+    payload: { message: `${mapEntityDisplayName(entity)} created` }
+  },
+  getRecords({ entity, listUpdate: true }),
+  setListSelection([]),
+  initialize(LIST_EDIT_VIEW_FORM_NAME, null)
+];

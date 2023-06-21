@@ -8,10 +8,11 @@
 
 // CRUD actions
 import { _toRequestType } from "../../../../common/actions/ActionUtils";
-import { EntityName } from "../../../../model/entities/common";
+import { ListActionEntity } from "../../../../model/entities/common";
 import { getContact } from "../../contacts/actions";
-import { getCourseClass } from "../../courseClasses/actions";
+import { createCourseClass, getCourseClass } from "../../courseClasses/actions";
 import { getSite } from "../../sites/actions";
+import { updateVetReportEntities } from "../../vetReporting/actions";
 
 export const GET_ENTITY_RECORD_REQUEST = _toRequestType("get/entity/record");
 
@@ -21,9 +22,10 @@ export const UPDATE_ENTITY_RECORD_REQUEST = _toRequestType("update/entity/record
 
 export const DELETE_ENTITY_RECORD_REQUEST = _toRequestType("delete/entity/record");
 
-export const getEntityRecord = (id, entity: EntityName) => {
+export const getEntityRecord = (id, entity: ListActionEntity) => {
   switch (entity) {
     case "Contact":
+    case "VetReport":
       return getContact(id);
     case "CourseClass":
       return getCourseClass(id);
@@ -37,17 +39,31 @@ export const getEntityRecord = (id, entity: EntityName) => {
   }
 };
 
-export const createEntityRecord = (item: any, entity: EntityName) => ({
-  type: CREATE_ENTITY_RECORD_REQUEST,
-  payload: { item, entity }
-});
+export const createEntityRecord = (item: any, entity: ListActionEntity) => {
+  switch (entity) {
+    case "CourseClass":
+      return createCourseClass(item);
+    default:
+      return {
+        type: CREATE_ENTITY_RECORD_REQUEST,
+        payload: { item, entity }
+      };
+  }
+};
 
-export const updateEntityRecord = (id: number, entity: EntityName, item: any) => ({
-  type: UPDATE_ENTITY_RECORD_REQUEST,
-  payload: { id, entity, item }
-});
+export const updateEntityRecord = (id: number, entity: ListActionEntity, item: any) => {
+  switch (entity) {
+    case "VetReport":
+      return updateVetReportEntities(entity, item);
+    default:
+      return {
+        type: UPDATE_ENTITY_RECORD_REQUEST,
+        payload: { id, entity, item }
+      };
+  }
+};
 
-export const deleteEntityRecord = (id: number, entity: EntityName) => ({
+export const deleteEntityRecord = (id: number, entity: ListActionEntity) => ({
   type: DELETE_ENTITY_RECORD_REQUEST,
   payload: { id, entity }
 });

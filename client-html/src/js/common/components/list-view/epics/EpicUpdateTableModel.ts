@@ -35,7 +35,7 @@ const request: EpicUtils.Request<
       throw Error("Table columns are empty!");
     }
 
-    return EntityService.updateTableModel(payload.entity, updatedModel);
+    return EntityService.updateTableModel(state.list.customTableModel || payload.entity, updatedModel);
   },
   processData: (records: any, state: any, payload) => [
     ...(payload.listUpdate

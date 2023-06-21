@@ -16,7 +16,7 @@ import { MenuTag } from "../tags";
 import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
 import { MessageData } from "./Message";
-import { EntityName } from "../entities/common";
+import { CustomTableModelName, EntityName } from "../entities/common";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
@@ -74,6 +74,7 @@ export interface ListState {
   searchQuery?: SearchQuery;
   searchError?: boolean;
   userAQLSearch?: string;
+  customTableModel?: CustomTableModelName;
   savingFilter?: SavingFilterState;
   scripts?: Script[];
   emailTemplates?: EmailTemplate[];
@@ -88,6 +89,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   EditViewContent: React.FunctionComponent<EditViewProps>;
   hasSelected: boolean;
   creatingNew: boolean;
+  customTableModel: CustomTableModelName;
   pending?: boolean;
   values?: E;
   updateDeleteCondition?: any;
@@ -117,11 +119,12 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   dispatch: any;
   updateDeleteCondition: AnyArgFunction;
   showConfirm: ShowConfirmCaller;
+  onScroll?: AnyArgFunction;
   twoColumn?: boolean;
   isNested?: boolean;
   nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
-  syncErrors?: FormErrors;
+  syncErrors?: FormErrors<V>;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
@@ -138,6 +141,7 @@ export interface GetRecordsArgs {
   ignoreSelection?: boolean;
   stopIndex?: number;
   resolve?: AnyArgFunction;
+  tableModel?: string;
 }
 
 export interface CustomColumnFormats {

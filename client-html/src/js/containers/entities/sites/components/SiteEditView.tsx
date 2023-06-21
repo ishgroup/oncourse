@@ -30,6 +30,7 @@ const items = [
 ];
 
 const SiteEditView = props => <TabsList
+  onParentScroll={props.onScroll}
   items={props.values ? items : []}
   itemProps={...props}
 />;
