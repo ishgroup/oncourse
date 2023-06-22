@@ -1,5 +1,5 @@
 import {
- Diff, Document, DocumentApi, DocumentVersion
+ Diff, Document, DocumentApi
 } from "@api/model";
 import { DefaultHttpService } from "../../../../services/HttpService";
 
@@ -38,10 +38,6 @@ class DocumentsService {
 
   public searchDocument(content: File): Promise<Document> {
     return this.service.POST("/v1/list/entity/document/search", content);
-  }
-
-  public createDocumentVersion(id, fileName, file: File): Promise<DocumentVersion> {
-    return this.documentApi.createVersion(id, fileName, file);
   }
 }
 
