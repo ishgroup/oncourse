@@ -2,31 +2,29 @@ import React, { useCallback, useRef } from "react";
 import { ButtonBase, Typography } from "@mui/material";
 import clsx from "clsx";
 import { alpha } from "@mui/material/styles";
-import { WrappedFieldProps } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-interface Props extends WrappedFieldProps {
-  label: string;
-  color: string;
-  className?: string;
-  disabled?: boolean;
-}
+import { ColoredCheckboxFieldProps } from "../../../model/common/Fields";
 
 export const ColoredCheckBox = ({
  input, label, color, className, disabled
-}: Props) => {
+}: ColoredCheckboxFieldProps) => {
   const inputRef = useRef<HTMLInputElement>();
 
   const onClick = useCallback(() => {
     inputRef.current.click();
   }, [inputRef.current]);
-  
+
   return (
     <div
       className={clsx("centeredFlex cursor-pointer", className)}
       onClick={onClick}
     >
-      <input type="checkbox" ref={inputRef} checked={input.value} hidden onChange={input.onChange} />
+      <input
+        ref={inputRef}
+        type="checkbox"
+        onChange={input.onChange}
+        hidden
+      />
       <ButtonBase
         component="div"
         disabled={disabled}
@@ -42,7 +40,7 @@ export const ColoredCheckBox = ({
       >
         {input.value && <FontAwesomeIcon fixedWidth icon="check" />}
       </ButtonBase>
-      <Typography 
+      {label && <Typography
         variant="caption"
         fontWeight="400"
         sx={{
@@ -52,7 +50,7 @@ export const ColoredCheckBox = ({
         }}
       >
         {label}
-      </Typography>
+      </Typography>}
     </div>
   );
 };
