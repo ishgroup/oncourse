@@ -33,11 +33,13 @@ const CorporatePassEditView = props => {
     twoColumn,
     submitSucceeded,
     manualLink,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? items : []}
       itemProps={{
         isNew,

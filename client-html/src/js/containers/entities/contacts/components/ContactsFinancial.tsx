@@ -9,9 +9,9 @@ import React, {
   useCallback, useMemo, useState
 } from "react";
 import {
-  Cart, Contact, PaymentMethod, Tax
+  Cart, ConcessionType, Contact, ContactRelationType, PaymentMethod, StudentConcession, Tax
 } from "@api/model";
-import { change, FieldArray } from "redux-form";
+import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
 import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
@@ -26,6 +26,12 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { ContactsState } from "../reducers";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import Divider from "@mui/material/Divider";
+import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
+import { MembershipContent, MembershipHeader } from "./MembershipLines";
+import { RelationsContent, RelationsHeader } from "./RelationsLines";
+import { getContactFullName } from "../utils";
+import { ConcessionsContent, ConcessionsHeader } from "./ConcessionsLines";
 
 interface ContactsFinancialProps extends EditViewProps<Contact> {
   taxTypes?: Tax[];
@@ -33,6 +39,8 @@ interface ContactsFinancialProps extends EditViewProps<Contact> {
   paymentTypes?: PaymentMethod[];
   storedCard?: ContactsState["storedCard"];
   access?: AccessState;
+  concessionTypes?: ConcessionType[];
+  relationTypes?: ContactRelationType[];
 }
 
 const getFormattedTaxes = (taxes: Tax[]) => taxes.map(tax => ({
@@ -116,7 +124,9 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
     setExpanded,
     storedCard,
     access,
-    syncErrors
+    syncErrors,
+    relationTypes,
+    concessionTypes
   } = props;
 
   const [lockedTerms, setLockedTerms] = useState(true);
@@ -150,8 +160,125 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
 
   const paymentInPermissions = access["/a/v1/list/plain?entity=PaymentIn"] && access["/a/v1/list/plain?entity=PaymentIn"]["GET"];
 
+  const membershipsCount = useMemo(() => (values.memberships && values.memberships.length) || 0, [values.memberships]);
+  const relationsCount = useMemo(() => (values.relations && values.relations.length) || 0, [values.relations]);
+  const concessionsCount = useMemo(
+    () => (values.student && values.student.concessions && values.student.concessions.length) || 0,
+    [values.student && values.student.concessions]
+  );
+
+  const deleteRelation = useCallback(
+    index => {
+      dispatch(arrayRemove(form, "relations", index));
+    },
+    [values && values.relations, form]
+  );
+
+  const addNewRelation = useCallback(() => {
+    dispatch(
+      arrayInsert(form, "relations", 0, {
+        id: null,
+        relationId: null,
+        relatedContactId: null,
+        relatedContactName: null
+      })
+    );
+  }, [values && values.id, form]);
+
+  const RelationsHeaderLine = useCallback(
+    props => <RelationsHeader relationTypes={relationTypes} contactId={values.id} {...props} />,
+    [values && values.id, relationTypes]
+  );
+  const RelationsContentLine = useCallback(
+    props => (
+      <RelationsContent
+        form={form}
+        dispatch={dispatch}
+        relationTypes={relationTypes}
+        contactId={values.id}
+        contactFullName={getContactFullName(values)}
+        {...props}
+      />
+    ),
+    [values && values.firstName, values && values.lastName, values && values.id, form, relationTypes]
+  );
+
+  const deleteConcession = useCallback(
+    index => {
+      dispatch(arrayRemove(form, "student.concessions", index));
+    },
+    [values && values.student && values.student.concessions, form]
+  );
+
+  const addNewConcession = useCallback(() => {
+    const newLine: StudentConcession = {
+      number: null,
+      expiresOn: null,
+      type: null
+    };
+
+    dispatch(arrayInsert(form, "student.concessions", 0, newLine));
+  }, [values && values.id, form]);
+
+  const ConcessionsHeaderLine = useCallback(props => <ConcessionsHeader {...props} />, [
+    values.student && values.student.concessions
+  ]);
+  const ConcessionsContentLine = useCallback(
+    props => <ConcessionsContent concessionTypes={concessionTypes} {...props} />,
+    []
+  );
+
   return values ? (
     <div className="pl-3 pr-3">
+      {values.student && (
+        <>
+          <Grid item xs={12} className="pb-1">
+            <Divider className="mb-1" />
+            <MinifiedEntitiesList
+              name="student.concessions"
+              header="Concessions"
+              oneItemHeader="Concession"
+              count={concessionsCount}
+              FieldsContent={ConcessionsContentLine}
+              HeaderContent={ConcessionsHeaderLine}
+              onAdd={addNewConcession}
+              onDelete={deleteConcession}
+              syncErrors={syncErrors}
+              accordion
+            />
+          </Grid>
+        </>
+      )}
+      <Grid item xs={12} className="pb-1">
+        <Divider className="mb-1" />
+        <MinifiedEntitiesList
+          name="memberships"
+          header="Memberships"
+          oneItemHeader="Membership"
+          count={membershipsCount}
+          FieldsContent={MembershipContent}
+          HeaderContent={MembershipHeader}
+          syncErrors={syncErrors}
+          twoColumn={twoColumn}
+          accordion
+        />
+      </Grid>
+      <Grid item xs={12} className="pb-1">
+        <Divider className="mb-1" />
+        <MinifiedEntitiesList
+          name="relations"
+          header="Relations"
+          oneItemHeader="Relation"
+          count={relationsCount}
+          FieldsContent={RelationsContentLine}
+          HeaderContent={RelationsHeaderLine}
+          onAdd={addNewRelation}
+          onDelete={deleteRelation}
+          syncErrors={syncErrors}
+          accordion
+        />
+      </Grid>
+
       <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Financial">
         <Grid container columnSpacing={3} rowSpacing={2} className="pb-3">
           <Grid item xs={twoColumn ? 3 : 12}>
@@ -252,7 +379,9 @@ const mapStateToProps = (state: State) => ({
   defaultTerms: state.invoices.defaultTerms,
   taxTypes: state.contacts.taxTypes,
   storedCard: state.contacts.storedCard,
-  access: state.access
+  access: state.access,
+  relationTypes: state.contacts.contactsRelationTypes,
+  concessionTypes: state.contacts.contactsConcessionTypes,
 });
 
 export default connect<any, any, any>(mapStateToProps)(ContactsFinancial);

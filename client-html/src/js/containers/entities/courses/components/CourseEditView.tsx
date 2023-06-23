@@ -60,7 +60,7 @@ const CourseEditView = props => {
     hasVetPermissions
   ]);
 
-  return <TabsList items={props.values ? usedItems : []} itemProps={props} />;
+  return <TabsList onParentScroll={props.onScroll} items={props.values ? usedItems : []} itemProps={props} />;
 };
 
 export default withStyles(styles)(CourseEditView);

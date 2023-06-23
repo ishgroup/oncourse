@@ -10,7 +10,7 @@
  */
 
 import { Document, DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
-import { FormControlLabel } from "@mui/material";
+import { Alert, AlertTitle, FormControlLabel } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
@@ -30,8 +30,6 @@ import {
   OpenInNew,
   SupervisorAccount
 } from "@mui/icons-material";
-import { AlertTitle } from "@mui/lab";
-import Alert from "@mui/lab/Alert";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { showMessage } from "../../../../../actions";

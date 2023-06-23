@@ -275,6 +275,7 @@ const CourseClassGeneralTab = React.memo<Props>(
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be at least
+              {" "}
               <FormField
                 type="number"
                 name="minStudentAge"
@@ -283,11 +284,13 @@ const CourseClassGeneralTab = React.memo<Props>(
                 step="1"
                 inline
               />
+              {" "}
               years old to enrol
             </Typography>
 
             <Typography variant="body2" color="inherit" component="div" className="pb-2">
               Students must be no older than
+              {" "}
               <FormField
                 type="number"
                 name="maxStudentAge"
@@ -296,6 +299,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 step="1"
                 inline
               />
+              {" "}
               years old to enrol
             </Typography>
 

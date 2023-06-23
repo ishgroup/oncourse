@@ -179,6 +179,7 @@ class SettingsForm extends React.Component<any, any> {
                       onClick={e => e.preventDefault()}
                     >
                       Require password change every
+                      {" "}
                       <FormField
                         type="number"
                         name={this.formModel.SecurityPasswordExpiryPeriod.uniqueKey}
@@ -197,6 +198,7 @@ class SettingsForm extends React.Component<any, any> {
                         }}
                         disabled={!enablePasswordScheduleField}
                       />
+                      {" "}
                       days
                     </Typography>
                   )}
@@ -211,6 +213,7 @@ class SettingsForm extends React.Component<any, any> {
                   label={(
                     <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                       Require two factor authentication every
+                      {" "}
                       <FormField
                         type="number"
                         name={this.formModel.SecurityTFAExpiryPeriod.uniqueKey}
@@ -230,6 +233,7 @@ class SettingsForm extends React.Component<any, any> {
                         debounced={false}
                         disabled={!enableTOTPScheduleField}
                       />
+                      {" "}
                       hours
                     </Typography>
                   )}
@@ -240,6 +244,7 @@ class SettingsForm extends React.Component<any, any> {
             <Grid item xs={12} sm={8} className="mt-3">
               <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                 Disable account after
+                {" "}
                 <FormField
                   type="number"
                   name={this.formModel.SecurityNumberIncorrectLoginAttempts.uniqueKey}
@@ -258,6 +263,7 @@ class SettingsForm extends React.Component<any, any> {
                   }}
                   debounced={false}
                 />
+                {" "}
                 incorrect login attempts
               </Typography>
             </Grid>

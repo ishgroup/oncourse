@@ -42,10 +42,11 @@ import { getContactFullName } from "./utils";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
-interface ContactsProps {
+export interface ContactsProps {
   onInit?: () => void;
   getRecords?: () => void;
   getFilters?: () => void;
+  setCustomTableModel?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
   getCountries?: () => void;

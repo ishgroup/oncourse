@@ -56,7 +56,8 @@ const DiscountEditView = React.memo<any>(props => {
     showConfirm,
     manualLink,
     access,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -66,6 +67,7 @@ const DiscountEditView = React.memo<any>(props => {
   return values ? (
     <>
       <TabsList
+        onParentScroll={onScroll}
         items={checkedItems}
         itemProps={{
           isNew,

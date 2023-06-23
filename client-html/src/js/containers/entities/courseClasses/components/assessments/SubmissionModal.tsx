@@ -59,8 +59,8 @@ const SubmissionModal = (
       <DialogContent>
         <DialogTitle className="p-0 mb-2">{title}</DialogTitle>
         {opened && (
-        <Grid container columnSpacing={3}>
-          <Grid item xs={6}>
+        <Grid container rowSpacing={2} columnSpacing={3}>
+          <Grid item xs={12}>
             <EditInPlaceDateTimeField
               type="datetime"
               label={`${type} date`}
@@ -75,7 +75,7 @@ const SubmissionModal = (
               }}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             {type === "Marked" && (
               (
                 <EditInPlaceSearchSelect

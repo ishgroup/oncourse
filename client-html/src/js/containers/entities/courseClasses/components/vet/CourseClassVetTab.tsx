@@ -31,6 +31,7 @@ import { normalizeNumber, normalizeNumberToZero } from "../../../../../common/ut
 import { State } from "../../../../../reducers/state";
 import { formatFundingSourceId } from "../../../common/utils";
 import CourseClassAttendanceTab from "../attendance/CourseClassAttendanceTab";
+import { fundingSourceValues } from "../../constants";
 
 interface Props extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -39,7 +40,6 @@ interface Props extends Partial<EditViewProps> {
 
 const deliveryModeValues = Object.keys(DeliveryMode).map(mapSelectItems);
 const attendanceTypeValues = Object.keys(CourseClassAttendanceType).map(mapSelectItems);
-const fundingSourceValues = Object.keys(ClassFundingSource).map(mapSelectItems);
 
 const CourseClassVetTab = React.memo<Props>(props => {
   const {

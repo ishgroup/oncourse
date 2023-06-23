@@ -89,7 +89,7 @@ class Rooms extends React.Component<any, any> {
 
   render() {
     const {
-      updateTableModel, onInit
+      onInit
     } = this.props;
 
     return (
@@ -104,7 +104,6 @@ class Rooms extends React.Component<any, any> {
           asyncChangeFields: ["notes[].message"],
           hideTitle: true
         }}
-        updateTableModel={updateTableModel}
         CogwheelAdornment={BulkEditCogwheelOption}
         EditViewContent={RoomEditView}
         rootEntity="Room"
@@ -129,4 +128,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState())
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(Rooms);
+export default connect(null, mapDispatchToProps)(Rooms);

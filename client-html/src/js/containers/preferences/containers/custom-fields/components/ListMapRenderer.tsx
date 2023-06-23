@@ -122,7 +122,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                         {
                           isMap && (
                           <>
-                            (
+                            {" ( "}
                             <EditInPlaceField
                               meta={{
                                 error: valueError,
@@ -138,7 +138,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                               inline
                               multiline
                             />
-                            )
+                            {" ) "}
                           </>
                         )
                       }

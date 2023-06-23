@@ -85,7 +85,7 @@ const setRowClasses = ({ status }) => (status === "Closed" ? "text-op05" : undef
 
 const Leads = props => {
   const {
-    updateTableModel, onInit
+    onInit
   } = props;
 
   useEffect(() => {
@@ -111,29 +111,26 @@ const Leads = props => {
   };
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          setRowClasses,
-          primaryColumn: "estimatedValue",
-          secondaryColumn: "customer.fullName"
-        }}
-        editViewProps={{
-          manualLink,
-          asyncValidate: notesAsyncValidate,
-          asyncChangeFields: ["notes[].message"],
-          hideTitle: true
-        }}
-        updateTableModel={updateTableModel}
-        EditViewContent={LeadEditView}
-        rootEntity="Lead"
-        onInit={onInit}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        CogwheelAdornment={LeadCogWheel}
-        preformatBeforeSubmit={preformatBeforeSubmit}
-      />
-    </div>
+    <ListView
+      listProps={{
+        setRowClasses,
+        primaryColumn: "estimatedValue",
+        secondaryColumn: "customer.fullName"
+      }}
+      editViewProps={{
+        manualLink,
+        asyncValidate: notesAsyncValidate,
+        asyncChangeFields: ["notes[].message"],
+        hideTitle: true
+      }}
+      EditViewContent={LeadEditView}
+      rootEntity="Lead"
+      onInit={onInit}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      CogwheelAdornment={LeadCogWheel}
+      preformatBeforeSubmit={preformatBeforeSubmit}
+    />
   );
 };
 
