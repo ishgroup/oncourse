@@ -28,14 +28,19 @@ export const formatDocumentSize = (size: number): string => {
   return size.toString();
 };
 
+export const getDocumentContent = (file: File): Promise<string> => {
+  const reader = new FileReader();
+
+  return new Promise(resolve => {
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  }).then((result: any) => result.replace(`data:${file.type};base64,`, ""));
+
+};
+
 export const getDocumentThumbnail = (file: File): Promise<string> => {
   if (file.type.match(/image/)) {
-    const reader = new FileReader();
-
-    return new Promise(resolve => {
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(file);
-    }).then((result: any) => result.replace(`data:${file.type};base64,`, ""));
+    return getDocumentContent(file);
   }
 
   return new Promise(resolve => resolve(""));

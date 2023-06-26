@@ -141,8 +141,6 @@ paths:
     $ref: './path/list/entity/document/api.yaml'
   /list/entity/document/search:
     $ref: './path/list/entity/document/search/api.yaml'
-  /list/entity/document/version:
-    $ref: './path/list/entity/document/version/api.yaml'
   /list/entity/emailTemplate:
     $ref: './path/list/entity/emailTemplate/api.yaml'
   /list/entity/emailTemplate/template:
