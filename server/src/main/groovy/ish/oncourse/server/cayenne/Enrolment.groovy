@@ -113,6 +113,9 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 
 	@Override
 	void prePersist() {
+		if(invoiceLines.empty){
+			throw new IllegalArgumentException("Enrolment tried to be created/updated without related invoice lines, id = ${id}, willowId=${willowId}")
+		}
 		updateOverriddenFields()
 	}
 
