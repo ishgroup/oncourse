@@ -22,7 +22,7 @@ import { Document, DocumentVersion } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
 import {
-  FileTypeIcon,
+  FileTypeIcon, getDocumentContent,
   getLatestDocumentItem
 } from "../../../../common/components/form/documents/components/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
@@ -203,20 +203,23 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
   const thumbnail = values && Array.isArray(values.versions) && ( values.versions[0].thumbnail);
 
   const handleFileSelect = useCallback(() => {
-    const content = fileRef.current.files[0];
+    const content:File = fileRef.current.files[0];
     if (content) {
-      const newVersion: DocumentVersion = {
-        id: null,
-        added: new Date().toISOString(),
-        createdBy: null,
-        fileName: content.name,
-        mimeType: content.type,
-        size: null,
-        url: null,
-        thumbnail: null,
-        content
-      };
-      dispatch(arrayInsert(form, "versions", 0, newVersion));
+      getDocumentContent(content).then( _content => {
+        const newVersion: DocumentVersion = {
+          id: null,
+          added: new Date().toISOString(),
+          createdBy: null,
+          fileName: content.name,
+          mimeType: content.type,
+          size: null,
+          url: null,
+          thumbnail: null,
+          name: content.name,
+          content: _content
+        };
+        dispatch(arrayInsert(form, "versions", 0, newVersion));
+      });
     }
   }, [form]);
 
