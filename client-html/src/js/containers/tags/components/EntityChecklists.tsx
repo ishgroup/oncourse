@@ -115,7 +115,7 @@ const ChecklistItem = ({
             <ColoredCheckBox
               className="mb-1"
               label={ct.name}
-              color={item.color}
+              color={`#${item.color}`}
               input={{ onChange: e => onCheck(ct.id, e.target.checked), value: checkedIds[ct.id] } as any}
               meta={{} as any}
             />

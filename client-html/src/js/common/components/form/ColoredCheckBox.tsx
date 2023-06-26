@@ -4,15 +4,24 @@ import clsx from "clsx";
 import { alpha } from "@mui/material/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ColoredCheckboxFieldProps } from "../../../model/common/Fields";
+import { getCheckboxValue } from "../../utils/common";
+import { useAppTheme } from "../../themes/ishTheme";
+import { rgbToHex } from "@mui/system/colorManipulator";
 
 export const ColoredCheckBox = ({
  input, label, color, className, disabled
 }: ColoredCheckboxFieldProps) => {
+  const theme = useAppTheme();
+  
   const inputRef = useRef<HTMLInputElement>();
 
   const onClick = useCallback(() => {
     inputRef.current.click();
   }, [inputRef.current]);
+  
+  if (disabled) {
+    color = rgbToHex(theme.palette.divider);
+  }
 
   return (
     <div
@@ -22,7 +31,8 @@ export const ColoredCheckBox = ({
       <input
         ref={inputRef}
         type="checkbox"
-        onChange={input.onChange}
+        {...input}
+        checked={getCheckboxValue(input.value, false)}
         hidden
       />
       <ButtonBase
@@ -31,11 +41,11 @@ export const ColoredCheckBox = ({
         sx={{
           width: theme => theme.spacing(3),
           height: theme => theme.spacing(3),
-          border: `2px solid #${color}`,
+          border: `2px solid ${color}`,
           borderRadius: "50%",
           fontSize: "10px",
-          backgroundColor: input.value ? `#${color}` : alpha(`#${color}`, 0.1),
-          color: theme => theme.palette.getContrastText(`#${color}`)
+          backgroundColor: input.value ? `${color}` : alpha(`${color}`, 0.1),
+          color: theme => theme.palette.getContrastText(`${color}`)
         }}
       >
         {input.value && <FontAwesomeIcon fixedWidth icon="check" />}

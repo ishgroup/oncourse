@@ -153,7 +153,7 @@ const DocumentVersion = ({
               <FormField
                 type="coloredCheckbox"
                 name={`versions[${index}].current`}
-                color={theme.palette.secondary.main?.replace('#', '')}
+                color={theme.palette.secondary.main}
                 onChange={onCurrentChange}
               />
             </IconButton>
@@ -215,7 +215,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           size: null,
           url: null,
           thumbnail: null,
-          name: content.name,
+          current: false,
           content: _content
         };
         dispatch(arrayInsert(form, "versions", 0, newVersion));
