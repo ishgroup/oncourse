@@ -142,6 +142,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   },
   { title: "Invoices", list: "invoice", expression: "invoiceLines.enrolment.id" },
   { title: "Outcomes", list: "outcome", expression: "enrolment.id" },
+  { title: "VET reporting", list: "vetReporting", expression: "student.enrolments.id" },
   { title: "Voucher redeemed", list: "sale", expression: "redeemedEnrolment.id" },
   { title: "Students", list: "contact", expression: "student.enrolments.id" },
   { title: "Submissions", list: "assessmentSubmission", expression: "enrolment.id" },
