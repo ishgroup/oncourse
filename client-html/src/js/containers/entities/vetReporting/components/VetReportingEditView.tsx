@@ -40,8 +40,8 @@ const VetReportingEditView = ({ onScroll, values, ...rest }: EditViewProps<VetRe
   const [currentItems, setCurrentItems] = useState<TabsListItem<VetReport>[]>([studentItem, enrolmentsItem]);
 
   const usiLocked = useMemo(
-    () => values.student && values.student.student.usiStatus === "Verified" && usiUpdateLocked,
-    [values.student && values.student.student.usiStatus, usiUpdateLocked]
+    () => values.student?.student?.usiStatus === "Verified" && usiUpdateLocked,
+    [values.student?.student?.usiStatus, usiUpdateLocked]
   );
   
   useEffect(() => {
