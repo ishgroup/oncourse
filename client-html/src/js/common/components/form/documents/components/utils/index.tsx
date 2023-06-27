@@ -8,7 +8,7 @@
 
 import React from "react";
 import { compareAsc, parseISO } from "date-fns";
-import { DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
+import { DocumentAttachmentRelation, DocumentVersion, DocumentVisibility } from "@api/model";
 import { StringKeyObject } from "../../../../../../model/common/CommomObjects";
 import { DocumentExtended } from "../../../../../../model/common/Documents";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
@@ -188,19 +188,7 @@ export const groupAttachmentsByEntity = (attachmentRelations: DocumentAttachment
   return acc;
 }, {});
 
-export const getLatestDocumentItem = (data: any[]) => {
+export const getLatestDocumentItem = (data: DocumentVersion[]) => {
   if (data && data.length === 1) return data[0];
-
-  let latestDate = parseISO("1970-01-01T00:00:00.000Z");
-  let resultElem = {};
-
-  data.forEach(elem => {
-    const result = compareAsc(parseISO(elem.added), latestDate);
-    if (result === 1) {
-      latestDate = parseISO(elem.added);
-      resultElem = elem;
-    }
-  });
-
-  return resultElem as any;
+  return data.find( elem => elem.current);
 };

@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 123-1
+      comment: add a flag to determine the current version of the document
+      author: kristina
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: DocumentVersion
+          not:
+            - columnExists:
+                tableName: DocumentVersion
+                columnName: current
+      changes:
+        - addColumn:
+            tableName: DocumentVersion
+            columns:
+              - column:
+                  name: current
+                  type: Boolean
+                  defaultValueBoolean: false
+        - addNotNullConstraint:
+            tableName: DocumentVersion
+            columnName: current
+            columnDataType: Boolean
