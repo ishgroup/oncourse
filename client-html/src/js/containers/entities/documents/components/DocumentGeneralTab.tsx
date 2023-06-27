@@ -198,9 +198,9 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const documentVersion = getLatestDocumentItem(values.versions);
 
-  const validUrl = values && values.urlWithoutVersionId;
+  const validUrl = documentVersion?.url;
 
-  const thumbnail = values && Array.isArray(values.versions) && ( values.versions[0].thumbnail);
+  const thumbnail = documentVersion?.thumbnail;
 
   const handleFileSelect = useCallback(() => {
     const content:File = fileRef.current.files[0];
