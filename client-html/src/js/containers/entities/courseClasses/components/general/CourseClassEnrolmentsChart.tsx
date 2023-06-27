@@ -18,7 +18,7 @@ import { differenceInCalendarWeeks } from "date-fns";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import withTheme from "@mui/styles/withTheme";
-import { green } from "@mui/material/colors";
+import { green, orange } from "@mui/material/colors";
 import Paper from "@mui/material/Paper";
 import Edit from "@mui/icons-material/Edit";
 import { CourseClassState } from "../../reducers";
@@ -94,12 +94,13 @@ const LabelButton = ({ box, onClick }) => (
   </IconButton>
 );
 
-type ChartWeeks = { week: string | number; enrolments: number; value: number }[];
+type ChartWeeks = { week: string | number; enrolments: number; value: number, averageValue: number }[];
 
 const initialWeeks: ChartWeeks = [...Array(8).keys()].map((v, week) => ({
   week,
   enrolments: 0,
-  value: 0
+  value: 0,
+  averageValue: 0.0
 }));
 
 const initialData = [];
@@ -159,7 +160,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     const minLabelEl = useRef<SVGAElement>();
 
     const clearData = useCallback(() => {
-      setData(prev => prev.map(({ week }) => ({ week, enrolments: 0, value: 0 })));
+      setData(prev => prev.map(({ week }) => ({ week, enrolments: 0, value: 0, averageValue: 0 })));
     }, []);
 
     const onChartHover = useCallback(() => setShowLabels(true), []);
@@ -209,6 +210,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
         if (diff >= weeks.length) {
           for (let i = 0; i < weeks.length; i++) {
             weeks[i].value++;
+            weeks[i].averageValue = (weeks[i].averageValue * (i + 1) + 1) / (i + 1);
           }
           return;
         }
@@ -216,6 +218,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
         if (diff <= 0) {
           weeks[0].enrolments++;
           weeks[0].value++;
+          weeks[0].averageValue = weeks[0].value;
           return;
         }
 
@@ -225,6 +228,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
 
         for (let i = diff; i >= 0; i--) {
           weeks[i].value++;
+          weeks[i].averageValue = (weeks[i].averageValue * (i + 1) + 1) / (i + 1);
         }
       });
 
@@ -237,7 +241,8 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
       weeks = [...Array(Math.abs(enrolmentsWeeks + 1) || 1).keys()].map((v, week) => ({
         week,
         enrolments: 0,
-        value: 0
+        value: 0,
+        averageValue: 0.0,
       }));
 
       enrolments.forEach(e => {
@@ -250,6 +255,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
 
           for (let i = diff; i >= 0; i--) {
             weeks[i].value++;
+            weeks[i].averageValue = (weeks[i].value) / (i + 1);
           }
         }
       });
@@ -263,7 +269,8 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
           ...[...Array(Math.abs(startWeek)).keys()].map((v, week) => ({
             week,
             enrolments: 0,
-            value: 0
+            value: 0,
+            averageValue: 0.0
           }))
         );
 
@@ -271,13 +278,20 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
 
         startWeek = 0;
       } else if (startWeek >= weeks.length) {
-        const lastValue = weeks[weeks.length - 1].value;
+        const lastValue = weeks[weeks.length - 1].value as number;
+        const lastAverageValue = weeks[weeks.length - 1].averageValue as number;
+        const additionalLength = startWeek + 1 - weeks.length;
+
+        for (let i = 0; i < weeks.length; i++) {
+          weeks[i].averageValue = weeks[i].value / (weeks.length - i + additionalLength);
+        }
 
         weeks.push(
-          ...[...Array(startWeek + 1 - weeks.length).keys()].map((v, week) => ({
+          ...[...Array(additionalLength).keys()].map((v, week) => ({
             week,
             enrolments: 0,
-            value: lastValue
+            value: lastValue,
+            averageValue: lastAverageValue / (additionalLength - v),
           }))
         );
 
@@ -353,6 +367,12 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
               type="stepAfter"
               fill={theme.palette.grey["200"]}
               stroke={theme.palette.grey["500"]}
+            />
+            <Area
+              dataKey="averageValue"
+              type="natural"
+              fill={theme.palette.grey["200"]}
+              stroke={orange["200"]}
             />
             <Tooltip
               wrapperStyle={{ zIndex: 1 }}
