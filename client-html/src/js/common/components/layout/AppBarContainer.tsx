@@ -154,8 +154,14 @@ const AppBarContainer = (props: Props) => {
   const isSmallScreen = useMediaQuery('(max-width:992px)');
   const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
   const isHighcontrastTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "highcontrast";
-
   const hasFab = onAddMenu || customAddMenu;
+
+  const childrenWithProps = React.Children.map(children, child => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement<any>(child, { onScroll });
+    }
+    return child;
+  });
 
   return (
     <>
@@ -247,7 +253,7 @@ const AppBarContainer = (props: Props) => {
             )}
           </div>
         )}
-        {children}
+        {childrenWithProps}
       </div>
     </>
   );

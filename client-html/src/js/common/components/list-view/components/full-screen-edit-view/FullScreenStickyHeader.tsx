@@ -11,7 +11,6 @@ const useStyles = makeAppStyles(theme => ({
       background: theme.appBar.headerAlternate.background,
       position: "fixed",
       top: 0,
-      width: "calc(100% - 250px)",
       zIndex: theme.zIndex.appBar + 1,
       marginTop: 0,
       height: APP_BAR_HEIGHT
@@ -93,7 +92,8 @@ interface Props {
   isFixed?: boolean,
   customStuck?: boolean,
   fields?: any,
-  className?: string
+  className?: string,
+  leftOffset?: number
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -105,7 +105,8 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     twoColumn,
     disableInteraction,
     isFixed =  true,
-    customStuck
+    customStuck,
+    leftOffset
   } = props;
 
   const classes = useStyles();
@@ -163,12 +164,15 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
         <Grid
           item
           xs={12}
+          columnSpacing={3}
           className={clsx(
             "centeredFlex",
             twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
             !opened && isFixed && twoColumn && classes.isFixed,
           )}
-          columnSpacing={3}
+          style={{
+            width: `calc(100% - 250px - ${leftOffset || 0}px)`
+          }}
         >
           {Avatar && (
             <Avatar
