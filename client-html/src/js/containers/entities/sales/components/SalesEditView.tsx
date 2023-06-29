@@ -237,7 +237,7 @@ const SalesEditView: React.FC<SalesGeneralViewProps> = props => {
       </Grid>
 
       <Grid item xs={12}>
-        <OwnApiNotes {...props} leftOffset />
+        <OwnApiNotes {...props}/>
       </Grid>
 
       <Grid item xs={12}>

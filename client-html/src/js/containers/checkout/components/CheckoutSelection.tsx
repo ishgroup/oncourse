@@ -1134,7 +1134,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         </Drawer>
       </ResizableWrapper>
 
-      <div className="w-100">
+      <div style={{ width: `calc(100% - ${sidebarWidth}px)` }}>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) })}>
           <div className="appFrame flex-fill root">
             <LoadingIndicator
@@ -1206,6 +1206,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 showConfirm={showConfirm}
                 onSave={onContactSave}
                 onClose={onClose}
+                leftOffset={sidebarWidth}
               />
             )}
 

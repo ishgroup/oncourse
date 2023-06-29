@@ -49,7 +49,7 @@ const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) 
         />
       </div>
       <div>
-        <OwnApiNotes {...props} />
+        <OwnApiNotes {...props} className="pl-3 pr-3" />
       </div>
       <div className="p-3">
         <FormField
