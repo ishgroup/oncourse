@@ -166,12 +166,12 @@ class CheckoutApiService {
                     sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
 
                     if (!sessionAttributes.complete) {
-                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText, ${sessionAttributes.errorMessage ?: ""}")])
+                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
                     }
                 }
 
                 if (!sessionAttributes.authorised) {
-                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText, ${sessionAttributes.errorMessage ?: ""}")])
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " +  sessionAttributes.errorMessage) : ""}")])
                 }
 
                 if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(cayenneService.newContext) != null) {
