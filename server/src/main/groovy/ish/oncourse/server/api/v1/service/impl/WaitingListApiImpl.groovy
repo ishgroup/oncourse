@@ -42,9 +42,4 @@ class WaitingListApiImpl implements WaitingListApi {
     void bulkChange(DiffDTO diff) {
         entityApiService.bulkChange(diff)
     }
-
-    @Override
-    void bulkDelete(DiffDTO diff) {
-        entityApiService.bulkRemove(diff)
-    }
 }
