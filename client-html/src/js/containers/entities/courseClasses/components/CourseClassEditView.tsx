@@ -108,7 +108,7 @@ const itemsBase: TabsListItem[] = [
   {
     label: "NOTES",
     type: "NOTES",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pb-2" />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3 pb-2" />
   },
   {
     label: "ENROLMENTS",
