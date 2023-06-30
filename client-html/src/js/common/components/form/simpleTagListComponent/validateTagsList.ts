@@ -17,7 +17,7 @@ export const validateTagsList = (tags: Tag[], value, allValues, props, rootEntit
   const rootTagsWithRequirements = {};
 
   tags.forEach(t => {
-    const match = t.requirements.filter(r => (r.type === (rootEntity || props.rootEntity) && (r.mandatory || r.limitToOneTag)));
+    const match = t.requirements.filter(r => (r.type === (rootEntity || props.rootEntity)) && (r.mandatory || r.limitToOneTag));
 
     if (match.length) {
       rootTagsWithRequirements[t.id] = { name: t.name, requirements: match[0] };
@@ -44,11 +44,11 @@ export const validateTagsList = (tags: Tag[], value, allValues, props, rootEntit
     if (!usedRootTags[u] && rootTagsWithRequirements[u].requirements.mandatory) {
       error = `The ${
         rootTagsWithRequirements[u].name
-      } Tag is mandatory. Modify your tag settings before removing this tag`;
+      } tag is mandatory. Modify your tag settings before removing this tag`;
     }
 
     if (usedRootTags[u] && rootTagsWithRequirements[u].requirements.limitToOneTag && usedRootTags[u].length > 1) {
-      error = `The ${rootTagsWithRequirements[u].name} Tag group can be used only once`;
+      error = `The ${rootTagsWithRequirements[u].name} tag group can be used only once`;
     }
   });
 
