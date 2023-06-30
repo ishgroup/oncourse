@@ -69,7 +69,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
             "attachedRecordsCount":null,
             "versions":
                 [
-                    {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}
+                    {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null,"content":null,current:true}
                 ],
             "name":"defaultPrivateDocument",
             "id":200,
