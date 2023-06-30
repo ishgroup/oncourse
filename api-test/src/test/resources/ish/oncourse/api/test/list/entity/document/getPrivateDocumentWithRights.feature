@@ -37,7 +37,10 @@ Feature: Re-usable feature to get Document with access rights
             "mimeType":"text/plain",
             "size":"22 b",
             "url":null,
-            "thumbnail":null
+            "thumbnail":null,
+            "content":null,
+            "name":null,
+            "current":true
             }],
         "description":"Private description",
         "access":"Private",
