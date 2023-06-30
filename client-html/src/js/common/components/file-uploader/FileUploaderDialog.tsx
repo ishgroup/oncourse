@@ -63,6 +63,7 @@ const FileUploaderDialog: React.FC<Props> = (props => {
   } = props;
 
   const onFileDrop = (acceptedfiles, fileRejections) => {
+    console.log('!!!!!!');
     if (onChange) onChange(acceptedfiles, fileRejections);
   };
 
