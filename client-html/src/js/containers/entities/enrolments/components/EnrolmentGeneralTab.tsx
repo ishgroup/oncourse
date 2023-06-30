@@ -190,21 +190,19 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         />
       </Grid>
 
-      {Boolean(Object.keys(values.customFields).length) && <>
-        <Grid item xs={12} className="pb-3">
-          <Divider />
-        </Grid>
-        <CustomFields
-          entityName="Enrolment"
-          fieldName="customFields"
-          entityValues={values}
-          form={form}
-          gridItemProps={{
-            xs: twoColumn ? 6 : 12,
-            lg: twoColumn ? 4 : 12
-          }}
-        />
-      </>}
+      <Grid item xs={12} className="pb-3">
+        <Divider />
+      </Grid>
+      <CustomFields
+        entityName="Enrolment"
+        fieldName="customFields"
+        entityValues={values}
+        form={form}
+        gridItemProps={{
+          xs: twoColumn ? 6 : 12,
+          lg: twoColumn ? 4 : 12
+        }}
+      />
 
       <Grid item xs={12}>
         {Boolean(values?.assessments?.length) && <>

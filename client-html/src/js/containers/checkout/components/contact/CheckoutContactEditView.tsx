@@ -34,6 +34,7 @@ interface Props extends Partial<InjectedFormProps> {
   onClose?: () => void;
   isVerifyingUSI?: boolean;
   usiVerificationResult?: any;
+  leftOffset?: number;
 }
 
 const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
@@ -53,7 +54,8 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
     onContactSave,
     onContactCreate,
     isVerifyingUSI,
-    usiVerificationResult
+    usiVerificationResult,
+    leftOffset
   } = props;
 
   const handleContactSave = React.useCallback(contact => {
@@ -87,34 +89,33 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
   const disabledSubmitCondition = getDisabledSubmitCondition(isVerifyingUSI, usiVerificationResult);
 
   return (
-    <>
-      <form className="flex-column w-100" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <AppBarContainer
-          noTitle
-          disabled={invalid || (!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
+    <form className="flex-column w-100" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <AppBarContainer
+        noTitle
+        disabled={invalid || (!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
+        invalid={invalid}
+        onCloseClick={creatingNew ? onClose : null}
+        containerClass="p-0"
+      >
+        <ContactEditView
+          twoColumn
+          asyncValidating={asyncValidating}
+          syncErrors={syncErrors}
+          submitSucceeded={submitSucceeded}
+          manualLink=""
           invalid={invalid}
-          onCloseClick={creatingNew ? onClose : null}
-          containerClass="p-0"
-        >
-          <ContactEditView
-            twoColumn
-            asyncValidating={asyncValidating}
-            syncErrors={syncErrors}
-            submitSucceeded={submitSucceeded}
-            manualLink=""
-            invalid={invalid}
-            form={CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME}
-            rootEntity="Contact"
-            isNew={creatingNew}
-            values={values}
-            dirty={dirty}
-            dispatch={dispatch}
-            showConfirm={showConfirm}
-            toogleFullScreenEditView={() => {}}
-          />
-        </AppBarContainer>
-      </form>
-    </>
+          form={CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME}
+          rootEntity="Contact"
+          isNew={creatingNew}
+          values={values}
+          dirty={dirty}
+          dispatch={dispatch}
+          showConfirm={showConfirm}
+          leftOffset={leftOffset}
+          toogleFullScreenEditView={() => {}}
+        />
+      </AppBarContainer>
+    </form>
   );
 };
 

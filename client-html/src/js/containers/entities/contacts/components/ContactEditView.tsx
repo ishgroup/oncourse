@@ -74,7 +74,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: props => <OwnApiNotes {...props} />
+    component: props => <OwnApiNotes {...props} className="pl-3 pr-3" />
   },
   {
     label: "Documents",
@@ -89,6 +89,7 @@ const items: TabsListItem[] = [
 interface Props {
   classes?: any;
   currencySymbol?: any;
+  leftOffset?: number;
 }
 
 const ContactEditView = (props: EditViewProps<Contact> & Props) => {
@@ -108,7 +109,8 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
     invalid,
     currencySymbol,
     syncErrors,
-    onScroll
+    onScroll,
+    leftOffset
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -183,6 +185,7 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
         setUsiUpdateLocked,
         syncErrors,
         onScroll,
+        leftOffset
       }}
     />
   );
