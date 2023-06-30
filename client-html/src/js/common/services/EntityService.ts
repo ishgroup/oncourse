@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DataResponse, EntityApi, SearchQuery } from "@api/model";
+import { DataResponse, Diff, EntityApi, SearchQuery } from "@api/model";
 import { DefaultHttpService } from "./HttpService";
 import {
  LIST_PAGE_SIZE, PLAIN_LIST_MAX_PAGE_SIZE, SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX
@@ -11,7 +11,7 @@ import {
 import { State } from "../../reducers/state";
 import { getFiltersString, getTagGroups } from "../components/list-view/utils/listFiltersUtils";
 import { GetRecordsArgs } from "../../model/common/ListView";
-import { EntityName } from "../../model/entities/common";
+import { EntityName, ListActionEntity } from "../../model/entities/common";
 
 class EntityService {
   readonly entityApi = new EntityApi(new DefaultHttpService());
@@ -81,6 +81,10 @@ class EntityService {
     ascending?: boolean
   ): Promise<DataResponse> {
     return this.entityApi.getPlain(entity, search, pageSize || PLAIN_LIST_MAX_PAGE_SIZE, offset || 0, columns, sortings, ascending);
+  }
+
+  public bulkDelete(entity: ListActionEntity, diff: Diff): Promise<any> {
+    return this.entityApi.bulkDelete(entity, diff);
   }
 }
 
