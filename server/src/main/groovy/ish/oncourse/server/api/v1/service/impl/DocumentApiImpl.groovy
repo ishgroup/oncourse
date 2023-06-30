@@ -29,6 +29,8 @@ import org.apache.commons.collections.CollectionUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.deleteDocumentVersion
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocumentVersion
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.getDocumentByHash
@@ -36,6 +38,7 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocume
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocumentVersion
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateForSave
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForDelete
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForSave
 
 class DocumentApiImpl implements DocumentApi {
@@ -70,6 +73,7 @@ class DocumentApiImpl implements DocumentApi {
         DocumentVersionDTO initDocumentVersion = new DocumentVersionDTO().with {
             it.content = content.getBytes()
             it.fileName = fileName
+            it.current = true
             it
         }
         AmazonS3Service s3Service = documentService.usingExternalStorage ? new AmazonS3Service(documentService) : null
@@ -127,30 +131,20 @@ class DocumentApiImpl implements DocumentApi {
         dbDocument.versions
                 .findAll { removedVersions.contains(it.id) }
                 .each { version ->
-                    if (s3Service != null && dbDocument.fileUUID != null) {
-                        s3Service.removeFileVersion(dbDocument.fileUUID, version.versionId)
-                    }
-                    context.deleteObject(version)
+                    checkForBadRequest(validateVersionForDelete(version))
+                    deleteDocumentVersion(version,context,s3Service,dbDocument.fileUUID)
                 }
 
         List<Long> savedVersions = CollectionUtils.intersection(
                 dbDocument.getVersions().collect { it.id },
                 documentDto.getVersions().collect { it.id }
         ) as List<Long>
-        dbDocument.versions
-                .findAll { savedVersions.contains(it.id) }
-                .each { version ->
-                    try {
-                        version.current = documentDto.versions.find { it.id == version.id }.current
-                        if (s3Service != null && dbDocument.fileUUID != null) {
-                            s3Service.changeVisibility(dbDocument.fileUUID, version.versionId, dbDocument.webVisibility)
-                        }
-                    } catch (Exception e) {
-                        logger.error("Could not change document visibility uuid: {}, versionId: {}", dbDocument.getId(), version.versionId, e)
-                    }
-                }
 
-        dbDocument.getContext().commitChanges()
+        savedVersions.each { versionId ->
+            updateDocumentVersion(documentDto.versions.find { it.id == versionId}, dbDocument.versions.find { it.id == versionId}, s3Service, dbDocument.fileUUID, dbDocument.webVisibility)
+        }
+
+        context.commitChanges()
     }
 
     @Override

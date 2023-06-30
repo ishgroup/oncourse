@@ -12,7 +12,7 @@ Feature: Re-usable feature to get Document with access rights
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  '#(user)'}
 
-        
+
 #       <--->
 
         Given path ishPath + "/200"
@@ -39,7 +39,6 @@ Feature: Re-usable feature to get Document with access rights
             "url":null,
             "thumbnail":null,
             "content":null,
-            "name":null,
             "current":true
             }],
         "description":"Private description",

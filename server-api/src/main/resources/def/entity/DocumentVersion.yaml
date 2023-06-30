@@ -16,6 +16,9 @@ properties:
   fileName:
     type: string
     example: class_schedule.png
+  content:
+    type: string
+    format: byte
   mimeType:
     type: string
     example: image/png
@@ -24,11 +27,6 @@ properties:
     example: 150 kbs
   url:
     type: string
-  name:
-    type: string
-  content:
-    type: string
-    format: byte
   thumbnail:
     type: string
     format: byte
