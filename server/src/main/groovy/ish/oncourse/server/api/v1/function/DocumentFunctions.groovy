@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
+import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.DocumentDao
 import ish.oncourse.server.api.v1.model.*
@@ -221,6 +222,23 @@ class DocumentFunctions {
         version
     }
 
+    static void deleteDocumentVersion(DocumentVersion version, ObjectContext context, AmazonS3Service s3Service = null, String fileUUID = null) {
+        if (s3Service != null && fileUUID != null) {
+            s3Service.removeFileVersion(fileUUID, version.versionId)
+        }
+        context.deleteObject(version)
+    }
+
+    static void updateDocumentVersion(DocumentVersionDTO versionDTO, DocumentVersion version, AmazonS3Service s3Service = null, String fileUUID = null, AttachmentInfoVisibility webVisibility = null) {
+        version.current = versionDTO.current
+        try {
+            if (s3Service != null && fileUUID != null) {
+                s3Service.changeVisibility(fileUUID, version.versionId, webVisibility)
+            }
+        } catch (Exception e) {
+            logger.error("Could not change document visibility uuid: {}, versionId: {}", fileUUID, version.versionId, e)
+        }
+    }
 
     static ValidationErrorDTO validateStoragePlace(byte[] content, DocumentService documentService, ObjectContext context) {
         Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)?:0
@@ -248,6 +266,13 @@ class DocumentFunctions {
                     "Your upload has failed. The file you are trying to upload already exists as a document called '${document.name}' or its history.")
         }
 
+        return null
+    }
+
+    static ValidationErrorDTO validateVersionForDelete(DocumentVersion documentVersion) {
+        if (documentVersion.current) {
+            return new ValidationErrorDTO(null, 'versions', "Failed to delete the document version. The '${documentVersion.fileName}' is current and cannot be deleted unless you select a other version.")
+        }
         return null
     }
 
