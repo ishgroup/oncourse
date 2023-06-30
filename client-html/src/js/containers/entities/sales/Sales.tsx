@@ -135,6 +135,7 @@ const Sales: React.FC<SalesProps> = props => {
       }}
       editViewProps={{
         manualLink,
+        hideTitle: true,
         asyncValidate: notesAsyncValidate,
         asyncChangeFields: ["notes[].message"],
         nameCondition: values => (values ? values.productName : "")

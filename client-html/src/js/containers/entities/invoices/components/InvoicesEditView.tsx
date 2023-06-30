@@ -437,7 +437,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <OwnApiNotes
           {...props}
           notesHeader="Private Note"
-          leftOffset
         />
       </Grid>
 
