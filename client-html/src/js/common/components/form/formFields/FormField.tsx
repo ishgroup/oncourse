@@ -144,7 +144,7 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
       );
     }
     return result.length > 1 ? result : result.length ? result[0] : undefined;
-  }, [validate, required, type, type === "tags" && props.validateEntity]);
+  }, [validate, required, type, tags, type === "tags" && props.validateEntity]);
 
   return (
     <Field
