@@ -8,7 +8,7 @@ import {
 } from "@api/model";
 import { format } from "date-fns";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
-import { EntityName } from "../../../../model/entities/common";
+import { EntityName, ListActionEntity } from "../../../../model/entities/common";
 import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
 import { State } from "../../../../reducers/state";
 import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
@@ -19,7 +19,7 @@ import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { initialize } from "redux-form";
 
-export const mapEntityDisplayName = (entity: EntityName) => {
+export const mapEntityDisplayName = (entity: ListActionEntity) => {
   switch (entity) {
     case "VoucherProduct":
       return "Voucher";
@@ -226,6 +226,16 @@ export const getListRecordAfterGetActions = (item: any, entity: EntityName, stat
   ...NOTE_ENTITIES.includes(entity) ? [getNoteItems(entity, item.id, LIST_EDIT_VIEW_FORM_NAME)] : [],
   initialize(LIST_EDIT_VIEW_FORM_NAME, item),
   ...(state.actionsQueue.queuedActions.length ? [clearActionsQueue()] : [])
+];
+
+export const getListRecordAfterBulkDeleteActions = (entity: ListActionEntity) => [
+  {
+    type: FETCH_SUCCESS,
+    payload: { message: `${mapEntityDisplayName(entity)} records deleted` }
+  },
+  getRecords({ entity, listUpdate: true }),
+  setListSelection([]),
+  initialize(LIST_EDIT_VIEW_FORM_NAME, null)
 ];
 
 export const getListRecordAfterDeleteActions = (entity: EntityName) => [
