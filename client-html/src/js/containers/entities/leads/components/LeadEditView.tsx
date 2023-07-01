@@ -34,6 +34,7 @@ const items: TabsListItem[] = [
 
 const LeadEditView = props => props.values ? (
   <TabsList
+    onParentScroll={props.onScroll}
     items={items}
     itemProps={{
       ...props

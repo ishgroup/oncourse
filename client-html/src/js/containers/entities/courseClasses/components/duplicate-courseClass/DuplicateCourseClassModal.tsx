@@ -301,6 +301,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               {Boolean(sessions.length) && (
                 <div className="pb-2 pr-2">
                   Advance all classes by
+                  {" "}
                   <FormField
                     type="number"
                     name="daysTo"
@@ -309,7 +310,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     onChange={handleDaysToChange}
                     debounced={false}
                     disabled={fetching}
-                    className={classes.daysInput}
                     required
                   />
                   {" "}
@@ -318,12 +318,11 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   <FormField
                     type="date"
                     name="toDate"
-                    className={classes.dateTime}
-                    inline
                     onChange={handleDateChange}
                     debounced={false}
                     disabled={fetching}
-                                        required
+                    required
+                    inline
                   />
                 </div>
               )}
@@ -456,6 +455,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   label={(
                     <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                       Change course for all classes to
+                      {" "}
                       <FormField
                         type="remoteDataSelect"
                         entity="Course"
@@ -476,7 +476,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               </FormGroup>
             </Grid>
             <Grid item xs={8} className={clsx("relative overflow-y-auto mt-2", classes.timetableContainer)}>
-              <div className={clsx("absolute w-100 h-100", fetching && "centeredFlex justify-content-center")}>
+              <div className={clsx("absolute w-100 h-100 pl-3 pr-3", fetching && "centeredFlex justify-content-center")}>
                 <DuplicateCourseClassTimetable months={months} fetching={fetching} />
               </div>
             </Grid>

@@ -78,6 +78,7 @@ interface ContactsVETProps extends EditViewProps {
   clearUSIVerificationResult?: () => void;
   setUsiUpdateLocked?: (v: boolean) => void;
   usiLocked?: boolean;
+  namePrefix?: string;
 }
 
 const parseIntValue = v => (v ? parseInt(v, 10) : v);
@@ -107,22 +108,6 @@ const isSpecialUSI = (values: Contact): boolean => {
   return status === "Exemption" || status === "International";
 };
 
-const validateUSI = (value, allValues) => {
-  if (!value || isSpecialUSI(allValues)) {
-    return undefined;
-  }
-
-  if (value.trim().length !== 10) {
-    return "The USI code is not valid";
-  }
-
-  if (!allValues.birthDate) {
-    return "Please provide birth date to continue verify USI";
-  }
-
-  return undefined;
-};
-
 const stillAtSchoolItems = [
   { value: true, label: "Yes" },
   { value: false, label: "No" },
@@ -132,6 +117,7 @@ const stillAtSchoolItems = [
 const ContactsVET: React.FC<ContactsVETProps> = props => {
   const {
     classes,
+    namePrefix,
     twoColumn,
     values,
     countries,
@@ -150,15 +136,33 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     syncErrors
   } = props;
 
+  const getName = (name: string) => namePrefix ? `${namePrefix}.${name}` : name;
+
   const prevId = usePrevious(values.id);
   const [showMenuUSI, setMenuUSI] = useState(null);
   const setUSIStatus = (status: UsiStatus) => {
-    dispatch(change(form, "student.usiStatus", status));
+    dispatch(change(form, getName("student.usiStatus"), status));
   };
 
   const closeUSIMenu = useCallback(() => {
     setMenuUSI(null);
   }, [setMenuUSI]);
+
+  const validateUSI = useCallback((value) => {
+    if (!value || isSpecialUSI(values)) {
+      return undefined;
+    }
+
+    if (value.trim().length !== 10) {
+      return "The USI code is not valid";
+    }
+
+    if (!values.birthDate) {
+      return "Please provide birth date to continue verify USI";
+    }
+
+    return undefined;
+  },[values?.birthDate, values?.student?.usiStatus]);
 
   const getUSIStatusMsg = () => {
     if (!values) return "";
@@ -249,7 +253,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   }, [prevId, usiVerificationResult]);
 
   return values ? (
-    <div className="pt-1 pl-3 pr-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (

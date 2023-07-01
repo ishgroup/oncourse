@@ -31,7 +31,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3" />
   },
   {
     label: "Vet",
@@ -43,7 +43,7 @@ const items: TabsListItem[] = [
   }
 ];
 
-const styles = theme =>
+const styles = () =>
   createStyles({
     icon: {
       alignItems: "right"
@@ -60,7 +60,7 @@ const CourseEditView = props => {
     hasVetPermissions
   ]);
 
-  return <TabsList items={props.values ? usedItems : []} itemProps={props} />;
+  return <TabsList onParentScroll={props.onScroll} items={props.values ? usedItems : []} itemProps={props} />;
 };
 
 export default withStyles(styles)(CourseEditView);

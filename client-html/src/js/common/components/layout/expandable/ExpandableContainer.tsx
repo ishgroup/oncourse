@@ -18,6 +18,7 @@ import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { FormErrors } from "redux-form";
 import { findDOMNode } from "react-dom";
 import { animateFormErrors } from "../../../utils/highlightFormErrors";
+import { getFirstErrorNodePath } from "../../../utils/validation";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -39,8 +40,8 @@ const styles = (theme: AppTheme) =>
 interface Props {
   children: React.ReactNode;
   header: React.ReactNode;
-  expanded: number[];
-  index: number;
+  expanded: any[];
+  index: any;
   formErrors?: FormErrors;
   setExpanded: (arg: number[]) => void;
   headerAdornment?: React.ReactNode;
@@ -104,11 +105,8 @@ const ExpandableContainer: React.FC<Props> = ({
 
       let childrenError = false;
 
-      for (const field of Object.keys(formErrors)) {
-        if (domNode.querySelector(`[id=${field}]`)) {
-          childrenError = true;
-          break;
-        }
+      if (domNode?.querySelector(`[name="${getFirstErrorNodePath(formErrors)}"]`)) {
+        childrenError = true;
       }
       setHasErrors(childrenError);
     }

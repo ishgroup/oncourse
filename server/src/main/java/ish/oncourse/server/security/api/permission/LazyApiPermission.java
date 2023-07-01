@@ -15,19 +15,15 @@ import io.bootique.jetty.servlet.DefaultServletEnvironment;
 import ish.common.types.KeyCode;
 import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.preference.DefaultUserPreference;
 import ish.oncourse.server.security.api.IPermissionService;
-import ish.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
-
-import static ish.oncourse.server.security.api.PermissionServiceFactory.ROOT_API;
 
 /**
  * Lazy implementation of ApiPermission which calculates his KeyCode based on query parameters.
@@ -96,6 +92,7 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(Message.class.getSimpleName().toLowerCase(), KeyCode.EMAIL_TEMPLATE);
         KEY_CODE_MAP.put(Session.class.getSimpleName().toLowerCase(), KeyCode.SESSION);
         KEY_CODE_MAP.put(TRAINEESHIP, KeyCode.CLASS);
+        KEY_CODE_MAP.put(DefaultUserPreference.VET_MODEL_NAME.toLowerCase(), KeyCode.CONTACT);
         KEY_CODE_MAP.put(PriorLearning.class.getSimpleName().toLowerCase(), KeyCode.OUTCOMES);
         KEY_CODE_MAP.put(FundingSource.class.getSimpleName().toLowerCase(), KeyCode.COURSE);
         KEY_CODE_MAP.put(CustomFieldType.class.getSimpleName().toLowerCase(), KeyCode.CONTACT);

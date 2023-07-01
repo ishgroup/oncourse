@@ -19,7 +19,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "VET Student Loans",
-    component: props => <EnrolmentVetStudentLoans {...props} />
+    component: props => <div className="pl-3 pr-3" ><EnrolmentVetStudentLoans {...props} /></div>
   },
   {
     label: "Attachments",
@@ -48,11 +48,13 @@ const EnrolmentEditView = props => {
     invalid,
     onEditViewScroll,
     isScrollingRoot,
+    onScroll
   } = props;
 
   return (
     <>
       <TabsList
+        onParentScroll={onScroll}
         items={values ? items : []}
         itemProps={{
           isNew,

@@ -91,12 +91,11 @@ const CancelSaleDialog = React.memo<Props>(props => {
   ]);
 
   return (
-    <Dialog open={opened} onClose={onClose} scroll="body">
+    <Dialog open={opened} onClose={onClose} scroll="body" maxWidth="md">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>You are about to cancel this sale</DialogTitle>
-
         <DialogContent className="overflow-hidden">
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12}>
               <FormControlLabel
                 classes={{
@@ -112,9 +111,6 @@ const CancelSaleDialog = React.memo<Props>(props => {
                 )}
                 label="Create credit note to reverse the sale fee"
               />
-            </Grid>
-
-            <Grid item xs={12} className="pr-3 pb-1">
               <FormControlLabel
                 classes={{
                   root: "checkbox"
@@ -132,42 +128,38 @@ const CancelSaleDialog = React.memo<Props>(props => {
               />
             </Grid>
 
+            <Grid item xs={6}>
+              <FormField
+                type="money"
+                name="feeAmount"
+                label="Fee amount"
+                validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
+                disabled={feeValuesDisabled}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormField
+                type="select"
+                name="feeTaxId"
+                label="Tax type"
+                selectValueMark="id"
+                selectLabelMark="code"
+                items={taxes || []}
+                validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
+                disabled={feeValuesDisabled}
+              />
+            </Grid>
             <Grid item xs={12}>
-              <Grid container columnSpacing={3}>
-                <Grid item xs={4}>
-                  <FormField
-                    type="money"
-                    name="feeAmount"
-                    label="Fee amount"
-                    validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
-                    disabled={feeValuesDisabled}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormField
-                    type="select"
-                    name="feeTaxId"
-                    label="Tax type"
-                    selectValueMark="id"
-                    selectLabelMark="code"
-                    items={taxes || []}
-                    validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
-                    disabled={feeValuesDisabled}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormField
-                    type="select"
-                    name="retainAccountId"
-                    label="Account"
-                    items={incomeAccounts || []}
-                    selectValueMark="id"
-                    selectLabelCondition={accountLabelCondition}
-                    validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
-                    disabled={feeValuesDisabled}
-                  />
-                </Grid>
-              </Grid>
+              <FormField
+                type="select"
+                name="retainAccountId"
+                label="Account"
+                items={incomeAccounts || []}
+                selectValueMark="id"
+                selectLabelCondition={accountLabelCondition}
+                validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
+                disabled={feeValuesDisabled}
+              />
             </Grid>
           </Grid>
         </DialogContent>

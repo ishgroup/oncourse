@@ -22,10 +22,10 @@ import InfiniteLoader from "react-window-infinite-loader";
 import clsx from "clsx";
 import Typography from "@mui/material/Typography";
 import {
+  APP_BAR_HEIGHT,
   HEADER_ROWS_COUNT,
   HEADER_ROWS_INDICES,
   LIST_PAGE_SIZE,
-  LIST_THREE_COLUMN_ROW_HEIGHT,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
 import TagDotRenderer from "./TagDotRenderer";
@@ -182,7 +182,7 @@ export default ({
                 style={{ overflow: false }}
                 itemCount={itemCount}
                 itemData={itemData}
-                itemSize={threeColumn ? LIST_THREE_COLUMN_ROW_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}
+                itemSize={threeColumn ? APP_BAR_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}
                 height={height}
                 width={threeColumn ? mainContentWidth : (totalColumnsWidth > width ? totalColumnsWidth : width)}
                 onItemsRendered={onItemsRendered}

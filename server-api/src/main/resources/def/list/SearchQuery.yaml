@@ -23,3 +23,7 @@ properties:
     type: array
     items:
       $ref: './TagGroup.yaml'
+  customTableModel:
+    type: string
+    description: If we need not standard table model for entity then this param can be specified
+    example: VetReport

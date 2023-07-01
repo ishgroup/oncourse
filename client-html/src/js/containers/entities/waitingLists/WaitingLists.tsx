@@ -55,7 +55,7 @@ class WaitingLists extends React.Component<any, any> {
 
   render() {
     const {
-      updateTableModel, onInit
+      onInit
     } = this.props;
 
     return (
@@ -69,7 +69,6 @@ class WaitingLists extends React.Component<any, any> {
           nameCondition,
           hideTitle: true
         }}
-        updateTableModel={updateTableModel}
         EditViewContent={WaitingListEditView}
         rootEntity="WaitingList"
         onInit={onInit}

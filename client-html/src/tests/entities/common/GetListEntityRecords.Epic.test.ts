@@ -39,6 +39,7 @@ describe("Get account entities epic tests", () => {
             records,
             payload,
             searchQuery: {
+              customTableModel: null,
               filter: "",
               offset: 0,
               pageSize: 50,

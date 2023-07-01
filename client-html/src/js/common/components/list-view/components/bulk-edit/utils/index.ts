@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
+import { CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
 import { EntityName, SelectItemDefault } from "../../../../../../model/entities/common";
 import { mapSelectItems } from "../../../../../utils/common";
 import {
@@ -14,6 +14,7 @@ import {
   validatePurchasingContractScheduleIdentifier,
   validateVetPurchasingContractIdentifier
 } from "../../../../../utils/validation";
+import { fundingSourceValues } from "../../../../../../containers/entities/courseClasses/constants";
 
 export interface BulkEditField {
   keyCode: string;
@@ -46,7 +47,7 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Funding source",
           name: "Funding source",
           type: "Select",
-          items: Object.keys(ClassFundingSource).map(mapSelectItems),
+          items: fundingSourceValues,
         },
         {
           keyCode: "vetPurchasingContractID",
@@ -202,7 +203,7 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Default funding source national",
           name: "Default funding source national",
           type: "Select",
-          items: Object.keys(ClassFundingSource).map(mapSelectItems),
+          items: fundingSourceValues,
         },
         {
           keyCode: "relatedFundingSourceId",

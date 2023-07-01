@@ -49,6 +49,7 @@ import { EpicNotes } from "./common/components/form/notes/epics";
 import { EpicCheckout } from "./containers/checkout/epics";
 import { EpicServerLogs } from "./containers/logs/epics";
 import { EpicWaitingList } from "./containers/entities/waitingLists/epics";
+import { EpicUpdateVetReport } from "./containers/entities/vetReporting/epics/EpicUpdateVetReport";
 
 // Creating ES6 Set Object to guarantee unique value of each import
 const importSet = new Set([
@@ -96,7 +97,8 @@ const importSet = new Set([
   EpicEnrolment,
   EpicMessage,
   EpicCheckout,
-  EpicServerLogs
+  EpicServerLogs,
+  EpicUpdateVetReport
 ]);
 
 const importArray = [];
