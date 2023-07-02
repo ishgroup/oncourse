@@ -125,6 +125,7 @@ class DocumentFunctions {
             dv.id = dbDocumentVersion.id
             dv.added = LocalDateUtils.dateToTimeValue(dbDocumentVersion.timestamp)
             dv.size = getDisplayableSize(dbDocumentVersion.byteSize)
+            dv.current = dbDocumentVersion.current
             dv.thumbnail = dbDocumentVersion.thumbnail
             if (s3Service) {
                 dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.versionId, dbDocumentVersion.document.webVisibility)
