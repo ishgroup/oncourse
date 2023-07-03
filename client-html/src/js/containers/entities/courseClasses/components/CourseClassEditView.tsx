@@ -108,7 +108,7 @@ const itemsBase: TabsListItem[] = [
   {
     label: "NOTES",
     type: "NOTES",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pb-2" />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3 pb-2" />
   },
   {
     label: "ENROLMENTS",
@@ -202,7 +202,9 @@ const useBudgetAdornmentStyles = makeAppStyles(theme => ({
 const getDiscountedFee = (discount, currentTax, classFee) => {
   const taxOnDiscount = decimalMul(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0, currentTax.rate);
 
-  const decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
+  let decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
+  
+  if (decimal.toNumber() < 0) decimal = new Decimal(0);
 
   return getRoundingByType(discount.courseClassDiscount.discount.rounding, decimal);
 };
@@ -226,7 +228,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  dispatch,
  expandedBudget,
  expandBudgetItem,
- currentTax
+ currentTax,
 }) => {
   const classes = useBudgetAdornmentStyles();
 
@@ -341,7 +343,8 @@ const CourseClassEditView: React.FC<Props> = ({
   toogleFullScreenEditView,
   currencySymbol,
   taxes,
-  tutorRoles
+  tutorRoles,
+                                                onScroll
 }) => {
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
@@ -491,7 +494,6 @@ const CourseClassEditView: React.FC<Props> = ({
     [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
   );
 
-
   const classCostTypes = useMemo(
     () =>
       getClassCostTypes(
@@ -546,6 +548,7 @@ const CourseClassEditView: React.FC<Props> = ({
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={items}
       itemProps={{
         isNew,

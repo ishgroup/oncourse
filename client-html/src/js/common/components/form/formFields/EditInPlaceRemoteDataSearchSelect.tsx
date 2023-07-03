@@ -18,7 +18,6 @@ import {
   EditInPlaceRemoteDataSelectFieldProps,
 } from "../../../../model/common/Fields";
 
-
 const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {
     onLoadMoreRows,
@@ -26,6 +25,8 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFie
     entity,
     aqlFilter,
     aqlColumns,
+    getCustomSearch,
+    preloadEmpty,
     ...rest
   }
 ) => {
@@ -34,12 +35,19 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFie
     return () => onSearchChange("");
   }, []);
 
-  const onInputChange = useCallback(debounce((input: string) => {
-    onSearchChange(input);
-    if (input) {
+  useEffect(() => {
+    if (preloadEmpty) {
+      onSearchChange("");
       onLoadMoreRows(0);
     }
-  }, 800), [aqlFilter, aqlColumns, entity]);
+  }, [preloadEmpty, getCustomSearch]);
+
+  const onInputChange = useCallback(debounce((input: string) => {
+    onSearchChange(input);
+    if (input || preloadEmpty) {
+      onLoadMoreRows(0);
+    }
+  }, 800), [preloadEmpty, aqlFilter, aqlColumns, getCustomSearch, entity]);
 
   const onLoadMoreRowsOwn = startIndex => {
     if (!rest.loading) {
@@ -48,7 +56,12 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFie
   };
 
   return (
-    <EditInPlaceSearchSelect {...rest as any} onInputChange={onInputChange} loadMoreRows={onLoadMoreRowsOwn} remoteData />
+    <EditInPlaceSearchSelect
+      {...rest as any}
+      onInputChange={onInputChange}
+      loadMoreRows={onLoadMoreRowsOwn}
+      remoteData
+    />
   );
 };
 
@@ -83,7 +96,14 @@ const getDefaultColumns = entity => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
-  const getSearch = search => (search ? `~"${search}"${ownProps.aqlFilter ? ` and ${ownProps.aqlFilter}` : ""}` : "");
+  const getSearch = search => ownProps.getCustomSearch
+    ? ownProps.getCustomSearch(search)
+    : (search
+      ? `~"${search}"${ownProps.aqlFilter 
+        ? ` and ${ownProps.aqlFilter}` 
+        : ""}`
+      : "");
+
   return {
     onLoadMoreRows: (offset?: number) => dispatch(
       getCommonPlainRecords(

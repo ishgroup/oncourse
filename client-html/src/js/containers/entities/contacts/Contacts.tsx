@@ -42,10 +42,11 @@ import { getContactFullName } from "./utils";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
-interface ContactsProps {
+export interface ContactsProps {
   onInit?: () => void;
   getRecords?: () => void;
   getFilters?: () => void;
+  setCustomTableModel?: () => void;
   clearListState?: () => void;
   getTags?: () => void;
   getCountries?: () => void;
@@ -166,6 +167,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Student timetable", list: "timetable", expression: "courseClass.enrolments.student.id" },
   { title: "Tutor timetable", list: "timetable", expression: "tutor.contact.id" },
   { title: "Transactions", list: "transaction", expression: "contact.id" },
+  { title: "VET reporting", list: "vetReporting", expression: "id" },
   { title: "Waiting lists", list: "waitingList", expression: "student.contact.id" }
 ];
 

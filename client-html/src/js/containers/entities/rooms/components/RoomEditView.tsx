@@ -19,7 +19,7 @@ const items = [
   },
   {
     label: "Notes",
-    component: props => <OwnApiNotes {...props} />
+    component: props => <OwnApiNotes {...props} className="pl-3 pr-3" />
   },
   {
     label: "Availability Rules",
@@ -42,11 +42,13 @@ const RoomEditView = props => {
     manualLink,
     rootEntity,
     onEditViewScroll,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? items : []}
       itemProps={{
         isNew,

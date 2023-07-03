@@ -221,8 +221,8 @@ const completeSuggestions = (
 
   return variants.map(i => ({
     token,
-    value: i,
-    label: i.replace(/'/g, "")
+    value: i.replace(/[']/g, ""),
+    label: i.replace(/[']/g, "")
   }));
 };
 
@@ -1086,7 +1086,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper,
               noOptions: classes.noOptions
             } : undefined}
             renderInput={params => (

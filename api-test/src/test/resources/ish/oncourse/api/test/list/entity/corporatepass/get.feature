@@ -131,5 +131,5 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         Given path ishPath + "/9999"
         When method GET
         Then status 400
-        And match $.errorMessage == "CorporatePass with id:9999 doesn't exist"
+        And match $.errorMessage == "Record with id = '9999' doesn't exist."
         

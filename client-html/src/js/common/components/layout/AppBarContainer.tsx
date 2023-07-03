@@ -7,7 +7,7 @@
  */
 
 import React, {
-  useState, useCallback, useEffect
+  useState, useCallback
 } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
@@ -19,9 +19,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME, STICKY_HEADER_EVENT } from "../../../constants/Config";
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
 import { LSGetItem } from "../../utils/storage";
-import { useAppDispatch, useStickyScrollSpy } from "../../utils/hooks";
+import { useAppDispatch } from "../../utils/hooks";
 import { openDrawer } from "../../actions";
 import AppBarHelpMenu from "../form/AppBarHelpMenu";
 import FormSubmitButton from "../form/FormSubmitButton";
@@ -89,7 +89,8 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   actionsWrapper: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    zIndex: theme.zIndex.appBar + 1
   }
 }));
 
@@ -137,30 +138,30 @@ const AppBarContainer = (props: Props) => {
 
   const classes = useStyles();
 
-  const { scrollSpy } = useStickyScrollSpy();
-
   const [hasScrolling, setScrolling] = useState<boolean>(false);
 
-  const onStickyChange = useCallback(e => {
-    if (hasScrolling !== e.detail.stuck) {
-      setScrolling(e.detail.stuck);
+  const onScroll = useCallback(e => {
+    if (e.target.scrollTop > 0 && !hasScrolling) {
+      setScrolling(true);
+    }
+    if (e.target.scrollTop <= 0 && hasScrolling) {
+      setScrolling(false);
     }
   }, [hasScrolling]);
-  
-  useEffect(() => {
-    document.addEventListener(STICKY_HEADER_EVENT, onStickyChange);
-    return () => {
-      document.removeEventListener(STICKY_HEADER_EVENT, onStickyChange);
-    };
-  }, [onStickyChange]);
 
   const drawerHandler = () => dispatch(openDrawer());
 
   const isSmallScreen = useMediaQuery('(max-width:992px)');
   const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
   const isHighcontrastTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "highcontrast";
-
   const hasFab = onAddMenu || customAddMenu;
+
+  const childrenWithProps = React.Children.map(children, child => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement<any>(child, { onScroll });
+    }
+    return child;
+  });
 
   return (
     <>
@@ -197,6 +198,7 @@ const AppBarContainer = (props: Props) => {
                 fields={fields}
                 Avatar={Avatar}
                 disableInteraction={disableInteraction}
+                customStuck={hasScrolling}
                 twoColumn
               />
             )
@@ -233,7 +235,7 @@ const AppBarContainer = (props: Props) => {
           </div>
         </Toolbar>
       </AppBar>
-      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)} onScroll={noScrollSpy ? null : scrollSpy}>
+      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)} onScroll={noScrollSpy ? null : onScroll}>
         {hasFab && (
           <div className={classes.scriptAddMenu}>
             {customAddMenu || (
@@ -251,7 +253,7 @@ const AppBarContainer = (props: Props) => {
             )}
           </div>
         )}
-        {children}
+        {childrenWithProps}
       </div>
     </>
   );

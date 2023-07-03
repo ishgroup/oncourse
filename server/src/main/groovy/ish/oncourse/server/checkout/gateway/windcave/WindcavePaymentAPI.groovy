@@ -14,6 +14,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
+import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.windcave.WindcaveResponseCode
@@ -39,6 +40,8 @@ class WindcavePaymentAPI {
     public static final String  AUTH_TYPE = "auth"
     public static final String  PURCHASE_TYPE = "purchase"
 
+    public static final int ACCEPTED_STATUS = 202
+    public static final int STATUS_CHECK_LIMIT = 3
 
     private static final Logger logger = LogManager.getLogger(WindcavePaymentAPI)
 
@@ -112,6 +115,7 @@ class WindcavePaymentAPI {
 
     SessionAttributes completeTransaction(String transactionId, Money amount, String merchantReference) {
         SessionAttributes result = new SessionAttributes()
+        Integer status = null
         try {
             new HTTPBuilder().post(
                     [uri               : WINDCAVE_BASE,
@@ -128,13 +132,50 @@ class WindcavePaymentAPI {
                     ]) { response, body ->
                             logger.info("Complite transaction success: ${body.toString()}")
                             buildSessionAttributes(result, body as Map<String, Object>)
+                            status = (response as HttpResponseDecorator).getStatus()
                          }
         } catch(Exception e) {
             logger.error("Fail to complete payment transaction")
             logger.catching(e)
         }
 
+        // In very rare cases, the server may return a 202 response and only the transaction ID. This happens because the transaction did not have time to be processed by the services in Windcave.
+        // Therefore, we will try to get a response through a GET request 3 times in 10 seconds. https://www.windcave.com/developer-e-commerce-api-rest#Server_Side_Post_Walkthrough
+        if (status == ACCEPTED_STATUS) {
+            result = checkTransactionIfStatusAccept(status, result)
+        }
+
         return result
+    }
+
+    private SessionAttributes checkTransactionIfStatusAccept(Integer status, SessionAttributes sessionAttributes) {
+        Integer statusCheckLimit = 0
+        while (status == ACCEPTED_STATUS && statusCheckLimit < STATUS_CHECK_LIMIT) {
+            Thread.sleep(10000)
+            status = checkTransactionStatus(sessionAttributes)
+            statusCheckLimit++
+        }
+        return sessionAttributes
+    }
+
+    Integer checkTransactionStatus(SessionAttributes sessionAttributes) {
+        Integer status = null
+        try {
+            new HTTPBuilder().get(
+                    [uri               : WINDCAVE_BASE,
+                     path              : "/api/v1/transactions/${sessionAttributes.transactionId}",
+                     contentType       : ContentType.JSON,
+                     headers           : [Authorization: "Basic $preferenceController.paymentGatewayPass"],
+                    ]) { response, body ->
+                logger.info("Get transaction success: ${body.toString()}")
+                status = (response as HttpResponseDecorator).getStatus()
+                buildSessionAttributes(sessionAttributes, body as Map<String, Object>)
+            }
+        } catch(Exception e) {
+            logger.error("Fail to get payment transaction")
+            logger.catching(e)
+        }
+        return status
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
@@ -236,7 +277,7 @@ class WindcavePaymentAPI {
     @CompileStatic(TypeCheckingMode.SKIP)
     SessionAttributes makeTransaction(Money amount, String merchantReference, String cardId) {
         SessionAttributes attributes = new SessionAttributes()
-
+        Integer status = null
         try {
             HTTPBuilder builder  = new HTTPBuilder()
             builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
@@ -244,6 +285,7 @@ class WindcavePaymentAPI {
             builder.handler['success'] = { response, body ->
                 logger.info("Make transaction success: ${body.toString()}")
                 buildSessionAttributes(attributes, body as Map<String, Object>)
+                status = (response as HttpResponseDecorator).getStatus()
             }
             builder.post(
                     [uri               : WINDCAVE_BASE,
@@ -262,6 +304,13 @@ class WindcavePaymentAPI {
             logger.error("Fail to create transaction")
             logger.catching(e)
         }
+
+        // In very rare cases, the server may return a 202 response and only the transaction ID. This happens because the transaction did not have time to be processed by the services in Windcave.
+        // Therefore, we will try to get a response through a GET request 3 times in 10 seconds. https://www.windcave.com/developer-e-commerce-api-rest#Server_Side_Post_Walkthrough
+        if (status == ACCEPTED_STATUS) {
+            attributes = checkTransactionIfStatusAccept(status, attributes)
+        }
+
         return attributes
     }
 

@@ -581,14 +581,8 @@ const CourseClassTimetableTab = ({
             return result;
           }
 
-          const taStart = new Date(ta.start);
-          const taEnd = new Date(ta.end);
-
           let start = new Date(session.start);
           let end = new Date(session.end);
-
-          start.setHours(taStart.getHours(), taStart.getMinutes(), 0, 0);
-          end.setHours(taEnd.getHours(), taEnd.getMinutes(), 0, 0);
 
           // workaround for DST time offset
           if (session.siteTimezone) {

@@ -49,7 +49,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/corporatepa
         Given path ishPath + '/' + id
         When method GET
         Then status 400
-        And match $.errorMessage == "CorporatePass with id:" + id + " doesn't exist"
+        And match $.errorMessage == "Record with id = '" + id + "' doesn't exist."
 
 
 
@@ -96,7 +96,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/corporatepa
         Given path ishPath + '/' + id
         When method GET
         Then status 400
-        And match $.errorMessage == "CorporatePass with id:" + id + " doesn't exist"
+        And match $.errorMessage == "Record with id = '" + id + "' doesn't exist."
 
 
 
@@ -170,5 +170,5 @@ Feature: Main feature for all DELETE requests with path 'list/entity/corporatepa
         Given path ishPath + '/99999'
         When method DELETE
         Then status 400
-        And match response.errorMessage == "CorporatePass with id:99999 doesn't exist"
+        And match response.errorMessage == "Record with id = '99999' doesn't exist."
         

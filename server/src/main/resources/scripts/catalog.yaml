@@ -136,7 +136,7 @@
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.notificationWithDocumentsList"
 
-- name: Mailchimp pull subscribe
+- name: Mailchimp pull unsubscribe
   keyCode: ish.script.mailchimpPullUnsubscribes
   body: ish.script.mailchimpPullUnsubscribes.groovy
   status: NOT_INSTALLED

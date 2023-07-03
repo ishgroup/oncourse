@@ -62,20 +62,7 @@ export default (theme: AppTheme) => createStyles({
     top: "1px",
     "&:hover $resizer": {
       opacity: 1
-    },
-    "& $draggingCell,&:focus $draggingCell": {
-      color: theme.palette.divider
-    },
-    "&:hover:not($activeRight) $canSort": {
-      transition: theme.transitions.create("padding", {
-        duration: theme.transitions.duration.standard,
-        easing: theme.transitions.easing.easeInOut
-      }),
-      paddingRight: theme.spacing(3)
-    },
-    "&$activeRight $rightSort": {
-      position: "static"
-    },
+    }
   },
   draggableCellItem: {
     position: "relative",

@@ -42,21 +42,9 @@ export const validatePurchasingContractScheduleIdentifier = value => validateCha
 
 export const validateOutcomeIdTrainingOrg = value => validateCharacter(value, 3, "Outcome identifier");
 
-export const validateVetTrainingContractID = (value, allValues) => {
-  if (!value && allValues.vetClientID) {
-    return "If you enter data in either the Training Contract ID or the Training Contract Client ID, then you must fill out both";
-  }
-  return validateCharacter(value, 10, "Training contract identifier");
-};
+export const validateCricosConfirmation = value => validateCharacter(value, 32, "Confirmation of Enrolment");
 
 export const validateVetFundingSourceState = value => validateCharacter(value, 3, "Funding source state");
-
-export const validateVetClientID = (value, allValues) => {
-  if (!value && allValues.vetTrainingContractID) {
-    return "If you enter data in either the Training Contract ID or the Training Contract Client ID, then you must fill out both";
-  }
-  return validateCharacter(value, 10, "Training contract client identifier");
-};
 
 export const validateFundingSourse = value => validateCharacter(
   value, 12, "Funding Source State is not valid. It must contain 12 or fewer characters."
