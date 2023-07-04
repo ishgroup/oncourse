@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
+import ish.common.types.MessageStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.*
@@ -90,6 +91,11 @@ class EntityApiImpl implements EntityApi {
 
         if (entities.contains(null)) {
             validator.throwClientErrorException("diff", "Record with id ${dto.ids.get(entities.indexOf(null))} not found")
+        }
+
+        if(clzz.equals(Message)){
+            if(entities.find {(it as Message).status != MessageStatus.QUEUED})
+                validator.throwClientErrorException("diff", "Request returned messages with disallowed status. Bulk remove of messages that are not queued is not allowed")
         }
 
         try {
