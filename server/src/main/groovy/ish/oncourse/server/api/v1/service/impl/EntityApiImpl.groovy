@@ -71,8 +71,8 @@ class EntityApiImpl implements EntityApi {
         if(!ALLOWED_BULK_DELETE_ENTITIES.contains(clzz))
             validator.throwClientErrorException("diff", "Bulk remove of ${entity} is not allowed")
 
-        if(clzz.equals(Message))
-            dto.search = dto.search ? dto.search + " and "+MESSAGE_BULK_DELETE_AQL : MESSAGE_BULK_DELETE_AQL
+        if(clzz.equals(Message) && !dto.search?.contains(MESSAGE_BULK_DELETE_AQL))
+            validator.throwClientErrorException("diff", "Bulk remove of messages that are not queued is not allowed")
 
         List<? extends CayenneDataObject> entities = null
 
