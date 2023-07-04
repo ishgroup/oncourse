@@ -19,6 +19,8 @@ import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Audit
+import ish.oncourse.server.cayenne.Message
+import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.DateFormatter
@@ -49,6 +51,8 @@ class EntityApiImpl implements EntityApi {
     private static final BigDecimal DEF_OFFSET = 0
     private static final BigDecimal DEF_PAGE_SIZE = 50
     private static final String ID_FIELD = "id"
+    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList, Message)
+    private static final String MESSAGE_BULK_DELETE_AQL = "status is QUEUED"
 
     @Inject
     private ICayenneService cayenneService
@@ -63,6 +67,12 @@ class EntityApiImpl implements EntityApi {
     void bulkDelete(String entity, DiffDTO dto) {
         ObjectContext context = cayenneService.newContext
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
+
+        if(!ALLOWED_BULK_DELETE_ENTITIES.contains(clzz))
+            validator.throwClientErrorException("diff", "Bulk remove of ${entity} is not allowed")
+
+        if(clzz.equals(Message))
+            dto.search = dto.search ? dto.search + " and "+MESSAGE_BULK_DELETE_AQL : MESSAGE_BULK_DELETE_AQL
 
         List<? extends CayenneDataObject> entities = null
 
