@@ -13,7 +13,7 @@ import {
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import MessageEditView from "./components/MessageEditView";
 import ListView from "../../../common/components/list-view/ListView";
-import BulkDeleteCogwheelOption from "../common/components/BulkDeleteCogwheelOption";
+import QuedMessagesBulkDelete from "./components/QuedMessagesBulkDelete";
 
 interface MessagesProps {
   onInit?: () => void;
@@ -71,7 +71,7 @@ const Messages: React.FC<MessagesProps> = props => {
         nameCondition: values => (values ? values.subject : "")
       }}
       EditViewContent={MessageEditView}
-      CogwheelAdornment={BulkDeleteCogwheelOption}
+      CogwheelAdornment={QuedMessagesBulkDelete}
       rootEntity="Message"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
