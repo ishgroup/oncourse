@@ -58,6 +58,10 @@ const CustomizedTooltip = props => {
         <span className="mr-1">This week enrolments:</span>
         <span>{payload[0].payload["enrolments"]}</span>
       </Typography>
+      <Typography component="div" variant="body2" color="textSecondary" noWrap>
+        <span className="mr-1">Average enrolments:</span>
+        <span>{payload[0].payload["averageValue"]}</span>
+      </Typography>
     </Paper>
   );
 };
