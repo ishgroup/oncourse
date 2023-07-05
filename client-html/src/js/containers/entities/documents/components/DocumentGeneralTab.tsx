@@ -202,7 +202,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const thumbnail = documentVersion?.thumbnail;
 
-  const handleFileSelect = useCallback(() => {
+  const handleFileSelect = () => {
     const content:File = fileRef.current.files[0];
     if (content) {
       getDocumentContent(content).then( _content => {
@@ -221,7 +221,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         dispatch(arrayInsert(form, "versions", 0, newVersion));
       });
     }
-  }, [form]);
+  };
 
   const onUploadClick = useCallback(() => {
     fileRef.current.click();
