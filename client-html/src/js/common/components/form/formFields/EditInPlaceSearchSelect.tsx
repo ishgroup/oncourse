@@ -26,9 +26,6 @@ const searchStyles = theme => createStyles({
     marginBottom: "6px",
     color: theme.palette.primary.main
   },
-  endAdornment: {
-    opacity: 0.5
-  },
   popper: {
     zIndex: 1400
   }
@@ -419,7 +416,7 @@ const EditInPlaceSearchSelect = ({
           <IconButton
             size="small"
             color="inherit"
-            className="pl-0 pr-0"
+            className={clsx(classes.expandIcon, "pl-0 pr-0")}
             disableRipple
           >
             <ExpandMore className={inline && "fsInherit"} />
@@ -499,7 +496,7 @@ const EditInPlaceSearchSelect = ({
               label={label}
               warning={warning}
               fieldClasses={fieldClasses}
-              endAdornmentClass={classes.endAdornment}
+              endAdornmentClass={classes.selectAdornment}
               rightAligned={rightAligned}
               shrink={Boolean(label || input.value)}
               labelAdornment={labelAdornment}
@@ -540,7 +537,7 @@ const EditInPlaceSearchSelect = ({
                   endAdornment={
                     <InputAdornment
                       position="end"
-                      className={clsx(classes.endAdornment, classes.selectAdornment, "d-none")}>
+                      className={clsx( classes.selectAdornment, "d-none")}>
                       {renderIcons}
                     </InputAdornment>
                   }
