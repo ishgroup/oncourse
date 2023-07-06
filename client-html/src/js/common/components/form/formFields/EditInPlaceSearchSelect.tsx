@@ -413,7 +413,7 @@ const EditInPlaceSearchSelect = ({
               onClick={onClear}
               color="inherit"
             >
-              <CloseIcon className={clsx("cursor-pointer", inline && "fsInherit")} />
+              <CloseIcon fontSize="inherit" />
             </IconButton>
           )}
           <IconButton
