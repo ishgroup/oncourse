@@ -14,13 +14,11 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
-import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.CayenneLayer
 import ish.oncourse.server.api.traits._DTOTrait
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.util.EntityUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
 import org.apache.cayenne.query.ObjectSelect
@@ -114,31 +112,6 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         }
 
         save(context)
-    }
-
-    final void bulkRemove(DiffDTO dto) {
-        ObjectContext context = cayenneService.newContext
-        List<K> entities = null
-
-        if (dto.ids)
-            entities = EntityUtil.getObjectsByIds(context, getPersistentClass() as Class<? extends PersistentObjectI>, dto.ids).collect { it as K }
-        else if (dto.filter || dto.search)
-            entities = getBulkEntities(dto, context)
-
-        if (entities == null || entities.empty) {
-            validator.throwClientErrorException("diff", "Records for bulk remove are not found")
-        }
-
-        if (entities.contains(null)) {
-            validator.throwClientErrorException("diff", "Record with id ${dto.ids.get(entities.indexOf(null))} not found")
-        }
-
-        try {
-            context.deleteObjects(entities)
-            context.commitChanges()
-        } catch (Exception e) {
-            validator.throwClientErrorException("diff", "Unexpected error during delete : ${e.message}")
-        }
     }
 
     final List<K> getBulkEntities(DiffDTO dto, ObjectContext context) {

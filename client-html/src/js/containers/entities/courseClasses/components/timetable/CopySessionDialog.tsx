@@ -16,7 +16,7 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { normalizeNumber, normalizeNumberToZero } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumberToPositive} from "../../../../../common/utils/numbers/numbersNormalizing";
 import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import { mapSelectItems } from "../../../../../common/utils/common";
 
@@ -54,8 +54,8 @@ const repeatTypeItems = Object.keys(SessionRepeatTypes).map(mapSelectItems);
 
 const CopySessionDialogBase = React.memo<any>(props => {
   const {
- popupAnchorEl, onCancel, reset, onSave, values, classes
-} = props;
+   popupAnchorEl, onCancel, reset, onSave, values, classes, invalid
+  } = props;
   const [closeDialog, setCloseDialog] = React.useState(true);
 
   const onSaveBase = useCallback(
@@ -95,23 +95,26 @@ const CopySessionDialogBase = React.memo<any>(props => {
                   <div className="heading pb-2">Repeat</div>
                   <Typography variant="body2" color="inherit" component="div" className="pb-1">
                     Repeat this session
+                    {" "}
                     <FormField
                       type="number"
                       name="repeatTimes"
                       min="1"
                       max="99"
                       step="1"
-                      normalize={normalizeNumberToZero}
-                      debounced={false}
+                      normalize={normalizeNumberToPositive}
+                      placeholder="0"
+                      required
                       inline
                     />
+                    {" "}
                     times
                   </Typography>
 
                   <Typography variant="body2" color="inherit" component="div" className="pb-2">
                     Repeat every
+                    {" "}
                     <FormField
-                      className="d-inline-flex ml-0-5"
                       type="select"
                       name="repeatType"
                       items={repeatTypeItems}
@@ -125,7 +128,7 @@ const CopySessionDialogBase = React.memo<any>(props => {
                   <Button color="primary" onClick={onCancel}>
                     Cancel
                   </Button>
-                  <Button color="primary" onClick={onSaveBase} variant="contained">
+                  <Button color="primary" onClick={onSaveBase} disabled={invalid} variant="contained">
                     Create Sessions
                   </Button>
                 </DialogActions>
@@ -140,7 +143,10 @@ const CopySessionDialogBase = React.memo<any>(props => {
 });
 
 export default reduxForm<any, any>({
-  form: "CopySessionForm"
+  form: "CopySessionForm",
+  initialValues: {
+    repeatTimes: 1
+  }
 })(
   connect(
     state => ({

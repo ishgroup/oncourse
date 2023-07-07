@@ -93,7 +93,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               name={`${itemPath}.tags`}
               tags={tags}
               disabled={readOnly}
-              validateEntity={readOnly ? undefined : "Document"}
+              validateEntity="Document"
             />
           </Grid>
         </Grid>

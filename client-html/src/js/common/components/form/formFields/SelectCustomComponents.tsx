@@ -113,10 +113,11 @@ export const selectStyles = theme => createStyles({
       "&:hover $inputEndAdornment": {
         visibility: 'visible'
       },
-      "&:focus $inputEndAdornment": {
-        visibility: 'hidden',
+      "&.Mui-focused $expandIcon": {
+        opacity: 1
       }
     },
+    expandIcon: { opacity: 0.5 },
     hasPopup: {
       "&$root $inputWrapper": {
         paddingRight: 0
