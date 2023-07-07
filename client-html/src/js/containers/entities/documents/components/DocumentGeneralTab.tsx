@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
-import { arrayInsert, arrayRemove, change, } from "redux-form";
+import { arrayRemove, change, } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -215,10 +215,10 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           size: null,
           url: null,
           thumbnail: null,
-          current: false,
+          current: true,
           content: _content
         };
-        dispatch(arrayInsert(form, "versions", 0, newVersion));
+        dispatch(change(form, "versions", [newVersion, ...values.versions.map(v => ({ ...v, current: false }))]));
       });
     }
   };
