@@ -25,17 +25,20 @@ import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
+import org.apache.commons.collections.CollectionUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.deleteDocumentVersion
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocumentVersion
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.getDocumentByHash
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocumentVersion
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentVersion
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateForSave
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForDelete
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForSave
 
 class DocumentApiImpl implements DocumentApi {
@@ -67,25 +70,17 @@ class DocumentApiImpl implements DocumentApi {
 
         Document dbDocument = createDocument(name, description, visibility, tagIds, shared,  context)
         dbDocument.fileUUID = UUID.randomUUID().toString()
-        DocumentVersion version = createDocumentVersion(dbDocument, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
+        DocumentVersionDTO initDocumentVersion = new DocumentVersionDTO().with {
+            it.content = content.getBytes()
+            it.fileName = fileName
+            it.current = true
+            it
+        }
+        AmazonS3Service s3Service = documentService.usingExternalStorage ? new AmazonS3Service(documentService) : null
+        DocumentVersion version = createDocumentVersion(dbDocument, initDocumentVersion, context, systemUserService.currentUser, s3Service)
         context.commitChanges()
 
         return toRestDocument(dbDocument, version.id, documentService)
-    }
-
-    @Override
-    DocumentVersionDTO createVersion(Long id, String fileName, File content) {
-        ObjectContext context = cayenneService.newContext
-        checkForBadRequest(validateStoragePlace(content.getBytes(), documentService, context))
-        checkForBadRequest(validateVersionForSave(content.getBytes(), context))
-        Document document = service.getEntityAndValidateExistence(context, id)
-        AmazonS3Service s3Service = null
-        if (documentService.usingExternalStorage) {
-            s3Service = new AmazonS3Service(documentService)
-        }
-        DocumentVersion version = createDocumentVersion(document, content.getBytes(), fileName, context, documentService, systemUserService.currentUser)
-        context.commitChanges()
-        return toRestDocumentVersion(version, s3Service)
     }
 
     @Override
@@ -116,20 +111,40 @@ class DocumentApiImpl implements DocumentApi {
     void update(Long id, DocumentDTO documentDto) {
         ObjectContext context = cayenneService.newContext
         Document dbDocument = service.getEntityAndValidateExistence(context, id)
+
         service.validateModelBeforeSave(documentDto, context, id)
         service.toCayenneModel(documentDto, dbDocument)
-        if (documentService.usingExternalStorage && dbDocument.fileUUID != null) {
-            AmazonS3Service s3Service = new AmazonS3Service(documentService)
-            String uuid = dbDocument.getFileUUID()
-            dbDocument.versions.each { version ->
-                try {
-                    s3Service.changeVisibility(uuid, version.versionId, dbDocument.webVisibility)
-                } catch (Exception e) {
-                    logger.error("Could not change document visibility uuid: {}, versionId: {}", dbDocument.getId(), version.versionId, e)
-                }
-            }
+
+        AmazonS3Service s3Service = documentService.usingExternalStorage ? new AmazonS3Service(documentService) : null
+
+        List<DocumentVersionDTO> createdVersions = documentDto.versions.findAll { it.id == null }
+        createdVersions.each { version ->
+            checkForBadRequest(validateStoragePlace(version.content, documentService, context))
+            checkForBadRequest(validateVersionForSave(version.content, context))
+            createDocumentVersion(dbDocument, version, context, systemUserService.currentUser, s3Service)
         }
-        dbDocument.getContext().commitChanges()
+
+        List<Long> removedVersions = CollectionUtils.subtract(
+                dbDocument.getVersions().collect { it.id },
+                documentDto.getVersions().collect { it.id }
+        ) as List<Long>
+        dbDocument.versions
+                .findAll { removedVersions.contains(it.id) }
+                .each { version ->
+                    checkForBadRequest(validateVersionForDelete(version))
+                    deleteDocumentVersion(version,context,s3Service,dbDocument.fileUUID)
+                }
+
+        List<Long> savedVersions = CollectionUtils.intersection(
+                dbDocument.getVersions().collect { it.id },
+                documentDto.getVersions().collect { it.id }
+        ) as List<Long>
+
+        savedVersions.each { versionId ->
+            updateDocumentVersion(documentDto.versions.find { it.id == versionId}, dbDocument.versions.find { it.id == versionId}, s3Service, dbDocument.fileUUID, dbDocument.webVisibility)
+        }
+
+        context.commitChanges()
     }
 
     @Override

@@ -12,7 +12,7 @@ Feature: Re-usable feature to get Document without access rights
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  '#(user)'}
 
-        
+
 #       <--->
 
         Given path ishPath + "/200"

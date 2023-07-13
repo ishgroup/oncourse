@@ -27,6 +27,7 @@ import { validateTagsList } from "../simpleTagListComponent/validateTagsList";
 import EditInPlacePhoneField from "./EditInPlacePhoneField";
 import { FormFieldProps } from "../../../../model/common/Fields";
 import { stubFunction } from "../../../utils/common";
+import { ColoredCheckBox } from "../ColoredCheckBox";
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 
@@ -103,6 +104,8 @@ const FormFieldBase = (props: FormFieldProps) => {
       return <FormSwitch {...sharedProps} />;
     case "checkbox":
       return <CheckboxField {...sharedProps} />;
+    case "coloredCheckbox":
+      return <ColoredCheckBox {...sharedProps} label={type === "coloredCheckbox" && props.label} color={type === "coloredCheckbox" && props.color} />;
     case "multilineText":
       return <EditInPlaceField  {...sharedProps} multiline />;
     case "stub":
