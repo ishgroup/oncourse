@@ -65,7 +65,6 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         CourseAttachmentRelation courseAttachmentRelation = cayenneContext.newObject(CourseAttachmentRelation.class)
         courseAttachmentRelation.setAttachedCourse(course)
         courseAttachmentRelation.setDocument(document)
-        courseAttachmentRelation.setDocumentVersion(null)
         courseAttachmentRelation.setSpecialType(null)
 
         cayenneContext.commitChanges()

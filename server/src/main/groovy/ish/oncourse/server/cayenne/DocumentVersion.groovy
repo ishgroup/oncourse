@@ -148,15 +148,6 @@ class DocumentVersion extends _DocumentVersion implements Queueable {
 	}
 
 	/**
-	 * @return list of relations for this document version
-	 */
-	@Nonnull
-	@Override
-	List<AttachmentRelation> getAttachmentRelations() {
-		return super.getAttachmentRelations()
-	}
-
-	/**
 	 * @return onCourse user who created this document version
 	 */
 	@Nullable

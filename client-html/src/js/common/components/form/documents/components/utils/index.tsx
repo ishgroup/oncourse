@@ -83,7 +83,6 @@ export const getInitialDocument = (file: File): Promise<DocumentExtended> => {
   return getDocumentThumbnail(file).then(thumbnail => ({
     id: null,
     name: null,
-    versionId: null,
     created: today,
     modified,
     added: null,
