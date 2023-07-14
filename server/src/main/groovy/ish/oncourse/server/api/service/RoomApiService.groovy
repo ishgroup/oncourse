@@ -57,7 +57,7 @@ class RoomApiService extends TaggableApiService<RoomDTO, Room, RoomDao> {
             room.facilities = dbRoom.facilities
             room.kioskUrl = getKioskUrl(preferenceController.collegeURL, 'room', dbRoom.id)
             room.tags = dbRoom.allTags.collect { it.id }
-            room.documents = dbRoom.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            room.documents = dbRoom.activeAttachments.collect { toRestDocument(it.document, documentService) }
             room.rules = dbRoom.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             room.siteTimeZone = dbRoom.site.localTimezone
             room.createdOn = dbRoom.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
