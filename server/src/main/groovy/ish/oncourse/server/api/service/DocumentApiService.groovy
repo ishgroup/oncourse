@@ -98,11 +98,15 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         }
 
         if (restModel.access == null) {
-            validator.throwClientErrorException(id, 'access', 'Security level is required')
+            validator.throwClientErrorException(id, 'access', 'Security level is required.')
         }
 
         if (restModel.shared == null) {
-            validator.throwClientErrorException(id, 'shared', 'Shared flag is required')
+            validator.throwClientErrorException(id, 'shared', 'Shared flag is required.')
+        }
+
+        if (restModel.versions.size() == 0) {
+            validator.throwClientErrorException(id, 'versions', 'At least one document version is required.')
         }
 
     }
