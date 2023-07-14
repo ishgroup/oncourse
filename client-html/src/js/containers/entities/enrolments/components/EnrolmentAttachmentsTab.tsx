@@ -32,7 +32,7 @@ const EnrolmentAttachmentsTab: React.FC<any> = props => {
       />
 
       <Grid item xs={12}>
-        <OwnApiNotes {...props} leftOffset />
+        <OwnApiNotes {...props} />
       </Grid>
     </Grid>
   );

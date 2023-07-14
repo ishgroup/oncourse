@@ -30,7 +30,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="mb-2" />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3 mb-2" />
   },
   {
     label: "Corporate Passes",

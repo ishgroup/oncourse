@@ -4,8 +4,9 @@ import { withStyles, createStyles } from "@mui/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import clsx from "clsx";
 import { LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
+import { AppTheme } from "../../../../model/common/Theme";
 
-const styles = theme =>
+const styles = (theme: AppTheme) =>
   createStyles({
     sideBar: {
       borderRight: `1px solid ${theme.palette.divider}`,
@@ -23,10 +24,10 @@ const styles = theme =>
     line: {
       height: "100%",
       width: "2px",
-      transition: "background 120ms ease-in-out"
+      transition: "background 120ms ease-in-out",
     },
     resizeLine: {
-      zIndex: 1,
+      zIndex: theme.zIndex.drawer,
       display: "flex",
       justifyContent: "center",
       "&:active $line, &:hover $line": {

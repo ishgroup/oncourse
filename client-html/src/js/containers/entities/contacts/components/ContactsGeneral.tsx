@@ -10,7 +10,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import {
   Contact, Student, Tag, Tutor
 } from "@api/model";
-import { change, Field, getFormInitialValues } from "redux-form";
+import { change, getFormInitialValues } from "redux-form";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { connect } from "react-redux";
@@ -27,7 +27,6 @@ import TimetableButton from "../../../../common/components/buttons/TimetableButt
 import { EditViewProps } from "../../../../model/common/ListView";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import ProfileHeading from "./ProfileHeading";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import clsx from "clsx";
 
 const TutorInitial: Tutor = {
@@ -44,6 +43,7 @@ interface ContactsGeneralProps extends EditViewProps<Contact> {
   setIsCompany?: any;
   tags?: any;
   usiLocked?: boolean;
+  leftOffset?: number;
 }
 
 export const studentInitial: Student = {
@@ -106,6 +106,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     syncErrors,
     showConfirm,
     usiLocked,
+    leftOffset
   } = props;
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
@@ -192,6 +193,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
         isCompany={isCompany}
         usiLocked={usiLocked}
         syncErrors={syncErrors}
+        leftOffset={leftOffset}
       />
       <Grid container columnSpacing={3} className="mt-3">
         <Grid item xs={12} md={twoColumn ? 7 : 12}>

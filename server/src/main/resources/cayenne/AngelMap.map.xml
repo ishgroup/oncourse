@@ -584,6 +584,7 @@
 		<db-attribute name="timestamp" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="versionId" type="VARCHAR" length="256"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="current" type="BOOLEAN" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="EmailTemplate">
 		<db-attribute name="bodyHtml" type="CLOB"/>
@@ -2258,6 +2259,7 @@
 		<obj-attribute name="timestamp" type="java.util.Date" db-attribute-path="timestamp"/>
 		<obj-attribute name="versionId" type="java.lang.String" db-attribute-path="versionId"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="current" type="java.lang.Boolean" db-attribute-path="current"/>
 	</obj-entity>
 	<obj-entity name="EmailTemplate" className="ish.oncourse.server.cayenne.EmailTemplate" clientClassName="ish.oncourse.cayenne.EmailTemplate" dbEntityName="EmailTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="bodyHtml" type="java.lang.String" db-attribute-path="bodyHtml"/>

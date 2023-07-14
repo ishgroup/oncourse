@@ -8,52 +8,7 @@ import { connect } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import clsx from "clsx";
-import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
-import { bulkDeleteWaitingLists } from "../actions";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-
-interface WaitingListBulkDeleteProps {
-  menuItemClass: string;
-  closeMenu: AnyArgFunction;
-  selection: number[];
-  showConfirm: ShowConfirmCaller;
-}
-
-const WaitingListBulkDelete = memo<WaitingListBulkDeleteProps>(({
-  menuItemClass, closeMenu, selection, showConfirm
-}) => {
-  const hasAql = useAppSelector(state => state.list.searchQuery
-    && (state.list.searchQuery.search || state.list.searchQuery.filter || state.list.searchQuery.tagGroups.length));
-
-  const { search, filter, tagGroups } = useAppSelector(state => state.list.searchQuery);
-
-  const dispatch = useAppDispatch();
-
-  const onBulkEditClick = () => {
-    showConfirm({
-      onConfirm: () => {
-        dispatch(bulkDeleteWaitingLists({
-          ids: selection,
-          search,
-          filter,
-          tagGroups
-        }));
-        closeMenu();
-      },
-      confirmMessage: "Records will be permanently deleted. This action can not be undone",
-      confirmButtonText: "Delete"
-    })
-
-  };
-
-  return (
-    <MenuItem className={clsx(menuItemClass, "errorColor")} onClick={onBulkEditClick} disabled={!selection.length && !hasAql}>
-      Bulk delete...
-    </MenuItem>
-  );
-});
+import BulkDeleteCogwheelOption from "../../common/components/BulkDeleteCogwheelOption";
 
 const WaitingListCogWheel = memo<any>(props => {
   const {
@@ -61,6 +16,8 @@ const WaitingListCogWheel = memo<any>(props => {
     menuItemClass,
     hasQePermissions
   } = props;
+
+  console.log(props);
 
   const hoSelectedOrNew = useMemo(() => selection.length === 0 || selection[0] === "NEW", [selection]);
 
@@ -81,7 +38,7 @@ const WaitingListCogWheel = memo<any>(props => {
         </MenuItem>
       )}
       <BulkEditCogwheelOption {...props} />
-      <WaitingListBulkDelete {...props} />
+      <BulkDeleteCogwheelOption {...props}  />
     </>
   );
 });

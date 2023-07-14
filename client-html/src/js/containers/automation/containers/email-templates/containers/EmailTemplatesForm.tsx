@@ -247,6 +247,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     name="entity"
                     items={MessageTemplateEntityItems}
                     disabled={isInternal}
+                    allowEmpty
                   />
                 </Grid>
                 <Grid item xs={6}>

@@ -26,13 +26,19 @@ import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 
 const errorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
 
-const getErrorMessage = response => response.data?.responseText
-  ? response.data.responseText
-  : /(4|5)+/.test(response.status)
-    ? response.error
+const getErrorMessage = response => {
+  if (Array.isArray(response.data)) {
+    return response.data.reduce((p, c, i) => p + c.error + (i === response.data.length - 1 ? "" : "\n\n"), "");
+  }
+
+  return response.data?.responseText
+    ? response.data.responseText
+    : /(4|5)+/.test(response.status)
       ? response.error
-      : errorMessageDefault
-    : null;
+        ? response.error
+        : errorMessageDefault
+      : null;
+};
 
 const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
   type: CHECKOUT_PROCESS_PAYMENT,
@@ -88,7 +94,7 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
         actions.push({
           type: SHOW_MESSAGE,
           payload: {
-            message: response.data.reduce((p, c, i) => p + c.error + (i === response.data.length - 1 ? "" : "\n\n"), ""),
+            message: getErrorMessage(response),
             persist: true
           }
         });

@@ -8,10 +8,6 @@ class WaitingListService {
     return this.waitingListApi.bulkChange(diff);
   }
 
-  public bulkDelete(diff: Diff): Promise<any> {
-    return this.waitingListApi.bulkDelete(diff);
-  }
-
   public createWaitingList(waitingList: WaitingList): Promise<any> {
     return this.waitingListApi.create(waitingList);
   }

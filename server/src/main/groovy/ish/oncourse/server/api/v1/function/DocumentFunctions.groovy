@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
+import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.DocumentDao
 import ish.oncourse.server.api.v1.model.*
@@ -59,9 +60,8 @@ class DocumentFunctions {
             document.versionId = versionId
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
             document.tags = dbDocument.allTags.collect { it.id }
-
-            DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.versions.max{ v1, v2 -> v1.timestamp.compareTo(v2.timestamp)}
-            document.thumbnail = dbVersion.thumbnail
+            DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.currentVersion
+            document.thumbnail = dbVersion?.thumbnail
             AmazonS3Service s3Service
             if (documentService.usingExternalStorage) {
                 s3Service = new AmazonS3Service(documentService)
@@ -112,6 +112,7 @@ class DocumentFunctions {
             dv.mimeType = dbDocumentVersion.mimeType
             dv.fileName = dbDocumentVersion.fileName
             dv.thumbnail = dbDocumentVersion.thumbnail
+            dv.current = dbDocumentVersion.current
             if (s3Service) {
                 dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.versionId, dbDocumentVersion.document.webVisibility)
             }
@@ -124,6 +125,7 @@ class DocumentFunctions {
             dv.id = dbDocumentVersion.id
             dv.added = LocalDateUtils.dateToTimeValue(dbDocumentVersion.timestamp)
             dv.size = getDisplayableSize(dbDocumentVersion.byteSize)
+            dv.current = dbDocumentVersion.current
             dv.thumbnail = dbDocumentVersion.thumbnail
             if (s3Service) {
                 dv.url = s3Service.getFileUrl(dbDocumentVersion.document.fileUUID, dbDocumentVersion.versionId, dbDocumentVersion.document.webVisibility)
@@ -165,22 +167,25 @@ class DocumentFunctions {
         dbDocument
     }
 
-    static DocumentVersion createDocumentVersion(Document document, byte[] content, String filename, ObjectContext context, DocumentService documentService, SystemUser user) {
+    static DocumentVersion createDocumentVersion(Document document, DocumentVersionDTO versionDTO, ObjectContext context, SystemUser user, AmazonS3Service s3Service = null) {
         Date timestamp = new Date()
-        String hash  = SecurityUtil.hashByteArray(content)
+        String filename = versionDTO.fileName
+        String hash  = SecurityUtil.hashByteArray(versionDTO.content)
+
         DocumentVersion version = context.newObject(DocumentVersion)
         version.document = document
         version.hash = hash
-        version.byteSize = content.length as Long
+        version.byteSize = versionDTO.content.length as Long
         version.mimeType = Files.probeContentType(Path.of(filename))
         version.timestamp = timestamp
         version.fileName = trimToNull(filename)
         version.createdByUser = context.localObject(user)
-        if (isImage(content, version.mimeType)) {
-            version.pixelWidth = imageWidth(content)
-            version.pixelHeight = imageHeight(content)
+        version.current = versionDTO.current
+        if (isImage(versionDTO.content, version.mimeType)) {
+            version.pixelWidth = imageWidth(versionDTO.content)
+            version.pixelHeight = imageHeight(versionDTO.content)
             try {
-                version.thumbnail = ThumbnailGenerator.generateForImg(content, version.mimeType)
+                version.thumbnail = ThumbnailGenerator.generateForImg(versionDTO.content, version.mimeType)
             } catch (IOException e) {
                 logger.warn("Attempted to process document with name $document.name as an image, but it wasn't.")
                 logger.catching(e)
@@ -189,19 +194,19 @@ class DocumentFunctions {
             try {
                 switch (version.mimeType) {
                     case {it instanceof String && isDoc(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForDoc(content)
+                        version.thumbnail = ThumbnailGenerator.generateForDoc(versionDTO.content)
                         break
                     case {it instanceof String && isExcel(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForExcel(content)
+                        version.thumbnail = ThumbnailGenerator.generateForExcel(versionDTO.content)
                         break
                     case {it instanceof String && isCsv(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForCsv(content)
+                        version.thumbnail = ThumbnailGenerator.generateForCsv(versionDTO.content)
                         break
                     case {it instanceof String && isText(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForText(content)
+                        version.thumbnail = ThumbnailGenerator.generateForText(versionDTO.content)
                         break
                     default:
-                        version.thumbnail = generatePdfPreview(content)
+                        version.thumbnail = generatePdfPreview(versionDTO.content)
                 }
             } catch (NotActiveException e) {
                 logger.warn("Attempted to process document with name $document.name failed. Angel can not generate privew")
@@ -209,16 +214,32 @@ class DocumentFunctions {
             }
         }
 
-        if (documentService.usingExternalStorage) {
-            AmazonS3Service s3Service = new AmazonS3Service(documentService)
-            version.versionId  =  s3Service.putFile(document.fileUUID, version.fileName, content, document.webVisibility)
+        if (s3Service) {
+            version.versionId = s3Service.putFile(document.fileUUID, version.fileName, versionDTO.content, document.webVisibility)
         } else {
-           // throw new ClientErrorException("Attempted to process document with name $document.name as data, stored in db, but this ability was removed in new versions. Add s3 accessKey.", Response.Status.BAD_REQUEST)
+            // throw new ClientErrorException("Attempted to process document with name $document.name as data, stored in db, but this ability was removed in new versions. Add s3 accessKey.", Response.Status.BAD_REQUEST)
         }
 
         version
     }
 
+    static void deleteDocumentVersion(DocumentVersion version, ObjectContext context, AmazonS3Service s3Service = null, String fileUUID = null) {
+        if (s3Service != null && fileUUID != null) {
+            s3Service.removeFileVersion(fileUUID, version.versionId)
+        }
+        context.deleteObject(version)
+    }
+
+    static void updateDocumentVersion(DocumentVersionDTO versionDTO, DocumentVersion version, AmazonS3Service s3Service = null, String fileUUID = null, AttachmentInfoVisibility webVisibility = null) {
+        version.current = versionDTO.current
+        try {
+            if (s3Service != null && fileUUID != null) {
+                s3Service.changeVisibility(fileUUID, version.versionId, webVisibility)
+            }
+        } catch (Exception e) {
+            logger.error("Could not change document visibility uuid: {}, versionId: {}", fileUUID, version.versionId, e)
+        }
+    }
 
     static ValidationErrorDTO validateStoragePlace(byte[] content, DocumentService documentService, ObjectContext context) {
         Long currentStorageSize = DocumentDao.getStoredDocumentsSize(context)?:0
@@ -246,6 +267,13 @@ class DocumentFunctions {
                     "Your upload has failed. The file you are trying to upload already exists as a document called '${document.name}' or its history.")
         }
 
+        return null
+    }
+
+    static ValidationErrorDTO validateVersionForDelete(DocumentVersion documentVersion) {
+        if (documentVersion.current) {
+            return new ValidationErrorDTO(null, 'versions', "Failed to delete the document version. The '${documentVersion.fileName}' is current and cannot be deleted unless you select a other version.")
+        }
         return null
     }
 
