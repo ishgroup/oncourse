@@ -77,7 +77,6 @@ let Initial: Document = {
   createdOn: null,
   modifiedOn: null,
   thumbnail: null,
-  versionId: null,
   access: null,
   shared: true,
   description: null,

@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 120-1
+      author: kristina
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: BinaryRelation
+        - columnExists:
+            tableName: BinaryRelation
+            columnName: documentVersionId
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: BinaryRelation
+            constraintName: fk_BinaryRelation_DocumentVersion
+        - dropColumn:
+            tableName: BinaryRelation
+            columnName: documentVersionId

@@ -45,7 +45,7 @@ class AssessmentSubmissionApiService extends EntityApiService<AssessmentSubmissi
             dtoModel.classId = cayenneModel.assessmentClass.courseClass.id
             dtoModel.courseClassName = cayenneModel.courseClassName
             dtoModel.assessment = cayenneModel.assessmentName
-            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, documentService) }
             dtoModel
         }
     }

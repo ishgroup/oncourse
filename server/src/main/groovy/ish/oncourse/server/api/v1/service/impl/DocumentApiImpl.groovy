@@ -80,12 +80,12 @@ class DocumentApiImpl implements DocumentApi {
         DocumentVersion version = createDocumentVersion(dbDocument, initDocumentVersion, context, systemUserService.currentUser, s3Service)
         context.commitChanges()
 
-        return toRestDocument(dbDocument, version.id, documentService)
+        return toRestDocument(dbDocument, documentService)
     }
 
     @Override
     DocumentDTO get(Long id) {
-        return toRestDocument(service.getEntityAndValidateExistence(cayenneService.newContext, id), null, documentService)
+        return toRestDocument(service.getEntityAndValidateExistence(cayenneService.newContext, id), documentService)
     }
 
     @Override
@@ -94,7 +94,7 @@ class DocumentApiImpl implements DocumentApi {
         if (content && content.length) {
             Document document = getDocumentByHash(content, context)
             if (document) {
-                return toRestDocument(document, null, documentService)
+                return toRestDocument(document, documentService)
             }
         }
         return null

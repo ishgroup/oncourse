@@ -152,7 +152,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                     }.findAll{ doc ->
                         !doc.isRemoved
                     }.collect{ d ->
-                        toRestDocumentMinimized(d, d.currentVersion.id, documentService)
+                        toRestDocumentMinimized(d, documentService)
                     }
             dto.abandonedCarts = cayenneModel.abandonedCarts.collect{toRestCart(it)}
             dto.tags = cayenneModel.allTags.collect{ it.id }

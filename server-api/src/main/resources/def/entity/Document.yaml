@@ -8,10 +8,6 @@ properties:
     type: string
     required: true
     example: Class Schedule
-  versionId:
-    type: integer
-    format: int64
-    example: 1
   added:
     type: string
     format: date-time

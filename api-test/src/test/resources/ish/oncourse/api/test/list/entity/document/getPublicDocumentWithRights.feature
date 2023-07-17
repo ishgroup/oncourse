@@ -24,7 +24,6 @@ Feature: Re-usable feature to get Document with access rights
         {
         "id":201,
         "name":"defaultPublicDocument",
-        "versionId":null,
         "added":"#ignore",
         "tags":[],
         "thumbnail":null,
