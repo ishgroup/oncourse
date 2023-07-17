@@ -100,7 +100,7 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? (productItem as Voucher).redeemableBy.getFullName() : null
             productItemDTO.payments = getPayments(type, productItem)
             productItemDTO.tags = productItem.allTags.collect{ it.id }
-            productItemDTO.documents = ((AttachableTrait)productItem).activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            productItemDTO.documents = ((AttachableTrait)productItem).activeAttachments.collect { toRestDocument(it.document, documentService) }
 
             switch (type) {
                 case ProductTypeDTO.PRODUCT:

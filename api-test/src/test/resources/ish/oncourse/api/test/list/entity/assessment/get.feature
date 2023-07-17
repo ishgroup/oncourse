@@ -93,7 +93,6 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
             "attachedRecordsCount":"#ignore",
             "id":201,
             "name":"defaultPublicDocument",
-            "versionId":null,
             "added":"#ignore",
             "tags":[],
             "thumbnail":null,
