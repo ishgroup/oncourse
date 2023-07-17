@@ -16,7 +16,7 @@ import { Dispatch } from "redux";
 import { WrappedFieldArrayProps } from "redux-form";
 import { AppTheme } from "../../../../model/common/Theme";
 import { openInternalLink } from "../../../utils/links";
-import DocumentItem from "./components/items/DocumentItem";
+import DocumentItem from "../../../ish-ui/documents/DocumentItem";
 import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
 import { State } from "../../../../reducers/state";
 import {

@@ -16,7 +16,7 @@ import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Dispatch } from "redux";
 import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";

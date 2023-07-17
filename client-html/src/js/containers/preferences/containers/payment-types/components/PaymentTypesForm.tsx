@@ -8,7 +8,7 @@ import {
  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
 } from "redux-form";
 import { PaymentMethod } from "@api/model";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import PaymentTypesRenderer from "./PaymentTypesRenderer";

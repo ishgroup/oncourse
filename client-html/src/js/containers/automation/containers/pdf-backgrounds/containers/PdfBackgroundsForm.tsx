@@ -18,7 +18,7 @@ import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import FilePreview from "../../../../../common/components/form/FilePreview";

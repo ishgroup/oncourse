@@ -27,7 +27,7 @@ import { createIntegration, deleteIntegrationItem, updateIntegration } from "../
 import { showConfirm } from "../../../../../common/actions";
 import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 
 const styles = theme => createStyles({
   root: {

@@ -8,7 +8,7 @@ import isEqual from "lodash.isequal";
 import { ConcessionType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";

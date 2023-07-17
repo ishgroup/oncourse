@@ -14,7 +14,7 @@ import ContactCourseClass from "./ContactCourseClass";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { Switch } from "../../../../common/components/form/formFields/Switch";
+import { Switch } from "../../../../common/ish-ui/formFields/Switch";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { EditViewProps } from "../../../../model/common/ListView";

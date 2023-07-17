@@ -21,7 +21,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../../common/ish-ui/formFields/EditInPlaceField";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
   AttandanceChangeType,

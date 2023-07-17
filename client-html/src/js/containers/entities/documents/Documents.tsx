@@ -13,8 +13,7 @@ import { initialize } from "redux-form";
 import { Document } from "@api/model";
 import { OpenWith } from "@mui/icons-material";
 import Button from "@mui/material/Button";
-import FileUploaderDialog from "../../../common/components/file-uploader/FileUploaderDialog";
-import { getInitialDocument } from "../../../common/components/form/documents/components/utils";
+import { getInitialDocument } from "../../../common/ish-ui/documents/utils";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
 import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
@@ -33,6 +32,7 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import DocumentEditView from "./components/DocumentEditView";
 import BinCogwheel from "./components/BinCogwheel";
+import FileUploaderDialog from "../../../common/ish-ui/fileUploader/FileUploaderDialog";
 
 const styles = () => createStyles({
   linkBtnWrapper: {

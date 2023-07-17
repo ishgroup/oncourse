@@ -25,10 +25,10 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/ish-ui/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../../common/ish-ui/formFields/EditInPlaceSearchSelect";
 
 const paymentColumns: NestedTableColumn[] = [
   {

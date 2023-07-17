@@ -14,7 +14,7 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";

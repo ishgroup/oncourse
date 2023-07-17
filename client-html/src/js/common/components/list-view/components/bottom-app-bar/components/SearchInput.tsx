@@ -18,8 +18,7 @@ import { Dispatch } from "redux";
 import { darken } from "@mui/material/styles";
 import debounce from "lodash.debounce";
 import { CustomFieldType, ProductType } from "@api/model";
-import { getAllMenuTags } from "../../../../../../containers/tags/utils";
-import EditInPlaceQuerySelect, { Suggestion } from "../../../../form/formFields/EditInPlaceQuerySelect";
+import EditInPlaceQuerySelect from "../../../../form/formFields/EditInPlaceQuerySelect";
 import QuerySaveMenu from "./QuerySaveMenu";
 import { State } from "../../../../../../reducers/state";
 import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
@@ -27,11 +26,13 @@ import { setIndeterminate } from "../../../utils/listFiltersUtils";
 import {
  setFilterGroups, setListSavingFilter, setListUserAQLSearch
 } from "../../../actions";
-import { MenuTag } from "../../../../../../model/tags";
+import { FormMenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
 import { FILTER_TAGS_REGEX } from "../../../../../../constants/Config";
 import { AppTheme } from "../../../../../../model/common/Theme";
 import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
+import { QueryFieldSuggestion } from "../../../../../../model/common/Fields";
+import { getAllMenuTags } from "../../../../../ish-ui/utils";
 
 export const styles = (theme: AppTheme) => createStyles({
     container: {
@@ -92,7 +93,7 @@ interface Props {
   rootEntity: string;
   userAQLSearch: string;
   savingFilter: SavingFilterState;
-  tags: MenuTag[];
+  tags: FormMenuTag[];
   filterGroups: FilterGroup[];
   setListUserAQLSearch: StringArgFunction;
   onQuerySearch: StringArgFunction;
@@ -113,13 +114,13 @@ interface Props {
 interface SearchInputState {
   expanded: boolean;
   querySaveMenuAnchor: HTMLElement;
-  tagsSuggestions: Suggestion[];
-  filtersSuggestions: Suggestion[];
+  tagsSuggestions: QueryFieldSuggestion[];
+  filtersSuggestions: QueryFieldSuggestion[];
   customFieldsSuggestions: string[];
   tagsPrefixes?: string[];
 }
 
-const getFilterNamesSuggestions = (filterGroups: FilterGroup[]): Suggestion[] => filterGroups
+const getFilterNamesSuggestions = (filterGroups: FilterGroup[]): QueryFieldSuggestion[] => filterGroups
     .flatMap(i => i.filters)
     .map(i => {
       const name = i.name.replace(/\s/g, "_");
@@ -131,12 +132,12 @@ const getFilterNamesSuggestions = (filterGroups: FilterGroup[]): Suggestion[] =>
       };
     });
 
-const getTagNamesSuggestions = (tags: MenuTag[]): Suggestion[] => {
+const getTagNamesSuggestions = (tags: FormMenuTag[]): QueryFieldSuggestion[] => {
   const childTags = tags.flatMap(t => t.children);
 
   return getAllMenuTags(childTags).map(i => {
     const name = i.tagBody.name;
-    const suggestion: Suggestion = {
+    const suggestion: QueryFieldSuggestion = {
       token: "Identifier",
       value: ` "${name}"`,
       label: name
@@ -156,7 +157,7 @@ const getTagNamesSuggestions = (tags: MenuTag[]): Suggestion[] => {
 
 const getCustomFieldsSuggestions = (customFields: CustomFieldType[]): string[] => customFields.map(f => f.fieldKey);
 
-const mapTags = (tags: MenuTag[], parent?: MenuTag) => tags.map(t => {
+const mapTags = (tags: FormMenuTag[], parent?: FormMenuTag) => tags.map(t => {
     const updated = { ...t, parent };
 
     if (updated.children.length) {

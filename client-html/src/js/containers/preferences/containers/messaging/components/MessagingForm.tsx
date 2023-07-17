@@ -23,7 +23,7 @@ import * as Model from "../../../../../model/preferences/Messaging";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import { validateSingleMandatoryField, validateEmail } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import DynamicText from "./DynamicText";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";

@@ -15,7 +15,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Grid from "@mui/material/Grid";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/ish-ui/formFields/CheckboxField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";

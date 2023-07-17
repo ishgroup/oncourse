@@ -7,7 +7,7 @@ import React, { useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import { Course } from "@api/model";
 import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
-import { SelectItemRendererProps } from "../../../../model/common/Fields";
+import { SelectItemRendererProps } from "../../../../common/ish-ui/model/Fields";
 
 const CourseItemRenderer = React.memo<SelectItemRendererProps<Course>>(
   ({

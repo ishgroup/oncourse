@@ -25,7 +25,7 @@ import Button from "@mui/material/Button";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import { usePrevious } from "../../../../../common/utils/hooks";

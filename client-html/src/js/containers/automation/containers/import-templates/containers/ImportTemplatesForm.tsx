@@ -24,7 +24,7 @@ import { ImportModel } from "@api/model";
 import Typography from "@mui/material/Typography";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";

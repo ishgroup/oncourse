@@ -26,7 +26,7 @@ import { Dispatch } from "redux";
 import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from "redux-form";
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../common/components/form/formFields/FormField";
-import { Switch } from "../../common/components/form/formFields/Switch";
+import { Switch } from "../../common/ish-ui/formFields/Switch";
 import DynamicSizeList from "../../common/components/form/DynamicSizeList";
 import { LinkAdornment } from "../../common/components/form/FieldAdornments";
 import LoadingIndicator from "../../common/components/progress/LoadingIndicator";

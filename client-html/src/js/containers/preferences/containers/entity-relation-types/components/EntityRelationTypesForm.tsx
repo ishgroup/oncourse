@@ -8,7 +8,7 @@ import {
 } from "redux-form";
 import { EntityRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";

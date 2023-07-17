@@ -12,11 +12,11 @@ import { Dispatch } from "redux";
 import {
   DataResponse, EmailTemplate, Filter, Script, SearchQuery
 } from "@api/model";
-import { MenuTag } from "../tags";
 import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
 import { ShowConfirmCaller } from "./Confirm";
 import { MessageData } from "./Message";
 import { CustomTableModelName, EntityName } from "../entities/common";
+import { FormMenuTag } from "../tags";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
@@ -56,9 +56,9 @@ export interface CogwhelAdornmentProps {
 }
 
 export interface ListState {
-  menuTags: MenuTag[];
-  checkedChecklists?: MenuTag[];
-  uncheckedChecklists?: MenuTag[];
+  menuTags: FormMenuTag[];
+  checkedChecklists?: FormMenuTag[];
+  uncheckedChecklists?: FormMenuTag[];
   menuTagsLoaded?: boolean;
   filterGroups: FilterGroup[];
   filterGroupsLoaded?: boolean;

@@ -23,7 +23,7 @@ import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/
 import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { cancelEnrolment } from "../../actions";
-import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
+import WarningMessage from "../../../../../common/ish-ui/fieldMessage/WarningMessage";
 import { useOutcomeWarnings } from "./hooks";
 import { enrolmentModalStyles } from "./styles";
 import TransferEnrolmentInvoiceLines from "./TransferEnrolmentInvoiceLines";

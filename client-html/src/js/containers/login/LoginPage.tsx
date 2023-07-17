@@ -30,7 +30,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
 import NewPasswordField from "./components/NewPasswordField";
-import { FormTextField } from "../../common/components/form/formFields/TextField";
+import { FormTextField } from "../../common/ish-ui/formFields/TextField";
 import { validateSingleMandatoryField } from "../../common/utils/validation";
 import {
   postLoginRequest, setLoginState, updatePasswordRequest, checkPassword, getEmailByToken, createPasswordRequest

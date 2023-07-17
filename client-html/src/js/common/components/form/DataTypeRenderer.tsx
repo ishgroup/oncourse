@@ -5,13 +5,13 @@
 
 import React from "react";
 import { FormControlLabel, Tooltip } from "@mui/material";
-import { FormSwitch } from "./formFields/Switch";
-import EditInPlaceField from "./formFields/EditInPlaceField";
-import EditInPlaceDateTimeField from "./formFields/EditInPlaceDateTimeField";
-import { CheckboxField } from "./formFields/CheckboxField";
-import EditInPlaceFileField from "./formFields/EditInPlaceFileField";
-import EditInPlaceMoneyField from "./formFields/EditInPlaceMoneyField";
-import EditInPlaceSearchSelect from "./formFields/EditInPlaceSearchSelect";
+import { FormSwitch } from "../../ish-ui/formFields/Switch";
+import EditInPlaceField from "../../ish-ui/formFields/EditInPlaceField";
+import EditInPlaceDateTimeField from "../../ish-ui/formFields/EditInPlaceDateTimeField";
+import { CheckboxField } from "../../ish-ui/formFields/CheckboxField";
+import EditInPlaceFileField from "../../ish-ui/formFields/EditInPlaceFileField";
+import EditInPlaceMoneyField from "../../ish-ui/formFields/EditInPlaceMoneyField";
+import EditInPlaceSearchSelect from "../../ish-ui/formFields/EditInPlaceSearchSelect";
 
 interface Props {
   type: string;
