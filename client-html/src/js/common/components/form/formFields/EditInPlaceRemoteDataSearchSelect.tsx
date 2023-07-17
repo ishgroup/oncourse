@@ -7,7 +7,6 @@ import React, { useCallback, useEffect } from "react";
 import debounce from "lodash.debounce";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import EditInPlaceSearchSelect from "./EditInPlaceSearchSelect";
 import { State } from "../../../../reducers/state";
 import {
   clearCommonPlainRecords,
@@ -17,6 +16,7 @@ import {
 import {
   EditInPlaceRemoteDataSelectFieldProps,
 } from "../../../../model/common/Fields";
+import EditInPlaceSearchSelect from "../../../ish-ui/formFields/EditInPlaceSearchSelect";
 
 const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {

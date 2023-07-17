@@ -19,7 +19,7 @@ import * as Model from "../../../../../model/preferences/Financial";
 import { currency, postPrepaidFees } from "../ListItems";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { State } from "../../../../../reducers/state";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";

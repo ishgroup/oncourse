@@ -16,8 +16,8 @@ import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../mode
 import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
 import GradeContent from "../../courseClasses/components/assessments/GradeContent";
 import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
+import EditInPlaceDateTimeField from "../../../../common/ish-ui/formFields/EditInPlaceDateTimeField";
+import EditInPlaceSearchSelect from "../../../../common/ish-ui/formFields/EditInPlaceSearchSelect";
 import { Dispatch } from "redux";
 
 

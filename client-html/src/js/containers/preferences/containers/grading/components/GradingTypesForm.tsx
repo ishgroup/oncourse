@@ -8,7 +8,7 @@ import { GradingType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import { showConfirm } from "../../../../../common/actions";
 import { deleteGradingType, updateGradingTypes } from "../../../actions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import GradingsRenderer from "./GradingsRenderer";

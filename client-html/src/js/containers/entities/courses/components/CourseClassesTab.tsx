@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import { EntityType } from "../../../../model/common/NestedEntity";
+import { EntityType } from "../../../../common/ish-ui/model/NestedEntity";
 import { getNestedCourseClassItem } from "../../courseClasses/utils";
 
 const CourseClassesTab: React.FC<any> = ({

@@ -29,7 +29,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../common/ish-ui/formFields/CheckboxField";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { courseFilterCondition } from "../../../courses/utils";
 import {

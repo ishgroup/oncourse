@@ -13,17 +13,17 @@ import makeStyles from "@mui/styles/makeStyles";
 import { Draggable } from "react-beautiful-dnd-next";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import ListTagItem from "./ListTagItem";
-import { MenuTag } from "../../../../../../model/tags";
+import { FormMenuTag } from "../../../../../../model/tags";
 import { updateIndeterminateState, getUpdated } from "../../../utils/listFiltersUtils";
 import styles from "../../list/styles";
 
 const useStyles = makeStyles(styles);
 
 interface Props {
-  rootTag: MenuTag;
+  rootTag: FormMenuTag;
   classes: any;
   showColoredDots: boolean;
-  updateActive: (updated: MenuTag) => void;
+  updateActive: (updated: FormMenuTag) => void;
   dndKey: number;
   dndEnabled?: boolean;
 }

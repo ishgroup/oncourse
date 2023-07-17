@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import CustomSelectorHeader from "./CustomSelectorHeader";
 import CustomSelectorBody from "./CustomSelectorBody";
+import { FormFieldWrapperProps } from "../../../model/common/Fields";
 
 interface Props {
   className?: any;
@@ -13,16 +14,8 @@ interface Props {
 
 export interface CustomSelectorOption {
   caption?: string;
-  type?: string;
-  component?: any;
   body?: string;
-  validate?: any;
-  normalize?: any;
-  format?: any;
-  parse?: any;
-  min?: number;
-  fieldName?: string;
-  preformatDisplayValue?: any;
+  formFileldProps?: FormFieldWrapperProps;
 }
 
 const CustomSelector = ({ className, caption, options, onSelect, initialIndex, disabled }: Props) => {

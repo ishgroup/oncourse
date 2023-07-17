@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { DiscountType } from "@api/model";
 import { Dispatch } from "redux";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../common/ish-ui/formFields/CheckboxField";
 import Uneditable from "../../../../../common/components/form/Uneditable";
 import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";

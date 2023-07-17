@@ -16,8 +16,8 @@ import {
   DialogTitle
 } from "@mui/material";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceSearchSelect from "../../../../../common/components/form/formFields/EditInPlaceSearchSelect";
+import EditInPlaceDateTimeField from "../../../../../common/ish-ui/formFields/EditInPlaceDateTimeField";
+import EditInPlaceSearchSelect from "../../../../../common/ish-ui/formFields/EditInPlaceSearchSelect";
 
 const SubmissionModal = (
   {

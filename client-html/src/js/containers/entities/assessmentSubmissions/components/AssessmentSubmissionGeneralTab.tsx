@@ -12,7 +12,7 @@ import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/ish-ui/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { EditViewProps } from "../../../../model/common/ListView";

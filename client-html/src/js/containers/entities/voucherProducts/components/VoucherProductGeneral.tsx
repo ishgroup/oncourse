@@ -9,7 +9,7 @@ import { change, FieldArray } from "redux-form";
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../common/ish-ui/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
@@ -17,7 +17,7 @@ import { State } from "../../../../reducers/state";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { clearMinMaxFee, getMinMaxFee } from "../actions";
-import EditInPlaceMoneyField from "../../../../common/components/form/formFields/EditInPlaceMoneyField";
+import EditInPlaceMoneyField from "../../../../common/ish-ui/formFields/EditInPlaceMoneyField";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import {
@@ -68,25 +68,26 @@ const getRedemptionOptions = (): CustomSelectorOption[] => [
       // RedemptionType.Enrolment
       caption: "enrolment in",
       body: "classes from",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "maxCoursesRedemption",
-      validate: [validateNonNegative, validateGreaterThenZero]
+      formFileldProps: {
+        type: "number",
+        name: "maxCoursesRedemption",
+        validate: [validateNonNegative, validateGreaterThenZero]
+      }
     },
     {
       // RedemptionType.Purchase
       caption: "purchase price",
       body: "",
-      type: null
     },
     {
       // RedemptionType.Value
       caption: "value",
       body: "",
-      type: "string",
-      fieldName: "value",
-      component: EditInPlaceMoneyField,
-      validate: validateGreaterThenZero
+      formFileldProps: {
+        type: "money",
+        name: "value",
+        validate: validateGreaterThenZero
+      }
     }
   ];
 

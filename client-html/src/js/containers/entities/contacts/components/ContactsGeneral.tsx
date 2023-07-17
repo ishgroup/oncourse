@@ -23,7 +23,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { getContactFullName } from "../utils";
 import { openInternalLink } from "../../../../common/utils/links";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
+import TimetableButton from "../../../../common/ish-ui/buttons/TimetableButton";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import ProfileHeading from "./ProfileHeading";

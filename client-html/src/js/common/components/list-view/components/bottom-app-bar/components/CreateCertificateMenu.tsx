@@ -18,7 +18,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Dispatch } from "redux";
 import EntityService from "../../../../../services/EntityService";
 import { openInternalLink } from "../../../../../utils/links";
-import { StyledCheckbox } from "../../../../form/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../ish-ui/formFields/CheckboxField";
 import CertificateService from "../../../../../../containers/entities/certificates/services/CertificateService";
 import instantFetchErrorHandler from "../../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 

@@ -21,7 +21,7 @@ import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName"
 import { useHoverShowStyles } from "../../../common/styles/hooks";
 import { makeAppStyles } from "../../../common/styles/makeStyles";
 import FormField from "../../../common/components/form/formFields/FormField";
-import { Switch } from "../../../common/components/form/formFields/Switch";
+import { Switch } from "../../../common/ish-ui/formFields/Switch";
 import EntityService from "../../../common/services/EntityService";
 import { Dispatch } from "redux";
 import { change } from "redux-form";

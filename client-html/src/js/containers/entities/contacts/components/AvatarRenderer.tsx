@@ -17,7 +17,7 @@ import clsx from "clsx";
 import noAvatarImg from "../../../../../images/no_pic.png";
 import FilePreview from "../../../../common/components/form/FilePreview";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import { getInitialDocument } from "../../../../common/components/form/documents/components/utils";
+import { getInitialDocument } from "../../../../common/ish-ui/documents/utils";
 import { createAvatarDocument } from "../../../../common/components/form/documents/actions";
 import { showMessage } from "../../../../common/actions";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";

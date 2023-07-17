@@ -258,7 +258,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           name={field.keyCode}
           type={field.type}
           component={DataTypeRenderer}
-                    validate={field.validate}
+           validate={field.validate}
           {...fieldProps}
         />
       );

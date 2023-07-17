@@ -11,7 +11,7 @@ import {
   Chip, Paper, Typography, Grid, FormControlLabel
 } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../common/ish-ui/formFields/CheckboxField";
 import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import { openInternalLink } from "../../../../common/utils/links";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";

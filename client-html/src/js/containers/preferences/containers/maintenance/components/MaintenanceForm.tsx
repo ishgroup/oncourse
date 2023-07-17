@@ -17,7 +17,7 @@ import * as Model from "../../../../../model/preferences/Maintenance";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import { State } from "../../../../../reducers/state";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";

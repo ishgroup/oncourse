@@ -47,7 +47,7 @@ import {
 } from "./actions";
 import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
 import ResizableWrapper from "../layout/resizable/ResizableWrapper";
-import { MenuTag } from "../../../model/tags";
+import { FormMenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
 import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
 import {
@@ -139,7 +139,7 @@ interface OwnProps {
   dispatch?: Dispatch;
   fetch?: Fetch;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
-  setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[] }) => void;
+  setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: FormMenuTag[], checkedChecklists: FormMenuTag[], uncheckedChecklists: FormMenuTag[] }) => void;
   deleteFilter?: (id: number, entity: string, checked: boolean) => void;
   exportTemplates?: ExportTemplate[];
   pdfReports?: Report[];
@@ -645,7 +645,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
     if (newSelection) updateSelection(newSelection);
   };
 
-  onChangeFilters = (filters: FilterGroup[] | MenuTag[], type: string) => {
+  onChangeFilters = (filters: FilterGroup[] | FormMenuTag[], type: string) => {
     const {
      setFilterGroups, setListMenuTags, location: { search }, match: { url }, menuTags, checkedChecklists, uncheckedChecklists
     } = this.props;
@@ -667,9 +667,9 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
         tags: menuTags,
         checkedChecklists, 
         uncheckedChecklists,
-        ...{ [type]: filters as MenuTag[] }
+        ...{ [type]: filters as FormMenuTag[] }
       });
-      const tagsString = getActiveTags(filters as MenuTag[]).map(t => t.tagBody.id).toString();
+      const tagsString = getActiveTags(filters as FormMenuTag[]).map(t => t.tagBody.id).toString();
       if (tagsString) {
         searchParams.set(type, tagsString);
       } else {

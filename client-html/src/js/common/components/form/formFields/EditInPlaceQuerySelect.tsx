@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2022.
+ * Copyright ish group pty ltd 2023.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import DateRange from "@mui/icons-material/DateRange";
 import QueryBuilder from "@mui/icons-material/QueryBuilder";
 import Autocomplete from "@mui/material/Autocomplete";
-import React from "react";
+import React, { Ref } from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import { format as formatDate } from "date-fns";
 import clsx from "clsx";
@@ -23,7 +23,7 @@ import * as Entities from "@aql/queryLanguageModel";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { selectStyles } from "./SelectCustomComponents";
+import { selectStyles } from "../../../ish-ui/formFields/SelectCustomComponents";
 import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
 import {
   FILTER_TAGS_REGEX,
@@ -31,7 +31,11 @@ import {
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
-import { EditInPlaceQueryFieldProps } from "../../../../model/common/Fields";
+import { HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
+import { FieldClasses, FieldMetaProps } from "../../../ish-ui/model/Fields";
+import { InputProps } from "@mui/material/Input";
+import { QueryFieldSuggestion } from "../../../../model/common/Fields";
+
 
 const queryStyles = theme => createStyles({
   queryMenuItem: {
@@ -85,8 +89,8 @@ const completeSuggestions = (
   operatorsFilter: string,
   pathFilter: string,
   rootEntity: string,
-  filterTags?: Suggestion[],
-  tags?: Suggestion[],
+  filterTags?: QueryFieldSuggestion[],
+  tags?: QueryFieldSuggestion[],
   customFields?: string[]
 ) => {
   let variants = [token];
@@ -226,22 +230,45 @@ const completeSuggestions = (
   }));
 };
 
-export interface Suggestion {
-  token: string;
-  value: string;
-  label: string;
-  prefix?: string;
-  queryPrefix?: string;
-}
-
 interface State {
   value: object[];
-  options: Suggestion[];
+  options: QueryFieldSuggestion[];
   menuIsOpen: boolean;
   pickerOpened: "DATE" | "TIME";
   inputValue: string;
   searchValue: string;
   caretCoordinates: any;
+}
+
+interface EditInPlaceQueryFieldProps {
+  ref?: Ref<any>;
+  setInputNode?: HTMLTagArgFunction;
+  className?: string;
+  rootEntity: string;
+  classes?: any;
+  input?: any;
+  editableComponent?: any;
+  label?: string;
+  disabled?: boolean;
+  disableUnderline?: boolean;
+  disableErrorText?: boolean;
+  inline?: boolean;
+  hideLabel?: boolean;
+  meta?: Partial<FieldMetaProps>;
+  InputProps?: InputProps;
+  filterTags?: QueryFieldSuggestion[];
+  tags?: QueryFieldSuggestion[];
+  customFields?: string[];
+  performSearch?: () => void;
+  theme?: any;
+  onFocus?: any;
+  onBlur?: any;
+  placeholder?: string;
+  labelAdornment?: any;
+  endAdornment?: any;
+  menuHeight?: number;
+  fieldClasses?: FieldClasses;
+  itemRenderer?: any;
 }
 
 class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldProps, State> {

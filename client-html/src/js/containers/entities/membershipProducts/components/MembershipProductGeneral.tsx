@@ -9,7 +9,7 @@ import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from 
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../common/ish-ui/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
 import { State } from "../../../../reducers/state";
@@ -36,29 +36,32 @@ const validateNonNegative = value => (value < 0 ? "Must be non negative" : undef
 const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 
 const expiryOptions: CustomSelectorOption[] = [
-  { caption: "Never (Lifetime)", body: "", type: null },
+  { caption: "Never (Lifetime)", body: "" },
   {
     caption: "1st July",
     body: "",
-    type: null,
-    fieldName: "expiryType",
-    component: EditInPlaceField
+    formFileldProps: {
+      type: "text",
+      name: "expiryType",
+    }
   },
   {
     caption: "1st January",
     body: "",
-    type: null,
-    fieldName: "expiryType",
-    component: EditInPlaceField
+    formFileldProps: {
+      type: "text",
+      name: "expiryType",
+    }
   },
   {
     caption: "Days",
     body: "",
-    type: "number",
-    component: EditInPlaceField,
-    fieldName: "expiryDays",
-    validate: [validateNonNegative, validateSingleMandatoryField],
-    normalize: normalizeNumber
+    formFileldProps: {
+      type: "number",
+      name: "expiryDays",
+      validate: [validateNonNegative, validateSingleMandatoryField],
+      normalize: normalizeNumber
+    }
   }
 ];
 

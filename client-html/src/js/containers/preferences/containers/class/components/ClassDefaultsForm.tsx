@@ -12,7 +12,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import * as Model from "../../../../../model/preferences/ClassDefaults";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";

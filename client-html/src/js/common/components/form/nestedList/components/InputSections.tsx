@@ -10,7 +10,7 @@ import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import Close from "@mui/icons-material/Close";
 import AddButton from "../../../icons/AddButton";
-import { Switch } from "../../formFields/Switch";
+import { Switch } from "../../../../ish-ui/formFields/Switch";
 import SearchInput from "./SearchInput";
 
 export const InputSection = React.memo<any>(props => {
