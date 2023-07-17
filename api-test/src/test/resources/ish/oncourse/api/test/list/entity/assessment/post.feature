@@ -63,7 +63,6 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
             "createdOn":"#ignore",
             "tags":[],
             "attachmentRelations":"#ignore",
-            "versionId":null,
             "modifiedOn":"#ignore",
             "removed":false,
             "attachedRecordsCount":null,

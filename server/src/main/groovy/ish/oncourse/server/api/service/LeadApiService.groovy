@@ -82,7 +82,7 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.invoices = cayenneModel.invoices.collect {invoiceApiService.toRestLeadInvoice(it) } +
                     cayenneModel.quotes.collect {invoiceApiService.toRestLeadInvoice(it) }
             dtoModel.customFields = cayenneModel.customFields.collectEntries {[(it.customFieldType.key): it.value] }
-            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, documentService) }
             dtoModel.tags = cayenneModel.allTags.collect { it.id }
             dtoModel.relatedSellables = cayenneModel.items.collect {item -> item.course ? toRestSale(item.course) : toRestSale(item.product) }
             dtoModel.sites =  cayenneModel.sites.collect {toRestSiteMinimized(it) }
