@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import { TagGroup, Tag } from "@api/model";
-import { MenuTag } from "../../../../model/tags";
+import { FormMenuTag } from "../../../../model/tags";
 import { FilterGroup } from "../../../../model/common/ListView";
 
 export const getFiltersNameString = (filterGroups: FilterGroup[]) => filterGroups
@@ -41,7 +41,7 @@ export const setActiveFiltersBySearch = (search: string, filters: FilterGroup[])
   });
 };
 
-export const getActiveTags = (tags: MenuTag[], res?: MenuTag[]): MenuTag[] => {
+export const getActiveTags = (tags: FormMenuTag[], res?: FormMenuTag[]): FormMenuTag[] => {
   const result = res || [];
 
   tags.forEach(i => {
@@ -57,7 +57,7 @@ export const getActiveTags = (tags: MenuTag[], res?: MenuTag[]): MenuTag[] => {
   return result;
 };
 
-export const getTagGroups = (tags: MenuTag[]) => {
+export const getTagGroups = (tags: FormMenuTag[]) => {
   const groups: TagGroup[] = [];
 
   tags.forEach(t => {
@@ -74,10 +74,10 @@ export const getTagGroups = (tags: MenuTag[]) => {
   return groups;
 };
 
-export const getMenuTags = (allTags: Tag[], addedTags: Tag[], prefix?: string, queryPrefix?: string, entity?: string, path?: string, parent?: MenuTag): MenuTag[] => allTags.map(t => {
+export const getMenuTags = (allTags: Tag[], addedTags: Tag[], prefix?: string, queryPrefix?: string, entity?: string, path?: string, parent?: FormMenuTag): FormMenuTag[] => allTags.map(t => {
   const active = addedTags.find(i => i.id === t.id);
 
-  const tag: MenuTag = {
+  const tag: FormMenuTag = {
     active: Boolean(active),
     tagBody: t,
     parent,
@@ -106,7 +106,7 @@ const selectionTemplate = str => `id == "${str}"`;
 
 export const getExpression = (selection: string[]): string => selection.map(selectionTemplate).join(" or ");
 
-export const setIndeterminate = (parentTag: MenuTag) => {
+export const setIndeterminate = (parentTag: FormMenuTag) => {
   if (parentTag.children.some(c => !c.active)) {
     parentTag.active = false;
     parentTag.indeterminate = parentTag.children.some(c => c.active || c.indeterminate);
@@ -120,7 +120,7 @@ export const setIndeterminate = (parentTag: MenuTag) => {
   }
 };
 
-export const updateIndeterminateState = (tags: MenuTag[], id: string) => {
+export const updateIndeterminateState = (tags: FormMenuTag[], id: string) => {
   for (let i = 0; i < tags.length; i++) {
     if (tags[i].prefix + tags[i].tagBody.id.toString() === id) {
       if (tags[i].parent) {
@@ -132,7 +132,7 @@ export const updateIndeterminateState = (tags: MenuTag[], id: string) => {
   }
 };
 
-export const getUpdated = (tags: MenuTag[], id: string, active, parent?: MenuTag, allActive?: boolean) => tags.map(t => {
+export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: FormMenuTag, allActive?: boolean) => tags.map(t => {
     const updated = { ...t, parent };
     let toggleChildrenActive = false;
 
@@ -149,7 +149,7 @@ export const getUpdated = (tags: MenuTag[], id: string, active, parent?: MenuTag
     return updated;
   });
 
-export const getTagsUpdatedByIds = (tags: MenuTag[], activeIds: number[]) => tags.map(t => {
+export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[]) => tags.map(t => {
   const updated = { ...t };
 
   updated.active = activeIds.includes(updated.tagBody.id);

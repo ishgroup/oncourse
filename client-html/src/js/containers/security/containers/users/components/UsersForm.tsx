@@ -24,8 +24,8 @@ import { State } from "../../../../../reducers/state";
 import {
   updateUser, resetUserPassword, disableUser2FA
 } from "../../../actions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import Message from "../../../../../common/components/dialog/message/Message";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import Message from "../../../../../common/ish-ui/dialog/message/Message";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates/format";

@@ -14,7 +14,7 @@ import Collapse from "@mui/material/Collapse";
 import { createStyles, withStyles } from "@mui/styles";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
-import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
+import { CheckboxField } from "../../../../common/ish-ui/formFields/CheckboxField";
 import NestedList, {
   NestedListItem,
   NestedListPanelItem

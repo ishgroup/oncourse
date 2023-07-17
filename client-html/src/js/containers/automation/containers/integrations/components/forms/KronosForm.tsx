@@ -7,7 +7,7 @@ import * as React from "react";
 import { getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../../common/components/dialog/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";
 

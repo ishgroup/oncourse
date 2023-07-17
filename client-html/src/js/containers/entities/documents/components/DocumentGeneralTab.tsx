@@ -24,11 +24,11 @@ import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../comm
 import {
   FileTypeIcon, getDocumentContent,
   getLatestDocumentItem
-} from "../../../../common/components/form/documents/components/utils";
+} from "../../../../common/ish-ui/documents/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
-import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
+import DocumentShare from "../../../../common/ish-ui/documents/DocumentShare";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";

@@ -15,11 +15,11 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import FormField from "../../../formFields/FormField";
-import DocumentIconsChooser from "../items/DocumentIconsChooser";
+import DocumentIconsChooser from "../../../../../ish-ui/documents/DocumentIconsChooser";
 import { dialogStyles } from "./dialogStyles";
 
-import { getLatestDocumentItem } from "../utils";
-import DocumentShare from "../items/DocumentShare";
+import { getLatestDocumentItem } from "../../../../../ish-ui/documents/utils";
+import DocumentShare from "../../../../../ish-ui/documents/DocumentShare";
 import Button from "@mui/material/Button";
 
 export type DocumentDialogType = "edit" | "create" | "view";

@@ -21,13 +21,13 @@ import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import { Dispatch } from "redux";
 import { KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL } from "../../../../../utils/dates/format";
-import FileUploaderDialog from "../../../../file-uploader/FileUploaderDialog";
 import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { State } from "../../../../../../reducers/state";
 import { dialogStyles } from "./dialogStyles";
-import EditInPlaceSearchSelect from "../../../formFields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../../../ish-ui/formFields/EditInPlaceSearchSelect";
 import { DocumentSearchItem as DocumentSearchItemType } from "../../epics/EpicSearchExistingDocumentByName";
 import { stubFunction } from "../../../../../utils/common";
+import FileUploaderDialog from "src/js/common/ish-ui/fileUploader/FileUploaderDialog";
 
 const addDialogStyles = theme => createStyles({
   addDialogMargin: {

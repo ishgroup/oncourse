@@ -7,7 +7,7 @@ import {
 } from "redux-form";
 import { Tax } from "@api/model";
 import isEqual from "lodash.isequal";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import TaxTypesRenderer from "./TaxTypesRenderer";

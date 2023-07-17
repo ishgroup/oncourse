@@ -3,14 +3,14 @@ import { ButtonBase, Typography } from "@mui/material";
 import clsx from "clsx";
 import { alpha } from "@mui/material/styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ColoredCheckboxFieldProps } from "../../../model/common/Fields";
 import { getCheckboxValue } from "../../utils/common";
 import { useAppTheme } from "../../themes/ishTheme";
 import { rgbToHex } from "@mui/system/colorManipulator";
+import { ColoredCheckboxFieldProps, FieldInputProps, FieldMetaProps } from "../../ish-ui/model/Fields";
 
-export const ColoredCheckBox = ({
+export function ColoredCheckBox<IP extends FieldInputProps, MP extends FieldMetaProps>({
  input, label, color, className, disabled
-}: ColoredCheckboxFieldProps) => {
+}: ColoredCheckboxFieldProps<IP, MP>) {
   const theme = useAppTheme();
   
   const inputRef = useRef<HTMLInputElement>();
@@ -63,4 +63,4 @@ export const ColoredCheckBox = ({
       </Typography>}
     </div>
   );
-};
+}

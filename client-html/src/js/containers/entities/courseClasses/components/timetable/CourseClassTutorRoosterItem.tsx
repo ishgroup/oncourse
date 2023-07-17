@@ -24,7 +24,7 @@ import {
 import { Dispatch } from "redux";
 import { makeStyles } from "@mui/styles";
 import { TimetableSession } from "../../../../../model/timetable";
-import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
+import ErrorMessage from "../../../../../common/ish-ui/fieldMessage/ErrorMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";

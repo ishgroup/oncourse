@@ -15,9 +15,9 @@ import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperLi
 import ListRenderer from "./components/ListRenderer";
 import { InputSection, InputSectionWithToggle } from "./components/InputSections";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX, TAGS_REGEX } from "../../../../constants/Config";
-import { Suggestion } from "../formFields/EditInPlaceQuerySelect";
 import { State } from "../../../../reducers/state";
 import { getTagNamesSuggestions } from "../../../../containers/tags/utils";
+import { QueryFieldSuggestion } from "../../../../model/common/Fields";
 
 const styles = theme => createStyles({
     root__search: {
@@ -88,7 +88,7 @@ interface NestedListState {
   searchExpression?: string;
   toggleEnabled?: boolean;
   formError?: string;
-  searchTags?: Suggestion[];
+  searchTags?: QueryFieldSuggestion[];
   selectedAqlEntity?: string;
 }
 

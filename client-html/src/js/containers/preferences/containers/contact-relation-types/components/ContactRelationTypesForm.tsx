@@ -8,7 +8,7 @@ import {
 } from "redux-form";
 import { ContactRelationType } from "@api/model";
 import isEqual from "lodash.isequal";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";

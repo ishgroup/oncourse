@@ -9,7 +9,7 @@
 import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
 import { MessageData } from "../../../../model/common/Message";
 import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
-import { MenuTag } from "../../../../model/tags";
+import { FormMenuTag } from "../../../../model/tags";
 import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
 import { IAction } from "../../../actions/IshAction";
 import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
@@ -99,7 +99,7 @@ export const setListLayout = (layout: LayoutType) => ({
   payload: layout
 });
 
-export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[]) => ({
+export const setListMenuTags = (menuTags: FormMenuTag[], checkedChecklists: FormMenuTag[], uncheckedChecklists: FormMenuTag[]) => ({
   type: SET_LIST_MENU_TAGS,
   payload: { menuTags, checkedChecklists, uncheckedChecklists }
 });

@@ -23,7 +23,7 @@ import { addHours } from "date-fns";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import AvailabilityRenderer from "../../../../../common/components/form/availabilityComponent/AvailabilityRenderer";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";

@@ -22,7 +22,7 @@ import { FormEditorField } from "../../../common/components/markdown-editor/Form
 import { stopEventPropagation } from "../../../common/utils/events";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormTagProps } from "../../../model/tags";
-import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
+import ColorPicker from "../../../common/ish-ui/color-picker/ColorPicker";
 
 const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
 

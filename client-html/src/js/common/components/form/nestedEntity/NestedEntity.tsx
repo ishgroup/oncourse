@@ -13,7 +13,7 @@ import DateRange from "@mui/icons-material/DateRange";
 import Launch from "@mui/icons-material/Launch";
 import Grid from "@mui/material/Grid";
 import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { EntityType } from "../../../../model/common/NestedEntity";
+import { EntityType } from "../../../ish-ui/model/NestedEntity";
 import { openInternalLink } from "../../../utils/links";
 import AddButton from "../../icons/AddButton";
 import clsx from "clsx";

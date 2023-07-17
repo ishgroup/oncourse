@@ -15,7 +15,7 @@ import { Dispatch } from "redux";
 import { format } from "date-fns";
 import { normalizeNumberToPositive } from "../../../utils/numbers/numbersNormalizing";
 import FormField from "../formFields/FormField";
-import { StyledCheckbox } from "../formFields/CheckboxField";
+import { StyledCheckbox } from "../../../ish-ui/formFields/CheckboxField";
 import { repeatEndListItems, repeatListItems } from "../../../../containers/preferences/containers/holidays/ListItems";
 import AvailabilityNextHint from "./AvailabilityNextHint";
 import { validateMinMaxDate } from "../../../utils/validation";

@@ -13,7 +13,7 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
 import * as Model from "../../../../../model/preferences/College";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";

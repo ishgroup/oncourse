@@ -19,7 +19,7 @@ import Grow from "@mui/material/Grow";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";

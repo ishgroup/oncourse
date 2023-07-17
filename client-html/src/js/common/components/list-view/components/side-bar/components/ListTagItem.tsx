@@ -14,7 +14,7 @@ import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import TreeItem, { TreeItemProps } from "@mui/lab/TreeItem";
 import clsx from "clsx";
 import { BooleanArgFunction } from "../../../../../../model/common/CommonFunctions";
-import { MenuTag } from "../../../../../../model/tags";
+import { FormMenuTag } from "../../../../../../model/tags";
 
 const styles = theme => createStyles({
     checkbox: {
@@ -84,7 +84,7 @@ const styles = theme => createStyles({
   });
 
 interface Props extends TreeItemProps {
-  item: MenuTag;
+  item: FormMenuTag;
   handleExpand: any;
   classes: any;
   toggleActive: any;

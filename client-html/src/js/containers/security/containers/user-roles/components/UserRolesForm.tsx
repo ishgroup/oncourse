@@ -18,7 +18,7 @@ import Categories from "../../../../../model/user-roles/index";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import UserRolePreference from "./UserRolePreference";
 import { State } from "../../../../../reducers/state";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { updateUserRole, removeUserRole } from "../../../actions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";

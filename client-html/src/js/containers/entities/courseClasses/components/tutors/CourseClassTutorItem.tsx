@@ -22,7 +22,7 @@ import { ContactLinkAdornment, LinkAdornment } from "../../../../../common/compo
 import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
 import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
-import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
+import WarningMessage from "../../../../../common/ish-ui/fieldMessage/WarningMessage";
 import { getContactFullName } from "../../../contacts/utils";
 
 const styles = (theme: AppTheme) => createStyles({

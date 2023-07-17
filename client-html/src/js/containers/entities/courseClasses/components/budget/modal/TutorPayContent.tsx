@@ -29,7 +29,7 @@ import {
 import { decimalMinus, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
-import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
+import WarningMessage from "../../../../../../common/ish-ui/fieldMessage/WarningMessage";
 import { getClassCostFee } from "../utils";
 import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 
