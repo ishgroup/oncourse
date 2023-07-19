@@ -11,8 +11,17 @@
 
 package ish.oncourse.server.api.service
 
+import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.DocumentDao
+import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
+import ish.oncourse.server.cayenne.DocumentVersion
+import ish.oncourse.server.document.DocumentService
+import ish.s3.AmazonS3Service
+import ish.util.LocalDateUtils
+
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentAttachmentRelations
+import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocumentVersion
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.cayenne.Document
@@ -25,15 +34,41 @@ import static org.apache.commons.lang3.StringUtils.trimToNull
 @CompileStatic
 class DocumentApiService extends TaggableApiService<DocumentDTO, Document, DocumentDao> {
 
+    @Inject
+    private DocumentService documentService
+
     @Override
     Class<Document> getPersistentClass() {
         return Document
     }
 
     @Override
-    DocumentDTO toRestModel(Document cayenneModel) {
-        // Is not applicable for this entity
-        return null
+    DocumentDTO toRestModel(Document dbDocument) {
+        new DocumentDTO().with { document ->
+            document.id = dbDocument.id
+            document.name = dbDocument.name
+            document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
+            document.tags = dbDocument.allTags.collect { it.id }
+
+            document.thumbnail = dbDocument.currentVersion?.thumbnail
+            AmazonS3Service s3Service
+            if (documentService.usingExternalStorage) {
+                s3Service = new AmazonS3Service(documentService)
+            }
+            document.versions = dbDocument.versions.collect { toRestDocumentVersion(it, s3Service) }.sort { it.added }.reverse()
+
+            document.description = dbDocument.description
+            document.access = DocumentVisibilityDTO.values()[0].fromDbType(dbDocument.webVisibility)
+            document.shared = dbDocument.isShared
+            document.removed = dbDocument.isRemoved
+            document.createdOn = LocalDateUtils.dateToTimeValue(dbDocument.createdOn)
+            document.modifiedOn = LocalDateUtils.dateToTimeValue(dbDocument.modifiedOn)
+            document.attachmentRelations = toRestDocumentAttachmentRelations(dbDocument.attachmentRelations)
+            if (s3Service) {
+                document.urlWithoutVersionId = s3Service.getFileUrl(dbDocument.fileUUID, null, dbDocument.webVisibility)
+            }
+            document
+        }
     }
 
     @Override
@@ -62,11 +97,15 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         }
 
         if (restModel.access == null) {
-            validator.throwClientErrorException(id, 'access', 'Security level is required')
+            validator.throwClientErrorException(id, 'access', 'Security level is required.')
         }
 
         if (restModel.shared == null) {
-            validator.throwClientErrorException(id, 'shared', 'Shared flag is required')
+            validator.throwClientErrorException(id, 'shared', 'Shared flag is required.')
+        }
+
+        if (restModel.versions.size() == 0) {
+            validator.throwClientErrorException(id, 'versions', 'At least one document version is required.')
         }
 
     }

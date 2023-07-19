@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import ish.common.types.DataType
 import ish.imports.ImportResult
 import ish.oncourse.server.api.dao.ImportDao
 import ish.oncourse.server.api.model.ImportModel
@@ -19,11 +20,14 @@ import ish.oncourse.server.api.v1.model.ExecuteImportRequestDTO
 import ish.oncourse.server.api.v1.model.ImportModelDTO
 import ish.oncourse.server.cayenne.Import
 import ish.oncourse.server.concurrent.ExecutorManager
+import ish.oncourse.server.configs.AutomationModel
 import ish.oncourse.server.imports.ImportService
-import ish.common.types.DataType
 import org.apache.cayenne.ObjectContext
 
 import java.util.concurrent.Callable
+import java.util.function.BiConsumer
+
+import static ish.oncourse.server.upgrades.DataPopulationUtils.fillImportWithCommonFields
 
 class ImportApiService extends AutomationApiService<ImportModelDTO, Import, ImportDao> {
 
@@ -41,6 +45,21 @@ class ImportApiService extends AutomationApiService<ImportModelDTO, Import, Impo
     @Override
     protected ImportModelDTO createDto() {
         return new ImportModelDTO()
+    }
+
+    @Override
+    protected BiConsumer<Import, Map<String, Object>> getFillPropertiesFunction() {
+        return new BiConsumer<Import, Map<String, Object>>() {
+            @Override
+            void accept(Import anImport, Map<String, Object> stringObjectMap) {
+                fillImportWithCommonFields(anImport, stringObjectMap)
+            }
+        }
+    }
+
+    @Override
+    protected AutomationModel getConfigsModelOf(Import entity) {
+        return new ish.oncourse.server.configs.ImportModel(entity)
     }
 
     @Override

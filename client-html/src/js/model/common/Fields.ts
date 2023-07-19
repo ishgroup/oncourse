@@ -1,7 +1,7 @@
 import { Tag } from "@api/model";
 import { InputProps } from "@mui/material/Input";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import React, { ReactElement, ReactNode } from "react";
+import React, { MutableRefObject, ReactElement, ReactNode } from "react";
 import { AnyArgFunction, HTMLTagArgFunction, NumberArgFunction, StringArgFunction } from "./CommonFunctions";
 import { Suggestion } from "../../common/components/form/formFields/EditInPlaceQuerySelect";
 import { ShowConfirmCaller } from "./Confirm";
@@ -25,7 +25,7 @@ export interface SelectItemRendererProps<E = any> {
 }
 
 export interface EditInPlaceFieldProps {
-  inputRef?: React.Ref<any>;
+  inputRef?: MutableRefObject<any>;
   input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
   meta?: Partial<WrappedFieldMetaProps>;
   InputProps?: Partial<InputProps>;
@@ -52,7 +52,7 @@ export interface EditInPlaceFieldProps {
 }
 
 export interface EditInPlaceDateTimeFieldProps {
-  inputRef?: React.Ref<any>;
+  inputRef?: MutableRefObject<any>;
   input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
   meta?: Partial<WrappedFieldMetaProps>;
   fieldClasses?: FieldClasses,
@@ -106,7 +106,7 @@ export interface EditInPlaceQueryFieldProps {
 }
 
 export interface EditInPlaceSearchSelectFieldProps {
-  inputRef?: React.Ref<any>;
+  inputRef?: MutableRefObject<any>;
   input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
   meta?: Partial<WrappedFieldMetaProps>;
   items?: any[];
@@ -158,11 +158,13 @@ export interface EditInPlaceSearchSelectFieldProps {
 
 export interface EditInPlaceRemoteDataSelectFieldProps extends EditInPlaceSearchSelectFieldProps {
   onSearchChange?: StringArgFunction;
+  getCustomSearch?: (search: string) => string;
   onLoadMoreRows?: NumberArgFunction;
   onClearRows?: AnyArgFunction;
   entity: EntityName;
   aqlFilter?: string;
   aqlColumns?: string;
+  preloadEmpty?: boolean;
 }
 
 export interface CodeFieldProps {
@@ -198,10 +200,20 @@ export interface CheckboxFieldProps {
   stopPropagation?: boolean;
 }
 
+export interface ColoredCheckboxFieldProps {
+  input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
+  meta?: Partial<WrappedFieldMetaProps>;
+  color: string;
+  label?: string;
+  className?: string;
+  disabled?: boolean;
+}
+
 export interface TagsFieldProps extends EditInPlaceFieldProps {
   tags: Tag[];
   showConfirm?: ShowConfirmCaller;
   classes?: any;
+  validateEntity?: EntityName;
 }
 
 interface FormFieldBaseProps {
@@ -224,5 +236,6 @@ export type FormFieldProps =
   | ({ type: "code" } & FormFieldBaseProps & CodeFieldProps)
   | ({ type: "switch" } & FormFieldBaseProps & FormSwitchProps)
   | ({ type: "checkbox" } & FormFieldBaseProps & CheckboxFieldProps)
+  | ({ type: "coloredCheckbox" } & FormFieldBaseProps & ColoredCheckboxFieldProps)
   | ({ type: "tags" } & FormFieldBaseProps & TagsFieldProps)
   | ({ type: "stub" })

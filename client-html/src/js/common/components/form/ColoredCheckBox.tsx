@@ -2,47 +2,55 @@ import React, { useCallback, useRef } from "react";
 import { ButtonBase, Typography } from "@mui/material";
 import clsx from "clsx";
 import { alpha } from "@mui/material/styles";
-import { WrappedFieldProps } from "redux-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-interface Props extends WrappedFieldProps {
-  label: string;
-  color: string;
-  className?: string;
-  disabled?: boolean;
-}
+import { ColoredCheckboxFieldProps } from "../../../model/common/Fields";
+import { getCheckboxValue } from "../../utils/common";
+import { useAppTheme } from "../../themes/ishTheme";
+import { rgbToHex } from "@mui/system/colorManipulator";
 
 export const ColoredCheckBox = ({
  input, label, color, className, disabled
-}: Props) => {
+}: ColoredCheckboxFieldProps) => {
+  const theme = useAppTheme();
+  
   const inputRef = useRef<HTMLInputElement>();
 
   const onClick = useCallback(() => {
     inputRef.current.click();
   }, [inputRef.current]);
   
+  if (disabled) {
+    color = rgbToHex(theme.palette.divider);
+  }
+
   return (
     <div
       className={clsx("centeredFlex cursor-pointer", className)}
       onClick={onClick}
     >
-      <input type="checkbox" ref={inputRef} checked={input.value} hidden onChange={input.onChange} />
+      <input
+        ref={inputRef}
+        type="checkbox"
+        {...input}
+        checked={getCheckboxValue(input.value, false)}
+        hidden
+      />
       <ButtonBase
         component="div"
         disabled={disabled}
         sx={{
           width: theme => theme.spacing(3),
           height: theme => theme.spacing(3),
-          border: `2px solid #${color}`,
+          border: `2px solid ${color}`,
           borderRadius: "50%",
           fontSize: "10px",
-          backgroundColor: input.value ? `#${color}` : alpha(`#${color}`, 0.1),
-          color: theme => theme.palette.getContrastText(`#${color}`)
+          backgroundColor: input.value ? `${color}` : alpha(`${color}`, 0.1),
+          color: theme => theme.palette.getContrastText(`${color}`)
         }}
       >
         {input.value && <FontAwesomeIcon fixedWidth icon="check" />}
       </ButtonBase>
-      <Typography 
+      {label && <Typography
         variant="caption"
         fontWeight="400"
         sx={{
@@ -52,7 +60,7 @@ export const ColoredCheckBox = ({
         }}
       >
         {label}
-      </Typography>
+      </Typography>}
     </div>
   );
 };

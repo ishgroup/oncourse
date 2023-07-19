@@ -79,7 +79,7 @@ const ChecklistsFilters = (
         <ColoredCheckBox
           className="flex-fill"
           label="Completed"
-          color="43a047"
+          color="#43a047"
           input={{ onChange: stubFunction, value: true } as any}
           meta={{} as any}
         />
@@ -109,7 +109,7 @@ const ChecklistsFilters = (
         <ColoredCheckBox
           className="flex-fill"
           label="Incomplete"
-          color="43a047"
+          color="#43a047"
           input={{ onChange: stubFunction, value: false } as any}
           meta={{} as any}
         />

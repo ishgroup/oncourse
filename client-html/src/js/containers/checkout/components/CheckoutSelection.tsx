@@ -871,7 +871,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         showConfirm({
           onConfirm: onRemove,
           confirmMessage: "The item you are removing is required by another item in the shopping cart.",
-          cancelButtonText: "Override"
         });
       } else {
         onRemove();
@@ -1135,7 +1134,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         </Drawer>
       </ResizableWrapper>
 
-      <div className="w-100">
+      <div style={{ width: `calc(100% - ${sidebarWidth}px)` }}>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) })}>
           <div className="appFrame flex-fill root">
             <LoadingIndicator
@@ -1207,6 +1206,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 showConfirm={showConfirm}
                 onSave={onContactSave}
                 onClose={onClose}
+                leftOffset={sidebarWidth}
               />
             )}
 

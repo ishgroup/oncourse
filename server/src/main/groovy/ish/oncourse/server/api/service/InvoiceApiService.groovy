@@ -22,6 +22,7 @@ import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
 import ish.oncourse.server.services.IAutoIncrementService
@@ -38,6 +39,7 @@ import java.time.LocalDate
 import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoiceLineModel
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
@@ -126,6 +128,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             invoiceDTO.modifiedOn = dateToTimeValue(abstractInvoice.modifiedOn)
             invoiceDTO.paymentPlans.addAll([toRestPaymentPlan(abstractInvoice)])
             invoiceDTO.tags = abstractInvoice.allTags.collect { it.id }
+            invoiceDTO.customFields = abstractInvoice.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             invoiceDTO
         }
         if (abstractInvoice instanceof Invoice) {
@@ -202,6 +205,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             updateInvoiceDueDates(abstractInvoice as Invoice, invoiceDTO.paymentPlans)
         }
         updateTags(abstractInvoice, abstractInvoice.taggingRelations, invoiceDTO.tags, AbstractInvoiceTagRelation.class, abstractInvoice.context)
+        updateCustomFields(abstractInvoice.context, abstractInvoice, invoiceDTO.customFields, abstractInvoice.getCustomFieldClass())
         abstractInvoice
     }
 
@@ -470,7 +474,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             validator.throwClientErrorException(id, 'id', "There are no invoices selected.")
         } else {
             listOfInvoices.find { !it.amountOwing.isGreaterThan(Money.ZERO) }
-                    ?.with { validator.throwClientErrorException(it.id, 'id', "Invoice with id=$id has no amount owing.") }
+                    ?.with { EntityValidator.throwClientErrorException(it.id, 'id', "Invoice with id=$id has no amount owing.") }
         }
 
         PaymentMethod method = PaymentMethodUtil.getCONTRAPaymentMethods(context, PaymentMethod)

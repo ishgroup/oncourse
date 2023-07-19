@@ -20,10 +20,6 @@ import { AppTheme } from "../../../../model/common/Theme";
 import Tooltip from "@mui/material/Tooltip";
 
 export const selectStyles = theme => createStyles({
-    root: {},
-    inline: {
-      margin: theme.spacing(0, 0.5)
-    },
     bottomMargin: {
       marginBottom: `${theme.spacing(1) + 1}`
     },
@@ -87,14 +83,41 @@ export const selectStyles = theme => createStyles({
       fontWeight: 300,
       pointerEvents: "none"
     },
+    multiple: {},
+    inline: {
+      display: "inline-block",
+      "& .MuiInput-root .MuiInput-input": {
+        padding: 0
+      },
+      "& $inputEndAdornment": {
+        marginBottom: '-8px'
+      }
+    },
+    root: {
+      "& $multiple": {
+        flexWrap: 'wrap'
+      },
+      "& $multiple $inputEndAdornment": {
+        position: 'absolute',
+        right: 0,
+        bottom: 6,
+        height: "auto"
+      }
+    },
+    inputEndAdornment: {
+      marginBottom: "-6px",
+      alignItems: "center",
+      display: "flex",
+    },
     inputWrapper: {
       "&:hover $inputEndAdornment": {
         visibility: 'visible'
       },
-      "&:focus $inputEndAdornment": {
-        visibility: 'hidden',
+      "&.Mui-focused $expandIcon": {
+        opacity: 1
       }
     },
+    expandIcon: { opacity: 0.5 },
     hasPopup: {
       "&$root $inputWrapper": {
         paddingRight: 0
@@ -137,7 +160,7 @@ const OuterElementType = React.forwardRef<any, any>((props, ref) => {
   return <div ref={ref} {...props} {...outerProps} />;
 });
 
-export const ListboxComponent = React.memo<any>(props => {
+export const ListboxComponent = React.forwardRef<any, any>((props, ref) => {
   const {
    children, rowHeight, remoteRowCount, loadMoreRows, classes, loading, selectAdornment, fieldClasses, ...other
   } = props;
@@ -167,28 +190,30 @@ export const ListboxComponent = React.memo<any>(props => {
   const isItemLoaded = index => index < (children.length + (selectAdornment ? 1 : 0));
   
   return (
-    <OuterElementContext.Provider value={other}>
-      <InfiniteLoader
-        isItemLoaded={isItemLoaded}
-        itemCount={itemCount}
-        loadMoreItems={loadMoreItems}
-      >
-        {({ onItemsRendered }) => (
-          <List
-            height={getHeight() + 2 * 8}
-            width="100%"
-            className={clsx(classes.menuList, fieldClasses.selectMenu)}
-            itemData={itemData}
-            outerElementType={OuterElementType}
-            onItemsRendered={onItemsRendered}
-            itemSize={itemSize}
-            itemCount={itemCount}
-          >
-            {ListRow}
-          </List>
-        )}
-      </InfiniteLoader>
-    </OuterElementContext.Provider>
+    <div ref={ref}>
+      <OuterElementContext.Provider value={other}>
+        <InfiniteLoader
+          isItemLoaded={isItemLoaded}
+          itemCount={itemCount}
+          loadMoreItems={loadMoreItems}
+        >
+          {({ onItemsRendered }) => (
+            <List
+              height={getHeight() + 2 * 8}
+              width="100%"
+              className={clsx(classes.menuList, fieldClasses.selectMenu)}
+              itemData={itemData}
+              outerElementType={OuterElementType}
+              onItemsRendered={onItemsRendered}
+              itemSize={itemSize}
+              itemCount={itemCount}
+            >
+              {ListRow}
+            </List>
+          )}
+        </InfiniteLoader>
+      </OuterElementContext.Provider>
+    </div>
   );
 });
 

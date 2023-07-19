@@ -30,8 +30,7 @@ import { endFieldProcessingAction, startFieldProcessingAction } from "../../../a
 import { EditInPlaceDateTimeFieldProps } from "../../../../model/common/Fields";
 import { makeAppStyles } from "../../../styles/makeStyles";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
-import { formatInTimeZone } from "date-fns-tz";
-import { appendTimezoneToUTC } from "../../../utils/dates/formatTimezone";
+import { prependTimezone, appendTimezone } from "../../../utils/dates/formatTimezone";
 import { useAppSelector } from "../../../utils/hooks";
 
 const useStyles = makeAppStyles(theme => ({
@@ -49,8 +48,7 @@ const useStyles = makeAppStyles(theme => ({
     bottom: theme.spacing(-0.5)
   },
   inlineContainer: {
-    display: "inline-flex",
-    margin: theme.spacing(0, 0.5)
+    display: "inline-block",
   }
 }));
 
@@ -100,17 +98,25 @@ const EditInPlaceDateTimeField = (
 
     switch (type) {
       case "date":
-        return timezone ? formatInTimeZone(dateObj, timezone, formatDate || III_DD_MMM_YYYY) : format(dateObj, formatDate || III_DD_MMM_YYYY);
+        return format(dateObj, formatDate || III_DD_MMM_YYYY);
       case "time":
-        return timezone ? formatInTimeZone(dateObj, timezone, formatTime || HH_MM_COLONED) : format(dateObj, formatTime || HH_MM_COLONED);
+        return format(dateObj, formatTime || HH_MM_COLONED);
       case "datetime":
-        return timezone ? formatInTimeZone(dateObj, timezone, formatDateTime || III_DD_MMM_YYYY_HH_MM) : format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
+        return format(dateObj, formatDateTime || III_DD_MMM_YYYY_HH_MM);
       default:
         return dateObj.toString();
     }
   };
 
-  const dateValue = useMemo(() => input.value ? new Date(input.value) : null, [input.value, timezone]);
+  const dateValue = useMemo(() => {
+    let base = input.value ? new Date(input.value) : null;
+    
+    if (base && timezone) {
+      base = appendTimezone(base, timezone);
+    }
+    
+    return base;
+  }, [input.value, timezone]);
 
   useEffect(() => {
     setTextValue(formatDateInner(dateValue));
@@ -149,7 +155,11 @@ const EditInPlaceDateTimeField = (
           formatted = null;
         }
       }
-      setTextValue(formatDateInner(v));
+
+      if (timezone && formatted) {
+        formatted = prependTimezone(formatted, timezone)?.toISOString();
+      }
+
       input.onChange(formatted);
       input.onBlur(formatted);
       return;
@@ -174,20 +184,24 @@ const EditInPlaceDateTimeField = (
       : null;
 
     if (parsed) {
-      const appended = timezone ? appendTimezoneToUTC(parsed, timezone) : parsed;
       let formatted;
       if (formatValue) {
-        formatted = format(appended, formatValue);
-      } else if (type === "date" && isValid(appended)) {
-        formatted = format(appended, YYYY_MM_DD_MINUSED);
+        formatted = format(parsed, formatValue);
+      } else if (type === "date" && isValid(parsed)) {
+        formatted = format(parsed, YYYY_MM_DD_MINUSED);
       } else {
         try {
-          formatted = appended.toISOString();
+          formatted = parsed.toISOString();
         } catch {
           formatted = null;
         }
       }
-      setTextValue(formatDateInner(appended));
+      setTextValue(formatDateInner(parsed));
+
+      if (timezone && formatted) {
+        formatted = prependTimezone(formatted, timezone).toISOString();
+      }
+
       input.onChange(formatted);
       input.onBlur(formatted);
     } else {
@@ -227,7 +241,6 @@ const EditInPlaceDateTimeField = (
           onClose={onClose}
           renderInput={() => (
             <EditInPlaceFieldBase
-              ref={inputNode}
               name={input.name}
               value={textValue}
               error={error}

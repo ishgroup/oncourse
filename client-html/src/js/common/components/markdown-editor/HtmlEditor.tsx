@@ -35,8 +35,8 @@ const HtmlEditor = props => {
         tabSize: 2,
       }}
       editorProps={{ $blockScrolling: Infinity }}
-      value={value}
-      onChange={val => onChange(val)}
+      defaultValue={value}
+      onChange={onChange}
     />
   );
 };

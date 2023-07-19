@@ -19,7 +19,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "NOTES",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3" />
   },
   {
     label: "DOCUMENTS",
@@ -41,11 +41,13 @@ const AssessmentEditView: React.FC<EditViewProps<Assessment>> = props => {
     rootEntity,
     onCloseClick,
     toogleFullScreenEditView,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={items}
       itemProps={{
         isNew,

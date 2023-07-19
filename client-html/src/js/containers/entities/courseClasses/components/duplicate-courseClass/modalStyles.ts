@@ -20,12 +20,6 @@ const styles = (theme: AppTheme) => createStyles({
     background: theme.palette.background.default,
     borderRadius: theme.shape.borderRadius
   },
-  daysInput: {
-    maxWidth: theme.spacing(6)
-  },
-  dateTime: {
-    minWidth: theme.spacing(32.5)
-  }
 });
 
 export default styles;

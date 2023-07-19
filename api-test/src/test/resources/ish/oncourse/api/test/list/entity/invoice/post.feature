@@ -114,7 +114,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "title": null,
             "leadId": null,
             "quoteNumber": null,
-            "tags": []
+            "tags": [],
+            "customFields":{}
         }
         """
 
@@ -122,6 +123,9 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
 
     Scenario: (+) Create invoice with correct Payment Plan
 
+        * def futureYear = new Date().getFullYear() + 2
+        * def futureDate1 = futureYear + "-06-23"
+        * def futureDate2 = futureYear + "-07-23"
         * def newInvoice =
         """
         {
@@ -132,7 +136,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "billToAddress":"address str. Adelaide SA 5000",
         "shippingAddress":null,
         "invoiceDate":"2023-06-01",
-        "dateDue":"2023-06-23",
+        "dateDue":'#(futureDate1)',
         "invoiceLines":
             [{
             "title":"invoiceLine5",
@@ -150,8 +154,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
         "publicNotes":null,
         "paymentPlans":
             [
-            {"date":"2023-06-23","type":"Payment due","successful":true,"amount":30.00,"entityName":"InvoiceDueDate"},
-            {"date":"2023-07-23","type":"Payment due","successful":true,"amount":300.00,"entityName":"InvoiceDueDate"},
+            {"date":'#(futureDate1)',"type":"Payment due","successful":true,"amount":30.00,"entityName":"InvoiceDueDate"},
+            {"date":'#(futureDate2)',"type":"Payment due","successful":true,"amount":300.00,"entityName":"InvoiceDueDate"},
             {"date":"2019-06-21","type":"Invoice office","successful":true,"amount":330.00,"entityName":"Invoice"}
             ],
         "sendEmail":false
@@ -188,7 +192,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "billToAddress":"address str. Adelaide SA 5000",
             "shippingAddress":null,
             "invoiceDate":"2023-06-01",
-            "dateDue":"2023-06-23",
+            "dateDue":'#(futureDate1)',
             "overdue":0.0,
             "invoiceLines":[{"id":"#number","title":"invoiceLine5","quantity":2.00,"unit":"kg","incomeAccountId":7,"incomeAccountName":"Student enrolments 41000","discountId":null,"discountName":null,"priceEachExTax":150.00,"discountEachExTax":0.00,"taxEach":15.00,"finalPriceToPayIncTax":null,,"taxId":1,"taxName":"Australian GST","description":null,"courseClassId":null,"courseName":null,"courseCode":null,"classCode":null,"enrolmentId":null,"enrolledStudent":null,"courseId":null,"enrolment": null,"voucher": null,"article": null,"membership": null,"contactId": null}],
             "total":330.00,
@@ -197,8 +201,8 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "paymentPlans":
                 [
                 {"id":"#number","date":"#ignore","type":"Invoice office","successful":true,"amount":330.00,"entityName":"Invoice"},
-                {"id":"#number","date":"2023-06-23","type":"Payment due","successful":true,"amount":30.00,"entityName":"InvoiceDueDate"},
-                {"id":"#number","date":"2023-07-23","type":"Payment due","successful":true,"amount":300.00,"entityName":"InvoiceDueDate"}
+                {"id":"#number","date":'#(futureDate1)',"type":"Payment due","successful":true,"amount":30.00,"entityName":"InvoiceDueDate"},
+                {"id":"#number","date":'#(futureDate2)',"type":"Payment due","successful":true,"amount":300.00,"entityName":"InvoiceDueDate"}
                 ],
             "source":"office",
             "createdByUser":"admin@gmail.com",
@@ -213,6 +217,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 
@@ -292,6 +297,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 
@@ -371,6 +377,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 
@@ -763,6 +770,7 @@ Feature: Main feature for all POST requests with path 'list/entity/invoice'
             "leadId": null,
             "quoteNumber": null,
             "tags": [],
+            "customFields":{}
         }
         """
 

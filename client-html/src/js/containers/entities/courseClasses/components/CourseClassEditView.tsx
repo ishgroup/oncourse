@@ -21,7 +21,7 @@ import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { Typography } from "@mui/material";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { StringArgFunction } from "../../../../model/common/CommonFunctions";
 import { getRoundingByType } from "../../discounts/utils";
 import { getCurrentTax } from "../../taxes/utils";
@@ -53,6 +53,7 @@ import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
 import { makeAppStyles } from "../../../../common/styles/makeStyles";
 import { getTutorPayInitial } from "./tutors/utils";
+import { getClassCostTypes } from "../utils";
 
 const itemsBase: TabsListItem[] = [
   {
@@ -107,7 +108,7 @@ const itemsBase: TabsListItem[] = [
   {
     label: "NOTES",
     type: "NOTES",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pb-2" />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3 pb-2" />
   },
   {
     label: "ENROLMENTS",
@@ -201,7 +202,9 @@ const useBudgetAdornmentStyles = makeAppStyles(theme => ({
 const getDiscountedFee = (discount, currentTax, classFee) => {
   const taxOnDiscount = decimalMul(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0, currentTax.rate);
 
-  const decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
+  let decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
+  
+  if (decimal.toNumber() < 0) decimal = new Decimal(0);
 
   return getRoundingByType(discount.courseClassDiscount.discount.rounding, decimal);
 };
@@ -225,7 +228,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  dispatch,
  expandedBudget,
  expandBudgetItem,
- currentTax
+ currentTax,
 }) => {
   const classes = useBudgetAdornmentStyles();
 
@@ -340,7 +343,8 @@ const CourseClassEditView: React.FC<Props> = ({
   toogleFullScreenEditView,
   currencySymbol,
   taxes,
-  tutorRoles
+  tutorRoles,
+                                                onScroll
 }) => {
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
@@ -490,8 +494,61 @@ const CourseClassEditView: React.FC<Props> = ({
     [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
   );
 
+  const classCostTypes = useMemo(
+    () =>
+      getClassCostTypes(
+        values.budget,
+        values.maximumPlaces,
+        values.budgetedPlaces,
+        values.successAndQueuedEnrolmentsCount,
+        values.sessions,
+        values.tutors,
+        tutorRoles,
+      ),
+    [
+      values.budget,
+      values.maximumPlaces,
+      values.budgetedPlaces,
+      values.successAndQueuedEnrolmentsCount,
+      values.sessions,
+      values.tutors,
+      tutorRoles
+    ]
+  );
+
+  const netValues = useMemo(() => {
+    const max = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.max, classCostTypes.income.max),
+      classCostTypes.discount.max
+    );
+
+    const projected = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.projected, classCostTypes.income.projected),
+      classCostTypes.discount.projected
+    );
+
+    const actual = decimalMinus(
+      decimalPlus(classCostTypes.customInvoices.actual, classCostTypes.income.actual),
+      classCostTypes.discount.actual
+    );
+
+    return {
+      income: {
+        max,
+        projected,
+        actual
+      },
+      profit: {
+        max: decimalMinus(max, classCostTypes.cost.max),
+        projected: decimalMinus(projected, classCostTypes.cost.projected),
+        actual: decimalMinus(actual, classCostTypes.cost.actual)
+      }
+    };
+  }, [classCostTypes]);
+
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={items}
       itemProps={{
         isNew,
@@ -517,7 +574,9 @@ const CourseClassEditView: React.FC<Props> = ({
         expandedBudget,
         expandBudgetItem,
         addTutorWage,
-        currentTax
+        currentTax,
+        classCostTypes,
+        netValues
       }}
     />
   );

@@ -4,10 +4,11 @@
  */
 
 import { Epic } from "redux-observable";
-import { DataResponse, DataRow, Script } from "@api/model";
+import { DataResponse, Script } from "@api/model";
 import { Request, Create } from "./EpicUtils";
 import { GET_SCRIPTS_FULFILLED, GET_SCRIPTS_REQUEST } from "../actions";
 import EntityService from "../services/EntityService";
+import { getCustomColumnsMap } from "../utils/common";
 
 const scriptsMap = {
   "ProductItem": ["ProductItem", "Voucher", "Article", "Membership"],
@@ -18,7 +19,7 @@ const request: Request = {
   type: GET_SCRIPTS_REQUEST,
   getData: payload => EntityService.getPlainRecords(
     "Script",
-    "name",
+    "name,entity",
     `( ${
       scriptsMap[payload.entity]
         ? scriptsMap[payload.entity].map(e => `entityClass == ${e}`).join(" || ")
@@ -26,7 +27,7 @@ const request: Request = {
     } ) && ( triggerType == ON_DEMAND ) && (automationStatus = ENABLED)`
   ),
   processData: (records: DataResponse) => {
-    const scripts: Script[] = records.rows.map((row: DataRow) => ({ id: Number(row.id), name: row.values[0] } as Script));
+    const scripts: Script[] = records.rows.map(getCustomColumnsMap("name,entity"));
 
     return [
       {

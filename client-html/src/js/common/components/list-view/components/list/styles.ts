@@ -62,9 +62,6 @@ export default (theme: AppTheme) => createStyles({
     top: "1px",
     "&:hover $resizer": {
       opacity: 1
-    },
-    "& $draggingCell,&:focus $draggingCell": {
-      color: theme.palette.divider
     }
   },
   draggableCellItem: {
@@ -156,6 +153,14 @@ export default (theme: AppTheme) => createStyles({
     "&$selected $listDots": {
       display: "none",
     },
+    "&:hover $deleteCell, &$selected $deleteCell": {
+      display: "inline-flex",
+    },
+  },
+  deleteCell: {
+    display: "none",
+    fontSize: theme.spacing(2),
+    padding: 6
   },
   oddRow: {
     backgroundColor: alpha(theme.palette.action.hover, 0.03)

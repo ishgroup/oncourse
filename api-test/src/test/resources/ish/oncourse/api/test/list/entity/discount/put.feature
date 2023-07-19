@@ -19,7 +19,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"CUBE1",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[{"id":"1001"}],
         "cosAccount":10,
         "description":"some description",
@@ -77,7 +77,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":300,
         "cosAccount":null,
         "predictedStudentsPercentage":0.2,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"CUBE1UPD",
         "validFrom":null,
         "validFromOffset":null,
@@ -121,7 +121,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":300.00,
         "cosAccount":null,
         "predictedStudentsPercentage":0.20,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"CUBE1UPD",
         "validFrom":null,
         "validFromOffset":null,
@@ -150,7 +150,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         """
 
 #       <--->  Scenario have been finished. Now remove relations and then remove created object from DB:
-        * def discountToUpdate = {"id":"#(id)","name":"testDiscount200upd","discountType":"Percent","rounding":"Nearest 50 cents","discountValue":0,"discountPercent":0.2,"discountMin":100,"discountMax":300,"cosAccount":null,"predictedStudentsPercentage":0.2,"availableOnWeb":false,"code":"CUBE1UPD","validFrom":null,"validFromOffset":null,"validTo":"2028-07-11","validToOffset":null,"hideOnWeb":false,"description":"some description upd","studentEnrolledWithinDays":10,"studentAgeUnder":false,"studentAge":3,"studentPostcode":"123456upd","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":2,"minValue":5,"corporatePassDiscounts":[]}
+        * def discountToUpdate = {"id":"#(id)","name":"testDiscount200upd","discountType":"Percent","rounding":"Nearest 50 cents","discountValue":0,"discountPercent":0.2,"discountMin":100,"discountMax":300,"cosAccount":null,"predictedStudentsPercentage":0.2,"availableFor":'Office only',"code":"CUBE1UPD","validFrom":null,"validFromOffset":null,"validTo":"2028-07-11","validToOffset":null,"hideOnWeb":false,"description":"some description upd","studentEnrolledWithinDays":10,"studentAgeUnder":false,"studentAge":3,"studentPostcode":"123456upd","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":2,"minValue":5,"corporatePassDiscounts":[]}
 
         Given path ishPath + '/' + id
         And request discountToUpdate
@@ -171,7 +171,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"WABCD2",
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "corporatePassDiscounts":[{"id":"1001"}],
         "cosAccount":10,
         "description":"some description",
@@ -229,7 +229,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":0,
         "cosAccount":null,
         "predictedStudentsPercentage":0.11,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "code":"WABCD2upd",
         "validFrom":null,
         "validFromOffset":-3,
@@ -273,7 +273,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":0.00,
         "cosAccount":null,
         "predictedStudentsPercentage":0.11,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "code":"WABCD2upd",
         "validFrom":null,
         "validFromOffset":-3,
@@ -302,7 +302,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         """
 
 #       <--->  Scenario have been finished. Now remove relations and then remove created object from DB:
-        * def discountToUpdate = {"id":"#(id)","name":"testDiscount201upd","discountType":"Dollar","rounding":"Nearest dollar","discountValue":55.5,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":null,"predictedStudentsPercentage":0.11,"availableOnWeb":true,"code":"ABCD2upd","validFrom":null,"validFromOffset":-3,"validTo":null,"validToOffset":23,"hideOnWeb":true,"description":"some description upd","studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":"abc","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":10,"minValue":222,"corporatePassDiscounts":[]}
+        * def discountToUpdate = {"id":"#(id)","name":"testDiscount201upd","discountType":"Dollar","rounding":"Nearest dollar","discountValue":55.5,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":null,"predictedStudentsPercentage":0.11,"availableFor":'Online and office',"code":"ABCD2upd","validFrom":null,"validFromOffset":-3,"validTo":null,"validToOffset":23,"hideOnWeb":true,"description":"some description upd","studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":"abc","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":10,"minValue":222,"corporatePassDiscounts":[]}
 
         Given path ishPath + '/' + id
         And request discountToUpdate
@@ -323,7 +323,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"EABCD3",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some description",
@@ -380,7 +380,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":0,
         "cosAccount":null,
         "predictedStudentsPercentage":0.2,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"EABCD3upd",
         "validFrom":null,
         "validFromOffset":-6,
@@ -423,7 +423,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":0.00,
         "cosAccount":null,
         "predictedStudentsPercentage":0.20,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"EABCD3upd",
         "validFrom":null,
         "validFromOffset":-6,
@@ -451,7 +451,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         """
 
 #       <--->  Scenario have been finished. Now remove relations and then remove created object from DB:
-        * def discountToUpdate = {"id":"#(id)","name":"testDiscount202upd","discountType":"Fee override","rounding":"No Rounding","discountValue":100,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":null,"predictedStudentsPercentage":0.2,"availableOnWeb":false,"code":"ABCD3upd","validFrom":null,"validFromOffset":-6,"validTo":null,"validToOffset":5,"hideOnWeb":false,"description":"some description upd","studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":5,"minValue":205,"corporatePassDiscounts":[]}
+        * def discountToUpdate = {"id":"#(id)","name":"testDiscount202upd","discountType":"Fee override","rounding":"No Rounding","discountValue":100,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":null,"predictedStudentsPercentage":0.2,"availableFor":'Office only',"code":"ABCD3upd","validFrom":null,"validFromOffset":-6,"validTo":null,"validToOffset":5,"hideOnWeb":false,"description":"some description upd","studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":5,"minValue":205,"corporatePassDiscounts":[]}
 
         Given path ishPath + '/' + id
         And request discountToUpdate
@@ -472,7 +472,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"sCUBE123",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[{"id":"1001"}],
         "cosAccount":10,
         "description":"some description",
@@ -534,7 +534,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":300,
         "cosAccount":null,
         "predictedStudentsPercentage":0.2,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"sCUBE123UPD",
         "validFrom":null,
         "validFromOffset":null,
@@ -577,7 +577,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":300.00,
         "cosAccount":null,
         "predictedStudentsPercentage":0.20,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"sCUBE123UPD",
         "validFrom":null,
         "validFromOffset":null,
@@ -609,7 +609,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
 
         
 
-        * def discountToUpdate = {"id":"#(id)","name":"testDiscount203upd","discountType":"Percent","rounding":"Nearest 50 cents","discountValue":0,"discountPercent":0.2,"discountMin":100,"discountMax":300,"cosAccount":null,"predictedStudentsPercentage":0.2,"availableOnWeb":false,"code":"CUBE123UPD","validFrom":null,"validFromOffset":null,"validTo":"2028-07-11","validToOffset":null,"hideOnWeb":false,"description":"some description upd","studentEnrolledWithinDays":10,"studentAgeUnder":false,"studentAge":3,"studentPostcode":"123456upd","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":2,"minValue":5,"corporatePassDiscounts":[]}
+        * def discountToUpdate = {"id":"#(id)","name":"testDiscount203upd","discountType":"Percent","rounding":"Nearest 50 cents","discountValue":0,"discountPercent":0.2,"discountMin":100,"discountMax":300,"cosAccount":null,"predictedStudentsPercentage":0.2,"availableFor":'Office only',"code":"CUBE123UPD","validFrom":null,"validFromOffset":null,"validTo":"2028-07-11","validToOffset":null,"hideOnWeb":false,"description":"some description upd","studentEnrolledWithinDays":10,"studentAgeUnder":false,"studentAge":3,"studentPostcode":"123456upd","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":2,"minValue":5,"corporatePassDiscounts":[]}
 
         Given path ishPath + '/' + id
         And request discountToUpdate
@@ -630,7 +630,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"jCUBE21",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some description",
@@ -692,7 +692,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":300,
         "cosAccount":null,
         "predictedStudentsPercentage":0.2,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"jCUBE21UPD",
         "validFrom":null,
         "validFromOffset":null,
@@ -736,7 +736,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
 #       <----->  Add a new entity to update and define its id:
         * def newDiscount =
         """
-        {"addByDefault":false,"code":null,"availableOnWeb":false,"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":5,"minValue":50,"name":"testDiscount205","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
+        {"addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":5,"minValue":50,"name":"testDiscount205","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}
         """
 
         Given path ishPath
@@ -767,7 +767,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":null,
         "predictedStudentsPercentage":0.1,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -809,7 +809,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":null,
         "predictedStudentsPercentage":0.1,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -851,7 +851,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":null,
         "predictedStudentsPercentage":0.1,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -893,7 +893,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":null,
         "predictedStudentsPercentage":null,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -935,7 +935,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":null,
         "predictedStudentsPercentage":0.1,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -977,7 +977,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":null,
         "predictedStudentsPercentage":0.1,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -1015,7 +1015,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
     Scenario: (-) Update discount to discountMax < discountMin
 
 #       <----->  Add a new entity to update and define its id:
-        * def newDiscount = {"addByDefault":false,"code":null,"availableOnWeb":false,"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":20,"discountMemberships":[],"discountMin":10,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount208","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}        """
+        * def newDiscount = {"addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":20,"discountMemberships":[],"discountMin":10,"discountPercent":0.1,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount208","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null}        """
 
         Given path ishPath
         And request newDiscount
@@ -1038,7 +1038,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "id":"#(id)","name":"testDiscount208","discountType":"Percent","rounding":"No Rounding","discountValue":0,"discountPercent":0.1,
         "discountMin":30,
         "discountMax":20,
-        "cosAccount":null,"predictedStudentsPercentage":0.1,"availableOnWeb":false,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":false,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":0,"minValue":0,"corporatePassDiscounts":[]
+        "cosAccount":null,"predictedStudentsPercentage":0.1,"availableFor":'Office only',"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":false,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":0,"minValue":0,"corporatePassDiscounts":[]
         }
         """
 
@@ -1061,7 +1061,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         * def newDiscount =
         """
         {
-        "addByDefault":false,"code":null,"availableOnWeb":false,"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount209","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,
+        "addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount209","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,
         "validFrom":"2019-07-11","validFromOffset":null,
         "validTo":"2019-07-31","validToOffset":null
         }
@@ -1086,7 +1086,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         """
         {
         "id":"#(id)",
-        "name":"testDiscount209","discountType":"Percent","rounding":"No Rounding","discountValue":0,"discountPercent":0,"discountMin":0,"discountMax":0,"cosAccount":null,"predictedStudentsPercentage":0.1,"availableOnWeb":false,"code":null,
+        "name":"testDiscount209","discountType":"Percent","rounding":"No Rounding","discountValue":0,"discountPercent":0,"discountMin":0,"discountMax":0,"cosAccount":null,"predictedStudentsPercentage":0.1,"availableFor":'Office only',"code":null,
         "validFrom":"2019-07-11","validFromOffset":null,
         "validTo":"2019-07-01","validToOffset":null,
         "hideOnWeb":false,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":false,"minEnrolments":0,"minValue":0,"corporatePassDiscounts":[]
@@ -1121,7 +1121,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":null,
         "predictedStudentsPercentage":0.1,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -1147,7 +1147,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         And request discountToUpdate
         When method PUT
         Then status 400
-        And match $.errorMessage == "Discount with id:99999 doesn't exist"
+        And match $.errorMessage == "Record with id = '99999' doesn't exist."
 
 
 

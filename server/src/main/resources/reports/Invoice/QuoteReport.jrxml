@@ -2,15 +2,9 @@
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
 <!-- 2017-04-03T16:31:20 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="QuoteReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" isFloatColumnFooter="true" whenResourceMissingType="Empty" uuid="ba1ca0c5-0202-4784-a5bd-c3ff7fab3dd8">
-	<property name="name" value="Quote"/>
-	<property name="entity" value="QuoteLine"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.quoteReport"/>
 	<property name="ish.oncourse.title" value="Quote line list"/>
 	<property name="ish.oncourse.filePrefix" value="quote line"/>
-	<property name="ish.oncourse.description" value="To supply hard copy Quote to students and other debtors.This report prints in Portrait format."/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="source"/>
 	<import value="ish.math.Money"/>
 	<import value="net.sf.jasperreports.engine.*"/>

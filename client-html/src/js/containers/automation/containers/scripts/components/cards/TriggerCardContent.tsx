@@ -18,7 +18,13 @@ import { CatalogItemType } from "../../../../../../model/common/Catalog";
 import TagsService from "../../../../../tags/services/TagsService";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
-const AllEntities = [...AQL_ENTITY_ITEMS, { label: "ContactTagRelation", value: "ContactTagRelation" }];
+// Filter AbstractInvoice and include Quote
+const AllEntities = [
+  ...AQL_ENTITY_ITEMS, 
+  { label: "ContactTagRelation", value: "ContactTagRelation" },
+  { label: "Quote", value: "Quote" }
+  ]
+  .filter(e => e.value !== "AbstractInvoice");
 
 const TagableEntities = Object.keys(TagRequirementType).map(mapSelectItems);
 

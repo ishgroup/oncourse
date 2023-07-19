@@ -844,3 +844,27 @@ databaseChangeLog:
       changes:
         - dropTable:
             tableName: MessageTemplate
+
+  - changeSet:
+      id: 121-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Checkout
+            columnName: createdOn
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.UpdatePayerIdForCheckouts
+  - changeSet:
+      id: 123-2
+      author: kristina
+      comment: the current version of the document must be determined by `current` property
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: DocumentVersion
+            columnName: current
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.ChangeCurrentVersionDocumentsDefenitionJob

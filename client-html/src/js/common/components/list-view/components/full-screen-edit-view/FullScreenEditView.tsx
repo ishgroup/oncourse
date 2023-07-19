@@ -27,11 +27,9 @@ import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayNa
 import { LSGetItem } from "../../../../utils/storage";
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  STICKY_HEADER_EVENT,
   TAB_LIST_SCROLL_TARGET_ID
 } from "../../../../../constants/Config";
 import FullScreenStickyHeader from "./FullScreenStickyHeader";
-import { useStickyScrollSpy } from "../../../../utils/hooks";
 
 const styles = theme => createStyles({
   header: {
@@ -82,7 +80,7 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
 class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps, any> {
   state = {
     hasScrolling: false
-  }
+  };
 
   componentDidUpdate(prevProps) {
     const {
@@ -101,26 +99,18 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     }
   }
 
-  onStickyChange = e => {
-    if (this.state.hasScrolling !== e.detail.stuck) {
-      this.setState({ hasScrolling: e.detail.stuck });
+  updateTitle = (title: string) => {
+    const { fullScreenEditView, customTableModel, rootEntity,  } = this.props;
+
+    if (fullScreenEditView && title) {
+      document.title = `${getSingleEntityDisplayName(customTableModel || rootEntity)} (${title})`;
     }
   };
 
-  componentDidMount() {
-    document.addEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
-  }
-
-  updateTitle = (title: string) => {
-    const { fullScreenEditView, rootEntity } = this.props;
-
-    if (fullScreenEditView && title) {
-      document.title = `${getSingleEntityDisplayName(rootEntity)} (${title})`;
-    }
+  resetScroll = () => {
+    this.setState({
+      hasScrolling: false
+    });
   };
 
   onCloseClick = () => {
@@ -133,10 +123,25 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
         onConfirm: () => {
           reset();
           toogleFullScreenEditView();
+          this.resetScroll();
         }
       });
     } else {
       toogleFullScreenEditView();
+      this.resetScroll();
+    }
+  };
+
+  onScroll = e => {
+    if (e.target.scrollTop > 0 && !this.state.hasScrolling) {
+      this.setState({
+        hasScrolling: true
+      });
+    }
+    if (e.target.scrollTop <= 0 && this.state.hasScrolling) {
+      this.setState({
+        hasScrolling: false
+      });
     }
   };
 
@@ -179,8 +184,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     this.updateTitle(title);
 
     const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
-
-    const { scrollSpy } = useStickyScrollSpy();
 
     return (
       <Dialog
@@ -233,10 +236,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
           </AppBar>
           <div
             className={clsx(classes.root, noTabList && "overflow-y-auto", !hideTitle && noTabList && "pt-1")}
-            onScroll={noTabList ? scrollSpy : undefined}
+            onScroll={noTabList ? this.onScroll : undefined}
           >
             <EditViewContent
               twoColumn
+              onScroll={this.onScroll}
               asyncValidating={asyncValidating}
               syncErrors={syncErrors}
               submitSucceeded={submitSucceeded}

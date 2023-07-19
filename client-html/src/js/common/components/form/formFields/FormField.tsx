@@ -27,10 +27,11 @@ import { validateTagsList } from "../simpleTagListComponent/validateTagsList";
 import EditInPlacePhoneField from "./EditInPlacePhoneField";
 import { FormFieldProps } from "../../../../model/common/Fields";
 import { stubFunction } from "../../../utils/common";
+import { ColoredCheckBox } from "../ColoredCheckBox";
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 
-const FormFieldBase = React.forwardRef<any, FormFieldProps>((props, ref) => {
+const FormFieldBase = (props: FormFieldProps) => {
 
   const { type, ...rest } = props;
 
@@ -74,46 +75,48 @@ const FormFieldBase = React.forwardRef<any, FormFieldProps>((props, ref) => {
 
   switch (type) {
     case "phone":
-      return <EditInPlacePhoneField inputRef={ref} {...sharedProps} />;
+      return <EditInPlacePhoneField  {...sharedProps} />;
     case "duration":
-      return <EditInPlaceDurationField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceDurationField  {...sharedProps} />;
     case "file":
-      return <EditInPlaceFileField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceFileField  {...sharedProps} />;
     case "money":
-      return <EditInPlaceMoneyField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceMoneyField  {...sharedProps} />;
     case "select":
-      return <EditInPlaceSearchSelect inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceSearchSelect  {...sharedProps} />;
     case "remoteDataSelect":
-      return <EditInPlaceRemoteDataSearchSelect inputRef={ref} entity={entity} {...sharedProps} />;
+      return <EditInPlaceRemoteDataSearchSelect  entity={entity} {...sharedProps} />;
     case "number":
-      return <EditInPlaceField inputRef={ref} {...sharedProps} type="number" />;
+      return <EditInPlaceField  {...sharedProps} type="number" />;
     case "date":
-      return <EditInPlaceDateTimeField inputRef={ref} {...sharedProps} type="date" />;
+      return <EditInPlaceDateTimeField  {...sharedProps} type="date" />;
     case "time":
-      return <EditInPlaceDateTimeField inputRef={ref} {...sharedProps} type="time" />;
+      return <EditInPlaceDateTimeField  {...sharedProps} type="time" />;
     case "dateTime":
-      return <EditInPlaceDateTimeField inputRef={ref} {...sharedProps} type="datetime" />;
+      return <EditInPlaceDateTimeField  {...sharedProps} type="datetime" />;
     case "aql":
-      return <EditInPlaceQuerySelect inputRef={ref} {...sharedProps as any} />;
+      return <EditInPlaceQuerySelect  {...sharedProps as any} />;
     case "code":
       return <CodeEditorField {...sharedProps} />;
     case "password":
-      return <EditInPlaceField inputRef={ref} {...sharedProps} type="password" />;
+      return <EditInPlaceField  {...sharedProps} type="password" />;
     case "switch":
       return <FormSwitch {...sharedProps} />;
     case "checkbox":
       return <CheckboxField {...sharedProps} />;
+    case "coloredCheckbox":
+      return <ColoredCheckBox {...sharedProps} label={type === "coloredCheckbox" && props.label} color={type === "coloredCheckbox" && props.color} />;
     case "multilineText":
-      return <EditInPlaceField inputRef={ref} {...sharedProps} multiline />;
+      return <EditInPlaceField  {...sharedProps} multiline />;
     case "stub":
-      return <div className="invisible" ref={ref} />;
+      return <div className="invisible" />;
     case "tags":
-      return <SimpleTagList inputRef={ref} {...sharedProps} />;
+      return <SimpleTagList  {...sharedProps} />;
     case "text":
     default:
-      return <EditInPlaceField inputRef={ref} {...sharedProps} />;
+      return <EditInPlaceField  {...sharedProps} />;
   }
-});
+};
 
 type BaseProps = FormFieldProps & BaseFieldProps<FormFieldProps>;
 
@@ -127,8 +130,6 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
   const tags = type === "tags" ? props.tags : [];
   const required = type !== "stub" ? props.required : false;
 
-  const validateTags = useCallback((...args: [any, any, any]) => validateTagsList(tags || [], ...args), [tags]);
-  
   const validateResolver = useMemo(() => {
     const result = [];
     if (required) {
@@ -138,11 +139,15 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
       result.push(validate);
     }
     if (type === "tags") {
-      result.push(validateTags);
+      result.push(
+        (value, allValues, formProps) => validateTagsList(tags || [], value, allValues, formProps, (type === "tags"
+            ? props.validateEntity
+            : null
+        ))
+      );
     }
-
     return result.length > 1 ? result : result.length ? result[0] : undefined;
-  }, [validate, required, type, validateTags]);
+  }, [validate, required, type, tags, type === "tags" && props.validateEntity]);
 
   return (
     <Field

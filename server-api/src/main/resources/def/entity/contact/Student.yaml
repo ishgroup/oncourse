@@ -75,3 +75,7 @@ properties:
     type: array
     items:
       $ref: '../StudentConcession.yaml'
+  customFields:
+    type: object
+    additionalProperties:
+      type: string

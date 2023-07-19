@@ -17,6 +17,7 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateOutcomeReportableHours
+import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._Enrolment
 import ish.validation.EnrolmentStatusValidator
 import org.apache.cayenne.PersistenceState
@@ -29,7 +30,6 @@ import javax.annotation.Nullable
 
 import static ish.common.types.EnrolmentStatus.NEW
 import static java.lang.String.format
-
 /**
  * An enrolment joins a student to a class. There can be only one enrolment per student per class.
  *
@@ -114,6 +114,29 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	void prePersist() {
 		updateOverriddenFields()
+	}
+
+	@Override
+	protected void postPersist() {
+		removeAbandonedCartsWithThisClass()
+	}
+
+	private void removeAbandonedCartsWithThisClass(){
+		Contact contact = student.getContact()
+		if(contact == null)
+			return
+
+		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
+
+		checkouts.each {checkout ->
+			def classesIds = CartFunctions.idsOfCurrentItems(checkout, contact.getWillowId(), CartFunctions.CLASSES_KEY)
+			def waitingCoursesIds = CartFunctions.idsOfCurrentItems(checkout, contact.getWillowId(), CartFunctions.WAITING_KEY)
+
+			if (classesIds.contains(courseClass.willowId) || waitingCoursesIds.contains(courseClass.course.willowId)) {
+				context.deleteObject(checkout)
+				context.commitChanges()
+			}
+		}
 	}
 
 	/**

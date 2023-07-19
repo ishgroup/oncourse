@@ -8,6 +8,7 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
         * def ishPathWaitingList = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
         * def ishPathLogin = 'login'
+        * def ishPathDelete = '/list/plain/bulkDelete?entity=WaitingList'
         
 
 
@@ -50,8 +51,13 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
         And match $.latestWaitingLists == [{"title":"Course2","info":"1","link":"/waitingList?search=course.id=2"}]
 
 #       <---> Scenario have been finished. Now find and remove created Waiting List from DB:
-        Given path ishPathWaitingList + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -100,8 +106,13 @@ Feature: Main feature for all GET requests with path 'dashboard/statistic'
 #       <---> Scenario have been finished. Now find and remove created Waiting List from DB:
         * configure headers = { Authorization: 'admin'}
 
-        Given path ishPathWaitingList + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 

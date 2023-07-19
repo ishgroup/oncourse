@@ -25,10 +25,6 @@ const useStyles = makeAppStyles(theme => ({
   },
   inlineContainer: {
     display: "inline-block",
-    marginLeft: theme.spacing(0.5)
-  },
-  inlineMargin: {
-    marginRight: theme.spacing(0.5)
   },
   editIcon: {
     fontSize: "24px",
@@ -87,13 +83,11 @@ const EditInPlaceField = (
     <div
       id={input.name}
       className={clsx(className, "outline-none", {
-        [classes.inlineMargin]: inline,
         [classes.rightAligned]: rightAligned,
         [classes.inlineContainer]: inline
       })}
     >
       <EditInPlaceFieldBase
-        ref={inputRef}
         name={input.name}
         value={inputValue}
         error={error}
@@ -117,6 +111,7 @@ const EditInPlaceField = (
           onFocus: input.onFocus,
           maxRows: truncateLines,
           inputProps: {
+            ref: inputRef,
             maxLength,
             step,
             min,

@@ -19,10 +19,6 @@ class WaitingListService {
   public updateWaitingList(id: number, waitingList: WaitingList): Promise<any> {
     return this.waitingListApi.update(id, waitingList);
   }
-
-  public removeWaitingList(id: number): Promise<any> {
-    return this.waitingListApi.remove(id);
-  }
 }
 
 export default new WaitingListService();

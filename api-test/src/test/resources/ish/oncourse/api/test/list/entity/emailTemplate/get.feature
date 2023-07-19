@@ -69,3 +69,15 @@ Feature: Main feature for all GET requests with path 'list/entity/emailTemplate'
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
+
+
+
+    Scenario: (+) Get EmailTemplate configs by admin
+
+        Given path ishPath + '/config/1'
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: "A message template for inviting the student of a VET course to\\\n  \\ complete a course completion survey. Their answers will be available in the \'Student\\\n  \\ Feedback\' section of onCourse. Sent by an automation, or manually form the Class\\\n  \\ or Enrolments windows."\ndescription: "A message template for inviting the student of a VET course to complete\\\n  \\ a course completion survey. Their answers will be available in the \'Student Feedback\'\\\n  \\ section of onCourse. Sent by an automation, or manually form the Class or Enrolments\\\n  \\ windows."\ncategory: accreditation\nname: VET Course completion survey\noptions:'
+        And match $ contains '\n- name: header_keycode\n  value: ish.email.header\n  dataType: TEXT'
+        And match $ contains '\n- name: footer_keycode\n  value: ish.email.footer\n  dataType: TEXT'
+        And match $ contains '\nentityClass: Enrolment\ntype: EMAIL\nsubject: VET Course completion survey'

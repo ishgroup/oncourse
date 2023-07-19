@@ -7,9 +7,7 @@
  */
 
 import { Course } from "@api/model";
-import React, {
-  useCallback, useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
@@ -34,7 +32,6 @@ import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation
 import { getDiscountAmountExTax } from "../../discounts/utils";
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { calculateInvoiceLineTotal } from "../utils";
-
 
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)
     .minus(discountEachExTax || 0)
@@ -389,7 +386,6 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           defaultValue={row.incomeAccountName}
           selectValueMark="id"
           selectLabelCondition={accountLabelCondition}
-          
           onChange={onIncomeAccountChange}
           inputRef={accountRef}
           required
@@ -437,7 +433,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               type="remoteDataSelect"
               entity="Discount"
               aqlColumns="name,discountType,discountDollar,discountPercent,rounding"
-              aqlFilter="((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))"
+              aqlFilter="((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null)) "
               label="Discount"
               selectValueMark="id"
               selectLabelMark="name"

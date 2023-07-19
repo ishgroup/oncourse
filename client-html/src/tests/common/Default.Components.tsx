@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-  render as testRender, screen as testScreen, fireEvent as testFireEvent
+  render as testRender, screen as testScreen, fireEvent as testFireEvent, act
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { mockedAPI, TestEntry } from "../TestEntry";
@@ -40,19 +40,21 @@ export const defaultComponents = (props: Props) => {
     beforeFn();
   }
 
+
+
   testRender(
     <TestEntry state={state ? { ...state({ mockedApi: mockedAPI, viewProps }) } : {}}>
       <View {...viewProps} />
     </TestEntry>
   );
 
-  it(`${entity} components should render with given values`, () => {
-    render({
+  it(`${entity} components should render with given values`, async () => {
+    await act( async () => render({
       screen: testScreen,
       initialValues,
       mockedApi: mockedAPI,
       fireEvent: testFireEvent,
       viewProps,
-    });
+    }));
   });
 };

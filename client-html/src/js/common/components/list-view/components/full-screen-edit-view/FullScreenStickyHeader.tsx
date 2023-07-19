@@ -1,19 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import makeStyles from "@mui/styles/makeStyles";
 import { ClickAwayListener, Collapse, Grid, Typography } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-import { AppTheme } from "../../../../../model/common/Theme";
-import { APP_BAR_HEIGHT, STICKY_HEADER_EVENT } from "../../../../../constants/Config";
+import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
+import { makeAppStyles } from "../../../../styles/makeStyles";
 
-const useStyles = makeStyles((theme: AppTheme) => ({
-  fullScreenTitleItem: {
-    marginTop: theme.spacing(4),
-    position: "fixed",
-    top: 0,
-    maxWidth: "calc(100% - 224px)",
-    zIndex: theme.zIndex.appBar + 1,
+const useStyles = makeAppStyles(theme => ({
+  root: {
+    "& $fullScreenTitleItem": {
+      background: theme.appBar.headerAlternate.background,
+      position: "fixed",
+      top: 0,
+      zIndex: theme.zIndex.appBar + 1,
+      marginTop: 0,
+      height: APP_BAR_HEIGHT
+    }
   },
+  fullScreenTitleItem: {},
   titleFields: {
     transition: theme.transitions.create("all", {
       duration: theme.transitions.duration.standard,
@@ -32,15 +35,6 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     "& button": {
       color: `${theme.appBar.headerAlternate.color}`,
     }
-  },
-  titleWrapper: {
-    minHeight: 51,
-  },
-  hasAvatar: {
-    minHeight: 90,
-  },
-  hasAvatarScrollIn: {
-    marginTop: theme.spacing(0),
   },
   title: {
     cursor: "text",
@@ -77,9 +71,11 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     marginBottom: theme.spacing(0.5),
     marginLeft: theme.spacing(1)
   },
-  isStuck: {
-    marginTop: 0,
-    height: APP_BAR_HEIGHT
+  isFixed: {
+    marginTop: theme.spacing(4),
+    position: "fixed",
+    top: 0,
+    zIndex: theme.zIndex.appBar + 1,
   },
   disableInteraction: {}
 }));
@@ -93,7 +89,11 @@ interface Props {
   title?: any;
   disableInteraction?: boolean,
   opened?: boolean,
-  fields?: any;
+  isFixed?: boolean,
+  customStuck?: boolean,
+  fields?: any,
+  className?: string,
+  leftOffset?: number
 }
 
 const FullScreenStickyHeader = React.memo<Props>(props => {
@@ -103,13 +103,18 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     opened,
     fields,
     twoColumn,
-    disableInteraction
+    disableInteraction,
+    isFixed =  true,
+    customStuck,
+    leftOffset
   } = props;
 
   const classes = useStyles();
   
   const [isEditing, setIsEditing] = useState<boolean>(opened);
   const [isStuck, setIsStuck] = useState<boolean>(false);
+
+  const rootRef = useRef<HTMLDivElement>();
   
   useEffect(() => {
     if (!isEditing && opened) {
@@ -123,41 +128,51 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     }
   };
 
-  const onStickyChange = useCallback(e => {
-    if (isStuck !== e.detail.stuck) {
-      setIsStuck(e.detail.stuck);
+  const onStickyChange = useCallback(() => {
+    if (typeof customStuck === "boolean") return;
+
+    const top = rootRef.current?.getBoundingClientRect().top;
+    if (top < APP_BAR_HEIGHT && !isStuck) {
+      setIsStuck(true);
+    }
+    if (top >= APP_BAR_HEIGHT && isStuck) {
+      setIsStuck(false);
     }
     onClickAway();
-  }, [isStuck, isEditing]);
+  }, [isStuck, customStuck]);
 
   useEffect(() => {
-    document.addEventListener(STICKY_HEADER_EVENT, onStickyChange);
+    document.addEventListener("scroll", onStickyChange, true);
     return () => {
-      document.removeEventListener(STICKY_HEADER_EVENT, onStickyChange);
+      document.removeEventListener("scroll", onStickyChange);
     };
   }, [onStickyChange]);
 
-  const showTitleOnly = twoColumn && isStuck;
+  const showTitleOnly = twoColumn && (isStuck || customStuck);
 
   const titleExpanded = opened ? false : !isEditing;
 
   return (
     <ClickAwayListener onClickAway={onClickAway}>
       <Grid
+        ref={rootRef}
         container
         columnSpacing={3}
-        className={clsx("align-items-center", Avatar && opened && "mb-2")}
+        className={clsx("align-items-center", Avatar && opened && "mb-2", classes.root)}
         style={Avatar ? { minHeight: "60px" } : null}
       >
         <Grid
           item
           xs={12}
+          columnSpacing={3}
           className={clsx(
             "centeredFlex",
-            twoColumn && !opened && classes.fullScreenTitleItem,
-            isStuck && !opened && classes.isStuck
+            twoColumn && !opened && (isStuck || customStuck) && classes.fullScreenTitleItem,
+            !opened && isFixed && twoColumn && classes.isFixed,
           )}
-          columnSpacing={3}
+          style={{
+            width: `calc(100% - 250px - ${leftOffset || 0}px)`
+          }}
         >
           {Avatar && (
             <Avatar

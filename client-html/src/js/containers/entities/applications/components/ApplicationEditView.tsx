@@ -26,7 +26,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3" />
   },
   {
     label: "Documents",
@@ -36,6 +36,7 @@ const items: TabsListItem[] = [
 
 const ApplicationEditView: React.FC<EditViewProps<Application> & { classes: any }> = props => (
   <TabsList
+    onParentScroll={props.onScroll}
     items={props.values ? items : []}
     itemProps={props}
   />

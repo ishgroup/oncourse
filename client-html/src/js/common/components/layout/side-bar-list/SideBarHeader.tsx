@@ -93,7 +93,7 @@ const SideBarHeader = (
       onClick={onClick}
     >
       <div>
-        <div className="centeredFlex">
+        <div className="centeredFlex mb-1">
           <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
           <div className={classes.label}>{label}</div>
         </div>

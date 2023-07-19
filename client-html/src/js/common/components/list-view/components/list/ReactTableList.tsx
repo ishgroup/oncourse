@@ -78,7 +78,10 @@ const Table = ({
   const [columnVisibility, onColumnVisibilityChange] = useState<VisibilityState>({});
   const [columnSizing, onColumnSizingChange] = useState<ColumnSizingState>({});
   const [columnOrder, onColumnOrderChange] = useState<ColumnOrderState>([]);
-  const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>({});
+  const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>(selection.reduce((p, c) => {
+    p[c] = true;
+    return p;
+  }, {}));
 
   const tableRef = useRef<any>();
 
@@ -171,11 +174,7 @@ const Table = ({
   });
 
   const onSelectionChangeHangler = useCallback<any>(debounce(() => {
-    const newSelection = Object.keys(table.getState().rowSelection).map(k => k);
-    if (newSelection.length === 1 && selection.length === 1 && newSelection[0] === selection[0]) {
-      return;
-    }
-    onSelectionChange(newSelection);
+    onSelectionChange(Object.keys(table.getState().rowSelection).map(k => k));
   }, 500), [selection]);
 
   const onHiddenChange = useCallback<any>(debounce(() => {
@@ -385,7 +384,7 @@ const Table = ({
                                         } else {
                                           column.toggleSorting(isSorted !== false);
                                         }
-                                        onSortChange()
+                                        onSortChange();
                                       }
                                       : null
                                     }

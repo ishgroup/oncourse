@@ -67,6 +67,12 @@ const queryStyles = theme => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
   },
+  noOptions: {
+    display: "none",
+    "& $menuCorner": {
+      display: "none"
+    }
+  }
 });
 
 const TimePicker: any = Time;
@@ -115,7 +121,7 @@ const completeSuggestions = (
 
       variants = (operatorsFilter && operatorsFilter !== ENUM_CONSTRUCTOR_NAME) || !match ? [] : Object.keys(match);
 
-      if (!pathFilter && customFields) {
+      if (!pathFilter && !operatorsFilter && customFields) {
         variants = [...variants, ...customFields];
       }
 
@@ -215,8 +221,8 @@ const completeSuggestions = (
 
   return variants.map(i => ({
     token,
-    value: i,
-    label: i.replace(/'/g, "")
+    value: i.replace(/[']/g, ""),
+    label: i.replace(/[']/g, "")
   }));
 };
 
@@ -503,22 +509,25 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     const { classes } = this.props;
 
     const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
-
-    return [clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft), {
-      display: menuIsOpen && Boolean(options.length) ? "block" : "none",
-      position: "absolute",
-      marginBottom: "12px",
-      width: "auto",
-      transform: "translateY(calc(-100% - 8px))",
-      top: 0,
-      ...rightAligned
-        ? {
-          left: this.inputNode.clientWidth,
-        }
-        : {
-          left: caretCoordinates ? caretCoordinates.left : 0,
-        }
-    }];
+    
+    return {
+      className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
+      style: {
+        display: menuIsOpen && Boolean(options.length) ? "block" : "none",
+        position: "absolute" as any,
+        marginBottom: "12px",
+        width: "auto",
+        transform: "translateY(calc(-100% - 8px))",
+        top: 0,
+        ...rightAligned
+          ? {
+            left: this.inputNode.clientWidth,
+          }
+          : {
+            left: caretCoordinates ? caretCoordinates.left : 0,
+          }
+      }
+    };
   };
 
   filterOptions = item => item.label
@@ -602,7 +611,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
         new RegExp((this.state.searchValue.match(/[+*()]/) ? "\\" : "") + this.state.searchValue + "$"),
         this.state.searchValue.match(/\s/) ? " " : ""
       )
-      + value[0].label
+      + value[0].value
       + (value[0].token === "SEPARATOR" || value[0].token === "'@'" || value[0].token === "'#'"
         ? ""
         : Entities[propType] && Entities[propType].constructor.name !== ENUM_CONSTRUCTOR_NAME
@@ -610,7 +619,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
         : " ");
 
     if (value[0].queryPrefix) {
-      const tagStr = "#" + value[0].label;
+      const tagStr = "#" + value[0].value;
       inputValue = inputValue.replace(tagStr, `${value[0].queryPrefix} ${tagStr}`);
     }
 
@@ -724,7 +733,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     if (lastTokenType === "'@'") {
       this.setState({
         searchValue: "",
-        options: (filterTags || []).filter(this.filterOptions)
+        options: (filterTags || [])
       });
       return;
     }
@@ -732,7 +741,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     if (lastTokenType === "'#'") {
       this.setState({
         searchValue: "",
-        options: (tags || []).filter(this.filterOptions)
+        options: (tags || [])
       });
       return;
     }
@@ -1014,11 +1023,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     return option as any;
   };
 
-  popperAdapter = params => {
-    const [className, style] = this.getInlineMenuStyles();
-
-    return <div {...params} className={className} style={style} />;
-  };
+  popperAdapter = ({ anchorEl, disablePortal, className, style,  ...params }) => (<div {...params} {...this.getInlineMenuStyles()} />);
 
   render() {
     const {
@@ -1081,7 +1086,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
               hasPopupIcon: classes.hasPopup,
               hasClearIcon: classes.hasClear,
-              inputRoot: classes.inputWrapper
+              noOptions: classes.noOptions
             } : undefined}
             renderInput={params => (
               <TextField
@@ -1103,7 +1108,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
                 // eslint-disable-next-line react/jsx-no-duplicate-props
                 inputProps={{
                   ...params.inputProps,
-                  value: inputValue
+                  value: inputValue || ""
                 }}
                 error={meta?.invalid}
                 helperText={(

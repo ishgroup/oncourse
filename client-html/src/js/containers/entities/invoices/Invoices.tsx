@@ -220,6 +220,7 @@ const Invoices = React.memo<any>(({
           asyncValidate: notesAsyncValidate,
           asyncChangeFields: ["notes[].message"]
         }}
+        scriptsFilterColumn="type"
         rootEntity="AbstractInvoice"
         filterEntity="Invoice"
         onInit={onInit}

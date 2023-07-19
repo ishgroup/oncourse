@@ -23,7 +23,7 @@ export const appendTimezone = (date: Date, timezone: string) => {
   return result;
 };
 
-export const appendTimezoneToUTC = (date: Date, timezone: string) => {
+export const prependTimezone = (date: Date, timezone: string) => {
   let result = date;
 
   try {

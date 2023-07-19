@@ -102,7 +102,7 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
             membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
-            membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, documentService) }
             membershipProductDTO.tags = membershipProduct.allTags.collect{ it.id }
             membershipProductDTO.customFields = membershipProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             membershipProductDTO

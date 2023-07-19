@@ -468,15 +468,15 @@
 
   <Discount CREATEDON="2012-04-04 16:37:01.17" DISCOUNTPERCENT="0.10" MODIFIEDON="2012-04-04 16:40:36.06"
             NAME="Discount percent" ROUNDING="0" ID="200" DISCOUNTTYPE="1" PREDICTEDSTUDENTSPERCENTAGE="0.50"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0"/>
   <Discount CREATEDON="2012-04-04 16:38:26.466" DISCOUNTDOLLAR="20.00" DISCOUNTMAX="0.00" DISCOUNTMIN="0.00"
             MODIFIEDON="2012-04-04 16:42:13.669" NAME="Discount dollar" ROUNDING="0" ID="201" DISCOUNTTYPE="2"
-            PREDICTEDSTUDENTSPERCENTAGE="0.50" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1"
+            PREDICTEDSTUDENTSPERCENTAGE="0.50" HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1"
             minValue="0" limitPreviousEnrolment="0"/>
   <Discount CREATEDON="2012-04-04 16:39:04.325" DISCOUNTDOLLAR="50.00" DISCOUNTMAX="0.00" DISCOUNTMIN="0.00"
             MODIFIEDON="2012-04-04 16:43:18.695" NAME="Discount fee" ROUNDING="0" ID="202" DISCOUNTTYPE="3"
-            PREDICTEDSTUDENTSPERCENTAGE="0.10" HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1"
+            PREDICTEDSTUDENTSPERCENTAGE="0.10" HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1"
             minValue="0" limitPreviousEnrolment="0"/>
 
   <Discount_CourseClass COURSECLASSID="220" CREATEDON="2012-04-04 16:37:01.173" MODIFIEDON="2012-04-04 16:37:01.173"

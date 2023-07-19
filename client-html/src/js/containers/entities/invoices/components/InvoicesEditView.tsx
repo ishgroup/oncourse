@@ -44,6 +44,7 @@ import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRendere
 import Uneditable from "../../../../common/components/form/Uneditable";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -436,7 +437,6 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <OwnApiNotes
           {...props}
           notesHeader="Private Note"
-          leftOffset
         />
       </Grid>
 
@@ -465,6 +465,30 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           value={values.createdByUser}
         />
       </Grid>
+
+      {values.type === "Invoice" && (
+        <CustomFields
+          entityName="Invoice"
+          fieldName="customFields"
+          entityValues={values}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 6 : 12,
+            lg: twoColumn ? 4 : 12
+          }}
+        />)}
+
+      {values.type === "Quote" && (
+        <CustomFields
+          entityName="Quote"
+          fieldName="customFields"
+          entityValues={values}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 6 : 12,
+            lg: twoColumn ? 4 : 12
+          }}
+        />)}
     </Grid>
   );
 };

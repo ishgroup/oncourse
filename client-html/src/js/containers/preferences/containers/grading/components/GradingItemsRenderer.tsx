@@ -104,11 +104,11 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                       type="text"
                       name={`${f}.name`}
                       inline
-                      className="mr-1"
                       required
                     />
                     {" ( "}
                     {offsetLabel}
+                    {" "}
                     <FormField
                       type="number"
                       name={`${f}.lowerBound`}
@@ -116,6 +116,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                       validate={validateMinMax}
                       required
                     />
+                    {" "}
                     {parent.entryType === "choice list" && "%"}
                     {" ) "}
                     <IconButton
