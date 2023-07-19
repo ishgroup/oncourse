@@ -6,7 +6,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "build:prod": "webpack --progress --node-env production",
-    "test": "jest --ci",
+    "test": "jest --ci --maxWorkers=50%",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx",
     "start:prod": "webpack serve --history-api-fallback --port 8100 --progress --env NODE_ENV=production",
     "start:mock": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/dev/app.tsx",
@@ -14,6 +14,8 @@
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^30.5.0",
+    "@swc/core": "^1.3.42",
+    "@swc/jest": "^0.2.24",
     "@testing-library/dom": "^8.17.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -43,7 +45,6 @@
     "eslint-plugin-jsx-a11y": "6.6.1",
     "eslint-plugin-react": "7.31.1",
     "eslint-plugin-react-hooks": "4.6.0",
-    "@fatso83/stacktrace-cli": "1.0.7",
     "file-loader": "6.*",
     "fork-ts-checker-webpack-plugin": "7.2.13",
     "html-webpack-plugin": "5.*",
@@ -57,11 +58,10 @@
     "redux-logger": "3.*",
     "source-map-loader": "4.0.0",
     "terser-webpack-plugin": "5.3.6",
-    "ts-jest": "^29.0.0",
     "ts-loader": "9.3.1",
     "tsconfig-paths-webpack-plugin": "4.0.0",
     "typescript": "^4.8.2",
-    "webpack": "5.74.0",
+    "webpack": "5.76.0",
     "webpack-bugsnag-plugins": "1.*",
     "webpack-bundle-analyzer": "4.6.1",
     "webpack-cli": "4.10.0",
@@ -143,13 +143,13 @@
     "uuid": "8.*"
   },
   "jest": {
-    "preset": "ts-jest",
     "testEnvironment": "jsdom",
     "setupFiles": [
       "<rootDir>/src/tests/tests.setup.ts",
       "jest-canvas-mock"
     ],
     "transform": {
+      "^.+\\.(t|j)sx?$": "@swc/jest",
       ".+\\.(css|styl|less|sass|scss|png|jpg|gif|svg|ttf|woff|woff2)$": "jest-transform-stub"
     },
     "reporters": [

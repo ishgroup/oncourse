@@ -31,7 +31,6 @@ interface Props {
   form?: string;
   dispatch: any;
   values: any;
-  leftOffset?: boolean;
   isNew: boolean;
   rootEntity: string;
 }
@@ -47,7 +46,6 @@ const OwnApiNotes = React.memo<Props>(
     dispatch,
     form,
     values,
-    leftOffset,
     isNew
   }) => {
     const [showMore, setShowMore] = useState(false);
@@ -108,7 +106,7 @@ const OwnApiNotes = React.memo<Props>(
     return (
       <Grid container columnSpacing={3} className={clsx("h-100 justify-content-center", className)} alignContent="flex-start">
         <Grid item xs={12}>
-          <div className={clsx("centeredFlex", { "pl-3": !leftOffset })}>
+          <div className="centeredFlex">
             <div className="heading">
               {values.notes && values.notes.length > 0 && values.notes.length}
               {' '}
@@ -128,7 +126,6 @@ const OwnApiNotes = React.memo<Props>(
           handleShowMore={handleShowMore}
           onDelete={deleteNote}
           twoColumn={twoColumn}
-          leftOffset={leftOffset}
         />
       </Grid>
     );

@@ -95,8 +95,8 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Classes", list: "class", expression: "enrolments.outcomes.id" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.id" },
   { title: "Students", list: "contact", expression: "student.enrolments.outcomes.id" },
-  { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.id" }
-
+  { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.id" },
+  { title: "VET reporting", list: "vetReporting", expression: "student.enrolments.outcomes.id" }
 ];
 
 const nameCondition = (val: Outcome) => val.studentName;

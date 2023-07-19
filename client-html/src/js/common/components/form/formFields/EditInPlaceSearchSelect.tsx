@@ -19,34 +19,12 @@ import { usePrevious } from "../../../utils/hooks";
 import { ListboxComponent, selectStyles } from "./SelectCustomComponents";
 import EditInPlaceFieldBase from "./EditInPlaceFieldBase";
 import { EditInPlaceSearchSelectFieldProps } from "../../../../model/common/Fields";
+import { stubComponent } from "../../../utils/common";
 
 const searchStyles = theme => createStyles({
-  inputEndAdornment: {
-    marginBottom: "-6px",
-    alignItems: "center",
-    display: "flex",
-  },
   selectAdornment: {
     marginBottom: "6px",
     color: theme.palette.primary.main
-  },
-  endAdornment: {
-    opacity: 0.5
-  },
-  multiple: {},
-  root: {
-    "& $inline.MuiInput-root .MuiInput-input": {
-      padding: 0
-    },
-    "& $multiple": {
-      flexWrap: 'wrap'
-    },
-    "& $multiple $inputEndAdornment": {
-      position: 'absolute',
-      right: 0,
-      bottom: 6,
-      height: "auto"
-    }
   },
   popper: {
     zIndex: 1400
@@ -355,11 +333,8 @@ const EditInPlaceSearchSelect = ({
   const getOptionLabel = option => (selectLabelCondition ? selectLabelCondition(option) : option && option[selectLabelMark]) || "";
 
   const getOptionSelected = (option: any, value: any) => {
-    if (multiple) {
+    if (multiple || returnType === "object") {
       return option[selectValueMark] === value[selectValueMark];
-    }
-    if (returnType === "object") {
-      return option === value;
     }
     return option[selectValueMark] === value;
   };
@@ -408,10 +383,21 @@ const EditInPlaceSearchSelect = ({
     classes
   ]);
 
-  const renderValue = useMemo(() => valueRenderer
-    ? valueRenderer(displayedValue, selectedOption, searchValue, { value: selectedOption && selectedOption[selectValueMark] })
-    : null,
-  [selectedOption, searchValue, displayedValue, selectValueMark, valueRenderer]);
+  const renderValue = useMemo(() => {
+    const valueForRender = returnType === "object"
+      ? input.value
+      : selectedOption;
+    
+    return valueRenderer
+      ? valueRenderer(
+        displayedValue,
+        valueForRender,
+        searchValue,
+        { value: valueForRender && valueForRender[selectValueMark] }
+      )
+      : null;  
+  },
+  [selectedOption, searchValue, displayedValue, selectValueMark, returnType, valueRenderer, input.value]);
 
   const renderIcons = useMemo(() => !disabled && (
     loading
@@ -424,13 +410,13 @@ const EditInPlaceSearchSelect = ({
               onClick={onClear}
               color="inherit"
             >
-              <CloseIcon className={clsx("cursor-pointer", inline && "fsInherit")} />
+              <CloseIcon fontSize="inherit" />
             </IconButton>
           )}
           <IconButton
             size="small"
             color="inherit"
-            className="pl-0 pr-0"
+            className={clsx(classes.expandIcon, "pl-0 pr-0")}
             disableRipple
           >
             <ExpandMore className={inline && "fsInherit"} />
@@ -443,7 +429,7 @@ const EditInPlaceSearchSelect = ({
     if (multiple) {
       return (input.value || []).map(v => sortedItems.find(s => s[selectValueMark] === v));
     }
-    return input.value || "";
+    return input.value || null;
   }, [input.value, multiple, selectValueMark, sortedItems]);
 
   const renderedPlaceholder = useMemo(() => {
@@ -453,7 +439,7 @@ const EditInPlaceSearchSelect = ({
 
   return (
     <div
-      className={clsx(className, "outline-none")}
+      className={clsx(className, "outline-none", inline && classes.inline)}
       id={input?.name}
     >
       <SelectContext.Provider value={{
@@ -483,7 +469,7 @@ const EditInPlaceSearchSelect = ({
           isOptionEqualToValue={getOptionSelected}
           onChange={handleChange}
           classes={{
-            root: clsx("d-inline-flex", classes.root, inline && classes.inline),
+            root: clsx("d-inline-flex", classes.root),
             hasPopupIcon: classes.hasPopup,
             hasClearIcon: classes.hasClear,
             inputRoot: clsx(classes.inputWrapper, multiple && classes.multiple),
@@ -503,14 +489,14 @@ const EditInPlaceSearchSelect = ({
             <EditInPlaceFieldBase
               {...params}
               name={input.name}
-              value={input.value}
+              value={displayedValue}
               error={error}
               invalid={hasError || invalid}
               inline={inline}
               label={label}
               warning={warning}
               fieldClasses={fieldClasses}
-              endAdornmentClass={classes.endAdornment}
+              endAdornmentClass={classes.selectAdornment}
               rightAligned={rightAligned}
               shrink={Boolean(label || input.value)}
               labelAdornment={labelAdornment}
@@ -525,11 +511,11 @@ const EditInPlaceSearchSelect = ({
                 disableUnderline,
                 classes: {
                   underline: fieldClasses.underline,
-                  input: clsx(classes.input, disabled && classes.readonly, fieldClasses.text),
+                  input: clsx(disabled && classes.readonly, fieldClasses.text),
                 },
                 inputProps: {
                   ...inputProps,
-                  className: fieldClasses.text,
+                  className: clsx(fieldClasses.text, "mr-auto"),
                   ref: ref => {
                     (inputProps as any).ref.current = ref;
                     inputNode.current = ref;
@@ -542,17 +528,20 @@ const EditInPlaceSearchSelect = ({
                 ?
                 <Select
                   {...InputProps}
+                  inputRef={ref => {
+                    (inputProps as any).ref.current = ref?.node;
+                  }}
                   classes={{ select: "cursor-text" }}
                   onFocus={edit}
-                  value={input.value || ""}
+                  value={(returnType === "object" ? input.value[selectValueMark] : input.value) || ""}
                   endAdornment={
                     <InputAdornment
                       position="end"
-                      className={clsx(classes.endAdornment, classes.selectAdornment, "d-none")}>
+                      className={clsx( classes.selectAdornment, "d-none")}>
                       {renderIcons}
                     </InputAdornment>
                   }
-                  IconComponent={null}
+                  IconComponent={stubComponent}
                 >
                   {renderValue}
                 </Select>

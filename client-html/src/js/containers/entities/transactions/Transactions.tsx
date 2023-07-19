@@ -93,30 +93,25 @@ class Transactions extends React.Component<any, any> {
   };
 
   render() {
-    const { updateTableModel } = this.props;
-
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "account.accountCode",
-            secondaryColumn: "account.type",
-            primaryColumnCondition,
-            secondaryColumnCondition
-          }}
-          updateTableModel={updateTableModel}
-          EditViewContent={TransactionsEditView}
-          rootEntity="AccountTransaction"
-          editViewProps={{
-            nameCondition: this.getTransactionAccountName
-          }}
-          onInit={this.onInit}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          defaultDeleteDisabled
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "account.accountCode",
+          secondaryColumn: "account.type",
+          primaryColumnCondition,
+          secondaryColumnCondition
+        }}
+        EditViewContent={TransactionsEditView}
+        rootEntity="AccountTransaction"
+        editViewProps={{
+          nameCondition: this.getTransactionAccountName
+        }}
+        onInit={this.onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        defaultDeleteDisabled
+        noListTags
+      />
     );
   }
 }

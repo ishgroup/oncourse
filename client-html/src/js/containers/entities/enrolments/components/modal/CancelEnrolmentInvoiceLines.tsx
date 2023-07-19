@@ -77,7 +77,6 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
 
             return (
               <div className="pt-2" key={field.id}>
-
                 <Typography variant="body2" className="normalHeading">
                   Invoice
                   {' '}
@@ -93,53 +92,65 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                       debounced={false}
                     />
                   )}
-                  label={`Create credit note to reverse the enrolment fee of $${field
-                  && field.finalPriceToPayIncTax} to ${field && field.contactName}`}
+                  label={
+                    <>
+                      Create credit note to reverse the enrolment fee of <span className="money">
+                        {formatCurrency(field.finalPriceToPayIncTax, currencySymbol)}
+                      </span> to {field && field.contactName}
+                    </>
+                  }
                 />
-                <Grid className="centeredFlex">
+                <Grid>
                   <FormControlLabel
-                    className="mr-0-5"
+                    classes={{
+                      label: "mt-0-5"
+                    }}
                     control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" />}
-                    label={`Charge ${field && field.contactName} an administrative fee of `}
+                    label={
+                      <>
+                        Charge {field && field.contactName} an administrative fee of
+                        {" "}
+                        <FormField
+                          type="number"
+                          name={`${item}.cancellationFeeExTax`}
+                          normalize={roundCancellationFeeExTax}
+                          onChange={e => onCancelFeeChange(e, index)}
+                          debounced={false}
+                          disabled={!field.isReverseCreditNotes}
+                          inline
+                          step="1"
+                        />
+                        {" "}
+                        <FormField
+                          type="select"
+                          name={`${item}.taxId`}
+                          items={taxes || []}
+                          selectValueMark="id"
+                          selectLabelMark="code"
+                          onChange={v => onTaxChange(v, index)}
+                          debounced={false}
+                          disabled={!field.isReverseCreditNotes}
+                          inline
+                        />
+                        {" "}
+                        <span className="money">
+                          {formatCurrency(field.chargedFee, currencySymbol)}
+                        </span>
+                        {" "}
+                        <FormField
+                          type="select"
+                          name={`${item}.incomeAccountId`}
+                          items={incomeAccounts || []}
+                          selectValueMark="id"
+                          selectLabelCondition={accountLabelCondition}
+                          disabled={!field.isReverseCreditNotes}
+                          inline
+                        />
+                      </>
+                    }
                     disabled={!field.isReverseCreditNotes}
-                  />
-                  <FormField
-                    type="number"
-                    name={`${item}.cancellationFeeExTax`}
-                    normalize={roundCancellationFeeExTax}
-                    onChange={e => onCancelFeeChange(e, index)}
-                    debounced={false}
-                    disabled={!field.isReverseCreditNotes}
-                    inline
-                    step="1"
-                  />
-                  <FormField
-                    type="select"
-                    name={`${item}.taxId`}
-                    items={taxes || []}
-                    selectValueMark="id"
-                    selectLabelMark="code"
-                    onChange={v => onTaxChange(v, index)}
-                    debounced={false}
-                    disabled={!field.isReverseCreditNotes}
-                    className="ml-0-5 mt-0-5"
-                    inline
-                  />
-                  <span className="money ml-0-5">
-                    {formatCurrency(field.chargedFee, currencySymbol)}
-                  </span>
-                  <FormField
-                    type="select"
-                    name={`${item}.incomeAccountId`}
-                    items={incomeAccounts || []}
-                    selectValueMark="id"
-                    selectLabelCondition={accountLabelCondition}
-                    disabled={!field.isReverseCreditNotes}
-                    className="ml-0-5 mt-0-5"
-                    inline
                   />
                 </Grid>
-
                 <Grid className="centeredFlex">
                   {getCancelFeeAmountWarning(index) && (
                     <WarningMessage warning={getCancelFeeAmountWarning(index)} className="pb-0 pt-1" />

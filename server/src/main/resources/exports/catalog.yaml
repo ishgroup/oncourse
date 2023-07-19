@@ -854,3 +854,12 @@
     - name: numberOfEnrolmentsText
       label: Number of enrolments
       dataType: TEXT
+
+- keyCode: ish.onCourse.discountByClass.csv
+  entityClass: CourseClass
+  body: ish.onCourse.discountByClass.csv.groovy
+  name: Discount by CourseClass CSV
+  outputType: csv
+  description: Export all discounts, related to CourseClass, with statistic.
+  short: Export all discounts, related to CourseClass
+  category: accounting

@@ -141,12 +141,12 @@ paths:
     $ref: './path/list/entity/document/api.yaml'
   /list/entity/document/search:
     $ref: './path/list/entity/document/search/api.yaml'
-  /list/entity/document/version:
-    $ref: './path/list/entity/document/version/api.yaml'
   /list/entity/emailTemplate:
     $ref: './path/list/entity/emailTemplate/api.yaml'
   /list/entity/emailTemplate/template:
     $ref: './path/list/entity/emailTemplate/template/api.yaml'
+  /list/entity/emailTemplate/config:
+    $ref: './path/list/entity/emailTemplate/config/api.yaml'
   /list/entity/enrolment:
     $ref: './path/list/entity/enrolment/api.yaml'
   /list/entity/enrolment/cancel:
@@ -155,6 +155,8 @@ paths:
     $ref: './path/list/entity/priorLearning/api.yaml'
   /list/entity/exportTemplate:
     $ref: './path/list/entity/exportTemplate/api.yaml'
+  /list/entity/exportTemplate/config:
+    $ref: './path/list/entity/exportTemplate/config/api.yaml'
   /list/entity/exportTemplate/export:
     $ref: './path/list/entity/exportTemplate/export/api.yaml'
   /list/entity/exportTemplate/preview:
@@ -163,6 +165,8 @@ paths:
     $ref: './path/list/entity/import/api.yaml'
   /list/entity/import/execution:
     $ref: './path/list/entity/import/execution/api.yaml'
+  /list/entity/import/config:
+    $ref: './path/list/entity/import/config/api.yaml'
   /list/entity/invoice:
     $ref: './path/list/entity/invoice/api.yaml'
   /list/entity/invoice/contra:
@@ -199,6 +203,8 @@ paths:
     $ref: './path/list/entity/report/api.yaml'
   /list/entity/report/preview:
     $ref: './path/list/entity/report/preview/api.yaml'
+  /list/entity/report/config:
+    $ref: './path/list/entity/report/config/api.yaml'
   /list/entity/reportOverlay:
     $ref: './path/list/entity/reportOverlay/api.yaml'
   /list/entity/reportOverlay/original:
@@ -209,6 +215,8 @@ paths:
     $ref: './path/list/entity/room/validation/api.yaml'
   /list/entity/script:
     $ref: './path/list/entity/script/api.yaml'
+  /list/entity/script/config:
+    $ref: './path/list/entity/script/config/api.yaml'
   /list/entity/script/execute:
     $ref: './path/list/entity/script/execute/api.yaml'
   /list/entity/script/execute/pdf:
@@ -245,6 +253,8 @@ paths:
     $ref: './path/list/option/payroll/api.yaml'
   /list/plain:
     $ref: './path/list/plain/api.yaml'
+  /list/plain/bulkDelete:
+    $ref: './path/list/plain/bulkDelete/api.yaml'
   /login:
     $ref: './path/login/api.yaml'
   /logout:

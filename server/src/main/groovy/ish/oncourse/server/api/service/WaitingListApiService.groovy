@@ -11,12 +11,23 @@
 
 package ish.oncourse.server.api.service
 
+
 import ish.oncourse.server.api.dao.WaitingListDao
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import ish.oncourse.server.api.v1.function.CustomFieldFunctions
+import ish.oncourse.server.api.v1.function.TagFunctions
+import ish.oncourse.server.api.v1.model.SiteDTO
 import ish.oncourse.server.api.v1.model.WaitingListDTO
-import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.cayenne.*
+import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.SelectById
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
+import static ish.oncourse.server.api.v1.function.SiteFunctions.toRestSiteMinimized
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.oncourse.server.api.v1.function.TagFunctions.validateRelationsForSave
+import static org.apache.commons.lang3.StringUtils.*
 
 class WaitingListApiService extends TaggableApiService<WaitingListDTO, WaitingList, WaitingListDao> {
     @Override
@@ -25,18 +36,91 @@ class WaitingListApiService extends TaggableApiService<WaitingListDTO, WaitingLi
     }
 
     @Override
-    WaitingListDTO toRestModel(WaitingList cayenneModel) {
-        return null
+    WaitingListDTO toRestModel(WaitingList dbWaitingList) {
+        new WaitingListDTO().with { wl ->
+            wl.id = dbWaitingList.id
+            wl.privateNotes = dbWaitingList.notes
+            wl.studentNotes = dbWaitingList.studentNotes
+            wl.studentCount = dbWaitingList.studentCount
+            wl.contactId = dbWaitingList.student.contact.id
+            wl.studentName = dbWaitingList.student.contact.with { it.getFullName() }
+            wl.courseId = dbWaitingList.course.id
+            wl.courseName = dbWaitingList.course.with { "$it.name $it.code" }
+            wl.tags = dbWaitingList.allTags.collect { it.id }
+            wl.sites = dbWaitingList.sites.collect { toRestSiteMinimized(it)}
+            wl.customFields = dbWaitingList.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
+            wl.createdOn = LocalDateUtils.dateToTimeValue(dbWaitingList.createdOn)
+            wl.modifiedOn = LocalDateUtils.dateToTimeValue(dbWaitingList.modifiedOn)
+            wl
+        }
     }
 
     @Override
-    WaitingList toCayenneModel(WaitingListDTO dto, WaitingList cayenneModel) {
-        return null
+    WaitingList toCayenneModel(WaitingListDTO waitingListDTO, WaitingList waitingList) {
+        waitingList.notes = trimToNull(waitingListDTO.privateNotes)
+        waitingList.studentCount = waitingListDTO.studentCount
+        waitingList.student = getRecordById(waitingList.context, Contact, waitingListDTO.contactId).student
+        waitingList.course = getRecordById(waitingList.context, Course, waitingListDTO.courseId)
+        updateTags(waitingList, waitingList.taggingRelations, waitingListDTO.tags, WaitingListTagRelation, waitingList.context)
+        updateSites(waitingList.context, waitingList, waitingListDTO.sites)
+        updateCustomFields(waitingList.context, waitingList, waitingListDTO.customFields, WaitingListCustomField)
+        waitingList
     }
 
-    @Override
-    void validateModelBeforeSave(WaitingListDTO dto, ObjectContext context, Long id) {
+    private static void updateSites(ObjectContext context, WaitingList dbWaitingList, List<SiteDTO> sites) {
+        List<Long> sitesToSave = sites*.id ?: [] as List<Long>
+        context.deleteObjects(dbWaitingList.waitingListSites.findAll { !sitesToSave.contains(it.site.id) })
+        sites.findAll { !dbWaitingList.sites*.id.contains(it.id) }
+                .collect { getRecordById(context, Site, it.id)}
+                .each {
+                    WaitingListSite wls = context.newObject(WaitingListSite)
+                    wls.setWaitingList(dbWaitingList)
+                    wls.setSite(it)
+                }
+    }
 
+
+    @Override
+    void validateModelBeforeSave(WaitingListDTO waitingListDTO, ObjectContext context, Long id) {
+        if (!waitingListDTO.contactId) {
+            validator.throwClientErrorException(id, 'studentContact', 'Student is required.')
+        } else if (!getRecordById(context, Contact, waitingListDTO.contactId)?.student) {
+            validator.throwClientErrorException(id, 'studentContact', 'Contact is not a student.')
+        }
+
+        if (!waitingListDTO.studentCount) {
+            validator.throwClientErrorException(id, 'studentCount', 'Number of students is required.')
+        } else if (waitingListDTO.studentCount <= 0) {
+            validator.throwClientErrorException(id, 'studentCount', 'Number of students must be positive value.')
+        }
+
+        if (!waitingListDTO.courseId) {
+            validator.throwClientErrorException(id, 'course', 'Course is required.')
+        } else {
+            getRecordById(context, Course, waitingListDTO.courseId)
+        }
+
+        if (trimToEmpty(waitingListDTO.studentNotes).length() > 32000) {
+            validator.throwClientErrorException(id, 'studentNotes', 'Student notes can not be more than 32000 chars.')
+        }
+
+        if (trimToEmpty(waitingListDTO.privateNotes).length() > 32000) {
+            validator.throwClientErrorException(id, 'privateNotes', 'Private notes can not be more than 32000 chars.')
+        }
+
+        TagFunctions.validateTagForSave(WaitingList, context, waitingListDTO.tags)
+                ?.with { validator.throwClientErrorException(it) }
+
+        validateRelationsForSave(WaitingList, context, waitingListDTO.tags)
+                ?.with { validator.throwClientErrorException(it) }
+
+
+        CustomFieldFunctions.getCustomFieldTypes(context, WaitingList.class.simpleName)
+                        .findAll { it.isMandatory }
+                        .collect { it -> isBlank(waitingListDTO.customFields[it.key]) ? validator.throwClientErrorException(id, 'customFields', "$it.name is required.") : null }
+                        .find() ?:
+                        waitingListDTO.sites.findAll { it -> !SelectById.query(Site, it.id).selectOne(context) }
+                                .collect{ SiteDTO it, idx -> validator.throwClientErrorException(id, "sites[$idx].id", "Site with id=${it.id} not found.") }[0]
     }
 
     @Override

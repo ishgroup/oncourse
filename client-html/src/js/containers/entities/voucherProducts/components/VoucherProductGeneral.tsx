@@ -332,6 +332,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
       <Grid item xs={12}>
         <Typography color="inherit" component="div" noWrap>
           Expires
+          {" "}
           <FormField
             type="number"
             name="expiryDays"
@@ -340,6 +341,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             debounced={false}
             inline
           />
+          {" "}
           days after purchase
         </Typography>
       </Grid>

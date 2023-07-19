@@ -20,6 +20,7 @@ import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../mode
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
 import AddButton from "../../../../../common/components/icons/AddButton";
 import CourseClassTutorRoosterItem from "./CourseClassTutorRoosterItem";
+import { preventEventDefault } from "../../../../../common/utils/events";
 
 interface TutorRoosterProps extends WrappedFieldProps {
   warningTypes: { [P in ClashType]: SessionWarning[] },
@@ -30,6 +31,7 @@ interface TutorRoosterProps extends WrappedFieldProps {
   sessionDuration: number;
   budget: ClassCostExtended[];
   addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
+  disableExpand?: boolean;
 }
 
 const CourseClassTutorRooster = (
@@ -45,7 +47,8 @@ const CourseClassTutorRooster = (
     onAddTutor,
     sessionDuration,
     addTutorWage,
-    budget
+    budget,
+    disableExpand
   }: TutorRoosterProps
 ) => {
   const [tutorsMenuOpened, setTutorsMenuOpened] = useState(false);
@@ -91,7 +94,7 @@ const CourseClassTutorRooster = (
         </div>
       </div>
 
-      <div>
+      <div onClick={preventEventDefault}>
         {session?.tutorAttendances?.map((t, index) => (
           <CourseClassTutorRoosterItem
             key={t.courseClassTutorId || t.temporaryTutorId}
@@ -109,6 +112,7 @@ const CourseClassTutorRooster = (
             addTutorWage={addTutorWage}
             onDeleteTutor={onDeleteTutor}
             setExpanded={setExpanded}
+            disableExpand={disableExpand}
           />
         ))}
       </div>

@@ -204,15 +204,21 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return CertificateService.updateCertificate(id, item);
 
     case "Contact": {
-      const { student, relations } = item;
+      const itemToSave = { ...item };
 
-      if (student) delete item.student.education;
+      if (itemToSave.student) {
+        itemToSave.student = {
+          ...item.student,
+          education: null
+        };
+        delete itemToSave.student.education;
+      }
 
-      item.relations = formatRelationsBeforeSave(relations);
+      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave.relations)];
 
-      if (item.isCompany) delete item.firstName;
+      if (itemToSave.isCompany) delete item.firstName;
 
-      return ContactsService.updateContact(id, item);
+      return ContactsService.updateContact(id, itemToSave);
     }
 
     case "CorporatePass":
@@ -260,7 +266,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = [...item?.paylines.filter(p => p.deferred) || []];
+      const paylines = [...item?.paylines?.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;
@@ -376,8 +382,8 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
         shared,
         access,
         content,
-        tags,
-        (Array.isArray(versions) && versions[0].fileName) || content.name
+        tags?.toString(),
+        (versions && versions[0] && versions[0].fileName) || content.name
       );
     }
 
@@ -509,8 +515,6 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
       return RoomService.removeRoom(id);
     case "Site":
       return SiteService.removeSite(id);
-    case "WaitingList":
-      return WaitingListService.removeWaitingList(id);
     default:
       return defaultUnknown();
   }

@@ -56,6 +56,7 @@ export const ENTITIES = stringLiterals(
   "ProductItem",
   "PriorLearning",
   "Qualification",
+  "Quote",
   "Room",
   "Sale",
   "Script",
@@ -63,6 +64,7 @@ export const ENTITIES = stringLiterals(
   "Site",
   "Student",
   "Survey",
+  "SystemUser",
   "TrainingPackage",
   "Tutor",
   "TutorAttendance",
@@ -71,6 +73,15 @@ export const ENTITIES = stringLiterals(
   "WaitingList"
 );
 
+export const CUSTOM_TABLE_MODELS = stringLiterals(
+  "VetReport"
+);
+
 export const EntityItems = ENTITIES.map(e => ({ label: e, value: e }));
 
-export type EntityName = StringValueType<typeof ENTITIES>;
+export type EntityName = StringValueType<typeof ENTITIES >;
+
+export type CustomTableModelName = StringValueType<typeof CUSTOM_TABLE_MODELS >;
+
+export type ListActionEntity = EntityName | CustomTableModelName;
+

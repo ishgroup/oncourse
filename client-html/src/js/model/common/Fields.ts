@@ -158,11 +158,13 @@ export interface EditInPlaceSearchSelectFieldProps {
 
 export interface EditInPlaceRemoteDataSelectFieldProps extends EditInPlaceSearchSelectFieldProps {
   onSearchChange?: StringArgFunction;
+  getCustomSearch?: (search: string) => string;
   onLoadMoreRows?: NumberArgFunction;
   onClearRows?: AnyArgFunction;
   entity: EntityName;
   aqlFilter?: string;
   aqlColumns?: string;
+  preloadEmpty?: boolean;
 }
 
 export interface CodeFieldProps {
@@ -198,10 +200,20 @@ export interface CheckboxFieldProps {
   stopPropagation?: boolean;
 }
 
+export interface ColoredCheckboxFieldProps {
+  input?: Partial<Omit<WrappedFieldInputProps, "onBlur">> & { onBlur?: AnyArgFunction };
+  meta?: Partial<WrappedFieldMetaProps>;
+  color: string;
+  label?: string;
+  className?: string;
+  disabled?: boolean;
+}
+
 export interface TagsFieldProps extends EditInPlaceFieldProps {
   tags: Tag[];
   showConfirm?: ShowConfirmCaller;
   classes?: any;
+  validateEntity?: EntityName;
 }
 
 interface FormFieldBaseProps {
@@ -224,5 +236,6 @@ export type FormFieldProps =
   | ({ type: "code" } & FormFieldBaseProps & CodeFieldProps)
   | ({ type: "switch" } & FormFieldBaseProps & FormSwitchProps)
   | ({ type: "checkbox" } & FormFieldBaseProps & CheckboxFieldProps)
+  | ({ type: "coloredCheckbox" } & FormFieldBaseProps & ColoredCheckboxFieldProps)
   | ({ type: "tags" } & FormFieldBaseProps & TagsFieldProps)
   | ({ type: "stub" })

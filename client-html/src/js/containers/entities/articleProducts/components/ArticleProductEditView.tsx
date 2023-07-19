@@ -32,7 +32,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3" />
   },
   {
     label: "Corporate Passes",
@@ -64,7 +64,8 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
     taxes,
     access,
     submitSucceeded,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -73,6 +74,7 @@ const ArticleProductEditView: React.FC<ArticleProductEditViewProps> = props => {
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? checkedItems : []}
       itemProps={{
         values,

@@ -9,6 +9,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         * def ishPathList = 'list'
         * def ishPathPlain = 'list/plain'
         * def ishPathCustomFieldsType = 'preference/field/type'
+        * def ishPathDelete = '/list/plain/bulkDelete?entity=WaitingList'
         
 
 
@@ -69,8 +70,13 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         """
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -155,8 +161,13 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         """
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Remove all Custom fields for WaitingList from Preferences:
@@ -250,8 +261,13 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         """
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Remove all Custom fields for WaitingList from Preferences:
@@ -457,10 +473,15 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         * configure headers = { Authorization: 'admin'}
 
-        
 
-        Given path ishPath + '/' + id
-        When method DELETE
+
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 

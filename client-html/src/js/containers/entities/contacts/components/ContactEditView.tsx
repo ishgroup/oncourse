@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { useTheme } from "@mui/styles";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
@@ -24,6 +24,8 @@ import AvailabilityFormComponent from "../../../../common/components/form/availa
 import { State } from "../../../../reducers/state";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { AppTheme } from "../../../../model/common/Theme";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { Contact } from "@api/model";
 
 const studentItems: TabsListItem[] = [
   {
@@ -40,15 +42,15 @@ const studentItems: TabsListItem[] = [
 
 const tutorItems: TabsListItem[] = [
   {
+    label: "Tutor",
+    component: props => <ContactsTutor {...props} />,
+    expandable: true
+  },
+  {
     label: "Resume",
     component: props => <ContactsResume {...props} />,
     expandable: true
   },
-  {
-    label: "Tutor",
-    component: props => <ContactsTutor {...props} />,
-    expandable: true
-  }
 ];
 
 const items: TabsListItem[] = [
@@ -72,7 +74,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: props => <OwnApiNotes {...props} />
+    component: props => <OwnApiNotes {...props} className="pl-3 pr-3" />
   },
   {
     label: "Documents",
@@ -84,7 +86,13 @@ const items: TabsListItem[] = [
   }
 ];
 
-const ContactEditView = props => {
+interface Props {
+  classes?: any;
+  currencySymbol?: any;
+  leftOffset?: number;
+}
+
+const ContactEditView = (props: EditViewProps<Contact> & Props) => {
   const {
     isNew,
     isNested,
@@ -101,7 +109,8 @@ const ContactEditView = props => {
     invalid,
     currencySymbol,
     syncErrors,
-    onEditViewScroll
+    onScroll,
+    leftOffset
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -142,13 +151,14 @@ const ContactEditView = props => {
     return activeItems;
   };
 
-  const getUsiLocked = useCallback(
+  const usiLocked = useMemo(
     () => values && values.student && values.student.usiStatus === "Verified" && usiUpdateLocked,
     [values && values.student && values.student.usiStatus, usiUpdateLocked]
   );
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? getActiveItems() : []}
       newsOffset={twoColumn ? theme.spacing(6) : null}
       itemProps={{
@@ -171,10 +181,11 @@ const ContactEditView = props => {
         setIsStudent,
         setIsTutor,
         setIsCompany,
-        usiLocked: getUsiLocked(),
+        usiLocked,
         setUsiUpdateLocked,
         syncErrors,
-        onEditViewScroll,
+        onScroll,
+        leftOffset
       }}
     />
   );

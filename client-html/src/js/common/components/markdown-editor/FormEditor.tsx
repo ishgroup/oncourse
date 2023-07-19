@@ -130,7 +130,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                 classes.editorArea,
                 { "ace-wrapper": contentMode === "html" || contentMode === "textile" },
                 label && "mt-2"
-            )
+              )
             }
           >
             <div className="content-mode-wrapper">

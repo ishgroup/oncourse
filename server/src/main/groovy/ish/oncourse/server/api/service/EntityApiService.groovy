@@ -16,15 +16,14 @@ import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.CayenneLayer
-import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import ish.oncourse.server.api.traits._DTOTrait
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
-import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
+
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 
 @CompileStatic
 abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M extends CayenneLayer<K>> {
@@ -32,7 +31,8 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
     @Inject
     protected ICayenneService cayenneService
 
-    @Inject AqlService aqlService
+    @Inject
+    AqlService aqlService
 
     @Inject
     protected EntityValidator validator
@@ -90,12 +90,8 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         }
         ObjectContext context = cayenneService.newContext
 
-        if (dto.search ||  dto.filter || !dto.tagGroups.empty) {
-
-            Class<K> clzz = getPersistentClass()
-            ObjectSelect query = ObjectSelect.query(clzz)
-            query = parseSearchQuery(query as ObjectSelect, context, aqlService, clzz.simpleName, dto.search, dto.filter, dto.tagGroups)
-            List<K> entities = query.select(context) as List<K>
+        if (dto.search || dto.filter || !dto.tagGroups.empty) {
+            List<K> entities = getBulkEntities(dto, context)
 
             entities.each { entity ->
                 dto.diff.entrySet().each { entry ->
@@ -118,7 +114,14 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         save(context)
     }
 
-    void remove (K persistent, ObjectContext context) {
+    final List<K> getBulkEntities(DiffDTO dto, ObjectContext context) {
+        Class<K> clzz = getPersistentClass()
+        ObjectSelect query = ObjectSelect.query(clzz)
+        query = parseSearchQuery(query as ObjectSelect, context, aqlService, clzz.simpleName, dto.search, dto.filter, dto.tagGroups)
+        query.select(context) as List<K>
+    }
+
+    void remove(K persistent, ObjectContext context) {
         context.deleteObject(persistent)
     }
 

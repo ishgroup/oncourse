@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
         * def ishPath = 'list/entity/document'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        
+
 
 
 
@@ -23,7 +23,6 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
         {
         "id":200,
         "name":"defaultPrivateDocument",
-        "versionId":null,
         "added":"#ignore",
         "tags":[],
         "thumbnail":null,
@@ -36,7 +35,9 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
             "mimeType":"text/plain",
             "size":"22 b",
             "url":null,
-            "thumbnail":null
+            "thumbnail":null,
+            "content":null,
+            "current":true
             }],
         "description":"Private description",
         "access":"Private",
@@ -56,7 +57,6 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
         {
         "id":201,
         "name":"defaultPublicDocument",
-        "versionId":null,
         "added":"#ignore",
         "tags":[],
         "thumbnail":null,
@@ -69,7 +69,9 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
             "mimeType":"text/plain",
             "size":"21 b",
             "url":null,
-            "thumbnail":null
+            "thumbnail":null,
+            "content":null,
+            "current":true
             }],
         "description":"Public description",
         "access":"Public",

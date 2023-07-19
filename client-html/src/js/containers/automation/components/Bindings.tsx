@@ -122,7 +122,8 @@ const BindingsItem = React.memo<BindingsItemProps>(({
 
     if (item.type === "Message template") {
       props["items"] = emailTemplateItems;
-      props["selectLabelCondition"] = renderAutomationItems;
+      props["itemRenderer"] = renderAutomationItems;
+      props["valueRenderer"] = renderAutomationItems;
     }
 
     return props;

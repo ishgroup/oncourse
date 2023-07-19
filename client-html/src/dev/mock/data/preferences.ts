@@ -178,10 +178,10 @@ export function mockPreferences() {
     [Model.AccountTax.uniqueKey]: "3",
     [Model.AccountStudentEnrolments.uniqueKey]: "5",
     [Model.AccountPrepaidFees.uniqueKey]: "4",
-    [Model.AccountPrepaidFeesPostAt.uniqueKey]: "everySession",
+    [Model.AccountPrepaidFeesPostAt.uniqueKey]: "Every session",
     [Model.AccountVoucherLiability.uniqueKey]: "3",
     [Model.AccountVoucherUnderpayment.uniqueKey]: "9",
-    [Model.AccountDefaultCurrency.uniqueKey]: "AUD",
+    [Model.AccountDefaultCurrency.uniqueKey]: "AUD ($)",
     [Model.AccountInvoiceTerms.uniqueKey]: "7",
     [Model.PaymentInfo.uniqueKey]: "Some payment info",
 

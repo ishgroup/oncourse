@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CourseDetailsReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="75f7ecbf-ad0a-45d2-bf0e-61b323bb674e">
-	<property name="name" value="Course Details"/>
-	<property name="entity" value="Course"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.courseDetailsReport"/>
 	<property name="ish.oncourse.title" value="Course Details"/>
 	<property name="ish.oncourse.filePrefix" value="courseDetails"/>
-	<property name="ish.oncourse.description" value="To create a print out of the full course information including scheduled classes.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="Course Details.pdf"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="ish.util.Textile"/>

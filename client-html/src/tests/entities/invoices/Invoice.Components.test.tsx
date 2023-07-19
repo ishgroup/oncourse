@@ -14,22 +14,20 @@ describe("Virtual rendered InvoicesEditView", () => {
       expect(screen.getByLabelText('Source').value).toBe(initialValues.source);
       expect(screen.getByLabelText('Created by').value).toBe(initialValues.createdByUser);
 
-      setTimeout(() => {
-        expect(screen.getByRole(formRoleName)).toHaveFormValues({
-          title: initialValues.title,
-          leadId: initialValues.leadCustomerName,
-          contactId: initialValues.contactName,
-          customerReference: initialValues.customerReference,
-          invoiceNumber: initialValues.invoiceNumber.toString(),
-          invoiceDate: format(new Date(initialValues.invoiceDate), III_DD_MMM_YYYY).toString(),
-          dateDue: format(new Date(initialValues.paymentPlans.find(p => p.id === 517).date), III_DD_MMM_YYYY).toString(),
-          billToAddress: initialValues.billToAddress,
-          shippingAddress: initialValues.shippingAddress,
-          description: initialValues.description,
-          publicNotes: initialValues.publicNotes,
-          sendEmail: initialValues.sendEmail,
-        });
-      }, 500);
+      expect(screen.getByRole(formRoleName)).toHaveFormValues({
+        title: initialValues.title,
+        leadId: initialValues.leadCustomerName,
+        contactId: initialValues.contactName,
+        customerReference: initialValues.customerReference,
+        invoiceNumber: initialValues.invoiceNumber.toString(),
+        invoiceDate: format(new Date(initialValues.invoiceDate), III_DD_MMM_YYYY).toString(),
+        dateDue: format(new Date(initialValues.paymentPlans.find(p => p.id === 517).date), III_DD_MMM_YYYY).toString(),
+        billToAddress: initialValues.billToAddress,
+        shippingAddress: initialValues.shippingAddress,
+        description: initialValues.description,
+        publicNotes: initialValues.publicNotes,
+        sendEmail: initialValues.sendEmail,
+      });
     },
     state: () => ({
       userPreferences: {

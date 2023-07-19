@@ -27,6 +27,7 @@ import { validateTagsList } from "../simpleTagListComponent/validateTagsList";
 import EditInPlacePhoneField from "./EditInPlacePhoneField";
 import { FormFieldProps } from "../../../../model/common/Fields";
 import { stubFunction } from "../../../utils/common";
+import { ColoredCheckBox } from "../ColoredCheckBox";
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 
@@ -103,6 +104,8 @@ const FormFieldBase = (props: FormFieldProps) => {
       return <FormSwitch {...sharedProps} />;
     case "checkbox":
       return <CheckboxField {...sharedProps} />;
+    case "coloredCheckbox":
+      return <ColoredCheckBox {...sharedProps} label={type === "coloredCheckbox" && props.label} color={type === "coloredCheckbox" && props.color} />;
     case "multilineText":
       return <EditInPlaceField  {...sharedProps} multiline />;
     case "stub":
@@ -127,8 +130,6 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
   const tags = type === "tags" ? props.tags : [];
   const required = type !== "stub" ? props.required : false;
 
-  const validateTags = useCallback((...args: [any, any, any]) => validateTagsList(tags || [], ...args), [tags]);
-  
   const validateResolver = useMemo(() => {
     const result = [];
     if (required) {
@@ -138,11 +139,15 @@ const FormField = React.forwardRef<any, BaseProps>((props, ref) => {
       result.push(validate);
     }
     if (type === "tags") {
-      result.push(validateTags);
+      result.push(
+        (value, allValues, formProps) => validateTagsList(tags || [], value, allValues, formProps, (type === "tags"
+            ? props.validateEntity
+            : null
+        ))
+      );
     }
-
     return result.length > 1 ? result : result.length ? result[0] : undefined;
-  }, [validate, required, type, validateTags]);
+  }, [validate, required, type, tags, type === "tags" && props.validateEntity]);
 
   return (
     <Field

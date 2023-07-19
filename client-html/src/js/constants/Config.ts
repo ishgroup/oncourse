@@ -26,8 +26,6 @@ export const LIST_PAGE_SIZE = 50;
 
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
 
-export const LIST_THREE_COLUMN_ROW_HEIGHT = 64;
-
 export const LIST_TWO_COLUMN_ROW_HEIGHT = 27;
 
 export const LIST_SIDE_BAR_DEFAULT_WIDTH = 265;
@@ -37,8 +35,6 @@ export const LIST_MAIN_CONTENT_DEFAULT_WIDTH = 774;
 export const HEADER_ROWS_COUNT = 2;
 
 export const HEADER_ROWS_INDICES = [0, 1];
-
-export const STICKY_HEADER_EVENT = 'sticky-change';
 
 export const APPLICATION_THEME_STORAGE_NAME = "theme";
 

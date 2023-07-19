@@ -81,11 +81,11 @@
 
   <Discount createdOn="2019-03-01 18:48:47.0" discountPercent="0.010" id="1" modifiedOn="2019-03-01 23:43:42.0"
             name="Discount1" rounding="0" discountType="1" predictedStudentsPercentage="0.10" hideOnWeb="0"
-            isAvailableOnWeb="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9"
+            AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9"
             limitPreviousEnrolment="0"/>
   <Discount createdOn="2019-03-01 19:08:53.0" discountPercent="0.020" id="2" modifiedOn="2019-03-01 23:43:42.0"
             name="Discount2" rounding="0" discountType="1" predictedStudentsPercentage="0.10" hideOnWeb="0"
-            isAvailableOnWeb="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9"
+            AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0.00" cosAccountId="9"
             limitPreviousEnrolment="0"/>
 
   <Discount_CourseClass courseClassId="1" createdOn="2019-03-01 18:48:47.0" modifiedOn="2019-03-01 18:48:47.0"

@@ -143,6 +143,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
                 "clientIndustryEmployment":"Retail Trade (G)",
                 "clientOccupationIdentifier":"Not Stated",
                 "waitingLists":[],
+                "customFields":{},
                 "concessions":[{"id":"#ignore","number":"50","type":{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2030-01-01","created":"#ignore","modified":"#ignore"}]
             },
         "tutor":null,
@@ -277,7 +278,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"defaultPayType":null, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":"12345678901",
         "birthDate":"1991-07-20",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -440,8 +441,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         """
         {
         "id":"#(~~id)",
-        "student":{"id":"#number","countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Not stated","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":"#number","countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
-        "tutor":{"defaultPayType":null, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "student":{"id":"#number", "customFields":{},"countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Not stated","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":"#number","countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
+        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":"12345678901",
         "birthDate":"1991-07-20",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -573,7 +574,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         {
         "id":"#(~~id)",
         "student":null,
-        "tutor":{"defaultPayType":null, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":null, "customFields":{}, "id":"#number","dateFinished":"2025-01-01","dateStarted":"2018-02-02","familyNameLegal":"familyNameLegal","givenNameLegal":"givenNameLegal","payrollRef":"some payrollRef","resume":"some resume","wwChildrenCheckedOn":"2018-03-03","wwChildrenExpiry":"2024-04-04","wwChildrenRef":"some wwChildrenRef","wwChildrenStatus":"Interim barred","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":0,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":"12345678901",
         "birthDate":"1991-07-20",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -750,7 +751,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
     * def newContact =
         """
         {
-        "student":{"countryOfBirth":{"id":2},"disabilityType":"Mental illness","labourForceStatus":"Default popup option","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","concessions":[]},
+        "student":{"countryOfBirth":{"id":2}, "customFields":{},"disabilityType":"Mental illness","labourForceStatus":"Default popup option","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","concessions":[]},
         "tutor":null,
         "abn":"12345678901",
         "birthDate":"1991-07-20",
@@ -804,7 +805,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
     * def newContact =
         """
         {
-        "student":{"countryOfBirth":{"id":2},"disabilityType":"Mental illness","labourForceStatus":"Default popup option","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","concessions":[]},
+        "student":{"countryOfBirth":{"id":2}, "customFields":{},"disabilityType":"Mental illness","labourForceStatus":"Default popup option","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","concessions":[]},
         "tutor":null,
         "abn":"12345678901",
         "birthDate":"1991-07-20",
@@ -944,7 +945,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
     * def newContact =
         """
         {
-        "student":{"countryOfBirth":{"id":2},"disabilityType":"Mental illness","labourForceStatus":"Default popup option","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","concessions":[]},
+        "student":{"countryOfBirth":{"id":2}, "customFields":{},"disabilityType":"Mental illness","labourForceStatus":"Default popup option","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","concessions":[]},
         "tutor":null,
         "abn":"12345678901",
         "birthDate":"1991-07-20",
@@ -3149,7 +3150,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact'
         """
         {
             "id":"#(~~id)",
-            "student":{"id":"#number","countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Not stated","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":"#number","countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":null,"usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
+            "student":{"id":"#number", "customFields":{},"countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Not stated","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":"#number","countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":null,"usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
             "tutor":null,
             "abn":"12345678901",
             "birthDate":"1991-07-20",

@@ -48,7 +48,7 @@ class DocumentItem extends React.PureComponent<any, any> {
             editItem={this.openFullDocumentView}
             viewItem={this.openDocumentView}
           />
-          <DocumentTags tags={item.tags} classes={classes} />
+          {Boolean(item.tags) && <DocumentTags tags={item.tags} classes={classes} />}
         </Grid>
       </Paper>
     );

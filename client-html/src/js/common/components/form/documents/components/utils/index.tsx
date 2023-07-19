@@ -8,7 +8,7 @@
 
 import React from "react";
 import { compareAsc, parseISO } from "date-fns";
-import { DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
+import { DocumentAttachmentRelation, DocumentVersion, DocumentVisibility } from "@api/model";
 import { StringKeyObject } from "../../../../../../model/common/CommomObjects";
 import { DocumentExtended } from "../../../../../../model/common/Documents";
 import { DocumentShareOption } from "../../../../../../model/entities/Document";
@@ -28,14 +28,19 @@ export const formatDocumentSize = (size: number): string => {
   return size.toString();
 };
 
+export const getDocumentContent = (file: File): Promise<string> => {
+  const reader = new FileReader();
+
+  return new Promise(resolve => {
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(file);
+  }).then((result: any) => result.replace(`data:${file.type};base64,`, ""));
+
+};
+
 export const getDocumentThumbnail = (file: File): Promise<string> => {
   if (file.type.match(/image/)) {
-    const reader = new FileReader();
-
-    return new Promise(resolve => {
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(file);
-    }).then((result: any) => result.replace(`data:${file.type};base64,`, ""));
+    return getDocumentContent(file);
   }
 
   return new Promise(resolve => resolve(""));
@@ -78,7 +83,6 @@ export const getInitialDocument = (file: File): Promise<DocumentExtended> => {
   return getDocumentThumbnail(file).then(thumbnail => ({
     id: null,
     name: null,
-    versionId: null,
     created: today,
     modified,
     added: null,
@@ -183,19 +187,7 @@ export const groupAttachmentsByEntity = (attachmentRelations: DocumentAttachment
   return acc;
 }, {});
 
-export const getLatestDocumentItem = (data: any[]) => {
+export const getLatestDocumentItem = (data: DocumentVersion[]) => {
   if (data && data.length === 1) return data[0];
-
-  let latestDate = parseISO("1970-01-01T00:00:00.000Z");
-  let resultElem = {};
-
-  data.forEach(elem => {
-    const result = compareAsc(parseISO(elem.added), latestDate);
-    if (result === 1) {
-      latestDate = parseISO(elem.added);
-      resultElem = elem;
-    }
-  });
-
-  return resultElem as any;
+  return data.find( elem => elem.current);
 };

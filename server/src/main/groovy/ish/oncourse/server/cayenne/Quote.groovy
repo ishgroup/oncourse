@@ -28,7 +28,7 @@ import java.time.LocalDate
  */
 @API
 @QueueableEntity
-class Quote extends _Quote {
+class Quote extends _Quote implements ExpandableTrait{
 
 	@Inject
 	private transient IAutoIncrementService autoIncrementService
@@ -232,5 +232,10 @@ class Quote extends _Quote {
 
 	void updateOverdue() {
 		setOverdue(Money.ZERO)
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return QuoteCustomField
 	}
 }

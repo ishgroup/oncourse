@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.ExportTemplateApiService
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
 
@@ -32,6 +33,10 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
+    }
+
     byte[] getHighQualityPreview(Long id) {
         def content = service.getPreview(id)
         return content
@@ -50,6 +55,11 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     @Override
     void update(Long id, ExportTemplateDTO exportTemplate) {
         service.update(id, exportTemplate)
+    }
+
+    @Override
+    void updateConfigs(Long id, AutomationConfigsDTO exportConfigs) {
+        service.updateConfigs(id, exportConfigs.config)
     }
 
     @Override

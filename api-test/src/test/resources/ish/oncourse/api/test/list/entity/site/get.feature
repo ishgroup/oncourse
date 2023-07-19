@@ -141,4 +141,4 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
         Given path ishPath + "/99999"
         When method GET
         Then status 400
-        And match $.errorMessage == "Site with id:99999 doesn't exist"
+        And match $.errorMessage == "Record with id = '99999' doesn't exist."

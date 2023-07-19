@@ -12,21 +12,7 @@ import Checkbox from "@mui/material/Checkbox";
 import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
 import { CheckboxFieldProps } from "../../../../model/common/Fields";
-
-const getValue = (value, stringValue) => {
-  if (!stringValue) {
-    return !!value;
-  }
-
-  switch (value) {
-    case "false":
-      return false;
-    case "true":
-      return true;
-    default:
-      return Boolean(value);
-  }
-};
+import { getCheckboxValue } from "../../../utils/common";
 
 const styles = theme => ({
   root: {
@@ -73,7 +59,7 @@ export const CheckboxField = ({ input, color, disabled, stringValue, className, 
 
   return (
     <StyledCheckbox
-      checked={getValue(input.value, stringValue)}
+      checked={getCheckboxValue(input.value, stringValue)}
       onChange={onChange}
       color={color}
       disabled={disabled}

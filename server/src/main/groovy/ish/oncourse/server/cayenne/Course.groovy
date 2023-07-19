@@ -334,7 +334,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of all courses related to this one
+	 * @return a list of all courses related to this one. It is a union of relatedToCourses and relatedFromCourses
 	 */
 	@Nonnull @API
 	List<Course> getRelatedCourses() {
@@ -419,7 +419,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses related to this one
+	 * @return a list of courses that this course is related to (relationships to courses, created from this one)
 	 */
 	@Nonnull
 	@API
@@ -434,7 +434,8 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses related to this one by type with specified name
+	 * @return a list of courses that this course is related to (relationships to courses, created from this course)
+	 * by type with specified name
 	 */
 	@Nonnull
 	@API
@@ -449,7 +450,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses this one relate to
+	 * @return a list of courses related to this one (relashionships, created in other courses to this one)
 	 */
 	@Nonnull
 	@API
@@ -464,7 +465,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses this one relate to by type with specified name
+	 * @return a list of courses related to this one (relashionships, created in other courses to this one) by type with specified name
 	 */
 	@Nonnull
 	@API
