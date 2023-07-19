@@ -164,7 +164,6 @@
 	<db-entity name="BinaryRelation">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
-		<db-attribute name="documentVersionId" type="BIGINT"/>
 		<db-attribute name="entityIdentifier" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="entityRecordId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -584,6 +583,7 @@
 		<db-attribute name="timestamp" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="versionId" type="VARCHAR" length="256"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="current" type="BOOLEAN" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="EmailTemplate">
 		<db-attribute name="bodyHtml" type="CLOB"/>
@@ -2258,6 +2258,7 @@
 		<obj-attribute name="timestamp" type="java.util.Date" db-attribute-path="timestamp"/>
 		<obj-attribute name="versionId" type="java.lang.String" db-attribute-path="versionId"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="current" type="java.lang.Boolean" db-attribute-path="current"/>
 	</obj-entity>
 	<obj-entity name="EmailTemplate" className="ish.oncourse.server.cayenne.EmailTemplate" clientClassName="ish.oncourse.cayenne.EmailTemplate" dbEntityName="EmailTemplate" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="bodyHtml" type="java.lang.String" db-attribute-path="bodyHtml"/>
@@ -3538,9 +3539,6 @@
 	<db-relationship name="document" source="BinaryRelation" target="Document">
 		<db-attribute-pair source="documentId" target="id"/>
 	</db-relationship>
-	<db-relationship name="documentVersion" source="BinaryRelation" target="DocumentVersion">
-		<db-attribute-pair source="documentVersionId" target="id"/>
-	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Certificate" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
@@ -4005,9 +4003,6 @@
 	</db-relationship>
 	<db-relationship name="versions" source="Document" target="DocumentVersion" toMany="true">
 		<db-attribute-pair source="id" target="documentId"/>
-	</db-relationship>
-	<db-relationship name="attachingRelations" source="DocumentVersion" target="BinaryRelation" toMany="true">
-		<db-attribute-pair source="id" target="documentVersionId"/>
 	</db-relationship>
 	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser">
 		<db-attribute-pair source="createdByUserId" target="id"/>
@@ -5081,7 +5076,6 @@
 	<obj-relationship name="notedAssessmentSubmission" source="AssessmentSubmissionNoteRelation" target="AssessmentSubmission" deleteRule="Nullify" db-relationship-path="notedAssessmentSubmission"/>
 	<obj-relationship name="taggedAssessment" source="AssessmentTagRelation" target="Assessment" deleteRule="Nullify" db-relationship-path="taggedAssessment"/>
 	<obj-relationship name="document" source="AttachmentRelation" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
-	<obj-relationship name="documentVersion" source="AttachmentRelation" target="DocumentVersion" deleteRule="Nullify" db-relationship-path="documentVersion"/>
 	<obj-relationship name="markedByTutor" source="Attendance" target="Tutor" deleteRule="Nullify" db-relationship-path="markedByTutor"/>
 	<obj-relationship name="session" source="Attendance" target="Session" deleteRule="Nullify" db-relationship-path="session"/>
 	<obj-relationship name="student" source="Attendance" target="Student" deleteRule="Nullify" db-relationship-path="student"/>
@@ -5266,7 +5260,6 @@
 	<obj-relationship name="taggingRelations" source="Document" target="DocumentTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
 	<obj-relationship name="taggedDocument" source="DocumentTagRelation" target="Document" deleteRule="Nullify" db-relationship-path="taggedDocument"/>
-	<obj-relationship name="attachmentRelations" source="DocumentVersion" target="AttachmentRelation" deleteRule="Deny" db-relationship-path="attachingRelations"/>
 	<obj-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="automationBindings" source="EmailTemplate" target="EmailTemplateAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>

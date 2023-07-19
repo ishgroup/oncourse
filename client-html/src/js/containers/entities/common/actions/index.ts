@@ -13,6 +13,7 @@ import { getContact } from "../../contacts/actions";
 import { createCourseClass, getCourseClass } from "../../courseClasses/actions";
 import { getSite } from "../../sites/actions";
 import { updateVetReportEntities } from "../../vetReporting/actions";
+import { Diff } from "@api/model";
 
 export const GET_ENTITY_RECORD_REQUEST = _toRequestType("get/entity/record");
 
@@ -21,6 +22,8 @@ export const CREATE_ENTITY_RECORD_REQUEST = _toRequestType("create/entity/record
 export const UPDATE_ENTITY_RECORD_REQUEST = _toRequestType("update/entity/record");
 
 export const DELETE_ENTITY_RECORD_REQUEST = _toRequestType("delete/entity/record");
+
+export const BULK_DELETE_ENTITY_RECORDS_REQUEST = _toRequestType("bulkDelete/entity/records");
 
 export const getEntityRecord = (id, entity: ListActionEntity) => {
   switch (entity) {
@@ -66,4 +69,9 @@ export const updateEntityRecord = (id: number, entity: ListActionEntity, item: a
 export const deleteEntityRecord = (id: number, entity: ListActionEntity) => ({
   type: DELETE_ENTITY_RECORD_REQUEST,
   payload: { id, entity }
+});
+
+export const bulkDeleteEntityRecordsRequest = (entity: ListActionEntity, diff: Diff) => ({
+  type: BULK_DELETE_ENTITY_RECORDS_REQUEST,
+  payload: { diff, entity }
 });

@@ -235,16 +235,23 @@ class MessageService {
 					}
 				} else if (recipient.email) {
 					SmtpParameters parameters = new SmtpParameters(messageSpec)
-					parameters.toList.add(recipient.email)
+					parameters.toList = List.of(recipient.email)
 
 					SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
 				}
 			}
+
 			if (++counter == 50) {
 				context.commitChanges()
 				counter = 0
 			}
 		}
+
+		if(!messageSpec.toList.isEmpty()){
+			SmtpParameters parameters = new SmtpParameters(messageSpec)
+			SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
+		}
+
 		if (counter > 0) {
 			context.commitChanges()
 		}

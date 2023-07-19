@@ -7,7 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
-        * def ishPathDelete = 'list/entity/waitingList/bulkDelete'
+        * def ishPathDelete = '/list/plain/bulkDelete?entity=WaitingList'
         
 
 
@@ -62,63 +62,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         And match $.rows[*].values[*] !contains ["20"]
 
 
-
-    Scenario: (+) Delete existing WaitingList by notadmin with rights
-
-#       <----->  Add a new entity for deleting and define id:
-        * def newWaitingList =
-        """
-        {
-        "privateNotes":"Some notes 21",
-        "studentNotes":null,
-        "studentCount":21,
-        "contactId":3,
-        "courseId":2,
-        "tags":[221],
-        "sites":[{"id":200}],
-        "customFields":{}
-        }
-        """
-
-        Given path ishPath
-        And request newWaitingList
-        When method POST
-        Then status 204
-
-        Given path ishPathPlain
-        And param entity = 'WaitingList'
-        And param columns = 'studentCount'
-        When method GET
-        Then status 200
-
-        * def id = get[0] response.rows[?(@.values == ["21"])].id
-        * print "id = " + id
-
-#       <--->  Login as notadmin:
-        * configure headers = { Authorization:  'UserWithRightsDelete'}
-
-        
-#       <--->
-
-        * def deleteRequest =
-        """
-        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
-        """
-        Given path ishPathDelete
-        And request deleteRequest
-        When method POST
-        Then status 204
-
-#       <---> Verification deleting:
-        Given path ishPathPlain
-        And param entity = 'WaitingList'
-        And param columns = 'studentCount'
-        When method GET
-        Then status 200
-        And match $.rows[*].values[*] !contains ["21"]
-
-
-
     Scenario: (-) Delete existing WaitingList by notadmin without rights
 
 #       <----->  Add a new entity for deleting and define id:
@@ -164,7 +107,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         And request deleteRequest
         When method POST
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to edit waiting lists. Please contact your administrator."
+        And match $.errorMessage == "Only users with admin rights can do it. Please contact your administrator"
 
 #       <---->  Scenario have been finished. Now change back permissions and delete created entity:
         * configure headers = { Authorization: 'admin'}

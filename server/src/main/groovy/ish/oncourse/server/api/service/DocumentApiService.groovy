@@ -47,7 +47,6 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
-            document.versionId = dbDocument.currentVersion?.id
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
             document.tags = dbDocument.allTags.collect { it.id }
 
@@ -98,11 +97,15 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         }
 
         if (restModel.access == null) {
-            validator.throwClientErrorException(id, 'access', 'Security level is required')
+            validator.throwClientErrorException(id, 'access', 'Security level is required.')
         }
 
         if (restModel.shared == null) {
-            validator.throwClientErrorException(id, 'shared', 'Shared flag is required')
+            validator.throwClientErrorException(id, 'shared', 'Shared flag is required.')
+        }
+
+        if (restModel.versions.size() == 0) {
+            validator.throwClientErrorException(id, 'versions', 'At least one document version is required.')
         }
 
     }

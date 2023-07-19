@@ -73,7 +73,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        
+
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc4.png')
@@ -107,7 +107,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        
+
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc5.csv')
@@ -141,7 +141,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        
+
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc6.xml')
@@ -161,7 +161,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsEdit'}
 
-        
+
 
 #       <-----> Upload private document:
         * def someStream = read('testDoc4.png')

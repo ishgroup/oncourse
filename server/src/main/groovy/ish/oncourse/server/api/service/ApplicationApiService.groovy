@@ -77,7 +77,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
             applicationDTO.createdBy = application.createdByUser ? "$application.createdByUser.firstName $application.createdByUser.lastName" : null
             applicationDTO.reason = application.reason
             applicationDTO.tags =  application.allTags.collect { it.id }
-            applicationDTO.documents = application.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            applicationDTO.documents = application.activeAttachments.collect { toRestDocument(it.document, documentService) }
             applicationDTO.customFields = application.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             applicationDTO.createdOn = application.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             applicationDTO.modifiedOn = application.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()

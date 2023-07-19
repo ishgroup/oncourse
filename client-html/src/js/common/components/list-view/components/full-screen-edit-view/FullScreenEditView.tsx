@@ -107,6 +107,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     }
   };
 
+  resetScroll = () => {
+    this.setState({
+      hasScrolling: false
+    });
+  };
+
   onCloseClick = () => {
     const {
       toogleFullScreenEditView, dirty, creatingNew, showConfirm, reset
@@ -117,10 +123,12 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
         onConfirm: () => {
           reset();
           toogleFullScreenEditView();
+          this.resetScroll();
         }
       });
     } else {
       toogleFullScreenEditView();
+      this.resetScroll();
     }
   };
 

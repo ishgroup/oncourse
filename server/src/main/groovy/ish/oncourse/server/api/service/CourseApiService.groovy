@@ -111,7 +111,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
             courseDTO.shortWebDescription = course.shortWebDescription
-            courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, documentService) }
             courseDTO.relatedSellables = relatedSellablesOf(course.context, course.id)
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode

@@ -87,7 +87,7 @@ const FileUploaderDialog: React.FC<Props> = (props => {
     return text.join(", ");
   };
   const backdropUploaderContent = (
-    <div className={clsx("w-100 h-100", classes.fullScreenFileDropContainer)}>
+    <div {...getRootProps()}  className={clsx("w-100 h-100", classes.fullScreenFileDropContainer)}>
       <div className="h-100 outline-none overflow-hidden cursor-pointer">
         <div className="h-100 p-1">
           <input {...getInputProps()} />
@@ -97,7 +97,7 @@ const FileUploaderDialog: React.FC<Props> = (props => {
   );
 
   const uploadContent = (
-    <div className={clsx("w-100 overflow-y-auto relative", classes.boxDropContainer, { "zIndex2": isBackdropDragging })}>
+    <div {...getRootProps()}  className={clsx("w-100 overflow-y-auto relative", classes.boxDropContainer, { "zIndex2": isBackdropDragging })}>
       <div className="h-100 outline-none overflow-hidden cursor-pointer">
         <div className="h-100 p-1">
           <input {...getInputProps()} />
@@ -138,7 +138,6 @@ const FileUploaderDialog: React.FC<Props> = (props => {
       classes={{
         paper: "w-100"
       }}
-      {...getRootProps()}
     >
       <div>
         {onClose && (

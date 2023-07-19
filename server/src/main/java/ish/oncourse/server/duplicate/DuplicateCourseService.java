@@ -69,7 +69,6 @@ public class DuplicateCourseService {
                 var relation = context.newObject(CourseAttachmentRelation.class);
                 relation.setAttachedCourse(newCourse);
                 relation.setDocument(courseAttachmentRelation.getDocument());
-                relation.setDocumentVersion(courseAttachmentRelation.getDocumentVersion());
                 relation.setSpecialType(courseAttachmentRelation.getSpecialType());
             }
 

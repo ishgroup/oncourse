@@ -89,8 +89,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "customFields":{"cf1":"bb","cf2":"b"},
         "documents":
         [
-            {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":null}],"name":"defaultPublicDocument","id":201,"urlWithoutVersionId":null},
-            {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
+            {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":null,content:null,current:true}],"name":"defaultPublicDocument","id":201,"urlWithoutVersionId":null},
+            {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null,content:null,current:true}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
         ],
         "tags":[234],
         "memberships":"#ignore",
