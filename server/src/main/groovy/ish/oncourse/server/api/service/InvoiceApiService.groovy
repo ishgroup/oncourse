@@ -258,7 +258,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             if (invoiceDTO.invoiceLines.empty) {
                 validator.throwClientErrorException(id, 'invoiceLines', 'At least 1 invoice line required.')
             } else {
-                invoiceDTO.invoiceLines.eachWithIndex { InvoiceInvoiceLineDTO iil, int idx ->
+                invoiceDTO.invoiceLines.eachWithIndex { AbstractInvoiceLineDTO iil, int idx ->
                     if (isBlank(iil.title)) {
                         validator.throwClientErrorException(id, "invoiceLines[$idx].title", 'Invoice line title is required.')
                     } else if (trimToNull(iil.title).length() > 200) {
@@ -371,7 +371,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
         abstractInvoice
     }
 
-    private void updateInvoiceLines(AbstractInvoice cayenneModel, List<InvoiceInvoiceLineDTO> invoiceLines) {
+    private void updateInvoiceLines(AbstractInvoice cayenneModel, List<AbstractInvoiceLineDTO> invoiceLines) {
         if (cayenneModel instanceof Quote && !cayenneModel.newRecord) {
             //handle quote line removal
             List<Long> ids = invoiceLines*.id.flatten().grep() as List<Long>
@@ -427,7 +427,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             Money taxAdjustment = MoneyUtil.calculateTaxAdjustment(totalEachIncTax, totalEachExTax,  iLine.tax.rate)
 
             iLine.taxEach = calculateTaxEachForInvoiceLine(iLine.priceEachExTax, iLine.discountEachExTax, iLine.tax.rate, taxAdjustment)
-            iLine.invoice = cayenneModel
+            iLine.abstractInvoice = cayenneModel
         }
     }
 

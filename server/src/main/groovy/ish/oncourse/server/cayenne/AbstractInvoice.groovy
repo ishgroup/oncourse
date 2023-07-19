@@ -48,6 +48,8 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 
 	abstract List<? extends AbstractInvoiceLine> getLines()
 
+	abstract List<AbstractInvoiceLine> getAbstractInvoiceLines()
+
 	abstract Contact getContact()
 
 	abstract void setContact(Contact contact)
