@@ -21,7 +21,7 @@ import { stubComponent } from "../../utils/common";
 import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../utils/dates/format";
 import { AnyArgFunction } from "../../../model/common/CommonFunctions";
 import { openInternalLink } from "../../utils/links";
-import { AppTheme } from "../../../model/common/Theme";
+import { AppTheme } from "../../../../ish-ui/model/Theme";
 
 const styles = (theme: AppTheme) => createStyles({
     rootPanel: {

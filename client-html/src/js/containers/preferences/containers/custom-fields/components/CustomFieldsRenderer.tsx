@@ -15,10 +15,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
-import { CheckboxField, StyledCheckbox } from "../../../../../common/ish-ui/formFields/CheckboxField";
-import EditInPlaceDateTimeField from "../../../../../common/ish-ui/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/ish-ui/formFields/EditInPlaceField";
-import EditInPlaceMoneyField from "../../../../../common/ish-ui/formFields/EditInPlaceMoneyField";
+import { CheckboxField, StyledCheckbox } from "../../../../../../ish-ui/formFields/CheckboxField";
+import EditInPlaceDateTimeField from "../../../../../../ish-ui/formFields/EditInPlaceDateTimeField";
+import EditInPlaceField from "../../../../../../ish-ui/formFields/EditInPlaceField";
+import EditInPlaceMoneyField from "../../../../../../ish-ui/formFields/EditInPlaceMoneyField";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import {
   validateEmail,
@@ -30,8 +30,9 @@ import {
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import ListMapRenderer from "./ListMapRenderer";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import Uneditable from "../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import { SelectItemDefault } from "../../../../../model/entities/common";
+import { useAppSelector } from "../../../../../common/utils/hooks";
 
 const mapEntityType = (entityType: EntityType) => {
   switch (entityType) {
@@ -131,6 +132,9 @@ const validateListMap = (value, dataType) => {
 
 const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: string }, classes: any }>(
   ({ classes, field, ...props }) => {
+
+    const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+
     switch (field.dataType) {
       case "Checkbox":
         return (
@@ -161,7 +165,7 @@ const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: str
       case "Map":
         return <ListMapRenderer {...props as any} dataType={field.dataType} key={field.id || field.uniqid} label="Options" />;
       case "Money":
-        return <EditInPlaceMoneyField {...props} />;
+        return <EditInPlaceMoneyField {...props} currencySymbol={currencySymbol} />;
       case "URL":
       case "Text":
       default:

@@ -10,7 +10,7 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import { ExpandMore } from "@mui/icons-material";
 import GradeButton from "./GradeButton";
-import EditInPlaceField from "../../../../../common/ish-ui/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../../../ish-ui/formFields/EditInPlaceField";
 import { stubFunction } from "../../../../../common/utils/common";
 
 const GradeContent = (

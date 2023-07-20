@@ -28,7 +28,7 @@ import * as security from "../../../model/preferences/security";
 import { State } from "../../../reducers/state";
 import { Fetch } from "../../../model/common/Fetch";
 import { setUserPreference, showConfirm } from "../../../common/actions";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
 
 const styles = () =>

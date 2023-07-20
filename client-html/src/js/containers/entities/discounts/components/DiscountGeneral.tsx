@@ -11,7 +11,7 @@ import Divider from "@mui/material/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
 import { connect } from "react-redux";
 import Decimal from "decimal.js-light";
-import EditInPlaceField from "../../../../common/ish-ui/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../../ish-ui/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
 import {
@@ -20,9 +20,9 @@ import {
   validateSingleMandatoryField
 } from "../../../../common/utils/validation";
 import { State } from "../../../../reducers/state";
-import { Switch } from "../../../../common/ish-ui/formFields/Switch";
+import { Switch } from "../../../../../ish-ui/formFields/Switch";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import EditInPlaceDateTimeField from "../../../../common/ish-ui/formFields/EditInPlaceDateTimeField";
+import EditInPlaceDateTimeField from "../../../../../ish-ui/formFields/EditInPlaceDateTimeField";
 import { mapSelectItems } from "../../../../common/utils/common";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

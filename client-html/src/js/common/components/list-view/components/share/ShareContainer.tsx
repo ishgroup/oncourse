@@ -58,8 +58,8 @@ import { TemplateOutputDisplayName } from "../../../../../model/common/Share";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
 import { validateSingleMandatoryField } from "../../../../utils/validation";
 import { CommonListItem } from "../../../../../model/common/sidebar";
-import FilePreview from "../../../form/FilePreview";
-import ConfirmBase from "../../../../ish-ui/dialog/confirm/ConfirmBase";
+import FilePreview from "../../../../../../ish-ui/formFields/FilePreview";
+import ConfirmBase from "../../../../../../ish-ui/dialog/confirm/ConfirmBase";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
 import { LSGetItem, LSSetItem } from "../../../../utils/storage";
 import {

@@ -18,7 +18,7 @@ import {
   Dialog
 } from "@mui/material";
 import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/ish-ui/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../../../ish-ui/formFields/EditInPlaceField";
 import { useGradeErrors } from "./utils/hooks";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 

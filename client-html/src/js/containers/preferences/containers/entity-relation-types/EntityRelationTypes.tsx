@@ -14,7 +14,7 @@ import { Fetch } from "../../../../model/common/Fetch";
 import EntityRelationTypesForm from "./components/EntityRelationTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
 import { mapPlainDiscounts } from "../../../entities/discounts/utils";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";

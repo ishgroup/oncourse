@@ -34,7 +34,7 @@ import { Dispatch } from "redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { validateNonNegative } from "../../../../common/utils/validation";
-import { SettingsAdornment } from "../../../../common/components/form/FieldAdornments";
+import { SettingsAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 import { clearUSIVerificationResult, verifyUSI } from "../actions";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { usePrevious } from "../../../../common/utils/hooks";

@@ -17,7 +17,7 @@ import { validateUniqueNamesInArray } from "../../../../../common/utils/validati
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import GradingItemsRenderer from "./GradingItemsRenderer";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
 
 interface Props {
   classes?: any;

@@ -21,7 +21,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import EditInPlaceField from "../../../../../common/ish-ui/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../../../ish-ui/formFields/EditInPlaceField";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
   AttandanceChangeType,
@@ -31,7 +31,7 @@ import AttendanceIcon from "./AttendanceIcon";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import { TimetableSession } from "../../../../../model/timetable";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
-import Uneditable from "../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import { stubFunction } from "../../../../../common/utils/common";
 import { getStudentAttendanceLabel } from "./utils";
 import {

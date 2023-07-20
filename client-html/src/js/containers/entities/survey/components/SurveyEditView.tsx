@@ -18,7 +18,7 @@ import Score from "./Score";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
+import { HeaderContactTitle } from "../../../../../ish-ui/formFields/FieldAdornments";
 
 interface Props {
   classes?: any;

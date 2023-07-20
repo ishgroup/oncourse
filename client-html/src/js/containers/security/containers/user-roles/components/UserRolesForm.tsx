@@ -15,7 +15,7 @@ import { Dispatch } from "redux";
 import { UserRole } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Categories from "../../../../../model/user-roles/index";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import UserRolePreference from "./UserRolePreference";
 import { State } from "../../../../../reducers/state";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";

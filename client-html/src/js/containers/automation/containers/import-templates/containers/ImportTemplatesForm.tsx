@@ -23,7 +23,7 @@ import IconButton from "@mui/material/IconButton";
 import { ImportModel } from "@api/model";
 import Typography from "@mui/material/Typography";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
@@ -36,7 +36,7 @@ import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/d
 import ExecuteImportModal from "../components/ExecuteImportModal";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
+import InfoPill from "../../../../../../ish-ui/layout/InfoPill";
 import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("advancedSetup_Import");
@@ -186,7 +186,6 @@ const ImportTemplatesForm = React.memo<Props>(
                       {
                         action: handleDelete,
                         icon: <DeleteForever/>,
-                        confirm: true,
                         tooltip: "Delete import template",
                         confirmText: "Import template will be deleted permanently",
                         confirmButtonText: "DELETE"

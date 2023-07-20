@@ -12,13 +12,13 @@ import { change } from "redux-form";
 import { AssessmentSubmission } from "@api/model";
 import clsx from "clsx";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { StyledCheckbox } from "../../../../common/ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../ish-ui/formFields/CheckboxField";
 import EntityService from "../../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
+import { HeaderContactTitle } from "../../../../../ish-ui/formFields/FieldAdornments";
 import { getContactFullName } from "../../contacts/utils";
 
 const AssessmentSubmissionGeneralTab: React.FC<EditViewProps<AssessmentSubmission>> = props => {

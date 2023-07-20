@@ -9,7 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Contact } from "@api/model";
 import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { SelectItemRendererProps } from "../../../../common/ish-ui/model/Fields";
+import { SelectItemRendererProps } from "../../../../../ish-ui/model/Fields";
 
 const ContactSelectItemRenderer = React.memo<SelectItemRendererProps<Contact>>(({ content, data, parentProps }) => {
   const caption = useMemo(

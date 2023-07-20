@@ -34,15 +34,15 @@ import {
   validateSpecificProgramIdentifier,
   validateVetPurchasingContractIdentifier
 } from "../../../../common/utils/validation";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import { HeaderContactTitle, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import { HeaderContactTitle, LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 import { fundingUploadsPath } from "../../../../constants/Api";
 import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
 import { openModuleLink } from "../../modules/utils";
 import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from "../../../../model/common/Theme";
+import { AppTheme } from "../../../../../ish-ui/model/Theme";
 import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

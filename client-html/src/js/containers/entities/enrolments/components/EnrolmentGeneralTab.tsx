@@ -26,11 +26,11 @@ import { setSelectedContact } from "../../invoices/actions";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { EditViewProps } from "../../../../model/common/ListView";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { HeaderContactTitle } from "../../../../common/components/form/FieldAdornments";
+import { HeaderContactTitle } from "../../../../../ish-ui/formFields/FieldAdornments";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import EnrolmentDetails from "./EnrolmentDetails";
 import { paymentSourceItems } from "../constants";

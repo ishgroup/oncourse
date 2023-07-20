@@ -22,7 +22,7 @@ import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "../../../en
 import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
 import { getDeepValue } from "../../../../common/utils/common";
-import AddButton from "../../../../common/components/icons/AddButton";
+import AddButton from "../../../../../ish-ui/buttons/AddButton";
 
 interface PaymentPlansProps {
   classes?: any;

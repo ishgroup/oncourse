@@ -11,7 +11,7 @@ import { Field, change } from "redux-form";
 import createStyles from "@mui/styles/createStyles";
 import clsx from "clsx";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { Switch } from "../../../../../common/ish-ui/formFields/Switch";
+import { Switch } from "../../../../../../ish-ui/formFields/Switch";
 import SliderStepperField from "./SliderStepperField";
 
 const styles = theme =>

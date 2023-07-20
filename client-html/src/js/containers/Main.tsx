@@ -21,11 +21,11 @@ import { connect } from "react-redux";
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { Dispatch } from "redux";
-import { BrowserWarning } from "../common/ish-ui/dialog/BrowserWarning";
+import { BrowserWarning } from "../../ish-ui/dialog/BrowserWarning";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import { loginRoute, routes } from "../routes";
-import MessageProvider from "../common/ish-ui/dialog/message/MessageProvider";
-import { currentTheme, getTheme } from "../common/themes/ishTheme";
+import MessageProvider from "../common/components/dialog/MessageProvider";
+import { currentTheme, getTheme } from "../../ish-ui/themes/ishTheme";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
@@ -34,15 +34,15 @@ import {
   READ_NEWS,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
-import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
+import { DefaultThemeKey, ThemeValues } from "../../ish-ui/model/Theme";
 import { State } from "../reducers/state";
 import { AnyArgFunction } from "../model/common/CommonFunctions";
-import GlobalStylesProvider from "../common/styles/GlobalStylesProvider";
+import GlobalStylesProvider from "../../ish-ui/styles/GlobalStylesProvider";
 import { getUserPreferences } from "../common/actions";
 import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
 import { getCurrency, isLoggedIn } from "./preferences/actions";
-import ConfirmProvider from "../common/ish-ui/dialog/confirm/ConfirmProvider";
-import Message from "../common/ish-ui/dialog/message/Message";
+import ConfirmProvider from "../common/components/dialog/ConfirmProvider";
+import Message from "../../ish-ui/dialog/message/Message";
 import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
 import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
 import { getDashboardBlogPosts } from "./dashboard/actions";

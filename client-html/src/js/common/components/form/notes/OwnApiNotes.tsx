@@ -14,12 +14,12 @@ import styles from "./styles";
 import { State } from "../../../../reducers/state";
 import { addActionToQueue, removeActionsFromQueue } from "../../../actions";
 import NotesRenderer from "./components/NotesRenderer";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
 import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import uniqid from "../../../utils/uniqid";
-import AddButton from "../../icons/AddButton";
+import AddButton from "../../../../../ish-ui/buttons/AddButton";
 import { APP_BAR_HEIGHT } from "../../../../constants/Config";
 
 interface Props {

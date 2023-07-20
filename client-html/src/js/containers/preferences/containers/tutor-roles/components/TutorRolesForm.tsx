@@ -13,11 +13,11 @@ import Grid from "@mui/material/Grid";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { DefinedTutorRole } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import PayRates from "./PayRates";
 import { useAppSelector } from "../../../../../common/utils/hooks";
@@ -87,7 +87,6 @@ const TutorRolesForm = React.memo<Props>(
                 {
                   action: handleDelete,
                   icon: <DeleteForever/>,
-                  confirm: true,
                   tooltip: "Delete tutor role",
                   confirmText: "Role will be deleted permanently",
                   confirmButtonText: "DELETE"

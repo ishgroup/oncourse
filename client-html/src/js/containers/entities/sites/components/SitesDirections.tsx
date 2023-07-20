@@ -8,7 +8,7 @@ import { Grid } from "@mui/material";
 import { FieldArray } from "redux-form";
 import { GridSize } from "@mui/material/Grid";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
   (twoColumn

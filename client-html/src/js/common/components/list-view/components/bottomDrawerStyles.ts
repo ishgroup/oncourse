@@ -4,7 +4,7 @@
  */
 
 import { createStyles } from "@mui/material";
-import { AppTheme } from "../../../../model/common/Theme";
+import { AppTheme } from "../../../../../ish-ui/model/Theme";
 
 export default (theme: AppTheme) => createStyles({
   fileInput: {

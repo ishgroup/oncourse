@@ -12,9 +12,9 @@ import {
   Outcome, PriorLearning, Qualification
 } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 import {
   getContactFullName
 } from "../../contacts/utils";

@@ -5,7 +5,7 @@
 
 import { Tag } from "@api/model";
 import { NumberArgFunction } from "../common/CommonFunctions";
-import { MenuTag } from "../../common/ish-ui/model/Fields";
+import { MenuTag } from "../../../ish-ui/model/Fields";
 
 export type FormMenuTag  = MenuTag<Tag>;
 

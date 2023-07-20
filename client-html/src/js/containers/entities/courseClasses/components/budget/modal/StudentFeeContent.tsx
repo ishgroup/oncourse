@@ -29,7 +29,7 @@ import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
-import AddButton from "../../../../../../common/components/icons/AddButton";
+import AddButton from "../../../../../../../ish-ui/buttons/AddButton";
 import { IS_JEST } from "../../../../../../constants/EnvironmentConstants";
 
 const StudentFeePaymentPlan: React.FC<any> = ({

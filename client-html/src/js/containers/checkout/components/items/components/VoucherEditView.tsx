@@ -5,7 +5,7 @@
 import Typography from "@mui/material/Typography";
 import React from "react";
 import { Grid } from "@mui/material";
-import Uneditable from "../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 
 const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
   if (!values) {

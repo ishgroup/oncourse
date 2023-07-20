@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import QualificationListItemRenderer from "../../qualifications/components/QualificationListItemRenderer";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";

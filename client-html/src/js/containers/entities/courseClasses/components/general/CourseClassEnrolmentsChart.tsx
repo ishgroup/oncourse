@@ -25,7 +25,7 @@ import { CourseClassState } from "../../reducers";
 import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../ish-ui/model/Theme";
 
 interface Props {
   classId: number;

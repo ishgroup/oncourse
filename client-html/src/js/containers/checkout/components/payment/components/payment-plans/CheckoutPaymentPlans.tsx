@@ -15,7 +15,7 @@ import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { normalizeNumberToPositive } from "../../../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from "../../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../../ish-ui/model/Theme";
 import { paymentPlanStyles } from "../../../../../entities/invoices/styles/paymentPlanStyles";
 
 const styles = () => createStyles({

@@ -24,7 +24,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { State } from "../../../../../reducers/state";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
+import { LinkAdornment } from "../../../../../../ish-ui/formFields/FieldAdornments";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";

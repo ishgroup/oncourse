@@ -10,7 +10,7 @@ import { change } from "redux-form";
 import { Contact } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { getContactFullName } from "../utils";
-import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
 
 const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {

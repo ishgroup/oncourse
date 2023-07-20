@@ -11,7 +11,7 @@ import clsx from "clsx";
 import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
 import { openInternalLink } from "../../utils/links";
-import { makeAppStyles } from "../../styles/makeStyles";
+import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
 
 const useStyles = makeAppStyles(theme => ({
   root: {

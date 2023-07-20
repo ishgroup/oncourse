@@ -15,7 +15,7 @@ import {
 } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
 import { LoginState } from "../../containers/login/reducers/state";
-import { ShowConfirmCaller } from "../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../ish-ui/model/Confirm";
 import { IAction } from "./IshAction";
 import { QueuedAction } from "../../model/common/ActionsQueue";
 import { ApiMethods } from "../../model/common/apiHandlers";

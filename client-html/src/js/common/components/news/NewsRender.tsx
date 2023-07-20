@@ -20,7 +20,7 @@ import Box from "@mui/material/Box";
 import { format as formatDate } from "date-fns";
 import ListItem from "@mui/material/ListItem";
 import { State } from "../../../reducers/state";
-import { AppTheme } from "../../../model/common/Theme";
+import { AppTheme } from "../../../../ish-ui/model/Theme";
 import { D_MMM_YYYY } from "../../utils/dates/format";
 import { READ_NEWS } from "../../../constants/Config";
 import { setUserPreference } from "../../actions";

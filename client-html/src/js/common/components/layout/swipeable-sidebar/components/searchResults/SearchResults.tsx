@@ -18,7 +18,7 @@ import { getResultId } from "../../utils";
 import navigation from "../../../../navigation/data/navigation.json";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { IconButton } from "@mui/material";
-import { useHoverShowStyles } from "../../../../../styles/hooks";
+import { useHoverShowStyles } from "../../../../../../../ish-ui/styles/hooks";
 import clsx from "clsx";
 
 const styles = theme => createStyles({

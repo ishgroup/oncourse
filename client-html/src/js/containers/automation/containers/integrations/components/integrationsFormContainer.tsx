@@ -21,11 +21,11 @@ import IntegrationDescription from "./IntegrationDescription";
 import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
 import IntegrationTypes from "../IntegrationTypes";
 import { State } from "../../../../../reducers/state";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
 import { showConfirm } from "../../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 

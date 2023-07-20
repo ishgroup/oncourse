@@ -16,7 +16,7 @@
 
 import React from "react";
 import clsx from "clsx";
-import { makeAppStyles } from "../../../../../styles/makeStyles";
+import { makeAppStyles } from "../../../../../../../ish-ui/styles/makeStyles";
 
 const useStyles = makeAppStyles(theme => ({
   tagColorDotExtraSmall: {

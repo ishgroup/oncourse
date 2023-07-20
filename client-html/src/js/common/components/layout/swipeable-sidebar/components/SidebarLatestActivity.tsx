@@ -12,7 +12,7 @@ import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config
 import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import ListLinksGroup from "./searchResults/ListLinksGroup";
 import { LSGetItem } from "../../../../utils/storage";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../ish-ui/model/Theme";
 
 const styles = (theme: AppTheme) => createStyles({
   activityStatistic: {

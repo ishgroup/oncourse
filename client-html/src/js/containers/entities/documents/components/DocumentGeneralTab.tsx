@@ -24,17 +24,17 @@ import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../comm
 import {
   FileTypeIcon, getDocumentContent,
   getLatestDocumentItem
-} from "../../../../common/ish-ui/documents/utils";
+} from "../../../../../ish-ui/documents/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { AppTheme } from "../../../../model/common/Theme";
+import { AppTheme } from "../../../../../ish-ui/model/Theme";
 import { State } from "../../../../reducers/state";
-import DocumentShare from "../../../../common/ish-ui/documents/DocumentShare";
+import DocumentShare from "../../../../common/components/form/documents/DocumentShare";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import IconButton from "@mui/material/IconButton";
-import { useHoverShowStyles } from "../../../../common/styles/hooks";
-import { useAppTheme } from "../../../../common/themes/ishTheme";
+import { useHoverShowStyles } from "../../../../../ish-ui/styles/hooks";
+import { useAppTheme } from "../../../../../ish-ui/themes/ishTheme";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {

@@ -8,7 +8,7 @@
 
 import { IAction } from "../actions/IshAction";
 import { OPEN_SEND_MESSAGE, CLOSE_SEND_MESSAGE } from "../actions";
-import { ConfirmState } from "../../model/common/Confirm";
+import { ConfirmState } from "../../../ish-ui/model/Confirm";
 import { SendMessageState } from "../../model/common/SendMessage";
 
 const Initial: SendMessageState = {

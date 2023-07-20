@@ -9,8 +9,8 @@
 import React, { useEffect, useRef } from "react";
 import { alpha } from "@mui/material/styles";
 import * as d3 from "d3";
-import { makeAppStyles } from "../../common/styles/makeStyles";
-import { useWindowSize } from "../../common/styles/hooks";
+import { makeAppStyles } from "../../../ish-ui/styles/makeStyles";
+import { useWindowSize } from "../../../ish-ui/styles/hooks";
 
 // Returns a list of all nodes under the root.
 function flatten(nodes) {

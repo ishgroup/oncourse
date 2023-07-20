@@ -35,7 +35,7 @@ import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
 import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
 import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
-import DynamicSizeList from "../../../../common/components/form/DynamicSizeList";
+import DynamicSizeList from "../../../../../ish-ui/dynamicSizeList/DynamicSizeList";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
   getFiltersNameString,

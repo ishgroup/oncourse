@@ -24,7 +24,7 @@ import QueryCardContent from "./QueryCardContent";
 import MessageCardContent from "./MessageCardContent";
 import ReportCardContent from "./ReportCardContent";
 import { getType } from "../../utils";
-import { ShowConfirmCaller } from "../../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../../ish-ui/model/Confirm";
 import AddScriptAction from "../AddScriptAction";
 import ScriptIcon from "../../../../../../../images/icon-script.svg";
 import { Binding } from "@api/model";

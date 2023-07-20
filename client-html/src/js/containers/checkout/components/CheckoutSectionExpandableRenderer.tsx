@@ -13,7 +13,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { AppTheme } from "../../../model/common/Theme";
+import { AppTheme } from "../../../../ish-ui/model/Theme";
 
 const styles = (theme: AppTheme) =>
   createStyles({
