@@ -82,6 +82,14 @@ class Tax extends _Tax implements TaxInterface, Queueable {
 		return super.getIsGSTTaxType()
 	}
 
+
+	List<AbstractInvoiceLine> getAbstractInvoiceLines() {
+		return new ArrayList<AbstractInvoiceLine>(){{
+			addAll(invoiceLines)
+			addAll(quoteLines)
+		}}
+	}
+
 	/**
 	 * @return the date and time this record was modified
 	 */

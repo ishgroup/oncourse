@@ -46,11 +46,11 @@ public class CourseClassesInvoice implements SyntheticAttributeDescriptor {
     @Override
     public SimpleNode spawnNode() {
         return new SyntheticCompoundNodeTemplate(getAttributeName(),
-                AbstractInvoice.INVOICE_LINES.outer()
+                Invoice.INVOICE_LINES.outer()
                         .dot(InvoiceLine.ENROLMENT).outer()
                         .dot(Enrolment.COURSE_CLASS).outer()
                         .getExpression(),
-                AbstractInvoice.INVOICE_LINES.outer()
+                Invoice.INVOICE_LINES.outer()
                         .dot(InvoiceLine.COURSE_CLASS).outer()
                         .getExpression());
     }

@@ -40,9 +40,9 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
 
     abstract Class<? extends AbstractInvoice> getInvoicePersistentClass()
 
-    abstract AbstractInvoice  getInvoice()
+    abstract AbstractInvoice  getAbstractInvoice()
 
-    abstract void setInvoice(AbstractInvoice abstractInvoice)
+    abstract void setAbstractInvoice(AbstractInvoice abstractInvoice)
 
     abstract CourseClass getCourseClass()
 
@@ -371,8 +371,8 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
 
         super.setDiscountEachExTax(discountEachEx)
 
-        if (getInvoice() != null) {
-            getInvoice().updateAmountOwing()
+        if (getAbstractInvoice() != null) {
+            getAbstractInvoice().updateAmountOwing()
         }
     }
 
@@ -384,8 +384,8 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
 
         super.setPriceEachExTax(priceEachExTax)
 
-        if (getInvoice() != null) {
-            getInvoice().updateAmountOwing()
+        if (getAbstractInvoice() != null) {
+            getAbstractInvoice().updateAmountOwing()
         }
     }
 

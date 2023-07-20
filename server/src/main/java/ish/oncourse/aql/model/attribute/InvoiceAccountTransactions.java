@@ -46,6 +46,6 @@ public class InvoiceAccountTransactions implements SyntheticAttributeDescriptor 
 
     @Override
     public SimpleNode spawnNode() {
-        return new AccountTransactionLazyNode(AbstractInvoice.ABSTRACT_INVOICE_LINES.dot(InvoiceLine.ID), AccountTransactionType.INVOICE_LINE, false);
+        return new AccountTransactionLazyNode(Invoice.INVOICE_LINES.dot(InvoiceLine.ID), AccountTransactionType.INVOICE_LINE, false);
     }
 }
