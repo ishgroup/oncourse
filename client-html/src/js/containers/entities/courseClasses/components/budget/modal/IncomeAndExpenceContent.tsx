@@ -13,7 +13,7 @@ import { Divider } from "@mui/material";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { getContactFullName } from "../../../../contacts/utils";
-import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment } from "../../../../../../../ish-ui/formFields/FieldAdornments";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
 import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { getCurrentTax } from "../../../../taxes/utils";

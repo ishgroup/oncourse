@@ -17,7 +17,7 @@ import {
 import { END_DAY_VALUE, initDataForGraph, START_DAY_VALUE } from "../utils";
 import EntityService from "../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM } from "../../../../common/utils/dates/format";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
 
 const useStyles = makeAppStyles(() => ({
   chartWrapper: {

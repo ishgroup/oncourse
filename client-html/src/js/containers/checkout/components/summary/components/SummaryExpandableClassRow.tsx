@@ -24,9 +24,9 @@ import Accordion from "@mui/material/Accordion";
 import { EnrolmentStudyReason } from "@api/model";
 import debounce from "lodash.debounce";
 import { showConfirm } from "../../../../../common/actions";
-import { StyledCheckbox } from "../../../../../common/ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../../ish-ui/formFields/CheckboxField";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import {
   formatCurrency

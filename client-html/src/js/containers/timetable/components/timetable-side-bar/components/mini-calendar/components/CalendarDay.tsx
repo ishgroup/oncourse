@@ -11,8 +11,8 @@ import { Button } from "@mui/material";
 import { isSameDay } from "date-fns";
 import clsx from "clsx";
 import { alpha } from "@mui/material/styles";
-import { makeAppStyles } from "../../../../../../../common/styles/makeStyles";
-import { useAppTheme } from "../../../../../../../common/themes/ishTheme";
+import { makeAppStyles } from "../../../../../../../../ish-ui/styles/makeStyles";
+import { useAppTheme } from "../../../../../../../../ish-ui/themes/ishTheme";
 
 interface Props {
   day: number;

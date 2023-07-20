@@ -17,12 +17,12 @@ import { Dispatch } from "redux";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import FilePreview from "../../../../../common/components/form/FilePreview";
-import Uneditable from "../../../../../common/components/form/Uneditable";
+import FilePreview from "../../../../../../ish-ui/formFields/FilePreview";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { showMessage } from "../../../../../common/actions";
 import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
@@ -182,7 +182,6 @@ const PdfBackgroundsForm = React.memo<Props>(
                       {
                         action: handleDelete,
                         icon: <DeleteForever />,
-                        confirm: true,
                         tooltip: "Delete PDF background",
                         confirmText: "PDF background will be deleted permanently",
                         confirmButtonText: "DELETE"

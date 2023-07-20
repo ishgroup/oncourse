@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { FormControlLabel } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 
 const CertificatesHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
   const { row } = props;

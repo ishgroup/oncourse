@@ -5,7 +5,7 @@
 
 import React from "react";
 import { Grid } from "@mui/material";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { Contact } from "@api/model";

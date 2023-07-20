@@ -17,12 +17,12 @@ import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Collapse } from "@mui/material";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
-import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
+import { useHoverShowStyles } from "../../../../ish-ui/styles/hooks";
+import { FormEditorField } from "../../../common/components/form/formFields/FormEditor";
 import { stopEventPropagation } from "../../../common/utils/events";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormTagProps } from "../../../model/tags";
-import ColorPicker from "../../../common/ish-ui/color-picker/ColorPicker";
+import ColorPicker from "../../../../ish-ui/colorPicker/ColorPicker";
 
 const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
 

@@ -51,7 +51,7 @@ import history from "../../../../constants/History";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
 import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
 import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
 import { getTutorPayInitial } from "./tutors/utils";
 import { getClassCostTypes } from "../utils";
 

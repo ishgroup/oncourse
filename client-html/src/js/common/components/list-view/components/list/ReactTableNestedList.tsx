@@ -31,7 +31,7 @@ import { NestedTableColumn } from "../../../../../model/common/NestedTable";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { State } from "../../../../../reducers/state";
 import { openInternalLink } from "../../../../utils/links";
-import AddButton from "../../../icons/AddButton";
+import AddButton from "../../../../../../ish-ui/buttons/AddButton";
 import StaticList from "./components/StaticList";
 import styles from "./styles";
 import { getNestedTableCell } from "./utils";

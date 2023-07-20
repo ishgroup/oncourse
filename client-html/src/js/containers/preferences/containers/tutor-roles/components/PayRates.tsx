@@ -13,8 +13,8 @@ import { TutorRolePayRate } from "@api/model";
 import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
 import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AddButton from "../../../../../common/components/icons/AddButton";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
+import AddButton from "../../../../../../ish-ui/buttons/AddButton";
 
 const FIELD_NAME: string = "payRates";
 

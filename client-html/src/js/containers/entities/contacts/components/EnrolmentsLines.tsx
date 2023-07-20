@@ -7,7 +7,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 
 const EnrolmentsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
   const { row } = props;

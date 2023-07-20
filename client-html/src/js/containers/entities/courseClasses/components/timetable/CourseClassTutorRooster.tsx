@@ -18,7 +18,7 @@ import { ClashType, CourseClassTutor, SessionWarning } from "@api/model";
 import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import AddButton from "../../../../../common/components/icons/AddButton";
+import AddButton from "../../../../../../ish-ui/buttons/AddButton";
 import CourseClassTutorRoosterItem from "./CourseClassTutorRoosterItem";
 import { preventEventDefault } from "../../../../../common/utils/events";
 

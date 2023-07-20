@@ -25,13 +25,13 @@ import {
   updateUser, resetUserPassword, disableUser2FA
 } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import Message from "../../../../../common/ish-ui/dialog/message/Message";
+import Message from "../../../../../../ish-ui/dialog/message/Message";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../../../../common/utils/dates/format";
 import { showConfirm } from "../../../../../common/actions";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("users");

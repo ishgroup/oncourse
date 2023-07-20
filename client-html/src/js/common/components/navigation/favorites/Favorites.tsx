@@ -19,7 +19,7 @@ import FavoriteScriptItem from "./FavoriteScriptItem";
 import { IconButton } from "@mui/material";
 import clsx from "clsx";
 import Close from "@mui/icons-material/Close";
-import { useHoverShowStyles } from "../../../styles/hooks";
+import { useHoverShowStyles } from "../../../../../ish-ui/styles/hooks";
 
 const styles = theme => createStyles({
   root: {

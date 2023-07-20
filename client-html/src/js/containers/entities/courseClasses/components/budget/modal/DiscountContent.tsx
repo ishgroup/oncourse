@@ -16,7 +16,7 @@ import { Dispatch } from "redux";
 import debounce from "lodash.debounce";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
 import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
 import { decimalMul } from "../../../../../../common/utils/numbers/decimalCalculation";
 import {

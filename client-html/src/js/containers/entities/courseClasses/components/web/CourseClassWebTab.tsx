@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import Grid from "@mui/material/Grid";
-import { FormEditorField } from "../../../../../common/components/markdown-editor/FormEditor";
+import { FormEditorField } from "../../../../../common/components/form/formFields/FormEditor";
 
 class CourseClassWebTab extends React.Component<any, any> {
   render() {

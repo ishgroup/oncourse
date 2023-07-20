@@ -17,7 +17,7 @@ import createStyles from "@mui/styles/createStyles";
 import debounce from "lodash.debounce";
 import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
 import { latestActivityStorageHandler } from "../../../utils/storage";
-import AddButton from "../../icons/AddButton";
+import AddButton from "../../../../../ish-ui/buttons/AddButton";
 import CollapseSideBarListItem from "./CollapseSideBarListItem";
 
 const styles = theme => createStyles({

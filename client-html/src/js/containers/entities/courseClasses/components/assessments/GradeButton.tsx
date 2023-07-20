@@ -9,7 +9,7 @@
 import React from "react";
 import { ButtonBase, IconButton, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
 
 interface AssessmentSubmissionIconButtonProps {
   onClick?: any;

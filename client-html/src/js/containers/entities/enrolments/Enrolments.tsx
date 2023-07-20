@@ -21,7 +21,7 @@ import Menu from "@mui/material/Menu";
 import { CustomFieldType, Enrolment } from "@api/model";
 import Button from "@mui/material/Button";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { StyledCheckbox } from "../../../common/ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../ish-ui/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import EntityService from "../../../common/services/EntityService";

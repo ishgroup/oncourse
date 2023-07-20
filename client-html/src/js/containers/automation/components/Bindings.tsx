@@ -23,9 +23,9 @@ import DataTypesMenu from "./DataTypesMenu";
 import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
 import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { renderAutomationItems } from "../utils";
-import { AppTheme } from "../../../model/common/Theme";
-import AddButton from "../../../common/components/icons/AddButton";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { AppTheme } from "../../../../ish-ui/model/Theme";
+import AddButton from "../../../../ish-ui/buttons/AddButton";
+import { useHoverShowStyles } from "../../../../ish-ui/styles/hooks";
 import { CatalogItemType } from "../../../model/common/Catalog";
 
 export type BindingsItemType = "component" | "label";

@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import withStyles from "@mui/styles/withStyles";
 import { StringValueType } from "../../../../../model/common/CommomObjects";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
 
 const useStyles = makeAppStyles(() => ({
   iconRemove: {

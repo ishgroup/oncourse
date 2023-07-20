@@ -7,7 +7,7 @@ import clsx from "clsx";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Tooltip from "@mui/material/Tooltip";
 import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
-import { AppTheme } from "../../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../../ish-ui/model/Theme";
 
 const styles = (theme: AppTheme) =>
   createStyles({

@@ -18,7 +18,7 @@ import { Dispatch } from "redux";
 import Grow from "@mui/material/Grow";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ScriptCard from "../../scripts/components/cards/CardBase";
@@ -33,7 +33,7 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
+import InfoPill from "../../../../../../ish-ui/layout/InfoPill";
 import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("advancedSetup_Export");
@@ -197,7 +197,6 @@ const ExportTemplatesForm = React.memo<Props>(
                       {
                         action: handleDelete,
                         icon: <DeleteForever/>,
-                        confirm: true,
                         tooltip: "Delete export template",
                         confirmText: "Export template will be deleted permanently",
                         confirmButtonText: "DELETE"

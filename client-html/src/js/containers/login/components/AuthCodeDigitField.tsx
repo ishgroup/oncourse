@@ -1,7 +1,7 @@
 import * as React from "react";
 import { withStyles } from "@mui/styles";
 import Input from "@mui/material/Input";
-import { AppTheme } from "../../../model/common/Theme";
+import { AppTheme } from "../../../../ish-ui/model/Theme";
 
 const styles = (theme: AppTheme) => ({
   inputWrapper: {

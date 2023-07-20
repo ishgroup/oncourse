@@ -13,7 +13,7 @@ import {
   DataResponse, EmailTemplate, Filter, Script, SearchQuery
 } from "@api/model";
 import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
-import { ShowConfirmCaller } from "./Confirm";
+import { ShowConfirmCaller } from "../../../ish-ui/model/Confirm";
 import { MessageData } from "./Message";
 import { CustomTableModelName, EntityName } from "../entities/common";
 import { FormMenuTag } from "../tags";

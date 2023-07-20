@@ -15,7 +15,7 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/material/Button";
 import { Radio } from "@mui/material";
 import { filterPastClasses } from "../../../utils";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../ish-ui/model/Theme";
 import { getAllMonthsWithSessions } from "../../../../timetable/utils";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";

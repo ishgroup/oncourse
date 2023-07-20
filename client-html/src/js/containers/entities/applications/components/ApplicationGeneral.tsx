@@ -11,7 +11,7 @@ import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { getContactFullName } from "../../contacts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
@@ -20,7 +20,7 @@ import {
   ContactLinkAdornment,
   HeaderContactTitle,
   LinkAdornment
-} from "../../../../common/components/form/FieldAdornments";
+} from "../../../../../ish-ui/formFields/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

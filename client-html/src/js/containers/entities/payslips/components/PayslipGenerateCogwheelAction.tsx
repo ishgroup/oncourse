@@ -17,7 +17,7 @@ import { interruptProcess } from "../../../../common/actions";
 import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { usePrevious } from "../../../../common/utils/hooks";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
 import { AnyArgFunction, NoArgFunction } from "../../../../model/common/CommonFunctions";
 
 const getPayrollInitial = (): PayrollRequest => {

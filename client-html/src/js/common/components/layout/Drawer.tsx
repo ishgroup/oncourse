@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../../reducers/state";
 import { closeDrawer } from "../../actions";
-import { AppTheme } from "../../../model/common/Theme";
+import { AppTheme } from "../../../../ish-ui/model/Theme";
 
 const styles = (theme: AppTheme) =>
   createStyles({

@@ -7,7 +7,7 @@
  */
 
 import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
 import React, { memo } from "react";
 import { useAppDispatch } from "../../../../common/utils/hooks";
 import MenuItem from "@mui/material/MenuItem";

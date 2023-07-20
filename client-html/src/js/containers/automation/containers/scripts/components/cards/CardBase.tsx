@@ -9,7 +9,7 @@ import { withStyles, createStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import clsx from "clsx";
-import AddButton from "../../../../../../common/components/icons/AddButton";
+import AddButton from "../../../../../../../ish-ui/buttons/AddButton";
 
 const styles = theme =>
   createStyles({

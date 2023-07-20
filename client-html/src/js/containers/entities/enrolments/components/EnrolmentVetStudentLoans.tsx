@@ -18,7 +18,7 @@ import {
 import { Collapse } from "@mui/material";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";

@@ -23,12 +23,12 @@ import { BankingReport } from "../consts";
 import { DD_MMM_YYYY_MINUSED, YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { StyledCheckbox } from "../../../../common/ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../ish-ui/formFields/CheckboxField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceSearchSelect from "../../../../common/ish-ui/formFields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../../../ish-ui/formFields/EditInPlaceSearchSelect";
 
 const paymentColumns: NestedTableColumn[] = [
   {

@@ -15,7 +15,7 @@ import { getContactFullName } from "../utils";
 import { Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { Dispatch } from "redux";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
 import { Contact } from "@api/model";
 
 interface Props {

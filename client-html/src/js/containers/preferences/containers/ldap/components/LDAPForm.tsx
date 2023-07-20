@@ -16,7 +16,7 @@ import {
 import { connect } from "react-redux";
 import isEmpty from "lodash.isempty";
 import Button from "@mui/material/Button";
-import ConfirmBase from "../../../../../common/ish-ui/dialog/confirm/ConfirmBase";
+import ConfirmBase from "../../../../../../ish-ui/dialog/confirm/ConfirmBase";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../../model/preferences/Ldap";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";

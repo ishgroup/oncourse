@@ -11,7 +11,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Divider from "@mui/material/Divider";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 import Collapse from "@mui/material/Collapse";
 import { change } from "redux-form";
 import { VetReport } from "../../../../model/entities/VetReporting";

@@ -74,34 +74,6 @@ export const getTagGroups = (tags: FormMenuTag[]) => {
   return groups;
 };
 
-export const getMenuTags = (allTags: Tag[], addedTags: Tag[], prefix?: string, queryPrefix?: string, entity?: string, path?: string, parent?: FormMenuTag): FormMenuTag[] => allTags.map(t => {
-  const active = addedTags.find(i => i.id === t.id);
-
-  const tag: FormMenuTag = {
-    active: Boolean(active),
-    tagBody: t,
-    parent,
-    children: []
-  };
-
-  tag.children = t.childTags.length ? getMenuTags(t.childTags, addedTags, prefix, queryPrefix, entity, path, tag) : [];
-
-  if (prefix) {
-    tag.prefix = prefix;
-  }
-  if (queryPrefix) {
-    tag.queryPrefix = queryPrefix;
-  }
-  if (entity) {
-    tag.entity = entity;
-  }
-  if (path) {
-    tag.path = path;
-  }
-
-  return tag;
-});
-
 const selectionTemplate = str => `id == "${str}"`;
 
 export const getExpression = (selection: string[]): string => selection.map(selectionTemplate).join(" or ");

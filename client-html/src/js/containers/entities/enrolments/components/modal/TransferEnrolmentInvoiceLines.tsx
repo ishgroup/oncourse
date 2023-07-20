@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { Decimal } from "decimal.js-light";
 import React, { useCallback } from "react";
 import { change } from "redux-form";
-import WarningMessage from "../../../../../common/ish-ui/fieldMessage/WarningMessage";
+import WarningMessage from "../../../../../../ish-ui/fieldMessage/WarningMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { accountLabelCondition } from "../../../accounts/utils";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";

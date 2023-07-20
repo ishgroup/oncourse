@@ -8,7 +8,7 @@
 
 import { createStyles } from "@mui/styles";
 import { alpha } from '@mui/material/styles';
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../ish-ui/model/Theme";
 import { HEADER_ROWS_COUNT, LIST_TWO_COLUMN_ROW_HEIGHT } from "../../../../../constants/Config";
 
 export default (theme: AppTheme) => createStyles({

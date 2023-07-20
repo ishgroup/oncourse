@@ -24,7 +24,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
@@ -33,14 +33,14 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 import { createAndDownloadFile } from "../../../../../common/utils/common";
-import FilePreview from "../../../../../common/components/form/FilePreview";
+import FilePreview from "../../../../../../ish-ui/formFields/FilePreview";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import Uneditable from "../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import { EntityItems } from "../../../../../model/entities/common";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
+import InfoPill from "../../../../../../ish-ui/layout/InfoPill";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { reportFullScreenPreview } from "../actions";
 import getConfigActions from "../../../components/ImportExportConfig";
@@ -293,7 +293,6 @@ const PdfReportsForm = React.memo<Props>(
                       {
                         action: handleDelete,
                         icon: <DeleteForever/>,
-                        confirm: true,
                         tooltip: "Delete PDF template",
                         confirmText: "PDF template will be deleted permanently",
                         confirmButtonText: "DELETE"

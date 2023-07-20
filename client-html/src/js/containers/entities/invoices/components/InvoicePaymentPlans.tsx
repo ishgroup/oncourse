@@ -21,7 +21,7 @@ import { paymentPlanStyles } from "../styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../utils";
 import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "./InvoicePaymentPlanComponents";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import AddButton from "../../../../common/components/icons/AddButton";
+import AddButton from "../../../../../ish-ui/buttons/AddButton";
 
 interface PaymentPlansProps {
   classes?: any;

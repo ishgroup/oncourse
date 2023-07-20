@@ -2,7 +2,7 @@ import {
   EditInPlaceSearchSelectFieldProps,
   FormFieldBaseProps,
   FormFieldProps
-} from "../../common/ish-ui/model/Fields";
+} from "../../../ish-ui/model/Fields";
 import { BaseFieldProps } from "redux-form";
 import { StringArgFunction } from "./CommonFunctions";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";

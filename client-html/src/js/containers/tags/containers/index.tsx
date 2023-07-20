@@ -24,13 +24,13 @@ import { TagsFormBase, TagsFormWrapper } from "./TagsFormBase";
 import RouteChangeConfirm from "../../../common/components/dialog/RouteChangeConfirm";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import FormField from "../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../common/components/appBar/AppBarActions";
 import TagRequirementsMenu from "../components/TagRequirementsMenu";
 import TagRequirementItem from "../components/TagRequirementItem";
-import AddButton from "../../../common/components/icons/AddButton";
+import AddButton from "../../../../ish-ui/buttons/AddButton";
 import { ChecklistTree, TagTree } from "../components/Trees";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import ColorPicker from "../../../common/ish-ui/color-picker/ColorPicker";
+import ColorPicker from "../../../../ish-ui/colorPicker/ColorPicker";
 import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
 import { FormTag } from "../../../model/tags";
 

@@ -10,7 +10,7 @@ import { SHOW_MESSAGE } from "../../../../actions";
 import * as EpicUtils from "../../../../epics/EpicUtils";
 import DocumentsService from "../services/DocumentsService";
 import { SEARCH_DOCUMENT_BY_HASH, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT } from "../actions";
-import { getInitialDocument } from "../../../../ish-ui/documents/utils";
+import { getInitialDocument } from "../../../../../../ish-ui/documents/utils";
 import { IAction } from "../../../../actions/IshAction";
 
 const getEditingDocumentAction = (

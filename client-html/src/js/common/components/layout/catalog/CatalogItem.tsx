@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import clsx from "clsx";
 import { CatalogItemType } from "../../../../model/common/Catalog";
-import { makeAppStyles } from "../../../styles/makeStyles";
+import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
 import { NumberArgFunction } from "../../../../model/common/CommonFunctions";
-import { useHoverShowStyles } from "../../../styles/hooks";
-import InfoPill from "../InfoPill";
+import { useHoverShowStyles } from "../../../../../ish-ui/styles/hooks";
+import InfoPill from "../../../../../ish-ui/layout/InfoPill";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {

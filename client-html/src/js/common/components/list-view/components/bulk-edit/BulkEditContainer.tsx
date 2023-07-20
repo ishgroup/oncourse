@@ -37,7 +37,7 @@ import bottomDrawerStyles from "../bottomDrawerStyles";
 import SelectionSwitcher from "../share/SelectionSwitcher";
 import { BulkEditField, getBulkEditFields } from "./utils";
 import { EntityName } from "../../../../../model/entities/common";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 
 interface BulkEditProps {
   rootEntity: EntityName;

@@ -23,7 +23,7 @@ import ViewSwitcher from "./components/ViewSwitcher";
 import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
 import FindRelatedMenu from "./components/FindRelatedMenu";
 import { FindRelatedItem } from "../../../../../model/common/ListView";
-import { makeAppStyles } from "../../../../styles/makeStyles";
+import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
 import EntityService from "../../../../services/EntityService";
 import instantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 

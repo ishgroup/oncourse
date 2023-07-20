@@ -6,7 +6,7 @@
 import React from "react";
 import Alert from "@mui/lab/Alert";
 import Tooltip from "@mui/material/Tooltip";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
 
 const useStyles = makeAppStyles(() => ({
   alertRoot: {

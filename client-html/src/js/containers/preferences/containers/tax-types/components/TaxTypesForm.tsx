@@ -13,7 +13,7 @@ import { formCommonStyles } from "../../../styles/formCommonStyles";
 import TaxTypesRenderer from "./TaxTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_taxTypes");

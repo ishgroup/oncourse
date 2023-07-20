@@ -12,7 +12,7 @@ import Collapse from "@mui/material/Collapse";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { createStyles, withStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
-import { AppTheme } from "../../../../model/common/Theme";
+import { AppTheme } from "../../../../../ish-ui/model/Theme";
 import { stopEventPropagation } from "../../../utils/events";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
