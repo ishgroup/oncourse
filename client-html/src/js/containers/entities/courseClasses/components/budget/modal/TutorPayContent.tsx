@@ -15,7 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
@@ -29,9 +29,9 @@ import {
 import { decimalMinus, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
-import WarningMessage from "../../../../../../common/ish-ui/fieldMessage/WarningMessage";
+import WarningMessage from "../../../../../../../ish-ui/fieldMessage/WarningMessage";
 import { getClassCostFee } from "../utils";
-import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment } from "../../../../../../../ish-ui/formFields/FieldAdornments";
 
 const styles = theme => createStyles({
   divider: {

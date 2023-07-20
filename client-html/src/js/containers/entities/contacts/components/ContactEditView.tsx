@@ -23,7 +23,7 @@ import ContactsTutor from "./ContactsTutor";
 import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 import { State } from "../../../../reducers/state";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from "../../../../model/common/Theme";
+import { AppTheme } from "../../../../../ish-ui/model/Theme";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { Contact } from "@api/model";
 

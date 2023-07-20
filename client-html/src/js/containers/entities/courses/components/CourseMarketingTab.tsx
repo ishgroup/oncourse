@@ -8,7 +8,7 @@ import { FieldArray } from "redux-form";
 import Grid from "@mui/material/Grid";
 import { Course } from "@api/model";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EditViewProps } from "../../../../model/common/ListView";

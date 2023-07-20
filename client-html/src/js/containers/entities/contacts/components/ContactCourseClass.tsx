@@ -4,7 +4,7 @@
  */
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { EntityType } from "../../../../common/ish-ui/model/NestedEntity";
+import { EntityType } from "../../../../../ish-ui/model/NestedEntity";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import { getNestedTutorClassItem } from "../utils";
 

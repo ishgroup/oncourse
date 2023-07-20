@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import clsx from "clsx";
 import { Route, Switch } from "react-router-dom";
-import ResizableWrapper from "../resizable/ResizableWrapper";
+import ResizableWrapper from "../../../../../ish-ui/layout/resizable/ResizableWrapper";
 import Drawer from "../Drawer";
 import LoadingIndicator from "../../progress/LoadingIndicator";
 import { AnyArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";

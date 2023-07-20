@@ -13,11 +13,11 @@ import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import { WrappedFieldArrayProps } from "redux-form";
 import { GradingItem, GradingType } from "@api/model";
-import { useHoverShowStyles } from "../../../../../common/styles/hooks";
+import { useHoverShowStyles } from "../../../../../../ish-ui/styles/hooks";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 import { GradingFormData } from "./GradingTypesForm";
-import AddButton from "../../../../../common/components/icons/AddButton";
+import AddButton from "../../../../../../ish-ui/buttons/AddButton";
 
 interface Props {
   classes: any;

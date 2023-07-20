@@ -5,7 +5,7 @@
 
 import { IAction } from "../actions/IshAction";
 import { OPEN_CONFIRM, CLOSE_CONFIRM } from "../actions";
-import { ConfirmState } from "../../model/common/Confirm";
+import { ConfirmState } from "../../../ish-ui/model/Confirm";
 
 const Initial: ConfirmState = {
   open: false,

@@ -13,7 +13,7 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/FieldAdornments";
+} from "../../../../../ish-ui/formFields/FieldAdornments";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

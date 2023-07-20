@@ -20,7 +20,7 @@ import React, {
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
-import { makeAppStyles } from "../../../styles/makeStyles";
+import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
 
 interface Props {
   selected: boolean;

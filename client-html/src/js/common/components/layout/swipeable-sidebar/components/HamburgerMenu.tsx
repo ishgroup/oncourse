@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import { State } from "../../../../../reducers/state";
 import { toggleSwipeableDrawer } from "../actions";
 import Divider from "@mui/material/Divider";
-import { getTheme } from "../../../../themes/ishTheme";
+import { getTheme } from "../../../../../../ish-ui/themes/ishTheme";
 import onCourseLogoDark from "../../../../../../images/onCourseLogoDark.png";
 import onCourseLogoLight from "../../../../../../images/onCourseLogoLight.png";
 

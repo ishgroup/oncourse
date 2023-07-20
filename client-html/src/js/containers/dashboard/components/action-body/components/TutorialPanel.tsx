@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import { alpha } from "@mui/material/styles";
 import { Grid } from "@mui/material";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { useAppDispatch } from "../../../../../common/utils/hooks";
 import { setUserPreference } from "../../../../../common/actions";

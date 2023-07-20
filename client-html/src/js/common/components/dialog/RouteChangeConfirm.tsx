@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import { useEffect, useRef } from "react";
 import { closeConfirm, showConfirm, setNextLocation } from "../../actions";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
 import { State } from "../../../reducers/state";
 
 interface Props {

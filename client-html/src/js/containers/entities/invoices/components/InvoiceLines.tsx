@@ -27,10 +27,10 @@ import { useAppSelector, usePrevious } from "../../../../common/utils/hooks";
 import { accountLabelCondition } from "../../accounts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getDiscountAmountExTax } from "../../discounts/utils";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { calculateInvoiceLineTotal } from "../utils";
 
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)

@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, getFormValues } from "redux-form";
 import { checkPermissions } from "../../../../../common/actions";
-import { StyledCheckbox } from "../../../../../common/ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../../ish-ui/formFields/CheckboxField";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
 import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";

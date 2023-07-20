@@ -11,7 +11,7 @@ import clsx from "clsx";
 import Delete from "@mui/icons-material/Delete";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { useHoverShowStyles } from "../../../../ish-ui/styles/hooks";
 import { stopEventPropagation } from "../../../common/utils/events";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormTagProps } from "../../../model/tags";

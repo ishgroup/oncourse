@@ -38,10 +38,10 @@ import {
   FundingUpload
 } from "@api/model";
 import LoadingButton from "@mui/lab/LoadingButton";
-import ErrorMessage from "../../../common/ish-ui/fieldMessage/ErrorMessage";
+import ErrorMessage from "../../../../ish-ui/fieldMessage/ErrorMessage";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { State } from "../../../reducers/state";
-import { StyledCheckbox } from "../../../common/ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../ish-ui/formFields/CheckboxField";
 import AvetmissExportResults from "../components/AvetmissExportResults";
 import {
   clearAvetmiss8ExportID,

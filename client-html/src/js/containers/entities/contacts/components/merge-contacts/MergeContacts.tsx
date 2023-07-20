@@ -19,13 +19,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import { MergeData, MergeLine, MergeRequest } from "@api/model";
-import { StyledCheckbox } from "../../../../../common/ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../../ish-ui/formFields/CheckboxField";
 import { State } from "../../../../../reducers/state";
-import { Switch } from "../../../../../common/ish-ui/formFields/Switch";
+import { Switch } from "../../../../../../ish-ui/formFields/Switch";
 import { getMergeContacts, postMergeContacts } from "../../actions";
 import RadioLabelGroup from "./components/RadioLabelGroup";
 import InfoCard from "./components/InfoCard";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../ish-ui/model/Theme";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getContactFullName } from "../../utils";
 

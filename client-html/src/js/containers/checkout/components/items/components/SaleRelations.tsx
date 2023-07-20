@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 import { Card } from "@mui/material";
 import { CheckoutItem, CheckoutSaleRelationExtended } from "../../../../../model/checkout";
 import { NestedListRow } from "../../../../../common/components/form/nestedList/components/ListRenderer";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
 
 interface Props {
   relations: CheckoutSaleRelationExtended[];

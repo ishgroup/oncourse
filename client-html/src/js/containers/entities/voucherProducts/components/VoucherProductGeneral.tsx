@@ -9,7 +9,6 @@ import { change, FieldArray } from "redux-form";
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../common/ish-ui/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
@@ -17,7 +16,6 @@ import { State } from "../../../../reducers/state";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { clearMinMaxFee, getMinMaxFee } from "../actions";
-import EditInPlaceMoneyField from "../../../../common/ish-ui/formFields/EditInPlaceMoneyField";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
 import {
@@ -26,7 +24,7 @@ import {
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
@@ -35,7 +33,7 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { ConfirmProps } from "../../../../model/common/Confirm";
+import { ConfirmProps } from "../../../../../ish-ui/model/Confirm";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];

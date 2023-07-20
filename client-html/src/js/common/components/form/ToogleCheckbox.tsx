@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from "react";
 import { WrappedFieldProps } from "redux-form";
 import { Button, ButtonGroup, Typography } from "@mui/material";
 import clsx from "clsx";
-import { makeAppStyles } from "../../styles/makeStyles";
+import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
 import { alpha } from "@mui/material/styles";
 
 interface Props extends WrappedFieldProps {

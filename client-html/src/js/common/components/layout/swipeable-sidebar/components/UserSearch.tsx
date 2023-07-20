@@ -11,7 +11,7 @@ import Search from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
 import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { makeAppStyles } from "../../../../styles/makeStyles";
+import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
 
 const useStyles = makeAppStyles(theme => ({
   inputRoot: {

@@ -11,7 +11,7 @@ import Close from "@mui/icons-material/Close";
 import React, { useMemo } from "react";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { makeAppStyles } from "../../styles/makeStyles";
+import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
 import navigation from "./data/navigation.json";
 import structure from "./data/structure.json";
 import CatalogItem from "../layout/catalog/CatalogItem";

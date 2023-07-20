@@ -15,7 +15,7 @@ import { WrappedFieldArrayProps } from "redux-form";
 import { Dispatch } from "redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
+import { LinkAdornment } from "../../../../../../ish-ui/formFields/FieldAdornments";
 import { openInternalLink } from "../../../../../common/utils/links";
 import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
 import { showMessage } from "../../../../../common/actions";

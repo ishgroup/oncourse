@@ -17,7 +17,7 @@ import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AddIcon from "@mui/icons-material/Add";
 import Collapse from "@mui/material/Collapse";
-import { transition } from "../../../../../common/styles/mixins/common";
+import { transition } from "../../../../../../ish-ui/styles/mixins/common";
 
 const styles = createStyles(theme => ({
   addActionButton: {

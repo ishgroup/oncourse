@@ -8,32 +8,35 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
-import EditInPlacePhoneField from "../../../ish-ui/formFields/EditInPlacePhoneField";
-import EditInPlaceDurationField from "../../../ish-ui/formFields/EditInPlaceDurationField";
-import EditInPlaceFileField from "../../../ish-ui/formFields/EditInPlaceFileField";
-import EditInPlaceMoneyField from "../../../ish-ui/formFields/EditInPlaceMoneyField";
-import EditInPlaceSearchSelect from "../../../ish-ui/formFields/EditInPlaceSearchSelect";
+import EditInPlacePhoneField from "../../../../../ish-ui/formFields/EditInPlacePhoneField";
+import EditInPlaceDurationField from "../../../../../ish-ui/formFields/EditInPlaceDurationField";
+import EditInPlaceFileField from "../../../../../ish-ui/formFields/EditInPlaceFileField";
+import EditInPlaceMoneyField from "../../../../../ish-ui/formFields/EditInPlaceMoneyField";
+import EditInPlaceSearchSelect from "../../../../../ish-ui/formFields/EditInPlaceSearchSelect";
 import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
-import EditInPlaceField from "../../../ish-ui/formFields/EditInPlaceField";
-import EditInPlaceDateTimeField from "../../../ish-ui/formFields/EditInPlaceDateTimeField";
-import CodeEditorField from "../../../ish-ui/formFields/CodeEditorField";
-import { FormSwitch } from "../../../ish-ui/formFields/Switch";
-import { CheckboxField } from "../../../ish-ui/formFields/CheckboxField";
-import SimpleTagList from "../tagsInput/TagInputList";
+import EditInPlaceField from "../../../../../ish-ui/formFields/EditInPlaceField";
+import EditInPlaceDateTimeField from "../../../../../ish-ui/formFields/EditInPlaceDateTimeField";
+import CodeEditorField from "../../../../../ish-ui/formFields/CodeEditorField";
+import { FormSwitch } from "../../../../../ish-ui/formFields/Switch";
+import { CheckboxField } from "../../../../../ish-ui/formFields/CheckboxField";
+import SimpleTagList from "../../../../../ish-ui/tagsInput/TagInputList";
 import { stubFunction } from "../../../utils/common";
-import { WrappedFieldInputProps } from "redux-form/lib/Field";
-import { ColoredCheckBox } from "../ColoredCheckBox";
+import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
+import { ColoredCheckBox } from "../../../../../ish-ui/formFields/ColoredCheckBox";
 import { AngelFormFieldProps } from "../../../../model/common/Fields";
+import { useAppSelector } from "../../../utils/hooks";
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 
 const FormFieldBase = (props: AngelFormFieldProps) => {
-
   const { type, ...rest } = props;
 
   const { input, format, debounced = true } = type !== "stub"
     ? props
     : stubFieldMocks;
+
+  const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+  const processActionId = useAppSelector(state => state.fieldProcessing[input?.name]);
 
   const entity = type === "remoteDataSelect" ? props.entity : null;
 
@@ -71,47 +74,83 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
 
   switch (type) {
     case "phone":
-      return <EditInPlacePhoneField  {...sharedProps} />;
+      return <EditInPlacePhoneField
+        <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+      />;
     case "duration":
-      return <EditInPlaceDurationField  {...sharedProps} />;
+      return <EditInPlaceDurationField
+        <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+      />;
     case "file":
-      return <EditInPlaceFileField  {...sharedProps} />;
+      return <EditInPlaceFileField
+        <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+      />;
     case "money":
-      return <EditInPlaceMoneyField  {...sharedProps} />;
+      return <EditInPlaceMoneyField
+        <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+        currencySymbol={currencySymbol}
+      />;
     case "select":
-      return <EditInPlaceSearchSelect  {...sharedProps} />;
+      return <EditInPlaceSearchSelect
+        <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+      />;
     case "remoteDataSelect":
       return <EditInPlaceRemoteDataSearchSelect
         entity={entity}
         {...sharedProps}
       />;
     case "number":
-      return <EditInPlaceField  {...sharedProps} type="number" />;
+      return <EditInPlaceField  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps} type="number" />;
     case "date":
-      return <EditInPlaceDateTimeField  {...sharedProps} type="date" />;
+      return <EditInPlaceDateTimeField  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+        processActionId={processActionId}
+        type="date"
+      />;
     case "time":
-      return <EditInPlaceDateTimeField  {...sharedProps} type="time" />;
+      return <EditInPlaceDateTimeField  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+        processActionId={processActionId}
+        type="time"
+      />;
     case "dateTime":
-      return <EditInPlaceDateTimeField  {...sharedProps} type="datetime" />;
+      return <EditInPlaceDateTimeField  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+        processActionId={processActionId}
+        type="datetime"
+      />;
     case "code":
-      return <CodeEditorField {...sharedProps} />;
+      return <CodeEditorField <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps} />;
     case "coloredCheckbox":
-      return <ColoredCheckBox {...sharedProps} />;
+      return <ColoredCheckBox <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps} />;
     case "password":
-      return <EditInPlaceField  {...sharedProps} type="password" />;
+      return <EditInPlaceField  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps} type="password" />;
     case "switch":
       return <FormSwitch<WrappedFieldInputProps> {...sharedProps} />;
     case "checkbox":
-      return <CheckboxField {...sharedProps} />;
+      return <CheckboxField <WrappedFieldInputProps>
+        {...sharedProps} />;
     case "multilineText":
-      return <EditInPlaceField  {...sharedProps} multiline />;
+      return <EditInPlaceField  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps} multiline />;
     case "stub":
       return <div className="invisible" />;
     case "tags":
-      return <SimpleTagList  {...sharedProps} />;
+      return <SimpleTagList  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}/>;
     case "text":
     default:
-      return <EditInPlaceField  {...sharedProps} />;
+      return <EditInPlaceField  <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}/>;
   }
 };
 

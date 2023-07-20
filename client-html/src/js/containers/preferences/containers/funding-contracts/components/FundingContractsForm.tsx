@@ -27,7 +27,7 @@ import { State } from "../../../../../reducers/state";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 

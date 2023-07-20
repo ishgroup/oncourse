@@ -17,7 +17,7 @@ import Paper from "@mui/material/Paper";
 import Launch from "@mui/icons-material/Launch";
 import { NestedListItem } from "../NestedList";
 import { openInternalLink } from "../../../../utils/links";
-import DynamicSizeList from "../../DynamicSizeList";
+import DynamicSizeList from "../../../../../../ish-ui/dynamicSizeList/DynamicSizeList";
 import { listStyles } from "./styles";
 
 interface Props {

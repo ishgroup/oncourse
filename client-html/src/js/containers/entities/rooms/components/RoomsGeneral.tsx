@@ -11,12 +11,12 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import { State } from "../../../../reducers/state";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { openInternalLink } from "../../../../common/utils/links";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import TimetableButton from "../../../../common/ish-ui/buttons/TimetableButton";
+import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import TimetableButton from "../../../../../ish-ui/buttons/TimetableButton";
 import { openSiteLink } from "../../sites/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

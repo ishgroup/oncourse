@@ -14,9 +14,9 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { format } from "date-fns";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { ContactLinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
 
 interface MessageEditViewProps {
   values?: Message;

@@ -35,7 +35,7 @@ import BudgetExpandableItemRenderer from "./BudgetExpandableItemRenderer";
 import history from "../../../../../constants/History";
 import { State } from "../../../../../reducers/state";
 import { CourseClassState } from "../../reducers";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../ish-ui/model/Theme";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import BudgetCostModal from "./modal/BudgetCostModal";
 import { decimalMinus, decimalMul, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";

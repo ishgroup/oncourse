@@ -10,7 +10,7 @@ import { withStyles, createStyles } from "@mui/styles";
 import { green } from "@mui/material/colors";
 import ClassNames from "clsx";
 import debounce from "lodash.debounce";
-import { TextField } from "../../../common/ish-ui/formFields/TextField";
+import { TextField } from "../../../../ish-ui/formFields/TextField";
 
 const styles = theme => createStyles({
   disabled: {},

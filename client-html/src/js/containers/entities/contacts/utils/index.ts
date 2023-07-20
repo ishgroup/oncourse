@@ -6,7 +6,7 @@
 import { Contact } from "@api/model";
 import { openInternalLink } from "../../../../common/utils/links";
 import { CourseClassStatus } from "../../../../model/entities/CourseClass";
-import { EntityType } from "../../../../common/ish-ui/model/NestedEntity";
+import { EntityType } from "../../../../../ish-ui/model/NestedEntity";
 
 const getContactName = item => {
   const firstName = item.firstName || "";

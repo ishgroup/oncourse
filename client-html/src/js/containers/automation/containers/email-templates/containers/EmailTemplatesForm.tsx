@@ -17,7 +17,7 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Dispatch } from "redux";
 import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
@@ -32,7 +32,7 @@ import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
+import InfoPill from "../../../../../../ish-ui/layout/InfoPill";
 import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("emailTemplates");
@@ -216,7 +216,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     {
                       action: handleDelete,
                       icon: <DeleteForever/>,
-                      confirm: true,
                       tooltip: "Delete message template",
                       confirmText: "Message template will be deleted permanently",
                       confirmButtonText: "DELETE"

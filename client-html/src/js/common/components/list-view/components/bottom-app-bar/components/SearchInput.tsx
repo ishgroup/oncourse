@@ -29,10 +29,10 @@ import {
 import { FormMenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
 import { FILTER_TAGS_REGEX } from "../../../../../../constants/Config";
-import { AppTheme } from "../../../../../../model/common/Theme";
+import { AppTheme } from "../../../../../../../ish-ui/model/Theme";
 import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
 import { QueryFieldSuggestion } from "../../../../../../model/common/Fields";
-import { getAllMenuTags } from "../../../../../ish-ui/utils";
+import { getAllMenuTags } from "../../../../../../../ish-ui/utils";
 
 export const styles = (theme: AppTheme) => createStyles({
     container: {

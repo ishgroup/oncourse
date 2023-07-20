@@ -31,7 +31,7 @@ import { Column, DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
 import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { getTableRows } from "./utils";
-import { StyledCheckbox } from "../../../../ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from "../../../../../../ish-ui/formFields/CheckboxField";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
 import { StringKeyObject } from "../../../../../model/common/CommomObjects";

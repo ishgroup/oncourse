@@ -51,16 +51,16 @@ import {
   getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent
 } from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import AddScriptAction from "../components/AddScriptAction";
 import BoltIcon from "../../../../../../images/icon-bolt.svg";
 import ScriptIcon from "../../../../../../images/icon-script.svg";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
-import { AppTheme } from "../../../../../model/common/Theme";
+import InfoPill from "../../../../../../ish-ui/layout/InfoPill";
+import { AppTheme } from "../../../../../../ish-ui/model/Theme";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import getConfigActions from "../../../components/ImportExportConfig";
 import { validateForbiddenSymbols } from "../../../../../common/utils/validation";

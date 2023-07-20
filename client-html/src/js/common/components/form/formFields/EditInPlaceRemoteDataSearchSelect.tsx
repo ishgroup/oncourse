@@ -16,7 +16,7 @@ import {
 import {
   EditInPlaceRemoteDataSelectFieldProps,
 } from "../../../../model/common/Fields";
-import EditInPlaceSearchSelect from "../../../ish-ui/formFields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../../../ish-ui/formFields/EditInPlaceSearchSelect";
 
 const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {

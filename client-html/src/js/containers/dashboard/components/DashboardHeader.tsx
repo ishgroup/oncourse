@@ -20,9 +20,9 @@ import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/c
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
 import DashboardService from "../services/DashboardService";
 import {  LSRemoveItem } from "../../../common/utils/storage";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
 import { useAppSelector } from "../../../common/utils/hooks";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
 import { getSystemUserData } from "../../../common/actions";
 
 const useStyles = makeAppStyles(theme => ({

@@ -10,7 +10,7 @@ import Close from "@mui/icons-material/Close";
 import Input from "@mui/material/Input";
 import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
 import { mapSelectItems, stubFunction } from "../../../../utils/common";
-import EditInPlaceSearchSelect from "../../../../ish-ui/formFields/EditInPlaceSearchSelect";
+import EditInPlaceSearchSelect from "../../../../../../ish-ui/formFields/EditInPlaceSearchSelect";
 
 const getAqlLabel = entity => {
   switch (entity) {

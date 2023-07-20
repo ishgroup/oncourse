@@ -14,7 +14,7 @@ import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import { createStyles, Theme } from "@mui/material";
 import { differenceInMinutes, format } from "date-fns";
-import WarningMessage from "../../../../../../common/ish-ui/fieldMessage/WarningMessage";
+import WarningMessage from "../../../../../../../ish-ui/fieldMessage/WarningMessage";
 import CalendarSessionTag from "./CalendarSessionTag";
 import { openCourseClassLink } from "../../../../../entities/courseClasses/utils";
 import { formatDurationMinutes } from "../../../../../../common/utils/dates/formatString";

@@ -21,7 +21,7 @@ import {
   ContactLinkAdornment,
   HeaderContactTitle,
   LinkAdornment
-} from "../../../../common/components/form/FieldAdornments";
+} from "../../../../../ish-ui/formFields/FieldAdornments";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import EntityService from "../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
@@ -34,7 +34,7 @@ import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { getContactFullName } from "../../contacts/utils";
 
 interface Props extends EditViewProps {

@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 
 const PriorLearningsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
   const { row } = props;

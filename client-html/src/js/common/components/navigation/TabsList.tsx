@@ -16,7 +16,7 @@ import NewsRender from "../news/NewsRender";
 import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
 import { LSGetItem, LSSetItem } from "../../utils/storage";
 import { EditViewProps } from "../../../model/common/ListView";
-import { makeAppStyles } from "../../styles/makeStyles";
+import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
 import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
 import { AnyArgFunction } from "../../../model/common/CommonFunctions";
 

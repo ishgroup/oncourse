@@ -9,21 +9,6 @@ import { DataRow } from "@api/model";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IS_JEST } from "../../../constants/EnvironmentConstants";
 
-export const getCheckboxValue = (value, stringValue) => {
-  if (!stringValue) {
-    return !!value;
-  }
-
-  switch (value) {
-    case "false":
-      return false;
-    case "true":
-      return true;
-    default:
-      return Boolean(value);
-  }
-};
-
 export const getDeepValue = (source, path) => {
   if (path.match(/[.,[]/)) {
     const pathArr = path.split(/[.,[]/g).filter(p => p);
@@ -133,10 +118,6 @@ export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
   return { field: match[2], index: Number(match[1]) };
 };
-
-export const stubFunction = () => undefined;
-
-export const stubComponent = () => <div className="invisible" />;
 
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
 

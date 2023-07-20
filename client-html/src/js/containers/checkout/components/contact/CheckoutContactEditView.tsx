@@ -16,7 +16,7 @@ import { State } from "../../../../reducers/state";
 import ContactEditView from "../../../entities/contacts/components/ContactEditView";
 import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 

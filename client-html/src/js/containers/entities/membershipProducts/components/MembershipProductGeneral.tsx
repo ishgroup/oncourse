@@ -9,9 +9,9 @@ import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from 
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import EditInPlaceField from "../../../../common/ish-ui/formFields/EditInPlaceField";
+import EditInPlaceField from "../../../../../ish-ui/formFields/EditInPlaceField";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import { State } from "../../../../reducers/state";
 import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";

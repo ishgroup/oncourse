@@ -23,7 +23,7 @@ import * as Entities from "@aql/queryLanguageModel";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { selectStyles } from "../../../ish-ui/formFields/SelectCustomComponents";
+import { selectStyles } from "../../../../../ish-ui/formFields/SelectCustomComponents";
 import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
 import {
   FILTER_TAGS_REGEX,
@@ -32,7 +32,7 @@ import {
   TAGS_REGEX
 } from "../../../../constants/Config";
 import { HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
-import { FieldClasses, FieldMetaProps } from "../../../ish-ui/model/Fields";
+import { FieldClasses, FieldMetaProps } from "../../../../../ish-ui/model/Fields";
 import { InputProps } from "@mui/material/Input";
 import { QueryFieldSuggestion } from "../../../../model/common/Fields";
 
