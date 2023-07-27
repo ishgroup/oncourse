@@ -17,7 +17,7 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
+import { ShowConfirmCaller } from  "ish-ui";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import PayRates from "./PayRates";
 import { useAppSelector } from "../../../../../common/utils/hooks";

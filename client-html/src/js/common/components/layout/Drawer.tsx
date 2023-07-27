@@ -4,14 +4,14 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
-import { withStyles, createStyles } from "@mui/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import Drawer from "@mui/material/Drawer";
 import Hidden from "@mui/material/Hidden";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../../reducers/state";
 import { closeDrawer } from "../../actions";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -41,8 +41,8 @@ const styles = (theme: AppTheme) =>
   });
 
 const appDrawer = React.memo<any>(({
-  classes, children, opened, closeDrawer
-}) => {
+                                     classes, children, opened, closeDrawer
+                                   }) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

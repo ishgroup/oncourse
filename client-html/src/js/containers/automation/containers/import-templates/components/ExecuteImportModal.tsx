@@ -23,7 +23,7 @@ import { interruptProcess } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import DataTypeRenderer from "../../../../../common/components/form/DataTypeRenderer";
 import { ProcessState } from "../../../../../common/reducers/processReducer";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";

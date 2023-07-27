@@ -41,8 +41,8 @@ const styles = createStyles((theme: Theme) => ({
 }));
 
 const FiltersList = React.memo<Props>(({
- filters, activeFilters, setActveFilters, classes 
-}) => {
+                                         filters, activeFilters, setActveFilters, classes
+                                       }) => {
   const onClick = useCallback(e => {
     const index = Number(e.currentTarget.getAttribute("role"));
 

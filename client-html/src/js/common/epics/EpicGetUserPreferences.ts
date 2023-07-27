@@ -14,11 +14,11 @@ const request: EpicUtils.Request<{ [key: string]: string }, PreferenceEnum[]> = 
   type: GET_USER_PREFERENCES,
   getData: keys => UserPreferenceService.getUserPreferencesByKeys(keys),
   processData: preferences => [
-      {
-        type: GET_USER_PREFERENCES_FULFILLED,
-        payload: { preferences }
-      }
-    ]
+    {
+      type: GET_USER_PREFERENCES_FULFILLED,
+      payload: {preferences}
+    }
+  ]
 };
 
 export const EpicGetUserPreferences: Epic<any, any> = EpicUtils.Create(request);

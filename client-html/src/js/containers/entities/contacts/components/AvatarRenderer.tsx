@@ -15,12 +15,12 @@ import Tooltip from "@mui/material/Tooltip";
 import Grid from "@mui/material/Grid";
 import clsx from "clsx";
 import noAvatarImg from "../../../../../images/no_pic.png";
-import FilePreview from "../../../../../ish-ui/formFields/FilePreview";
+import FilePreview from  "ish-ui";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import { getInitialDocument } from "../../../../../ish-ui/documents/utils";
+import { getInitialDocument } from  "ish-ui";
 import { createAvatarDocument } from "../../../../common/components/form/documents/actions";
 import { showMessage } from "../../../../common/actions";
-import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
+import { makeAppStyles } from  "ish-ui";
 
 const validateImageFormat = (imageFile: File) =>
   (["image/jpeg", "image/png"].includes(imageFile.type) ? undefined : "Avatar must be of image type");

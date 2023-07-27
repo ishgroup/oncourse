@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import {
   formatFieldPercent,
   parseFieldPercent,

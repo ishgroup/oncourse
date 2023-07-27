@@ -12,7 +12,8 @@ import { FormFieldWrapperProps } from "../../../../model/common/Fields";
 import FormFieldBase from "./FormFieldBase";
 
 const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
-  const { name,
+  const {
+    name,
     validate,
     type,
     ...rest

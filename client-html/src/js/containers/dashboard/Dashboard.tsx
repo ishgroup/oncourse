@@ -19,7 +19,7 @@ import {
   DASHBOARD_CATEGORY_WIDTH_KEY,
   DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP,
 } from "../../constants/Config";
-import { AppTheme, ThemeValues } from "../../../ish-ui/model/Theme";
+import { AppTheme, ThemeValues } from  "ish-ui";
 import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
 import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";

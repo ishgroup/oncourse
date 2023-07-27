@@ -19,12 +19,12 @@ const request: EpicUtils.Request = {
       f.active = false;
     });
 
-    let filterGroups = state.list.filterGroups.map(f => ({ ...f }));
+    let filterGroups = state.list.filterGroups.map(f => ({...f}));
 
     const customFiltersIndex = state.list.filterGroups.findIndex(i => i.title === "Custom Filters");
 
     if (customFiltersIndex === -1) {
-      filterGroups = [...filterGroups, ...(filters.length ? [{ title: "Custom Filters", filters }] : [])];
+      filterGroups = [...filterGroups, ...(filters.length ? [{title: "Custom Filters", filters}] : [])];
     } else {
       if (filters.length) {
         filterGroups[customFiltersIndex].filters = filters;
@@ -43,13 +43,13 @@ const request: EpicUtils.Request = {
       },
       ...(payload.listUpdate
         ? [
-            {
-              type: GET_RECORDS_REQUEST,
-              payload: {
-                entity: payload.entity
-              }
+          {
+            type: GET_RECORDS_REQUEST,
+            payload: {
+              entity: payload.entity
             }
-          ]
+          }
+        ]
         : [])
     ];
   }

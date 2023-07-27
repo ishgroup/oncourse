@@ -14,7 +14,7 @@ import {
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from  "ish-ui";
 import {
   getContactFullName
 } from "../../contacts/utils";

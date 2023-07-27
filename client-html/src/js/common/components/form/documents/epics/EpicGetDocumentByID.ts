@@ -13,13 +13,13 @@ import DocumentsService from "../services/DocumentsService";
 const request: EpicUtils.Request<any, { id: number; editingFormName: string }> = {
   type: GET_DOCUMENT,
   hideLoadIndicator: true,
-  getData: ({ id }) => DocumentsService.getDocumentItem(id),
-  processData: (editingDocument: Document, state: any, { editingFormName }) => [
-      {
-        type: SET_EDITING_DOCUMENT,
-        payload: { editingDocument, editingFormName }
-      }
-    ]
+  getData: ({id}) => DocumentsService.getDocumentItem(id),
+  processData: (editingDocument: Document, state: any, {editingFormName}) => [
+    {
+      type: SET_EDITING_DOCUMENT,
+      payload: {editingDocument, editingFormName}
+    }
+  ]
 };
 
 export const EpicGetDocumentByID: Epic<any, any> = EpicUtils.Create(request);

@@ -25,7 +25,7 @@ import {
 } from "./actions";
 import DiscountEditView from "./components/DiscountEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { III_DD_MMM_YYYY } from "../../../common/utils/dates/format";
+import { III_DD_MMM_YYYY } from  "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getEntityTags } from "../../tags/actions";
 

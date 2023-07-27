@@ -16,7 +16,7 @@
 
 import React from "react";
 import clsx from "clsx";
-import { makeAppStyles } from "../../../../../../../ish-ui/styles/makeStyles";
+import { makeAppStyles } from  "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   tagColorDotExtraSmall: {
@@ -29,14 +29,15 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 const TagDotRenderer = ({
- colors, className = null
-}) => {
+                          colors, className = null
+                        }) => {
   const classes = useStyles();
 
   return (
     <div className={clsx("centeredFlex", className)}>
       {colors.map((color: string, index) => (
-        <div key={color + index} className={clsx(classes.tagColorDotExtraSmall, "mr-0-5")} style={{ background: "#" + color }} />
+        <div key={color + index} className={clsx(classes.tagColorDotExtraSmall, "mr-0-5")}
+             style={{background: "#" + color}}/>
       ))}
     </div>
   );

@@ -27,64 +27,64 @@ export interface DelayedRequest<V = any, P = any> extends Request<V, P> {
 }
 
 export const processError = (data: any, type: string, processError: any, payload: any): IAction<any>[] => [
-    ...(process.env.NODE_ENV === EnvironmentConstants.development
-      ? [
-          {
-            type: REJECTED(type),
-            payload
-          }
-        ]
-      : []),
-    ...(processError ? processError(data, payload) : FetchErrorHandler(data))
-  ];
+  ...(process.env.NODE_ENV === EnvironmentConstants.development
+    ? [
+      {
+        type: REJECTED(type),
+        payload
+      }
+    ]
+    : []),
+  ...(processError ? processError(data, payload) : FetchErrorHandler(data))
+];
 
 export const CreateWithTimeout = <V, P>(request: DelayedRequest<V, P>): Epic<any, any, any> => (action$: Observable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
-      ofType(request.type),
-      delay(request.delay),
-      mergeMap(action =>
-        concat(
-          [
-            {
-              type: FETCH_START,
-              payload: {
-                hideIndicator: request.hideLoadIndicator
-              }
-            }
-          ],
-          from(request.getData(action.payload, state$.value)).pipe(
-            mergeMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
-            mergeMap(data => request.processData(data, state$.value, action.payload)),
-            catchError(data => processError(data, request.type, request.processError, action.payload))
-          ),
-          [
-            {
-              type: FETCH_FINISH
-            }
-          ]
-        ))
-    );
+  ofType(request.type),
+  delay(request.delay),
+  mergeMap(action =>
+    concat(
+      [
+        {
+          type: FETCH_START,
+          payload: {
+            hideIndicator: request.hideLoadIndicator
+          }
+        }
+      ],
+      from(request.getData(action.payload, state$.value)).pipe(
+        mergeMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
+        mergeMap(data => request.processData(data, state$.value, action.payload)),
+        catchError(data => processError(data, request.type, request.processError, action.payload))
+      ),
+      [
+        {
+          type: FETCH_FINISH
+        }
+      ]
+    ))
+);
 
 export const Create = <V, P>(request: Request<V, P>): Epic<any, any> => (action$: Observable<any>, state$: StateObservable<State>): Observable<any> => action$.pipe(
-      ofType(request.type),
-      mergeMap(action =>
-        concat(
-          [
-            {
-              type: FETCH_START,
-              payload: {
-                hideIndicator: request.hideLoadIndicator
-              }
-            }
-          ],
-          from(request.getData(action.payload, state$.value)).pipe(
-            mergeMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
-            mergeMap(data => request.processData(data, state$.value, action.payload)),
-            catchError(data => processError(data, request.type, request.processError, action.payload))
-          ),
-          [
-            {
-              type: FETCH_FINISH
-            }
-          ]
-        ))
-    );
+  ofType(request.type),
+  mergeMap(action =>
+    concat(
+      [
+        {
+          type: FETCH_START,
+          payload: {
+            hideIndicator: request.hideLoadIndicator
+          }
+        }
+      ],
+      from(request.getData(action.payload, state$.value)).pipe(
+        mergeMap(data => (request.retrieveData ? request.retrieveData(action.payload, state$.value) : [data])),
+        mergeMap(data => request.processData(data, state$.value, action.payload)),
+        catchError(data => processError(data, request.type, request.processError, action.payload))
+      ),
+      [
+        {
+          type: FETCH_FINISH
+        }
+      ]
+    ))
+);

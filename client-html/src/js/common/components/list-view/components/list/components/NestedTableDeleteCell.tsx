@@ -17,7 +17,7 @@ const NestedTableDeleteCell = props => {
 
   return (
     <IconButton onClick={onRowDelete} className={classes.deleteCell}>
-      <Delete fontSize="inherit" />
+      <Delete fontSize="inherit"/>
     </IconButton>
   );
 };

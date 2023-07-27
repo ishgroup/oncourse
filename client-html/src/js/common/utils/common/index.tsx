@@ -40,18 +40,18 @@ export const getDeepValue = (source, path) => {
 export const sortDefaultSelectItems = (a: SelectItemDefault, b: SelectItemDefault) =>
   (a.label[0].toLowerCase() > b.label[0].toLowerCase() ? 1 : -1);
 
-export const mapSelectItems = (i): SelectItemDefault => ({ label: i, value: i });
+export const mapSelectItems = (i): SelectItemDefault => ({label: i, value: i});
 
 export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any => {
   const colArr: string[] = columns.split(",");
   const booleanArr = ["true", "false"];
 
-  return ({ id, values }) => ({
+  return ({id, values}) => ({
     id: Number(id),
     ...colArr.reduce((prev, cur, i) => ({
-        ...prev,
-        [cur]: booleanArr.includes(values[i]) ? JSON.parse(values[i]) : values[i]
-      }), {})
+      ...prev,
+      [cur]: booleanArr.includes(values[i]) ? JSON.parse(values[i]) : values[i]
+    }), {})
   });
 };
 
@@ -116,7 +116,7 @@ export const createAndDownloadBase64File = (data: any, name: string, type: strin
 
 export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
-  return { field: match[2], index: Number(match[1]) };
+  return {field: match[2], index: Number(match[1])};
 };
 
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;

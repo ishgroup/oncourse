@@ -28,7 +28,7 @@ const sortEmailBodyDown = (a, b) => {
 
 const request: EpicUtils.Request = {
   type: GET_EMAIL_TEMPLATES_WITH_KEYCODE,
-  getData: ({ entities }) => Promise.all(entities.map(entity => EmailTemplateService.getEmailTemplatesWithKeyCode(entity))),
+  getData: ({entities}) => Promise.all(entities.map(entity => EmailTemplateService.getEmailTemplatesWithKeyCode(entity))),
   processData: (records: EmailTemplate[]) => {
     const sortedRecords = records.flat().map(r => {
       if (Array.isArray(r.variables) && r.variables.length) {

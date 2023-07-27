@@ -12,7 +12,7 @@ import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config
 import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import ListLinksGroup from "./searchResults/ListLinksGroup";
 import { LSGetItem } from "../../../../utils/storage";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
   activityStatistic: {
@@ -24,7 +24,7 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const { classes, checkSelectedResult } = props;
+  const {classes, checkSelectedResult} = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {

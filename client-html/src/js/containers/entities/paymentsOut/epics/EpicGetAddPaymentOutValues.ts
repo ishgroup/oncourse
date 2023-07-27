@@ -16,7 +16,7 @@ import { getAmountToAllocate } from "../utils";
 import { setListEditRecord } from "../../../../common/components/list-view/actions";
 import { initialize } from "redux-form";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { III_DD_MMM_YYYY } from  "ish-ui";
 import { format } from "date-fns";
 import history from "../../../../constants/History";
 

@@ -22,7 +22,7 @@ import { Currency, StatisticData } from "@api/model";
 import Paper from "@mui/material/Paper";
 import { State } from "../../../../../reducers/state";
 import { getDashboardStatistic } from "../../../actions";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import ScriptStatistic from "./ScriptStatistic";

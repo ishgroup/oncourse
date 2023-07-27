@@ -19,13 +19,13 @@ export const accessReducer = (state: AccessState = {}, action: IAction): AccessS
   switch (action.type) {
     case CHECK_PERMISSIONS_REQUEST_FULFILLED: {
       const {
- path, method, keyCode, hasAccess 
-} = action.payload;
+        path, method, keyCode, hasAccess
+      } = action.payload;
 
       return {
         ...state,
-        ...(path && method ? { [path]: { [method]: hasAccess } } : {}),
-        ...(keyCode ? { [keyCode]: hasAccess } : {})
+        ...(path && method ? {[path]: {[method]: hasAccess}} : {}),
+        ...(keyCode ? {[keyCode]: hasAccess} : {})
       };
     }
 

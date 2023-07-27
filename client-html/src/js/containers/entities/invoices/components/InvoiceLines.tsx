@@ -27,7 +27,7 @@ import { useAppSelector, usePrevious } from "../../../../common/utils/hooks";
 import { accountLabelCondition } from "../../accounts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { LinkAdornment } from  "ish-ui";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getDiscountAmountExTax } from "../../discounts/utils";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";

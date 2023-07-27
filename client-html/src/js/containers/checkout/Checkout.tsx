@@ -9,7 +9,7 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { NoArgFunction } from "../../model/common/CommonFunctions";
+import { NoArgFunction } from  "ish-ui";
 import { State } from "../../reducers/state";
 import { getActiveFundingContracts } from "../avetmiss-export/actions";
 import { getCountries, getLanguages } from "../preferences/actions";

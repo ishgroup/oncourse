@@ -11,7 +11,7 @@ import { getEntityItemById } from "../../entities/common/entityItemsService";
 import { SET_LIST_EDIT_RECORD } from "../../../common/components/list-view/actions";
 import { initialize } from "redux-form";
 import { format } from "date-fns";
-import { EEE_D_MMM_YYYY } from "../../../common/utils/dates/format";
+import { EEE_D_MMM_YYYY } from  "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
 const request: EpicUtils.Request = {

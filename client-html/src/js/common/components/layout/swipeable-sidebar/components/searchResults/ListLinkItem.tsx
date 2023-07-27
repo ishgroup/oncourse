@@ -15,6 +15,7 @@ import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
 import { openInternalLink } from "../../../../../utils/links";
 import { getPrivisioningLink } from "../../../../../../routes/routesMapping";
+import { ListItem } from "@mui/material";
 
 const styles = theme => createStyles({
   chips: {
@@ -54,11 +55,11 @@ const ListLinkItem = props => {
       <Typography variant="body2" className={`linkDecoration ${classes.itemName}`}>
         {item.name}
         {' '}
-        {item.type === "script" ? <DescriptionOutlinedIcon className={classes.favoriteScriptIcon} /> : ""}
+        {item.type === "script" ? <DescriptionOutlinedIcon className={classes.favoriteScriptIcon}/> : ""}
       </Typography>
       {item.date && (
         <Typography className="graySmallFont12" align="right">
-          {formatDistanceStrict(new Date(item.date), new Date(), { addSuffix: true })}
+          {formatDistanceStrict(new Date(item.date), new Date(), {addSuffix: true})}
         </Typography>
       )}
     </ListItem>

@@ -19,7 +19,7 @@ import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
 import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
 import { getEmailTemplatesList } from "./containers/email-templates/actions";
 import { getImportTemplatesList } from "./containers/import-templates/actions";
-import { NumberArgFunction } from "../../model/common/CommonFunctions";
+import { NumberArgFunction } from  "ish-ui";
 import automationRoutes from "./routes";
 import { getAllTags } from "../tags/actions";
 

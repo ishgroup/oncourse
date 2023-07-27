@@ -6,9 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useState, useCallback
-} from "react";
+import React, { useCallback, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -23,12 +21,13 @@ import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constan
 import { LSGetItem } from "../../utils/storage";
 import { useAppDispatch } from "../../utils/hooks";
 import { openDrawer } from "../../actions";
-import AppBarHelpMenu from "../../../../ish-ui/appBar/AppBarHelpMenu";
+import AppBarHelpMenu from  "ish-ui";
 import FormSubmitButton from "../form/FormSubmitButton";
 import FullScreenStickyHeader from "../list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { VARIANTS } from "./swipeable-sidebar/utils";
 import HamburgerMenu from "./swipeable-sidebar/components/HamburgerMenu";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
+import { AppBarHelpMenu } from "ish-ui";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   header: {
@@ -129,11 +128,35 @@ interface Props {
 
 const AppBarContainer = (props: Props) => {
   const {
-    title, actions, hideHelpMenu, children, noDrawer, noTitle, noScrollSpy, values, manualUrl, getAuditsUrl, disabled, invalid, fields,
-    disableInteraction, hideSubmitButton, disabledScrolling, createdOn, modifiedOn, onAddMenu, customAddMenu, submitButtonText,
-    onCloseClick, hamburgerMenu, opened, containerClass, closeButtonText, Avatar
+    title,
+    actions,
+    hideHelpMenu,
+    children,
+    noDrawer,
+    noTitle,
+    noScrollSpy,
+    values,
+    manualUrl,
+    getAuditsUrl,
+    disabled,
+    invalid,
+    fields,
+    disableInteraction,
+    hideSubmitButton,
+    disabledScrolling,
+    createdOn,
+    modifiedOn,
+    onAddMenu,
+    customAddMenu,
+    submitButtonText,
+    onCloseClick,
+    hamburgerMenu,
+    opened,
+    containerClass,
+    closeButtonText,
+    Avatar
   } = props;
-  
+
   const dispatch = useAppDispatch();
 
   const classes = useStyles();
@@ -158,7 +181,7 @@ const AppBarContainer = (props: Props) => {
 
   const childrenWithProps = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
-      return React.cloneElement<any>(child, { onScroll });
+      return React.cloneElement<any>(child, {onScroll});
     }
     return child;
   });
@@ -172,8 +195,8 @@ const AppBarContainer = (props: Props) => {
           classes.header,
           hasFab && classes.headerFabOffset,
           opened && "pt-2",
-          { [classes.headerAlternate]: hasScrolling },
-          { [classes.headerHighContrast]: isHighcontrastTheme }
+          {[classes.headerAlternate]: hasScrolling},
+          {[classes.headerHighContrast]: isHighcontrastTheme}
         )}
       >
         <Toolbar>
@@ -184,11 +207,11 @@ const AppBarContainer = (props: Props) => {
               onClick={drawerHandler}
               className={clsx(!isSmallScreen && classes.hiddenContainer, classes.drawerToggle)}
             >
-              <MenuIcon />
+              <MenuIcon/>
             </IconButton>
           )}
           {hamburgerMenu && (
-            <HamburgerMenu variant={VARIANTS.temporary} />
+            <HamburgerMenu variant={VARIANTS.temporary}/>
           )}
           {
             !noTitle && (
@@ -203,7 +226,7 @@ const AppBarContainer = (props: Props) => {
               />
             )
           }
-          <div className="flex-fill" />
+          <div className="flex-fill"/>
           <div className={classes.actionsWrapper}>
             {actions}
             {!hideHelpMenu && (
@@ -235,7 +258,8 @@ const AppBarContainer = (props: Props) => {
           </div>
         </Toolbar>
       </AppBar>
-      <div className={clsx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)} onScroll={noScrollSpy ? null : onScroll}>
+      <div className={clsx("w-100", {"appBarContainer": !disabledScrolling}, classes.container, containerClass)}
+           onScroll={noScrollSpy ? null : onScroll}>
         {hasFab && (
           <div className={classes.scriptAddMenu}>
             {customAddMenu || (
@@ -248,7 +272,7 @@ const AppBarContainer = (props: Props) => {
                 }}
                 onClick={onAddMenu}
               >
-                <AddIcon />
+                <AddIcon/>
               </Fab>
             )}
           </div>

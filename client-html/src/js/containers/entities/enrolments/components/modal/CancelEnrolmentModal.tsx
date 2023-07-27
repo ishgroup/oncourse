@@ -18,10 +18,10 @@ import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } f
 import { getUserPreferences } from "../../../../../common/actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 import Button from "@mui/material/Button";
-import WarningMessage from "../../../../../../ish-ui/fieldMessage/WarningMessage";
+import WarningMessage from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
-import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
 import { cancelEnrolment } from "../../actions";
 import CancelEnrolmentInvoiceLines from "./CancelEnrolmentInvoiceLines";

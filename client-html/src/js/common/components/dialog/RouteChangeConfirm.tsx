@@ -7,15 +7,15 @@
  */
 
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Dispatch } from "redux";
 import { isInvalid, submit } from "redux-form";
 import { connect } from "react-redux";
 import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import { useEffect, useRef } from "react";
-import { closeConfirm, showConfirm, setNextLocation } from "../../actions";
-import { ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
+import { closeConfirm, setNextLocation, showConfirm } from "../../actions";
+import { ShowConfirmCaller } from "ish-ui";
 import { State } from "../../../reducers/state";
 
 interface Props {
@@ -63,7 +63,7 @@ const RouteChangeConfirm = (
           classes={{
             disabled: "saveButtonEditViewDisabled"
           }}
-          startIcon={isInvalid && <ErrorOutline color="error" />}
+          startIcon={isInvalid && <ErrorOutline color="error"/>}
           variant="contained"
           color="primary"
           disabled={isInvalid}
@@ -88,7 +88,7 @@ const RouteChangeConfirm = (
         }
       );
     }
-    
+
     return !when as any;
   };
 

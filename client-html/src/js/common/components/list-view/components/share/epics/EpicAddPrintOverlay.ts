@@ -13,18 +13,18 @@ import ReportOverlayService
 
 const request: EpicUtils.Request<any, { fileName: string; overlay: File }> = {
   type: ADD_PRINT_OVERLAY,
-  getData: ({ fileName, overlay }) => ReportOverlayService.addOverlay(fileName, overlay),
+  getData: ({fileName, overlay}) => ReportOverlayService.addOverlay(fileName, overlay),
   processData: (value, state, payload) => ([
     {
       type: ADD_PRINT_OVERLAY_FULFILLED
     },
     {
       type: GET_OVERLAY_ITEMS,
-      payload: { overlayToSelect: payload.fileName }
+      payload: {overlayToSelect: payload.fileName}
     },
     {
       type: FETCH_SUCCESS,
-      payload: { message: "New Background was added" }
+      payload: {message: "New Background was added"}
     }
   ]),
   processError: response => FetchErrorHandler(response, "New Background was not added")

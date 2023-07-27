@@ -15,7 +15,7 @@ import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import NotFoundBgImage from "../../../images/bg-404.png";
-import { AppTheme } from "../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
   container: {

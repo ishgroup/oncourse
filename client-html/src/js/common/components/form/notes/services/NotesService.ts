@@ -29,20 +29,20 @@ class NotesService {
 
   public validateUpdate(noteId: number, note: Note): Promise<any> {
     return this.service.PUT(`/v1/list/entity/note/${noteId}`, note, {
-      headers: { "X-validate-only": "true" }
+      headers: {"X-validate-only": "true"}
     });
   }
 
   public validateRemove(noteId: number): Promise<any> {
     return this.service.DELETE(`/v1/list/entity/note/${noteId}`, {
-      headers: { "X-validate-only": "true" }
+      headers: {"X-validate-only": "true"}
     });
   }
 
   public validateCreate(entityName: string, entityId: number, note: Note): Promise<any> {
     return this.service.POST("/v1/list/entity/note", note, {
-      params: { entityName, entityId },
-      headers: { "X-validate-only": "true" }
+      params: {entityName, entityId},
+      headers: {"X-validate-only": "true"}
     });
   }
 }

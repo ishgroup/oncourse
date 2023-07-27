@@ -22,7 +22,7 @@ import {
   checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails, checkoutProcessPayment, clearCcIframeUrl
 } from "../../../../actions/checkoutPayment";
 import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { StringArgFunction } from  "ish-ui";
 import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import styles from "./styles";
 import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";

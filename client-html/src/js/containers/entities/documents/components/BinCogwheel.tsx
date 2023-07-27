@@ -14,7 +14,7 @@ import Delete from "@mui/icons-material/Delete";
 import RestoreFromTrash from "@mui/icons-material/RestoreFromTrash";
 import { removeDocument, restoreDocument } from "../actions";
 import { ListState } from "../../../../model/common/ListView";
-import { NoArgFunction } from "../../../../model/common/CommonFunctions";
+import { NoArgFunction } from  "ish-ui";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { getPluralSuffix } from "../../../../common/utils/strings";
 

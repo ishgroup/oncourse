@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
-const DocumentTags: React.FC<any> = ({ tags, bold, classes }) => (
+const DocumentTags: React.FC<any> = ({tags, bold, classes}) => (
   <Grid container columnSpacing={3}>
     {tags.length ? (
       tags.map(t => (

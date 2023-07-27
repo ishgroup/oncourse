@@ -25,11 +25,11 @@ import {
   normalizeNumber
 } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import { accountLabelCondition } from "../../../../accounts/utils";
-import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
+import { D_MMM_YYYY } from  "ish-ui";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
-import AddButton from "../../../../../../../ish-ui/buttons/AddButton";
+import AddButton from  "ish-ui";
 import { IS_JEST } from "../../../../../../constants/EnvironmentConstants";
 
 const StudentFeePaymentPlan: React.FC<any> = ({

@@ -14,7 +14,7 @@ import Launch from "@mui/icons-material/Launch";
 import IconButton from "@mui/material/IconButton";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import { AttandanceStepItem } from "../../../../../model/entities/CourseClass";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 
 const styles = (theme: AppTheme) =>

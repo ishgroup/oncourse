@@ -31,7 +31,7 @@ const request: EpicUtils.Request<any, { overlayToSelect?: string }> = {
     return [
       {
         type: GET_OVERLAY_ITEMS_FULFILLED,
-        payload: { overlays }
+        payload: {overlays}
       },
       ...(selectItem ? [change("ListShareForm", "backgroundId", selectItem.id)] : [])
     ];

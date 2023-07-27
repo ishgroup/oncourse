@@ -13,11 +13,11 @@ import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import { WrappedFieldProps } from "redux-form";
 import debounce from "lodash.debounce";
-import EditInPlaceField from "../../../../../../ish-ui/formFields/EditInPlaceField";
-import { useHoverShowStyles } from "../../../../../../ish-ui/styles/hooks";
+import EditInPlaceField from  "ish-ui";
+import { useHoverShowStyles } from  "ish-ui";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import AddButton from "../../../../../../ish-ui/buttons/AddButton";
+import AddButton from  "ish-ui";
 
 interface Props {
   label: string;

@@ -122,10 +122,7 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
-      port: 8100,
-      devMiddleware: {
-        writeToDisk: true,
-      }
+      port: 8100
     },
     devtool: false,
   };

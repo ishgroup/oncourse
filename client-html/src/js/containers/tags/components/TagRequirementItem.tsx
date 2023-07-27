@@ -9,9 +9,9 @@ import { Dispatch } from "redux";
 import { TagRequirement } from "@api/model";
 import { ToogleCheckbox } from "../../../common/components/form/ToogleCheckbox";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
-import { ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
-import { useHoverShowStyles } from "../../../../ish-ui/styles/hooks";
+import { ShowConfirmCaller } from  "ish-ui";
+import { AppTheme } from  "ish-ui";
+import { useHoverShowStyles } from  "ish-ui";
 import { Grid } from "@mui/material";
 
 const styles = (theme: AppTheme) => createStyles({

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { ClickAwayListener, Collapse, Grid, Typography } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
-import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
+import { makeAppStyles } from "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   root: {

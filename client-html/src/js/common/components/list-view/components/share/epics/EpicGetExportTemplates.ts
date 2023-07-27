@@ -12,7 +12,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: GET_EXPORT_TEMPLATES_FULFILLED,
-        payload: { exportTemplates }
+        payload: {exportTemplates}
       }
     ];
   },

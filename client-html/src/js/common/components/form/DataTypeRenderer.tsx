@@ -5,13 +5,17 @@
 
 import React from "react";
 import { FormControlLabel, Tooltip } from "@mui/material";
-import { FormSwitch } from "../../../../ish-ui/formFields/Switch";
-import EditInPlaceField from "../../../../ish-ui/formFields/EditInPlaceField";
-import EditInPlaceDateTimeField from "../../../../ish-ui/formFields/EditInPlaceDateTimeField";
-import { CheckboxField } from "../../../../ish-ui/formFields/CheckboxField";
-import EditInPlaceFileField from "../../../../ish-ui/formFields/EditInPlaceFileField";
-import EditInPlaceMoneyField from "../../../../ish-ui/formFields/EditInPlaceMoneyField";
-import EditInPlaceSearchSelect from "../../../../ish-ui/formFields/EditInPlaceSearchSelect";
+import EditInPlaceField from "ish-ui";
+import EditInPlaceDateTimeField from "ish-ui";
+import EditInPlaceFileField from "ish-ui";
+import EditInPlaceMoneyField from "ish-ui";
+import EditInPlaceSearchSelect, {
+  CheckboxField,
+  EditInPlaceDateTimeField,
+  EditInPlaceField,
+  EditInPlaceMoneyField,
+  FormSwitch
+} from "ish-ui";
 import { useAppSelector } from "../../utils/hooks";
 
 interface Props {
@@ -19,7 +23,7 @@ interface Props {
 }
 
 const DataTypeRenderer = React.memo<Props & any>(props => {
-  const { type, ...rest } = props;
+  const {type, ...rest} = props;
 
   const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
   const processActionId = useAppSelector(state => state.fieldProcessing[rest.name]);
@@ -31,11 +35,11 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
     }
 
     case "Date": {
-      return <EditInPlaceDateTimeField type="date" {...rest} processActionId={processActionId} />;
+      return <EditInPlaceDateTimeField type="date" {...rest} processActionId={processActionId}/>;
     }
 
     case "Date time": {
-      return <EditInPlaceDateTimeField type="datetime" {...rest} processActionId={processActionId} />;
+      return <EditInPlaceDateTimeField type="datetime" {...rest} processActionId={processActionId}/>;
     }
 
     case "Message template":
@@ -44,7 +48,7 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
     }
 
     case "Number": {
-      return <EditInPlaceField {...rest} type="number" />;
+      return <EditInPlaceField {...rest} type="number"/>;
     }
 
     case "Checkbox": {
@@ -65,7 +69,7 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
       return (
         <FormControlLabel
           className="switchWrapper"
-          control={<FormSwitch {...rest} label={null} />}
+          control={<FormSwitch {...rest} label={null}/>}
           label={props.label}
           labelPlacement="start"
         />
@@ -73,7 +77,7 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
     }
 
     case "Money": {
-      return <EditInPlaceMoneyField {...rest} currencySymbol={currencySymbol} />;
+      return <EditInPlaceMoneyField {...rest} currencySymbol={currencySymbol}/>;
     }
 
     case "File": {

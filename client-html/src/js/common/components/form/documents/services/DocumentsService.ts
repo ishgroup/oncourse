@@ -1,6 +1,4 @@
-import {
- Diff, Document, DocumentApi
-} from "@api/model";
+import { Diff, Document, DocumentApi } from "@api/model";
 import { DefaultHttpService } from "../../../../services/HttpService";
 
 class DocumentsService {

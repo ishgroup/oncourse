@@ -4,85 +4,79 @@
  */
 
 import React, { Component } from "react";
-import {
-  Typography,
-  Button,
-  ButtonBase,
-  FormControl,
-  Select,
-  MenuItem
-} from "@mui/material";
+import { Button, ButtonBase, FormControl, MenuItem, Select, Typography } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
 import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { KeyboardArrowDown, OpenInNew } from "@mui/icons-material";
 import { stubComponent } from "../../utils/common";
-import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../utils/dates/format";
-import { AnyArgFunction } from "../../../model/common/CommonFunctions";
+import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from  "ish-ui";
+import { AnyArgFunction } from  "ish-ui";
 import { openInternalLink } from "../../utils/links";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
+import Typography from "@mui/material/Typography";
 
 const styles = (theme: AppTheme) => createStyles({
-    rootPanel: {
-      display: "grid",
-      gridTemplateColumns: "1fr auto",
-      gridColumnGap: "8px",
-      marginBottom: theme.spacing(2)
-    },
-    actionGroup: {
-      display: "flex",
-      alignItems: "center",
-      width: "180px",
-      justifyContent: "space-between"
-    },
-    button: {
-      whiteSpace: "nowrap",
-      minHeight: "auto",
-      padding: theme.spacing(0, 1),
-      textTransform: "lowercase"
-    },
-    buttonContained: {
-      boxShadow: "none"
-    },
-    subheadingButton: {
-      width: "30px",
-      minWidth: "unset"
-    },
-    buttonIcon: {
-      fontSize: "18px"
-    },
-    inlineBlock: {
-      display: "inline-block"
-    },
-    textInfo: {
-      fontSize: `${theme.typography.fontSize - 2}`,
-      margin: theme.spacing(0, -0.5),
-      display: "flex",
-      alignItems: "baseline",
-      flexWrap: "wrap",
-      "& > *": {
-        padding: theme.spacing(0, 0.5)
-      }
-    },
-    linkButton: {
-      height: "1.2em",
-      width: "1.2em",
-      borderRadius: `${theme.shape.borderRadius}px`,
-      margin: theme.spacing(0, 0, 0.25, 0.25)
-    },
-    linkButtonIcon: { fontSize: "1.2em" },
-    rootSelect: {
-      fontWeight: 700,
-      paddingRight: `${theme.spacing(2.5)}`
-    },
-    disabled: {}
-  });
+  rootPanel: {
+    display: "grid",
+    gridTemplateColumns: "1fr auto",
+    gridColumnGap: "8px",
+    marginBottom: theme.spacing(2)
+  },
+  actionGroup: {
+    display: "flex",
+    alignItems: "center",
+    width: "180px",
+    justifyContent: "space-between"
+  },
+  button: {
+    whiteSpace: "nowrap",
+    minHeight: "auto",
+    padding: theme.spacing(0, 1),
+    textTransform: "lowercase"
+  },
+  buttonContained: {
+    boxShadow: "none"
+  },
+  subheadingButton: {
+    width: "30px",
+    minWidth: "unset"
+  },
+  buttonIcon: {
+    fontSize: "18px"
+  },
+  inlineBlock: {
+    display: "inline-block"
+  },
+  textInfo: {
+    fontSize: `${theme.typography.fontSize - 2}`,
+    margin: theme.spacing(0, -0.5),
+    display: "flex",
+    alignItems: "baseline",
+    flexWrap: "wrap",
+    "& > *": {
+      padding: theme.spacing(0, 0.5)
+    }
+  },
+  linkButton: {
+    height: "1.2em",
+    width: "1.2em",
+    borderRadius: `${theme.shape.borderRadius}px`,
+    margin: theme.spacing(0, 0, 0.25, 0.25)
+  },
+  linkButtonIcon: {fontSize: "1.2em"},
+  rootSelect: {
+    fontWeight: 700,
+    paddingRight: `${theme.spacing(2.5)}`
+  },
+  disabled: {}
+});
 
 const fundingStatuses: any[] = [
-  { value: FundingStatus.success, label: "Success" },
-  { value: FundingStatus.fail, label: "Failed" },
-  { value: FundingStatus.unknown, label: "Unknown" }
+  {value: FundingStatus.success, label: "Success"},
+  {value: FundingStatus.fail, label: "Failed"},
+  {value: FundingStatus.unknown, label: "Unknown"}
 ];
 
 interface Props {
@@ -101,14 +95,14 @@ class FundingUploadComponent extends Component<Props, any> {
   };
 
   handleChange = event => {
-    const { onStatusChange, fundingUpload } = this.props;
+    const {onStatusChange, fundingUpload} = this.props;
 
     onStatusChange(fundingUpload.id, event.target.value);
   };
 
   render() {
     const {
-     fundingUpload, classes, className, setFirstUploadNode, onRunAgainClicked, readOnly
+      fundingUpload, classes, className, setFirstUploadNode, onRunAgainClicked, readOnly
     } = this.props;
 
     return (
@@ -158,12 +152,12 @@ class FundingUploadComponent extends Component<Props, any> {
                   <Typography
                     variant="button"
                     classes={{
-                    root: clsx({
-                      "textSecondaryColor": value.value === FundingStatus.unknown,
-                      "errorColor": value.value === FundingStatus.fail,
-                      "successColor": value.value === FundingStatus.success
-                    })
-                  }}
+                      root: clsx({
+                        "textSecondaryColor": value.value === FundingStatus.unknown,
+                        "errorColor": value.value === FundingStatus.fail,
+                        "successColor": value.value === FundingStatus.success
+                      })
+                    }}
                   >
                     {value.label}
                   </Typography>

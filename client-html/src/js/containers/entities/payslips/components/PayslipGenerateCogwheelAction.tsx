@@ -14,11 +14,11 @@ import PayslipGenerateDialog from "./PayslipGenerateDialog";
 import { State } from "../../../../reducers/state";
 import { clearPayrollPreparedWages, executePayroll, preparePayroll } from "../../payrolls/actions";
 import { interruptProcess } from "../../../../common/actions";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { usePrevious } from "../../../../common/utils/hooks";
-import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
-import { AnyArgFunction, NoArgFunction } from "../../../../model/common/CommonFunctions";
+import { ShowConfirmCaller } from  "ish-ui";
+import { AnyArgFunction, NoArgFunction } from  "ish-ui";
 
 const getPayrollInitial = (): PayrollRequest => {
   const yesterday = new Date();

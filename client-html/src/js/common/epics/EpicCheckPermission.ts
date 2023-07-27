@@ -10,22 +10,25 @@ import * as EpicUtils from "./EpicUtils";
 import AccessService from "../services/AccessService";
 import { CHECK_PERMISSIONS_REQUEST, CHECK_PERMISSIONS_REQUEST_FULFILLED } from "../actions";
 
-const request: EpicUtils.Request<PermissionResponse, { permissionRequest: PermissionRequest, onComplete?: IAction[] }> = {
+const request: EpicUtils.Request<PermissionResponse, {
+  permissionRequest: PermissionRequest,
+  onComplete?: IAction[]
+}> = {
   type: CHECK_PERMISSIONS_REQUEST,
   getData: payload => AccessService.checkPermissions(payload.permissionRequest),
   processData: (
-    { hasAccess },
+    {hasAccess},
     state,
-    { permissionRequest: { path, method, keyCode }, onComplete },
+    {permissionRequest: {path, method, keyCode}, onComplete},
   ) => [
-      {
-        type: CHECK_PERMISSIONS_REQUEST_FULFILLED,
-        payload: {
-         path, method, keyCode, hasAccess
-        }
-      },
-      ...hasAccess && onComplete ? onComplete : []
-    ]
+    {
+      type: CHECK_PERMISSIONS_REQUEST_FULFILLED,
+      payload: {
+        path, method, keyCode, hasAccess
+      }
+    },
+    ...hasAccess && onComplete ? onComplete : []
+  ]
 };
 
 export const EpicCheckPermission: Epic<any, any> = EpicUtils.Create(request);

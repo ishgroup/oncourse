@@ -40,16 +40,16 @@ const request: EpicUtils.Request<
   processData: (records: any, state: any, payload) => [
     ...(payload.listUpdate
       ? [
-          {
-            type: GET_RECORDS_REQUEST,
-            payload: { entity: payload.entity, listUpdate: !payload.resetScroll }
-          },
+        {
+          type: GET_RECORDS_REQUEST,
+          payload: {entity: payload.entity, listUpdate: !payload.resetScroll}
+        },
         {
           type: UPDATE_TAGS_ORDER,
           payload: payload.model.tagsOrder || state.list.records.tagsOrder,
         }
       ]
-    : [])
+      : [])
   ],
   processError: response => FetchErrorHandler(response, "List settings was not saved")
 };

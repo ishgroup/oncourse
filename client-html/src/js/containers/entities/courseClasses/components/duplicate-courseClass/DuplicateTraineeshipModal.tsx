@@ -43,7 +43,7 @@ import {
   getDuplicateCourseClassesSessions,
   setDuplicateCourseClassesBudget
 } from "../../actions";
-import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from  "ish-ui";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import StudentFeeContent from "../budget/modal/StudentFeeContent";
 import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";

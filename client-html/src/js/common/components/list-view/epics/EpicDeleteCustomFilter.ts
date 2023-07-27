@@ -14,17 +14,17 @@ const request: EpicUtils.Request = {
   type: DELETE_FILTER_REQUEST,
   getData: payload => CustomFiltersService.deleteCustomFilter(payload.entity, payload.id),
   processData: (data, state, payload) => [
-      {
-        type: GET_FILTERS_REQUEST,
-        payload: { entity: payload.entity, listUpdate: payload.checked }
-      },
-      {
-        type: FETCH_SUCCESS,
-        payload: {
-          message: "Custom filter successfully deleted"
-        }
+    {
+      type: GET_FILTERS_REQUEST,
+      payload: {entity: payload.entity, listUpdate: payload.checked}
+    },
+    {
+      type: FETCH_SUCCESS,
+      payload: {
+        message: "Custom filter successfully deleted"
       }
-    ]
+    }
+  ]
 };
 
 export const EpicDeleteCustomFilter: Epic<any, any> = EpicUtils.Create(request);

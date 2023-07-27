@@ -29,14 +29,14 @@ import { formatCurrency } from "../../../../common/utils/numbers/numbersNormaliz
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { getInvoiceClosestPaymentDueDate } from "../utils";
 import { HeaderContent, InvoiceLines } from "./InvoiceLines";
-import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
+import { formatToDateOnly } from  "ish-ui";
 import { EditViewProps } from "../../../../model/common/ListView";
 import InvoicePaymentPlans from "./InvoicePaymentPlans";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 import { InvoiceLineWithTotal, InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { setSelectedContact } from "../actions";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from  "ish-ui";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { usePrevious } from "../../../../common/utils/hooks";
 import { leadLabelCondition, openLeadLink } from "../../leads/utils";

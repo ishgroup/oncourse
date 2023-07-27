@@ -2,9 +2,9 @@ import * as React from "react";
 import { format } from "date-fns";
 import { RepeatEnum } from "@api/model";
 import { defaultComponents } from "../../common/Default.Components";
-import { III_DD_MMM_YYYY_HH_MM } from "../../../js/common/utils/dates/format";
+import { III_DD_MMM_YYYY_HH_MM } from "ish-ui";
 import Holidays from "../../../js/containers/preferences/containers/holidays/Holidays";
-import { repeatListItems, repeatEndListItems } from "../../../js/containers/preferences/containers/holidays/ListItems";
+import { repeatEndListItems, repeatListItems } from "../../../js/containers/preferences/containers/holidays/ListItems";
 import { HOLIDAYS_FORM } from "../../../js/containers/preferences/containers/holidays/components/HolidaysForm";
 
 describe("Virtual rendered HolidaysForm", () => {

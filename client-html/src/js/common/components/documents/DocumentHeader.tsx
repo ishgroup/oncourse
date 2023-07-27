@@ -7,9 +7,7 @@
  */
 
 import Avatar from '@mui/material/Avatar';
-import {
- Directions, Language, Link, MoreVert
-} from '@mui/icons-material';
+import { Directions, Language, Link, MoreVert } from '@mui/icons-material';
 import { AlertTitle } from '@mui/lab';
 import Alert from '@mui/lab/Alert';
 import clsx from 'clsx';
@@ -38,6 +36,9 @@ import MenuItem from '@mui/material/MenuItem';
 import { AppTheme } from '@src/model';
 import DocumentIconsChooser from './DocumentIconsChooser';
 import { formatRelativeDate, III_DD_MMM_YYYY_HH_MM_SPECIAL } from '@src/utils';
+import { getDocumentShareSummary, getLatestDocumentItem } from "../../utils/documents";
+import DocumentIconsChooser, { DocumentIconsChooser } from "ish-ui";
+import Popover from "@mui/material/Popover";
 
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile);
@@ -87,7 +88,7 @@ const styles = (theme: AppTheme) =>
   });
 
 const DocumentInfo = props => {
-  const { classes } = props;
+  const {classes} = props;
   return (
     <div className="flex-column flex-fill overflow-hidden pr-1">
       <Typography className={clsx('text-truncate word-break-all', classes.infoName)}>
@@ -120,7 +121,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
 
   unlinkItem = e => {
     e.stopPropagation();
-    const { index, unlink } = this.props;
+    const {index, unlink} = this.props;
     unlink(index);
     this.onCloseMoreMenu(e);
   };
@@ -157,14 +158,14 @@ class DocumentHeader extends React.PureComponent<Props, any> {
   };
 
   openDocumentView = e => {
-    const { viewItem } = this.props;
+    const {viewItem} = this.props;
     viewItem();
     this.onCloseMoreMenu(e);
   };
 
   render() {
-    const { classes, item, entity } = this.props;
-    const { popoverAnchor, openMoreMenu } = this.state;
+    const {classes, item, entity} = this.props;
+    const {popoverAnchor, openMoreMenu} = this.state;
 
     const latestItem = item && getLatestDocumentItem(item.versions);
     const validUrl = latestItem && latestItem.url;
@@ -199,27 +200,27 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             onMouseLeave={this.handlePopoverClose}
           >
             {((item.attachmentRelations.length === 1
-              && item.attachmentRelations[0].entity === 'Course'
-              && item.access === 'Public') || (!item.attachmentRelations.length && entity === 'Course' && item.access === 'Public'))
+                && item.attachmentRelations[0].entity === 'Course'
+                && item.access === 'Public') || (!item.attachmentRelations.length && entity === 'Course' && item.access === 'Public'))
               && (
                 <Avatar className={clsx('activeAvatar', classes.avatar)}>
-                  <Language fontSize="small" />
+                  <Language fontSize="small"/>
                 </Avatar>
               )}
             {
               ['Link', 'Public'].includes(item.access)
               && (
-              <Avatar className={clsx('activeAvatar', classes.avatar)}>
-                <Link fontSize="small" />
-              </Avatar>
-            )
+                <Avatar className={clsx('activeAvatar', classes.avatar)}>
+                  <Link fontSize="small"/>
+                </Avatar>
+              )
             }
             {
               ['Tutors and enrolled students', 'Tutors only'].includes(item.access)
               && (
-              <Avatar className={clsx('activeAvatar', classes.avatar)}>
-                <Directions fontSize="small" />
-              </Avatar>
+                <Avatar className={clsx('activeAvatar', classes.avatar)}>
+                  <Directions fontSize="small"/>
+                </Avatar>
               )
             }
           </div>
@@ -251,7 +252,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             onClick={this.onOpenMoreMenu}
             className={classes.closeIcon}
           >
-            <MoreVert fontSize="inherit" color="inherit" />
+            <MoreVert fontSize="inherit" color="inherit"/>
           </IconButton>
 
           <Menu

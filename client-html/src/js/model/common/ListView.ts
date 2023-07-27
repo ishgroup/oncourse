@@ -9,11 +9,9 @@
 import React, { ReactElement } from "react";
 import { FormErrors, InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
-import {
-  DataResponse, EmailTemplate, Filter, Script, SearchQuery
-} from "@api/model";
-import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
-import { ShowConfirmCaller } from "../../../ish-ui/model/Confirm";
+import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
+import { AnyArgFunction, NoArgFunction } from  "ish-ui";
+import { ShowConfirmCaller } from  "ish-ui";
 import { MessageData } from "./Message";
 import { CustomTableModelName, EntityName } from "../entities/common";
 import { FormMenuTag } from "../tags";

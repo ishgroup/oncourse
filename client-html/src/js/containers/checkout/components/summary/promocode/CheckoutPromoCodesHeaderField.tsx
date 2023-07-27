@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
 import debounce from "lodash.debounce";
-import { StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { StringArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
 import HeaderField from "../../HeaderField";
 import {

@@ -10,7 +10,7 @@ import { Dispatch } from "redux";
 import { change } from "redux-form";
 import clsx from "clsx";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { AppTheme } from "../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { State } from "../../../../reducers/state";
 import {
   clearCommonPlainRecords,

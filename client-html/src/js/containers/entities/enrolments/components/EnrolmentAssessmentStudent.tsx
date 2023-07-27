@@ -11,13 +11,13 @@ import Grid from "@mui/material/Grid";
 import clsx from "clsx";
 import { GradingItem, GradingType } from "@api/model";
 import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
-import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { D_MMM_YYYY } from  "ish-ui";
 import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
 import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
 import GradeContent from "../../courseClasses/components/assessments/GradeContent";
 import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../../ish-ui/formFields/EditInPlaceDateTimeField";
-import EditInPlaceSearchSelect from "../../../../../ish-ui/formFields/EditInPlaceSearchSelect";
+import EditInPlaceDateTimeField from  "ish-ui";
+import EditInPlaceSearchSelect from  "ish-ui";
 import { Dispatch } from "redux";
 
 

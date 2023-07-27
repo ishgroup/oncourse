@@ -24,15 +24,15 @@ import {
 import { Dispatch } from "redux";
 import { makeStyles } from "@mui/styles";
 import { TimetableSession } from "../../../../../model/timetable";
-import ErrorMessage from "../../../../../../ish-ui/fieldMessage/ErrorMessage";
+import ErrorMessage from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
-import { H_MMAAA } from "../../../../../common/utils/dates/format";
+import { H_MMAAA } from  "ish-ui";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
+import { AppTheme } from  "ish-ui";
+import { NumberArgFunction } from  "ish-ui";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   root: {

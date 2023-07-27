@@ -22,7 +22,7 @@ const switchByStatus = (
       return [
         {
           type: UPDATE_PROCESS,
-          payload: { process, processId }
+          payload: {process, processId}
         },
         ...actions,
         {
@@ -34,11 +34,11 @@ const switchByStatus = (
       return [
         {
           type: UPDATE_PROCESS,
-          payload: { process, processId }
+          payload: {process, processId}
         },
         {
           type: START_PROCESS,
-          payload: { processId, actions, actionsOnFail }
+          payload: {processId, actions, actionsOnFail}
         }
       ];
     }
@@ -46,7 +46,7 @@ const switchByStatus = (
       return [
         {
           type: FETCH_FAIL,
-          payload: { message: process.message || "Process not found" }
+          payload: {message: process.message || "Process not found"}
         },
         {
           type: CLEAR_PROCESS
@@ -58,9 +58,9 @@ const switchByStatus = (
       return [
         {
           type: FETCH_FAIL,
-          payload: { message: process.message || "Process failed" }
+          payload: {message: process.message || "Process failed"}
         },
-        ...(actionsOnFail !== undefined ? actionsOnFail : [{ type: CLEAR_ACTION_ON_FAIL }]),
+        ...(actionsOnFail !== undefined ? actionsOnFail : [{type: CLEAR_ACTION_ON_FAIL}]),
         {
           type: CLEAR_PROCESS
         }

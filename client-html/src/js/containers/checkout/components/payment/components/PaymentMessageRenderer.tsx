@@ -15,10 +15,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DoneRounded from "@mui/icons-material/DoneRounded";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import { LinkAdornment } from "../../../../../../ish-ui/formFields/FieldAdornments";
+import { LinkAdornment } from  "ish-ui";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import CheckoutPaymentExpandableItemRenderer from "./CheckoutPaymentExpandableItemRenderer";
 import { getContactFullName } from "../../../../entities/contacts/utils";
 

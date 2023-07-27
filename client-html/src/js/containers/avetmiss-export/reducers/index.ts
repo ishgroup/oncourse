@@ -14,7 +14,7 @@ import {
 import { AvetmissExportState } from "./state";
 import { format as formatDate } from "date-fns";
 
-import { YYYYMMDD_KKMMSS_MINUSED } from "../../../common/utils/dates/format";
+import { YYYYMMDD_KKMMSS_MINUSED } from  "ish-ui";
 
 export const AvetmissExportReducer = (state: AvetmissExportState = {}, action: IAction<any>): any => {
   switch (action.type) {

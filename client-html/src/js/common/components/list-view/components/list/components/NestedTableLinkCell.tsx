@@ -9,13 +9,13 @@ import { openInternalLink } from "../../../../../utils/links";
 
 const NestedTableLinkCell = props => {
   const {
- classes, value, link
-} = props;
+    classes, value, link
+  } = props;
 
   return (
     <div className="centeredFlex linkDecoration" onClick={() => openInternalLink(link)}>
       <span className="text-truncate">{value}</span>
-      <OpenInNew className={classes.linkIcon} color="primary" />
+      <OpenInNew className={classes.linkIcon} color="primary"/>
     </div>
   );
 };

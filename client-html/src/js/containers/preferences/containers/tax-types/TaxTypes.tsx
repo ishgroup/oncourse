@@ -15,7 +15,7 @@ import TaxTypesForm from "./components/TaxTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
+import { ShowConfirmCaller } from  "ish-ui";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
 
 interface Props {

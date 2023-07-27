@@ -16,11 +16,11 @@ import ExportService from "../services/ExportService";
 const request: EpicUtils.Request<any, number> = {
   type: DELETE_EXPORT_TEMPLATE_PREVIEW,
   getData: id => ExportService.deletePreview(id),
-  processData: (value, { list: { records: { entity }}}) => ([
+  processData: (value, {list: {records: {entity}}}) => ([
     getExportTemplates(entity),
     {
       type: FETCH_SUCCESS,
-      payload: { message: "Preview was deleted" }
+      payload: {message: "Preview was deleted"}
     }
   ]),
   processError: response => FetchErrorHandler(response, "Failed to delete preview")

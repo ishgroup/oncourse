@@ -4,7 +4,7 @@
  */
 
 import createStyles from "@mui/styles/createStyles";
-import { AppTheme } from "../../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
   content: {

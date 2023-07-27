@@ -5,7 +5,7 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { TagGroup, Tag } from "@api/model";
+import { TagGroup } from "@api/model";
 import { FormMenuTag } from "../../../../model/tags";
 import { FilterGroup } from "../../../../model/common/ListView";
 
@@ -105,24 +105,24 @@ export const updateIndeterminateState = (tags: FormMenuTag[], id: string) => {
 };
 
 export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: FormMenuTag, allActive?: boolean) => tags.map(t => {
-    const updated = { ...t, parent };
-    let toggleChildrenActive = false;
+  const updated = {...t, parent};
+  let toggleChildrenActive = false;
 
-    if (allActive || updated.prefix + updated.tagBody.id.toString() === id) {
-      updated.active = active;
-      updated.indeterminate = false;
-      toggleChildrenActive = true;
-    }
+  if (allActive || updated.prefix + updated.tagBody.id.toString() === id) {
+    updated.active = active;
+    updated.indeterminate = false;
+    toggleChildrenActive = true;
+  }
 
-    if (updated.children.length) {
-      updated.children = getUpdated(updated.children, id, active, updated, toggleChildrenActive);
-    }
+  if (updated.children.length) {
+    updated.children = getUpdated(updated.children, id, active, updated, toggleChildrenActive);
+  }
 
-    return updated;
-  });
+  return updated;
+});
 
 export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[]) => tags.map(t => {
-  const updated = { ...t };
+  const updated = {...t};
 
   updated.active = activeIds.includes(updated.tagBody.id);
 

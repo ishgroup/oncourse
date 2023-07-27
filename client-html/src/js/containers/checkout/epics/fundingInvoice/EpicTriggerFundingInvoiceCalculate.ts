@@ -19,7 +19,7 @@ import CourseClassAttendanceService
 import CourseClassTimetableService
   from "../../../entities/courseClasses/components/timetable/services/CourseClassTimetableService";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
 import EntityService from "../../../../common/services/EntityService";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";

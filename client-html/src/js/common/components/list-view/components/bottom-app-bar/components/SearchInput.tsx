@@ -21,7 +21,7 @@ import { CustomFieldType, ProductType } from "@api/model";
 import EditInPlaceQuerySelect from "../../../../form/formFields/EditInPlaceQuerySelect";
 import QuerySaveMenu from "./QuerySaveMenu";
 import { State } from "../../../../../../reducers/state";
-import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { StringArgFunction } from  "ish-ui";
 import { setIndeterminate } from "../../../utils/listFiltersUtils";
 import {
  setFilterGroups, setListSavingFilter, setListUserAQLSearch
@@ -29,10 +29,10 @@ import {
 import { FormMenuTag } from "../../../../../../model/tags";
 import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
 import { FILTER_TAGS_REGEX } from "../../../../../../constants/Config";
-import { AppTheme } from "../../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
 import { QueryFieldSuggestion } from "../../../../../../model/common/Fields";
-import { getAllMenuTags } from "../../../../../../../ish-ui/utils";
+import { getAllMenuTags } from  "ish-ui";
 
 export const styles = (theme: AppTheme) => createStyles({
     container: {

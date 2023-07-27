@@ -35,18 +35,18 @@ import {
   validateVetPurchasingContractIdentifier
 } from "../../../../common/utils/validation";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { HeaderContactTitle, LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { HeaderContactTitle, LinkAdornment } from  "ish-ui";
 import { fundingUploadsPath } from "../../../../constants/Api";
 import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
 import { openModuleLink } from "../../modules/utils";
 import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from "../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { StringKeyObject } from "../../../../model/common/CommomObjects";
+import { StringKeyObject } from  "ish-ui";
 import EntityService from "../../../../common/services/EntityService";
 import { fundingSourceValues } from "../../courseClasses/constants";
 

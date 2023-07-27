@@ -15,11 +15,16 @@ import { GET_EXPORT_RESULT } from "../actions";
 import { State } from "../../../../../../reducers/state";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, { entityName: string; processId: string; outputType: OutputType, isClipboard?: boolean }> = {
+const request: EpicUtils.Request<any, {
+  entityName: string;
+  processId: string;
+  outputType: OutputType,
+  isClipboard?: boolean
+}> = {
   type: GET_EXPORT_RESULT,
   hideLoadIndicator: true,
-  getData: ({ entityName, processId }) => ExportService.getExportResult(entityName, processId),
-  processData: (data: any, state: State, { outputType, isClipboard }) => {
+  getData: ({entityName, processId}) => ExportService.getExportResult(entityName, processId),
+  processData: (data: any, state: State, {outputType, isClipboard}) => {
     let noContent = false;
     if (data) {
       if (isClipboard) {
@@ -37,12 +42,12 @@ const request: EpicUtils.Request<any, { entityName: string; processId: string; o
       stopSubmit("ListShareForm"),
       noContent ? {
           type: FETCH_FAIL,
-          payload: { message: "No export content was found for chosen template" }
+          payload: {message: "No export content was found for chosen template"}
         }
-      : {
-        type: FETCH_SUCCESS,
-        payload: { message: isClipboard ? "Export content copied" : "Export completed" }
-      }
+        : {
+          type: FETCH_SUCCESS,
+          payload: {message: isClipboard ? "Export content copied" : "Export completed"}
+        }
     ];
   },
   processError: response => [stopSubmit("ListShareForm"), ...FetchErrorHandler(response)]

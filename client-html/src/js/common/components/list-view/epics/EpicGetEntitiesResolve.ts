@@ -15,7 +15,7 @@ export const EpicGetEntitiesResolve: Epic<any> = (
   action$: Observable<any>,
 ): Observable<any> => action$.pipe(
   ofType(GET_RECORDS_FULFILLED_RESOLVE),
-  mergeMap(({ payload: { resolve } }) => {
+  mergeMap(({payload: {resolve}}) => {
     resolve();
 
     return [];

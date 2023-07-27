@@ -25,7 +25,7 @@ import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoo
 import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
 import { validateDeleteRoom } from "../../rooms/actions";
 import { openInternalLink } from "../../../../common/utils/links";
-import TimetableButton from "../../../../../ish-ui/buttons/TimetableButton";
+import TimetableButton from  "ish-ui";
 import { openRoomLink } from "../../rooms/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader

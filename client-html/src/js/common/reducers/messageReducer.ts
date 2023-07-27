@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import { IAction } from "../actions/IshAction";
-import { SHOW_MESSAGE, CLEAR_MESSAGE } from "../actions";
+import { CLEAR_MESSAGE, SHOW_MESSAGE } from "../actions";
 import { AppMessage } from "../../model/common/Message";
 
 const initial: AppMessage = {
@@ -11,7 +11,7 @@ const initial: AppMessage = {
   message: null
 };
 
-export const messageReducer = (state: AppMessage = { ...initial }, action: IAction<any>): any => {
+export const messageReducer = (state: AppMessage = {...initial}, action: IAction<any>): any => {
   switch (action.type) {
     case SHOW_MESSAGE: {
       return {

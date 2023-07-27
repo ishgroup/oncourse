@@ -21,7 +21,7 @@ import { CancelCourseClass } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import Button from "@mui/material/Button";
-import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction } from  "ish-ui";
 import { cancelCourseClass } from "../../actions";
 import {clearCommonPlainRecords, setCommonPlainSearch} from "../../../../../common/actions/CommonPlainRecordsActions";
 

@@ -7,15 +7,14 @@
  */
 
 import React, { useCallback } from "react";
-import {
-  ListItem, ListItemText, Divider
-} from "@mui/material";
+import { Divider, ListItem, ListItemText } from "@mui/material";
 import clsx from "clsx";
 import { CatalogItemType } from "../../../../model/common/Catalog";
-import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
-import { NumberArgFunction } from "../../../../model/common/CommonFunctions";
-import { useHoverShowStyles } from "../../../../../ish-ui/styles/hooks";
-import InfoPill from "../../../../../ish-ui/layout/InfoPill";
+import { makeAppStyles } from  "ish-ui";
+import { NumberArgFunction } from  "ish-ui";
+import { useHoverShowStyles } from  "ish-ui";
+import InfoPill from  "ish-ui";
+import { InfoPill } from "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {
@@ -61,7 +60,7 @@ const CatalogItem = (
     disabled
   }: Props
 ) => {
-  const { 
+  const {
     id,
     tags,
     title,
@@ -69,7 +68,7 @@ const CatalogItem = (
     shortDescription,
     hideShortDescription
   } = item;
-  
+
   const classes = useStyles();
   const hoverClasses = useHoverShowStyles();
 
@@ -94,16 +93,16 @@ const CatalogItem = (
           }}
           primary={(
             <div className="centeredFlex">
-              {showDot && <span className={classes.dot} />}
+              {showDot && <span className={classes.dot}/>}
               {title}
               {titleAdornment}
-              {tags?.split(",").map(t => <InfoPill key={t} label={t} />)}
+              {tags?.split(",").map(t => <InfoPill key={t} label={t}/>)}
             </div>
           )}
           secondary={!hideShortDescription && (shortDescription || "No description")}
         />
       </ListItem>
-      <Divider light />
+      <Divider light/>
     </>
   );
 };

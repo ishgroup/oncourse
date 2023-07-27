@@ -18,12 +18,12 @@ const FetchErrorHandler = (response: ServerResponse, customMessage?: string): IA
     return [
       {
         type: FETCH_FAIL,
-        payload: { message: customMessage || "Something went wrong" }
+        payload: {message: customMessage || "Something went wrong"}
       }
     ];
   }
 
-  const { data, status } = response;
+  const {data, status} = response;
 
   switch (status) {
     case 400:
@@ -57,11 +57,11 @@ const FetchErrorHandler = (response: ServerResponse, customMessage?: string): IA
         ...(data["url"] && data["url"] === "/a/"
           ? []
           : [
-              {
-                type: FETCH_FAIL,
-                payload: { message: "Unauthorized" }
-              }
-            ])
+            {
+              type: FETCH_FAIL,
+              payload: {message: "Unauthorized"}
+            }
+          ])
       ];
 
     case 403:
@@ -80,7 +80,7 @@ const FetchErrorHandler = (response: ServerResponse, customMessage?: string): IA
       return [
         {
           type: FETCH_FAIL,
-          payload: { message: customMessage || "Something went wrong" }
+          payload: {message: customMessage || "Something went wrong"}
         }
       ];
   }

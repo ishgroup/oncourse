@@ -10,8 +10,8 @@ import Input from "@mui/material/Input";
 import Search from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
-import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
+import { BooleanArgFunction, StringArgFunction } from  "ish-ui";
+import { makeAppStyles } from  "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   inputRoot: {
@@ -35,10 +35,10 @@ interface Props {
 }
 
 const UserSearch = ({
-  getSearchResults,
-  placeholder = "Find anything...",
-  setFocusOnSearchInput 
-}: Props) => {
+                      getSearchResults,
+                      placeholder = "Find anything...",
+                      setFocusOnSearchInput
+                    }: Props) => {
   const [userSearch, setUserSearch] = React.useState("");
   const [focused, setFocused] = React.useState(false);
   const searchRef = React.useRef("");
@@ -90,12 +90,12 @@ const UserSearch = ({
         endAdornment={
           (
             <IconButton className={clsx("closeAndClearButton", !userSearch && "invisible")} onClick={clear}>
-              <Close className="inputAdornmentIcon" />
+              <Close className="inputAdornmentIcon"/>
             </IconButton>
           )
         }
         className="w-100"
-        classes={{ root: classes.inputRoot, input: classes.input }}
+        classes={{root: classes.inputRoot, input: classes.input}}
         onFocus={onFocus}
         onBlur={onBlur}
       />

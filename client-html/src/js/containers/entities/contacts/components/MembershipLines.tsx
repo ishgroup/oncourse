@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { buildUrl, productUrl } from "../../sales/utils";
-import { ContactLinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { ContactLinkAdornment } from  "ish-ui";
 
 export const MembershipHeader: React.FunctionComponent<any> = ({ row }) => (
   <div className="w-100 d-grid gridTemplateColumns-1fr">

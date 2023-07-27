@@ -1,10 +1,6 @@
-import {
-  EditInPlaceSearchSelectFieldProps,
-  FormFieldBaseProps,
-  FormFieldProps
-} from "../../../ish-ui/model/Fields";
+import { EditInPlaceSearchSelectFieldProps, FormFieldBaseProps, FormFieldProps } from  "ish-ui";
 import { BaseFieldProps } from "redux-form";
-import { StringArgFunction } from "./CommonFunctions";
+import { StringArgFunction } from  "ish-ui";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 import { EntityName } from "../entities/common";
 
@@ -27,6 +23,8 @@ export interface EditInPlaceRemoteDataSelectFieldProps extends EditInPlaceSearch
   preloadEmpty?: boolean;
 }
 
-export type AngelFormFieldProps =  FormFieldProps | ({ type: "remoteDataSelect" } & FormFieldBaseProps & EditInPlaceRemoteDataSelectFieldProps)
+export type AngelFormFieldProps = FormFieldProps | ({
+  type: "remoteDataSelect"
+} & FormFieldBaseProps & EditInPlaceRemoteDataSelectFieldProps)
 
 export type FormFieldWrapperProps = AngelFormFieldProps & BaseFieldProps<AngelFormFieldProps>;

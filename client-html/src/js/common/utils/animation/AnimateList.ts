@@ -22,7 +22,7 @@ const calculateBoundingBoxes = children => {
   return boundingBoxes;
 };
 
-const AnimateList = ({ children }) => {
+const AnimateList = ({children}) => {
   const [boundingBox, setBoundingBox] = useState({});
   const [prevBoundingBox, setPrevBoundingBox] = useState({});
   const prevChildren = usePrevious(children);

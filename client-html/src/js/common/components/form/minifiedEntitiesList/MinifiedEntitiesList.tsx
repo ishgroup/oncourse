@@ -7,7 +7,7 @@ import React, { useMemo } from "react";
 import { FieldArray } from "redux-form";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import AddButton from "../../../../../ish-ui/buttons/AddButton";
+import AddButton, { AddButton } from "ish-ui";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 
 const MinifiedEntitiesList = props => {
@@ -44,13 +44,13 @@ const MinifiedEntitiesList = props => {
   return (
     <div id={name}>
       <div className="centeredFlex">
-        <Typography className={clsx("heading mb-2 mt-2", { "errorColor": error })}>
+        <Typography className={clsx("heading mb-2 mt-2", {"errorColor": error})}>
           {count > 0 ? count : ""}
           {' '}
           {count !== 1 ? header : oneItemHeader}
         </Typography>
         {onAdd && (
-          <AddButton onClick={onAdd} />
+          <AddButton onClick={onAdd}/>
         )}
       </div>
 

@@ -25,7 +25,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { openInternalLink } from "../../../../common/utils/links";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 
 export const PAYSLIP_GENERATE_FORM = "PayslipGenerateForm";

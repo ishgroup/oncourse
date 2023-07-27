@@ -29,7 +29,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import { StyledCheckbox } from "../../../../../../ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from  "ish-ui";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { courseFilterCondition } from "../../../courses/utils";
 import {
@@ -39,7 +39,7 @@ import {
 } from "../../actions";
 import {
  BooleanArgFunction, NoArgFunction
-} from "../../../../../model/common/CommonFunctions";
+} from  "ish-ui";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
