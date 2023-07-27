@@ -14,12 +14,11 @@ import styles from "./styles";
 import { State } from "../../../../reducers/state";
 import { addActionToQueue, removeActionsFromQueue } from "../../../actions";
 import NotesRenderer from "./components/NotesRenderer";
-import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
+import AddButton, { AddButton, ShowConfirmCaller } from "ish-ui";
 import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import uniqid from "../../../utils/uniqid";
-import AddButton from "../../../../../ish-ui/buttons/AddButton";
 import { APP_BAR_HEIGHT } from "../../../../constants/Config";
 
 interface Props {
@@ -37,17 +36,17 @@ interface Props {
 
 const OwnApiNotes = React.memo<Props>(
   ({
-    classes,
-    className,
-    showConfirm,
-    twoColumn,
-    notesHeader = "Note",
-    rootEntity,
-    dispatch,
-    form,
-    values,
-    isNew
-  }) => {
+     classes,
+     className,
+     showConfirm,
+     twoColumn,
+     notesHeader = "Note",
+     rootEntity,
+     dispatch,
+     form,
+     values,
+     isNew
+   }) => {
     const [showMore, setShowMore] = useState(false);
 
     const handleShowMore = useCallback(() => {
@@ -74,7 +73,7 @@ const OwnApiNotes = React.memo<Props>(
                   .catch(response => instantFetchErrorHandler(dispatch, response));
                 return;
               }
-              dispatch(removeActionsFromQueue([{ entity: "Note", id: deletedNote.temporaryId }]));
+              dispatch(removeActionsFromQueue([{entity: "Note", id: deletedNote.temporaryId}]));
               dispatch(change(form, "notes", updatedNotes));
             },
             confirmMessage: "This note will be deleted permanently.",
@@ -87,15 +86,19 @@ const OwnApiNotes = React.memo<Props>(
 
     const addNote = useCallback(() => {
       if (isNew) {
-        showConfirm({ title: null, confirmMessage: `Please save new record before adding notes`, cancelButtonText: "OK" });
+        showConfirm({
+          title: null,
+          confirmMessage: `Please save new record before adding notes`,
+          cancelButtonText: "OK"
+        });
       } else {
         const temporaryId = uniqid();
-        const newNote: Note = { message: "", entityName: rootEntity, entityId: values.id };
-        dispatch(arrayInsert(form, "notes", 0, { ...newNote, temporaryId }));
+        const newNote: Note = {message: "", entityName: rootEntity, entityId: values.id};
+        dispatch(arrayInsert(form, "notes", 0, {...newNote, temporaryId}));
         dispatch(addActionToQueue(postNoteItem(newNote), "POST", "Note", temporaryId));
         setTimeout(() => {
           const domNode = document.getElementById("notes[0].message");
-          if (domNode)  window.scrollTo({
+          if (domNode) window.scrollTo({
             top: domNode.offsetTop - APP_BAR_HEIGHT,
             behavior: 'smooth'
           });
@@ -104,7 +107,8 @@ const OwnApiNotes = React.memo<Props>(
     }, [isNew, form, rootEntity, values.notes, values.id]);
 
     return (
-      <Grid container columnSpacing={3} className={clsx("h-100 justify-content-center", className)} alignContent="flex-start">
+      <Grid container columnSpacing={3} className={clsx("h-100 justify-content-center", className)}
+            alignContent="flex-start">
         <Grid item xs={12}>
           <div className="centeredFlex">
             <div className="heading">
@@ -113,7 +117,7 @@ const OwnApiNotes = React.memo<Props>(
               {notesHeader}
               {values.notes && values.notes.length !== 1 ? "s" : ""}
             </div>
-            <AddButton onClick={addNote} />
+            <AddButton onClick={addNote}/>
           </div>
         </Grid>
 

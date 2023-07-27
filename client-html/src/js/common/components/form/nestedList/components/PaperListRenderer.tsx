@@ -112,11 +112,11 @@ class PaperPanel extends PureComponent<PaperPanelProps, PaperPanelState> {
   }
 
   handleExpandClick = () => {
-    this.setState({ panelExpanded: !this.state.panelExpanded });
+    this.setState({panelExpanded: !this.state.panelExpanded});
   };
 
   private expandCaption = (items: number[]): string => {
-    const { panelCaption, panelItems } = this.props;
+    const {panelCaption, panelItems} = this.props;
     return items.reduce((caption, pi, i) => {
       if (caption.length === panelCaptionMaximumLength) {
         return caption;
@@ -145,7 +145,7 @@ class PaperPanel extends PureComponent<PaperPanelProps, PaperPanelState> {
       panelItems, panelCaption, item, onChangePanelItem, classes
     } = this.props;
 
-    const { panelExpanded } = this.state;
+    const {panelExpanded} = this.state;
 
     return (
       <>
@@ -155,7 +155,7 @@ class PaperPanel extends PureComponent<PaperPanelProps, PaperPanelState> {
           })}
           onClick={this.handleExpandClick}
         >
-          <ExpandMoreIcon />
+          <ExpandMoreIcon/>
         </IconButton>
         <Typography variant="caption" className="linkDecoration" onClick={this.handleExpandClick}>
           {panelExpanded ? panelCaption : this.expandCaption(item.panelItemIds ? item.panelItemIds : [])}
@@ -166,7 +166,7 @@ class PaperPanel extends PureComponent<PaperPanelProps, PaperPanelState> {
               {panelItems.map((panelItemValue: NestedListPanelItem, id) => (
                 <ListItem key={id} disableGutters className={classes.listItem}>
                   <Checkbox
-                    onChange={(_, checked) => onChangePanelItem({ panelItemId: panelItemValue.id, checked, item })}
+                    onChange={(_, checked) => onChangePanelItem({panelItemId: panelItemValue.id, checked, item})}
                     checked={this.isListItemSelected(panelItemValue, item)}
                     className={classes.listItemCheckbox}
                   />
@@ -176,7 +176,7 @@ class PaperPanel extends PureComponent<PaperPanelProps, PaperPanelState> {
                     className={classes.listItemText}
                   />
                 </ListItem>
-                ))}
+              ))}
             </List>
           </div>
         </Collapse>
@@ -221,12 +221,12 @@ class PaperListRenderer extends PureComponent<PaperListRendererProps, any> {
                 )}
               </div>
 
-              <div className="flex-fill" />
+              <div className="flex-fill"/>
 
               {onDelete && (
                 <IconButton
                   className={clsx("lightGrayIconButton", classes.deleteButton, disabled && "invisible")}
-                  children={<Delete fontSize="inherit" color="inherit" />}
+                  children={<Delete fontSize="inherit" color="inherit"/>}
                   color="secondary"
                   onClick={() => onDelete(item, index)}
                 />

@@ -12,7 +12,7 @@ import Collapse from "@mui/material/Collapse";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { createStyles, withStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
-import { AppTheme } from "../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { stopEventPropagation } from "../../../utils/events";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
@@ -70,7 +70,15 @@ interface Props {
 
 const ExpandableItem: React.FunctionComponent<Props> = props => {
   const {
-    expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent, elevation = 2, expandButtonId
+    expanded,
+    keepPaper,
+    onChange,
+    classes,
+    collapsedContent,
+    buttonsContent,
+    detailsContent,
+    elevation = 2,
+    expandButtonId
   } = props;
 
   const buttonId = expandButtonId ? `expand-button-${expandButtonId}` : null;
@@ -81,7 +89,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
   return (
     <Accordion
       expanded={expanded}
-      TransitionProps={{ unmountOnExit: true, mountOnEnter: true }}
+      TransitionProps={{unmountOnExit: true, mountOnEnter: true}}
       classes={{
         root: clsx(classes.expansionPanelRoot,
           !expanded
@@ -97,13 +105,13 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
-        expandIcon={<IconButton id={buttonId} {...iconButtonProps}><ExpandMoreIcon /></IconButton>}
+        expandIcon={<IconButton id={buttonId} {...iconButtonProps}><ExpandMoreIcon/></IconButton>}
       >
-        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{ root: classes.collapseRoot }}>
+        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{root: classes.collapseRoot}}>
           {collapsedContent}
         </Collapse>
 
-        <div className="flex-fill" />
+        <div className="flex-fill"/>
 
         {buttonsContent}
       </AccordionSummary>

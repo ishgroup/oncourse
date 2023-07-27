@@ -13,13 +13,13 @@ import { CONTEXT } from "../../../../../api/Constants";
 const request: EpicUtils.Request = {
   type: GET_PRINT_RESULT,
   hideLoadIndicator: true,
-  getData: ({ entityName, processId }) => {
+  getData: ({entityName, processId}) => {
     window.open(`${CONTEXT}v1/list/export/pdf/${processId}?entityName=${entityName}`);
     return new Promise(resolve => resolve(null));
   },
   processData: () => [
-      stopSubmit("ListShareForm"),
-    ],
+    stopSubmit("ListShareForm"),
+  ],
   processError: response => [stopSubmit("ListShareForm"), ...FetchErrorHandler(response)],
 };
 

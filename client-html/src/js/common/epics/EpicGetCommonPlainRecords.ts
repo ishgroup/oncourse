@@ -16,13 +16,21 @@ import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<
   DataResponse,
-  { key?: string; offset?: number; columns?: string; ascending?: boolean; sort?: string, pageSize?: number, customColumnMap?: any }
+  {
+    key?: string;
+    offset?: number;
+    columns?: string;
+    ascending?: boolean;
+    sort?: string,
+    pageSize?: number,
+    customColumnMap?: any
+  }
 > = {
   type: GET_COMMON_PLAIN_RECORDS,
   hideLoadIndicator: true,
   getData: ({
-   key, offset, columns, ascending, sort, pageSize
-  }, { plainSearchRecords }) => EntityService.getPlainRecords(
+              key, offset, columns, ascending, sort, pageSize
+            }, {plainSearchRecords}) => EntityService.getPlainRecords(
     key,
     columns,
     plainSearchRecords[key].search,
@@ -31,8 +39,8 @@ const request: EpicUtils.Request<
     sort,
     ascending
   ),
-  processData: (records, s, { key, columns, customColumnMap }) => {
-    const { rows, offset, pageSize } = records;
+  processData: (records, s, {key, columns, customColumnMap}) => {
+    const {rows, offset, pageSize} = records;
     let items = rows.map(getCustomColumnsMap(columns));
 
     if (typeof customColumnMap === "function") {
@@ -48,7 +56,7 @@ const request: EpicUtils.Request<
       }
     ];
   },
-  processError: (e, { key }) => [getCommonPlainRecordsRejected(key)]
+  processError: (e, {key}) => [getCommonPlainRecordsRejected(key)]
 };
 
 export const EpicGetCommonPlainRecords: Epic<any, any> = EpicUtils.Create(request);

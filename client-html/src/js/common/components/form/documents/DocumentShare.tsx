@@ -7,7 +7,7 @@
  */
 
 import { Document, DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
-import { Alert, AlertTitle, FormControlLabel } from "@mui/material";
+import { Alert, AlertTitle, CardContent, FormControlLabel } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
@@ -30,18 +30,19 @@ import {
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { showMessage } from "../../../actions";
-import { StyledCheckbox } from "../../../../../ish-ui/formFields/CheckboxField";
-import { Switch } from "../../../../../ish-ui/formFields/Switch";
-import { openInternalLink } from "../../../utils/links";
-import { DocumentShareOption } from "../../../../model/entities/Document";
 import {
   getAvailableOptions,
   getDocumentShareSummary,
   groupAttachmentsByEntity,
-  isSingleContactAttachment
-} from "../../../../../ish-ui/documents/utils";
-import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
+  isSingleContactAttachment,
+  makeAppStyles,
+  StyledCheckbox,
+  Switch
+} from "ish-ui";
+import { openInternalLink } from "../../../utils/links";
+import { DocumentShareOption } from "../../../../model/entities/Document";
 import { mapEntityDisplayName } from "../../../../containers/entities/common/utils";
+import { Switch } from "react-router-dom";
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 
@@ -139,15 +140,15 @@ const mapEntityName = (entity: string) => {
   }
 };
 
-const DocumentShare:React.FC<Props> = ({
-   validUrl,
-   dispatch,
-   documentSource,
-   form,
-   readOnly,
-   itemPath,
-   noPaper
- }) => {
+const DocumentShare: React.FC<Props> = ({
+                                          validUrl,
+                                          dispatch,
+                                          documentSource,
+                                          form,
+                                          readOnly,
+                                          itemPath,
+                                          noPaper
+                                        }) => {
   const attachmentRef = useRef(null);
   const summaryRef = useRef(null);
 
@@ -237,90 +238,90 @@ const DocumentShare:React.FC<Props> = ({
     return (
       <div className={documentSource.attachmentRelations.length > 1 ? classes.attachments : "d-flex"}>
         {Object.keys(groupedAttachmentRelations).map((entity: any) => {
-        const relations = groupedAttachmentRelations[entity];
-        const relationsMap = relations.map(r => r.entityId);
-        const displayedRelations = relations.slice(0, 4);
-        const displayedRelationsCount = displayedRelations.length;
-        const relationsCount = relations.length;
-        const moreCount = relationsCount - displayedRelationsCount;
-        const entityName = mapEntityName(entity);
+          const relations = groupedAttachmentRelations[entity];
+          const relationsMap = relations.map(r => r.entityId);
+          const displayedRelations = relations.slice(0, 4);
+          const displayedRelationsCount = displayedRelations.length;
+          const relationsCount = relations.length;
+          const moreCount = relationsCount - displayedRelationsCount;
+          const entityName = mapEntityName(entity);
 
-        return (
-          <div key={entity}>
-            <Typography
-              component="div"
-            >
-              {`${relationsCount} ${mapEntityDisplayName(entity)}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`}
-              <IconButton
-                size="small"
-                color="secondary"
-                className={classes.linkButton}
-                onClick={() => onAttachmentCategoryClick(entityName, relationsMap)}
+          return (
+            <div key={entity}>
+              <Typography
+                component="div"
               >
-                <OpenInNew fontSize="inherit" color="primary" />
-              </IconButton>
-              {portalEnabled
-                && !["Site", "Room"].includes(entity) && (
+                {`${relationsCount} ${mapEntityDisplayName(entity)}${relationsCount > 1 ? entity[entity.length - 1] === "s" ? "es" : "s" : ""}`}
                 <IconButton
                   size="small"
                   color="secondary"
                   className={classes.linkButton}
-                  onClick={() => onAttachmentPeopleClick(entity, documentSource.access, relations)}
+                  onClick={() => onAttachmentCategoryClick(entityName, relationsMap)}
                 >
-                  <SupervisorAccount fontSize="inherit" className="highlight" color="primary" />
+                  <OpenInNew fontSize="inherit" color="primary"/>
                 </IconButton>
-              )}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="div">
-              {
-                displayedRelations.map((r, index) => (
-                  <span
-                    key={r.entityId}
-                  >
+                {portalEnabled
+                  && !["Site", "Room"].includes(entity) && (
+                    <IconButton
+                      size="small"
+                      color="secondary"
+                      className={classes.linkButton}
+                      onClick={() => onAttachmentPeopleClick(entity, documentSource.access, relations)}
+                    >
+                      <SupervisorAccount fontSize="inherit" className="highlight" color="primary"/>
+                    </IconButton>
+                  )}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="div">
+                {
+                  displayedRelations.map((r, index) => (
+                    <span
+                      key={r.entityId}
+                    >
                     {r.label}
-                    {index === displayedRelations.length - 1
-                      ? ""
-                      : ", "}
+                      {index === displayedRelations.length - 1
+                        ? ""
+                        : ", "}
                   </span>
-                ))
-              }
-              {moreCount ? (
-                <span>{`... and ${moreCount} more`}</span>
-                )
-                : null}
-            </Typography>
-          </div>
-        );
-      })}
+                  ))
+                }
+                {moreCount ? (
+                    <span>{`... and ${moreCount} more`}</span>
+                  )
+                  : null}
+              </Typography>
+            </div>
+          );
+        })}
         {documentSource.attachmentRelations.length === 1
-        && (
-          <FormControlLabel
-            classes={{
-              root: clsx("checkbox", classes.lockCheckbox),
-              label: "ml-0"
-            }}
-            control={(
-              <StyledCheckbox
-                disabled={readOnly}
-                checked={!documentSource.shared}
-                onChange={onSharedChange}
-              />
-            )}
-            label="Attach only to this record"
-          />
-        )}
+          && (
+            <FormControlLabel
+              classes={{
+                root: clsx("checkbox", classes.lockCheckbox),
+                label: "ml-0"
+              }}
+              control={(
+                <StyledCheckbox
+                  disabled={readOnly}
+                  checked={!documentSource.shared}
+                  onChange={onSharedChange}
+                />
+              )}
+              label="Attach only to this record"
+            />
+          )}
       </div>
     );
   }, [documentSource.attachmentRelations, documentSource.shared, documentSource.access]);
 
   const websiteAvailable = !documentSource.attachmentRelations.length
     || (documentSource.attachmentRelations.length === 1
-    && typesAllowedForWebsite.includes(documentSource.attachmentRelations[0].entity));
+      && typesAllowedForWebsite.includes(documentSource.attachmentRelations[0].entity));
 
   const contactRelated = isSingleContactAttachment(documentSource.attachmentRelations);
 
   const SummaryLabel = useMemo(() => getDocumentShareSummary(documentSource.access, documentSource.attachmentRelations),
-     [documentSource.access, documentSource.attachmentRelations]);
+    [documentSource.access, documentSource.attachmentRelations]);
 
   const linkOrPublic = ["Link", "Public"].includes(documentSource.access);
 
@@ -330,14 +331,14 @@ const DocumentShare:React.FC<Props> = ({
 
   const cardHeaderClasses = noPaper
     ? {
-        root: "p-0",
-        action: "mt-0",
-        title: "heading"
-      }
+      root: "p-0",
+      action: "mt-0",
+      title: "heading"
+    }
     : {
-        action: classes.action,
-        title: "heading"
-      };
+      action: classes.action,
+      title: "heading"
+    };
 
   return (
     <div>
@@ -350,7 +351,7 @@ const DocumentShare:React.FC<Props> = ({
           classes={cardHeaderClasses}
           avatar={(
             <Avatar className="activeAvatar">
-              <Attachment />
+              <Attachment/>
             </Avatar>
           )}
           title="Attached to"
@@ -362,85 +363,85 @@ const DocumentShare:React.FC<Props> = ({
 
       {availableOptions["PortalSharing"]
         && (
-        <Card className="mb-2" elevation={cardsElevation}>
-          <CardHeader
-            classes={cardHeaderClasses}
-            action={(
-              <FormControlLabel
-                classes={{
-                root: "switchWrapper",
-                label: "switchLabel"
-              }}
-                control={(
-                  <Switch
-                    disabled={readOnly}
-                    checked={tutorsAndStudents}
-                    onChange={onPortalSharingChange}
-                  />
-              )}
-                label="Shared in portal"
-              />
-          )}
-            avatar={(
-              <Avatar className="activeAvatar">
-                <Directions />
-              </Avatar>
-          )}
-            title="Skills onCourse"
-          />
-          {contactRelated
-          ? (
-            <Collapse in={tutorsAndStudents}>
-              <CardContent className={noPaper && "pl-0"}>
-                <Typography>
-                  Shared with
-                  {" "}
-                  {documentSource.attachmentRelations[0].relatedContacts.map(c => c.name)}
-                  {" "}
-                </Typography>
-              </CardContent>
-            </Collapse>
-          )
-          : (
-            <>
-              {availableOptions["Tutor&Student"]
-              && (
-              <Collapse in={tutorsAndStudents}>
-                <CardContent className={noPaper && "pl-0"}>
-                  <FormControlLabel
-                    classes={{
-                    root: "checkbox",
-                    label: "ml-0"
+          <Card className="mb-2" elevation={cardsElevation}>
+            <CardHeader
+              classes={cardHeaderClasses}
+              action={(
+                <FormControlLabel
+                  classes={{
+                    root: "switchWrapper",
+                    label: "switchLabel"
                   }}
-                    control={(
-                      <StyledCheckbox
-                        disabled={readOnly}
-                        checked={tutorsAndStudents}
-                        onChange={onTutorsChange}
-                      />
+                  control={(
+                    <Switch
+                      disabled={readOnly}
+                      checked={tutorsAndStudents}
+                      onChange={onPortalSharingChange}
+                    />
                   )}
-                    label="Show to tutors"
-                  />
-                  <FormControlLabel
-                    classes={{
-                    root: "checkbox"
-                  }}
-                    control={(
-                      <StyledCheckbox
-                        disabled={readOnly}
-                        checked={documentSource.access === "Tutors and enrolled students"}
-                        onChange={onTutorsAndStudentsChange}
-                      />
-                  )}
-                    label="Show to students"
-                  />
-                </CardContent>
-              </Collapse>
+                  label="Shared in portal"
+                />
               )}
-            </>
-          )}
-        </Card>
-      )}
+              avatar={(
+                <Avatar className="activeAvatar">
+                  <Directions/>
+                </Avatar>
+              )}
+              title="Skills onCourse"
+            />
+            {contactRelated
+              ? (
+                <Collapse in={tutorsAndStudents}>
+                  <CardContent className={noPaper && "pl-0"}>
+                    <Typography>
+                      Shared with
+                      {" "}
+                      {documentSource.attachmentRelations[0].relatedContacts.map(c => c.name)}
+                      {" "}
+                    </Typography>
+                  </CardContent>
+                </Collapse>
+              )
+              : (
+                <>
+                  {availableOptions["Tutor&Student"]
+                    && (
+                      <Collapse in={tutorsAndStudents}>
+                        <CardContent className={noPaper && "pl-0"}>
+                          <FormControlLabel
+                            classes={{
+                              root: "checkbox",
+                              label: "ml-0"
+                            }}
+                            control={(
+                              <StyledCheckbox
+                                disabled={readOnly}
+                                checked={tutorsAndStudents}
+                                onChange={onTutorsChange}
+                              />
+                            )}
+                            label="Show to tutors"
+                          />
+                          <FormControlLabel
+                            classes={{
+                              root: "checkbox"
+                            }}
+                            control={(
+                              <StyledCheckbox
+                                disabled={readOnly}
+                                checked={documentSource.access === "Tutors and enrolled students"}
+                                onChange={onTutorsAndStudentsChange}
+                              />
+                            )}
+                            label="Show to students"
+                          />
+                        </CardContent>
+                      </Collapse>
+                    )}
+                </>
+              )}
+          </Card>
+        )}
 
       <Card className="mb-2" elevation={cardsElevation}>
         <CardHeader
@@ -463,7 +464,7 @@ const DocumentShare:React.FC<Props> = ({
           )}
           avatar={(
             <Avatar className="activeAvatar">
-              <Link />
+              <Link/>
             </Avatar>
           )}
           title="Shareable link"
@@ -472,7 +473,7 @@ const DocumentShare:React.FC<Props> = ({
           <CardContent className={noPaper && "pl-0"}>
             <div className="centeredFlex">
               <Typography color="textSecondary" className="flex-fill">
-                <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl} />
+                <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl}/>
               </Typography>
               <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
                 Copy Link
@@ -482,7 +483,7 @@ const DocumentShare:React.FC<Props> = ({
         </Collapse>
         <Collapse in={!linkOrPublic}>
           <CardContent className={noPaper && "pl-0"}>
-            <Alert severity="warning" icon={<LockOutlined />}>
+            <Alert severity="warning" icon={<LockOutlined/>}>
               Document can not be accessed by direct link
             </Alert>
           </CardContent>
@@ -490,39 +491,39 @@ const DocumentShare:React.FC<Props> = ({
       </Card>
 
       {websiteAvailable
-      && (
-        <Card className="mb-2" elevation={cardsElevation}>
-          <CardHeader
-            classes={cardHeaderClasses}
-            action={(
-              <FormControlLabel
-                classes={{
-                  root: "switchWrapper",
-                  label: "switchLabel"
-                }}
-                control={(
-                  <Switch
-                    disabled={readOnly}
-                    checked={
-                      documentSource.access === "Public"
-                    }
-                    onChange={onWebsiteChange}
-                  />
-                )}
-                label="Shared with website visitors"
-              />
-            )}
-            avatar={(
-              <Avatar className="activeAvatar">
-                <Language />
-              </Avatar>
-            )}
-            title="Website"
-          />
-        </Card>
-      )}
+        && (
+          <Card className="mb-2" elevation={cardsElevation}>
+            <CardHeader
+              classes={cardHeaderClasses}
+              action={(
+                <FormControlLabel
+                  classes={{
+                    root: "switchWrapper",
+                    label: "switchLabel"
+                  }}
+                  control={(
+                    <Switch
+                      disabled={readOnly}
+                      checked={
+                        documentSource.access === "Public"
+                      }
+                      onChange={onWebsiteChange}
+                    />
+                  )}
+                  label="Shared with website visitors"
+                />
+              )}
+              avatar={(
+                <Avatar className="activeAvatar">
+                  <Language/>
+                </Avatar>
+              )}
+              title="Website"
+            />
+          </Card>
+        )}
     </div>
-);
+  );
 };
 
 export default DocumentShare;

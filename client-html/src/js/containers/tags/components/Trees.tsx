@@ -20,7 +20,7 @@ import { ItemId } from "@atlaskit/tree/types";
 import Tree from "./TagTreeBasis";
 import { FormTag, FormTagProps } from "../../../model/tags";
 import TagItem from "./TagItem";
-import { AnyArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
+import { AnyArgFunction, NumberArgFunction } from  "ish-ui";
 import { getDeepValue } from "../../../common/utils/common";
 import ChecklistItem from "./ChecklistItem";
 

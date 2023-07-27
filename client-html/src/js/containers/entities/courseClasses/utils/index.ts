@@ -22,7 +22,7 @@ import {
   CourseClassStatus,
   CourseClassTutorExtended, SessionRepeatTypes
 } from "../../../../model/entities/CourseClass";
-import { EntityType } from "../../../../../ish-ui/model/NestedEntity";
+import { EntityType } from  "ish-ui";
 import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
 import CourseClassCostService from "../components/budget/services/ClassCostService";
 import { State } from "../../../../reducers/state";

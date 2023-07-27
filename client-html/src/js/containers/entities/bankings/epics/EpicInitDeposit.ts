@@ -12,7 +12,7 @@ import { setListEditRecord } from "../../../../common/components/list-view/actio
 import { Banking } from "@api/model";
 import { format } from "date-fns";
 import { getAccountTransactionLockedDate } from "../../../preferences/actions";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
 export const EpicInitDeposit = actions$ => {

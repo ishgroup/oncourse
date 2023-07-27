@@ -23,7 +23,7 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../../ish-ui/formFields/FieldAdornments";
+} from  "ish-ui";
 import {
   getContactFullName
 } from "../../contacts/utils";
@@ -34,7 +34,7 @@ import { getCustomColumnsMap, mapSelectItems } from "../../../../common/utils/co
 import EntityService from "../../../../common/services/EntityService";
 import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { getProductAqlType } from "../../sales/utils";
-import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
+import { makeAppStyles } from  "ish-ui";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import history from "../../../../constants/History";

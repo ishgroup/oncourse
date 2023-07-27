@@ -1,10 +1,5 @@
 import { DefaultHttpService } from "../../../../../services/HttpService";
-import {
-  ExportTemplateApi,
-  ExportTemplate,
-  ExportApi,
-  ExportRequest
-} from "@api/model";
+import { ExportApi, ExportRequest, ExportTemplate, ExportTemplateApi } from "@api/model";
 
 class ExportService {
   readonly service = new DefaultHttpService();

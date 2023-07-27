@@ -6,7 +6,7 @@
 import React, { useRef } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 import { CourseClassTutor } from "@api/model";
 
 interface Props {

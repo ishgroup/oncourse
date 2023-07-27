@@ -16,35 +16,35 @@ const request: EpicUtils.Request = {
   hideLoadIndicator: true,
   getData: payload => PdfService.doPrint(payload.rootEntity, payload.printRequest),
   processData: (processId: string, state, payload) => [
-      {
-        type: DO_PRINT_REQUEST_FULFILLED
-      },
-      {
-        type: UPDATE_PROCESS,
-        payload: { processId }
-      },
-      {
-        type: START_PROCESS,
-        payload: {
-          processId,
-          actionsOnFail: [stopSubmit("ListShareForm")],
-          actions: [
-            {
-              type: GET_PRINT_RESULT,
-              payload: { entityName: payload.rootEntity, processId }
-            },
-            ...(payload.printRequest.createPreview
-              ? [
-                  {
-                    type: GET_PDF_REPORTS,
-                    payload: payload.rootEntity
-                  }
-                ]
-              : [])
-          ]
-        }
+    {
+      type: DO_PRINT_REQUEST_FULFILLED
+    },
+    {
+      type: UPDATE_PROCESS,
+      payload: {processId}
+    },
+    {
+      type: START_PROCESS,
+      payload: {
+        processId,
+        actionsOnFail: [stopSubmit("ListShareForm")],
+        actions: [
+          {
+            type: GET_PRINT_RESULT,
+            payload: {entityName: payload.rootEntity, processId}
+          },
+          ...(payload.printRequest.createPreview
+            ? [
+              {
+                type: GET_PDF_REPORTS,
+                payload: payload.rootEntity
+              }
+            ]
+            : [])
+        ]
       }
-    ],
+    }
+  ],
   processError: response => [
     clearProcess(),
     ...FetchErrorHandler(response)

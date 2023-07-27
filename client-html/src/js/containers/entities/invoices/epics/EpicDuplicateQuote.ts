@@ -14,7 +14,7 @@ import InvoiceService from "../services/InvoiceService";
 import { DUPLICATE_QUOTE } from "../actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
+import { formatToDateOnly } from  "ish-ui";
 
 const request: EpicUtils.Request = {
   type: DUPLICATE_QUOTE,

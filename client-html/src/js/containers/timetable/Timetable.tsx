@@ -17,9 +17,9 @@ import { TimetableContextState } from "../../model/timetable";
 import SearchBar from "./components/search-bar/SearchBar";
 import { useAppDispatch, useAppSelector } from "../../common/utils/hooks";
 import { LSGetItem, LSSetItem } from "../../common/utils/storage";
-import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from "./TimetableConstants";
+import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from "./constants";
 import { getTimetableFilters } from "./actions";
-import { DD_MMM_YYYY_MINUSED } from "../../common/utils/dates/format";
+import { DD_MMM_YYYY_MINUSED } from  "ish-ui";
 
 const styles = () =>
   createStyles({

@@ -17,12 +17,12 @@ import { Dispatch } from "redux";
 import {
   change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm
 } from "redux-form";
-import { ContactLinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { ContactLinkAdornment } from  "ish-ui";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
+import { BooleanArgFunction } from  "ish-ui";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { postContraInvoices } from "../actions";

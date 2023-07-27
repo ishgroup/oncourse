@@ -32,12 +32,12 @@ const styles = (theme: AppTheme) => createStyles({
 
 class DocumentItem extends React.PureComponent<any, any> {
   openFullDocumentView = () => {
-    const { editItem, item } = this.props;
+    const {editItem, item} = this.props;
     editItem(item);
   };
 
   openDocumentView = () => {
-    const { viewItem, item } = this.props;
+    const {viewItem, item} = this.props;
     viewItem(item);
   };
 
@@ -46,7 +46,7 @@ class DocumentItem extends React.PureComponent<any, any> {
       classes, item, unlink, index, entity
     } = this.props;
     return (
-      <Paper onClick={this.openDocumentView} classes={{ root: clsx("cursor-pointer h-100", classes.documentPaper) }}>
+      <Paper onClick={this.openDocumentView} classes={{root: clsx("cursor-pointer h-100", classes.documentPaper)}}>
         <Grid container className={clsx("p-1 relative h-100 align-content-between", classes.container)}>
           <DocumentHeader
             item={item}
@@ -56,7 +56,7 @@ class DocumentItem extends React.PureComponent<any, any> {
             editItem={this.openFullDocumentView}
             viewItem={this.openDocumentView}
           />
-          {Boolean(item.tags) && <DocumentTags tags={item.tags} classes={classes} />}
+          {Boolean(item.tags) && <DocumentTags tags={item.tags} classes={classes}/>}
         </Grid>
       </Paper>
     );

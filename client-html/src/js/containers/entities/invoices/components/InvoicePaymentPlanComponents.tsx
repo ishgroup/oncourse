@@ -13,10 +13,10 @@ import OpenInNew from "@mui/icons-material/OpenInNew";
 import { format, isPast } from "date-fns";
 import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { useHoverShowStyles } from "../../../../../ish-ui/styles/hooks";
+import { useHoverShowStyles } from  "ish-ui";
 import { openInternalLink } from "../../../../common/utils/links";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { III_DD_MMM_YYYY } from  "ish-ui";
 import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { reducePayments } from "../utils";
 

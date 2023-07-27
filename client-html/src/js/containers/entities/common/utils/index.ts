@@ -9,7 +9,7 @@ import {
 import { format } from "date-fns";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { EntityName, ListActionEntity } from "../../../../model/entities/common";
-import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { EEE_D_MMM_YYYY } from  "ish-ui";
 import { State } from "../../../../reducers/state";
 import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from "../../../../common/components/list-view/actions";

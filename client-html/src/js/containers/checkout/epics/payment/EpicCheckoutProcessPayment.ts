@@ -22,7 +22,7 @@ import CheckoutService from "../../services/CheckoutService";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getCheckoutModel } from "../../utils";
 import { FORM } from "../../components/CheckoutSelection";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 
 const errorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
 

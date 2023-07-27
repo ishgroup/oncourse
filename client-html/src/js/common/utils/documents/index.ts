@@ -7,7 +7,10 @@
  */
 
 
-import { DocumentAttachmentRelation, DocumentVersion } from "@api/model";
+import { DocumentAttachmentRelation, DocumentVersion, DocumentVisibility } from "@api/model";
+import { DocumentExtended } from "../../../model/common/Documents";
+import { formatDocumentSize, getDocumentThumbnail, StringKeyObject } from "ish-ui";
+import { DocumentShareOption } from "../../../model/entities/Document";
 
 export const isSingleContactAttachment = (attachmentRelations: DocumentAttachmentRelation[]) => attachmentRelations.length === 1
   && [
@@ -123,5 +126,5 @@ export const groupAttachmentsByEntity = (attachmentRelations: DocumentAttachment
 
 export const getLatestDocumentItem = (data: DocumentVersion[]) => {
   if (data && data.length === 1) return data[0];
-  return data.find( elem => elem.current);
+  return data.find(elem => elem.current);
 };

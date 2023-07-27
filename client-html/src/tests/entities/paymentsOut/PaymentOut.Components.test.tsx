@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { III_DD_MMM_YYYY } from "ish-ui";
 import PaymentsOutEditView from "../../../js/containers/entities/paymentsOut/components/PaymentOutEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 

@@ -20,7 +20,7 @@ import {
   SET_COURSE_CLASS_SESSIONS_WARNINGS, SET_DUPLICATE_COURSE_CLASSES_BUDGET
 } from "../actions";
 import { CourseClassBulkSession } from "./state";
-import { StringKeyAndValueObject } from "../../../../model/common/CommomObjects";
+import { StringKeyAndValueObject } from  "ish-ui";
 import { SET_COURSE_CLASS_TUTOR_NAMES_WARNINGS } from "../components/tutors/actions";
 import {
   COURSE_CLASS_CLOSE_BULK_UPDATE_MODAL,

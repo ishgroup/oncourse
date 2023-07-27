@@ -24,10 +24,10 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../../ish-ui/formFields/FieldAdornments";
+} from  "ish-ui";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 import { mapSelectItems } from "../../../../common/utils/common";
-import AddButton from "../../../../../ish-ui/buttons/AddButton";
+import AddButton from  "ish-ui";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";

@@ -7,7 +7,7 @@ import { Fetch } from "../../model/common/Fetch";
 import { IAction } from "../actions/IshAction";
 import { FETCH_CLEAR, FETCH_FAIL, FETCH_FINISH, FETCH_START, FETCH_SUCCESS } from "../actions";
 
-export const fetchReducer = (state: Fetch = { number: 0 }, action: IAction<any>): any => {
+export const fetchReducer = (state: Fetch = {number: 0}, action: IAction<any>): any => {
   switch (action.type) {
     case FETCH_SUCCESS: {
       return {
@@ -19,7 +19,7 @@ export const fetchReducer = (state: Fetch = { number: 0 }, action: IAction<any>)
     }
 
     case FETCH_FAIL: {
-      const { message, formError, persist } = action.payload;
+      const {message, formError, persist} = action.payload;
       return {
         ...state,
         message,
@@ -31,7 +31,7 @@ export const fetchReducer = (state: Fetch = { number: 0 }, action: IAction<any>)
     }
 
     case FETCH_START: {
-      const { hideIndicator } = action.payload;
+      const {hideIndicator} = action.payload;
 
       return {
         ...state,
@@ -52,7 +52,7 @@ export const fetchReducer = (state: Fetch = { number: 0 }, action: IAction<any>)
     }
 
     case FETCH_CLEAR: {
-      return { number: 0 };
+      return {number: 0};
     }
 
     default:

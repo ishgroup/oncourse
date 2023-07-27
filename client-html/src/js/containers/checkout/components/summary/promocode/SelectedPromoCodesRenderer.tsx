@@ -12,7 +12,7 @@ import { alpha } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
 
 const styles = (theme: AppTheme) => createStyles({

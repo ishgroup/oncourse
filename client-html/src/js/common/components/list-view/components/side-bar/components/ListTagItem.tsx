@@ -13,7 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import TreeItem, { TreeItemProps } from "@mui/lab/TreeItem";
 import clsx from "clsx";
-import { BooleanArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction } from  "ish-ui";
 import { FormMenuTag } from "../../../../../../model/tags";
 
 const styles = theme => createStyles({

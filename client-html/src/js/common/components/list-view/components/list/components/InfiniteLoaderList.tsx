@@ -6,17 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  createContext,
-  forwardRef,
-  memo,
-  useMemo,
-  useState
-} from "react";
-import {
-  flexRender
-} from '@tanstack/react-table';
-import { FixedSizeList, areEqual } from "react-window";
+import React, { createContext, forwardRef, memo, useMemo, useState } from "react";
+import { flexRender } from '@tanstack/react-table';
+import { areEqual, FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import InfiniteLoader from "react-window-infinite-loader";
 import clsx from "clsx";
@@ -33,7 +25,7 @@ import StaticProgress from "../../../../progress/StaticProgress";
 import { stubFunction } from "../../../../../utils/common";
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../constants";
 
-const ThreeColumnCell = ({ row }) => (<div>
+const ThreeColumnCell = ({row}) => (<div>
   <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
     {row.original.secondary}
   </Typography>
@@ -58,7 +50,7 @@ const ThreeColumnCell = ({ row }) => (<div>
   </Typography>
 </div>);
 
-const TwoColumnCell = ({ cell, classes }) => (<div
+const TwoColumnCell = ({cell, classes}) => (<div
   style={{
     width: cell.column.getSize()
   }}
@@ -67,7 +59,7 @@ const TwoColumnCell = ({ cell, classes }) => (<div
   {flexRender(cell.column.columnDef.cell, cell.getContext())}
 </div>);
 
-const ListRow = memo<any>(({ data, index, style }) => {
+const ListRow = memo<any>(({data, index, style}) => {
   const {
     rows,
     classes,
@@ -92,7 +84,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
   );
 
   if (!row) {
-    return <div style={style} className={rowClasses} />;
+    return <div style={style} className={rowClasses}/>;
   }
 
   return (
@@ -103,9 +95,9 @@ const ListRow = memo<any>(({ data, index, style }) => {
       onDoubleClick={() => onRowDoubleClick(row.id)}
     >
       {threeColumn ? (
-        <ThreeColumnCell row={row} />
+        <ThreeColumnCell row={row}/>
       ) : row.getVisibleCells().filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
-        <TwoColumnCell cell={cell} key={cell.id} classes={classes} />
+        <TwoColumnCell cell={cell} key={cell.id} classes={classes}/>
       ))}
     </div>
   );
@@ -114,9 +106,9 @@ const ListRow = memo<any>(({ data, index, style }) => {
 const StickyListContext = createContext(null);
 StickyListContext.displayName = "StickyListContext";
 
-const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ children, ...rest }, ref) => (
+const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({children, ...rest}, ref) => (
   <StickyListContext.Consumer>
-    {({ header }) => (
+    {({header}) => (
       <div ref={ref} {...rest}>
         {header}
         {children}
@@ -126,29 +118,31 @@ const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ chil
 ));
 
 export default ({
-  table,
-  classes,
-  onRowSelect,
-  onLoadMore,
-  recordsCount,
-  listRef,
-  threeColumn,
-  onRowDoubleClick,
-  mainContentWidth,
-  header
-}) => {
+                  table,
+                  classes,
+                  onRowSelect,
+                  onLoadMore,
+                  recordsCount,
+                  listRef,
+                  threeColumn,
+                  onRowDoubleClick,
+                  mainContentWidth,
+                  header
+                }) => {
   const rows = table.getRowModel().rows;
   const totalColumnsWidth = table.getCenterTotalSize();
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const isItemLoaded = index => index >= recordsCount ? true : !!rows[index];
 
   const loadMoreItems = isLoading
     ? stubFunction
     : (startIndex, stopIndex) => {
       setIsLoading(true);
-      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => { setIsLoading(false); });
+      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => {
+        setIsLoading(false);
+      });
     };
 
   const itemCountBase = (rows.length + LIST_PAGE_SIZE);
@@ -167,7 +161,7 @@ export default ({
   );
 
   return (
-    <StickyListContext.Provider value={{ header }}>
+    <StickyListContext.Provider value={{header}}>
       <InfiniteLoader
         threshold={0}
         minimumBatchSize={LIST_PAGE_SIZE}
@@ -175,11 +169,11 @@ export default ({
         itemCount={itemCount}
         loadMoreItems={loadMoreItems}
       >
-        {({ onItemsRendered, ref }) => (
+        {({onItemsRendered, ref}) => (
           <AutoSizer>
-            {({ height, width }) => (
+            {({height, width}) => (
               <FixedSizeList
-                style={{ overflow: false }}
+                style={{overflow: false}}
                 itemCount={itemCount}
                 itemData={itemData}
                 itemSize={threeColumn ? APP_BAR_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}

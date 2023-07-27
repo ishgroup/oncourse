@@ -18,7 +18,7 @@ export const setCommonPlainSearch = (
 ) => ({
   type: SET_COMMON_PLAIN_RECORD_SEARCH,
   payload: {
-   key, search
+    key, search
   }
 });
 
@@ -39,11 +39,11 @@ export const getCommonPlainRecords = (
 
 export const clearCommonPlainRecords = (key: string, loading?: boolean) => ({
   type: CLEAR_COMMON_PLAIN_RECORDS,
-  payload: { key, loading }
+  payload: {key, loading}
 });
 
 export const getCommonPlainRecordsRejected = (key: string) => ({
   type: GET_COMMON_PLAIN_RECORDS_REJECTED,
-  payload: { key }
+  payload: {key}
 });
 

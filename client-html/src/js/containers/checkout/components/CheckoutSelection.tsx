@@ -27,9 +27,9 @@ import {
   CheckoutCourse, CheckoutCourseClass, CheckoutItem, CheckoutSummary
 } from "../../../model/checkout";
 import { State } from "../../../reducers/state";
-import ResizableWrapper from "../../../../ish-ui/layout/resizable/ResizableWrapper";
+import ResizableWrapper from  "ish-ui";
 import Drawer from "../../../common/components/layout/Drawer";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
 import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
 import {
@@ -41,7 +41,7 @@ import {
 import { setListEditRecord } from "../../../common/components/list-view/actions";
 import LoadingIndicator from "../../../common/components/progress/LoadingIndicator";
 import { EditViewProps } from "../../../model/common/ListView";
-import { NoArgFunction } from "../../../model/common/CommonFunctions";
+import { NoArgFunction } from  "ish-ui";
 import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
 import { latestActivityStorageHandler } from "../../../common/utils/storage";
 import {
@@ -116,7 +116,7 @@ import {
   setCommonPlainSearch
 } from "../../../common/actions/CommonPlainRecordsActions";
 import uniqid from "../../../common/utils/uniqid";
-import { ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
+import { ShowConfirmCaller } from  "ish-ui";
 import CheckoutAppBar from "./CheckoutAppBar";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getContactFullName } from "../../entities/contacts/utils";

@@ -19,10 +19,10 @@ import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import CourseClassTutorService from "./services/CourseClassTutorService";
 import { deleteCourseClassTutor, postCourseClassTutor, setCourseClassTutorNamesWarnings } from "./actions";
-import { StringKeyAndValueObject } from "../../../../../model/common/CommomObjects";
+import { StringKeyAndValueObject } from  "ish-ui";
 import { getTutorNameWarning, isTutorWageExist } from "./utils";
 import uniqid from "../../../../../common/utils/uniqid";
-import AddButton from "../../../../../../ish-ui/buttons/AddButton";
+import AddButton from  "ish-ui";
 import { getContactFullName } from "../../../contacts/utils";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {

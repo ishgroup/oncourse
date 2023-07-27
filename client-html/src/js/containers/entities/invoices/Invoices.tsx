@@ -30,7 +30,7 @@ import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import InvoiceCogwheel from "./components/InvoiceCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
+import { formatToDateOnly } from  "ish-ui";
 import { getAdministrationSites } from "../sites/actions";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";

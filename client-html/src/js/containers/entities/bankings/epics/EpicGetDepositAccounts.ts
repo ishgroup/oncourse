@@ -14,7 +14,7 @@ import AccountService from "../../accounts/services/AccountService";
 import { GET_DEPOSIT_ACCOUNTS, GET_DEPOSIT_ACCOUNTS_FULFILLED } from "../actions";
 import { IAction } from "../../../../common/actions/IshAction";
 import { FETCH_FAIL } from "../../../../common/actions";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
 const request: EpicUtils.Request = {

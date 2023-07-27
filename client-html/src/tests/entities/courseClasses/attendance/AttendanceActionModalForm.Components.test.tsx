@@ -1,9 +1,9 @@
 import * as React from "react";
 import { format } from "date-fns";
 import { defaultComponents } from "../../../common/Default.Components";
-import AttendanceActionModal from "../../../../js/containers/entities/courseClasses/components/attendance/AttendanceActionModal";
-import { III_DD_MMM_YYYY_HH_MM_SS } from "../../../../js/common/utils/dates/format";
-import { appendTimezone } from "../../../../js/common/utils/dates/formatTimezone";
+import AttendanceActionModal
+  from "../../../../js/containers/entities/courseClasses/components/attendance/AttendanceActionModal";
+import { appendTimezone, III_DD_MMM_YYYY_HH_MM_SS } from "ish-ui";
 
 describe("Virtual rendered AttendanceActionModalForm of Class edit view", () => {
   defaultComponents({

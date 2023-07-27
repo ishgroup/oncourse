@@ -14,7 +14,7 @@ import { Fetch } from "../../../../model/common/Fetch";
 import ContactRelationTypesForm from "./components/ContactRelationTypesForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
+import { ShowConfirmCaller } from  "ish-ui";
 
 interface Props {
   getTypes: () => void;

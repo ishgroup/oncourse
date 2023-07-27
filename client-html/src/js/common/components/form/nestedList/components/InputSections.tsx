@@ -9,9 +9,9 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import Close from "@mui/icons-material/Close";
-import AddButton from "../../../../../../ish-ui/buttons/AddButton";
-import { Switch } from "../../../../../../ish-ui/formFields/Switch";
+import AddButton, { AddButton, Switch } from "ish-ui";
 import SearchInput from "./SearchInput";
+import { Switch } from "react-router-dom";
 
 export const InputSection = React.memo<any>(props => {
   const {
@@ -49,9 +49,9 @@ export const InputSection = React.memo<any>(props => {
       <div className={clsx(!secondaryHeading && classes.root__search)}>
         <div className="centeredFlex">
           <Typography className={clsx(secondaryHeading
-            ? "secondaryHeading"
-            : "heading pt-1 pb-1",
-            { "errorColor": formError })}
+              ? "secondaryHeading"
+              : "heading pt-1 pb-1",
+            {"errorColor": formError})}
           >
             {title}
           </Typography>
@@ -59,13 +59,13 @@ export const InputSection = React.memo<any>(props => {
             ? (
               <IconButton
                 className={clsx(
-                secondaryHeading && "p-0 ml-1",
+                  secondaryHeading && "p-0 ml-1",
                   hideAddButton && "invisible"
-              )}
+                )}
                 onClick={toggleSearch}
                 disabled={disabled}
               >
-                <Close className="inherit" />
+                <Close className="inherit"/>
               </IconButton>
             )
             : (
@@ -160,13 +160,13 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     <div className={disabled ? "disabled" : undefined}>
       <div className="centeredFlex">
         <Typography className={clsx(secondaryHeading
-          ? "secondaryHeading"
-          : "heading pt-1 pb-1",
-          { "errorColor": formError })}
+            ? "secondaryHeading"
+            : "heading pt-1 pb-1",
+          {"errorColor": formError})}
         >
           {title}
         </Typography>
-        <Switch onChange={onSwitchToggle} checked={toggleEnabled} disabled={disabled} />
+        <Switch onChange={onSwitchToggle} checked={toggleEnabled} disabled={disabled}/>
       </div>
 
       {formError && (

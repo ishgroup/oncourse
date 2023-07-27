@@ -24,7 +24,7 @@ import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { DD_MMM_YYYY_MINUSED, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { DD_MMM_YYYY_MINUSED, III_DD_MMM_YYYY } from  "ish-ui";
 import { PaymentInType } from "../consts";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { openSiteLink } from "../../sites/utils";

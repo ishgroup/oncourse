@@ -19,7 +19,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: GET_PLAIN_RECORDS_REQUEST_FULFILLED,
-        payload: { plainRecords }
+        payload: {plainRecords}
       }
     ];
   }

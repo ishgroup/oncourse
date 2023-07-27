@@ -33,7 +33,7 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { ConfirmProps } from "../../../../../ish-ui/model/Confirm";
+import { ConfirmProps } from  "ish-ui";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];

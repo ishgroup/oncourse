@@ -6,7 +6,7 @@ import debounce from "lodash.debounce";
 import { setCertificatesValidationStatus, validateCertificates } from "../actions";
 import { State } from "../../../../reducers/state";
 import { setPrintValidatingStatus } from "../../../../common/components/list-view/components/share/actions";
-import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
+import { BooleanArgFunction } from  "ish-ui";
 import { getExpression } from "../../../../common/components/list-view/utils/listFiltersUtils";
 
 interface USIAlertProps {

@@ -15,14 +15,19 @@ import { openInternalLink } from "../../../utils/links";
 
 const request: EpicUtils.Request<DataResponse, { filter: string | Function, list: string }> = {
   type: FIND_RELATED_BY_FILTER,
-  getData: (p, { list: { searchQuery, records: { entity } } }) => EntityService.getRecordsByListSearch(entity as any, searchQuery),
-  processData: (data, s, { filter, list }) => {
+  getData: (p, {
+    list: {
+      searchQuery,
+      records: {entity}
+    }
+  }) => EntityService.getRecordsByListSearch(entity as any, searchQuery),
+  processData: (data, s, {filter, list}) => {
     const rowIds = data.rows.map(r => r.id).toString();
 
     const search = typeof filter === "function"
-      ?  filter(rowIds)
+      ? filter(rowIds)
       : `${filter} in (${rowIds})`;
-    
+
     openInternalLink(`/${list}?search=${search}`);
     return [];
   }

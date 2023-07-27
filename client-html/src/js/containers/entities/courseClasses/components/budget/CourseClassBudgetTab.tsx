@@ -35,7 +35,7 @@ import BudgetExpandableItemRenderer from "./BudgetExpandableItemRenderer";
 import history from "../../../../../constants/History";
 import { State } from "../../../../../reducers/state";
 import { CourseClassState } from "../../reducers";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import BudgetCostModal from "./modal/BudgetCostModal";
 import { decimalMinus, decimalMul, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
@@ -58,7 +58,7 @@ import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from "
 import ClassCostService from "./services/ClassCostService";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { getTutorPayInitial } from "../tutors/utils";
-import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction, StringArgFunction } from  "ish-ui";
 import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from "./utils";
 import PreferencesService from "../../../../preferences/services/PreferencesService";
 import BudgetItemRow from "./BudgetItemRow";

@@ -14,7 +14,7 @@ import Grid from "@mui/material/Grid";
 import { ClassCost } from "@api/model";
 import Decimal from "decimal.js-light";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { NumberArgFunction, StringArgFunction } from  "ish-ui";
 import { ClassCostType } from "../../../../../model/entities/CourseClass";
 import BudgetItemRow from "./BudgetItemRow";
 

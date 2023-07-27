@@ -7,7 +7,7 @@ import { format } from "date-fns-tz";
 import { Epic } from "redux-observable";
 import { DataResponse, PaymentMethod } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { D_MMM_YYYY } from  "ish-ui";
 import PreferencesService from "../../../preferences/services/PreferencesService";
 import { GET_CONTACTS_STORED_CC, GET_CONTACTS_STORED_CC_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";

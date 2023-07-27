@@ -16,7 +16,7 @@ import { Dispatch } from "redux";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../../reducers/state";
 import { ADMIN_EMAIL_KEY } from "../../../../../../constants/Config";
-import { Switch } from "../../../../../../../ish-ui/formFields/Switch";
+import { Switch } from  "ish-ui";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";

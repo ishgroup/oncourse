@@ -6,7 +6,7 @@
 import React from "react";
 import { History } from "history";
 import SideBarHeader from "../../../common/components/layout/side-bar-list/SideBarHeader";
-import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
+import { makeAppStyles } from  "ish-ui";
 
 interface Props {
   history: History;

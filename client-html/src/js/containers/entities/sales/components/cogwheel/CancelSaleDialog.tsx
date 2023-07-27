@@ -18,7 +18,7 @@ import { Dispatch } from "redux";
 import { Account, ProductItemCancel, Tax } from "@api/model";
 import { FormControlLabel } from "@mui/material";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { accountLabelCondition } from "../../../accounts/utils";

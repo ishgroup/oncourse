@@ -10,8 +10,8 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import withStyles from "@mui/styles/withStyles";
-import { StringValueType } from "../../../../../model/common/CommomObjects";
-import { makeAppStyles } from "../../../../../../ish-ui/styles/makeStyles";
+import { StringValueType } from  "ish-ui";
+import { makeAppStyles } from  "ish-ui";
 
 const useStyles = makeAppStyles(() => ({
   iconRemove: {

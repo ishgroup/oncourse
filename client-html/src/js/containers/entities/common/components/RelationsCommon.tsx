@@ -11,7 +11,7 @@ import { Dispatch } from "redux";
 import { State } from "../../../../reducers/state";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { formatRelatedSalables, formattedEntityRelationTypes, mapRelatedSalables, salesSort } from "../utils";
-import { BooleanArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
+import { BooleanArgFunction, StringArgFunction } from  "ish-ui";
 import NestedListRelationCell from "./NestedListRelationCell";
 import { clearSales, getSales } from "../../sales/actions";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";

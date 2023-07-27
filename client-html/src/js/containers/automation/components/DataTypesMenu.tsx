@@ -18,8 +18,8 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { BindingsItemType } from "./Bindings";
-import { NoArgFunction } from "../../../model/common/CommonFunctions";
-import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
+import { NoArgFunction } from  "ish-ui";
+import { makeAppStyles } from  "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   popper: {

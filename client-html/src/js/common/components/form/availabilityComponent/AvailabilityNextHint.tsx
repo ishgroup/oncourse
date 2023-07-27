@@ -6,7 +6,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { format as formatDate } from "date-fns";
-import { III_DD_MMM_YYYY } from "../../../utils/dates/format";
+import { III_DD_MMM_YYYY } from "ish-ui";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import { appendTimezone } from "../../../utils/dates/formatTimezone";
 
@@ -144,7 +144,7 @@ const AvailabilityNextHint = (props: HintProps) => {
     startDate, startDateTime, endDate, endDateTime, ...rest
   } = props.item;
 
-  const computed: Holiday = { ...rest };
+  const computed: Holiday = {...rest};
 
   const allDay = Boolean(startDate && endDate);
 

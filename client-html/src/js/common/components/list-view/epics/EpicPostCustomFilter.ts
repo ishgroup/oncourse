@@ -26,7 +26,7 @@ const request: EpicUtils.Request = {
       },
       {
         type: GET_FILTERS_REQUEST,
-        payload: { entity: payload.entity }
+        payload: {entity: payload.entity}
       },
       {
         type: SET_LIST_SAVING_FILTER,

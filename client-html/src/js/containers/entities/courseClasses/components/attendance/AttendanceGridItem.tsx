@@ -29,7 +29,7 @@ import {
   TrainingPlanIconButton
 } from "./AttendanceIconButtons";
 import { TimetableSession } from "../../../../../model/timetable";
-import { D_MMM } from "../../../../../common/utils/dates/format";
+import { D_MMM } from  "ish-ui";
 
 const styles = () =>
   createStyles({

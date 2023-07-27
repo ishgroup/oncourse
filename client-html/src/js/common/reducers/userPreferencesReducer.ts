@@ -11,7 +11,7 @@ export type UserPreferencesState = {
 export const userPreferencesReducer = (state: UserPreferencesState = {}, action: IAction<any>): any => {
   switch (action.type) {
     case GET_USER_PREFERENCES_FULFILLED: {
-      const { preferences } = action.payload;
+      const {preferences} = action.payload;
 
       return {
         ...state,

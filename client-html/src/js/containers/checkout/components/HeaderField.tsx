@@ -16,12 +16,12 @@ import CardHeader from "@mui/material/CardHeader";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import ArrowForward from "@mui/icons-material/ArrowForward";
-import { StyledCheckbox } from "../../../../ish-ui/formFields/CheckboxField";
-import { FormTextField } from "../../../../ish-ui/formFields/TextField";
+import { StyledCheckbox } from  "ish-ui";
+import { FormTextField } from  "ish-ui";
 import { formatCurrency } from "../../../common/utils/numbers/numbersNormalizing";
-import { NoArgFunction } from "../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
-import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
+import { NoArgFunction } from  "ish-ui";
+import { AppTheme } from  "ish-ui";
+import { makeAppStyles } from  "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
   headerRoot: {

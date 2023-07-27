@@ -24,8 +24,8 @@ import Edit from "@mui/icons-material/Edit";
 import { CourseClassState } from "../../reducers";
 import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { NumberArgFunction } from  "ish-ui";
+import { AppTheme } from  "ish-ui";
 
 interface Props {
   classId: number;

@@ -12,7 +12,7 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import { initialize } from "redux-form";
 import { Invoice } from "@api/model";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
+import { formatToDateOnly } from  "ish-ui";
 
 const request: EpicUtils.Request = {
   type: DUPLICATE_AND_REVERSE_INVOICE_ITEM,

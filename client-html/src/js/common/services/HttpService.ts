@@ -8,13 +8,17 @@ import { defaultAxios } from "./DefaultHttpClient";
 
 export interface HttpService {
   GET<T>(path: string, config?: AxiosRequestConfig): Promise<T>;
+
   POST<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+
   PUT<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+
   DELETE<T>(path: string, config?: AxiosRequestConfig): Promise<T>;
 }
 
 export class DefaultHttpService implements HttpService {
-  constructor(private client: AxiosInstance = defaultAxios) {}
+  constructor(private client: AxiosInstance = defaultAxios) {
+  }
 
   GET<T>(path: string, config?: AxiosRequestConfig): Promise<T> {
     return this.client.get(path, config).then(

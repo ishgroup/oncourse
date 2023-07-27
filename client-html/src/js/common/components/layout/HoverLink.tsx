@@ -11,7 +11,7 @@ import clsx from "clsx";
 import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
 import { openInternalLink } from "../../utils/links";
-import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
+import { makeAppStyles } from  "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   root: {
@@ -47,14 +47,14 @@ interface Props {
   children: ReactNode;
 }
 
-const HoverLink = ({ children, link, className }: Props) => {
+const HoverLink = ({children, link, className}: Props) => {
   const classes = useStyles();
-  
+
   return link ? (
     <div className={clsx(className, classes.root)} onClick={() => openInternalLink(link)}>
       {children}
       <IconButton className={classes.link} color="primary">
-        <Launch fontSize="inherit" />
+        <Launch fontSize="inherit"/>
       </IconButton>
     </div>
   ) : <>{children}</>;

@@ -10,7 +10,7 @@
  */
 
 import createStyles from "@mui/styles/createStyles";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 
 export const summaryListStyles = (theme: AppTheme) => createStyles({
   itemTotal: {

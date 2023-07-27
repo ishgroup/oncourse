@@ -29,9 +29,9 @@ import {
 import { decimalMinus, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
-import WarningMessage from "../../../../../../../ish-ui/fieldMessage/WarningMessage";
+import WarningMessage from  "ish-ui";
 import { getClassCostFee } from "../utils";
-import { ContactLinkAdornment } from "../../../../../../../ish-ui/formFields/FieldAdornments";
+import { ContactLinkAdornment } from  "ish-ui";
 
 const styles = theme => createStyles({
   divider: {

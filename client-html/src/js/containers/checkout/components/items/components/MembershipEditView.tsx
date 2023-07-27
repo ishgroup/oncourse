@@ -7,7 +7,7 @@ import { format as formatDate } from "date-fns";
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
+import { III_DD_MMM_YYYY } from  "ish-ui";
 
 const MembershipEditView: React.FC<any> = props => {
   const { values } = props;

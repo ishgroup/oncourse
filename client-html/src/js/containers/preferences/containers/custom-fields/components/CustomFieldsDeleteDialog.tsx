@@ -17,7 +17,7 @@ import { getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-f
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { stubFunction } from "../../../../../common/utils/common";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { NoArgFunction } from "../../../../../model/common/CommonFunctions";
+import { NoArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
 
 interface CustomFieldsDeleteDialogProps {

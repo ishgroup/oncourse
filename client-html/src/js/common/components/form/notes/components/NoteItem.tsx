@@ -14,7 +14,8 @@ import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../formFields/FormField";
 import { formatRelativeDate } from "../../../../utils/dates/formatRelative";
-import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../utils/dates/format";
+import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "ish-ui";
+import { Grid } from "@mui/material";
 
 interface Props {
   item: Note;
@@ -39,7 +40,7 @@ const NoteItem = (props: Props) => {
               type="text"
               name={messageName}
               required
-                            multiline
+              multiline
             />
           </Grid>
           <Grid container justifyContent="space-between">
@@ -80,7 +81,7 @@ const NoteItem = (props: Props) => {
                   color="secondary"
                   onClick={() => onDelete(index)}
                 >
-                  <DeleteIcon fontSize="inherit" color="inherit" />
+                  <DeleteIcon fontSize="inherit" color="inherit"/>
                 </IconButton>
               </Tooltip>
             </Grid>

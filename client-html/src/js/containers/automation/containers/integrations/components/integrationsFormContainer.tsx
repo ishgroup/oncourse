@@ -25,7 +25,7 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
 import { showConfirm } from "../../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../../ish-ui/model/Confirm";
+import { ShowConfirmCaller } from  "ish-ui";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 

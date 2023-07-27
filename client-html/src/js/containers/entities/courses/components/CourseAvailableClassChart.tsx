@@ -16,8 +16,8 @@ import {
 } from 'recharts';
 import { END_DAY_VALUE, initDataForGraph, START_DAY_VALUE } from "../utils";
 import EntityService from "../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY_HH_MM } from "../../../../common/utils/dates/format";
-import { makeAppStyles } from "../../../../../ish-ui/styles/makeStyles";
+import { III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
+import { makeAppStyles } from "ish-ui";
 
 const useStyles = makeAppStyles(() => ({
   chartWrapper: {

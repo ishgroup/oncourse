@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import { Script } from "@api/model";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 import itemStyles from "./itemStyles";
 
 interface Props {

@@ -6,9 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import {
- FormControl, FormHelperText, Input, InputLabel 
-} from "@mui/material";
+import { ButtonBase, FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
 import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Menu from "@mui/material/Menu";
@@ -23,11 +21,17 @@ import { Field, WrappedFieldProps } from "redux-form";
 import HtmlEditor from "../../../../../ish-ui/markdown-editor/HtmlEditor";
 import { useStyles } from "../../../../../ish-ui/markdown-editor/style";
 import {
- addContentMarker, CONTENT_MODES, getContentMarker, getEditorModeLabel, removeContentMarker 
+  addContentMarker,
+  CONTENT_MODES,
+  getContentMarker,
+  getEditorModeLabel,
+  removeContentMarker
 } from "../../../../../ish-ui/markdown-editor/utils";
 import WysiwygEditor from "../../../../../ish-ui/markdown-editor/WysiwygEditor";
+import { HtmlEditor, WysiwygEditor } from "ish-ui";
+import FormHelperText from "@mui/material/FormHelperText";
 
-const EditorResolver = ({ contentMode, draftContent, onChange, wysiwygRef }) => {
+const EditorResolver = ({contentMode, draftContent, onChange, wysiwygRef}) => {
   switch (contentMode) {
     case "md": {
       return (
@@ -61,7 +65,7 @@ interface Props {
 
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
   {
-    input: { value, name, onChange },
+    input: {value, name, onChange},
     meta,
     disabled,
     label,
@@ -125,7 +129,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             className={
               clsx(
                 classes.editorArea,
-                { "ace-wrapper": contentMode === "html" || contentMode === "textile" },
+                {"ace-wrapper": contentMode === "html" || contentMode === "textile"},
                 label && "mt-2"
               )
             }
@@ -169,29 +173,29 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
               wysiwygRef={wysiwygRef}
             />
           </div>
-          ) : (
-            <Typography
-              variant="body2"
-              component="div"
-              onClick={onEditButtonFocus}
-              className={clsx( classes.editable, {
-                [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
-                [fieldClasses.text]: value,
-              })}
-            >
+        ) : (
+          <Typography
+            variant="body2"
+            component="div"
+            onClick={onEditButtonFocus}
+            className={clsx(classes.editable, {
+              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
+              [fieldClasses.text]: value,
+            })}
+          >
               <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
                 {
                   value
                     ? contentMode === "md"
-                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }} />
+                      ? <div dangerouslySetInnerHTML={{__html: markdown2html(removeContentMarker(value))}}/>
                       : removeContentMarker(value)
                     : placeholder || "No value"
                 }
               </span>
-              {!disabled
-              && <Edit color="primary" className={classes.hoverIcon} />}
-            </Typography>
-          )}
+            {!disabled
+              && <Edit color="primary" className={classes.hoverIcon}/>}
+          </Typography>
+        )}
         <FormHelperText>
           <span className="shakingError">
             {meta.error}
@@ -213,7 +217,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   );
 };
 
-export const FormEditorField = ({ name, label, placeholder }: { name: string, label?: string, placeholder?: string }) => (
+export const FormEditorField = ({name, label, placeholder}: { name: string, label?: string, placeholder?: string }) => (
   <Field
     name={name}
     label={label}

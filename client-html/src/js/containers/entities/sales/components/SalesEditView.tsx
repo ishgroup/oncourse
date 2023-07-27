@@ -17,10 +17,10 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import { EEE_D_MMM_YYYY } from  "ish-ui";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { ContactLinkAdornment, LinkAdornment } from  "ish-ui";
 import { buildUrl, getSaleEntityName, productUrl } from "../utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader

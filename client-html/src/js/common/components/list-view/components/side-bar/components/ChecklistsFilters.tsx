@@ -12,8 +12,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ButtonBase, Collapse } from "@mui/material";
 import clsx from "clsx";
 import ListTagGroup from "./ListTagGroup";
-import { makeAppStyles } from "../../../../../../../ish-ui/styles/makeStyles";
-import { ColoredCheckBox } from "../../../../../../../ish-ui/formFields/ColoredCheckBox";
+import { makeAppStyles } from  "ish-ui";
+import { ColoredCheckBox } from  "ish-ui";
 import { stubFunction } from "../../../../../utils/common";
 import { useAppSelector } from "../../../../../utils/hooks";
 

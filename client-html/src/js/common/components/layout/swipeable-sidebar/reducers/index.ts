@@ -11,7 +11,8 @@ const initial: SwipeableDrawer = {
   opened: false,
   variant: "temporary",
   selected: null,
-  resetEditView: () => {}
+  resetEditView: () => {
+  }
 };
 
 export const swipeableDrawerReducer = (state: SwipeableDrawer = initial, action: IAction<any>): any => {
@@ -23,7 +24,7 @@ export const swipeableDrawerReducer = (state: SwipeableDrawer = initial, action:
         variant: action.payload.variant
       };
     }
-    
+
     case SET_SWIPEABLE_DRAWER_SELECTION: {
       return {
         ...state,

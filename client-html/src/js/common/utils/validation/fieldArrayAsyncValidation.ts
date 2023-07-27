@@ -30,9 +30,9 @@ export const getFieldArrayFieldMeta = (field: string): FieldArrayFieldMeta => {
 export const highlightFieldArrayFieldError = (array: string, index: string, field: string, errorMessage: string) => {
   const idexNum = Number(index);
 
-  const error = { [array]: Array(idexNum).fill(null) };
+  const error = {[array]: Array(idexNum).fill(null)};
 
-  error[array][idexNum] = { [field]: errorMessage };
+  error[array][idexNum] = {[field]: errorMessage};
 
   throw error;
 };
@@ -56,7 +56,7 @@ export const asyncValidateFieldArrayFieldCallback = (
 
 export const instantAsyncValidateFieldArrayItemCallback = (array: string, index: number, response: ServerResponse) => {
   if (response && response.status && response.status === 400 && response.data) {
-    const error = { [array]: Array(index).fill(null) };
+    const error = {[array]: Array(index).fill(null)};
 
     error[array][index] = {
       [response.data.propertyName]: response.data.errorMessage

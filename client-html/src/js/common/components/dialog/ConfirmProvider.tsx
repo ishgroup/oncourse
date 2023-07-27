@@ -9,21 +9,19 @@
 import React, { useCallback } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import ConfirmBase from "../../../../ish-ui/dialog/confirm/ConfirmBase";
+import ConfirmBase, { AnyArgFunction, ConfirmBase, ConfirmState } from "ish-ui";
 import { State } from "../../../reducers/state";
 import { closeConfirm } from "../../actions";
-import { AnyArgFunction } from "../../../model/common/CommonFunctions";
-import { ConfirmState } from "../../../../ish-ui/model/Confirm";
 
 interface Props {
   stateProps: ConfirmState;
   closeConfirm?: AnyArgFunction;
 }
 
-const ConfirmProvider = React.memo<Props>(({ stateProps, closeConfirm }) => {
+const ConfirmProvider = React.memo<Props>(({stateProps, closeConfirm}) => {
   const {
- onCancel, onConfirm, onCancelCustom, confirmCustomComponent, ...rest
-} = stateProps;
+    onCancel, onConfirm, onCancelCustom, confirmCustomComponent, ...rest
+  } = stateProps;
 
   const onCancelHandler = useCallback(() => {
     if (onCancel) {
@@ -44,9 +42,9 @@ const ConfirmProvider = React.memo<Props>(({ stateProps, closeConfirm }) => {
   const onConfirmHandler = useCallback(
     typeof onConfirm === "function"
       ? () => {
-          onConfirm();
-          closeConfirm();
-        }
+        onConfirm();
+        closeConfirm();
+      }
       : null,
     [onConfirm]
   );
@@ -59,7 +57,7 @@ const ConfirmProvider = React.memo<Props>(({ stateProps, closeConfirm }) => {
       onCancelCustom={onCancelCustom ? onCancelCustomHandler : null}
       confirmCustomComponent={confirmCustomComponent}
     />
-);
+  );
 });
 
 const mapStateToProps = (state: State) => ({

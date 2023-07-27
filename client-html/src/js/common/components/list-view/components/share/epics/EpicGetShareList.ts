@@ -28,7 +28,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: GET_PDF_REPORTS_FULFILLED,
-        payload: { pdfReports }
+        payload: {pdfReports}
       },
       {
         type: GET_OVERLAY_ITEMS

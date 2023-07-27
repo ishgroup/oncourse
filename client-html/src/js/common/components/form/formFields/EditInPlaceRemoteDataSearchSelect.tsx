@@ -13,10 +13,8 @@ import {
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../actions/CommonPlainRecordsActions";
-import {
-  EditInPlaceRemoteDataSelectFieldProps,
-} from "../../../../model/common/Fields";
-import EditInPlaceSearchSelect from "../../../../../ish-ui/formFields/EditInPlaceSearchSelect";
+import { EditInPlaceRemoteDataSelectFieldProps, } from "../../../../model/common/Fields";
+import EditInPlaceSearchSelect, { EditInPlaceSearchSelect } from "ish-ui";
 
 const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {
@@ -99,8 +97,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
   const getSearch = search => ownProps.getCustomSearch
     ? ownProps.getCustomSearch(search)
     : (search
-      ? `~"${search}"${ownProps.aqlFilter 
-        ? ` and ${ownProps.aqlFilter}` 
+      ? `~"${search}"${ownProps.aqlFilter
+        ? ` and ${ownProps.aqlFilter}`
         : ""}`
       : "");
 

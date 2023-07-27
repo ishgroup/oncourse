@@ -10,7 +10,7 @@ import React, { useCallback, useState } from "react";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import Divider from "@mui/material/Divider";
-import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { LinkAdornment } from  "ish-ui";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import {
   EnrolmentSelectItemRenderer,

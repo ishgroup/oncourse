@@ -9,9 +9,8 @@
 import React, { useContext } from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import { getDay } from "date-fns";
-import CalendarDay from "./CalendarDay";
-import { getCalendarDays } from "../utils";
 import { TimetableContext } from "../../../../../Timetable";
+import { CalendarDay, getCalendarDays } from "ish-ui";
 
 const styles = theme =>
   createStyles({

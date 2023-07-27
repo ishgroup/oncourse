@@ -31,11 +31,11 @@ import {
   setTimetableSearch
 } from "../../actions";
 import { TimetableContext } from "../../Timetable";
-import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
+import { DD_MMM_YYYY_MINUSED } from  "ish-ui";
 import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
 import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
-import DynamicSizeList from "../../../../../ish-ui/dynamicSizeList/DynamicSizeList";
+import DynamicSizeList from  "ish-ui";
 import { usePrevious } from "../../../../common/utils/hooks";
 import {
   getFiltersNameString,

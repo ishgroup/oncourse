@@ -18,8 +18,9 @@ import { getResultId } from "../../utils";
 import navigation from "../../../../navigation/data/navigation.json";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { IconButton } from "@mui/material";
-import { useHoverShowStyles } from "../../../../../../../ish-ui/styles/hooks";
+import { useHoverShowStyles } from  "ish-ui";
 import clsx from "clsx";
+import IconButton from "@mui/material/IconButton";
 
 const styles = theme => createStyles({
   root: {
@@ -46,7 +47,7 @@ const SearchResults = props => {
     favoriteScripts,
     updateFavorites
   } = props;
-  
+
   const hoverClasses = useHoverShowStyles();
 
   return (
@@ -55,9 +56,9 @@ const SearchResults = props => {
         && navigation.features
           .filter(c => c.title.toLowerCase().includes(userSearch.toLowerCase()))
           .map((c, i) => {
-            
+
             const isFavorite = favorites.includes(c.key);
-            
+
             return <div key={i} className={clsx(hoverClasses.container, "centeredFlex")}>
               <ListLinkItem
                 url={c.link}
@@ -70,10 +71,10 @@ const SearchResults = props => {
               <IconButton
                 onMouseDown={e => e.stopPropagation()}
                 onClick={() => updateFavorites(c.key, "category")}
-                className={clsx("p-0-5 lightGrayColor", !isFavorite && hoverClasses.target )}
+                className={clsx("p-0-5 lightGrayColor", !isFavorite && hoverClasses.target)}
                 size="small"
               >
-                <FavoriteBorderIcon fontSize="inherit" color={isFavorite ? "primary" : "inherit"} />
+                <FavoriteBorderIcon fontSize="inherit" color={isFavorite ? "primary" : "inherit"}/>
               </IconButton>
             </div>;
           })}
@@ -84,7 +85,7 @@ const SearchResults = props => {
           .map((s, i) => {
 
             const isFavorite = favoriteScripts.includes(String(s.id));
-            
+
             return <div key={i} className={clsx(hoverClasses.container, "centeredFlex")}>
               <ListLinkItem
                 key={i}
@@ -102,14 +103,14 @@ const SearchResults = props => {
               <IconButton
                 onMouseDown={e => e.stopPropagation()}
                 onClick={() => updateFavorites(String(s.id), "automation")}
-                className={clsx("p-0-5 lightGrayColor", !isFavorite && hoverClasses.target )}
+                className={clsx("p-0-5 lightGrayColor", !isFavorite && hoverClasses.target)}
                 size="small"
               >
-                <FavoriteBorderIcon fontSize="inherit" color={isFavorite ? "primary" : "inherit"} />
+                <FavoriteBorderIcon fontSize="inherit" color={isFavorite ? "primary" : "inherit"}/>
               </IconButton>
             </div>;
           })}
-      {updating && <CircularProgress size={32} thickness={5} />}
+      {updating && <CircularProgress size={32} thickness={5}/>}
       {!updating
         && searchResults
         && searchResults.map((r, index) => (
@@ -121,7 +122,7 @@ const SearchResults = props => {
               checkSelectedResult={checkSelectedResult}
               items={r.items.map(item => {
                 const name = getHighlightedPartLabel(item.name, userSearch);
-                return { ...item, name };
+                return {...item, name};
               })}
               userSearch={userSearch}
               setSelected={setSelected}

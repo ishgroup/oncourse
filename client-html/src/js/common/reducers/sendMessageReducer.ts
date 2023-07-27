@@ -7,15 +7,15 @@
  */
 
 import { IAction } from "../actions/IshAction";
-import { OPEN_SEND_MESSAGE, CLOSE_SEND_MESSAGE } from "../actions";
-import { ConfirmState } from "../../../ish-ui/model/Confirm";
+import { CLOSE_SEND_MESSAGE, OPEN_SEND_MESSAGE } from "../actions";
+import { ConfirmState } from  "ish-ui";
 import { SendMessageState } from "../../model/common/SendMessage";
 
 const Initial: SendMessageState = {
   open: false
 };
 
-export const sendMessageReducer = (state: SendMessageState = { ...Initial }, action: IAction<any>): ConfirmState => {
+export const sendMessageReducer = (state: SendMessageState = {...Initial}, action: IAction<any>): ConfirmState => {
   switch (action.type) {
     case OPEN_SEND_MESSAGE: {
       return {

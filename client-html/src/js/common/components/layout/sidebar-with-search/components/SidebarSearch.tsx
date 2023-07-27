@@ -6,7 +6,7 @@ import Input from "@mui/material/Input";
 import debounce from "lodash.debounce";
 import clsx from "clsx";
 
-const SidebarSearch = React.memo<any>(({ placeholder = "Filter items", setParentSearch, smallIcons }) => {
+const SidebarSearch = React.memo<any>(({placeholder = "Filter items", setParentSearch, smallIcons}) => {
   const [search, setSearch] = useState("");
 
   const searchRef = useRef("");
@@ -35,11 +35,11 @@ const SidebarSearch = React.memo<any>(({ placeholder = "Filter items", setParent
         value={search}
         onChange={onChange}
         placeholder={placeholder}
-        startAdornment={<Search className={clsx("textSecondaryColor mr-1", smallIcons && "inputAdornmentIcon")} />}
+        startAdornment={<Search className={clsx("textSecondaryColor mr-1", smallIcons && "inputAdornmentIcon")}/>}
         endAdornment={
           search && (
             <IconButton className="closeAndClearButton" onClick={clear}>
-              <Close className={clsx(smallIcons && "inputAdornmentIcon")} />
+              <Close className={clsx(smallIcons && "inputAdornmentIcon")}/>
             </IconButton>
           )
         }
