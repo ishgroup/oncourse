@@ -4,10 +4,10 @@
  */
 
 import { Tag } from "@api/model";
-import { NumberArgFunction } from "../common/CommonFunctions";
-import { MenuTag } from "../../../ish-ui/model/Fields";
+import { NumberArgFunction } from  "ish-ui";
+import { MenuTag } from  "ish-ui";
 
-export type FormMenuTag  = MenuTag<Tag>;
+export type FormMenuTag = MenuTag<Tag>;
 
 export interface FormTag extends Tag {
   parent?: string;

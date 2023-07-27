@@ -20,21 +20,21 @@ import Button from "@mui/material/Button";
 import { addDays, format } from "date-fns";
 import { Document, DocumentVersion } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from  "ish-ui";
 import {
   FileTypeIcon, getDocumentContent,
   getLatestDocumentItem
-} from "../../../../../ish-ui/documents/utils";
+} from  "ish-ui";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { AppTheme } from "../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { State } from "../../../../reducers/state";
 import DocumentShare from "../../../../common/components/form/documents/DocumentShare";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import IconButton from "@mui/material/IconButton";
-import { useHoverShowStyles } from "../../../../../ish-ui/styles/hooks";
-import { useAppTheme } from "../../../../../ish-ui/themes/ishTheme";
+import { useHoverShowStyles } from  "ish-ui";
+import { useAppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {

@@ -29,7 +29,7 @@ import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
-import { SettingsAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
+import { SettingsAdornment } from  "ish-ui";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { openInternalLink } from "../../../../common/utils/links";

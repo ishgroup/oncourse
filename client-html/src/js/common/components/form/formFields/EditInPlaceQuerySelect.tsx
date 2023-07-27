@@ -23,18 +23,23 @@ import * as Entities from "@aql/queryLanguageModel";
 import { stubComponent } from "../../../utils/common";
 import { getHighlightedPartLabel } from "../../../utils/formatting";
 import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { selectStyles } from "../../../../../ish-ui/formFields/SelectCustomComponents";
-import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
+import {
+  DD_MM_YYYY_SLASHED,
+  FieldClasses,
+  FieldMetaProps,
+  HH_MM_COLONED,
+  HTMLTagArgFunction,
+  selectStyles
+} from "ish-ui";
 import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
-import { HTMLTagArgFunction } from "../../../../model/common/CommonFunctions";
-import { FieldClasses, FieldMetaProps } from "../../../../../ish-ui/model/Fields";
 import { InputProps } from "@mui/material/Input";
 import { QueryFieldSuggestion } from "../../../../model/common/Fields";
+import { QueryBuilder } from "@mui/icons-material";
 
 
 const queryStyles = theme => createStyles({
@@ -304,7 +309,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
   componentDidUpdate(prev) {
     const {
-     input, rootEntity
+      input, rootEntity
     } = this.props;
 
     if (prev.rootEntity !== rootEntity) {
@@ -333,7 +338,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   }
 
   getAutocomplete = (input, position?) => {
-    const { parser } = this.parseInputString(input);
+    const {parser} = this.parseInputString(input);
     const {
       rootEntity, filterTags, tags, customFields
     } = this.props;
@@ -422,7 +427,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     const parser = new AqlParser(tokens);
     parser.query();
 
-    return { tokens, parser } as any;
+    return {tokens, parser} as any;
   };
 
   setInputNode = node => {
@@ -431,7 +436,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
       this.inputNode.addEventListener("click", this.onInputClick);
 
-      const { setInputNode, inline } = this.props;
+      const {setInputNode, inline} = this.props;
 
       if (setInputNode && inline) {
         setInputNode(this.inputNode);
@@ -475,7 +480,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   onBlur = () => {
     if (this.state.pickerOpened) return;
 
-    const { onBlur } = this.props;
+    const {onBlur} = this.props;
 
     if (onBlur) {
       onBlur();
@@ -487,7 +492,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   onFocus = e => {
-    const { inline, input, onFocus } = this.props;
+    const {inline, input, onFocus} = this.props;
 
     if (onFocus) {
       onFocus();
@@ -532,11 +537,11 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   getInlineMenuStyles = () => {
-    const { caretCoordinates, menuIsOpen, options } = this.state;
-    const { classes } = this.props;
+    const {caretCoordinates, menuIsOpen, options} = this.state;
+    const {classes} = this.props;
 
     const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
-    
+
     return {
       className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
       style: {
@@ -558,9 +563,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   filterOptions = item => item.label
-      .toLowerCase()
-      .trim()
-      .startsWith(this.state.searchValue.trim().toLowerCase());
+    .toLowerCase()
+    .trim()
+    .startsWith(this.state.searchValue.trim().toLowerCase());
 
   filterOptionsInner = options => options.filter(this.filterOptions);
 
@@ -596,7 +601,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   handleChange = (e, value, action) => {
-    const { inline, input } = this.props;
+    const {inline, input} = this.props;
 
     if (action === "clear" || action === "remove-option") {
       this.operatorsFilter = "";
@@ -642,8 +647,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       + (value[0].token === "SEPARATOR" || value[0].token === "'@'" || value[0].token === "'#'"
         ? ""
         : Entities[propType] && Entities[propType].constructor.name !== ENUM_CONSTRUCTOR_NAME
-        ? ""
-        : " ");
+          ? ""
+          : " ");
 
     if (value[0].queryPrefix) {
       const tagStr = "#" + value[0].value;
@@ -669,7 +674,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   handleInputChange = e => {
-    const { input, inline } = this.props;
+    const {input, inline} = this.props;
 
     const value = e.target.value;
 
@@ -677,7 +682,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       this.simpleSearchChecked = false;
     }
 
-    const { tokens: { tokens } } = this.parseInputString(value);
+    const {tokens: {tokens}} = this.parseInputString(value);
 
     if (!value) {
       this.setState(
@@ -718,9 +723,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   updateAutocomplete = value => {
-    const { tokens, parser } = this.parseInputString(value);
-    const { filterTags, tags } = this.props;
-    const { options } = this.state;
+    const {tokens, parser} = this.parseInputString(value);
+    const {filterTags, tags} = this.props;
+    const {options} = this.state;
 
     const parsedTokens = tokens.tokens;
 
@@ -805,7 +810,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
         && ["String", "RichText"].includes(this.operatorsFilter)
         && !["Identifier", "DoubleQuotedStringLiteral", "SingleQuotedStringLiteral", "RichTextLiteral"].includes(preLastTokenType)
       ) {
-        const { inputValue } = this.state;
+        const {inputValue} = this.state;
 
         this.autoQuotesAdded = true;
 
@@ -893,7 +898,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   setIdentifierFilters = tokenText => {
-    const { rootEntity, customFields } = this.props;
+    const {rootEntity, customFields} = this.props;
 
     if (customFields && customFields.includes(tokenText)) {
       this.operatorsFilter = "String";
@@ -956,7 +961,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   onKeyDown = e => {
-    const { inputValue, options } = this.state;
+    const {inputValue, options} = this.state;
 
     switch (e.keyCode) {
       case 32: {
@@ -1014,7 +1019,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   performSearch = () => {
-    const { performSearch } = this.props;
+    const {performSearch} = this.props;
 
     if (performSearch) {
       performSearch();
@@ -1024,8 +1029,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   getOptionLabel = option => option.label;
 
   renderOption = (optionProps, data) => {
-    const { itemRenderer } = this.props;
-    const { searchValue } = this.state;
+    const {itemRenderer} = this.props;
+    const {searchValue} = this.state;
 
     const label = this.getOptionLabel(data);
 
@@ -1037,8 +1042,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       option = (
         <div className={clsx("heading", "centeredFlex")}>
           {content}
-          {label === "DATE" && <DateRange className="ml-1" />}
-          {label === "TIME" && <QueryBuilder className="ml-1" />}
+          {label === "DATE" && <DateRange className="ml-1"/>}
+          {label === "TIME" && <QueryBuilder className="ml-1"/>}
         </div>
       );
     }
@@ -1050,7 +1055,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     return option as any;
   };
 
-  popperAdapter = ({ anchorEl, disablePortal, className, style,  ...params }) => (<div {...params} {...this.getInlineMenuStyles()} />);
+  popperAdapter = ({anchorEl, disablePortal, className, style, ...params}) => (
+    <div {...params} {...this.getInlineMenuStyles()} />);
 
   render() {
     const {
@@ -1162,6 +1168,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   }
 }
 
-export default withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
+export default withStyles(theme => ({...selectStyles(theme), ...queryStyles(theme)}))(
   EditInPlaceQuerySelect
 ) as React.FC<EditInPlaceQueryFieldProps>;

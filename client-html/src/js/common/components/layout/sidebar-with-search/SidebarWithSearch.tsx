@@ -1,12 +1,10 @@
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { Route, Switch } from "react-router-dom";
-import ResizableWrapper from "../../../../../ish-ui/layout/resizable/ResizableWrapper";
+import ResizableWrapper from  "ish-ui";
 import Drawer from "../Drawer";
 import LoadingIndicator from "../../progress/LoadingIndicator";
-import { AnyArgFunction, NumberArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction, NumberArgFunction } from  "ish-ui";
 import HamburgerMenu from "../swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../swipeable-sidebar/utils";
 import SidebarSearch from "./components/SidebarSearch";
@@ -14,6 +12,7 @@ import { CommonListFilter } from "../../../../model/common/sidebar";
 import FiltersList from "./components/FiltersList";
 import { MainRoute } from "../../../../routes";
 import { LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
+import { ResizableWrapper } from "ish-ui";
 
 interface Props {
   leftColumnWidth: number;
@@ -31,7 +30,17 @@ interface Props {
 
 export const SidebarWithSearch = (props: Props) => {
   const {
-    leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, noSearch, routes, filters = [], appFrameClass
+    leftColumnWidth,
+    updateColumnsWidth,
+    onInit,
+    history,
+    match,
+    SideBar,
+    AppFrame,
+    noSearch,
+    routes,
+    filters = [],
+    appFrameClass
   } = props;
 
   const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || LIST_SIDE_BAR_DEFAULT_WIDTH);
@@ -76,26 +85,26 @@ export const SidebarWithSearch = (props: Props) => {
       >
         <Drawer>
           <div className="pl-2">
-            <HamburgerMenu variant={VARIANTS.temporary} />
+            <HamburgerMenu variant={VARIANTS.temporary}/>
           </div>
-          {!noSearch && <SidebarSearch setParentSearch={setSearch} smallIcons />}
+          {!noSearch && <SidebarSearch setParentSearch={setSearch} smallIcons/>}
           {Boolean(filters.length) && (
-            <FiltersList filters={filters} activeFilters={activeFilters} setActveFilters={setActveFilters} />
+            <FiltersList filters={filters} activeFilters={activeFilters} setActveFilters={setActveFilters}/>
           )}
-          <SideBar search={search} activeFiltersConditions={activeFiltersConditions} history={history} match={match} />
+          <SideBar search={search} activeFiltersConditions={activeFiltersConditions} history={history} match={match}/>
         </Drawer>
       </ResizableWrapper>
 
       <div className={clsx("appFrame", appFrameClass)}>
-        <LoadingIndicator />
-        {AppFrame ? <AppFrame match={match} routes={routes} />
+        <LoadingIndicator/>
+        {AppFrame ? <AppFrame match={match} routes={routes}/>
           : (
             <Switch>
               {routes.map((route, index) => (
-                <Route exact key={index} path={route.path} component={route.main} />
+                <Route exact key={index} path={route.path} component={route.main}/>
               ))}
             </Switch>
-        )}
+          )}
       </div>
     </div>
   );

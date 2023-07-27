@@ -15,7 +15,7 @@ import Delete from "@mui/icons-material/Delete";
 import Edit from "@mui/icons-material/Edit";
 import { ClassCost } from "@api/model";
 import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
+import { NumberArgFunction } from  "ish-ui";
 
 interface BudgetItemRowProps {
   value: ClassCost;

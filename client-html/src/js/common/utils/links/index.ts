@@ -1,6 +1,5 @@
 import { FindEntityAql, FindEntityState } from "../../../model/entities/common";
 import { ENTITY_AQL_STORAGE_NAME } from "../../../constants/Config";
-import { isInStandaloneMode } from "../common";
 import { LSGetItem, LSSetItem } from "../storage";
 
 

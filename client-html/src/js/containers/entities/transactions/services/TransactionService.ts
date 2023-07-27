@@ -1,7 +1,7 @@
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { Transaction, TransactionApi } from "@api/model";
 import { format } from "date-fns";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 
 class TransactionService {
   readonly transactionApi = new TransactionApi(new DefaultHttpService());

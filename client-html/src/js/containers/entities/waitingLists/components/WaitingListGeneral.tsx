@@ -20,7 +20,7 @@ import {
   ContactLinkAdornment,
   HeaderContactTitle,
   LinkAdornment
-} from "../../../../../ish-ui/formFields/FieldAdornments";
+} from  "ish-ui";
 import { getContactFullName } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

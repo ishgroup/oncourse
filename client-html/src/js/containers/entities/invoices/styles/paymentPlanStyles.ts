@@ -5,7 +5,7 @@
 
 import { createStyles } from "@mui/styles";
 import { alpha } from "@mui/material/styles";
-import { AppTheme } from "../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 
 export const paymentPlanStyles = (theme: AppTheme) => createStyles({
   root: {

@@ -5,7 +5,7 @@
 
 import { Epic } from "redux-observable";
 import { DataResponse, Script } from "@api/model";
-import { Request, Create } from "./EpicUtils";
+import { Create, Request } from "./EpicUtils";
 import { GET_SCRIPTS_FULFILLED, GET_SCRIPTS_REQUEST } from "../actions";
 import EntityService from "../services/EntityService";
 import { getCustomColumnsMap } from "../utils/common";

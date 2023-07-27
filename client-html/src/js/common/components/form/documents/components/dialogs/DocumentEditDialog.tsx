@@ -15,12 +15,11 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import FormField from "../../../formFields/FormField";
-import DocumentIconsChooser from "../../../../../../../ish-ui/documents/DocumentIconsChooser";
+import DocumentIconsChooser, { DocumentIconsChooser, getLatestDocumentItem } from "ish-ui";
 import { dialogStyles } from "./dialogStyles";
-
-import { getLatestDocumentItem } from "../../../../../../../ish-ui/documents/utils";
 import DocumentShare from "../../DocumentShare";
 import Button from "@mui/material/Button";
+import { Grid } from "@mui/material";
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -113,10 +112,10 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           name={`${itemPath}.description`}
           label="Description"
           multiline
-                    disabled={readOnly}
+          disabled={readOnly}
         />
 
-        <DialogActions classes={{ root: classes.actions }}>
+        <DialogActions classes={{root: classes.actions}}>
           <Button color="primary" onClick={onClose}>
             {type === "view" ? "Close" : "Cancel"}
           </Button>
@@ -156,7 +155,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
       opened, onClose, classes, type, item, onCancelEdit, isNew
     } = this.props;
 
-    const { loading } = this.state;
+    const {loading} = this.state;
 
     const lastVersion = item && getLatestDocumentItem(item.versions);
 
@@ -166,7 +165,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
       <Dialog
         open={opened}
         onClose={type === "create" || isNew ? onClose : onCancelEdit}
-        classes={{ paper: classes.paper }}
+        classes={{paper: classes.paper}}
       >
         <div className={classes.container}>
           {item && (
@@ -192,7 +191,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
                   </Typography>
                 </div>
 
-                {loading && <LinearProgress className={classes.documentLoading} />}
+                {loading && <LinearProgress className={classes.documentLoading}/>}
               </div>
 
               {!loading && (

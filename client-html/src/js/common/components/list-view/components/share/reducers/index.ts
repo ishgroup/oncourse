@@ -5,12 +5,12 @@
 
 import { IAction } from "../../../../../actions/IshAction";
 import {
-  GET_OVERLAY_ITEMS_FULFILLED,
-  GET_PDF_REPORTS_FULFILLED,
+  GET_EXPORT_TEMPLATES,
   GET_EXPORT_TEMPLATES_FULFILLED,
-  SET_PRINT_VALIDATING_STATUS,
+  GET_OVERLAY_ITEMS_FULFILLED,
   GET_PDF_REPORTS,
-  GET_EXPORT_TEMPLATES
+  GET_PDF_REPORTS_FULFILLED,
+  SET_PRINT_VALIDATING_STATUS
 } from "../actions";
 import { ShareState } from "../../../../../../model/common/Share";
 

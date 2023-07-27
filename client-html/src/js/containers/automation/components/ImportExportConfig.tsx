@@ -10,7 +10,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { useAppDispatch } from "../../../common/utils/hooks";
 import { AutomationEntity } from "../../../model/automation/common";
-import { AppBarAction } from "../../../../ish-ui/model/AppBar";
+import { AppBarAction } from  "ish-ui";
 import { importAutomationConfig, exportAutomationConfig } from "../actions";
 import { uploadAndGetFile } from "../../../common/utils/common";
 import { showMessage } from "../../../common/actions";

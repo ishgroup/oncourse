@@ -7,6 +7,7 @@ class ProcessService {
   public getProcessStatus(processId: string): Promise<ProcessResult> {
     return this.controlApi.getStatus(processId);
   }
+
   public interruptProcess(processId: string): Promise<ProcessResult> {
     return this.controlApi.interrupt(processId);
   }

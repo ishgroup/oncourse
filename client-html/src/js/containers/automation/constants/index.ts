@@ -1,7 +1,7 @@
 import * as Entities from "@aql/queryLanguageModel";
 import { mapSelectItems } from "../../../common/utils/common";
 import { stringLiterals } from "../../../common/utils/stringLiteral";
-import { StringValueType } from "../../../model/common/CommomObjects";
+import { StringValueType } from  "ish-ui";
 
 export const AQL_ENTITIES = Object
   .keys(Entities)

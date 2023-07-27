@@ -32,13 +32,13 @@ import { State } from "../../../../../reducers/state";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { stubFunction } from "../../../../../common/utils/common";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from "../../../../../../ish-ui/formFields/EditInPlaceDurationField";
+import EditInPlaceDurationField from  "ish-ui";
 import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
-import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
+import { DD_MMM_YYYY } from  "ish-ui";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
-import { NoWrapOption } from "../../../../../../ish-ui/formFields/SelectCustomComponents";
+import { NoWrapOption } from  "ish-ui";
 
 export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 

@@ -10,7 +10,7 @@ import { Holiday as HoldayItemModel } from "@api/model";
 import HolidaysForm from "./components/HolidaysForm";
 import { deleteHolidaysItem, getHolidays, saveHolidays } from "../../actions";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
+import { ShowConfirmCaller } from  "ish-ui";
 
 interface Props {
   onInit: () => void;

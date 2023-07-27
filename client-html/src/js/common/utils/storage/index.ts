@@ -63,7 +63,7 @@ export const latestActivityStorageHandler = (item: LatestActivityItem, entity: s
 
     activitySate.data = [destination, ...activitySate.data.filter(i => i.entity !== destination.entity)];
   } else {
-    activitySate.data = [{ entity, items: [item] }, ...activitySate.data.slice(0, 19)];
+    activitySate.data = [{entity, items: [item]}, ...activitySate.data.slice(0, 19)];
   }
 
   LSSetItem(DASHBOARD_ACTIVITY_STORAGE_NAME, JSON.stringify(activitySate));

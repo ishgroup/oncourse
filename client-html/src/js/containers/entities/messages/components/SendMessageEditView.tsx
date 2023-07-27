@@ -29,14 +29,14 @@ import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handle
 import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { clearRecipientsMessageData, getRecipientsMessageData } from "../../../../common/components/list-view/actions";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { AnyArgFunction, NoArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
+import { AnyArgFunction, NoArgFunction, StringArgFunction } from  "ish-ui";
 import { MessageData, MessageExtended } from "../../../../model/common/Message";
 import { State } from "../../../../reducers/state";
 import MessageService from "../services/MessageService";
 import RecipientsSelectionSwitcher from "./RecipientsSelectionSwitcher";
-import { Switch } from "../../../../../ish-ui/formFields/Switch";
-import { StyledCheckbox } from "../../../../../ish-ui/formFields/CheckboxField";
+import { Switch } from  "ish-ui";
+import { StyledCheckbox } from  "ish-ui";
 import previewSmsImage from "../../../../../images/preview-sms.png";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { getMessageRequestModel } from "../utils";

@@ -7,13 +7,10 @@
  */
 
 import { DefaultEpic } from "../common/Default.Epic";
-import {
-  GET_ENTITY_TAGS_REQUEST_FULFILLED,
-  getListTags
-} from "../../js/containers/tags/actions";
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED, getListTags } from "../../js/containers/tags/actions";
 import { EpicGetListTags } from "../../js/containers/tags/epics/EpicGetListTags";
 import { setListMenuTags } from "../../js/common/components/list-view/actions";
-import { getMenuTags } from "../../js/common/components/list-view/utils/listFiltersUtils";
+import { getMenuTags } from "ish-ui";
 
 const entityName: string = "Course";
 

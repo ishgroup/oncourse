@@ -18,7 +18,7 @@ import {
   getFormValues, InjectedFormProps, reduxForm
 } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 import { State } from "../../../../reducers/state";
 import { getCertificatesRevokeStatus, revokeCertificate, setCertificatesRevokeStatus } from "../actions";
 

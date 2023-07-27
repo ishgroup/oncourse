@@ -22,7 +22,7 @@ import FormSubmitButton from "../../../form/FormSubmitButton";
 import LoadingIndicator from "../../../progress/LoadingIndicator";
 import { pushGTMEvent } from "../../../google-tag-manager/actions";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
-import AppBarHelpMenu from "../../../../../../ish-ui/appBar/AppBarHelpMenu";
+import AppBarHelpMenu from  "ish-ui";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import { LSGetItem } from "../../../../utils/storage";
 import {

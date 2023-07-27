@@ -19,7 +19,7 @@ import ApplicationEditView from "./components/ApplicationEditView";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { State } from "../../../reducers/state";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 

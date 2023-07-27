@@ -64,9 +64,9 @@ class ListLinksGroup extends React.PureComponent<any, any> {
 
   openLink = id => {
     const {
-     entityDisplayName, entity, setSelected
+      entityDisplayName, entity, setSelected
     } = this.props;
-    
+
     if (entity === "Contact" && typeof setSelected === "function") {
       setSelected(id);
       return;
@@ -87,7 +87,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     const {
       classes, entityDisplayName, items, showFirst, checkSelectedResult, entity
     } = this.props;
-    const { collapsed } = this.state;
+    const {collapsed} = this.state;
 
     let firstItems;
     let lastItems;
@@ -108,7 +108,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
           </Typography>
           {showFirst && Boolean(lastItems.length) && (
             <>
-              <div className="flex-fill" />
+              <div className="flex-fill"/>
               <Typography
                 onClick={this.toggleCollapsed}
                 className={clsx("cursor-pointer", classes.showMoreText)}

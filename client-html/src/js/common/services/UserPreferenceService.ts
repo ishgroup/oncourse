@@ -1,8 +1,4 @@
-import {
-  UserPreferenceApi,
-  UserPreference,
-  PreferenceEnum
-} from "@api/model";
+import { PreferenceEnum, UserPreference, UserPreferenceApi } from "@api/model";
 import { DefaultHttpService } from "./HttpService";
 
 class UserPreferenceService {

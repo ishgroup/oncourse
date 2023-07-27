@@ -23,7 +23,7 @@ import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
+import { NumberArgFunction } from  "ish-ui";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
@@ -32,7 +32,7 @@ import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../../ish-ui/layout/InfoPill";
+import InfoPill from  "ish-ui";
 import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("emailTemplates");

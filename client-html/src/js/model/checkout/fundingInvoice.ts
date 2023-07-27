@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- Contact, Enrolment, Invoice, InvoicePaymentPlan, TrainingPlan
-} from "@api/model";
+import { Contact, Enrolment, Invoice, InvoicePaymentPlan, TrainingPlan } from "@api/model";
 import { CheckoutSummaryListItem } from "./index";
 
 export type CheckoutFundingInvoiceItem = Enrolment & Invoice & {

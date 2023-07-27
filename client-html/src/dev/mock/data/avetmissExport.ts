@@ -6,8 +6,8 @@ import {
   AvetmissExportType
 } from "@api/model";
 import { format, subDays } from "date-fns";
-import { getRandomInt, generateArraysOfRecords } from "../mockUtils";
-import { YYYY_MM_DD_MINUSED } from "../../../js/common/utils/dates/format";
+import { generateArraysOfRecords, getRandomInt } from "../mockUtils";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
 
 const types = Object.keys(AvetmissExportType) as AvetmissExportType[];
 const statuses = Object.keys(AvetmissExportOutcomeStatus) as AvetmissExportOutcomeStatus[];

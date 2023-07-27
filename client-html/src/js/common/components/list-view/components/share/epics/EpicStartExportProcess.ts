@@ -12,26 +12,30 @@ import { getExportResult, getExportTemplates, POST_EXPORT_REQUEST } from "../act
 import { clearProcess, START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
-const request: EpicUtils.Request<any, { exportRequest: ExportRequest; outputType: OutputType, isClipboard: boolean }> = {
+const request: EpicUtils.Request<any, {
+  exportRequest: ExportRequest;
+  outputType: OutputType,
+  isClipboard: boolean
+}> = {
   type: POST_EXPORT_REQUEST,
   hideLoadIndicator: true,
-  getData: ({ exportRequest }) => ExportService.runExport(exportRequest),
-  processData: (processId: string, state, { exportRequest: { entityName, createPreview }, outputType, isClipboard }) => [
-      {
-        type: UPDATE_PROCESS,
-        payload: { processId }
-      },
-      {
-        type: START_PROCESS,
-        payload: {
-          processId,
-          actions: [
-            ...(createPreview ? [getExportTemplates(entityName)] : []),
-            getExportResult(entityName, processId, outputType, isClipboard)
-          ]
-        }
+  getData: ({exportRequest}) => ExportService.runExport(exportRequest),
+  processData: (processId: string, state, {exportRequest: {entityName, createPreview}, outputType, isClipboard}) => [
+    {
+      type: UPDATE_PROCESS,
+      payload: {processId}
+    },
+    {
+      type: START_PROCESS,
+      payload: {
+        processId,
+        actions: [
+          ...(createPreview ? [getExportTemplates(entityName)] : []),
+          getExportResult(entityName, processId, outputType, isClipboard)
+        ]
       }
-    ],
+    }
+  ],
   processError: response => [
     clearProcess(),
     ...FetchErrorHandler(response)

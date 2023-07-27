@@ -21,7 +21,7 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import FilePreview from "../../../../../../ish-ui/formFields/FilePreview";
+import FilePreview from  "ish-ui";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { showMessage } from "../../../../../common/actions";

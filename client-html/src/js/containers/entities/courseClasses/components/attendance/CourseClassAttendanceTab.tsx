@@ -20,7 +20,7 @@ import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import Divider from "@mui/material/Divider";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";

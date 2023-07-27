@@ -8,7 +8,7 @@
 
 import { Assessment, Enrolment } from "@api/model";
 
-export interface EnrolmentAssessmentExtended extends Assessment{
+export interface EnrolmentAssessmentExtended extends Assessment {
   tutors: {
     contactId: number;
     tutorName: string;

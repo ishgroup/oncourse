@@ -15,7 +15,7 @@ import { openInternalLink } from "../../../../common/utils/links";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import TimetableButton from "../../../../../ish-ui/buttons/TimetableButton";
+import TimetableButton from  "ish-ui";
 import { CourseExtended } from "../../../../model/entities/Course";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";

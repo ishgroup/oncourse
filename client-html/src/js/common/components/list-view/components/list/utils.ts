@@ -6,10 +6,10 @@
 import { format } from "date-fns";
 import { ColumnType, DataResponse } from "@api/model";
 import { NestedTableColumnsTypes } from "../../../../../model/common/NestedTable";
-import { EEE_D_MMM_YYYY, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from "../../../../utils/dates/format";
+import { EEE_D_MMM_YYYY, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
 import { formatCurrency, formatPercent } from "../../../../utils/numbers/numbersNormalizing";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 
 const formatBoolean = val => {
   switch (val) {
@@ -26,13 +26,13 @@ const formatBoolean = val => {
 };
 
 export const getTableRows = (records: DataResponse,
-  shortCurrencySymbol: string,
-  primaryColumn: string,
-  secondaryColumn: string,
-  primaryColumnCondition?: AnyArgFunction,
-  secondaryColumnCondition?: AnyArgFunction,
-  customColumnFormats?: CustomColumnFormats,
-  setRowClasses?: AnyArgFunction) => {
+                             shortCurrencySymbol: string,
+                             primaryColumn: string,
+                             secondaryColumn: string,
+                             primaryColumnCondition?: AnyArgFunction,
+                             secondaryColumnCondition?: AnyArgFunction,
+                             customColumnFormats?: CustomColumnFormats,
+                             setRowClasses?: AnyArgFunction) => {
   const visibleColumns = records.columns.filter(c => c.visible || c.system);
   let counter = 0;
 

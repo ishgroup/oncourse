@@ -6,7 +6,7 @@
 import { CourseClassTutor } from "@api/model";
 import { format } from "date-fns";
 import CourseClassTutorService from "../services/CourseClassTutorService";
-import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
+import { D_MMM_YYYY } from  "ish-ui";
 import { classCostInitial } from "../../../CourseClasses";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../../model/entities/CourseClass";
 

@@ -4,7 +4,7 @@
  */
 
 import React, { memo } from "react";
-import { FixedSizeList, areEqual } from "react-window";
+import { areEqual, FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import clsx from "clsx";
 import TableCell from "@mui/material/TableCell";
@@ -15,8 +15,8 @@ import { flexRender } from "@tanstack/react-table";
 import NestedTableDeleteCell from "./NestedTableDeleteCell";
 
 const ListCell = React.memo<any>(({
- value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
-} ) => {
+                                    value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
+                                  }) => {
   switch (column.type as NestedTableColumnsTypes) {
     case "delete":
       return (
@@ -25,7 +25,7 @@ const ListCell = React.memo<any>(({
           onRowDelete={onRowDelete}
         />
       );
-      
+
     case "checkbox": {
       return (
         <NestedTableCheckboxCell
@@ -58,7 +58,7 @@ const ListCell = React.memo<any>(({
   }
 });
 
-const ListRow = memo<any>(({ data, index, style }) => {
+const ListRow = memo<any>(({data, index, style}) => {
   const {
     rows,
     classes,
@@ -118,9 +118,9 @@ export default itemData => {
 
   return (
     <AutoSizer>
-      {({ height, width }) => (
+      {({height, width}) => (
         <FixedSizeList
-          style={{ overflow: "hidden auto" }}
+          style={{overflow: "hidden auto"}}
           itemCount={rows.length}
           itemData={itemData}
           itemSize={27}

@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- Binding, MessageType, Recipients, SendMessageRequest
-} from "@api/model";
+import { Binding, MessageType, Recipients, SendMessageRequest } from "@api/model";
 
 export interface AppMessage {
   message: string;

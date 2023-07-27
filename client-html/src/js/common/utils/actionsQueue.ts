@@ -6,7 +6,7 @@
 import { Dispatch } from "redux";
 import { asyncValidateFieldArrayFieldCallback, getFieldArrayFieldMeta } from "./validation";
 import { addActionToQueue } from "../actions";
-import { AnyArgFunction, PromiseReturnFunction } from "../../model/common/CommonFunctions";
+import { AnyArgFunction, PromiseReturnFunction } from  "ish-ui";
 import { IAction } from "../actions/IshAction";
 
 export const fieldUpdateHandler = (
@@ -28,7 +28,7 @@ export const fieldUpdateHandler = (
 
   const meta = getFieldArrayFieldMeta(blurredField);
 
-  const item = { ...values[valuePath][meta.index] };
+  const item = {...values[valuePath][meta.index]};
 
   const temporaryId = item.temporaryId;
 

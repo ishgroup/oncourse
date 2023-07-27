@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { withStyles, createStyles } from "@mui/styles";
 import { Theme } from "@mui/material";
-import { D_III } from "../../../../../../common/utils/dates/format";
+import { D_III } from  "ish-ui";
 import { appendTimezone } from "../../../../../../common/utils/dates/formatTimezone";
 
 const styles = (theme: Theme) =>

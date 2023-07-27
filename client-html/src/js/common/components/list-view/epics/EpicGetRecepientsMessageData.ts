@@ -10,35 +10,41 @@ import MessageService from "../../../../containers/entities/messages/services/Me
 import { GET_RECIPIENTS_MESSAGE_DATA, setRecipientsMessageData } from "../actions";
 
 const request:
-  EpicUtils.Request<Recipients, { entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[], templateId: number }> = {
-    type: GET_RECIPIENTS_MESSAGE_DATA,
-    hideLoadIndicator: true,
-    getData: ({
-     entityName, messageType, searchQuery, selection, templateId
-    }) => {
-      if (Array.isArray(selection) && selection.length) {
-        const selectionSearch: SearchQuery = {
-          search: `id in (${String(selection)})`,
-          filter: "",
-          tagGroups: []
-        };
-
-        return MessageService.getRecipients(entityName, messageType, selectionSearch, templateId);
-      }
-      return MessageService.getRecipients(entityName, messageType, searchQuery, templateId);
-    },
-    processData: (r: Recipients, s, { selection, messageType }) => {
-      const payload: MessageData = {
-        [(Array.isArray(selection) && selection.length) ? "selected" : "filtered"]: {
-          [messageType]: r,
-        }
+  EpicUtils.Request<Recipients, {
+    entityName: string,
+    messageType: MessageType,
+    searchQuery: SearchQuery,
+    selection: string[],
+    templateId: number
+  }> = {
+  type: GET_RECIPIENTS_MESSAGE_DATA,
+  hideLoadIndicator: true,
+  getData: ({
+              entityName, messageType, searchQuery, selection, templateId
+            }) => {
+    if (Array.isArray(selection) && selection.length) {
+      const selectionSearch: SearchQuery = {
+        search: `id in (${String(selection)})`,
+        filter: "",
+        tagGroups: []
       };
 
-      return [
-        setRecipientsMessageData(payload)
-      ];
+      return MessageService.getRecipients(entityName, messageType, selectionSearch, templateId);
     }
-  };
+    return MessageService.getRecipients(entityName, messageType, searchQuery, templateId);
+  },
+  processData: (r: Recipients, s, {selection, messageType}) => {
+    const payload: MessageData = {
+      [(Array.isArray(selection) && selection.length) ? "selected" : "filtered"]: {
+        [messageType]: r,
+      }
+    };
+
+    return [
+      setRecipientsMessageData(payload)
+    ];
+  }
+};
 
 export const EpicGetRecepientsMessageData: Epic<any, any> = EpicUtils.Create(request);
 

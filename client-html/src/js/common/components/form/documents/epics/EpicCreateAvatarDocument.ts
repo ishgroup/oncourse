@@ -15,7 +15,7 @@ import { DocumentExtended } from "../../../../../model/common/Documents";
 
 const request: EpicUtils.Request<any, { document: DocumentExtended; form: string; documentPath: string }> = {
   type: CREATE_AVATAR_DOCUMENT,
-  getData: ({ document }) =>
+  getData: ({document}) =>
     DocumentsService.createDocument(
       document.content.name,
       document.description,
@@ -25,8 +25,8 @@ const request: EpicUtils.Request<any, { document: DocumentExtended; form: string
       "",
       document.content.name
     ),
-  processData: (newDocument: Document, state: any, { form, documentPath }) => [change(form, documentPath, newDocument)],
-  processError: (error, { form, documentPath }) => [change(form, documentPath, null), ...FetchErrorHandler(error)]
+  processData: (newDocument: Document, state: any, {form, documentPath}) => [change(form, documentPath, newDocument)],
+  processError: (error, {form, documentPath}) => [change(form, documentPath, null), ...FetchErrorHandler(error)]
 };
 
 export const EpicCreateAvatarDocument: Epic<any, any> = EpicUtils.Create(request);

@@ -13,7 +13,7 @@ import NotesService from "../services/NotesService";
 const request: EpicUtils.Request<any, { note: Note }> = {
   type: PUT_NOTE_ITEM,
   hideLoadIndicator: true,
-  getData: ({ note }) => NotesService.update(note.id, note),
+  getData: ({note}) => NotesService.update(note.id, note),
   processData: () => [],
   processError: response => FetchErrorHandler(response, "Failed to update note")
 };

@@ -21,7 +21,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import EditInPlaceField from "../../../../../../ish-ui/formFields/EditInPlaceField";
+import EditInPlaceField from  "ish-ui";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
   AttandanceChangeType,
@@ -37,7 +37,7 @@ import { getStudentAttendanceLabel } from "./utils";
 import {
   DD_MMM_YYYY_HH_MM_SS,
   III_DD_MMM_YYYY_HH_MM_SS
-} from "../../../../../common/utils/dates/format";
+} from  "ish-ui";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {

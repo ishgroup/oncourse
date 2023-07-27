@@ -13,9 +13,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { connect } from "react-redux";
 import { showConfirm } from "../../actions";
-import { ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
-import { AppBarAction } from "../../../../ish-ui/model/AppBar";
-import { makeAppStyles } from "../../../../ish-ui/styles/makeStyles";
+import { AppBarAction, makeAppStyles, ShowConfirmCaller } from "ish-ui";
 import clsx from "clsx";
 
 const useStyles = makeAppStyles(theme => ({
@@ -43,9 +41,9 @@ interface Props {
   showConfirm?: ShowConfirmCaller;
 }
 
-const AppBarActions = React.memo<Props>(({ actions, showConfirm }) => {
+const AppBarActions = React.memo<Props>(({actions, showConfirm}) => {
   const [opened, setOpened] = useState<boolean>(false);
-  
+
   const classes = useStyles();
 
   const onClickAction = useCallback((onConfirm, confirmMessage, confirmButtonText) => {
@@ -76,7 +74,7 @@ const AppBarActions = React.memo<Props>(({ actions, showConfirm }) => {
         direction="left"
         ariaLabel="SpeedDial actions"
         open={opened}
-        icon={<SpeedDialIcon icon={<SettingsIcon color="inherit" />} />}
+        icon={<SpeedDialIcon icon={<SettingsIcon color="inherit"/>}/>}
         onClick={handleAddFieldClick}
         onClose={handleAddFieldClose}
         onMouseEnter={handleAddFieldClick}

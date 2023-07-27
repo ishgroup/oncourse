@@ -6,19 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useRef, useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  ColumnSort,
   ColumnDef,
   ColumnOrderState,
-  VisibilityState,
-  RowSelectionState,
   ColumnSizingState,
+  ColumnSort,
   flexRender,
   getCoreRowModel,
-  useReactTable
+  RowSelectionState,
+  useReactTable,
+  VisibilityState
 } from '@tanstack/react-table';
 import makeStyles from "@mui/styles/makeStyles";
 import TableSortLabel from "@mui/material/TableSortLabel";
@@ -29,16 +27,17 @@ import clsx from "clsx";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
 import { Column, DataResponse, TableModel } from "@api/model";
 import InfiniteLoaderList from "./components/InfiniteLoaderList";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 import { getTableRows } from "./utils";
-import { StyledCheckbox } from "../../../../../../ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from  "ish-ui";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import ColumnChooser from "./components/ColumnChooser";
-import { StringKeyObject } from "../../../../../model/common/CommomObjects";
+import { StringKeyObject } from  "ish-ui";
 import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
-import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN, COLUMN_MIN_WIDTH } from "./constants";
+import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_MIN_WIDTH, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "./constants";
+import { StyledCheckbox } from "ish-ui";
 
 const useStyles = makeStyles(styles);
 
@@ -57,22 +56,22 @@ interface ListTableProps extends Partial<TableListProps> {
 }
 
 const Table = ({
-   columnsBase,
-   data,
-   onLoadMore,
-   onChangeColumns,
-   onChangeColumnsSort,
-   sortingInitial,
-   threeColumn,
-   onSelectionChange,
-   onRowDoubleClick,
-   selection,
-   getContainerNode,
-   onChangeColumnsOrder,
-   mainContentWidth,
-   sidebarWidth,
-   recordsCount
-  }: ListTableProps) => {
+                 columnsBase,
+                 data,
+                 onLoadMore,
+                 onChangeColumns,
+                 onChangeColumnsSort,
+                 sortingInitial,
+                 threeColumn,
+                 onSelectionChange,
+                 onRowDoubleClick,
+                 selection,
+                 getContainerNode,
+                 onChangeColumnsOrder,
+                 mainContentWidth,
+                 sidebarWidth,
+                 recordsCount
+               }: ListTableProps) => {
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
   const [sorting, onSortingChange] = useState<ColumnSort[]>([]);
   const [columnVisibility, onColumnVisibilityChange] = useState<VisibilityState>({});
@@ -99,9 +98,9 @@ const Table = ({
         id: SELECTION_COLUMN,
         disableResizing: true,
         size: 40,
-        cell: ({ row }) => {
+        cell: ({row}) => {
           const colorsCell: any = row.getVisibleCells().find(c => c.column.id === COLUMN_WITH_COLORS);
-          return  <>
+          return <>
             <StyledCheckbox
               checked={row.getIsSelected()}
               className={classes.selectionCheckbox}
@@ -150,7 +149,7 @@ const Table = ({
       listRef.current.scrollTo(e.currentTarget.scrollTop as any);
     }
   };
-  
+
   const table = useReactTable({
     data,
     columns,
@@ -198,7 +197,7 @@ const Table = ({
   }, 500), []);
 
   const toggleRowSelect = id => {
-    const updated = { ...table.getState().rowSelection };
+    const updated = {...table.getState().rowSelection};
     if (updated[id]) {
       delete updated[id];
     } else {
@@ -233,7 +232,7 @@ const Table = ({
       toggleRowSelect(row.id);
       return;
     }
-    onRowSelectionChange({ [row.id]: true });
+    onRowSelectionChange({[row.id]: true});
     onSelectionChangeHangler();
   };
 
@@ -256,8 +255,8 @@ const Table = ({
   }, [threeColumn]);
 
   const reorderColumns = ({
-     destination, source, headers
-   }) => {
+                            destination, source, headers
+                          }) => {
     if (destination) {
       const findDestinationColumn = headers[destination.index];
       const findSourceColumn = headers[source.index];
@@ -285,10 +284,10 @@ const Table = ({
     return {
       userSelect: 'none',
       ...draggableStyle,
-      ...isDragging ? { left: draggableStyle.left - sidebarWidth + tableRef.current.scrollLeft } : {}
+      ...isDragging ? {left: draggableStyle.left - sidebarWidth + tableRef.current.scrollLeft} : {}
     };
   };
-  
+
   const updateRemoteColumnsWidth = () => {
     onChangeColumns(table.getState().columnSizing, "width");
     document.removeEventListener("mouseup", updateRemoteColumnsWidth);
@@ -311,9 +310,13 @@ const Table = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={classes.headerRow}
-                style={{ ...snapshot.isDraggingOver ? { pointerEvents: "none" } : {} }}
+                style={{...snapshot.isDraggingOver ? {pointerEvents: "none"} : {}}}
               >
-                {headerGroup.headers.filter(({ column }) => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map(({ column, getContext, getResizeHandler }, columnIndex) => {
+                {headerGroup.headers.filter(({column}) => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map(({
+                                                                                                                               column,
+                                                                                                                               getContext,
+                                                                                                                               getResizeHandler
+                                                                                                                             }, columnIndex) => {
                   const disabledCell = [SELECTION_COLUMN, CHOOSER_COLUMN].includes(column.id);
                   const columnDef = column.columnDef as any;
                   const canSort = column.getCanSort();
@@ -339,16 +342,16 @@ const Table = ({
                             )}
                           >
                             <div
-                               style={{ width: column.getSize() }}
-                               className={clsx(
-                                 classes.draggableCellItem,
-                                 "text-truncate text-nowrap",
-                                 {
-                                   [classes.isDragging]: isDragging,
-                                   [classes.rightAlighed]: columnDef.type === "Money",
-                                   [classes.activeRight]: columnDef.type === "Money" && column.getIsSorted()
-                                 })
-                               }
+                              style={{width: column.getSize()}}
+                              className={clsx(
+                                classes.draggableCellItem,
+                                "text-truncate text-nowrap",
+                                {
+                                  [classes.isDragging]: isDragging,
+                                  [classes.rightAlighed]: columnDef.type === "Money",
+                                  [classes.activeRight]: columnDef.type === "Money" && column.getIsSorted()
+                                })
+                              }
                             >
                               <Typography
                                 variant="subtitle2"
@@ -373,47 +376,47 @@ const Table = ({
                                       }
                                     />
                                   </span>
-                                  <TableSortLabel
-                                    hideSortIcon={isDragging || !canSort}
-                                    active={Boolean(isSorted)}
-                                    direction={isSorted || "asc"}
-                                    onClick={canSort
-                                      ? () => {
-                                        if (isSorted === "desc") {
-                                          column.clearSorting();
-                                        } else {
-                                          column.toggleSorting(isSorted !== false);
+                                    <TableSortLabel
+                                      hideSortIcon={isDragging || !canSort}
+                                      active={Boolean(isSorted)}
+                                      direction={isSorted || "asc"}
+                                      onClick={canSort
+                                        ? () => {
+                                          if (isSorted === "desc") {
+                                            column.clearSorting();
+                                          } else {
+                                            column.toggleSorting(isSorted !== false);
+                                          }
+                                          onSortChange();
                                         }
-                                        onSortChange();
+                                        : null
                                       }
-                                      : null
-                                    }
-                                    classes={{
-                                      root: clsx(
-                                        canSort ? classes.canSort : classes.noSort,
-                                        columnDef.colClass,
-                                        "overflow-hidden"
-                                      ),
-                                      icon: columnDef.type === "Money" && canSort && classes.rightSort
-                                    }}
-                                    component="span"
-                                  >
-                                    {flexRender(columnDef.header, getContext())}
-                                    &nbsp;
-                                  </TableSortLabel>
-                                </>
+                                      classes={{
+                                        root: clsx(
+                                          canSort ? classes.canSort : classes.noSort,
+                                          columnDef.colClass,
+                                          "overflow-hidden"
+                                        ),
+                                        icon: columnDef.type === "Money" && canSort && classes.rightSort
+                                      }}
+                                      component="span"
+                                    >
+                                      {flexRender(columnDef.header, getContext())}
+                                      &nbsp;
+                                    </TableSortLabel>
+                                  </>
                                 )}
                               </Typography>
-                                {!isDraggingColumn && canResize &&
-                                  <div
-                                    className={classes.resizer}
-                                    onMouseDown={e => {
-                                      getResizeHandler()(e);
-                                      document.addEventListener("mouseup", updateRemoteColumnsWidth);
-                                    }}
-                                    onTouchStart={getResizeHandler()}
-                                  />
-                                }
+                              {!isDraggingColumn && canResize &&
+                                <div
+                                  className={classes.resizer}
+                                  onMouseDown={e => {
+                                    getResizeHandler()(e);
+                                    document.addEventListener("mouseup", updateRemoteColumnsWidth);
+                                  }}
+                                  onTouchStart={getResizeHandler()}
+                                />
+                              }
                             </div>
                           </div>
                         );
@@ -454,10 +457,11 @@ const Table = ({
     <div
       ref={tableRef}
       className={classes.table}
-      style={threeColumn ? { overflowX: "hidden" } : null}
+      style={threeColumn ? {overflowX: "hidden"} : null}
       onScroll={onScroll}
     >
-      {!threeColumn && <ColumnChooser columns={table.getAllLeafColumns()} classes={classes} onHiddenChange={onHiddenChange} />}
+      {!threeColumn &&
+        <ColumnChooser columns={table.getAllLeafColumns()} classes={classes} onHiddenChange={onHiddenChange}/>}
       <div className="flex-fill">
         {List}
       </div>
@@ -512,25 +516,25 @@ const RenderCell = props => {
 };
 
 const ListRoot = React.memo<TableListProps>(({
-   records,
-   shortCurrencySymbol,
-   onLoadMore,
-   onChangeModel,
-   customColumnFormats,
-   setRowClasses,
-   threeColumn,
-   primaryColumn,
-   secondaryColumn,
-   primaryColumnCondition,
-   secondaryColumnCondition,
-   onRowDoubleClick,
-   onSelectionChange,
-   selection,
-   firstColumnName,
-   getContainerNode,
-   sidebarWidth,
-   mainContentWidth
- }) => {
+                                               records,
+                                               shortCurrencySymbol,
+                                               onLoadMore,
+                                               onChangeModel,
+                                               customColumnFormats,
+                                               setRowClasses,
+                                               threeColumn,
+                                               primaryColumn,
+                                               secondaryColumn,
+                                               primaryColumnCondition,
+                                               secondaryColumnCondition,
+                                               onRowDoubleClick,
+                                               onSelectionChange,
+                                               selection,
+                                               firstColumnName,
+                                               getContainerNode,
+                                               sidebarWidth,
+                                               mainContentWidth
+                                             }) => {
   const columns = useMemo(
     () => {
       let firstVisibleIndex;
@@ -579,7 +583,7 @@ const ListRoot = React.memo<TableListProps>(({
     [records.columns, firstColumnName]
   );
 
-  const sortingInitial = useMemo(() => records.sort.map(s => ({ id: s.attribute, desc: !s.ascending })), [records.sort]);
+  const sortingInitial = useMemo(() => records.sort.map(s => ({id: s.attribute, desc: !s.ascending})), [records.sort]);
 
   const rows = useMemo(() => getTableRows(
     records,
@@ -614,7 +618,7 @@ const ListRoot = React.memo<TableListProps>(({
 
   const onChangeColumnsSort = sortings => {
     onChangeModel({
-      sortings: sortings.map(({ id, desc }) => ({
+      sortings: sortings.map(({id, desc}) => ({
         attribute: id,
         ascending: !desc,
         complexAttribute: records.columns.find(c => c.attribute === id).sortFields

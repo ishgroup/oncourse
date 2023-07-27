@@ -33,7 +33,7 @@ import SaleService from "../sales/services/SaleService";
 import SurveyService from "../survey/services/SurveyService";
 import ArticleProductService from "../articleProducts/service/ArticleProductService";
 import MessageService from "../messages/services/MessageService";
-import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
+import { formatToDateOnly } from  "ish-ui";
 import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from "../invoices/utils";
 import ContactsService from "../contacts/services/ContactsService";
 import { PayLineWithDefer } from "../../../model/entities/Payslip";

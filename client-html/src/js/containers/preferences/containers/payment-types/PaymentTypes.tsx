@@ -16,7 +16,7 @@ import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
+import { ShowConfirmCaller } from  "ish-ui";
 
 interface Props {
   getTypes: () => void;

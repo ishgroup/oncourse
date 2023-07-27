@@ -46,7 +46,7 @@ import {
   updateTableModel,
 } from "./actions";
 import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
-import ResizableWrapper from "../../../../ish-ui/layout/resizable/ResizableWrapper";
+import ResizableWrapper from  "ish-ui";
 import { FormMenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
 import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
@@ -55,7 +55,7 @@ import {
   BooleanArgFunction,
   NoArgFunction,
   StringArgFunction
-} from "../../../model/common/CommonFunctions";
+} from  "ish-ui";
 import {
   EditViewContainerProps,
   FilterGroup,
@@ -69,7 +69,7 @@ import {
   LIST_SIDE_BAR_DEFAULT_WIDTH,
   LISTVIEW_MAIN_CONTENT_WIDTH
 } from "../../../constants/Config";
-import { ConfirmProps, ShowConfirmCaller } from "../../../../ish-ui/model/Confirm";
+import { ConfirmProps, ShowConfirmCaller } from  "ish-ui";
 import { EntityName, FindEntityState } from "../../../model/entities/common";
 import { saveCategoryAQLLink } from "../../utils/links";
 import ReactTableList, { TableListProps } from "./components/list/ReactTableList";

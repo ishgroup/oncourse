@@ -5,7 +5,7 @@
 
 import { createStyles } from "@mui/styles";
 import { darken } from "@mui/material";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 
 export const formCommonStyles = (theme: AppTheme) => createStyles({
   marginTop: {

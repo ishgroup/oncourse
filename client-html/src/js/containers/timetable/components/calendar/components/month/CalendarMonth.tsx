@@ -9,7 +9,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { format, getDay } from "date-fns";
 import { TimetableMonth } from "../../../../../../model/timetable";
-import { DD_MMM_YYYY_MINUSED } from "../../../../../../common/utils/dates/format";
+import { DD_MMM_YYYY_MINUSED } from  "ish-ui";
 import { CalendarDay } from "../day/CalendarDay";
 import { TimetableContext } from "../../../../Timetable";
 import { filterSessionsByPeriod } from "../../../../utils";

@@ -16,7 +16,7 @@ import {
  } from "../../common/components/list-view/actions";
 import AuditsEditView from "./components/AuditsEditView";
 import AuditFindRelatedMenu from "./components/AuditFindRelatedMenu";
-import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "../../common/utils/dates/format";
+import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from  "ish-ui";
 import { getManualLink } from "../../common/utils/getManualLink";
 
 const filterGroups: FilterGroup[] = [

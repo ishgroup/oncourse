@@ -21,19 +21,19 @@ import { connect } from "react-redux";
 import {
   ClashType, CourseClassTutor, SessionWarning, TutorAttendance,
 } from "@api/model";
-import ErrorMessage from "../../../../../../ish-ui/fieldMessage/ErrorMessage";
+import ErrorMessage from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from "../../../../../../ish-ui/formFields/EditInPlaceDurationField";
+import EditInPlaceDurationField from  "ish-ui";
 import { stubFunction } from "../../../../../common/utils/common";
 import { State } from "../../../../../reducers/state";
-import { LinkAdornment } from "../../../../../../ish-ui/formFields/FieldAdornments";
+import { LinkAdornment } from  "ish-ui";
 import { openRoomLink } from "../../../rooms/utils";
 import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassTutorRooster from "./CourseClassTutorRooster";
 import { setShiftedTutorAttendances } from "../../utils";
-import { NoWrapOption } from "../../../../../../ish-ui/formFields/SelectCustomComponents";
+import { NoWrapOption } from  "ish-ui";
 
 interface Props {
   form: string;

@@ -15,8 +15,8 @@ import { FormEditorField } from "../../../../common/components/form/formFields/F
 import { State } from "../../../../reducers/state";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { openInternalLink } from "../../../../common/utils/links";
-import { LinkAdornment } from "../../../../../ish-ui/formFields/FieldAdornments";
-import TimetableButton from "../../../../../ish-ui/buttons/TimetableButton";
+import { LinkAdornment } from  "ish-ui";
+import TimetableButton from  "ish-ui";
 import { openSiteLink } from "../../sites/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

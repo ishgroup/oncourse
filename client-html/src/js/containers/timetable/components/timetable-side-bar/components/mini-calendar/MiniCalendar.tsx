@@ -9,12 +9,11 @@
 import React, { useContext } from "react";
 import { addMonths, format } from "date-fns";
 import { connect } from "react-redux";
-import CalendarHeader from "./components/CalendarHeader";
-import CalendarWeekPanel from "./components/CalendarWeekPanel";
 import CalendarBody from "./components/CalendarBody";
 import { TimetableContext } from "../../../../Timetable";
 import { State } from "../../../../../../reducers/state";
 import { validateDate } from "../../../../../../common/utils/validation";
+import { CalendarHeader, CalendarWeekPanel } from "ish-ui";
 
 interface Props {
   classes?: any;

@@ -12,11 +12,10 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import DateRange from "@mui/icons-material/DateRange";
 import Launch from "@mui/icons-material/Launch";
 import Grid from "@mui/material/Grid";
-import { ShowConfirmCaller } from "../../../../../ish-ui/model/Confirm";
-import { EntityType } from "../../../../../ish-ui/model/NestedEntity";
+import AddButton, { AddButton, EntityType, ShowConfirmCaller } from "ish-ui";
 import { openInternalLink } from "../../../utils/links";
-import AddButton from "../../../../../ish-ui/buttons/AddButton";
 import clsx from "clsx";
+import { ButtonGroup } from "@mui/material";
 
 interface Props {
   entityName?: string;
@@ -32,17 +31,17 @@ interface Props {
 }
 
 const NestedEntity: React.FC<Props> = ({
-  entityName,
-  entityTypes,
-  addLink,
-  dirty,
-  showConfirm,
-  twoColumn,
-  isNew,
-  preventAddMessage,
-  goToLink,
-  secondaryHeading
-}) => {
+                                         entityName,
+                                         entityTypes,
+                                         addLink,
+                                         dirty,
+                                         showConfirm,
+                                         twoColumn,
+                                         isNew,
+                                         preventAddMessage,
+                                         goToLink,
+                                         secondaryHeading
+                                       }) => {
   const openEntityLink = useCallback(
     link => {
       openInternalLink(link);
@@ -51,13 +50,13 @@ const NestedEntity: React.FC<Props> = ({
   );
 
   const saveAlert = () =>
-  showConfirm(
-    {
-      title: null,
-      confirmMessage: preventAddMessage,
-      cancelButtonText: "OK"
-    },
-  );
+    showConfirm(
+      {
+        title: null,
+        confirmMessage: preventAddMessage,
+        cancelButtonText: "OK"
+      },
+    );
 
   const openAddLink = useCallback(() => {
     openInternalLink(addLink);
@@ -73,7 +72,7 @@ const NestedEntity: React.FC<Props> = ({
   const addAction = useMemo(
     () =>
       (addLink ? (
-        <AddButton onClick={isNew ? saveAlert : openAddLink} />
+        <AddButton onClick={isNew ? saveAlert : openAddLink}/>
       ) : null),
     [isNew, addLink]
   );
@@ -82,10 +81,11 @@ const NestedEntity: React.FC<Props> = ({
     <div>
       {entityName && (
         <div className="centeredFlex">
-          <Typography className={clsx("pt-2 pb-2", secondaryHeading ? "secondaryHeading" : "heading")}>{entityName}</Typography>
+          <Typography
+            className={clsx("pt-2 pb-2", secondaryHeading ? "secondaryHeading" : "heading")}>{entityName}</Typography>
           {goToLink && (
             <IconButton size="small" color="primary" onClick={() => openInternalLink(goToLink)}>
-              <Launch fontSize="inherit" />
+              <Launch fontSize="inherit"/>
             </IconButton>
           )}
           {addAction}
@@ -106,7 +106,7 @@ const NestedEntity: React.FC<Props> = ({
               <ButtonGroup variant="contained" color="inherit" className="mr-2" disabled={t.disabled}>
                 {t.timetableLink && (
                   <Button size="small" onClick={() => openTimetableLink(t.timetableLink)}>
-                    <DateRange />
+                    <DateRange/>
                   </Button>
                 )}
                 <Button size="small" onClick={t.linkHandler ? t.linkHandler : () => openEntityLink(t.link)}>

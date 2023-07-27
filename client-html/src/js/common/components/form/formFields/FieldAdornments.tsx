@@ -8,9 +8,7 @@
 
 import React from "react";
 import IconButton from "@mui/material/IconButton";
-import Launch from "@mui/icons-material/Launch";
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { IconButtonTypeMap } from "@mui/material";
 import { useAppDispatch } from "../../../utils/hooks";
 import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "../../layout/swipeable-sidebar/actions";
@@ -31,12 +29,12 @@ interface HeaderContactLinkProps {
 
 export const HeaderContactTitle: React.FC<HeaderContactLinkProps> = (
   {
-   id,
-   name
- }
+    id,
+    name
+  }
 ) => {
   const dispatch = useAppDispatch();
-  
+
   const setSelectedContact = () => {
     dispatch(toggleSwipeableDrawer());
     dispatch(setSwipeableDrawerSelection(id));
@@ -46,7 +44,7 @@ export const HeaderContactTitle: React.FC<HeaderContactLinkProps> = (
     <div className="d-inline-flex-center">
       {name}
       <IconButton disabled={!id} size="small" color="primary" onClick={setSelectedContact}>
-        <EmojiPeopleIcon fontSize="inherit" />
+        <EmojiPeopleIcon fontSize="inherit"/>
       </IconButton>
     </div>
   );
@@ -57,8 +55,8 @@ interface ContactLinkAdornmentProps {
 }
 
 export const ContactLinkAdornment: React.FC<ContactLinkAdornmentProps> = ({
-  id
-}) => {
+                                                                            id
+                                                                          }) => {
   const dispatch = useAppDispatch();
   const setSelectedContact = () => {
     dispatch(toggleSwipeableDrawer());
@@ -75,7 +73,7 @@ export const ContactLinkAdornment: React.FC<ContactLinkAdornmentProps> = ({
           root: "inputAdornmentButton"
         }}
       >
-        <EmojiPeopleIcon className="inputAdornmentIcon" color="inherit" />
+        <EmojiPeopleIcon className="inputAdornmentIcon" color="inherit"/>
       </IconButton>
     </span>
   );

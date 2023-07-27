@@ -77,17 +77,17 @@ const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
 
 const request: EpicUtils.Request<any, { entity: EntityName, diff: Diff }> = {
   type: BULK_CHANGE_RECORDS,
-  getData: ({ entity, diff }) => getBulkRequest(entity, diff),
-  processData: (v, s, { entity }) => [
-      {
-        type: FETCH_SUCCESS,
-        payload: { message: "Bulk change completed" }
-      },
-      {
-        type: GET_RECORDS_REQUEST,
-        payload: { entity, listUpdate: true }
-      }
-    ],
+  getData: ({entity, diff}) => getBulkRequest(entity, diff),
+  processData: (v, s, {entity}) => [
+    {
+      type: FETCH_SUCCESS,
+      payload: {message: "Bulk change completed"}
+    },
+    {
+      type: GET_RECORDS_REQUEST,
+      payload: {entity, listUpdate: true}
+    }
+  ],
   processError: response => {
     const isClientReject = typeof response === "string";
 

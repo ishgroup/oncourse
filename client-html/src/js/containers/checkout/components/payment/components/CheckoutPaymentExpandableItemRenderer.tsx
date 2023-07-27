@@ -12,7 +12,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LinkAdornment } from "../../../../../../ish-ui/formFields/FieldAdornments";
+import { LinkAdornment } from  "ish-ui";
 import { openInternalLink } from "../../../../../common/utils/links";
 import { CheckoutItem } from "../../../../../model/checkout";
 import { getInvoiceLineKey } from "../../../utils";

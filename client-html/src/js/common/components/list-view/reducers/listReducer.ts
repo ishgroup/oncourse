@@ -7,33 +7,31 @@
  */
 
 import { IAction } from "../../../actions/IshAction";
-import {
-  GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED,
-  GET_SCRIPTS_FULFILLED
-} from "../../../actions";
+import { GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED, GET_SCRIPTS_FULFILLED } from "../../../actions";
 import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import {
   CLEAR_LIST_STATE,
+  CLEAR_RECIPIENTS_MESSAGE_DATA,
   GET_FILTERS_FULFILLED,
+  GET_PLAIN_RECORDS_REQUEST_FULFILLED,
   GET_RECORDS_FULFILLED,
   GET_RECORDS_REQUEST,
   SET_LIST_CORE_FILTERS,
+  SET_LIST_CREATING_NEW,
+  SET_LIST_CUSTOM_TABLE_MODEL,
   SET_LIST_EDIT_RECORD,
+  SET_LIST_EDIT_RECORD_FETCHING,
+  SET_LIST_ENTITY,
+  SET_LIST_FULL_SCREEN_EDIT_VIEW,
   SET_LIST_LAYOUT,
+  SET_LIST_MENU_TAGS,
   SET_LIST_SAVING_FILTER,
   SET_LIST_SEARCH,
-  SET_LIST_ENTITY,
+  SET_LIST_SEARCH_ERROR,
   SET_LIST_SELECTION,
   SET_LIST_USER_AQL_SEARCH,
-  GET_PLAIN_RECORDS_REQUEST_FULFILLED,
-  SET_LIST_MENU_TAGS,
-  SET_LIST_SEARCH_ERROR,
-  SET_LIST_CREATING_NEW,
-  SET_LIST_FULL_SCREEN_EDIT_VIEW,
   SET_RECIPIENTS_MESSAGE_DATA,
-  CLEAR_RECIPIENTS_MESSAGE_DATA,
-  SET_LIST_EDIT_RECORD_FETCHING,
-  UPDATE_TAGS_ORDER, SET_LIST_CUSTOM_TABLE_MODEL,
+  UPDATE_TAGS_ORDER,
 } from "../actions";
 import { latestActivityStorageHandler } from "../../../utils/storage";
 import { GetRecordsArgs, ListState } from "../../../../model/common/ListView";
@@ -106,8 +104,8 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
       };
 
     case GET_RECORDS_FULFILLED: {
-      const { records, payload, searchQuery } = action.payload;
-      const { stopIndex }: GetRecordsArgs = payload;
+      const {records, payload, searchQuery} = action.payload;
+      const {stopIndex}: GetRecordsArgs = payload;
 
       let newRecords = state.records;
       newRecords = records;
@@ -124,9 +122,9 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
         ...state,
         records: {
           ...newRecords,
-          sort: newRecords.sort.map(s => ({ ...s })),
-          columns: newRecords.columns.map(c => ({ ...c })),
-          rows: newRecords.rows.map(r => ({ ...r })),
+          sort: newRecords.sort.map(s => ({...s})),
+          columns: newRecords.columns.map(c => ({...c})),
+          rows: newRecords.rows.map(r => ({...r})),
           tagsOrder: [...newRecords.tagsOrder],
           filteredCount: newRecords.entity === "Audit" ? PLAIN_LIST_MAX_PAGE_SIZE : newRecords.filteredCount,
           filterColumnWidth: newRecords.filterColumnWidth < LIST_SIDE_BAR_DEFAULT_WIDTH
@@ -139,7 +137,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case GET_PLAIN_RECORDS_REQUEST_FULFILLED: {
-      const { plainRecords } = action.payload;
+      const {plainRecords} = action.payload;
 
       return {
         ...state,
@@ -149,11 +147,11 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_EDIT_RECORD: {
-      const { editRecord, name } = action.payload;
+      const {editRecord, name} = action.payload;
 
       if (editRecord && editRecord.id) {
         latestActivityStorageHandler(
-          { name, date: new Date().toISOString(), id: editRecord.id },
+          {name, date: new Date().toISOString(), id: editRecord.id},
           state.records.entity
         );
       }
@@ -187,7 +185,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case GET_FILTERS_FULFILLED: {
-      const { filterGroups } = action.payload;
+      const {filterGroups} = action.payload;
 
       state.records.offset = 0;
 
@@ -199,7 +197,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_CORE_FILTERS: {
-      const { filterGroups } = action.payload;
+      const {filterGroups} = action.payload;
 
       state.records.offset = 0;
 
@@ -244,7 +242,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_SEARCH_ERROR: {
-      const { searchError } = action.payload;
+      const {searchError} = action.payload;
 
       return {
         ...state,
@@ -253,7 +251,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_SEARCH: {
-      const { search } = action.payload;
+      const {search} = action.payload;
 
       state.records.offset = 0;
 
@@ -282,7 +280,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_USER_AQL_SEARCH: {
-      const { userAQLSearch } = action.payload;
+      const {userAQLSearch} = action.payload;
       return {
         ...state,
         userAQLSearch
@@ -290,7 +288,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_SELECTION: {
-      const { selection } = action.payload;
+      const {selection} = action.payload;
       return {
         ...state,
         selection
@@ -315,7 +313,7 @@ export const listReducer = (state: State = new State(), action: IAction<any>): a
     }
 
     case SET_LIST_MENU_TAGS: {
-      const { menuTags, checkedChecklists, uncheckedChecklists } = action.payload;
+      const {menuTags, checkedChecklists, uncheckedChecklists} = action.payload;
 
       state.records.offset = 0;
 

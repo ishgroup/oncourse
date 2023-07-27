@@ -45,22 +45,22 @@ export const deleteExportTemplatePreview = (id: number) => ({
 
 export const setPrintValidatingStatus = (validating: boolean) => ({
   type: SET_PRINT_VALIDATING_STATUS,
-  payload: { validating }
+  payload: {validating}
 });
 
 export const getOverlayItems = (overlayToSelect?: string) => ({
   type: GET_OVERLAY_ITEMS,
-  payload: { overlayToSelect }
+  payload: {overlayToSelect}
 });
 
 export const addPrintOverlay = (fileName: string, overlay: File) => ({
   type: ADD_PRINT_OVERLAY,
-  payload: { fileName, overlay }
+  payload: {fileName, overlay}
 });
 
 export const doPrintRequest = (rootEntity: string, printRequest: PrintRequest) => ({
   type: DO_PRINT_REQUEST,
-  payload: { rootEntity, printRequest }
+  payload: {rootEntity, printRequest}
 });
 
 export const getPrintResult = (processId: string) => ({
@@ -87,5 +87,5 @@ export const getExportResult = (entityName: string, processId: string, outputTyp
 
 export const runExport = (exportRequest: ExportRequest, outputType: OutputType, isClipboard: boolean) => ({
   type: POST_EXPORT_REQUEST,
-  payload: { exportRequest, outputType, isClipboard }
+  payload: {exportRequest, outputType, isClipboard}
 });

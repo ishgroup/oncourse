@@ -5,7 +5,7 @@
 
 import { _toRequestType } from "../../../../../../common/actions/ActionUtils";
 import { CourseClassTutor } from "@api/model";
-import { StringKeyAndValueObject } from "../../../../../../model/common/CommomObjects";
+import { StringKeyAndValueObject } from  "ish-ui";
 
 export const GET_COURSE_CLASS_TUTORS = _toRequestType("get/courseClass/tutors");
 

@@ -1,4 +1,4 @@
-import { AnyArgFunction } from "./CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 
 export type NestedTableColumnsTypes = "checkbox" | "link" | "currency" | "date" | "date-time" | "delete";
 

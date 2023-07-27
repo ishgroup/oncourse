@@ -15,9 +15,9 @@ import Typography from "@mui/material/Typography";
 import {
   CheckoutPayment, CheckoutSummary
 } from "../../../../../../model/checkout";
-import { BooleanArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { BooleanArgFunction } from  "ish-ui";
 import { State } from "../../../../../../reducers/state";
-import { YYYY_MM_DD_MINUSED } from "../../../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
 import {
   checkoutClearPaymentStatus,

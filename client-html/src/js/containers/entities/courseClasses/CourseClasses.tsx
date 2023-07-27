@@ -25,7 +25,7 @@ import {
 } from "@api/model";
 import Button from "@mui/material/Button";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { StyledCheckbox } from "../../../../ish-ui/formFields/CheckboxField";
+import { StyledCheckbox } from  "ish-ui";
 import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import {
@@ -47,7 +47,7 @@ import OutcomeService from "../outcomes/services/OutcomeService";
 import CourseClassCogWheel from "./components/CourseClassCogWheel";
 import CourseClassEditView from "./components/CourseClassEditView";
 import { getCourseClassTags, updateCourseClass } from "./actions";
-import { BooleanArgFunction, NoArgFunction } from "../../../model/common/CommonFunctions";
+import { BooleanArgFunction, NoArgFunction } from  "ish-ui";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import { getPlainAccounts } from "../accounts/actions";
@@ -76,7 +76,7 @@ import {
   PLAIN_LIST_MAX_PAGE_SIZE
 } from "../../../constants/Config";
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
-import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
+import { III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
 import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
 import uniqid from "../../../common/utils/uniqid";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";

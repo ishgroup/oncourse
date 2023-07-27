@@ -1,19 +1,19 @@
 import React from "react";
 import {
+  AlchemerFields,
+  AmazonS3Fields,
+  AzureFields,
   CanvasFields,
   CloudAssessFields,
   CoassembleFields,
+  KronosFields,
   MailchimpFields,
   MicropowerFields,
   MoodleFields,
   MYOBFields,
-  AlchemerFields,
-  SurveyMonkeyFields,
-  XeroFields,
-  AmazonS3Fields,
-  AzureFields,
   ServiceNSWFields,
-  KronosFields
+  SurveyMonkeyFields,
+  XeroFields
 } from "./IntegrationsFields";
 
 export interface IntegrationSchema {

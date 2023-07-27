@@ -30,7 +30,7 @@ import ScriptRunAudit from "../../../../../common/components/layout/swipeable-si
 import { getExpression } from "../../../../../common/components/list-view/utils/listFiltersUtils";
 import { ProcessState } from "../../../../../common/reducers/processReducer";
 import EntityService from "../../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
+import { III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";

@@ -9,7 +9,7 @@ import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from 
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import EditInPlaceField from "../../../../../ish-ui/formFields/EditInPlaceField";
+import EditInPlaceField from  "ish-ui";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import { State } from "../../../../reducers/state";

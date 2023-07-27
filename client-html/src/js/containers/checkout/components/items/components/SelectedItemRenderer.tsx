@@ -13,8 +13,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
-import { III_DD_MMM_YYYY_HH_MM_AAAA } from "../../../../../common/utils/dates/format";
+import { AppTheme } from  "ish-ui";
+import { III_DD_MMM_YYYY_HH_MM_AAAA } from  "ish-ui";
 import CheckoutAlertTextMessage from "../../CheckoutAlertTextMessage";
 
 const styles = (theme: AppTheme) => createStyles({

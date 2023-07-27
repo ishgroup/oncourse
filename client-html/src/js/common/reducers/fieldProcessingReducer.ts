@@ -19,7 +19,7 @@ export const fieldProcessingReducer = (state: Record<string, boolean> = {}, acti
     }
 
     case END_FIELD_PROCESSING_ACTION: {
-      const updated = { ...state };
+      const updated = {...state};
       if (updated[action.payload]) {
         delete updated[action.payload];
       }

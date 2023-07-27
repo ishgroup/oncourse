@@ -19,17 +19,12 @@ import { Backdrop } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import { PreferenceEnum, SearchQuery } from "@api/model";
-import { AppTheme } from "../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { State } from "../../../../reducers/state";
 import { getDashboardSearch } from "../../../../containers/dashboard/actions";
 import { openInternalLink } from "../../../utils/links";
 import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
-import {
-  checkPermissions,
-  getOnDemandScripts,
-  getUserPreferences,
-  setUserPreference
-} from "../../../actions";
+import { checkPermissions, getOnDemandScripts, getUserPreferences, setUserPreference } from "../../../actions";
 import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";
 import UserSearch from "./components/UserSearch";
 import SearchResults from "./components/searchResults/SearchResults";
@@ -45,7 +40,7 @@ import ExecuteScriptModal from "../../../../containers/automation/containers/scr
 import { DashboardItem } from "../../../../model/dashboard";
 import navigation from "../../navigation/data/navigation.json";
 import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
+import { AnyArgFunction } from  "ish-ui";
 import SendMessageEditView from "../../../../containers/entities/messages/components/SendMessageEditView";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
@@ -119,7 +114,7 @@ const styles = (theme: AppTheme) =>
     paperBorder: {
       borderRight: `1px solid ${theme.palette.divider}`
     },
-    logo: { height: "36px", width: "auto" },
+    logo: {height: "36px", width: "auto"},
   });
 
 interface Props {
@@ -204,7 +199,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
       getFavoriteScripts();
     }
   }, [hasScriptsPermissions]);
-  
+
   useEffect(() => {
     if (!opened) {
       setSelected(null);
@@ -230,13 +225,13 @@ const SwipeableSidebar: React.FC<Props> = props => {
       if (userSearch) {
         navigation.features
           .filter(c => c.title.toLowerCase().includes(userSearch.toLowerCase()))
-          .forEach((c, i) => results.push(Object.assign(c, { entity: "category", htmlId: getResultId(i, c.key) })));
+          .forEach((c, i) => results.push(Object.assign(c, {entity: "category", htmlId: getResultId(i, c.key)})));
       }
 
       if (userSearch && scripts && hasScriptsPermissions) {
         scripts
           .filter(s => s.name.toLowerCase().includes(userSearch.toLowerCase()))
-          .forEach((s, i) => results.push(Object.assign(s, { entity: "script", htmlId: getResultId(i, s.name) })));
+          .forEach((s, i) => results.push(Object.assign(s, {entity: "script", htmlId: getResultId(i, s.name)})));
       }
 
       searchResults.map(res => {
@@ -245,7 +240,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
             return true;
           }
           results.push(
-            Object.assign(item, { entity: res.entity, htmlId: getResultId(index, `${res.entity}-${item.id}`) })
+            Object.assign(item, {entity: res.entity, htmlId: getResultId(index, `${res.entity}-${item.id}`)})
           );
           return false;
         });
@@ -269,7 +264,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
     if (searchResults) {
       const updated = [...searchResults];
 
-      updated.map(res => Object.assign(res, { showAll: false }));
+      updated.map(res => Object.assign(res, {showAll: false}));
 
       formatSearchControlResult(updated);
     }
@@ -378,13 +373,13 @@ const SwipeableSidebar: React.FC<Props> = props => {
   );
 
   const groupedSortedItems = useMemo<DashboardItem[]>(() => [
-    ...navigation.features.map(f => ({
-     category: f.key, url: f.link, name: f.title, id: null
-    })),
-    ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])]
-    .sort(sortItems),
+      ...navigation.features.map(f => ({
+        category: f.key, url: f.link, name: f.title, id: null
+      })),
+      ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])]
+      .sort(sortItems),
     [navigation.features, scripts]);
-  
+
   const isContactIdSelected = selected && typeof selected === "number";
 
   const updateFavorites = (key, type: "category" | "automation") => {
@@ -425,7 +420,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
       >
         <div className={classes.drawerWidth}>
           <div className={clsx("pl-2", classes.toolbar)}>
-            <HamburgerMenu variant={variant} form={form} />
+            <HamburgerMenu variant={variant} form={form}/>
           </div>
           <UserSearch
             getSearchResults={getSearchResults}
@@ -448,7 +443,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                 className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
               >
                 <SearchResults
-                  classes={{ root: classes.searchResultsRoot }}
+                  classes={{root: classes.searchResultsRoot}}
                   userSearch={userSearch}
                   checkSelectedResult={checkSelectedResult}
                   setExecMenuOpened={setExecMenuOpened}
@@ -470,7 +465,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   scriptId={scriptIdSelected}
                 />
                 <Favorites
-                  classes={{ topBar: classes.favoritesTopBar }}
+                  classes={{topBar: classes.favoritesTopBar}}
                   groupedSortedItems={groupedSortedItems}
                   setScriptIdSelected={setScriptIdSelected}
                   execMenuOpened={execMenuOpened}
@@ -488,8 +483,8 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   execMenuOpened={execMenuOpened}
                   setExecMenuOpened={setExecMenuOpened}
                 />
-                <Divider variant="middle" className="mb-2" />
-                <SidebarLatestActivity checkSelectedResult={checkSelectedResult} />
+                <Divider variant="middle" className="mb-2"/>
+                <SidebarLatestActivity checkSelectedResult={checkSelectedResult}/>
               </div>
             </Collapse>
           </div>
@@ -503,18 +498,18 @@ const SwipeableSidebar: React.FC<Props> = props => {
         }
         >
           {isContactIdSelected ? (
-            <ContactInsight id={selected as number} onClose={() => setSelected(null)} />
-        ) : (
-          <NavigationCategory
-            selected={selected as string}
-            favorites={favorites}
-            favoriteScripts={favoriteScripts}
-            onClose={() => setSelected(null)}
-            setScriptIdSelected={setScriptIdSelected}
-            setExecMenuOpened={setExecMenuOpened}
-            updateFavorites={updateFavorites}
-          />
-        )}
+            <ContactInsight id={selected as number} onClose={() => setSelected(null)}/>
+          ) : (
+            <NavigationCategory
+              selected={selected as string}
+              favorites={favorites}
+              favoriteScripts={favoriteScripts}
+              onClose={() => setSelected(null)}
+              setScriptIdSelected={setScriptIdSelected}
+              setExecMenuOpened={setExecMenuOpened}
+              updateFavorites={updateFavorites}
+            />
+          )}
         </div>
       </SwipeableDrawer>
 
@@ -533,7 +528,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
         selectionOnly={isContactIdSelected}
       />
     </>
-);
+  );
 };
 
 const mapsStateToProps = (state: State) => ({
@@ -559,7 +554,7 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   getScripts: () => dispatch(getOnDemandScripts()),
   getFavoriteScripts: () => dispatch(getUserPreferences([FAVORITE_SCRIPTS_KEY])),
   getFavorites: () => dispatch(getUserPreferences([DASHBOARD_FAVORITES_KEY])),
-  getScriptsPermissions: () => dispatch(checkPermissions({ keyCode: "ADMIN" })),
+  getScriptsPermissions: () => dispatch(checkPermissions({keyCode: "ADMIN"})),
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, {withTheme: true})(SwipeableSidebar));

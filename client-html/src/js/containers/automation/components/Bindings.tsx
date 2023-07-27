@@ -21,11 +21,11 @@ import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/Impor
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../containers/scripts/constants";
 import DataTypesMenu from "./DataTypesMenu";
 import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { renderAutomationItems } from "../utils";
-import { AppTheme } from "../../../../ish-ui/model/Theme";
-import AddButton from "../../../../ish-ui/buttons/AddButton";
-import { useHoverShowStyles } from "../../../../ish-ui/styles/hooks";
+import { AppTheme } from  "ish-ui";
+import AddButton from  "ish-ui";
+import { useHoverShowStyles } from  "ish-ui";
 import { CatalogItemType } from "../../../model/common/Catalog";
 
 export type BindingsItemType = "component" | "label";

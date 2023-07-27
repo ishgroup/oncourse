@@ -8,8 +8,8 @@ import clsx from "clsx";
 import ButtonBase from "@mui/material/ButtonBase";
 import { FundingUpload, FundingStatus } from "@api/model";
 import { format } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
-import { AppTheme } from "../../../../../ish-ui/model/Theme";
+import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from  "ish-ui";
+import { AppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) =>
   createStyles({

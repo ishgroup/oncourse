@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import { Dispatch } from "redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { AppTheme } from "../../../../../../ish-ui/model/Theme";
+import { AppTheme } from  "ish-ui";
 import { normalizeNumberToZero, preventDecimalEnter } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
 import { validateNonNegative } from "../../../../../common/utils/validation";

@@ -21,7 +21,7 @@ import {
   clearCcIframeUrl
 } from "../../../../actions/checkoutPayment";
 import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
+import { StringArgFunction } from  "ish-ui";
 import { FORM } from "../../../CheckoutSelection";
 import { LoadingButton } from "@mui/lab";
 

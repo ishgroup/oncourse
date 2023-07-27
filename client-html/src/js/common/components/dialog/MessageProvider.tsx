@@ -10,13 +10,13 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../../reducers/state";
-import Message from "../../../../ish-ui/dialog/message/Message";
+import Message from "ish-ui";
 import { clearFetch, clearMessage } from "../../actions";
 
 const MessageProvider = props => {
   const {
- fetch, message, clearFetch, clearMessage
-} = props;
+    fetch, message, clearFetch, clearMessage
+  } = props;
   return (
     <Message
       opened={Boolean(fetch.message || message.message)}

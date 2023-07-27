@@ -17,7 +17,7 @@ import debounce from "lodash.debounce";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
-import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
+import { D_MMM_YYYY } from  "ish-ui";
 import { decimalMul } from "../../../../../../common/utils/numbers/decimalCalculation";
 import {
   formatCurrency,
