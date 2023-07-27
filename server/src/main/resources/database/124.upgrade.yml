@@ -1,0 +1,137 @@
+databaseChangeLog:
+  - changeSet:
+      id: 124-1
+      comment: add a new table for checkout to entities relations
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - not:
+            - tableExists:
+                tableName: CheckoutContactRelation
+      changes:
+        - createTable:
+            tableName: CheckoutContactRelation
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  name: willowId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contactId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: checkoutId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: foreignId
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: selected
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: INTEGER
+              - column:
+                  name: entityName
+                  type: VARCHAR(45)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 124-2
+      comment: add constraints to new foreign keys
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: CheckoutContactRelation_Contact
+            - foreignKeyConstraintExists:
+                foreignKeyName: CheckoutContactRelation_Checkout
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: CheckoutContactRelation
+            baseColumnNames: contactId
+            constraintName: CheckoutContactRelation_Contact
+            referencedTableName: Contact
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: CheckoutContactRelation
+            baseColumnNames: checkoutId
+            constraintName: CheckoutContactRelation_Checkout
+            referencedTableName: Checkout
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 124-3
+      comment: add checkoutUrl column to Checkout
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Checkout
+                columnName: checkoutUrl
+      changes:
+        - addColumn:
+            tableName: Checkout
+            columns:
+              - column:
+                  name: checkoutUrl
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 124-4
+      comment: set shopping cart column to nullable
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Checkout
+            columnName: shoppingCart
+      changes:
+        - dropNotNullConstraint:
+            tableName: Checkout
+            columnName: shoppingCart
+            columnDataType: LONGTEXT
+
+  - changeSet:
+      id: 124-5
+      comment: drop shopping cart column
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Checkout
+            columnName: shoppingCart
+      changes:
+        - dropColumn:
+            tableName: Checkout
+            columnName: shoppingCart
+            columnDataType: LONGTEXT
