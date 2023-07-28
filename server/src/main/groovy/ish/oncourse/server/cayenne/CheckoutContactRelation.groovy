@@ -8,9 +8,12 @@
 
 package ish.oncourse.server.cayenne
 
+
+import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.cayenne.glue._CheckoutContactRelation
 
+@QueueableEntity
 abstract class CheckoutContactRelation extends _CheckoutContactRelation implements Queueable {
     abstract void setRelatedObject(CayenneDataObject object);
     abstract Long getRelatedObjectId();

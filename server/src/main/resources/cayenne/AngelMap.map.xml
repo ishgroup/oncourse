@@ -213,6 +213,8 @@
 		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="quantity" type="INTEGER"/>
 		<db-attribute name="selected" type="BOOLEAN"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="entityName" type="VARCHAR" isMandatory="true" length="45"/>
 		<db-attribute name="foreignId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
@@ -1900,12 +1902,12 @@
 		<obj-attribute name="totalValue" type="ish.math.Money" db-attribute-path="totalValue"/>
 	</obj-entity>
 	<obj-entity name="CheckoutContactRelation" abstract="true" className="ish.oncourse.server.cayenne.CheckoutContactRelation" dbEntityName="CheckoutContactRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
-		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="angelId"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="relatedEntityName" type="java.lang.String" db-attribute-path="entityName"/>
 		<obj-attribute name="selected" type="java.lang.Boolean" db-attribute-path="selected"/>
-		<obj-attribute name="created" type="java.util.Date" db-attribute-path="created"/>
-		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="modified"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 	</obj-entity>
 	<obj-entity name="CheckoutProductRelation" abstract="false" superEntityName="CheckoutContactRelation" className="ish.oncourse.server.cayenne.CheckoutProductRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<qualifier><![CDATA[relatedEntityName = "Product"]]></qualifier>
