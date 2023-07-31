@@ -13,8 +13,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Launch from "@mui/icons-material/Launch";
 import Grid from "@mui/material/Grid";
 import { IconButton } from "@mui/material";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { openInternalLink } from "ish-ui";
+import { formatCurrency } from "ish-ui";
 import { BudgetExpandableProps } from "./BudgetExpandableItemRenderer";
 
 const BudgetInvoiceItemRow = React.memo<any>(({ value, currencySymbol, classes }) => {

@@ -13,9 +13,8 @@ import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
-import { openInternalLink } from "../../../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { getPrivisioningLink } from "../../../../../../routes/routesMapping";
-import { ListItem } from "@mui/material";
 
 const styles = theme => createStyles({
   chips: {

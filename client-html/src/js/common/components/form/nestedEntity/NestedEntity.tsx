@@ -12,10 +12,9 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import DateRange from "@mui/icons-material/DateRange";
 import Launch from "@mui/icons-material/Launch";
 import Grid from "@mui/material/Grid";
-import AddButton, { AddButton, EntityType, ShowConfirmCaller } from "ish-ui";
-import { openInternalLink } from "../../../utils/links";
+import { AddButton, EntityType, ShowConfirmCaller } from "ish-ui";
+import { openInternalLink } from "ish-ui";
 import clsx from "clsx";
-import { ButtonGroup } from "@mui/material";
 
 interface Props {
   entityName?: string;

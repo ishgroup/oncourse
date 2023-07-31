@@ -12,13 +12,13 @@ import { change, Field } from "redux-form";
 import { SurveyItem } from "@api/model";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import Score from "./Score";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { HeaderContactTitle } from  "ish-ui";
 
 interface Props {
   classes?: any;

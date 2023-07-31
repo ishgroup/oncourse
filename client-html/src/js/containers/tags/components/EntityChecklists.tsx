@@ -21,9 +21,7 @@ import TagsService from "../services/TagsService";
 import { useAppDispatch } from "../../../common/utils/hooks";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import StaticProgress from "../../../common/components/progress/StaticProgress";
-import { ColoredCheckBox } from  "ish-ui";
-import { BooleanArgFunction } from  "ish-ui";
-import { openInternalLink } from "../../../common/utils/links";
+import { BooleanArgFunction, openInternalLink, ColoredCheckBox } from  "ish-ui";
 import { LSGetItem, LSSetItem } from "../../../common/utils/storage";
 import { ENTITY_TAGS_EXPAND_SETTINGS_KEY } from "../constants";
 

@@ -17,7 +17,7 @@ import structure from "./data/structure.json";
 import CatalogItem from "../layout/catalog/CatalogItem";
 import { useAppSelector } from "../../utils/hooks";
 import { BooleanArgFunction, NumberArgFunction } from  "ish-ui";
-import { openInternalLink } from "../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { getPrivisioningLink } from "../../../routes/routesMapping";
 import StructureGraph from "../../../containers/dashboard/StructureGraph";
 

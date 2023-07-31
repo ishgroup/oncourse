@@ -10,7 +10,7 @@ import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_SALE_MENU_TAGS } from "../actions";
 import TagsService from "../../../tags/services/TagsService";
-import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
+import { getMenuTags } from "ish-ui";
 import { setListMenuTags } from "../../../../common/components/list-view/actions";
 
 const getTags = async () => {

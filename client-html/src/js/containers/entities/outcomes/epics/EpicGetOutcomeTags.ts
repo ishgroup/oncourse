@@ -5,7 +5,7 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
+import { getMenuTags } from "ish-ui";
 import TagsService from "../../../tags/services/TagsService";
 import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../tags/actions";
 import { setListMenuTags } from "../../../../common/components/list-view/actions";

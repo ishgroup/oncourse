@@ -11,13 +11,11 @@ import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import Divider from "@mui/material/Divider";
 import { AppTheme } from  "ish-ui";
-import AddButton from  "ish-ui";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { FormErrors } from "redux-form";
 import { findDOMNode } from "react-dom";
 import { animateFormErrors } from "../../../utils/highlightFormErrors";
 import { getFirstErrorNodePath } from "../../../utils/validation";
-import { Divider } from "@mui/material";
 import { AddButton } from "ish-ui";
 
 const styles = (theme: AppTheme) =>

@@ -21,7 +21,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMul } from "ish-ui";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);

@@ -22,7 +22,7 @@ import {
   updateInternalExportTemplate,
   removeExportTemplate
 } from "./actions";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 
 export const EXPORT_TEMPLATES_FORM_NAME = "ExportTemplatesForm";
 

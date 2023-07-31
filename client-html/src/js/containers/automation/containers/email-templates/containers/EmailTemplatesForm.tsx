@@ -21,7 +21,7 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { usePrevious } from "../../../../../common/utils/hooks";
+import { InfoPill, usePrevious } from "ish-ui";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { NumberArgFunction } from  "ish-ui";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
@@ -32,7 +32,6 @@ import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from  "ish-ui";
 import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("emailTemplates");

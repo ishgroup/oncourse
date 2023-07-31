@@ -24,16 +24,15 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
-import { NumberArgFunction } from  "ish-ui";
+import { InfoPill, NumberArgFunction } from "ish-ui";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "../../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from  "ish-ui";
 import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("advancedSetup_Export");

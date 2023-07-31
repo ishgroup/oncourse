@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import Card from "@mui/material/Card";
 import React from "react";
 import { addMinutes, differenceInMinutes, format } from "date-fns";
 import { change, Field, WrappedFieldProps } from "redux-form";
 import {
- Card, Collapse, Grid, IconButton, MenuItem, Select, Typography 
+ Collapse, Grid, IconButton, MenuItem, Select, Typography
 } from "@mui/material";
 import OpenInNew from "@mui/icons-material/OpenInNew";
 import clsx from "clsx";
@@ -24,12 +25,11 @@ import {
 import { Dispatch } from "redux";
 import { makeStyles } from "@mui/styles";
 import { TimetableSession } from "../../../../../model/timetable";
-import ErrorMessage from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
+import { ErrorMessage, openInternalLink } from "ish-ui";
+import { formatDurationMinutes } from "ish-ui";
 import { H_MMAAA } from  "ish-ui";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import { appendTimezone } from "ish-ui";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
 import { AppTheme } from  "ish-ui";
 import { NumberArgFunction } from  "ish-ui";

@@ -24,8 +24,7 @@ import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
 import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { renderAutomationItems } from "../utils";
 import { AppTheme } from  "ish-ui";
-import AddButton from  "ish-ui";
-import { useHoverShowStyles } from  "ish-ui";
+import { useHoverShowStyles, AddButton } from  "ish-ui";
 import { CatalogItemType } from "../../../model/common/Catalog";
 
 export type BindingsItemType = "component" | "label";
@@ -266,6 +265,7 @@ const Bindings = React.memo<BindingsProps>( props => {
     [form, name]
   );
 
+  // @ts-ignore
   return (
     <div>
       <DataTypesMenu

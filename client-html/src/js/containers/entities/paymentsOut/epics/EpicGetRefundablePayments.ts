@@ -8,7 +8,7 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalPlus } from "ish-ui";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { GET_REFUNDABLE_PAYMENTS, GET_REFUNDABLE_PAYMENTS_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";

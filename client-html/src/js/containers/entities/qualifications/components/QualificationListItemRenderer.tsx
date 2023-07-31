@@ -6,7 +6,7 @@
 import React, { useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import { Qualification } from "@api/model";
-import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
+import { getHighlightedPartLabel } from "ish-ui";
 
 const QualificationListItemRenderer = React.memo<{ content: string; search: string; data: Qualification, parentProps: any }>(
   ({ search, data, parentProps }) => {

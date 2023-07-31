@@ -9,11 +9,10 @@ import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from 
 import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import EditInPlaceField from  "ish-ui";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import { State } from "../../../../reducers/state";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PreferencesState } from "../../../preferences/reducers/state";

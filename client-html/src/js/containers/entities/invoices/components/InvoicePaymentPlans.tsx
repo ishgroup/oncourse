@@ -16,12 +16,10 @@ import StepButton from "@mui/material/StepButton";
 import { format } from "date-fns";
 import clsx from "clsx";
 import { YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency, decimalPlus, AddButton } from "ish-ui";
 import { paymentPlanStyles } from "../styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../utils";
 import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "./InvoicePaymentPlanComponents";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import AddButton from  "ish-ui";
 
 interface PaymentPlansProps {
   classes?: any;

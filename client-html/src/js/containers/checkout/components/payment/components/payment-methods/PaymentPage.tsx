@@ -18,7 +18,7 @@ import {
 import { BooleanArgFunction } from  "ish-ui";
 import { State } from "../../../../../../reducers/state";
 import { YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import {
   checkoutClearPaymentStatus,
   checkoutProcessPayment,

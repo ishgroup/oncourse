@@ -18,7 +18,7 @@ import withStyles from "@mui/styles/withStyles";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import { StyledCheckbox } from  "ish-ui";
 import { FormTextField } from  "ish-ui";
-import { formatCurrency } from "../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import { NoArgFunction } from  "ish-ui";
 import { AppTheme } from  "ish-ui";
 import { makeAppStyles } from  "ish-ui";

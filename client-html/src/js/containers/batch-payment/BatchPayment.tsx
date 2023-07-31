@@ -27,15 +27,13 @@ import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../common/components/form/formFields/FormField";
 import { Switch } from  "ish-ui";
-import DynamicSizeList from  "ish-ui";
-import { LinkAdornment } from  "ish-ui";
+import { LinkAdornment, DynamicSizeList, formatRelativeDate } from  "ish-ui";
 import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 import EntityService from "../../common/services/EntityService";
 import { D_MMM_YYYY } from  "ish-ui";
-import { formatRelativeDate } from "../../common/utils/dates/formatRelative";
-import { openInternalLink } from "../../common/utils/links";
-import { decimalPlus } from "../../common/utils/numbers/decimalCalculation";
-import { formatCurrency } from "../../common/utils/numbers/numbersNormalizing";
+import { openInternalLink } from "ish-ui";
+import { decimalPlus } from "ish-ui";
+import { formatCurrency } from "ish-ui";
 import { BatchPaymentContact } from "../../model/batch-payment";
 import { State } from "../../reducers/state";
 import CheckoutService from "../checkout/services/CheckoutService";
@@ -281,6 +279,8 @@ const ContactRenderer = ({
 }) => {
   const items = filterByStoreCard ? fields.getAll().filter(i => i.hasStoredCard) : fields.getAll();
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <AutoSizer>
       {({ width, height }) => (
@@ -295,7 +295,7 @@ const ContactRenderer = ({
             ...rest,
           }}
         >
-          {RowRenderer}
+          {RowRenderer as any}
         </DynamicSizeList>
     )}
     </AutoSizer>

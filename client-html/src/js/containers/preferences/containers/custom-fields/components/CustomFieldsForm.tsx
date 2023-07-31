@@ -14,7 +14,7 @@ import { formCommonStyles } from "../../../styles/formCommonStyles";
 import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
 import CustomFieldsRenderer from "./CustomFieldsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { idsToString } from "ish-ui";
 import { getCustomFields } from "../../../actions";
 import { Fetch } from "../../../../../model/common/Fetch";
 import uniqid from "../../../../../common/utils/uniqid";

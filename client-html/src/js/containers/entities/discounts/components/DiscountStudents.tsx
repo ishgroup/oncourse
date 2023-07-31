@@ -22,7 +22,7 @@ import NestedList, {
 import { State } from "../../../../reducers/state";
 import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
 import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,

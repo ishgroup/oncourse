@@ -32,7 +32,7 @@ import {
 } from "./index";
 import uniqid from "../../../common/utils/uniqid";
 import { getProductAqlType } from "../../entities/sales/utils";
-import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
+import { decimalPlus } from "ish-ui";
 
 export const processCeckoutCartIds = async (cartId, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);

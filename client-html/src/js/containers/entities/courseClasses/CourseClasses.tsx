@@ -62,7 +62,7 @@ import { getVirtualSites } from "../sites/actions";
 import { validateNoteCreate, validateNoteUpdate } from "../../../common/components/form/notes/utils";
 import { postNoteItem, putNoteItem } from "../../../common/components/form/notes/actions";
 import { State } from "../../../reducers/state";
-import { normalizeNumberToZero } from "../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumberToZero } from "ish-ui";
 import { createCourseClassAssessment, updateCourseClassAssessment } from "./components/assessments/actions";
 import { validateAssesmentCreate, validateAssesmentUpdate } from "./components/assessments/utils";
 import EntityService from "../../../common/services/EntityService";
@@ -76,7 +76,7 @@ import {
 } from "../../../constants/Config";
 import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import { III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
-import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
+import { appendTimezone } from "ish-ui";
 import uniqid from "../../../common/utils/uniqid";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 

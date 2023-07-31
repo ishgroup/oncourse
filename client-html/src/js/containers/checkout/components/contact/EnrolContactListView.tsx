@@ -7,7 +7,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
 import { D_MMM_YYYY } from  "ish-ui";
-import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
+import { getHighlightedPartLabel } from "ish-ui";
 import EnrolItemListRenderer from "../items/components/EnrolItemListRenderer";
 import { getContactFullName } from "../../../entities/contacts/utils";
 

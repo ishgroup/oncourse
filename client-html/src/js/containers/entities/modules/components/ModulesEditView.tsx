@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import { ModuleType } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
-import { normalizeNumberToPositive } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumberToPositive } from "ish-ui";
 
 const moduleTypes = Object.keys(ModuleType).map(key => ({ value: ModuleType[key], label: key }));
 

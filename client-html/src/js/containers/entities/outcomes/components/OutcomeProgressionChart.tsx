@@ -11,7 +11,7 @@ import { Cell, Legend, Pie, PieChart } from "recharts";
 import { Tooltip, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { OutcomeProgression } from "@api/model";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 
 interface Props {
   data: OutcomeProgression

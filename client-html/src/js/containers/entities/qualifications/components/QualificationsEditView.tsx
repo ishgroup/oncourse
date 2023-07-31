@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 
 const qualificationTypes = Object.keys(QualificationType)
   .filter(i => Number.isNaN(Number(i)))

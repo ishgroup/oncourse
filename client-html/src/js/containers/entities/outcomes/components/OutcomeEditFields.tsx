@@ -22,6 +22,7 @@ import {
  DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
 } from "@api/model";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
 import { AccessState } from "../../../../common/reducers/accessReducer";
@@ -35,14 +36,13 @@ import {
   validateVetPurchasingContractIdentifier
 } from "../../../../common/utils/validation";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { HeaderContactTitle, LinkAdornment } from  "ish-ui";
+import { LinkAdornment } from "ish-ui";
 import { fundingUploadsPath } from "../../../../constants/Api";
 import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
 import { openModuleLink } from "../../modules/utils";
 import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from  "ish-ui";
+import { AppTheme, normalizeNumberToZero } from  "ish-ui";
 import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
@@ -262,7 +262,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           )}
         />
       </Grid>}
-
       
       <Grid container rowSpacing={2} item xs={twoColumn ? 4 : 12}>
         <Grid item xs={12}>

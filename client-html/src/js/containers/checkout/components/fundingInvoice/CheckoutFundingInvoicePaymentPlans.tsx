@@ -15,14 +15,13 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import React, { useCallback, useMemo } from "react";
 import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import { YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { AddButton, YYYY_MM_DD_MINUSED } from  "ish-ui";
+import { decimalPlus } from "ish-ui";
+import { formatCurrency } from "ish-ui";
 import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "../../../entities/invoices/components/InvoicePaymentPlanComponents";
 import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
 import { getDeepValue } from "../../../../common/utils/common";
-import AddButton from  "ish-ui";
 
 interface PaymentPlansProps {
   classes?: any;

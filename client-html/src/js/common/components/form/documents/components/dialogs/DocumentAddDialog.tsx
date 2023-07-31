@@ -20,8 +20,8 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import { Dispatch } from "redux";
-import EditInPlaceSearchSelect from "ish-ui";
-import FileUploaderDialog, {
+import {
+  stubFunction,
   EditInPlaceSearchSelect,
   FileUploaderDialog,
   KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL
@@ -30,9 +30,6 @@ import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { State } from "../../../../../../reducers/state";
 import { dialogStyles } from "./dialogStyles";
 import { DocumentSearchItem as DocumentSearchItemType } from "../../epics/EpicSearchExistingDocumentByName";
-import { stubFunction } from "../../../../../utils/common";
-import FileUploaderDialog from "ish-ui";
-import FileUploaderDialog from "ish-ui";
 
 const addDialogStyles = theme => createStyles({
   addDialogMargin: {
@@ -109,7 +106,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   dialogRef: any = React.createRef();
 
   draggingEvent = isDragging => {
-    const {closeAddDialog} = this.props;
+    const { closeAddDialog } = this.props;
     this.setState({
       isDragging
     });
@@ -120,11 +117,11 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   };
 
   addDraggingEvent = draggingEventAdded => {
-    this.setState({draggingEventAdded});
+    this.setState({ draggingEventAdded });
   };
 
   addDialogRefEvents = () => {
-    const {draggingEventAdded} = this.state;
+    const { draggingEventAdded } = this.state;
     if (this.dialogRef.current && !draggingEventAdded) {
       this.addDraggingEvent(true);
       this.dialogRef.current.addEventListener("dragover", () => this.draggingEvent(true));
@@ -134,7 +131,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   };
 
   setParentDraggingState = isDragging => {
-    this.setState({isDragging});
+    this.setState({ isDragging });
   };
 
   UNSAFE_componentWillUpdate(nextProps) {
@@ -162,7 +159,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   }, 600);
 
   checkExistingOnUpload = (document: Blob) => {
-    const {searchDocument, setDocumentFile} = this.props;
+    const { searchDocument, setDocumentFile } = this.props;
 
     setDocumentFile(document);
     searchDocument(document);
@@ -173,7 +170,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   };
 
   onSelectInputChange = searchValue => {
-    this.setState({searchValue}, () => {
+    this.setState({ searchValue }, () => {
       if (searchValue) {
         this.debounceSearch();
       } else {
@@ -183,7 +180,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   };
 
   onSelectChange = value => {
-    const {getDocumentItem, form} = this.props;
+    const { getDocumentItem, form } = this.props;
 
     this.setState({
       searchValue: ""
@@ -193,7 +190,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   };
 
   onClose = () => {
-    const {onClose, clearSearchDocuments} = this.props;
+    const { onClose, clearSearchDocuments } = this.props;
 
     this.setState({
       searchValue: ""
@@ -216,7 +213,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
       opened, classes, fetch, searchItems, searchExistingDocsDisabled
     } = this.props;
 
-    const {searchValue, isDragging} = this.state;
+    const { searchValue, isDragging } = this.state;
 
     return (
       <>
@@ -232,11 +229,11 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
           }}
         >
           <div className="centeredFlex p-1" ref={this.searchContainerNode}>
-            <div className={clsx(classes.selectContainer, {"zIndex2": isDragging})}>
+            <div className={clsx(classes.selectContainer, { "zIndex2": isDragging })}>
               <EditInPlaceSearchSelect
                 selectValueMark="id"
                 selectLabelMark="name"
-                input={{value: searchValue, onChange: this.onSelectChange as any, onBlur: stubFunction} as any}
+                input={{ value: searchValue, onChange: this.onSelectChange as any, onBlur: stubFunction } as any}
                 meta={{} as any}
                 onInputChange={this.onSelectInputChange}
                 placeholder="Find existing documents"
@@ -250,7 +247,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
               />
             </div>
             <IconButton
-              className={clsx("closeAndClearButton", classes.closeAndClearButton, {"zIndex2": isDragging})}
+              className={clsx("closeAndClearButton", classes.closeAndClearButton, { "zIndex2": isDragging })}
               onClick={this.onClose}
             >
               <Close className="inputAdornmentIcon"/>
@@ -281,4 +278,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withTheme(withStyles(theme => ({...dialogStyles(theme), ...addDialogStyles(theme)}))(DocumentAddDialog)));
+)(withTheme(withStyles(theme => ({ ...dialogStyles(theme), ...addDialogStyles(theme) }))(DocumentAddDialog)));

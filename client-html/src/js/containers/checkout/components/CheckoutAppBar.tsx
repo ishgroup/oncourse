@@ -9,7 +9,7 @@
 import React from "react";
 import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
-import { openInternalLink } from "../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 
 interface Props {
   title: string;

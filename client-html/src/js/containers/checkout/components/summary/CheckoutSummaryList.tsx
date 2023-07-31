@@ -22,7 +22,7 @@ import { summaryListStyles } from "../../styles/summaryListStyles";
 import { CheckoutSummaryCogwheel } from "./CheckoutSummaryCogwheel";
 import CheckoutSummaryExpandableItemRenderer from "./CheckoutSummaryExpandableItemRenderer";
 import { toggleSendContext, toggleSummaryItem, toggleVoucherItem } from "../../actions";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import CheckoutAppBar from "../CheckoutAppBar";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 import { getContactFullName } from "../../../entities/contacts/utils";

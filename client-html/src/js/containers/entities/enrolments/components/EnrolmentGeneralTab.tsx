@@ -20,6 +20,7 @@ import {
   Tag
 } from "@api/model";
 import clsx from "clsx";
+import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { setSelectedContact } from "../../invoices/actions";
@@ -30,7 +31,6 @@ import Uneditable from "../../../../common/components/form/formFields/Uneditable
 import EnrolmentSubmissions from "./EnrolmentSubmissions";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { HeaderContactTitle } from  "ish-ui";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import EnrolmentDetails from "./EnrolmentDetails";
 import { paymentSourceItems } from "../constants";

@@ -21,7 +21,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import EditInPlaceField from  "ish-ui";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import {
   AttandanceChangeType,
@@ -30,15 +29,15 @@ import {
 import AttendanceIcon from "./AttendanceIcon";
 import AttendanceActionsMenu from "./AttendanceActionsMenu";
 import { TimetableSession } from "../../../../../model/timetable";
-import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
+import { EditInPlaceField, formatDurationMinutes } from "ish-ui";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { stubFunction } from "../../../../../common/utils/common";
+import { stubFunction } from "ish-ui";
 import { getStudentAttendanceLabel } from "./utils";
 import {
   DD_MMM_YYYY_HH_MM_SS,
   III_DD_MMM_YYYY_HH_MM_SS
 } from  "ish-ui";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import { appendTimezone } from "ish-ui";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);

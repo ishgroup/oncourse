@@ -41,7 +41,6 @@ import { setCourseClassSessionsWarnings } from "../../actions";
 import CourseClassBulkChangeSession from "./CourseClassBulkChangeSession";
 import CourseClassExpandableSession from "./CourseClassExpandableSession";
 import CopySessionDialog from "./CopySessionDialog";
-import { normalizeNumber, normalizeNumberToPositive } from "../../../../../common/utils/numbers/numbersNormalizing";
 import CourseClassTimetableService from "./services/CourseClassTimetableService";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import {
@@ -55,7 +54,7 @@ import { instantAsyncValidateFieldArrayItemCallback } from "../../../../../commo
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { State } from "../../../../../reducers/state";
 import { SelectItemDefault } from "../../../../../model/entities/common";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import { appendTimezone, normalizeNumber, normalizeNumberToPositive } from "ish-ui";
 import uniqid from "../../../../../common/utils/uniqid";
 import { getSessionsWithRepeated, setShiftedTutorAttendances } from "../../utils";
 

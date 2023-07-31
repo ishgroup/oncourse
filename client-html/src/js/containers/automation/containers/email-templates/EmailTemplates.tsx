@@ -13,7 +13,7 @@ import { withRouter } from "react-router";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { EmailTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import { State } from "../../../../reducers/state";
 import {
  createEmailTemplate, getEmailTemplate, removeEmailTemplate, updateEmailTemplate, updateInternalEmailTemplate

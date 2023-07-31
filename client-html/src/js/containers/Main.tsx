@@ -21,10 +21,10 @@ import { connect } from "react-redux";
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { Dispatch } from "redux";
-import { BrowserWarning } from "../common/components/dialog/BrowserWarning";
+import ConfirmProvider from "../common/components/dialog/ConfirmProvider";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import { loginRoute, routes } from "../routes";
-import MessageProvider from "../common/components/dialog/message/MessageProvider";
+import MessageProvider from "../common/components/dialog/MessageProvider";
 import { ThemeContext } from "./ThemeContext";
 import {
   APPLICATION_THEME_STORAGE_NAME,
@@ -33,19 +33,16 @@ import {
   READ_NEWS,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
-import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
 import { State } from "../reducers/state";
-import { AnyArgFunction } from  "ish-ui";
+import { AnyArgFunction, GlobalStylesProvider } from "ish-ui";
 import { getUserPreferences } from "../common/actions";
 import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
 import { getCurrency, isLoggedIn } from "./preferences/actions";
-import ConfirmProvider from "../common/components/dialog/confirm/ConfirmProvider";
-import Message from "../common/components/dialog/message/Message";
 import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
 import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
 import { getDashboardBlogPosts } from "./dashboard/actions";
 import { getFormNames, isDirty } from "redux-form";
-import { currentTheme, getTheme, GlobalStylesProvider } from "ish-ui";
+import { currentTheme, getTheme, Message, BrowserWarning, DefaultThemeKey, ThemeValues } from "ish-ui";
 
 export const muiCache = createCache({
   key: 'mui',
@@ -266,7 +263,7 @@ export class MainBase extends React.PureComponent<Props, any> {
 const mapStateToProps = (state: State) => ({
   isLogged: state.preferences.isLogged,
   preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY],
-  isAnyFormDirty: getFormNames()(state).reduce((p,name) => isDirty(name)(state) || p, false)
+  isAnyFormDirty: getFormNames()(state).reduce((p, name) => isDirty(name)(state) || p, false)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

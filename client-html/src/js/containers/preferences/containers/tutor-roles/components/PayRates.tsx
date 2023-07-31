@@ -14,7 +14,7 @@ import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
 import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { ShowConfirmCaller } from  "ish-ui";
-import AddButton from  "ish-ui";
+import { AddButton } from  "ish-ui";
 
 const FIELD_NAME: string = "payRates";
 

@@ -12,7 +12,7 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/RouteCha
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { idsToString } from "ish-ui";
 import { State } from "../../../../../reducers/state";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import { ShowConfirmCaller } from  "ish-ui";

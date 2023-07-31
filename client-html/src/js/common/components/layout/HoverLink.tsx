@@ -10,7 +10,7 @@ import React, { ReactNode } from "react";
 import clsx from "clsx";
 import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
-import { openInternalLink } from "../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { makeAppStyles } from  "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({

@@ -31,7 +31,7 @@ import { getExpression } from "../../../../../common/components/list-view/utils/
 import { ProcessState } from "../../../../../common/reducers/processReducer";
 import EntityService from "../../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { usePrevious } from "../../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
 import RecipientsSelectionSwitcher from "../../../../entities/messages/components/RecipientsSelectionSwitcher";

@@ -14,7 +14,7 @@ import {
   setCommonPlainSearch
 } from "../../../actions/CommonPlainRecordsActions";
 import { EditInPlaceRemoteDataSelectFieldProps, } from "../../../../model/common/Fields";
-import EditInPlaceSearchSelect, { EditInPlaceSearchSelect } from "ish-ui";
+import { EditInPlaceSearchSelect } from "ish-ui";
 
 const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {

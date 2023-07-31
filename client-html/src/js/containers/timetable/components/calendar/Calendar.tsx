@@ -31,12 +31,10 @@ import {
   setTimetableSearch
 } from "../../actions";
 import { TimetableContext } from "../../Timetable";
-import { DD_MMM_YYYY_MINUSED } from  "ish-ui";
 import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
 import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
-import DynamicSizeList from  "ish-ui";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { DynamicSizeList, usePrevious, DD_MMM_YYYY_MINUSED } from  "ish-ui";
 import {
   getFiltersNameString,
   setActiveFiltersBySearch
@@ -421,6 +419,7 @@ const Calendar = React.memo<Props>(props => {
       <div className={`${classes.centered} ${months.length === 0 && sessionsLoading ? "" : classes.hidden}`}>
         <CircularProgress size={40} thickness={5} />
       </div>
+
       <AutoSizer>
         {({ width, height }) => (
           <DynamicSizeList
@@ -436,7 +435,7 @@ const Calendar = React.memo<Props>(props => {
             onItemsRendered={onRowsRendered}
             useIsScrolling
           >
-            {MonthRenderer}
+            {MonthRenderer as any}
           </DynamicSizeList>
         )}
       </AutoSizer>

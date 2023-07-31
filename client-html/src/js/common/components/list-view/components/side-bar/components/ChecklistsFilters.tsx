@@ -14,7 +14,7 @@ import clsx from "clsx";
 import ListTagGroup from "./ListTagGroup";
 import { makeAppStyles } from  "ish-ui";
 import { ColoredCheckBox } from  "ish-ui";
-import { stubFunction } from "../../../../../utils/common";
+import { stubFunction } from "ish-ui";
 import { useAppSelector } from "../../../../../utils/hooks";
 
 const useStyles = makeAppStyles(theme => ({

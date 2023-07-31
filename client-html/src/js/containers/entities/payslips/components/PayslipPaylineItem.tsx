@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import Button from "@mui/material/Button";
 import { Currency } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import { EEE_D_MMM_YYYY } from  "ish-ui";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";

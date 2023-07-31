@@ -9,8 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
 import Input from "@mui/material/Input";
 import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
-import { mapSelectItems, stubFunction } from "../../../../utils/common";
-import EditInPlaceSearchSelect, { EditInPlaceSearchSelect } from "ish-ui";
+import { mapSelectItems } from "../../../../utils/common";
+import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
 
 const getAqlLabel = entity => {
   switch (entity) {
@@ -108,7 +108,7 @@ const SearchInput = React.memo<any>(props => {
 
         <EditInPlaceQuerySelect
           inline
-          tags={searchTags}
+          tagSuggestions={searchTags}
           filterTags={[]}
           ref={aqlComponentRef}
           setInputNode={node => {

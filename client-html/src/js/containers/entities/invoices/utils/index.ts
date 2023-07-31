@@ -6,7 +6,7 @@
 import { min } from "date-fns";
 import { Invoice, InvoicePaymentPlan } from "@api/model";
 import { InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
-import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalPlus } from "ish-ui";
 import { Decimal } from "decimal.js-light";
 
 export const calculateInvoiceLineTotal = (

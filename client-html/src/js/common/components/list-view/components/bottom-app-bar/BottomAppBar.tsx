@@ -15,7 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { alpha, darken } from '@mui/material/styles';
 import FindInPage from "@mui/icons-material/FindInPage";
 import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { openInternalLink } from "../../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import SearchInput from "./components/SearchInput";
 import ScriptsMenu from "./components/ScriptsMenu";
 import SendMessageMenu from "./components/SendMessageMenu";

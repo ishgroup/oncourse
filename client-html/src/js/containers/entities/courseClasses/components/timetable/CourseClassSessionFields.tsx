@@ -21,11 +21,9 @@ import { connect } from "react-redux";
 import {
   ClashType, CourseClassTutor, SessionWarning, TutorAttendance,
 } from "@api/model";
-import ErrorMessage from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from  "ish-ui";
-import { stubFunction } from "../../../../../common/utils/common";
+import { EditInPlaceDurationField, ErrorMessage, stubFunction } from "ish-ui";
 import { State } from "../../../../../reducers/state";
 import { LinkAdornment } from  "ish-ui";
 import { openRoomLink } from "../../../rooms/utils";

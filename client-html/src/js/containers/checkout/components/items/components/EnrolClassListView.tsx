@@ -17,11 +17,11 @@ import { Radio } from "@mui/material";
 import { filterPastClasses } from "../../../utils";
 import { AppTheme } from  "ish-ui";
 import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+import { appendTimezone } from "ish-ui";
 import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
 import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
     list: {

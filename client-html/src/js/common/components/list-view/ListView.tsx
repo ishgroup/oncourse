@@ -46,16 +46,15 @@ import {
   updateTableModel,
 } from "./actions";
 import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
-import ResizableWrapper from  "ish-ui";
 import { FormMenuTag } from "../../../model/tags";
 import { pushGTMEvent } from "../google-tag-manager/actions";
 import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
 import {
   AnyArgFunction,
   BooleanArgFunction,
-  NoArgFunction,
+  NoArgFunction, ResizableWrapper,
   StringArgFunction
-} from  "ish-ui";
+} from "ish-ui";
 import {
   EditViewContainerProps,
   FilterGroup,

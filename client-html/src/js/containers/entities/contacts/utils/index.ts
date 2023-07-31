@@ -4,7 +4,7 @@
  */
 
 import { Contact } from "@api/model";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { CourseClassStatus } from "../../../../model/entities/CourseClass";
 import { EntityType } from  "ish-ui";
 

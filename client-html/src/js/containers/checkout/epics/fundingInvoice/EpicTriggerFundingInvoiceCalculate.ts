@@ -24,7 +24,7 @@ import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "../../components/fun
 import EntityService from "../../../../common/services/EntityService";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
-import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
+import { appendTimezone } from "ish-ui";
 import uniqid from "../../../../common/utils/uniqid";
 
 const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {

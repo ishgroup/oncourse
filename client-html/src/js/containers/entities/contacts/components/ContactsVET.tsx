@@ -37,7 +37,7 @@ import { validateNonNegative } from "../../../../common/utils/validation";
 import { SettingsAdornment } from  "ish-ui";
 import { clearUSIVerificationResult, verifyUSI } from "../actions";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import { mapSelectItems } from "../../../../common/utils/common";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";

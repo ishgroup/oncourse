@@ -23,8 +23,8 @@ import Paper from "@mui/material/Paper";
 import { State } from "../../../../../reducers/state";
 import { getDashboardStatistic } from "../../../actions";
 import { AnyArgFunction } from  "ish-ui";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { openInternalLink } from "ish-ui";
+import { formatCurrency } from "ish-ui";
 import ScriptStatistic from "./ScriptStatistic";
 import { checkPermissions } from "../../../../../common/actions";
 
@@ -153,15 +153,15 @@ const ChartTooltip = args => {
 };
 
 const Chart = props => (
-  <AutoSizer disableHeight defaultHeight={200}>
+  <AutoSizer disableHeight>
     {({ width }) => (
       <AreaChart
         width={width}
         height={200}
         data={props.data}
         margin={{
- top: 8, right: 0, left: 0, bottom: 8
-}}
+         top: 8, right: 0, left: 0, bottom: 8
+        }}
       >
         <XAxis hide interval={0} />
         <CartesianGrid strokeDasharray="3 3" />

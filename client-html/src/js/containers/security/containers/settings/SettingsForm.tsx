@@ -16,7 +16,7 @@ import isEmpty from "lodash.isempty";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import * as Model from "../../../../model/preferences/security/SecuritySettings";
 import { Switch } from  "ish-ui";
-import FormRadioButtons from  "ish-ui";
+import { FormRadioButtons } from  "ish-ui";
 import RouteChangeConfirm from "../../../../common/components/dialog/RouteChangeConfirm";
 import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
 import { State } from "../../../../reducers/state";

@@ -22,7 +22,7 @@ import { PreferenceEnum, SearchQuery } from "@api/model";
 import { AppTheme } from  "ish-ui";
 import { State } from "../../../../reducers/state";
 import { getDashboardSearch } from "../../../../containers/dashboard/actions";
-import { openInternalLink } from "../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
 import { checkPermissions, getOnDemandScripts, getUserPreferences, setUserPreference } from "../../../actions";
 import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";

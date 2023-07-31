@@ -11,7 +11,7 @@ import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
-import { openInternalLink } from "../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import itemStyles from "./itemStyles";
 import { DashboardItem } from "../../../../model/dashboard";
 import { getPrivisioningLink } from "../../../../routes/routesMapping";

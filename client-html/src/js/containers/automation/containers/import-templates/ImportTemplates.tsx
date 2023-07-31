@@ -23,7 +23,7 @@ import {
   updateInternalImportTemplate,
   removeImportTemplate
 } from "./actions";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 
 export const IMPORT_TEMPLATES_FORM_NAME = "ImportTemplatesForm";
 

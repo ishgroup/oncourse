@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { LinkAdornment } from  "ish-ui";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { CheckoutItem } from "../../../../../model/checkout";
 import { getInvoiceLineKey } from "../../../utils";
 

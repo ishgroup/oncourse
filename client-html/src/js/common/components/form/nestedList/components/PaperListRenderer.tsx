@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Checkbox, Collapse, List, ListItem, ListItemText } from "@mui/material";
-import { openInternalLink } from "../../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { NestedListItem, NestedListPanelItem } from "../NestedList";
 
 const styles = theme =>
