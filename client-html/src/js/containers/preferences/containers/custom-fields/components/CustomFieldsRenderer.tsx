@@ -15,10 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { CustomFieldType, DataType, EntityType } from "@api/model";
-import { CheckboxField, StyledCheckbox } from  "ish-ui";
-import EditInPlaceDateTimeField from  "ish-ui";
-import EditInPlaceField from  "ish-ui";
-import EditInPlaceMoneyField from  "ish-ui";
+import { CheckboxField, StyledCheckbox, EditInPlaceDateTimeField, EditInPlaceField, EditInPlaceMoneyField } from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import {
   validateEmail,

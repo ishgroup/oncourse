@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import PlayArrow from "@mui/icons-material/PlayArrow";
+import { Grid, ListItem } from "@mui/material";
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import withStyles from "@mui/styles/withStyles";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Help, PlayArrow, Publish } from "@mui/icons-material";
+import { Help, Publish } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from "redux-form";
@@ -49,7 +49,7 @@ import {
 import SelectionSwitcher from "./SelectionSwitcher";
 import { ProcessState } from "../../../../reducers/processReducer";
 import { interruptProcess } from "../../../../actions";
-import { YYYY_MM_DD_MINUSED } from  "ish-ui";
+import { ConfirmBase, FilePreview, YYYY_MM_DD_MINUSED } from "ish-ui";
 import { getManualLink } from "../../../../utils/getManualLink";
 import { getExpression } from "../../utils/listFiltersUtils";
 import { getTemplateOutputDisplayName } from "./utils";
@@ -57,8 +57,6 @@ import { TemplateOutputDisplayName } from "../../../../../model/common/Share";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
 import { validateSingleMandatoryField } from "../../../../utils/validation";
 import { CommonListItem } from "../../../../../model/common/sidebar";
-import FilePreview from  "ish-ui";
-import ConfirmBase from  "ish-ui";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
 import { LSGetItem, LSSetItem } from "../../../../utils/storage";
 import { reportFullScreenPreview } from "../../../../../containers/automation/containers/pdf-reports/actions";
@@ -156,7 +154,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   }
 
   componentDidMount() {
-    const {getShareList, rootEntity, getExportTemplates} = this.props;
+    const { getShareList, rootEntity, getExportTemplates } = this.props;
     getShareList(rootEntity);
     getExportTemplates(rootEntity);
   }
@@ -245,12 +243,12 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         this.getCompressedPreview(null, template.id);
       }
 
-      this.setState({exportTemplateTypes});
+      this.setState({ exportTemplateTypes });
     }
   }
 
   componentWillUnmount() {
-    const {process, interruptProcess, submitting} = this.props;
+    const { process, interruptProcess, submitting } = this.props;
 
     if (submitting) {
       interruptProcess(process.processId);
@@ -259,8 +257,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   }
 
   initializeShareForm = (primary: number, secondary: number) => {
-    const {dispatch, pdfReports, exportTemplates} = this.props;
-    const {exportTemplateTypes} = this.state;
+    const { dispatch, pdfReports, exportTemplates } = this.props;
+    const { exportTemplateTypes } = this.state;
 
     if (primary === 0 && pdfReports.length) {
       const report = pdfReports[secondary];
@@ -278,7 +276,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   selectPrimary = selectedPrimary => {
-    const {rootEntity} = this.props;
+    const { rootEntity } = this.props;
 
     this.setState({
       selectedPrimary,
@@ -296,9 +294,9 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   selectSecondary = selectedSecondary => {
-    const {rootEntity} = this.props;
+    const { rootEntity } = this.props;
 
-    const {selectedPrimary} = this.state;
+    const { selectedPrimary } = this.state;
 
     this.setState({
       selectedSecondary,
@@ -342,7 +340,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   handleBackgroundUpload = () => {
-    const {addPrintOverlay} = this.props;
+    const { addPrintOverlay } = this.props;
 
     const file = this.fileInputNode.files[0];
 
@@ -361,7 +359,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   getSelectedContactsTypes = () => {
-    const {selection, rows, columns} = this.props;
+    const { selection, rows, columns } = this.props;
     const contactTypeIndex = columns.findIndex(c => c.attribute === "contactType");
     const selectionTypes = rows.filter(r => selection.includes(r.id)).map(r => r.values[contactTypeIndex]);
 
@@ -377,7 +375,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   }
 
   getSelectedPdfReportName = () => {
-    const {pdfReports} = this.props;
+    const { pdfReports } = this.props;
     const selectedReportIndex = this.state.selectedSecondary;
 
     if (!pdfReports || typeof selectedReportIndex !== "number") return "";
@@ -433,11 +431,11 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   showWrongPdfReportDialog = (msg: string) => {
-    this.setState({wrongPdfReportMsg: msg});
+    this.setState({ wrongPdfReportMsg: msg });
   };
 
   hideWrongPdfReportDialog = () => {
-    this.setState({wrongPdfReportMsg: null});
+    this.setState({ wrongPdfReportMsg: null });
   };
 
   onSave = values => {
@@ -445,7 +443,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       searchQuery, rootEntity, doPrint, doExport, selection, sort,
     } = this.props;
 
-    const {selectedPrimary, selectAll, createPreview} = this.state;
+    const { selectedPrimary, selectAll, createPreview } = this.state;
 
     if (this.isContactList && selectedPrimary === 0) {
       const wrongPdfReportMsg = this.getWrongPdfReportMsg();
@@ -481,7 +479,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       };
 
       if (selectedPrimary === 0) {
-        const {id, backgroundId, variables} = values as Report;
+        const { id, backgroundId, variables } = values as Report;
         const printRequest: PrintRequest = {
           ...requestFilters,
           sorting: sort,
@@ -497,7 +495,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         return doPrint(rootEntity, printRequest);
       }
 
-      const {id, variables, outputType} = values as ExportTemplate;
+      const { id, variables, outputType } = values as ExportTemplate;
 
       const exportRequest: ExportRequest = {
         ...requestFilters,
@@ -539,8 +537,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   handlePreviewAction = (exportAction, reportAction) => {
-    const {pdfReports, dispatch} = this.props;
-    const {selectedSecondary, selectedPrimary, exportTemplateTypes} = this.state;
+    const { pdfReports, dispatch } = this.props;
+    const { selectedSecondary, selectedPrimary, exportTemplateTypes } = this.state;
 
     if (this.isExportTemplateSelected(selectedPrimary)) {
       const activeExportTemplate = exportTemplateTypes[Object.keys(exportTemplateTypes)[selectedPrimary - 1]][selectedSecondary];
@@ -644,7 +642,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     color="primary"
                     checked={createPreview}
                     className={clsx(classes.createPreviewCheckbox, classes.label)}
-                    onClick={() => this.setState({createPreview: !createPreview})}
+                    onClick={() => this.setState({ createPreview: !createPreview })}
                   />
                 )}
                 label="Create preview"
@@ -661,8 +659,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     );
   }
 
-  templatesRenderer = ({fields}) => {
-    const {classes} = this.props;
+  templatesRenderer = ({ fields }) => {
+    const { classes } = this.props;
 
     return fields.map((f, index) => {
       const item: Binding = fields.get(index);
@@ -671,7 +669,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
       const fieldProps: any = isCheckbox
         ? {
-          classes: {label: classes.label},
+          classes: { label: classes.label },
           uncheckedClass: classes.label,
           color: "primary",
           stringValue: true,
@@ -681,8 +679,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             text: classes.text,
             label: classes.customLabel
           },
-          ...(item.type === "Date" ? {formatValue: YYYY_MM_DD_MINUSED} : {}),
-          ...(item.type === "Money" ? {stringValue: true} : {}),
+          ...(item.type === "Date" ? { formatValue: YYYY_MM_DD_MINUSED } : {}),
+          ...(item.type === "Money" ? { stringValue: true } : {}),
         };
 
       return (
@@ -701,7 +699,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   };
 
   renderTemplateFields() {
-    const {classes, values} = this.props;
+    const { classes, values } = this.props;
 
     const { createPreview, preview, loadingPreview } = this.state;
 
@@ -746,7 +744,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     color="primary"
                     checked={createPreview}
                     className={clsx(classes.createPreviewCheckbox, classes.label)}
-                    onClick={() => this.setState({createPreview: !createPreview})}
+                    onClick={() => this.setState({ createPreview: !createPreview })}
                   />
                 )}
                 label="Create preview"
@@ -798,7 +796,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         anchor="bottom"
         open={showExportDrawer}
         onClose={toggleExportDrawer}
-        classes={{paper: classes.exportContainer}}
+        classes={{ paper: classes.exportContainer }}
         PaperProps={{
           style: {
             left: window.innerWidth >= 1024 ? sidebarWidth : 0,
@@ -849,7 +847,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     selected={selectedPrimary === 0}
                     onClick={() => this.selectPrimary(0)}
                   >
-                    <Typography variant="body2" color="inherit" classes={{root: classes.listItemsText}}>
+                    <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       PDF
                     </Typography>
 
@@ -866,7 +864,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     selected={selectedPrimary === i + 1}
                     onClick={() => this.selectPrimary(i + 1)}
                   >
-                    <Typography variant="body2" color="inherit" classes={{root: classes.listItemsText}}>
+                    <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                       {t}
                     </Typography>
 
@@ -888,9 +886,9 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      style={{position: "relative"}}
+                      style={{ position: "relative" }}
                     >
-                      <Typography variant="body2" color="inherit" classes={{root: classes.listItemsText}}>
+                      <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                         {i.name}
                       </Typography>
 
@@ -910,9 +908,9 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       selected={selectedSecondary === index}
                       onClick={() => this.selectSecondary(index)}
                       disableGutters
-                      style={{position: "relative"}}
+                      style={{ position: "relative" }}
                     >
-                      <Typography variant="body2" color="inherit" classes={{root: classes.listItemsText}}>
+                      <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
                         {t.name}
                       </Typography>
 
@@ -1003,7 +1001,7 @@ const mapStateToProps = (state: State) => ({
   exportTemplates: state.share.exportTemplates,
   exportTemplatesFetching: state.share.exportTemplatesFetching,
   validating: state.share.validating,
-  overlays: state.share.overlays.map(i => ({value: i.id, label: i.name})),
+  overlays: state.share.overlays.map(i => ({ value: i.id, label: i.name })),
   processStatus: state.process.status,
   searchQuery: state.list.searchQuery,
   sort: state.list.records.sort,

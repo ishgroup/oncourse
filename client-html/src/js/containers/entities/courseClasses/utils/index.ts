@@ -14,7 +14,7 @@ import {
   addWeeks,
   addMonths, addYears
 } from "date-fns";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import {
   ClassCostExtended,
   ClassCostItem,
@@ -30,10 +30,10 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-vie
 import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
 import CourseClassAssessmentService from "../components/assessments/services/CourseClassAssessmentService";
 import { getClassCostFee } from "../components/budget/utils";
-import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMul, decimalPlus } from "ish-ui";
 import { TimetableSession } from "../../../../model/timetable";
 import CourseClassAttendanceService from "../components/attendance/services/CourseClassAttendanceService";
-import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
+import { appendTimezone } from "ish-ui";
 import uniqid from "../../../../common/utils/uniqid";
 
 export const openCourseClassLink = (classId: number) => openInternalLink(`/class/${classId}`);

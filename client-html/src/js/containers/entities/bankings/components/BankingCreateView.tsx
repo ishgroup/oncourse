@@ -20,15 +20,14 @@ import { getFormattedTotal } from "../../common/bankingPaymentUtils";
 import { validateMinMaxDate } from "../../../../common/utils/validation";
 import { getDepositPayments, updateBankingAccountId } from "../actions";
 import { BankingReport } from "../consts";
-import { DD_MMM_YYYY_MINUSED, YYYY_MM_DD_MINUSED } from  "ish-ui";
+import { DD_MMM_YYYY_MINUSED, EditInPlaceSearchSelect, YYYY_MM_DD_MINUSED } from "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
 import { LinkAdornment } from  "ish-ui";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { StyledCheckbox } from  "ish-ui";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceSearchSelect from  "ish-ui";
+import { stubFunction } from "ish-ui";
 
 const paymentColumns: NestedTableColumn[] = [
   {

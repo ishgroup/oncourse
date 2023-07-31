@@ -13,7 +13,7 @@ import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { ContactLinkAdornment } from  "ish-ui";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";

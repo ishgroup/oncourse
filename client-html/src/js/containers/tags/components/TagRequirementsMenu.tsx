@@ -7,7 +7,7 @@ import { TagRequirement, TagRequirementType } from "@api/model";
 import clsx from "clsx";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 import { State } from "../../../reducers/state";
-import AddButton from  "ish-ui";
+import { AddButton } from  "ish-ui";
 
 const requirements = Object.keys(TagRequirementType).map(
   (i: TagRequirementType) =>

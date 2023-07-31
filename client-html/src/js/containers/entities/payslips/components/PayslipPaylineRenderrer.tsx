@@ -3,7 +3,7 @@ import { createStyles } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
 import PayslipPaylineItem from "./PayslipPaylineItem";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 
 const styles = theme =>

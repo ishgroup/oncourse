@@ -15,19 +15,19 @@ import {
 import { connect } from "react-redux";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
 import Typography from "@mui/material/Typography";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
 import { getContactFullName } from "../../contacts/utils";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import {
-  ContactLinkAdornment,
-  HeaderContactTitle
-} from  "ish-ui";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 import { mapSelectItems } from "../../../../common/utils/common";
-import AddButton from  "ish-ui";
+import { AddButton } from  "ish-ui";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";

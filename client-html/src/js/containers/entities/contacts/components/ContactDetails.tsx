@@ -32,7 +32,7 @@ import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from ".
 import { SettingsAdornment } from  "ish-ui";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";

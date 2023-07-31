@@ -4,7 +4,6 @@ import { Button, ButtonGroup, Typography } from "@mui/material";
 import clsx from "clsx";
 import { makeAppStyles } from  "ish-ui";
 import { alpha } from "@mui/material/styles";
-import Button from "@mui/material/Button";
 
 interface Props extends WrappedFieldProps {
   chackedLabel: string;

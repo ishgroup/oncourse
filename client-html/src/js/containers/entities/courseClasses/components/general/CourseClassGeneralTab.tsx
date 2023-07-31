@@ -24,14 +24,13 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import { State } from "../../../../../reducers/state";
 import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import { LinkAdornment } from  "ish-ui";
+import { LinkAdornment, decimalDivide, decimalMinus, decimalPlus } from  "ish-ui";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
 import { showMessage } from "../../../../../common/actions";
 import { AppMessage } from "../../../../../model/common/Message";
 import history from "../../../../../constants/History";
-import { decimalDivide, decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import { getClassCostTypes } from "../../utils";
 import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader

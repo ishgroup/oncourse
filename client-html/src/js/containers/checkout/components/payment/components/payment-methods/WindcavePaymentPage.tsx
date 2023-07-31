@@ -23,7 +23,7 @@ import {
 } from "../../../../actions/checkoutPayment";
 import PaymentMessageRenderer from "../PaymentMessageRenderer";
 import { StringArgFunction } from  "ish-ui";
-import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import styles from "./styles";
 import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
 

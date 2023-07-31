@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { FieldArray, initialize } from "redux-form";
 import { AccessState } from "../../../../common/reducers/accessReducer";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { State } from "../../../../reducers/state";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";

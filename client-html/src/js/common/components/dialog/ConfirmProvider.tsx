@@ -9,7 +9,7 @@
 import React, { useCallback } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import ConfirmBase, { AnyArgFunction, ConfirmBase, ConfirmState } from "ish-ui";
+import { AnyArgFunction, ConfirmBase, ConfirmState } from "ish-ui";
 import { State } from "../../../reducers/state";
 import { closeConfirm } from "../../actions";
 

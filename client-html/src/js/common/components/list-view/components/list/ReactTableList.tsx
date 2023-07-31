@@ -37,7 +37,6 @@ import styles from "./styles";
 import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
 import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_MIN_WIDTH, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "./constants";
-import { StyledCheckbox } from "ish-ui";
 
 const useStyles = makeStyles(styles);
 

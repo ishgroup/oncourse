@@ -32,17 +32,13 @@ import clsx from "clsx";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { formatDistanceStrict } from "date-fns";
 import AvatarRenderer from "../AvatarRenderer";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { openInternalLink, EditInPlaceDateTimeField, EditInPlaceField, getPhoneMask, countLines } from "ish-ui";
 import { DD_MM_YYYY_SLASHED } from  "ish-ui";
 import { makeAppStyles } from "ish-ui";
-import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from  "ish-ui";
+import { stubFunction } from "ish-ui";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getPhoneMask } from "../../../../../constants/PhoneMasks";
-import EditInPlaceDateTimeField from  "ish-ui";
 import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
 import { getPluralSuffix } from "../../../../../common/utils/strings";
-import { countLines } from "../../../../../common/utils/DOM";
 import HoverLink from "../../../../../common/components/layout/HoverLink";
 import ContactsService from "../../services/ContactsService";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -447,6 +443,8 @@ const ContactInsight = (
 
   const hasLastInteractions = Boolean(lastInteractions?.length);
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className="relative w-100">
       <SendMessageEditView

@@ -14,7 +14,7 @@ import {
   formatFieldPercent,
   parseFieldPercent,
   preventNegativeOrLogEnter
-} from "../../../../../common/utils/numbers/numbersNormalizing";
+} from "ish-ui";
 
 const validatePercentage = value => (!value && value !== 0
     ? "Field is mandatory"

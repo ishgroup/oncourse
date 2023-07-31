@@ -16,7 +16,7 @@ import { clearPayrollPreparedWages, executePayroll, preparePayroll } from "../..
 import { interruptProcess } from "../../../../common/actions";
 import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import { ShowConfirmCaller } from  "ish-ui";
 import { AnyArgFunction, NoArgFunction } from  "ish-ui";
 

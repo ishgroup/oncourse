@@ -22,8 +22,7 @@ import Divider from '@mui/material/Divider';
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import { getContactFullName } from "../utils";
-import { openInternalLink } from "../../../../common/utils/links";
-import TimetableButton from  "ish-ui";
+import { openInternalLink, TimetableButton } from "ish-ui";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import ProfileHeading from "./ProfileHeading";
@@ -180,6 +179,9 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
       <ProfileHeading

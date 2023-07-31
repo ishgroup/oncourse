@@ -21,13 +21,11 @@ import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constan
 import { LSGetItem } from "../../utils/storage";
 import { useAppDispatch } from "../../utils/hooks";
 import { openDrawer } from "../../actions";
-import AppBarHelpMenu from  "ish-ui";
+import { AppBarHelpMenu, AppTheme } from  "ish-ui";
 import FormSubmitButton from "../form/FormSubmitButton";
 import FullScreenStickyHeader from "../list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { VARIANTS } from "./swipeable-sidebar/utils";
 import HamburgerMenu from "./swipeable-sidebar/components/HamburgerMenu";
-import { AppTheme } from  "ish-ui";
-import { AppBarHelpMenu } from "ish-ui";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   header: {

@@ -24,13 +24,10 @@ import Accordion from "@mui/material/Accordion";
 import { EnrolmentStudyReason } from "@api/model";
 import debounce from "lodash.debounce";
 import { showConfirm } from "../../../../../common/actions";
-import { StyledCheckbox } from  "ish-ui";
+import { StyledCheckbox, formatCurrency } from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import { mapSelectItems } from "../../../../../common/utils/common";
-import {
-  formatCurrency
-} from "../../../../../common/utils/numbers/numbersNormalizing";
 import { CheckoutCourse } from "../../../../../model/checkout";
 import { checkoutUpdateSummaryItem, checkoutChangeSummaryItemField } from "../../../actions/checkoutSummary";
 import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "../CheckoutSummaryList";
@@ -199,9 +196,6 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
               onChange={onDiscountChange}
               placeholder="No discount"
               allowEmpty
-              classes={{
-                placeholderContent: classes.discountPlaceholder
-              }}
             />
           </Grid>
           <Grid item container columnSpacing={3} rowSpacing={2} xs={12} lg={8}>

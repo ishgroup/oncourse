@@ -10,17 +10,16 @@ import { change } from "redux-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { ClassCostRepetitionType } from "@api/model";
 import { Divider } from "@mui/material";
+import { ContactLinkAdornment } from "../../../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { getContactFullName } from "../../../../contacts/utils";
-import { ContactLinkAdornment } from  "ish-ui";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
-import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
-import { normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumberToZero, decimalDivide, decimalMul, decimalPlus } from "ish-ui";
 
 const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId)?.rate));
 

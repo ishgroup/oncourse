@@ -26,7 +26,7 @@ import AvailabilityRenderer from "../../../../../common/components/form/availabi
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { idsToString } from "ish-ui";
 import { ShowConfirmCaller } from  "ish-ui";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 

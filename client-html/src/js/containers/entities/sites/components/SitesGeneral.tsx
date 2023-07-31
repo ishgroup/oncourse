@@ -17,15 +17,14 @@ import Collapse from "@mui/material/Collapse";
 import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import { State } from "../../../../reducers/state";
 import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoogleMap";
 import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
 import { validateDeleteRoom } from "../../rooms/actions";
-import { openInternalLink } from "../../../../common/utils/links";
-import TimetableButton from  "ish-ui";
+import { openInternalLink, TimetableButton } from "ish-ui";
 import { openRoomLink } from "../../rooms/utils";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader

@@ -16,25 +16,23 @@ import {
 } from "@api/model";
 import Chip from "@mui/material/Chip";
 import clsx from "clsx";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import {
-  ContactLinkAdornment,
-  HeaderContactTitle
-} from  "ish-ui";
-import {
   getContactFullName
 } from "../../contacts/utils";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
 import { getCustomColumnsMap, mapSelectItems } from "../../../../common/utils/common";
 import EntityService from "../../../../common/services/EntityService";
-import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMul, decimalPlus, normalizeNumberToZero, makeAppStyles } from "ish-ui";
 import { getProductAqlType } from "../../sales/utils";
-import { makeAppStyles } from  "ish-ui";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import history from "../../../../constants/History";

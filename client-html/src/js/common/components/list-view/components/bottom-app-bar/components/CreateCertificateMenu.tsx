@@ -17,7 +17,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dispatch } from "redux";
 import EntityService from "../../../../../services/EntityService";
-import { openInternalLink } from "../../../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { StyledCheckbox } from  "ish-ui";
 import CertificateService from "../../../../../../containers/entities/certificates/services/CertificateService";
 import instantFetchErrorHandler from "../../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";

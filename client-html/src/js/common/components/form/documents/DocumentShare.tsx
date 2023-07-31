@@ -15,7 +15,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import {
@@ -31,18 +30,19 @@ import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { showMessage } from "../../../actions";
 import {
-  getAvailableOptions,
-  getDocumentShareSummary,
-  groupAttachmentsByEntity,
-  isSingleContactAttachment,
   makeAppStyles,
   StyledCheckbox,
   Switch
 } from "ish-ui";
-import { openInternalLink } from "../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { DocumentShareOption } from "../../../../model/entities/Document";
 import { mapEntityDisplayName } from "../../../../containers/entities/common/utils";
-import { Switch } from "react-router-dom";
+import {
+  getAvailableOptions,
+  getDocumentShareSummary,
+  groupAttachmentsByEntity,
+  isSingleContactAttachment
+} from "../../../utils/documents";
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 

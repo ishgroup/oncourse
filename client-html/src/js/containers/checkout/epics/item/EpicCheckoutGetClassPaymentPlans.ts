@@ -8,7 +8,7 @@ import { Epic } from "redux-observable";
 import { ClassCost } from "@api/model";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalPlus } from "ish-ui";
 import { CheckoutCourse } from "../../../../model/checkout";
 import ClassCostService from "../../../entities/courseClasses/components/budget/services/ClassCostService";
 import { updateClassItem } from "../../actions";

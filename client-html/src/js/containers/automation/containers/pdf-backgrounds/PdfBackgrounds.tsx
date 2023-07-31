@@ -15,7 +15,7 @@ import { ExportTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import PdfReportsForm from "./containers/PdfBackgroundsForm";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import {
   createAutomationPdfBackground,
   getAutomationPdfBackground, getPdfBackgroundCopy,

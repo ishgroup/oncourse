@@ -13,9 +13,7 @@ import { Note } from "@api/model";
 import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../formFields/FormField";
-import { formatRelativeDate } from "../../../../utils/dates/formatRelative";
-import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "ish-ui";
-import { Grid } from "@mui/material";
+import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL, formatRelativeDate } from "ish-ui";
 
 interface Props {
   item: Note;

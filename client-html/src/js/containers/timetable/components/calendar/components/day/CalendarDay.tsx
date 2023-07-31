@@ -6,16 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import clsx from "clsx";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
 import withStyles from "@mui/styles/withStyles";
-import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions";
-import styles from "../styles";
-import { gapHoursDayPeriodsBase, getGapHours, getGroupings } from "../../../../utils";
+import clsx from "clsx";
+import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import {
   CalendarGrouping,
   CalendarGroupingState,
@@ -23,10 +20,13 @@ import {
   CalendarTagsState,
   TimetableDay
 } from "../../../../../../model/timetable";
-import CalendarSessionHour from "../session/CalendarSessionHour";
+import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions";
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../../../../constants";
+import { gapHoursDayPeriodsBase, getGapHours, getGroupings } from "../../../../utils";
 import CalendarSession from "../session/CalendarSession";
+import CalendarSessionHour from "../session/CalendarSessionHour";
+import styles from "../styles";
 import CalendarDayBase from "./CalendarDayBase";
-import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../../../../TimetableConstants";
 
 interface CompactModeDayProps extends TimetableDay {
   monthIndex: number;

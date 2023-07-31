@@ -9,15 +9,13 @@ import { ButtonBase, Typography } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
 import { Delete } from "@mui/icons-material";
 import clsx from "clsx";
-import ButtonBase from "@mui/material/ButtonBase";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Launch from "@mui/icons-material/Launch";
 import { NestedListItem } from "../NestedList";
-import { openInternalLink } from "../../../../utils/links";
-import DynamicSizeList, { DynamicSizeList } from "ish-ui";
+import { openInternalLink } from "ish-ui";
+import { DynamicSizeList } from "ish-ui";
 import { listStyles } from "./styles";
-import Typography from "@mui/material/Typography";
 
 interface Props {
   classes: any;
@@ -155,7 +153,7 @@ const ListRenderer = React.memo(
                 itemCount={items.length}
                 itemData={itemData}
               >
-                {RowRenderer}
+                {RowRenderer as any}
               </DynamicSizeList>
             )}
           </AutoSizer>

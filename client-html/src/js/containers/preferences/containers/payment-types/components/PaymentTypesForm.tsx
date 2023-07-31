@@ -1,22 +1,19 @@
-import * as React from "react";
+import { PaymentMethod } from "@api/model";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
+import { idsToString, ShowConfirmCaller } from "ish-ui";
 import isEqual from "lodash.isequal";
+import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import {
- Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { PaymentMethod } from "@api/model";
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { State } from "../../../../../reducers/state";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import PaymentTypesRenderer from "./PaymentTypesRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { State } from "../../../../../reducers/state";
-import { ShowConfirmCaller } from  "ish-ui";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_paymentTypes");
 

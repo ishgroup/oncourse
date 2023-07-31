@@ -13,7 +13,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import { createStyles, withStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
 import { AppTheme } from  "ish-ui";
-import { stopEventPropagation } from "../../../utils/events";
+import { stopEventPropagation } from "ish-ui";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = (theme: AppTheme) =>

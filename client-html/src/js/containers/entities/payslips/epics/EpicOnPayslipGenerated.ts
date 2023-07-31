@@ -8,7 +8,7 @@ import { mergeMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { State } from "../../../../reducers/state";
 import { PAYROLL_PROCESS_FINISHED } from "../../payrolls/actions";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 
 export const EpicOnPayslipGenerated: Epic<any, State> = (action$: Observable<any>): any => action$.pipe(
     ofType(PAYROLL_PROCESS_FINISHED),

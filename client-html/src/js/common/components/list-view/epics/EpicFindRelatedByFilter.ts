@@ -11,7 +11,7 @@ import * as EpicUtils from "../../../epics/EpicUtils";
 import { FIND_RELATED_BY_FILTER } from "../actions";
 import { DataResponse } from "@api/model";
 import EntityService from "../../../services/EntityService";
-import { openInternalLink } from "../../../utils/links";
+import { openInternalLink } from "ish-ui";
 
 const request: EpicUtils.Request<DataResponse, { filter: string | Function, list: string }> = {
   type: FIND_RELATED_BY_FILTER,

@@ -12,12 +12,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 import {
   formatFieldPercent,
   parseFieldPercent,
-  preventNegativeOrLogEnter
-} from "../../../../../common/utils/numbers/numbersNormalizing";
+  preventNegativeOrLogEnter,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
 

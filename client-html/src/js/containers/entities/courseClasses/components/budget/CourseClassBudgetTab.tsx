@@ -24,8 +24,8 @@ import {
 import Decimal from "decimal.js-light";
 import { Dispatch } from "redux";
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
-import { stubFunction } from "../../../../../common/utils/common";
-import { stopEventPropagation } from "../../../../../common/utils/events";
+import { stubFunction } from "ish-ui";
+import { stopEventPropagation } from "ish-ui";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
@@ -38,7 +38,6 @@ import { CourseClassState } from "../../reducers";
 import { AppTheme } from  "ish-ui";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import BudgetCostModal from "./modal/BudgetCostModal";
-import { decimalMinus, decimalMul, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
 import {
   discountSort,
   getDiscountAmountExTax,
@@ -48,7 +47,7 @@ import {
 } from "../../../discounts/utils";
 import { getCurrentTax } from "../../../taxes/utils";
 import BudgetInvoiceItemRenderer from "./BudgetInvoiceItemRenderer";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency, decimalMinus, decimalMul, decimalPlus  } from "ish-ui";
 import AddBudgetMenu from "./AddBudgetMenu";
 import { DefinedTutorRoleExtended } from "../../../../../model/preferences/TutorRole";
 import { setCourseClassBudgetModalOpened } from "../../actions";

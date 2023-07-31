@@ -20,11 +20,11 @@ import Button from "@mui/material/Button";
 import { addDays, format } from "date-fns";
 import { Document, DocumentVersion } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from  "ish-ui";
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "ish-ui";
 import {
-  FileTypeIcon, getDocumentContent,
-  getLatestDocumentItem
+  FileTypeIcon, getDocumentContent
 } from  "ish-ui";
+import { getLatestDocumentItem } from "../../../../common/utils/documents";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AppTheme } from  "ish-ui";
 import { State } from "../../../../reducers/state";

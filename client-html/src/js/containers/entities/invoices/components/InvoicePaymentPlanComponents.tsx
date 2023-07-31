@@ -14,10 +14,10 @@ import { format, isPast } from "date-fns";
 import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { useHoverShowStyles } from  "ish-ui";
-import { openInternalLink } from "../../../../common/utils/links";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { openInternalLink } from "ish-ui";
+import { formatCurrency } from "ish-ui";
 import { III_DD_MMM_YYYY } from  "ish-ui";
-import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalPlus } from "ish-ui";
 import { reducePayments } from "../utils";
 
 const validateAmount = val => (val <= 0 ? "Payment due amount must be greater than zero" : undefined);

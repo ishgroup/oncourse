@@ -33,12 +33,11 @@ import UploadIcon from "@mui/icons-material/Upload";
 import IconButton from "@mui/material/IconButton";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
-import { usePrevious } from "../../../../../common/utils/hooks";
+import { InfoPill, usePrevious } from "ish-ui";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../components/cards/CardBase";
-import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
 import { setScriptComponents } from "../actions";
@@ -50,7 +49,7 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import {
   getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent
 } from "../constants";
-import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from  "ish-ui";
+import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate } from  "ish-ui";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
@@ -59,11 +58,9 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 import AddScriptAction from "../components/AddScriptAction";
 import BoltIcon from "../../../../../../images/icon-bolt.svg";
 import ScriptIcon from "../../../../../../images/icon-script.svg";
-import InfoPill from  "ish-ui";
 import { AppTheme } from  "ish-ui";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import getConfigActions from "../../../components/ImportExportConfig";
-import { validateForbiddenSymbols } from "../../../../../common/utils/validation";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;

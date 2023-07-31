@@ -11,6 +11,7 @@ import { Directions, Language, Link, MoreVert } from '@mui/icons-material';
 import { AlertTitle } from '@mui/lab';
 import Alert from '@mui/lab/Alert';
 import clsx from 'clsx';
+import { AppTheme, DocumentIconsChooser, formatRelativeDate, III_DD_MMM_YYYY_HH_MM_SPECIAL } from "ish-ui";
 import React, { MouseEvent } from 'react';
 import withStyles from '@mui/styles/withStyles';
 import createStyles from '@mui/styles/createStyles';
@@ -33,12 +34,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import { Document } from '@api/model';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { AppTheme } from '@src/model';
-import DocumentIconsChooser from './DocumentIconsChooser';
-import { formatRelativeDate, III_DD_MMM_YYYY_HH_MM_SPECIAL } from '@src/utils';
 import { getDocumentShareSummary, getLatestDocumentItem } from "../../utils/documents";
-import DocumentIconsChooser, { DocumentIconsChooser } from "ish-ui";
-import Popover from "@mui/material/Popover";
 
 
 library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile);

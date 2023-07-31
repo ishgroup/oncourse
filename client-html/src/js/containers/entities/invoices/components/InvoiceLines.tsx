@@ -15,7 +15,6 @@ import { Dispatch } from "redux";
 import { Decimal } from "decimal.js-light";
 import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { formatCurrency, normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../reducers/state";
 import {
   getInvoiceLineCourse,
@@ -23,12 +22,12 @@ import {
   setInvoiceLineCourse,
   setInvoiceLineEnrolments
 } from "../actions";
-import { useAppSelector, usePrevious } from "../../../../common/utils/hooks";
+import { useAppSelector } from "../../../../common/utils/hooks";
 import { accountLabelCondition } from "../../accounts/utils";
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import { LinkAdornment } from  "ish-ui";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalPlus, usePrevious, formatCurrency, normalizeNumber } from "ish-ui";
 import { getDiscountAmountExTax } from "../../discounts/utils";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { calculateInvoiceLineTotal } from "../utils";

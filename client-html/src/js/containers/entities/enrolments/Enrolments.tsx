@@ -36,7 +36,7 @@ import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
 import EnrolmentEditView from "./components/EnrolmentEditView";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
 import { State } from "../../../reducers/state";
-import { openInternalLink } from "../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { checkPermissions } from "../../../common/actions";
 import { getGradingTypes } from "../../preferences/actions";
 import { updateEntityRecord } from "../common/actions";

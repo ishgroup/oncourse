@@ -6,7 +6,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
+import { getHighlightedPartLabel } from "ish-ui";
 import EnrolItemListRenderer from "./components/EnrolItemListRenderer";
 import SaleRelations from "./components/SaleRelations";
 

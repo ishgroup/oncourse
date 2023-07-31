@@ -23,7 +23,7 @@ import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/
 import { BooleanArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
 import { cancelEnrolment } from "../../actions";
-import WarningMessage from  "ish-ui";
+import { WarningMessage } from  "ish-ui";
 import { useOutcomeWarnings } from "./hooks";
 import { enrolmentModalStyles } from "./styles";
 import TransferEnrolmentInvoiceLines from "./TransferEnrolmentInvoiceLines";

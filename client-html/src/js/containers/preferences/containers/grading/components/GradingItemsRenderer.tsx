@@ -16,8 +16,7 @@ import { GradingItem, GradingType } from "@api/model";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 import { GradingFormData } from "./GradingTypesForm";
-import AddButton from "../../../../../common/components/icons/AddButton";
-import { useHoverShowStyles } from "ish-ui";
+import { useHoverShowStyles, AddButton } from "ish-ui";
 
 interface Props {
   classes: any;

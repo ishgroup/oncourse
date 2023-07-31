@@ -13,7 +13,7 @@ import createStyles from "@mui/styles/createStyles";
 import List from "@mui/material/List";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
-import { openInternalLink } from "../../../../../utils/links";
+import { openInternalLink } from "ish-ui";
 import ListLinkItem from "./ListLinkItem";
 import { getResultId } from "../../utils";
 import navigation from "../../../../navigation/data/navigation.json";

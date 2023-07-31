@@ -2,7 +2,7 @@ import React, { memo, useEffect } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import { State } from "../../../../reducers/state";
 import { getCustomValues, reverse } from "../actions";
 import { CogwhelAdornmentProps } from "../../../../model/common/ListView";

@@ -10,6 +10,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
 import { Grid } from "@mui/material";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
@@ -17,10 +21,8 @@ import ContactSelectItemRenderer from "../../contacts/components/ContactSelectIt
 import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
 import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import {
-  ContactLinkAdornment,
-  HeaderContactTitle,
   LinkAdornment
-} from  "ish-ui";
+} from "ish-ui";
 import { getContactFullName } from "../../contacts/utils";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

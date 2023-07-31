@@ -25,7 +25,7 @@ import { Fetch } from "../../../../../model/common/Fetch";
 import FundingContractItem from "./FundingContractItem";
 import { State } from "../../../../../reducers/state";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { idsToString } from "ish-ui";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { ShowConfirmCaller } from  "ish-ui";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";

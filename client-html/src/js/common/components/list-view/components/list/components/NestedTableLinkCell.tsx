@@ -5,7 +5,7 @@
 
 import React from "react";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import { openInternalLink } from "../../../../../utils/links";
+import { openInternalLink } from "ish-ui";
 
 const NestedTableLinkCell = props => {
   const {

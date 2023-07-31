@@ -4,7 +4,6 @@ import withStyles from "@mui/styles/withStyles";
 import Tooltip from "@mui/material/Tooltip";
 import { format } from "date-fns";
 import React, { useMemo } from "react";
-import { Typography } from "@mui/material";
 import { Check, Clear } from "@mui/icons-material";
 import clsx from "clsx";
 import { III_DD_MMM_YYYY_HH_MM } from  "ish-ui";

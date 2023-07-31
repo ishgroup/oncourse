@@ -9,9 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import Close from "@mui/icons-material/Close";
-import AddButton, { AddButton, Switch } from "ish-ui";
+import { AddButton, Switch } from "ish-ui";
 import SearchInput from "./SearchInput";
-import { Switch } from "react-router-dom";
 
 export const InputSection = React.memo<any>(props => {
   const {

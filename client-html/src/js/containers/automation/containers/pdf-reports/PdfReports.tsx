@@ -18,7 +18,7 @@ import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import { showConfirm } from "../../../../common/actions";
 import PdfReportsForm from "./containers/PdfReportsForm";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import {
   createAutomationPdfReport,
   getAutomationPdfReport,

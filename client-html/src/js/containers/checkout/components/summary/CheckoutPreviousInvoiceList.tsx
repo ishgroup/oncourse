@@ -13,8 +13,8 @@ import {
 import { withStyles } from "@mui/styles";
 import { StyledCheckbox } from  "ish-ui";
 import { LinkAdornment } from  "ish-ui";
-import { openInternalLink } from "../../../../common/utils/links";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { openInternalLink } from "ish-ui";
+import { formatCurrency } from "ish-ui";
 import { D_MMM_YYYY } from  "ish-ui";
 import { State } from "../../../../reducers/state";
 import {

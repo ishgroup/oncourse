@@ -25,7 +25,6 @@ import { D_MMM_YYYY } from  "ish-ui";
 import { READ_NEWS } from "../../../constants/Config";
 import { setUserPreference } from "../../actions";
 import { setReadNewsLocal } from "../list-view/actions";
-import { Box, ListItem } from "@mui/material";
 
 const styles = (theme: AppTheme) => createStyles({
   postWrapper: {

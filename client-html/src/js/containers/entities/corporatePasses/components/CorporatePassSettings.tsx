@@ -7,13 +7,13 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import { change } from "redux-form";
 import { Contact } from "@api/model";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { getContactFullName } from "../../contacts/utils";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from  "ish-ui";
+} from "../../../../common/components/form/formFields/FieldAdornments";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import { getContactFullName } from "../../contacts/utils";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";

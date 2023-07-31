@@ -5,16 +5,13 @@
 
 import React from "react";
 import { FormControlLabel, Tooltip } from "@mui/material";
-import EditInPlaceField from "ish-ui";
-import EditInPlaceDateTimeField from "ish-ui";
-import EditInPlaceFileField from "ish-ui";
-import EditInPlaceMoneyField from "ish-ui";
-import EditInPlaceSearchSelect, {
+import {
   CheckboxField,
+  EditInPlaceSearchSelect,
   EditInPlaceDateTimeField,
   EditInPlaceField,
   EditInPlaceMoneyField,
-  FormSwitch
+  FormSwitch, EditInPlaceFileField
 } from "ish-ui";
 import { useAppSelector } from "../../utils/hooks";
 

@@ -14,8 +14,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { formatCurrency, normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { formatCurrency, normalizeNumberToZero, decimalPlus } from "ish-ui";
 
 const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(props => {
   const {

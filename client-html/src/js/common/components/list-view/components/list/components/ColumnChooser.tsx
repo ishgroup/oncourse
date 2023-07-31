@@ -6,8 +6,6 @@
 import React, { useRef, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
-import List from "@mui/material/List";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Popover from "@mui/material/Popover";
 import { CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "../constants";

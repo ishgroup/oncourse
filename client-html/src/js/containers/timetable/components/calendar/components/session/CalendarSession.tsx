@@ -14,11 +14,9 @@ import clsx from "clsx";
 import withStyles from "@mui/styles/withStyles";
 import { createStyles, Theme } from "@mui/material";
 import { differenceInMinutes, format } from "date-fns";
-import WarningMessage from  "ish-ui";
+import { WarningMessage, formatDurationMinutes, appendTimezone } from  "ish-ui";
 import CalendarSessionTag from "./CalendarSessionTag";
 import { openCourseClassLink } from "../../../../../entities/courseClasses/utils";
-import { formatDurationMinutes } from "../../../../../../common/utils/dates/formatString";
-import { appendTimezone } from "../../../../../../common/utils/dates/formatTimezone";
 import { CalendarTagsState } from "../../../../../../model/timetable";
 
 const styles = (theme: Theme) => createStyles({

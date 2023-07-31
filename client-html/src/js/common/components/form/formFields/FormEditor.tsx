@@ -7,7 +7,6 @@
  */
 
 import { ButtonBase, FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
-import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -18,20 +17,195 @@ import clsx from "clsx";
 import React, { useRef, useState } from "react";
 import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
 import { Field, WrappedFieldProps } from "redux-form";
-import HtmlEditor from "../../../../../ish-ui/markdown-editor/HtmlEditor";
-import { useStyles } from "../../../../../ish-ui/markdown-editor/style";
 import {
+  HtmlEditor,
+  WysiwygEditor,
   addContentMarker,
   CONTENT_MODES,
   getContentMarker,
   getEditorModeLabel,
-  removeContentMarker
-} from "../../../../../ish-ui/markdown-editor/utils";
-import WysiwygEditor from "../../../../../ish-ui/markdown-editor/WysiwygEditor";
-import { HtmlEditor, WysiwygEditor } from "ish-ui";
-import FormHelperText from "@mui/material/FormHelperText";
+  removeContentMarker, makeAppStyles,
+} from "ish-ui";
 
-const EditorResolver = ({contentMode, draftContent, onChange, wysiwygRef}) => {
+const useStyles = makeAppStyles(theme => ({
+  hoverIcon: {
+    opacity: 0.5,
+    visibility: "hidden",
+    marginLeft: theme.spacing(1)
+  },
+  editable: {
+    display: "inline-flex",
+    cursor: "text",
+    color: theme.palette.text.primaryEditable,
+    minHeight: "32px",
+    padding: "4px 0 4px",
+    marginTop: theme.spacing(2),
+    fontWeight: 400,
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    "&:hover $hoverIcon": {
+      visibility: "visible"
+    },
+    "&:before": {
+      borderBottom: '1px solid transparent',
+      left: 0,
+      bottom: "4px",
+      content: "' '",
+      position: "absolute",
+      right: 0,
+      transition: theme.transitions.create("border-bottom-color", {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      pointerEvents: "none"
+    },
+    "&:hover:before": {
+      borderBottom: `1px solid ${theme.palette.primary.main}`
+    },
+  },
+  editorArea: {
+    "&#editorRoot": {
+      "& .ck-dropdown__button .ck-button__label": {
+        fontSize: "14px"
+      },
+      cursor: "text",
+      overflowY: "auto",
+      position: "relative",
+      "& .ck-list__item .ck-button": {
+        height: "unset",
+        padding: "5px 10px"
+      },
+      "& .ck-list__item .ck-heading_heading3": {
+        fontSize: "15px"
+      },
+      "& .ck-list__item .ck-heading_heading4": {
+        fontSize: "14px"
+      },
+      "& .ck-toolbar": {
+        height: "45px",
+        background: theme.table.contrastRow.main
+      },
+      "& .ck-list__item": {
+        fontSize: "15px"
+      },
+      "& .ck-dropdown": {
+        fontSize: "15px"
+      },
+      "& .ck.ck-dropdown .ck-button__label": {
+        fontFamily: "Inter, sans-serif",
+        overflow: "visible",
+        width: "120px"
+      },
+      "& .content-mode-wrapper": {
+        position: "absolute",
+        right: "10px",
+        top: "6px",
+        padding: "5px",
+        zIndex: 1000,
+        "& .content-mode": {
+          maxWidth: "85px",
+          border: 0,
+          boxShadow: "none",
+          backgroundColor: "black",
+          color: "white",
+          padding: "2px",
+          fontSize: "9px",
+          "&:hover": {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+          },
+        }
+      },
+      "& .ck-editor": {
+        "& .ck-content": {
+          resize: "vertical",
+          maxHeight: "80vh",
+          minHeight: "200px",
+          fontFamily: "Inter, sans-serif",
+          fontWeight: 400,
+          fontSize: '14px',
+          color: "black"
+        },
+        "& .ck-content .table": {
+          marginLeft: 0
+        },
+        "& .ck-toolbar": {
+          padding: "3px"
+        },
+        "& .ck-source-editing-button": {
+          marginLeft: "auto",
+          marginRight: "44px"
+        },
+        "& .ck-source-editing-button > *": {
+          visibility: 'hidden'
+        },
+        "& .ck-source-editing-button .ck_source_edit_custom": {
+          visibility: 'visible'
+        },
+        "& .ck-source-editing-button .ck_code_icon_custom": {
+          width: "24px"
+        },
+      },
+      "&.ace-wrapper": {
+        border: `1px solid ${theme.palette.divider}`,
+        paddingTop: "44px",
+        background: theme.table.contrastRow.main,
+        "& .ace_editor": {
+          borderTop: `1px solid ${theme.palette.divider}`
+        }
+      }
+    }
+  },
+  previewFrame: {
+    width: "100%",
+    maxHeight: "300px",
+    overflow: "auto",
+    fontSize: "16px",
+    "& > div": {
+      width: "100%"
+    },
+    "& h1,h2,h3,h4": {
+      all: "revert"
+    },
+    "& table": {
+      marginLeft: 0,
+      marginRight: 'auto',
+      borderCollapse: "collapse",
+      borderSpacing: 0,
+      border: '1px double #b3b3b3',
+      "& th": {
+        textAlign: 'left',
+        fontWeight: 700,
+        background: 'hsla(0,0%,0%,5%)',
+        minWidth: '2em',
+        padding: '0.4em',
+        border: '1px solid #bfbfbf'
+      },
+      "& td": {
+        minWidth: '2em',
+        padding: '0.4em',
+        border: '1px solid #bfbfbf'
+      },
+    }
+  },
+  readonly: {
+    fontWeight: 300,
+    pointerEvents: "none"
+  },
+  textField: {
+    paddingLeft: "0",
+    // @ts-ignore
+    paddingBottom: `${theme.spacing(2) - 3}`,
+    margin: 0
+  },
+  "@global": {
+    ".ck.ck-balloon-panel.ck-balloon-panel_visible": {
+      zIndex: 2000
+    }
+  }
+}));
+
+const EditorResolver = ({ contentMode, draftContent, onChange, wysiwygRef }) => {
   switch (contentMode) {
     case "md": {
       return (
@@ -65,7 +239,7 @@ interface Props {
 
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
   {
-    input: {value, name, onChange},
+    input: { value, name, onChange },
     meta,
     disabled,
     label,
@@ -129,7 +303,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             className={
               clsx(
                 classes.editorArea,
-                {"ace-wrapper": contentMode === "html" || contentMode === "textile"},
+                { "ace-wrapper": contentMode === "html" || contentMode === "textile" },
                 label && "mt-2"
               )
             }
@@ -187,7 +361,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                 {
                   value
                     ? contentMode === "md"
-                      ? <div dangerouslySetInnerHTML={{__html: markdown2html(removeContentMarker(value))}}/>
+                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }}/>
                       : removeContentMarker(value)
                     : placeholder || "No value"
                 }
@@ -217,7 +391,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   );
 };
 
-export const FormEditorField = ({name, label, placeholder}: { name: string, label?: string, placeholder?: string }) => (
+export const FormEditorField = ({ name, label, placeholder }: { name: string, label?: string, placeholder?: string }) => (
   <Field
     name={name}
     label={label}

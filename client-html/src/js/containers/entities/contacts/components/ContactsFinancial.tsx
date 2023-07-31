@@ -19,7 +19,7 @@ import { connect } from "react-redux";
 import { Alert, Grid } from "@mui/material";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { AccessState } from "../../../../common/reducers/accessReducer";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { State } from "../../../../reducers/state";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";

@@ -3,14 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Grid from "@mui/material/Grid";
+import { Grid, Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import { format } from "date-fns";
-import { withStyles, createStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
-import { D_III } from  "ish-ui";
-import { appendTimezone } from "../../../../../../common/utils/dates/formatTimezone";
+import { appendTimezone, D_III } from "ish-ui";
+import React from "react";
 
 const styles = (theme: Theme) =>
   createStyles({

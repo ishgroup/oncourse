@@ -13,16 +13,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import clsx from "clsx";
+import { ContactLinkAdornment } from "../../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { openInternalLink, WarningMessage } from "ish-ui";
 import { AppTheme } from  "ish-ui";
 import { DD_MM_YYYY_SLASHED, EEE_D_MMM_YYYY } from  "ish-ui";
-import { ContactLinkAdornment, LinkAdornment } from  "ish-ui";
+import { LinkAdornment } from  "ish-ui";
 import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
 import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
-import WarningMessage from  "ish-ui";
+import { normalizeNumber } from "ish-ui";
 import { getContactFullName } from "../../../contacts/utils";
 
 const styles = (theme: AppTheme) => createStyles({

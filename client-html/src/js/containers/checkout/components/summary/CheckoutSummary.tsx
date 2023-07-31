@@ -6,7 +6,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import { BooleanArgFunction, NumberArgFunction } from  "ish-ui";
 import { CheckoutSummaryListItem as SummaryList } from "../../../../model/checkout";
 import {

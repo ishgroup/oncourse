@@ -14,9 +14,8 @@ import IconButton from "@mui/material/IconButton";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { WrappedFieldArrayProps } from "redux-form";
-import DocumentItem from "ish-ui";
-import AddButton, { AddButton, AppTheme, ShowConfirmCaller } from "ish-ui";
-import { openInternalLink } from "../../../utils/links";
+import { AddButton, AppTheme, ShowConfirmCaller } from "ish-ui";
+import { openInternalLink } from "ish-ui";
 import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
 import { State } from "../../../../reducers/state";
 import {
@@ -30,7 +29,6 @@ import {
 import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/DocumentEditDialog";
 import { getEntityTags } from "../../../../containers/tags/actions";
 import { EntityName } from "../../../../model/entities/common";
-import { Grid } from "@mui/material";
 import DocumentItem from "../../documents/DocumentItem";
 
 const styles = (theme: AppTheme) => createStyles({
