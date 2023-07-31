@@ -21,7 +21,7 @@ import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import EntityService from "../../../../../common/services/EntityService";
 import { III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import AnimateList from "../../../../../common/utils/animation/AnimateList";
 

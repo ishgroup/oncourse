@@ -7,7 +7,7 @@
  */
 
 import { IAction } from "../actions/IshAction";
-import { END_FIELD_PROCESSING_ACTION, START_FIELD_PROCESSING_ACTION } from "../actions/FieldProcessing";
+import { END_FIELD_PROCESSING_ACTION, START_FIELD_PROCESSING_ACTION } from "ish-ui";
 
 export const fieldProcessingReducer = (state: Record<string, boolean> = {}, action: IAction<any>): any => {
   switch (action.type) {

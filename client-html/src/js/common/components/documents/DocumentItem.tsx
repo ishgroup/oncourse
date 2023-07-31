@@ -6,13 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { AppTheme } from "ish-ui";
 import React from "react";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { Grid } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import clsx from "clsx";
-import { AppTheme } from "../model/Theme";
 import DocumentHeader from "./DocumentHeader";
 import DocumentTags from "./DocumentTags";
 

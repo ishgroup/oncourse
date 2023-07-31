@@ -9,7 +9,7 @@ import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import { addHours } from "date-fns";
 import AvailabilityRenderer from "./AvailabilityRenderer";
 import { getLabelWithCount } from "../../../utils/strings";
-import AddButton, { AddButton, ShowConfirmCaller } from "ish-ui";
+import { AddButton, ShowConfirmCaller } from "ish-ui";
 import { EditViewProps } from "../../../../model/common/ListView";
 
 const addRule = (dispatch: any, form: string) => {

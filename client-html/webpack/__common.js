@@ -91,6 +91,7 @@ const _common = (dirname, options) => {
         },
       ],
     },
+    ignoreWarnings: [/Failed to parse source map/],
     plugins: [
       new ReactLoadablePlugin({
         async callback(manifest) {

@@ -8,33 +8,34 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
-import EditInPlacePhoneField from "ish-ui";
-import EditInPlaceDurationField from "ish-ui";
-import EditInPlaceFileField from "ish-ui";
-import EditInPlaceMoneyField from "ish-ui";
-import EditInPlaceSearchSelect from "ish-ui";
-import EditInPlaceField from "ish-ui";
-import EditInPlaceDateTimeField from "ish-ui";
-import CodeEditorField from "ish-ui";
-import SimpleTagList, {
+import {
   CheckboxField,
+  CodeEditorField,
   ColoredCheckBox,
+  EditInPlaceField,
+  EditInPlaceFileField,
+  EditInPlaceSearchSelect,
+  EditInPlaceDurationField,
   EditInPlaceDateTimeField,
+  EditInPlacePhoneField,
   EditInPlaceMoneyField,
-  FormSwitch
+  FormSwitch,
+  TagInputList,
+  stubFunction,
 } from "ish-ui";
-import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
-import { stubFunction } from "../../../utils/common";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import { AngelFormFieldProps } from "../../../../model/common/Fields";
 import { useAppSelector } from "../../../utils/hooks";
+import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
+import EditInPlaceQuerySelect from "./EditInPlaceQuerySelect";
+import { AngelFormFieldProps } from "../../../../model/common/Fields";
 
-const stubFieldMocks = {input: {onChange: stubFunction, onBlur: stubFunction}, format: null, debounced: null};
+const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 
 const FormFieldBase = (props: AngelFormFieldProps) => {
-  const {type, ...rest} = props;
 
-  const {input, format, debounced = true} = type !== "stub"
+  const { type, ...rest } = props;
+
+  const { input, format, debounced = true } = type !== "stub"
     ? props
     : stubFieldMocks;
 
@@ -42,6 +43,10 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
   const processActionId = useAppSelector(state => state.fieldProcessing[input?.name]);
 
   const entity = type === "remoteDataSelect" ? props.entity : null;
+
+  const color = type === "coloredCheckbox" ? props.color : null;
+
+  const rootEntity = type === "aql" ? props.rootEntity : null;
 
   const [value, setValue] = useState(input?.value);
 
@@ -72,10 +77,15 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
 
   const sharedProps = {
     ...rest,
-    ...debounced ? {input: inputProxy} : {}
+    ...debounced ? { input: inputProxy } : {}
   };
 
   switch (type) {
+    case "aql":
+      return <EditInPlaceQuerySelect
+        {...sharedProps}
+        rootEntity={rootEntity}
+      />;
     case "phone":
       return <EditInPlacePhoneField
         <WrappedFieldInputProps, WrappedFieldMetaProps>
@@ -132,11 +142,15 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
       return <CodeEditorField<WrappedFieldInputProps, WrappedFieldMetaProps>
         {...sharedProps} />;
     case "coloredCheckbox":
-      return <ColoredCheckBox<WrappedFieldInputProps, WrappedFieldMetaProps>
-        {...sharedProps} />;
+      return <ColoredCheckBox <WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+        color={color}
+      />;
     case "password":
       return <EditInPlaceField<WrappedFieldInputProps, WrappedFieldMetaProps>
-        {...sharedProps} type="password"/>;
+        {...sharedProps}
+        type="password"
+      />;
     case "switch":
       return <FormSwitch<WrappedFieldInputProps> {...sharedProps} />;
     case "checkbox":
@@ -148,7 +162,7 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
     case "stub":
       return <div className="invisible"/>;
     case "tags":
-      return <SimpleTagList<WrappedFieldInputProps, WrappedFieldMetaProps>
+      return <TagInputList<WrappedFieldInputProps, WrappedFieldMetaProps>
         {...sharedProps}/>;
     case "text":
     default:

@@ -34,7 +34,7 @@ import { StyledCheckbox } from  "ish-ui";
 import { EEE_D_MMM_YYYY } from  "ish-ui";
 import { validateSingleMandatoryField, validateMinMaxDate } from "../../common/utils/validation";
 import { State } from "../../reducers/state";
-import { openInternalLink } from "../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 
 interface Props {
   handleSubmit: any;

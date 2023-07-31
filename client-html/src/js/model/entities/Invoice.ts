@@ -1,9 +1,9 @@
-import { Invoice, AbstractInvoiceLine } from "@api/model";
+import { Invoice, InvoiceInvoiceLine } from "@api/model";
 
 export interface InvoiceWithTotalLine extends Invoice {
   invoiceLines?: InvoiceLineWithTotal[];
 }
 
-export interface InvoiceLineWithTotal extends AbstractInvoiceLine {
+export interface InvoiceLineWithTotal extends InvoiceInvoiceLine {
   total?: number;
 }

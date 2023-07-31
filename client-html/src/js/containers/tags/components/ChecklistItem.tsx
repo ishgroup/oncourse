@@ -12,7 +12,7 @@ import Delete from "@mui/icons-material/Delete";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
 import { useHoverShowStyles } from  "ish-ui";
-import { stopEventPropagation } from "../../../common/utils/events";
+import { stopEventPropagation } from "ish-ui";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormTagProps } from "../../../model/tags";
 

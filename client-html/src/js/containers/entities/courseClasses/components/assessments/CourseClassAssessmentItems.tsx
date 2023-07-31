@@ -21,13 +21,12 @@ import {
 import { withStyles } from "@mui/styles";
 import { DateRange, ExpandMore, Edit } from "@mui/icons-material";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { StyledCheckbox } from  "ish-ui";
+import { StyledCheckbox, stubComponent } from  "ish-ui";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { stubComponent } from "../../../../../common/utils/common";
 import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
 import SubmissionModal from "./SubmissionModal";
 import styles from "./styles";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import CourseClassAssessmentStudent from "./CourseClassAssessmentStudent";
 import GradeModal from "./GradeModal";
 

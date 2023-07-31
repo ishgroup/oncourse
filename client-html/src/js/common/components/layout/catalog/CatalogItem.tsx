@@ -10,11 +10,7 @@ import React, { useCallback } from "react";
 import { Divider, ListItem, ListItemText } from "@mui/material";
 import clsx from "clsx";
 import { CatalogItemType } from "../../../../model/common/Catalog";
-import { makeAppStyles } from  "ish-ui";
-import { NumberArgFunction } from  "ish-ui";
-import { useHoverShowStyles } from  "ish-ui";
-import InfoPill from  "ish-ui";
-import { InfoPill } from "ish-ui";
+import { InfoPill, makeAppStyles, useHoverShowStyles, NumberArgFunction } from "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {

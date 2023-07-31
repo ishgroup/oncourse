@@ -13,7 +13,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Grid from "@mui/material/Grid";
 import { ClassCost } from "@api/model";
 import Decimal from "decimal.js-light";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import { NumberArgFunction, StringArgFunction } from  "ish-ui";
 import { ClassCostType } from "../../../../../model/entities/CourseClass";
 import BudgetItemRow from "./BudgetItemRow";

@@ -7,11 +7,11 @@
  */
 
 
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { MenuItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useMemo } from "react";
-import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
+import { getHighlightedPartLabel } from "ish-ui";
 import * as React from "react";
 
 export const openOutcomeLink = id => openInternalLink("/outcome/" + id);

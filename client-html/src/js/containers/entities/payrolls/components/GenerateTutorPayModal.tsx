@@ -23,7 +23,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import { YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import Button from "@mui/material/Button";
 
 interface Props extends InjectedFormProps {

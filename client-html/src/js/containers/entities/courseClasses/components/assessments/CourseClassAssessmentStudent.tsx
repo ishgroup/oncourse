@@ -18,9 +18,7 @@ import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
 import { StudentForRender } from "./CourseClassAssessmentItems";
 import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
-import EditInPlaceDateTimeField from  "ish-ui";
-import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceSearchSelect from  "ish-ui";
+import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from "ish-ui";
 import { Dispatch } from "redux";
 
 interface Props {

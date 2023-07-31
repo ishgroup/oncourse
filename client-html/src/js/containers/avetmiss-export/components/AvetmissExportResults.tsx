@@ -16,11 +16,11 @@ import {
   AvetmissExportType
 } from "@api/model";
 import clsx from "clsx";
-import Button from "@mui/material/Button";
+import { openInternalLink } from "ish-ui";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormField from "../../../common/components/form/formFields/FormField";
 import SpeechCard from "../../../common/components/layout/SpeechCard";
-import { openInternalLink, saveCategoryAQLLink } from "../../../common/utils/links";
+import { saveCategoryAQLLink } from "../../../common/utils/links";
 
 interface ExtendedValues extends AvetmissExportSettings {
   defaultStatus: boolean;

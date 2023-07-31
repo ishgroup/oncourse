@@ -6,8 +6,7 @@
 import { format } from "date-fns";
 import { ColumnType, DataResponse } from "@api/model";
 import { NestedTableColumnsTypes } from "../../../../../model/common/NestedTable";
-import { EEE_D_MMM_YYYY, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
-import { formatCurrency, formatPercent } from "../../../../utils/numbers/numbersNormalizing";
+import { EEE_D_MMM_YYYY, formatCurrency, formatPercent, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from "ish-ui";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
 import { AnyArgFunction } from  "ish-ui";
 

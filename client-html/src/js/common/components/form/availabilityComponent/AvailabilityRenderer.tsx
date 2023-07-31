@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { createStyles, Grid } from "@mui/material";
+import { createStyles } from "@mui/material";
 import Grid, { GridSize } from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
 import { Holiday } from "@api/model";

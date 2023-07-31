@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import { withStyles, createStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
+import { AddButton } from "ish-ui";
 import clsx from "clsx";
-import AddButton from  "ish-ui";
 
 const styles = theme =>
   createStyles({
@@ -86,6 +86,9 @@ const CardBase = props => {
     onExpand
   } = props;
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <Accordion
       classes={{

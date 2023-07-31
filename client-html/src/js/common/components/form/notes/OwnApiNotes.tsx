@@ -14,7 +14,7 @@ import styles from "./styles";
 import { State } from "../../../../reducers/state";
 import { addActionToQueue, removeActionsFromQueue } from "../../../actions";
 import NotesRenderer from "./components/NotesRenderer";
-import AddButton, { AddButton, ShowConfirmCaller } from "ish-ui";
+import { AddButton, ShowConfirmCaller } from "ish-ui";
 import { deleteNoteItem, postNoteItem } from "./actions";
 import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";

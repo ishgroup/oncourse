@@ -15,7 +15,7 @@ import {
 import { Dispatch } from "redux";
 import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import GradingItemsRenderer from "./GradingItemsRenderer";
 import { makeAppStyles } from "ish-ui";
 

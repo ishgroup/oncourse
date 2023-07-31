@@ -13,7 +13,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { State } from "../../../../reducers/state";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import { validateNonNegative, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import {
   clearCommonPlainRecords,

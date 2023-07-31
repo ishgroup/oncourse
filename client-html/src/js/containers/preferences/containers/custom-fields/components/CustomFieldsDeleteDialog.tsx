@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { stubFunction } from "../../../../../common/utils/common";
+import { stubFunction } from "ish-ui";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { NoArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";

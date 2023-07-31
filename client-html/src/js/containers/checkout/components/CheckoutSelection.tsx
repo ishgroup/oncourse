@@ -27,9 +27,8 @@ import {
   CheckoutCourse, CheckoutCourseClass, CheckoutItem, CheckoutSummary
 } from "../../../model/checkout";
 import { State } from "../../../reducers/state";
-import ResizableWrapper from  "ish-ui";
 import Drawer from "../../../common/components/layout/Drawer";
-import { AppTheme } from  "ish-ui";
+import { AppTheme, ResizableWrapper } from "ish-ui";
 import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
 import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
 import {

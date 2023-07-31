@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { TimetableContext, timetableContextStateInitial } from "../../../../Timetable";
-import { MorningIcon, AfternoonIcon, EveningIcon } from "./DayPeriodIcons";
+import { MorningIcon, AfternoonIcon, EveningIcon } from "ish-ui";
 
 const styles = theme =>
   createStyles({

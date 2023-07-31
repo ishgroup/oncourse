@@ -16,7 +16,7 @@ import { State } from "../../../../reducers/state";
 import { LinkAdornment } from  "ish-ui";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import QualificationListItemRenderer from "../../qualifications/components/QualificationListItemRenderer";
-import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumberToZero } from "ish-ui";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { AnyArgFunction, BooleanArgFunction, StringArgFunction } from  "ish-ui";

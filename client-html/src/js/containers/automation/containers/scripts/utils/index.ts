@@ -68,7 +68,7 @@ const reportFilter = body => {
 
 export const ParseScriptBody = async (scriptItem: Script) => {
   let content = scriptItem.content.replace(/["]{3}/g, '"');
-  let imports = content.match(importsRegexp);
+  let imports: string[] = content.match(importsRegexp);
 
   if (imports) {
     imports = imports.map(i => i.replace(/\n/, "").replace("import ", ""));

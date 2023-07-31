@@ -9,7 +9,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { State } from "../../../../reducers/state";
-import UneditableBase from "ish-ui";
+import { UneditableBase } from "ish-ui";
 
 const mapStateToProps = (state: State) => ({
   currencySymbol: state.currency && state.currency.shortCurrencySymbol

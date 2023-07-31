@@ -16,7 +16,7 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { normalizeNumberToPositive} from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumberToPositive } from "ish-ui";
 import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import { mapSelectItems } from "../../../../../common/utils/common";
 

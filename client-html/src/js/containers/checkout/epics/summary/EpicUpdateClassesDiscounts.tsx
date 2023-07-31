@@ -7,7 +7,7 @@ import { change } from "redux-form";
 import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import { decimalPlus } from "ish-ui";
 import {
   CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS,
   checkoutUpdateSummaryItems,

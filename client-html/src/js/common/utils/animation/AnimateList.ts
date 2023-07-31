@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { usePrevious } from "../hooks";
+import { usePrevious } from "ish-ui";
 
 const calculateBoundingBoxes = children => {
   const boundingBoxes = {};

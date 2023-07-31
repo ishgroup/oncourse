@@ -25,7 +25,7 @@ import {
   updateUser, resetUserPassword, disableUser2FA
 } from "../../../actions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import Message from  "ish-ui";
+import { Message } from  "ish-ui";
 import { SelectItemDefault } from "../../../../../model/entities/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from  "ish-ui";

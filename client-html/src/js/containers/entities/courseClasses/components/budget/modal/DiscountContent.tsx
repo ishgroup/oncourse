@@ -17,15 +17,15 @@ import debounce from "lodash.debounce";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
-import { D_MMM_YYYY } from  "ish-ui";
-import { decimalMul } from "../../../../../../common/utils/numbers/decimalCalculation";
 import {
+  D_MMM_YYYY,
+  decimalMul,
   formatCurrency,
   normalizeNumberToZero,
   formatFieldPercent,
   parseFieldPercent,
   preventNegativeOrLogEnter
-} from "../../../../../../common/utils/numbers/numbersNormalizing";
+} from  "ish-ui";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { getDiscountAmountExTax, getRoundingByType } from "../../../../discounts/utils";
 

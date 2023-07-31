@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { Route, Switch } from "react-router-dom";
-import ResizableWrapper from  "ish-ui";
 import Drawer from "../Drawer";
 import LoadingIndicator from "../../progress/LoadingIndicator";
 import { AnyArgFunction, NumberArgFunction } from  "ish-ui";

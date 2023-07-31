@@ -16,7 +16,7 @@ import DoneRounded from "@mui/icons-material/DoneRounded";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { LinkAdornment } from  "ish-ui";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
 import { AppTheme } from  "ish-ui";
 import CheckoutPaymentExpandableItemRenderer from "./CheckoutPaymentExpandableItemRenderer";

@@ -7,7 +7,7 @@ import React, { useMemo } from "react";
 import { FieldArray } from "redux-form";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import AddButton, { AddButton } from "ish-ui";
+import { AddButton } from "ish-ui";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 
 const MinifiedEntitiesList = props => {

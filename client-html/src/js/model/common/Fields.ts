@@ -1,4 +1,12 @@
-import { EditInPlaceSearchSelectFieldProps, FormFieldBaseProps, FormFieldProps } from  "ish-ui";
+import { InputProps } from "@mui/material/Input";
+import {
+  EditInPlaceSearchSelectFieldProps, FieldClasses,
+  FieldMetaProps,
+  FormFieldBaseProps,
+  FormFieldProps,
+  HTMLTagArgFunction
+} from "ish-ui";
+import { ReactNode, Ref } from "react";
 import { BaseFieldProps } from "redux-form";
 import { StringArgFunction } from  "ish-ui";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
@@ -23,8 +31,41 @@ export interface EditInPlaceRemoteDataSelectFieldProps extends EditInPlaceSearch
   preloadEmpty?: boolean;
 }
 
+export interface EditInPlaceQueryFieldProps {
+  ref?: Ref<any>;
+  setInputNode?: HTMLTagArgFunction;
+  className?: string;
+  rootEntity: string;
+  classes?: any;
+  input?: any;
+  editableComponent?: any;
+  label?: ReactNode;
+  disabled?: boolean;
+  disableUnderline?: boolean;
+  disableErrorText?: boolean;
+  inline?: boolean;
+  hideLabel?: boolean;
+  meta?: Partial<FieldMetaProps>;
+  InputProps?: InputProps;
+  filterTags?: QueryFieldSuggestion[];
+  tagSuggestions?: QueryFieldSuggestion[];
+  customFields?: string[];
+  performSearch?: () => void;
+  theme?: any;
+  onFocus?: any;
+  onBlur?: any;
+  placeholder?: string;
+  labelAdornment?: any;
+  endAdornment?: any;
+  menuHeight?: number;
+  fieldClasses?: FieldClasses;
+  itemRenderer?: any;
+}
+
 export type AngelFormFieldProps = FormFieldProps | ({
   type: "remoteDataSelect"
-} & FormFieldBaseProps & EditInPlaceRemoteDataSelectFieldProps)
+} & FormFieldBaseProps & EditInPlaceRemoteDataSelectFieldProps) | ({
+  type: "aql"
+} & FormFieldBaseProps & EditInPlaceQueryFieldProps)
 
 export type FormFieldWrapperProps = AngelFormFieldProps & BaseFieldProps<AngelFormFieldProps>;

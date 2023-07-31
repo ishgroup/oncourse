@@ -24,7 +24,7 @@ import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-han
 import DataTypeRenderer from "../../../../../common/components/form/DataTypeRenderer";
 import { ProcessState } from "../../../../../common/reducers/processReducer";
 import { YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { usePrevious } from "../../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { State } from "../../../../../reducers/state";
 import { getEntityItemById } from "../../../../entities/common/entityItemsService";

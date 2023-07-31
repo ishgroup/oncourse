@@ -10,12 +10,10 @@ import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model
 import clsx from "clsx";
 import { format } from "date-fns";
 import { KeyboardArrowDown, OpenInNew } from "@mui/icons-material";
-import { stubComponent } from "../../utils/common";
-import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from  "ish-ui";
+import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, stubComponent } from  "ish-ui";
 import { AnyArgFunction } from  "ish-ui";
-import { openInternalLink } from "../../utils/links";
+import { openInternalLink } from "ish-ui";
 import { AppTheme } from  "ish-ui";
-import Typography from "@mui/material/Typography";
 
 const styles = (theme: AppTheme) => createStyles({
   rootPanel: {

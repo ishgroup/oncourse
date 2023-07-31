@@ -9,7 +9,7 @@
 import * as React from "react";
 import { FieldArray } from "redux-form";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 
 const invoiceColumns: NestedTableColumn[] = [

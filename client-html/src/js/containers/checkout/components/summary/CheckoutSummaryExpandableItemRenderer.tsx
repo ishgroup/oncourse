@@ -18,7 +18,7 @@ import Typography from "@mui/material/Typography";
 import { StyledCheckbox } from  "ish-ui";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import { greaterThanNullValidation } from "../../../../common/utils/validation";
 import { CheckoutItem } from "../../../../model/checkout";
 import { changeSummaryItemQuantity, checkoutUpdateSummaryItem } from "../../actions/checkoutSummary";

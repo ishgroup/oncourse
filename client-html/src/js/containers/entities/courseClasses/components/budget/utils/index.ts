@@ -9,7 +9,7 @@ import {
   decimalDivide,
   decimalMul,
   decimalPlus
-} from "../../../../../../common/utils/numbers/decimalCalculation";
+} from "ish-ui";
 import { TimetableSession } from "../../../../../../model/timetable";
 import { ClassCostExtended } from "../../../../../../model/entities/CourseClass";
 import { getCurrentTax } from "../../../../taxes/utils";

@@ -4,7 +4,7 @@
  */
 
 import { IAction } from "../../../common/actions/IshAction";
-import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
+import { decimalPlus } from "ish-ui";
 import {
   CheckoutAddItemsRequiest,
   CheckoutDiscount,

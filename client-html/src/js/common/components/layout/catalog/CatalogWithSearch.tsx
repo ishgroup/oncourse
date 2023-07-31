@@ -9,17 +9,15 @@
 import React, { memo, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
-import { Fade, IconButton, Typography } from "@mui/material";
+import { Fade } from "@mui/material";
 import clsx from "clsx";
 import { areEqual } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Delete } from "@mui/icons-material";
 import { makeAppStyles } from  "ish-ui";
-import AddButton from  "ish-ui";
 import CatalogItem from "./CatalogItem";
 import { CatalogData, CatalogItemType } from "../../../../model/common/Catalog";
 import NewsRender from "../../news/NewsRender";
-import DynamicSizeList from  "ish-ui";
 import { AnyArgFunction } from  "ish-ui";
 import ExpandableContainer from "../expandable/ExpandableContainer";
 import UserSearch from "../swipeable-sidebar/components/UserSearch";
@@ -277,7 +275,7 @@ const CatalogWithSearch = React.memo<Props>((
                       onRemove: toggleInstall
                     }}
                   >
-                    {RowRenderer}
+                    {RowRenderer as any}
                   </DynamicSizeList>
                 )}
               </AutoSizer>

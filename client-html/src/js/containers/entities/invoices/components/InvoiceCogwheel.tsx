@@ -31,7 +31,7 @@ import history from "../../../../constants/History";
 import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 import { isInvoiceType } from "../utils";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 
 interface Props extends CogwhelAdornmentProps {
   dispatch: any;

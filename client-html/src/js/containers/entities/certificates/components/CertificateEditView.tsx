@@ -16,10 +16,12 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { arrayRemove, change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
 import {
   ContactLinkAdornment,
-  HeaderContactTitle,
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import {
   LinkAdornment
 } from  "ish-ui";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";

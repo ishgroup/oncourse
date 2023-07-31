@@ -24,9 +24,8 @@ import {
   setTimetableSavingFilter,
   setTimetableSearch
 } from "../../actions";
-import { AnyArgFunction, StringArgFunction } from  "ish-ui";
+import { AnyArgFunction, stubFunction, StringArgFunction } from  "ish-ui";
 import { FilterGroup, SavingFilterState } from "../../../../model/common/ListView";
-import { stubFunction } from "../../../../common/utils/common";
 
 interface Props {
   classes?: any;

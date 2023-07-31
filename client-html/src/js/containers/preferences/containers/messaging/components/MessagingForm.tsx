@@ -18,7 +18,7 @@ import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import * as Model from "../../../../../model/preferences/Messaging";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import { validateSingleMandatoryField, validateEmail } from "../../../../../common/utils/validation";

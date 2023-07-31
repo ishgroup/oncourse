@@ -17,10 +17,9 @@ import {
   Button,
   Dialog
 } from "@mui/material";
-import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from  "ish-ui";
+import { EditInPlaceField, stubFunction } from "ish-ui";
 import { useGradeErrors } from "./utils/hooks";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 
 const GradeModal = (
   {

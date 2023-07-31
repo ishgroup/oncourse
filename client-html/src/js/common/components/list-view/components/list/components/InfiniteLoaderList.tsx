@@ -22,10 +22,10 @@ import {
 } from "../../../../../../constants/Config";
 import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
-import { stubFunction } from "../../../../../utils/common";
+import { stubFunction } from "ish-ui";
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../constants";
 
-const ThreeColumnCell = ({row}) => (<div>
+const ThreeColumnCell = ({ row }) => (<div>
   <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
     {row.original.secondary}
   </Typography>
@@ -50,7 +50,7 @@ const ThreeColumnCell = ({row}) => (<div>
   </Typography>
 </div>);
 
-const TwoColumnCell = ({cell, classes}) => (<div
+const TwoColumnCell = ({ cell, classes }) => (<div
   style={{
     width: cell.column.getSize()
   }}
@@ -59,7 +59,7 @@ const TwoColumnCell = ({cell, classes}) => (<div
   {flexRender(cell.column.columnDef.cell, cell.getContext())}
 </div>);
 
-const ListRow = memo<any>(({data, index, style}) => {
+const ListRow = memo<any>(({ data, index, style }) => {
   const {
     rows,
     classes,
@@ -106,9 +106,9 @@ const ListRow = memo<any>(({data, index, style}) => {
 const StickyListContext = createContext(null);
 StickyListContext.displayName = "StickyListContext";
 
-const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({children, ...rest}, ref) => (
+const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ children, ...rest }, ref) => (
   <StickyListContext.Consumer>
-    {({header}) => (
+    {({ header }) => (
       <div ref={ref} {...rest}>
         {header}
         {children}
@@ -161,7 +161,7 @@ export default ({
   );
 
   return (
-    <StickyListContext.Provider value={{header}}>
+    <StickyListContext.Provider value={{ header }}>
       <InfiniteLoader
         threshold={0}
         minimumBatchSize={LIST_PAGE_SIZE}
@@ -169,11 +169,10 @@ export default ({
         itemCount={itemCount}
         loadMoreItems={loadMoreItems}
       >
-        {({onItemsRendered, ref}) => (
+        {({ onItemsRendered, ref }) => (
           <AutoSizer>
-            {({height, width}) => (
+            {({ height, width }) => (
               <FixedSizeList
-                style={{overflow: false}}
                 itemCount={itemCount}
                 itemData={itemData}
                 itemSize={threeColumn ? APP_BAR_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}

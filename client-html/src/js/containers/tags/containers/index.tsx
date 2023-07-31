@@ -27,10 +27,9 @@ import FormField from "../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../common/components/appBar/AppBarActions";
 import TagRequirementsMenu from "../components/TagRequirementsMenu";
 import TagRequirementItem from "../components/TagRequirementItem";
-import AddButton from  "ish-ui";
+import { AddButton, ColorPicker } from  "ish-ui";
 import { ChecklistTree, TagTree } from "../components/Trees";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import ColorPicker from  "ish-ui";
 import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
 import { FormTag } from "../../../model/tags";
 

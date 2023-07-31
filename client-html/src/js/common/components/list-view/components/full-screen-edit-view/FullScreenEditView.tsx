@@ -6,6 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { AppBarHelpMenu } from "ish-ui";
 import React from "react";
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
@@ -22,7 +23,6 @@ import FormSubmitButton from "../../../form/FormSubmitButton";
 import LoadingIndicator from "../../../progress/LoadingIndicator";
 import { pushGTMEvent } from "../../../google-tag-manager/actions";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
-import AppBarHelpMenu from  "ish-ui";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import { LSGetItem } from "../../../../utils/storage";
 import {

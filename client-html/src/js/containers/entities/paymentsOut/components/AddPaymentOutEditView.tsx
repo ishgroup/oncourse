@@ -12,8 +12,9 @@ import { change, FieldArray } from "redux-form";
 import Grid from "@mui/material/Grid";
 import { compareAsc, format as formatDate } from "date-fns";
 import { Currency, PaymentMethod } from "@api/model";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
@@ -26,7 +27,7 @@ import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
 import { PaymentOutModel } from "../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { ContactLinkAdornment, LinkAdornment } from  "ish-ui";
+import { LinkAdornment } from  "ish-ui";
 import { getAmountToAllocate, getInitialTotalOutstanding, getInitialTotalOwing, getTotalOutstanding } from "../utils";
 
 const addPaymentOutColumnsBase: NestedTableColumn[] = [

@@ -14,12 +14,12 @@ import Tooltip from "@mui/material/Tooltip";
 import ButtonBase from "@mui/material/ButtonBase";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
+import { getLatestDocumentItem } from "../../../../../utils/documents";
 import FormField from "../../../formFields/FormField";
-import DocumentIconsChooser, { DocumentIconsChooser, getLatestDocumentItem } from "ish-ui";
+import { DocumentIconsChooser } from "ish-ui";
 import { dialogStyles } from "./dialogStyles";
 import DocumentShare from "../../DocumentShare";
 import Button from "@mui/material/Button";
-import { Grid } from "@mui/material";
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -115,7 +115,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           disabled={readOnly}
         />
 
-        <DialogActions classes={{root: classes.actions}}>
+        <DialogActions classes={{ root: classes.actions }}>
           <Button color="primary" onClick={onClose}>
             {type === "view" ? "Close" : "Cancel"}
           </Button>
@@ -155,7 +155,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
       opened, onClose, classes, type, item, onCancelEdit, isNew
     } = this.props;
 
-    const {loading} = this.state;
+    const { loading } = this.state;
 
     const lastVersion = item && getLatestDocumentItem(item.versions);
 
@@ -165,7 +165,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
       <Dialog
         open={opened}
         onClose={type === "create" || isNew ? onClose : onCancelEdit}
-        classes={{paper: classes.paper}}
+        classes={{ paper: classes.paper }}
       >
         <div className={classes.container}>
           {item && (

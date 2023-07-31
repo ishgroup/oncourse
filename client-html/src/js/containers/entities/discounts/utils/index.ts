@@ -11,7 +11,7 @@ import {
   decimalMinus,
   decimalMul,
   decimalPlus
-} from "../../../../common/utils/numbers/decimalCalculation";
+} from "ish-ui";
 
 export const getRoundingByType = (type: MoneyRounding, value: Decimal): number => {
   switch (type) {

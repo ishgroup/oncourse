@@ -22,7 +22,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { DD_MMM_YYYY_MINUSED, III_DD_MMM_YYYY } from  "ish-ui";
 import { PaymentInType } from "../consts";

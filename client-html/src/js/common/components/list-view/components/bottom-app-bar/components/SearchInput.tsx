@@ -457,7 +457,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
               <EditInPlaceQuerySelect
                 inline
                 ref={this.getQueryComponentRef}
-                tags={tagsSuggestions || []}
+                tagSuggestions={tagsSuggestions || []}
                 filterTags={filtersSuggestions || []}
                 customFields={customFieldsSuggestions || []}
                 setInputNode={this.setInputNode}

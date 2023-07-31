@@ -27,7 +27,7 @@ import {
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import { mapSelectItems } from "../../../../../common/utils/common";
-import { normalizeNumber, normalizeNumberToZero } from "../../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber, normalizeNumberToZero } from "ish-ui";
 import { State } from "../../../../../reducers/state";
 import { formatFundingSourceId } from "../../../common/utils";
 import CourseClassAttendanceTab from "../attendance/CourseClassAttendanceTab";

@@ -10,7 +10,7 @@ import { Dispatch } from "redux";
 import { getFormValues, initialize, isDirty } from "redux-form";
 import { DefinedTutorRole } from "@api/model";
 import { State } from "../../../../reducers/state";
-import { usePrevious } from "../../../../common/utils/hooks";
+import { usePrevious } from "ish-ui";
 import {
  createTutorRole, getTutorRole, removeTutorRole, updateTutorRole
 } from "../../actions";

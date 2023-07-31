@@ -11,7 +11,7 @@ import Bugsnag from "@bugsnag/browser";
 import { Client } from "@bugsnag/core";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import { EnvironmentConstants, IS_JEST } from "./EnvironmentConstants";
-import { stubFunction } from "../common/utils/common";
+import { stubFunction } from "ish-ui";
 
 export const bugsnagClient = IS_JEST
   ? {

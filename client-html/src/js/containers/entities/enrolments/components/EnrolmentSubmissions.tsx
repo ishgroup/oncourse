@@ -21,7 +21,7 @@ import SubmissionModal from "../../courseClasses/components/assessments/Submissi
 import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
 import EnrolmentAssessmentStudent from "./EnrolmentAssessmentStudent";
 import GradeModal from "../../courseClasses/components/assessments/GradeModal";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
 import { EditViewProps } from "../../../../model/common/ListView";
 
 interface Props extends EditViewProps<EnrolmentExtended> {

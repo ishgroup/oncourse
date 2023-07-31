@@ -16,7 +16,7 @@ import { Dispatch } from "redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { NumberArgFunction } from  "ish-ui";
 import { LinkAdornment } from  "ish-ui";
-import { openInternalLink } from "../../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
 import { showMessage } from "../../../../../common/actions";
 import { getContactFullName } from "../../../../entities/contacts/utils";

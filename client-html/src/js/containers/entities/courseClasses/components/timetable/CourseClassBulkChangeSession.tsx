@@ -30,9 +30,8 @@ import {
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
 import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { stubFunction } from "../../../../../common/utils/common";
+import { EditInPlaceDurationField, stubFunction } from "ish-ui";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from  "ish-ui";
 import { courseClassCloseBulkUpdateModal } from "./actions";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
 import { DD_MMM_YYYY } from  "ish-ui";

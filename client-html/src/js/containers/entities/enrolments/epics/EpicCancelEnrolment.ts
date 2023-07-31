@@ -8,7 +8,7 @@ import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/compon
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { CANCEL_ENROLMENT, setEnrolmentsDialog, setEnrolmentsProcessing } from "../actions";
 import EnrolmentService from "../services/EnrolmentService";
-import { openInternalLink } from "../../../../common/utils/links";
+import { openInternalLink } from "ish-ui";
 
 const request: EpicUtils.Request<any, { values: CancelEnrolment, type: string }> = {
   type: CANCEL_ENROLMENT,
