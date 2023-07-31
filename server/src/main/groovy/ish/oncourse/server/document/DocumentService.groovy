@@ -177,6 +177,7 @@ class DocumentService {
 		doc.setWebVisibility(permission)
 		version.setMimeType(mimeType)
 		version.setByteSize(content.size())
+		version.setCurrent(true)
 		if (ImageHelper.isImage(content, mimeType)) {
 			version.setPixelWidth(ImageHelper.imageWidth(content))
 			version.setPixelHeight(ImageHelper.imageHeight(content))
