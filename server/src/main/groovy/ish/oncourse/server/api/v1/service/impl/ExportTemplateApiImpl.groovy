@@ -16,6 +16,7 @@ import ish.oncourse.server.api.service.ExportTemplateApiService
 import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
+import ish.util.ThumbnailGenerator
 
 class ExportTemplateApiImpl implements ExportTemplateApi {
 
@@ -49,7 +50,11 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
 
     @Override
     List<ExportTemplateDTO> templates(String entityName) {
-        service.getAutomationFor(entityName)
+        service.getAutomationFor(entityName).collect {dto ->
+            if(dto.preview)
+                dto.preview = ThumbnailGenerator.generateForImg(dto.preview, "image/png")
+            dto
+        }
     }
 
     @Override
