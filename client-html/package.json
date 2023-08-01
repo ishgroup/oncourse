@@ -142,6 +142,9 @@
       "^.+\\.(t|j)sx?$": "@swc/jest",
       ".+\\.(css|styl|less|sass|scss|png|jpg|gif|svg|ttf|woff|woff2)$": "jest-transform-stub"
     },
+    "transformIgnorePatterns": [
+      "node_modules/(?!ish-ui)"
+    ],
     "reporters": [
       "default",
       [
