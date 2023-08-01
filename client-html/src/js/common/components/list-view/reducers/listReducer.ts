@@ -6,9 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { IAction } from "../../../actions/IshAction";
-import { GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED, GET_SCRIPTS_FULFILLED } from "../../../actions";
 import { LIST_PAGE_SIZE, LIST_SIDE_BAR_DEFAULT_WIDTH, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { GetRecordsArgs, ListState } from "../../../../model/common/ListView";
+import { GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED, GET_SCRIPTS_FULFILLED } from "../../../actions";
+import { IAction } from "../../../actions/IshAction";
+import { latestActivityStorageHandler } from "../../../utils/storage";
 import {
   CLEAR_LIST_STATE,
   CLEAR_RECIPIENTS_MESSAGE_DATA,
@@ -33,8 +35,6 @@ import {
   SET_RECIPIENTS_MESSAGE_DATA,
   UPDATE_TAGS_ORDER,
 } from "../actions";
-import { latestActivityStorageHandler } from "../../../utils/storage";
-import { GetRecordsArgs, ListState } from "../../../../model/common/ListView";
 import { getUpdated } from "../utils/listFiltersUtils";
 
 class State implements ListState {

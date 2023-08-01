@@ -1,8 +1,8 @@
 import { Binding } from "@api/model";
-import { ScriptComponent } from "../../../../../model/scripts";
-import uniqid from "../../../../../common/utils/uniqid";
-import EmailTemplateService from "../../email-templates/services/EmailTemplateService";
 import EntityService from "../../../../../common/services/EntityService";
+import uniqid from "../../../../../common/utils/uniqid";
+import { ScriptComponent } from "../../../../../model/scripts";
+import EmailTemplateService from "../../email-templates/services/EmailTemplateService";
 import PdfService from "../../pdf-reports/services/PdfService";
 
 export const SCRIPT_EDIT_VIEW_FORM_NAME = "ScriptsForm";

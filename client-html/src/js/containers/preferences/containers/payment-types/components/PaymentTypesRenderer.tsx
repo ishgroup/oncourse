@@ -4,10 +4,9 @@
  */
 
 import { PaymentType, PayType } from "@api/model";
-import { FormControlLabel } from "@mui/material";
+import { FormControlLabel, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";

@@ -1,6 +1,6 @@
 import * as React from "react";
-import FilterItem from "./FilterItem";
 import { CoreFilter, FilterGroup } from "../../../../../../model/common/ListView";
+import FilterItem from "./FilterItem";
 
 interface Props {
   title?: string;

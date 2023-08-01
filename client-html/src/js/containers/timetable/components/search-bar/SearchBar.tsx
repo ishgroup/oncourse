@@ -3,29 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useRef, useMemo
-} from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import { withStyles, createStyles } from "@mui/styles";
-import { darken } from "@mui/material/styles";
-import { Theme } from "@mui/material";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
 import { Filter } from "@api/model";
-import { SearchInputBase } from "../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput";
-import { Fetch } from "../../../../model/common/Fetch";
-import { State } from "../../../../reducers/state";
-import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from "../../../../constants/Config";
+import { Theme } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import { darken } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import { createStyles, withStyles } from "@mui/styles";
+import { AnyArgFunction, StringArgFunction, stubFunction } from "ish-ui";
+import React, { useCallback, useMemo, useRef } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import {
-  clearTimetableMonths,
-  setTimetableFilters,
-  setTimetableSavingFilter,
-  setTimetableSearch
-} from "../../actions";
-import { AnyArgFunction, stubFunction, StringArgFunction } from  "ish-ui";
+  SearchInputBase
+} from "../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput";
+import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from "../../../../constants/Config";
+import { Fetch } from "../../../../model/common/Fetch";
 import { FilterGroup, SavingFilterState } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import { clearTimetableMonths, setTimetableFilters, setTimetableSavingFilter, setTimetableSearch } from "../../actions";
 
 interface Props {
   classes?: any;

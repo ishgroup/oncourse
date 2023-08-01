@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { UneditableBase } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
 import { State } from "../../../../reducers/state";
-import { UneditableBase } from "ish-ui";
 
 const mapStateToProps = (state: State) => ({
   currencySymbol: state.currency && state.currency.shortCurrencySymbol

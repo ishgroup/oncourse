@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { format } from "date-fns";
+import { Contact } from "@api/model";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { Contact } from "@api/model";
-import { D_MMM_YYYY } from  "ish-ui";
-import { SelectItemRendererProps } from  "ish-ui";
+import { format } from "date-fns";
+import { D_MMM_YYYY, SelectItemRendererProps } from "ish-ui";
+import React, { useMemo } from "react";
 
 const ContactSelectItemRenderer = React.memo<SelectItemRendererProps<Contact>>(({ content, data, parentProps }) => {
   const caption = useMemo(

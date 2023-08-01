@@ -1,6 +1,6 @@
-import { IAction } from "../actions/IshAction";
-import { CLEAR_PROCESS, INTERRUPT_PROCESS_FULFILLED, UPDATE_PROCESS } from "../actions";
 import { ProcessResult } from "@api/model";
+import { CLEAR_PROCESS, INTERRUPT_PROCESS_FULFILLED, UPDATE_PROCESS } from "../actions";
+import { IAction } from "../actions/IshAction";
 
 export interface ProcessState extends ProcessResult {
   processId?: string;

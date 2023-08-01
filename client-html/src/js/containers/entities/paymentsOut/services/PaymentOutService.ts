@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { PaymentOut, PaymentOutApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class PaymentOutService {
   readonly paymentOutApi = new PaymentOutApi(new DefaultHttpService());

@@ -6,12 +6,12 @@
 import { Epic, ofType, StateObservable } from "redux-observable";
 import { concat, from, Observable } from "rxjs";
 import { catchError, delay, mergeMap } from "rxjs/operators";
-import { IAction } from "../actions/IshAction";
-import { FETCH_FINISH, FETCH_START } from "../actions";
-import FetchErrorHandler from "../api/fetch-errors-handlers/FetchErrorHandler";
-import { REJECTED } from "../actions/ActionUtils";
 import { EnvironmentConstants } from "../../constants/EnvironmentConstants";
 import { State } from "../../reducers/state";
+import { FETCH_FINISH, FETCH_START } from "../actions";
+import { REJECTED } from "../actions/ActionUtils";
+import { IAction } from "../actions/IshAction";
+import FetchErrorHandler from "../api/fetch-errors-handlers/FetchErrorHandler";
 
 export interface Request<V = any, P = any> {
   type: string;

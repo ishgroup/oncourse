@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "./HttpService";
 import { AccessApi, PermissionRequest, PermissionResponse } from "@api/model";
+import { DefaultHttpService } from "./HttpService";
 
 class AccessService {
   readonly accessApi = new AccessApi(new DefaultHttpService());

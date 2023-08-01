@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
+import { CoreFilter } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import CustomFiltersService from "../../../services/CustomFiltersService";
-import { State } from "../../../../reducers/state";
 import { GET_FILTERS_FULFILLED, GET_FILTERS_REQUEST, GET_RECORDS_REQUEST } from "../actions/index";
-import { CoreFilter } from "../../../../model/common/ListView";
 
 const request: EpicUtils.Request = {
   type: GET_FILTERS_REQUEST,

@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
 import Close from "@mui/icons-material/Close";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
 import { AddButton, Switch } from "ish-ui";
+import React from "react";
 import SearchInput from "./SearchInput";
 
 export const InputSection = React.memo<any>(props => {

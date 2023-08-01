@@ -6,44 +6,37 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import { Account, Currency, Tag, Tax } from "@api/model";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import {
- arrayInsert, arrayRemove, change, initialize 
-} from "redux-form";
+import Typography from "@mui/material/Typography";
+import { addDays } from "date-fns";
+import { AnyArgFunction, decimalPlus, formatCurrency, formatToDateOnly, LinkAdornment, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
- Account, Currency, Tag, Tax 
-} from "@api/model";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { addDays } from "date-fns";
+import { arrayInsert, arrayRemove, change, initialize } from "redux-form";
 import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { InvoiceLineWithTotal, InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 import { State } from "../../../../reducers/state";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { getContactFullName } from "../../contacts/utils";
-import { formatCurrency } from "ish-ui";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
+import { leadLabelCondition, openLeadLink } from "../../leads/utils";
+import { setSelectedContact } from "../actions";
 import { getInvoiceClosestPaymentDueDate } from "../utils";
 import { HeaderContent, InvoiceLines } from "./InvoiceLines";
-import { formatToDateOnly } from  "ish-ui";
-import { EditViewProps } from "../../../../model/common/ListView";
 import InvoicePaymentPlans from "./InvoicePaymentPlans";
-import { AnyArgFunction } from  "ish-ui";
-import { InvoiceLineWithTotal, InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { setSelectedContact } from "../actions";
-import { LinkAdornment, decimalPlus, usePrevious } from  "ish-ui";
-import { leadLabelCondition, openLeadLink } from "../../leads/utils";
-import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface Props extends EditViewProps {
   currency: Currency;

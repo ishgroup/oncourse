@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import Typography from "@mui/material/Typography";
-import { makeAppStyles } from  "ish-ui";
+import { makeAppStyles } from "ish-ui";
+import React from "react";
 
 const useStyles = makeAppStyles(theme => ({
   root: {

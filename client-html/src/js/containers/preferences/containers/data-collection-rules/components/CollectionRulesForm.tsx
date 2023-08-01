@@ -3,22 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
+import { DataCollectionForm, DataCollectionRule, DataCollectionType } from "@api/model";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
+import createStyles from "@mui/styles/createStyles";
+import * as React from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getFormSyncErrors, initialize, reduxForm } from "redux-form";
-import { DataCollectionForm, DataCollectionRule, DataCollectionType } from "@api/model";
-import createStyles from "@mui/styles/createStyles";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { State } from "../../../../../reducers/state";
 
 const manualUrl = getManualLink("dataCollection");

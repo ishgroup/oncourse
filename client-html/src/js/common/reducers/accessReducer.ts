@@ -4,8 +4,8 @@
  */
 
 import { ApiMethods } from "../../model/common/apiHandlers";
-import { IAction } from "../actions/IshAction";
 import { CHECK_PERMISSIONS_REQUEST_FULFILLED } from "../actions";
+import { IAction } from "../actions/IshAction";
 
 export type AccessItem = {
   [method in keyof ApiMethods]: boolean;

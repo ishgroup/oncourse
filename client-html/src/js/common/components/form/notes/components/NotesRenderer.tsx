@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
+import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
+import * as React from "react";
 import NoteItem from "./NoteItem";
 
 const NotesRenderer = props => {

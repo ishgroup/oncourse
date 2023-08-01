@@ -6,11 +6,11 @@
 *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 */
 
-import React, { useEffect, useRef } from "react";
-import Button from "@mui/material/Button";
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import { IS_JEST } from "../../../constants/EnvironmentConstants";
 import { Collapse } from "@mui/material";
+import Button from "@mui/material/Button";
+import React, { useEffect, useRef } from "react";
+import { IS_JEST } from "../../../constants/EnvironmentConstants";
 import { useAppSelector } from "../../utils/hooks";
 
 interface Props {

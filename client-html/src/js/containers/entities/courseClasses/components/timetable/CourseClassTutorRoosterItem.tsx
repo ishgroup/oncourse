@@ -6,33 +6,32 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Card from "@mui/material/Card";
-import React from "react";
-import { addMinutes, differenceInMinutes, format } from "date-fns";
-import { change, Field, WrappedFieldProps } from "redux-form";
-import {
- Collapse, Grid, IconButton, MenuItem, Select, Typography
-} from "@mui/material";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import clsx from "clsx";
-import Button from "@mui/material/Button";
+import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance } from "@api/model";
 import ChatIcon from "@mui/icons-material/Chat";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import {
- ClashType, CourseClassTutor, SessionWarning, TutorAttendance 
-} from "@api/model";
-import { Dispatch } from "redux";
+import OpenInNew from "@mui/icons-material/OpenInNew";
+import { Collapse, Grid, IconButton, MenuItem, Select, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
 import { makeStyles } from "@mui/styles";
-import { TimetableSession } from "../../../../../model/timetable";
+import clsx from "clsx";
+import { addMinutes, differenceInMinutes, format } from "date-fns";
+import {
+  appendTimezone,
+  AppTheme,
+  ErrorMessage,
+  formatDurationMinutes,
+  H_MMAAA,
+  NumberArgFunction,
+  openInternalLink
+} from "ish-ui";
+import React from "react";
+import { Dispatch } from "redux";
+import { change, Field, WrappedFieldProps } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { ErrorMessage, openInternalLink } from "ish-ui";
-import { formatDurationMinutes } from "ish-ui";
-import { H_MMAAA } from  "ish-ui";
-import { appendTimezone } from "ish-ui";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { AppTheme } from  "ish-ui";
-import { NumberArgFunction } from  "ish-ui";
+import { TimetableSession } from "../../../../../model/timetable";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   root: {

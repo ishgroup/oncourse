@@ -6,18 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import { GradingEntryType, GradingType } from "@api/model";
-import { change, FieldArray, WrappedFieldArrayProps } from "redux-form";
-import {
- Collapse, Card, Grid, Button
-} from "@mui/material";
+import { Button, Card, Collapse, Grid } from "@mui/material";
+import { makeAppStyles, normalizeNumber } from "ish-ui";
+import React from "react";
 import { Dispatch } from "redux";
-import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
+import { change, FieldArray, WrappedFieldArrayProps } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "ish-ui";
+import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 import GradingItemsRenderer from "./GradingItemsRenderer";
-import { makeAppStyles } from "ish-ui";
 
 interface Props {
   classes?: any;

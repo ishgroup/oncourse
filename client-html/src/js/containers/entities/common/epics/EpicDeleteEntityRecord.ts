@@ -9,8 +9,8 @@
 import { Epic } from "redux-observable";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { EntityName } from "../../../../model/entities/common";
-import { deleteEntityItemById, deleteEntityItemByIdErrorHandler, } from "../entityItemsService";
 import { DELETE_ENTITY_RECORD_REQUEST } from "../actions";
+import { deleteEntityItemById, deleteEntityItemByIdErrorHandler, } from "../entityItemsService";
 import { getListRecordAfterDeleteActions } from "../utils";
 
 const request: Request<any, { entity: EntityName, id: number }> = {

@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { SystemPreference } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_USI_SORTWARE_ID, GET_USI_SORTWARE_ID_FULFILLED } from "../actions";
-import { SystemPreference } from "@api/model";
 import PreferencesService from "../services/PreferencesService";
 
 const request: EpicUtils.Request<SystemPreference[]> = {

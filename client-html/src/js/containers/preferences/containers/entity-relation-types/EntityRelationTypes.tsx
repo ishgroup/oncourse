@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Discount, EntityRelationType } from "@api/model";
+import { ShowConfirmCaller } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import { Discount, EntityRelationType } from "@api/model";
-import { deleteEntityRelationType, getEntityRelationTypes, updateEntityRelationTypes } from "../../actions";
-import { State } from "../../../../reducers/state";
-import { Fetch } from "../../../../model/common/Fetch";
-import EntityRelationTypesForm from "./components/EntityRelationTypesForm";
-import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from  "ish-ui";
-import { mapPlainDiscounts } from "../../../entities/discounts/utils";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
+import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { Fetch } from "../../../../model/common/Fetch";
+import { State } from "../../../../reducers/state";
+import { mapPlainDiscounts } from "../../../entities/discounts/utils";
+import { deleteEntityRelationType, getEntityRelationTypes, updateEntityRelationTypes } from "../../actions";
+import EntityRelationTypesForm from "./components/EntityRelationTypesForm";
 
 interface Props {
     getTypes: () => void;

@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import * as ReactBeautifulDnD from "react-beautiful-dnd-next";
 import Tree from "@atlaskit/tree";
 import isEmpty from "lodash.isempty";
+import * as React from "react";
+import * as ReactBeautifulDnD from "react-beautiful-dnd-next";
 
 const TAG_ITEMS_SPACING = 8;
 

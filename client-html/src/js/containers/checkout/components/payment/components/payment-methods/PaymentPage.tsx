@@ -5,20 +5,16 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
+import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { format } from "date-fns";
+import { BooleanArgFunction, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
 import React, { Dispatch } from "react";
 import { connect } from "react-redux";
-import { format } from "date-fns";
-import { reduxForm, InjectedFormProps, isInvalid } from "redux-form";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import {
-  CheckoutPayment, CheckoutSummary
-} from "../../../../../../model/checkout";
-import { BooleanArgFunction } from  "ish-ui";
+import { InjectedFormProps, isInvalid, reduxForm } from "redux-form";
+import { CheckoutPayment, CheckoutSummary } from "../../../../../../model/checkout";
 import { State } from "../../../../../../reducers/state";
-import { YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { formatCurrency } from "ish-ui";
 import {
   checkoutClearPaymentStatus,
   checkoutProcessPayment,

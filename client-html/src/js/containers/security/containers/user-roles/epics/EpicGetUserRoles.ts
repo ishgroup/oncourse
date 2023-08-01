@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { UserRole } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import UserRolesService from "../services/UserRolesService";
 import { GET_USER_ROLES_FULFILLED, GET_USER_ROLES_REQUEST } from "../../../actions";
-import { UserRole } from "@api/model";
+import UserRolesService from "../services/UserRolesService";
 
 const request: EpicUtils.Request = {
   type: GET_USER_ROLES_REQUEST,

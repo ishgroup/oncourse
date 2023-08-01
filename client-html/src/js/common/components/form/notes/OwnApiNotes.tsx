@@ -3,23 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useState } from "react";
+import { Note } from "@api/model";
 import { Grid } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import { arrayInsert, change, FieldArray } from "redux-form";
 import clsx from "clsx";
-import { Note } from "@api/model";
+import { AddButton, ShowConfirmCaller } from "ish-ui";
+import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
-import styles from "./styles";
+import { arrayInsert, change, FieldArray } from "redux-form";
+import { APP_BAR_HEIGHT } from "../../../../constants/Config";
 import { State } from "../../../../reducers/state";
 import { addActionToQueue, removeActionsFromQueue } from "../../../actions";
-import NotesRenderer from "./components/NotesRenderer";
-import { AddButton, ShowConfirmCaller } from "ish-ui";
-import { deleteNoteItem, postNoteItem } from "./actions";
-import NotesService from "./services/NotesService";
 import instantFetchErrorHandler from "../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import uniqid from "../../../utils/uniqid";
-import { APP_BAR_HEIGHT } from "../../../../constants/Config";
+import { deleteNoteItem, postNoteItem } from "./actions";
+import NotesRenderer from "./components/NotesRenderer";
+import NotesService from "./services/NotesService";
+import styles from "./styles";
 
 interface Props {
   classes?: any;

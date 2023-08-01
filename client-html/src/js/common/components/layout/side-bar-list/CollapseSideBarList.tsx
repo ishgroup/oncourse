@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
+import { ExpandMore } from "@mui/icons-material";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import IconButton from "@mui/material/IconButton";
-import Collapse from "@mui/material/Collapse";
-import { ExpandMore } from "@mui/icons-material";
+import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
+import clsx from "clsx";
+import { AddButton } from "ish-ui";
 import debounce from "lodash.debounce";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
 import { latestActivityStorageHandler } from "../../../utils/storage";
 import CollapseSideBarListItem from "./CollapseSideBarListItem";
-import { AddButton } from "ish-ui";
 
 const styles = theme => createStyles({
   listItemPadding: {

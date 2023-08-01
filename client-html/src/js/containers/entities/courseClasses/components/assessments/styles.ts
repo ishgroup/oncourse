@@ -7,7 +7,7 @@
  */
 
 import { createStyles } from "@mui/styles";
-import { AppTheme } from  "ish-ui";
+import { AppTheme } from "ish-ui";
 
 export default (theme: AppTheme) =>
   createStyles({

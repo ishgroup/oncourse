@@ -3,31 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import { Outcome, PriorLearning, Qualification } from "@api/model";
 import { Grid } from "@mui/material";
-import {
-  arrayInsert, arrayRemove, change, FieldArray
-} from "redux-form";
-import {
-  Outcome, PriorLearning, Qualification
-} from "@api/model";
+import { LinkAdornment } from "ish-ui";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { LinkAdornment } from  "ish-ui";
-import {
-  getContactFullName
-} from "../../contacts/utils";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import { OutcomesContentLine, OutcomesHeaderLine } from "./OutcomesLines";
-import EntityService from "../../../../common/services/EntityService";
-import { openQualificationLink } from "../../qualifications/utils";
-import { OutcomeInitial } from "../../outcomes/Outcomes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import EntityService from "../../../../common/services/EntityService";
+import { EditViewProps } from "../../../../model/common/ListView";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
+import { OutcomeInitial } from "../../outcomes/Outcomes";
+import { openQualificationLink } from "../../qualifications/utils";
+import { OutcomesContentLine, OutcomesHeaderLine } from "./OutcomesLines";
 
 interface PriorLearningEditViewProps extends EditViewProps<PriorLearning> {
   classes?: any;

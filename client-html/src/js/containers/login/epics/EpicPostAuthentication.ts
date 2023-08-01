@@ -5,17 +5,17 @@
 
 import { LoginRequest, LoginResponse } from "@api/model";
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { bugsnagClient } from "../../../constants/Bugsnag";
-import LoginService from "../services/LoginService";
 import {
   CLEAR_LAST_LOCATION,
   FETCH_SUCCESS,
   POST_AUTHENTICATION_FULFILLED,
   POST_AUTHENTICATION_REQUEST,
 } from "../../../common/actions";
-import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { bugsnagClient } from "../../../constants/Bugsnag";
 import history from "../../../constants/History";
+import LoginService from "../services/LoginService";
+import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 
 const request: EpicUtils.Request<LoginResponse, { body: LoginRequest, host, port }> = {
   type: POST_AUTHENTICATION_REQUEST,

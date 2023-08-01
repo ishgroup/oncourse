@@ -6,18 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
+import { executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
+import { getRecords } from "../../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { ListActionEntity } from "../../../../model/entities/common";
-import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
-import { UPDATE_VET_REPORT_ENTITIES } from "../actions";
 import { VetReport } from "../../../../model/entities/VetReporting";
 import { updateEntityItemById } from "../../common/entityItemsService";
-import { executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
-import { getRecords } from "../../../../common/components/list-view/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { UPDATE_VET_REPORT_ENTITIES } from "../actions";
 
 const request: Request<any, { item: VetReport, entity: ListActionEntity }> = {
   type: UPDATE_VET_REPORT_ENTITIES,

@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
 import OpenInNew from "@mui/icons-material/OpenInNew";
 import { openInternalLink } from "ish-ui";
+import React from "react";
 
 const NestedTableLinkCell = props => {
   const {

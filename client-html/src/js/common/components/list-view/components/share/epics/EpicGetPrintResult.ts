@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { stopSubmit } from "redux-form";
+import { Epic } from "redux-observable";
+import { CONTEXT } from "../../../../../api/Constants";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import { GET_PRINT_RESULT } from "../actions";
-import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { CONTEXT } from "../../../../../api/Constants";
 
 const request: EpicUtils.Request = {
   type: GET_PRINT_RESULT,

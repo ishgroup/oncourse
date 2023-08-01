@@ -6,36 +6,32 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useMemo
-} from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Dispatch } from "redux";
 import { Tag } from "@api/model";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Collapse from "@mui/material/Collapse";
-import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../reducers/state";
-import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
-import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import { LinkAdornment, decimalDivide, decimalMinus, decimalPlus } from  "ish-ui";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
+import { FormControlLabel, Grid, IconButton } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { decimalDivide, decimalMinus, decimalPlus, LinkAdornment } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import { showMessage } from "../../../../../common/actions";
-import { AppMessage } from "../../../../../model/common/Message";
-import history from "../../../../../constants/History";
-import { getClassCostTypes } from "../../utils";
-import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import history from "../../../../../constants/History";
+import { EditViewProps } from "../../../../../model/common/ListView";
+import { AppMessage } from "../../../../../model/common/Message";
+import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
+import { State } from "../../../../../reducers/state";
 import { EntityChecklists } from "../../../../tags/components/EntityChecklists";
+import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
+import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
+import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
+import { getClassCostTypes } from "../../utils";
+import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];

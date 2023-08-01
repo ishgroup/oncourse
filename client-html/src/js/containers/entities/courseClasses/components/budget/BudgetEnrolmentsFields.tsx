@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { withStyles, createStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import { AppTheme, normalizeNumberToZero, preventDecimalEnter } from "ish-ui";
+import React, { useMemo } from "react";
 import { Dispatch } from "redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { normalizeNumberToZero, preventDecimalEnter, AppTheme } from  "ish-ui";
-import { CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
 import { validateNonNegative } from "../../../../../common/utils/validation";
+import { CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
 
 const styles = (theme: AppTheme) => createStyles({
   root: {

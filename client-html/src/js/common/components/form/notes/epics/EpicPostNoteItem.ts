@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { Note } from "@api/model";
-import * as EpicUtils from "../../../../epics/EpicUtils";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../epics/EpicUtils";
 import { POST_NOTE_ITEM } from "../actions";
 import NotesService from "../services/NotesService";
 

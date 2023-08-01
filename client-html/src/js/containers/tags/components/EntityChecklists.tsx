@@ -3,27 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  Fragment,
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import {
-  Card, CircularProgress, Collapse, Divider,
-  IconButton, Link, Menu, MenuItem, Typography
-} from "@mui/material";
+import { Tag } from "@api/model";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Tag } from "@api/model";
-import { change } from "redux-form";
-import debounce from "lodash.debounce";
+import { Card, CircularProgress, Collapse, Divider, IconButton, Link, Menu, MenuItem, Typography } from "@mui/material";
 import clsx from "clsx";
-import TagsService from "../services/TagsService";
-import { useAppDispatch } from "../../../common/utils/hooks";
+import { BooleanArgFunction, ColoredCheckBox, openInternalLink } from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { change } from "redux-form";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import StaticProgress from "../../../common/components/progress/StaticProgress";
-import { BooleanArgFunction, openInternalLink, ColoredCheckBox } from  "ish-ui";
+import { useAppDispatch } from "../../../common/utils/hooks";
 import { LSGetItem, LSSetItem } from "../../../common/utils/storage";
 import { ENTITY_TAGS_EXPAND_SETTINGS_KEY } from "../constants";
+import TagsService from "../services/TagsService";
 
 interface ChecklistItemProps {
   item: Tag;

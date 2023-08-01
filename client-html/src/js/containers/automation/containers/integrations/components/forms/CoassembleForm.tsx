@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import { getFormValues, initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import { getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";

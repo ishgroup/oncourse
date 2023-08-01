@@ -5,25 +5,24 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
+import { LoadingButton } from "@mui/lab";
+import { StringArgFunction } from "ish-ui";
 import React, { useEffect } from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { change } from "redux-form";
-import {
-  CheckoutPayment,
-  CheckoutPaymentProcess,
-  CheckoutSummary
-} from "../../../../../../model/checkout";
+import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from "../../../../../../model/checkout";
 import { State } from "../../../../../../reducers/state";
 import {
-  checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails,
-  checkoutPaymentSetCustomStatus, checkoutProcessPayment, checkoutSetPaymentMethod,
+  checkoutClearPaymentStatus,
+  checkoutGetPaymentStatusDetails,
+  checkoutPaymentSetCustomStatus,
+  checkoutProcessPayment,
+  checkoutSetPaymentMethod,
   clearCcIframeUrl
 } from "../../../../actions/checkoutPayment";
-import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import { StringArgFunction } from  "ish-ui";
 import { FORM } from "../../../CheckoutSelection";
-import { LoadingButton } from "@mui/lab";
+import PaymentMessageRenderer from "../PaymentMessageRenderer";
 
 interface CreditCardPaymentPageProps {
   classes?: any;

@@ -1,7 +1,7 @@
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_ACTIVE_PAYMENT_OUT_METHODS, GET_ACTIVE_PAYMENT_OUT_METHODS_FULFILLED } from "../actions";
 import { Epic } from "redux-observable";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../preferences/services/PreferencesService";
+import { GET_ACTIVE_PAYMENT_OUT_METHODS, GET_ACTIVE_PAYMENT_OUT_METHODS_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_ACTIVE_PAYMENT_OUT_METHODS,

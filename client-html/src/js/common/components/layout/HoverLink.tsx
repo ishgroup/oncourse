@@ -6,12 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { ReactNode } from "react";
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
 import Launch from "@mui/icons-material/Launch";
-import { openInternalLink } from "ish-ui";
-import { makeAppStyles } from  "ish-ui";
+import IconButton from "@mui/material/IconButton";
+import clsx from "clsx";
+import { makeAppStyles, openInternalLink } from "ish-ui";
+import React, { ReactNode } from "react";
 
 const useStyles = makeAppStyles(theme => ({
   root: {

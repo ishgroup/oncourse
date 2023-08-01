@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../../common/services/HttpService";
 import { UserRole, UserRoleApi } from "@api/model";
+import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class UserRolesService {
   readonly userRoleApi = new UserRoleApi(new DefaultHttpService());

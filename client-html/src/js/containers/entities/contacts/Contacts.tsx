@@ -6,38 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Contact } from "@api/model";
+import Typography from "@mui/material/Typography";
 import { isBefore } from "date-fns";
 import React, { Dispatch, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import Typography from "@mui/material/Typography";
-import { Contact } from "@api/model";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import {
-  getContactsConcessionTypes,
-  getContactsRelationTypes,
-  getContactsTaxTypes,
-  getContactTags
-} from "./actions";
-import ContactEditView from "./components/ContactEditView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import {
- getContactRelationTypes, getCountries, getLanguages, getPaymentTypes 
-} from "../../preferences/actions";
-import { getDefaultInvoiceTerms } from "../invoices/actions";
-import ContactCogWheel from "./components/ContactCogWheel";
-import { checkPermissions } from "../../../common/actions";
-import { State } from "../../../reducers/state";
-import { PreferencesState } from "../../preferences/reducers/state";
+import company from "../../../../images/company.png";
+import person from "../../../../images/person.png";
+import tutorStudent from "../../../../images/student-tutor.png";
 import student from "../../../../images/student.png";
 import tutor from "../../../../images/tutor.png";
-import company from "../../../../images/company.png";
-import tutorStudent from "../../../../images/student-tutor.png";
-import person from "../../../../images/person.png";
+import { checkPermissions } from "../../../common/actions";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
+import { PreferencesState } from "../../preferences/reducers/state";
+import { getDefaultInvoiceTerms } from "../invoices/actions";
+import { getContactsConcessionTypes, getContactsRelationTypes, getContactsTaxTypes, getContactTags } from "./actions";
+import ContactCogWheel from "./components/ContactCogWheel";
+import ContactEditView from "./components/ContactEditView";
 import { getContactFullName } from "./utils";
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";

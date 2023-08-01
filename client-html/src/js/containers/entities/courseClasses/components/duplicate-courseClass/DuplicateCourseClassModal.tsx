@@ -3,33 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useRef, useState
-} from "react";
-import clsx from "clsx";
-import debounce from "lodash.debounce";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
-  reduxForm, getFormValues, DecoratedComponentClass, InjectedFormProps, change
-} from "redux-form";
-import withStyles from "@mui/styles/withStyles";
+import { CourseClassDuplicate } from "@api/model";
+import { Grid, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { CourseClassDuplicate } from "@api/model";
-import {
- addDays, differenceInDays, getHours, getMinutes, getSeconds, getMilliseconds
-} from "date-fns";
-import { Typography } from "@mui/material";
+import FormGroup from "@mui/material/FormGroup";
 import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
+import { BooleanArgFunction, NoArgFunction, StyledCheckbox } from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change, DecoratedComponentClass, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
+import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import { State } from "../../../../../reducers/state";
-import { StyledCheckbox } from  "ish-ui";
+import { getAllMonthsWithSessions } from "../../../../timetable/utils";
 import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
 import { courseFilterCondition } from "../../../courses/utils";
 import {
@@ -37,13 +33,7 @@ import {
   duplicateCourseClass,
   getDuplicateCourseClassesSessions
 } from "../../actions";
-import {
- BooleanArgFunction, NoArgFunction
-} from  "ish-ui";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
 import modalStyles from "./modalStyles";
 
 export const DUPLICATE_COURSE_CLASS_FORM: string = "DuplicateCourseClassForm";

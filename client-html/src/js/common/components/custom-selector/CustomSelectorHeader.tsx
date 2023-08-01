@@ -1,9 +1,9 @@
-import React, { useCallback } from "react";
+import ArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import ArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import React, { useCallback } from "react";
 import { CustomSelectorOption } from "./CustomSelector";
 
 interface Props {

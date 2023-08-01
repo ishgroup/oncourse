@@ -2,11 +2,11 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { Epic } from "redux-observable";
 import { MessageType, Recipients, SearchQuery } from "@api/model";
+import { Epic } from "redux-observable";
+import MessageService from "../../../../containers/entities/messages/services/MessageService";
 import { MessageData } from "../../../../model/common/Message";
 import * as EpicUtils from "../../../epics/EpicUtils";
-import MessageService from "../../../../containers/entities/messages/services/MessageService";
 import { GET_RECIPIENTS_MESSAGE_DATA, setRecipientsMessageData } from "../actions";
 
 const request:

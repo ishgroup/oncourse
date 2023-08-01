@@ -2,28 +2,24 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { FormControlLabel } from "@mui/material";
-import { format } from "date-fns-tz";
-import React from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { DiscountType } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { format } from "date-fns-tz";
+import { decimalMinus, decimalPlus, formatCurrency, III_DD_MMM_YYYY, StyledCheckbox } from "ish-ui";
+import React from "react";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { StyledCheckbox } from  "ish-ui";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { III_DD_MMM_YYYY } from  "ish-ui";
-import { decimalMinus, decimalPlus } from "ish-ui";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CheckoutDiscount, CheckoutSummary } from "../../../../../model/checkout";
 import { State } from "../../../../../reducers/state";
-import { formatCurrency } from "ish-ui";
 import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
-import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
 import CheckoutAppBar from "../../CheckoutAppBar";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
 
 const styles = () => createStyles({
     history: {

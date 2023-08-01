@@ -4,17 +4,17 @@
  */
 
 import { DataResponse, Diff, EntityApi, SearchQuery } from "@api/model";
-import { DefaultHttpService } from "./HttpService";
 import {
   LIST_PAGE_SIZE,
   PLAIN_LIST_MAX_PAGE_SIZE,
   SIMPLE_SEARCH_QUOTES_REGEX,
   SIMPLE_SEARCH_REGEX
 } from "../../constants/Config";
-import { State } from "../../reducers/state";
-import { getFiltersString, getTagGroups } from "../components/list-view/utils/listFiltersUtils";
 import { GetRecordsArgs } from "../../model/common/ListView";
 import { EntityName, ListActionEntity } from "../../model/entities/common";
+import { State } from "../../reducers/state";
+import { getFiltersString, getTagGroups } from "../components/list-view/utils/listFiltersUtils";
+import { DefaultHttpService } from "./HttpService";
 
 class EntityService {
   readonly entityApi = new EntityApi(new DefaultHttpService());

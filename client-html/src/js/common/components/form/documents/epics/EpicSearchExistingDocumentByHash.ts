@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Document } from "@api/model";
 import { Epic } from "redux-observable";
 import { from } from "rxjs";
-import { Document } from "@api/model";
 import { SHOW_MESSAGE } from "../../../../actions";
+import { IAction } from "../../../../actions/IshAction";
 import * as EpicUtils from "../../../../epics/EpicUtils";
 import { getInitialDocument } from "../../../../utils/documents";
-import DocumentsService from "../services/DocumentsService";
 import { SEARCH_DOCUMENT_BY_HASH, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT } from "../actions";
-import { IAction } from "../../../../actions/IshAction";
+import DocumentsService from "../services/DocumentsService";
 
 const getEditingDocumentAction = (
   file: File,

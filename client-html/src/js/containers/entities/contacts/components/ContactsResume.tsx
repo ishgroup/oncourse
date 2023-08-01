@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import { Contact } from "@api/model";
 import { Grid } from "@mui/material";
+import React from "react";
 import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { Contact } from "@api/model";
 
 const ContactsResume: React.FC<EditViewProps<Contact>> = ({
   tabIndex,

@@ -3,22 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { StringArgFunction } from "ish-ui";
+import debounce from "lodash.debounce";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import debounce from "lodash.debounce";
-import { StringArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
-import HeaderField from "../../HeaderField";
 import {
   checkoutGetPromoCode,
   checkoutRemoveDiscount,
   checkoutRemoveVoucher,
   checkoutUpdateSummaryClassesDiscounts
 } from "../../../actions/checkoutSummary";
-import SelectedPromoCodesRenderer from "./SelectedPromoCodesRenderer";
 import { CheckoutPage } from "../../../constants";
+import HeaderField from "../../HeaderField";
+import SelectedPromoCodesRenderer from "./SelectedPromoCodesRenderer";
 
 export interface Props {
   setActiveField?: (field: any) => void;

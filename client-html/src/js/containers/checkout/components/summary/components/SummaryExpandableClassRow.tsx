@@ -8,28 +8,28 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-import IconButton from "@mui/material/IconButton";
+import { EnrolmentStudyReason } from "@api/model";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Lock from "@mui/icons-material/Lock";
 import LockOpen from "@mui/icons-material/LockOpen";
-import React from "react";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import clsx from "clsx";
+import { formatCurrency, StyledCheckbox } from "ish-ui";
+import debounce from "lodash.debounce";
+import React from "react";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Accordion from "@mui/material/Accordion";
-import { EnrolmentStudyReason } from "@api/model";
-import debounce from "lodash.debounce";
 import { showConfirm } from "../../../../../common/actions";
-import { StyledCheckbox, formatCurrency } from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { CheckoutCourse } from "../../../../../model/checkout";
-import { checkoutUpdateSummaryItem, checkoutChangeSummaryItemField } from "../../../actions/checkoutSummary";
+import { checkoutChangeSummaryItemField, checkoutUpdateSummaryItem } from "../../../actions/checkoutSummary";
 import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "../CheckoutSummaryList";
 
 const enrolmentStudyReasonItems = Object.keys(EnrolmentStudyReason).map(mapSelectItems);

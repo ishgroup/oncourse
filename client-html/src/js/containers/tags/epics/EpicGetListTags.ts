@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { Request, Create } from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_REQUEST } from "../actions";
-import { setListMenuTags } from "../../../common/components/list-view/actions";
 import { getMenuTags } from "ish-ui";
+import { Epic } from "redux-observable";
+import { setListMenuTags } from "../../../common/components/list-view/actions";
+import { Create, Request } from "../../../common/epics/EpicUtils";
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_REQUEST } from "../actions";
+import TagsService from "../services/TagsService";
 
 const request: Request<any, { entityName: string }> = {
   type: GET_LIST_TAGS_REQUEST,

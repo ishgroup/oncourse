@@ -3,8 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import Launch from "@mui/icons-material/Launch";
+import RemoveCircle from "@mui/icons-material/RemoveCircle";
+import IconButton from "@mui/material/IconButton";
+import MaUTable from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Typography from "@mui/material/Typography";
+import makeStyles from "@mui/styles/makeStyles";
 import {
   ColumnDef,
   ColumnSort,
@@ -13,26 +21,16 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table';
-import makeStyles from "@mui/styles/makeStyles";
-import MaUTable from "@mui/material/Table";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Launch from "@mui/icons-material/Launch";
-import RemoveCircle from "@mui/icons-material/RemoveCircle";
 import clsx from "clsx";
+import { AddButton, AnyArgFunction, openInternalLink } from "ish-ui";
+import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { NESTED_TABLE_ROW_HEIGHT } from "../../../../../constants/Config";
 import { NestedTableColumn } from "../../../../../model/common/NestedTable";
-import { AnyArgFunction } from  "ish-ui";
 import { State } from "../../../../../reducers/state";
-import { openInternalLink } from "ish-ui";
 import StaticList from "./components/StaticList";
 import styles from "./styles";
 import { getNestedTableCell } from "./utils";
-import { NESTED_TABLE_ROW_HEIGHT } from "../../../../../constants/Config";
-import { AddButton } from "ish-ui";
 
 const DEFAULT_COLUMN_WIDTH = 100;
 

@@ -6,14 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
 import { Invoice } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import InvoiceService from "../../../entities/invoices/services/InvoiceService";
-import {
-  CHECKOUT_GET_PREVIOUS_CREDIT,
-  CHECKOUT_SET_PREVIOUS_CREDIT
-} from "../../actions/checkoutSummary";
+import { CHECKOUT_GET_PREVIOUS_CREDIT, CHECKOUT_SET_PREVIOUS_CREDIT } from "../../actions/checkoutSummary";
 import { mergeInvoicePaymentPlans } from "../../utils";
 
 const request: EpicUtils.Request<any, string> = {

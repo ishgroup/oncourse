@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { PriorLearning, PriorLearningApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class PriorLearningService {
   readonly priorLearningApi = new PriorLearningApi(new DefaultHttpService());

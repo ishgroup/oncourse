@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useState } from "react";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import ExpandIcon from "@mui/icons-material/ExpandMore";
-import clsx from "clsx";
 import { Session } from "@api/model";
-import CalendarSession from "./CalendarSession";
+import ExpandIcon from "@mui/icons-material/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import React, { useMemo, useState } from "react";
 import { CalendarTagsState } from "../../../../../../model/timetable";
+import CalendarSession from "./CalendarSession";
 
 const numberOfClasses = (length: number) => (length > 1 ? `${length} classes` : `${length} class`);
 

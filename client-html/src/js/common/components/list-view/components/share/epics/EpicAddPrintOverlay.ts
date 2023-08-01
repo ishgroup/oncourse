@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../epics/EpicUtils";
-import { ADD_PRINT_OVERLAY, ADD_PRINT_OVERLAY_FULFILLED, GET_OVERLAY_ITEMS } from "../actions";
-import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { FETCH_SUCCESS } from "../../../../../actions";
 import ReportOverlayService
   from "../../../../../../containers/automation/containers/pdf-backgrounds/services/ReportOverlayService";
+import { FETCH_SUCCESS } from "../../../../../actions";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../epics/EpicUtils";
+import { ADD_PRINT_OVERLAY, ADD_PRINT_OVERLAY_FULFILLED, GET_OVERLAY_ITEMS } from "../actions";
 
 const request: EpicUtils.Request<any, { fileName: string; overlay: File }> = {
   type: ADD_PRINT_OVERLAY,

@@ -4,9 +4,9 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetCourseClassAssessments } from "./EpicGetCourseClassAssessments";
 import { EpicCreateCourseClassAssessment } from "./EpicCreateCourseClassAssessment";
 import { EpicDeleteCourseClassAssessment } from "./EpicDeleteCourseClassAssessment";
+import { EpicGetCourseClassAssessments } from "./EpicGetCourseClassAssessments";
 import { EpicUpdateCourseClassAssessment } from "./EpicUpdateCourseClassAssessment";
 
 export const EpicCourseClassAssestments = combineEpics(

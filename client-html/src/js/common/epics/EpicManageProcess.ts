@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ProcessResult } from "@api/model";
 import { Epic } from "redux-observable";
+import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from "../actions";
+import { IAction } from "../actions/IshAction";
+import ProcessService from "../services/ProcessService";
 
 import * as EpicUtils from "./EpicUtils";
-import ProcessService from "../services/ProcessService";
-import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from "../actions";
-import { ProcessResult } from "@api/model";
-import { IAction } from "../actions/IshAction";
 
 const switchByStatus = (
   process: ProcessResult = {},

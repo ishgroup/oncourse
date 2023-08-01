@@ -3,22 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from "react";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
+import { Document } from "@api/model";
+import { OpenWith } from "@mui/icons-material";
 import Delete from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { BooleanArgFunction, FileUploaderDialog } from "ish-ui";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Document } from "@api/model";
-import { OpenWith } from "@mui/icons-material";
-import Button from "@mui/material/Button";
-import { FileUploaderDialog } from "ish-ui";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
-import { BooleanArgFunction } from  "ish-ui";
-import { getInitialDocument } from "../../../common/utils/documents";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import ListView from "../../../common/components/list-view/ListView";
 import {
   clearListState,
   getFilters,
@@ -27,12 +23,15 @@ import {
   setListEditRecord,
   setListSelection
 } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getInitialDocument } from "../../../common/utils/documents";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { State } from "../../../reducers/state";
 import { getEntityTags, getListTags } from "../../tags/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import DocumentEditView from "./components/DocumentEditView";
 import BinCogwheel from "./components/BinCogwheel";
+import DocumentEditView from "./components/DocumentEditView";
 
 const styles = () => createStyles({
   linkBtnWrapper: {

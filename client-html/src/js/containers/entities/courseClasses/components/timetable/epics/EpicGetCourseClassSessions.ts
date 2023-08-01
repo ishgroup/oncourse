@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { Session } from "@api/model";
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { courseClassTimetablePath } from "../../../../../../constants/Api";
 import { getCourseClassSessionsWarnings } from "../../../actions";
 import { GET_COURSE_CLASS_SESSIONS } from "../actions";

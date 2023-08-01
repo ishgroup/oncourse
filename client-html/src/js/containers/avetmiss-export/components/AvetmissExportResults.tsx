@@ -3,10 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { change } from "redux-form";
-import { ButtonBase, Divider, Typography } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 import {
   AvetmissExportOutcome,
   AvetmissExportOutcomeCategory,
@@ -15,9 +11,13 @@ import {
   AvetmissExportSettings,
   AvetmissExportType
 } from "@api/model";
+import Launch from "@mui/icons-material/Launch";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { ButtonBase, Divider, Typography } from "@mui/material";
 import clsx from "clsx";
 import { openInternalLink } from "ish-ui";
-import LoadingButton from "@mui/lab/LoadingButton";
+import React from "react";
+import { change } from "redux-form";
 import FormField from "../../../common/components/form/formFields/FormField";
 import SpeechCard from "../../../common/components/layout/SpeechCard";
 import { saveCategoryAQLLink } from "../../../common/utils/links";

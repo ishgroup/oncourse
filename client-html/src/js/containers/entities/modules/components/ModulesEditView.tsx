@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
 import { ModuleType } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import { normalizeNumberToPositive } from "ish-ui";
+import * as React from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
-import { normalizeNumberToPositive } from "ish-ui";
 
 const moduleTypes = Object.keys(ModuleType).map(key => ({ value: ModuleType[key], label: key }));
 

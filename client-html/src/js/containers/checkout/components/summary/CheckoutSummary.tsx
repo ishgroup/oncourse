@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { BooleanArgFunction, NumberArgFunction, usePrevious } from "ish-ui";
+import debounce from "lodash.debounce";
 import React from "react";
 import { connect } from "react-redux";
-import debounce from "lodash.debounce";
-import { usePrevious } from "ish-ui";
-import { BooleanArgFunction, NumberArgFunction } from  "ish-ui";
 import { CheckoutSummaryListItem as SummaryList } from "../../../../model/checkout";
 import {
   checkoutGetPreviousCredit,
@@ -15,9 +14,9 @@ import {
   checkoutUpdateSummaryClassesDiscounts,
   checkoutUpdateSummaryPrices
 } from "../../actions/checkoutSummary";
-import CheckoutDiscountEditView from "./promocode/CheckoutDiscountEditView";
-import CheckoutSummaryList from "./CheckoutSummaryList";
 import { CheckoutPage } from "../../constants";
+import CheckoutSummaryList from "./CheckoutSummaryList";
+import CheckoutDiscountEditView from "./promocode/CheckoutDiscountEditView";
 
 interface Props {
   checkoutStep?: number;

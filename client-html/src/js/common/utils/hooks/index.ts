@@ -5,8 +5,8 @@
 
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { Dispatch } from "redux";
-import { IAction } from "../../actions/IshAction";
 import { State } from "../../../reducers/state";
+import { IAction } from "../../actions/IshAction";
 
 // Redux
 export const useAppDispatch = () => useDispatch<Dispatch<IAction>>();

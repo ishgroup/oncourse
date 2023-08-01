@@ -1,8 +1,8 @@
-import { IAction } from "../actions/IshAction";
-import { GET_USER_PREFERENCES_FULFILLED } from "../actions";
-import { SET_READ_NEWS_LOCAL } from "../components/list-view/actions";
-import { READ_NEWS } from "../../constants/Config";
 import { PreferenceEnum } from "@api/model";
+import { READ_NEWS } from "../../constants/Config";
+import { GET_USER_PREFERENCES_FULFILLED } from "../actions";
+import { IAction } from "../actions/IshAction";
+import { SET_READ_NEWS_LOCAL } from "../components/list-view/actions";
 
 export type UserPreferencesState = {
   [K in PreferenceEnum]?: K extends "payment.gateway.type" ? "EWAY" | "EWAY_TEST" | "WINDCAVE" | "TEST" | "DISABLED" | "OFFLINE" : string;

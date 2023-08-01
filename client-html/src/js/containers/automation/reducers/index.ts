@@ -4,19 +4,19 @@
  */
 
 import { IAction } from "../../../common/actions/IshAction";
+import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
+import { CatalogItemType } from "../../../model/common/Catalog";
 import { GET_INTEGRATIONS_FULFILLED, } from "../actions";
-import { GET_SCRIPTS_LIST_FULFILLED, GET_TIMEZONE_FULFILLED } from "../containers/scripts/actions";
+import { GET_EMAIL_TEMPLATES_LIST_FULFILLED } from "../containers/email-templates/actions";
 import { GET_EXPORT_TEMPLATES_LIST_FULFILLED } from "../containers/export-templates/actions";
-import { GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED } from "../containers/pdf-reports/actions";
+import { GET_IMPORT_TEMPLATES_LIST_FULFILLED } from "../containers/import-templates/actions";
 import {
   GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED,
-  GET_PDF_BACKGROUND_COPY, GET_PDF_BACKGROUND_COPY_LIST_FULFILLED
+  GET_PDF_BACKGROUND_COPY,
+  GET_PDF_BACKGROUND_COPY_LIST_FULFILLED
 } from "../containers/pdf-backgrounds/actions";
-import { GET_IMPORT_TEMPLATES_LIST_FULFILLED } from "../containers/import-templates/actions";
-import { GET_EMAIL_TEMPLATES_LIST_FULFILLED } from "../containers/email-templates/actions";
-import { CatalogItemType } from "../../../model/common/Catalog";
-import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
-import { FETCH_FAIL } from "../../../common/actions";
+import { GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED } from "../containers/pdf-reports/actions";
+import { GET_SCRIPTS_LIST_FULFILLED, GET_TIMEZONE_FULFILLED } from "../containers/scripts/actions";
 
 export interface AutomationState {
   integration: {

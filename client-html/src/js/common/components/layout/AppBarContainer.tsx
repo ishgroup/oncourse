@@ -6,26 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useState } from "react";
-import clsx from "clsx";
-import { makeStyles } from "@mui/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import MenuIcon from "@mui/icons-material/Menu";
+import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
+import Fab from "@mui/material/Fab";
+import IconButton from "@mui/material/IconButton";
+import Toolbar from "@mui/material/Toolbar";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { makeStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AppBarHelpMenu, AppTheme } from "ish-ui";
+import React, { useCallback, useState } from "react";
 import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
-import { LSGetItem } from "../../utils/storage";
-import { useAppDispatch } from "../../utils/hooks";
 import { openDrawer } from "../../actions";
-import { AppBarHelpMenu, AppTheme } from  "ish-ui";
+import { useAppDispatch } from "../../utils/hooks";
+import { LSGetItem } from "../../utils/storage";
 import FormSubmitButton from "../form/FormSubmitButton";
 import FullScreenStickyHeader from "../list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { VARIANTS } from "./swipeable-sidebar/utils";
 import HamburgerMenu from "./swipeable-sidebar/components/HamburgerMenu";
+import { VARIANTS } from "./swipeable-sidebar/utils";
 
 const useStyles = makeStyles((theme: AppTheme) => ({
   header: {

@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import debounce from "lodash.debounce";
-import clsx from "clsx";
-import Input from "@mui/material/Input";
+import Close from "@mui/icons-material/Close";
 import Search from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
-import Close from "@mui/icons-material/Close";
-import { BooleanArgFunction, StringArgFunction } from  "ish-ui";
-import { makeAppStyles } from  "ish-ui";
+import Input from "@mui/material/Input";
+import clsx from "clsx";
+import { BooleanArgFunction, makeAppStyles, StringArgFunction } from "ish-ui";
+import debounce from "lodash.debounce";
+import React from "react";
 
 const useStyles = makeAppStyles(theme => ({
   inputRoot: {

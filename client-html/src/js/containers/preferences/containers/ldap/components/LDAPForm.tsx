@@ -3,30 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
-import Hidden from "@mui/material/Hidden";
-import { FormControlLabel } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import Checkbox from "@mui/material/Checkbox";
-import {
-  Form, reduxForm, getFormValues, initialize
-} from "redux-form";
-import { connect } from "react-redux";
-import isEmpty from "lodash.isempty";
+import { Divider, FormControlLabel, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
-import { ConfirmBase } from  "ish-ui";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import * as Model from "../../../../../model/preferences/Ldap";
-import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import Checkbox from "@mui/material/Checkbox";
+import Hidden from "@mui/material/Hidden";
+import Typography from "@mui/material/Typography";
+import { ConfirmBase } from "ish-ui";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import * as Model from "../../../../../model/preferences/Ldap";
+import { State } from "../../../../../reducers/state";
+import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
 const manualUrl = getManualLink("generalPrefs_ldap");
 

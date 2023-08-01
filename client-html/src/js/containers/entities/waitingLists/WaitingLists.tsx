@@ -6,21 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { WaitingList } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { WaitingList } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import WaitingListEditView from "./components/WaitingListEditView";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { getEntityTags, getListTags } from "../../tags/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { State } from "../../../reducers/state";
-import WaitingListCogWheel from "./components/WaitingListCogWheel";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { initialize } from "redux-form";
 import { checkPermissions } from "../../../common/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
 import { FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getEntityTags, getListTags } from "../../tags/actions";
+import WaitingListCogWheel from "./components/WaitingListCogWheel";
+import WaitingListEditView from "./components/WaitingListEditView";
 
 const Initial: WaitingList = {
   id: null,

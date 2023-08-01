@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { memo } from "react";
-import { areEqual, FixedSizeList } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import clsx from "clsx";
 import TableCell from "@mui/material/TableCell";
+import { flexRender } from "@tanstack/react-table";
+import clsx from "clsx";
+import React, { memo } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { areEqual, FixedSizeList } from "react-window";
 import { NestedTableColumnsTypes } from "../../../../../../model/common/NestedTable";
 import NestedTableCheckboxCell from "./NestedTableCheckboxCell";
-import NestedTableLinkCell from "./NestedTableLinkCell";
-import { flexRender } from "@tanstack/react-table";
 import NestedTableDeleteCell from "./NestedTableDeleteCell";
+import NestedTableLinkCell from "./NestedTableLinkCell";
 
 const ListCell = React.memo<any>(({
                                     value, fieldName, column, row, onCheckboxChange, onRowDelete, classes

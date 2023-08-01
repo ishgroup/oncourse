@@ -11,18 +11,14 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { BooleanArgFunction, decimalPlus, formatCurrency } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm
-} from "redux-form";
+import { change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm } from "redux-form";
 import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { decimalPlus } from "ish-ui";
-import { formatCurrency } from "ish-ui";
-import { BooleanArgFunction } from  "ish-ui";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { postContraInvoices } from "../actions";

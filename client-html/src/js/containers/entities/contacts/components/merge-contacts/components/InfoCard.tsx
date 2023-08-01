@@ -1,15 +1,15 @@
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Check from "@mui/icons-material/Check";
-import { createStyles, withStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
-import { change } from "redux-form";
 import { MergeLine } from "@api/model";
+import Check from "@mui/icons-material/Check";
+import { Theme } from "@mui/material";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import React, { useCallback, useMemo } from "react";
+import { change } from "redux-form";
 import { MergeContactsFormValues } from "../MergeContacts";
-import { Selected } from "./RadioLabelGroup";
 import Marker from "./Marker";
+import { Selected } from "./RadioLabelGroup";
 
 interface Props {
   classes?: any;

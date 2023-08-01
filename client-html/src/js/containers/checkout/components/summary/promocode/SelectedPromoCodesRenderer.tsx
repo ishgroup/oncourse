@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
+import Delete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import { alpha } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { AppTheme } from  "ish-ui";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { AppTheme } from "ish-ui";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { State } from "../../../../../reducers/state";
 
 const styles = (theme: AppTheme) => createStyles({

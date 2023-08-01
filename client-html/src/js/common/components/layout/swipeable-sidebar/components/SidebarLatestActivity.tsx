@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { AppTheme } from "ish-ui";
+import React from "react";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
 import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
-import ListLinksGroup from "./searchResults/ListLinksGroup";
 import { LSGetItem } from "../../../../utils/storage";
-import { AppTheme } from  "ish-ui";
+import ListLinksGroup from "./searchResults/ListLinksGroup";
 
 const styles = (theme: AppTheme) => createStyles({
   activityStatistic: {

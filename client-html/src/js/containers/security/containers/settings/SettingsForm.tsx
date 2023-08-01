@@ -3,27 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import {
-  Form, change, reduxForm, initialize, getFormValues, Field
-} from "redux-form";
-import { connect } from "react-redux";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { FormRadioButtons, Switch } from "ish-ui";
 import isEmpty from "lodash.isempty";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import * as Model from "../../../../model/preferences/security/SecuritySettings";
-import { Switch } from  "ish-ui";
-import { FormRadioButtons } from  "ish-ui";
+import React from "react";
+import { connect } from "react-redux";
+import { change, Field, Form, getFormValues, initialize, reduxForm } from "redux-form";
 import RouteChangeConfirm from "../../../../common/components/dialog/RouteChangeConfirm";
-import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
-import { State } from "../../../../reducers/state";
-import { getManualLink } from "../../../../common/utils/getManualLink";
-import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
-import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
+import { FormModelSchema } from "../../../../model/preferences/FormModelShema";
+import * as Model from "../../../../model/preferences/security/SecuritySettings";
+import { State } from "../../../../reducers/state";
+import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
 
 const manualUrl = getManualLink("users_Users");
 

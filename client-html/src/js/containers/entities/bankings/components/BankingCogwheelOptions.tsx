@@ -1,9 +1,9 @@
-import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { reconcileBanking } from "../actions";
 import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
+import { reconcileBanking } from "../actions";
 
 class BankingCogwheelOptions extends React.PureComponent<CogwhelAdornmentProps & { reconcileBanking: any }, any> {
   reconcileBanking = () => {

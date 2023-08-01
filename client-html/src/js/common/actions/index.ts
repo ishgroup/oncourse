@@ -8,13 +8,13 @@
  * */
 
 import { LoginRequest, PermissionRequest, PreferenceEnum, User, UserPreference } from "@api/model";
-import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
-import { LoginState } from "../../containers/login/reducers/state";
 import { ShowConfirmCaller } from "ish-ui";
-import { IAction } from "./IshAction";
+import { LoginState } from "../../containers/login/reducers/state";
 import { QueuedAction } from "../../model/common/ActionsQueue";
 import { ApiMethods } from "../../model/common/apiHandlers";
 import { AppMessage } from "../../model/common/Message";
+import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
+import { IAction } from "./IshAction";
 
 export const CHECK_PERMISSIONS_REQUEST = _toRequestType("post/access");
 export const CHECK_PERMISSIONS_REQUEST_FULFILLED = FULFILLED(CHECK_PERMISSIONS_REQUEST);

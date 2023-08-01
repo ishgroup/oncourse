@@ -3,26 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { getFormValues } from "redux-form";
-import { Epic } from "redux-observable";
 import { CheckoutResponse } from "@api/model";
 import { format } from "date-fns";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
+import { getFormValues } from "redux-form";
+import { Epic } from "redux-observable";
 import { SHOW_MESSAGE } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_PAYMENT,
   checkoutPaymentSetCustomStatus,
-  checkoutPaymentSetStatus, checkoutProcessPaymentFulfilled,
+  checkoutPaymentSetStatus,
+  checkoutProcessPaymentFulfilled,
   checkoutSetPaymentProcessing
 } from "../../actions/checkoutPayment";
-import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
+import { FORM } from "../../components/CheckoutSelection";
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
 import { CHECKOUT_SUMMARY_FORM } from "../../components/summary/CheckoutSummaryList";
 import CheckoutService from "../../services/CheckoutService";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getCheckoutModel } from "../../utils";
-import { FORM } from "../../components/CheckoutSelection";
-import { YYYY_MM_DD_MINUSED } from  "ish-ui";
 
 const errorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
 

@@ -8,9 +8,9 @@
 
 import React from "react";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import EnrolmentAttachmentsTab from "./EnrolmentAttachmentsTab";
 import EnrolmentGeneralTab from "./EnrolmentGeneralTab";
 import EnrolmentVetStudentLoans from "./EnrolmentVetStudentLoans";
-import EnrolmentAttachmentsTab from "./EnrolmentAttachmentsTab";
 
 const items: TabsListItem[] = [
   {

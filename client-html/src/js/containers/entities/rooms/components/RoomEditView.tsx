@@ -7,10 +7,11 @@
  */
 
 import * as React from "react";
+import AvailabilityFormComponent
+  from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList from "../../../../common/components/navigation/TabsList";
 import RoomsGeneral from "./RoomsGeneral";
-import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 
 const items = [
   {

@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import { addHours } from "date-fns";
-import AvailabilityRenderer from "./AvailabilityRenderer";
-import { getLabelWithCount } from "../../../utils/strings";
 import { AddButton, ShowConfirmCaller } from "ish-ui";
+import React from "react";
+import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { getLabelWithCount } from "../../../utils/strings";
+import AvailabilityRenderer from "./AvailabilityRenderer";
 
 const addRule = (dispatch: any, form: string) => {
   const item = {} as Holiday;

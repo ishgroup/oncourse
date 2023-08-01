@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ReportOverlay, ReportOverlayApi } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
-import { ReportOverlayApi, ReportOverlay } from "@api/model";
 
 class ReportOverlayService {
   readonly service = new DefaultHttpService();

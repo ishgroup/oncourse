@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
+import { OutputType } from "@api/model";
 
 import { stopSubmit } from "redux-form";
-import { OutputType } from "@api/model";
+import { Epic } from "redux-observable";
+import { State } from "../../../../../../reducers/state";
 import { FETCH_FAIL, FETCH_SUCCESS } from "../../../../../actions";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import { createAndDownloadFile } from "../../../../../utils/common";
-import ExportService from "../services/ExportService";
 import { GET_EXPORT_RESULT } from "../actions";
-import { State } from "../../../../../../reducers/state";
-import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import ExportService from "../services/ExportService";
 
 const request: EpicUtils.Request<any, {
   entityName: string;

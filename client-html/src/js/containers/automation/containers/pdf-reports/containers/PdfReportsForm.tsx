@@ -6,42 +6,36 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import {
-  change, FieldArray, Form, initialize, InjectedFormProps
-} from "redux-form";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import Grid from "@mui/material/Grid";
 import { Report } from "@api/model";
-import { Dispatch } from "redux";
-import Typography from "@mui/material/Typography";
-import Grow from "@mui/material/Grow";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import FileCopy from "@mui/icons-material/FileCopy";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Grow from "@mui/material/Grow";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import { FilePreview, InfoPill, NumberArgFunction, ShowConfirmCaller, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch } from "redux";
+import { change, FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import { FilePreview, InfoPill, NumberArgFunction } from "ish-ui";
-import { usePrevious } from "ish-ui";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import { CommonListItem } from "../../../../../model/common/sidebar";
-import { createAndDownloadFile } from "../../../../../common/utils/common";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { EntityItems } from "../../../../../model/entities/common";
-import { ShowConfirmCaller } from  "ish-ui";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { createAndDownloadFile } from "../../../../../common/utils/common";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import { reportFullScreenPreview } from "../actions";
+import { CommonListItem } from "../../../../../model/common/sidebar";
+import { EntityItems } from "../../../../../model/entities/common";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import getConfigActions from "../../../components/ImportExportConfig";
+import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
+import { reportFullScreenPreview } from "../actions";
 
 const manualUrl = getManualLink("reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;

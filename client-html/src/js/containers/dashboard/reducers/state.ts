@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- StatisticData, SearchGroup
-} from "@api/model";
+import { SearchGroup, StatisticData } from "@api/model";
 
 export interface DashboardState {
   statistics: {

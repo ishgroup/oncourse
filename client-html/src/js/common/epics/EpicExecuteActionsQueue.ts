@@ -4,8 +4,8 @@
  */
 
 import { Epic, ofType, StateObservable } from "redux-observable";
-import { mergeMap } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { mergeMap } from "rxjs/operators";
 import { State } from "../../reducers/state";
 import { clearActionsQueue, EXECUTE_ACTIONS_QUEUE } from "../actions";
 

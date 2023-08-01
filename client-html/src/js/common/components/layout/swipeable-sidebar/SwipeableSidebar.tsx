@@ -6,42 +6,39 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import clsx from "clsx";
-import { createStyles, withStyles } from "@mui/styles";
+import { PreferenceEnum, SearchQuery } from "@api/model";
+import { Backdrop, Divider } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
 import { darken } from "@mui/material/styles";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Divider from "@mui/material/Divider";
-import { Backdrop } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
-import { PreferenceEnum, SearchQuery } from "@api/model";
-import { AppTheme } from  "ish-ui";
-import { State } from "../../../../reducers/state";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AnyArgFunction, AppTheme, openInternalLink } from "ish-ui";
+import * as React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../../constants/Config";
+import ExecuteScriptModal from "../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { getDashboardSearch } from "../../../../containers/dashboard/actions";
-import { openInternalLink } from "ish-ui";
-import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
+import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
+import SendMessageEditView from "../../../../containers/entities/messages/components/SendMessageEditView";
+import { DashboardItem } from "../../../../model/dashboard";
+import { State } from "../../../../reducers/state";
 import { checkPermissions, getOnDemandScripts, getUserPreferences, setUserPreference } from "../../../actions";
-import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";
-import UserSearch from "./components/UserSearch";
-import SearchResults from "./components/searchResults/SearchResults";
-import SidebarLatestActivity from "./components/SidebarLatestActivity";
+import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
+import { useAppSelector } from "../../../utils/hooks";
+import navigation from "../../navigation/data/navigation.json";
 import Favorites from "../../navigation/favorites/Favorites";
-import { getResultId, VARIANTS } from "./utils";
-import HamburgerMenu from "./components/HamburgerMenu";
 import Navigation from "../../navigation/Navigation";
 import NavigationCategory from "../../navigation/NavigationCategory";
-import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../../constants/Config";
-import { useAppSelector } from "../../../utils/hooks";
-import ExecuteScriptModal from "../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { DashboardItem } from "../../../../model/dashboard";
-import navigation from "../../navigation/data/navigation.json";
-import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
-import { AnyArgFunction } from  "ish-ui";
-import SendMessageEditView from "../../../../containers/entities/messages/components/SendMessageEditView";
+import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";
+import HamburgerMenu from "./components/HamburgerMenu";
+import SearchResults from "./components/searchResults/SearchResults";
+import SidebarLatestActivity from "./components/SidebarLatestActivity";
+import UserSearch from "./components/UserSearch";
+import { getResultId, VARIANTS } from "./utils";
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 

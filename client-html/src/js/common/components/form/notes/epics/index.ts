@@ -4,9 +4,9 @@
  */
 
 import { combineEpics } from "redux-observable";
+import { EpicDeleteNoteItem } from "./EpicDeleteNoteItem";
 import { EpicGetNoteItems } from "./EpicGetNoteItems";
 import { EpicPostNoteItem } from "./EpicPostNoteItem";
 import { EpicPutNoteItem } from "./EpicPutNoteItem";
-import { EpicDeleteNoteItem } from "./EpicDeleteNoteItem";
 
 export const EpicNotes = combineEpics(EpicGetNoteItems, EpicPostNoteItem, EpicPutNoteItem, EpicDeleteNoteItem);

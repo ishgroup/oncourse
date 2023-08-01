@@ -9,19 +9,20 @@ import StepButton from "@mui/material/StepButton";
 import StepContent from "@mui/material/StepContent";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
-import { withStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { format } from "date-fns";
+import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import { AddButton, YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { decimalPlus } from "ish-ui";
-import { formatCurrency } from "ish-ui";
-import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "../../../entities/invoices/components/InvoicePaymentPlanComponents";
+import { getDeepValue } from "../../../../common/utils/common";
+import {
+  InvoicePaymentPlanContent,
+  InvoicePaymentPlanHeader
+} from "../../../entities/invoices/components/InvoicePaymentPlanComponents";
 import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
-import { getDeepValue } from "../../../../common/utils/common";
 
 interface PaymentPlansProps {
   classes?: any;

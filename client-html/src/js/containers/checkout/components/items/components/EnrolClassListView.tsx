@@ -2,26 +2,22 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { isBefore } from "date-fns";
-import React from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import Typography from "@mui/material/Typography";
-import ListItem from "@mui/material/ListItem";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import { Grid, List, Radio } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Radio } from "@mui/material";
-import { filterPastClasses } from "../../../utils";
-import { AppTheme } from  "ish-ui";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import { appendTimezone } from "ish-ui";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
+import ListItem from "@mui/material/ListItem";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { isBefore } from "date-fns";
+import { appendTimezone, AppTheme, formatCurrency } from "ish-ui";
+import React from "react";
 import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
+import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
-import { formatCurrency } from "ish-ui";
+import { getAllMonthsWithSessions } from "../../../../timetable/utils";
+import { filterPastClasses } from "../../../utils";
 
 const styles = (theme: AppTheme) => createStyles({
     list: {

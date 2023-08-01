@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import AvetmissExportService from "../services/AvetmissExportService";
-import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPORT_ID_FULFILLED } from "../actions";
 import { CLEAR_PROCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPORT_ID_FULFILLED } from "../actions";
+import AvetmissExportService from "../services/AvetmissExportService";
 
 const request: EpicUtils.Request = {
   type: GET_AVETMISS8_EXPORT_ID,

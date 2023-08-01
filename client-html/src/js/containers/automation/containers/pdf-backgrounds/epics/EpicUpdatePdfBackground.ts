@@ -4,6 +4,8 @@
  */
 
 import { Epic } from "redux-observable";
+import { showMessage } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
@@ -11,9 +13,7 @@ import {
   getAutomationPdfBackgroundsList,
   UPDATE_AUTOMATION_PDF_BACKGROUND
 } from "../actions";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ReportOverlayService from "../services/ReportOverlayService";
-import { showMessage } from "../../../../../common/actions";
 
 const request: EpicUtils.Request<any, { fileName: string; id: number; overlay: File }> = {
   type: UPDATE_AUTOMATION_PDF_BACKGROUND,

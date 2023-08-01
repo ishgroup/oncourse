@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
 import { FormControlLabel, Tooltip } from "@mui/material";
 import {
   CheckboxField,
-  EditInPlaceSearchSelect,
   EditInPlaceDateTimeField,
   EditInPlaceField,
+  EditInPlaceFileField,
   EditInPlaceMoneyField,
-  FormSwitch, EditInPlaceFileField
+  EditInPlaceSearchSelect,
+  FormSwitch
 } from "ish-ui";
+import React from "react";
 import { useAppSelector } from "../../utils/hooks";
 
 interface Props {

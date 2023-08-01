@@ -1,5 +1,5 @@
+import { StringValueType } from "ish-ui";
 import { stringLiterals } from "../../../common/utils/stringLiteral";
-import { StringValueType } from  "ish-ui";
 
 export interface MoodleFields {
   baseUrl: string;

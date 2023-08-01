@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
-import EntityService from "../services/EntityService";
-import { getCustomColumnsMap } from "../utils/common";
+import { Epic } from "redux-observable";
 import {
   GET_COMMON_PLAIN_RECORDS,
   GET_COMMON_PLAIN_RECORDS_FULFILLED,
   getCommonPlainRecordsRejected
 } from "../actions/CommonPlainRecordsActions";
+import EntityService from "../services/EntityService";
+import { getCustomColumnsMap } from "../utils/common";
 import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<

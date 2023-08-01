@@ -3,19 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo, useEffect, useCallback, useState } from "react";
-import { withRouter } from "react-router-dom";
+import { DefinedTutorRole } from "@api/model";
+import { usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Dispatch } from "redux";
 import { getFormValues, initialize, isDirty } from "redux-form";
-import { DefinedTutorRole } from "@api/model";
-import { State } from "../../../../reducers/state";
-import { usePrevious } from "ish-ui";
-import {
- createTutorRole, getTutorRole, removeTutorRole, updateTutorRole
-} from "../../actions";
-import TutorRolesForm from "./components/TutorRolesForm";
 import { showConfirm } from "../../../../common/actions";
+import { State } from "../../../../reducers/state";
+import { createTutorRole, getTutorRole, removeTutorRole, updateTutorRole } from "../../actions";
+import TutorRolesForm from "./components/TutorRolesForm";
 
 export const TUTOR_ROLES_FORM_NAME: string = "TutorRolesForm";
 

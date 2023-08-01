@@ -3,18 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
+import AvailabilityFormComponent
+  from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import { State } from "../../../../reducers/state";
 import CourseClassesTab from "./CourseClassesTab";
 import CourseGeneralTab from "./CourseGeneralTab";
 import CourseMarketingTab from "./CourseMarketingTab";
 import CourseVetTab from "./CourseVetTab";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
-import { State } from "../../../../reducers/state";
 
 const items: TabsListItem[] = [
   {

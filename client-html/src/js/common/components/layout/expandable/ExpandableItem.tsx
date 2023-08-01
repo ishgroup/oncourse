@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import { createStyles, withStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
-import { AppTheme } from  "ish-ui";
-import { stopEventPropagation } from "ish-ui";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Collapse from "@mui/material/Collapse";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AppTheme, stopEventPropagation } from "ish-ui";
+import React from "react";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = (theme: AppTheme) =>

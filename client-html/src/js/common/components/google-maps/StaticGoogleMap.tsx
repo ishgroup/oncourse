@@ -1,7 +1,7 @@
-import * as React from "react";
-import { GOOGLE_MAPS_API_KEY } from "../../../constants/Config";
 import Typography from "@mui/material/Typography";
 import withStyles from "@mui/styles/withStyles";
+import * as React from "react";
+import { GOOGLE_MAPS_API_KEY } from "../../../constants/Config";
 
 const styles = theme => ({
   noAddressContainer: {

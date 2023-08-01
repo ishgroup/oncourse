@@ -8,8 +8,8 @@
 
 
 import { DocumentAttachmentRelation, DocumentVersion, DocumentVisibility } from "@api/model";
-import { DocumentExtended } from "../../../model/common/Documents";
 import { formatDocumentSize, getDocumentThumbnail, StringKeyObject } from "ish-ui";
+import { DocumentExtended } from "../../../model/common/Documents";
 import { DocumentShareOption } from "../../../model/entities/Document";
 
 export const isSingleContactAttachment = (attachmentRelations: DocumentAttachmentRelation[]) => attachmentRelations.length === 1

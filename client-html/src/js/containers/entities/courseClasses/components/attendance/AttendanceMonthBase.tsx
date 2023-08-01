@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { withStyles, createStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import { format } from "date-fns";
+import React from "react";
 import { AttandanceMonth } from "../../../../../model/entities/CourseClass";
 
 const styles = () =>

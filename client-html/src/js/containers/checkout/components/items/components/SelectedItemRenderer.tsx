@@ -3,18 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { memo, useEffect, useState } from "react";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
+import Delete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 import { alpha } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { appendTimezone } from "ish-ui";
-import { AppTheme } from  "ish-ui";
-import { III_DD_MMM_YYYY_HH_MM_AAAA } from  "ish-ui";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { format as formatDate } from "date-fns";
+import { appendTimezone, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA } from "ish-ui";
+import React, { memo, useEffect, useState } from "react";
 import CheckoutAlertTextMessage from "../../CheckoutAlertTextMessage";
 
 const styles = (theme: AppTheme) => createStyles({

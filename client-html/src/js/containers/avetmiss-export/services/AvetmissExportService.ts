@@ -1,11 +1,11 @@
-import { DefaultHttpService } from "../../../common/services/HttpService";
 import {
-  ControlApi,
   AvetmissExportApi,
-  AvetmissExportSettings,
   AvetmissExportOutcome,
-  AvetmissExportRequest
+  AvetmissExportRequest,
+  AvetmissExportSettings,
+  ControlApi
 } from "@api/model";
+import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class AvetmissExportService {
   readonly service = new DefaultHttpService();

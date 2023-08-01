@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { Discount, DiscountApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class DiscountService {
   readonly discountApi = new DiscountApi(new DefaultHttpService());

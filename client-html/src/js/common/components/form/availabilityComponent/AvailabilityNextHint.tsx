@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
+import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import Typography from "@mui/material/Typography";
 import { format as formatDate } from "date-fns";
-import { III_DD_MMM_YYYY } from "ish-ui";
-import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import { appendTimezone } from "ish-ui";
+import { appendTimezone, III_DD_MMM_YYYY } from "ish-ui";
+import * as React from "react";
 
 function encreaseDate(date, step) {
   switch (step) {

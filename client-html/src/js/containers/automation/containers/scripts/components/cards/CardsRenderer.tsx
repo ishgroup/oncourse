@@ -3,31 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useMemo
-} from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import Grid from "@mui/material/Grid";
-import { FormControlLabel } from "@mui/material";
-import { WrappedFieldArrayProps } from "redux-form";
-import { Dispatch } from "redux";
-import clsx from "clsx";
+import { Binding } from "@api/model";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import Typography from "@mui/material/Typography";
+import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
+import { FormControlLabel } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { ShowConfirmCaller } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
+import { Dispatch } from "redux";
+import { WrappedFieldArrayProps } from "redux-form";
+import ScriptIcon from "../../../../../../../images/icon-script.svg";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
-import ScriptCard from "./CardBase";
-import QueryCardContent from "./QueryCardContent";
-import MessageCardContent from "./MessageCardContent";
-import ReportCardContent from "./ReportCardContent";
 import { getType } from "../../utils";
-import { ShowConfirmCaller } from  "ish-ui";
 import AddScriptAction from "../AddScriptAction";
-import ScriptIcon from "../../../../../../../images/icon-script.svg";
-import { Binding } from "@api/model";
+import ScriptCard from "./CardBase";
+import MessageCardContent from "./MessageCardContent";
+import QueryCardContent from "./QueryCardContent";
+import ReportCardContent from "./ReportCardContent";
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {

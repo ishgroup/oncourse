@@ -3,22 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
 import { Contact, PayslipPayType, WorkingWithChildrenStatus } from "@api/model";
 import { Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { makeAppStyles, Switch } from "ish-ui";
+import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { change } from "redux-form";
-import Typography from "@mui/material/Typography";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import ContactCourseClass from "./ContactCourseClass";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import { mapSelectItems } from "../../../../common/utils/common";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { Switch } from  "ish-ui";
-import { makeAppStyles } from  "ish-ui";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { EditViewProps } from "../../../../model/common/ListView";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import ContactCourseClass from "./ContactCourseClass";
 
 const useStyles = makeAppStyles(() => ({
   switchWrapper: {

@@ -4,8 +4,7 @@
  */
 
 import { Tag } from "@api/model";
-import { NumberArgFunction } from  "ish-ui";
-import { MenuTag } from  "ish-ui";
+import { MenuTag, NumberArgFunction } from "ish-ui";
 
 export type FormMenuTag = MenuTag<Tag>;
 

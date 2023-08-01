@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Document } from "@api/model";
 import { change } from "redux-form";
-import * as EpicUtils from "../../../../epics/EpicUtils";
-import DocumentsService from "../services/DocumentsService";
-import { CREATE_AVATAR_DOCUMENT } from "../actions";
-import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import { Epic } from "redux-observable";
 import { DocumentExtended } from "../../../../../model/common/Documents";
+import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../epics/EpicUtils";
+import { CREATE_AVATAR_DOCUMENT } from "../actions";
+import DocumentsService from "../services/DocumentsService";
 
 const request: EpicUtils.Request<any, { document: DocumentExtended; form: string; documentPath: string }> = {
   type: CREATE_AVATAR_DOCUMENT,

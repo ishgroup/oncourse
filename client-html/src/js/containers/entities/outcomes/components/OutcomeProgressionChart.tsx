@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useState } from "react";
-import { Cell, Legend, Pie, PieChart } from "recharts";
+import { OutcomeProgression } from "@api/model";
 import { Tooltip, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { OutcomeProgression } from "@api/model";
 import { normalizeNumber } from "ish-ui";
+import React, { useMemo, useState } from "react";
+import { Cell, Legend, Pie, PieChart } from "recharts";
 
 interface Props {
   data: OutcomeProgression

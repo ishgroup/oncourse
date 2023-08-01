@@ -3,11 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  Fragment, useCallback, useEffect, useMemo, useState
-} from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import React, { Fragment, useCallback, useMemo, useState } from "react";
 import { FindRelatedItem } from "../../../../../../model/common/ListView";
 
 interface Props {

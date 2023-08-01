@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import { EntityType } from "ish-ui";
+import React, { useEffect, useState } from "react";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import { EntityType } from  "ish-ui";
 import { getNestedCourseClassItem } from "../../courseClasses/utils";
 
 const CourseClassesTab: React.FC<any> = ({

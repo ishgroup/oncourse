@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { PayrollRequest } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 
 export const PREPARE_PAYROLL = _toRequestType("post/list/option/payroll");
 export const PREPARE_PAYROLL_FULFILLED = FULFILLED(PREPARE_PAYROLL);

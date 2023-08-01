@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo, useCallback } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import MenuItem from "@mui/material/MenuItem";
+import { getPluralSuffix } from "../../../../common/utils/strings";
 import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import MergeContactsModal from "./MergeContactsModal";
-import { closeMergeContactsSuccess, getMergeContacts } from "../actions";
 import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGenerateCogwheelAction";
-import { getPluralSuffix } from "../../../../common/utils/strings";
+import { closeMergeContactsSuccess, getMergeContacts } from "../actions";
+import MergeContactsModal from "./MergeContactsModal";
 
 const ContactCogWheel = props => {
   const {

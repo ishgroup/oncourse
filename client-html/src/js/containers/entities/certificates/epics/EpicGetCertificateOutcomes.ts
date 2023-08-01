@@ -1,9 +1,9 @@
-import { Epic } from "redux-observable";
 import { CertificateOutcome, Outcome } from "@api/model";
+import { formatToDateOnly } from "ish-ui";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_CERTIFICATE_OUTCOMES, GET_CERTIFICATE_OUTCOMES_FULFILLED } from "../actions/index";
-import { formatToDateOnly } from  "ish-ui";
 
 const request: EpicUtils.Request<any, number> = {
   type: GET_CERTIFICATE_OUTCOMES,

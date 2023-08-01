@@ -6,18 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useState } from "react";
-import withTheme from "@mui/styles/withTheme";
-import { green } from "@mui/material/colors";
-import { differenceInDays, format, parseISO } from "date-fns";
 import { Grid, Paper, Typography } from "@mui/material";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
-} from 'recharts';
-import { END_DAY_VALUE, initDataForGraph, START_DAY_VALUE } from "../utils";
+import { green } from "@mui/material/colors";
+import withTheme from "@mui/styles/withTheme";
+import { differenceInDays, format, parseISO } from "date-fns";
+import { III_DD_MMM_YYYY_HH_MM, makeAppStyles } from "ish-ui";
+import React, { useEffect, useState } from "react";
+import { CartesianGrid, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import EntityService from "../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
-import { makeAppStyles } from "ish-ui";
+import { END_DAY_VALUE, initDataForGraph, START_DAY_VALUE } from "../utils";
 
 const useStyles = makeAppStyles(() => ({
   chartWrapper: {

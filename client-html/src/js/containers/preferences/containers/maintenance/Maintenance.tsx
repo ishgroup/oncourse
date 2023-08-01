@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { EnumItem, EnumName } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { State } from "../../../../reducers/state";
 import { Categories } from "../../../../model/preferences";
+import { State } from "../../../../reducers/state";
+import { getEnum } from "../../actions";
 import FormContainer from "../FormContainer";
 import MaintenanceForm from "./components/MaintenanceForm";
-import { EnumItem, EnumName } from "@api/model";
-import { getEnum } from "../../actions";
 
 interface Props {
   MaintenanceTimes: EnumItem[];

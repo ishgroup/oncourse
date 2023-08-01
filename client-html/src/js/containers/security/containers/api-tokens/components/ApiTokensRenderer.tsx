@@ -6,20 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useRef } from "react";
-import Grid from "@mui/material/Grid";
-import { Card, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
 import { ApiToken, User } from "@api/model";
-import { WrappedFieldArrayProps } from "redux-form";
+import { Card, Grid, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import { LinkAdornment, NumberArgFunction, openInternalLink } from "ish-ui";
+import React, { useRef } from "react";
 import { Dispatch } from "redux";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { NumberArgFunction } from  "ish-ui";
-import { LinkAdornment } from  "ish-ui";
-import { openInternalLink } from "ish-ui";
-import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
+import { WrappedFieldArrayProps } from "redux-form";
 import { showMessage } from "../../../../../common/actions";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getContactFullName } from "../../../../entities/contacts/utils";
+import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
 
 interface RendererProps {
   users: User[];

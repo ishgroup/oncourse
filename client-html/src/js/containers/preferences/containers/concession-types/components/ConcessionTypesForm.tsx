@@ -1,22 +1,19 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import {
-  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { withRouter } from "react-router";
-import isEqual from "lodash.isequal";
 import { ConcessionType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
+import { idsToString, ShowConfirmCaller } from "ish-ui";
+import isEqual from "lodash.isequal";
+import * as React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "ish-ui";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
-import { ShowConfirmCaller } from  "ish-ui";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 
 const manualUrl = getManualLink("generalPrefs_concessionTypes");
 

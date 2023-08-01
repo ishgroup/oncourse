@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { FieldArray } from "redux-form";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { AddButton } from "ish-ui";
+import React, { useMemo } from "react";
+import { FieldArray } from "redux-form";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 
 const MinifiedEntitiesList = props => {

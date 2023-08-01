@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Holiday as HoldayItemModel } from "@api/model";
+import { ShowConfirmCaller } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Holiday as HoldayItemModel } from "@api/model";
-import HolidaysForm from "./components/HolidaysForm";
-import { deleteHolidaysItem, getHolidays, saveHolidays } from "../../actions";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from  "ish-ui";
+import { deleteHolidaysItem, getHolidays, saveHolidays } from "../../actions";
+import HolidaysForm from "./components/HolidaysForm";
 
 interface Props {
   onInit: () => void;
