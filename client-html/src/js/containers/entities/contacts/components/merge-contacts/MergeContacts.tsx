@@ -3,31 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FormControlLabel } from "@mui/material";
-import React, {
- Dispatch, useEffect, useMemo, useState
-} from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import {
- Field, getFormValues, initialize, reduxForm
-} from "redux-form";
-import { createStyles, withStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import { MergeData, MergeLine, MergeRequest } from "@api/model";
-import { StyledCheckbox } from  "ish-ui";
-import { State } from "../../../../../reducers/state";
-import { Switch } from  "ish-ui";
-import { getMergeContacts, postMergeContacts } from "../../actions";
-import RadioLabelGroup from "./components/RadioLabelGroup";
-import InfoCard from "./components/InfoCard";
-import { AppTheme } from  "ish-ui";
+import { FormControlLabel, Grid } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AppTheme, StyledCheckbox, Switch } from "ish-ui";
+import React, { Dispatch, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { Field, getFormValues, initialize, reduxForm } from "redux-form";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { State } from "../../../../../reducers/state";
+import { getMergeContacts, postMergeContacts } from "../../actions";
 import { getContactFullName } from "../../utils";
+import InfoCard from "./components/InfoCard";
+import RadioLabelGroup from "./components/RadioLabelGroup";
 
 export interface MergeContactsFormValues {
   mergeData?: MergeData;

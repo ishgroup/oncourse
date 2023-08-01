@@ -6,29 +6,36 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
 import { addDays, compareAsc, isSameDay } from "date-fns";
 import { format } from "date-fns-tz";
+import {
+  BooleanArgFunction,
+  D_MMM_YYYY,
+  decimalMinus,
+  decimalPlus,
+  formatCurrency,
+  NumberArgFunction,
+  StringArgFunction,
+  StyledCheckbox,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
 import debounce from "lodash.debounce";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, getFormValues } from "redux-form";
 import { checkPermissions } from "../../../../../common/actions";
-import { StyledCheckbox } from  "ish-ui";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from  "ish-ui";
-import { decimalMinus, decimalPlus } from "ish-ui";
-import { formatCurrency } from "ish-ui";
-import { BooleanArgFunction, NumberArgFunction, StringArgFunction } from  "ish-ui";
-import { State } from "../../../../../reducers/state";
+import { UserPreferencesState } from "../../../../../common/reducers/userPreferencesReducer";
 import { CheckoutItem, CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
+import { State } from "../../../../../reducers/state";
 import { getAccountTransactionLockedDate } from "../../../../preferences/actions";
 import {
   checkoutGetSavedCard,
@@ -43,11 +50,10 @@ import {
   checkoutUpdatePromo,
   checkoutUpdateSummaryField
 } from "../../../actions/checkoutSummary";
+import { CheckoutPage } from "../../../constants";
 import HeaderField, { HeaderFieldTypo } from "../../HeaderField";
 import SelectedPromoCodesRenderer from "../../summary/promocode/SelectedPromoCodesRenderer";
 import CheckoutPaymentPlans from "./payment-plans/CheckoutPaymentPlans";
-import { CheckoutPage } from "../../../constants";
-import { UserPreferencesState } from "../../../../../common/reducers/userPreferencesReducer";
 
 const styles = () => createStyles({
   success: {

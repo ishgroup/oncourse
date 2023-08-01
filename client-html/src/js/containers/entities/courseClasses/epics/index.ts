@@ -4,21 +4,21 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicCourseClassTutors } from "../components/tutors/epics";
-import { EpicCourseClassBudget } from "../components/budget/epics";
-import { EpicCourseClassTimeTable } from "../components/timetable/epics";
 import { EpicCourseClassAssestments } from "../components/assessments/epics";
 import { EpicCourseClassAttendance } from "../components/attendance/epics";
+import { EpicCourseClassBudget } from "../components/budget/epics";
+import { EpicCourseClassTimeTable } from "../components/timetable/epics";
+import { EpicCourseClassTutors } from "../components/tutors/epics";
+import { EpicCancelCourseClass } from "./EpicCancelCourseClass";
+import { EpicCreateCourseClass } from "./EpicCreateCourseClass";
 import { EpicDuplicateCourseClass } from "./EpicDuplicateCourseClass";
-import { EpicGetDuplicateCourseClassesSessions } from "./EpicGetDuplicateCourseClassesSessions";
 import { EpicGetCourseClass } from "./EpicGetCourseClass";
 import { EpicGetCourseClassEnrolments } from "./EpicGetCourseClassEnrolments";
-import { EpicCancelCourseClass } from "./EpicCancelCourseClass";
-import { EpicGetCourseClassTags } from "./EpicGetCourseClassTags";
-import { EpicUpdateCourseClass } from "./EpicUpdateCourseClass";
-import { EpicCreateCourseClass } from "./EpicCreateCourseClass";
 import { EpicGetCourseClassSessionsWarnings } from "./EpicGetCourseClassSessionsWarnings";
+import { EpicGetCourseClassTags } from "./EpicGetCourseClassTags";
+import { EpicGetDuplicateCourseClassesSessions } from "./EpicGetDuplicateCourseClassesSessions";
 import { EpicGetDuplicateTraineeshipBudget } from "./EpicGetDuplicateTraineeshipBudget";
+import { EpicUpdateCourseClass } from "./EpicUpdateCourseClass";
 
 export const EpicCourseClass = combineEpics(
   EpicCourseClassTutors,

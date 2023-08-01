@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import { Grid } from "@mui/material";
+import * as React from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import {  EditViewProps } from "../../../../model/common/ListView";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const WaitingListNotes: React.FunctionComponent<EditViewProps> = ({ twoColumn }) => (
   <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 saveButtonTableOffset">

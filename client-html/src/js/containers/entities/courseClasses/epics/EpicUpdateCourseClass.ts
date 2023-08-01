@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { reset } from "redux-form";
 import { CourseClass } from "@api/model";
-import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { reset } from "redux-form";
+import { Epic } from "redux-observable";
 import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { QueuedAction } from "../../../../model/common/ActionsQueue";
 import { processCustomFields } from "../../customFieldTypes/utils";
 import { GET_COURSE_CLASS, UPDATE_COURSE_CLASS } from "../actions";
 import CourseClassService from "../services/CourseClassService";
-import { QueuedAction } from "../../../../model/common/ActionsQueue";
 import { processCourseClassApiActions } from "../utils";
 
 const request: EpicUtils.Request<any, { id: number; courseClass: CourseClass }> = {

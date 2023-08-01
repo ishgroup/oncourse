@@ -1,11 +1,11 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetPdfReportsList } from "./EpicGetPdfReportsList";
-import { EpicGetPdfReport } from "./EpicGetPdfReport";
 import { EpicCreatePdfReport } from "./EpicCreatePdfReport";
-import { EpicRemovePdfReport } from "./EpicRemovePdfReport";
-import { EpicUpdatePdfReport } from "./EpicUpdatePdfReport";
-import { EpicUpdateInternalPdfReport } from "./EpicUpdateInternalPdfReport";
 import { EpicGetFullScreenPreview } from "./EpicGetFullScreenPreview";
+import { EpicGetPdfReport } from "./EpicGetPdfReport";
+import { EpicGetPdfReportsList } from "./EpicGetPdfReportsList";
+import { EpicRemovePdfReport } from "./EpicRemovePdfReport";
+import { EpicUpdateInternalPdfReport } from "./EpicUpdateInternalPdfReport";
+import { EpicUpdatePdfReport } from "./EpicUpdatePdfReport";
 
 export const EpicPdfReports = combineEpics(
   EpicGetPdfReportsList,

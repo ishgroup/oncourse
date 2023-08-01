@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DefaultHttpService } from "../../../common/services/HttpService";
 import { FundingStatus, FundingUpload, FundingUploadApi } from "@api/model";
+import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class FundingUploadService {
   readonly service = new DefaultHttpService();

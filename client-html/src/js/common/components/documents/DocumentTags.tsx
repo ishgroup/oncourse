@@ -1,6 +1,6 @@
-import React from "react";
 import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import React from "react";
 
 const DocumentTags: React.FC<any> = ({tags, bold, classes}) => (
   <Grid container columnSpacing={3}>

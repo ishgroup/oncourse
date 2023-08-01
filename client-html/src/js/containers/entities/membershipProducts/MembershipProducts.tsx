@@ -6,28 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Account, MembershipProduct, Tax } from "@api/model";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import { Account, MembershipProduct, Tax } from "@api/model";
 import { Dispatch } from "redux";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
-import ListView from "../../../common/components/list-view/ListView";
-import MembershipProductEditView from "./components/MembershipProductEditView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { getPlainTaxes } from "../taxes/actions";
-import { State } from "../../../reducers/state";
-import { getPlainAccounts } from "../accounts/actions";
+import { initialize } from "redux-form";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
-import { getListTags } from "../../tags/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { plainContactRelationTypePath, plainCorporatePassPath } from "../../../constants/Api";
+import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
+import { getListTags } from "../../tags/actions";
+import { getPlainAccounts } from "../accounts/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import { getPlainTaxes } from "../taxes/actions";
+import MembershipProductEditView from "./components/MembershipProductEditView";
 
 interface MembershipProductsProps {
   onInit?: (initial: MembershipProduct) => void;

@@ -6,24 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { ExportTemplate } from "@api/model";
+import { usePrevious } from "ish-ui";
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { Dispatch } from "redux";
-import { ExportTemplate } from "@api/model";
+import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
-
-import ImportTemplatesForm from "./containers/ImportTemplatesForm";
 import {
   createImportTemplate,
   getImportTemplate,
+  removeImportTemplate,
   updateImportTemplate,
-  updateInternalImportTemplate,
-  removeImportTemplate
+  updateInternalImportTemplate
 } from "./actions";
-import { usePrevious } from "ish-ui";
+
+import ImportTemplatesForm from "./containers/ImportTemplatesForm";
 
 export const IMPORT_TEMPLATES_FORM_NAME = "ImportTemplatesForm";
 

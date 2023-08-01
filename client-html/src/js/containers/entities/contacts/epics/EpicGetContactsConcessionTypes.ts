@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ConcessionType } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { ConcessionType } from "@api/model";
 import { GET_CONTACTS_CONCESSION_TYPES, GET_CONTACTS_CONCESSION_TYPES_FULFILLED } from "../actions";
 import ContactsService from "../services/ContactsService";
 

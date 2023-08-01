@@ -6,12 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Contact } from "@api/model";
+import Typography from "@mui/material/Typography";
 import { isBefore } from "date-fns";
 import React, { Dispatch, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import Typography from "@mui/material/Typography";
-import { Contact } from "@api/model";
+import company from "../../../../images/company.png";
+import person from "../../../../images/person.png";
+import tutorStudent from "../../../../images/student-tutor.png";
+import student from "../../../../images/student.png";
+import tutor from "../../../../images/tutor.png";
+import { checkPermissions } from "../../../common/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import {
   clearListState,
@@ -19,22 +25,22 @@ import {
   setListCustomTableModel,
   setListEditRecord
 } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import {
-  getContactRelationTypes, getCountries, getGradingTypes, getLanguages, getPaymentTypes
-} from "../../preferences/actions";
-import { getDefaultInvoiceTerms } from "../invoices/actions";
-import { checkPermissions } from "../../../common/actions";
+import { fundingUploadsPath } from "../../../constants/Api";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { VetReport } from "../../../model/entities/VetReporting";
 import { State } from "../../../reducers/state";
-import student from "../../../../images/student.png";
-import tutor from "../../../../images/tutor.png";
-import company from "../../../../images/company.png";
-import tutorStudent from "../../../../images/student-tutor.png";
-import person from "../../../../images/person.png";
-import VetReportingEditView from "./components/VetReportingEditView";
+import { getActiveFundingContracts } from "../../avetmiss-export/actions";
+import {
+  getContactRelationTypes,
+  getCountries,
+  getGradingTypes,
+  getLanguages,
+  getPaymentTypes
+} from "../../preferences/actions";
+import { PreferencesState } from "../../preferences/reducers/state";
 import {
   getContactsConcessionTypes,
   getContactsRelationTypes,
@@ -43,10 +49,8 @@ import {
 } from "../contacts/actions";
 import { ContactType } from "../contacts/Contacts";
 import { getContactFullName } from "../contacts/utils";
-import { VetReport } from "../../../model/entities/VetReporting";
-import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import { PreferencesState } from "../../preferences/reducers/state";
-import { fundingUploadsPath } from "../../../constants/Api";
+import { getDefaultInvoiceTerms } from "../invoices/actions";
+import VetReportingEditView from "./components/VetReportingEditView";
 
 export const ContactInitial: Contact = {
   id: 0,

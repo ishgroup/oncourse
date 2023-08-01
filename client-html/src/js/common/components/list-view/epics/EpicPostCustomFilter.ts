@@ -4,11 +4,11 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../actions/index";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import CustomFiltersService from "../../../services/CustomFiltersService";
-import { FETCH_SUCCESS } from "../../../actions/index";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import {
   GET_FILTERS_REQUEST,
   POST_FILTER_REQUEST,

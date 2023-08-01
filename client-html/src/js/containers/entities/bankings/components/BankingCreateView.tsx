@@ -3,31 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import {
- change, FieldArray, getFormInitialValues, initialize
-} from "redux-form";
+import { Report } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { format as formatDate } from "date-fns";
-import { Report } from "@api/model";
+import {
+  DD_MMM_YYYY_MINUSED,
+  EditInPlaceSearchSelect,
+  LinkAdornment,
+  stubFunction,
+  StyledCheckbox,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, FieldArray, getFormInitialValues, initialize } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { validateMinMaxDate } from "../../../../common/utils/validation";
+import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { getFormattedTotal } from "../../common/bankingPaymentUtils";
-import { validateMinMaxDate } from "../../../../common/utils/validation";
+import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { getDepositPayments, updateBankingAccountId } from "../actions";
 import { BankingReport } from "../consts";
-import { DD_MMM_YYYY_MINUSED, EditInPlaceSearchSelect, YYYY_MM_DD_MINUSED } from "ish-ui";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
-import { LinkAdornment } from  "ish-ui";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { StyledCheckbox } from  "ish-ui";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { stubFunction } from "ish-ui";
 
 const paymentColumns: NestedTableColumn[] = [
   {

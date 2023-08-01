@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { BooleanArgFunction, StringArgFunction } from "ish-ui";
 import React, { useCallback } from "react";
 import ExecuteScriptModal from "../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { BooleanArgFunction, StringArgFunction } from  "ish-ui";
-import navigation from "./data/navigation.json";
 import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
+import navigation from "./data/navigation.json";
 
 interface Props {
   selected: string | number,

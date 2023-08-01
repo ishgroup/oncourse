@@ -3,21 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType 
-} from "@api/model";
+import { Account, Course, EntityRelationType, Module, Qualification, Sale, SaleType } from "@api/model";
 import { format } from "date-fns";
-import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
-import { EntityName, ListActionEntity } from "../../../../model/entities/common";
-import { EEE_D_MMM_YYYY } from  "ish-ui";
-import { State } from "../../../../reducers/state";
-import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
-import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from "../../../../common/components/list-view/actions";
-import { getEntityRecord } from "../actions";
-import { NOTE_ENTITIES } from "../../../../constants/Config";
-import { getNoteItems } from "../../../../common/components/form/notes/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { EEE_D_MMM_YYYY } from "ish-ui";
 import { initialize } from "redux-form";
+import { clearActionsQueue, executeActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
+import { getRecords, SET_LIST_EDIT_RECORD, setListSelection } from "../../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { NOTE_ENTITIES } from "../../../../constants/Config";
+import { EntityName, ListActionEntity } from "../../../../model/entities/common";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { State } from "../../../../reducers/state";
+import { getEntityRecord } from "../actions";
 
 export const mapEntityDisplayName = (entity: ListActionEntity) => {
   switch (entity) {

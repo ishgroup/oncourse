@@ -7,12 +7,12 @@
  */
 
 import { Epic } from "redux-observable";
+import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { EntityName } from "../../../../model/entities/common";
-import { updateEntityItemById, updateEntityItemByIdErrorHandler } from "../entityItemsService";
 import { UPDATE_ENTITY_RECORD_REQUEST } from "../actions";
+import { updateEntityItemById, updateEntityItemByIdErrorHandler } from "../entityItemsService";
 import { getListRecordAfterUpdateActions } from "../utils";
-import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 
 const request: Request<any, { item: any, entity: EntityName }> = {
   type: UPDATE_ENTITY_RECORD_REQUEST,

@@ -2,47 +2,50 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import CircularProgress from "@mui/material/CircularProgress";
-import Tooltip from "@mui/material/Tooltip";
-import clsx from "clsx";
-import React, { memo, useCallback, useEffect, useRef, useState, } from "react";
-import { FormControlLabel } from "@mui/material";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { areEqual } from "react-window";
-import { format } from "date-fns";
-import Chip from "@mui/material/Chip";
+import Close from '@mui/icons-material/Close';
+import CreditCard from "@mui/icons-material/CreditCard";
+import Done from '@mui/icons-material/Done';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { FormControlLabel, Grid } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import CreditCard from "@mui/icons-material/CreditCard";
-import Grid from "@mui/material/Grid";
+import Chip from "@mui/material/Chip";
+import CircularProgress from "@mui/material/CircularProgress";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Done from '@mui/icons-material/Done';
-import Close from '@mui/icons-material/Close';
 import Zoom from '@mui/material/Zoom';
+import clsx from "clsx";
+import { format } from "date-fns";
+import {
+  D_MMM_YYYY,
+  decimalPlus,
+  DynamicSizeList,
+  formatCurrency,
+  formatRelativeDate,
+  LinkAdornment,
+  makeAppStyles,
+  openInternalLink,
+  Switch
+} from "ish-ui";
+import React, { memo, useCallback, useEffect, useRef, useState, } from "react";
 import { connect } from "react-redux";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { areEqual } from "react-window";
 import { Dispatch } from "redux";
 import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from "redux-form";
 import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../common/components/form/formFields/FormField";
-import { Switch } from  "ish-ui";
-import { LinkAdornment, DynamicSizeList, formatRelativeDate } from  "ish-ui";
+import AppBarContainer from "../../common/components/layout/AppBarContainer";
 import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 import EntityService from "../../common/services/EntityService";
-import { D_MMM_YYYY } from  "ish-ui";
-import { openInternalLink } from "ish-ui";
-import { decimalPlus } from "ish-ui";
-import { formatCurrency } from "ish-ui";
+import { getManualLink } from "../../common/utils/getManualLink";
+import { getPluralSuffix } from "../../common/utils/strings";
 import { BatchPaymentContact } from "../../model/batch-payment";
 import { State } from "../../reducers/state";
 import CheckoutService from "../checkout/services/CheckoutService";
-import { getBachCheckoutModel } from "./utils";
-import { makeAppStyles } from  "ish-ui";
-import AppBarContainer from "../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../common/utils/getManualLink";
-import { getPluralSuffix } from "../../common/utils/strings";
 import { getContactFullName } from "../entities/contacts/utils";
+import { getBachCheckoutModel } from "./utils";
 
 const useStyles = makeAppStyles(theme => ({
   checkbox: {

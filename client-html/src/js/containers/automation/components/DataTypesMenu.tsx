@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useRef } from "react";
 import { Binding, DataType } from "@api/model";
+import Button from "@mui/material/Button";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Grow from "@mui/material/Grow";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import Popper from "@mui/material/Popper";
-import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
-import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { Dispatch } from "redux";
+import Popper from "@mui/material/Popper";
+import { makeAppStyles, NoArgFunction } from "ish-ui";
+import React, { useCallback, useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { BindingsItemType } from "./Bindings";
-import { NoArgFunction } from  "ish-ui";
-import { makeAppStyles } from  "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   popper: {

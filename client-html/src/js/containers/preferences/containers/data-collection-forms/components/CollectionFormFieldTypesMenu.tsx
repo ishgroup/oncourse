@@ -1,15 +1,13 @@
-import * as React from "react";
-import { Typography, Menu, MenuItem } from "@mui/material";
-import { withStyles } from "@mui/styles";
+import { DataCollectionType, FieldType } from "@api/model";
 import AddIcon from "@mui/icons-material/Add";
+import { Menu, MenuItem, Typography } from "@mui/material";
+import Fab from "@mui/material/Fab";
+import { withStyles, createStyles } from "@mui/styles";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { DataCollectionType, FieldType } from "@api/model";
-
-import createStyles from "@mui/styles/createStyles";
-import Fab from "@mui/material/Fab";
-import { getDataCollectionFormFieldTypes } from "../../../actions";
 import { State } from "../../../../../reducers/state";
+import { getDataCollectionFormFieldTypes } from "../../../actions";
 
 const styles = () => createStyles({
   menu: {

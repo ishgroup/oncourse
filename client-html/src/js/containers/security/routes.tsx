@@ -1,7 +1,7 @@
+import ApiTokens from "./containers/api-tokens/ApiTokens";
 import Settings from "./containers/settings/Settings";
 import UserRoles from "./containers/user-roles/UserRoles";
 import Users from "./containers/users/Users";
-import ApiTokens from "./containers/api-tokens/ApiTokens";
 
 const securityRoutes = [
   {

@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import { format } from "date-fns";
-import { withStyles, createStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
+import { AppTheme } from "ish-ui";
+import React from "react";
 
-const styles = (theme: Theme) => createStyles({
+const styles = (theme: AppTheme) => createStyles({
     manyDaysWrapper: {
       "& > .dayOffset": {
         marginBottom: theme.spacing(1)

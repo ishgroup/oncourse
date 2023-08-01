@@ -6,27 +6,57 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
-import { createStyles, withStyles, ThemeProvider } from "@mui/styles";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { Currency, ExportTemplate, LayoutType, Report, TableModel } from "@api/model";
-import { createTheme } from '@mui/material';
 import ErrorOutline from "@mui/icons-material/ErrorOutline";
+import { createTheme } from '@mui/material';
 import Button from "@mui/material/Button";
-import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
-import { onSubmitFail } from "../../utils/highlightFormErrors";
-import SideBar from "./components/side-bar/SideBar";
-import BottomAppBar from "./components/bottom-app-bar/BottomAppBar";
-import EditView from "./components/edit-view/EditView";
-import ShareContainer from "./components/share/ShareContainer";
-import BulkEditContainer from "./components/bulk-edit/BulkEditContainer";
-import { State } from "../../../reducers/state";
+import { createStyles, ThemeProvider, withStyles } from "@mui/styles";
+import {
+  AnyArgFunction,
+  BooleanArgFunction,
+  ConfirmProps,
+  NoArgFunction,
+  ResizableWrapper,
+  ShowConfirmCaller,
+  StringArgFunction
+} from "ish-ui";
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Dispatch } from "redux";
+import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
+import {
+  ENTITY_AQL_STORAGE_NAME,
+  LIST_MAIN_CONTENT_DEFAULT_WIDTH,
+  LIST_SIDE_BAR_DEFAULT_WIDTH,
+  LISTVIEW_MAIN_CONTENT_WIDTH
+} from "../../../constants/Config";
+import {
+  createEntityRecord,
+  deleteEntityRecord,
+  getEntityRecord,
+  updateEntityRecord
+} from "../../../containers/entities/common/actions";
+import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
 import { Fetch } from "../../../model/common/Fetch";
+import {
+  EditViewContainerProps,
+  FilterGroup,
+  FindRelatedItem,
+  ListAqlMenuItemsRenderer
+} from "../../../model/common/ListView";
+import { EntityName, FindEntityState } from "../../../model/entities/common";
+import { FormMenuTag } from "../../../model/tags";
+import { State } from "../../../reducers/state";
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
+import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
+import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
+import { onSubmitFail } from "../../utils/highlightFormErrors";
+import { saveCategoryAQLLink } from "../../utils/links";
+import { LSGetItem } from "../../utils/storage";
+import { pushGTMEvent } from "../google-tag-manager/actions";
+import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
 import LoadingIndicator from "../progress/LoadingIndicator";
-import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEditView";
 import {
   clearListState,
   deleteCustomFilter,
@@ -45,47 +75,20 @@ import {
   setSearch,
   updateTableModel,
 } from "./actions";
-import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
-import { FormMenuTag } from "../../../model/tags";
-import { pushGTMEvent } from "../google-tag-manager/actions";
-import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
-import {
-  AnyArgFunction,
-  BooleanArgFunction,
-  NoArgFunction, ResizableWrapper,
-  StringArgFunction
-} from "ish-ui";
-import {
-  EditViewContainerProps,
-  FilterGroup,
-  FindRelatedItem,
-  ListAqlMenuItemsRenderer
-} from "../../../model/common/ListView";
-import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
-import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
-import {
-  ENTITY_AQL_STORAGE_NAME, LIST_MAIN_CONTENT_DEFAULT_WIDTH,
-  LIST_SIDE_BAR_DEFAULT_WIDTH,
-  LISTVIEW_MAIN_CONTENT_WIDTH
-} from "../../../constants/Config";
-import { ConfirmProps, ShowConfirmCaller } from  "ish-ui";
-import { EntityName, FindEntityState } from "../../../model/entities/common";
-import { saveCategoryAQLLink } from "../../utils/links";
+import BottomAppBar from "./components/bottom-app-bar/BottomAppBar";
+import BulkEditContainer from "./components/bulk-edit/BulkEditContainer";
+import EditView from "./components/edit-view/EditView";
+import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEditView";
 import ReactTableList, { TableListProps } from "./components/list/ReactTableList";
+import ShareContainer from "./components/share/ShareContainer";
+import SideBar from "./components/side-bar/SideBar";
+import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
 import {
   getActiveTags,
   getFiltersNameString,
   getTagsUpdatedByIds,
   setActiveFiltersBySearch
 } from "./utils/listFiltersUtils";
-import { LSGetItem } from "../../utils/storage";
-import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
-import {
-  createEntityRecord,
-  deleteEntityRecord,
-  getEntityRecord,
-  updateEntityRecord
-} from "../../../containers/entities/common/actions";
 import { shouldAsyncValidate } from "./utils/listFormUtils";
 
 const styles = () => createStyles({

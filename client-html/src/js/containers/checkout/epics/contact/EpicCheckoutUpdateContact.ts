@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { Contact } from "@api/model";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
+import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { processNotesAsyncQueue } from "../../../../common/components/form/notes/utils";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { clearActionsQueue, FETCH_SUCCESS } from "../../../../common/actions";
 import { updateEntityItemById } from "../../../entities/common/entityItemsService";
 import {
   CHECKOUT_GET_CONTACT,

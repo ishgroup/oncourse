@@ -1,6 +1,4 @@
-import {
- Diff, Payslip, PayslipApi, PayslipStatus 
-} from "@api/model";
+import { Diff, Payslip, PayslipApi, PayslipStatus } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class PayslipService {

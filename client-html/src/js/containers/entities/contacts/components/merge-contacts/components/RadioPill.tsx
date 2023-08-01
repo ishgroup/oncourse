@@ -1,10 +1,10 @@
-import React from "react";
-import { Theme } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
 import Check from "@mui/icons-material/Check";
+import { Theme } from "@mui/material";
 import { green } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import React from "react";
 import Marker from "./Marker";
 
 interface Props {

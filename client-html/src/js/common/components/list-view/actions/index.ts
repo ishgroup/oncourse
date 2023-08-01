@@ -7,13 +7,13 @@
  */
 
 import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
-import { MessageData } from "../../../../model/common/Message";
-import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
-import { FormMenuTag } from "../../../../model/tags";
+import { AnyArgFunction } from "ish-ui";
 import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
-import { IAction } from "../../../actions/IshAction";
+import { MessageData } from "../../../../model/common/Message";
 import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
-import { AnyArgFunction } from  "ish-ui";
+import { FormMenuTag } from "../../../../model/tags";
+import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
+import { IAction } from "../../../actions/IshAction";
 
 // Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");

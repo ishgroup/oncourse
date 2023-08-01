@@ -1,7 +1,7 @@
-import React from "react";
 import Typography from "@mui/material/Typography";
-import { CustomSelectorOption } from "./CustomSelector";
+import React from "react";
 import FormField from "../form/formFields/FormField";
+import { CustomSelectorOption } from "./CustomSelector";
 
 interface Props {
   className?: any;

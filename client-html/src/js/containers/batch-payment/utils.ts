@@ -5,7 +5,7 @@
 
 import { CheckoutModel } from "@api/model";
 import { format } from "date-fns-tz";
-import { YYYY_MM_DD_MINUSED } from  "ish-ui";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
 import { BatchPaymentContact } from "../../model/batch-payment";
 
 export const getBachCheckoutModel = (contact: BatchPaymentContact):CheckoutModel =>

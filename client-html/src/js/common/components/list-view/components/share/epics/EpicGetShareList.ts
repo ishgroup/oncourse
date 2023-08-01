@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Report } from "@api/model";
-import * as EpicUtils from "../../../../../epics/EpicUtils";
+import { Epic } from "redux-observable";
 import PdfService from "../../../../../../containers/automation/containers/pdf-reports/services/PdfService";
-import { GET_OVERLAY_ITEMS, GET_PDF_REPORTS, GET_PDF_REPORTS_FULFILLED } from "../actions";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../epics/EpicUtils";
+import { GET_OVERLAY_ITEMS, GET_PDF_REPORTS, GET_PDF_REPORTS_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_PDF_REPORTS,

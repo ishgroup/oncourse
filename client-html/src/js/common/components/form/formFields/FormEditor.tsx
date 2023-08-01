@@ -6,26 +6,27 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
+import Edit from "@mui/icons-material/Edit";
 import { ButtonBase, FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import Edit from "@mui/icons-material/Edit";
 import clsx from "clsx";
-import React, { useRef, useState } from "react";
-import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
-import { Field, WrappedFieldProps } from "redux-form";
 import {
-  HtmlEditor,
-  WysiwygEditor,
   addContentMarker,
   CONTENT_MODES,
   getContentMarker,
   getEditorModeLabel,
-  removeContentMarker, makeAppStyles,
+  HtmlEditor,
+  makeAppStyles,
+  removeContentMarker,
+  WysiwygEditor,
 } from "ish-ui";
+import React, { useRef, useState } from "react";
+import { Field, WrappedFieldProps } from "redux-form";
 
 const useStyles = makeAppStyles(theme => ({
   hoverIcon: {

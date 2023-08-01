@@ -3,20 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
+import { CourseClassAttendanceType, DeliveryMode, FundingSource } from "@api/model";
+import { Divider, FormControlLabel, Grid } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
-import {
-  CourseClassAttendanceType,
-  ClassFundingSource,
-  DeliveryMode,
-  FundingSource
-} from "@api/model";
+import { normalizeNumber, normalizeNumberToZero } from "ish-ui";
+import * as React from "react";
 import { connect } from "react-redux";
-import Divider from "@mui/material/Divider";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
+import { mapSelectItems } from "../../../../../common/utils/common";
 import {
   validateCourseSiteIdentifier,
   validateDefaultPurchasingContractIdentifier,
@@ -26,12 +21,10 @@ import {
 } from "../../../../../common/utils/validation";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { normalizeNumber, normalizeNumberToZero } from "ish-ui";
 import { State } from "../../../../../reducers/state";
 import { formatFundingSourceId } from "../../../common/utils";
-import CourseClassAttendanceTab from "../attendance/CourseClassAttendanceTab";
 import { fundingSourceValues } from "../../constants";
+import CourseClassAttendanceTab from "../attendance/CourseClassAttendanceTab";
 
 interface Props extends Partial<EditViewProps> {
   values?: CourseClassExtended;

@@ -1,13 +1,13 @@
+import { CertificateValidationRequest, SearchQuery, Sorting } from "@api/model";
+import Typography from "@mui/material/Typography";
+import { BooleanArgFunction } from "ish-ui";
+import debounce from "lodash.debounce";
 import React, { Dispatch, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
-import { CertificateValidationRequest, SearchQuery, Sorting } from "@api/model";
-import debounce from "lodash.debounce";
-import { setCertificatesValidationStatus, validateCertificates } from "../actions";
-import { State } from "../../../../reducers/state";
 import { setPrintValidatingStatus } from "../../../../common/components/list-view/components/share/actions";
-import { BooleanArgFunction } from  "ish-ui";
 import { getExpression } from "../../../../common/components/list-view/utils/listFiltersUtils";
+import { State } from "../../../../reducers/state";
+import { setCertificatesValidationStatus, validateCertificates } from "../actions";
 
 interface USIAlertProps {
   selection?: any[];

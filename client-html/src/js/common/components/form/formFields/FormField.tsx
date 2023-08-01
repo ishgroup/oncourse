@@ -7,8 +7,8 @@
  */
 import React, { useMemo } from "react";
 import { Field } from "redux-form";
-import { validateSingleMandatoryField, validateTagsList } from "../../../utils/validation";
 import { FormFieldWrapperProps } from "../../../../model/common/Fields";
+import { validateSingleMandatoryField, validateTagsList } from "../../../utils/validation";
 import FormFieldBase from "./FormFieldBase";
 
 const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {

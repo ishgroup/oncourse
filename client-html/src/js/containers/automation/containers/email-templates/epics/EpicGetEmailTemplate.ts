@@ -1,8 +1,8 @@
+import { EmailTemplate } from "@api/model";
 import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
-import { EmailTemplate } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_EMAIL_TEMPLATE, GET_EMAIL_TEMPLATE_FULFILLED } from "../actions";
 import { EMAIL_TEMPLATES_FORM_NAME } from "../EmailTemplates";
 import EmailTemplateService from "../services/EmailTemplateService";

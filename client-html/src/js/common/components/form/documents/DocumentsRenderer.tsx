@@ -3,21 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import { Document, Tag } from "@api/model";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
 import Launch from "@mui/icons-material/Launch";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { AddButton, AppTheme, openInternalLink, ShowConfirmCaller } from "ish-ui";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { WrappedFieldArrayProps } from "redux-form";
-import { AddButton, AppTheme, ShowConfirmCaller } from "ish-ui";
-import { openInternalLink } from "ish-ui";
-import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
+import { getEntityTags } from "../../../../containers/tags/actions";
+import { EntityName } from "../../../../model/entities/common";
 import { State } from "../../../../reducers/state";
+import DocumentItem from "../../documents/DocumentItem";
 import {
   clearEditingDocument,
   createDocument,
@@ -26,10 +27,8 @@ import {
   setEditingDocument,
   setSearchDocuments
 } from "./actions";
+import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
 import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/DocumentEditDialog";
-import { getEntityTags } from "../../../../containers/tags/actions";
-import { EntityName } from "../../../../model/entities/common";
-import DocumentItem from "../../documents/DocumentItem";
 
 const styles = (theme: AppTheme) => createStyles({
   dropInfo: {

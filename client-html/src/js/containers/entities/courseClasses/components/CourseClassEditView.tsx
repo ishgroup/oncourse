@@ -6,53 +6,56 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import clsx from "clsx";
-import Decimal from "decimal.js-light";
-import React, {
-  useEffect, useMemo, useState, Fragment, useCallback
-} from "react";
-import { format } from "date-fns";
-import { connect, useSelector } from "react-redux";
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from "@api/model";
-import debounce from "lodash.debounce";
 import Edit from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { format } from "date-fns";
+import Decimal from "decimal.js-light";
+import {
+  appendTimezone,
+  D_MMM,
+  decimalMinus,
+  decimalMul,
+  decimalPlus,
+  formatCurrency,
+  makeAppStyles,
+  StringArgFunction
+} from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { connect, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Typography } from "@mui/material";
-import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import { StringArgFunction, decimalMinus, decimalMul, decimalPlus } from  "ish-ui";
-import { getRoundingByType } from "../../discounts/utils";
-import { getCurrentTax } from "../../taxes/utils";
-import CourseClassGeneralTab from "./general/CourseClassGeneralTab";
-import CourseClassVetTab from "./vet/CourseClassVetTab";
-import CourseClassWebTab from "./web/CourseClassWebTab";
-import CourseClassBudgetTab from "./budget/CourseClassBudgetTab";
-import CourseClassTutorsTab from "./tutors/CourseClassTutorsTab";
-import CourseClassTimetableTab from "./timetable/CourseClassTimetableTab";
-import CourseClassAttendanceTab from "./attendance/CourseClassAttendanceTab";
-import { D_MMM } from  "ish-ui";
-import { EditViewProps } from "../../../../model/common/ListView";
-import CourseClassOutcomesTab from "./outcomes/CourseClassOutcomesTab";
-import CourseClassAssessmentsTab from "./assessments/CourseClassAssessmentsTab";
-import CourseClassEnrolmentsTab from "./enrolments/CourseClassEnrolmentsTab";
-import EntityService from "../../../../common/services/EntityService";
-import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from "../actions";
-import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from "../../../../model/entities/CourseClass";
-import { formatCurrency } from "ish-ui";
-import { State } from "../../../../reducers/state";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import CourseClassDetTab from "./det/CourseClassDetTab";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import EntityService from "../../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
 import { getLabelWithCount } from "../../../../common/utils/strings";
-import CourseClassDocumentsTab from "./documents/CourseClassDocumentsTab";
 import history from "../../../../constants/History";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from "../../../../model/entities/CourseClass";
+import { State } from "../../../../reducers/state";
+import { getRoundingByType } from "../../discounts/utils";
+import { getCurrentTax } from "../../taxes/utils";
+import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from "../actions";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
-import { appendTimezone } from "ish-ui";
-import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
-import { makeAppStyles } from  "ish-ui";
-import { getTutorPayInitial } from "./tutors/utils";
 import { getClassCostTypes } from "../utils";
+import CourseClassAssessmentsTab from "./assessments/CourseClassAssessmentsTab";
+import CourseClassAttendanceTab from "./attendance/CourseClassAttendanceTab";
+import CourseClassBudgetTab from "./budget/CourseClassBudgetTab";
+import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
+import CourseClassDetTab from "./det/CourseClassDetTab";
+import CourseClassDocumentsTab from "./documents/CourseClassDocumentsTab";
+import CourseClassEnrolmentsTab from "./enrolments/CourseClassEnrolmentsTab";
+import CourseClassGeneralTab from "./general/CourseClassGeneralTab";
+import CourseClassOutcomesTab from "./outcomes/CourseClassOutcomesTab";
+import CourseClassTimetableTab from "./timetable/CourseClassTimetableTab";
+import CourseClassTutorsTab from "./tutors/CourseClassTutorsTab";
+import { getTutorPayInitial } from "./tutors/utils";
+import CourseClassVetTab from "./vet/CourseClassVetTab";
+import CourseClassWebTab from "./web/CourseClassWebTab";
 
 const itemsBase: TabsListItem[] = [
   {

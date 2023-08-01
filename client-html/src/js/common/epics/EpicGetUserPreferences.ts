@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { PreferenceEnum } from "@api/model";
-import * as EpicUtils from "./EpicUtils";
+import { Epic } from "redux-observable";
 import { GET_USER_PREFERENCES, GET_USER_PREFERENCES_FULFILLED } from "../actions";
 import UserPreferenceService from "../services/UserPreferenceService";
+import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<{ [key: string]: string }, PreferenceEnum[]> = {
   type: GET_USER_PREFERENCES,

@@ -1,10 +1,9 @@
-import * as React from "react";
-import { createStyles } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { createStyles, Grid } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
-import PayslipPaylineItem from "./PayslipPaylineItem";
 import { formatCurrency } from "ish-ui";
+import * as React from "react";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
+import PayslipPaylineItem from "./PayslipPaylineItem";
 
 const styles = theme =>
   createStyles({

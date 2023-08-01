@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { ButtonBase, Typography } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
 import { Delete } from "@mui/icons-material";
-import clsx from "clsx";
+import Launch from "@mui/icons-material/Launch";
+import { ButtonBase, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import Launch from "@mui/icons-material/Launch";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { DynamicSizeList, openInternalLink } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
 import { NestedListItem } from "../NestedList";
-import { openInternalLink } from "ish-ui";
-import { DynamicSizeList } from "ish-ui";
 import { listStyles } from "./styles";
 
 interface Props {

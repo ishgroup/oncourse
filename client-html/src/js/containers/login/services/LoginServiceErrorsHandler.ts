@@ -1,7 +1,7 @@
+import { LoginResponse, ValidationError } from "@api/model";
 import { change, untouch } from "redux-form";
 import { FETCH_FAIL, SET_LOGIN_STATE } from "../../../common/actions";
 import { IAction } from "../../../common/actions/IshAction";
-import { LoginResponse, ValidationError } from "@api/model";
 import { LoginState } from "../reducers/state";
 
 interface loginResponse {

@@ -6,29 +6,27 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Currency, PaymentMethod } from "@api/model";
+import { Grid } from "@mui/material";
+import { compareAsc, format as formatDate } from "date-fns";
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, LinkAdornment, openInternalLink } from "ish-ui";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { change, FieldArray } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { compareAsc, format as formatDate } from "date-fns";
-import { Currency, PaymentMethod } from "@api/model";
 import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "ish-ui";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from  "ish-ui";
-import { EditViewProps } from "../../../../model/common/ListView";
 import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import { State } from "../../../../reducers/state";
 import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
-import { PaymentOutModel } from "../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { LinkAdornment } from  "ish-ui";
+import { PaymentOutModel } from "../reducers/state";
 import { getAmountToAllocate, getInitialTotalOutstanding, getInitialTotalOwing, getTotalOutstanding } from "../utils";
+import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
 
 const addPaymentOutColumnsBase: NestedTableColumn[] = [
   {

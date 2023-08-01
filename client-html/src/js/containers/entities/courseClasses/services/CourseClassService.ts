@@ -3,12 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  CourseClassDuplicate,
-  CourseClassApi,
-  CourseClass,
-  CancelCourseClass, Diff
-} from "@api/model";
+import { CancelCourseClass, CourseClass, CourseClassApi, CourseClassDuplicate, Diff } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class CourseClassService {

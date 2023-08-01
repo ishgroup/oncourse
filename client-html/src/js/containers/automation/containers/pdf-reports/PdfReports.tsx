@@ -6,26 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { ExportTemplate, Report } from "@api/model";
+import { usePrevious } from "ish-ui";
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import {
-  getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm
-} from "redux-form";
 import { withRouter } from "react-router";
 import { Dispatch } from "redux";
-import { ExportTemplate, Report } from "@api/model";
+import { getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
+import { showConfirm } from "../../../../common/actions";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
-import { showConfirm } from "../../../../common/actions";
-import PdfReportsForm from "./containers/PdfReportsForm";
-import { usePrevious } from "ish-ui";
 import {
   createAutomationPdfReport,
   getAutomationPdfReport,
+  removeAutomationPdfReport,
   updateAutomationPdfReport,
-  updateInternalAutomationPdfReport,
-  removeAutomationPdfReport
+  updateInternalAutomationPdfReport
 } from "./actions";
+import PdfReportsForm from "./containers/PdfReportsForm";
 
 export const PDF_REPORT_FORM_NAME = "PdfReportForm";
 

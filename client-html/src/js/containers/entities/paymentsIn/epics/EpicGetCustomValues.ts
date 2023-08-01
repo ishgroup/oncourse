@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_PAYMENT_IN_CUSTOM_VALUES, GET_PAYMENT_IN_CUSTOM_VALUES_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_PAYMENT_IN_CUSTOM_VALUES, GET_PAYMENT_IN_CUSTOM_VALUES_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request<any,  number> = {
   type: GET_PAYMENT_IN_CUSTOM_VALUES,

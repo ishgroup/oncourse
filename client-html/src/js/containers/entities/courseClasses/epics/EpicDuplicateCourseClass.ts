@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { initialize, reset } from "redux-form";
 import { CourseClassDuplicate } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { initialize, reset } from "redux-form";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import CourseClassService from "../services/CourseClassService";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   DUPLICATE_COURSE_CLASS,
   DUPLICATE_COURSE_CLASS_FULFILLED,
   setDuplicateCourseClassesSessions
 } from "../actions";
 import { DUPLICATE_COURSE_CLASS_FORM } from "../components/duplicate-courseClass/DuplicateCourseClassModal";
+import CourseClassService from "../services/CourseClassService";
 
 let prevSessions;
 let prevEarliestSessionStart;

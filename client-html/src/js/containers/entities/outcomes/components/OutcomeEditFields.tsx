@@ -6,26 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import {
-  Card, Chip, Grid, Tooltip, Typography
-} from "@mui/material";
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
-import { change } from "redux-form";
-import { connect } from "react-redux";
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
+import { DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus } from "@api/model";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Card, Chip, Grid, Tooltip, Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
-import {
- DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus
-} from "@api/model";
+import clsx from "clsx";
+import { AppTheme, LinkAdornment, normalizeNumberToZero, StringKeyObject } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { AccessState } from "../../../../common/reducers/accessReducer";
+import EntityService from "../../../../common/services/EntityService";
 import { mapSelectItems } from "../../../../common/utils/common";
 import {
   validateFundingSourse,
@@ -35,20 +34,13 @@ import {
   validateSpecificProgramIdentifier,
   validateVetPurchasingContractIdentifier
 } from "../../../../common/utils/validation";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { LinkAdornment } from "ish-ui";
 import { fundingUploadsPath } from "../../../../constants/Api";
-import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
-import { openModuleLink } from "../../modules/utils";
-import { State } from "../../../../reducers/state";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { AppTheme, normalizeNumberToZero } from  "ish-ui";
-import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
-import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { StringKeyObject } from  "ish-ui";
-import EntityService from "../../../../common/services/EntityService";
+import { State } from "../../../../reducers/state";
+import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
 import { fundingSourceValues } from "../../courseClasses/constants";
+import { openModuleLink } from "../../modules/utils";
+import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];

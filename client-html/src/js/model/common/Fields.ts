@@ -1,14 +1,15 @@
 import { InputProps } from "@mui/material/Input";
 import {
-  EditInPlaceSearchSelectFieldProps, FieldClasses,
+  EditInPlaceSearchSelectFieldProps,
+  FieldClasses,
   FieldMetaProps,
   FormFieldBaseProps,
   FormFieldProps,
-  HTMLTagArgFunction
+  HTMLTagArgFunction,
+  StringArgFunction
 } from "ish-ui";
 import { ReactNode, Ref } from "react";
 import { BaseFieldProps } from "redux-form";
-import { StringArgFunction } from  "ish-ui";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
 import { EntityName } from "../entities/common";
 

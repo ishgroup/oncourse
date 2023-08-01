@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import List from "@mui/material/List";
 import Collapse from "@mui/material/Collapse";
+import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
 import { openInternalLink } from "ish-ui";
-import ListLinkItem from "./ListLinkItem";
-import { getResultId } from "../../utils";
+import React from "react";
 import navigation from "../../../../navigation/data/navigation.json";
+import { getResultId } from "../../utils";
+import ListLinkItem from "./ListLinkItem";
 
 const styles = theme =>
   createStyles({

@@ -3,7 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { PayrollRequest } from "@api/model";
 import { Epic } from "redux-observable";
+import { SHOW_MESSAGE, START_PROCESS } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
@@ -13,11 +17,7 @@ import {
   EXECUTE_PAYROLL_FULFILLED,
   PAYROLL_PROCESS_FINISHED
 } from "../actions/index";
-import { PayrollRequest } from "@api/model";
 import PayrollService from "../services/PayrollService";
-import { SHOW_MESSAGE, START_PROCESS } from "../../../../common/actions";
-import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 let maxPayslipId;
 

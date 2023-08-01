@@ -4,6 +4,7 @@
  */
 
 import { Binding, DataType, Script } from "@api/model";
+import { ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 import {
   closureSplitRegexp,
   getMessageComponent,
@@ -18,9 +19,6 @@ import {
   queryClosureRegexp,
   reportClosureRegexp,
 } from "../constants";
-import {
- ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode 
-} from "../../../../../model/scripts";
 
 const getClosureComponent = async (body: string, type: ScriptComponentType) => {
   switch (type) {

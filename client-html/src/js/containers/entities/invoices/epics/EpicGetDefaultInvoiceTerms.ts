@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_DEFAULT_INVOICE_TERMS, GET_DEFAULT_INVOICE_TERMS_FULFILLED } from "../actions/index";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import UserPreferenceService from "../../../../common/services/UserPreferenceService";
 import { ACCOUNT_INVOICE_TERMS } from "../../../../constants/Config";
+import { GET_DEFAULT_INVOICE_TERMS, GET_DEFAULT_INVOICE_TERMS_FULFILLED } from "../actions/index";
 
 const request: EpicUtils.Request = {
   type: GET_DEFAULT_INVOICE_TERMS,

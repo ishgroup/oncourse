@@ -4,10 +4,10 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetCourseClassCosts } from "./EpicGetCourseClassCosts";
 import { EpicCreateClassCost } from "./EpicCreateClassCost";
-import { EpicUpdateClassCost } from "./EpicUpdateClassCost";
 import { EpicDeleteClassCost } from "./EpicDeleteClassCost";
+import { EpicGetCourseClassCosts } from "./EpicGetCourseClassCosts";
+import { EpicUpdateClassCost } from "./EpicUpdateClassCost";
 
 export const EpicCourseClassBudget = combineEpics(
   EpicGetCourseClassCosts,

@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
 import { Divider, ListItem, ListItemText } from "@mui/material";
 import clsx from "clsx";
+import { InfoPill, makeAppStyles, NumberArgFunction, useHoverShowStyles } from "ish-ui";
+import React, { useCallback } from "react";
 import { CatalogItemType } from "../../../../model/common/Catalog";
-import { InfoPill, makeAppStyles, useHoverShowStyles, NumberArgFunction } from "ish-ui";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {

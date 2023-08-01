@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import Typography from "@mui/material/Typography";
 import { Course } from "@api/model";
-import { getHighlightedPartLabel } from "ish-ui";
-import { SelectItemRendererProps } from  "ish-ui";
+import Typography from "@mui/material/Typography";
+import { getHighlightedPartLabel, SelectItemRendererProps } from "ish-ui";
+import React, { useMemo } from "react";
 
 const CourseItemRenderer = React.memo<SelectItemRendererProps<Course>>(
   ({

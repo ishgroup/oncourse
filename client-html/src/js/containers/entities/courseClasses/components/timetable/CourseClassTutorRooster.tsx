@@ -6,18 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useRef, useState } from "react";
-import {
-  FormHelperText,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import clsx from "clsx";
-import { WrappedFieldProps } from "redux-form";
 import { ClashType, CourseClassTutor, SessionWarning } from "@api/model";
-import { TimetableSession } from "../../../../../model/timetable";
+import { FormHelperText, Menu, MenuItem, } from "@mui/material";
+import clsx from "clsx";
+import { AddButton, NumberArgFunction, preventEventDefault } from "ish-ui";
+import React, { useMemo, useRef, useState } from "react";
+import { WrappedFieldProps } from "redux-form";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { AddButton, preventEventDefault, NumberArgFunction } from  "ish-ui";
+import { TimetableSession } from "../../../../../model/timetable";
 import CourseClassTutorRoosterItem from "./CourseClassTutorRoosterItem";
 
 interface TutorRoosterProps extends WrappedFieldProps {

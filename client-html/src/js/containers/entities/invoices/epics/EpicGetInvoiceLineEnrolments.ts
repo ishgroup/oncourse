@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_INVOICE_LINE_ENROLMENTS, SET_INVOICE_LINE_ENROLMENTS } from "../actions";
-import { DataResponse } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_INVOICE_LINE_ENROLMENTS, SET_INVOICE_LINE_ENROLMENTS } from "../actions";
 
 const request: EpicUtils.Request<any, number> = {
   type: GET_INVOICE_LINE_ENROLMENTS,

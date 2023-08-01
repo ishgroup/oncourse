@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
 import Typography from "@mui/material/Typography";
+import React, { useCallback } from "react";
 import OutcomeEditFields from "../../outcomes/components/OutcomeEditFields";
 
 const OutcomesHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {

@@ -3,36 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import withStyles from "@mui/styles/withStyles";
-import { green } from "@mui/material/colors";
-import IconButton from "@mui/material/IconButton";
-import Clear from "@mui/icons-material/Clear";
+import { CustomFieldType, ProductType } from "@api/model";
 import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
 import BookmarkTwoTone from "@mui/icons-material/BookmarkTwoTone";
-import createStyles from "@mui/styles/createStyles";
+import Clear from "@mui/icons-material/Clear";
 import HelpOutline from "@mui/icons-material/HelpOutline";
+import { green } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
+import { darken } from "@mui/material/styles";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
+import { AppTheme, getAllMenuTags, StringArgFunction } from "ish-ui";
+import debounce from "lodash.debounce";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { darken } from "@mui/material/styles";
-import debounce from "lodash.debounce";
-import { CustomFieldType, ProductType } from "@api/model";
-import EditInPlaceQuerySelect from "../../../../form/formFields/EditInPlaceQuerySelect";
-import QuerySaveMenu from "./QuerySaveMenu";
-import { State } from "../../../../../../reducers/state";
-import { StringArgFunction } from  "ish-ui";
-import { setIndeterminate } from "../../../utils/listFiltersUtils";
-import {
- setFilterGroups, setListSavingFilter, setListUserAQLSearch
-} from "../../../actions";
-import { FormMenuTag } from "../../../../../../model/tags";
-import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
 import { FILTER_TAGS_REGEX } from "../../../../../../constants/Config";
-import { AppTheme } from  "ish-ui";
 import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
 import { QueryFieldSuggestion } from "../../../../../../model/common/Fields";
-import { getAllMenuTags } from  "ish-ui";
+import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
+import { FormMenuTag } from "../../../../../../model/tags";
+import { State } from "../../../../../../reducers/state";
+import EditInPlaceQuerySelect from "../../../../form/formFields/EditInPlaceQuerySelect";
+import { setFilterGroups, setListSavingFilter, setListUserAQLSearch } from "../../../actions";
+import { setIndeterminate } from "../../../utils/listFiltersUtils";
+import QuerySaveMenu from "./QuerySaveMenu";
 
 export const styles = (theme: AppTheme) => createStyles({
     container: {

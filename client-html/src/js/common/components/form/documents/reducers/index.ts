@@ -1,6 +1,6 @@
 import { IAction } from "../../../../actions/IshAction";
-import { DocumentsState } from "./state";
 import { CLEAR_EDITING_DOCUMENT, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT, SET_SEARCH_DOCUMENTS } from "../actions";
+import { DocumentsState } from "./state";
 
 class DocumentsInitialState implements DocumentsState {
   editingFormName: null;

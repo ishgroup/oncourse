@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { createStyles, withStyles } from "@mui/styles";
 import Drawer from "@mui/material/Drawer";
 import Hidden from "@mui/material/Hidden";
+import { createStyles, withStyles } from "@mui/styles";
+import { AppTheme } from "ish-ui";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../../reducers/state";
 import { closeDrawer } from "../../actions";
-import { AppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) =>
   createStyles({

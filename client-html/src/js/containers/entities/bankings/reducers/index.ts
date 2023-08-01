@@ -1,9 +1,5 @@
 import { IAction } from "../../../../common/actions/IshAction";
-import {
-  GET_DEPOSIT_ACCOUNTS_FULFILLED,
-  GET_DEPOSIT_PAYMENTS_FULFILLED,
-  UPDATE_BANKING_ACCOUNT_ID
-} from "../actions";
+import { GET_DEPOSIT_ACCOUNTS_FULFILLED, GET_DEPOSIT_PAYMENTS_FULFILLED, UPDATE_BANKING_ACCOUNT_ID } from "../actions";
 import { BankingState } from "./state";
 
 class BankingStateClass implements BankingState {

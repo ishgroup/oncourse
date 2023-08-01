@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { PasswordComplexity } from "@api/model";
 import { Epic } from "redux-observable";
+import { CHECK_PASSWORD_FULFILLED, CHECK_PASSWORD_REQUEST, FETCH_FAIL, FETCH_SUCCESS } from "../../../common/actions";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import LoginService from "../services/LoginService";
-import { CHECK_PASSWORD_FULFILLED, CHECK_PASSWORD_REQUEST, FETCH_FAIL, FETCH_SUCCESS } from "../../../common/actions";
-import { PasswordComplexity } from "@api/model";
 
 const request: EpicUtils.Request = {
   type: CHECK_PASSWORD_REQUEST,

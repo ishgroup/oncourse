@@ -2,25 +2,23 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React from "react";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import IconButton from "@mui/material/IconButton";
-import Launch from "@mui/icons-material/Launch";
-import Share from "@mui/icons-material/Share";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DoneRounded from "@mui/icons-material/DoneRounded";
-import Paper from "@mui/material/Paper";
+import Launch from "@mui/icons-material/Launch";
+import Share from "@mui/icons-material/Share";
 import Button from "@mui/material/Button";
-import { LinkAdornment } from  "ish-ui";
-import { openInternalLink } from "ish-ui";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { AppTheme, LinkAdornment, openInternalLink } from "ish-ui";
+import React from "react";
 import { CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
-import { AppTheme } from  "ish-ui";
-import CheckoutPaymentExpandableItemRenderer from "./CheckoutPaymentExpandableItemRenderer";
 import { getContactFullName } from "../../../../entities/contacts/utils";
+import CheckoutPaymentExpandableItemRenderer from "./CheckoutPaymentExpandableItemRenderer";
 
 const styles = (theme: AppTheme) =>
   createStyles({

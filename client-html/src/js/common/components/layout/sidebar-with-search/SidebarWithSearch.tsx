@@ -1,17 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
+import { AnyArgFunction, NumberArgFunction, ResizableWrapper } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import Drawer from "../Drawer";
+import { LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
+import { CommonListFilter } from "../../../../model/common/sidebar";
+import { MainRoute } from "../../../../routes";
 import LoadingIndicator from "../../progress/LoadingIndicator";
-import { AnyArgFunction, NumberArgFunction } from  "ish-ui";
+import Drawer from "../Drawer";
 import HamburgerMenu from "../swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../swipeable-sidebar/utils";
-import SidebarSearch from "./components/SidebarSearch";
-import { CommonListFilter } from "../../../../model/common/sidebar";
 import FiltersList from "./components/FiltersList";
-import { MainRoute } from "../../../../routes";
-import { LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
-import { ResizableWrapper } from "ish-ui";
+import SidebarSearch from "./components/SidebarSearch";
 
 interface Props {
   leftColumnWidth: number;

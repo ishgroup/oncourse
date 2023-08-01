@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
+import { GradingItem, GradingType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import clsx from "clsx";
-import { GradingItem, GradingType } from "@api/model";
-import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
-import { D_MMM_YYYY, EditInPlaceDateTimeField, EditInPlaceSearchSelect } from "ish-ui";
-import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
-import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
-import GradeContent from "../../courseClasses/components/assessments/GradeContent";
-import { stubFunction } from "ish-ui";
+import { D_MMM_YYYY, EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import React, { useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
+import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
+import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
+import GradeContent from "../../courseClasses/components/assessments/GradeContent";
+import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
 
 
 interface Props {

@@ -3,37 +3,36 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
-import { Grid, Typography } from "@mui/material";
-import { change, FieldArray } from "redux-form";
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
+import { Grid, Typography } from "@mui/material";
+import { ConfirmProps, formatCurrency } from "ish-ui";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { formatCurrency } from "ish-ui";
-import { State } from "../../../../reducers/state";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { clearMinMaxFee, getMinMaxFee } from "../actions";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EditViewProps } from "../../../../model/common/ListView";
+import { change, FieldArray } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { normalizeString } from "../../../../common/utils/strings";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { useAppSelector } from "../../../../common/utils/hooks";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { normalizeString } from "../../../../common/utils/strings";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { ConfirmProps } from  "ish-ui";
+import RelationsCommon from "../../common/components/RelationsCommon";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { clearMinMaxFee, getMinMaxFee } from "../actions";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];

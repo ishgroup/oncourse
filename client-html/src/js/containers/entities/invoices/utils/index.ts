@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { min } from "date-fns";
 import { Invoice, InvoicePaymentPlan } from "@api/model";
-import { InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
-import { decimalMinus, decimalPlus } from "ish-ui";
+import { min } from "date-fns";
 import { Decimal } from "decimal.js-light";
+import { decimalMinus, decimalPlus } from "ish-ui";
+import { InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
 
 export const calculateInvoiceLineTotal = (
   priceEachExTax: number,

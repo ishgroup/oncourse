@@ -3,26 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import { change, FieldArray } from "redux-form";
-import {
- Account, ArticleProduct, ProductStatus, Tag, Tax 
-} from "@api/model";
-import { connect } from "react-redux";
+import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { change, FieldArray } from "redux-form";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import { State } from "../../../../reducers/state";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { normalizeString } from "../../../../common/utils/strings";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { normalizeString } from "../../../../common/utils/strings";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import RelationsCommon from "../../common/components/RelationsCommon";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];

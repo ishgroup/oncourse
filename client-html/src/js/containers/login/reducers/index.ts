@@ -1,12 +1,13 @@
-import { IAction } from "../../../common/actions/IshAction";
+import { User } from "@api/model";
 import {
   CHECK_PASSWORD_FULFILLED,
   GET_EMAIL_BY_TOKEN_FULFILLED,
   POST_UPDATE_PASSWORD_FULFILLED,
-  SET_LOGIN_STATE, SET_SYSTEM_USER_DATA,
+  SET_LOGIN_STATE,
+  SET_SYSTEM_USER_DATA,
 } from "../../../common/actions";
+import { IAction } from "../../../common/actions/IshAction";
 import { LoginState } from "./state";
-import { User } from "@api/model";
 
 const clearState: LoginState = {
   isTOTP: false,

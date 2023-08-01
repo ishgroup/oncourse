@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
+import { IconButton } from "@mui/material";
 import { openInternalLink } from "ish-ui";
+import React from "react";
 
 interface Props {
   title: string;

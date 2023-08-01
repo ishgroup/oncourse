@@ -6,13 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { createContext, forwardRef, memo, useMemo, useState } from "react";
-import { flexRender } from '@tanstack/react-table';
-import { areEqual, FixedSizeList } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import InfiniteLoader from "react-window-infinite-loader";
-import clsx from "clsx";
 import Typography from "@mui/material/Typography";
+import { flexRender } from '@tanstack/react-table';
+import clsx from "clsx";
+import { stubFunction } from "ish-ui";
+import React, { createContext, forwardRef, memo, useMemo, useState } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { areEqual, FixedSizeList } from "react-window";
+import InfiniteLoader from "react-window-infinite-loader";
 import {
   APP_BAR_HEIGHT,
   HEADER_ROWS_COUNT,
@@ -20,10 +21,9 @@ import {
   LIST_PAGE_SIZE,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
-import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
-import { stubFunction } from "ish-ui";
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../constants";
+import TagDotRenderer from "./TagDotRenderer";
 
 const ThreeColumnCell = ({ row }) => (<div>
   <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>

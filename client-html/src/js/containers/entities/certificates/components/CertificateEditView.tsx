@@ -4,13 +4,13 @@
  */
 
 import { CertificateOutcome, Contact } from "@api/model";
-import { FormControlLabel, Theme } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { FormControlLabel, Grid, Theme } from "@mui/material";
 import Link from "@mui/material/Link";
-import { createStyles, withStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { format } from "date-fns";
+import { AnyArgFunction, III_DD_MMM_YYYY, LinkAdornment, NumberArgFunction, StringArgFunction } from "ish-ui";
 import QRCode from "qrcode.react";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
@@ -21,23 +21,18 @@ import {
   HeaderContactTitle
 } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import {
-  LinkAdornment
-} from  "ish-ui";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import EntityService from "../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY } from  "ish-ui";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { AnyArgFunction, NumberArgFunction, StringArgFunction } from  "ish-ui";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
 import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
-import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { getContactFullName } from "../../contacts/utils";
 
 interface Props extends EditViewProps {
   status?: string;

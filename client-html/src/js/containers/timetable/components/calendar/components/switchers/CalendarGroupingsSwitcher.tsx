@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useContext } from "react";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import React, { useCallback, useContext } from "react";
 import { TimetableContextState } from "../../../../../../model/timetable";
 
 const CalendarGroupingsSwitcher = ({ className = null, TimetableContext }) => {

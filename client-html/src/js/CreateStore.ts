@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createEpicMiddleware } from "redux-observable";
-import { createLogger } from "redux-logger";
 import { applyMiddleware, compose, createStore, Store } from "redux";
+import { createLogger } from "redux-logger";
+import { createEpicMiddleware } from "redux-observable";
+import { IAction } from "./common/actions/IshAction";
+import { EnvironmentConstants } from "./constants/EnvironmentConstants";
 import { EpicRoot } from "./EpicRoot";
 import { combinedReducers } from "./reducers";
-import { EnvironmentConstants } from "./constants/EnvironmentConstants";
 import { State } from "./reducers/state";
-import { IAction } from "./common/actions/IshAction";
 
 const inDevelopment = process.env.NODE_ENV === EnvironmentConstants.development;
 

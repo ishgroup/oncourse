@@ -3,14 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { ExportRequest, OutputType } from "@api/model";
-import * as EpicUtils from "../../../../../epics/EpicUtils";
-import ExportService from "../services/ExportService";
-import { getExportResult, getExportTemplates, POST_EXPORT_REQUEST } from "../actions";
+import { Epic } from "redux-observable";
 import { clearProcess, START_PROCESS, UPDATE_PROCESS } from "../../../../../actions";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../epics/EpicUtils";
+import { getExportResult, getExportTemplates, POST_EXPORT_REQUEST } from "../actions";
+import ExportService from "../services/ExportService";
 
 const request: EpicUtils.Request<any, {
   exportRequest: ExportRequest;

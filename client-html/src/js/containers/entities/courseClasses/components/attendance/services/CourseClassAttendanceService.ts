@@ -3,12 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  AttendanceApi,
-  CourseClassApi,
-  TrainingPlan,
-  StudentAttendance
-} from "@api/model";
+import { AttendanceApi, CourseClassApi, StudentAttendance, TrainingPlan } from "@api/model";
 import { DefaultHttpService } from "../../../../../../common/services/HttpService";
 
 class CourseClassAttendanceService {

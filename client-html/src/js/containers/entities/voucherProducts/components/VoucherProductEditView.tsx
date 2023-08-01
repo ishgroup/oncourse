@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import { Account, VoucherProduct } from "@api/model";
+import React from "react";
 import { connect } from "react-redux";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { plainCorporatePassPath } from "../../../../constants/Api";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import VoucherProductGeneral from "./VoucherProductGeneral";
-import { EditViewProps } from "../../../../model/common/ListView";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
 interface VoucherProductEditViewProps extends EditViewProps<VoucherProduct>{
   accounts?: Account[];

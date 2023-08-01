@@ -4,11 +4,11 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_FAIL, FETCH_SUCCESS, GET_LDAP_CONNECTION_REQUEST } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
-import { FETCH_FAIL, FETCH_SUCCESS, GET_LDAP_CONNECTION_REQUEST } from "../../../../../common/actions";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: EpicUtils.Request = {
   type: GET_LDAP_CONNECTION_REQUEST,

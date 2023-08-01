@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { SurveyApi, SurveyItem } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class SurveyService {
   readonly surveyApi = new SurveyApi(new DefaultHttpService());

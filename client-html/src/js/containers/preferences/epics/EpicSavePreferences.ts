@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../common/actions";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { FETCH_SUCCESS } from "../../../common/actions";
-import PreferencesService from "../services/PreferencesService";
 import { SAVE_PREFERENCES_FULFILLED, SAVE_PREFERENCES_REQUEST } from "../actions";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import PreferencesService from "../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: SAVE_PREFERENCES_REQUEST,

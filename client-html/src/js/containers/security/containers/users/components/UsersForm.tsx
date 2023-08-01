@@ -3,36 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { ComponentClass } from "react";
-import {
-  FormControlLabel, FormGroup, Typography, Grid, Paper, Collapse, Button
-} from "@mui/material";
+import { User, UserRole } from "@api/model";
+import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
+import { Button, Collapse, FormControlLabel, FormGroup, Grid, Paper, Typography } from "@mui/material";
 import { withStyles } from "@mui/styles";
 import clsx from "clsx";
-import {
-  Form, getFormValues, initialize, reduxForm, change, getFormSyncErrors
-} from "redux-form";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { format as formatDate } from "date-fns";
-import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
-import { User, UserRole } from "@api/model";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
-import {
-  updateUser, resetUserPassword, disableUser2FA
-} from "../../../actions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import { Message } from  "ish-ui";
-import { SelectItemDefault } from "../../../../../model/entities/common";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from  "ish-ui";
+import { III_DD_MMM_YYYY_HH_MM_SPECIAL, Message, ShowConfirmCaller } from "ish-ui";
+import React, { ComponentClass } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { Dispatch } from "redux";
+import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { showConfirm } from "../../../../../common/actions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { ShowConfirmCaller } from  "ish-ui";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { SelectItemDefault } from "../../../../../model/entities/common";
+import { State } from "../../../../../reducers/state";
+import { disableUser2FA, resetUserPassword, updateUser } from "../../../actions";
 
 const manualUrl = getManualLink("users");
 

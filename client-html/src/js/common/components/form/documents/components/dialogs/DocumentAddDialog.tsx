@@ -3,33 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
-import React, { RefObject } from "react";
-import createStyles from "@mui/styles/createStyles";
-import debounce from "lodash.debounce";
-import { format } from "date-fns";
 import Collapse from "@mui/material/Collapse";
 import Dialog from "@mui/material/Dialog";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import LinearProgress from "@mui/material/LinearProgress";
-import withTheme from "@mui/styles/withTheme";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import LinearProgress from "@mui/material/LinearProgress";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import withTheme from "@mui/styles/withTheme";
+import clsx from "clsx";
+import { format } from "date-fns";
+import { EditInPlaceSearchSelect, FileUploaderDialog, KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL, stubFunction } from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { RefObject } from "react";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  stubFunction,
-  EditInPlaceSearchSelect,
-  FileUploaderDialog,
-  KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL
-} from "ish-ui";
-import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { State } from "../../../../../../reducers/state";
-import { dialogStyles } from "./dialogStyles";
+import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { DocumentSearchItem as DocumentSearchItemType } from "../../epics/EpicSearchExistingDocumentByName";
+import { dialogStyles } from "./dialogStyles";
 
 const addDialogStyles = theme => createStyles({
   addDialogMargin: {

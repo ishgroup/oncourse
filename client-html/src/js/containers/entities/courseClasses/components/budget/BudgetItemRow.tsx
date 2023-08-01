@@ -6,16 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Decimal from "decimal.js-light";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { IconButton } from "@mui/material";
+import { ClassCost } from "@api/model";
 import Delete from "@mui/icons-material/Delete";
 import Edit from "@mui/icons-material/Edit";
-import { ClassCost } from "@api/model";
-import { formatCurrency } from "ish-ui";
-import { NumberArgFunction } from  "ish-ui";
+import { Grid, IconButton } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Decimal from "decimal.js-light";
+import { formatCurrency, NumberArgFunction } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 
 interface BudgetItemRowProps {
   value: ClassCost;

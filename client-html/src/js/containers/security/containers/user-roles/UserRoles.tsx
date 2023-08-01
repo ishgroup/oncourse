@@ -1,9 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import UserRolesForm from "./components/UserRolesForm";
-import { State } from "../../../../reducers/state";
-import history from "../../../../constants/History";
 import { LICENSE_ACCESS_CONTROL_KEY } from "../../../../constants/Config";
+import history from "../../../../constants/History";
+import { State } from "../../../../reducers/state";
+import UserRolesForm from "./components/UserRolesForm";
 
 class UserRoles extends React.Component<any, any> {
   shouldComponentUpdate({

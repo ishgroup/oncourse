@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { Contact } from "@api/model";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import { clearActionsQueue, getUserPreferences } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from "../../../../constants/Config";
-import { formatContactRelationIds } from "../../../entities/contacts/epics/EpicGetContact";
 import { getEntityItemById } from "../../../entities/common/entityItemsService";
 import {
   getContactCertificates,
@@ -20,6 +19,7 @@ import {
   getContactPriorLearnings,
   getContactsStoredCc
 } from "../../../entities/contacts/actions";
+import { formatContactRelationIds } from "../../../entities/contacts/epics/EpicGetContact";
 import {
   CHECKOUT_GET_CONTACT,
   CHECKOUT_GET_CONTACT_FULFILLED,

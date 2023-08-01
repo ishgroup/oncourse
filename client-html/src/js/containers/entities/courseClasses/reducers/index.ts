@@ -3,31 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- ClassCost, EnrolmentStatus, Session, SessionWarning
-} from "@api/model";
+import { ClassCost, EnrolmentStatus, Session, SessionWarning } from "@api/model";
+import { StringKeyAndValueObject } from "ish-ui";
 import { IAction } from "../../../../common/actions/IshAction";
 import {
   CLEAR_DUPLICATE_COURSE_CLASSES_SESSIONS,
-  SET_COURSE_CLASS_ENROLMENTS,
-  GET_DUPLICATE_COURSE_CLASSES_SESSIONS,
-  SET_DUPLICATE_COURSE_CLASSES_SESSIONS,
-  GET_COURSE_CLASS_ENROLMENTS,
   DUPLICATE_COURSE_CLASS,
   DUPLICATE_COURSE_CLASS_FULFILLED,
-  SET_COURSE_CLASS_LATEST_SESSION,
+  GET_COURSE_CLASS_ENROLMENTS,
+  GET_DUPLICATE_COURSE_CLASSES_SESSIONS,
   SET_COURSE_CLASS_BUDGET_MODAL_OPENED,
-  SET_COURSE_CLASS_SESSIONS_WARNINGS, SET_DUPLICATE_COURSE_CLASSES_BUDGET
+  SET_COURSE_CLASS_ENROLMENTS,
+  SET_COURSE_CLASS_LATEST_SESSION,
+  SET_COURSE_CLASS_SESSIONS_WARNINGS,
+  SET_DUPLICATE_COURSE_CLASSES_BUDGET,
+  SET_DUPLICATE_COURSE_CLASSES_SESSIONS
 } from "../actions";
-import { CourseClassBulkSession } from "./state";
-import { StringKeyAndValueObject } from  "ish-ui";
-import { SET_COURSE_CLASS_TUTOR_NAMES_WARNINGS } from "../components/tutors/actions";
 import {
   COURSE_CLASS_CLOSE_BULK_UPDATE_MODAL,
   COURSE_CLASS_OPEN_BULK_UPDATE_MODAL,
   COURSE_CLASS_SELECT_BULK_SESSION,
   COURSE_CLASS_SELECT_SINGLE_SESSION
 } from "../components/timetable/actions";
+import { SET_COURSE_CLASS_TUTOR_NAMES_WARNINGS } from "../components/tutors/actions";
+import { CourseClassBulkSession } from "./state";
 
 export interface CourseClassState {
   timetable: {

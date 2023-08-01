@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
 import { AnyArgFunction, ConfirmBase, ConfirmState } from "ish-ui";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { State } from "../../../reducers/state";
 import { closeConfirm } from "../../actions";
 

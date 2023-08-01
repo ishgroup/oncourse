@@ -14,11 +14,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { ReactNode } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
-import { makeAppStyles } from  "ish-ui";
+import Typography from "@mui/material/Typography";
+import { makeAppStyles } from "ish-ui";
+import React, { ReactNode } from "react";
 
 interface Props {
   selected: boolean;

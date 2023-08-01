@@ -3,16 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Card from "@mui/material/Card";
+import { EntityRelationCartAction, EntityRelationType } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import { EntityRelationType, EntityRelationCartAction } from "@api/model";
+import Card from "@mui/material/Card";
+import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
+import Subtitle from "../../../../../common/components/layout/Subtitle";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
-import Subtitle from "../../../../../common/components/layout/Subtitle";
 
 const CartActions = Object.keys(EntityRelationCartAction)
   .filter(val => isNaN(Number(val)))

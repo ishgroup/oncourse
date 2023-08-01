@@ -7,16 +7,6 @@
  */
 
 import { Document, DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
-import { Alert, AlertTitle, CardContent, FormControlLabel } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import clsx from "clsx";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Typography from "@mui/material/Typography";
 import {
   Attachment,
   Directions,
@@ -26,17 +16,22 @@ import {
   OpenInNew,
   SupervisorAccount
 } from "@mui/icons-material";
+import { Alert, AlertTitle, CardContent, FormControlLabel } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { makeAppStyles, openInternalLink, StyledCheckbox, Switch } from "ish-ui";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import { showMessage } from "../../../actions";
-import {
-  makeAppStyles,
-  StyledCheckbox,
-  Switch
-} from "ish-ui";
-import { openInternalLink } from "ish-ui";
-import { DocumentShareOption } from "../../../../model/entities/Document";
 import { mapEntityDisplayName } from "../../../../containers/entities/common/utils";
+import { DocumentShareOption } from "../../../../model/entities/Document";
+import { showMessage } from "../../../actions";
 import {
   getAvailableOptions,
   getDocumentShareSummary,

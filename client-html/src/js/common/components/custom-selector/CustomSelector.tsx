@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import CustomSelectorHeader from "./CustomSelectorHeader";
-import CustomSelectorBody from "./CustomSelectorBody";
 import { FormFieldWrapperProps } from "../../../model/common/Fields";
+import CustomSelectorBody from "./CustomSelectorBody";
+import CustomSelectorHeader from "./CustomSelectorHeader";
 
 interface Props {
   className?: any;

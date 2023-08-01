@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
-import { Create, Request } from "../../../../common/epics/EpicUtils";
-import { GET_DISCOUNT_CONTACT_RELATION_TYPES, GET_DISCOUNT_CONTACT_RELATION_TYPES_FULFILLED } from "../actions";
-import EntityService from "../../../../common/services/EntityService";
+import { Epic } from "redux-observable";
 import { NestedListPanelItem } from "../../../../common/components/form/nestedList/NestedList";
+import { Create, Request } from "../../../../common/epics/EpicUtils";
+import EntityService from "../../../../common/services/EntityService";
+import { GET_DISCOUNT_CONTACT_RELATION_TYPES, GET_DISCOUNT_CONTACT_RELATION_TYPES_FULFILLED } from "../actions";
 
 const request: Request = {
   type: GET_DISCOUNT_CONTACT_RELATION_TYPES,

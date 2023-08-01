@@ -13,19 +13,31 @@
  * Main app layout
  * */
 
-import React, { useEffect } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { connect } from "react-redux";
-import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import {
+  AnyArgFunction,
+  BrowserWarning,
+  currentTheme,
+  DefaultThemeKey,
+  getTheme,
+  GlobalStylesProvider,
+  Message,
+  ThemeValues
+} from "ish-ui";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Route, Switch, withRouter } from "react-router-dom";
 import { Dispatch } from "redux";
+import { getFormNames, isDirty } from "redux-form";
+import { getUserPreferences } from "../common/actions";
 import ConfirmProvider from "../common/components/dialog/ConfirmProvider";
-import { EnvironmentConstants } from "../constants/EnvironmentConstants";
-import { loginRoute, routes } from "../routes";
 import MessageProvider from "../common/components/dialog/MessageProvider";
-import { ThemeContext } from "./ThemeContext";
+import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
+import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
+import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
 import {
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_THEME_KEY,
@@ -33,16 +45,12 @@ import {
   READ_NEWS,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
+import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import { State } from "../reducers/state";
-import { AnyArgFunction, GlobalStylesProvider } from "ish-ui";
-import { getUserPreferences } from "../common/actions";
-import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
-import { getCurrency, isLoggedIn } from "./preferences/actions";
-import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
+import { loginRoute, routes } from "../routes";
 import { getDashboardBlogPosts } from "./dashboard/actions";
-import { getFormNames, isDirty } from "redux-form";
-import { currentTheme, getTheme, Message, BrowserWarning, DefaultThemeKey, ThemeValues } from "ish-ui";
+import { getCurrency, isLoggedIn } from "./preferences/actions";
+import { ThemeContext } from "./ThemeContext";
 
 export const muiCache = createCache({
   key: 'mui',

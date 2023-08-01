@@ -4,8 +4,8 @@
  */
 
 import { Document } from "@api/model";
-import { _toRequestType } from "../../../../actions/ActionUtils";
 import { DocumentExtended } from "../../../../../model/common/Documents";
+import { _toRequestType } from "../../../../actions/ActionUtils";
 
 export const CREATE_DOCUMENT = _toRequestType("post/list/entity/document");
 

@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import Delete from "@mui/icons-material/Delete";
+import RestoreFromTrash from "@mui/icons-material/RestoreFromTrash";
+import MenuItem from "@mui/material/MenuItem";
+import { NoArgFunction } from "ish-ui";
 import React, { memo, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import MenuItem from "@mui/material/MenuItem";
-import Delete from "@mui/icons-material/Delete";
-import RestoreFromTrash from "@mui/icons-material/RestoreFromTrash";
-import { removeDocument, restoreDocument } from "../actions";
-import { ListState } from "../../../../model/common/ListView";
-import { NoArgFunction } from  "ish-ui";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { getPluralSuffix } from "../../../../common/utils/strings";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import { ListState } from "../../../../model/common/ListView";
+import { removeDocument, restoreDocument } from "../actions";
 
 interface Props {
   selection?: ListState["selection"];

@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_CONTACT_CERTIFICATES, GET_CONTACT_CERTIFICATES_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_CONTACT_CERTIFICATES, GET_CONTACT_CERTIFICATES_FULFILLED } from "../actions";
 
 export const contactCertificatesMap = ({ values, id }) => {
   const fullQualification = values[0] === "true";

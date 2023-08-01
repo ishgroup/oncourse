@@ -5,36 +5,35 @@
 
 import { AssessmentClass, Session } from "@api/model";
 import {
-  differenceInMinutes,
-  addMinutes,
-  addHours,
-  isWeekend,
   addBusinessDays,
   addDays,
+  addHours,
+  addMinutes,
+  addMonths,
   addWeeks,
-  addMonths, addYears
+  addYears,
+  differenceInMinutes,
+  isWeekend
 } from "date-fns";
-import { openInternalLink } from "ish-ui";
+import { appendTimezone, decimalMul, decimalPlus, EntityType, openInternalLink } from "ish-ui";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import uniqid from "../../../../common/utils/uniqid";
 import {
   ClassCostExtended,
   ClassCostItem,
   ClassCostTypes,
   CourseClassStatus,
-  CourseClassTutorExtended, SessionRepeatTypes
+  CourseClassTutorExtended,
+  SessionRepeatTypes
 } from "../../../../model/entities/CourseClass";
-import { EntityType } from  "ish-ui";
-import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
-import CourseClassCostService from "../components/budget/services/ClassCostService";
-import { State } from "../../../../reducers/state";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
-import CourseClassAssessmentService from "../components/assessments/services/CourseClassAssessmentService";
-import { getClassCostFee } from "../components/budget/utils";
-import { decimalMul, decimalPlus } from "ish-ui";
 import { TimetableSession } from "../../../../model/timetable";
+import { State } from "../../../../reducers/state";
+import CourseClassAssessmentService from "../components/assessments/services/CourseClassAssessmentService";
 import CourseClassAttendanceService from "../components/attendance/services/CourseClassAttendanceService";
-import { appendTimezone } from "ish-ui";
-import uniqid from "../../../../common/utils/uniqid";
+import CourseClassCostService from "../components/budget/services/ClassCostService";
+import { getClassCostFee } from "../components/budget/utils";
+import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
+import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
 
 export const openCourseClassLink = (classId: number) => openInternalLink(`/class/${classId}`);
 

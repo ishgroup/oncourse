@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { AnyArgFunction, PromiseReturnFunction } from "ish-ui";
 import { Dispatch } from "redux";
-import { asyncValidateFieldArrayFieldCallback, getFieldArrayFieldMeta } from "./validation";
 import { addActionToQueue } from "../actions";
-import { AnyArgFunction, PromiseReturnFunction } from  "ish-ui";
 import { IAction } from "../actions/IshAction";
+import { asyncValidateFieldArrayFieldCallback, getFieldArrayFieldMeta } from "./validation";
 
 export const fieldUpdateHandler = (
   values: any,

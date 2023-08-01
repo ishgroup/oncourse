@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_AMOUNT_OWING, GET_AMOUNT_OWING_FULFILLED, GET_CONTRA_INVOICES } from "../actions";
-import { DataResponse } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_AMOUNT_OWING, GET_AMOUNT_OWING_FULFILLED, GET_CONTRA_INVOICES } from "../actions";
 import { ContraInvoiceFormData } from "../reducers/state";
 
 const request: EpicUtils.Request<any,  number> = {

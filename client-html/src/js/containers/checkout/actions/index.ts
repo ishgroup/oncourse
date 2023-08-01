@@ -3,10 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  CheckoutAddItemsRequiest,
-  CheckoutSaleRelationExtended
-} from "../../../model/checkout";
+import { CheckoutAddItemsRequiest, CheckoutSaleRelationExtended } from "../../../model/checkout";
 
 export const CHECKOUT_ADD_CONTACT = "checkout/add/contact";
 export const CHECKOUT_REMOVE_CONTACT = "checkout/remove/contact";

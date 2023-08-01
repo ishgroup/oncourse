@@ -6,34 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import { ExportTemplate, OutputType } from "@api/model";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
-import { ExportTemplate, OutputType } from "@api/model";
-import { Dispatch } from "redux";
 import Grow from "@mui/material/Grow";
-import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Dispatch } from "redux";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
-import { InfoPill, NumberArgFunction } from "ish-ui";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "ish-ui";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { mapSelectItems } from "../../../../../common/utils/common";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
+import { EntityItems, EntityName } from "../../../../../model/entities/common";
+import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import getConfigActions from "../../../components/ImportExportConfig";
+import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
+import ScriptCard from "../../scripts/components/cards/CardBase";
 
 const manualUrl = getManualLink("advancedSetup_Export");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;

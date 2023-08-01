@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Collapse, Grid, Typography } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import { Field, change } from "redux-form";
 import createStyles from "@mui/styles/createStyles";
 import clsx from "clsx";
+import { Switch } from "ish-ui";
+import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { change, Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { Switch } from  "ish-ui";
 import SliderStepperField from "./SliderStepperField";
 
 const styles = theme =>

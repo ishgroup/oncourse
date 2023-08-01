@@ -4,11 +4,11 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
-import { DELETE_CUSTOM_FIELD_REQUEST, getCustomFields } from "../../../actions";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { showMessage } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { DELETE_CUSTOM_FIELD_REQUEST, getCustomFields } from "../../../actions";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request<any, any> = {
   type: DELETE_CUSTOM_FIELD_REQUEST,

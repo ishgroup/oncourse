@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import IconButton from "@mui/material/IconButton";
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import { IconButtonTypeMap } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import React from "react";
 import { useAppDispatch } from "../../../utils/hooks";
 import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "../../layout/swipeable-sidebar/actions";
 

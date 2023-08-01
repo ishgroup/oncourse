@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Slider from "@mui/material/Slider";
 import DragHandleRounded from "@mui/icons-material/DragIndicatorRounded";
+import Slider from "@mui/material/Slider";
 import { createStyles, withStyles } from "@mui/styles";
 import debounce from "lodash.debounce";
+import React, { useCallback, useMemo } from "react";
 import { AttandanceStepItem } from "../../../../../model/entities/CourseClass";
 
 const SliderThumbComponent = props => (

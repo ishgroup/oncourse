@@ -1,5 +1,5 @@
-import React from "react";
 import Loadable from "@react-loadable/revised";
+import React from "react";
 import Loading from "../../../common/components/progress/Loading";
 
 const LoadableComponent = Loadable({

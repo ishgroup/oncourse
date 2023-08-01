@@ -1,6 +1,6 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import React from "react";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 
 const PriorLearningsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {

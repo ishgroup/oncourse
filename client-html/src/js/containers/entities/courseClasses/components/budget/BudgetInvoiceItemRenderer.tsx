@@ -3,18 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import clsx from "clsx";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Launch from "@mui/icons-material/Launch";
+import { Grid, IconButton } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Launch from "@mui/icons-material/Launch";
-import Grid from "@mui/material/Grid";
-import { IconButton } from "@mui/material";
-import { openInternalLink } from "ish-ui";
-import { formatCurrency } from "ish-ui";
+import clsx from "clsx";
+import { formatCurrency, openInternalLink } from "ish-ui";
+import React, { useCallback, useMemo, useState } from "react";
 import { BudgetExpandableProps } from "./BudgetExpandableItemRenderer";
 
 const BudgetInvoiceItemRow = React.memo<any>(({ value, currencySymbol, classes }) => {

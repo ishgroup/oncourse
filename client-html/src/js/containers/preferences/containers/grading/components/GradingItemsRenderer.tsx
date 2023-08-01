@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import clsx from "clsx";
-import React, { useMemo } from "react";
-import { Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { WrappedFieldArrayProps } from "redux-form";
 import { GradingItem, GradingType } from "@api/model";
+import Delete from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { AddButton, useHoverShowStyles } from "ish-ui";
+import React, { useMemo } from "react";
+import { WrappedFieldArrayProps } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
 import { GradingFormData } from "./GradingTypesForm";
-import { useHoverShowStyles, AddButton } from "ish-ui";
 
 interface Props {
   classes: any;

@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import IconButton from "@mui/material/IconButton";
+import { AttendanceType, TutorAttendanceType } from "@api/model";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { AttendanceType, TutorAttendanceType } from "@api/model";
-import AttendanceIcon from "./AttendanceIcon";
+import React, { useCallback } from "react";
 import { AttendanceGridType } from "../../../../../model/entities/CourseClass";
+import AttendanceIcon from "./AttendanceIcon";
 import { getStudentAttendanceLabel, getTrainingPlanAttendanceLabel } from "./utils";
 
 interface Props {

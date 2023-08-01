@@ -1,4 +1,4 @@
-import { StringKeyObject } from  "ish-ui";
+import { StringKeyObject } from "ish-ui";
 
 export interface CommonListItem extends StringKeyObject<boolean | string | number> {
   id: number;

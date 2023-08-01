@@ -6,20 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { change } from "redux-form";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { Site } from "@api/model";
 import { Grid } from "@mui/material";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
 
 class LeadSites extends React.PureComponent<any, any> {
   sitesToNestedListItems = (sites: Site[]) =>

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
 import { Button } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import { AfternoonIcon, EveningIcon, MorningIcon } from "ish-ui";
+import React, { useContext } from "react";
 import { TimetableContext, timetableContextStateInitial } from "../../../../Timetable";
-import { MorningIcon, AfternoonIcon, EveningIcon } from "ish-ui";
 
 const styles = theme =>
   createStyles({

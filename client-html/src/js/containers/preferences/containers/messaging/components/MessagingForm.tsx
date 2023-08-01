@@ -3,31 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  Form, reduxForm, initialize, getFormValues
-} from "redux-form";
-import { connect } from "react-redux";
-import isEmpty from "lodash.isempty";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
-import ExitToApp from "@mui/icons-material/ExitToApp";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { openInternalLink } from "ish-ui";
-import * as Model from "../../../../../model/preferences/Messaging";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import { validateSingleMandatoryField, validateEmail } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Form, getFormValues, initialize, reduxForm } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import DynamicText from "./DynamicText";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateEmail, validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import * as Model from "../../../../../model/preferences/Messaging";
+import { State } from "../../../../../reducers/state";
+import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import DynamicText from "./DynamicText";
 
 const manualUrl = getManualLink("generalPrefs_messaging");
 
