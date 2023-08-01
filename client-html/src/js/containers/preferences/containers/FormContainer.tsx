@@ -6,30 +6,30 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { withStyles } from "@mui/styles";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { SystemPreference } from "@api/model";
-import { SubmissionError, initialize } from "redux-form";
-import { withRouter, RouteComponentProps } from "react-router";
+import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
+import { ShowConfirmCaller } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router";
+import { Dispatch } from "redux";
+import { initialize, SubmissionError } from "redux-form";
+import { setUserPreference, showConfirm } from "../../../common/actions";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
+import { Fetch } from "../../../model/common/Fetch";
+import { Categories } from "../../../model/preferences";
+import * as avetmiss from "../../../model/preferences/Avetmiss";
+import * as classDefaults from "../../../model/preferences/ClassDefaults";
 import * as college from "../../../model/preferences/College";
+import * as financial from "../../../model/preferences/Financial";
 import * as ldap from "../../../model/preferences/Ldap";
 import * as licences from "../../../model/preferences/Licences";
-import * as messaging from "../../../model/preferences/Messaging";
-import * as classDefaults from "../../../model/preferences/ClassDefaults";
 import * as maintenance from "../../../model/preferences/Maintenance";
-import * as avetmiss from "../../../model/preferences/Avetmiss";
-import { getPreferences, savePreferences } from "../actions";
-import { Categories } from "../../../model/preferences";
-import * as financial from "../../../model/preferences/Financial";
+import * as messaging from "../../../model/preferences/Messaging";
 import * as security from "../../../model/preferences/security";
 import { State } from "../../../reducers/state";
-import { Fetch } from "../../../model/common/Fetch";
-import { setUserPreference, showConfirm } from "../../../common/actions";
-import { ShowConfirmCaller } from  "ish-ui";
-import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
+import { getPreferences, savePreferences } from "../actions";
 
 const styles = () =>
   createStyles({

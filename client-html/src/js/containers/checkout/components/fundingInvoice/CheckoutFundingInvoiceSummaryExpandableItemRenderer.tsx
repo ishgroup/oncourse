@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { change } from "redux-form";
-import debounce from "lodash.debounce";
-import clsx from "clsx";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import clsx from "clsx";
+import { decimalPlus, formatCurrency, normalizeNumberToZero } from "ish-ui";
+import debounce from "lodash.debounce";
+import React from "react";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { formatCurrency, normalizeNumberToZero, decimalPlus } from "ish-ui";
 
 const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(props => {
   const {

@@ -6,36 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import PlayArrow from "@mui/icons-material/PlayArrow";
-import React, {
- useCallback, useMemo, useState
-} from "react";
-import { Dispatch } from "redux";
-import {
- FieldArray, Form, initialize, InjectedFormProps 
-} from "redux-form";
+import { ImportModel } from "@api/model";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
+import PlayArrow from "@mui/icons-material/PlayArrow";
 import Grid from "@mui/material/Grid";
 import Grow from "@mui/material/Grow";
-import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import { ImportModel } from "@api/model";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate, InfoPill, NumberArgFunction } from "ish-ui";
+import React, { useCallback, useMemo, useState } from "react";
+import { Dispatch } from "redux";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import { InfoPill, NumberArgFunction } from "ish-ui";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate } from  "ish-ui";
-import ExecuteImportModal from "../components/ExecuteImportModal";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
 import getConfigActions from "../../../components/ImportExportConfig";
+import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
+import ScriptCard from "../../scripts/components/cards/CardBase";
+import ExecuteImportModal from "../components/ExecuteImportModal";
 
 const manualUrl = getManualLink("advancedSetup_Import");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;

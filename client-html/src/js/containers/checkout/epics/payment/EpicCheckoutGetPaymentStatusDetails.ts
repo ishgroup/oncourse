@@ -7,8 +7,12 @@ import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
-  CHECKOUT_GET_PAYMENT_STATUS_DETAILS, checkoutPaymentSetCustomStatus, checkoutProcessPayment,
-  checkoutSetPaymentDetailsFetching, checkoutSetPaymentStatusDetails, checkoutSetPaymentSuccess
+  CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
+  checkoutPaymentSetCustomStatus,
+  checkoutProcessPayment,
+  checkoutSetPaymentDetailsFetching,
+  checkoutSetPaymentStatusDetails,
+  checkoutSetPaymentSuccess
 } from "../../actions/checkoutPayment";
 import CheckoutService from "../../services/CheckoutService";
 

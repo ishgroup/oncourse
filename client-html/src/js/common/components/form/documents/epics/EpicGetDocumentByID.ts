@@ -3,9 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Document } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../epics/EpicUtils";
 import { GET_DOCUMENT, SET_EDITING_DOCUMENT } from "../actions";
 import DocumentsService from "../services/DocumentsService";

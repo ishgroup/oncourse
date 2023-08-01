@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
+import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import Close from "@mui/icons-material/Close";
 import Input from "@mui/material/Input";
-import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
-import { mapSelectItems } from "../../../../utils/common";
 import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import React, { useMemo } from "react";
+import { mapSelectItems } from "../../../../utils/common";
+import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
 
 const getAqlLabel = entity => {
   switch (entity) {

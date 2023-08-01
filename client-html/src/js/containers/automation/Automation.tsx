@@ -3,25 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { NumberArgFunction } from "ish-ui";
 import React, { useEffect } from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
+import { Dispatch } from "redux";
+import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
 import { ADMIN_EMAIL_KEY } from "../../constants/Config";
 import { State } from "../../reducers/state";
-import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
 import { getColumnsWidth, getPreferencesByKeys, updateColumnsWidth } from "../preferences/actions";
-import SideBar from "./components/AutomationSideBar";
-import { getIntegrations } from "./actions";
-import { getScriptsList, getTimeZone } from "./containers/scripts/actions";
-import { getExportTemplatesList } from "./containers/export-templates/actions";
-import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
-import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
-import { getEmailTemplatesList } from "./containers/email-templates/actions";
-import { getImportTemplatesList } from "./containers/import-templates/actions";
-import { NumberArgFunction } from  "ish-ui";
-import automationRoutes from "./routes";
 import { getAllTags } from "../tags/actions";
+import { getIntegrations } from "./actions";
+import SideBar from "./components/AutomationSideBar";
+import { getEmailTemplatesList } from "./containers/email-templates/actions";
+import { getExportTemplatesList } from "./containers/export-templates/actions";
+import { getImportTemplatesList } from "./containers/import-templates/actions";
+import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
+import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
+import { getScriptsList, getTimeZone } from "./containers/scripts/actions";
+import automationRoutes from "./routes";
 
 interface Props extends RouteComponentProps {
   formName: string;

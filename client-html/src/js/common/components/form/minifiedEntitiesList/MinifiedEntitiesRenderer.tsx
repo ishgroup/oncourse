@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Typography from "@mui/material/Typography";
 import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Accordion from "@mui/material/Accordion";
 import AccordionActions from "@mui/material/AccordionActions";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Button from "@mui/material/Button";
-import { getDeepValue } from "../../../utils/common";
 import { AppTheme } from "ish-ui";
+import React, { useCallback, useEffect, useState } from "react";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import { getDeepValue } from "../../../utils/common";
 
 const styles = (theme: AppTheme) =>
   createStyles({

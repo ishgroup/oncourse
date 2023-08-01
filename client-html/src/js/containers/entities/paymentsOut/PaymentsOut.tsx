@@ -6,32 +6,32 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { PaymentOut } from "@api/model";
+import { ExitToApp } from "@mui/icons-material";
+import Link from "@mui/material/Link";
+import Popover from "@mui/material/Popover";
+import zIndex from "@mui/material/styles/zIndex";
+import { createStyles, withStyles } from "@mui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Popover } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import Link from "@mui/material/Link";
-import zIndex from "@mui/material/styles/zIndex";
-import { ExitToApp } from "@mui/icons-material";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
-import { getActivePaymentOutMethods, getAddPaymentOutContact } from "./actions";
-import { getPlainAccounts } from "../accounts/actions";
 import {
   clearListState,
   getFilters,
   setListCreatingNew,
   setListSelection,
 } from "../../../common/components/list-view/actions";
+import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup } from "../../../model/common/ListView";
 import { getAccountTransactionLockedDate } from "../../preferences/actions";
+import { getPlainAccounts } from "../accounts/actions";
+import { getAmountOwing, setContraInvoices } from "../invoices/actions";
+import { getAdministrationSites } from "../sites/actions";
+import { getActivePaymentOutMethods, getAddPaymentOutContact } from "./actions";
+import AddPaymentOutEditView from "./components/AddPaymentOutEditView";
 import PaymentsOutEditView from "./components/PaymentOutEditView";
 import { PaymentOutModel } from "./reducers/state";
-import { getAdministrationSites } from "../sites/actions";
-import { PaymentOut } from "@api/model";
-import { getAmountOwing, setContraInvoices } from "../invoices/actions";
-import AddPaymentOutEditView from "./components/AddPaymentOutEditView";
 
 const manualLink = getManualLink("processingEnrolments_PaymentOut");
 

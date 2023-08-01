@@ -7,6 +7,8 @@
  */
 
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import {
   GET_TIMETABLE_SESSIONS_DAYS,
@@ -14,8 +16,6 @@ import {
   setTimetableSearchError
 } from "../actions";
 import TimetableService from "../services/TimetableService";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 
 const request: EpicUtils.Request<number[], { month: number; year: number }> = {
   type: GET_TIMETABLE_SESSIONS_DAYS,

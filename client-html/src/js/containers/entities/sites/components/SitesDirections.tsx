@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import { Grid } from "@mui/material";
-import { FieldArray } from "redux-form";
 import { GridSize } from "@mui/material/Grid";
+import * as React from "react";
+import { FieldArray } from "redux-form";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 

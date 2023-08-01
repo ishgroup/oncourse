@@ -4,6 +4,9 @@
  */
 
 import { Epic } from "redux-observable";
+import { GetRecordsArgs } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import { Create, Request } from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
 import {
@@ -13,9 +16,6 @@ import {
   setListSearchError,
   setListSelection
 } from "../actions";
-import { State } from "../../../../reducers/state";
-import { GetRecordsArgs } from "../../../../model/common/ListView";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: Request<any, GetRecordsArgs> = {
   type: GET_RECORDS_REQUEST,

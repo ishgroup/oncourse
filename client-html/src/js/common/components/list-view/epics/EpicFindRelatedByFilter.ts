@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { DataResponse } from "@api/model";
+import { openInternalLink } from "ish-ui";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../epics/EpicUtils";
-import { FIND_RELATED_BY_FILTER } from "../actions";
-import { DataResponse } from "@api/model";
 import EntityService from "../../../services/EntityService";
-import { openInternalLink } from "ish-ui";
+import { FIND_RELATED_BY_FILTER } from "../actions";
 
 const request: EpicUtils.Request<DataResponse, { filter: string | Function, list: string }> = {
   type: FIND_RELATED_BY_FILTER,

@@ -6,28 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import TextField from "@mui/material/TextField";
-import DateRange from "@mui/icons-material/DateRange";
-import QueryBuilder from "@mui/icons-material/QueryBuilder";
-import Autocomplete from "@mui/material/Autocomplete";
-import getCaretCoordinates from "ish-ui/dist/utils/DOM/getCaretCoordinates";
-import React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import { format as formatDate } from "date-fns";
-import clsx from "clsx";
-import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
-import { CodeCompletionCore } from "antlr4-c3";
-import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { AqlLexer } from "@aql/AqlLexer";
 import { AqlParser } from "@aql/AqlParser";
 import * as Entities from "@aql/queryLanguageModel";
-import {
-  DD_MM_YYYY_SLASHED,
-  HH_MM_COLONED,
-  selectStyles,
-  stubComponent, 
-  getHighlightedPartLabel
-} from "ish-ui";
+import DateRange from "@mui/icons-material/DateRange";
+import QueryBuilder from "@mui/icons-material/QueryBuilder";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { createStyles, withStyles } from "@mui/styles";
+import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
+import { CodeCompletionCore } from "antlr4-c3";
+import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
+import clsx from "clsx";
+import { format as formatDate } from "date-fns";
+import { DD_MM_YYYY_SLASHED, getHighlightedPartLabel, HH_MM_COLONED, selectStyles, stubComponent } from "ish-ui";
+import getCaretCoordinates from "ish-ui/dist/utils/DOM/getCaretCoordinates";
+import React from "react";
 import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,

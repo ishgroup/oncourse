@@ -7,11 +7,11 @@
  */
 
 import { Epic } from "redux-observable";
+import PdfService from "../../../../../../containers/automation/containers/pdf-reports/services/PdfService";
+import { FETCH_SUCCESS } from "../../../../../actions";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import { DELETE_PDF_REPORT_PREVIEW, getShareList } from "../actions";
-import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { FETCH_SUCCESS } from "../../../../../actions";
-import PdfService from "../../../../../../containers/automation/containers/pdf-reports/services/PdfService";
 
 const request: EpicUtils.Request<any, number> = {
   type: DELETE_PDF_REPORT_PREVIEW,

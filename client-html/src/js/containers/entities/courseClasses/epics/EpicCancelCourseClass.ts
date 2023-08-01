@@ -1,12 +1,12 @@
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import CourseClassService from "../services/CourseClassService";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { CANCEL_COURSE_CLASS, CANCEL_COURSE_CLASS_FULFILLED } from "../actions";
+import CourseClassService from "../services/CourseClassService";
 
 const request: EpicUtils.Request = {
   type: CANCEL_COURSE_CLASS,

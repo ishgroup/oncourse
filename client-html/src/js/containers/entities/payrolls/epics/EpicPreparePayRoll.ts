@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { PayrollRequest, WagesToProcess } from "@api/model";
+import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { CLEAR_PAYROLL_PREPARED_WAGES, PREPARE_PAYROLL, PREPARE_PAYROLL_FULFILLED } from "../actions/index";
-import { PayrollRequest, WagesToProcess } from "@api/model";
-import PayrollService from "../services/PayrollService";
-import { initialize } from "redux-form";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { PAYSLIP_GENERATE_FORM } from "../../payslips/components/PayslipGenerateDialog";
+import { CLEAR_PAYROLL_PREPARED_WAGES, PREPARE_PAYROLL, PREPARE_PAYROLL_FULFILLED } from "../actions/index";
+import PayrollService from "../services/PayrollService";
 
 const request: EpicUtils.Request<any, { entity: string; payrollRequest: PayrollRequest }> = {
   type: PREPARE_PAYROLL,

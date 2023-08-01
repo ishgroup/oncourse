@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ServerResponse } from "../../../model/common/apiHandlers";
 import { Dispatch } from "redux";
+import { ServerResponse } from "../../../model/common/apiHandlers";
 import instantFetchErrorHandler from "../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 export interface FieldArrayFieldMeta {

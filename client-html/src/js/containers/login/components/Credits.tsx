@@ -5,9 +5,9 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import React from "react";
 
 const CreditsItem = ({ heading, creditPersons, className }) => (<div className="mb-3">
   <Typography variant="body1" className={className}>

@@ -6,13 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Lead } from "@api/model";
 import React from "react";
 import { FieldArray } from "redux-form";
-import { Lead } from "@api/model";
-import { EditViewProps } from "../../../../model/common/ListView";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 interface LeadDocumentsProps {
   classes?: any;

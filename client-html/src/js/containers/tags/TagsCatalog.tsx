@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
-import { useAppSelector } from "../../common/utils/hooks";
 import CatalogWithSearch from "../../common/components/layout/catalog/CatalogWithSearch";
+import { useAppSelector } from "../../common/utils/hooks";
 
 export const TagsCatalog = ({ history }: RouteComponentProps) => {
   const allTags = useAppSelector(state => state.tags.allTags);

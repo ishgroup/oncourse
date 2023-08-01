@@ -6,8 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import { TagGroup } from "@api/model";
-import { FormMenuTag } from "../../../../model/tags";
 import { FilterGroup } from "../../../../model/common/ListView";
+import { FormMenuTag } from "../../../../model/tags";
 
 export const getFiltersNameString = (filterGroups: FilterGroup[]) => filterGroups
   .map(group => group.filters.filter(f => f.active).map(f => "@" + f.name.trim().replace(/\s/g, "_")).toString())

@@ -3,23 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Dialog from "@mui/material/Dialog";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import DialogActions from "@mui/material/DialogActions";
 import { Document, Tag } from "@api/model";
-import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
 import ButtonBase from "@mui/material/ButtonBase";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { DocumentIconsChooser } from "ish-ui";
+import React from "react";
 import { getLatestDocumentItem } from "../../../../../utils/documents";
 import FormField from "../../../formFields/FormField";
-import { DocumentIconsChooser } from "ish-ui";
-import { dialogStyles } from "./dialogStyles";
 import DocumentShare from "../../DocumentShare";
-import Button from "@mui/material/Button";
+import { dialogStyles } from "./dialogStyles";
 
 export type DocumentDialogType = "edit" | "create" | "view";
 

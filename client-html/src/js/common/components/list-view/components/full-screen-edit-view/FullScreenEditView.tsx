@@ -6,29 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AppBarHelpMenu } from "ish-ui";
-import React from "react";
-import clsx from "clsx";
-import { withRouter } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
-import { createStyles, withStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
-import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
-import { connect } from "react-redux";
+import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { State } from "../../../../../reducers/state";
-import FormSubmitButton from "../../../form/FormSubmitButton";
-import LoadingIndicator from "../../../progress/LoadingIndicator";
-import { pushGTMEvent } from "../../../google-tag-manager/actions";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AppBarHelpMenu } from "ish-ui";
+import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
+import { APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from "../../../../../constants/Config";
 import { EditViewContainerProps } from "../../../../../model/common/ListView";
+import { State } from "../../../../../reducers/state";
 import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
 import { LSGetItem } from "../../../../utils/storage";
-import {
-  APPLICATION_THEME_STORAGE_NAME,
-  TAB_LIST_SCROLL_TARGET_ID
-} from "../../../../../constants/Config";
+import FormSubmitButton from "../../../form/FormSubmitButton";
+import { pushGTMEvent } from "../../../google-tag-manager/actions";
+import LoadingIndicator from "../../../progress/LoadingIndicator";
 import FullScreenStickyHeader from "./FullScreenStickyHeader";
 
 const styles = theme => createStyles({

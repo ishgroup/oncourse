@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CorporatePass, Sale, SaleType } from "@api/model";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import { CorporatePass, Sale, SaleType } from "@api/model";
 import { change } from "redux-form";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
-import { clearSales, getSales } from "../../sales/actions";
-import { entityForLink } from "../../common/utils";
-import { mapPlainDiscountClasses } from "../../discounts/utils";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
+import { entityForLink } from "../../common/utils";
+import { mapPlainDiscountClasses } from "../../discounts/utils";
+import { clearSales, getSales } from "../../sales/actions";
 
 const styles = createStyles({
   dataRowClass: {

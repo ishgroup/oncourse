@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
-import Typography from "@mui/material/Typography";
-import { Theme } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
 import { MergeLine } from "@api/model";
+import { Theme } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import React, { useCallback } from "react";
 import { Selected } from "./RadioLabelGroup";
 import RadioLabelPill from "./RadioPill";
 

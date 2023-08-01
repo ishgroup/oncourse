@@ -1,7 +1,7 @@
-import * as React from "react";
-import { MenuItem } from "@mui/material";
 import { DataRow } from "@api/model";
+import MenuItem from "@mui/material/MenuItem";
 import { openInternalLink } from "ish-ui";
+import * as React from "react";
 
 const AuditFindRelatedMenu = props => {
   const {

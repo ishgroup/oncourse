@@ -6,34 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Tag } from "@api/model";
+import { TreeData } from "@atlaskit/tree";
+import { alpha } from "@mui/material/styles";
+import { createStyles, withStyles } from "@mui/styles";
+import { AppTheme, ShowConfirmCaller } from "ish-ui";
 import React from "react";
-import {
-  arrayPush,
-  arrayRemove,
-  change,
-  getFormSyncErrors,
-  getFormValues,
-  reduxForm
-} from "redux-form";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Tag } from "@api/model";
-import { createStyles, withStyles } from "@mui/styles";
-import { alpha } from "@mui/material/styles";
-import { TreeData } from "@atlaskit/tree";
-import { State } from "../../../reducers/state";
-import { getDeepValue } from "../../../common/utils/common";
-import { createTag, deleteTag, updateTag } from "../actions";
+import { arrayPush, arrayRemove, change, getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
 import { showConfirm } from "../../../common/actions";
-import { ShowConfirmCaller } from  "ish-ui";
+import { getDeepValue } from "../../../common/utils/common";
 import { onSubmitFail } from "../../../common/utils/highlightFormErrors";
 import { getPluralSuffix } from "../../../common/utils/strings";
-import { AppTheme } from  "ish-ui";
-import { FormTag } from "../../../model/tags";
-import { validate } from "../utils/validation";
 import { CatalogItemType } from "../../../model/common/Catalog";
+import { FormTag } from "../../../model/tags";
+import { State } from "../../../reducers/state";
+import { createTag, deleteTag, updateTag } from "../actions";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
 import { COLORS, getAllTags } from "../utils";
+import { validate } from "../utils/validation";
 
 const styles = (theme: AppTheme) => createStyles({
   dragIcon: {

@@ -7,8 +7,8 @@
  */
 
 import { Epic, ofType } from "redux-observable";
-import { mergeMap } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { mergeMap } from "rxjs/operators";
 import { GET_RECORDS_FULFILLED_RESOLVE } from "../actions";
 
 export const EpicGetEntitiesResolve: Epic<any> = (

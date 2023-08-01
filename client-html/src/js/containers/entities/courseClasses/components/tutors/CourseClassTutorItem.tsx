@@ -3,27 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { createStyles, withStyles } from "@mui/styles";
 import { CourseClassTutor } from "@api/model";
-import { format } from "date-fns";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import { format } from "date-fns";
+import {
+  AppTheme,
+  DD_MM_YYYY_SLASHED,
+  EEE_D_MMM_YYYY,
+  LinkAdornment,
+  normalizeNumber,
+  openInternalLink,
+  WarningMessage
+} from "ish-ui";
+import React from "react";
 import { ContactLinkAdornment } from "../../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import { openInternalLink, WarningMessage } from "ish-ui";
-import { AppTheme } from  "ish-ui";
-import { DD_MM_YYYY_SLASHED, EEE_D_MMM_YYYY } from  "ish-ui";
-import { LinkAdornment } from  "ish-ui";
 import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
-import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
-import { normalizeNumber } from "ish-ui";
 import { getContactFullName } from "../../../contacts/utils";
+import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
 
 const styles = (theme: AppTheme) => createStyles({
   tutorRoot: {

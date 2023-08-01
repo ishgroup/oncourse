@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import debounce from "lodash.debounce";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Field, Validator } from "redux-form";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperListRenderer";
-import ListRenderer from "./components/ListRenderer";
-import { InputSection, InputSectionWithToggle } from "./components/InputSections";
+import { Field, Validator } from "redux-form";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX, TAGS_REGEX } from "../../../../constants/Config";
-import { State } from "../../../../reducers/state";
 import { getTagNamesSuggestions } from "../../../../containers/tags/utils";
 import { QueryFieldSuggestion } from "../../../../model/common/Fields";
+import { State } from "../../../../reducers/state";
+import { InputSection, InputSectionWithToggle } from "./components/InputSections";
+import ListRenderer from "./components/ListRenderer";
+import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperListRenderer";
 
 const styles = theme => createStyles({
   root__search: {

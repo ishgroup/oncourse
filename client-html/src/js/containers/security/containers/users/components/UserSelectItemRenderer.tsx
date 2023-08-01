@@ -6,9 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo } from "react";
 import { User } from "@api/model";
 import { Tooltip, Typography } from "@mui/material";
+import React, { useMemo } from "react";
 import { getContactFullName } from "../../../../entities/contacts/utils";
 
 const UserSelectItemRenderer = React.memo<{ content: string; data: User, parentProps: any }>(props => {

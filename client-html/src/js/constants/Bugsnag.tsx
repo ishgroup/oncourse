@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import Bugsnag from "@bugsnag/browser";
 import { Client } from "@bugsnag/core";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
-import { EnvironmentConstants, IS_JEST } from "./EnvironmentConstants";
 import { stubFunction } from "ish-ui";
+import React from "react";
+import { EnvironmentConstants, IS_JEST } from "./EnvironmentConstants";
 
 export const bugsnagClient = IS_JEST
   ? {

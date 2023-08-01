@@ -1,25 +1,23 @@
-import * as React from "react";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
-import {
-  Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change, initialize
-} from "redux-form";
 import { CustomFieldType } from "@api/model";
-import isEqual from "lodash.isequal";
-import { withStyles, createStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
+import { createStyles, withStyles } from "@mui/styles";
+import { idsToString } from "ish-ui";
+import isEqual from "lodash.isequal";
+import * as React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { arrayRemove, change, FieldArray, Form, initialize, reduxForm, SubmissionError } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import uniqid from "../../../../../common/utils/uniqid";
+import { Fetch } from "../../../../../model/common/Fetch";
+import { State } from "../../../../../reducers/state";
+import { getCustomFields } from "../../../actions";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
 import CustomFieldsRenderer from "./CustomFieldsRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "ish-ui";
-import { getCustomFields } from "../../../actions";
-import { Fetch } from "../../../../../model/common/Fetch";
-import uniqid from "../../../../../common/utils/uniqid";
-import { State } from "../../../../../reducers/state";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("generalPrefs_customFields");
 

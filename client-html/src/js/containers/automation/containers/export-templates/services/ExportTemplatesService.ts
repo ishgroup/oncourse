@@ -1,5 +1,5 @@
+import { AutomationConfigs, ExportTemplate, ExportTemplateApi } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
-import { ExportTemplateApi, ExportTemplate, AutomationConfigs } from "@api/model";
 
 class ExportTemplatesService {
   readonly exportTemplatesApi = new ExportTemplateApi(new DefaultHttpService());

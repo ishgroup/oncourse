@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../epics/EpicUtils";
-import { SEARCH_DOCUMENT_BY_NAME, SET_SEARCH_DOCUMENTS } from "../actions";
 import EntityService from "../../../../services/EntityService";
+import { SEARCH_DOCUMENT_BY_NAME, SET_SEARCH_DOCUMENTS } from "../actions";
 
 const defaultDocumentMap = ({id, values}): DocumentSearchItem => ({
   id: Number(id),

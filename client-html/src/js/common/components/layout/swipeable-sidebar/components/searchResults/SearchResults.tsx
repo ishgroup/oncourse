@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { getHighlightedPartLabel, useHoverShowStyles } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import List from "@mui/material/List";
-import CircularProgress from "@mui/material/CircularProgress";
-import { getHighlightedPartLabel } from "ish-ui";
-import { getEntityDisplayName } from "../../../../../utils/getEntityDisplayName";
 import { State } from "../../../../../../reducers/state";
+import { getEntityDisplayName } from "../../../../../utils/getEntityDisplayName";
+import navigation from "../../../../navigation/data/navigation.json";
+import { getResultId } from "../../utils";
 import ListLinkItem from "./ListLinkItem";
 import ListLinksGroup from "./ListLinksGroup";
-import { getResultId } from "../../utils";
-import navigation from "../../../../navigation/data/navigation.json";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useHoverShowStyles } from  "ish-ui";
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
 
 const styles = theme => createStyles({
   root: {

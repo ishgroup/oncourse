@@ -1,14 +1,14 @@
+import { DataResponse, TableModel } from "@api/model";
+import { createStyles, withStyles } from "@mui/styles";
 import React, { useCallback, useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd-next";
 import { connect } from "react-redux";
-import { DataResponse, TableModel } from "@api/model";
 import { Dispatch } from "redux";
-import { createStyles, withStyles } from "@mui/styles";
 import { FormMenuTag } from "../../../../../../model/tags";
-import ListTagGroup from "./ListTagGroup";
 import { State } from "../../../../../../reducers/state";
 import { updateTableModel } from "../../../actions";
 import { COLUMN_WITH_COLORS } from "../../list/constants";
+import ListTagGroup from "./ListTagGroup";
 
 const styles = theme =>
   createStyles({

@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { decimalMinus, decimalPlus } from "ish-ui";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { decimalMinus, decimalPlus } from "ish-ui";
+import EntityService from "../../../../common/services/EntityService";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { GET_REFUNDABLE_PAYMENTS, GET_REFUNDABLE_PAYMENTS_FULFILLED } from "../actions";
-import EntityService from "../../../../common/services/EntityService";
 
 const request: EpicUtils.Request = {
   type: GET_REFUNDABLE_PAYMENTS,

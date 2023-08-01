@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo } from "react";
-import RadioLabel from "./RadioLabel";
-import Typography from "@mui/material/Typography";
 import { MergeLine } from "@api/model";
+import Typography from "@mui/material/Typography";
+import React, { useCallback, useMemo } from "react";
 import { WrappedFieldProps } from "redux-form";
+import RadioLabel from "./RadioLabel";
 
 export interface RadioLabelGroupProps extends WrappedFieldProps {
   line: MergeLine;

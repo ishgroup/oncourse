@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Tag } from "@api/model";
 import { FormErrors } from "redux-form";
 import { getDeepValue } from "../common";
-import { Tag } from "@api/model";
 
 export * from "./emailsValidation";
 export * from "./urlValidation";

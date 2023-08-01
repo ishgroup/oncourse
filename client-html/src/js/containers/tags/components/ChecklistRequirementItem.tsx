@@ -6,25 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Collapse } from "@mui/material";
 import { TagRequirement } from "@api/model";
+import Delete from "@mui/icons-material/Delete";
+import { Collapse, FormControlLabel } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { makeAppStyles, Switch, useHoverShowStyles } from "ish-ui";
 import debounce from "lodash.debounce";
-import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
-import { useHoverShowStyles } from  "ish-ui";
-import { makeAppStyles } from  "ish-ui";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { Switch } from  "ish-ui";
-import EntityService from "../../../common/services/EntityService";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
+import FormField from "../../../common/components/form/formFields/FormField";
+import EntityService from "../../../common/services/EntityService";
+import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 
 const useStyles = makeAppStyles(theme => ({
   deleteIcon: {

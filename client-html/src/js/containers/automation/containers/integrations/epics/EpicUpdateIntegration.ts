@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import IntegrationService from "../services";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getIntegrations, UPDATE_INTEGRATION_ITEM_REQUEST } from "../../../actions";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import history from "../../../../../constants/History";
+import { getIntegrations, UPDATE_INTEGRATION_ITEM_REQUEST } from "../../../actions";
+import IntegrationService from "../services";
 import { parseIntegrations } from "../utils";
 
 const request: EpicUtils.Request = {

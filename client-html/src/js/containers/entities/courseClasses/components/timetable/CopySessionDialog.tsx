@@ -3,22 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import Popper from "@mui/material/Popper";
+import Button from "@mui/material/Button";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
-import DialogContent from "@mui/material/DialogContent";
-import { getFormValues, reduxForm } from "redux-form";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import { createStyles, withStyles } from "@mui/styles";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Popper from "@mui/material/Popper";
 import Typography from "@mui/material/Typography";
-import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import { createStyles, withStyles } from "@mui/styles";
 import { normalizeNumberToPositive } from "ish-ui";
-import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { getFormValues, reduxForm } from "redux-form";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { mapSelectItems } from "../../../../../common/utils/common";
+import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 
 const styles = createStyles(theme => ({
   popper: {

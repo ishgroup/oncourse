@@ -3,21 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { format } from "date-fns";
+import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { format } from "date-fns";
+import { clearListState, getFilters, getRecords, } from "../../common/components/list-view/actions";
 import ListView from "../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../model/common/ListView";
-import {
-  getRecords,
-  clearListState,
-  getFilters,
- } from "../../common/components/list-view/actions";
-import AuditsEditView from "./components/AuditsEditView";
-import AuditFindRelatedMenu from "./components/AuditFindRelatedMenu";
-import { III_DD_MMM_YYYY_HH_MM_SPECIAL } from  "ish-ui";
 import { getManualLink } from "../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../model/common/ListView";
+import AuditFindRelatedMenu from "./components/AuditFindRelatedMenu";
+import AuditsEditView from "./components/AuditsEditView";
 
 const filterGroups: FilterGroup[] = [
   {

@@ -9,13 +9,13 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import { AppTheme } from "ish-ui";
+import React from "react";
 import NotFoundBgImage from "../../../images/bg-404.png";
-import { AppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
   container: {

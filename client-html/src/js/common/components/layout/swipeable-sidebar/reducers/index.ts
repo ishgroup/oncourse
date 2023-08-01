@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { IAction } from "../../../../actions/IshAction";
 import { SwipeableDrawer } from "../../../../../model/common/drawer/SwipeableDrawerModel";
+import { IAction } from "../../../../actions/IshAction";
 import { SET_SWIPEABLE_DRAWER_SELECTION, TOGGLE_SWIPEABLE_DRAWER } from "../actions";
 
 const initial: SwipeableDrawer = {

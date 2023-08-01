@@ -6,23 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { utcToZonedTime } from "date-fns-tz";
 import CloseIcon from "@mui/icons-material/Close";
+import { Box, ListItem } from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import { alpha } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from '@mui/styles';
-import { alpha } from '@mui/material/styles';
 import clsx from "clsx";
-import ListItemText from "@mui/material/ListItemText";
-import Box from "@mui/material/Box";
 import { format as formatDate } from "date-fns";
-import ListItem from "@mui/material/ListItem";
-import { State } from "../../../reducers/state";
-import { AppTheme } from  "ish-ui";
-import { D_MMM_YYYY } from  "ish-ui";
+import { utcToZonedTime } from "date-fns-tz";
+import { AppTheme, D_MMM_YYYY } from "ish-ui";
+import React, { useMemo } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { READ_NEWS } from "../../../constants/Config";
+import { State } from "../../../reducers/state";
 import { setUserPreference } from "../../actions";
 import { setReadNewsLocal } from "../list-view/actions";
 

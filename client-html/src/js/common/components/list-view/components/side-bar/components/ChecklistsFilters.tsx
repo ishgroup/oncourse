@@ -6,16 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useState } from "react";
-import { alpha } from "@mui/material/styles";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ButtonBase, Collapse } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import clsx from "clsx";
-import ListTagGroup from "./ListTagGroup";
-import { makeAppStyles } from  "ish-ui";
-import { ColoredCheckBox } from  "ish-ui";
-import { stubFunction } from "ish-ui";
+import { ColoredCheckBox, makeAppStyles, stubFunction } from "ish-ui";
+import React, { useState } from "react";
 import { useAppSelector } from "../../../../../utils/hooks";
+import ListTagGroup from "./ListTagGroup";
 
 const useStyles = makeAppStyles(theme => ({
   expandable: {

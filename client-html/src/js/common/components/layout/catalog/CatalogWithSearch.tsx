@@ -6,24 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { memo, useMemo, useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
-import { Fade } from "@mui/material";
-import clsx from "clsx";
-import { areEqual } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { Delete } from "@mui/icons-material";
-import { makeAppStyles } from  "ish-ui";
-import CatalogItem from "./CatalogItem";
-import { CatalogData, CatalogItemType } from "../../../../model/common/Catalog";
-import NewsRender from "../../news/NewsRender";
-import { AnyArgFunction } from  "ish-ui";
-import ExpandableContainer from "../expandable/ExpandableContainer";
-import UserSearch from "../swipeable-sidebar/components/UserSearch";
+import AddIcon from "@mui/icons-material/Add";
+import { Fade } from "@mui/material";
+import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { AddButton, DynamicSizeList } from "ish-ui";
+import clsx from "clsx";
+import { AddButton, AnyArgFunction, DynamicSizeList, makeAppStyles } from "ish-ui";
+import React, { memo, useMemo, useState } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { areEqual } from "react-window";
+import { CatalogData, CatalogItemType } from "../../../../model/common/Catalog";
+import NewsRender from "../../news/NewsRender";
+import ExpandableContainer from "../expandable/ExpandableContainer";
+import UserSearch from "../swipeable-sidebar/components/UserSearch";
+import CatalogItem from "./CatalogItem";
 
 const Row = memo<any>(
   ({

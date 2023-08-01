@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Course } from "@api/model";
+import Grid from "@mui/material/Grid";
 import React from "react";
 import { FieldArray } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Course } from "@api/model";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
-import { EditViewProps } from "../../../../model/common/ListView";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import RelationsCommon from "../../common/components/RelationsCommon";
 
 const relationTypesFilter = {
   entities: ["Module" as const],

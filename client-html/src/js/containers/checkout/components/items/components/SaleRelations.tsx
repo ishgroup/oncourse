@@ -2,11 +2,11 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React, { useMemo } from "react";
 import { Card } from "@mui/material";
-import { CheckoutItem, CheckoutSaleRelationExtended } from "../../../../../model/checkout";
-import { NestedListRow } from "../../../../../common/components/form/nestedList/components/ListRenderer";
 import { makeAppStyles } from "ish-ui";
+import React, { useMemo } from "react";
+import { NestedListRow } from "../../../../../common/components/form/nestedList/components/ListRenderer";
+import { CheckoutItem, CheckoutSaleRelationExtended } from "../../../../../model/checkout";
 
 interface Props {
   relations: CheckoutSaleRelationExtended[];

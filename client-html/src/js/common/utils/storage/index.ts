@@ -1,5 +1,5 @@
-import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
+import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 
 export const LSGetItem = (key: string) => {
   try {

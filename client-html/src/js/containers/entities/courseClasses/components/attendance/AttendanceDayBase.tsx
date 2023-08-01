@@ -3,19 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { format } from "date-fns";
-import { withStyles, createStyles } from "@mui/styles";
 import { AttendanceType } from "@api/model";
 import Launch from "@mui/icons-material/Launch";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { format } from "date-fns";
+import { appendTimezone, AppTheme } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 import { AttandanceStepItem } from "../../../../../model/entities/CourseClass";
-import { AppTheme } from  "ish-ui";
-import { appendTimezone } from "ish-ui";
+import AttendanceActionsMenu from "./AttendanceActionsMenu";
 
 const styles = (theme: AppTheme) =>
   createStyles({

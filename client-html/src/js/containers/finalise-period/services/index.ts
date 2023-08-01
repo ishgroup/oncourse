@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../common/services/HttpService";
 import { FinalisePeriodApi, FinalisePeriodInfo } from "@api/model";
+import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class FinaliseService {
   readonly finaliseApi = new FinalisePeriodApi(new DefaultHttpService());

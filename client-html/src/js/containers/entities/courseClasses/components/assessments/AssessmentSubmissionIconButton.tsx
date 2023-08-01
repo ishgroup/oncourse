@@ -6,12 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import IconButton from "@mui/material/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import IconButton from "@mui/material/IconButton";
 import withStyles from "@mui/styles/withStyles";
-import { StringValueType } from  "ish-ui";
-import { makeAppStyles } from  "ish-ui";
+import { makeAppStyles, StringValueType } from "ish-ui";
+import React from "react";
 
 const useStyles = makeAppStyles(() => ({
   iconRemove: {

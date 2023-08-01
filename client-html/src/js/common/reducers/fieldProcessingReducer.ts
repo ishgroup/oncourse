@@ -6,8 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { IAction } from "../actions/IshAction";
 import { END_FIELD_PROCESSING_ACTION, START_FIELD_PROCESSING_ACTION } from "ish-ui";
+import { IAction } from "../actions/IshAction";
 
 export const fieldProcessingReducer = (state: Record<string, boolean> = {}, action: IAction<any>): any => {
   switch (action.type) {

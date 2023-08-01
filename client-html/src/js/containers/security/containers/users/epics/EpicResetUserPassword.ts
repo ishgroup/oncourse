@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { User } from "@api/model";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import UserService from "../services/UsersService";
+import { Epic } from "redux-observable";
 import { showMessage } from "../../../../../common/actions";
-import { POST_USER_REQUEST_FULFILLED, RESET_USER_PASSWORD } from "../../../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { POST_USER_REQUEST_FULFILLED, RESET_USER_PASSWORD } from "../../../actions";
+import UserService from "../services/UsersService";
 
 const request: EpicUtils.Request = {
     type: RESET_USER_PASSWORD,

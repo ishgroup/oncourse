@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Note } from "@api/model";
 import { _toRequestType } from "../../../../actions/ActionUtils";
 import { IAction } from "../../../../actions/IshAction";
-import { Note } from "@api/model";
 
 export const GET_NOTE_ITEMS = _toRequestType("get/list/entity/note");
 

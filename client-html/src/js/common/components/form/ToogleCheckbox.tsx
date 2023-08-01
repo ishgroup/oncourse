@@ -1,9 +1,9 @@
+import { Button, ButtonGroup, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
+import clsx from "clsx";
+import { makeAppStyles } from "ish-ui";
 import React, { useCallback, useRef } from "react";
 import { WrappedFieldProps } from "redux-form";
-import { Button, ButtonGroup, Typography } from "@mui/material";
-import clsx from "clsx";
-import { makeAppStyles } from  "ish-ui";
-import { alpha } from "@mui/material/styles";
 
 interface Props extends WrappedFieldProps {
   chackedLabel: string;

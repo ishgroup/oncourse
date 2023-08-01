@@ -1,7 +1,7 @@
 import { combineEpics } from "redux-observable";
+import { EpicDeleteEntityRelationType } from "./EpicDeleteEntityRelationType";
 import { EpicGetEntityRelationTypes } from "./EpicGetEntityRelationTypes";
 import { EpicUpdateEntityRelationTypes } from "./EpicUpdateEntityRelationTypes";
-import { EpicDeleteEntityRelationType } from "./EpicDeleteEntityRelationType";
 
 export const EpicEntityRelationTypes = combineEpics(
     EpicGetEntityRelationTypes,

@@ -6,9 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
 import { ApiToken } from "@api/model";
 import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_API_TOKENS_REQUEST } from "../../../actions";
 import ApiTokensService from "../services/ApiTokensService";

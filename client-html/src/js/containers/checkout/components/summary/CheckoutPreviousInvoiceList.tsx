@@ -3,19 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Chip, FormControlLabel, Grid, Paper, Typography } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { format } from "date-fns";
+import {
+  BooleanArgFunction,
+  D_MMM_YYYY,
+  formatCurrency,
+  LinkAdornment,
+  openInternalLink,
+  StyledCheckbox
+} from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
-import { format } from "date-fns";
-import clsx from "clsx";
-import {
-  Chip, Paper, Typography, Grid, FormControlLabel
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
-import { StyledCheckbox } from  "ish-ui";
-import { LinkAdornment } from  "ish-ui";
-import { openInternalLink } from "ish-ui";
-import { formatCurrency } from "ish-ui";
-import { D_MMM_YYYY } from  "ish-ui";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { CheckoutPreviousInvoice, PreviousInvoiceState } from "../../../../model/checkout";
 import { State } from "../../../../reducers/state";
 import {
   checkoutSetPreviousOwingPayDue,
@@ -24,9 +27,6 @@ import {
 } from "../../actions/checkoutSummary";
 import { summaryListStyles } from "../../styles/summaryListStyles";
 import CheckoutAppBar from "../CheckoutAppBar";
-import { CheckoutPreviousInvoice, PreviousInvoiceState } from "../../../../model/checkout";
-import { BooleanArgFunction } from  "ish-ui";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 export const CheckoutPreviousInvoiceListFormRole: string = "CheckoutPreviousInvoiceListform";
 

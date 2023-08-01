@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { MenuItem } from "@mui/material";
-import { connect } from "react-redux";
-import Menu from "@mui/material/Menu/Menu";
 import { DataCollectionType } from "@api/model";
-import { State } from "../../../reducers/state";
-import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
-import routes from "../routes";
-import { SidebarSharedProps } from "../../../model/common/sidebar";
-import { LICENSE_ACCESS_CONTROL_KEY } from "../../../constants/Config";
+import { MenuItem } from "@mui/material";
+import Menu from "@mui/material/Menu/Menu";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getUserPreferences } from "../../../common/actions";
+import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
+import { LICENSE_ACCESS_CONTROL_KEY } from "../../../constants/Config";
+import { SidebarSharedProps } from "../../../model/common/sidebar";
+import { State } from "../../../reducers/state";
 import LDAP from "../containers/ldap/LDAP";
+import routes from "../routes";
 
 const formTypes = Object.keys(DataCollectionType).map(type => {
   const response = { type, displayName: type };

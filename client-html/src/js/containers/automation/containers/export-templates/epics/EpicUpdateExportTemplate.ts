@@ -3,17 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { ExportTemplate, ImportModel } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import {
-  GET_EXPORT_TEMPLATE,
-  GET_EXPORT_TEMPLATES_LIST,
-  UPDATE_EXPORT_TEMPLATE
-} from "../actions";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import ExportTemplatesService from "../services/ExportTemplatesService";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { GET_EXPORT_TEMPLATE, GET_EXPORT_TEMPLATES_LIST, UPDATE_EXPORT_TEMPLATE } from "../actions";
+import ExportTemplatesService from "../services/ExportTemplatesService";
 
 const request: EpicUtils.Request<{ importTemplate: ImportModel }, { exportTemplate: ExportTemplate }> = {
   type: UPDATE_EXPORT_TEMPLATE,

@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import IconButton from "@mui/material/IconButton";
 import { ExpandMore } from "@mui/icons-material";
-import GradeButton from "./GradeButton";
+import IconButton from "@mui/material/IconButton";
 import { EditInPlaceField, stubFunction } from "ish-ui";
+import React from "react";
+import GradeButton from "./GradeButton";
 
 const GradeContent = (
   {

@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { format as formatDateTime } from "date-fns";
 import { DataRow } from "@api/model";
-import { SelectItemDefault } from "../../../model/entities/common";
+import { format as formatDateTime } from "date-fns";
+import React from "react";
 import { IS_JEST } from "../../../constants/EnvironmentConstants";
+import { SelectItemDefault } from "../../../model/entities/common";
 
 export const getDeepValue = (source, path) => {
   if (path.match(/[.,[]/)) {

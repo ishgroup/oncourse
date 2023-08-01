@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_CONTACT_ENROLMENTS, GET_CONTACT_ENROLMENTS_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_CONTACT_ENROLMENTS, GET_CONTACT_ENROLMENTS_FULFILLED } from "../actions";
 
 export const contactEnrolmentMap = ({ values, id }) => ({
   id: Number(id),

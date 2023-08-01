@@ -3,22 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
-import Button from "@mui/material/Button";
-import { FormControlLabel } from "@mui/material";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import { Dispatch } from "redux";
+import clsx from "clsx";
 import { format } from "date-fns";
-import { normalizeNumberToPositive } from "ish-ui";
-import FormField from "../formFields/FormField";
-import { StyledCheckbox, YYYY_MM_DD_MINUSED } from "ish-ui";
+import { normalizeNumberToPositive, StyledCheckbox, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import { repeatEndListItems, repeatListItems } from "../../../../containers/preferences/containers/holidays/ListItems";
-import AvailabilityNextHint from "./AvailabilityNextHint";
 import { validateMinMaxDate } from "../../../utils/validation";
+import FormField from "../formFields/FormField";
+import AvailabilityNextHint from "./AvailabilityNextHint";
 
 interface Props {
   fieldName: string;

@@ -7,12 +7,12 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
-import { EditViewProps } from "../../../../model/common/ListView";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import VetReportingStudent from "./VetReportingStudent";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { VetReport } from "../../../../model/entities/VetReporting";
 import VetReportingEnrolments from "./VetReportingEnrolments";
 import VetReportingOutcomes from "./VetReportingOutcomes";
-import { VetReport } from "../../../../model/entities/VetReporting";
+import VetReportingStudent from "./VetReportingStudent";
 
 const studentItem = {
   label: "Student",

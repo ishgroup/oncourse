@@ -1,14 +1,14 @@
-import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { CancelEnrolment } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { openInternalLink } from "ish-ui";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { CANCEL_ENROLMENT, setEnrolmentsDialog, setEnrolmentsProcessing } from "../actions";
 import EnrolmentService from "../services/EnrolmentService";
-import { openInternalLink } from "ish-ui";
 
 const request: EpicUtils.Request<any, { values: CancelEnrolment, type: string }> = {
   type: CANCEL_ENROLMENT,

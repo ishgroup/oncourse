@@ -6,6 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Diff } from "@api/model";
 // CRUD actions
 import { _toRequestType } from "../../../../common/actions/ActionUtils";
 import { ListActionEntity } from "../../../../model/entities/common";
@@ -13,7 +14,6 @@ import { getContact } from "../../contacts/actions";
 import { createCourseClass, getCourseClass } from "../../courseClasses/actions";
 import { getSite } from "../../sites/actions";
 import { updateVetReportEntities } from "../../vetReporting/actions";
-import { Diff } from "@api/model";
 
 export const GET_ENTITY_RECORD_REQUEST = _toRequestType("get/entity/record");
 

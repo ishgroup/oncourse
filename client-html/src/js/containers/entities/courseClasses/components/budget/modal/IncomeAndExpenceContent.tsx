@@ -3,23 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Grid from "@mui/material/Grid";
-import Collapse from "@mui/material/Collapse";
-import { change } from "redux-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { ClassCostRepetitionType } from "@api/model";
-import { Divider } from "@mui/material";
+import { Divider, FormControlLabel, Grid } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import { decimalDivide, decimalMul, decimalPlus, normalizeNumberToZero } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { change } from "redux-form";
 import { ContactLinkAdornment } from "../../../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
+import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { getContactFullName } from "../../../../contacts/utils";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../../../contacts/utils";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
-import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
-import { normalizeNumberToZero, decimalDivide, decimalMul, decimalPlus } from "ish-ui";
 
 const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId)?.rate));
 

@@ -3,22 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { PriorLearning, TableModel } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import { PriorLearning, TableModel } from "@api/model";
 import { checkPermissions } from "../../../common/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
 import { fundingUploadsPath } from "../../../constants/Api";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import PriorLearningEditView from "./components/PriorLearningEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
- } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { getManualLink } from "../../../common/utils/getManualLink";
 
 const nameCondition = (val: PriorLearning) => val.title;
 

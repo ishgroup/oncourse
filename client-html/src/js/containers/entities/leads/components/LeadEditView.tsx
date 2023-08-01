@@ -8,10 +8,10 @@
 
 import * as React from "react";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import LeadGeneral from "./LeadGeneral";
-import LeadSites from "./LeadSites";
 import LeadAttachmentsTab from "./LeadAttachmentsTab";
+import LeadGeneral from "./LeadGeneral";
 import LeadInvoiceTab from "./LeadInvoiceTab";
+import LeadSites from "./LeadSites";
 
 const items: TabsListItem[] = [
   {

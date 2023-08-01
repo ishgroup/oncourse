@@ -1,8 +1,8 @@
+import { Filter, Session } from "@api/model";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_TIMETABLE_FILTERS, SET_TIMETABLE_FILTERS } from "../actions";
-import { Filter, Session } from "@api/model";
 import CustomFiltersService from "../../../common/services/CustomFiltersService";
+import { GET_TIMETABLE_FILTERS, SET_TIMETABLE_FILTERS } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_TIMETABLE_FILTERS,

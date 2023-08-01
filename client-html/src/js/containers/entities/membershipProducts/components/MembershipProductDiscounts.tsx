@@ -3,21 +3,21 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, FieldArray } from "redux-form";
-import { State } from "../../../../reducers/state";
-import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
-import NestedList, {
-  NestedListItem,
-  NestedListPanelItem
-} from "../../../../common/components/form/nestedList/NestedList";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EditViewProps } from "../../../../model/common/ListView";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
+import NestedList, {
+  NestedListItem,
+  NestedListPanelItem
+} from "../../../../common/components/form/nestedList/NestedList";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import RelationsCommon from "../../common/components/RelationsCommon";
 
 interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
   foundDiscounts?: MembershipDiscount[];

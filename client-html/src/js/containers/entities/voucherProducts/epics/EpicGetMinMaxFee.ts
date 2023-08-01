@@ -1,8 +1,8 @@
 import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_VOUCHER_PRODUCT_MIN_MAX_FEE, GET_VOUCHER_PRODUCT_MIN_MAX_FEE_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_VOUCHER_PRODUCT_MIN_MAX_FEE, GET_VOUCHER_PRODUCT_MIN_MAX_FEE_FULFILLED } from "../actions";
 
 const getFee = (ids: string, asc: boolean) =>
   EntityService.getPlainRecords(

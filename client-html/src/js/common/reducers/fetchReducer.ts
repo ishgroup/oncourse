@@ -4,8 +4,8 @@
  */
 
 import { Fetch } from "../../model/common/Fetch";
-import { IAction } from "../actions/IshAction";
 import { FETCH_CLEAR, FETCH_FAIL, FETCH_FINISH, FETCH_START, FETCH_SUCCESS } from "../actions";
+import { IAction } from "../actions/IshAction";
 
 export const fetchReducer = (state: Fetch = {number: 0}, action: IAction<any>): any => {
   switch (action.type) {

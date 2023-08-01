@@ -4,10 +4,10 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetDashboardScripts } from "./EpicGetDashboardScripts";
-import { EpicGetDashboardStatistics } from "./EpicGetDashboardStatistics";
-import { EpicGetDashboardSearch } from "./EpicGetDashboardSearch";
 import { EpicGetDashboardBlogPosts } from "./EpicGetDashboardBlogPosts";
+import { EpicGetDashboardScripts } from "./EpicGetDashboardScripts";
+import { EpicGetDashboardSearch } from "./EpicGetDashboardSearch";
+import { EpicGetDashboardStatistics } from "./EpicGetDashboardStatistics";
 
 export const EpicDashboard = combineEpics(
   EpicGetDashboardStatistics,

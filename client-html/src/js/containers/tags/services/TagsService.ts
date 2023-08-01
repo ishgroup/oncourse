@@ -1,6 +1,4 @@
-import {
-  TagApi, Tag
-} from "@api/model";
+import { Tag, TagApi } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class TagsService {

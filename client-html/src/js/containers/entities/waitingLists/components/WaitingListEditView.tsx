@@ -1,10 +1,10 @@
+import { WaitingList } from "@api/model";
 import * as React from "react";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import { EditViewProps } from "../../../../model/common/ListView";
 import WaitingListGeneral from "./WaitingListGeneral";
 import WaitingListNotes from "./WaitingListNotes";
 import WaitingListSites from "./WaitingListSites";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { WaitingList } from "@api/model";
 
 const items: TabsListItem[] = [
   {

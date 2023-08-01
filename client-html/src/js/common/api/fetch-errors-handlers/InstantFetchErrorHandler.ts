@@ -4,8 +4,8 @@
  */
 
 import { Dispatch } from "redux";
-import { SHOW_MESSAGE } from "../../actions";
 import { ServerResponse } from "../../../model/common/apiHandlers";
+import { SHOW_MESSAGE } from "../../actions";
 
 const instantFetchErrorHandler = (
   dispatch: Dispatch,

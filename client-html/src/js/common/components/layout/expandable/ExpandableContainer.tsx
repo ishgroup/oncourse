@@ -3,20 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import Divider from "@mui/material/Divider";
-import { AppTheme } from  "ish-ui";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
-import { FormErrors } from "redux-form";
+import { AddButton, AppTheme } from "ish-ui";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { findDOMNode } from "react-dom";
+import { FormErrors } from "redux-form";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { animateFormErrors } from "../../../utils/highlightFormErrors";
 import { getFirstErrorNodePath } from "../../../utils/validation";
-import { AddButton } from "ish-ui";
 
 const styles = (theme: AppTheme) =>
   createStyles({

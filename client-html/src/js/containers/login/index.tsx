@@ -1,7 +1,7 @@
-import * as React from "react";
-import Loadable from "@react-loadable/revised";
-import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from '@mui/material';
+import { ThemeProvider } from "@mui/material/styles";
+import Loadable from "@react-loadable/revised";
+import * as React from "react";
 import Loading from "../../common/components/progress/Loading";
 
 const LoadableComponent = Loadable({

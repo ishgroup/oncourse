@@ -5,13 +5,8 @@
 
 import { Discount, DiscountType, MoneyRounding, Tax } from "@api/model";
 import Decimal from "decimal.js-light";
+import { decimalDivide, decimalMinus, decimalMul, decimalPlus } from "ish-ui";
 import { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import {
-  decimalDivide,
-  decimalMinus,
-  decimalMul,
-  decimalPlus
-} from "ish-ui";
 
 export const getRoundingByType = (type: MoneyRounding, value: Decimal): number => {
   switch (type) {

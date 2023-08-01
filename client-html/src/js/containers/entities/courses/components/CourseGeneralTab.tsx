@@ -3,25 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import { openInternalLink, TimetableButton } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { openInternalLink, TimetableButton } from "ish-ui";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { PreferencesState } from "../../../preferences/reducers/state";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import { CourseExtended } from "../../../../model/entities/Course";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { mapSelectItems } from "../../../../common/utils/common";
-import CourseAvailableClassChart from "./CourseAvailableClassChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { mapSelectItems } from "../../../../common/utils/common";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { CourseExtended } from "../../../../model/entities/Course";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import CourseAvailableClassChart from "./CourseAvailableClassChart";
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);

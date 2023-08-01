@@ -1,18 +1,15 @@
-import React, { useCallback, useMemo } from "react";
-import clsx from "clsx";
-import { change, Field } from "redux-form";
-import { createStyles, withStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
+import { TagRequirement } from "@api/model";
 import Delete from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AppTheme, ShowConfirmCaller, useHoverShowStyles } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 import { Dispatch } from "redux";
-import { TagRequirement } from "@api/model";
+import { change, Field } from "redux-form";
 import { ToogleCheckbox } from "../../../common/components/form/ToogleCheckbox";
 import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
-import { ShowConfirmCaller } from  "ish-ui";
-import { AppTheme } from  "ish-ui";
-import { useHoverShowStyles } from  "ish-ui";
-import { Grid } from "@mui/material";
 
 const styles = (theme: AppTheme) => createStyles({
   deleteIcon: {

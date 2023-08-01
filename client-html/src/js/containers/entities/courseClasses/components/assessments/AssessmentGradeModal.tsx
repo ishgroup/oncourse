@@ -6,20 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Menu, MenuItem } from "@mui/material";
+import { EditInPlaceField, normalizeNumber, stubFunction } from "ish-ui";
 import React, { useState } from "react";
-import {
-  Grid,
-  Menu,
-  MenuItem,
-  DialogContent,
-  DialogTitle,
-  DialogActions,
-  Button,
-  Dialog
-} from "@mui/material";
-import { EditInPlaceField, stubFunction } from "ish-ui";
 import { useGradeErrors } from "./utils/hooks";
-import { normalizeNumber } from "ish-ui";
 
 const AssessmentGradeModal = (
   {

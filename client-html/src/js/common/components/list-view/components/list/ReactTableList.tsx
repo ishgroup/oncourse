@@ -6,7 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Column, DataResponse, TableModel } from "@api/model";
+import DragIndicator from "@mui/icons-material/DragIndicator";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Typography from "@mui/material/Typography";
+import makeStyles from "@mui/styles/makeStyles";
 import {
   ColumnDef,
   ColumnOrderState,
@@ -18,25 +22,19 @@ import {
   useReactTable,
   VisibilityState
 } from '@tanstack/react-table';
-import makeStyles from "@mui/styles/makeStyles";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import debounce from "lodash.debounce";
-import Typography from "@mui/material/Typography";
-import DragIndicator from "@mui/icons-material/DragIndicator";
 import clsx from "clsx";
+import { AnyArgFunction, StringKeyObject, StyledCheckbox } from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import { Column, DataResponse, TableModel } from "@api/model";
-import InfiniteLoaderList from "./components/InfiniteLoaderList";
-import { AnyArgFunction } from  "ish-ui";
-import { getTableRows } from "./utils";
-import { StyledCheckbox } from  "ish-ui";
 import { CustomColumnFormats } from "../../../../../model/common/ListView";
-import ColumnChooser from "./components/ColumnChooser";
-import { StringKeyObject } from  "ish-ui";
-import styles from "./styles";
-import TagDotRenderer from "./components/TagDotRenderer";
 import StaticProgress from "../../../progress/StaticProgress";
+import ColumnChooser from "./components/ColumnChooser";
+import InfiniteLoaderList from "./components/InfiniteLoaderList";
+import TagDotRenderer from "./components/TagDotRenderer";
 import { CHECKLISTS_COLUMN, CHOOSER_COLUMN, COLUMN_MIN_WIDTH, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "./constants";
+import styles from "./styles";
+import { getTableRows } from "./utils";
 
 const useStyles = makeStyles(styles);
 

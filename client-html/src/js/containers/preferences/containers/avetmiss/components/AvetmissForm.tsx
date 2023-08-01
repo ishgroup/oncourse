@@ -6,25 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import isEmpty from "lodash.isempty";
-import Hidden from "@mui/material/Hidden";
 import Help from "@mui/icons-material/Help";
+import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
+import Hidden from "@mui/material/Hidden";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import { Form, reduxForm, initialize } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import * as Model from "../../../../../model/preferences/Avetmiss";
-import { validateEmail } from "../../../../../common/utils/validation";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { Form, initialize, reduxForm } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateEmail } from "../../../../../common/utils/validation";
+import * as Model from "../../../../../model/preferences/Avetmiss";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
 const manualUrl = getManualLink("generalPrefs_avetmiss");
 

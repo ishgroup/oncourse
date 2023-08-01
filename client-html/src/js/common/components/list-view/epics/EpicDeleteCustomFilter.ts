@@ -4,10 +4,10 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../actions";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import CustomFiltersService from "../../../services/CustomFiltersService";
-import { FETCH_SUCCESS } from "../../../actions";
 import { DELETE_FILTER_REQUEST, GET_FILTERS_REQUEST } from "../actions";
 
 const request: EpicUtils.Request = {

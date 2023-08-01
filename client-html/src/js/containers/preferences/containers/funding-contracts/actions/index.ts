@@ -1,5 +1,5 @@
-import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { FundingSource } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 
 export const GET_FUNDING_CONTACTS_REQUEST = _toRequestType("get/fundingcontracts");

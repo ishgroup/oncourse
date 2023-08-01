@@ -6,35 +6,37 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useRef } from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import { arrayRemove, change, } from "redux-form";
-import { createStyles, withStyles } from "@mui/styles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Collapse from "@mui/material/Collapse";
+import { Document, DocumentVersion } from "@api/model";
 import { Delete, ExpandMore, OpenWith } from "@mui/icons-material";
 import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
 import { addDays, format } from "date-fns";
-import { Document, DocumentVersion } from "@api/model";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "ish-ui";
 import {
-  FileTypeIcon, getDocumentContent
-} from  "ish-ui";
-import { getLatestDocumentItem } from "../../../../common/utils/documents";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { AppTheme } from  "ish-ui";
-import { State } from "../../../../reducers/state";
+  AppTheme,
+  D_MMM_YYYY,
+  FileTypeIcon,
+  getDocumentContent,
+  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL,
+  useAppTheme,
+  useHoverShowStyles
+} from "ish-ui";
+import React, { useCallback, useRef } from "react";
+import { connect } from "react-redux";
+import { arrayRemove, change, } from "redux-form";
 import DocumentShare from "../../../../common/components/form/documents/DocumentShare";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { getLatestDocumentItem } from "../../../../common/utils/documents";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import IconButton from "@mui/material/IconButton";
-import { useHoverShowStyles } from  "ish-ui";
-import { useAppTheme } from  "ish-ui";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {

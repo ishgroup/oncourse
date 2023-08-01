@@ -1,5 +1,5 @@
-import { HttpService } from "../../../common/services/HttpService";
 import { Holiday } from "@api/model";
+import { HttpService } from "../../../common/services/HttpService";
 
 export class PreferencesApi {
   constructor(private http: HttpService) {}

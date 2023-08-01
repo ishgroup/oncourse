@@ -5,13 +5,9 @@
 
 import { ClassCost, CourseClassPaymentPlan, Tax } from "@api/model";
 import { differenceInMinutes, format, subMinutes } from "date-fns";
-import {
-  decimalDivide,
-  decimalMul,
-  decimalPlus
-} from "ish-ui";
-import { TimetableSession } from "../../../../../../model/timetable";
+import { decimalDivide, decimalMul, decimalPlus } from "ish-ui";
 import { ClassCostExtended } from "../../../../../../model/entities/CourseClass";
+import { TimetableSession } from "../../../../../../model/timetable";
 import { getCurrentTax } from "../../../../taxes/utils";
 
 export const discountsSort = (a, b) => (a.description > b.description ? 1 : -1);

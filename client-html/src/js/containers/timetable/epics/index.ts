@@ -1,11 +1,11 @@
 import { combineEpics } from "redux-observable";
+import { EpicDeleteTimetableFilter } from "./EpicDeleteTimetableFilter";
 import { EpicFindTimetableSessions } from "./EpicFindTimetableSessions";
+import { EpicGetSessionTags } from "./EpicGetSessionTags";
+import { EpicGetTimetableFilters } from "./EpicGetTimetableFilters";
 import { EpicGetTimetableSessionsByIds } from "./EpicGetTimetableSessionsByIds";
 import { EpicGetTimetableSessionsDays } from "./EpicGetTimetableSessionsDays";
-import { EpicGetTimetableFilters } from "./EpicGetTimetableFilters";
 import { EpicPostTimetableFilter } from "./EpicPostTimetableFilter";
-import { EpicDeleteTimetableFilter } from "./EpicDeleteTimetableFilter";
-import { EpicGetSessionTags } from "./EpicGetSessionTags";
 
 export const EpicTimetable = combineEpics(
   EpicFindTimetableSessions,

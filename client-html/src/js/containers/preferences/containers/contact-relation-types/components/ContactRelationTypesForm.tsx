@@ -1,22 +1,19 @@
-import * as React from "react";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
+import { ContactRelationType } from "@api/model";
 import Grid from "@mui/material/Grid";
 import withStyles from "@mui/styles/withStyles";
-import {
-  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { ContactRelationType } from "@api/model";
+import { idsToString, ShowConfirmCaller } from "ish-ui";
 import isEqual from "lodash.isequal";
+import * as React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from "redux-form";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "ish-ui";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
-import { ShowConfirmCaller } from  "ish-ui";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 
 const manualUrl = getManualLink("generalPrefs_contactRelationTypes");
 

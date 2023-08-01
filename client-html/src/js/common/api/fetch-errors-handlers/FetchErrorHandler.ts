@@ -4,13 +4,13 @@
  */
 
 import { APPLICATION_THEME_STORAGE_NAME, DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
-import { FETCH_FAIL, SET_LAST_LOCATION } from "../../actions";
-import { IAction } from "../../actions/IshAction";
 import history from "../../../constants/History";
-import { State } from "../../../reducers/state";
 import store from "../../../constants/Store";
 import { GET_IS_LOGGED_FULFILLED } from "../../../containers/preferences/actions";
 import { ServerResponse } from "../../../model/common/apiHandlers";
+import { State } from "../../../reducers/state";
+import { FETCH_FAIL, SET_LAST_LOCATION } from "../../actions";
+import { IAction } from "../../actions/IshAction";
 import { LSRemoveItem } from "../../utils/storage";
 
 const FetchErrorHandler = (response: ServerResponse, customMessage?: string): IAction<any>[] => {

@@ -3,41 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import clsx from "clsx";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
-  arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit
-} from "redux-form";
-import Dialog from "@mui/material/Dialog";
-import Grid from "@mui/material/Grid";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
+import { TutorAttendance } from "@api/model";
 import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Collapse from "@mui/material/Collapse";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import { TutorAttendance } from "@api/model";
-import {
-  addDays, differenceInMinutes, format as formatDate, subDays
-} from "date-fns";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../reducers/state";
-import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { EditInPlaceDurationField, stubFunction } from "ish-ui";
-import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import { courseClassCloseBulkUpdateModal } from "./actions";
+import clsx from "clsx";
+import { addDays, differenceInMinutes, format as formatDate, subDays } from "date-fns";
+import { DD_MMM_YYYY, EditInPlaceDurationField, NoWrapOption, stubFunction } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit } from "redux-form";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
-import { DD_MMM_YYYY } from  "ish-ui";
-import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import { greaterThanNullValidation } from "../../../../../common/utils/validation";
 import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
-import { NoWrapOption } from  "ish-ui";
+import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
+import { State } from "../../../../../reducers/state";
+import { courseClassCloseBulkUpdateModal } from "./actions";
+import CourseClassTutorRooster from "./CourseClassTutorRooster";
 
 export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 

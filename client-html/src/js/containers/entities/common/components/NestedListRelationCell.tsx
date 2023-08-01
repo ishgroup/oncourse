@@ -1,7 +1,7 @@
 import { Sale } from "@api/model";
-import { change } from "redux-form";
+import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
 import React, { useMemo } from "react";
-import { stubFunction, EditInPlaceSearchSelect } from "ish-ui";
+import { change } from "redux-form";
 
 export default (
   {

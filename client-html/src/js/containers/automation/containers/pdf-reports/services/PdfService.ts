@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../../common/services/HttpService";
 import { AutomationConfigs, PdfApi, PdfTemplateApi, PrintRequest, Report } from "@api/model";
+import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class PdfService {
   readonly service = new DefaultHttpService();

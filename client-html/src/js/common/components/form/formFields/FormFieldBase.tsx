@@ -6,28 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import debounce from "lodash.debounce";
 import {
   CheckboxField,
   CodeEditorField,
   ColoredCheckBox,
+  EditInPlaceDateTimeField,
+  EditInPlaceDurationField,
   EditInPlaceField,
   EditInPlaceFileField,
-  EditInPlaceSearchSelect,
-  EditInPlaceDurationField,
-  EditInPlaceDateTimeField,
-  EditInPlacePhoneField,
   EditInPlaceMoneyField,
+  EditInPlacePhoneField,
+  EditInPlaceSearchSelect,
   FormSwitch,
-  TagInputList,
   stubFunction,
+  TagInputList,
 } from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import { useAppSelector } from "../../../utils/hooks";
-import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
-import EditInPlaceQuerySelect from "./EditInPlaceQuerySelect";
 import { AngelFormFieldProps } from "../../../../model/common/Fields";
+import { useAppSelector } from "../../../utils/hooks";
+import EditInPlaceQuerySelect from "./EditInPlaceQuerySelect";
+import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
 

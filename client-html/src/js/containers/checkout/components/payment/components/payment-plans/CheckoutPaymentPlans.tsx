@@ -4,18 +4,17 @@
  */
 
 import { PaymentMethod } from "@api/model";
-import React from "react";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
 import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
 import StepButton from "@mui/material/StepButton";
+import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
+import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
+import { AppTheme, normalizeNumberToPositive } from "ish-ui";
+import React from "react";
+import { FieldArray, WrappedFieldArrayProps } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { normalizeNumberToPositive } from "ish-ui";
-import { AppTheme } from  "ish-ui";
 import { paymentPlanStyles } from "../../../../../entities/invoices/styles/paymentPlanStyles";
 
 const styles = () => createStyles({

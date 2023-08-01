@@ -6,33 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Typography from "@mui/material/Typography";
-import React, {
-  useCallback, useState
-} from "react";
-import {
-  Contact, ContactGender, StudentCitizenship
-} from "@api/model";
-import {
-  change
-} from "redux-form";
-import { connect } from "react-redux";
-import {
- Alert, FormControlLabel, Grid, IconButton
-} from "@mui/material";
+import { Contact, ContactGender, StudentCitizenship } from "@api/model";
+import OpenInNew from "@mui/icons-material/OpenInNew";
+import { Alert, FormControlLabel, Grid, IconButton } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Checkbox from "@mui/material/Checkbox";
-import OpenInNew from "@mui/icons-material/OpenInNew";
+import Typography from "@mui/material/Typography";
+import { openInternalLink, SettingsAdornment } from "ish-ui";
+import React, { useCallback, useState } from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
-import { SettingsAdornment } from  "ish-ui";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { mapSelectItems } from "../../../../common/utils/common";
-import { openInternalLink } from "ish-ui";
+import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";

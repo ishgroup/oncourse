@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { withStyles } from "@mui/styles";
 import { LinearProgress } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import React from "react";
 
 const styles: any = () => ({
   root: {

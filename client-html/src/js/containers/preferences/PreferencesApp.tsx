@@ -13,9 +13,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { State } from "../../reducers/state";
-import { Categories } from "../../model/preferences";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
+import { Categories } from "../../model/preferences";
+import { State } from "../../reducers/state";
 import {
   getColumnsWidth,
   getDataCollectionForms,

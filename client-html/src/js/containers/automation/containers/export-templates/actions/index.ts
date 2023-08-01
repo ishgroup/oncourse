@@ -1,5 +1,5 @@
-import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { ExportTemplate } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_EXPORT_TEMPLATES_LIST = _toRequestType("get/export-templates/list");

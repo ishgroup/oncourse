@@ -1,14 +1,14 @@
-import React, { PureComponent } from "react";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
 import Delete from "@mui/icons-material/Delete";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import clsx from "clsx";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Checkbox, Collapse, List, ListItem, ListItemText } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
 import { openInternalLink } from "ish-ui";
+import React, { PureComponent } from "react";
 import { NestedListItem, NestedListPanelItem } from "../NestedList";
 
 const styles = theme =>

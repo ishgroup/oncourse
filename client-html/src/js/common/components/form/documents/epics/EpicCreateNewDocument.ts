@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Document } from "@api/model";
 import { arrayPush, arrayRemove } from "redux-form";
-import * as EpicUtils from "../../../../epics/EpicUtils";
-import DocumentsService from "../services/DocumentsService";
-import { CREATE_DOCUMENT, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT } from "../actions";
-import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import { Epic } from "redux-observable";
 import { State } from "../../../../../reducers/state";
+import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../epics/EpicUtils";
+import { CREATE_DOCUMENT, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT } from "../actions";
+import DocumentsService from "../services/DocumentsService";
 
 const request: EpicUtils.Request<
   any,

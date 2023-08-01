@@ -3,27 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import { change } from "redux-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Chip from "@mui/material/Chip";
-import Tooltip from "@mui/material/Tooltip";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Grid from "@mui/material/Grid";
+import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Chip from "@mui/material/Chip";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { StyledCheckbox } from  "ish-ui";
+import clsx from "clsx";
+import { formatCurrency, StyledCheckbox } from "ish-ui";
+import React from "react";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { formatCurrency } from "ish-ui";
 import { greaterThanNullValidation } from "../../../../common/utils/validation";
 import { CheckoutItem } from "../../../../model/checkout";
 import { changeSummaryItemQuantity, checkoutUpdateSummaryItem } from "../../actions/checkoutSummary";
-import SummaryExpandableClassRow from "./components/SummaryExpandableClassRow";
 import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "./CheckoutSummaryList";
+import SummaryExpandableClassRow from "./components/SummaryExpandableClassRow";
 
 export const SummaryItemRow = React.memo<any>(props => {
   const {

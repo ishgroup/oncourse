@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { IAction } from "../actions/IshAction";
+import { ConfirmState } from "ish-ui";
 import { CLOSE_CONFIRM, OPEN_CONFIRM } from "../actions";
-import { ConfirmState } from  "ish-ui";
+import { IAction } from "../actions/IshAction";
 
 const Initial: ConfirmState = {
   open: false,

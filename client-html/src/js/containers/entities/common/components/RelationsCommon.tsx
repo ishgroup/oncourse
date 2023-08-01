@@ -3,27 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import { change, Validator } from "redux-form";
 import { Course, EntityRelationType, Module, Qualification, Sale } from "@api/model";
+import { BooleanArgFunction, StringArgFunction } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { State } from "../../../../reducers/state";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { formatRelatedSalables, formattedEntityRelationTypes, mapRelatedSalables, salesSort } from "../utils";
-import { BooleanArgFunction, StringArgFunction } from  "ish-ui";
-import NestedListRelationCell from "./NestedListRelationCell";
-import { clearSales, getSales } from "../../sales/actions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { change, Validator } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
-import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
-import { EntityName } from "../../../../model/entities/common";
-import { RELATION_COURSE_COLUMNS } from "../entityConstants";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { getPluralSuffix } from "../../../../common/utils/strings";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { EntityName } from "../../../../model/entities/common";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { State } from "../../../../reducers/state";
+import { clearSales, getSales } from "../../sales/actions";
+import { RELATION_COURSE_COLUMNS } from "../entityConstants";
+import { formatRelatedSalables, formattedEntityRelationTypes, mapRelatedSalables, salesSort } from "../utils";
+import NestedListRelationCell from "./NestedListRelationCell";
 
 interface Props {
   values: any;

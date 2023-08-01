@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import { FormControlLabel } from "@mui/material";
-import { initialize, reduxForm } from "redux-form";
+import * as React from "react";
 import { connect } from "react-redux";
+import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 

@@ -1,7 +1,7 @@
-import React from "react";
 import Typography from "@mui/material/Typography";
-import { MessageTemplateEntityName } from "../constants";
+import React from "react";
 import { EntityName } from "../../../model/entities/common";
+import { MessageTemplateEntityName } from "../constants";
 
 export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
   switch (entity) {

@@ -7,29 +7,28 @@
  */
 
 import { Course } from "@api/model";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
-import { Dispatch } from "redux";
+import Typography from "@mui/material/Typography";
 import { Decimal } from "decimal.js-light";
+import { decimalPlus, formatCurrency, LinkAdornment, normalizeNumber, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import { useAppSelector } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
+import { accountLabelCondition } from "../../accounts/utils";
+import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
+import { courseFilterCondition, openCourseLink } from "../../courses/utils";
+import { getDiscountAmountExTax } from "../../discounts/utils";
 import {
   getInvoiceLineCourse,
   getInvoiceLineEnrolments,
   setInvoiceLineCourse,
   setInvoiceLineEnrolments
 } from "../actions";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { accountLabelCondition } from "../../accounts/utils";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { LinkAdornment } from  "ish-ui";
-import { decimalPlus, usePrevious, formatCurrency, normalizeNumber } from "ish-ui";
-import { getDiscountAmountExTax } from "../../discounts/utils";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { calculateInvoiceLineTotal } from "../utils";
 
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)

@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { MergeRequest } from "@api/model";
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import ContactsService from "../services/ContactsService";
 import { POST_MERGE_CONTACTS, POST_MERGE_CONTACTS_FULFILLED } from "../actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { MergeRequest } from "@api/model";
-import { FETCH_SUCCESS } from "../../../../common/actions";
+import ContactsService from "../services/ContactsService";
 import { openContactLink } from "../utils";
-import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 
 const request: EpicUtils.Request<any, MergeRequest> = {
   type: POST_MERGE_CONTACTS,

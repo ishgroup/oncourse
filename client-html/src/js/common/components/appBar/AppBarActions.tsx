@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useState } from "react";
+import SettingsIcon from "@mui/icons-material/Settings";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SettingsIcon from "@mui/icons-material/Settings";
+import clsx from "clsx";
+import { AppBarAction, makeAppStyles, ShowConfirmCaller } from "ish-ui";
+import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
 import { showConfirm } from "../../actions";
-import { AppBarAction, makeAppStyles, ShowConfirmCaller } from "ish-ui";
-import clsx from "clsx";
 
 const useStyles = makeAppStyles(theme => ({
   root: {

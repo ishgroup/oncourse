@@ -6,9 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import { Theme } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
+import React from "react";
 import { CalendarTagsState } from "../../../../../../model/timetable";
 
 const styles = (theme: Theme) => ({

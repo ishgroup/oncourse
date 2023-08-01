@@ -6,19 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_ADD_PAYMENT_OUT_VALUES, getActivePaymentOutMethods } from "../actions";
 import { DataResponse } from "@api/model";
+import { format } from "date-fns";
+import { III_DD_MMM_YYYY } from "ish-ui";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
+import { setListEditRecord } from "../../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
+import history from "../../../../constants/History";
+import { GET_ADD_PAYMENT_OUT_VALUES, getActivePaymentOutMethods } from "../actions";
 import { PaymentOutModel } from "../reducers/state";
 import { getAmountToAllocate } from "../utils";
-import { setListEditRecord } from "../../../../common/components/list-view/actions";
-import { initialize } from "redux-form";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { III_DD_MMM_YYYY } from  "ish-ui";
-import { format } from "date-fns";
-import history from "../../../../constants/History";
 
 const request: EpicUtils.Request<{ dataResponse: DataResponse, formData: PaymentOutModel  }> = {
   type: GET_ADD_PAYMENT_OUT_VALUES,

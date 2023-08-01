@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
-import Collapse from "@mui/material/Collapse";
-import { CircularProgress, Typography } from "@mui/material";
 import * as Entities from "@aql/queryLanguageModel";
+import { CircularProgress, Grid, Typography } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
 import debounce from "lodash.debounce";
+import React, { useCallback, useEffect, useState } from "react";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems } from "../../../../../../common/utils/common";
 import EntityService from "../../../../../../common/services/EntityService";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
+import { mapSelectItems } from "../../../../../../common/utils/common";
 import { getPluralSuffix } from "../../../../../../common/utils/strings";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
 
 const records = Object.keys(Entities)
   .filter(i => Entities[i].constructor.name !== "Enum")

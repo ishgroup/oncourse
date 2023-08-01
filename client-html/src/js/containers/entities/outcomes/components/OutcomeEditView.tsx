@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Outcome } from "@api/model";
 import React, { useEffect } from "react";
 import { change } from "redux-form";
-import { Outcome } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
 import { EditViewProps } from "../../../../model/common/ListView";
-import OutcomeEditFields from "./OutcomeEditFields";
 import { getContactFullName } from "../../contacts/utils";
+import OutcomeEditFields from "./OutcomeEditFields";
 
 const getFieldName = name => name;
 

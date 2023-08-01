@@ -1,6 +1,4 @@
-import {
- ProductItemCancel, ProductItemStatus, ProductType, SaleType
-} from "@api/model";
+import { ProductItemCancel, ProductItemStatus, ProductType, SaleType } from "@api/model";
 import { _toRequestType, FULFILLED, REJECTED } from "../../../../common/actions/ActionUtils";
 
 export const GET_SALES = _toRequestType("get/sales");

@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ShareState } from "../../../../../../model/common/Share";
 import { IAction } from "../../../../../actions/IshAction";
 import {
   GET_EXPORT_TEMPLATES,
@@ -12,7 +13,6 @@ import {
   GET_PDF_REPORTS_FULFILLED,
   SET_PRINT_VALIDATING_STATUS
 } from "../actions";
-import { ShareState } from "../../../../../../model/common/Share";
 
 export class ShareStateInitial implements ShareState {
   exportTemplates = [];

@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Assessment } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import { Assessment } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import AssessmentEditView from "./components/AssessmentEditView";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { getGradingTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import { getGradingTypes } from "../../preferences/actions";
+import AssessmentEditView from "./components/AssessmentEditView";
 
 const manualLink = getManualLink("assessment");
 

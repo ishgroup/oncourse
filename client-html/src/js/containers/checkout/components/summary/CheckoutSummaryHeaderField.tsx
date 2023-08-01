@@ -5,11 +5,11 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../../../reducers/state";
 import { CheckoutSummaryListItem } from "../../../../model/checkout";
-import { HeaderFieldTypo } from "../HeaderField";
-import { CheckoutPage } from "../../constants";
+import { State } from "../../../../reducers/state";
 import { getContactFullName } from "../../../entities/contacts/utils";
+import { CheckoutPage } from "../../constants";
+import { HeaderFieldTypo } from "../HeaderField";
 
 interface Props {
   classes?: any;

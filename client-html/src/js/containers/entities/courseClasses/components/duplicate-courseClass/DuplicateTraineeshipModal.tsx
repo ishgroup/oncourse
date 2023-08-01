@@ -3,13 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Account, ClassCost, CourseClassDuplicate, Tax } from "@api/model";
+import { Grid, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Tooltip from "@mui/material/Tooltip";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
+import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
+import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "ish-ui";
 import debounce from "lodash.debounce";
-import { Dispatch } from "redux";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import {
   change,
   DecoratedComponentClass,
@@ -19,21 +31,12 @@ import {
   InjectedFormProps,
   reduxForm
 } from "redux-form";
-import withStyles from "@mui/styles/withStyles";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Account, ClassCost, CourseClassDuplicate, Tax } from "@api/model";
-import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
-import { Typography } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import EntityService from "../../../../../common/services/EntityService";
+import history from "../../../../../constants/History";
+import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import { State } from "../../../../../reducers/state";
+import { getAllMonthsWithSessions } from "../../../../timetable/utils";
 import { getPlainAccounts } from "../../../accounts/actions";
 import { getPlainTaxes } from "../../../taxes/actions";
 import {
@@ -43,13 +46,9 @@ import {
   getDuplicateCourseClassesSessions,
   setDuplicateCourseClassesBudget
 } from "../../actions";
-import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from  "ish-ui";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import StudentFeeContent from "../budget/modal/StudentFeeContent";
 import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
 import modalStyles from "./modalStyles";
-import history from "../../../../../constants/History";
 
 export const DUPLICATE_TRAINEESHIP_FORM: string = "DuplicateTraineeshipForm";
 

@@ -7,17 +7,17 @@
  */
 
 import { Epic } from "redux-observable";
-import { INSTALL_AUTOMATION } from "../actions";
-import { CatalogItemType } from "../../../model/common/Catalog";
+import { showMessage } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Create, Request } from "../../../common/epics/EpicUtils";
 import { AutomationEntity } from "../../../model/automation/common";
+import { CatalogItemType } from "../../../model/common/Catalog";
+import { INSTALL_AUTOMATION } from "../actions";
 import EmailTemplateService from "../containers/email-templates/services/EmailTemplateService";
 import ExportTemplatesService from "../containers/export-templates/services/ExportTemplatesService";
 import ImportTemplatesService from "../containers/import-templates/services/ImportTemplatesService";
 import PdfService from "../containers/pdf-reports/services/PdfService";
 import ScriptsService from "../containers/scripts/services/ScriptsService";
-import { showMessage } from "../../../common/actions";
 
 const request: Request<any, { automation: CatalogItemType, entity: AutomationEntity }> = {
   type: INSTALL_AUTOMATION,
