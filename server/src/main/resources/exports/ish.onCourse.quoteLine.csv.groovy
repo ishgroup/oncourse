@@ -1,7 +1,7 @@
 records.collectMany { Quote q -> q.quoteLines }.each { ql ->
 	csv << [
 			"Quote title"                 : ql.quote.title,
-			"Quote Date"                  : ql.invoice.invoiceDate?.format("yyyy-MM-dd"),
+			"Quote Date"                  : ql.quote.invoiceDate?.format("yyyy-MM-dd"),
 			"Quote line Title"            : ql.title,
 			"Quote line Description"      : ql.description,
 			"Quote To Last Name"          : ql.quote.contact.lastName,
