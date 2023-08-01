@@ -7176,10 +7176,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-ish-ui@1.0.0-alpha.22:
-  version "1.0.0-alpha.22"
-  resolved "https://registry.yarnpkg.com/ish-ui/-/ish-ui-1.0.0-alpha.22.tgz#1b9c9a36dee088e79c906659b86bb89efefad261"
-  integrity sha512-cvBkLa7efH3LpXcWxe9jzi8KA8NK5LUKuRZ2AguuAV6lL5aP01Y6zDUFQmffE4bdNayN9p3skyFgiM3QyXSIVQ==
+ish-ui@1.0.0-alpha.23:
+  version "1.0.0-alpha.23"
+  resolved "https://registry.yarnpkg.com/ish-ui/-/ish-ui-1.0.0-alpha.23.tgz#32a6e505e97e576284f6ce5fde8acc75ddccef72"
+  integrity sha512-VAWSDXfvJqrJDCXHNSavj4+BoaGV0GstBYOlBTQbIPLAQ/6S5jxx9JD2KnKqZY36l1Yr2Dn1YaCmvWMvWR984w==
   dependencies:
     "@ckeditor/ckeditor5-autoformat" "35.1.0"
     "@ckeditor/ckeditor5-basic-styles" "35.1.0"
@@ -7219,7 +7219,7 @@ ish-ui@1.0.0-alpha.22:
     react-color "^2.19.3"
     react-dom "^18.2.0"
     react-dropzone "^14.2.3"
-    react-number-format "^5.2.2"
+    react-number-format "4.9.3"
     react-window "^1.8.9"
     react-window-infinite-loader "^1.0.9"
     redux "^4.2.1"
@@ -9598,13 +9598,6 @@ react-number-format@4.9.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-number-format@^5.2.2:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-5.2.2.tgz#60ee1152b33fee9e522e13846da9c9bf30993404"
-  integrity sha512-wCh64Z1HCwXcO2dbgkeYIaB+Rmp/fcsH8kAeRtUkc46dv1pIrgDjie2WkOqKBw8YqyqhwNdYgNFNQuuY+iGJ/g==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-pose@4.*:
   version "4.0.10"
   resolved "https://registry.yarnpkg.com/react-pose/-/react-pose-4.0.10.tgz#fde1c6c388ec210f7099dfe2b8dd2f89a75db7d0"
@@ -11832,7 +11825,7 @@ wildcard@^2.0.0:
   resolved "https://registry.yarnpkg.com/wildcard/-/wildcard-2.0.1.tgz#5ab10d02487198954836b6349f74fff961e10f67"
   integrity sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==
 
-word-wrap@^1.2.3, word-wrap@~1.2.3:
+word-wrap@~1.2.3:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.4.tgz#cb4b50ec9aca570abd1f52f33cd45b6c61739a9f"
   integrity sha512-2V81OA4ugVo5pRo46hAoD2ivUJx8jXmWXfUkY4KFNw0hEptvN0QfH3K4nHiwzGeKl5rFKedV48QVoqYavy4YpA==

@@ -7,19 +7,8 @@
  */
 
 import Edit from "@mui/icons-material/Edit";
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import {
- ResponsiveContainer, Area, AreaChart, XAxis, ReferenceLine, Tooltip
-} from "recharts";
-import { differenceInCalendarWeeks } from "date-fns";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import withTheme from "@mui/styles/withTheme";
 import { green, orange } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import withTheme from "@mui/styles/withTheme";
