@@ -41,14 +41,16 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     public ExportTemplateDTO toRestModel(ExportTemplate exportTemplate) {
-        var dto = toRestWithoutPreviewModel(exportTemplate);
+        var dto = toRestWithoutBodyAndPreviewModel(exportTemplate);
+        dto.setBody(exportTemplate.getBody());
         dto.setPreview(exportTemplate.getPreview());
         return dto;
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
-    public ExportTemplateDTO toRestWithoutPreviewModel(ExportTemplate exportTemplate) {
+    public ExportTemplateDTO toRestWithoutBodyAndPreviewModel(ExportTemplate exportTemplate) {
         var dto = super.toRestModel(exportTemplate);
+        dto.setBody(null);
         dto.setOutputType(OutputTypeDTO.values()[0].fromDbType(exportTemplate.getOutputType()));
         return dto;
     }

@@ -40,7 +40,7 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
         apiService.getAutomationFor(entityName, new Function<Report, ReportDTO>() {
             @Override
             ReportDTO apply(Report report) {
-                apiService.toRestWithoutPreviewModel(report, entityName)
+                apiService.toRestWithoutBodyAndPreviewModel(report, entityName)
             }
         })
     }

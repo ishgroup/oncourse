@@ -52,7 +52,7 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
 
     @Override
     List<ExportTemplateDTO> templates(String entityName) {
-        service.getAutomationFor(entityName, service.&toRestWithoutPreviewModel)
+        service.getAutomationFor(entityName, service.&toRestWithoutBodyAndPreviewModel)
     }
 
     @Override
