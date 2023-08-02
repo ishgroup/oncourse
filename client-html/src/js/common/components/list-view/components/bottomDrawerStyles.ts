@@ -11,7 +11,7 @@ export default (theme: AppTheme) => createStyles({
     display: "none"
   },
   exportContainer: {
-    height: "50vh",
+    height: "70vh",
     backgroundColor: theme.share.exportContainer.backgroundColor,
     backgroundImage: 'unset',
     padding: theme.spacing(2, 3, 3, 3),
