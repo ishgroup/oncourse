@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Help, PlayArrow, Publish } from "@mui/icons-material";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -68,6 +69,10 @@ import {
 import {
   exportTemplateFullScreenPreview,
 } from "../../../../../containers/automation/containers/export-templates/actions";
+import PdfService from "../../../../../containers/automation/containers/pdf-reports/services/PdfService";
+import InstantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
+import ExportTemplatesService
+  from "../../../../../containers/automation/containers/export-templates/services/ExportTemplatesService";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -80,7 +85,7 @@ interface Props {
   selection: string[];
   count: number;
   process?: ProcessState;
-  pdfReports: any[];
+  pdfReports: Report[];
   exportTemplates: ExportTemplate[];
   overlays: CommonListItem[];
   submitting?: boolean;
@@ -113,6 +118,8 @@ interface ShareState {
   selectedPrimary: number;
   selectedSecondary: number;
   selectAll: boolean;
+  preview: string;
+  loadingPreview: boolean;
   exportTemplateTypes: { [N in TemplateOutputDisplayName]?: ExportTemplate[] };
   createPreview: boolean;
   wrongPdfReportMsg?: string;
@@ -138,6 +145,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       selectedPrimary: null,
       selectedSecondary: null,
       selectAll: false,
+      preview: null,
+      loadingPreview: true,
       exportTemplateTypes: null,
       createPreview: false,
       wrongPdfReportMsg: null,
@@ -169,17 +178,23 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         if (savedState) {
           if (savedState.selectedPrimary === 0) {
             this.setState(savedState);
-            this.props.dispatch(initialize("ListShareForm", this.props.pdfReports[savedState.selectedSecondary]));
+            const report = this.props.pdfReports[savedState.selectedSecondary];
+            this.props.dispatch(initialize("ListShareForm", report));
+            this.getCompressedPreview(report.id);
           }
         } else {
           this.setState({
             selectedPrimary: 0,
             selectedSecondary: 0,
           });
-          this.props.dispatch(initialize("ListShareForm", this.props.pdfReports[0]));
+          const report = this.props.pdfReports[0];
+          this.props.dispatch(initialize("ListShareForm", report));
+          this.getCompressedPreview(report.id);
         }
       } else if (prevState.selectedPrimary === 0) {
-        this.props.dispatch(initialize("ListShareForm", this.props.pdfReports[prevState.selectedSecondary]));
+        const report = this.props.pdfReports[prevState.selectedSecondary];
+        this.props.dispatch(initialize("ListShareForm", report));
+        this.getCompressedPreview(report.id);
       }
     }
 
@@ -210,20 +225,24 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
         if (savedState && savedState.selectedPrimary > 0 ) {
           this.setState(savedState);
+          const template  = exportTemplateTypes[Object.keys(exportTemplateTypes)[savedState.selectedPrimary - 1]][
+            savedState.selectedSecondary
+            ];
           this.props.dispatch(initialize(
             "ListShareForm",
-            exportTemplateTypes[Object.keys(exportTemplateTypes)[savedState.selectedPrimary - 1]][
-              savedState.selectedSecondary
-              ],
+            template
           ));
+          this.getCompressedPreview(null, template.id);
         }
       } else if (prevState.selectedPrimary > 0) {
+        const template = exportTemplateTypes[Object.keys(exportTemplateTypes)[prevState.selectedPrimary - 1]][
+          this.state.selectedSecondary
+        ];
         this.props.dispatch(initialize(
           "ListShareForm",
-          exportTemplateTypes[Object.keys(exportTemplateTypes)[prevState.selectedPrimary - 1]][
-            this.state.selectedSecondary
-            ],
+          template
         ));
+        this.getCompressedPreview(null, template.id);
       }
 
       this.setState({ exportTemplateTypes });
@@ -244,13 +263,17 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     const { exportTemplateTypes } = this.state;
 
     if (primary === 0 && pdfReports.length) {
-      dispatch(initialize("ListShareForm", pdfReports[secondary]));
+      const report = pdfReports[secondary];
+      dispatch(initialize("ListShareForm", report));
+      this.getCompressedPreview(report.id);
     }
 
     if (primary > 0 && exportTemplates.length) {
+      const template = exportTemplateTypes[Object.keys(exportTemplateTypes)[primary - 1]][secondary];
       dispatch(
-        initialize("ListShareForm", exportTemplateTypes[Object.keys(exportTemplateTypes)[primary - 1]][secondary]),
+        initialize("ListShareForm", template),
       );
+      this.getCompressedPreview(null, template.id);
     }
   };
 
@@ -289,6 +312,31 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     }));
 
     this.initializeShareForm(selectedPrimary, selectedSecondary);
+  };
+  
+  getCompressedPreview = async (pdfId, templateID?) => {
+    const { dispatch } = this.props;
+    
+    try {
+      this.setState({ loadingPreview: true, preview: null });
+      let preview;
+
+      if (typeof pdfId === "number") {
+        preview = await PdfService.getLowQualityPreview(pdfId);
+      }
+
+      if (typeof templateID === "number") {
+        preview = await ExportTemplatesService.getLowQualityPreview(templateID);
+      }
+      
+      this.setState({
+        preview,
+        loadingPreview: false
+      });
+    } catch (e) {
+      this.setState({ loadingPreview: false });
+      InstantFetchErrorHandler(dispatch, e, "Failed to get preview");
+    }
   };
 
   handleBackgroundUpload = () => {
@@ -511,14 +559,12 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   renderPdfFields() {
     const {
-     classes, overlays, pdfReports, values,
+     classes, overlays, pdfReports,
     } = this.props;
 
-    const { selectedSecondary, createPreview } = this.state;
+    const { selectedSecondary, createPreview, preview, loadingPreview  } = this.state;
 
     const pdfActive: Report = pdfReports[selectedSecondary];
-
-    const preview = values && values.preview;
 
     return (
       <>
@@ -563,7 +609,10 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               </Grid>
             </Grid>
           </Grid>
-          {preview && (
+
+          {loadingPreview && <CircularProgress />}
+
+          {!loadingPreview && preview && (
             <Grid item xs={4} className={classes.previewWrapper}>
               <FilePreview
                 data={preview}
@@ -584,7 +633,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           )}
         </Grid>
 
-        {!preview && (
+        {!loadingPreview && !preview && (
           <>
             <Grid item xs={12} container className="mt-2">
               <FormControlLabel
@@ -652,9 +701,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
   renderTemplateFields() {
     const { classes, values } = this.props;
 
-    const { createPreview } = this.state;
-
-    const preview = values && values.preview;
+    const { createPreview, preview, loadingPreview } = this.state;
 
     return (
       <>
@@ -667,7 +714,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               <FieldArray name="variables" component={this.templatesRenderer as any} />
             </Grid>
           </Grid>
-          {preview && (
+          {loadingPreview && <CircularProgress />}
+          {!loadingPreview && preview && (
             <Grid item xs={4} className={classes.previewWrapper}>
               <FilePreview
                 data={preview}
@@ -687,7 +735,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             </Grid>
           )}
         </Grid>
-        {!preview && (
+        {!loadingPreview && !preview && (
           <>
             <Grid item xs={12} container className="mt-2">
               <FormControlLabel
