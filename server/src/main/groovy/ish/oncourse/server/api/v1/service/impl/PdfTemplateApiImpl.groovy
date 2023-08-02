@@ -78,7 +78,7 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
     @Override
     byte[] getPreview(Long id, Boolean compressed = false) {
         def preview = apiService.getPreview(id)
-        return compressed ? ImageHelper.generatePdfPreview() : ImageHelper.generateHighQualityPdfPreview(
+        return compressed ? ImageHelper.generatePdfPreview(preview) : ImageHelper.generateHighQualityPdfPreview(
                 preview,
                 ImageHelper.getBackgroundQualityScale(userPreferenceService)
         )
