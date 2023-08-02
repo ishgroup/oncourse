@@ -14,7 +14,7 @@ jdbc:
     maximumPoolSize: 150
     minimumIdle: 2
     idleTimeout: 1000000
-    connectionTimeout: 15000
+    connectionTimeout: 30000
     registerMbeans: true
 
 cayenne:
