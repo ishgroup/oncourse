@@ -22,10 +22,12 @@ import ish.oncourse.server.cayenne.ExportTemplate;
 import ish.oncourse.server.configs.AutomationModel;
 import ish.oncourse.server.configs.ExportModel;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
+import ish.util.ThumbnailGenerator;
 import org.apache.cayenne.ObjectContext;
 import ish.oncourse.server.cayenne.Report;
 import org.apache.cayenne.query.ObjectSelect;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -39,11 +41,18 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     public ExportTemplateDTO toRestModel(ExportTemplate exportTemplate) {
-        var dto = super.toRestModel(exportTemplate);
-        dto.setOutputType(OutputTypeDTO.values()[0].fromDbType(exportTemplate.getOutputType()));
+        var dto = toRestWithoutPreviewModel(exportTemplate);
         dto.setPreview(exportTemplate.getPreview());
         return dto;
     }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    public ExportTemplateDTO toRestWithoutPreviewModel(ExportTemplate exportTemplate) {
+        var dto = super.toRestModel(exportTemplate);
+        dto.setOutputType(OutputTypeDTO.values()[0].fromDbType(exportTemplate.getOutputType()));
+        return dto;
+    }
+
 
     @Override
     public ExportTemplate toCayenneModel(ExportTemplateDTO dto, ExportTemplate cayenneModel) {
@@ -72,8 +81,9 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
         return getEntityAndValidateExistence(cayenneService.getNewContext(), id).getScript().getBytes();
     }
 
-    public byte[] getPreview(Long id) {
-        return ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
+    public byte[] getPreview(Long id, Boolean compressed) throws IOException {
+        var data = ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
+        return compressed == Boolean.TRUE ? ThumbnailGenerator.generateForImg(data, "image/png") : data;
     }
 
     public void deletePreview(Long id) {

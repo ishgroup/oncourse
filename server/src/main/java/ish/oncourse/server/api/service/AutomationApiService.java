@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static ish.oncourse.common.ResourceProperty.OPTIONS;
@@ -199,8 +200,12 @@ abstract class AutomationApiService<T extends AutomationDTOTrait , K extends Aut
         return outputStream.toString();
     }
 
-    public List<T> getAutomationFor(String entityName) {
-        return entityDao.getForEntity(entityName, cayenneService.getNewContext()).stream().map(this::toRestModel).collect(Collectors.toList());
+    public List<T> getAutomationFor(String entityName){
+        return getAutomationFor(entityName, this::toRestModel);
+    }
+
+    public List<T> getAutomationFor(String entityName, Function<K, T> toRestFunction) {
+        return entityDao.getForEntity(entityName, cayenneService.getNewContext()).stream().map(toRestFunction).collect(Collectors.toList());
     }
 
     public Map<String, Object> getVariablesMap(Map<String, String> variables, K template) {

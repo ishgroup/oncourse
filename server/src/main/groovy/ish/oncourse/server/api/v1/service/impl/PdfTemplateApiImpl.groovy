@@ -16,8 +16,11 @@ import ish.oncourse.server.api.service.ReportApiService
 import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ReportDTO
 import ish.oncourse.server.api.v1.service.PdfTemplateApi
+import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.ImageHelper
+
+import java.util.function.Function
 
 class PdfTemplateApiImpl implements PdfTemplateApi {
 
@@ -34,7 +37,12 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
 
     @Override
     List<ReportDTO> get(String entityName) {
-        apiService.getAutomationFor(entityName)
+        apiService.getAutomationFor(entityName, new Function<Report, ReportDTO>() {
+            @Override
+            ReportDTO apply(Report report) {
+                apiService.toRestWithoutPreviewModel(report, entityName)
+            }
+        })
     }
 
     @Override
@@ -68,9 +76,10 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
     }
 
     @Override
-    byte[] getHighQualityPreview(Long id) {
-        return ImageHelper.generateHighQualityPdfPreview(
-                apiService.getPreview(id),
+    byte[] getPreview(Long id, Boolean compressed = false) {
+        def preview = apiService.getPreview(id)
+        return compressed ? ImageHelper.generatePdfPreview() : ImageHelper.generateHighQualityPdfPreview(
+                preview,
                 ImageHelper.getBackgroundQualityScale(userPreferenceService)
         )
     }
