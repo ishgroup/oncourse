@@ -85,7 +85,7 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
 
     public byte[] getPreview(Long id, Boolean compressed) throws IOException {
         var data = ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
-        return compressed == Boolean.TRUE ? ThumbnailGenerator.generateForImg(data, "image/png") : data;
+        return compressed == Boolean.TRUE && data != null ? ThumbnailGenerator.generateForImg(data, "image/png") : data;
     }
 
     public void deletePreview(Long id) {
