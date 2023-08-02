@@ -73,6 +73,7 @@ import PdfService from "../../../../../containers/automation/containers/pdf-repo
 import InstantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import ExportTemplatesService
   from "../../../../../containers/automation/containers/export-templates/services/ExportTemplatesService";
+import { getDocumentContent } from "../../../form/documents/components/utils";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -328,7 +329,9 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
       if (typeof templateID === "number") {
         preview = await ExportTemplatesService.getLowQualityPreview(templateID);
       }
-      
+
+      preview = await getDocumentContent(preview);
+
       this.setState({
         preview,
         loadingPreview: false
