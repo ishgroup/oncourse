@@ -45,6 +45,12 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
 
     @Override
     public ReportDTO toRestModel(Report dbReport) {
+        var dto = toRestWithoutPreviewModel(dbReport);
+        dto.setPreview(ish.util.ImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
+        return dto;
+    }
+
+    private ReportDTO toRestWithoutPreviewModel(Report dbReport) {
         var dto = super.toRestModel(dbReport);
 
         if ( dbReport.getBackground() != null) {
@@ -52,12 +58,12 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
         }
         dto.setSubreport(dbReport.getIsVisible());
         dto.setSortOn(dbReport.getSortOn() != null ? dbReport.getSortOn() : "");
-        dto.setPreview(ish.util.ImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
+        dto.setPreview(null);
         return dto;
     }
 
-    private ReportDTO toRestModel(Report dbReport, String entityName) {
-        var dto = toRestModel(dbReport);
+    public ReportDTO toRestWithoutPreviewModel(Report dbReport, String entityName) {
+        var dto = toRestWithoutPreviewModel(dbReport);
 
         var transformation = PrintTransformationsFactory.getPrintTransformationFor(entityName, dbReport.getEntity(), dbReport.getKeyCode());
         if (transformation != null && !transformation.getFields().isEmpty()) {
@@ -108,7 +114,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     }
 
     public List<ReportDTO> getAutomationFor(String entityName) {
-        return entityDao.getForEntity(entityName, cayenneService.getNewContext()).stream().map(it -> toRestModel(it, entityName)).collect(Collectors.toList());
+        return entityDao.getForEntity(entityName, cayenneService.getNewContext()).stream().map(it -> toRestWithoutPreviewModel(it, entityName)).collect(Collectors.toList());
     }
 
     public Report updateInternal(ReportDTO dto) {
