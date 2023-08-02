@@ -18,6 +18,8 @@ export const GET_EXPORT_TEMPLATE = _toRequestType("get/export-templates/item");
 
 export const SHOW_EXPORT_TEMPLATE_FULL_SCREEN_PREVIEW = _toRequestType("get/export-templates/fullPreview");
 
+export const SHOW_EXPORT_TEMPLATE_COMPRESSED_PREVIEW = _toRequestType("get/export-templates/compressedPreview");
+
 export const updateExportTemplate = (exportTemplate: ExportTemplate) => ({
   type: UPDATE_EXPORT_TEMPLATE,
   payload: { exportTemplate }
@@ -55,5 +57,10 @@ export const getExportTemplatesListFulfilled = (exportTemplates: CatalogItemType
 
 export const exportTemplateFullScreenPreview = (exportTemplateId: number) => ({
   type: SHOW_EXPORT_TEMPLATE_FULL_SCREEN_PREVIEW,
+  payload: exportTemplateId
+});
+
+export const showExportTemplateCompressedPreview = (exportTemplateId: number) => ({
+  type: SHOW_EXPORT_TEMPLATE_COMPRESSED_PREVIEW,
   payload: exportTemplateId
 });

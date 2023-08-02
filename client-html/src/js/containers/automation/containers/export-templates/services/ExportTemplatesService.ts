@@ -33,7 +33,11 @@ class ExportTemplatesService {
   }
   
   public getHighQualityPreview(id: number): Promise<any> {
-    return this.exportTemplatesApi.getHighQualityPreview(id);
+    return this.exportTemplatesApi.getPreview(id, false);
+  }
+
+  public getLowQualityPreview(id: number): Promise<any> {
+    return this.exportTemplatesApi.getPreview(id, true);
   }
 }
 
