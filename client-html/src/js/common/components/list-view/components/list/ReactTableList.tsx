@@ -56,6 +56,11 @@ interface ListTableProps extends Partial<TableListProps> {
   onChangeColumnsOrder: (arg: string[]) => void;
 }
 
+const reduceSelection = selection => selection.reduce((p, c) => {
+  p[c] = true;
+  return p;
+}, {});
+
 const Table = ({
    columnsBase,
    data,
@@ -73,15 +78,13 @@ const Table = ({
    sidebarWidth,
    recordsCount
   }: ListTableProps) => {
+  
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
   const [sorting, onSortingChange] = useState<ColumnSort[]>([]);
   const [columnVisibility, onColumnVisibilityChange] = useState<VisibilityState>({});
   const [columnSizing, onColumnSizingChange] = useState<ColumnSizingState>({});
   const [columnOrder, onColumnOrderChange] = useState<ColumnOrderState>([]);
-  const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>(selection.reduce((p, c) => {
-    p[c] = true;
-    return p;
-  }, {}));
+  const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>(reduceSelection(selection));
 
   const tableRef = useRef<any>();
 
@@ -144,6 +147,10 @@ const Table = ({
   useEffect(() => {
     onSortingChange(sortingInitial);
   }, [sortingInitial]);
+  
+  useEffect(() => {
+    onRowSelectionChange(reduceSelection(selection));
+  }, [selection]);
 
   const onScroll = e => {
     if (listRef.current) {

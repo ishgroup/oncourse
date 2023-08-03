@@ -17,8 +17,6 @@ const WaitingListCogWheel = memo<any>(props => {
     hasQePermissions
   } = props;
 
-  console.log(props);
-
   const hoSelectedOrNew = useMemo(() => selection.length === 0 || selection[0] === "NEW", [selection]);
 
   const onQuickEnrolment = useCallback(() => {
