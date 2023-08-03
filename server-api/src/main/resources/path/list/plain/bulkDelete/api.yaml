@@ -22,6 +22,6 @@ post:
     default:
       description: Unexpected error
   x-permission:
-    mask: edit
-    keyCode: ADMIN
-    errorMessage: Sorry, you have no permissions to bulk remove entities. Please contact your administrator.
+    mask: delete
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to delete this entity. Please contact your administrator
