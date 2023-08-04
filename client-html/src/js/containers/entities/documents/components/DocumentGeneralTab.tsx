@@ -9,7 +9,7 @@
 import React, { useCallback, useRef } from "react";
 import clsx from "clsx";
 import { connect } from "react-redux";
-import { arrayRemove, change, } from "redux-form";
+import { change, FieldArray, WrappedFieldArrayProps, } from "redux-form";
 import { createStyles, withStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -35,6 +35,8 @@ import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import IconButton from "@mui/material/IconButton";
 import { useHoverShowStyles } from "../../../../common/styles/hooks";
 import { useAppTheme } from "../../../../common/themes/ishTheme";
+import { Dispatch } from "redux";
+import { ShowConfirmCaller } from "../../../../model/common/Confirm";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {
@@ -111,20 +113,19 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   window.open(url);
 };
 
-const DocumentVersion = ({
+const DocumentVersionComp = ({
   classes,
   version,
   index,
-  dispatch, 
-  form, 
   showConfirm,
   hasOneVersion,
-  onCurrentChange
+  onCurrentChange,
+  remove
  }) => {
   
   const onDelete = () => {
     showConfirm({
-      onConfirm: () => dispatch(arrayRemove(form, "versions", index)),
+      onConfirm: () => remove(index),
       confirmMessage: "Version will be deleted permanently after save",
       confirmButtonText: "Delete"
     });
@@ -169,6 +170,35 @@ const DocumentVersion = ({
     </div>
   );
 };
+
+interface DocumentVersionsProps {
+  classes: any;
+  dispatch: Dispatch;
+  showConfirm: ShowConfirmCaller;
+  onCurrentChange: any;
+  hasOneVersion: boolean;
+}
+
+const DocumentVersions = (
+  {
+    fields,
+    classes,
+    showConfirm,
+    onCurrentChange,
+    hasOneVersion
+  }: WrappedFieldArrayProps & DocumentVersionsProps ) => <div>{fields.map((f, index) => {
+  const version = fields.get(index);
+  return <DocumentVersionComp
+    key={f}
+    classes={classes}
+    version={version}
+    index={index}
+    remove={fields.remove}
+    showConfirm={showConfirm}
+    onCurrentChange={(e, v) => onCurrentChange(e, v, index)}
+    hasOneVersion={hasOneVersion}
+  />;
+})}</div>;
 
 const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
   const {
@@ -366,22 +396,14 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           <div className="heading mb-2">
             History
           </div>
-          <div>
-            {Boolean(values.versions)
-              && values.versions.map((version, index) => (
-                <DocumentVersion
-                  key={"key_" + version.id || `new${index}`}
-                  classes={classes}
-                  version={version}
-                  index={index}
-                  dispatch={dispatch}
-                  form={form}
-                  showConfirm={showConfirm}
-                  onCurrentChange={(e, v) => onCurrentChange(e, v, index)}
-                  hasOneVersion={hasOneVersion}
-                />
-            ))}
-          </div>
+          <FieldArray
+            name="versions"
+            component={DocumentVersions}
+            classes={classes}
+            showConfirm={showConfirm}
+            onCurrentChange={onCurrentChange}
+            hasOneVersion={hasOneVersion}
+          />
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
           <Button variant="outlined" size="medium" color="secondary" onClick={onUploadClick}>
             UPLOAD NEW VERSION
