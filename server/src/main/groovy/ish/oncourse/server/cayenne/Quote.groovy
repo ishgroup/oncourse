@@ -56,6 +56,13 @@ class Quote extends _Quote implements ExpandableTrait{
 		return this.getQuoteLines()
 	}
 
+	@Override
+	List<AbstractInvoiceLine> getAbstractInvoiceLines() {
+		new ArrayList<AbstractInvoiceLine>(){{
+			addAll(quoteLines)
+		}}
+	}
+
 	void setContact(ContactInterface contact) {
 		if (contact instanceof Contact) {
 			super.setContact((Contact) contact)

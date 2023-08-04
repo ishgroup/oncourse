@@ -47,7 +47,6 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
-            document.versionId = dbDocument.currentVersion?.id
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
             document.tags = dbDocument.allTags.collect { it.id }
 

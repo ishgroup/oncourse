@@ -161,7 +161,7 @@ class AccountApiService extends EntityApiService<AccountDTO, Account, AccountDao
         if (!account.discounts.empty) {
             validator.throwClientErrorException(account?.id, 'id', 'Cannot delete account assigned to discounts.')
         }
-        if (!account.invoices.empty || !account.invoiceLines.empty || !account.prepaidInvoiceLines.empty) {
+        if (!account.invoices.empty || !account.abstractInvoiceLines.empty || !account.prepaidInvoiceLines.empty) {
             validator.throwClientErrorException(account?.id, 'id', 'Cannot delete account assigned to invoices.')
         }
         if (!account.payableTaxes.empty || !account.receivableTaxes.empty) {

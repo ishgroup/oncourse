@@ -192,4 +192,11 @@ class Account extends _Account implements AccountInterface {
 	String getSummaryDescription() {
 		return getAccountCode()
 	}
+
+	List<AbstractInvoiceLine> getAbstractInvoiceLines() {
+		return new ArrayList<AbstractInvoiceLine>(){{
+			addAll(invoiceLines)
+			addAll(quoteLines)
+		}}
+	}
 }

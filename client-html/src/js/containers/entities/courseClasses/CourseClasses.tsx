@@ -16,7 +16,6 @@ import {
   Account,
   ClassCost,
   ClassFundingSource,
-  Course,
   CourseClass,
   DeliveryMode,
   Enrolment,
@@ -261,6 +260,11 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Submissions", list: "assessmentSubmission", expression: "assessmentClass.courseClass.id" },
   { title: "Timetable", list: "timetable", expression: "courseClass.id" },
   { title: "Tutors", list: "contact", expression: "tutor.courseClassRoles.courseClass.id" },
+  {
+    title: "VET reporting",
+    list: "vetReporting",
+    expression: "student.enrolments.courseClass.id"
+  },
   {
     title: "Withdrawn students",
     list: "contact",

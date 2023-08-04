@@ -24,7 +24,6 @@ import ish.util.SecurityUtil
 import ish.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -48,19 +47,18 @@ class DocumentFunctions {
     static DocumentDTO getProfilePicture(Contact contact, DocumentService documentService) {
         Document profilePictureDocument = getProfilePictureDocument(contact)
         if (profilePictureDocument) {
-            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, documentService)
+            return toRestDocument(profilePictureDocument, documentService)
         }
         null
     }
 
-    static DocumentDTO toRestDocument(Document dbDocument, Long versionId, DocumentService documentService) {
+    static DocumentDTO toRestDocument(Document dbDocument, DocumentService documentService) {
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
-            document.versionId = versionId
             document.added = LocalDateUtils.dateToTimeValue(dbDocument.added)
             document.tags = dbDocument.allTags.collect { it.id }
-            DocumentVersion dbVersion = versionId ? dbDocument.versions.find { it.id == versionId } : dbDocument.currentVersion
+            DocumentVersion dbVersion = dbDocument.currentVersion
             document.thumbnail = dbVersion?.thumbnail
             AmazonS3Service s3Service
             if (documentService.usingExternalStorage) {
@@ -82,7 +80,7 @@ class DocumentFunctions {
         }
     }
 
-    static DocumentDTO toRestDocumentMinimized(Document dbDocument, Long versionId, DocumentService documentService) {
+    static DocumentDTO toRestDocumentMinimized(Document dbDocument, DocumentService documentService) {
         new DocumentDTO().with { document ->
             document.id = dbDocument.id
             document.name = dbDocument.name
@@ -374,14 +372,6 @@ class DocumentFunctions {
             context.deleteObjects(it)
         }
 
-        documentRelations.findAll { it.document.id in documentsToSave }.each { relation ->
-            DocumentDTO document = documents.find { it.id == relation.document.id }
-            if (document.versionId) {
-                relation.documentVersion = SelectById.query(DocumentVersion, document.versionId).selectOne(context)
-            }
-        }
-
-
         ObjectSelect.query(Document)
                 .where(Document.ID.in(documentsToSave.findAll { !(it in currentDocs) }))
                 .prefetch(Document.VERSIONS.joint())
@@ -391,10 +381,6 @@ class DocumentFunctions {
                 relation.attachedRelation = relatedObject
                 relation.document = dbDocument
                 relation.entityIdentifier = relatedObject.class.simpleName
-                Long versionId = documents.find { it.id == dbDocument.id }?.versionId
-                if (versionId) {
-                    relation.documentVersion = dbDocument.versions.find { it.id == versionId }
-                }
                 relation
             }
         }

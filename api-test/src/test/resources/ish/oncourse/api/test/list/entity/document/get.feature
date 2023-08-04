@@ -23,7 +23,6 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
         {
         "id":200,
         "name":"defaultPrivateDocument",
-        "versionId":null,
         "added":"#ignore",
         "tags":[],
         "thumbnail":null,
@@ -58,7 +57,6 @@ Feature: Main feature for all GET requests with path 'list/entity/document'
         {
         "id":201,
         "name":"defaultPublicDocument",
-        "versionId":null,
         "added":"#ignore",
         "tags":[],
         "thumbnail":null,
