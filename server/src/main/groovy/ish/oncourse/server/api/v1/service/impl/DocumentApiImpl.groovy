@@ -38,12 +38,9 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocume
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.createDocumentVersion
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateForSave
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForDelete
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateVersionForSave
 
 class DocumentApiImpl implements DocumentApi {
-
-    private static Logger logger = LogManager.logger
 
     @Inject
     private ICayenneService cayenneService
@@ -131,8 +128,7 @@ class DocumentApiImpl implements DocumentApi {
         dbDocument.versions
                 .findAll { removedVersions.contains(it.id) }
                 .each { version ->
-                    checkForBadRequest(validateVersionForDelete(version))
-                    deleteDocumentVersion(version,context,s3Service,dbDocument.fileUUID)
+                    deleteDocumentVersion(version, context, s3Service, dbDocument.fileUUID)
                 }
 
         List<Long> savedVersions = CollectionUtils.intersection(

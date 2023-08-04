@@ -109,6 +109,13 @@ class DocumentApiService extends TaggableApiService<DocumentDTO, Document, Docum
             validator.throwClientErrorException(id, 'versions', 'At least one document version is required.')
         }
 
+        if (restModel.versions.findAll {it.current}.size() == 0) {
+            validator.throwClientErrorException(id, 'versions', 'At least one document version must be current.')
+        }
+
+        if (restModel.versions.findAll {it.current}.size() > 1) {
+            validator.throwClientErrorException(id, 'versions', 'Document cannot contain 2 current versions.')
+        }
     }
 
     @Override
