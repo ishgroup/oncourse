@@ -20,7 +20,6 @@ import ish.oncourse.server.api.v1.model.ReportDTO;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.configs.AutomationModel;
 import ish.oncourse.server.configs.ReportModel;
-import ish.oncourse.server.report.ReportBuilder;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
 import ish.print.PrintTransformationsFactory;
 import ish.util.LocalDateUtils;
@@ -45,6 +44,13 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
 
     @Override
     public ReportDTO toRestModel(Report dbReport) {
+        var dto = toRestWithoutBodyAndPreviewModel(dbReport);
+        dto.setPreview(ish.util.ImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
+        dto.setBody(dbReport.getBody());
+        return dto;
+    }
+
+    private ReportDTO toRestWithoutBodyAndPreviewModel(Report dbReport) {
         var dto = super.toRestModel(dbReport);
 
         if ( dbReport.getBackground() != null) {
@@ -52,12 +58,13 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
         }
         dto.setSubreport(dbReport.getIsVisible());
         dto.setSortOn(dbReport.getSortOn() != null ? dbReport.getSortOn() : "");
-        dto.setPreview(ish.util.ImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
+        dto.setPreview(null);
+        dto.setBody(null);
         return dto;
     }
 
-    private ReportDTO toRestModel(Report dbReport, String entityName) {
-        var dto = toRestModel(dbReport);
+    public ReportDTO toRestWithoutBodyAndPreviewModel(Report dbReport, String entityName) {
+        var dto = toRestWithoutBodyAndPreviewModel(dbReport);
 
         var transformation = PrintTransformationsFactory.getPrintTransformationFor(entityName, dbReport.getEntity(), dbReport.getKeyCode());
         if (transformation != null && !transformation.getFields().isEmpty()) {
@@ -108,7 +115,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     }
 
     public List<ReportDTO> getAutomationFor(String entityName) {
-        return entityDao.getForEntity(entityName, cayenneService.getNewContext()).stream().map(it -> toRestModel(it, entityName)).collect(Collectors.toList());
+        return entityDao.getForEntity(entityName, cayenneService.getNewContext()).stream().map(it -> toRestWithoutBodyAndPreviewModel(it, entityName)).collect(Collectors.toList());
     }
 
     public Report updateInternal(ReportDTO dto) {
