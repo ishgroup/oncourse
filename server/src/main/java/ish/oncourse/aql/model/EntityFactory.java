@@ -102,7 +102,11 @@ public class EntityFactory {
             TaggingRelationsRoom.class,
             TaggingRelationsSite.class,
             TaggingRelationsVoucherProduct.class,
-            TaggingRelationsWaitingList.class
+            TaggingRelationsWaitingList.class,
+            EnrolmentAbstractInvoiceLines.class,
+            CourseClassAbstractInvoiceLines.class,
+            TaxAbstractInvoiceLines.class,
+            AccountAbstractInvoiceLines.class
     );
 
     private final ObjectContext context;

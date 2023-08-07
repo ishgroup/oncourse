@@ -48,10 +48,6 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
 
     abstract void setCourseClass(CourseClass courseClass)
 
-    abstract Enrolment getEnrolment()
-
-    abstract void setEnrolment(Enrolment enrolment)
-
     abstract List<InvoiceLineDiscount> getInvoiceLineDiscounts()
 
 
