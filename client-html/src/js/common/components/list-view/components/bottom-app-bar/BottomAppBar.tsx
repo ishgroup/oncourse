@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import IconButton from "@mui/material/IconButton";
 import PlusIcon from "@mui/icons-material/Add";
@@ -302,6 +302,20 @@ const BottomAppBar = (
       </MenuItem>
     )].filter(i => i);
 
+    const findRelatedTitle = useMemo(() => {
+      switch (true) {
+        case (selection.length && selection.length < PLAIN_LIST_MAX_PAGE_SIZE):
+        default:
+          return "Find Related";
+        case (!findRelated):
+          return "No find related filters found";
+        case (fetch.pending):
+          return "Loading...";
+        case (records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE):
+          return `Not available for greater than ${PLAIN_LIST_MAX_PAGE_SIZE} records`;
+      }
+    }, [findRelated, selection, fetch.pending, records.filteredCount]);
+
     return (
       <>
         <ExecuteScriptModal
@@ -326,14 +340,14 @@ const BottomAppBar = (
 
           <div className={clsx("centeredFlex", !querySearch && "flex-fill")}>
             {!querySearch && (
-              <Tooltip title="Find Related" disableFocusListener>
+              <Tooltip title={findRelatedTitle} disableFocusListener>
                 <div className={clsx(querySearch && classes.findRelated)}>
                   <IconButton
                     classes={{
                       root: clsx(classes.actionsBarButton, classes.customIconButton),
                       disabled: classes.buttonDisabledOpacity
                     }}
-                    disabled={!findRelated || fetch.pending || records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE}
+                    disabled={(selection.length > 0 && selection.length < PLAIN_LIST_MAX_PAGE_SIZE) ? false : (!findRelated || fetch.pending || records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE)}
                     className="ml-1"
                     aria-owns={showFindRelatedMenu ? "related" : undefined}
                     aria-haspopup="true"
