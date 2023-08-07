@@ -594,9 +594,9 @@
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
   <Node id="2" isWebVisible="1" nodeType="1" name="ClassWithoutSpaceTag"
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-  <Node id="3" isWebVisible="1" nodeType="2" name="Course With space Tag"
+  <Node id="3" isWebVisible="1" nodeType="1" name="Course With space Tag"
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-  <Node id="4" isWebVisible="1" nodeType="2" name="CourseWithoutSpaceTag"
+  <Node id="4" isWebVisible="1" nodeType="1" name="CourseWithoutSpaceTag"
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
   <NodeRelation id="1" entityIdentifier="2" entityRecordId="202" nodeId="1"
                 createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>

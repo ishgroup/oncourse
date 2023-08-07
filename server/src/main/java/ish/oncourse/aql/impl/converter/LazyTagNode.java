@@ -1,16 +1,14 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2022.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.model.Entity;
@@ -26,20 +24,13 @@ import java.util.List;
 
 import static ish.util.TaggableUtil.resolveTaggableClass;
 
-/**
- * Lazy node that resolves '#tag' expressions.
- *
-
- */
-public class LazyTagNode extends LazyExprNodeWithBasePathResolver {
+public abstract class LazyTagNode extends LazyExprNodeWithBasePathResolver{
     protected static final String TAGGING_RELATIONS = "taggingRelations";
 
     private final String tag;
-    private final ParserRuleContext ruleContext;
 
-    public LazyTagNode(String tag, ParserRuleContext ruleContext) {
+    public LazyTagNode(String tag) {
         this.tag = tag;
-        this.ruleContext = ruleContext;
     }
 
     @Override
@@ -47,16 +38,14 @@ public class LazyTagNode extends LazyExprNodeWithBasePathResolver {
         return parent;
     }
 
-    @Override
-    public SimpleNode resolveSelf(CompilationContext ctx) {
-        var path = resolveBasePath();
+    protected Entity resolveTaggableEntity(String path, CompilationContext ctx){
         Entity taggedEntity = ctx.getQueryRootEntity();
         if(!path.startsWith(TAGGING_RELATIONS))
             taggedEntity = EntityPathUtils.resolvePathToTaggable(path, ctx);
-        if(taggedEntity == null) {
-            return null;
-        }
+        return taggedEntity;
+    }
 
+    protected SimpleNode resolveDefaultTagNode(String path, Entity taggedEntity){
         if(!path.isEmpty()) {
             path += '.';
         }
@@ -78,11 +67,10 @@ public class LazyTagNode extends LazyExprNodeWithBasePathResolver {
         } else {
             node = createTaggedNode(path, resolveTaggableClass(taggedEntity));
         }
-
         return node;
     }
 
-    private SimpleNode createTaggedNode(String path, TaggableClasses tagEntity) {
+    protected SimpleNode createTaggedNode(String path, TaggableClasses tagEntity) {
         SimpleNode taggedNode = new ASTAnd();
         var aliasName = tag.replace(".", "_");
         var map = Collections.singletonMap(aliasName, "taggingRelations+");
@@ -96,8 +84,13 @@ public class LazyTagNode extends LazyExprNodeWithBasePathResolver {
         var entityIdentifier = new ASTEqual(entityPath, tagEntity.getDatabaseValue());
         var tagName = new ASTEqual(namePath, tag);
 
+        var tagNodePath = new ASTObjPath(path + aliasName + ".tag+.nodeType");
+        tagNodePath.setPathAliases(map);
+        var tagNodeType = new ASTEqual(tagNodePath, NodeType.TAG.getDatabaseValue());
+
         ExpressionUtil.addChild(taggedNode, entityIdentifier, 0);
-        ExpressionUtil.addChild(taggedNode, tagName, 1);
+        ExpressionUtil.addChild(taggedNode, tagNodeType, 1);
+        ExpressionUtil.addChild(taggedNode, tagName, 2);
 
         return taggedNode;
     }

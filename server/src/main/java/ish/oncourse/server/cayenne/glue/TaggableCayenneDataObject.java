@@ -147,7 +147,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	public List<Tag> getAllTags() {
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
-			if (relation.getTag() != null) {
+			if (relation.getTag() != null && relation.getTag().getParentTag() != null) {
 				result.add(relation.getTag());
 			}
 		}

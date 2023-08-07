@@ -61,6 +61,8 @@ public class ConverterDirectory {
                 new IdSetPredicateConverter());
         registerConverter(AqlParser.TagPredicateContext.class,
                 new TagConverter());
+        registerConverter(AqlParser.NotTagPredicateContext.class,
+                new NotTagConverter());
         registerConverter(AqlParser.UnaryOperatorPredicateContext.class,
                 new UnaryOpConverter());
         registerConverter(AqlParser.EntityRootSearchContext.class,

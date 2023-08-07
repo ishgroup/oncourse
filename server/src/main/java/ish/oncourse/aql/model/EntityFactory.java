@@ -12,8 +12,11 @@
 package ish.oncourse.aql.model;
 
 import ish.oncourse.aql.model.attribute.*;
+import ish.oncourse.aql.model.attribute.tagging.*;
 import ish.oncourse.aql.model.attribute.tagging.relations.*;
+import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.CustomFieldType;
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.map.ObjEntity;
@@ -102,7 +105,12 @@ public class EntityFactory {
             TaggingRelationsRoom.class,
             TaggingRelationsSite.class,
             TaggingRelationsVoucherProduct.class,
-            TaggingRelationsWaitingList.class
+            TaggingRelationsWaitingList.class,
+            TagsAttribute.class,
+            CheckedTasksAttribute.class,
+            UncheckedTasksAttribute.class,
+            CompletedChecklistsAttribute.class,
+            UncompletedChecklistsAttribute.class
     );
 
     private final ObjectContext context;
@@ -141,7 +149,11 @@ public class EntityFactory {
     Entity createEntity(ObjEntity entity) {
         var entityName = entity.getName();
         var syntheticAttributesForEntity
-                = syntheticAttributes.getOrDefault(entity.getJavaClassName(), Collections.emptyList());
+                = syntheticAttributes.getOrDefault(entity.getJavaClassName(), new ArrayList<>());
+        if(entityIsTaggable(entityName)){
+            var taggableAttributes = syntheticAttributes.getOrDefault(TaggableCayenneDataObject.class.getName(), new ArrayList<>());
+            syntheticAttributesForEntity.addAll(taggableAttributes);
+        }
         if(ENTITIES_WITH_CUSTOM_FIELDS.contains(entityName)) {
             return new Entity(this, entity, customFieldLookup(entityName), syntheticAttributesForEntity);
         }
@@ -160,6 +172,10 @@ public class EntityFactory {
         Map<String, Class<?>> customFields = new HashMap<>();
         customFieldsNames.forEach(field -> customFields.put(field, CustomFieldMarker.class));
         return customFields;
+    }
+
+    private boolean entityIsTaggable(String entityName){
+        return TagFunctions.taggableClassesBidiMap.containsKey(entityName);
     }
 
 }

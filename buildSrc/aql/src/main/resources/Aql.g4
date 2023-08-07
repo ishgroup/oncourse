@@ -21,6 +21,7 @@ predicate
     // Identifier with '{expression}' block will be resolved as segment
     | (pathSegment SEPARATOR)* pathSegment  # PathSegmentPredicate
     | path? tag                             # TagPredicate
+    | path? notTag                          # NotTagPredicate
     | path unaryOperator                    # UnaryOperatorPredicate
     | LIKE termOp                           # EntityRootSearch
     | filterTag                             # FilterTagReference
@@ -114,6 +115,8 @@ idsSet : '[' value (',' value)* ']';
 amount : (IntegerLiteral unit)+;
 
 tag : '#' (Identifier | SingleQuotedStringLiteral | DoubleQuotedStringLiteral);
+
+notTag : 'not #' (Identifier | SingleQuotedStringLiteral | DoubleQuotedStringLiteral);
 
 filterTag : '@' (Identifier | SingleQuotedStringLiteral | DoubleQuotedStringLiteral);
 

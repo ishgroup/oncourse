@@ -17,6 +17,11 @@ import org.apache.cayenne.exp.parser.ASTPath;
  */
 public abstract class LazyExprNodeWithBasePathResolver extends LazyExpressionNode implements BasePathProvider{
     protected static final String TAGGING_RELATIONS = "taggingRelations";
+    protected static final String TAGS = "tags";
+    protected static final String CHECKED_TASKS = "checkedTasks";
+    protected static final String UNCHECKED_TASKS = "uncheckedTasks";
+    protected static final String COMPLETED_CHECKLISTS = "completedChecklists";
+    protected static final String NOT_COMPLETED_CHECKLISTS = "notCompletedChecklists";
 
     /**
      * @return not null path
