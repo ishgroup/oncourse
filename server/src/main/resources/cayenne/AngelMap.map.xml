@@ -5475,7 +5475,7 @@
 
 	<obj-relationship name="paymentInLines" source="AbstractInvoice" target="PaymentInLine" deleteRule="Cascade" db-relationship-path="paymentInLines"/>
 	<obj-relationship name="paymentOutLines" source="AbstractInvoice" target="PaymentOutLine" deleteRule="Cascade" db-relationship-path="paymentOutLines"/>
-	<!--<obj-relationship name="invoiceLines" source="AbstractInvoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>-->
+	<obj-relationship name="invoiceLines" source="AbstractInvoice" target="InvoiceLine" deleteRule="Cascade" db-relationship-path="invoiceLines"/>
 	<obj-relationship name="noteRelations" source="AbstractInvoice" target="InvoiceNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
 	<obj-relationship name="attachmentRelations" source="AbstractInvoice" target="InvoiceAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="authorisedRebillingCard" source="AbstractInvoice" target="PaymentIn" deleteRule="Nullify" db-relationship-path="authorisedRebillingCard"/>
