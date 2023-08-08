@@ -2911,7 +2911,7 @@
 		<qualifier><![CDATA[entityIdentifier = "Quote"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="QuoteLine" superEntityName="AbstractInvoiceLine" className="ish.oncourse.server.cayenne.QuoteLine">
-		<qualifier><![CDATA[invoice.type = enum:ish.common.types.InvoiceType.QUOTE]]></qualifier>
+		<qualifier><![CDATA[db:invoice.type = enum:ish.common.types.InvoiceType.QUOTE]]></qualifier>
 	</obj-entity>
 
 	<obj-entity name="SavedFind" className="ish.oncourse.server.cayenne.SavedFind" clientClassName="ish.oncourse.cayenne.SavedFind" dbEntityName="SavedFind" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
