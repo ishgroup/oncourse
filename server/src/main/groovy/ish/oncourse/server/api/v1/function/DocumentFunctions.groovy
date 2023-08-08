@@ -268,13 +268,6 @@ class DocumentFunctions {
         return null
     }
 
-    static ValidationErrorDTO validateVersionForDelete(DocumentVersion documentVersion) {
-        if (documentVersion.current) {
-            return new ValidationErrorDTO(null, 'versions', "Failed to delete the document version. The '${documentVersion.fileName}' is current and cannot be deleted unless you select a other version.")
-        }
-        return null
-    }
-
 
     static ValidationErrorDTO validateForSave(String filename, String name, DocumentVisibilityDTO access, List<Long> tags, Boolean shared, ObjectContext context) {
         if (isBlank(name)) {

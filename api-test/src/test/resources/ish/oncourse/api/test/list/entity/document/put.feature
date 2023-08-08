@@ -198,7 +198,7 @@ Feature: Main feature for PUT request with path 'list/entity/document/'
         And request documentToUpdate
         When method PUT
         Then status 400
-        And match $.errorMessage == "Failed to delete the document version. The 'testDoc8.2.txt' is current and cannot be deleted unless you select a other version."
+        And match $.errorMessage == "At least one document version must be current."
 
 
     Scenario: (+) Try to delete all document versions. Validation error expected

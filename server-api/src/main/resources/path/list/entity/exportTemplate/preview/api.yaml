@@ -1,5 +1,5 @@
 get:
-  operationId: getHighQualityPreview
+  operationId: getPreview
   description: retrieves preview of report from database
   tags:
     - ExportTemplate
@@ -10,6 +10,11 @@ get:
       format: int64
       required: true
       description: Unique identifier of pdf background record to fetch
+    - name: compressed
+      in: query
+      type: boolean
+      required: false
+      description: Set it to true to get compressed image. False by default
   produces:
     - application/pdf
   responses:
