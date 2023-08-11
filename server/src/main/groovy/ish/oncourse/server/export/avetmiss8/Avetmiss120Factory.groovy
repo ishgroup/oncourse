@@ -492,6 +492,9 @@ class Avetmiss120Factory extends AvetmissFactory {
                                 case VETFeeExemptionType.UNSET:
                                     line.setFeeExemption("Z")
                                     break
+                                case VETFeeExemptionType.OS:
+                                    line.setFeeExemption("OS")
+                                    break
                                 default:
                                     line.setFeeExemption("Z")
                                     break
