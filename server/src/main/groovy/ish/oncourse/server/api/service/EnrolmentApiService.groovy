@@ -107,6 +107,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.vetPurchasingContractID = enrolment.vetPurchasingContractID
             enrolmentDTO.outcomeIdTrainingOrg = enrolment.outcomeIdTrainingOrg
             enrolmentDTO.vetTrainingContractID = enrolment.vetTrainingContractID
+            enrolmentDTO.vetPurchasingContractScheduleID = enrolment.vetPurchasingContractScheduleID
             enrolmentDTO.cricosConfirmation = enrolment.cricosConfirmation
             enrolmentDTO.vetFeeIndicator = enrolment.vetFeeIndicator
             enrolmentDTO.trainingPlanDeveloped = enrolment.trainingPlanDeveloped
@@ -171,6 +172,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditType = CREDIT_TYPE_MAP.getByValue(dto.creditType)
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
         enrolment.studentLoanStatus = dto.studentLoanStatus.getDbType()
+        enrolment.vetPurchasingContractScheduleID = dto.vetPurchasingContractScheduleID
 
         updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags, EnrolmentTagRelation, context)
@@ -203,6 +205,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         validateLength(id, dto.vetFundingSourceStateID, 'vetFundingSourceStateID', 3)
         validateLength(id, dto.vetPurchasingContractID, 'vetPurchasingContractID', 12)
         validateLength(id, dto.vetTrainingContractID, 'vetTrainingContractID', 10)
+        validateLength(id, dto.vetPurchasingContractScheduleID, 'vetPurchasingContractScheduleID', 3)
 
         if (dto.studentIndustryANZSICCode && (dto.studentIndustryANZSICCode > 99 || dto.studentIndustryANZSICCode < 1)) {
             validator.throwClientErrorException(id, 'studentIndustryANZSICCode', 'Status code must be between 1-99.')
