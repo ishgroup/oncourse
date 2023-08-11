@@ -179,7 +179,15 @@ public enum VETFeeExemptionType implements DisplayableExtendedEnumeration<Intege
 	 * VIC: None, WA: No Concession
 	 */
 	@API
-	Z(8, "VIC: None, WA: No Concession  (Z)");
+	Z(8, "VIC: None, WA: No Concession  (Z)"),
+
+	/**
+	 * Database value: 9
+	 *
+	 * Outreach officer/officers engagement
+	 */
+	@API
+	OS(19, "ACE activity supported by the Outreach Officer (OS)");
 
 	private final Integer value;
 	private String displayName;
