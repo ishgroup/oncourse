@@ -16,7 +16,7 @@ import {
   validateAssociatedCourseIdentifier,
   validateCharacter,
   validateCricosConfirmation,
-  validateOutcomeIdTrainingOrg,
+  validateOutcomeIdTrainingOrg, validatePurchasingContractScheduleIdentifier,
   validateVetFundingSourceState,
   validateVetPurchasingContractIdentifier,
 } from "../../../../common/utils/validation";
@@ -139,6 +139,15 @@ const EnrolmentDetails = (
           name="vetPurchasingContractID"
           label="Default purchasing contract identifier (NSW Commitment ID)"
           validate={validateVetPurchasingContractIdentifier}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="vetPurchasingContractScheduleID"
+          label="Purchasing Contract Schedule Identifier"
+          validate={validatePurchasingContractScheduleIdentifier}
         />
       </Grid>
 
