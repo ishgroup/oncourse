@@ -184,6 +184,15 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                             if(dbScript.entityAttribute)
                                 st.parameterId = Long.parseLong(dbScript.entityAttribute)
                             break
+                        case SystemEventType.TAG_ADDED:
+                            st.type = TAG_ADDED
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                        case SystemEventType.TAG_REMOVED:
+                            st.type = TAG_REMOVED
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
                         default:
                             throw new ServerErrorException("Unexpected error: unknown system event trigger type '$dbScript.systemEventType' in script '$dbScript.name'", Response.Status.INTERNAL_SERVER_ERROR)
                     }
@@ -312,6 +321,24 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             case CHECKLIST_COMPLETED:
                 dbScript.triggerType = TriggerType.ONCOURSE_EVENT
                 dbScript.systemEventType = SystemEventType.CHECKLIST_COMPLETED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
+                break
+            case TAG_ADDED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.TAG_ADDED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
+                break
+            case TAG_REMOVED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.TAG_REMOVED
                 dbScript.entityClass = scriptDTO.trigger.entityName
                 if(scriptDTO.trigger.parameterId)
                     dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
