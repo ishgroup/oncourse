@@ -58,7 +58,7 @@ trait EnrolmentExemptionTypeDTOTrait {
                 return VETFeeExemptionType.V
             case EnrolmentExemptionTypeDTO.VIC_NONE_WA_NO_CONCESSION_Z_:
                 return VETFeeExemptionType.Z
-            case EnrolmentExemptionTypeDTO.ACE_ACTIVITY_SUPPORTED_BY_THE_OUTREACH_OFFICER_OS_:
+            case EnrolmentExemptionTypeDTO.OUTREACH_SUPPORT_OS_:
                 return VETFeeExemptionType.OS
             default:
                 throw new IllegalArgumentException("${toString()}")
@@ -111,7 +111,7 @@ trait EnrolmentExemptionTypeDTOTrait {
             case VETFeeExemptionType.Z:
                 return EnrolmentExemptionTypeDTO.VIC_NONE_WA_NO_CONCESSION_Z_
             case VETFeeExemptionType.OS:
-                return EnrolmentExemptionTypeDTO.ACE_ACTIVITY_SUPPORTED_BY_THE_OUTREACH_OFFICER_OS_
+                return EnrolmentExemptionTypeDTO.OUTREACH_SUPPORT_OS_
             default:
                 throw new IllegalArgumentException("$dataType.displayName")
         }

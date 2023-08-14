@@ -184,10 +184,10 @@ public enum VETFeeExemptionType implements DisplayableExtendedEnumeration<Intege
 	/**
 	 * Database value: 9
 	 *
-	 * Outreach officer/officers engagement
+	 * Outreach Support
 	 */
 	@API
-	OS(19, "ACE activity supported by the Outreach Officer (OS)");
+	OS(19, "Outreach Support (OS)");
 
 	private final Integer value;
 	private String displayName;
