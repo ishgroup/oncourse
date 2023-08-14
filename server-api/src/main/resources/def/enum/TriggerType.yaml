@@ -1,3 +1,4 @@
+
 type: string
 description: List of repeat types
 enum:
@@ -15,6 +16,8 @@ enum:
   - Payslip paid
   - Checklist task checked
   - Checklist completed
+  - Tag added
+  - Tag removed
 
 
 

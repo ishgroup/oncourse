@@ -52,10 +52,18 @@ class TagRelation extends _TagRelation implements Queueable {
 			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_TASK_CHECKED, this))
 			if(!recordTagIds.containsAll(allTagChilds))
 				return
-			eventService .postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_COMPLETED, this))
-		}
+			eventService.postEvent(SystemEvent.valueOf(SystemEventType.CHECKLIST_COMPLETED, this))
+		} else
+			eventService.postEvent(SystemEvent.valueOf(SystemEventType.TAG_ADDED, this))
 	}
-/**
+
+	@Override
+	protected void postRemove() {
+		if(tag.nodeType == NodeType.TAG)
+			eventService.postEvent(SystemEvent.valueOf(SystemEventType.TAG_REMOVED, this))
+	}
+
+	/**
 	 * To be overridden returning a constant from the TaggableClasses enum.
 	 * @return
 	 */
