@@ -15,22 +15,21 @@ import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.service.ReportApiService
-import ish.oncourse.server.document.DocumentService
-import ish.oncourse.server.preference.UserPreferenceService
-
-import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
-import ish.oncourse.server.api.v1.function.export.CertificatePrintFilter
-import ish.oncourse.server.api.v1.function.export.CertificatePrintPreProcessor
-import ish.oncourse.server.api.v1.function.export.PrintFilter
-import ish.oncourse.server.api.v1.function.export.PrintPreProcessor
-import ish.oncourse.server.api.v1.function.export.PrintRequestBuilder
+import ish.oncourse.server.api.v1.function.export.*
 import ish.oncourse.server.api.v1.model.PrintRequestDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.PdfApi
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.concurrent.ExecutorManager
+import ish.oncourse.server.document.DocumentService
+import ish.oncourse.server.messaging.DocumentParam
+import ish.oncourse.server.messaging.MailDeliveryService
+import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.print.PrintWorker
+import ish.oncourse.server.scripting.api.MailDeliveryParamBuilder
+import ish.oncourse.server.scripting.api.SmtpParameters
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.users.SystemUserService
 import ish.print.PrintRequest
@@ -44,18 +43,23 @@ import javax.ws.rs.core.Context
 import java.time.LocalDateTime
 import java.util.concurrent.Callable
 
+import static ish.oncourse.server.api.v1.function.CommonFunctions.badRequest
+
 @CompileStatic
 class PdfApiImpl implements PdfApi {
 
     private static Logger logger = LogManager.logger
 
     private final Map<String, ? extends PrintFilter> printFilters = [
-            (Certificate.class.simpleName)  : new CertificatePrintFilter()
+            (Certificate.class.simpleName): new CertificatePrintFilter()
     ]
 
     private final Map<String, ? extends PrintPreProcessor> preProcessors = [
-            (Certificate.class.simpleName)  : new CertificatePrintPreProcessor()
+            (Certificate.class.simpleName): new CertificatePrintPreProcessor()
     ]
+
+    private static final String RESULT_EMAIL_SUBJECT = "Ish onCourse report printing was completed"
+    private static final String RESULT_EMAIL_DOCUMENT_NAME = "Result.pdf"
 
     @Inject
     private ICayenneService cayenneService
@@ -80,6 +84,12 @@ class PdfApiImpl implements PdfApi {
 
     @Inject
     private UserPreferenceService userPreferenceService
+
+    @Inject
+    private MailDeliveryService mailDeliveryService
+
+    @Inject
+    private PreferenceController preferenceController
 
     @Context
     private HttpServletResponse response
@@ -106,6 +116,8 @@ class PdfApiImpl implements PdfApi {
                 systemUserService.currentUser
         )
 
+        printRequest.emailToSent = "dmitry@ish.com.au"
+
         executorManager.submit(new Callable<Object>() {
             @Override
             Object call() throws Exception {
@@ -120,6 +132,20 @@ class PdfApiImpl implements PdfApi {
 
                 PrintWorker worker = new PrintWorker(request, cayenneService, documentService, userPreferenceService)
                 worker.run()
+
+                if (printRequest.emailToSent && !worker.result.error) {
+                    def documentParam = DocumentParam.valueOf(RESULT_EMAIL_DOCUMENT_NAME, worker.result.result)
+                    def smtpParams = new SmtpParameters(
+                            preferenceController.getEmailFromAddress(),
+                            preferenceController.getEmailFromName(),
+                            printRequest.emailToSent,
+                            RESULT_EMAIL_SUBJECT,
+                            List.of(documentParam)
+                    )
+
+                    def mailDeliveryParam = MailDeliveryParamBuilder.valueOf(smtpParams).build()
+                    mailDeliveryService.sendEmail(mailDeliveryParam)
+                }
                 worker.result
             }
         })
