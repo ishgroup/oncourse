@@ -22,6 +22,7 @@ import ish.oncourse.server.api.v1.model.PrintRequestDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.PdfApi
 import ish.oncourse.server.cayenne.Certificate
+import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.messaging.DocumentParam
@@ -34,6 +35,7 @@ import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.server.users.SystemUserService
 import ish.print.PrintRequest
 import ish.print.PrintResult
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -58,7 +60,7 @@ class PdfApiImpl implements PdfApi {
             (Certificate.class.simpleName): new CertificatePrintPreProcessor()
     ]
 
-    private static final String RESULT_EMAIL_SUBJECT = "Ish onCourse report printing was completed"
+    private static final String RESULT_EMAIL_SUBJECT_PATTERN = "Your onCourse report is ready - %s"
     private static final String RESULT_EMAIL_DOCUMENT_NAME = "Result.pdf"
 
     @Inject
@@ -135,11 +137,13 @@ class PdfApiImpl implements PdfApi {
 
                 if (printRequest.emailToSent && !worker.result.error) {
                     def documentParam = DocumentParam.valueOf(RESULT_EMAIL_DOCUMENT_NAME, worker.result.result)
+                    def report = SelectById.query(Report, printRequest.report).selectFirst(cayenneService.newReadonlyContext)
+
                     def smtpParams = new SmtpParameters(
                             preferenceController.getEmailFromAddress(),
                             preferenceController.getEmailFromName(),
                             printRequest.emailToSent,
-                            RESULT_EMAIL_SUBJECT,
+                            String.format(RESULT_EMAIL_SUBJECT_PATTERN, report.name),
                             List.of(documentParam)
                     )
 
