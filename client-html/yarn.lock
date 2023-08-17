@@ -7146,10 +7146,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-ish-ui@1.0.0-alpha.31:
-  version "1.0.0-alpha.31"
-  resolved "https://registry.yarnpkg.com/ish-ui/-/ish-ui-1.0.0-alpha.31.tgz#18f49a65ba98412858760af516c55fe0f45dc9cd"
-  integrity sha512-u2wy86Kz8PmOQ0oMYJLWVpdwfAZPkr1bv5nkP1VK+vgJNtEaXf3dwYBeMd/LmRdu80xUHQIuArXADE6gaS4M9w==
+ish-ui@1.0.0-alpha.32:
+  version "1.0.0-alpha.32"
+  resolved "https://registry.yarnpkg.com/ish-ui/-/ish-ui-1.0.0-alpha.32.tgz#4b7b3044474166407d46701013f5c06a384cd3aa"
+  integrity sha512-wvZ2xP73hBFcJw7QiysOjo/rIiYzOSj0DmTEgY3nQDJOeVAzA5Wy1eeCMMSmyXBg8HthsGbuMfbbeAjfv6Fe+g==
   dependencies:
     "@ckeditor/ckeditor5-autoformat" "35.1.0"
     "@ckeditor/ckeditor5-basic-styles" "35.1.0"

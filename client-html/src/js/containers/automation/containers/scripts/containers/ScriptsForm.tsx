@@ -25,8 +25,7 @@ import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
 import clsx from "clsx";
 import {
-  AppTheme,
-  DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL,
+  AppTheme, DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL,
   formatRelativeDate,
   InfoPill,
   ShowConfirmCaller,
@@ -34,28 +33,30 @@ import {
 } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { arrayInsert, change, FieldArray, Form, initialize } from "redux-form";
-import BoltIcon from "../../../../../../images/icon-bolt.svg";
-import ScriptIcon from "../../../../../../images/icon-script.svg";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { mapSelectItems } from "../../../../../common/utils/common";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
 import { ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import getConfigActions from "../../../components/ImportExportConfig";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import { setScriptComponents } from "../actions";
 import AddScriptAction from "../components/AddScriptAction";
 import ScriptCard from "../components/cards/CardBase";
-import CardsRenderer from "../components/cards/CardsRenderer";
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
-import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent } from "../constants";
+import { setScriptComponents } from "../actions";
+import CardsRenderer from "../components/cards/CardsRenderer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import {
+  getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent
+} from "../constants";
+import BoltIcon from "../../../../../../images/icon-bolt.svg";
+import ScriptIcon from "../../../../../../images/icon-script.svg";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -165,7 +166,9 @@ const entityNameTypes: TriggerType[] = [
   'On create and edit',
   'On delete',
   'Checklist task checked',
-  'Checklist completed'
+  'Checklist completed',
+  'Tag added',
+  'Tag removed'
 ];
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
