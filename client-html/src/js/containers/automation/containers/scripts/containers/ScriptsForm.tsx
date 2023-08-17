@@ -63,7 +63,6 @@ import InfoPill from "../../../../../common/components/layout/InfoPill";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import getConfigActions from "../../../components/ImportExportConfig";
-import { validateForbiddenSymbols } from "../../../../../common/utils/validation";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
@@ -173,7 +172,9 @@ const entityNameTypes: TriggerType[] = [
   'On create and edit',
   'On delete',
   'Checklist task checked',
-  'Checklist completed'
+  'Checklist completed',
+  'Tag added',
+  'Tag removed'
 ];
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
