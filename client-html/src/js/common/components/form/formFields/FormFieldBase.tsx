@@ -6,6 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Tag } from "@api/model";
 import {
   CheckboxField,
   CodeEditorField,
@@ -47,6 +48,8 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
   const color = type === "coloredCheckbox" ? props.color : null;
 
   const rootEntity = type === "aql" ? props.rootEntity : null;
+
+  const tags = type === "tags" ? props.tags : null;
 
   const [value, setValue] = useState(input?.value);
 
@@ -162,8 +165,10 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
     case "stub":
       return <div className="invisible"/>;
     case "tags":
-      return <TagInputList<WrappedFieldInputProps, WrappedFieldMetaProps>
-        {...sharedProps}/>;
+      return <TagInputList<Tag, WrappedFieldInputProps, WrappedFieldMetaProps>
+        {...sharedProps}
+        tags={tags}
+      />;
     case "text":
     default:
       return <EditInPlaceField<WrappedFieldInputProps, WrappedFieldMetaProps>
