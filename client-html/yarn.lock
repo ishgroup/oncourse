@@ -7176,10 +7176,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-ish-ui@1.0.0-alpha.23:
-  version "1.0.0-alpha.23"
-  resolved "https://registry.yarnpkg.com/ish-ui/-/ish-ui-1.0.0-alpha.23.tgz#32a6e505e97e576284f6ce5fde8acc75ddccef72"
-  integrity sha512-VAWSDXfvJqrJDCXHNSavj4+BoaGV0GstBYOlBTQbIPLAQ/6S5jxx9JD2KnKqZY36l1Yr2Dn1YaCmvWMvWR984w==
+ish-ui@1.0.0-alpha.31:
+  version "1.0.0-alpha.31"
+  resolved "https://registry.yarnpkg.com/ish-ui/-/ish-ui-1.0.0-alpha.31.tgz#18f49a65ba98412858760af516c55fe0f45dc9cd"
+  integrity sha512-u2wy86Kz8PmOQ0oMYJLWVpdwfAZPkr1bv5nkP1VK+vgJNtEaXf3dwYBeMd/LmRdu80xUHQIuArXADE6gaS4M9w==
   dependencies:
     "@ckeditor/ckeditor5-autoformat" "35.1.0"
     "@ckeditor/ckeditor5-basic-styles" "35.1.0"
@@ -7213,7 +7213,7 @@ ish-ui@1.0.0-alpha.23:
     date-fns-tz "^2.0.0"
     decimal.js-light "^2.5.1"
     lodash.debounce "^4.0.8"
-    re-resizable "^6.9.9"
+    re-resizable "^6.9.11"
     react "^18.2.0"
     react-ace "^10.1.0"
     react-color "^2.19.3"
@@ -9493,10 +9493,15 @@ raw-loader@4.*, raw-loader@^4.0.1:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-re-resizable@6.9.9, re-resizable@^6.9.9:
+re-resizable@6.9.9:
   version "6.9.9"
   resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.9.tgz#99e8b31c67a62115dc9c5394b7e55892265be216"
   integrity sha512-l+MBlKZffv/SicxDySKEEh42hR6m5bAHfNu3Tvxks2c4Ah+ldnWjfnVRwxo/nxF27SsUsxDS0raAzFuJNKABXA==
+
+re-resizable@^6.9.11:
+  version "6.9.11"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.11.tgz#f356e27877f12d926d076ab9ad9ff0b95912b475"
+  integrity sha512-a3hiLWck/NkmyLvGWUuvkAmN1VhwAz4yOhS6FdMTaxCUVN9joIWkT11wsO68coG/iEYuwn+p/7qAmfQzRhiPLQ==
 
 react-ace@10.1.0, react-ace@^10.1.0:
   version "10.1.0"
