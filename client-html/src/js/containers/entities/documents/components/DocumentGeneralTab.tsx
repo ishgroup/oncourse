@@ -22,13 +22,14 @@ import {
   D_MMM_YYYY,
   FileTypeIcon,
   getDocumentContent,
-  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL,
+  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, ShowConfirmCaller,
   useAppTheme,
   useHoverShowStyles
 } from "ish-ui";
 import React, { useCallback, useRef } from "react";
+import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { arrayRemove, change, } from "redux-form";
+import { change, FieldArray, WrappedFieldArrayProps, } from "redux-form";
 import DocumentShare from "../../../../common/components/form/documents/DocumentShare";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader

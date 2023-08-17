@@ -18,18 +18,17 @@ import Delete from '@mui/icons-material/Delete';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Grid, ListItem } from "@mui/material";
+import { CircularProgress, Grid, ListItem, MenuItem } from "@mui/material";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Drawer from "@mui/material/Drawer";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
-import { ConfirmBase, FilePreview, YYYY_MM_DD_MINUSED } from "ish-ui";
+import { ConfirmBase, FilePreview, getDocumentContent, YYYY_MM_DD_MINUSED } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -37,12 +36,16 @@ import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from
 import {
   exportTemplateFullScreenPreview,
 } from "../../../../../containers/automation/containers/export-templates/actions";
+import ExportTemplatesService
+  from "../../../../../containers/automation/containers/export-templates/services/ExportTemplatesService";
 import { reportFullScreenPreview } from "../../../../../containers/automation/containers/pdf-reports/actions";
+import PdfService from "../../../../../containers/automation/containers/pdf-reports/services/PdfService";
 import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
 import { TemplateOutputDisplayName } from "../../../../../model/common/Share";
 import { CommonListItem } from "../../../../../model/common/sidebar";
 import { State } from "../../../../../reducers/state";
 import { interruptProcess } from "../../../../actions";
+import InstantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { ProcessState } from "../../../../reducers/processReducer";
 import { getManualLink } from "../../../../utils/getManualLink";
 import { LSGetItem, LSSetItem } from "../../../../utils/storage";
