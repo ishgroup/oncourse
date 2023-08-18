@@ -257,6 +257,8 @@ paths:
     $ref: './path/list/plain/bulkDelete/api.yaml'
   /login:
     $ref: './path/login/api.yaml'
+  /login/sso:
+    $ref: './path/login/sso/api.yaml'
   /logout:
     $ref: './path/logout/api.yaml'
   /preference:
