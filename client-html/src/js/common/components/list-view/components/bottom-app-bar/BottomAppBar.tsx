@@ -321,7 +321,6 @@ const BottomAppBar = (
           opened={Boolean(execScriptsMenuOpen)}
           onClose={onExecuteScriptDialogClose}
           scriptId={scriptIdSelected}
-          selection={selection}
           filteredCount={filteredCount}
           filteredSelection={filterScriptsBy && filterScriptsBy[scriptsMenuOpen?.entity]?.ids}
         />
