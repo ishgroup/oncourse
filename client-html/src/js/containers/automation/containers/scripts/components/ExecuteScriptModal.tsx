@@ -295,6 +295,7 @@ const mapStateToProps = (state: State) => ({
   hasScriptingLicense: state.userPreferences[LICENSE_SCRIPTING_KEY] && state.userPreferences[LICENSE_SCRIPTING_KEY] === "true",
   submitting: state.fetch.pending,
   listSearchQuery: state.list.searchQuery,
+  selection: state.list.selection,
   process: state.process
 });
 
