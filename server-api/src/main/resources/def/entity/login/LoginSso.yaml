@@ -1,0 +1,17 @@
+type: object
+properties:
+  login:
+    type: string
+    required: true
+    description: User login or email used for authorization
+    example: 'ish'
+  ssoEmail:
+    type: string
+    required: true
+    description: Email for user sso account
+    example: '1234'
+  authorizationCode:
+    type: string
+    required: true
+    description: Authorization code, returned from sso authorization page
+    example: 'asdf234sd'

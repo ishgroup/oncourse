@@ -2,7 +2,7 @@ type: object
 description: Authentication Api response
 properties:
   loginStatus:
-    $ref: '../enum/LoginStatus.yaml'
+    $ref: '../../enum/LoginStatus.yaml'
     description: User login status
   errorMessage:
     type: string
