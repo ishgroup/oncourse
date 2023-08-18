@@ -24,7 +24,6 @@ import { saveCategoryAQLLink } from "../../../common/utils/links";
 
 interface ExtendedValues extends AvetmissExportSettings {
   defaultStatus: boolean;
-  noAssessment: boolean;
 }
 
 interface Props {
@@ -125,7 +124,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
     delete settings.defaultStatus;
     delete settings.noAssessment;
     exportObj.settings = settings;
-    exportObj.settings.noAssessment = values.noAssessment;
+    exportObj.settings.noAssessment = outcome["Started (not assessed)"].number ? values.noAssessment : true;
 
     this.props.onExport(exportObj);
   };
@@ -611,7 +610,6 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <LoadingButton
             variant="contained"
             color="primary"
-            className="avetmissButton"
             onClick={() => this.export(outcome)}
             loading={pending}
           >
