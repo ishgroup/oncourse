@@ -1,0 +1,36 @@
+put:
+  summary: Get Authentication
+  operationId: loginSso
+  tags:
+    - Authentication
+  description: 'API endpoint which is used for user sso authorization'            '
+  tags:
+    - Authentication
+  parameters:
+    - name: ssoType
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: ssoCredentials
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/LoginSso.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
+    '400':
+      description: Bad request error.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
+    '401':
+      description: Unauthorized error.
+      schema:
+        $ref: './def/entity/LoginResponse.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
