@@ -38,7 +38,7 @@ const FORM = "ExecuteScriptForm";
 
 interface Props {
   opened?: boolean;
-  onClose?: any;
+  onClose: any;
   onSave?: any;
   selection?: string[];
   executeScript?: any;
@@ -84,7 +84,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
         type={item.type}
         component={DataTypeRenderer}
         validate={validateSingleMandatoryField}
-                {...fieldProps}
+        {...fieldProps}
       />
     </Grid>
   );
@@ -159,7 +159,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
   }, [process.processId]);
 
   useEffect(() => {
-    if (scriptId) {
+    if (scriptId && opened) {
       updateAudits();
       ScriptsService.getScriptItem(scriptId)
         .then(s => {
@@ -179,7 +179,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     } else if (prevScriptId) {
       resetForm();
     }
-  }, [scriptId]);
+  }, [scriptId, opened]);
 
   const handleRunScript = values => {
     const modelVariables = values.variables;
