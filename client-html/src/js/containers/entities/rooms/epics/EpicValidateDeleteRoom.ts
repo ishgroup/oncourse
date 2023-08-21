@@ -4,11 +4,11 @@
  */
 
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_ROOM_DELETE_VALIDATION, GET_ROOM_DELETE_VALIDATION_FULFILLED } from "../actions/index";
 import RoomService from "../services/RoomService";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: EpicUtils.Request<any, { id: number; callback: any }> = {
   type: GET_ROOM_DELETE_VALIDATION,

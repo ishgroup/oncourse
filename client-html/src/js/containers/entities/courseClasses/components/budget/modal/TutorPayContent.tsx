@@ -3,35 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { createStyles, withStyles } from "@mui/styles";
 import { ClassCostRepetitionType } from "@api/model";
-import { Collapse, Divider } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import LockOpen from "@mui/icons-material/LockOpen";
 import Lock from "@mui/icons-material/Lock";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
+import LockOpen from "@mui/icons-material/LockOpen";
+import { Collapse, Divider, FormControlLabel, Grid } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import {
+  decimalMinus,
+  decimalMul,
+  decimalPlus,
   formatCurrency,
   formatFieldPercent,
   normalizeNumberToZero,
   parseFieldPercent,
-  preventNegativeOrLogEnter
-} from "../../../../../../common/utils/numbers/numbersNormalizing";
-import { decimalMinus, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
+  preventNegativeOrLogEnter,
+  WarningMessage
+} from "ish-ui";
+import React, { useCallback, useMemo, useState } from "react";
+import { change } from "redux-form";
+import { ContactLinkAdornment } from "../../../../../../common/components/form/formFields/FieldAdornments";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
+import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
+import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
 import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
-import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
+import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { getClassCostFee } from "../utils";
-import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
+import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
 
 const styles = theme => createStyles({
   divider: {

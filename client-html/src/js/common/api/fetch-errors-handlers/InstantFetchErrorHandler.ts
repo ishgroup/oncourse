@@ -4,8 +4,8 @@
  */
 
 import { Dispatch } from "redux";
-import { SHOW_MESSAGE } from "../../actions";
 import { ServerResponse } from "../../../model/common/apiHandlers";
+import { SHOW_MESSAGE } from "../../actions";
 
 const instantFetchErrorHandler = (
   dispatch: Dispatch,
@@ -15,7 +15,7 @@ const instantFetchErrorHandler = (
   if (!response) {
     dispatch({
       type: SHOW_MESSAGE,
-      payload: { message: customMessage }
+      payload: {message: customMessage}
     });
     return;
   }
@@ -24,7 +24,7 @@ const instantFetchErrorHandler = (
     throw response;
   }
 
-  const { data, status } = response;
+  const {data, status} = response;
 
   if (status) {
     dispatch({

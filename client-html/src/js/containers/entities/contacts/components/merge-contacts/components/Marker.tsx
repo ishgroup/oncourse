@@ -1,7 +1,7 @@
-import React from "react";
-import { createStyles, withStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
-import { AppTheme } from "../../../../../../model/common/Theme";
+import { createStyles, withStyles } from "@mui/styles";
+import { AppTheme } from "ish-ui";
+import React from "react";
 
 interface Props {
   classes?: any;

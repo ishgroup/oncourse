@@ -3,26 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import Grid from "@mui/material/Grid";
 import {
   CourseClassAttendanceType,
+  Enrolment,
+  EnrolmentCreditLevel,
+  EnrolmentCreditProviderType,
   EnrolmentCreditTotal,
   EnrolmentCreditType,
-  EnrolmentCreditProviderType,
-  EnrolmentCreditLevel,
   EnrolmentFeeStatus,
-  Enrolment,
   EnrolmentReportingStatus,
 } from "@api/model";
-import { Collapse } from "@mui/material";
+import { Collapse, Grid } from "@mui/material";
+import { decimalMul } from "ish-ui";
+import React, { useMemo } from "react";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { mapSelectItems } from "../../../../common/utils/common";
-import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import { mapSelectItems } from "../../../../common/utils/common";
+import { EditViewProps } from "../../../../model/common/ListView";
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);
 

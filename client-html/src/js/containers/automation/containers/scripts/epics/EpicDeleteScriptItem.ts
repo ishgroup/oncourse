@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions/index";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import ScriptsService from "../services/ScriptsService";
-import { FETCH_SUCCESS } from "../../../../../common/actions/index";
 import { DELETE_SCRIPT_ENTITY_FULFILLED, DELETE_SCRIPT_ENTITY_REQUEST, GET_SCRIPTS_LIST } from "../actions/index";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import ScriptsService from "../services/ScriptsService";
 
 const request: EpicUtils.Request<any, any> = {
   type: DELETE_SCRIPT_ENTITY_REQUEST,

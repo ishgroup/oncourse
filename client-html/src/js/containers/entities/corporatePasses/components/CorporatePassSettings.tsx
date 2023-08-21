@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
 import { Contact } from "@api/model";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { getContactFullName } from "../../contacts/utils";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import Grid from "@mui/material/Grid";
+import * as React from "react";
+import { change } from "redux-form";
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/FieldAdornments";
-import { EditViewProps } from "../../../../model/common/ListView";
+} from "../../../../common/components/form/formFields/FieldAdornments";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EditViewProps } from "../../../../model/common/ListView";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
 
 class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
   onContactChange = (value: Contact) => {

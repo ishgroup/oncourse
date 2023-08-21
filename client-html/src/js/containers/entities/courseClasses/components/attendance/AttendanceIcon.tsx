@@ -4,9 +4,9 @@
  */
 
 import { AttendanceType, TutorAttendanceType } from "@api/model";
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { withStyles, createStyles } from "@mui/styles";
+import { createStyles, withStyles } from "@mui/styles";
+import React from "react";
 
 const styles = () =>
   createStyles({

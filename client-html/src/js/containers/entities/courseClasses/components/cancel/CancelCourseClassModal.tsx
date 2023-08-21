@@ -3,27 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import clsx from "clsx";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
-  reduxForm, getFormValues, InjectedFormProps
-} from "redux-form";
+import { CancelCourseClass } from "@api/model";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import Typography from "@mui/material/Typography";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import Grid from "@mui/material/Grid";
-import { CancelCourseClass } from "@api/model";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { BooleanArgFunction } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { getFormValues, InjectedFormProps, reduxForm } from "redux-form";
+import { clearCommonPlainRecords } from "../../../../../common/actions/CommonPlainRecordsActions";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../../reducers/state";
-import Button from "@mui/material/Button";
-import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
 import { cancelCourseClass } from "../../actions";
-import {clearCommonPlainRecords, setCommonPlainSearch} from "../../../../../common/actions/CommonPlainRecordsActions";
 
 interface Props extends InjectedFormProps {
   opened: boolean;

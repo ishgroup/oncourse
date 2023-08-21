@@ -6,39 +6,53 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import FileCopy from "@mui/icons-material/FileCopy";
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import {
-  arrayInsert, change, FieldArray, Form, initialize
-} from "redux-form";
-import clsx from "clsx";
 import { OutputType, Script, TriggerType } from "@api/model";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
-import CodeIcon from '@mui/icons-material/Code';
-import Divider from "@mui/material/Divider";
-import Accordion from "@mui/material/Accordion";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
+import CodeIcon from '@mui/icons-material/Code';
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FileCopy from "@mui/icons-material/FileCopy";
 import UploadIcon from "@mui/icons-material/Upload";
+import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import { Divider, Grid } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { withStyles } from "@mui/styles";
+import createStyles from "@mui/styles/createStyles";
+import clsx from "clsx";
+import {
+  AppTheme,
+  DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL,
+  formatRelativeDate,
+  InfoPill,
+  ShowConfirmCaller,
+  usePrevious
+} from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { arrayInsert, change, FieldArray, Form, initialize } from "redux-form";
+import BoltIcon from "../../../../../../images/icon-bolt.svg";
+import ScriptIcon from "../../../../../../images/icon-script.svg";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { mapSelectItems } from "../../../../../common/utils/common";
-import { usePrevious } from "../../../../../common/utils/hooks";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { ApiMethods } from "../../../../../model/common/apiHandlers";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import { ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
+import getConfigActions from "../../../components/ImportExportConfig";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
+import { setScriptComponents } from "../actions";
+import AddScriptAction from "../components/AddScriptAction";
 import ScriptCard from "../components/cards/CardBase";
-import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
+import CardsRenderer from "../components/cards/CardsRenderer";
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
 import { setScriptComponents } from "../actions";
@@ -47,9 +61,6 @@ import {
 } from "../../../../../model/scripts";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import {
-  getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent
-} from "../constants";
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
 import AppBarActions from "../../../../../common/components/form/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
@@ -63,6 +74,7 @@ import InfoPill from "../../../../../common/components/layout/InfoPill";
 import { AppTheme } from "../../../../../model/common/Theme";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import getConfigActions from "../../../components/ImportExportConfig";
+import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent } from "../constants";
 
 const manualUrl = getManualLink("scripts");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;

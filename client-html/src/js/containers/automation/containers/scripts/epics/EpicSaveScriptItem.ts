@@ -4,8 +4,8 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
   GET_SCRIPT_ENTITY_REQUEST,
   GET_SCRIPTS_LIST,

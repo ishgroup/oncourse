@@ -4,19 +4,19 @@
  */
 
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
 import { GET_RECORDS_FULFILLED, SET_LIST_SEARCH, setListSearchError } from "../actions/index";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: EpicUtils.Request<any, { search: string; entity: string }> = {
   type: SET_LIST_SEARCH,
-  getData: ({ entity }, state) => EntityService.getList({ entity }, state),
+  getData: ({entity}, state) => EntityService.getList({entity}, state),
   processData: ([records, searchQuery], state, payload) => [
     {
       type: GET_RECORDS_FULFILLED,
-      payload: { records, payload, searchQuery }
+      payload: {records, payload, searchQuery}
     },
     ...(state.list.searchError ? [setListSearchError(false)] : [])
   ],

@@ -4,8 +4,8 @@
  */
 
 import LockOutlined from "@mui/icons-material/LockOutlined";
+import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { MenuItem } from "@mui/material";
 
 export const validateKeycode = value =>
   (value && value.startsWith("ish.") ? "Custom automation key codes cannot start with 'ish.'" : undefined);

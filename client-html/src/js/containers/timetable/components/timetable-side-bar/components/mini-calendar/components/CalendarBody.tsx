@@ -6,11 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useContext } from "react";
 import { createStyles, withStyles } from "@mui/styles";
 import { getDay } from "date-fns";
-import CalendarDay from "./CalendarDay";
-import { getCalendarDays } from "../utils";
+import { CalendarDay, getCalendarDays } from "ish-ui";
+import React, { useContext } from "react";
 import { TimetableContext } from "../../../../../Timetable";
 
 const styles = theme =>

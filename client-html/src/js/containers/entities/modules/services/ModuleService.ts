@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { Module, ModuleApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class ModuleService {
   readonly moduleApi = new ModuleApi(new DefaultHttpService());

@@ -6,19 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import { Contact } from "@api/model";
+import { ShowConfirmCaller } from "ish-ui";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import { notesAsyncValidate } from "../../../../common/components/form/notes/utils";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import ContactEditView from "../../../entities/contacts/components/ContactEditView";
 import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
 

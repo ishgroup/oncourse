@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../common/actions";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import { Create, Request } from "../../../common/epics/EpicUtils";
 import { GET_FINALISE_INFO, UPDATE_FINALISE_DATE } from "../actions";
 import FinaliseService from "../services";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { FETCH_SUCCESS } from "../../../common/actions";
 
 const request: Request = {
   type: UPDATE_FINALISE_DATE,

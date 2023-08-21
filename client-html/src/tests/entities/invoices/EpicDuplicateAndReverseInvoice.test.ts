@@ -2,8 +2,10 @@ import { initialize } from "redux-form";
 import { DefaultEpic } from "../../common/Default.Epic";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../js/common/components/list-view/constants";
 import { duplicateAndReverseInvoice } from "../../../js/containers/entities/invoices/actions";
-import { EpicDuplicateAndReverseInvoice } from "../../../js/containers/entities/invoices/epics/EpicDuplicateAndReverseInvoice";
-import { formatToDateOnly } from "../../../js/common/utils/dates/datesNormalizing";
+import {
+  EpicDuplicateAndReverseInvoice
+} from "../../../js/containers/entities/invoices/epics/EpicDuplicateAndReverseInvoice";
+import { formatToDateOnly } from "ish-ui";
 
 describe("Duplicate and reverse invoice epic tests", () => {
   it("EpicDuplicateAndReverseInvoice should returns correct values", () => DefaultEpic({

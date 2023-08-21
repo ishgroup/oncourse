@@ -2,8 +2,8 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React from "react";
 import { Grid } from "@mui/material";
+import React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 
 const ProductEditView: React.FC<any> = () => (

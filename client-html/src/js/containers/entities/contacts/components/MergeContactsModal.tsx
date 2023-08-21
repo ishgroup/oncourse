@@ -1,5 +1,5 @@
-import React from "react";
 import Dialog from "@mui/material/Dialog";
+import React from "react";
 import MergeContacts from "./merge-contacts/MergeContacts";
 
 const MergeContactsModal: React.FC<any> = props => {

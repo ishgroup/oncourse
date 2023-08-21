@@ -1,11 +1,11 @@
+import { PayslipStatus } from "@api/model";
+import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { POST_PAYSLIP_EXECUTE, POST_PAYSLIP_EXECUTE_FULFILLED } from "../actions";
 import PayslipService from "../services/PayslipService";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { Epic } from "redux-observable";
-import { PayslipStatus } from "@api/model";
-import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import { FETCH_SUCCESS } from "../../../../common/actions";
 
 const request: EpicUtils.Request<any, { ids: number[]; status: PayslipStatus }> = {
   type: POST_PAYSLIP_EXECUTE,

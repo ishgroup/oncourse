@@ -1,6 +1,6 @@
-import React from "react";
 import Typography from "@mui/material/Typography";
-import { Field } from "redux-form";
+import React from "react";
+import FormField from "../form/formFields/FormField";
 import { CustomSelectorOption } from "./CustomSelector";
 
 interface Props {
@@ -13,20 +13,14 @@ const CustomSelectorBody = ({ className, options, selectedIndex }: Props) => {
   const option = options[selectedIndex];
   return (
     <div className={className}>
-      {option.type && (
+      {option.formFileldProps && (
         <Typography component="div">
-          <Field
-            name={option.fieldName}
-            component={option.component}
-            type={option.type}
-            validate={option.validate}
-            normalize={option.normalize}
-            format={option.format}
-            min={option.min}
-            preformatDisplayValue={option.preformatDisplayValue}
-            inline
+          <FormField
+            {...option.formFileldProps}
+            {...option.formFileldProps.type !== "code" ? { inline: true } : {}}
           />
-          {option.type && option.type !== "date" && ` ${option.body}`}
+          {" "}
+          {option.body}
         </Typography>
       )}
     </div>

@@ -3,26 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { format as formatDateTime } from "date-fns";
 import { DataRow } from "@api/model";
-import { SelectItemDefault } from "../../../model/entities/common";
+import { format as formatDateTime } from "date-fns";
+import React from "react";
 import { IS_JEST } from "../../../constants/EnvironmentConstants";
-
-export const getCheckboxValue = (value, stringValue) => {
-  if (!stringValue) {
-    return !!value;
-  }
-
-  switch (value) {
-    case "false":
-      return false;
-    case "true":
-      return true;
-    default:
-      return Boolean(value);
-  }
-};
+import { SelectItemDefault } from "../../../model/entities/common";
 
 export const getDeepValue = (source, path) => {
   if (path.match(/[.,[]/)) {
@@ -55,18 +40,18 @@ export const getDeepValue = (source, path) => {
 export const sortDefaultSelectItems = (a: SelectItemDefault, b: SelectItemDefault) =>
   (a.label[0].toLowerCase() > b.label[0].toLowerCase() ? 1 : -1);
 
-export const mapSelectItems = (i): SelectItemDefault => ({ label: i, value: i });
+export const mapSelectItems = (i): SelectItemDefault => ({label: i, value: i});
 
 export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any => {
   const colArr: string[] = columns.split(",");
   const booleanArr = ["true", "false"];
 
-  return ({ id, values }) => ({
+  return ({id, values}) => ({
     id: Number(id),
     ...colArr.reduce((prev, cur, i) => ({
-        ...prev,
-        [cur]: booleanArr.includes(values[i]) ? JSON.parse(values[i]) : values[i]
-      }), {})
+      ...prev,
+      [cur]: booleanArr.includes(values[i]) ? JSON.parse(values[i]) : values[i]
+    }), {})
   });
 };
 
@@ -131,12 +116,8 @@ export const createAndDownloadBase64File = (data: any, name: string, type: strin
 
 export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
-  return { field: match[2], index: Number(match[1]) };
+  return {field: match[2], index: Number(match[1])};
 };
-
-export const stubFunction = () => undefined;
-
-export const stubComponent = () => <div className="invisible" />;
 
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
 

@@ -11,7 +11,8 @@ import { checkoutSetHasErrors } from "../../actions";
 import {
   CHECKOUT_UPDATE_SUMMARY_PRICES,
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED,
-  checkoutUncheckSummaryItems, checkoutUpdateSummaryPrices
+  checkoutUncheckSummaryItems,
+  checkoutUpdateSummaryPrices
 } from "../../actions/checkoutSummary";
 import CheckoutService from "../../services/CheckoutService";
 import { getCheckoutModel } from "../../utils";

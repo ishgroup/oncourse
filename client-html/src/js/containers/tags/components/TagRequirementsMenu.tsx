@@ -1,13 +1,11 @@
+import { TagRequirement, TagRequirementType } from "@api/model";
+import { Menu, MenuItem, Typography } from "@mui/material";
+import clsx from "clsx";
+import { AddButton } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
-import {
-  Typography, Menu, MenuItem
-} from "@mui/material";
-import { TagRequirement, TagRequirementType } from "@api/model";
-import clsx from "clsx";
-import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 import { State } from "../../../reducers/state";
-import AddButton from "../../../common/components/icons/AddButton";
+import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 
 const requirements = Object.keys(TagRequirementType).map(
   (i: TagRequirementType) =>

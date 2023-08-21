@@ -4,20 +4,15 @@
  */
 
 import { DataType } from "@api/model";
-import clsx from "clsx";
-import React, {
-  useCallback, useState
-} from "react";
+import Delete from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { WrappedFieldProps } from "redux-form";
+import clsx from "clsx";
+import { AddButton, EditInPlaceField, stubFunction, useHoverShowStyles } from "ish-ui";
 import debounce from "lodash.debounce";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import { useHoverShowStyles } from "../../../../../common/styles/hooks";
-import { stubFunction } from "../../../../../common/utils/common";
+import React, { useCallback, useState } from "react";
+import { WrappedFieldProps } from "redux-form";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import AddButton from "../../../../../common/components/icons/AddButton";
 
 interface Props {
   label: string;

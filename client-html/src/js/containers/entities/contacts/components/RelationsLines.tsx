@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
 import { Contact } from "@api/model";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import React, { useCallback } from "react";
+import { change } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { getContactFullName } from "../utils";
-import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
 
 const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
@@ -86,6 +86,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
     [form]
   );
 
+  // @ts-ignore
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12} className={classes.select1}>

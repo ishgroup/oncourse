@@ -1,7 +1,5 @@
 import { Epic } from "redux-observable";
-import {
- FETCH_FAIL, FETCH_SUCCESS, START_PROCESS, UPDATE_PROCESS 
-} from "../../../../../common/actions";
+import { FETCH_FAIL, FETCH_SUCCESS, START_PROCESS, UPDATE_PROCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { POST_IMPORT_RUN_REQUEST, POST_IMPORT_RUN_REQUEST_FULFILLED } from "../actions";

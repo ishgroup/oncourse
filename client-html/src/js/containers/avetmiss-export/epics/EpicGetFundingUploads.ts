@@ -3,10 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { FundingUpload } from "@api/model";
 import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_FUNDING_UPLOADS_FULFILLED, GET_FUNDING_UPLOADS_REQUEST } from "../actions";
 import FundingUploadService from "../services/FundingUploadService";

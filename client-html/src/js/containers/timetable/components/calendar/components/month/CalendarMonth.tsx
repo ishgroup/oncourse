@@ -6,13 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
 import { format, getDay } from "date-fns";
+import { DD_MMM_YYYY_MINUSED } from "ish-ui";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { TimetableMonth } from "../../../../../../model/timetable";
-import { DD_MMM_YYYY_MINUSED } from "../../../../../../common/utils/dates/format";
-import { CalendarDay } from "../day/CalendarDay";
 import { TimetableContext } from "../../../../Timetable";
 import { filterSessionsByPeriod } from "../../../../utils";
+import { CalendarDay } from "../day/CalendarDay";
 import CalendarMonthBase from "./CalendarMonthBase";
 
 interface CompactModeMonthProps extends TimetableMonth {

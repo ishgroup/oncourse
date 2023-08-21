@@ -6,10 +6,10 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import history from "../../../../../constants/History";
+import { GET_INTEGRATIONS_REQUEST, getIntegrationsFulfilled } from "../../../actions";
 import IntegrationService from "../services";
 import { parseIntegrations } from "../utils";
-import { GET_INTEGRATIONS_REQUEST, getIntegrationsFulfilled } from "../../../actions";
-import history from "../../../../../constants/History";
 
 const request: EpicUtils.Request = {
   type: GET_INTEGRATIONS_REQUEST,

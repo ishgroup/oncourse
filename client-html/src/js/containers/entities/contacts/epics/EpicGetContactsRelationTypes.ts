@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ContactRelationType } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { ContactRelationType } from "@api/model";
 import { GET_CONTACTS_RELATION_TYPES, GET_CONTACTS_RELATION_TYPES_FULFILLED } from "../actions";
 import ContactsService from "../services/ContactsService";
 

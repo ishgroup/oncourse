@@ -6,23 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Lead } from "@api/model";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { Lead } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { getEntityTags, getListTags } from "../../tags/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { State } from "../../../reducers/state";
-import LeadCogWheel from "./components/LeadCogWheel";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { initialize } from "redux-form";
 import { checkPermissions } from "../../../common/actions";
-import LeadEditView from "./components/LeadEditView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { getActiveUsers } from "../../security/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getActiveUsers } from "../../security/actions";
+import { getEntityTags, getListTags } from "../../tags/actions";
+import LeadCogWheel from "./components/LeadCogWheel";
+import LeadEditView from "./components/LeadEditView";
 
 const Initial: Lead = {
   id: null,

@@ -6,16 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import {
-  ListItem, ListItemText, Divider
-} from "@mui/material";
+import { Divider, ListItem, ListItemText } from "@mui/material";
 import clsx from "clsx";
+import { InfoPill, makeAppStyles, NumberArgFunction, useHoverShowStyles } from "ish-ui";
+import React, { useCallback } from "react";
 import { CatalogItemType } from "../../../../model/common/Catalog";
-import { makeAppStyles } from "../../../styles/makeStyles";
-import { NumberArgFunction } from "../../../../model/common/CommonFunctions";
-import { useHoverShowStyles } from "../../../styles/hooks";
-import InfoPill from "../InfoPill";
 
 const useStyles = makeAppStyles(theme => ({
   primaryText: {
@@ -61,7 +56,7 @@ const CatalogItem = (
     disabled
   }: Props
 ) => {
-  const { 
+  const {
     id,
     tags,
     title,
@@ -69,7 +64,7 @@ const CatalogItem = (
     shortDescription,
     hideShortDescription
   } = item;
-  
+
   const classes = useStyles();
   const hoverClasses = useHoverShowStyles();
 
@@ -94,16 +89,16 @@ const CatalogItem = (
           }}
           primary={(
             <div className="centeredFlex">
-              {showDot && <span className={classes.dot} />}
+              {showDot && <span className={classes.dot}/>}
               {title}
               {titleAdornment}
-              {tags?.split(",").map(t => <InfoPill key={t} label={t} />)}
+              {tags?.split(",").map(t => <InfoPill key={t} label={t}/>)}
             </div>
           )}
           secondary={!hideShortDescription && (shortDescription || "No description")}
         />
       </ListItem>
-      <Divider light />
+      <Divider light/>
     </>
   );
 };

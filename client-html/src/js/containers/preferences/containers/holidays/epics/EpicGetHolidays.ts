@@ -6,8 +6,8 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
 import { GET_HOLIDAYS_FULFILLED, GET_HOLIDAYS_REQUEST } from "../../../actions";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: GET_HOLIDAYS_REQUEST,

@@ -9,16 +9,16 @@
 import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import { showConfirm } from "../../../../common/actions";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
+import store from "../../../../constants/Store";
 import { CheckoutDiscount } from "../../../../model/checkout";
 import { getContactFullName } from "../../../entities/contacts/utils";
 import { addContact } from "../../actions";
 import { CHECKOUT_GET_VOUCHER_REDEEMER, CHECKOUT_SET_PROMO } from "../../actions/checkoutSummary";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
-import store from "../../../../constants/Store";
 
 const request: EpicUtils.Request<DataResponse, { id: number, vouchersItem: CheckoutDiscount }> = {
   type: CHECKOUT_GET_VOUCHER_REDEEMER,

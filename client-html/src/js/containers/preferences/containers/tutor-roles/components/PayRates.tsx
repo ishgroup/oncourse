@@ -6,15 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { TutorRolePayRate } from "@api/model";
+import { Grid } from "@mui/material";
+import { format, subYears } from "date-fns";
+import { AddButton, ShowConfirmCaller, YYYY_MM_DD_MINUSED } from "ish-ui";
 import * as React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
-import { Grid } from "@mui/material";
-import { TutorRolePayRate } from "@api/model";
-import { format, subYears } from "date-fns";
 import PayRateItem from "./PayRateItem";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AddButton from "../../../../../common/components/icons/AddButton";
 
 const FIELD_NAME: string = "payRates";
 

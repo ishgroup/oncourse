@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
 import { GET_PLAIN_RECORDS_REQUEST, GET_PLAIN_RECORDS_REQUEST_FULFILLED } from "../actions";
-import { DataResponse } from "@api/model";
 
 const request: EpicUtils.Request = {
   type: GET_PLAIN_RECORDS_REQUEST,
@@ -19,7 +19,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: GET_PLAIN_RECORDS_REQUEST_FULFILLED,
-        payload: { plainRecords }
+        payload: {plainRecords}
       }
     ];
   }

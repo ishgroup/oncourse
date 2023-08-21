@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { GET_ENTITY_TAGS_REQUEST, GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../actions";
 import { Tag } from "@api/model";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { GET_ENTITY_TAGS_REQUEST, GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../actions";
+import TagsService from "../services/TagsService";
 
 const request: EpicUtils.Request<any, { entityName: string }> = {
   type: GET_ENTITY_TAGS_REQUEST,

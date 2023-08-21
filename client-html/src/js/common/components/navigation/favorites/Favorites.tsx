@@ -3,23 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
+import { Script } from "@api/model";
+import Close from "@mui/icons-material/Close";
+import { Grid, IconButton, List } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import List from "@mui/material/List";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import { Script } from "@api/model";
-import { State } from "../../../../reducers/state";
+import clsx from "clsx";
+import { useHoverShowStyles } from "ish-ui";
+import React, { useMemo } from "react";
+import { connect } from "react-redux";
 import { DashboardItem } from "../../../../model/dashboard";
+import { State } from "../../../../reducers/state";
 import FavoriteItem from "./FavoriteItem";
 import FavoriteScriptItem from "./FavoriteScriptItem";
-import { IconButton } from "@mui/material";
-import clsx from "clsx";
-import Close from "@mui/icons-material/Close";
-import { useHoverShowStyles } from "../../../styles/hooks";
 
 const styles = theme => createStyles({
   root: {

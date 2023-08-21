@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { _toRequestType } from "../../../../../../common/actions/ActionUtils";
 import { Session } from "@api/model";
+import { _toRequestType } from "../../../../../../common/actions/ActionUtils";
 
 export const GET_COURSE_CLASS_SESSIONS = _toRequestType("get/courseClass/sessions");
 

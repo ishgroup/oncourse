@@ -1,9 +1,10 @@
 import * as React from "react";
 import { defaultComponents } from "../../common/Default.Components";
-import CheckoutPreviousInvoiceList, { CheckoutPreviousInvoiceListFormRole }
-  from "../../../js/containers/checkout/components/summary/CheckoutPreviousInvoiceList";
+import CheckoutPreviousInvoiceList, {
+  CheckoutPreviousInvoiceListFormRole
+} from "../../../js/containers/checkout/components/summary/CheckoutPreviousInvoiceList";
 import { CheckoutPage, titles } from "../../../js/containers/checkout/constants";
-import { decimalPlus } from "../../../js/common/utils/numbers/decimalCalculation";
+import { decimalPlus } from "ish-ui";
 
 describe("Virtual rendered CheckoutPreviousInvoiceList", () => {
   defaultComponents({

@@ -4,14 +4,12 @@
  */
 
 import { Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 import * as React from "react";
 import { connect } from "react-redux";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
-import Button from "@mui/material/Button";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";

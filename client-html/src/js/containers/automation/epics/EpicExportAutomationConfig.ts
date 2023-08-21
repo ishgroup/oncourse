@@ -7,16 +7,16 @@
  */
 
 import { Epic } from "redux-observable";
-import { EXPORT_AUTOMATION_CONFIG } from "../actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Create, Request } from "../../../common/epics/EpicUtils";
+import { createAndDownloadFile } from "../../../common/utils/common";
 import { AutomationEntity } from "../../../model/automation/common";
+import { EXPORT_AUTOMATION_CONFIG } from "../actions";
 import EmailTemplateService from "../containers/email-templates/services/EmailTemplateService";
 import ExportTemplatesService from "../containers/export-templates/services/ExportTemplatesService";
 import ImportTemplatesService from "../containers/import-templates/services/ImportTemplatesService";
 import PdfService from "../containers/pdf-reports/services/PdfService";
 import ScriptsService from "../containers/scripts/services/ScriptsService";
-import { createAndDownloadFile } from "../../../common/utils/common";
 
 const request: Request<string, { entity: AutomationEntity, name: string, id: number }> = {
   type: EXPORT_AUTOMATION_CONFIG,

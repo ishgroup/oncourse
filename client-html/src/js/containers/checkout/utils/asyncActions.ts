@@ -4,15 +4,18 @@
  */
 
 import { ProductType } from "@api/model";
+import { decimalPlus } from "ish-ui";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import EntityService from "../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../common/utils/common";
+import uniqid from "../../../common/utils/uniqid";
 import {
   CheckoutContact,
   CheckoutCourse,
   CheckoutEnrolmentCustom,
   CheckoutProductPurchase
 } from "../../../model/checkout";
+import { getProductAqlType } from "../../entities/sales/utils";
 import { addContact, checkoutAddItems } from "../actions";
 import { checkoutUpdateSummaryPrices } from "../actions/checkoutSummary";
 import {
@@ -30,9 +33,6 @@ import {
   getProductColumnsByType,
   processCheckoutSale
 } from "./index";
-import uniqid from "../../../common/utils/uniqid";
-import { getProductAqlType } from "../../entities/sales/utils";
-import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
 
 export const processCeckoutCartIds = async (cartId, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);

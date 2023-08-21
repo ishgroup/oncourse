@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ColumnWidth } from "@api/model";
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import PreferencesService from "../services/PreferencesService";
 import { UPDATE_COLUMNS_WIDTH_REQUEST, UPDATE_COLUMNS_WIDTH_REQUEST_FULFILLED } from "../actions";
-import { ColumnWidth } from "@api/model";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import PreferencesService from "../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: UPDATE_COLUMNS_WIDTH_REQUEST,

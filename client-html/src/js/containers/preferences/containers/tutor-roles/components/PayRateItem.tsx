@@ -6,18 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { Card, IconButton, Grid } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Tooltip from "@mui/material/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Card, Grid, IconButton } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import { formatFieldPercent, parseFieldPercent, preventNegativeOrLogEnter, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
-import {
-  formatFieldPercent,
-  parseFieldPercent,
-  preventNegativeOrLogEnter
-} from "../../../../../common/utils/numbers/numbersNormalizing";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
 

@@ -3,21 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import clsx from "clsx";
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
-import { InvoicePaymentPlan, Currency } from "@api/model";
-import IconButton from "@mui/material/IconButton";
+import { Currency, InvoicePaymentPlan } from "@api/model";
 import DeleteIcon from "@mui/icons-material/Delete";
 import OpenInNew from "@mui/icons-material/OpenInNew";
-import { format, isPast } from "date-fns";
+import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { format, isPast } from "date-fns";
+import {
+  decimalMinus,
+  decimalPlus,
+  formatCurrency,
+  III_DD_MMM_YYYY,
+  openInternalLink,
+  useHoverShowStyles
+} from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { useHoverShowStyles } from "../../../../common/styles/hooks";
-import { openInternalLink } from "../../../../common/utils/links";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { reducePayments } from "../utils";
 
 const validateAmount = val => (val <= 0 ? "Payment due amount must be greater than zero" : undefined);

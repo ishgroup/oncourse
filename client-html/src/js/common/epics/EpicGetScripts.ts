@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse, Script } from "@api/model";
-import { Request, Create } from "./EpicUtils";
+import { Epic } from "redux-observable";
 import { GET_SCRIPTS_FULFILLED, GET_SCRIPTS_REQUEST } from "../actions";
 import EntityService from "../services/EntityService";
 import { getCustomColumnsMap } from "../utils/common";
+import { Create, Request } from "./EpicUtils";
 
 const scriptsMap = {
   "ProductItem": ["ProductItem", "Voucher", "Article", "Membership"],

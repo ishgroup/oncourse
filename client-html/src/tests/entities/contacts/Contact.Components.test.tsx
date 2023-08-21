@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 import ContactEditView from "../../../js/containers/entities/contacts/components/ContactEditView";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { III_DD_MMM_YYYY } from "ish-ui";
 
 describe("Virtual rendered ContactEditView", () => {
   mockedEditView({

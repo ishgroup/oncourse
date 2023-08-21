@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { CorporatePass, CorporatePassApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class CorporatePassService {
   readonly corporatePassApi = new CorporatePassApi(new DefaultHttpService());

@@ -3,19 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Document } from "@api/model";
 import { change } from "redux-form";
-import * as EpicUtils from "../../../../epics/EpicUtils";
-import DocumentsService from "../services/DocumentsService";
-import { CREATE_AVATAR_DOCUMENT } from "../actions";
-import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import { Epic } from "redux-observable";
 import { DocumentExtended } from "../../../../../model/common/Documents";
+import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../epics/EpicUtils";
+import { CREATE_AVATAR_DOCUMENT } from "../actions";
+import DocumentsService from "../services/DocumentsService";
 
 const request: EpicUtils.Request<any, { document: DocumentExtended; form: string; documentPath: string }> = {
   type: CREATE_AVATAR_DOCUMENT,
-  getData: ({ document }) =>
+  getData: ({document}) =>
     DocumentsService.createDocument(
       document.content.name,
       document.description,
@@ -25,8 +24,8 @@ const request: EpicUtils.Request<any, { document: DocumentExtended; form: string
       "",
       document.content.name
     ),
-  processData: (newDocument: Document, state: any, { form, documentPath }) => [change(form, documentPath, newDocument)],
-  processError: (error, { form, documentPath }) => [change(form, documentPath, null), ...FetchErrorHandler(error)]
+  processData: (newDocument: Document, state: any, {form, documentPath}) => [change(form, documentPath, newDocument)],
+  processError: (error, {form, documentPath}) => [change(form, documentPath, null), ...FetchErrorHandler(error)]
 };
 
 export const EpicCreateAvatarDocument: Epic<any, any> = EpicUtils.Create(request);

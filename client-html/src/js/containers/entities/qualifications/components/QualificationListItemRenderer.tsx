@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import Typography from "@mui/material/Typography";
 import { Qualification } from "@api/model";
-import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
+import Typography from "@mui/material/Typography";
+import { getHighlightedPartLabel } from "ish-ui";
+import React, { useMemo } from "react";
 
 const QualificationListItemRenderer = React.memo<{ content: string; search: string; data: Qualification, parentProps: any }>(
   ({ search, data, parentProps }) => {

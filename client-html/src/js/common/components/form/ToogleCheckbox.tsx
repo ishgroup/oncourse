@@ -1,9 +1,9 @@
+import { Button, ButtonGroup, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
+import clsx from "clsx";
+import { makeAppStyles } from "ish-ui";
 import React, { useCallback, useRef } from "react";
 import { WrappedFieldProps } from "redux-form";
-import { Button, ButtonGroup, Typography } from "@mui/material";
-import clsx from "clsx";
-import { makeAppStyles } from "../../styles/makeStyles";
-import { alpha } from "@mui/material/styles";
 
 interface Props extends WrappedFieldProps {
   chackedLabel: string;
@@ -35,26 +35,26 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 export const ToogleCheckbox = ({
- input, chackedLabel, uncheckedLabel, className, disabled 
-}: Props) => {
+                                 input, chackedLabel, uncheckedLabel, className, disabled
+                               }: Props) => {
   const inputRef = useRef<HTMLInputElement>();
 
   const onClick = useCallback(() => {
     inputRef.current.click();
   }, [inputRef.current]);
-  
+
   const classes = useStyles();
 
   return (
     <ButtonGroup
       classes={{
         root: classes.root
-      }} 
-      variant="outlined" 
-      disabled={disabled} 
+      }}
+      variant="outlined"
+      disabled={disabled}
       className={className}
     >
-      <input type="checkbox" ref={inputRef} checked={input.value} hidden onChange={input.onChange} />
+      <input type="checkbox" ref={inputRef} checked={input.value} hidden onChange={input.onChange}/>
       <Button
         classes={{
           root: clsx(classes.button, !input.value && classes.checked)

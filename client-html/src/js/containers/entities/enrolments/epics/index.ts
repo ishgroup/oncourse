@@ -1,6 +1,6 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetEnrolmentInvoiceLine } from "./EpicGetEnrolmentInvoiceLine";
 import { EpicCancelEnrolment } from "./EpicCancelEnrolment";
+import { EpicGetEnrolmentInvoiceLine } from "./EpicGetEnrolmentInvoiceLine";
 
 export const EpicEnrolment = combineEpics(
   EpicGetEnrolmentInvoiceLine,

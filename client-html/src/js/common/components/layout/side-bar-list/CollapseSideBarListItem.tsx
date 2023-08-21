@@ -3,26 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 const CollapseSideBarListItem: React.FC<any> = ({
-  to,
-  index,
-  item,
-  isActiveLink,
-  activeLink,
-  ItemIcon,
-  classes,
-  handleOpenTooltip,
-  handleCloseTooltip,
-  openedTooltip,
-  ItemIconRenderer
-}) => (
+                                                  to,
+                                                  index,
+                                                  item,
+                                                  isActiveLink,
+                                                  activeLink,
+                                                  ItemIcon,
+                                                  classes,
+                                                  handleOpenTooltip,
+                                                  handleCloseTooltip,
+                                                  openedTooltip,
+                                                  ItemIconRenderer
+                                                }) => (
   <NavLink to={to} className="link" isActive={(match, location) => isActiveLink(location, to, index, item.name)}>
     <Tooltip
       title={item.name}
@@ -42,10 +42,11 @@ const CollapseSideBarListItem: React.FC<any> = ({
         >
           {item.name}
         </Typography>
-        {ItemIconRenderer ? <ItemIconRenderer className={classes.itemIcon} item={item} /> : (item.hasIcon && <ItemIcon className={classes.itemIcon} item={item} />)}
+        {ItemIconRenderer ? <ItemIconRenderer className={classes.itemIcon} item={item}/> : (item.hasIcon &&
+          <ItemIcon className={classes.itemIcon} item={item}/>)}
       </MenuItem>
     </Tooltip>
   </NavLink>
-  );
+);
 
 export default CollapseSideBarListItem;

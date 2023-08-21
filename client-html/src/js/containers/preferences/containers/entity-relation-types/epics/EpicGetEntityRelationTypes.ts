@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { EntityRelationType } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
 import { GET_ENTITY_RELATION_TYPES_FULFILLED, GET_ENTITY_RELATION_TYPES_REQUEST } from "../../../actions";
-import { EntityRelationType } from "@api/model";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request = {
     type: GET_ENTITY_RELATION_TYPES_REQUEST,

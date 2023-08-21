@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
+import { PayslipStatus } from "@api/model";
 import MenuItem from "@mui/material/MenuItem";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { PayslipStatus } from "@api/model";
+import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import { executePayslip } from "../actions";
 import PayslipGenerateCogwheelAction from "./PayslipGenerateCogwheelAction";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 
 class PayslipCogwheelOptions extends React.PureComponent<any, any> {
   executePayslip = e => {

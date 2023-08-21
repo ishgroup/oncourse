@@ -3,23 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import Help from "@mui/icons-material/Help";
-import * as Entities from "@aql/queryLanguageModel";
-import { change } from "redux-form";
 import { Script, TagRequirementType, TriggerType } from "@api/model";
+import * as Entities from "@aql/queryLanguageModel";
+import Help from "@mui/icons-material/Help";
+import IconButton from "@mui/material/IconButton";
+import React, { useEffect, useState } from "react";
 import { Dispatch } from "redux";
+import { change } from "redux-form";
+import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { AQL_ENTITY_ITEMS } from "../../../../constants";
 import { mapSelectItems } from "../../../../../../common/utils/common";
-import { SelectItemDefault } from "../../../../../../model/entities/common";
 import { CatalogItemType } from "../../../../../../model/common/Catalog";
+import { SelectItemDefault } from "../../../../../../model/entities/common";
 import TagsService from "../../../../../tags/services/TagsService";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { getEntityTags } from "../../../../../tags/actions";
 import { useAppSelector } from "../../../../../../common/utils/hooks";
 import SimpleTagList from "../../../../../../common/components/form/simpleTagListComponent/SimpleTagList";
+import { AQL_ENTITY_ITEMS } from "../../../../constants";
+
 
 // Filter AbstractInvoice and include Quote
 const AllEntities = [

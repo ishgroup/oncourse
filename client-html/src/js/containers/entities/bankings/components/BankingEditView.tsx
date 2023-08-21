@@ -3,34 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import clsx from "clsx";
-import {
- change, FieldArray, getFormInitialValues
-} from "redux-form";
-import { compareAsc, format as formatDate } from "date-fns";
 import { Payment } from "@api/model";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
+import Launch from "@mui/icons-material/Launch";
+import { IconButton } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { compareAsc, format as formatDate } from "date-fns";
 import { Decimal } from "decimal.js-light";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
+import { DD_MMM_YYYY_MINUSED, formatCurrency, III_DD_MMM_YYYY } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, FieldArray, getFormInitialValues } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { DD_MMM_YYYY_MINUSED, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { PaymentInType } from "../consts";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { openSiteLink } from "../../sites/utils";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import { State } from "../../../../reducers/state";
+import { openSiteLink } from "../../sites/utils";
+import { PaymentInType } from "../consts";
 
 const disabledHandler = (p: Payment) => {
   if (!p) {

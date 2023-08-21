@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import { PreferenceEnum } from "@api/model";
+import Grid from "@mui/material/Grid";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Grid from "@mui/material/Grid";
-import { PreferenceEnum } from "@api/model";
-import { AppTheme } from "../../../../model/common/Theme";
-import ResizableWrapper from "../../../../common/components/layout/resizable/ResizableWrapper";
+import { AppTheme, ResizableWrapper } from "ish-ui";
+import React from "react";
+import { Dispatch } from "redux";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
+import NewsRender from "../../../../common/components/news/NewsRender";
+import { AccessState } from "../../../../common/reducers/accessReducer";
+import EntityService from "../../../../common/services/EntityService";
 import { DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
 import Statistics from "./components/Statistics";
-import NewsRender from "../../../../common/components/news/NewsRender";
 import TutorialPanel from "./components/TutorialPanel";
 import tutorials from "./tutorials.json";
-import EntityService from "../../../../common/services/EntityService";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { Dispatch } from "redux";
-import { AccessState } from "../../../../common/reducers/accessReducer";
 
 const styles = (theme: AppTheme) => createStyles({
   root: {

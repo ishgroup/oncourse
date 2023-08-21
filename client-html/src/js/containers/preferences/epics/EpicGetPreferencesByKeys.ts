@@ -6,9 +6,9 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import PreferencesService from "../services/PreferencesService";
-import { GET_PREFERENCES_BY_KEYS_FULFILLED, GET_PREFERENCES_BY_KEYS_REQUEST } from "../actions";
 import { Categories } from "../../../model/preferences";
+import { GET_PREFERENCES_BY_KEYS_FULFILLED, GET_PREFERENCES_BY_KEYS_REQUEST } from "../actions";
+import PreferencesService from "../services/PreferencesService";
 
 const request: EpicUtils.Request<any, { keys: string[]; category: Categories }> = {
   type: GET_PREFERENCES_BY_KEYS_REQUEST,

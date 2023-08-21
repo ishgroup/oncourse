@@ -6,34 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EmailTemplate, MessageType } from "@api/model";
-import { Grow } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
+import { Grid, Grow } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
+import getConfigActions from "../../../components/ImportExportConfig";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
-import getConfigActions from "../../../components/ImportExportConfig";
 
 const manualUrl = getManualLink("emailTemplates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
@@ -216,7 +213,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     {
                       action: handleDelete,
                       icon: <DeleteForever/>,
-                      confirm: true,
                       tooltip: "Delete message template",
                       confirmText: "Message template will be deleted permanently",
                       confirmButtonText: "DELETE"

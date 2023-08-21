@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { DOWNLOAD_LOGS } from "../actions";
 import { DatesInterval, LogFile } from "@api/model";
-import LogsService from "../services/LogsService";
-import { createAndDownloadBase64File } from "../../../common/utils/common";
 import { initialize } from "redux-form";
-import { LOGS_FORM_NAME } from "../Logs";
+import { Epic } from "redux-observable";
 import { showMessage } from "../../../common/actions";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { createAndDownloadBase64File } from "../../../common/utils/common";
+import { DOWNLOAD_LOGS } from "../actions";
+import { LOGS_FORM_NAME } from "../Logs";
+import LogsService from "../services/LogsService";
 
 const request: EpicUtils.Request<LogFile, DatesInterval> = {
   type: DOWNLOAD_LOGS,

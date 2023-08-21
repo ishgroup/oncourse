@@ -1,4 +1,3 @@
-
 export const getEntityDisplayName = (entity: string): string => {
   switch (entity) {
     case "Audit": {

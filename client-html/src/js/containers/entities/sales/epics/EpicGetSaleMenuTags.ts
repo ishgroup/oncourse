@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { getMenuTags } from "ish-ui";
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_SALE_MENU_TAGS } from "../actions";
-import TagsService from "../../../tags/services/TagsService";
-import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
 import { setListMenuTags } from "../../../../common/components/list-view/actions";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import TagsService from "../../../tags/services/TagsService";
+import { GET_SALE_MENU_TAGS } from "../actions";
 
 const getTags = async () => {
   const articleTags = await TagsService.getTags("Article");

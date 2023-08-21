@@ -4,9 +4,8 @@
  */
 
 import { Epic, ofType } from "redux-observable";
+import { Observable } from "rxjs";
 import { flatMap } from "rxjs/operators";
-import { State } from "../../../../reducers/state";
-import { GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED } from "../actions";
 import {
   GOOGLE_ANALYTICS_CLIENT_ID_KEY,
   GOOGLE_ANALYTICS_COMPAIN_ID_KEY,
@@ -15,7 +14,8 @@ import {
   GOOGLE_TAG_MANAGER,
   GOOGLE_TAG_MANAGER_DEFAULT_APP_NAME
 } from "../../../../constants/Config";
-import { Observable } from "rxjs";
+import { State } from "../../../../reducers/state";
+import { GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED } from "../actions";
 
 // Google Analytics Init
 export const EpicInitGoogleAnalytics: Epic<any, State> = (action$: Observable<any>): any => action$.pipe(

@@ -12,9 +12,9 @@ import TabsList from "../../../../common/components/navigation/TabsList";
 import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
+import DiscountClasses from "./DiscountClasses";
 import DiscountGeneral from "./DiscountGeneral";
 import DiscountStudents from "./DiscountStudents";
-import DiscountClasses from "./DiscountClasses";
 
 const items = [
   {

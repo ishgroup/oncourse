@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { ArticleProduct } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { getEntityItemById } from "../../../entities/common/entityItemsService";
 import { CHECKOUT_GET_ITEM_PRODUCT, CHECKOUT_GET_ITEM_PRODUCT_FULFILLED } from "../../actions/chekoutItem";
 import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "../../components/items/components/CkecoutItemViewForm";
