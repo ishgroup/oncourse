@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { EnumItem, EnumName } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { EnumItem, EnumName } from "@api/model";
-import ClassDefaultsForm from "./components/ClassDefaultsForm";
-import { State } from "../../../../reducers/state";
 import { Categories } from "../../../../model/preferences";
-import FormContainer from "../FormContainer";
+import { State } from "../../../../reducers/state";
 import { getEnum } from "../../actions";
+import FormContainer from "../FormContainer";
+import ClassDefaultsForm from "./components/ClassDefaultsForm";
 
 interface Props {
   classDefaults: any;

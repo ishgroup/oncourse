@@ -6,8 +6,8 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_COMPLEX_PASS_FILLED, GET_COMPLEX_PASS_REQUEST } from "../actions";
 import UsersService from "../../security/containers/users/services/UsersService";
+import { GET_COMPLEX_PASS_FILLED, GET_COMPLEX_PASS_REQUEST } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_COMPLEX_PASS_REQUEST,

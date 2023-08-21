@@ -5,27 +5,25 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import React from "react";
-import clsx from "clsx";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { formatCurrency, StringArgFunction } from "ish-ui";
+import React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { isInvalid } from "redux-form";
-import {
-  CheckoutPayment,
-  CheckoutPaymentProcess,
-  CheckoutSummary
-} from "../../../../../../model/checkout";
+import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from "../../../../../../model/checkout";
 import { State } from "../../../../../../reducers/state";
 import {
-  checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails, checkoutProcessPayment, clearCcIframeUrl
+  checkoutClearPaymentStatus,
+  checkoutGetPaymentStatusDetails,
+  checkoutProcessPayment,
+  clearCcIframeUrl
 } from "../../../../actions/checkoutPayment";
-import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
-import { formatCurrency } from "../../../../../../common/utils/numbers/numbersNormalizing";
-import styles from "./styles";
 import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
+import PaymentMessageRenderer from "../PaymentMessageRenderer";
+import styles from "./styles";
 
 interface CreditCardPaymentPageProps {
   classes?: any;

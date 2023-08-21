@@ -3,32 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Module, Qualification } from "@api/model";
+import { Collapse, FormControlLabel, Grid, Tooltip } from "@mui/material";
+import { AnyArgFunction, BooleanArgFunction, LinkAdornment, normalizeNumberToZero, StringArgFunction } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import { Module, Qualification } from "@api/model";
-import {
- Collapse, FormControlLabel, Grid, Tooltip 
-} from "@mui/material";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import QualificationListItemRenderer from "../../qualifications/components/QualificationListItemRenderer";
-import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { AnyArgFunction, BooleanArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { openQualificationLink } from "../../qualifications/utils";
-import { CourseExtended } from "../../../../model/entities/Course";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { CourseExtended } from "../../../../model/entities/Course";
+import { State } from "../../../../reducers/state";
+import QualificationListItemRenderer from "../../qualifications/components/QualificationListItemRenderer";
+import { openQualificationLink } from "../../qualifications/utils";
 
 const getQualificationLabel = (qal: Qualification) => `${qal.title}, ${qal.nationalCode}`;
 

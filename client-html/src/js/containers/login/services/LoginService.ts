@@ -1,11 +1,5 @@
+import { AuthenticationApi, LoginRequest, LoginResponse, PasswordComplexity, User, UserApi } from "@api/model";
 import axios from "axios";
-import {
-  AuthenticationApi,
-  UserApi,
-  LoginRequest,
-  LoginResponse,
-  PasswordComplexity, User
-} from "@api/model";
 import { CONTEXT } from "../../../common/api/Constants";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 

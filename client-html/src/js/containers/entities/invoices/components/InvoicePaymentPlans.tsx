@@ -3,25 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
-import { withStyles } from "@mui/styles";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import StepContent from "@mui/material/StepContent";
-import Typography from "@mui/material/Typography";
 import { InvoicePaymentPlan } from "@api/model";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
+import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
-import { format } from "date-fns";
+import StepContent from "@mui/material/StepContent";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
+import Typography from "@mui/material/Typography";
+import { withStyles } from "@mui/styles";
 import clsx from "clsx";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { format } from "date-fns";
+import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { FieldArray, WrappedFieldArrayProps } from "redux-form";
 import { paymentPlanStyles } from "../styles/paymentPlanStyles";
 import { sortInvoicePaymentPlans } from "../utils";
 import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "./InvoicePaymentPlanComponents";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import AddButton from "../../../../common/components/icons/AddButton";
 
 interface PaymentPlansProps {
   classes?: any;

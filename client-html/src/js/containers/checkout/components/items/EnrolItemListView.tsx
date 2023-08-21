@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
+import Typography from "@mui/material/Typography";
+import { getHighlightedPartLabel } from "ish-ui";
+import React from "react";
 import EnrolItemListRenderer from "./components/EnrolItemListRenderer";
 import SaleRelations from "./components/SaleRelations";
 

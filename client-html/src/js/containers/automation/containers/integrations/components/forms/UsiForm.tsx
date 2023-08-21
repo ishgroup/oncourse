@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import { change, initialize, reduxForm } from "redux-form";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { change, initialize, reduxForm } from "redux-form";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../../reducers/state";
 import { getUSISoftwareId } from "../../../../../preferences/actions";

@@ -9,40 +9,42 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { withStyles } from "@mui/styles";
-import { connect } from "react-redux";
-import { Dispatch, Action } from "redux";
-import QRCode from "qrcode.react";
-import {
-  Field, FieldArray, Form, reduxForm, initialize, change, touch
-} from "redux-form";
-import Slide from "@mui/material/Slide";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { LoginRequest } from "@api/model";
-import { darken } from "@mui/material";
-import { alpha } from '@mui/material/styles';
-import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import { darken, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
-import NewPasswordField from "./components/NewPasswordField";
-import { FormTextField } from "../../common/components/form/formFields/TextField";
-import { validateSingleMandatoryField } from "../../common/utils/validation";
-import {
-  postLoginRequest, setLoginState, updatePasswordRequest, checkPassword, getEmailByToken, createPasswordRequest
-} from "../../common/actions";
-import { isComplexPassRequired } from "../preferences/actions";
-import { State } from "../../reducers/state";
-import { LoginState } from "./reducers/state";
-import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
-import ishLogoSmall from "../../../images/logo_small.png";
-import EulaDialog from "./components/EulaDialog";
-import Credits from "./components/Credits";
+import Slide from "@mui/material/Slide";
+import { alpha } from '@mui/material/styles';
+import Typography from "@mui/material/Typography";
+import { withStyles } from "@mui/styles";
+import { FormTextField } from "ish-ui";
+import QRCode from "qrcode.react";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Action, Dispatch } from "redux";
+import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from "redux-form";
 import { DecoratedFormProps } from "redux-form/lib/reduxForm";
+import ishLogoSmall from "../../../images/logo_small.png";
+import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
+import {
+  checkPassword,
+  createPasswordRequest,
+  getEmailByToken,
+  postLoginRequest,
+  setLoginState,
+  updatePasswordRequest
+} from "../../common/actions";
+import { validateSingleMandatoryField } from "../../common/utils/validation";
+import { State } from "../../reducers/state";
+import { isComplexPassRequired } from "../preferences/actions";
+import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
+import Credits from "./components/Credits";
+import EulaDialog from "./components/EulaDialog";
+import NewPasswordField from "./components/NewPasswordField";
+import { LoginState } from "./reducers/state";
 
 const FORM_NAME = "LoginForm";
 

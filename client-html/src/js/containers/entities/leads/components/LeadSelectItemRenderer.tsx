@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import React, { useMemo } from "react";
 
 const LeadSelectItemRenderer = React.memo<{ content: string; data: any, parentProps: any }>(props => {
   const { content, data, parentProps } = props;

@@ -6,23 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
 import { AssessmentSubmission, GradingItem, GradingType } from "@api/model";
-import {
- Grid, IconButton, Typography
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
 import DateRange from "@mui/icons-material/DateRange";
-import {
- arrayInsert, arrayRemove, change, WrappedFieldArrayProps
-} from "redux-form";
+import { Grid, IconButton, Typography } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import { normalizeNumber } from "ish-ui";
+import React, { useEffect, useMemo, useState } from "react";
+import { arrayInsert, arrayRemove, change, WrappedFieldArrayProps } from "redux-form";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
+import GradeModal from "../../courseClasses/components/assessments/GradeModal";
 import styles from "../../courseClasses/components/assessments/styles";
 import SubmissionModal from "../../courseClasses/components/assessments/SubmissionModal";
-import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
 import EnrolmentAssessmentStudent from "./EnrolmentAssessmentStudent";
-import GradeModal from "../../courseClasses/components/assessments/GradeModal";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { EditViewProps } from "../../../../model/common/ListView";
 
 interface Props extends EditViewProps<EnrolmentExtended> {
   classes?: any;

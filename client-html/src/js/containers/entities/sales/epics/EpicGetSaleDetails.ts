@@ -1,8 +1,8 @@
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_SALE_DETAILS, SET_SALE_DETAILS } from "../actions";
 import { DataResponse, ProductItem, ProductType } from "@api/model";
 import { Epic } from "redux-observable";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_SALE_DETAILS, SET_SALE_DETAILS } from "../actions";
 
 const request: EpicUtils.Request<any, { id: string }> = {
   type: GET_SALE_DETAILS,

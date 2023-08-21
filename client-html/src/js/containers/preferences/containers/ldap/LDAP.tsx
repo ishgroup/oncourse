@@ -9,14 +9,14 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Categories } from "../../../../model/preferences";
-import { State } from "../../../../reducers/state";
-import LDAPForm from "./components/LDAPForm";
-import FormContainer from "../FormContainer";
-import * as ldapModel from "../../../../model/preferences/Ldap";
 import { getLdapConnection } from "../../../../common/actions";
-import { getPreferences } from "../../actions";
 import { IAction } from "../../../../common/actions/IshAction";
+import { Categories } from "../../../../model/preferences";
+import * as ldapModel from "../../../../model/preferences/Ldap";
+import { State } from "../../../../reducers/state";
+import { getPreferences } from "../../actions";
+import FormContainer from "../FormContainer";
+import LDAPForm from "./components/LDAPForm";
 
 class LDAP extends React.Component<any, any> {
 

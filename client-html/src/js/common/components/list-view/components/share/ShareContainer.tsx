@@ -3,26 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
-import withStyles from "@mui/styles/withStyles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Help, PlayArrow, Publish } from "@mui/icons-material";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import {
- change, Field, FieldArray, getFormValues, initialize, reduxForm, 
-} from "redux-form";
-import IconButton from "@mui/material/IconButton";
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import Delete from '@mui/icons-material/Delete';
 import {
   Binding,
   ExportRequest,
@@ -33,11 +13,46 @@ import {
   SearchQuery,
   Sorting,
 } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import { Help, Publish } from "@mui/icons-material";
+import Delete from '@mui/icons-material/Delete';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import PlayArrow from "@mui/icons-material/PlayArrow";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { CircularProgress, Grid, ListItem, MenuItem } from "@mui/material";
+import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import Drawer from "@mui/material/Drawer";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
-import FormField from "../../../form/formFields/FormField";
+import { ConfirmBase, FilePreview, getDocumentContent, YYYY_MM_DD_MINUSED } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from "redux-form";
+import {
+  exportTemplateFullScreenPreview,
+} from "../../../../../containers/automation/containers/export-templates/actions";
+import ExportTemplatesService
+  from "../../../../../containers/automation/containers/export-templates/services/ExportTemplatesService";
+import { reportFullScreenPreview } from "../../../../../containers/automation/containers/pdf-reports/actions";
+import PdfService from "../../../../../containers/automation/containers/pdf-reports/services/PdfService";
+import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
+import { TemplateOutputDisplayName } from "../../../../../model/common/Share";
+import { CommonListItem } from "../../../../../model/common/sidebar";
 import { State } from "../../../../../reducers/state";
+import { interruptProcess } from "../../../../actions";
+import InstantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { ProcessState } from "../../../../reducers/processReducer";
+import { getManualLink } from "../../../../utils/getManualLink";
+import { LSGetItem, LSSetItem } from "../../../../utils/storage";
+import { validateSingleMandatoryField } from "../../../../utils/validation";
+import DataTypeRenderer from "../../../form/DataTypeRenderer";
+import FormField from "../../../form/formFields/FormField";
+import { getExpression } from "../../utils/listFiltersUtils";
 import bottomDrawerStyles from "../bottomDrawerStyles";
 import {
   addPrintOverlay,
@@ -49,31 +64,7 @@ import {
   runExport,
 } from "./actions";
 import SelectionSwitcher from "./SelectionSwitcher";
-import { ProcessState } from "../../../../reducers/processReducer";
-import { interruptProcess } from "../../../../actions";
-import { YYYY_MM_DD_MINUSED } from "../../../../utils/dates/format";
-import { getManualLink } from "../../../../utils/getManualLink";
-import { getExpression } from "../../utils/listFiltersUtils";
 import { getTemplateOutputDisplayName } from "./utils";
-import { TemplateOutputDisplayName } from "../../../../../model/common/Share";
-import DataTypeRenderer from "../../../form/DataTypeRenderer";
-import { validateSingleMandatoryField } from "../../../../utils/validation";
-import { CommonListItem } from "../../../../../model/common/sidebar";
-import FilePreview from "../../../form/FilePreview";
-import ConfirmBase from "../../../dialog/confirm/ConfirmBase";
-import { ContactType } from "../../../../../containers/entities/contacts/Contacts";
-import { LSGetItem, LSSetItem } from "../../../../utils/storage";
-import {
-  reportFullScreenPreview
-} from "../../../../../containers/automation/containers/pdf-reports/actions";
-import {
-  exportTemplateFullScreenPreview,
-} from "../../../../../containers/automation/containers/export-templates/actions";
-import PdfService from "../../../../../containers/automation/containers/pdf-reports/services/PdfService";
-import InstantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
-import ExportTemplatesService
-  from "../../../../../containers/automation/containers/export-templates/services/ExportTemplatesService";
-import { getDocumentContent } from "../../../form/documents/components/utils";
 
 type PdfReportType = ContactType | "GENERAL";
 
@@ -164,7 +155,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   componentDidUpdate(prevProps, prevState) {
     const {
-     pdfReports, submitting, process, exportTemplates, pdfReportsFetching, exportTemplatesFetching, rootEntity,
+      pdfReports, submitting, process, exportTemplates, pdfReportsFetching, exportTemplatesFetching, rootEntity,
     } = this.props;
 
     if (submitting && prevProps.process.processId && !process.processId) {
@@ -224,7 +215,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
         const savedState: ShareState = LSGetItem(LAST_SELECTED_EXPORT)
           && JSON.parse(LSGetItem(LAST_SELECTED_EXPORT))[rootEntity];
 
-        if (savedState && savedState.selectedPrimary > 0 ) {
+        if (savedState && savedState.selectedPrimary > 0) {
           this.setState(savedState);
           const template  = exportTemplateTypes[Object.keys(exportTemplateTypes)[savedState.selectedPrimary - 1]][
             savedState.selectedSecondary
@@ -314,10 +305,10 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
     this.initializeShareForm(selectedPrimary, selectedSecondary);
   };
-  
+
   getCompressedPreview = async (pdfId, templateID?) => {
     const { dispatch } = this.props;
-    
+
     try {
       this.setState({ loadingPreview: true, preview: null });
       let preview;
@@ -443,7 +434,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   onSave = values => {
     const {
-     searchQuery, rootEntity, doPrint, doExport, selection, sort,
+      searchQuery, rootEntity, doPrint, doExport, selection, sort,
     } = this.props;
 
     const { selectedPrimary, selectAll, createPreview } = this.state;
@@ -562,7 +553,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
   renderPdfFields() {
     const {
-     classes, overlays, pdfReports,
+      classes, overlays, pdfReports,
     } = this.props;
 
     const { selectedSecondary, createPreview, preview, loadingPreview  } = this.state;
@@ -593,7 +584,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       content: (
                         <MenuItem className="relative w-100" key="upload" onClick={this.handleUploadBackgroundClick}>
                           <div className="heading centeredFlex">
-                            <Publish />
+                            <Publish/>
                             {' '}
                             <span className="ml-1">Upload from disk</span>
                           </div>
@@ -608,7 +599,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     allowEmpty
                   />
                 </Grid>
-                <FieldArray name="variables" component={this.templatesRenderer as any} />
+                <FieldArray name="variables" component={this.templatesRenderer as any}/>
               </Grid>
             </Grid>
           </Grid>
@@ -623,12 +614,12 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {
                     actionLabel: "Full size preview",
                     onAction: this.handleFullScreenPreview,
-                    icon: <FullscreenIcon />
+                    icon: <FullscreenIcon/>
                   },
                   {
                     actionLabel: "Delete preview",
                     onAction: this.deletePreview,
-                    icon: <Delete />
+                    icon: <Delete/>
                   }
                 ]}
               />
@@ -672,19 +663,19 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
       const fieldProps: any = isCheckbox
         ? {
-            classes: { label: classes.label },
-            uncheckedClass: classes.label,
-            color: "primary",
-            stringValue: true,
-          }
+          classes: { label: classes.label },
+          uncheckedClass: classes.label,
+          color: "primary",
+          stringValue: true,
+        }
         : {
-            fieldClasses: {
-              text: classes.text,
-              label: classes.customLabel
-            },
-            ...(item.type === "Date" ? { formatValue: YYYY_MM_DD_MINUSED } : {}),
-            ...(item.type === "Money" ? { stringValue: true } : {}),
-          };
+          fieldClasses: {
+            text: classes.text,
+            label: classes.customLabel
+          },
+          ...(item.type === "Date" ? { formatValue: YYYY_MM_DD_MINUSED } : {}),
+          ...(item.type === "Money" ? { stringValue: true } : {}),
+        };
 
       return (
         <Grid item xs={6} key={index}>
@@ -714,7 +705,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               {values && values.description}
             </Typography>
             <Grid item container rowSpacing={2} columnSpacing={3} xs={12}>
-              <FieldArray name="variables" component={this.templatesRenderer as any} />
+              <FieldArray name="variables" component={this.templatesRenderer as any}/>
             </Grid>
           </Grid>
           {loadingPreview && <CircularProgress />}
@@ -726,12 +717,12 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   {
                     actionLabel: "Full size preview",
                     onAction: this.handleFullScreenPreview,
-                    icon: <FullscreenIcon />
+                    icon: <FullscreenIcon/>
                   },
                   {
                     actionLabel: "Delete preview",
                     onAction: this.deletePreview,
-                    icon: <Delete />
+                    icon: <Delete/>
                   }
                 ]}
               />
@@ -785,7 +776,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
     } = this.props;
 
     const {
-     selectedPrimary, selectedSecondary, selectAll, exportTemplateTypes,
+      selectedPrimary, selectedSecondary, selectAll, exportTemplateTypes,
     } = this.state;
 
     const pdfSelected = this.isPdfReportSelected(selectedPrimary);
@@ -828,10 +819,10 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 disabled={submitting || validating}
               />
 
-              <div className="flex-fill" />
+              <div className="flex-fill"/>
 
               <IconButton className={classes.headerText} href={manualUrl} target="_blank">
-                <Help />
+                <Help/>
               </IconButton>
             </Grid>
           </Grid>
@@ -854,7 +845,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       PDF
                     </Typography>
 
-                    {selectedPrimary === 0 && <div className={classes.menuCorner} />}
+                    {selectedPrimary === 0 && <div className={classes.menuCorner}/>}
                   </ListItem>
                 )}
                 {exportTemplateTypesArr.map((t, i) => (
@@ -871,7 +862,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       {t}
                     </Typography>
 
-                    {selectedPrimary === i + 1 && <div className={classes.menuCorner} />}
+                    {selectedPrimary === i + 1 && <div className={classes.menuCorner}/>}
                   </ListItem>
                 ))}
               </List>
@@ -895,7 +886,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                         {i.name}
                       </Typography>
 
-                      {selectedSecondary === index && <div className={classes.menuCorner} />}
+                      {selectedSecondary === index && <div className={classes.menuCorner}/>}
                     </ListItem>
                   ))}
 
@@ -917,7 +908,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                         {t.name}
                       </Typography>
 
-                      {selectedSecondary === index && <div className={classes.menuCorner} />}
+                      {selectedSecondary === index && <div className={classes.menuCorner}/>}
                     </ListItem>
                   ))}
               </List>
@@ -946,23 +937,23 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     Close
                   </Button>
                   {templateSelected
-                  && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
-                  && (
-                    <LoadingButton
-                      disabled={invalid || validating}
-                      className={classes.closeButton}
-                      classes={{
-                        loadingIndicator: "primaryColor"
-                      }}
-                      type="submit"
-                      datatype="clipboard"
-                      variant="text"
-                      onClick={this.onSubmitClick}
-                      loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
-                    >
-                      Copy to clipboard
-                    </LoadingButton>
-                  )}
+                    && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
+                    && (
+                      <LoadingButton
+                        disabled={invalid || validating}
+                        className={classes.closeButton}
+                        classes={{
+                          loadingIndicator: "primaryColor"
+                        }}
+                        type="submit"
+                        datatype="clipboard"
+                        variant="text"
+                        onClick={this.onSubmitClick}
+                        loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
+                      >
+                        Copy to clipboard
+                      </LoadingButton>
+                    )}
                   <LoadingButton
                     disabled={invalid || validating}
                     className={classes.shareButton}
@@ -982,7 +973,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
             </Grid>
           </Grid>
         </Grid>
-        <PlayArrow className={window.innerWidth < 1024 ? classes.hide1024andDown : classes.corner} />
+        <PlayArrow className={window.innerWidth < 1024 ? classes.hide1024andDown : classes.corner}/>
         {this.isContactList && (
           <ConfirmBase
             title=""

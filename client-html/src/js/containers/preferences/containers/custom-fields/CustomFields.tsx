@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CustomFieldType } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import { CustomFieldType } from "@api/model";
-import { updateCustomFields, deleteCustomField, getCustomFields } from "../../actions";
-import { State } from "../../../../reducers/state";
-import { Fetch } from "../../../../model/common/Fetch";
-import CustomFieldsForm from "./components/CustomFieldsForm";
 import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
+import { Fetch } from "../../../../model/common/Fetch";
+import { State } from "../../../../reducers/state";
+import { deleteCustomField, getCustomFields, updateCustomFields } from "../../actions";
+import CustomFieldsForm from "./components/CustomFieldsForm";
 
 interface Props {
   getFields: () => void;

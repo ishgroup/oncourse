@@ -5,49 +5,51 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-// eslint-disable-next-line import/no-extraneous-dependencies
-import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Dispatch } from "redux";
-import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from "redux-form";
-import { connect } from "react-redux";
-import debounce from "lodash.debounce";
-import clsx from "clsx";
+import { Binding, DataType, EmailTemplate, MessageType, Recipients, SearchQuery } from "@api/model";
+import OpenInNew from "@mui/icons-material/OpenInNew";
+import { CardContent, Dialog, FormControlLabel, Grid } from "@mui/material";
+import Card from "@mui/material/Card";
+import IconButton from "@mui/material/IconButton";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
+import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import { Binding, DataType, EmailTemplate, MessageType, Recipients, SearchQuery } from "@api/model";
-import { Dialog } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
-import Slide from "@mui/material/Slide";
+import clsx from "clsx";
+import {
+  AnyArgFunction,
+  NoArgFunction,
+  openInternalLink,
+  StringArgFunction,
+  StyledCheckbox,
+  Switch,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
+import debounce from "lodash.debounce";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initialize, reduxForm } from "redux-form";
+import previewSmsImage from "../../../../../images/preview-sms.png";
+import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../common/actions";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import DataTypeRenderer from "../../../../common/components/form/DataTypeRenderer";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { clearRecipientsMessageData, getRecipientsMessageData } from "../../../../common/components/list-view/actions";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { AnyArgFunction, NoArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { MessageData, MessageExtended } from "../../../../model/common/Message";
-import { State } from "../../../../reducers/state";
-import MessageService from "../services/MessageService";
-import RecipientsSelectionSwitcher from "./RecipientsSelectionSwitcher";
-import { Switch } from "../../../../common/components/form/formFields/Switch";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
-import previewSmsImage from "../../../../../images/preview-sms.png";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { getMessageRequestModel } from "../utils";
-import { openInternalLink, saveCategoryAQLLink } from "../../../../common/utils/links";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { clearRecipientsMessageData, getRecipientsMessageData } from "../../../../common/components/list-view/actions";
 import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
-import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from "../../../../common/actions";
-import { sendMessage } from "../actions";
 import { getManualLink } from "../../../../common/utils/getManualLink";
+import { saveCategoryAQLLink } from "../../../../common/utils/links";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { EMAIL_FROM_KEY } from "../../../../constants/Config";
 import { SEND_MESSAGE_FORM_NAME } from "../../../../constants/Forms";
+import { MessageData, MessageExtended } from "../../../../model/common/Message";
+import { State } from "../../../../reducers/state";
+import { sendMessage } from "../actions";
+import MessageService from "../services/MessageService";
+import { getMessageRequestModel } from "../utils";
+import RecipientsSelectionSwitcher from "./RecipientsSelectionSwitcher";
 
 const styles = theme => createStyles({
   previewContent: {

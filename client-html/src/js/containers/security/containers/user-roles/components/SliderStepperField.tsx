@@ -1,11 +1,10 @@
-import React, { ComponentClass, useEffect, useRef, useState } from "react";
-import { withStyles, createStyles } from "@mui/styles";
-import clsx from "clsx";
+import { AccessStatus } from "@api/model";
+import Lock from "@mui/icons-material/Lock";
 import Slider from "@mui/material/Slider";
 import { lighten } from '@mui/material/styles';
-import Lock from "@mui/icons-material/Lock";
-
-import { AccessStatus } from "@api/model";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import React, { ComponentClass, useEffect, useRef, useState } from "react";
 
 const AccessStatusKeys = Object.keys(AccessStatus);
 

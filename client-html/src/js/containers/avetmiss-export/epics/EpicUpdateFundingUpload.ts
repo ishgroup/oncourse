@@ -3,9 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { FundingStatus } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { UPDATE_FUNDING_UPLOAD_FULFILLED, UPDATE_FUNDING_UPLOAD_REQUEST } from "../actions";
 import FundingUploadService from "../services/FundingUploadService";

@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import Grid from "@mui/material/Grid";
 import { Assessment, GradingType, Tag } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import React from "react";
+import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface Props extends Partial<EditViewProps<Assessment>> {

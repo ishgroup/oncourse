@@ -3,12 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { VoucherProductState } from "./state";
 import { IAction } from "../../../../common/actions/IshAction";
-import {
-  CLEAR_VOUCHER_PRODUCT_MIN_MAX_FEE,
-  GET_VOUCHER_PRODUCT_MIN_MAX_FEE_FULFILLED
-} from "../actions";
+import { CLEAR_VOUCHER_PRODUCT_MIN_MAX_FEE, GET_VOUCHER_PRODUCT_MIN_MAX_FEE_FULFILLED } from "../actions";
+import { VoucherProductState } from "./state";
 
 class VoucherProductStateClass implements VoucherProductState {
   maxFee: number = 0;

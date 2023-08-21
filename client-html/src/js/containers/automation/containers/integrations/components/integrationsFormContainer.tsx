@@ -3,31 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import {
-  getFormSyncErrors, isDirty, isInvalid
-} from "redux-form";
-import { withStyles } from "@mui/styles";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import createStyles from "@mui/styles/createStyles";
 import { Integration, IntegrationProp } from "@api/model";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import IntegrationDescription from "./IntegrationDescription";
-import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
-import IntegrationTypes from "../IntegrationTypes";
-import { State } from "../../../../../reducers/state";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import Grid from "@mui/material/Grid";
+import { withStyles } from "@mui/styles";
+import createStyles from "@mui/styles/createStyles";
+import clsx from "clsx";
+import { ShowConfirmCaller } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Dispatch } from "redux";
+import { getFormSyncErrors, isDirty, isInvalid } from "redux-form";
 import { showConfirm } from "../../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
+import { State } from "../../../../../reducers/state";
+import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
+import IntegrationTypes from "../IntegrationTypes";
+import IntegrationDescription from "./IntegrationDescription";
 
 const styles = theme => createStyles({
   root: {

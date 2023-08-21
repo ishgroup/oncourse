@@ -1,14 +1,14 @@
+import { DataResponse, TableModel } from "@api/model";
+import { createStyles, withStyles } from "@mui/styles";
 import React, { useCallback, useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd-next";
 import { connect } from "react-redux";
-import { DataResponse, TableModel } from "@api/model";
 import { Dispatch } from "redux";
-import { createStyles, withStyles } from "@mui/styles";
-import { MenuTag } from "../../../../../../model/tags";
-import ListTagGroup from "./ListTagGroup";
+import { FormMenuTag } from "../../../../../../model/tags";
 import { State } from "../../../../../../reducers/state";
 import { updateTableModel } from "../../../actions";
 import { COLUMN_WITH_COLORS } from "../../list/constants";
+import ListTagGroup from "./ListTagGroup";
 
 const styles = theme =>
   createStyles({
@@ -21,10 +21,10 @@ const styles = theme =>
   });
 
 interface Props {
-  tags: MenuTag[];
+  tags: FormMenuTag[];
   classes: any;
   records: DataResponse;
-  onChangeTagGroups: (tags: MenuTag[], type: string) => void;
+  onChangeTagGroups: (tags: FormMenuTag[], type: string) => void;
   rootEntity: string;
   updateTableModel: (model: TableModel, listUpdate?: boolean) => void;
 }
@@ -38,7 +38,7 @@ const ListTagGroups = ({
 
   useEffect(() => {
     const savedTagsOrder = records.tagsOrder;
-    const filteredTags = tags.filter((tag: MenuTag) => tag.children.length);
+    const filteredTags = tags.filter((tag: FormMenuTag) => tag.children.length);
 
     const filteredSortedTags = [];
 
@@ -58,7 +58,7 @@ const ListTagGroups = ({
   }, [records, tags]);
   
   const updateActive = useCallback(
-    (updated: MenuTag) => {
+    (updated: FormMenuTag) => {
       const updatedTags = tags.map(t => {
         if (t.tagBody.id === updated.tagBody.id && t.prefix === updated.prefix) {
           return updated;

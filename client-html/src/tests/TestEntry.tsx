@@ -15,11 +15,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import TestStore from "../js/constants/Store";
 import RootComponent from "../js/RootComponent";
 import { initMockDB } from "../dev/mock/MockAdapter";
-import GlobalStylesProvider from "../js/common/styles/GlobalStylesProvider";
-import { darkTheme } from "../js/common/themes/ishTheme";
+import { darkTheme, GlobalStylesProvider } from "ish-ui";
 
 // Configuring virtual rendering library and mockedAPI class
-
 export const mockedAPI: any = initMockDB();
 
 export const store = new StateObservable(new Subject(), TestStore.getState());

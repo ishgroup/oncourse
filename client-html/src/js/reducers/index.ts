@@ -5,6 +5,44 @@
 
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
+import { documentReducer } from "../common/components/form/documents/reducers";
+import { googleApiReducer } from "../common/components/google-maps/reducers";
+import { swipeableDrawerReducer } from "../common/components/layout/swipeable-sidebar/reducers";
+import { shareReducer } from "../common/components/list-view/components/share/reducers";
+import { listReducer } from "../common/components/list-view/reducers/listReducer";
+import { accessReducer } from "../common/reducers/accessReducer";
+import { actionsQueueReducer } from "../common/reducers/actionsQueueReducer";
+import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
+import { confirmReducer } from "../common/reducers/confirmReducer";
+import { drawerReducer } from "../common/reducers/drawerReducer";
+import { fetchReducer } from "../common/reducers/fetchReducer";
+import { fieldProcessingReducer } from "../common/reducers/fieldProcessingReducer";
+import { lastLocationReducer } from "../common/reducers/lastLocationReducer";
+import { messageReducer } from "../common/reducers/messageReducer";
+import { setNextLocationReducer } from "../common/reducers/nextLocation";
+import { processReducer } from "../common/reducers/processReducer";
+import { sendMessageReducer } from "../common/reducers/sendMessageReducer";
+import { userPreferencesReducer } from "../common/reducers/userPreferencesReducer";
+import { automationReducer } from "../containers/automation/reducers";
+import { AvetmissExportReducer } from "../containers/avetmiss-export/reducers";
+import { checkoutReducer } from "../containers/checkout/reducers";
+import { dashboardReducer } from "../containers/dashboard/reducers";
+import { bankingReducer } from "../containers/entities/bankings/reducers";
+import { certificatesReducer } from "../containers/entities/certificates/reducers";
+import { contactsReducer } from "../containers/entities/contacts/reducers";
+import { courseClassesBulkSessionReducer, courseClassReducer } from "../containers/entities/courseClasses/reducers";
+import { customFieldTypesReducer } from "../containers/entities/customFieldTypes/reducers";
+import { discountsReducer } from "../containers/entities/discounts/reducers";
+import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
+import { invoicesReducer } from "../containers/entities/invoices/reducers";
+import { paymentInReducer } from "../containers/entities/paymentsIn/reducers";
+import { paymentOutReducer } from "../containers/entities/paymentsOut/reducers";
+import { payrollsReducer } from "../containers/entities/payrolls/reducers";
+import { saleReducer } from "../containers/entities/sales/reducers";
+import { siteReducer } from "../containers/entities/sites/reducers";
+import { taxesReducer } from "../containers/entities/taxes/reducers";
+import { voucherProductReducer } from "../containers/entities/voucherProducts/reducers";
+import { loginReducer, systemUserReducer } from "../containers/login/reducers";
 import {
   countriesReducer,
   currencyReducer,
@@ -15,48 +53,10 @@ import {
   timezonesReducer,
   usiSoftwareIdReducer
 } from "../containers/preferences/reducers";
-import { drawerReducer } from "../common/reducers/drawerReducer";
-import { loginReducer, systemUserReducer } from "../containers/login/reducers";
 import { securityReducer } from "../containers/security/reducers";
 import { tagsReducer } from "../containers/tags/reducers";
-import { AvetmissExportReducer } from "../containers/avetmiss-export/reducers";
-import { processReducer } from "../common/reducers/processReducer";
-import { listReducer } from "../common/components/list-view/reducers/listReducer";
-import { lastLocationReducer } from "../common/reducers/lastLocationReducer";
-import { setNextLocationReducer } from "../common/reducers/nextLocation";
-import { fetchReducer } from "../common/reducers/fetchReducer";
-import { shareReducer } from "../common/components/list-view/components/share/reducers";
-import { siteReducer } from "../containers/entities/sites/reducers";
-import { googleApiReducer } from "../common/components/google-maps/reducers";
-import { documentReducer } from "../common/components/form/documents/reducers";
-import { dashboardReducer } from "../containers/dashboard/reducers";
-import { payrollsReducer } from "../containers/entities/payrolls/reducers";
-import { accessReducer } from "../common/reducers/accessReducer";
-import { contactsReducer } from "../containers/entities/contacts/reducers";
-import { userPreferencesReducer } from "../common/reducers/userPreferencesReducer";
-import { bankingReducer } from "../containers/entities/bankings/reducers";
-import { discountsReducer } from "../containers/entities/discounts/reducers";
-import { saleReducer } from "../containers/entities/sales/reducers";
 import { timetableReducer } from "../containers/timetable/reducers";
-import { customFieldTypesReducer } from "../containers/entities/customFieldTypes/reducers";
-import { taxesReducer } from "../containers/entities/taxes/reducers";
-import { certificatesReducer } from "../containers/entities/certificates/reducers";
-import { voucherProductReducer } from "../containers/entities/voucherProducts/reducers";
-import { invoicesReducer } from "../containers/entities/invoices/reducers";
-import { paymentInReducer } from "../containers/entities/paymentsIn/reducers";
-import { automationReducer } from "../containers/automation/reducers";
-import { confirmReducer } from "../common/reducers/confirmReducer";
-import { paymentOutReducer } from "../containers/entities/paymentsOut/reducers";
-import { courseClassesBulkSessionReducer, courseClassReducer } from "../containers/entities/courseClasses/reducers";
-import { actionsQueueReducer } from "../common/reducers/actionsQueueReducer";
-import { messageReducer } from "../common/reducers/messageReducer";
-import { checkoutReducer } from "../containers/checkout/reducers";
-import { swipeableDrawerReducer } from "../common/components/layout/swipeable-sidebar/reducers";
-import { enrolmentsReducer } from "../containers/entities/enrolments/reducers";
-import { commonPlainRecordSearchReducer } from "../common/reducers/commonPlainRecordSearchReducer";
 import { State } from "./state";
-import { sendMessageReducer } from "../common/reducers/sendMessageReducer";
-import { fieldProcessingReducer } from "../common/reducers/fieldProcessingReducer";
 
 export const combinedReducers = combineReducers<State>({
   access: accessReducer,

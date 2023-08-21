@@ -6,20 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Chip from "@mui/material/Chip";
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
 import { ClashType, Session } from "@api/model";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
 import { createStyles, Theme } from "@mui/material";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
 import { differenceInMinutes, format } from "date-fns";
-import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
-import CalendarSessionTag from "./CalendarSessionTag";
-import { openCourseClassLink } from "../../../../../entities/courseClasses/utils";
-import { formatDurationMinutes } from "../../../../../../common/utils/dates/formatString";
-import { appendTimezone } from "../../../../../../common/utils/dates/formatTimezone";
+import { appendTimezone, formatDurationMinutes, WarningMessage } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 import { CalendarTagsState } from "../../../../../../model/timetable";
+import { openCourseClassLink } from "../../../../../entities/courseClasses/utils";
+import CalendarSessionTag from "./CalendarSessionTag";
 
 const styles = (theme: Theme) => createStyles({
     "@global": {

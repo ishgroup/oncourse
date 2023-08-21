@@ -4,8 +4,8 @@
  */
 
 import { ApiMethods } from "../../model/common/apiHandlers";
-import { IAction } from "../actions/IshAction";
 import { CHECK_PERMISSIONS_REQUEST_FULFILLED } from "../actions";
+import { IAction } from "../actions/IshAction";
 
 export type AccessItem = {
   [method in keyof ApiMethods]: boolean;
@@ -19,13 +19,13 @@ export const accessReducer = (state: AccessState = {}, action: IAction): AccessS
   switch (action.type) {
     case CHECK_PERMISSIONS_REQUEST_FULFILLED: {
       const {
- path, method, keyCode, hasAccess 
-} = action.payload;
+        path, method, keyCode, hasAccess
+      } = action.payload;
 
       return {
         ...state,
-        ...(path && method ? { [path]: { [method]: hasAccess } } : {}),
-        ...(keyCode ? { [keyCode]: hasAccess } : {})
+        ...(path && method ? {[path]: {[method]: hasAccess}} : {}),
+        ...(keyCode ? {[keyCode]: hasAccess} : {})
       };
     }
 

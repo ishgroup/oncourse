@@ -4,12 +4,15 @@
  */
 import { stopSubmit } from "redux-form";
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import ScriptsService from "../services/ScriptsService";
 import { START_PROCESS, UPDATE_PROCESS } from "../../../../../common/actions";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
- getRunScriptResult, openRunScriptPdf, POST_SCRIPT_RUN_REQUEST, POST_SCRIPT_RUN_REQUEST_FULFILLED 
+  getRunScriptResult,
+  openRunScriptPdf,
+  POST_SCRIPT_RUN_REQUEST,
+  POST_SCRIPT_RUN_REQUEST_FULFILLED
 } from "../actions";
+import ScriptsService from "../services/ScriptsService";
 
 const request: EpicUtils.Request<any, any> = {
   type: POST_SCRIPT_RUN_REQUEST,

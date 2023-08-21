@@ -1,8 +1,8 @@
 import { combineEpics } from "redux-observable";
-import { EpicReconcileBanking } from "./EpicReconcileBanking";
-import { EpicGetDepositPayments } from "./EpicGetDepositPayments";
 import { EpicGetDepositAccounts } from "./EpicGetDepositAccounts";
+import { EpicGetDepositPayments } from "./EpicGetDepositPayments";
 import { EpicInitDeposit } from "./EpicInitDeposit";
+import { EpicReconcileBanking } from "./EpicReconcileBanking";
 
 export const EpicBankings = combineEpics(
   EpicReconcileBanking,

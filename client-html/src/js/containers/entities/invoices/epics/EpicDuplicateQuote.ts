@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
 import { Invoice } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import InvoiceService from "../services/InvoiceService";
-import { DUPLICATE_QUOTE } from "../actions/index";
+import { formatToDateOnly } from "ish-ui";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { DUPLICATE_QUOTE } from "../actions/index";
+import InvoiceService from "../services/InvoiceService";
 
 const request: EpicUtils.Request = {
   type: DUPLICATE_QUOTE,

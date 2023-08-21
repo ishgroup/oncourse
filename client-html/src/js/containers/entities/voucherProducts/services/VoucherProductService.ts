@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { Diff, VoucherProduct, VoucherProductApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class VoucherProductService {
   readonly voucherProductApi = new VoucherProductApi(new DefaultHttpService());

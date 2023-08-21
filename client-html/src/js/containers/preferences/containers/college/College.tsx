@@ -9,11 +9,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import CollegeForm from "./components/CollegeForm";
-import { State } from "../../../../reducers/state";
 import { Categories, CollegeSucureKey } from "../../../../model/preferences";
-import FormContainer from "../FormContainer";
+import { State } from "../../../../reducers/state";
 import { getTimezones } from "../../actions";
+import FormContainer from "../FormContainer";
+import CollegeForm from "./components/CollegeForm";
 
 interface Props {
   college: any;

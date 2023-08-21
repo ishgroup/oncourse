@@ -3,30 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Collapse, FormControlLabel, Typography } from "@mui/material";
-import Divider from "@mui/material/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
-import { connect } from "react-redux";
+import { Collapse, Divider, FormControlLabel, Grid, Typography } from "@mui/material";
 import Decimal from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import { Switch } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
+import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { mapSelectItems } from "../../../../common/utils/common";
 import {
   validateNonNegative,
   validateRangeInclusive,
   validateSingleMandatoryField
 } from "../../../../common/utils/validation";
-import { State } from "../../../../reducers/state";
-import { Switch } from "../../../../common/components/form/formFields/Switch";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import { mapSelectItems } from "../../../../common/utils/common";
-import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import { DiscountAvailabilityTypes } from "../constatnts";
 
 interface DiscountGeneralProps extends EditViewProps<Discount> {
@@ -121,60 +117,66 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   };
 
   validFromOptions: CustomSelectorOption[] = [
-    { caption: "any date", body: "Any date", type: null },
+    { caption: "any date", body: "Any date" },
     {
       caption: "days before",
       body: "days before class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validFromOffset",
-      format: value => -value,
-      normalize: value => -value,
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validFromOffset",
+        format: value => -value,
+        normalize: value => -value,
+        min: "0"
+      }
     },
     {
       caption: "days after",
       body: "days after class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validFromOffset",
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validFromOffset",
+        min: "0"
+      }
     },
     {
       caption: "date",
       body: "Date",
-      type: "date",
-      component: EditInPlaceDateTimeField,
-      fieldName: "validFrom"
+      formFileldProps: {
+        type: "date",
+        name: "validFrom"
+      }
     }
   ];
 
   validToOptions: CustomSelectorOption[] = [
-    { caption: "any date", body: "Any date", type: null },
+    { caption: "any date", body: "Any date" },
     {
       caption: "days before",
       body: "days before class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validToOffset",
-      format: value => -value,
-      normalize: value => -value,
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validToOffset",
+        format: value => -value,
+        normalize: value => -value,
+        min: "0"
+      }
     },
     {
       caption: "days after",
       body: "days after class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validToOffset",
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validToOffset",
+        min: "0"
+      }
     },
     {
       caption: "date",
       body: "Date",
-      type: "date",
-      component: EditInPlaceDateTimeField,
-      fieldName: "validTo"
+      formFileldProps: {
+        type: "date",
+        name: "validTo"
+      }
     }
   ];
 

@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import MenuItem from "@mui/material/MenuItem";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import MenuItem from "@mui/material/MenuItem";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import { duplicateCourses } from "../actions";
 import RelationshipView from "./RelationshipView";

@@ -7,13 +7,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Decimal } from "decimal.js-light";
+import { formatCurrency, WarningMessage } from "ish-ui";
 import React, { useCallback } from "react";
 import { change } from "redux-form";
-import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { accountLabelCondition } from "../../../accounts/utils";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { useAppSelector } from "../../../../../common/utils/hooks";
+import { accountLabelCondition } from "../../../accounts/utils";
 
 const FORM: string = "CANCEL_ENROLMENT_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";

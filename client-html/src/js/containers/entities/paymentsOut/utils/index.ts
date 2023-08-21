@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { PaymentOutModel } from "../reducers/state";
 import { PaymentOut } from "@api/model";
 import { format } from "date-fns";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
+import { PaymentOutModel } from "../reducers/state";
 
 export const getTotalOwing = invoices => invoices.reduce((acc, invoice) => Math.round(acc * 100 + invoice.amountOwing * 100) / 100, 0);
 

@@ -4,7 +4,7 @@
  */
 
 import { IAction } from "../../../../common/actions/IshAction";
-import { GET_CUSTOM_FIELD_TYPES_FULFILLED, GET_CUSTOM_FIELD_TYPES } from "../actions";
+import { GET_CUSTOM_FIELD_TYPES, GET_CUSTOM_FIELD_TYPES_FULFILLED } from "../actions";
 import { CustomFieldTypesState } from "./state";
 
 const initial: CustomFieldTypesState = {

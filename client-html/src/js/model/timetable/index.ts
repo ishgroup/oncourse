@@ -7,7 +7,7 @@
  */
 
 import { Session } from "@api/model";
-import { AnyArgFunction, DateArgFunction } from "../common/CommonFunctions";
+import { AnyArgFunction, DateArgFunction } from "ish-ui";
 import { CoreFilter, SavingFilterState } from "../common/ListView";
 
 export type CalendarMode = "Compact" | "Gap(Days)" | "Gap(Hours)";

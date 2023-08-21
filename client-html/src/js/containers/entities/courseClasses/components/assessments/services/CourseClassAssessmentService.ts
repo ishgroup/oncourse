@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AssessmentClassApi, AssessmentClass } from "@api/model";
+import { AssessmentClass, AssessmentClassApi } from "@api/model";
 import { DefaultHttpService } from "../../../../../../common/services/HttpService";
 
 class CourseClassAssessmentService {

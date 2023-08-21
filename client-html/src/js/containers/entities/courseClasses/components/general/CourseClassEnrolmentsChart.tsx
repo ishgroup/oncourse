@@ -6,26 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import {
- ResponsiveContainer, Area, AreaChart, XAxis, ReferenceLine, Tooltip
-} from "recharts";
-import { differenceInCalendarWeeks } from "date-fns";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import withTheme from "@mui/styles/withTheme";
-import { green, orange } from "@mui/material/colors";
-import Paper from "@mui/material/Paper";
 import Edit from "@mui/icons-material/Edit";
-import { CourseClassState } from "../../reducers";
+import { green } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import withTheme from "@mui/styles/withTheme";
+import { orange } from "@mui/material/colors";
+import { differenceInCalendarWeeks } from "date-fns";
+import { AppTheme, NumberArgFunction } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { connect } from "react-redux";
+import { Area, AreaChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import { Dispatch } from "redux";
 import { State } from "../../../../../reducers/state";
 import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { CourseClassState } from "../../reducers";
 
 interface Props {
   classId: number;

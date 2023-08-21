@@ -3,12 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  ConcessionType,
-  ContactRelationType,
-  Tax,
-  UsiVerificationResult
-} from "@api/model";
+import { ConcessionType, ContactRelationType, Tax, UsiVerificationResult } from "@api/model";
 import { IAction } from "../../../../common/actions/IshAction";
 import {
   CLEAR_CONTACT_EDUCATION,
@@ -19,7 +14,8 @@ import {
   GET_CONTACT_OUTCOMES_FULFILLED,
   GET_CONTACT_PRIOR_LEARNINGS_FULFILLED,
   GET_CONTACTS_CONCESSION_TYPES_FULFILLED,
-  GET_CONTACTS_RELATION_TYPES_FULFILLED, GET_CONTACTS_STORED_CC_FULFILLED,
+  GET_CONTACTS_RELATION_TYPES_FULFILLED,
+  GET_CONTACTS_STORED_CC_FULFILLED,
   GET_CONTACTS_TAX_TYPES_FULFILLED,
   POST_MERGE_CONTACTS_FULFILLED,
   VERIFY_USI,

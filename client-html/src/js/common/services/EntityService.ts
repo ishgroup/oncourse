@@ -4,14 +4,17 @@
  */
 
 import { DataResponse, Diff, EntityApi, SearchQuery } from "@api/model";
-import { DefaultHttpService } from "./HttpService";
 import {
- LIST_PAGE_SIZE, PLAIN_LIST_MAX_PAGE_SIZE, SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX
+  LIST_PAGE_SIZE,
+  PLAIN_LIST_MAX_PAGE_SIZE,
+  SIMPLE_SEARCH_QUOTES_REGEX,
+  SIMPLE_SEARCH_REGEX
 } from "../../constants/Config";
-import { State } from "../../reducers/state";
-import { getFiltersString, getTagGroups } from "../components/list-view/utils/listFiltersUtils";
 import { GetRecordsArgs } from "../../model/common/ListView";
 import { EntityName, ListActionEntity } from "../../model/entities/common";
+import { State } from "../../reducers/state";
+import { getFiltersString, getTagGroups } from "../components/list-view/utils/listFiltersUtils";
+import { DefaultHttpService } from "./HttpService";
 
 class EntityService {
   readonly entityApi = new EntityApi(new DefaultHttpService());
@@ -67,8 +70,8 @@ class EntityService {
     return this.entityApi.get(entity, search, PLAIN_LIST_MAX_PAGE_SIZE, 0);
   }
 
-  public getRecordsByListSearch(entity: EntityName, search:  SearchQuery): Promise<DataResponse> {
-    return this.entityApi.getAll(entity, { ...search, pageSize: PLAIN_LIST_MAX_PAGE_SIZE, offset: 0 });
+  public getRecordsByListSearch(entity: EntityName, search: SearchQuery): Promise<DataResponse> {
+    return this.entityApi.getAll(entity, {...search, pageSize: PLAIN_LIST_MAX_PAGE_SIZE, offset: 0});
   }
 
   public getPlainRecords(

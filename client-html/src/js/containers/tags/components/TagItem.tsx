@@ -6,23 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import clsx from "clsx";
-import { Field } from "redux-form";
 import Delete from "@mui/icons-material/Delete";
+import DragIndicator from "@mui/icons-material/DragIndicator";
 import Edit from "@mui/icons-material/Edit";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import DragIndicator from "@mui/icons-material/DragIndicator";
+import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { Collapse } from "@mui/material";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
-import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
-import { stopEventPropagation } from "../../../common/utils/events";
+import clsx from "clsx";
+import { ColorPicker, stopEventPropagation, useHoverShowStyles } from "ish-ui";
+import React, { useCallback } from "react";
+import { Field } from "redux-form";
+import { FormEditorField } from "../../../common/components/form/formFields/FormEditor";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormTagProps } from "../../../model/tags";
-import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
 
 const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
 

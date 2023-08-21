@@ -7,12 +7,12 @@
  */
 
 import React from "react";
+import { FormSection } from "redux-form";
 import { EditViewProps } from "../../../../model/common/ListView";
-import ProfileHeading from "../../contacts/components/ProfileHeading";
+import { VetReport } from "../../../../model/entities/VetReporting";
 import ContactDetails from "../../contacts/components/ContactDetails";
 import ContactsVET from "../../contacts/components/ContactsVET";
-import { FormSection } from "redux-form";
-import { VetReport } from "../../../../model/entities/VetReporting";
+import ProfileHeading from "../../contacts/components/ProfileHeading";
 
 const VetReportingEditView = (props: EditViewProps<VetReport> & { usiLocked: boolean }) => {
   const {

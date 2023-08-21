@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST, setListSelection } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import CourseService from "../services/CourseService";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { DUPLICATE_COURSE } from "../actions";
 import { ENTITY_NAME as CoursesEntity } from "../Courses";
+import CourseService from "../services/CourseService";
 
 const request: EpicUtils.Request = {
   type: DUPLICATE_COURSE,

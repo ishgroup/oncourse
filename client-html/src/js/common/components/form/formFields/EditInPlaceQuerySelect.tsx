@@ -1,37 +1,34 @@
 /*
- * Copyright ish group pty ltd 2022.
+ * Copyright ish group pty ltd 2023.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import TextField from "@mui/material/TextField";
-import DateRange from "@mui/icons-material/DateRange";
-import QueryBuilder from "@mui/icons-material/QueryBuilder";
-import Autocomplete from "@mui/material/Autocomplete";
-import React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import { format as formatDate } from "date-fns";
-import clsx from "clsx";
-import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
-import { CodeCompletionCore } from "antlr4-c3";
-import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
 import { AqlLexer } from "@aql/AqlLexer";
 import { AqlParser } from "@aql/AqlParser";
 import * as Entities from "@aql/queryLanguageModel";
-import { stubComponent } from "../../../utils/common";
-import { getHighlightedPartLabel } from "../../../utils/formatting";
-import getCaretCoordinates from "../../../utils/getCaretCoordinates";
-import { selectStyles } from "./SelectCustomComponents";
-import { DD_MM_YYYY_SLASHED, HH_MM_COLONED } from "../../../utils/dates/format";
+import DateRange from "@mui/icons-material/DateRange";
+import QueryBuilder from "@mui/icons-material/QueryBuilder";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { createStyles, withStyles } from "@mui/styles";
+import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
+import { CodeCompletionCore } from "antlr4-c3";
+import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
+import clsx from "clsx";
+import { format as formatDate } from "date-fns";
+import { DD_MM_YYYY_SLASHED, getHighlightedPartLabel, HH_MM_COLONED, selectStyles, stubComponent } from "ish-ui";
+import getCaretCoordinates from "ish-ui/dist/utils/DOM/getCaretCoordinates";
+import React from "react";
 import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
-import { EditInPlaceQueryFieldProps } from "../../../../model/common/Fields";
+import { EditInPlaceQueryFieldProps, QueryFieldSuggestion } from "../../../../model/common/Fields";
 
 const queryStyles = theme => createStyles({
   queryMenuItem: {
@@ -85,8 +82,8 @@ const completeSuggestions = (
   operatorsFilter: string,
   pathFilter: string,
   rootEntity: string,
-  filterTags?: Suggestion[],
-  tags?: Suggestion[],
+  filterTags?: QueryFieldSuggestion[],
+  tagSuggestions?: QueryFieldSuggestion[],
   customFields?: string[]
 ) => {
   let variants = [token];
@@ -137,7 +134,7 @@ const completeSuggestions = (
       break;
     }
     case "#": {
-      variants = tags && tags.length ? [token] : [];
+      variants = tagSuggestions && tagSuggestions.length ? [token] : [];
       break;
     }
     case "~":
@@ -226,17 +223,9 @@ const completeSuggestions = (
   }));
 };
 
-export interface Suggestion {
-  token: string;
-  value: string;
-  label: string;
-  prefix?: string;
-  queryPrefix?: string;
-}
-
 interface State {
   value: object[];
-  options: Suggestion[];
+  options: QueryFieldSuggestion[];
   menuIsOpen: boolean;
   pickerOpened: "DATE" | "TIME";
   inputValue: string;
@@ -277,7 +266,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
   componentDidUpdate(prev) {
     const {
-     input, rootEntity
+      input, rootEntity
     } = this.props;
 
     if (prev.rootEntity !== rootEntity) {
@@ -308,7 +297,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   getAutocomplete = (input, position?) => {
     const { parser } = this.parseInputString(input);
     const {
-      rootEntity, filterTags, tags, customFields
+      rootEntity, filterTags, tagSuggestions, customFields
     } = this.props;
 
     const core = new CodeCompletionCore(parser);
@@ -339,7 +328,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
         this.pathFilter,
         rootEntity,
         filterTags,
-        tags,
+        tagSuggestions,
         customFields
       );
 
@@ -509,7 +498,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     const { classes } = this.props;
 
     const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
-    
+
     return {
       className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
       style: {
@@ -531,9 +520,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   filterOptions = item => item.label
-      .toLowerCase()
-      .trim()
-      .startsWith(this.state.searchValue.trim().toLowerCase());
+    .toLowerCase()
+    .trim()
+    .startsWith(this.state.searchValue.trim().toLowerCase());
 
   filterOptionsInner = options => options.filter(this.filterOptions);
 
@@ -615,8 +604,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       + (value[0].token === "SEPARATOR" || value[0].token === "'@'" || value[0].token === "'#'"
         ? ""
         : Entities[propType] && Entities[propType].constructor.name !== ENUM_CONSTRUCTOR_NAME
-        ? ""
-        : " ");
+          ? ""
+          : " ");
 
     if (value[0].queryPrefix) {
       const tagStr = "#" + value[0].value;
@@ -692,7 +681,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
   updateAutocomplete = value => {
     const { tokens, parser } = this.parseInputString(value);
-    const { filterTags, tags } = this.props;
+    const { filterTags, tagSuggestions } = this.props;
     const { options } = this.state;
 
     const parsedTokens = tokens.tokens;
@@ -741,7 +730,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     if (lastTokenType === "'#'") {
       this.setState({
         searchValue: "",
-        options: (tags || [])
+        options: (tagSuggestions || [])
       });
       return;
     }
@@ -1010,8 +999,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       option = (
         <div className={clsx("heading", "centeredFlex")}>
           {content}
-          {label === "DATE" && <DateRange className="ml-1" />}
-          {label === "TIME" && <QueryBuilder className="ml-1" />}
+          {label === "DATE" && <DateRange className="ml-1"/>}
+          {label === "TIME" && <QueryBuilder className="ml-1"/>}
         </div>
       );
     }
@@ -1023,7 +1012,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     return option as any;
   };
 
-  popperAdapter = ({ anchorEl, disablePortal, className, style,  ...params }) => (<div {...params} {...this.getInlineMenuStyles()} />);
+  popperAdapter = ({ anchorEl, disablePortal, className, style, ...params }) => (
+    <div {...params} {...this.getInlineMenuStyles()} />);
 
   render() {
     const {

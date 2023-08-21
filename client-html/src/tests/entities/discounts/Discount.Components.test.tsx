@@ -1,9 +1,8 @@
 import { format } from "date-fns";
 import DiscountEditView from "../../../js/containers/entities/discounts/components/DiscountEditView";
 import { discountTypes } from "../../../js/containers/entities/discounts/components/DiscountGeneral";
-import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
+import { formatCurrency, III_DD_MMM_YYYY } from "ish-ui";
 import { mockedEditView } from "../../common/MockedEditView.Components";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
 
 describe("Virtual rendered DiscountEditView", () => {
   mockedEditView({

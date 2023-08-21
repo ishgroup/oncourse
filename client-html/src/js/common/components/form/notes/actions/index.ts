@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Note } from "@api/model";
 import { _toRequestType } from "../../../../actions/ActionUtils";
 import { IAction } from "../../../../actions/IshAction";
-import { Note } from "@api/model";
 
 export const GET_NOTE_ITEMS = _toRequestType("get/list/entity/note");
 
@@ -17,17 +17,17 @@ export const DELETE_NOTE_ITEM = _toRequestType("delete/list/entity/note");
 
 export const getNoteItems = (entityName: string, entityId: number, form: string): IAction<any> => ({
   type: GET_NOTE_ITEMS,
-  payload: { entityName, entityId, form }
+  payload: {entityName, entityId, form}
 });
 
 export const putNoteItem = (note: Note) => ({
   type: PUT_NOTE_ITEM,
-  payload: { note }
+  payload: {note}
 });
 
 export const postNoteItem = (note: Note) => ({
   type: POST_NOTE_ITEM,
-  payload: { note }
+  payload: {note}
 });
 
 export const deleteNoteItem = (noteId: number) => ({

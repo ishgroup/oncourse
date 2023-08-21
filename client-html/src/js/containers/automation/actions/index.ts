@@ -1,8 +1,8 @@
 import { AutomationConfigs, Integration } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
+import { AutomationEntity } from "../../../model/automation/common";
 import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
 import { CatalogItemType } from "../../../model/common/Catalog";
-import { AutomationEntity } from "../../../model/automation/common";
 
 export const GET_INTEGRATIONS_REQUEST = _toRequestType("get/integrations");
 export const GET_INTEGRATIONS_FULFILLED = FULFILLED(GET_INTEGRATIONS_REQUEST);
