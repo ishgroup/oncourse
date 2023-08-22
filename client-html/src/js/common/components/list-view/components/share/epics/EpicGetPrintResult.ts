@@ -9,6 +9,7 @@ import { CONTEXT } from "../../../../../api/Constants";
 import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import { GET_PRINT_RESULT } from "../actions";
+import { LIST_SHARE_FORM_NAME } from "../constants";
 
 const request: EpicUtils.Request = {
   type: GET_PRINT_RESULT,
@@ -18,9 +19,9 @@ const request: EpicUtils.Request = {
     return new Promise(resolve => resolve(null));
   },
   processData: () => [
-    stopSubmit("ListShareForm"),
+    stopSubmit(LIST_SHARE_FORM_NAME),
   ],
-  processError: response => [stopSubmit("ListShareForm"), ...FetchErrorHandler(response)],
+  processError: response => [stopSubmit(LIST_SHARE_FORM_NAME), ...FetchErrorHandler(response)],
 };
 
 export const EpicGetPrintResult: Epic<any, any> = EpicUtils.Create(request);
