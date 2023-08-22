@@ -24,7 +24,7 @@ const Credits = ({ wrapperClass, itemClass }) => {
   return <Grid container columnSpacing={3} className={wrapperClass}>
     <Grid item xs={12} sm={6}>
       <div>
-        <CreditsItem heading="Product design" creditPersons={["Aristedes Maniatis", "Natalie Morton"]} className={itemClass}  />
+        <CreditsItem heading="Product design" creditPersons={["Aristedes Maniatis", "Natalie Morton", "James Swinbanks"]} className={itemClass}  />
         <CreditsItem heading="System architecture" creditPersons={["Aristedes Maniatis"]} className={itemClass}  />
         <CreditsItem heading="Engineering leads" creditPersons={[
           "Yury Yasuchenya",
@@ -39,6 +39,7 @@ const Credits = ({ wrapperClass, itemClass }) => {
           "Dmitry Tarasenko",
           "Kristina Trukhan",
           "Chintan Kotadia",
+          "Dmitry Litvinko",
           "Victor Yarmolovich",
           "Vadim Haponov",
           "Rostislav Zenov",
@@ -78,6 +79,8 @@ const Credits = ({ wrapperClass, itemClass }) => {
       ]} className={itemClass}  />
       <CreditsItem heading="Documentation" creditPersons={[
         "James Swinbanks",
+        "Flynn Hill",
+        "Anne Marie Flores",
         "Charlotte Tanner",
         "Stephen McIlwaine",
       ]} className={itemClass}  />
