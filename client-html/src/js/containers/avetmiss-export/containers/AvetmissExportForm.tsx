@@ -866,9 +866,9 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                           <LoadingButton
                             color="primary"
                             type="submit"
+                            variant="contained"
                             disabled={invalid || !checkboxesValid}
                             loading={pending}
-                            className="avetmissButton"
                           >
                             Find
                           </LoadingButton>
