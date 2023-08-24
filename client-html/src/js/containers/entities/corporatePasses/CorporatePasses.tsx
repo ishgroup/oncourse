@@ -3,23 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CorporatePass } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { CorporatePass } from "@api/model";
 import {
-  setFilterGroups,
-  setListEditRecord,
   clearListState,
   getFilters,
- } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import CorporatePassEditView from "./components/CorporatePassEditView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
+  setFilterGroups,
+  setListEditRecord,
+} from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getEntityTags } from "../../tags/actions";
+import CorporatePassEditView from "./components/CorporatePassEditView";
 
 const filterGroups: FilterGroup[] = [
   {

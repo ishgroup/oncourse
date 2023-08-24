@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import { Application } from "@api/model";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import { Application } from "@api/model";
-import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import React from "react";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import ApplicationGeneral from "./ApplicationGeneral";
-import ApplicationDocuments from "./ApplicationDocuments";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { EditViewProps } from "../../../../model/common/ListView";
+import ApplicationDocuments from "./ApplicationDocuments";
+import ApplicationGeneral from "./ApplicationGeneral";
 
 const styles = theme => createStyles({
   documentsRoot: {

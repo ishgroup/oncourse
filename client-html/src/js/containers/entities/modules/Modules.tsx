@@ -3,21 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Module } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Module } from "@api/model";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import ModulesEditView from "./components/ModulesEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord
-} from "../../../common/components/list-view/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
 const nameCondition = (values: Module) => values.title;
 

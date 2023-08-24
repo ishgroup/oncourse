@@ -3,29 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
 import PlusIcon from "@mui/icons-material/Add";
-import Share from "@mui/icons-material/Share";
+import FindInPage from "@mui/icons-material/FindInPage";
 import Settings from "@mui/icons-material/Settings";
+import Share from "@mui/icons-material/Share";
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
 import { alpha, darken } from '@mui/material/styles';
-import FindInPage from "@mui/icons-material/FindInPage";
+import Tooltip from "@mui/material/Tooltip";
+import clsx from "clsx";
+import { makeAppStyles, openInternalLink } from "ish-ui";
+import React, { useEffect, useState, useMemo } from "react";
+import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
 import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { openInternalLink } from "../../../../utils/links";
-import SearchInput from "./components/SearchInput";
+import { FindRelatedItem } from "../../../../../model/common/ListView";
+import instantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
+import EntityService from "../../../../services/EntityService";
+import FindRelatedMenu from "./components/FindRelatedMenu";
 import ScriptsMenu from "./components/ScriptsMenu";
+import SearchInput from "./components/SearchInput";
 import SendMessageMenu from "./components/SendMessageMenu";
 import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
-import FindRelatedMenu from "./components/FindRelatedMenu";
-import { FindRelatedItem } from "../../../../../model/common/ListView";
-import { makeAppStyles } from "../../../../styles/makeStyles";
-import EntityService from "../../../../services/EntityService";
-import instantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -302,13 +301,26 @@ const BottomAppBar = (
       </MenuItem>
     )].filter(i => i);
 
+    const findRelatedTitle = useMemo(() => {
+      switch (true) {
+        case (selection.length && selection.length < PLAIN_LIST_MAX_PAGE_SIZE):
+        default:
+          return "Find Related";
+        case (!findRelated):
+          return "No find related filters found";
+        case (fetch.pending):
+          return "Loading...";
+        case (records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE):
+          return `Not available for greater than ${PLAIN_LIST_MAX_PAGE_SIZE} records`;
+      }
+    }, [findRelated, selection, fetch.pending, records.filteredCount]);
+
     return (
       <>
         <ExecuteScriptModal
           opened={Boolean(execScriptsMenuOpen)}
           onClose={onExecuteScriptDialogClose}
           scriptId={scriptIdSelected}
-          selection={selection}
           filteredCount={filteredCount}
           filteredSelection={filterScriptsBy && filterScriptsBy[scriptsMenuOpen?.entity]?.ids}
         />
@@ -326,14 +338,14 @@ const BottomAppBar = (
 
           <div className={clsx("centeredFlex", !querySearch && "flex-fill")}>
             {!querySearch && (
-              <Tooltip title="Find Related" disableFocusListener>
+              <Tooltip title={findRelatedTitle} disableFocusListener>
                 <div className={clsx(querySearch && classes.findRelated)}>
                   <IconButton
                     classes={{
                       root: clsx(classes.actionsBarButton, classes.customIconButton),
                       disabled: classes.buttonDisabledOpacity
                     }}
-                    disabled={!findRelated || fetch.pending || records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE}
+                    disabled={(selection.length > 0 && selection.length < PLAIN_LIST_MAX_PAGE_SIZE) ? false : (!findRelated || fetch.pending || records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE)}
                     className="ml-1"
                     aria-owns={showFindRelatedMenu ? "related" : undefined}
                     aria-haspopup="true"

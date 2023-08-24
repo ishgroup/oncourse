@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { FundingSource } from "@api/model";
 import React from "react";
-import FundingContractsForm from "./components/FundingContractsForm";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { deleteFundingContract, getFundingContracts, saveFundingContracts } from "./actions";
-import { FundingSource } from "@api/model";
-import { ApiMethods } from "../../../../model/common/apiHandlers";
 import { showConfirm } from "../../../../common/actions";
+import { ApiMethods } from "../../../../model/common/apiHandlers";
+import { deleteFundingContract, getFundingContracts, saveFundingContracts } from "./actions";
+import FundingContractsForm from "./components/FundingContractsForm";
 
 class FundingContracts extends React.Component<any, any> {
   componentDidMount() {

@@ -3,9 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_CERTIFICATES_REVOKE_STATUS, SET_CERTIFICATES_REVOKE_STATUS } from "../actions/index";

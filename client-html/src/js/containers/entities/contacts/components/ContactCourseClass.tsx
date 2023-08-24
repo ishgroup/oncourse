@@ -2,9 +2,9 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { EntityType } from "../../../../model/common/NestedEntity";
+import { EntityType } from "ish-ui";
+import React, { useEffect, useState } from "react";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import { getNestedTutorClassItem } from "../utils";
 

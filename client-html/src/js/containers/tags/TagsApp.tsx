@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { State } from "../../reducers/state";
+import { Dispatch } from "redux";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
+import { State } from "../../reducers/state";
 import { getColumnsWidth, updateColumnsWidth } from "../preferences/actions";
 import { getAllTags } from "./actions";
 import TagSidebar from "./components/TagSidebar";

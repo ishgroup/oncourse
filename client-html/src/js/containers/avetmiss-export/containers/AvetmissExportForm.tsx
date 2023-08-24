@@ -3,13 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import posed from "react-pose";
 import {
-  format as formatDate, getDaysInMonth, setDate, setMonth, setYear
-} from "date-fns";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+  AvetmissExportFee,
+  AvetmissExportFlavour,
+  AvetmissExportRequest,
+  AvetmissExportSettings,
+  FundingSource,
+  FundingStatus,
+  FundingUpload
+} from "@api/model";
+import { ExpandMore } from "@mui/icons-material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Card,
   CardContent,
@@ -22,27 +26,22 @@ import {
   Hidden,
   Typography,
 } from "@mui/material";
-import { withStyles, createStyles } from "@mui/styles";
-import { ExpandMore } from "@mui/icons-material";
-import {
-  arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import {
-  AvetmissExportFee,
-  AvetmissExportFlavour,
-  AvetmissExportRequest,
-  AvetmissExportSettings,
-  FundingSource,
-  FundingStatus,
-  FundingUpload
-} from "@api/model";
-import LoadingButton from "@mui/lab/LoadingButton";
-import ErrorMessage from "../../../common/components/form/fieldMessage/ErrorMessage";
+import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
+import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React from "react";
+import posed from "react-pose";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
+import { interruptProcess } from "../../../common/actions";
 import FormField from "../../../common/components/form/formFields/FormField";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { validateMinMaxDate } from "../../../common/utils/validation";
+import { AvetmissExportSettingsReqired } from "../../../model/preferences";
 import { State } from "../../../reducers/state";
-import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
-import AvetmissExportResults from "../components/AvetmissExportResults";
 import {
   clearAvetmiss8ExportID,
   clearExportOutcomes,
@@ -54,15 +53,10 @@ import {
   getFundingUploads,
   updateFundingUpload
 } from "../actions";
-import { interruptProcess } from "../../../common/actions";
-import { validateMinMaxDate } from "../../../common/utils/validation";
-import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
-import { getManualLink } from "../../../common/utils/getManualLink";
+import AvetmissExportResults from "../components/AvetmissExportResults";
 import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
 import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
 import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
-import { AvetmissExportSettingsReqired } from "../../../model/preferences";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 
 export const FORM: string = "AvetmissExportForm";
 
@@ -872,9 +866,9 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                           <LoadingButton
                             color="primary"
                             type="submit"
+                            variant="contained"
                             disabled={invalid || !checkboxesValid}
                             loading={pending}
-                            className="avetmissButton"
                           >
                             Find
                           </LoadingButton>

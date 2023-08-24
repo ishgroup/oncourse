@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo } from "react";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
+import Rating from "@mui/lab/Rating";
 import { Theme } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import Rating from "@mui/lab/Rating";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import React, { useCallback, useMemo } from "react";
 import { WrappedFieldProps } from "redux-form";
 
 interface Props extends WrappedFieldProps {

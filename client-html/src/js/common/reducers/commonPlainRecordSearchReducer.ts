@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { IAction } from "../actions/IshAction";
+import { availableEntities, CommonPlainRecordSearchState } from "../../model/common/Plain";
 import {
   CLEAR_COMMON_PLAIN_RECORDS,
   GET_COMMON_PLAIN_RECORDS,
@@ -11,7 +11,7 @@ import {
   GET_COMMON_PLAIN_RECORDS_REJECTED,
   SET_COMMON_PLAIN_RECORD_SEARCH
 } from "../actions/CommonPlainRecordsActions";
-import { availableEntities, CommonPlainRecordSearchState } from "../../model/common/Plain";
+import { IAction } from "../actions/IshAction";
 
 const initial = availableEntities.reduce((p, c) => {
   p[c] = {

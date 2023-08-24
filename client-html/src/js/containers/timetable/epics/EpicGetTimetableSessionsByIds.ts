@@ -1,5 +1,5 @@
-import { Epic } from "redux-observable";
 import { Session } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_TIMETABLE_SESSIONS_BY_IDS, GET_TIMETABLE_SESSIONS_BY_IDS_FULFILLED } from "../actions";
 import TimetableService from "../services/TimetableService";

@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
 import { SearchRequest, Session } from "@api/model";
+import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { FIND_TIMETABLE_SESSIONS, FIND_TIMETABLE_SESSIONS_FULFILLED, setTimetableSearchError } from "../actions";
 import TimetableService from "../services/TimetableService";
 import { getMonthsWithinYear } from "../utils";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 
 const request: EpicUtils.Request<Session[], { request: SearchRequest }> = {
   type: FIND_TIMETABLE_SESSIONS,

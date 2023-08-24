@@ -1,6 +1,4 @@
-import {
- Diff, Room, RoomApi, RoomValidationApi 
-} from "@api/model";
+import { Diff, Room, RoomApi, RoomValidationApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class RoomService {

@@ -6,29 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useState } from "react";
-import { EditViewProps } from "../../../../model/common/ListView";
-import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import Divider from "@mui/material/Divider";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import {
-  EnrolmentSelectItemRenderer,
-  EnrolmentSelectValueRenderer,
-  openEnrolmentLink
-} from "../../enrolments/utils";
-import Collapse from "@mui/material/Collapse";
-import { VetReport } from "../../../../model/entities/VetReporting";
-import EnrolmentDetails from "../../enrolments/components/EnrolmentDetails";
-import { Grid } from "@mui/material";
-import EnrolmentVetStudentLoans from "../../enrolments/components/EnrolmentVetStudentLoans";
-import { change, FieldArray, FormSection } from "redux-form";
-import { getEntityItemById } from "../../common/entityItemsService";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import EnrolmentSubmissions from "../../enrolments/components/EnrolmentSubmissions";
 import { AssessmentClass, Enrolment, GradingType } from "@api/model";
+import { Divider, Grid } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import Collapse from "@mui/material/Collapse";
+import { LinkAdornment } from "ish-ui";
+import React, { useCallback, useState } from "react";
+import { change, FieldArray, FormSection } from "redux-form";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { VetReport } from "../../../../model/entities/VetReporting";
+import { getEntityItemById } from "../../common/entityItemsService";
+import EnrolmentDetails from "../../enrolments/components/EnrolmentDetails";
+import EnrolmentSubmissions from "../../enrolments/components/EnrolmentSubmissions";
+import EnrolmentVetStudentLoans from "../../enrolments/components/EnrolmentVetStudentLoans";
+import { EnrolmentSelectItemRenderer, EnrolmentSelectValueRenderer, openEnrolmentLink } from "../../enrolments/utils";
 
 const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
   const {

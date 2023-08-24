@@ -3,32 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import clsx from "clsx";
-import { change } from "redux-form";
-import { FormControlLabel, Theme } from "@mui/material";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { ConcessionType, Discount, DiscountMembership } from "@api/model";
+import { FormControlLabel, Theme } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import { createStyles, withStyles } from "@mui/styles";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Subtitle from "../../../../common/components/layout/Subtitle";
-import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
-import NestedList, {
-  NestedListItem,
-  NestedListPanelItem
-} from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
-import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
-import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import clsx from "clsx";
+import { CheckboxField, normalizeNumber } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
+import NestedList, {
+  NestedListItem,
+  NestedListPanelItem
+} from "../../../../common/components/form/nestedList/NestedList";
+import Subtitle from "../../../../common/components/layout/Subtitle";
+import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
 
 interface DiscountStudentsProps {
   classes: any;

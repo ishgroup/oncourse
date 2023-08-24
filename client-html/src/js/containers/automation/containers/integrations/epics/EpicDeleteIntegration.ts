@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import IntegrationService from "../services";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { DELETE_INTEGRATION_ITEM_REQUEST, getIntegrations } from "../../../actions";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import history from "../../../../../constants/History";
+import { DELETE_INTEGRATION_ITEM_REQUEST, getIntegrations } from "../../../actions";
+import IntegrationService from "../services";
 
 const request: EpicUtils.Request = {
   type: DELETE_INTEGRATION_ITEM_REQUEST,

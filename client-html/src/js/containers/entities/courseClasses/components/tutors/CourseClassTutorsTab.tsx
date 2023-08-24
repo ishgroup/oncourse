@@ -3,27 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
- arrayInsert, change, FieldArray, WrappedFieldArrayProps
-} from "redux-form";
-import Grid from "@mui/material/Grid";
 import { CourseClassTutor, DefinedTutorRole } from "@api/model";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { ClassCostExtended, CourseClassExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { State } from "../../../../../reducers/state";
-import CourseClassTutorsRenderer from "./CourseClassTutorsRenderer";
+import Grid from "@mui/material/Grid";
+import { AddButton, StringKeyAndValueObject } from "ish-ui";
+import React, { useCallback, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { arrayInsert, change, FieldArray, WrappedFieldArrayProps } from "redux-form";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import CourseClassTutorService from "./services/CourseClassTutorService";
-import { deleteCourseClassTutor, postCourseClassTutor, setCourseClassTutorNamesWarnings } from "./actions";
-import { StringKeyAndValueObject } from "../../../../../model/common/CommomObjects";
-import { getTutorNameWarning, isTutorWageExist } from "./utils";
 import uniqid from "../../../../../common/utils/uniqid";
-import AddButton from "../../../../../common/components/icons/AddButton";
+import { EditViewProps } from "../../../../../model/common/ListView";
+import {
+  ClassCostExtended,
+  CourseClassExtended,
+  CourseClassTutorExtended
+} from "../../../../../model/entities/CourseClass";
+import { State } from "../../../../../reducers/state";
 import { getContactFullName } from "../../../contacts/utils";
+import { deleteCourseClassTutor, postCourseClassTutor, setCourseClassTutorNamesWarnings } from "./actions";
+import CourseClassTutorsRenderer from "./CourseClassTutorsRenderer";
+import CourseClassTutorService from "./services/CourseClassTutorService";
+import { getTutorNameWarning, isTutorWageExist } from "./utils";
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;

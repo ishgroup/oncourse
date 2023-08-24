@@ -3,42 +3,34 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import { connect } from "react-redux";
-import {
-  reduxForm, getFormValues, InjectedFormProps
-} from "redux-form";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Grid, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import { differenceInMinutes, format } from "date-fns";
-import { Typography } from "@mui/material";
 import SvgIcon from "@mui/material/SvgIcon";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../reducers/state";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { differenceInMinutes, format } from "date-fns";
 import {
-  AttandanceChangeType,
-  StudentAttendanceExtended
-} from "../../../../../model/entities/CourseClass";
-import AttendanceIcon from "./AttendanceIcon";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
-import { TimetableSession } from "../../../../../model/timetable";
-import { formatDurationMinutes } from "../../../../../common/utils/dates/formatString";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import { stubFunction } from "../../../../../common/utils/common";
-import { getStudentAttendanceLabel } from "./utils";
-import {
+  appendTimezone,
   DD_MMM_YYYY_HH_MM_SS,
-  III_DD_MMM_YYYY_HH_MM_SS
-} from "../../../../../common/utils/dates/format";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
+  EditInPlaceField,
+  formatDurationMinutes,
+  III_DD_MMM_YYYY_HH_MM_SS,
+  stubFunction
+} from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { getFormValues, InjectedFormProps, reduxForm } from "redux-form";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
+import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { AttandanceChangeType, StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
+import { TimetableSession } from "../../../../../model/timetable";
+import { State } from "../../../../../reducers/state";
+import AttendanceActionsMenu from "./AttendanceActionsMenu";
+import AttendanceIcon from "./AttendanceIcon";
+import { getStudentAttendanceLabel } from "./utils";
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);

@@ -8,8 +8,8 @@
 
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import UserService from "../services/UsersService";
 import { GET_ACTIVE_USERS_REQUEST, GET_ACTIVE_USERS_REQUEST_FULFILLED } from "../../../actions";
+import UserService from "../services/UsersService";
 
 const request: EpicUtils.Request = {
   type: GET_ACTIVE_USERS_REQUEST,

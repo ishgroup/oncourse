@@ -6,23 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
+import { DeliveryScheduleType } from "@api/model";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import FileCopy from "@mui/icons-material/FileCopy";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
-  Form, change, FieldArray, getFormValues, initialize, reduxForm, SubmissionError, getFormSyncErrors
+  change,
+  FieldArray,
+  Form,
+  getFormSyncErrors,
+  getFormValues,
+  initialize,
+  reduxForm,
+  SubmissionError
 } from "redux-form";
-import { DeliveryScheduleType } from "@api/model";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import { createStyles, withStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
@@ -30,7 +38,6 @@ import { State } from "../../../../../reducers/state";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 const manualUrl = getManualLink("dataCollection");
 
@@ -461,7 +468,6 @@ class DataCollectionWrapper extends React.Component<any, any> {
                       this.duplicateForm(history, values.form, values.items);
                     },
                     icon: <FileCopy />,
-                    confirm: false,
                     tooltip: "Copy form"
                   }
                 ]}

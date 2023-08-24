@@ -3,17 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../../reducers/state";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
+import { State } from "../../../../../../reducers/state";
 
 class CanvasBaseForm extends React.Component<any, any> {
   constructor(props) {

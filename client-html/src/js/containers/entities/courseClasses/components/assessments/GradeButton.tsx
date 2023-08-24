@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { ButtonBase, IconButton, Typography } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { ButtonBase, IconButton, Typography } from "@mui/material";
+import { makeAppStyles } from "ish-ui";
+import React from "react";
 
 interface AssessmentSubmissionIconButtonProps {
   onClick?: any;

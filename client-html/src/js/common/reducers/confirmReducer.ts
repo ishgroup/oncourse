@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ConfirmState } from "ish-ui";
+import { CLOSE_CONFIRM, OPEN_CONFIRM } from "../actions";
 import { IAction } from "../actions/IshAction";
-import { OPEN_CONFIRM, CLOSE_CONFIRM } from "../actions";
-import { ConfirmState } from "../../model/common/Confirm";
 
 const Initial: ConfirmState = {
   open: false,
@@ -18,7 +18,7 @@ const Initial: ConfirmState = {
   onCancelCustom: null,
 };
 
-export const confirmReducer = (state: ConfirmState = { ...Initial }, action: IAction<any>): ConfirmState => {
+export const confirmReducer = (state: ConfirmState = {...Initial}, action: IAction<any>): ConfirmState => {
   switch (action.type) {
     case OPEN_CONFIRM: {
       return {

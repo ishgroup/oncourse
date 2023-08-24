@@ -1,17 +1,17 @@
 import {
-  DataCollectionForm,
-  DataCollectionRule,
-  FieldType,
-  PaymentMethod,
-  Tax,
+  ColumnWidth,
   ConcessionType,
   ContactRelationType,
   CustomFieldType,
-  ColumnWidth,
-  FundingSource,
+  DataCollectionForm,
+  DataCollectionRule,
   DefinedTutorRole,
   EntityRelationType,
-  GradingType
+  FieldType,
+  FundingSource,
+  GradingType,
+  PaymentMethod,
+  Tax
 } from "@api/model";
 
 export interface PreferencesState {

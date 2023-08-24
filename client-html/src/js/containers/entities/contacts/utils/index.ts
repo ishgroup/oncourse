@@ -4,9 +4,8 @@
  */
 
 import { Contact } from "@api/model";
-import { openInternalLink } from "../../../../common/utils/links";
+import { EntityType, openInternalLink } from "ish-ui";
 import { CourseClassStatus } from "../../../../model/entities/CourseClass";
-import { EntityType } from "../../../../model/common/NestedEntity";
 
 const getContactName = item => {
   const firstName = item.firstName || "";

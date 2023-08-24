@@ -6,8 +6,8 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_IS_LOGGED_FULFILLED, GET_IS_LOGGED_REQUEST } from "../actions";
 import UsersService from "../../security/containers/users/services/UsersService";
+import { GET_IS_LOGGED_FULFILLED, GET_IS_LOGGED_REQUEST } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_IS_LOGGED_REQUEST,

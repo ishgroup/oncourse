@@ -7,8 +7,8 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicUpdateGradingTypes } from "./EpicUpdateGradingTypes";
-import { EpicGetGradingTypes } from "./EpicGetGradingTypes";
 import { EpicDeleteGradingType } from "./EpicDeleteGradingType";
+import { EpicGetGradingTypes } from "./EpicGetGradingTypes";
+import { EpicUpdateGradingTypes } from "./EpicUpdateGradingTypes";
 
 export const EpicGradings = combineEpics(EpicUpdateGradingTypes, EpicGetGradingTypes, EpicDeleteGradingType);

@@ -3,23 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo, useState } from "react";
-import clsx from "clsx";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import { change, Field } from "redux-form";
+import { CustomFieldType, DataType, EntityType } from "@api/model";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DragIndicator from "@mui/icons-material/DragIndicator";
+import { FormControlLabel, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import { CustomFieldType, DataType, EntityType } from "@api/model";
-import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import EditInPlaceMoneyField from "../../../../../common/components/form/formFields/EditInPlaceMoneyField";
+import clsx from "clsx";
+import {
+  CheckboxField,
+  EditInPlaceDateTimeField,
+  EditInPlaceField,
+  EditInPlaceMoneyField,
+  StyledCheckbox
+} from "ish-ui";
+import React, { useMemo, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
+import { change, Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
+import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
+import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { useAppSelector } from "../../../../../common/utils/hooks";
 import {
   validateEmail,
   validateRegex,
@@ -27,11 +33,8 @@ import {
   validateUniqueNamesInArray,
   validateURL
 } from "../../../../../common/utils/validation";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
-import ListMapRenderer from "./ListMapRenderer";
-import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import Uneditable from "../../../../../common/components/form/Uneditable";
 import { SelectItemDefault } from "../../../../../model/entities/common";
+import ListMapRenderer from "./ListMapRenderer";
 
 const mapEntityType = (entityType: EntityType) => {
   switch (entityType) {
@@ -131,6 +134,9 @@ const validateListMap = (value, dataType) => {
 
 const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: string }, classes: any }>(
   ({ classes, field, ...props }) => {
+
+    const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+
     switch (field.dataType) {
       case "Checkbox":
         return (
@@ -161,7 +167,7 @@ const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: str
       case "Map":
         return <ListMapRenderer {...props as any} dataType={field.dataType} key={field.id || field.uniqid} label="Options" />;
       case "Money":
-        return <EditInPlaceMoneyField {...props} />;
+        return <EditInPlaceMoneyField {...props} currencySymbol={currencySymbol} />;
       case "URL":
       case "Text":
       default:

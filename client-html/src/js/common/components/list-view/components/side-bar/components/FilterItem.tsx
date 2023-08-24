@@ -1,13 +1,13 @@
-import * as React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import clsx from "clsx";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tooltip from "@mui/material/Tooltip";
 import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
-import { AppTheme } from "../../../../../../model/common/Theme";
+import Delete from "@mui/icons-material/Delete";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AppTheme } from "ish-ui";
+import * as React from "react";
 
 const styles = (theme: AppTheme) =>
   createStyles({

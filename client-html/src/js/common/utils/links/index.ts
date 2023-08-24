@@ -1,16 +1,7 @@
-import { FindEntityAql, FindEntityState } from "../../../model/entities/common";
 import { ENTITY_AQL_STORAGE_NAME } from "../../../constants/Config";
-import { isInStandaloneMode } from "../common";
+import { FindEntityAql, FindEntityState } from "../../../model/entities/common";
 import { LSGetItem, LSSetItem } from "../storage";
 
-export const openInternalLink = link => {
-  if (link) {
-    window.open(
-      (link.includes("http") ? "" : window.location.origin) + link,
-      isInStandaloneMode() ? "_self" : "_blank"
-    );
-  }
-};
 
 export const saveCategoryAQLLink = (aql: FindEntityAql) => {
   let entityState: FindEntityState = LSGetItem(ENTITY_AQL_STORAGE_NAME) as FindEntityState;

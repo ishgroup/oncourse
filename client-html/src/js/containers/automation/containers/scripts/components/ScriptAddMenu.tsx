@@ -1,9 +1,9 @@
-import * as React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import { Menu, MenuItem } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { Menu, MenuItem } from "@mui/material";
 import Fab from "@mui/material/Fab";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import * as React from "react";
 import { change } from "redux-form";
 
 const styles = theme =>

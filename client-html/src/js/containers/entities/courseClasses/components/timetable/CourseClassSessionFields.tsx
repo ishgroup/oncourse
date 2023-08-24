@@ -6,34 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useRef
-} from "react";
+import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance, } from "@api/model";
 import Grid from "@mui/material/Grid";
-import {
-  arrayPush, arrayRemove, change, Field, formValueSelector
-} from "redux-form";
-import {
-  addMinutes, differenceInMinutes
-} from "date-fns";
-import { Dispatch } from "redux";
+import { addMinutes, differenceInMinutes } from "date-fns";
+import { EditInPlaceDurationField, ErrorMessage, LinkAdornment, NoWrapOption, stubFunction } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { connect } from "react-redux";
-import {
-  ClashType, CourseClassTutor, SessionWarning, TutorAttendance,
-} from "@api/model";
-import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
+import { Dispatch } from "redux";
+import { arrayPush, arrayRemove, change, Field, formValueSelector } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
-import { stubFunction } from "../../../../../common/utils/common";
-import { State } from "../../../../../reducers/state";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import { openRoomLink } from "../../../rooms/utils";
-import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { TimetableSession } from "../../../../../model/timetable";
+import { State } from "../../../../../reducers/state";
+import { openRoomLink } from "../../../rooms/utils";
 import { setShiftedTutorAttendances } from "../../utils";
-import { NoWrapOption } from "../../../../../common/components/form/formFields/SelectCustomComponents";
+import CourseClassTutorRooster from "./CourseClassTutorRooster";
 
 interface Props {
   form: string;

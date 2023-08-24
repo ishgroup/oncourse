@@ -6,15 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
 import Grid from "@mui/material/Grid";
-import AppBarContainer from "../../common/components/layout/AppBarContainer";
+import * as React from "react";
 import { Form, reduxForm } from "redux-form";
-import { onSubmitFail } from "../../common/utils/highlightFormErrors";
 import FormField from "../../common/components/form/formFields/FormField";
+import AppBarContainer from "../../common/components/layout/AppBarContainer";
+import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
+import { onSubmitFail } from "../../common/utils/highlightFormErrors";
 import { useAppDispatch } from "../../common/utils/hooks";
 import { downloadLogs } from "./actions";
-import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
 
 export const LOGS_FORM_NAME = "DownloadLogsForm";
 

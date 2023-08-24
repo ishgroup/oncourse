@@ -1,5 +1,4 @@
 import { IAction } from "../../../common/actions/IshAction";
-import { SecurityState } from "./state";
 import {
   DELETE_USER_ROLES_FULFILLED,
   DISABLE_USER_2FA_FULFILLED,
@@ -10,6 +9,7 @@ import {
   POST_USER_ROLES_FULFILLED,
   RESET_USER_PASSWORD_FULFILLED
 } from "../actions";
+import { SecurityState } from "./state";
 
 export const securityReducer = (state: SecurityState = {}, action: IAction<any>): any => {
   switch (action.type) {

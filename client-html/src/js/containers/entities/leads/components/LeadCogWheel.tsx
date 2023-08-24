@@ -6,16 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  memo, useCallback, useEffect, useMemo, useState
-} from "react";
-import { connect } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import EntityService from "../../../../common/services/EntityService";
+import { useAppDispatch } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import EntityService from "../../../../common/services/EntityService";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { useAppDispatch } from "../../../../common/utils/hooks";
 
 const LeadCogWheel = memo<any>(props => {
   const {

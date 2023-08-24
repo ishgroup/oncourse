@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import UserService from "../services/UsersService";
 import { User } from "@api/model";
-import { POST_USER_REQUEST, POST_USER_REQUEST_FULFILLED } from "../../../actions";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { POST_USER_REQUEST, POST_USER_REQUEST_FULFILLED } from "../../../actions";
+import UserService from "../services/UsersService";
 
 const request: EpicUtils.Request = {
   type: POST_USER_REQUEST,

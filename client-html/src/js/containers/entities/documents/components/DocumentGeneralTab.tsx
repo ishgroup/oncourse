@@ -6,35 +6,38 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useRef } from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import { arrayRemove, change, } from "redux-form";
-import { createStyles, withStyles } from "@mui/styles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Collapse from "@mui/material/Collapse";
+import { Document, DocumentVersion } from "@api/model";
 import { Delete, ExpandMore, OpenWith } from "@mui/icons-material";
 import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
 import { addDays, format } from "date-fns";
-import { Document, DocumentVersion } from "@api/model";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
 import {
-  FileTypeIcon, getDocumentContent,
-  getLatestDocumentItem
-} from "../../../../common/components/form/documents/components/utils";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { AppTheme } from "../../../../model/common/Theme";
-import { State } from "../../../../reducers/state";
-import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
+  AppTheme,
+  D_MMM_YYYY,
+  FileTypeIcon,
+  getDocumentContent,
+  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, ShowConfirmCaller,
+  useAppTheme,
+  useHoverShowStyles
+} from "ish-ui";
+import React, { useCallback, useRef } from "react";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
+import { change, FieldArray, WrappedFieldArrayProps, } from "redux-form";
+import DocumentShare from "../../../../common/components/form/documents/DocumentShare";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { getLatestDocumentItem } from "../../../../common/utils/documents";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import IconButton from "@mui/material/IconButton";
-import { useHoverShowStyles } from "../../../../common/styles/hooks";
-import { useAppTheme } from "../../../../common/themes/ishTheme";
 
 const styles = (theme: AppTheme) => createStyles({
   previewPaper: {
@@ -111,20 +114,19 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   window.open(url);
 };
 
-const DocumentVersion = ({
+const DocumentVersionComp = ({
   classes,
   version,
   index,
-  dispatch, 
-  form, 
   showConfirm,
   hasOneVersion,
-  onCurrentChange
+  onCurrentChange,
+  remove
  }) => {
   
   const onDelete = () => {
     showConfirm({
-      onConfirm: () => dispatch(arrayRemove(form, "versions", index)),
+      onConfirm: () => remove(index),
       confirmMessage: "Version will be deleted permanently after save",
       confirmButtonText: "Delete"
     });
@@ -169,6 +171,35 @@ const DocumentVersion = ({
     </div>
   );
 };
+
+interface DocumentVersionsProps {
+  classes: any;
+  dispatch: Dispatch;
+  showConfirm: ShowConfirmCaller;
+  onCurrentChange: any;
+  hasOneVersion: boolean;
+}
+
+const DocumentVersions = (
+  {
+    fields,
+    classes,
+    showConfirm,
+    onCurrentChange,
+    hasOneVersion
+  }: WrappedFieldArrayProps & DocumentVersionsProps ) => <div>{fields.map((f, index) => {
+  const version = fields.get(index);
+  return <DocumentVersionComp
+    key={f}
+    classes={classes}
+    version={version}
+    index={index}
+    remove={fields.remove}
+    showConfirm={showConfirm}
+    onCurrentChange={(e, v) => onCurrentChange(e, v, index)}
+    hasOneVersion={hasOneVersion}
+  />;
+})}</div>;
 
 const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
   const {
@@ -366,22 +397,14 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           <div className="heading mb-2">
             History
           </div>
-          <div>
-            {Boolean(values.versions)
-              && values.versions.map((version, index) => (
-                <DocumentVersion
-                  key={"key_" + version.id || `new${index}`}
-                  classes={classes}
-                  version={version}
-                  index={index}
-                  dispatch={dispatch}
-                  form={form}
-                  showConfirm={showConfirm}
-                  onCurrentChange={(e, v) => onCurrentChange(e, v, index)}
-                  hasOneVersion={hasOneVersion}
-                />
-            ))}
-          </div>
+          <FieldArray
+            name="versions"
+            component={DocumentVersions}
+            classes={classes}
+            showConfirm={showConfirm}
+            onCurrentChange={onCurrentChange}
+            hasOneVersion={hasOneVersion}
+          />
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
           <Button variant="outlined" size="medium" color="secondary" onClick={onUploadClick}>
             UPLOAD NEW VERSION

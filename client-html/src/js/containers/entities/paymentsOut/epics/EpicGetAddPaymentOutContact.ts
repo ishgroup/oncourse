@@ -6,16 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
-import {
-  GET_ADD_PAYMENT_OUT_CONTACT,
-  GET_ADD_PAYMENT_OUT_VALUES,
-  GET_REFUNDABLE_PAYMENTS
-} from "../actions";
-import EntityService from "../../../../common/services/EntityService";
 import { FETCH_SUCCESS } from "../../../../common/actions";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import EntityService from "../../../../common/services/EntityService";
+import { GET_ADD_PAYMENT_OUT_CONTACT, GET_ADD_PAYMENT_OUT_VALUES, GET_REFUNDABLE_PAYMENTS } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_ADD_PAYMENT_OUT_CONTACT,

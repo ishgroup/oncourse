@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { FinalisePeriodInfo } from "@api/model";
+import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import { Create, Request } from "../../../common/epics/EpicUtils";
 import { GET_FINALISE_INFO } from "../actions";
 import FinaliseService from "../services";
-import { FinalisePeriodInfo } from "@api/model";
-import { initialize } from "redux-form";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: Request = {
   type: GET_FINALISE_INFO,

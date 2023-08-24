@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { getHighlightedPartLabel } from "../../../../common/utils/formatting";
-import EnrolItemListRenderer from "../items/components/EnrolItemListRenderer";
+import { D_MMM_YYYY, getHighlightedPartLabel } from "ish-ui";
+import * as React from "react";
 import { getContactFullName } from "../../../entities/contacts/utils";
+import EnrolItemListRenderer from "../items/components/EnrolItemListRenderer";
 
 const EnrolContactListView = React.memo<any>(props => {
   const {

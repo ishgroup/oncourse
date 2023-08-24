@@ -6,21 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useContext, useEffect, useMemo, useRef, useState
-} from "react";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from "date-fns";
+import { DD_MMM_YYYY_MINUSED, DynamicSizeList, usePrevious } from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { Dispatch } from "redux";
-import { connect } from "react-redux";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import {
-  addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth
-} from "date-fns";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import debounce from "lodash.debounce";
+  getFiltersNameString,
+  setActiveFiltersBySearch
+} from "../../../../common/components/list-view/utils/listFiltersUtils";
+import EntityService from "../../../../common/services/EntityService";
+import { CoreFilter } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import {
   clearTimetableMonths,
@@ -31,21 +35,11 @@ import {
   setTimetableSearch
 } from "../../actions";
 import { TimetableContext } from "../../Timetable";
-import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
 import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
 import CalendarMonth from "./components/month/CalendarMonth";
-import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
-import DynamicSizeList from "../../../../common/components/form/DynamicSizeList";
-import { usePrevious } from "../../../../common/utils/hooks";
-import {
-  getFiltersNameString,
-  setActiveFiltersBySearch
-} from "../../../../common/components/list-view/utils/listFiltersUtils";
-import { CoreFilter } from "../../../../model/common/ListView";
-import CalendarTagsSwitcher from "./components/switchers/CalendarTagsSwitcher";
 import CalendarGroupingsSwitcher from "./components/switchers/CalendarGroupingsSwitcher";
-import EntityService from "../../../../common/services/EntityService";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
+import CalendarTagsSwitcher from "./components/switchers/CalendarTagsSwitcher";
 
 const styles = theme => createStyles({
     root: {
@@ -421,6 +415,7 @@ const Calendar = React.memo<Props>(props => {
       <div className={`${classes.centered} ${months.length === 0 && sessionsLoading ? "" : classes.hidden}`}>
         <CircularProgress size={40} thickness={5} />
       </div>
+
       <AutoSizer>
         {({ width, height }) => (
           <DynamicSizeList
@@ -436,7 +431,7 @@ const Calendar = React.memo<Props>(props => {
             onItemsRendered={onRowsRendered}
             useIsScrolling
           >
-            {MonthRenderer}
+            {MonthRenderer as any}
           </DynamicSizeList>
         )}
       </AutoSizer>

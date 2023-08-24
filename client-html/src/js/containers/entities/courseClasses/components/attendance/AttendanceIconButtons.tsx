@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
 import IconButton from "@mui/material/IconButton";
 import withStyles from "@mui/styles/withStyles";
+import React, { useMemo } from "react";
 import { StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
 import AttendanceIcon from "./AttendanceIcon";
 

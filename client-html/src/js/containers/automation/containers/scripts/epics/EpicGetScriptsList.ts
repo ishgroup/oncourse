@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_SCRIPTS_LIST, getScriptsListFulfilled } from "../actions";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import EntityService from "../../../../../common/services/EntityService";
+import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
 import history from "../../../../../constants/History";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
+import { GET_SCRIPTS_LIST, getScriptsListFulfilled } from "../actions";
 
 const request: EpicUtils.Request<any, { nameToSelect: string; selectFirst: boolean }> = {
   type: GET_SCRIPTS_LIST,

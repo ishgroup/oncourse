@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { Form, reduxForm, initialize } from "redux-form";
-import isEmpty from "lodash.isempty";
-import { connect } from "react-redux";
 import Grid from "@mui/material/Grid";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Form, initialize, reduxForm } from "redux-form";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import * as Model from "../../../../../model/preferences/ClassDefaults";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
+import * as Model from "../../../../../model/preferences/ClassDefaults";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
 const manualUrl = getManualLink("generalPrefs_classdefaults");
 

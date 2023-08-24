@@ -107,7 +107,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         And request deleteRequest
         When method POST
         Then status 403
-        And match $.errorMessage == "Only users with admin rights can do it. Please contact your administrator"
+        And match $.errorMessage == "Sorry, you have no permissions to delete this entity. Please contact your administrator"
 
 #       <---->  Scenario have been finished. Now change back permissions and delete created entity:
         * configure headers = { Authorization: 'admin'}

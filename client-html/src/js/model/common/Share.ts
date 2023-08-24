@@ -1,4 +1,4 @@
-import { ReportOverlay, Report, ExportTemplate } from "@api/model";
+import { ExportTemplate, Report, ReportOverlay } from "@api/model";
 
 export interface ShareState {
   exportTemplates: ExportTemplate[];

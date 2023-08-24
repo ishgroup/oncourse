@@ -1,12 +1,12 @@
 import { combineEpics } from "redux-observable";
+import { EpicDuplicateAndReverseInvoice } from "./EpicDuplicateAndReverseInvoice";
+import { EpicDuplicateQuote } from "./EpicDuplicateQuote";
+import { EpicGetAmountOwing } from "./EpicGetAmountOwing";
+import { EpicGetContraInvoices } from "./EpicGetContraInvoices";
+import { EpicGetDefaultInvoiceTerms } from "./EpicGetDefaultInvoiceTerms";
 import { EpicGetInvoiceLineCourse } from "./EpicGetInvoiceLineCourse";
 import { EpicGetInvoiceLineEnrolments } from "./EpicGetInvoiceLineEnrolments";
-import { EpicGetContraInvoices } from "./EpicGetContraInvoices";
 import { EpicPostContraInvoices } from "./EpicPostContraInvoices";
-import { EpicDuplicateAndReverseInvoice } from "./EpicDuplicateAndReverseInvoice";
-import { EpicGetAmountOwing } from "./EpicGetAmountOwing";
-import { EpicGetDefaultInvoiceTerms } from "./EpicGetDefaultInvoiceTerms";
-import { EpicDuplicateQuote } from "./EpicDuplicateQuote";
 
 export const EpicInvoice = combineEpics(
   EpicGetInvoiceLineCourse,

@@ -1,6 +1,6 @@
 import { AvetmissExportFee, AvetmissExportSettings } from "@api/model";
 import { format as formatDate } from "date-fns";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
 
 const Initial: AvetmissExportSettings = {
   flavour: "NCVER (Standard AVETMISS)",

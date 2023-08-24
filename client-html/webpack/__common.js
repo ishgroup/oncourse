@@ -91,6 +91,7 @@ const _common = (dirname, options) => {
         },
       ],
     },
+    ignoreWarnings: [/Failed to parse source map/],
     plugins: [
       new ReactLoadablePlugin({
         async callback(manifest) {
@@ -122,10 +123,7 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
-      port: 8100,
-      devMiddleware: {
-        writeToDisk: true,
-      }
+      port: 8100
     },
     devtool: false,
   };

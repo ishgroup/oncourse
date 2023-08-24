@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles } from "@mui/styles";
 import { alpha } from "@mui/material/styles";
-import { AppTheme } from "../../../../model/common/Theme";
+import { createStyles } from "@mui/styles";
+import { AppTheme } from "ish-ui";
 
 export const paymentPlanStyles = (theme: AppTheme) => createStyles({
   root: {

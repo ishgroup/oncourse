@@ -6,26 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Contact } from "@api/model";
+import { useTheme } from "@mui/styles";
+import { AppTheme, formatCurrency } from "ish-ui";
 import React, { useMemo, useState } from "react";
 import { connect } from "react-redux";
-import { useTheme } from "@mui/styles";
+import AvailabilityFormComponent
+  from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import ContactsGeneral from "./ContactsGeneral";
-import ContactsFinancial from "./ContactsFinancial";
-import ContactsMessages from "./ContactsMessages";
-import ContactsVET from "./ContactsVET";
-import ContactsEducation from "./ContactsEducation";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import ContactsDetails from "./ContactDetails";
 import ContactsDocuments from "./ContactsDocuments";
+import ContactsEducation from "./ContactsEducation";
+import ContactsFinancial from "./ContactsFinancial";
+import ContactsGeneral from "./ContactsGeneral";
+import ContactsMessages from "./ContactsMessages";
 import ContactsResume from "./ContactsResume";
 import ContactsTutor from "./ContactsTutor";
-import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
-import { State } from "../../../../reducers/state";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from "../../../../model/common/Theme";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { Contact } from "@api/model";
+import ContactsVET from "./ContactsVET";
 
 const studentItems: TabsListItem[] = [
   {

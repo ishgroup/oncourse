@@ -8,9 +8,9 @@
 
 import * as React from "react";
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { showConfirm } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { SHOW_EXPORT_TEMPLATE_FULL_SCREEN_PREVIEW } from "../actions";
 import ExportTemplatesService from "../services/ExportTemplatesService";
 

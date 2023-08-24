@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
+import { PasswordComplexity } from "@api/model";
 
 import { stopAsyncValidation } from "redux-form";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import LoginService from "../../../../login/services/LoginService";
 import { VALIDATE_USER_PASSWORD, VALIDATE_USER_PASSWORD_FULFILLED } from "../../../actions";
-import { PasswordComplexity } from "@api/model";
 
 const request: EpicUtils.Request = {
   type: VALIDATE_USER_PASSWORD,

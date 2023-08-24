@@ -6,15 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useContext } from "react";
 import { addMonths, format } from "date-fns";
+import { CalendarHeader, CalendarWeekPanel } from "ish-ui";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
-import CalendarHeader from "./components/CalendarHeader";
-import CalendarWeekPanel from "./components/CalendarWeekPanel";
-import CalendarBody from "./components/CalendarBody";
-import { TimetableContext } from "../../../../Timetable";
-import { State } from "../../../../../../reducers/state";
 import { validateDate } from "../../../../../../common/utils/validation";
+import { State } from "../../../../../../reducers/state";
+import { TimetableContext } from "../../../../Timetable";
+import CalendarBody from "./components/CalendarBody";
 
 interface Props {
   classes?: any;

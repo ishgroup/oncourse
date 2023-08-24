@@ -1,9 +1,9 @@
+import { openInternalLink } from "ish-ui";
 import * as React from "react";
-import BankingEditView from "./BankingEditView";
-import BankingCreateView from "./BankingCreateView";
-import { openInternalLink } from "../../../../common/utils/links";
-import { PaymentInType } from "../consts";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { PaymentInType } from "../consts";
+import BankingCreateView from "./BankingCreateView";
+import BankingEditView from "./BankingEditView";
 
 class BankingEditViewResolver extends React.PureComponent<EditViewProps, any> {
   openNestedView = item => {

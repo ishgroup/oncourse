@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo, useRef } from "react";
 import { Message } from "@api/model";
-import { Dispatch } from "redux";
-import { Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { CardContent, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { III_DD_MMM_YYYY } from "ish-ui";
+import React, { useEffect, useMemo, useRef } from "react";
+import { Dispatch } from "redux";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 
 interface MessageEditViewProps {
   values?: Message;

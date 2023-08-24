@@ -1,16 +1,17 @@
 import {
-  DataCollectionForm,
-  DataCollectionRule,
-  PaymentMethod,
-  Tax,
+  ColumnWidth,
   ConcessionType,
   ContactRelationType,
-  EntityRelationType,
   CustomFieldType,
+  DataCollectionForm,
+  DataCollectionRule,
+  DefinedTutorRole,
+  EntityRelationType,
   EnumName,
-  ColumnWidth,
+  GradingType,
   Holiday,
-  DefinedTutorRole, GradingType
+  PaymentMethod,
+  Tax
 } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import { Categories } from "../../../model/preferences";

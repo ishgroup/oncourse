@@ -10,6 +10,7 @@ import { Dispatch } from "redux";
 import CreateCertificateMenu
   from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
+import { useAppSelector } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
 import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import { getPlainAccounts } from "../../accounts/actions";
@@ -18,7 +19,6 @@ import { getPlainTaxes } from "../../taxes/actions";
 import { getEnrolmentInvoiceLines, setEnrolmentsDialog } from "../actions";
 import CancelEnrolmentModal from "./modal/CancelEnrolmentModal";
 import TransferEnrolmentModal from "./modal/TransferEnrolmentModal";
-import { useAppSelector } from "../../../../common/utils/hooks";
 
 const EnrolmentCogWheel = React.memo<any>(props => {
   const {

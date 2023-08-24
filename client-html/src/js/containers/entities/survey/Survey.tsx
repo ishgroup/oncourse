@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
-import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import ListView from "../../../common/components/list-view/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import SurveyEditView from "./components/SurveyEditView";
 
 interface StudentFeedbackProps {

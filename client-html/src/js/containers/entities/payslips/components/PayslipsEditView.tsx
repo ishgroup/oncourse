@@ -6,31 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import Grid, { GridSize } from "@mui/material/Grid";
-import clsx from "clsx";
-import {
- arrayInsert, arrayRemove, change, FieldArray 
-} from "redux-form";
-import { connect } from "react-redux";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
+import Grid, { GridSize } from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
-import { getContactFullName } from "../../contacts/utils";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import clsx from "clsx";
+import { AddButton, formatCurrency } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/FieldAdornments";
-import { PayLineWithDefer } from "../../../../model/entities/Payslip";
-import { mapSelectItems } from "../../../../common/utils/common";
-import AddButton from "../../../../common/components/icons/AddButton";
+} from "../../../../common/components/form/formFields/FieldAdornments";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { mapSelectItems } from "../../../../common/utils/common";
+import { PayLineWithDefer } from "../../../../model/entities/Payslip";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
+import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
 
 const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
     ? [

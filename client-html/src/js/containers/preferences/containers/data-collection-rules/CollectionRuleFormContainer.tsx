@@ -1,13 +1,13 @@
+import { DataCollectionForm, DataCollectionRule } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { DataCollectionForm, DataCollectionRule } from "@api/model";
+import { Dispatch } from "redux";
 import { getFormValues, initialize, SubmissionError } from "redux-form";
-import { State } from "../../../../reducers/state";
-import CollectionRulesForm from "./components/CollectionRulesForm";
-import { updateDataCollectionRule, removeDataCollectionRule, createDataCollectionRule } from "../../actions";
 import { Fetch } from "../../../../model/common/Fetch";
+import { State } from "../../../../reducers/state";
+import { createDataCollectionRule, removeDataCollectionRule, updateDataCollectionRule } from "../../actions";
+import CollectionRulesForm from "./components/CollectionRulesForm";
 
 interface Params {
   action: string;

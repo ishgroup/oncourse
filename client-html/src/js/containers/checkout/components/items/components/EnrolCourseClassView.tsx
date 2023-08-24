@@ -4,10 +4,10 @@
  */
 import React from "react";
 import { connect } from "react-redux";
-import EnrolClassListView from "./EnrolClassListView";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { State } from "../../../../../reducers/state";
 import CheckoutAppBar from "../../CheckoutAppBar";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import EnrolClassListView from "./EnrolClassListView";
 
 const EnrolCourseClassView = React.memo<any>(props => {
   const {

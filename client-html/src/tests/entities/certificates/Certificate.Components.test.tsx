@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { III_DD_MMM_YYYY } from "ish-ui";
 import CertificateEditView from "../../../js/containers/entities/certificates/components/CertificateEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 

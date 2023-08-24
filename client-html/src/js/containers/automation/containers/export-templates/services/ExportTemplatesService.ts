@@ -1,5 +1,5 @@
+import { AutomationConfigs, ExportTemplate, ExportTemplateApi } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
-import { ExportTemplateApi, ExportTemplate, AutomationConfigs } from "@api/model";
 
 class ExportTemplatesService {
   readonly exportTemplatesApi = new ExportTemplateApi(new DefaultHttpService());
@@ -33,7 +33,11 @@ class ExportTemplatesService {
   }
   
   public getHighQualityPreview(id: number): Promise<any> {
-    return this.exportTemplatesApi.getHighQualityPreview(id);
+    return this.exportTemplatesApi.getPreview(id, false);
+  }
+
+  public getLowQualityPreview(id: number): Promise<any> {
+    return this.exportTemplatesApi.getPreview(id, true);
   }
 }
 

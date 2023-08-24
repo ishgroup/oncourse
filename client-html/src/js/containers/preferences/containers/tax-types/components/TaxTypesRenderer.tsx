@@ -3,18 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
 import { Tax } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import { formatFieldPercent, parseFieldPercent, preventNegativeOrLogEnter } from "ish-ui";
+import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import {
-  formatFieldPercent,
-  parseFieldPercent,
-  preventNegativeOrLogEnter
-} from "../../../../../common/utils/numbers/numbersNormalizing";
 
 const validatePercentage = value => (!value && value !== 0
     ? "Field is mandatory"

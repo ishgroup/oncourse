@@ -3,16 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Message } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
-import { Message } from "@api/model";
-import {
-  getFilters,
-  clearListState,
-} from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
+import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import MessageEditView from "./components/MessageEditView";
-import ListView from "../../../common/components/list-view/ListView";
 import QuedMessagesBulkDelete from "./components/QuedMessagesBulkDelete";
 
 interface MessagesProps {

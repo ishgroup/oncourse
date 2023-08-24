@@ -4,21 +4,21 @@
  */
 
 import { Collapse } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
 import React from "react";
 import { connect } from "react-redux";
-import {
-  DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm
-} from "redux-form";
-import clsx from "clsx";
-import { createStyles, withStyles } from "@mui/styles";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import { DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { State } from "../../../../reducers/state";
 import { formatFundingSourceId } from "../../../entities/common/utils";
-import CheckoutFundingInvoiceSummaryList, { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
 import CheckoutAppBar from "../CheckoutAppBar";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import CheckoutFundingInvoiceSummaryList, {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from "./CheckoutFundingInvoiceSummaryList";
 
 const styles = createStyles(() => ({
   fundingInvoiceSourceId: {

@@ -1,5 +1,5 @@
-import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { ExportTemplate } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_EXPORT_TEMPLATES_LIST = _toRequestType("get/export-templates/list");
@@ -17,6 +17,8 @@ export const REMOVE_EXPORT_TEMPLATE = _toRequestType("delete/export-templates/li
 export const GET_EXPORT_TEMPLATE = _toRequestType("get/export-templates/item");
 
 export const SHOW_EXPORT_TEMPLATE_FULL_SCREEN_PREVIEW = _toRequestType("get/export-templates/fullPreview");
+
+export const SHOW_EXPORT_TEMPLATE_COMPRESSED_PREVIEW = _toRequestType("get/export-templates/compressedPreview");
 
 export const updateExportTemplate = (exportTemplate: ExportTemplate) => ({
   type: UPDATE_EXPORT_TEMPLATE,
@@ -55,5 +57,10 @@ export const getExportTemplatesListFulfilled = (exportTemplates: CatalogItemType
 
 export const exportTemplateFullScreenPreview = (exportTemplateId: number) => ({
   type: SHOW_EXPORT_TEMPLATE_FULL_SCREEN_PREVIEW,
+  payload: exportTemplateId
+});
+
+export const showExportTemplateCompressedPreview = (exportTemplateId: number) => ({
+  type: SHOW_EXPORT_TEMPLATE_COMPRESSED_PREVIEW,
   payload: exportTemplateId
 });

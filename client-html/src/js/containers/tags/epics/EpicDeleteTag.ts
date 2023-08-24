@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { DELETE_TAG_REQUEST, getAllTags } from "../actions";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
 import history from "../../../constants/History";
+import { DELETE_TAG_REQUEST, getAllTags } from "../actions";
+import TagsService from "../services/TagsService";
 
 const request: EpicUtils.Request = {
   type: DELETE_TAG_REQUEST,

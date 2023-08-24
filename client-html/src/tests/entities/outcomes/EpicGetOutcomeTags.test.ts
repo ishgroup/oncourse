@@ -10,7 +10,7 @@ import { DefaultEpic } from "../../common/Default.Epic";
 import { setListMenuTags } from "../../../js/common/components/list-view/actions";
 import { getOutcomeTags } from "../../../js/containers/entities/outcomes/actions";
 import { EpicGetOutcomeTags } from "../../../js/containers/entities/outcomes/epics/EpicGetOutcomeTags";
-import { getMenuTags } from "../../../js/common/components/list-view/utils/listFiltersUtils";
+import { getMenuTags } from "ish-ui";
 import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../js/containers/tags/actions";
 
 describe("Get outcome tags epic tests", () => {

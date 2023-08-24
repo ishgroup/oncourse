@@ -4,7 +4,10 @@
  */
 
 import { Epic } from "redux-observable";
-import { Request, Create } from "../../../epics/EpicUtils";
+import { GetRecordsArgs } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
+import { Create, Request } from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
 import {
   GET_RECORDS_FULFILLED,
@@ -13,22 +16,19 @@ import {
   setListSearchError,
   setListSelection
 } from "../actions";
-import { State } from "../../../../reducers/state";
-import { GetRecordsArgs } from "../../../../model/common/ListView";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: Request<any, GetRecordsArgs> = {
   type: GET_RECORDS_REQUEST,
   getData: (payload, state) => EntityService.getList(payload, state),
   processData: ([records, searchQuery], state: State, payload) => {
     const {
-     listUpdate, savedID, ignoreSelection, resolve
+      listUpdate, savedID, ignoreSelection, resolve
     } = payload;
 
     return [
       {
         type: GET_RECORDS_FULFILLED,
-        payload: { records, payload, searchQuery }
+        payload: {records, payload, searchQuery}
       },
       ...(!ignoreSelection && !listUpdate && state.list.selection[0] !== "NEW"
         ? savedID && records.rows.find(r => String(r.id) === String(savedID))
@@ -37,7 +37,7 @@ const request: Request<any, GetRecordsArgs> = {
         : []),
       ...resolve ? [{
         type: GET_RECORDS_FULFILLED_RESOLVE,
-        payload: { resolve }
+        payload: {resolve}
       }] : [],
     ];
   },

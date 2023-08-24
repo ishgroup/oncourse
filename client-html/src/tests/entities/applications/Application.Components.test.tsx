@@ -1,8 +1,7 @@
 import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { formatCurrency, III_DD_MMM_YYYY } from "ish-ui";
 import ApplicationEditView from "../../../js/containers/entities/applications/components/ApplicationEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
-import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
 
 describe("Virtual rendered ApplicationEditView", () => {
   mockedEditView({

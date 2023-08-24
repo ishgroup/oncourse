@@ -6,11 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useRef } from "react";
 import { alpha } from "@mui/material/styles";
 import * as d3 from "d3";
-import { makeAppStyles } from "../../common/styles/makeStyles";
-import { useWindowSize } from "../../common/styles/hooks";
+import { makeAppStyles, useWindowSize } from "ish-ui";
+import React, { useEffect, useRef } from "react";
 
 // Returns a list of all nodes under the root.
 function flatten(nodes) {

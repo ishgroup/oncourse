@@ -12,11 +12,13 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import groovy.transform.CompileDynamic
 import ish.oncourse.server.api.service.ExportTemplateApiService
 import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
 
+@CompileDynamic
 class ExportTemplateApiImpl implements ExportTemplateApi {
 
     @Inject
@@ -37,8 +39,9 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
         return service.getConfigs(id)
     }
 
-    byte[] getHighQualityPreview(Long id) {
-        def content = service.getPreview(id)
+    @Override
+    byte[] getPreview(Long id, Boolean compressed = false) {
+        def content = service.getPreview(id, compressed)
         return content
     }
 
@@ -49,7 +52,7 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
 
     @Override
     List<ExportTemplateDTO> templates(String entityName) {
-        service.getAutomationFor(entityName)
+        service.getAutomationFor(entityName, service.&toRestWithoutBodyAndPreviewModel)
     }
 
     @Override

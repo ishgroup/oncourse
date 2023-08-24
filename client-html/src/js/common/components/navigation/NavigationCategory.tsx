@@ -6,20 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Grid, IconButton, Typography } from "@mui/material";
 import Close from "@mui/icons-material/Close";
-import React, { useMemo } from "react";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { makeAppStyles } from "../../styles/makeStyles";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Grid, IconButton, Typography } from "@mui/material";
+import { BooleanArgFunction, makeAppStyles, NumberArgFunction, openInternalLink } from "ish-ui";
+import React, { useMemo } from "react";
+import StructureGraph from "../../../containers/dashboard/StructureGraph";
+import { getPrivisioningLink } from "../../../routes/routesMapping";
+import { useAppSelector } from "../../utils/hooks";
+import CatalogItem from "../layout/catalog/CatalogItem";
 import navigation from "./data/navigation.json";
 import structure from "./data/structure.json";
-import CatalogItem from "../layout/catalog/CatalogItem";
-import { useAppSelector } from "../../utils/hooks";
-import { BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
-import { openInternalLink } from "../../utils/links";
-import { getPrivisioningLink } from "../../../routes/routesMapping";
-import StructureGraph from "../../../containers/dashboard/StructureGraph";
 
 const useStyles = makeAppStyles(theme => ({
   description: {

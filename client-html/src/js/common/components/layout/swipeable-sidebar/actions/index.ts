@@ -11,10 +11,10 @@ export const SET_SWIPEABLE_DRAWER_SELECTION = "common/set/swipeableDrawer/select
 
 export const toggleSwipeableDrawer = (variant = VARIANTS.temporary) => ({
   type: TOGGLE_SWIPEABLE_DRAWER,
-  payload: { variant }
+  payload: {variant}
 });
 
 export const setSwipeableDrawerSelection = (selected: number | string) => ({
   type: SET_SWIPEABLE_DRAWER_SELECTION,
-  payload: { selected }
+  payload: {selected}
 });

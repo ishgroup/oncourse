@@ -1,6 +1,7 @@
-import MembershipProductEditView from "../../../js/containers/entities/membershipProducts/components/MembershipProductEditView";
+import MembershipProductEditView
+  from "../../../js/containers/entities/membershipProducts/components/MembershipProductEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
-import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
+import { formatCurrency } from "ish-ui";
 
 describe("Virtual rendered MembershipProductEditView", () => {
   mockedEditView({

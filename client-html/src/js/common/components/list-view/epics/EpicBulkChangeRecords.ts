@@ -4,31 +4,31 @@
  */
 import { Diff } from "@api/model";
 import { Epic } from "redux-observable";
+import ApplicationService from "../../../../containers/entities/applications/service/ApplicationService";
+import ArticleProductService from "../../../../containers/entities/articleProducts/service/ArticleProductService";
+import AssessmentService from "../../../../containers/entities/assessments/services/AssessmentService";
+import AssessmentSubmissionService
+  from "../../../../containers/entities/assessmentSubmissions/service/AssessmentSubmissionService";
 import ContactsService from "../../../../containers/entities/contacts/services/ContactsService";
 import CourseClassService from "../../../../containers/entities/courseClasses/services/CourseClassService";
 import CourseService from "../../../../containers/entities/courses/services/CourseService";
 import EnrolmentService from "../../../../containers/entities/enrolments/services/EnrolmentService";
+import InvoiceService from "../../../../containers/entities/invoices/services/InvoiceService";
+import LeadService from "../../../../containers/entities/leads/services/LeadService";
+import MembershipProductService
+  from "../../../../containers/entities/membershipProducts/services/MembershipProductService";
 import OutcomeService from "../../../../containers/entities/outcomes/services/OutcomeService";
+import PayslipService from "../../../../containers/entities/payslips/services/PayslipService";
+import RoomService from "../../../../containers/entities/rooms/services/RoomService";
+import SaleService from "../../../../containers/entities/sales/services/SaleService";
+import SiteService from "../../../../containers/entities/sites/services/SiteService";
+import VoucherProductService from "../../../../containers/entities/voucherProducts/services/VoucherProductService";
+import WaitingListService from "../../../../containers/entities/waitingLists/services/WaitingListService";
+import { EntityName } from "../../../../model/entities/common";
 import { FETCH_SUCCESS } from "../../../actions";
 import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import { BULK_CHANGE_RECORDS, GET_RECORDS_REQUEST } from "../actions";
-import AssessmentSubmissionService
-  from "../../../../containers/entities/assessmentSubmissions/service/AssessmentSubmissionService";
-import { EntityName } from "../../../../model/entities/common";
-import ApplicationService from "../../../../containers/entities/applications/service/ApplicationService";
-import AssessmentService from "../../../../containers/entities/assessments/services/AssessmentService";
-import PayslipService from "../../../../containers/entities/payslips/services/PayslipService";
-import SiteService from "../../../../containers/entities/sites/services/SiteService";
-import RoomService from "../../../../containers/entities/rooms/services/RoomService";
-import WaitingListService from "../../../../containers/entities/waitingLists/services/WaitingListService";
-import LeadService from "../../../../containers/entities/leads/services/LeadService";
-import InvoiceService from "../../../../containers/entities/invoices/services/InvoiceService";
-import ArticleProductService from "../../../../containers/entities/articleProducts/service/ArticleProductService";
-import MembershipProductService
-  from "../../../../containers/entities/membershipProducts/services/MembershipProductService";
-import SaleService from "../../../../containers/entities/sales/services/SaleService";
-import VoucherProductService from "../../../../containers/entities/voucherProducts/services/VoucherProductService";
 
 const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
   switch (entity) {
@@ -77,17 +77,17 @@ const getBulkRequest = (entity: EntityName, diff: Diff): Promise<any> => {
 
 const request: EpicUtils.Request<any, { entity: EntityName, diff: Diff }> = {
   type: BULK_CHANGE_RECORDS,
-  getData: ({ entity, diff }) => getBulkRequest(entity, diff),
-  processData: (v, s, { entity }) => [
-      {
-        type: FETCH_SUCCESS,
-        payload: { message: "Bulk change completed" }
-      },
-      {
-        type: GET_RECORDS_REQUEST,
-        payload: { entity, listUpdate: true }
-      }
-    ],
+  getData: ({entity, diff}) => getBulkRequest(entity, diff),
+  processData: (v, s, {entity}) => [
+    {
+      type: FETCH_SUCCESS,
+      payload: {message: "Bulk change completed"}
+    },
+    {
+      type: GET_RECORDS_REQUEST,
+      payload: {entity, listUpdate: true}
+    }
+  ],
   processError: response => {
     const isClientReject = typeof response === "string";
 

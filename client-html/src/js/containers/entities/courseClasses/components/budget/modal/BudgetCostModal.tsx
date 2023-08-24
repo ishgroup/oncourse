@@ -3,26 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import {
- getFormValues, InjectedFormProps, reduxForm, submit 
-} from "redux-form";
+import { Account, ClassCostRepetitionType, Tax } from "@api/model";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
-import { Account, ClassCostRepetitionType, Tax } from "@api/model";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { State } from "../../../../../../reducers/state";
-import StudentFeeContent from "./StudentFeeContent";
-import IncomeAndExpenceContent from "./IncomeAndExpenceContent";
-import DiscountContent from "./DiscountContent";
-import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/entities/CourseClass";
-import TutorPayContent from "./TutorPayContent";
+import { getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 import { mapSelectItems } from "../../../../../../common/utils/common";
 import { valiadateSelectItemAvailable } from "../../../../../../common/utils/validation";
+import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/entities/CourseClass";
+import { State } from "../../../../../../reducers/state";
+import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
+import DiscountContent from "./DiscountContent";
+import IncomeAndExpenceContent from "./IncomeAndExpenceContent";
+import StudentFeeContent from "./StudentFeeContent";
+import TutorPayContent from "./TutorPayContent";
 
 export const PayRateTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
 
