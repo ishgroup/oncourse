@@ -27,7 +27,10 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.PrefetchTreeNode
+import org.apache.commons.lang3.StringUtils
 
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 import java.time.ZoneOffset
 import java.util.stream.Collectors
 
@@ -205,6 +208,7 @@ class TagFunctions {
     }
 
     static ValidationErrorDTO validateForSave(ObjectContext context, TagDTO tag) {
+
         ValidationErrorDTO error = validateTag(tag)
         if (error) {
             return error
@@ -232,7 +236,33 @@ class TagFunctions {
         if (validateUrlPathUniqueness(tag)) {
             return new ValidationErrorDTO(null, 'name', 'The tag url path is not unique within its parent tag.')
         }
-        null
+
+        return null
+    }
+
+    static ValidationErrorDTO validateTagRequirementsForSave(Tag dbTag, List<TaggableClasses> deletedEntityList) {
+
+        TaggableClasses requiredEntity = null
+
+        switch (dbTag.specialType) {
+            case NodeSpecialType.SUBJECTS:
+                requiredEntity = deletedEntityList.find { it == TaggableClasses.COURSE }
+                break
+            case NodeSpecialType.ASSESSMENT_METHOD:
+                requiredEntity = deletedEntityList.find { it == TaggableClasses.ASSESSMENT }
+                break
+            case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
+                requiredEntity = deletedEntityList.find { it == TaggableClasses.TUTOR }
+                break
+            case NodeSpecialType.TERMS:
+                requiredEntity = deletedEntityList.find { it == TaggableClasses.COURSE_CLASS }
+                break
+        }
+
+        return requiredEntity == null ? null :
+                new ValidationErrorDTO(null, 'requirements',
+                        "The ${ StringUtils.capitalize(requiredEntity.name().toLowerCase()) } entity is mandatory for the Tag Group.".toString()
+                )
     }
 
     static ValidationErrorDTO validateTag(TagDTO tag, boolean root = true) {
@@ -303,6 +333,7 @@ class TagFunctions {
     static Tag toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
 
         Map<Long, TagRequirement> requirementMap = dbTag.tagRequirements.collectEntries { [(it.id), it] }
+
         tag.requirements.each { r ->
             TagRequirement tagRequirement = r.id ? requirementMap.remove(r.id) : context.newObject(TagRequirement)
             tagRequirement.entityIdentifier = tagRequirementBidiMap.getByValue(r.type)
@@ -311,22 +342,25 @@ class TagFunctions {
             tagRequirement.manyTermsAllowed = !r.limitToOneTag
             tagRequirement.tag = dbTag
         }
+
         List<TaggableClasses> deletedEntityList = requirementMap
                 .values()
                 .stream()
                 .map({ requirement -> requirement.entityIdentifier })
                 .collect(Collectors.toList())
 
-        _toDbTag(context, tag, dbTag, isParent, deletedEntityList, childTagsToRemove);
-
         if (isParent) {
-            if (!dbTag.specialType) {
-                context.deleteObjects(requirementMap.values())
+            ValidationErrorDTO error = validateTagRequirementsForSave(dbTag, deletedEntityList)
+            if (error != null) {
+                throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
             }
         }
+
+        _toDbTag(context, tag, dbTag, isParent, deletedEntityList, childTagsToRemove);
+        context.deleteObjects(requirementMap.values())
         context.deleteObjects(childTagsToRemove.values())
 
-        dbTag
+        return dbTag
     }
 
     private static void _toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, List<TaggableClasses> deletedEntityList, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
