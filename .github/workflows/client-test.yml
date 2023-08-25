@@ -21,10 +21,12 @@ jobs:
           node-version: '16.14.2'
 
       - name: Install modules
-        run: npm i --legacy-peer-deps
+        working-directory: ./client-html
+        run: npm ci --legacy-peer-deps
         
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        working-directory: ./client-html
         run: npm test
 
       - name: Publish test results
