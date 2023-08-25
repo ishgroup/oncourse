@@ -13,10 +13,10 @@ jobs:
     strategy:
       matrix:
         java: [11]
-        
+
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v2
+
       - id: skip_check
         uses: fkirc/skip-duplicate-actions@v3.4.1
         with:
@@ -25,7 +25,7 @@ jobs:
           paths_ignore: '["server/**", "server-api/**", "api-doc/**", "api-test/**", "types/**"]'
 
       - name: Set up JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
@@ -34,25 +34,38 @@ jobs:
         run: chmod +x gradlew
 
       - name: Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: |
             **/node_modules
+            ~/.build
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ matrix.java }}-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ matrix.java }}-
 
-      - name: Setup tests
-        run: ./gradlew client-html:queryGrammar
-        
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        working-directory: ./client-html
-        run: npm test
+        run: ./gradlew client-html:jest
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         with:
           files: '**/test-results/**/*.xml'
+
+#      - name: Upload coverage to Codecov
+#        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+#        uses: codecov/codecov-action@v1
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          flags: jest
+#          directory: client-html/build/reports/test
+
+#      - name: Upload coverage to codeclimate
+#        uses: paambaati/codeclimate-action@v2.7.5
+#        env:
+#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+#        with:
+#          workingDirectory: '${{github.workspace}}/client-html/src/js'
+#          coverageLocations: '${{github.workspace}}/client-html/build/reports/**/*.lcov:lcov'
