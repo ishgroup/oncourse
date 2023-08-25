@@ -43,9 +43,8 @@ jobs:
           key: ${{ matrix.java }}-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ matrix.java }}-
 
-      - name: Install modules
-        working-directory: ./client-html
-        run: npm ci --legacy-peer-deps
+      - name: Setup tests
+        run: ./gradlew client-html:queryGrammar
         
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
