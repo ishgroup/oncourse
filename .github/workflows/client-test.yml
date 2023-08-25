@@ -43,14 +43,6 @@ jobs:
           key: ${{ matrix.java }}-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ matrix.java }}-
 
-      - name: Setup tests
-        run: ./gradlew client-html:queryGrammar
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.14.2'
-
       - name: Install modules
         working-directory: ./client-html
         run: npm ci --legacy-peer-deps
