@@ -208,7 +208,7 @@ class PaperListRenderer extends PureComponent<PaperListRendererProps, any> {
         })}
       >
         {items.map((item, index) => (
-          <Paper key={item.id} className={classes.root__item}>
+          <Paper key={index} className={classes.root__item}>
             <div className="d-flex">
               <div className={classes.primaryLine}>
                 <Typography variant="body2" className="linkDecoration" onClick={() => openInternalLink(item.link)}>

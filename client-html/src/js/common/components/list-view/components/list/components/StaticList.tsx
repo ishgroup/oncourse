@@ -86,6 +86,7 @@ const ListRow = memo<any>(({data, index, style}) => {
     >
       {row.getVisibleCells().map(cell => (
         <TableCell
+          key={cell.id}
           style={{
             minWidth: '0px',
             boxSizing: "border-box",
@@ -124,8 +125,8 @@ export default itemData => {
           itemCount={rows.length}
           itemData={itemData}
           itemSize={27}
-          height={height}
-          width={totalColumnsWidth > width ? totalColumnsWidth : width}
+          height={isNaN(height) ? 0 : height}
+          width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
         >
           {ListRow}
         </FixedSizeList>
