@@ -3,8 +3,8 @@ plugins {
 }
 
 node {
-    version = '12.19.0'
-    yarnVersion = '1.22.10'
+    version = '16.14.2'
+    yarnVersion = '1.22.19'
     download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
     workDir = file("${project.buildDir}/nodejs")
 }
