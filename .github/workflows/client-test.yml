@@ -21,7 +21,7 @@ jobs:
           node-version: '16.14.2'
 
       - name: Install modules
-        run: npm ci --legacy-peer-deps
+        run: npm i --legacy-peer-deps
         
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
