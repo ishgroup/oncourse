@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { Qualification, QualificationApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class QualificationService {
   readonly qualificationApi = new QualificationApi(new DefaultHttpService());

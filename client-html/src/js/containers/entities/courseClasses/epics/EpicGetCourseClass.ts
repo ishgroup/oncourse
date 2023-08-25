@@ -3,23 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import { CourseClassExtended } from "../../../../model/entities/CourseClass";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { courseClassBudgetPath, plainEnrolmentPath } from "../../../../constants/Api";
-import { GET_COURSE_CLASS, GET_COURSE_CLASS_ENROLMENTS } from "../actions";
+import { Epic } from "redux-observable";
+import { clearActionsQueue } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { getNoteItems } from "../../../../common/components/form/notes/actions";
 import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { GET_COURSE_CLASS_TUTORS } from "../components/tutors/actions";
-import { GET_COURSE_CLASS_COSTS } from "../components/budget/actions";
-import { GET_COURSE_CLASS_SESSIONS } from "../components/timetable/actions";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { courseClassBudgetPath, plainEnrolmentPath } from "../../../../constants/Api";
+import { CourseClassExtended } from "../../../../model/entities/CourseClass";
+import { getEntityItemById } from "../../common/entityItemsService";
+import { GET_COURSE_CLASS, GET_COURSE_CLASS_ENROLMENTS } from "../actions";
 import { GET_COURSE_CLASS_ASSESSMENTS } from "../components/assessments/actions";
 import { GET_COURSE_CLASS_ATTENDANCE } from "../components/attendance/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getEntityItemById } from "../../common/entityItemsService";
-import { clearActionsQueue } from "../../../../common/actions";
-import { getNoteItems } from "../../../../common/components/form/notes/actions";
+import { GET_COURSE_CLASS_COSTS } from "../components/budget/actions";
+import { GET_COURSE_CLASS_SESSIONS } from "../components/timetable/actions";
+import { GET_COURSE_CLASS_TUTORS } from "../components/tutors/actions";
 
 const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS,

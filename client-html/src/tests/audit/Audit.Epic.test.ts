@@ -1,13 +1,13 @@
 import { GET_AUDIT_ITEM_FULFILLED, GET_AUDIT_ITEM_REQUEST } from "../../js/containers/audits/actions";
 import { SET_LIST_EDIT_RECORD } from "../../js/common/components/list-view/actions";
-import { EEE_D_MMM_YYYY } from "../../js/common/utils/dates/format";
-import { store, mockedAPI } from "../TestEntry";
+import { EEE_D_MMM_YYYY } from "ish-ui";
+import { mockedAPI, store } from "../TestEntry";
 import { format } from "date-fns";
 import { initialize } from "redux-form";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../js/common/components/list-view/constants";
 import { FETCH_FINISH, FETCH_START } from "../../js/common/actions";
 import { EpicGetAudit } from "../../js/containers/audits/epics/EpicGetAudit";
-import { toArray, filter } from "rxjs/operators";
+import { filter, toArray } from "rxjs/operators";
 import { from } from "rxjs";
 
 describe("Audit Epics tests", () => {

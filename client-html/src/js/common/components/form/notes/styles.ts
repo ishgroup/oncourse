@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@mui/styles/createStyles";
 import { alpha } from '@mui/material/styles';
+import createStyles from "@mui/styles/createStyles";
 
 const styles = theme =>
   createStyles({

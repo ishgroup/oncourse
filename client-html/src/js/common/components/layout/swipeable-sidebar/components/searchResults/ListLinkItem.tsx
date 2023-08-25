@@ -7,13 +7,13 @@
  */
 
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import React from "react";
-import { formatDistanceStrict } from "date-fns";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
-import { openInternalLink } from "../../../../../utils/links";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { formatDistanceStrict } from "date-fns";
+import { openInternalLink } from "ish-ui";
+import React from "react";
 import { getPrivisioningLink } from "../../../../../../routes/routesMapping";
 
 const styles = theme => createStyles({
@@ -54,11 +54,11 @@ const ListLinkItem = props => {
       <Typography variant="body2" className={`linkDecoration ${classes.itemName}`}>
         {item.name}
         {' '}
-        {item.type === "script" ? <DescriptionOutlinedIcon className={classes.favoriteScriptIcon} /> : ""}
+        {item.type === "script" ? <DescriptionOutlinedIcon className={classes.favoriteScriptIcon}/> : ""}
       </Typography>
       {item.date && (
         <Typography className="graySmallFont12" align="right">
-          {formatDistanceStrict(new Date(item.date), new Date(), { addSuffix: true })}
+          {formatDistanceStrict(new Date(item.date), new Date(), {addSuffix: true})}
         </Typography>
       )}
     </ListItem>

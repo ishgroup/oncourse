@@ -3,23 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
-import Button from "@mui/material/Button";
-import { FormControlLabel } from "@mui/material";
 import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import { Dispatch } from "redux";
+import clsx from "clsx";
 import { format } from "date-fns";
-import { normalizeNumberToPositive } from "../../../utils/numbers/numbersNormalizing";
-import FormField from "../formFields/FormField";
-import { StyledCheckbox } from "../formFields/CheckboxField";
+import { normalizeNumberToPositive, StyledCheckbox, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import { repeatEndListItems, repeatListItems } from "../../../../containers/preferences/containers/holidays/ListItems";
-import AvailabilityNextHint from "./AvailabilityNextHint";
 import { validateMinMaxDate } from "../../../utils/validation";
-import { YYYY_MM_DD_MINUSED } from "../../../utils/dates/format";
+import FormField from "../formFields/FormField";
+import AvailabilityNextHint from "./AvailabilityNextHint";
 
 interface Props {
   fieldName: string;
@@ -36,39 +33,39 @@ interface Props {
 }
 
 const AvailabilityItem: React.FC<Props> = ({
-  threeColumn,
-  classes,
-  availabilityLayout,
-  item,
-  field,
-  index,
-  onDelete,
-  fieldName,
-  formName,
-  dispatch,
-  timezone
-}) => {
+                                             threeColumn,
+                                             classes,
+                                             availabilityLayout,
+                                             item,
+                                             field,
+                                             index,
+                                             onDelete,
+                                             fieldName,
+                                             formName,
+                                             dispatch,
+                                             timezone
+                                           }) => {
   const allDay = useMemo(() => Boolean(field.startDate && field.endDate), [field.startDate, field.endDate]);
 
   const validateMaxDate = useCallback(
     (value, allValues) => validateMinMaxDate(
-        value,
-        "",
-        allValues[fieldName][index].endDate
-          ? allValues[fieldName][index].endDate
-          : allValues[fieldName][index].endDateTime
-      ),
+      value,
+      "",
+      allValues[fieldName][index].endDate
+        ? allValues[fieldName][index].endDate
+        : allValues[fieldName][index].endDateTime
+    ),
     [fieldName, index]
   );
 
   const validateMinDate = useCallback(
     (value, allValues) => validateMinMaxDate(
-        value,
-        allValues[fieldName][index].startDate
-          ? allValues[fieldName][index].startDate
-          : allValues[fieldName][index].startDateTime,
-        ""
-      ),
+      value,
+      allValues[fieldName][index].startDate
+        ? allValues[fieldName][index].startDate
+        : allValues[fieldName][index].startDateTime,
+      ""
+    ),
     [fieldName, index]
   );
 
@@ -109,10 +106,10 @@ const AvailabilityItem: React.FC<Props> = ({
                 "d-flex-start justify-content-space-between": threeColumn
               })}
             >
-              <FormField type="text" name={`${item}.description`} label="Description" />
+              <FormField type="text" name={`${item}.description`} label="Description"/>
               {threeColumn && (
                 <div className="d-flex errorColor">
-                  <div className="flex-fill" />
+                  <div className="flex-fill"/>
                   <Button size="small" color="inherit" onClick={onDelete.bind(null, field, index)}>
                     Delete
                   </Button>
@@ -122,7 +119,7 @@ const AvailabilityItem: React.FC<Props> = ({
 
             <Grid item xs={availabilityLayout[3].xs}>
               <FormControlLabel
-                control={<StyledCheckbox checked={allDay} onChange={onAllDayChange} />}
+                control={<StyledCheckbox checked={allDay} onChange={onAllDayChange}/>}
                 label="All day"
               />
             </Grid>
@@ -201,14 +198,14 @@ const AvailabilityItem: React.FC<Props> = ({
         <Grid item xs={availabilityLayout[10].xs}>
           {!threeColumn && (
             <div className="d-flex errorColor">
-              <div className="flex-fill" />
+              <div className="flex-fill"/>
               <Button size="small" color="inherit" onClick={onDelete.bind(null, field, index)}>
                 Delete
               </Button>
             </div>
           )}
 
-          <AvailabilityNextHint timezone={timezone} item={field} className={classes.hintContainer} />
+          <AvailabilityNextHint timezone={timezone} item={field} className={classes.hintContainer}/>
         </Grid>
       </Grid>
     </Card>

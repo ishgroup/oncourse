@@ -3,24 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Dialog from "@mui/material/Dialog";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import DialogActions from "@mui/material/DialogActions";
 import { Document, Tag } from "@api/model";
-import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
 import ButtonBase from "@mui/material/ButtonBase";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { DocumentIconsChooser } from "ish-ui";
+import React from "react";
+import { getLatestDocumentItem } from "../../../../../utils/documents";
 import FormField from "../../../formFields/FormField";
-import DocumentIconsChooser from "../items/DocumentIconsChooser";
+import DocumentShare from "../../DocumentShare";
 import { dialogStyles } from "./dialogStyles";
-
-import { getLatestDocumentItem } from "../utils";
-import DocumentShare from "../items/DocumentShare";
-import Button from "@mui/material/Button";
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -113,7 +112,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           name={`${itemPath}.description`}
           label="Description"
           multiline
-                    disabled={readOnly}
+          disabled={readOnly}
         />
 
         <DialogActions classes={{ root: classes.actions }}>
@@ -192,7 +191,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
                   </Typography>
                 </div>
 
-                {loading && <LinearProgress className={classes.documentLoading} />}
+                {loading && <LinearProgress className={classes.documentLoading}/>}
               </div>
 
               {!loading && (

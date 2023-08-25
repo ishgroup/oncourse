@@ -3,19 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import { format } from "date-fns";
-import Button from "@mui/material/Button";
 import { Currency } from "@api/model";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { format } from "date-fns";
+import { EEE_D_MMM_YYYY, normalizeNumber } from "ish-ui";
+import React, { useMemo } from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
-import Uneditable from "../../../../common/components/form/Uneditable";
 
 interface Props {
   threeColumn: boolean;

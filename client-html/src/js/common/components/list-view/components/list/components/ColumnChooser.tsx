@@ -3,22 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useRef, useState
-} from "react";
-import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
-import List from "@mui/material/List";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import { FormControlLabel, List, ListItemButton } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
+import React, { useRef, useState } from "react";
 import { CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "../constants";
-import { ListItemButton } from "@mui/material";
 
 const ColumnChooserItem = ({
- classes, column, onHiddenChange
-}) => (<ListItemButton
-  classes={{ root: classes.columnChooserListItem }}
+                             classes, column, onHiddenChange
+                           }) => (<ListItemButton
+  classes={{root: classes.columnChooserListItem}}
 >
   <FormControlLabel
     className="w-100"
@@ -43,8 +39,8 @@ const ColumnChooserItem = ({
 </ListItemButton>);
 
 const ColumnChooserOverlay = ({
-  columns, target, visible, onHide, classes, onHiddenChange
-}) => {
+                                columns, target, visible, onHide, classes, onHiddenChange
+                              }) => {
   let sortedColumns = [];
   const tagsColumn = columns.filter(column => column.id === COLUMN_WITH_COLORS);
   if (tagsColumn.length) {
@@ -84,15 +80,15 @@ const ColumnChooserOverlay = ({
   );
 };
 
-const ColumnChooserButton = React.forwardRef<any, any>(({ className, onToggle }, ref) => (
+const ColumnChooserButton = React.forwardRef<any, any>(({className, onToggle}, ref) => (
   <div className={className}>
     <IconButton onClick={onToggle} ref={ref} size="large" color="inherit">
-      <Visibility color="inherit" />
+      <Visibility color="inherit"/>
     </IconButton>
   </div>
 ));
 
-const ColumnChooser = ({ classes, columns, onHiddenChange }) => {
+const ColumnChooser = ({classes, columns, onHiddenChange}) => {
   const [visible, setVisible] = useState(false);
   const buttonRef = useRef<any>();
 
@@ -106,7 +102,8 @@ const ColumnChooser = ({ classes, columns, onHiddenChange }) => {
         onHide={() => setVisible(false)}
         onHiddenChange={onHiddenChange}
       />
-      <ColumnChooserButton ref={buttonRef} className={classes.columnChooserButton} onToggle={() => setVisible(!visible)} />
+      <ColumnChooserButton ref={buttonRef} className={classes.columnChooserButton}
+                           onToggle={() => setVisible(!visible)}/>
     </>
   );
 };

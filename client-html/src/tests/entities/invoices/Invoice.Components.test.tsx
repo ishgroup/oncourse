@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { III_DD_MMM_YYYY } from "ish-ui";
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../js/constants/Config";
 import InvoicesEditView from "../../../js/containers/entities/invoices/components/InvoicesEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";

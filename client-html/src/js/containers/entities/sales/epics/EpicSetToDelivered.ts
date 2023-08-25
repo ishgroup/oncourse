@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { ProductItem } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { SET_SALE_DELIVERED } from "../actions";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import { updateEntityItemById } from "../../common/entityItemsService";
-import SaleService from "../services/SaleService";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { getEntityRecord } from "../../common/actions";
+import { updateEntityItemById } from "../../common/entityItemsService";
+import { SET_SALE_DELIVERED } from "../actions";
+import SaleService from "../services/SaleService";
 
 const request: EpicUtils.Request<any, { id: number }> = {
   type: SET_SALE_DELIVERED,

@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
+import { Tag } from "@api/model";
 import {
   moveItemOnTree,
   RenderItemParams,
@@ -15,14 +15,14 @@ import {
   TreeItem,
   TreeSourcePosition
 } from '@atlaskit/tree';
-import { Tag } from "@api/model";
 import { ItemId } from "@atlaskit/tree/types";
-import Tree from "./TagTreeBasis";
-import { FormTag, FormTagProps } from "../../../model/tags";
-import TagItem from "./TagItem";
-import { AnyArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
+import { AnyArgFunction, NumberArgFunction } from "ish-ui";
+import React, { useCallback, useEffect, useState } from "react";
 import { getDeepValue } from "../../../common/utils/common";
+import { FormTag, FormTagProps } from "../../../model/tags";
 import ChecklistItem from "./ChecklistItem";
+import TagItem from "./TagItem";
+import Tree from "./TagTreeBasis";
 
 const PADDING_PER_LEVEL = 16;
 

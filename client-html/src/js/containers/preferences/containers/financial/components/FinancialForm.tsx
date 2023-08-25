@@ -3,30 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  Form, getFormInitialValues, initialize, reduxForm
-} from "redux-form";
-import { connect } from "react-redux";
-import isEmpty from "lodash.isempty";
 import { AccountType } from "@api/model";
+import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Form, getFormInitialValues, initialize, reduxForm } from "redux-form";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import * as Model from "../../../../../model/preferences/Financial";
-import { currency, postPrepaidFees } from "../ListItems";
-import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { State } from "../../../../../reducers/state";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../../constants/Config";
+import * as Model from "../../../../../model/preferences/Financial";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import { State } from "../../../../../reducers/state";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { getAccountsList } from "../../../utils";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../../constants/Config";
+import { currency, postPrepaidFees } from "../ListItems";
+
 const manualUrl = getManualLink("generalPrefs_financial");
 
 class FinancialBaseForm extends React.Component<any, any> {

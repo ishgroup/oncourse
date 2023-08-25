@@ -4,9 +4,9 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { closeSendMessage, FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { MessageExtended } from "../../../../model/common/Message";
 import { SEND_MESSAGE } from "../actions";
 import MessageService from "../services/MessageService";

@@ -6,17 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
+import { AnyArgFunction, NoArgFunction, ShowConfirmCaller } from "ish-ui";
 import React, { ReactElement } from "react";
-import { FormErrors, InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
-import {
-  DataResponse, EmailTemplate, Filter, Script, SearchQuery
-} from "@api/model";
-import { MenuTag } from "../tags";
-import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
-import { ShowConfirmCaller } from "./Confirm";
-import { MessageData } from "./Message";
+import { FormErrors, InjectedFormProps } from "redux-form";
 import { CustomTableModelName, EntityName } from "../entities/common";
+import { FormMenuTag } from "../tags";
+import { MessageData } from "./Message";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
@@ -56,9 +53,9 @@ export interface CogwhelAdornmentProps {
 }
 
 export interface ListState {
-  menuTags: MenuTag[];
-  checkedChecklists?: MenuTag[];
-  uncheckedChecklists?: MenuTag[];
+  menuTags: FormMenuTag[];
+  checkedChecklists?: FormMenuTag[];
+  uncheckedChecklists?: FormMenuTag[];
   menuTagsLoaded?: boolean;
   filterGroups: FilterGroup[];
   filterGroupsLoaded?: boolean;

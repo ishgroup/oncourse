@@ -1,11 +1,11 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetAllTags } from "./EpicGetAllTags";
 import { EpicCreateTag } from "./EpicCreateTag";
 import { EpicDeleteTag } from "./EpicDeleteTag";
-import { EpicUpdateTag } from "./EpicUpdateTag";
-import { EpicGetListTags } from "./EpicGetListTags";
+import { EpicGetAllTags } from "./EpicGetAllTags";
 import { EpicGetEntityTags } from "./EpicGetEntityTags";
+import { EpicGetListTags } from "./EpicGetListTags";
 import { EpicGetTag } from "./EpicGetTag";
+import { EpicUpdateTag } from "./EpicUpdateTag";
 
 export const EpicTags = combineEpics(
   EpicGetTag,

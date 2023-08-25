@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo, memo, useCallback } from "react";
-import { connect } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
+import React, { memo, useCallback, useMemo } from "react";
+import { connect } from "react-redux";
 import { State } from "../../../../reducers/state";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import BulkDeleteCogwheelOption from "../../common/components/BulkDeleteCogwheelOption";
+import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 
 const WaitingListCogWheel = memo<any>(props => {
   const {

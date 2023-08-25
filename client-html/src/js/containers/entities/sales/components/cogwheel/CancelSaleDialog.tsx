@@ -3,24 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import {
- change, clearFields, DecoratedComponentClass, getFormValues, reduxForm 
-} from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Dispatch } from "redux";
 import { Account, ProductItemCancel, Tax } from "@api/model";
 import { FormControlLabel } from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
+import { BooleanArgFunction } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change, clearFields, DecoratedComponentClass, getFormValues, reduxForm } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
-import { State } from "../../../../../reducers/state";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { State } from "../../../../../reducers/state";
 import { accountLabelCondition } from "../../../accounts/utils";
 import { cancelSale } from "../../actions";
 

@@ -6,9 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { createStyles } from "@mui/styles";
 import { alpha } from '@mui/material/styles';
-import { AppTheme } from "../../../../../model/common/Theme";
+import { createStyles } from "@mui/styles";
+import { AppTheme } from "ish-ui";
 import { HEADER_ROWS_COUNT, LIST_TWO_COLUMN_ROW_HEIGHT } from "../../../../../constants/Config";
 
 export default (theme: AppTheme) => createStyles({

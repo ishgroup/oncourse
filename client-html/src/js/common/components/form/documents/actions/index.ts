@@ -4,8 +4,8 @@
  */
 
 import { Document } from "@api/model";
-import { _toRequestType } from "../../../../actions/ActionUtils";
 import { DocumentExtended } from "../../../../../model/common/Documents";
+import { _toRequestType } from "../../../../actions/ActionUtils";
 
 export const CREATE_DOCUMENT = _toRequestType("post/list/entity/document");
 
@@ -34,22 +34,22 @@ export const createDocument = (document: Document, form: string, documentPath: s
 
 export const createAvatarDocument = (document: DocumentExtended, form: string, documentPath: string) => ({
   type: CREATE_AVATAR_DOCUMENT,
-  payload: { document, form, documentPath }
+  payload: {document, form, documentPath}
 });
 
 export const getDocumentItem = (id: number, editingFormName: string) => ({
   type: GET_DOCUMENT,
-  payload: { id, editingFormName }
+  payload: {id, editingFormName}
 });
 
 export const searchDocumentByHash = (inputDocument: File, editingFormName: string) => ({
   type: SEARCH_DOCUMENT_BY_HASH,
-  payload: { inputDocument, editingFormName }
+  payload: {inputDocument, editingFormName}
 });
 
 export const searchDocumentByName = (documentName: string, editingFormName: string) => ({
   type: SEARCH_DOCUMENT_BY_NAME,
-  payload: { documentName, editingFormName }
+  payload: {documentName, editingFormName}
 });
 
 export const clearEditingDocument = () => ({
@@ -61,15 +61,15 @@ export const clearEditingDocument = () => ({
 
 export const setEditingDocument = (editingDocument: Document, editingFormName: string, viewDocument: boolean = false) => ({
   type: SET_EDITING_DOCUMENT,
-  payload: { editingDocument, editingFormName, viewDocument }
+  payload: {editingDocument, editingFormName, viewDocument}
 });
 
 export const setDocumentFile = (documentFile: File) => ({
   type: SET_DOCUMENT_FILE,
-  payload: { documentFile }
+  payload: {documentFile}
 });
 
 export const setSearchDocuments = (searchDocuments: any) => ({
   type: SET_SEARCH_DOCUMENTS,
-  payload: { searchDocuments }
+  payload: {searchDocuments}
 });

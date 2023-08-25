@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import clsx from "clsx";
 import { withStyles } from "@mui/styles";
+import clsx from "clsx";
+import * as React from "react";
 import { connect } from "react-redux";
 import { State } from "../../../reducers/state";
 
@@ -91,7 +91,7 @@ class LoadingIndicator extends React.PureComponent<any, any> {
   }
 
   checkLoadingTime() {
-    const { hideIndicator, pending } = this.props.fetch;
+    const {hideIndicator, pending} = this.props.fetch;
 
     this.timeout = setTimeout(() => {
       if (this._isMounted) {
@@ -104,10 +104,10 @@ class LoadingIndicator extends React.PureComponent<any, any> {
 
   render() {
     const {
-     classes, appBarOffset, transparentBackdrop, position = "absolute", allowInteractions, customLoading
+      classes, appBarOffset, transparentBackdrop, position = "absolute", allowInteractions, customLoading
     } = this.props;
 
-    const { showLoading } = this.state;
+    const {showLoading} = this.state;
 
     return (
       <div
@@ -121,7 +121,8 @@ class LoadingIndicator extends React.PureComponent<any, any> {
           "fixed": position === "fixed"
         })}
       >
-        <CircularProgress classes={{ root: customLoading || showLoading ? undefined : "d-none" }} size={40} thickness={5} />
+        <CircularProgress classes={{root: customLoading || showLoading ? undefined : "d-none"}} size={40}
+                          thickness={5}/>
       </div>
     );
   }

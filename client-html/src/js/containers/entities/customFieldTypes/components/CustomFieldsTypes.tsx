@@ -6,23 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Grid } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
-import { change } from "redux-form";
 import { CustomFieldType } from "@api/model";
-import { connect } from "react-redux";
-import { GridProps } from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { GridProps } from "@mui/material/Grid";
+import React, { useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import { getDeepValue } from "../../../../common/utils/common";
 import {
   validateEmail,
   validatePattern,
   validateSingleMandatoryField,
   validateURL
 } from "../../../../common/utils/validation";
-import { State } from "../../../../reducers/state";
 import { EntityName } from "../../../../model/entities/common";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { getDeepValue } from "../../../../common/utils/common";
+import { State } from "../../../../reducers/state";
 
 const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
   const validate = type.mandatory ? validateSingleMandatoryField : undefined;

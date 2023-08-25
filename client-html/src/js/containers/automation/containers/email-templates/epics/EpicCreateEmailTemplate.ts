@@ -1,13 +1,13 @@
 import { EmailTemplate } from "@api/model";
+import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { State } from "../../../../../reducers/state";
 import { CREATE_EMAIL_TEMPLATE, GET_EMAIL_TEMPLATES_LIST } from "../actions";
-import EmailTemplateService from "../services/EmailTemplateService";
-import { initialize } from "redux-form";
 import { EMAIL_TEMPLATES_FORM_NAME } from "../EmailTemplates";
+import EmailTemplateService from "../services/EmailTemplateService";
 
 const request: EpicUtils.Request<State, { emailTemplate: EmailTemplate }> = {
   type: CREATE_EMAIL_TEMPLATE,

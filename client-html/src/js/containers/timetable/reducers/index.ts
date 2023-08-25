@@ -7,8 +7,8 @@
  */
 
 import { isSameDay } from "date-fns";
-import { TimetableState } from "../../../model/timetable";
 import { IAction } from "../../../common/actions/IshAction";
+import { TimetableState } from "../../../model/timetable";
 import {
   CLEAR_TIMETABLE_MONTHS,
   FIND_TIMETABLE_SESSIONS,

@@ -5,21 +5,19 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
-import {
- CheckoutDiscount, CheckoutItem, CheckoutPayment, CheckoutSummary
-} from "../../../../model/checkout";
+import { CheckoutDiscount, CheckoutItem, CheckoutPayment, CheckoutSummary } from "../../../../model/checkout";
 import { State } from "../../../../reducers/state";
-import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
-import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
-import WindcavePaymentPage from "./components/payment-methods/WindcavePaymentPage";
-import PaymentPage from "./components/payment-methods/PaymentPage";
+import { getContactFullName } from "../../../entities/contacts/utils";
+import { CheckoutPage } from "../../constants";
 import CheckoutAppBar from "../CheckoutAppBar";
 import RestartButton from "../RestartButton";
-import { CheckoutPage } from "../../constants";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import { getContactFullName } from "../../../entities/contacts/utils";
+import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
+import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
 import EwayPaymentPage from "./components/payment-methods/EwayPaymentPage";
+import PaymentPage from "./components/payment-methods/PaymentPage";
+import WindcavePaymentPage from "./components/payment-methods/WindcavePaymentPage";
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;

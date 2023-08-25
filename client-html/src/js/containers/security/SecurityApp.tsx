@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import SideBar from "./components/SecuritySideBar";
-import { Categories } from "../../model/preferences";
-import { getApiTokens, getUserRoles, getUsers } from "./actions";
-import { getColumnsWidth, getPreferences, updateColumnsWidth } from "../preferences/actions";
-import { State } from "../../reducers/state";
-import { LICENSE_ACCESS_CONTROL_KEY } from "../../constants/Config";
 import { getUserPreferences } from "../../common/actions";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
+import { LICENSE_ACCESS_CONTROL_KEY } from "../../constants/Config";
+import { Categories } from "../../model/preferences";
+import { State } from "../../reducers/state";
+import { getColumnsWidth, getPreferences, updateColumnsWidth } from "../preferences/actions";
+import { getApiTokens, getUserRoles, getUsers } from "./actions";
+import SideBar from "./components/SecuritySideBar";
 import securityRoutes from "./routes";
 
 const SecurityApp = React.memo<any>(

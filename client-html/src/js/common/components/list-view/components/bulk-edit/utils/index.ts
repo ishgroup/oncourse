@@ -7,6 +7,7 @@
  */
 
 import { CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
+import { fundingSourceValues } from "../../../../../../containers/entities/courseClasses/constants";
 import { EntityName, SelectItemDefault } from "../../../../../../model/entities/common";
 import { mapSelectItems } from "../../../../../utils/common";
 import {
@@ -14,7 +15,6 @@ import {
   validatePurchasingContractScheduleIdentifier,
   validateVetPurchasingContractIdentifier
 } from "../../../../../utils/validation";
-import { fundingSourceValues } from "../../../../../../containers/entities/courseClasses/constants";
 
 export interface BulkEditField {
   keyCode: string;

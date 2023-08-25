@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { getAllTags, UPDATE_TAG_REQUEST } from "../actions";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { TAGS_FORM_NAME } from "../constants";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
 import history from "../../../constants/History";
+import { getAllTags, UPDATE_TAG_REQUEST } from "../actions";
+import { TAGS_FORM_NAME } from "../constants";
+import TagsService from "../services/TagsService";
 
 const request: EpicUtils.Request = {
   type: UPDATE_TAG_REQUEST,

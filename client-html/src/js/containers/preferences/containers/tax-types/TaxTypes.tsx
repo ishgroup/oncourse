@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Account, Tax } from "@api/model";
+import { ShowConfirmCaller } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import { Account, Tax } from "@api/model";
-import { deleteTaxType, getTaxTypes, updateTaxTypes } from "../../actions";
-import { State } from "../../../../reducers/state";
-import { Fetch } from "../../../../model/common/Fetch";
-import TaxTypesForm from "./components/TaxTypesForm";
-import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import { sortDefaultSelectItems } from "../../../../common/utils/common";
+import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
+import { Fetch } from "../../../../model/common/Fetch";
+import { State } from "../../../../reducers/state";
 import { getPlainAccounts } from "../../../entities/accounts/actions";
+import { deleteTaxType, getTaxTypes, updateTaxTypes } from "../../actions";
+import TaxTypesForm from "./components/TaxTypesForm";
 
 interface Props {
   getTypes: () => void;

@@ -6,27 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Course, EntityRelationType, Sale } from "@api/model";
+import Dialog from "@mui/material/Dialog";
+import Slide from "@mui/material/Slide";
+import { alpha } from "@mui/material/styles";
+import { TransitionProps } from "@mui/material/transitions";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import * as d3 from "d3";
+import { getColor, makeAppStyles, NoArgFunction, StringArgFunction, useWindowSize } from "ish-ui";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import * as d3 from "d3";
-import clsx from "clsx";
-import { Course, EntityRelationType, Sale } from "@api/model";
-import { alpha } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import { TransitionProps } from "@mui/material/transitions";
-import Slide from "@mui/material/Slide";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
-import { getColor, useWindowSize } from "../../../../common/styles/hooks";
-import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
-import { NoArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { State } from "../../../../reducers/state";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import CourseService from "../services/CourseService";
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { useAppDispatch } from "../../../../common/utils/hooks";
-import Typography from "@mui/material/Typography";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import EntityService from "../../../../common/services/EntityService";
 import { getCustomColumnsMap } from "../../../../common/utils/common";
+import { useAppDispatch } from "../../../../common/utils/hooks";
+import { State } from "../../../../reducers/state";
+import CourseService from "../services/CourseService";
 
 const useStyles = makeAppStyles(theme => ({
   graphRoot: {

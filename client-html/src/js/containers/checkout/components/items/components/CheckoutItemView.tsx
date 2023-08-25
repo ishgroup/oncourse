@@ -2,15 +2,15 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React from "react";
 import Grid from "@mui/material/Grid";
+import React from "react";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { CheckoutItem, CheckoutSummary } from "../../../../../model/checkout";
+import CheckoutAppBar from "../../CheckoutAppBar";
 import QuickEnrolItemViewFormWraper from "./CkecoutItemViewForm";
 import MembershipEditView from "./MembershipEditView";
 import ProductEditView from "./ProductEditView";
 import VoucherEditView from "./VoucherEditView";
-import CheckoutAppBar from "../../CheckoutAppBar";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 interface Props {
   onClose?: any;

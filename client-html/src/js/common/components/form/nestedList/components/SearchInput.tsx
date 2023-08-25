@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
+import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import Close from "@mui/icons-material/Close";
 import Input from "@mui/material/Input";
+import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import React, { useMemo } from "react";
+import { mapSelectItems } from "../../../../utils/common";
 import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
-import { mapSelectItems, stubFunction } from "../../../../utils/common";
-import EditInPlaceSearchSelect from "../../formFields/EditInPlaceSearchSelect";
 
 const getAqlLabel = entity => {
   switch (entity) {
@@ -80,7 +80,7 @@ const SearchInput = React.memo<any>(props => {
             }
           }}
         >
-          <Close className="inputAdornmentIcon" />
+          <Close className="inputAdornmentIcon"/>
         </IconButton>
       )}
     </>
@@ -89,61 +89,61 @@ const SearchInput = React.memo<any>(props => {
   const entityItems = useMemo(() => (aqlEntities && aqlEntities.length > 1 ? aqlEntities.map(mapAqlEntitiesItems) : []), [aqlEntities]);
 
   return aqlEntity ? (
-    <div>
-      {aqlEntities && aqlEntities.length > 1
-        && (
-          <EditInPlaceSearchSelect
-            className="mt-2 mb-2"
-            label="Entity"
-            meta={{}}
-            input={{
-            onChange: value => setSelectedEntity(value),
-            onFocus: stubFunction,
-            onBlur: stubFunction,
-            value: aqlEntity
-            }}
-            items={entityItems}
-          />
-      )}
+      <div>
+        {aqlEntities && aqlEntities.length > 1
+          && (
+            <EditInPlaceSearchSelect
+              className="mt-2 mb-2"
+              label="Entity"
+              meta={{}}
+              input={{
+                onChange: value => setSelectedEntity(value),
+                onFocus: stubFunction,
+                onBlur: stubFunction,
+                value: aqlEntity
+              }}
+              items={entityItems}
+            />
+          )}
 
-      <EditInPlaceQuerySelect
-        inline
-        tags={searchTags}
-        filterTags={[]}
-        ref={aqlComponentRef}
-        setInputNode={node => {
-          inputRef.current = node;
-        }}
-        rootEntity={aqlEntity}
+        <EditInPlaceQuerySelect
+          inline
+          tagSuggestions={searchTags}
+          filterTags={[]}
+          ref={aqlComponentRef}
+          setInputNode={node => {
+            inputRef.current = node;
+          }}
+          rootEntity={aqlEntity}
+          className={className}
+          placeholder={searchPlaceholder || (aqlEntity ? `${aqlPlaceholderPrefix} ${getAqlLabel(aqlEntity)}` : null)}
+          input={{
+            value: searchExpression
+          }}
+          meta={{
+            invalid: aqlQueryError,
+            error: aqlQueryError && "Expression is invalid"
+          }}
+          performSearch={onAqlSearchChange}
+          onFocus={onFocus}
+          endAdornment={InputAdornment}
+          menuHeight={300}
+        />
+      </div>
+    )
+    : (
+      <Input
+        inputRef={inputRef}
+        value={searchExpression}
+        placeholder={searchPlaceholder}
         className={className}
-        placeholder={searchPlaceholder || (aqlEntity ? `${aqlPlaceholderPrefix} ${getAqlLabel(aqlEntity)}` : null)}
-        input={{
-          value: searchExpression
-        }}
-        meta={{
-          invalid: aqlQueryError,
-          error: aqlQueryError && "Expression is invalid"
-        }}
-        performSearch={onAqlSearchChange}
+        onChange={onSearchChange}
+        onKeyDown={onSearchEscape}
         onFocus={onFocus}
         endAdornment={InputAdornment}
-        menuHeight={300}
+        autoFocus={searchExpression ? false : autoFocus}
       />
-    </div>
-  )
-  : (
-    <Input
-      inputRef={inputRef}
-      value={searchExpression}
-      placeholder={searchPlaceholder}
-      className={className}
-      onChange={onSearchChange}
-      onKeyDown={onSearchEscape}
-      onFocus={onFocus}
-      endAdornment={InputAdornment}
-      autoFocus={searchExpression ? false : autoFocus}
-          />
-  );
+    );
 });
 
 export default SearchInput;

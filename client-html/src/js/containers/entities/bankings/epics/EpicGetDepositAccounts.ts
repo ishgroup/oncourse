@@ -3,19 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Account } from "@api/model";
-import { change } from "redux-form";
 import { format } from "date-fns";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
+import { change } from "redux-form";
+import { Epic } from "redux-observable";
+import { FETCH_FAIL } from "../../../../common/actions";
+import { IAction } from "../../../../common/actions/IshAction";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import AccountService from "../../accounts/services/AccountService";
 import { GET_DEPOSIT_ACCOUNTS, GET_DEPOSIT_ACCOUNTS_FULFILLED } from "../actions";
-import { IAction } from "../../../../common/actions/IshAction";
-import { FETCH_FAIL } from "../../../../common/actions";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
 const request: EpicUtils.Request = {
   type: GET_DEPOSIT_ACCOUNTS,

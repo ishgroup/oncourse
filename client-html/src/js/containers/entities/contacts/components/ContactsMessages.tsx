@@ -1,12 +1,12 @@
-import React, { useCallback } from "react";
 import { Contact } from "@api/model";
-import { FieldArray } from "redux-form";
 import Divider from "@mui/material/Divider";
-import { openInternalLink } from "../../../../common/utils/links";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { openInternalLink } from "ish-ui";
+import React, { useCallback } from "react";
+import { FieldArray } from "redux-form";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
 
 interface ContactsMessagesProps extends EditViewProps<Contact> {
   twoColumn?: boolean;

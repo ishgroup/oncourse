@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import clsx from "clsx";
+import Chip from "@mui/material/Chip";
+import CircularProgress from "@mui/material/CircularProgress";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import CircularProgress from "@mui/material/CircularProgress";
-import Chip from "@mui/material/Chip";
-import { AppTheme } from "../../../../../model/common/Theme";
+import clsx from "clsx";
+import { AppTheme } from "ish-ui";
+import React, { useCallback, useMemo, useState } from "react";
 import CheckoutSearchList from "../../CheckoutSearchList";
 
 const styles = (theme: AppTheme) =>

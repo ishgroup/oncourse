@@ -9,11 +9,8 @@
 import { Epic } from "redux-observable";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
 import { EntityName } from "../../../../model/entities/common";
-import {
-  getEntityItemById,
-  getEntityItemByIdErrorHandler
-} from "../entityItemsService";
 import { GET_ENTITY_RECORD_REQUEST } from "../actions";
+import { getEntityItemById, getEntityItemByIdErrorHandler } from "../entityItemsService";
 import { getListRecordAfterGetActions } from "../utils";
 
 const request: Request<any, { id: number, entity: EntityName }> = {

@@ -4,10 +4,10 @@
  */
 
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { getAutomationPdfBackgroundsList, REMOVE_AUTOMATION_PDF_BACKGROUND } from "../actions/index";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ReportOverlayService from "../services/ReportOverlayService";
 
 const request: EpicUtils.Request<any, number> = {

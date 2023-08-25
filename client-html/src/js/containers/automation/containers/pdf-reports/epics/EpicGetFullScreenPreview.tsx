@@ -8,11 +8,11 @@
 
 import * as React from "react";
 import { Epic } from "redux-observable";
+import { showConfirm } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { SHOW_REPORT_FULL_SCREEN_PREVIEW } from "../actions";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import PdfService from "../services/PdfService";
-import { showConfirm } from "../../../../../common/actions";
 
 const request: EpicUtils.Request<any, number> = {
   type: SHOW_REPORT_FULL_SCREEN_PREVIEW,

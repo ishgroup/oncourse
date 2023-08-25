@@ -4,10 +4,7 @@
  */
 
 import { IAction } from "../../../../common/actions/IshAction";
-import {
-  GET_ADMINISTRATION_SITES_FULFILLED,
-  GET_VIRTUAL_SITES_FULFILLED
-} from "../actions";
+import { GET_ADMINISTRATION_SITES_FULFILLED, GET_VIRTUAL_SITES_FULFILLED } from "../actions";
 import { SiteState } from "./state";
 
 const Initial: SiteState = {

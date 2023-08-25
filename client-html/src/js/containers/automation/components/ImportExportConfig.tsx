@@ -5,15 +5,15 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import React from "react";
-import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { AppBarAction } from "ish-ui";
+import React from "react";
+import { showMessage } from "../../../common/actions";
+import { uploadAndGetFile } from "../../../common/utils/common";
 import { useAppDispatch } from "../../../common/utils/hooks";
 import { AutomationEntity } from "../../../model/automation/common";
-import { AppBarAction } from "../../../model/common/AppBar";
-import { importAutomationConfig, exportAutomationConfig } from "../actions";
-import { uploadAndGetFile } from "../../../common/utils/common";
-import { showMessage } from "../../../common/actions";
+import { exportAutomationConfig, importAutomationConfig } from "../actions";
 
 const getConfigActions = (
   automation: AutomationEntity,

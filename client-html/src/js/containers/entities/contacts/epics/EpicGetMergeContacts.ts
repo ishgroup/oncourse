@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import ContactsService from "../services/ContactsService";
-import { GET_MERGE_CONTACTS, GET_MERGE_CONTACTS_FULFILLED } from "../actions";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { GET_MERGE_CONTACTS, GET_MERGE_CONTACTS_FULFILLED } from "../actions";
+import ContactsService from "../services/ContactsService";
 
 const request: EpicUtils.Request<any, { contactA: string; contactB: string }> = {
   type: GET_MERGE_CONTACTS,

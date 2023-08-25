@@ -3,8 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Session } from "@api/model";
+import { addMonths, endOfMonth, startOfMonth } from "date-fns";
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../common/actions";
+import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
+import CustomFiltersService from "../../../common/services/CustomFiltersService";
 import {
   clearTimetableMonths,
   DELETE_TIMETABLE_FILTER,
@@ -14,11 +19,6 @@ import {
   getTimetableSessionsDays,
   setTimetableSearch
 } from "../actions";
-import { Session } from "@api/model";
-import CustomFiltersService from "../../../common/services/CustomFiltersService";
-import { FETCH_SUCCESS } from "../../../common/actions";
-import { addMonths, endOfMonth, startOfMonth } from "date-fns";
-import { getFiltersString } from "../../../common/components/list-view/utils/listFiltersUtils";
 
 const getActionsForUpdate = (filters, id, currentMonth) => {
   const search = getFiltersString([{ filters: filters.filter(f => f.id !== id) }]);

@@ -3,23 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Banking } from "@api/model";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import * as React from "react";
-import { Banking } from "@api/model";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  getFilters,
-  clearListState,
-  setListEditRecord,
-} from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
-import { initDeposit } from "./actions";
-import BankingEditViewResolver from "./components/BankingEditViewResolver";
-import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
-import { getAccountTransactionLockedDate, getCurrency } from "../../preferences/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup } from "../../../model/common/ListView";
+import { getAccountTransactionLockedDate, getCurrency } from "../../preferences/actions";
 import { getAdministrationSites } from "../sites/actions";
+import { initDeposit } from "./actions";
+import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
+import BankingEditViewResolver from "./components/BankingEditViewResolver";
 
 const manualLink = getManualLink("accounting_Deposit");
 

@@ -3,13 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse, DataRow, Script } from "@api/model";
 import { Epic } from "redux-observable";
-import {
- DataResponse, DataRow, Script
-} from "@api/model";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_ON_DEMAND_SCRIPTS, GET_ON_DEMAND_SCRIPTS_FULFILLED } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
 import EntityService from "../../../common/services/EntityService";
 
 const request: EpicUtils.Request<DataResponse> = {

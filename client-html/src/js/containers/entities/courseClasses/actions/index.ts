@@ -3,12 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  CourseClassDuplicate,
-  Session,
-  CancelCourseClass,
-  CourseClass, SessionWarning, ClassCost
-} from "@api/model";
+import { CancelCourseClass, ClassCost, CourseClass, CourseClassDuplicate, Session, SessionWarning } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
 import { CourseClassState } from "../reducers";
 

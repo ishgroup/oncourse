@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import withStyles from "@mui/styles/withStyles";
-import { createStyles } from "@mui/material";
-import { CheckBoxOutlineBlank, CheckBox, IndeterminateCheckBox } from "@mui/icons-material";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
+import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from "@mui/icons-material";
 import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
 import TreeItem, { TreeItemProps } from "@mui/lab/TreeItem";
+import { createStyles, FormControlLabel } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
-import { BooleanArgFunction } from "../../../../../../model/common/CommonFunctions";
-import { MenuTag } from "../../../../../../model/tags";
+import { BooleanArgFunction } from "ish-ui";
+import React from "react";
+import { FormMenuTag } from "../../../../../../model/tags";
 
 const styles = theme => createStyles({
     checkbox: {
@@ -84,7 +83,7 @@ const styles = theme => createStyles({
   });
 
 interface Props extends TreeItemProps {
-  item: MenuTag;
+  item: FormMenuTag;
   handleExpand: any;
   classes: any;
   toggleActive: any;

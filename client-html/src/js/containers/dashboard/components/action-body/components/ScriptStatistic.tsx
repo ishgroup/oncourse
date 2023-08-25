@@ -6,23 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { createRef, useEffect, useState } from "react";
-import {
- Grid, Link, List, ListItem, Typography, Tooltip
-} from "@mui/material";
-import clsx from "clsx";
-import {
-  differenceInHours,
-  differenceInMinutes,
-  format
-} from "date-fns";
 import { Check, Clear } from "@mui/icons-material";
+import { Grid, Link, List, ListItem, Tooltip, Typography } from "@mui/material";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
-import EntityService from "../../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY_HH_MM } from "../../../../../common/utils/dates/format";
-import { openInternalLink } from "../../../../../common/utils/links";
+import clsx from "clsx";
+import { differenceInHours, differenceInMinutes, format } from "date-fns";
+import { III_DD_MMM_YYYY_HH_MM, openInternalLink } from "ish-ui";
+import React, { createRef, useEffect, useState } from "react";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import EntityService from "../../../../../common/services/EntityService";
 import AnimateList from "../../../../../common/utils/animation/AnimateList";
 
 const styles = theme => createStyles({

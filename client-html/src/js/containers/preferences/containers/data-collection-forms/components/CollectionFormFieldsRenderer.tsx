@@ -1,5 +1,5 @@
 import React from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd-next";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
 import { change } from "redux-form";
 import CollectionFormField from "./CollectionFormField";
 import CollectionFormHeading from "./CollectionFormHeading";

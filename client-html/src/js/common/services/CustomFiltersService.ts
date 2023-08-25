@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "./HttpService";
 import { Filter, FilterApi } from "@api/model";
+import { DefaultHttpService } from "./HttpService";
 
 class CustomFiltersService {
   readonly filterApi = new FilterApi(new DefaultHttpService());

@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ProcessResult } from "@api/model";
 import { Epic } from "redux-observable";
+import { CLEAR_PROCESS, FETCH_FAIL, UPDATE_PROCESS } from "../../../common/actions";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import AvetmissExportService from "../services/AvetmissExportService";
-import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPORT_RESULTS, GET_AVETMISS8_EXPORT_STATUS } from "../actions";
-import { ProcessResult } from "@api/model";
-import { CLEAR_PROCESS, FETCH_FAIL, UPDATE_PROCESS } from "../../../common/actions";
 import { State } from "../../../reducers/state";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_EXPORT_RESULTS, GET_AVETMISS8_EXPORT_STATUS } from "../actions";
+import AvetmissExportService from "../services/AvetmissExportService";
 
 const switchByStatus = (process, storedID) => {
   switch (process.status) {

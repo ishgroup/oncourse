@@ -4,9 +4,7 @@
  */
 
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import {
- CheckoutDiscount, CheckoutItem, CheckoutSummary, CheckoutSummaryListItem
-} from "../../../model/checkout";
+import { CheckoutDiscount, CheckoutItem, CheckoutSummary, CheckoutSummaryListItem } from "../../../model/checkout";
 
 export const CHECKOUT_GET_DISCOUNT_PROMO = "checkout/get/promocode";
 export const CHECKOUT_GET_VOUCHER_PROMO = "checkout/get/voucherPromo";

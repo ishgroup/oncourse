@@ -7,20 +7,10 @@
  */
 
 import { Session } from "@api/model";
-import {
- format, getDaysInMonth, parse, setDate, setHours, startOfMonth 
-} from "date-fns";
-import {
-  AfternoonIcon,
-  EveningIcon,
-  MorningIcon
-} from "../components/timetable-side-bar/components/day-period-filter/DayPeriodIcons";
-import { DD_MMM_YYYY_MINUSED, HA } from "../../../common/utils/dates/format";
-import {
- CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession 
-} from "../../../model/timetable";
-import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
-import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../TimetableConstants";
+import { format, getDaysInMonth, parse, setDate, setHours, startOfMonth } from "date-fns";
+import { AfternoonIcon, appendTimezone, DD_MMM_YYYY_MINUSED, EveningIcon, HA, MorningIcon } from "ish-ui";
+import { CalendarGrouping, CalendarGroupingState, TimetableMonth, TimetableSession } from "../../../model/timetable";
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../constants";
 
 export const getFormattedMonthDays = (startDate: Date) => Array.from(Array(getDaysInMonth(startDate)), (v, i) => i + 1).map(d => ({
   day: setDate(startDate, d),

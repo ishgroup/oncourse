@@ -6,17 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { EmailTemplate } from "@api/model";
+import { usePrevious } from "ish-ui";
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { withRouter } from "react-router";
+import { Dispatch } from "redux";
 import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
-import { EmailTemplate } from "@api/model";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
-import { usePrevious } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
 import {
- createEmailTemplate, getEmailTemplate, removeEmailTemplate, updateEmailTemplate, updateInternalEmailTemplate
+  createEmailTemplate,
+  getEmailTemplate,
+  removeEmailTemplate,
+  updateEmailTemplate,
+  updateInternalEmailTemplate
 } from "./actions";
 import EmailTemplatesForm from "./containers/EmailTemplatesForm";
 

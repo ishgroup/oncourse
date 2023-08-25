@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_ACTIVE_FUNDING_CONTRACTS_FULFILLED, GET_ACTIVE_FUNDING_CONTRACTS_REQUEST } from "../actions";
 import EntityService from "../../../common/services/EntityService";
+import { GET_ACTIVE_FUNDING_CONTRACTS_FULFILLED, GET_ACTIVE_FUNDING_CONTRACTS_REQUEST } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_ACTIVE_FUNDING_CONTRACTS_REQUEST,

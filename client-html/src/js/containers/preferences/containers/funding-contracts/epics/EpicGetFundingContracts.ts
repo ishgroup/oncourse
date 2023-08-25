@@ -6,8 +6,8 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import FundingContractService from "../services/FundingContractService";
 import { GET_FUNDING_CONTACTS_FULFILLED, GET_FUNDING_CONTACTS_REQUEST } from "../actions";
+import FundingContractService from "../services/FundingContractService";
 
 const request: EpicUtils.Request = {
   type: GET_FUNDING_CONTACTS_REQUEST,

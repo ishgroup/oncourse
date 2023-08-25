@@ -3,47 +3,38 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
-import {
- arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation 
-} from "redux-form";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import {
-  addDays,
-  addHours,
-  addMinutes,
-  differenceInMinutes,
-  subDays
-} from "date-fns";
 import { CourseClassTutor, SessionWarning, TutorAttendance } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
+import Settings from "@mui/icons-material/Settings";
+import { FormControlLabel, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import Settings from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
-import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
-import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import history from "../../../../../constants/History";
-import { setCourseClassSessionsWarnings } from "../../actions";
-import CourseClassBulkChangeSession from "./CourseClassBulkChangeSession";
-import CourseClassExpandableSession from "./CourseClassExpandableSession";
-import CopySessionDialog from "./CopySessionDialog";
-import { normalizeNumber, normalizeNumberToPositive } from "../../../../../common/utils/numbers/numbersNormalizing";
-import CourseClassTimetableService from "./services/CourseClassTimetableService";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from "date-fns";
+import { appendTimezone, normalizeNumber, normalizeNumberToPositive } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
+import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
+import uniqid from "../../../../../common/utils/uniqid";
+import { instantAsyncValidateFieldArrayItemCallback } from "../../../../../common/utils/validation";
+import history from "../../../../../constants/History";
+import { EditViewProps } from "../../../../../model/common/ListView";
+import { SelectItemDefault } from "../../../../../model/entities/common";
+import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
+import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
+import { State } from "../../../../../reducers/state";
+import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
+import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
+import { getAllMonthsWithSessions } from "../../../../timetable/utils";
+import { setCourseClassSessionsWarnings } from "../../actions";
+import { getSessionsWithRepeated, setShiftedTutorAttendances } from "../../utils";
 import {
   courseClassCloseBulkUpdateModal,
   courseClassOpenBulkUpdateModal,
@@ -51,13 +42,10 @@ import {
   courseClassSelectSingleSession,
   postCourseClassSessions
 } from "./actions";
-import { instantAsyncValidateFieldArrayItemCallback } from "../../../../../common/utils/validation";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { State } from "../../../../../reducers/state";
-import { SelectItemDefault } from "../../../../../model/entities/common";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
-import uniqid from "../../../../../common/utils/uniqid";
-import { getSessionsWithRepeated, setShiftedTutorAttendances } from "../../utils";
+import CopySessionDialog from "./CopySessionDialog";
+import CourseClassBulkChangeSession from "./CourseClassBulkChangeSession";
+import CourseClassExpandableSession from "./CourseClassExpandableSession";
+import CourseClassTimetableService from "./services/CourseClassTimetableService";
 
 const styles = () => createStyles({
     root: {

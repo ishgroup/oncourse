@@ -1,5 +1,5 @@
+import { StringValueType } from "ish-ui";
 import { stringLiterals } from "../../../common/utils/stringLiteral";
-import { StringValueType } from "../../common/CommomObjects";
 
 export interface MoodleFields {
   baseUrl: string;
@@ -83,7 +83,7 @@ export const ServiceNSWVoucher = stringLiterals(
   "AK", "CK"
 );
 
-export const ServiceNSWVoucherTypes = ServiceNSWVoucher.map(e => ({ label: e, value: e }));
+export const ServiceNSWVoucherTypes = ServiceNSWVoucher.map(e => ({label: e, value: e}));
 
 export interface ServiceNSWFields {
   voucher: StringValueType<typeof ServiceNSWVoucher>;

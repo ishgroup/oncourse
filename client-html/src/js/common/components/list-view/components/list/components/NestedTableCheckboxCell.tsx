@@ -8,8 +8,8 @@ import FormField from "../../../../form/formFields/FormField";
 
 const NestedTableCheckboxCell = props => {
   const {
- classes, fieldName, column: { onChangeHandler, disabledHandler }, row
-} = props;
+    classes, fieldName, column: {onChangeHandler, disabledHandler}, row
+  } = props;
 
   return (
     <div>

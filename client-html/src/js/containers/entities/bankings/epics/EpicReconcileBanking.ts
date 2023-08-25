@@ -4,14 +4,14 @@
  */
 
 import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { POST_RECONCILE_BANKING, POST_RECONCILE_BANKING_FULFILLED } from "../actions";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import BankingService from "../services/BankingService";
+
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { getEntityRecord } from "../../common/actions";
+import { POST_RECONCILE_BANKING, POST_RECONCILE_BANKING_FULFILLED } from "../actions";
+import BankingService from "../services/BankingService";
 
 const request: EpicUtils.Request<any, { ids: number[] }> = {
   type: POST_RECONCILE_BANKING,

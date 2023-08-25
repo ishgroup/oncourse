@@ -14,9 +14,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import clsx from "clsx";
-import { makeAppStyles } from "../../../../../styles/makeStyles";
+import { makeAppStyles } from "ish-ui";
+import React from "react";
 
 const useStyles = makeAppStyles(theme => ({
   tagColorDotExtraSmall: {
@@ -29,14 +29,15 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 const TagDotRenderer = ({
- colors, className = null
-}) => {
+                          colors, className = null
+                        }) => {
   const classes = useStyles();
 
   return (
     <div className={clsx("centeredFlex", className)}>
       {colors.map((color: string, index) => (
-        <div key={color + index} className={clsx(classes.tagColorDotExtraSmall, "mr-0-5")} style={{ background: "#" + color }} />
+        <div key={color + index} className={clsx(classes.tagColorDotExtraSmall, "mr-0-5")}
+             style={{background: "#" + color}}/>
       ))}
     </div>
   );

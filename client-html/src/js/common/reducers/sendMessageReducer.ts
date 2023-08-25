@@ -6,16 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { IAction } from "../actions/IshAction";
-import { OPEN_SEND_MESSAGE, CLOSE_SEND_MESSAGE } from "../actions";
-import { ConfirmState } from "../../model/common/Confirm";
+import { ConfirmState } from "ish-ui";
 import { SendMessageState } from "../../model/common/SendMessage";
+import { CLOSE_SEND_MESSAGE, OPEN_SEND_MESSAGE } from "../actions";
+import { IAction } from "../actions/IshAction";
 
 const Initial: SendMessageState = {
   open: false
 };
 
-export const sendMessageReducer = (state: SendMessageState = { ...Initial }, action: IAction<any>): ConfirmState => {
+export const sendMessageReducer = (state: SendMessageState = {...Initial}, action: IAction<any>): ConfirmState => {
   switch (action.type) {
     case OPEN_SEND_MESSAGE: {
       return {

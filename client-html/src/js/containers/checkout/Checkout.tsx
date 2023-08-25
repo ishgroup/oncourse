@@ -6,25 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { NoArgFunction } from "ish-ui";
 import React from "react";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { NoArgFunction } from "../../model/common/CommonFunctions";
+import { Dispatch } from "redux";
+import { checkPermissions, getUserPreferences } from "../../common/actions";
 import { State } from "../../reducers/state";
 import { getActiveFundingContracts } from "../avetmiss-export/actions";
-import { getCountries, getLanguages } from "../preferences/actions";
 import {
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
   getContactTags
 } from "../entities/contacts/actions";
-import { checkPermissions, getUserPreferences } from "../../common/actions";
+import { getCustomFieldTypes } from "../entities/customFieldTypes/actions";
 import { getDefaultInvoiceTerms } from "../entities/invoices/actions";
+import { getCountries, getLanguages } from "../preferences/actions";
 import { changeStep, checkoutClearState } from "./actions";
 import CheckoutSelection from "./components/CheckoutSelection";
 import { getCheckoutCurrentStep } from "./utils";
-import { getCustomFieldTypes } from "../entities/customFieldTypes/actions";
 
 export const FORM: string = "QUICK_ENROL_FORM";
 

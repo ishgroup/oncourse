@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { StudentAttendance } from "@api/model";
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { UPDATE_COURSE_CLASS_STUDENT_ATTENDANCE } from "../actions";
 import CourseClassAttendanceService from "../services/CourseClassAttendanceService";
 

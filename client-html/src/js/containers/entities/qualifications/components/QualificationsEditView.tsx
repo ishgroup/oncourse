@@ -3,14 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { FormControlLabel } from "@mui/material";
 import { Qualification, QualificationType } from "@api/model";
-import Grid from "@mui/material/Grid";
+import { FormControlLabel, Grid } from "@mui/material";
+import { normalizeNumber } from "ish-ui";
+import * as React from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
 
 const qualificationTypes = Object.keys(QualificationType)
   .filter(i => Number.isNaN(Number(i)))

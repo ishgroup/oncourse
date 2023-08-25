@@ -6,23 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { AutomationConfigs } from "@api/model";
 import { Epic } from "redux-observable";
-import { IMPORT_AUTOMATION_CONFIG } from "../actions";
+import { showMessage } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Create, Request } from "../../../common/epics/EpicUtils";
 import { AutomationEntity } from "../../../model/automation/common";
-import EmailTemplateService from "../containers/email-templates/services/EmailTemplateService";
-import ExportTemplatesService from "../containers/export-templates/services/ExportTemplatesService";
-import ImportTemplatesService from "../containers/import-templates/services/ImportTemplatesService";
-import PdfService from "../containers/pdf-reports/services/PdfService";
-import ScriptsService from "../containers/scripts/services/ScriptsService";
-import { showMessage } from "../../../common/actions";
+import { IMPORT_AUTOMATION_CONFIG } from "../actions";
 import { getEmailTemplate } from "../containers/email-templates/actions";
+import EmailTemplateService from "../containers/email-templates/services/EmailTemplateService";
 import { getExportTemplate } from "../containers/export-templates/actions";
+import ExportTemplatesService from "../containers/export-templates/services/ExportTemplatesService";
 import { getImportTemplate } from "../containers/import-templates/actions";
+import ImportTemplatesService from "../containers/import-templates/services/ImportTemplatesService";
 import { getAutomationPdfReport } from "../containers/pdf-reports/actions";
+import PdfService from "../containers/pdf-reports/services/PdfService";
 import { getScriptItem } from "../containers/scripts/actions";
-import { AutomationConfigs } from "@api/model";
+import ScriptsService from "../containers/scripts/services/ScriptsService";
 
 const request: Request<any, { entity: AutomationEntity, id: number, config: AutomationConfigs }> = {
   type: IMPORT_AUTOMATION_CONFIG,

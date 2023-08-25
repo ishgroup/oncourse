@@ -1,10 +1,19 @@
-import { Epic, ofType } from "redux-observable";
-import { debounce, mergeMap } from "rxjs/operators";
-import { interval, Observable } from "rxjs";
-import { format, isSameDay } from "date-fns";
-import { change, getFormValues } from "redux-form";
 import { Session, TrainingPlan } from "@api/model";
+import { format, isSameDay } from "date-fns";
+import { appendTimezone, D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "ish-ui";
+import { change, getFormValues } from "redux-form";
+import { Epic, ofType } from "redux-observable";
+import { interval, Observable } from "rxjs";
+import { debounce, mergeMap } from "rxjs/operators";
+import EntityService from "../../../../common/services/EntityService";
+import { getCustomColumnsMap } from "../../../../common/utils/common";
+import uniqid from "../../../../common/utils/uniqid";
+import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { State } from "../../../../reducers/state";
+import CourseClassAttendanceService
+  from "../../../entities/courseClasses/components/attendance/services/CourseClassAttendanceService";
+import CourseClassTimetableService
+  from "../../../entities/courseClasses/components/timetable/services/CourseClassTimetableService";
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
@@ -14,18 +23,10 @@ import {
   CHECKOUT_UPDATE_CLASS_ITEM,
   CHECKOUT_UPDATE_CONTACT
 } from "../../actions";
-import CourseClassAttendanceService
-  from "../../../entities/courseClasses/components/attendance/services/CourseClassAttendanceService";
-import CourseClassTimetableService
-  from "../../../entities/courseClasses/components/timetable/services/CourseClassTimetableService";
-import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
-import EntityService from "../../../../common/services/EntityService";
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
 import { CHECKOUT_CONTACT_COLUMNS } from "../../constants";
-import { getCustomColumnsMap } from "../../../../common/utils/common";
-import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
-import uniqid from "../../../../common/utils/uniqid";
 
 const getAndMergePlans = async (fundingInvoice: CheckoutFundingInvoice) => {
   let plans: TrainingPlan[] = [];
