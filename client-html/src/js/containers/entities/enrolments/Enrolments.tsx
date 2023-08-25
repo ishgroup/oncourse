@@ -346,7 +346,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
               <div>
                 <FormControlLabel
                   key={f.name}
-                  className="checkbox pb-3 pt-3"
+                  className="checkbox mb-3 mt-3"
                   control={(
                     <StyledCheckbox
                       checked={changedFields[i].update}
