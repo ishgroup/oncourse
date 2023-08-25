@@ -8,7 +8,7 @@ Feature: Main feature for all GET requests with path 'export/avetmiss8'
         * def ishPathLogin = 'login'
         * def ishPathControl = 'control'
         * def ishPathOutcomes = 'export/avetmiss8/outcomes'
-        
+
 
 
     Scenario: (+) Get avetmiss8 export result by admin
