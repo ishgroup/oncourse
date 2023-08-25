@@ -10,51 +10,25 @@ jobs:
   client-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    strategy:
-      matrix:
-        java: [11]
 
     steps:
-      - uses: actions/checkout@v3
-
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@v3.4.1
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          cancel_others: 'true'
-          skip_after_successful_duplicate: 'true'
-          paths_ignore: '["server/**", "server-api/**", "api-doc/**", "api-test/**", "types/**"]'
+          node-version: '16.14.2'
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: ${{ matrix.java }}
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
+      - name: Install modules
+        run: npm ci --legacy-peer-deps
+        
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew client-html:test
+        run: npm test
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
         with:
           files: '**/test-results/**/*.xml'
-
-#      - name: Upload coverage to Codecov
-#        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-#        uses: codecov/codecov-action@v1
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          flags: jest
-#          directory: client-html/build/reports/test
-
-#      - name: Upload coverage to codeclimate
-#        uses: paambaati/codeclimate-action@v2.7.5
-#        env:
-#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-#        with:
-#          workingDirectory: '${{github.workspace}}/client-html/src/js'
-#          coverageLocations: '${{github.workspace}}/client-html/build/reports/**/*.lcov:lcov'
