@@ -148,7 +148,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 ];
 
-const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID"];
+const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID", "vetPurchasingContractScheduleID"];
 
 const getDefaultFieldName = (field: keyof Enrolment) => {
   switch (field) {
@@ -160,6 +160,9 @@ const getDefaultFieldName = (field: keyof Enrolment) => {
     }
     case "vetPurchasingContractID": {
       return "Default purchasing contract identifier";
+    }
+    case "vetPurchasingContractScheduleID": {
+      return "Purchasing Contract Schedule Identifier";
     }
     default:
       return "";

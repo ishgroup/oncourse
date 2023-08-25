@@ -168,12 +168,19 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		if (getFundingSource() == null && getCourseClass() != null) {
 			setFundingSource(getCourseClass().getFundingSource());
 		}
+
 		if (getVetPurchasingContractID() == null && getCourseClass() != null) {
 			setVetPurchasingContractID(getCourseClass().getVetPurchasingContractID());
 		}
+
 		if (getVetFundingSourceStateID() == null && getCourseClass() != null) {
 			setVetFundingSourceStateID(getCourseClass().getVetFundingSourceStateID());
 		}
+
+		if (getVetPurchasingContractScheduleID() == null && getCourseClass() != null) {
+			setVetPurchasingContractScheduleID(getCourseClass().getVetPurchasingContractScheduleID())
+		}
+
 		if (getOutcomes() != null && getOutcomes().size() > 0) {
 			outcomes.findAll {o -> !o.startDateOverridden }
 					.each {o -> o.setStartDate(o.getActualStartDate()) }
@@ -184,7 +191,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 			outcomes.findAll{ o -> !o.vetPurchasingContractID}.each { o -> o.setVetPurchasingContractID(getVetPurchasingContractID())}
 			outcomes.findAll{ o -> !o.vetFundingSourceStateID}.each { o -> o.setVetFundingSourceStateID(getVetFundingSourceStateID())}
 
-			if(vetPurchasingContractScheduleID || courseClass?.vetPurchasingContractScheduleID ){
+			if (vetPurchasingContractScheduleID || courseClass?.vetPurchasingContractScheduleID) {
 				def outcomeContractSheduleId = vetPurchasingContractScheduleID ?: courseClass.vetPurchasingContractScheduleID
 				outcomes.findAll { o -> !o.vetPurchasingContractScheduleID }.each { o -> o.setVetPurchasingContractScheduleID(outcomeContractSheduleId) }
 			}

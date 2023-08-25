@@ -290,6 +290,12 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
                         e.vetPurchasingContractID = trimToNull(value)
                     }
                     break
+                case Enrolment.VET_PURCHASING_CONTRACT_SCHEDULE_ID.name:
+                    action = { Enrolment e ->
+                        validateLength(e.id, value, 'vetPurchasingContractScheduleID', 3)
+                        e.vetPurchasingContractScheduleID = trimToNull(value)
+                    }
+                    break
                 case Enrolment.VET_FUNDING_SOURCE_STATE_ID.name:
                     action = { Enrolment e ->
                         validateLength(e.id, value, 'vetFundingSourceStateID', 3)
