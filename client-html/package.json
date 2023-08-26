@@ -5,7 +5,7 @@
   "description": "react web client for oncourse application",
   "main": "webpack.config.js",
   "scripts": {
-    "build:prod": "webpack --progress --node-env production",
+    "build:prod": "webpack --progress --env NODE_ENV=production",
     "test": "jest --ci --maxWorkers=50%",
     "start": "webpack serve --history-api-fallback --progress --open --config webpack.dev.config.js --entry ./src/js/app.tsx",
     "start:prod": "webpack serve --history-api-fallback --port 8100 --progress --env NODE_ENV=production",
