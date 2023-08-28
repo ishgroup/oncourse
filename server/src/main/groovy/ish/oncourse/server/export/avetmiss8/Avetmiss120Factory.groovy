@@ -451,6 +451,10 @@ class Avetmiss120Factory extends AvetmissFactory {
                     case ExportJurisdiction.NSW:
                     case ExportJurisdiction.SMART:
                     case ExportJurisdiction.OLIV:
+                        if(jurisdiction == ExportJurisdiction.SMART && outcome.getEnrolment()?.getVetFeeExemptionType()){
+                            line.setFeeExemption("OS")
+                            break
+                        }
                         if (VETFeeExemptionType.YES == (outcome.getEnrolment() != null ? outcome.getEnrolment().getVetFeeExemptionType() : null)) {
                             line.setFeeExemption("Y")
                         } else {
