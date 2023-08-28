@@ -58,7 +58,7 @@ class TagRelation extends _TagRelation implements Queueable {
 	}
 
 	@Override
-	protected void postRemove() {
+	protected void preRemove() {
 		if(tag.nodeType == NodeType.TAG)
 			eventService.postEvent(SystemEvent.valueOf(SystemEventType.TAG_REMOVED, this))
 	}
