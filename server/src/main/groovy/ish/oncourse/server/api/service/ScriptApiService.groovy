@@ -186,10 +186,13 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                             break
                         case SystemEventType.TAG_ADDED:
                             st.type = TAG_ADDED
+                            st.entityName = dbScript.entityClass
                             if(dbScript.entityAttribute)
                                 st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
                         case SystemEventType.TAG_REMOVED:
                             st.type = TAG_REMOVED
+                            st.entityName = dbScript.entityClass
                             if(dbScript.entityAttribute)
                                 st.parameterId = Long.parseLong(dbScript.entityAttribute)
                             break
