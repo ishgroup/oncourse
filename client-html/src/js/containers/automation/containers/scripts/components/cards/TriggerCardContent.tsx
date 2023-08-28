@@ -74,7 +74,7 @@ const TriggerCardContent = (props: Props) => {
   };
 
   const onTagChange = tag => {
-    dispatch(change(form, 'trigger.parameterId', tag[tag.length - 1]));
+    dispatch(change(form, 'trigger.parameterId', tag[tag.length - 1] || null));
   };
 
   useEffect(() => {
