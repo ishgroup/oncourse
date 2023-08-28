@@ -17,11 +17,13 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.UserDao
 import ish.oncourse.server.api.servlet.ISessionManager
+import ish.oncourse.server.api.v1.login.Sso
 import ish.oncourse.server.api.v1.model.LoginRequestDTO
 import ish.oncourse.server.api.v1.model.LoginResponseDTO
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
 import ish.oncourse.server.api.v1.model.UserDTO
 import ish.oncourse.server.api.v1.service.AuthenticationApi
+import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.license.LicenseService
@@ -31,6 +33,7 @@ import ish.oncourse.server.users.SystemUserService
 import ish.security.AuthenticationUtil
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -294,6 +297,40 @@ class AuthenticationApiImpl implements AuthenticationApi {
             addTotpCookie(response, value, periodOfHours)
         }
 
+        return createAuthenticationContent(LOGIN_SUCCESSFUL, null, null, lastLoginOn)
+    }
+
+    @Override
+    LoginResponseDTO loginSso(String ssoTypeStr, String authorizationCode) {
+        def sso = Sso.ofType(ssoTypeStr)
+        if(!sso){
+            throw new ClientErrorException("Incorrect sso type: ${sso}", Response.Status.BAD_REQUEST)
+        }
+
+        def configuration = ObjectSelect.query(IntegrationConfiguration)
+                .where(IntegrationConfiguration.TYPE.eq(sso.integrationType.intValue()))
+                .selectFirst(cayenneService.newReadonlyContext)
+
+        if(!configuration){
+            throw new ClientErrorException("Integration of this sso provider is not configured. Connect your administrator", Response.Status.BAD_REQUEST)
+        }
+
+        def ssoProvider = sso.getSsoProvider(configuration: configuration, cayenneService: cayenneService)
+        def userEmail = ssoProvider.getUserEmailByCode(authorizationCode)
+
+        def context = cayenneService.newContext
+        SystemUser user = UserDao.getByEmail(context, userEmail)
+
+        if(!user)
+            throw new ClientErrorException("User with related ${userEmail} OKTA email not found in onCourse", Response.Status.UNAUTHORIZED)
+
+        sessionManager.createUserSession(user, prefController.timeoutSec, request)
+
+        LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)
+
+        user.lastLoginOn = new Date()
+        user.loginAttemptNumber = 0
+        context.commitChanges()
         return createAuthenticationContent(LOGIN_SUCCESSFUL, null, null, lastLoginOn)
     }
 

@@ -15,11 +15,11 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.oncourse.server.api.v1.login.SsoIntegrationTrait
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
 import ish.oncourse.server.integration.GetProps
 import ish.oncourse.server.integration.Plugin
-import ish.oncourse.server.integration.PluginTrait
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response
 
 @CompileDynamic
 @Plugin(type = 20)
-class OktaIntegration implements PluginTrait {
+class OktaIntegration implements SsoIntegrationTrait {
 	public static final String OKTA_CLIENT_ID = "oktaClientId"
 	public static final String OKTA_CLIENT_SECRET = "oktaClientSecret"
 	public static final String OKTA_WEB_REDIRECT = "oktaWebRedirect"
@@ -51,12 +51,14 @@ class OktaIntegration implements PluginTrait {
 	}
 
 
-	String authorizeUser(String activationCode){
+	String getUserEmailByCode(String activationCode){
 		Closure failureHandler = { resp, result ->
 			logger.error(resp)
 			logger.error(result)
 			throw new ClientErrorException('Login failed: '+result, Response.Status.UNAUTHORIZED)
 		}
+
+		def userToken = null
 
 		RESTClient client = new RESTClient(applicationUrl)
 		client.request(Method.POST, ContentType.JSON) {
@@ -66,7 +68,20 @@ class OktaIntegration implements PluginTrait {
 						 code         : activationCode]
 
 			response.success = { resp, result ->
-				return result.access_token
+				userToken = result.access_token
+			}
+			response.failure = failureHandler
+		}
+
+		client.headers['Authorization'] = "Bearer ${userToken}"
+		client.request(Method.GET, ContentType.JSON) {
+			uri.path = "/oauth2/default/v1/userinfo"
+
+			response.success = { resp, result ->
+				if(result.email_verified)
+					return result.email
+				else
+					throw new ClientErrorException('Login failed: OKTA email not verified', Response.Status.UNAUTHORIZED)
 			}
 			response.failure = failureHandler
 		}
