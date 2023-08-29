@@ -14,6 +14,7 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FileCopy from "@mui/icons-material/FileCopy";
 import UploadIcon from "@mui/icons-material/Upload";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { Divider, Grid } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -55,6 +56,7 @@ import ScriptCard from "../components/cards/CardBase";
 import CardsRenderer from "../components/cards/CardsRenderer";
 import ImportCardContent from "../components/cards/ImportCardContent";
 import TriggerCardContent from "../components/cards/TriggerCardContent";
+import ExecuteScriptModal from "../components/ExecuteScriptModal";
 import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent } from "../constants";
 
 const manualUrl = getManualLink("scripts");
@@ -165,7 +167,9 @@ const entityNameTypes: TriggerType[] = [
   'On create and edit',
   'On delete',
   'Checklist task checked',
-  'Checklist completed'
+  'Checklist completed',
+  'Tag added',
+  'Tag removed'
 ];
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);
@@ -263,8 +267,9 @@ const ScriptsForm = React.memo<Props>(props => {
   const [expandInfo, setExpandInfo] = useState<boolean>(isNew);
   const [triggerExpand, setTriggerExpand] = useState<boolean>(false);
   const [isCardDragging, setCardDragging] = useState<boolean>(false);
+  const [execMenuOpened, setExecMenuOpened] = useState<boolean>(false);
   const [expanded, setExpand] = useState([]);
-  
+
   const onExpand = id => setExpand(prev => {
     const index = prev.indexOf(id);
     const updated = [...prev];
@@ -493,6 +498,12 @@ const ScriptsForm = React.memo<Props>(props => {
         validateNameField={validateScriptCopyName}
       />
 
+      <ExecuteScriptModal
+        opened={execMenuOpened}
+        onClose={() => setExecMenuOpened(false)}
+        scriptId={values.id}
+      />
+
       <Form onSubmit={handleSubmit(handleSave)}>
         {(dirty || isNew) && <RouteChangeConfirm form={form} when={!disableRouteConfirm && (dirty || isNew)}/>}
 
@@ -537,6 +548,13 @@ const ScriptsForm = React.memo<Props>(props => {
                   }]
                   : [
                     ...importExportActions,
+                    ...values.trigger.type === "On demand" ? [
+                        {
+                          action: () => setExecMenuOpened(true),
+                          icon: <PlayArrowIcon/>,
+                          tooltip: "Run script"
+                        }
+                      ] : [],
                     {
                       action: handleDelete,
                       icon: <DeleteForever/>,

@@ -219,7 +219,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	String getVetPurchasingContractScheduleID() {
 		String contractID = super.getVetPurchasingContractScheduleID()
 		if (getEnrolment() != null && contractID == null) {
-			contractID = getEnrolment().getCourseClass().getVetPurchasingContractScheduleID()
+			contractID = enrolment.vetPurchasingContractScheduleID ?: enrolment.courseClass.vetPurchasingContractScheduleID
 		}
 		return contractID
 	}
