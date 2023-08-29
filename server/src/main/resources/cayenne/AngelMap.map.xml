@@ -400,7 +400,7 @@
 		<db-attribute name="isActive" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="isCancelled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isClassFeeApplicationOnly" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="isDistantLearningCourse" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="type" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isShownOnWeb" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="materials" type="CLOB" length="32000"/>
 		<db-attribute name="maxStudentAge" type="INTEGER"/>
@@ -2074,7 +2074,7 @@
 		<obj-attribute name="isActive" type="java.lang.Boolean" db-attribute-path="isActive"/>
 		<obj-attribute name="isCancelled" type="java.lang.Boolean" db-attribute-path="isCancelled"/>
 		<obj-attribute name="isClassFeeApplicationOnly" type="java.lang.Boolean" db-attribute-path="isClassFeeApplicationOnly"/>
-		<obj-attribute name="isDistantLearningCourse" type="java.lang.Boolean" db-attribute-path="isDistantLearningCourse"/>
+		<obj-attribute name="type" type="ish.common.types.CourseClassType" db-attribute-path="type"/>
 		<obj-attribute name="isShownOnWeb" type="java.lang.Boolean" db-attribute-path="isShownOnWeb"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="maxStudentAge" type="java.lang.Integer" db-attribute-path="maxStudentAge"/>

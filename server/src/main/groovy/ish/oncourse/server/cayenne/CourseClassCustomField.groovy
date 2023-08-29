@@ -15,6 +15,15 @@ import ish.oncourse.server.cayenne.glue._CourseClassCustomField
 
 class CourseClassCustomField extends _CourseClassCustomField {
 
+//    System custom field name to create and save 'minimum sessions to complete' value only for hybrid classes, this custom field isn't showed on Custom Fields list page.
+//    It will be used to show complete statuses for enrolments of hybrid classes.
+    public static String MINIMUM_SESSIONS_TO_COMPLETE = "minimumSessionsToComplete"
+
+    @Override
+    boolean isAsyncReplicationAllowed() {
+        return customFieldType.isAsyncReplicationAllowed()
+    }
+
     @Override
     void setRelatedObject(ExpandableTrait relatedObject) {
         super.setRelatedObject((CourseClass) relatedObject)

@@ -29,7 +29,7 @@ class CustomFieldType extends _CustomFieldType implements Queueable {
 
 	@Override
 	boolean isAsyncReplicationAllowed() {
-		return !getEntityIdentifier().equals(TutorAttendance.class.simpleName)
+		return !getEntityIdentifier().equals(TutorAttendance.class.simpleName) || !(name.equals(CourseClassCustomField.MINIMUM_SESSIONS_TO_COMPLETE) && getEntityIdentifier().equals(CourseClass.simpleName))
 	}
 
 	/**

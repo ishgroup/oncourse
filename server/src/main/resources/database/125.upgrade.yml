@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 125-1
+      author: dmitriyl
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: CourseClass
+            columnName: isDistantLearningCourse
+      changes:
+        - renameColumn:
+            columnDataType: smallint(6)
+            newColumnName: type
+            oldColumnName: isDistantLearningCourse
+            tableName: CourseClass

@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
+import ish.common.types.CourseClassType
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.CourseStatusDTO
@@ -70,7 +71,7 @@ trait CourseTrait {
 
     @API
     Integer getSelfPacedClassesCount() {
-        getCourseClasses().findAll { it.isDistantLearningCourse && !it.isCancelled }.size()
+        getCourseClasses().findAll { it.type.equals(CourseClassType.DISTANT_LEARNING) && !it.isCancelled }.size()
     }
 
     /**
@@ -79,7 +80,7 @@ trait CourseTrait {
 
     @API
     Integer getUnscheduledClassesCount() {
-        getCourseClasses().findAll { (it.startDateTime == null || it.endDateTime == null) && !it.isDistantLearningCourse && !it.isCancelled }.size()
+        getCourseClasses().findAll { (it.startDateTime == null || it.endDateTime == null) && !it.type.equals(CourseClassType.DISTANT_LEARNING) && !it.isCancelled }.size()
     }
 
     /**

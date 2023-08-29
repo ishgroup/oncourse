@@ -48,6 +48,8 @@ trait DataTypeDTOTrait {
                 return DataType.OBJECT
             case DataTypeDTO.PATTERN_TEXT:
                 return DataType.PATTERN_TEXT
+            case DataTypeDTO.NUMBER:
+                return DataType.NUMBER
             default:
                 throw new IllegalArgumentException("${toString()}")
         }

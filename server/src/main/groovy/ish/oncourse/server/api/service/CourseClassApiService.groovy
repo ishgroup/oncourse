@@ -13,6 +13,7 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import ish.cancel.CancelationResult
+import ish.common.types.CourseClassType
 import ish.common.types.EnrolmentStatus
 import ish.common.types.OutcomeStatus
 import ish.duplicate.ClassDuplicationRequest
@@ -26,6 +27,7 @@ import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.SessionModuleDao
 import ish.oncourse.server.api.dao.SiteDao
+import ish.oncourse.server.api.v1.model.CourseClassTypeDTO
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
@@ -156,7 +158,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.initialDetExport = cc.initialDETexport
         dto.isActive = cc.isActive
         dto.isCancelled = cc.isCancelled
-        dto.isDistantLearningCourse = cc.isDistantLearningCourse
+        dto.type = CourseClassTypeDTO.values()[0].fromDbType(cc.type)
         dto.isShownOnWeb = cc.isShownOnWeb
         dto.isTraineeship = cc.isTraineeship
         dto.maximumDays = cc.maximumDays
@@ -217,15 +219,17 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         courseClass.code = dto.code
 
-        if (dto.isDistantLearningCourse) {
-            courseClass.isDistantLearningCourse = true
+        if (dto.type.equals(CourseClassTypeDTO.DISTANT_LEARNING)) {
+            courseClass.type = CourseClassType.DISTANT_LEARNING
             courseClass.maximumDays = dto.maximumDays
             courseClass.expectedHours = dto.expectedHours
             if (dto.virtualSiteId != null) {
                 courseClass.room = siteDao.getById(courseClass.context, dto.virtualSiteId).rooms[0]
             }
-        } else {
-            courseClass.isDistantLearningCourse = false
+        } else if (dto.type.equals(CourseClassTypeDTO.WITH_SESSIONS)) {
+            courseClass.type = CourseClassType.WITH_SESSIONS
+        } else if (dto.type.equals(CourseClassTypeDTO.HYBRID)) {
+            courseClass.type = CourseClassType.HYBRID
         }
         courseClass.isActive = dto.isActive
         courseClass.isShownOnWeb = dto.isShownOnWeb
@@ -299,8 +303,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (dto.maximumPlaces < dto.minimumPlaces ) {
             validator.throwClientErrorException(id, 'maximumPlaces', 'Maximum places cannot be less than minimum places.')
         }
-        if (dto.isDistantLearningCourse == null) {
-            validator.throwClientErrorException(id, 'isDistantLearningCourse', 'Is self paced flag is required')
+        if (dto.type == null) {
+            validator.throwClientErrorException(id, 'type', 'Class type is required')
         }
         if (dto.isActive == null) {
             validator.throwClientErrorException(id, 'isActive', 'Is active flag required')
@@ -323,8 +327,12 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         validateLength(id, trimToEmpty(dto.vetPurchasingContractScheduleID), 'vetPurchasingContractScheduleID', 3)
 
         Course dbCourse = courseService.getEntityAndValidateExistence(context, dto.courseId)
-        if (dto.expectedHours == null && dto.isDistantLearningCourse && (dbCourse.modules == null || dbCourse.modules.size() == 0)) {
+        if (dto.expectedHours == null && dto.type.equals(CourseClassTypeDTO.DISTANT_LEARNING) && (dbCourse.modules == null || dbCourse.modules.size() == 0)) {
             validator.throwClientErrorException(id, 'expectedHours', 'Expected study hours is required for self-paced non-VET class')
+        }
+
+        if (dto.type.equals(CourseClassTypeDTO.HYBRID) && dto.getCustomFields().get(CourseClassCustomField.MINIMUM_SESSIONS_TO_COMPLETE) == null) {
+            validator.throwClientErrorException(id, CourseClassCustomField.MINIMUM_SESSIONS_TO_COMPLETE, "${CourseClassCustomField.MINIMUM_SESSIONS_TO_COMPLETE} field is required for hybrid class")
         }
     }
 

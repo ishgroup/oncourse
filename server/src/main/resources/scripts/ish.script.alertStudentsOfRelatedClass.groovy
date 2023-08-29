@@ -1,4 +1,4 @@
-if (!record || record.isDistantLearningCourse) {
+if (!record || record.type.equals(CourseClassType.DISTANT_LEARNING) || record.type.equals(CourseClassType.HYBRID)) {
     return
 }
 if (record?.firstSession?.tutors?.empty) {

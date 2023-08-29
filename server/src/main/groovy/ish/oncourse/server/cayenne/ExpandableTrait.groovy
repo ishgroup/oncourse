@@ -73,7 +73,7 @@ trait ExpandableTrait {
                 customField.relatedObject = this
                 customField.customFieldType = type
             } else {
-                throw new MissingPropertyException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
+                throw new IllegalArgumentException("The record attribute: $key does not exist. If you are attempting to access a custom field, check the keycode of that field.")
             }
         }
 
@@ -141,7 +141,7 @@ trait ExpandableTrait {
                         Money money = new Money(value)
                         customField.value = value.toString()
                     } catch (NumberFormatException e) {
-                        throw new NumberFormatException(e.message)
+                        throw new IllegalArgumentException("Cannot parse value `$value` for $key field")
                     }
                 } else if (value instanceof Money) {
                     customField.value = (value as Money).toPlainString()
@@ -157,6 +157,20 @@ trait ExpandableTrait {
                         customField.value = value == "true" ?: "false"
                     } else {
                         throw new IllegalArgumentException("$value cannot be the value for $key field")
+                    }
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            case NUMBER:
+                if (value instanceof Number) {
+                    customField.value = value.toString()
+                } else if (value instanceof String) {
+                    try {
+                        Integer number = Integer.valueOf(value)
+                        customField.value = number.toString()
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Cannot parse value `$value` for $key field.")
                     }
                 } else {
                     throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")

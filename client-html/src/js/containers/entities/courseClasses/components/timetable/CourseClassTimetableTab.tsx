@@ -166,7 +166,7 @@ const CourseClassTimetableTab = ({
 
   const onSelfPacedChange = useCallback(
     (e, value) => {
-      if (!values.isDistantLearningCourse && !isNew) {
+      if (!values.type && !isNew) {
         e.preventDefault();
         showConfirm({
           onConfirm: () => CourseClassTimetableService.validateUpdate(values.id, [])
@@ -186,7 +186,7 @@ const CourseClassTimetableTab = ({
         });
       }
     },
-    [values.isDistantLearningCourse, values.sessions, isNew]
+    [values.type, values.sessions, isNew]
   );
 
   useEffect(() => {
@@ -711,7 +711,7 @@ const CourseClassTimetableTab = ({
           budget={values.budget}
         />
       )}
-      {values.isDistantLearningCourse ? (
+      {values.type ? (
         <Grid container columnSpacing={3}>
           <Grid item xs={12} className="pb-2 centeredFlex">
             <div>

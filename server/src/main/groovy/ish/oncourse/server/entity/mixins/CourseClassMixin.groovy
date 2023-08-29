@@ -13,6 +13,7 @@ package ish.oncourse.server.entity.mixins
 
 import groovy.transform.CompileDynamic
 import ish.budget.ClassBudgetUtil
+import ish.common.types.CourseClassType
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
@@ -58,11 +59,11 @@ class CourseClassMixin {
      */
     @API
     static isActual(CourseClass self){
-		return isActual(self.isCancelled, self.isDistantLearningCourse, self.endDateTime)
+		return isActual(self.isCancelled, self.type, self.endDateTime)
     }
 
-	static isActual(boolean isCancelled, boolean isDistantLearningCourse, Date endDateTime) {
-		return !isCancelled && (isDistantLearningCourse || endDateTime?.after(new Date()))
+	static isActual(boolean isCancelled, CourseClassType type, Date endDateTime) {
+		return !isCancelled && (type.equals(CourseClassType.DISTANT_LEARNING) || endDateTime?.after(new Date()))
 	}
 
 	static getBudgetValue(CourseClass self, String key) {
@@ -401,7 +402,7 @@ class CourseClassMixin {
 		Date endOfMonth = DateUtils.addSeconds(DateUtils.truncate(DateUtils.addMonths(currentDate, monthsCount + 1), Calendar.MONTH), -1)
 
 
-		if (self.getIsDistantLearningCourse()) {
+		if (self.getType().equals(CourseClassType.DISTANT_LEARNING)) {
 			totalByMonth = totalByMonth.add(getTotalIncomeAmount(self)).subtract(getTotalIncomeAmountWithoutPrepaidFees(self))
 		} else if (self.getEndDateTime() != null && currentDate.after(self.getEndDateTime())) {
 			//do nothing

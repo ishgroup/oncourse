@@ -215,8 +215,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
@@ -273,7 +273,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * not displayed in gui at the moment and it caused problems me and Ari agreed on this, marcin 31 Jan 2011)
 	 */
 	void updateClassRoom() {
-		if (!isDistantLearningCourse) {
+		if (!type.equals(CourseClassType.DISTANT_LEARNING)) {
 			setRoom(getSessions().sort {it.startDatetime}.find {it.room != null}?.room)
 		}
 	}
@@ -528,8 +528,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
@@ -808,8 +808,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	@Override
-	Boolean getIsDistantLearningCourse() {
-		return super.getIsDistantLearningCourse()
+	CourseClassType getType() {
+		return super.getType()
 	}
 
 	/**

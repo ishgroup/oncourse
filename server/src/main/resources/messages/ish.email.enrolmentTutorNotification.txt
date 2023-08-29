@@ -1,6 +1,6 @@
 This is an automatic notification that a new enrolment has been received by ${Preferences.get("college.name")} for ${enrolment.courseClass.course.name} ${enrolment.courseClass.course.code}-${enrolment.courseClass.code}
 
-Start date: <% if (enrolment.courseClass.isDistantLearningCourse) { %>${enrolment.createdOn.format("EEEE d MMMM yyyy", enrolment.courseClass.getTimeZone())}<% } else { %>${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy", enrolment.courseClass.getTimeZone())}<% } %>
+Start date: <% if (enrolment.courseClass.type.equals(CourseClassType.DISTANT_LEARNING) || enrolment.courseClass.type.equals(CourseClassType.HYBRID)) { %>${enrolment.createdOn.format("EEEE d MMMM yyyy", enrolment.courseClass.getTimeZone())}<% } else { %>${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy", enrolment.courseClass.getTimeZone())}<% } %>
 
 Class venue: ${(enrolment.courseClass?.room?.site?.name?:'') + (enrolment.courseClass?.room?.name ? ', ' + enrolment.courseClass.room.name :'')}
 

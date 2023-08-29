@@ -151,7 +151,7 @@ const Initial: CourseClassExtended = {
   initialDetExport: null,
   isActive: true,
   isCancelled: false,
-  isDistantLearningCourse: false,
+  type: "With Sessions",
   isShownOnWeb: false,
   maxStudentAge: null,
   maximumDays: null,
@@ -218,13 +218,13 @@ const filterGroups: FilterGroup[] = [
       },
       {
         name: "Self paced classes",
-        expression: "isDistantLearningCourse is true and isCancelled is false",
+        expression: "type is DISTANT_LEARNING and isCancelled is false",
         active: true
       },
       {
         name: "Unscheduled classes",
         expression:
-          "(startDateTime is null or endDateTime is null) and isDistantLearningCourse is false and isCancelled is false",
+          "(startDateTime is null or endDateTime is null) and type is WITH_SESSIONS and isCancelled is false",
         active: false
       },
       {
@@ -354,7 +354,7 @@ const formatSelfPaced = (v, row, columns) => {
     .findIndex(c => c.attribute === "clientTimeZoneId");
   const selfPacedIndex = columns
     .filter(c => c.visible === true || c.system === true)
-    .findIndex(c => c.attribute === "isDistantLearningCourse");
+    .findIndex(c => c.attribute === "type");
 
   let timezone = null;
   let isSelfPaced = false;
@@ -377,7 +377,7 @@ const formatSelfPaced = (v, row, columns) => {
 const formatSelfPacedSessions = (v, row, columns) => {
   const selfPacedIndex = columns
     .filter(c => c.visible === true || c.system === true)
-    .findIndex(c => c.attribute === "isDistantLearningCourse");
+    .findIndex(c => c.attribute === "type");
 
   let isSelfPaced = false;
 

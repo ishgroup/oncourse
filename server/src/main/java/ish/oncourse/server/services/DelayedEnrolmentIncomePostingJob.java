@@ -12,6 +12,7 @@ package ish.oncourse.server.services;
 
 import com.google.inject.Inject;
 import ish.common.types.AccountTransactionType;
+import ish.common.types.CourseClassType;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.InvoiceType;
 import ish.math.Money;
@@ -181,7 +182,7 @@ public class DelayedEnrolmentIncomePostingJob implements Job {
 		var courseClass = invoiceLine.getEnrolment() != null ?
 				invoiceLine.getEnrolment().getCourseClass() : invoiceLine.getCourseClass();
 
-		if (courseClass.getIsDistantLearningCourse() || courseClass.getFirstSession() == null ) {
+		if (courseClass.getType().equals(CourseClassType.DISTANT_LEARNING) || courseClass.getFirstSession() == null ) {
 			// self paced class, post all the income
 			return invoiceLine.getPrepaidFeesRemaining();
 		}

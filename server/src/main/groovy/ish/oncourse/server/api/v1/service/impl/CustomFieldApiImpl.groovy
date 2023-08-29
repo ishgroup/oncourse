@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.cayenne.CourseClassCustomField
 import ish.oncourse.server.cayenne.TutorAttendance
 
 import static ish.oncourse.server.api.v1.function.CustomFieldTypeFunctions.updateCustomField
@@ -50,6 +51,8 @@ class CustomFieldApiImpl implements CustomFieldApi {
                 .orderBy(CustomFieldType.SORT_ORDER.asc())
 //                TutorAttendanceCustomField is private custom field, which using only for Kronos integration to store shift_id on onCourse side. TutorAttendanceCustomField won't be shown to users
                 .where(CustomFieldType.ENTITY_IDENTIFIER.ne(TutorAttendance.class.simpleName))
+//                Don't show private (system) course class custom field with name 'minimum sessions to complete'. It will be used to show complete statuses for enrolments of hybrid classes.
+                .and(CustomFieldType.NAME.ne(CourseClassCustomField.MINIMUM_SESSIONS_TO_COMPLETE))
                 .select(cayenneService.newContext)
                 .collect { dbType ->
             new CustomFieldTypeDTO().with { type ->

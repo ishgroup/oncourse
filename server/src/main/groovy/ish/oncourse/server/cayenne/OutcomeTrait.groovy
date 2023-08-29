@@ -11,11 +11,11 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.CourseClassType
 import ish.oncourse.server.util.AttendanceProcessor
 import ish.oncourse.server.util.DateCalculator
 import ish.common.types.AttendanceType
 import ish.oncourse.cayenne.CourseClassInterface
-import ish.oncourse.cayenne.OutcomeInterface
 import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate
@@ -158,7 +158,7 @@ trait OutcomeTrait {
 
     List<Session> getOutcomeSessions() {
         CourseClass clazz = enrolment.courseClass
-        if (clazz.isDistantLearningCourse || clazz.sessions.empty)
+        if (clazz.type.equals(CourseClassType.DISTANT_LEARNING) || clazz.sessions.empty)
             return clazz.sessions
 
         if (module) {
@@ -190,7 +190,7 @@ trait OutcomeTrait {
     List<AssessmentClass> getOutcomeAssessments() {
         CourseClass clazz = enrolment.courseClass
         List<AssessmentClass> outcomeAssessments
-        if (clazz.isDistantLearningCourse || clazz.sessions.empty) {
+        if (clazz.type.equals(CourseClassType.DISTANT_LEARNING) || clazz.sessions.empty) {
             outcomeAssessments = clazz.assessmentClasses
             // skip attendance diagram since no sessions
         } else {
@@ -235,6 +235,6 @@ trait OutcomeTrait {
 
 
     private boolean hasNoSessions(CourseClassInterface courseClass){
-        return courseClass.isDistantLearningCourse || (courseClass.sessions.empty && courseClass.assessmentClasses.empty)
+        return courseClass.type.equals(CourseClassType.DISTANT_LEARNING) || (courseClass.sessions.empty && courseClass.assessmentClasses.empty)
     }
 }

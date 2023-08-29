@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
+import ish.common.types.CourseClassType
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
@@ -33,11 +34,16 @@ trait EnrolmentTrait {
      */
     @API
     String getDisplayStatus() {
-        if (EnrolmentStatus.SUCCESS == getStatus() && getCourseClass().endDateTime != null && getCourseClass().endDateTime.before(new Date()) ) {
-            return STATUS_COMPLETE
+        if (getCourseClass().type.equals(CourseClassType.HYBRID)) {
+            if (EnrolmentStatus.SUCCESS == getStatus() && getAttendances().findAll { it.attendanceType.equals(AttendanceType.ATTENDED)}.size() >= (getCourseClass().getCustomFieldValue(CourseClassCustomField.MINIMUM_SESSIONS_TO_COMPLETE) as Integer)) {
+                return STATUS_COMPLETE
+            }
         } else {
-            getStatus() ? getStatus().displayName : null
+            if (EnrolmentStatus.SUCCESS == getStatus() && getCourseClass().endDateTime != null && getCourseClass().endDateTime.before(new Date()) ) {
+                return STATUS_COMPLETE
+            }
         }
+        getStatus() ? getStatus().displayName : null
     }
 
     /**

@@ -10,12 +10,14 @@
  */
 package ish.oncourse.cayenne;
 
+import ish.common.types.CourseClassType;
+
 import java.util.List;
 import java.util.Date;
 
 public interface CourseClassInterface {
 
-	Boolean getIsDistantLearningCourse();
+	CourseClassType getType();
 
 	List<? extends SessionInterface> getSessions();
 

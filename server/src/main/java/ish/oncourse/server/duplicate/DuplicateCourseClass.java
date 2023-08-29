@@ -13,6 +13,7 @@ package ish.oncourse.server.duplicate;
 
 import ish.common.types.AttendanceType;
 import ish.common.types.ClassCostFlowType;
+import ish.common.types.CourseClassType;
 import ish.duplicate.ClassDuplicationRequest;
 import ish.math.Money;
 import ish.oncourse.entity.services.CourseClassService;
@@ -87,9 +88,9 @@ public class DuplicateCourseClass {
 
         newClass.setAttendanceType(oldClass.getAttendanceType());
         newClass.setIsCancelled(Boolean.FALSE);
-        var isDistantLearning = oldClass.getIsDistantLearningCourse();
-        newClass.setIsDistantLearningCourse(isDistantLearning);
-        if (Boolean.TRUE.equals(isDistantLearning)) {
+        var type = oldClass.getType();
+        newClass.setType(type);
+        if (CourseClassType.DISTANT_LEARNING.equals(type)) {
             newClass.setExpectedHours(oldClass.getExpectedHours());
             newClass.setMaximumDays(oldClass.getMaximumDays());
         }

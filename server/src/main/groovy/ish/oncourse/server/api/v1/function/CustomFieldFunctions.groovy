@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.function
 
 import ish.common.types.DataType
 import ish.oncourse.server.api.validation.EntityValidator
+import ish.oncourse.server.cayenne.CourseClassCustomField
 import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.ExpandableTrait
@@ -38,7 +39,15 @@ class CustomFieldFunctions {
                 cf = context.newObject(relationClass)
                 cf.relatedObject = dbObject
                 cf.customFieldType = getCustomFieldType(context, dbObject.class.simpleName, k)
+                if (!cf.customFieldType && k.equals(CourseClassCustomField.MINIMUM_SESSIONS_TO_COMPLETE)) {
+                    cf.customFieldType = createCustomFieldType(context, dbObject, k, DataType.NUMBER)
+                }
                 cf.value = trimToNull(v)
+            }
+            try {
+                dbObject.propertyMissing(k, v)
+            } catch (IllegalArgumentException e) {
+                EntityValidator.throwClientErrorException(dbObject.id, "customField", e.message)
             }
         }
         dbObject.modifiedOn = new Date()
@@ -67,12 +76,16 @@ class CustomFieldFunctions {
     }
 
     static CustomFieldType createCustomFieldType(ObjectContext objectContext, ExpandableTrait entity, String customFieldKey) {
+        return createCustomFieldType(objectContext, entity, customFieldKey, DataType.TEXT)
+    }
+
+    static CustomFieldType createCustomFieldType(ObjectContext objectContext, ExpandableTrait entity, String customFieldKey, DataType dataType) {
         CustomFieldType cft = objectContext.newObject(CustomFieldType)
         cft.entityIdentifier = entity.class.simpleName
         cft.name = customFieldKey
         cft.key = customFieldKey
         cft.isMandatory = false
-        cft.dataType = DataType.TEXT
+        cft.dataType = dataType
         cft.sortOrder = ObjectSelect.query(CustomFieldType).selectCount(objectContext)
         return cft
     }
