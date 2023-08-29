@@ -50,19 +50,19 @@ interface Props {
 }
 
 const ExpandableContainer: React.FC<Props> = ({
-                                                children,
-                                                header,
-                                                headerAdornment,
-                                                onAdd,
-                                                onChange,
-                                                classes,
-                                                expanded,
-                                                setExpanded,
-                                                index,
-                                                noDivider,
-                                                formErrors,
-                                                className
-                                              }) => {
+  children,
+  header,
+  headerAdornment,
+  onAdd,
+  onChange,
+  classes,
+  expanded,
+  setExpanded,
+  index,
+  noDivider,
+  formErrors,
+  className
+}) => {
   const [hasErrors, setHasErrors] = useState(false);
 
   const childrenRef = useRef<HTMLDivElement>();
@@ -119,15 +119,16 @@ const ExpandableContainer: React.FC<Props> = ({
 
   return (
     <div className={className}>
-      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")}/>
+      <Divider className={clsx("mb-2 mb-3", noDivider && "invisible")}/>
       <div ref={headerRef}>
-        <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
+        <div className={clsx("centeredFlex mb-2", classes.controls)}>
           <div className="centeredFlex">
-            <div className={clsx("heading headingHover", isExpanded && classes.expanded)}
-                 onClick={clickHandler}>{header}</div>
-            {onAdd && (
-              <AddButton onClick={onAdd}/>
-            )}
+            <div
+              className={clsx("heading headingHover", isExpanded && classes.expanded)}
+              onClick={clickHandler}>
+              {header}
+            </div>
+            <AddButton className={onAdd ? null : "invisible"} onClick={onAdd} />
           </div>
           {headerAdornment}
           <IconButton
