@@ -168,7 +168,8 @@
       "@aql/queryLanguageModel": "<rootDir>/build/generated-sources/aql-model/queryLanguageModel.ts",
       "ace-builds": "<rootDir>/node_modules/ace-builds",
       "uuid": "<rootDir>/node_modules/uuid",
-      "^d3-(.*)$": "<rootDir>/node_modules/d3-$1/dist/d3-$1"
+      "^d3-(.*)$": "<rootDir>/node_modules/d3-$1/dist/d3-$1",
+      "\\.css$|@ckeditor": "<rootDir>/src/dev/mock/importMock.ts"
     }
   }
 }
