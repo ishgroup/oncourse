@@ -6,20 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { createContext, useEffect, useReducer } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
 import { isSameMonth, parse, setDate, startOfMonth } from "date-fns";
-import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import TimetableSideBar from "./components/timetable-side-bar/TimetableSideBar";
-import Calendar from "./components/calendar/Calendar";
-import { TimetableContextState } from "../../model/timetable";
-import SearchBar from "./components/search-bar/SearchBar";
+import { DD_MMM_YYYY_MINUSED } from "ish-ui";
+import React, { createContext, useEffect, useReducer } from "react";
 import { useAppDispatch, useAppSelector } from "../../common/utils/hooks";
 import { LSGetItem, LSSetItem } from "../../common/utils/storage";
-import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from "./TimetableConstants";
+import { TimetableContextState } from "../../model/timetable";
 import { getTimetableFilters } from "./actions";
-import { DD_MMM_YYYY_MINUSED } from "../../common/utils/dates/format";
+import Calendar from "./components/calendar/Calendar";
+import SearchBar from "./components/search-bar/SearchBar";
+import TimetableSideBar from "./components/timetable-side-bar/TimetableSideBar";
+import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from "./constants";
 
 const styles = () =>
   createStyles({

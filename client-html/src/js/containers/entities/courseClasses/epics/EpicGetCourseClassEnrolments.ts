@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse, Enrolment } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_COURSE_CLASS_ENROLMENTS, setCourseClassEnrolments } from "../actions";
-import EntityService from "../../../../common/services/EntityService";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import EntityService from "../../../../common/services/EntityService";
+import { GET_COURSE_CLASS_ENROLMENTS, setCourseClassEnrolments } from "../actions";
 
 const request: EpicUtils.Request<any, number> = {
   type: GET_COURSE_CLASS_ENROLMENTS,

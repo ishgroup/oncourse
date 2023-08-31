@@ -1,8 +1,8 @@
 import { combineEpics } from "redux-observable";
+import { EpicCreateIntegration } from "./EpicCreateIntegration";
+import { EpicDeleteIntegration } from "./EpicDeleteIntegration";
 import { EpicGetIntegrations } from "./EpicGetIntegrations";
 import { EpicUpdateIntegration } from "./EpicUpdateIntegration";
-import { EpicDeleteIntegration } from "./EpicDeleteIntegration";
-import { EpicCreateIntegration } from "./EpicCreateIntegration";
 
 export const EpicIntegrations = combineEpics(
   EpicGetIntegrations,

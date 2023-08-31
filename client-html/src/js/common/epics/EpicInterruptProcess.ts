@@ -4,10 +4,10 @@
  */
 
 import { Epic } from "redux-observable";
+import { INTERRUPT_PROCESS, INTERRUPT_PROCESS_FULFILLED } from "../actions";
 
 import * as EpicUtils from "../epics/EpicUtils";
 import ProcessService from "../services/ProcessService";
-import { INTERRUPT_PROCESS, INTERRUPT_PROCESS_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request = {
   type: INTERRUPT_PROCESS,
@@ -16,7 +16,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: INTERRUPT_PROCESS_FULFILLED,
-        payload: { process: null }
+        payload: {process: null}
       }
     ];
   }

@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
 import Chip from "@mui/material/Chip";
-import { createStyles, withStyles } from "@mui/styles";
 import { Theme } from "@mui/material/styles";
+import { createStyles, withStyles } from "@mui/styles";
+import React, { useCallback } from "react";
 import { CommonListFilter } from "../../../../../model/common/sidebar";
 
 interface Props {
@@ -41,8 +41,8 @@ const styles = createStyles((theme: Theme) => ({
 }));
 
 const FiltersList = React.memo<Props>(({
- filters, activeFilters, setActveFilters, classes 
-}) => {
+                                         filters, activeFilters, setActveFilters, classes
+                                       }) => {
   const onClick = useCallback(e => {
     const index = Number(e.currentTarget.getAttribute("role"));
 

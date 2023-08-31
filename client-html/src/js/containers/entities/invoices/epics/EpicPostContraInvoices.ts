@@ -4,13 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../common/actions";
+import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { POST_CONTRA_INVOICES, POST_CONTRA_INVOICES_FULFILLED } from "../actions";
-import { Invoice } from "@api/model";
-import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
 import InvoiceService from "../services/InvoiceService";
-import { FETCH_SUCCESS } from "../../../../common/actions";
 
 const request: EpicUtils.Request<any, { id: number; invoicesToPay: number[] }> = {
   type: POST_CONTRA_INVOICES,

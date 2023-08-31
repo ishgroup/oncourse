@@ -9,7 +9,7 @@
 import { DefaultEpic } from "../../common/Default.Epic";
 import { getContactTags } from "../../../js/containers/entities/contacts/actions";
 import { EpicGetContactTags } from "../../../js/containers/entities/contacts/epics/EpicGetContactTags";
-import { getMenuTags } from "../../../js/common/components/list-view/utils/listFiltersUtils";
+import { getMenuTags } from "ish-ui";
 import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../js/containers/tags/actions";
 import { setListMenuTags } from "../../../js/common/components/list-view/actions";
 

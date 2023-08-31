@@ -9,8 +9,8 @@ import { Provider } from "react-redux";
 import AppEntry from "./AppEntry";
 import { ErrorBoundary } from "./constants/Bugsnag";
 import { DEFAULT_CONFIG } from "./constants/Config";
-import store from "./constants/Store";
 import { EnvironmentConstants } from "./constants/EnvironmentConstants";
+import store from "./constants/Store";
 
 if (process.env.NODE_ENV === EnvironmentConstants.production) {
   if ("serviceWorker" in navigator) {

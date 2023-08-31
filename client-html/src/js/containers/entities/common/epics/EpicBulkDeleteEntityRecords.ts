@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Create, Request } from "../../../../common/epics/EpicUtils";
-import { Epic } from "redux-observable";
 import { Diff } from "@api/model";
-import { BULK_DELETE_ENTITY_RECORDS_REQUEST } from "../actions";
-import { ListActionEntity } from "../../../../model/entities/common";
+import { Epic } from "redux-observable";
+import { Create, Request } from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
+import { ListActionEntity } from "../../../../model/entities/common";
+import { BULK_DELETE_ENTITY_RECORDS_REQUEST } from "../actions";
 import { getListRecordAfterBulkDeleteActions } from "../utils";
 
 const request: Request<any, { entity: ListActionEntity, diff: Diff }> = {

@@ -21,8 +21,8 @@ import {
   TrainingPlan,
   TutorAttendanceType
 } from "@api/model";
-import { AccountExtended } from "./Account";
 import { TimetableSession } from "../timetable";
+import { AccountExtended } from "./Account";
 
 export interface CourseClassRoom {
   id: number;

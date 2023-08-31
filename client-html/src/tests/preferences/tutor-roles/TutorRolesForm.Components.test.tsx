@@ -2,10 +2,10 @@ import * as React from "react";
 // import * as _ from "lodash";
 import { format } from "date-fns";
 import { defaultComponents } from "../../common/Default.Components";
-import TutorRolesForm, { TUTOR_ROLES_FORM } from
-    "../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm";
-import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import TutorRolesForm, {
+  TUTOR_ROLES_FORM
+} from "../../../js/containers/preferences/containers/tutor-roles/components/TutorRolesForm";
+import { formatCurrency, III_DD_MMM_YYYY } from "ish-ui";
 
 describe("Virtual rendered TutorRolesForm", () => {
   defaultComponents({

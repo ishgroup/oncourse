@@ -15,15 +15,12 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import {
-  GET_TIMEZONE,
-  GET_TIMEZONE_FULFILLED
-} from "../actions";
 
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import UserPreferenceService from "../../../../../common/services/UserPreferenceService";
 import { SERVER_TIMEZONE } from "../../../../../constants/Config";
+import { GET_TIMEZONE, GET_TIMEZONE_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_TIMEZONE,

@@ -1,7 +1,7 @@
-import React from "react";
-import { withStyles, createStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
+import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import React from "react";
 
 const styles = theme =>
   createStyles({
@@ -79,7 +79,7 @@ const styles = theme =>
   });
 
 const SpeechCard = props => {
-  const { classes, className, children, leftSide } = props;
+  const {classes, className, children, leftSide} = props;
 
   return (
     <div

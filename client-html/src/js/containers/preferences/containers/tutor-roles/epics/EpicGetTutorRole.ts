@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { DefinedTutorRole } from "@api/model";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import PreferencesService from "../../../services/PreferencesService";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_TUTOR_ROLE_FULFILLED, GET_TUTOR_ROLE_REQUEST } from "../../../actions";
+import PreferencesService from "../../../services/PreferencesService";
 import { TUTOR_ROLES_FORM_NAME } from "../TutorRoleFormContainer";
 
 const request: EpicUtils.Request<any, any> = {

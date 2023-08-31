@@ -3,20 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useRef, useMemo, useEffect, useState
-} from "react";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import Divider from "@mui/material/Divider";
-import { AppTheme } from "../../../../model/common/Theme";
-import AddButton from "../../icons/AddButton";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
-import { FormErrors } from "redux-form";
+import { AddButton, AppTheme } from "ish-ui";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { findDOMNode } from "react-dom";
+import { FormErrors } from "redux-form";
+import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { animateFormErrors } from "../../../utils/highlightFormErrors";
 import { getFirstErrorNodePath } from "../../../utils/validation";
 
@@ -53,23 +50,23 @@ interface Props {
 }
 
 const ExpandableContainer: React.FC<Props> = ({
-  children,
-  header,
-  headerAdornment,
-  onAdd,
-  onChange,
-  classes,
-  expanded,
-  setExpanded,
-  index,
-  noDivider,
-  formErrors,
-  className
-}) => {
+                                                children,
+                                                header,
+                                                headerAdornment,
+                                                onAdd,
+                                                onChange,
+                                                classes,
+                                                expanded,
+                                                setExpanded,
+                                                index,
+                                                noDivider,
+                                                formErrors,
+                                                className
+                                              }) => {
   const [hasErrors, setHasErrors] = useState(false);
 
   const childrenRef = useRef<HTMLDivElement>();
-  
+
   const headerRef = useRef<any>();
 
   const isExpanded = useMemo(() => expanded.includes(index), [expanded, index]);
@@ -122,13 +119,14 @@ const ExpandableContainer: React.FC<Props> = ({
 
   return (
     <div className={className}>
-      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")} />
+      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")}/>
       <div ref={headerRef}>
         <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
           <div className="centeredFlex">
-            <div className={clsx("heading headingHover", isExpanded && classes.expanded)} onClick={clickHandler}>{header}</div>
+            <div className={clsx("heading headingHover", isExpanded && classes.expanded)}
+                 onClick={clickHandler}>{header}</div>
             {onAdd && (
-              <AddButton onClick={onAdd} />
+              <AddButton onClick={onAdd}/>
             )}
           </div>
           {headerAdornment}
@@ -138,7 +136,7 @@ const ExpandableContainer: React.FC<Props> = ({
             id={buttonId}
             {...iconButtonProps}
           >
-            <ExpandMore />
+            <ExpandMore/>
           </IconButton>
         </div>
       </div>

@@ -1,9 +1,9 @@
+import { ExportTemplate } from "@api/model";
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import { GET_EXPORT_TEMPLATES, GET_EXPORT_TEMPLATES_FULFILLED } from "../actions";
 import ExportService from "../services/ExportService";
-import { ExportTemplate } from "@api/model";
-import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 const request: EpicUtils.Request = {
   type: GET_EXPORT_TEMPLATES,
@@ -12,7 +12,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: GET_EXPORT_TEMPLATES_FULFILLED,
-        payload: { exportTemplates }
+        payload: {exportTemplates}
       }
     ];
   },

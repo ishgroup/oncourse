@@ -6,13 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import clsx from "clsx";
 import Delete from "@mui/icons-material/Delete";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
-import { stopEventPropagation } from "../../../common/utils/events";
+import clsx from "clsx";
+import { stopEventPropagation, useHoverShowStyles } from "ish-ui";
+import React, { useCallback } from "react";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { FormTagProps } from "../../../model/tags";
 

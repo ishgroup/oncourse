@@ -6,12 +6,6 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { getFormInitialValues, getFormValues, initialize } from "redux-form";
-import { format } from "date-fns";
 import {
   Account,
   ClassCost,
@@ -22,18 +16,26 @@ import {
   Outcome,
   TableModel
 } from "@api/model";
+import { Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
-import ListView from "../../../common/components/list-view/ListView";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { format } from "date-fns";
 import {
-  courseClassBudgetPath,
-  courseClassCancelPath,
-  courseClassTimetablePath,
-  plainEnrolmentPath
-} from "../../../constants/Api";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+  appendTimezone,
+  BooleanArgFunction,
+  III_DD_MMM_YYYY_HH_MM,
+  NoArgFunction,
+  normalizeNumberToZero,
+  StyledCheckbox
+} from "ish-ui";
+import React, { useCallback, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { getFormInitialValues, getFormValues, initialize } from "redux-form";
+import { checkPermissions, getUserPreferences } from "../../../common/actions";
+import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
+import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { postNoteItem, putNoteItem } from "../../../common/components/form/notes/actions";
+import { validateNoteCreate, validateNoteUpdate } from "../../../common/components/form/notes/utils";
 import {
   clearListState,
   getFilters,
@@ -41,32 +43,19 @@ import {
   setListEditRecord,
   setListSelection,
 } from "../../../common/components/list-view/actions";
-import EnrolmentService from "../enrolments/services/EnrolmentService";
-import OutcomeService from "../outcomes/services/OutcomeService";
-import CourseClassCogWheel from "./components/CourseClassCogWheel";
-import CourseClassEditView from "./components/CourseClassEditView";
-import { getCourseClassTags, updateCourseClass } from "./actions";
-import { BooleanArgFunction, NoArgFunction } from "../../../model/common/CommonFunctions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
-import { getPlainAccounts } from "../accounts/actions";
-import { getPlainTaxes } from "../taxes/actions";
-import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { CourseClassExtended } from "../../../model/entities/CourseClass";
-import { fieldUpdateHandler } from "../../../common/utils/actionsQueue";
-import { validateTutorCreate, validateTutorUpdate } from "./components/tutors/utils";
-import { postCourseClassTutor, putCourseClassTutor } from "./components/tutors/actions";
-import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import PreferencesService from "../../preferences/services/PreferencesService";
-import { getVirtualSites } from "../sites/actions";
-import { validateNoteCreate, validateNoteUpdate } from "../../../common/components/form/notes/utils";
-import { postNoteItem, putNoteItem } from "../../../common/components/form/notes/actions";
-import { State } from "../../../reducers/state";
-import { normalizeNumberToZero } from "../../../common/utils/numbers/numbersNormalizing";
-import { createCourseClassAssessment, updateCourseClassAssessment } from "./components/assessments/actions";
-import { validateAssesmentCreate, validateAssesmentUpdate } from "./components/assessments/utils";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
 import EntityService from "../../../common/services/EntityService";
-import history from "../../../constants/History";
+import { fieldUpdateHandler } from "../../../common/utils/actionsQueue";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import uniqid from "../../../common/utils/uniqid";
+import {
+  courseClassBudgetPath,
+  courseClassCancelPath,
+  courseClassTimetablePath,
+  plainEnrolmentPath
+} from "../../../constants/Api";
 import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
@@ -74,11 +63,25 @@ import {
   DEFAULT_MINIMUM_PLACES_KEY,
   PLAIN_LIST_MAX_PAGE_SIZE
 } from "../../../constants/Config";
-import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
-import { III_DD_MMM_YYYY_HH_MM } from "../../../common/utils/dates/format";
-import { appendTimezone } from "../../../common/utils/dates/formatTimezone";
-import uniqid from "../../../common/utils/uniqid";
-import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
+import history from "../../../constants/History";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { CourseClassExtended } from "../../../model/entities/CourseClass";
+import { State } from "../../../reducers/state";
+import { getActiveFundingContracts } from "../../avetmiss-export/actions";
+import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
+import PreferencesService from "../../preferences/services/PreferencesService";
+import { getPlainAccounts } from "../accounts/actions";
+import EnrolmentService from "../enrolments/services/EnrolmentService";
+import OutcomeService from "../outcomes/services/OutcomeService";
+import { getVirtualSites } from "../sites/actions";
+import { getPlainTaxes } from "../taxes/actions";
+import { getCourseClassTags, updateCourseClass } from "./actions";
+import { createCourseClassAssessment, updateCourseClassAssessment } from "./components/assessments/actions";
+import { validateAssesmentCreate, validateAssesmentUpdate } from "./components/assessments/utils";
+import CourseClassCogWheel from "./components/CourseClassCogWheel";
+import CourseClassEditView from "./components/CourseClassEditView";
+import { postCourseClassTutor, putCourseClassTutor } from "./components/tutors/actions";
+import { validateTutorCreate, validateTutorUpdate } from "./components/tutors/utils";
 
 const manualLink = getManualLink("classes");
 
@@ -412,7 +415,8 @@ const enrolmentUpdateFields: Array<keyof Enrolment> = [
   "fundingSource",
   "relatedFundingSourceId",
   "vetFundingSourceStateID",
-  "vetPurchasingContractID"
+  "vetPurchasingContractID",
+  "vetPurchasingContractScheduleID",
 ];
 
 const getDefaultFieldName = (field: keyof CourseClass) => {

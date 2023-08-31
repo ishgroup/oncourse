@@ -6,33 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect } from "react";
-import {
-  arrayInsert, arrayPush,
-  Field, Form, initialize
-} from "redux-form";
-import { Grid, Typography } from "@mui/material";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Divider from "@mui/material/Divider";
 import { TagRequirement } from "@api/model";
-import { useAppDispatch } from "../../../common/utils/hooks";
-import { EmptyTag, TAGS_FORM_NAME } from "../constants";
-import {
- getTagRequest
-} from "../actions";
-import { TagsFormBase, TagsFormWrapper } from "./TagsFormBase";
-import RouteChangeConfirm from "../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import { Divider, Grid, Typography } from "@mui/material";
+import { AddButton, ColorPicker } from "ish-ui";
+import React, { useEffect } from "react";
+import { arrayInsert, arrayPush, Field, Form, initialize } from "redux-form";
+import AppBarActions from "../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../common/components/form/AppBarActions";
-import TagRequirementsMenu from "../components/TagRequirementsMenu";
-import TagRequirementItem from "../components/TagRequirementItem";
-import AddButton from "../../../common/components/icons/AddButton";
-import { ChecklistTree, TagTree } from "../components/Trees";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
-import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
+import { useAppDispatch } from "../../../common/utils/hooks";
 import { FormTag } from "../../../model/tags";
+import { getTagRequest } from "../actions";
+import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
+import TagRequirementItem from "../components/TagRequirementItem";
+import TagRequirementsMenu from "../components/TagRequirementsMenu";
+import { ChecklistTree, TagTree } from "../components/Trees";
+import { EmptyTag, TAGS_FORM_NAME } from "../constants";
+import { TagsFormBase, TagsFormWrapper } from "./TagsFormBase";
 
 const manualUrl = getManualLink("tagging");
 

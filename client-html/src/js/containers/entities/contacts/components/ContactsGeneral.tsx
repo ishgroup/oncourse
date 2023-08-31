@@ -6,28 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo } from "react";
-import {
-  Contact, Student, Tag, Tutor
-} from "@api/model";
-import { change, getFormInitialValues } from "redux-form";
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Contact, Student, Tag, Tutor } from "@api/model";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { connect } from "react-redux";
-import { Grid } from "@mui/material";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Divider, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import Typography from "@mui/material/Typography";
-import Divider from '@mui/material/Divider';
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { getContactFullName } from "../utils";
-import { openInternalLink } from "../../../../common/utils/links";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import ProfileHeading from "./ProfileHeading";
 import clsx from "clsx";
+import { openInternalLink, TimetableButton } from "ish-ui";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { connect } from "react-redux";
+import { change, getFormInitialValues } from "redux-form";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { getContactFullName } from "../utils";
+import ProfileHeading from "./ProfileHeading";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
@@ -180,6 +176,9 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
       <ProfileHeading

@@ -6,18 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Invoice } from "@api/model";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { formatToDateOnly } from "ish-ui";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Invoice } from "@api/model";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import ListView from "../../../common/components/list-view/ListView";
-import { getDefaultInvoiceTerms } from "./actions";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import InvoicesEditView from "./components/InvoicesEditView";
 import {
   clearListState,
   getFilters,
@@ -25,21 +23,23 @@ import {
   setListEditRecord,
   setListSelection,
 } from "../../../common/components/list-view/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { getPlainAccounts } from "../accounts/actions";
-import { getPlainTaxes } from "../taxes/actions";
-import InvoiceCogwheel from "./components/InvoiceCogwheel";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import { getAdministrationSites } from "../sites/actions";
-import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { getAccountTransactionLockedDate } from "../../preferences/actions";
+import ListView from "../../../common/components/list-view/ListView";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import LeadService from "../leads/services/LeadService";
-import { isInvoiceType } from "./utils";
-import { State } from "../../../reducers/state";
-import { getListTags } from "../../tags/actions";
+import { getManualLink } from "../../../common/utils/getManualLink";
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getAccountTransactionLockedDate } from "../../preferences/actions";
+import { getListTags } from "../../tags/actions";
+import { getPlainAccounts } from "../accounts/actions";
+import LeadService from "../leads/services/LeadService";
+import { getAdministrationSites } from "../sites/actions";
+import { getPlainTaxes } from "../taxes/actions";
+import { getDefaultInvoiceTerms } from "./actions";
+import InvoiceCogwheel from "./components/InvoiceCogwheel";
+import InvoicesEditView from "./components/InvoicesEditView";
+import { isInvoiceType } from "./utils";
 
 const filterGroups: FilterGroup[] = [
   {

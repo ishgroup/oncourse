@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { addDays, isBefore } from "date-fns";
-import { Epic } from "redux-observable";
 import { ClassCost } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { addDays, isBefore } from "date-fns";
+import { decimalPlus } from "ish-ui";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { CheckoutCourse } from "../../../../model/checkout";
 import ClassCostService from "../../../entities/courseClasses/components/budget/services/ClassCostService";
 import { updateClassItem } from "../../actions";

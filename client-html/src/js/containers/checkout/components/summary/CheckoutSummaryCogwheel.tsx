@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useRef, useState } from "react";
+import Settings from "@mui/icons-material/Settings";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Settings from "@mui/icons-material/Settings";
+import { StyledCheckbox } from "ish-ui";
+import React, { useRef, useState } from "react";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
 import { CheckoutSummary } from "../../../../model/checkout";
 import {
   checkoutSetDisableDiscounts,

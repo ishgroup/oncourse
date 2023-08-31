@@ -6,8 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
 import Loadable from "@react-loadable/revised";
+import * as React from "react";
 import Loading from "../../../common/components/progress/Loading";
 
 const LoadableComponent = Loadable({

@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect } from "react";
+import ButtonBase from "@mui/material/ButtonBase";
+import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import ButtonBase from "@mui/material/ButtonBase";
+import React, { useCallback, useEffect } from "react";
 
 const styles = theme => createStyles({
     select: {
@@ -37,7 +37,7 @@ const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
     classes, selectedRecords, allRecords, selectAll, setSelectAll, disabled, selectionOnly
   } = props;
 
-  const allRecordsText = allRecords !== null ? `${allRecords} found record${allRecords > 1 ? "s" : ""}` : "All records";
+  const allRecordsText = allRecords ? `${allRecords} found record${allRecords > 1 ? "s" : ""}` : "All records";
 
   const setAll = useCallback(() => {
     setSelectAll(true);

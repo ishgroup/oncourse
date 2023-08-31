@@ -3,9 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { ImportModel } from "@api/model";
+import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
   GET_IMPORT_TEMPLATE,
@@ -13,9 +14,7 @@ import {
   UPDATE_INTERNAL_IMPORT_TEMPLATE,
   UPDATE_INTERNAL_IMPORT_TEMPLATE_FULFILLED
 } from "../actions/index";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ImportTemplatesService from "../services/ImportTemplatesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
 
 const request: EpicUtils.Request< { importTemplate: ImportModel }, { importTemplate: ImportModel }> = {
   type: UPDATE_INTERNAL_IMPORT_TEMPLATE,

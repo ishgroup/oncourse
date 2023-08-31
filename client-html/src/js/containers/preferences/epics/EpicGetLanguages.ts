@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Language } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import PreferencesService from "../services/PreferencesService";
 import { GET_LANGUAGES_REQUEST, GET_LANGUAGES_REQUEST_FULFILLED } from "../actions";
-import { Language } from "@api/model";
+import PreferencesService from "../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: GET_LANGUAGES_REQUEST,

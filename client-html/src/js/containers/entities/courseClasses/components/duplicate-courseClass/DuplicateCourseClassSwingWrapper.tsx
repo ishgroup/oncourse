@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import Typography from "@mui/material/Typography";
 import React, { useCallback, useEffect, useState } from "react";
 import DuplicateCourseClassModal from "./DuplicateCourseClassModal";
-import Typography from "@mui/material/Typography";
 
 export const DuplicateCourseClassSwingWrapper: React.FC<any> = () => {
   const [showCompleteMessage, setShowCompleteMessage] = useState(false);

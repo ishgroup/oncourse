@@ -6,30 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
+import { AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType } from "@api/model";
+import { DateRange, Edit, ExpandMore } from "@mui/icons-material";
+import { FormControlLabel, Grid, IconButton, Typography } from "@mui/material";
+import { withStyles } from "@mui/styles";
+import { differenceInDays } from "date-fns";
+import { normalizeNumber, stubComponent, StyledCheckbox } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dispatch } from "redux";
 import { change, Field } from "redux-form";
-import {
-  Grid, FormControlLabel, IconButton, Typography
-} from "@mui/material";
-import { differenceInDays } from "date-fns";
-import {
-  AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
-} from "@api/model";
-import { withStyles } from "@mui/styles";
-import { DateRange, ExpandMore, Edit } from "@mui/icons-material";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { stubComponent } from "../../../../../common/utils/common";
 import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
-import SubmissionModal from "./SubmissionModal";
-import styles from "./styles";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
 import CourseClassAssessmentStudent from "./CourseClassAssessmentStudent";
 import GradeModal from "./GradeModal";
+import styles from "./styles";
+import SubmissionModal from "./SubmissionModal";
 
 interface Props {
   form: string;

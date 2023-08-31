@@ -3,30 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
+import { Binding } from "@api/model";
 import Delete from "@mui/icons-material/Delete";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import IconButton from "@mui/material/IconButton";
-import { Binding } from "@api/model";
-import {
- arrayPush, arrayRemove, Field, FieldArray
-} from "redux-form";
-import { Dispatch } from "redux";
-import clsx from "clsx";
-import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { makeStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AddButton, AppTheme, useHoverShowStyles, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { Dispatch } from "redux";
+import { arrayPush, arrayRemove, Field, FieldArray } from "redux-form";
+import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
+import { CatalogItemType } from "../../../model/common/Catalog";
 import { SelectItemDefault } from "../../../model/entities/common";
 import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../containers/scripts/constants";
-import DataTypesMenu from "./DataTypesMenu";
-import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { renderAutomationItems } from "../utils";
-import { AppTheme } from "../../../model/common/Theme";
-import AddButton from "../../../common/components/icons/AddButton";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
-import { CatalogItemType } from "../../../model/common/Catalog";
+import DataTypesMenu from "./DataTypesMenu";
 
 export type BindingsItemType = "component" | "label";
 
@@ -266,6 +261,7 @@ const Bindings = React.memo<BindingsProps>( props => {
     [form, name]
   );
 
+  // @ts-ignore
   return (
     <div>
       <DataTypesMenu

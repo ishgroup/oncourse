@@ -3,20 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import Help from "@mui/icons-material/Help";
-import * as Entities from "@aql/queryLanguageModel";
-import { change } from "redux-form";
 import { Script, TagRequirementType, TriggerType } from "@api/model";
+import * as Entities from "@aql/queryLanguageModel";
+import Help from "@mui/icons-material/Help";
+import IconButton from "@mui/material/IconButton";
+import { TagInputList } from "ish-ui";
+import React, { useEffect, useState } from "react";
 import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { AQL_ENTITY_ITEMS } from "../../../../constants";
-import { mapSelectItems } from "../../../../../../common/utils/common";
-import { SelectItemDefault } from "../../../../../../model/entities/common";
-import { CatalogItemType } from "../../../../../../model/common/Catalog";
-import TagsService from "../../../../../tags/services/TagsService";
+import { change } from "redux-form";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
+import { mapSelectItems } from "../../../../../../common/utils/common";
+import { CatalogItemType } from "../../../../../../model/common/Catalog";
+import { SelectItemDefault } from "../../../../../../model/entities/common";
+import TagsService from "../../../../../tags/services/TagsService";
+import { AQL_ENTITY_ITEMS } from "../../../../constants";
+import { getEntityTags } from "../../../../../tags/actions";
+import { useAppSelector } from "../../../../../../common/utils/hooks";
 
 // Filter AbstractInvoice and include Quote
 const AllEntities = [
@@ -46,12 +49,19 @@ const ChecklistsTriggers: TriggerType[] = [
   'Checklist completed'
 ];
 
+const TagTriggers: TriggerType[] = [
+  'Tag added',
+  'Tag removed'
+];
+
 const TriggerCardContent = (props: Props) => {
   const {
     TriggerTypeItems, ScheduleTypeItems, enableEntityNameField, values, isInternal, dispatch, form, timeZone, checklists
   } = props;
 
   const [entityItems, setEntityItems] = useState(AllEntities);
+
+  const entityTags = useAppSelector(state => state.tags.entityTags[values.trigger.entityName]);
 
   const onTriggerChange = (e, newType: TriggerType) => {
     if (
@@ -63,11 +73,21 @@ const TriggerCardContent = (props: Props) => {
     dispatch(change(form, "trigger.parameterId", null));
   };
 
+  const onTagChange = tag => {
+    dispatch(change(form, 'trigger.parameterId', tag[tag.length - 1] || null));
+  };
+
   useEffect(() => {
     if (values.trigger.entityAttribute) {
       dispatch(change(form, "trigger.entityAttribute", null));
     }
   }, [values.trigger.type, values.trigger.entityName]);
+
+  useEffect(() => {
+    if (values.trigger.entityName) {
+      dispatch(getEntityTags(values.trigger.entityName));
+    }
+  }, [values.trigger.entityName]);
 
   useEffect(() => {
     setEntityItems(ChecklistsTriggers.includes(values?.trigger?.type)
@@ -76,7 +96,7 @@ const TriggerCardContent = (props: Props) => {
   }, [values.trigger.type]);
 
   useEffect(() => {
-    if (typeof values.trigger.parameterId === "number") {
+    if (ChecklistsTriggers.includes(values.trigger.type) && typeof values.trigger.parameterId === "number") {
       TagsService.getTag(values.trigger.parameterId)
         .then(checklist => {
           const updatedEntities = checklist.requirements.map(r => ({ value: r.type, label: r.type }));
@@ -88,11 +108,11 @@ const TriggerCardContent = (props: Props) => {
         })
         .catch(e => instantFetchErrorHandler(dispatch, e));
     } else {
-      setEntityItems(ChecklistsTriggers.includes(values?.trigger?.type)
+      setEntityItems(ChecklistsTriggers.includes(values?.trigger?.type) || TagTriggers.includes(values.trigger.type)
         ? TagableEntities
         : AllEntities);
     }
-  }, [values.trigger.parameterId]);
+  }, [values.trigger.parameterId, values.trigger.type]);
 
   const entityNotRequired = [...ChecklistsTriggers, "On demand"].includes(values.trigger.type);
 
@@ -128,6 +148,21 @@ const TriggerCardContent = (props: Props) => {
             selectValueMark="id"
             selectLabelMark="title"
             allowEmpty
+          />
+        )
+      }
+
+      {
+        TagTriggers.includes(values.trigger.type) && (
+          <TagInputList
+            input={{
+              onChange: onTagChange,
+              value: values.trigger.parameterId ? [values.trigger.parameterId] : []
+            }}
+            meta={{}}
+            label="Tag"
+            className="pl-2 flex-fill"
+            tags={entityTags}
           />
         )
       }

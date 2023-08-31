@@ -1,4 +1,4 @@
-import { Tag, Document } from "@api/model";
+import { Document, Tag } from "@api/model";
 
 export interface DocumentsState {
   editingFormName: string;

@@ -5,20 +5,20 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
+import { AssessmentSubmission as AssessmentSubmissionModel } from "@api/model";
 import React, { Dispatch, useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import { AssessmentSubmission as AssessmentSubmissionModel } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import { getListTags } from "../../tags/actions";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import { State } from "../../../reducers/state";
-import EntityService from "../../../common/services/EntityService";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { clearListState, getFilters } from "../../../common/components/list-view/actions";
+import ListView from "../../../common/components/list-view/ListView";
+import EntityService from "../../../common/services/EntityService";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getListTags } from "../../tags/actions";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { getContactFullName } from "../contacts/utils";
+import AssessmentSubmissionEditView from "./components/AssessmentSubmissionsEditView";
 
 const filterGroups: FilterGroup[] = [
   {

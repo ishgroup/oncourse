@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { format } from "date-fns-tz";
-import { Epic } from "redux-observable";
 import { DataResponse, PaymentMethod } from "@api/model";
+import { format } from "date-fns-tz";
+import { D_MMM_YYYY } from "ish-ui";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import EntityService from "../../../../common/services/EntityService";
 import PreferencesService from "../../../preferences/services/PreferencesService";
 import { GET_CONTACTS_STORED_CC, GET_CONTACTS_STORED_CC_FULFILLED } from "../actions";
-import EntityService from "../../../../common/services/EntityService";
 
 const getCardTypeId = (types: PaymentMethod[]): number => types.find(t => t.type === "Credit card").id;
 

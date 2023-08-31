@@ -1,6 +1,6 @@
-import { Decimal } from "decimal.js-light";
-import { formatCurrency } from "../../../common/utils/numbers/numbersNormalizing";
 import { Currency, Payment } from "@api/model";
+import { Decimal } from "decimal.js-light";
+import { formatCurrency } from "ish-ui";
 
 export const defaultCurrencySymbol = "$";
 

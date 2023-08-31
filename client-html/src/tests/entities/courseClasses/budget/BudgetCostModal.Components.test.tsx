@@ -1,10 +1,9 @@
 import * as React from "react";
 import { addDays, format } from "date-fns";
 import { defaultComponents } from "../../../common/Default.Components";
-import { D_MMM_YYYY } from "../../../../js/common/utils/dates/format";
+import { D_MMM_YYYY, formatCurrency } from "ish-ui";
 import BudgetCostModal from "../../../../js/containers/entities/courseClasses/components/budget/modal/BudgetCostModal";
 import { getCustomColumnsMap } from "../../../../js/common/utils/common";
-import { formatCurrency } from "../../../../js/common/utils/numbers/numbersNormalizing";
 import { getClassFeeTotal } from "../../../../js/containers/entities/courseClasses/components/budget/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../../js/containers/entities/courseClasses/constants";
 

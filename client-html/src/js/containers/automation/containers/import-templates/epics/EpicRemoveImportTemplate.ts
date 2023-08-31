@@ -4,13 +4,13 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_IMPORT_TEMPLATES_LIST, REMOVE_IMPORT_TEMPLATE, REMOVE_IMPORT_TEMPLATE_FULFILLED } from "../actions/index";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import ImportTemplatesService from "../services/ImportTemplatesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
 import history from "../../../../../constants/History";
+import { GET_IMPORT_TEMPLATES_LIST, REMOVE_IMPORT_TEMPLATE, REMOVE_IMPORT_TEMPLATE_FULFILLED } from "../actions/index";
+import ImportTemplatesService from "../services/ImportTemplatesService";
 
 const request: EpicUtils.Request<any, number> = {
   type: REMOVE_IMPORT_TEMPLATE,

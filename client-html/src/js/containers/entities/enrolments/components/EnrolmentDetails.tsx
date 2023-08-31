@@ -6,23 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import Divider from "@mui/material/Divider";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import Grid from "@mui/material/Grid";
+import React, { useCallback } from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { formatFundingSourceId } from "../../common/utils";
 import {
   validateAssociatedCourseIdentifier,
   validateCharacter,
   validateCricosConfirmation,
-  validateOutcomeIdTrainingOrg,
+  validateOutcomeIdTrainingOrg, validatePurchasingContractScheduleIdentifier,
   validateVetFundingSourceState,
   validateVetPurchasingContractIdentifier,
 } from "../../../../common/utils/validation";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Divider from "@mui/material/Divider";
-import FormGroup from "@mui/material/FormGroup";
-import React, { useCallback } from "react";
-import { enrolmentExemptionTypeItems, enrolmentStudyReasonItems } from "../constants";
+import { formatFundingSourceId } from "../../common/utils";
 import { fundingSourceValues } from "../../courseClasses/constants";
+import { enrolmentExemptionTypeItems, enrolmentStudyReasonItems } from "../constants";
 
 const EnrolmentDetails = (
   {
@@ -139,6 +139,15 @@ const EnrolmentDetails = (
           name="vetPurchasingContractID"
           label="Default purchasing contract identifier (NSW Commitment ID)"
           validate={validateVetPurchasingContractIdentifier}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <FormField
+          type="text"
+          name="vetPurchasingContractScheduleID"
+          label="Purchasing Contract Schedule Identifier"
+          validate={validatePurchasingContractScheduleIdentifier}
         />
       </Grid>
 

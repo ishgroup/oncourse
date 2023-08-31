@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import InputAdornment from "@mui/material/InputAdornment";
 import CircularProgress from "@mui/material/CircularProgress";
-import { withStyles, createStyles } from "@mui/styles";
 import { green } from "@mui/material/colors";
+import InputAdornment from "@mui/material/InputAdornment";
+import { createStyles, withStyles } from "@mui/styles";
 import ClassNames from "clsx";
+import { TextField } from "ish-ui";
 import debounce from "lodash.debounce";
-import { TextField } from "../../../common/components/form/formFields/TextField";
+import React from "react";
 
 const styles = theme => createStyles({
   disabled: {},

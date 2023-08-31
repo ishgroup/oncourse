@@ -13,7 +13,7 @@ const Initial: ActionsQueueState = {
 };
 
 export const actionsQueueReducer = (
-  state: ActionsQueueState = { ...Initial },
+  state: ActionsQueueState = {...Initial},
   action: IAction<any>
 ): ActionsQueueState => {
   switch (action.type) {

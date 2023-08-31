@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { change } from "redux-form";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { Site } from "@api/model";
 import { Grid } from "@mui/material";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
 
 class WaitingListSites extends React.PureComponent<any, any> {
   sitesToNestedListItems = (sites: Site[]) =>

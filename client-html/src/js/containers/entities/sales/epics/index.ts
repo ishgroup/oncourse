@@ -1,9 +1,9 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetSales } from "./EpicGetSales";
 import { EpicCancelSale } from "./EpicCancelSale";
 import { EpicGetSaleDetails } from "./EpicGetSaleDetails";
-import { EpicSetToDelivered } from "./EpicSetToDelivered";
 import { EpicGetSaleMenuTags } from "./EpicGetSaleMenuTags";
+import { EpicGetSales } from "./EpicGetSales";
+import { EpicSetToDelivered } from "./EpicSetToDelivered";
 
 export const EpicSales = combineEpics(
   EpicGetSales,

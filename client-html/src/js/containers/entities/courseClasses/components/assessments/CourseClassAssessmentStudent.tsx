@@ -6,22 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useEffect, useMemo, useState
-} from "react";
+import { CourseClassTutor, GradingItem, GradingType } from "@api/model";
 import { Grid, } from "@mui/material";
 import clsx from "clsx";
-import {
- CourseClassTutor, GradingItem, GradingType
-} from "@api/model";
+import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import React, { useEffect, useMemo, useState } from "react";
+import { Dispatch } from "redux";
 import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
 import { StudentForRender } from "./CourseClassAssessmentItems";
-import { useGradeErrors } from "./utils/hooks";
 import GradeContent from "./GradeContent";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceSearchSelect from "../../../../../common/components/form/formFields/EditInPlaceSearchSelect";
-import { Dispatch } from "redux";
+import { useGradeErrors } from "./utils/hooks";
 
 interface Props {
   elem: StudentForRender;

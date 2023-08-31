@@ -3,26 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
+import { PreferenceEnum } from "@api/model";
 import { Grid } from "@mui/material";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
+import { AppTheme, ThemeValues } from "ish-ui";
+import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { PreferenceEnum } from "@api/model";
-import { State } from "../../reducers/state";
-import DashboardHeader from "./components/DashboardHeader";
-import ActionBody from "./components/action-body/ActionBody";
-import { getUserPreferences, showConfirm, setUserPreference, checkPermissions } from "../../common/actions";
-import {
-  DASHBOARD_CATEGORY_WIDTH_KEY,
-  DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP,
-} from "../../constants/Config";
-import { AppTheme, ThemeValues } from "../../model/common/Theme";
+import { checkPermissions, getUserPreferences, setUserPreference, showConfirm } from "../../common/actions";
 import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
-import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
 import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
+import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
+import { DASHBOARD_CATEGORY_WIDTH_KEY, DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP, } from "../../constants/Config";
+import { State } from "../../reducers/state";
+import ActionBody from "./components/action-body/ActionBody";
+import DashboardHeader from "./components/DashboardHeader";
 
 const styles = (theme: AppTheme) =>
   createStyles({

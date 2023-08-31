@@ -3,32 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
+import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
 import Grid from "@mui/material/Grid";
+import { addHours } from "date-fns";
+import { idsToString, ShowConfirmCaller } from "ish-ui";
 import isEqual from "lodash.isequal";
+import * as React from "react";
+import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import {
-  Form,
-  FieldArray,
-  getFormValues,
-  reduxForm,
   arrayInsert,
   arrayRemove,
+  FieldArray,
+  Form,
+  getFormValues,
   initialize,
+  reduxForm,
   SubmissionError
 } from "redux-form";
-import { connect } from "react-redux";
-import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import { addHours } from "date-fns";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import AvailabilityRenderer from "../../../../../common/components/form/availabilityComponent/AvailabilityRenderer";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
+import { State } from "../../../../../reducers/state";
 
 const manualUrl = getManualLink("generalPrefs_holidays");
 

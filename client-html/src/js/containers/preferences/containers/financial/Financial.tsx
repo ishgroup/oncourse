@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Account } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { State } from "../../../../reducers/state";
-import { Categories } from "../../../../model/preferences";
-import FormContainer from "../FormContainer";
-import FinancialForm from "./components/FinancialForm";
-import { Account } from "@api/model";
-import { getPlainAccounts } from "../../../entities/accounts/actions";
 import { getUserPreferences } from "../../../../common/actions";
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
+import { Categories } from "../../../../model/preferences";
+import { State } from "../../../../reducers/state";
+import { getPlainAccounts } from "../../../entities/accounts/actions";
+import FormContainer from "../FormContainer";
+import FinancialForm from "./components/FinancialForm";
 
 interface Props {
   financial: any;

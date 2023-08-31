@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import { createStyles, withStyles } from "@mui/styles";
 import { IconButton } from "@mui/material";
-import { AppTheme } from "../../../../model/common/Theme";
-import { stopEventPropagation } from "../../../utils/events";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Collapse from "@mui/material/Collapse";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import { AppTheme, stopEventPropagation } from "ish-ui";
+import React from "react";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 
 const styles = (theme: AppTheme) =>
@@ -70,7 +69,15 @@ interface Props {
 
 const ExpandableItem: React.FunctionComponent<Props> = props => {
   const {
-    expanded, keepPaper, onChange, classes, collapsedContent, buttonsContent, detailsContent, elevation = 2, expandButtonId
+    expanded,
+    keepPaper,
+    onChange,
+    classes,
+    collapsedContent,
+    buttonsContent,
+    detailsContent,
+    elevation = 2,
+    expandButtonId
   } = props;
 
   const buttonId = expandButtonId ? `expand-button-${expandButtonId}` : null;
@@ -81,7 +88,7 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
   return (
     <Accordion
       expanded={expanded}
-      TransitionProps={{ unmountOnExit: true, mountOnEnter: true }}
+      TransitionProps={{unmountOnExit: true, mountOnEnter: true}}
       classes={{
         root: clsx(classes.expansionPanelRoot,
           !expanded
@@ -97,13 +104,13 @@ const ExpandableItem: React.FunctionComponent<Props> = props => {
           expandIconWrapper: classes.expandIcon
         }}
         onClick={onChange}
-        expandIcon={<IconButton id={buttonId} {...iconButtonProps}><ExpandMoreIcon /></IconButton>}
+        expandIcon={<IconButton id={buttonId} {...iconButtonProps}><ExpandMoreIcon/></IconButton>}
       >
-        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{ root: classes.collapseRoot }}>
+        <Collapse in={!expanded} timeout="auto" mountOnEnter unmountOnExit classes={{root: classes.collapseRoot}}>
           {collapsedContent}
         </Collapse>
 
-        <div className="flex-fill" />
+        <div className="flex-fill"/>
 
         {buttonsContent}
       </AccordionSummary>

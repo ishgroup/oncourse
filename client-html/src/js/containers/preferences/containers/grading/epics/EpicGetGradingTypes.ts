@@ -14,8 +14,8 @@
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { GET_GRADING_TYPES_FULFILLED, GET_GRADING_TYPES_REQUEST } from "../../../actions";
 import PreferencesService from "../../../services/PreferencesService";
-import { GET_GRADING_TYPES_REQUEST, GET_GRADING_TYPES_FULFILLED } from "../../../actions";
 
 const request: EpicUtils.Request = {
   type: GET_GRADING_TYPES_REQUEST,

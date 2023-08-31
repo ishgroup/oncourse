@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Divider, Grid } from "@mui/material";
 import React from "react";
 import { FieldArray } from "redux-form";
-import { Grid, Divider } from "@mui/material";
+import DocumentsRenderer from "../../../../../common/components/form/documents/DocumentsRenderer";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import DocumentsRenderer from "../../../../../common/components/form/documents/DocumentsRenderer";
 
 const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
   twoColumn,

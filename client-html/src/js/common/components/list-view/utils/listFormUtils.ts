@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-export const shouldAsyncValidate = ({ trigger, pristine, initialized }) => {
+export const shouldAsyncValidate = ({trigger, pristine, initialized}) => {
   switch (trigger) {
     case "blur":
     case "change":

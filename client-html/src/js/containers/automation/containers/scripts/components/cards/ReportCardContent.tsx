@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
 import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
+import React, { useMemo } from "react";
 import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import PdfService from "../../../pdf-reports/services/PdfService";
-import { ScriptComponent } from "../../../../../../model/scripts";
+import { change } from "redux-form";
 import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { renderAutomationItems } from "../../../../utils";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { useAppSelector } from "../../../../../../common/utils/hooks";
+import { ScriptComponent } from "../../../../../../model/scripts";
+import { renderAutomationItems } from "../../../../utils";
+import PdfService from "../../../pdf-reports/services/PdfService";
 
 interface Props {
   name: string;

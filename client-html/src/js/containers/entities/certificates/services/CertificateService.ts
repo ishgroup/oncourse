@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import {
   Certificate,
   CertificateApi,
-  CertificateValidationRequest,
+  CertificateCreateForEnrolmentsRequest,
   CertificateRevokeRequest,
-  CertificateCreateForEnrolmentsRequest
+  CertificateValidationRequest
 } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class CertificateService {
   readonly certificateApi = new CertificateApi(new DefaultHttpService());

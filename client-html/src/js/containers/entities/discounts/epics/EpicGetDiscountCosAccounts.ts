@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_DISCOUNT_COS_ACCOUNTS, GET_DISCOUNT_COS_ACCOUNTS_FULFILLED } from "../actions";
-import { DataResponse } from "@api/model";
 
 const request: EpicUtils.Request<any, string> = {
   type: GET_DISCOUNT_COS_ACCOUNTS,

@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../services/HttpService";
 import { GOOGLE_MAPS_API_KEY } from "../../../../constants/Config";
+import { DefaultHttpService } from "../../../services/HttpService";
 
 class GoogleApiService {
   readonly service = new DefaultHttpService();

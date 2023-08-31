@@ -9,12 +9,12 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { getMessageQueued } from "../../../../common/actions";
+import { IAction } from "../../../../common/actions/IshAction";
 import { Categories } from "../../../../model/preferences";
 import { State } from "../../../../reducers/state";
 import FormContainer from "../FormContainer";
 import MessagingForm from "./components/MessagingForm";
-import { getMessageQueued } from "../../../../common/actions";
-import { IAction } from "../../../../common/actions/IshAction";
 
 class Messaging extends React.Component<any, any> {
   render() {

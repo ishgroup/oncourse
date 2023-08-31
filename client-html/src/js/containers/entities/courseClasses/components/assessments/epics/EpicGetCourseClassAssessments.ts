@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { GET_COURSE_CLASS_ASSESSMENTS } from "../actions";
 import CourseClassAssessmentService from "../services/CourseClassAssessmentService";
 

@@ -3,26 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import { change } from "redux-form";
 import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
-import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import { State } from "../../../../reducers/state";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { normalizeString } from "../../../../common/utils/strings";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { normalizeString } from "../../../../common/utils/strings";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { EditViewProps } from "../../../../model/common/ListView";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
   accounts?: Account[];
@@ -36,29 +35,32 @@ const validateNonNegative = value => (value < 0 ? "Must be non negative" : undef
 const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 
 const expiryOptions: CustomSelectorOption[] = [
-  { caption: "Never (Lifetime)", body: "", type: null },
+  { caption: "Never (Lifetime)", body: "" },
   {
     caption: "1st July",
     body: "",
-    type: null,
-    fieldName: "expiryType",
-    component: EditInPlaceField
+    formFileldProps: {
+      type: "text",
+      name: "expiryType",
+    }
   },
   {
     caption: "1st January",
     body: "",
-    type: null,
-    fieldName: "expiryType",
-    component: EditInPlaceField
+    formFileldProps: {
+      type: "text",
+      name: "expiryType",
+    }
   },
   {
     caption: "Days",
     body: "",
-    type: "number",
-    component: EditInPlaceField,
-    fieldName: "expiryDays",
-    validate: [validateNonNegative, validateSingleMandatoryField],
-    normalize: normalizeNumber
+    formFileldProps: {
+      type: "number",
+      name: "expiryDays",
+      validate: [validateNonNegative, validateSingleMandatoryField],
+      normalize: normalizeNumber
+    }
   }
 ];
 

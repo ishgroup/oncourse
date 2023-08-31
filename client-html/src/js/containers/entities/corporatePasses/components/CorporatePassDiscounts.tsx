@@ -1,17 +1,17 @@
+import { CorporatePass, Discount } from "@api/model";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { CorporatePass, Discount } from "@api/model";
 import { change } from "redux-form";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
-import { discountSort, mapPlainDiscounts, transformDiscountForNestedList } from "../../discounts/utils";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
+import { discountSort, mapPlainDiscounts, transformDiscountForNestedList } from "../../discounts/utils";
 
 interface Props {
   values?: CorporatePass;

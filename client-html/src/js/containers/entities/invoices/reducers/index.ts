@@ -1,10 +1,10 @@
 import { IAction } from "../../../../common/actions/IshAction";
 import {
+  GET_AMOUNT_OWING_FULFILLED,
+  GET_DEFAULT_INVOICE_TERMS_FULFILLED,
   SET_CONTRA_INVOICES,
   SET_INVOICE_LINE_COURSE,
   SET_INVOICE_LINE_ENROLMENTS,
-  GET_AMOUNT_OWING_FULFILLED,
-  GET_DEFAULT_INVOICE_TERMS_FULFILLED,
   SET_SELECTED_CONTACT
 } from "../actions";
 import { InvoicesState } from "./state";

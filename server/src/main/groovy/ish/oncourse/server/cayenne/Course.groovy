@@ -280,6 +280,19 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
+	 * The course short description is displayed on the courses page as a description of course under the title.
+	 * If value not set, webDescription will be displayed.
+	 * It can contain rich text for embedding images, blocks, video, dynamic text, and more. It also supported unicode for multi-language support.
+	 *
+	 * @return a rich text field for display on the web
+	 */
+	@API
+	@Override
+	String getShortWebDescription() {
+		return super.getShortWebDescription()
+	}
+
+	/**
 	 * @return application records linked to this course
 	 */
 	@Nonnull

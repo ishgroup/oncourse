@@ -3,16 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { ProductItemCancel } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { CANCEL_SALE, CANCEL_SALE_FULFILLED } from "../actions";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import SaleService from "../services/SaleService";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { getEntityRecord } from "../../common/actions";
+import { CANCEL_SALE, CANCEL_SALE_FULFILLED } from "../actions";
+import SaleService from "../services/SaleService";
 
 const request: EpicUtils.Request<any, { productItemCancel: ProductItemCancel }> = {
   type: CANCEL_SALE,

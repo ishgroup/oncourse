@@ -1,16 +1,16 @@
+import { createStyles } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import clsx from "clsx";
 import * as React from "react";
 import { useState } from "react";
-import withStyles from "@mui/styles/withStyles";
-import { createStyles } from "@mui/material";
-import clsx from "clsx";
-import FilterGroupComp from "./components/FilterGroup";
-import StubFilterItem from "./components/StubFilterItem";
-import ListTagGroups from "./components/ListTagGroups";
+import { FilterGroup } from "../../../../../model/common/ListView";
 import HamburgerMenu from "../../../layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../layout/swipeable-sidebar/utils";
-import { FilterGroup } from "../../../../../model/common/ListView";
-import FiltersSwitcher from "./components/FiltersSwitcher";
 import ChecklistsFilters from "./components/ChecklistsFilters";
+import FilterGroupComp from "./components/FilterGroup";
+import FiltersSwitcher from "./components/FiltersSwitcher";
+import ListTagGroups from "./components/ListTagGroups";
+import StubFilterItem from "./components/StubFilterItem";
 
 const styles = theme =>
   createStyles({

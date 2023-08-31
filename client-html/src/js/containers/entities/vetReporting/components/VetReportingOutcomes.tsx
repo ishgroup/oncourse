@@ -6,19 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useState } from "react";
-import { EditViewProps } from "../../../../model/common/ListView";
-import FullScreenStickyHeader from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import Divider from "@mui/material/Divider";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import CircularProgress from "@mui/material/CircularProgress";
 import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
+import { LinkAdornment } from "ish-ui";
+import React, { useCallback, useState } from "react";
 import { change } from "redux-form";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import FullScreenStickyHeader
+  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { VetReport } from "../../../../model/entities/VetReporting";
-import { openOutcomeLink, OutcomeSelectItemRenderer, OutcomeSelectValueRenderer } from "../../outcomes/utils";
 import { getEntityItemById } from "../../common/entityItemsService";
 import OutcomeEditFields from "../../outcomes/components/OutcomeEditFields";
-import CircularProgress from "@mui/material/CircularProgress";
+import { openOutcomeLink, OutcomeSelectItemRenderer, OutcomeSelectValueRenderer } from "../../outcomes/utils";
 
 const getFieldName = name => `outcome.${name}`;
 

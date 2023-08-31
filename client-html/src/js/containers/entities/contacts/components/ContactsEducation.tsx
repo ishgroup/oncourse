@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Grid } from "@mui/material";
+import { openInternalLink } from "ish-ui";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { Grid } from "@mui/material";
 import { FieldArray, initialize } from "redux-form";
-import { AccessState } from "../../../../common/reducers/accessReducer";
-import { openInternalLink } from "../../../../common/utils/links";
-import { State } from "../../../../reducers/state";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { AccessState } from "../../../../common/reducers/accessReducer";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import { State } from "../../../../reducers/state";
 
 interface ContactsEducationProps extends EditViewProps {
   educationValues?: any;
