@@ -118,8 +118,6 @@ class PdfApiImpl implements PdfApi {
                 systemUserService.currentUser
         )
 
-        printRequest.emailToSent = "dmitry@ish.com.au"
-
         executorManager.submit(new Callable<Object>() {
             @Override
             Object call() throws Exception {
