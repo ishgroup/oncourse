@@ -37,7 +37,7 @@ const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
     classes, selectedRecords, allRecords, selectAll, setSelectAll, disabled, selectionOnly
   } = props;
 
-  const allRecordsText = allRecords !== null ? `${allRecords} found record${allRecords > 1 ? "s" : ""}` : "All records";
+  const allRecordsText = allRecords ? `${allRecords} found record${allRecords > 1 ? "s" : ""}` : "All records";
 
   const setAll = useCallback(() => {
     setSelectAll(true);
