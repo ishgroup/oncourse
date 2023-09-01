@@ -2,7 +2,7 @@ apply plugin: 'com.github.node-gradle.node'
 
 node {
     version = '16.14.2'
-    download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
+    download = true
     workDir = file("${project.buildDir}/nodejs")
     npmInstallCommand = System.getenv("CI") ? 'ci' : 'install'
 }
