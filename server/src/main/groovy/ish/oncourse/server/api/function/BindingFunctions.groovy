@@ -86,9 +86,9 @@ class BindingFunctions {
                 } else {
                     EntityValidator.throwClientErrorException(automation.id, "options[$i].value", "$dtoBinding.value is not valid for $dtoBinding.name option")
                 }
-            } else {
-                dbBinding.lable = dtoBinding.label
             }
+
+            dbBinding.lable = dtoBinding.label
         }
     }
 
