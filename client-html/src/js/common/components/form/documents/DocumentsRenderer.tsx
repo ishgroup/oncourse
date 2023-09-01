@@ -3,22 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import { Document, Tag } from "@api/model";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
 import Launch from "@mui/icons-material/Launch";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { AddButton, AppTheme, openInternalLink, ShowConfirmCaller } from "ish-ui";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { WrappedFieldArrayProps } from "redux-form";
-import { AppTheme } from "../../../../model/common/Theme";
-import { openInternalLink } from "../../../utils/links";
-import DocumentItem from "./components/items/DocumentItem";
-import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
+import { getEntityTags } from "../../../../containers/tags/actions";
+import { EntityName } from "../../../../model/entities/common";
 import { State } from "../../../../reducers/state";
+import DocumentItem from "../../documents/DocumentItem";
 import {
   clearEditingDocument,
   createDocument,
@@ -27,11 +27,8 @@ import {
   setEditingDocument,
   setSearchDocuments
 } from "./actions";
+import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
 import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/DocumentEditDialog";
-import { getEntityTags } from "../../../../containers/tags/actions";
-import { EntityName } from "../../../../model/entities/common";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import AddButton from "../../icons/AddButton";
 
 const styles = (theme: AppTheme) => createStyles({
   dropInfo: {
@@ -105,7 +102,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   closeEdit = () => {
-    const { clearEditingDocument, clearSearchDocuments } = this.props;
+    const {clearEditingDocument, clearSearchDocuments} = this.props;
 
     clearSearchDocuments();
     clearEditingDocument();
@@ -119,9 +116,9 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   removeNewDocument = () => {
-    const { fields } = this.props;
+    const {fields} = this.props;
 
-    const { isNewEditingDocument, editingDocumentIndex } = this.state;
+    const {isNewEditingDocument, editingDocumentIndex} = this.state;
 
     if (isNewEditingDocument) {
       fields.remove(editingDocumentIndex);
@@ -131,11 +128,11 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   unlinkDocument = (index: number) => {
-    const { showConfirm, fields } = this.props;
+    const {showConfirm, fields} = this.props;
 
-    const { editingDocumentPath } = this.state;
+    const {editingDocumentPath} = this.state;
 
-    showConfirm({ onConfirm: () => fields.remove(index), confirmMessage: "Document will be unlinked" });
+    showConfirm({onConfirm: () => fields.remove(index), confirmMessage: "Document will be unlinked"});
 
     if (editingDocumentPath) {
       this.closeEdit();
@@ -143,17 +140,17 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   onAddDocument = () => {
-    const { createDocument, form, fields } = this.props;
+    const {createDocument, form, fields} = this.props;
 
-    const { editingDocumentIndex } = this.state;
+    const {editingDocumentIndex} = this.state;
 
     createDocument(fields.get(editingDocumentIndex), form, fields.name, editingDocumentIndex);
   };
 
   onCancelEdit = () => {
-    const { editingDocument, fields } = this.props;
+    const {editingDocument, fields} = this.props;
 
-    const { editingDocumentIndex, isNewEditingDocument } = this.state;
+    const {editingDocumentIndex, isNewEditingDocument} = this.state;
 
     if (!isNewEditingDocument) {
       fields.remove(editingDocumentIndex);
@@ -178,7 +175,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   componentDidMount() {
-    const { tags, getDocumentTags } = this.props;
+    const {tags, getDocumentTags} = this.props;
 
     if (!tags && getDocumentTags) {
       getDocumentTags();
@@ -189,7 +186,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
 
   componentDidUpdate(prevProps) {
     const {
-     editingDocument, editingFormName, form, fields, tags, viewDocument
+      editingDocument, editingFormName, form, fields, tags, viewDocument
     } = this.props;
 
     if (!prevProps.editingDocument && editingDocument && editingFormName === form) {
@@ -242,19 +239,19 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   }
 
   setEditingItem = (document: Document) => {
-    const { setEditingDocument, form } = this.props;
+    const {setEditingDocument, form} = this.props;
 
     setEditingDocument(document, form);
   };
 
   setViewItem = (document: Document) => {
-    const { setEditingDocument, form } = this.props;
+    const {setEditingDocument, form} = this.props;
 
     setEditingDocument(document, form, true);
   };
 
   searchDocumentItem = (inputDocument: File) => {
-    const { searchExistingDocument, form } = this.props;
+    const {searchExistingDocument, form} = this.props;
     searchExistingDocument(inputDocument, form);
   };
 
@@ -278,7 +275,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
       entity,
       setDocumentFile,
       clearSearchDocuments,
-      meta: { dirty }
+      meta: {dirty}
     } = this.props;
 
     const {
@@ -337,9 +334,9 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
               color="primary"
               onClick={() => openInternalLink("/document")}
             >
-              <Launch fontSize="inherit" />
+              <Launch fontSize="inherit"/>
             </IconButton>
-            <AddButton size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
+            <AddButton size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton}/>
             <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
               Drag and drop file or click to browse.
             </Typography>
@@ -376,16 +373,16 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    clearEditingDocument: () => dispatch(clearEditingDocument()),
-    clearSearchDocuments: () => dispatch(setSearchDocuments(null)),
-    setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
-      dispatch(setEditingDocument(document, editingFormName, viewDocument)),
-    setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),
-    getDocumentTags: () => dispatch(getEntityTags("Document")),
-    searchExistingDocument: (inputDocument: File, editingFormName: string) =>
-      dispatch(searchDocumentByHash(inputDocument, editingFormName)),
-    createDocument: (document: Document, form: string, documentPath: string, index: number) =>
-      dispatch(createDocument(document, form, documentPath, index))
-  });
+  clearEditingDocument: () => dispatch(clearEditingDocument()),
+  clearSearchDocuments: () => dispatch(setSearchDocuments(null)),
+  setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
+    dispatch(setEditingDocument(document, editingFormName, viewDocument)),
+  setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),
+  getDocumentTags: () => dispatch(getEntityTags("Document")),
+  searchExistingDocument: (inputDocument: File, editingFormName: string) =>
+    dispatch(searchDocumentByHash(inputDocument, editingFormName)),
+  createDocument: (document: Document, form: string, documentPath: string, index: number) =>
+    dispatch(createDocument(document, form, documentPath, index))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DocumentsRenderer));

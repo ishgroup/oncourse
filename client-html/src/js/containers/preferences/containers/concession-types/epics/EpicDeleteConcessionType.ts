@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ConcessionType } from "@api/model";
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { DELETE_CONCESSION_TYPE_FULFILLED, DELETE_CONCESSION_TYPE_REQUEST } from "../../../actions";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { ConcessionType } from "@api/model";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: DELETE_CONCESSION_TYPE_REQUEST,

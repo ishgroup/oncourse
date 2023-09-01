@@ -6,23 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { utcToZonedTime } from "date-fns-tz";
 import CloseIcon from "@mui/icons-material/Close";
+import { Box, ListItem } from "@mui/material";
+import ListItemText from "@mui/material/ListItemText";
+import { alpha } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from '@mui/styles';
-import { alpha } from '@mui/material/styles';
 import clsx from "clsx";
-import ListItemText from "@mui/material/ListItemText";
-import Box from "@mui/material/Box";
 import { format as formatDate } from "date-fns";
-import ListItem from "@mui/material/ListItem";
-import { State } from "../../../reducers/state";
-import { AppTheme } from "../../../model/common/Theme";
-import { D_MMM_YYYY } from "../../utils/dates/format";
+import { utcToZonedTime } from "date-fns-tz";
+import { AppTheme, D_MMM_YYYY } from "ish-ui";
+import React, { useMemo } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { READ_NEWS } from "../../../constants/Config";
+import { State } from "../../../reducers/state";
 import { setUserPreference } from "../../actions";
 import { setReadNewsLocal } from "../list-view/actions";
 
@@ -139,7 +137,7 @@ const NewsItemRender = props => {
                     "blog-post-content d-block overflow-hidden", classes.postContentExpanded
                   )}
                 >
-                  <Box component="span" display="block" dangerouslySetInnerHTML={{ __html: post.content }} />
+                  <Box component="span" display="block" dangerouslySetInnerHTML={{__html: post.content}}/>
                 </Typography>
                 {" "}
               </Box>
@@ -157,24 +155,33 @@ const NewsItemRender = props => {
           )}
         />
       </div>
-      <CloseIcon className={classes.closeIcon} onClick={setIdOfReadNews} />
+      <CloseIcon className={classes.closeIcon} onClick={setIdOfReadNews}/>
     </ListItem>
   );
 };
 
 const NewsRender = props => {
   const {
-    blogPosts, classes, page, preferences, setReadNews, twoColumn, setReadNewsLocal, showPlaceholder, newsOffset, className
+    blogPosts,
+    classes,
+    page,
+    preferences,
+    setReadNews,
+    twoColumn,
+    setReadNewsLocal,
+    showPlaceholder,
+    newsOffset,
+    className
   } = props;
 
   const lastLoginOn = localStorage.getItem("lastLoginOn");
   const lastLoginOnWithTimeZone = utcToZonedTime(lastLoginOn || new Date(), Intl.DateTimeFormat().resolvedOptions().timeZone);
-  
+
   const postsForRender = useMemo(() => {
     const readNews = preferences[READ_NEWS] && preferences[READ_NEWS].split(",");
 
     const filteredPosts = blogPosts.filter(post => (page ? post.page && window.location.pathname.includes(post.page) : !post.page)
-    && (!readNews || !readNews.includes(post.id))).reverse();
+      && (!readNews || !readNews.includes(post.id))).reverse();
 
     const newsWithoutDate = filteredPosts.filter(post => !post.published);
     const newsWithDate = filteredPosts.filter(post => post.published);
@@ -182,7 +189,7 @@ const NewsRender = props => {
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <Box className={className} sx={{ marginTop: newsOffset }}>
+    <Box className={className} sx={{marginTop: newsOffset}}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
@@ -210,7 +217,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setReadNews: (newsId: string) => dispatch(setUserPreference({ key: READ_NEWS, value: newsId })),
+  setReadNews: (newsId: string) => dispatch(setUserPreference({key: READ_NEWS, value: newsId})),
   setReadNewsLocal: (newsId: string) => dispatch(setReadNewsLocal(newsId))
 });
 

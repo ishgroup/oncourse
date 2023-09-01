@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import UserRolesService from "../services/UserRolesService";
-import { DELETE_USER_ROLES_FULFILLED, DELETE_USER_ROLES_REQUEST } from "../../../actions";
 import { UserRole } from "@api/model";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { DELETE_USER_ROLES_FULFILLED, DELETE_USER_ROLES_REQUEST } from "../../../actions";
+import UserRolesService from "../services/UserRolesService";
 
 const request: EpicUtils.Request = {
   type: DELETE_USER_ROLES_REQUEST,

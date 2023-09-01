@@ -4,13 +4,13 @@
  */
 
 import { ClassCost } from "@api/model";
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import CourseClassCostService from "../services/ClassCostService";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { GET_COURSE_CLASS_COSTS } from "../actions";
+import CourseClassCostService from "../services/ClassCostService";
 
 const request: EpicUtils.Request<ClassCost[], number> = {
   type: GET_COURSE_CLASS_COSTS,

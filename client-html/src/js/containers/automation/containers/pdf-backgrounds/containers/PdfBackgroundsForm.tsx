@@ -6,25 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useRef, useState
-} from "react";
-import { change, Form, initialize, InjectedFormProps } from "redux-form";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
 import { ReportOverlay } from "@api/model";
-import { Dispatch } from "redux";
-import Button from "@mui/material/Button";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import LoadingButton from "@mui/lab/LoadingButton";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { usePrevious } from "../../../../../common/utils/hooks";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import FilePreview from "../../../../../common/components/form/FilePreview";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import { FilePreview, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch } from "redux";
+import { change, Form, initialize, InjectedFormProps } from "redux-form";
 import { showMessage } from "../../../../../common/actions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
 
 const manualUrl = getManualLink("reports_background");
@@ -182,7 +179,6 @@ const PdfBackgroundsForm = React.memo<Props>(
                       {
                         action: handleDelete,
                         icon: <DeleteForever />,
-                        confirm: true,
                         tooltip: "Delete PDF background",
                         confirmText: "PDF background will be deleted permanently",
                         confirmButtonText: "DELETE"

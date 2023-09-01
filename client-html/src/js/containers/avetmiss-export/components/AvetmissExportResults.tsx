@@ -3,10 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { change } from "redux-form";
-import { ButtonBase, Divider, Typography } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
 import {
   AvetmissExportOutcome,
   AvetmissExportOutcomeCategory,
@@ -15,16 +11,19 @@ import {
   AvetmissExportSettings,
   AvetmissExportType
 } from "@api/model";
-import clsx from "clsx";
-import Button from "@mui/material/Button";
+import Launch from "@mui/icons-material/Launch";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { ButtonBase, Divider, Typography } from "@mui/material";
+import clsx from "clsx";
+import { openInternalLink } from "ish-ui";
+import React from "react";
+import { change } from "redux-form";
 import FormField from "../../../common/components/form/formFields/FormField";
 import SpeechCard from "../../../common/components/layout/SpeechCard";
-import { openInternalLink, saveCategoryAQLLink } from "../../../common/utils/links";
+import { saveCategoryAQLLink } from "../../../common/utils/links";
 
 interface ExtendedValues extends AvetmissExportSettings {
   defaultStatus: boolean;
-  noAssessment: boolean;
 }
 
 interface Props {
@@ -125,7 +124,7 @@ class AvetmissExportResults extends React.Component<Props, any> {
     delete settings.defaultStatus;
     delete settings.noAssessment;
     exportObj.settings = settings;
-    exportObj.settings.noAssessment = values.noAssessment;
+    exportObj.settings.noAssessment = outcome["Started (not assessed)"].number ? values.noAssessment : true;
 
     this.props.onExport(exportObj);
   };
@@ -611,7 +610,6 @@ class AvetmissExportResults extends React.Component<Props, any> {
           <LoadingButton
             variant="contained"
             color="primary"
-            className="avetmissButton"
             onClick={() => this.export(outcome)}
             loading={pending}
           >

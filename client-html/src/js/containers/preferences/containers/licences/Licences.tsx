@@ -6,16 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { List, ListItem, ListItemText, ListSubheader } from "@mui/material";
+import Button from "@mui/material/Button";
+import { withStyles } from "@mui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@mui/styles";
-import {
-  List, ListItem, ListSubheader, ListItemText
-} from "@mui/material";
-import Button from "@mui/material/Button";
-import { State } from "../../../../reducers/state";
-import * as Model from "../../../../model/preferences/Licences";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import * as Model from "../../../../model/preferences/Licences";
+import { State } from "../../../../reducers/state";
 
 const styles: any = () => ({
   disabledList: {

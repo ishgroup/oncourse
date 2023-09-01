@@ -6,31 +6,30 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
 import { Contact, ProductItem, ProductItemPayment, ProductItemStatus, ProductType } from "@api/model";
-import { change, FieldArray } from "redux-form";
-import { compareAsc, format as formatDate, startOfDay } from "date-fns";
-import { Grid, IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
+import { Grid, IconButton } from "@mui/material";
 import clsx from "clsx";
+import { compareAsc, format as formatDate, startOfDay } from "date-fns";
+import { EEE_D_MMM_YYYY, LinkAdornment, openInternalLink } from "ish-ui";
+import React, { useCallback } from "react";
+import { change, FieldArray } from "redux-form";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { openInternalLink } from "../../../../common/utils/links";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { buildUrl, getSaleEntityName, productUrl } from "../utils";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { useAppSelector } from "../../../../common/utils/hooks";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { getContactFullName } from "../../contacts/utils";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { buildUrl, getSaleEntityName, productUrl } from "../utils";
 
 interface SalesGeneralViewProps extends EditViewProps<ProductItem> {
 }

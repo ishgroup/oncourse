@@ -3,18 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
-import {
-  GET_AUTOMATION_PDF_REPORTS_LIST,
-  getAutomationPdfReportsListFulfilled
-} from "../actions";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { Create, Request } from "../../../../../common/epics/EpicUtils";
 import EntityService from "../../../../../common/services/EntityService";
+import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
 import history from "../../../../../constants/History";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
-import { Create, Request } from "../../../../../common/epics/EpicUtils";
+import { GET_AUTOMATION_PDF_REPORTS_LIST, getAutomationPdfReportsListFulfilled } from "../actions";
 
 const request: Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
   type: GET_AUTOMATION_PDF_REPORTS_LIST,

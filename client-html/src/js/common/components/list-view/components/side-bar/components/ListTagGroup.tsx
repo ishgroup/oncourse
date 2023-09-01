@@ -6,24 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import clsx from "clsx";
+import DragIndicator from "@mui/icons-material/DragIndicator";
 import TreeView from "@mui/lab/TreeView";
 import makeStyles from "@mui/styles/makeStyles";
+import clsx from "clsx";
+import React, { useCallback, useMemo, useState } from "react";
 import { Draggable } from "react-beautiful-dnd-next";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import ListTagItem from "./ListTagItem";
-import { MenuTag } from "../../../../../../model/tags";
-import { updateIndeterminateState, getUpdated } from "../../../utils/listFiltersUtils";
+import { FormMenuTag } from "../../../../../../model/tags";
+import { getUpdated, updateIndeterminateState } from "../../../utils/listFiltersUtils";
 import styles from "../../list/styles";
+import ListTagItem from "./ListTagItem";
 
 const useStyles = makeStyles(styles);
 
 interface Props {
-  rootTag: MenuTag;
+  rootTag: FormMenuTag;
   classes: any;
   showColoredDots: boolean;
-  updateActive: (updated: MenuTag) => void;
+  updateActive: (updated: FormMenuTag) => void;
   dndKey: number;
   dndEnabled?: boolean;
 }

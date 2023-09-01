@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Account } from "@api/model";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import * as React from "react";
 import { initialize } from "redux-form";
-import { Account } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import AccountsEditView from "./components/AccountsEditView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { getTaxTypes } from "../../preferences/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { getTaxTypes } from "../../preferences/actions";
+import AccountsEditView from "./components/AccountsEditView";
 
 const Initial: Account = {
   accountCode: null,

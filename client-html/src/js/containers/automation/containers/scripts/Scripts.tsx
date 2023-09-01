@@ -3,23 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ScheduleType, Script } from "@api/model";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-  getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm
-} from "redux-form";
 import { withRouter } from "react-router";
-import { ScheduleType, Script } from "@api/model";
 import { Dispatch } from "redux";
+import { getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
+import { showConfirm } from "../../../../common/actions";
+import { mapSelectItems } from "../../../../common/utils/common";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
-import ScriptsForm from "./containers/ScriptsForm";
-import {
- createScriptItem, deleteScriptItem, getScriptItem, saveScriptItem
-} from "./actions";
+import { createScriptItem, deleteScriptItem, getScriptItem, saveScriptItem } from "./actions";
 import { SCRIPT_EDIT_VIEW_FORM_NAME } from "./constants";
-import { mapSelectItems } from "../../../../common/utils/common";
-import { showConfirm } from "../../../../common/actions";
+import ScriptsForm from "./containers/ScriptsForm";
 
 const ScheduleTypeItems = Object.keys(ScheduleType).map(mapSelectItems);
 

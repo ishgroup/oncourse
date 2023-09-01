@@ -6,29 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import {
- Diff, FundingSource, SearchQuery, Sorting, Tag 
-} from "@api/model";
+import { Diff, FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
+import { Help } from "@mui/icons-material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Grid, ListItem } from "@mui/material";
+import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import withStyles from "@mui/styles/withStyles";
 import Typography from "@mui/material/Typography";
-import { Help } from "@mui/icons-material";
-import React, {
- useEffect, useMemo, useState
-} from "react";
+import withStyles from "@mui/styles/withStyles";
+import { ShowConfirmCaller } from "ish-ui";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
- change, Field, reduxForm, reset 
-} from "redux-form";
-import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { change, Field, reduxForm, reset } from "redux-form";
 import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
 import { getEntityTags } from "../../../../../containers/tags/actions";
+import { EntityName } from "../../../../../model/entities/common";
 import { State } from "../../../../../reducers/state";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
 import FormField from "../../../form/formFields/FormField";
@@ -36,8 +31,6 @@ import { bulkChangeRecords } from "../../actions";
 import bottomDrawerStyles from "../bottomDrawerStyles";
 import SelectionSwitcher from "../share/SelectionSwitcher";
 import { BulkEditField, getBulkEditFields } from "./utils";
-import { EntityName } from "../../../../../model/entities/common";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
 
 interface BulkEditProps {
   rootEntity: EntityName;
@@ -258,7 +251,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           name={field.keyCode}
           type={field.type}
           component={DataTypeRenderer}
-                    validate={field.validate}
+           validate={field.validate}
           {...fieldProps}
         />
       );

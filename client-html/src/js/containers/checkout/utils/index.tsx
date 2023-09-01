@@ -17,8 +17,7 @@ import {
   ProductType
 } from "@api/model";
 import { differenceInMinutes, format, isBefore } from "date-fns";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
-import { decimalMinus, decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from "ish-ui";
 import {
   CheckoutCourse,
   CheckoutCourseClass,

@@ -3,24 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Grid, { GridSize } from "@mui/material/Grid";
-import { change, FieldArray } from "redux-form";
 import ScreenShare from "@mui/icons-material/ScreenShare";
+import Grid, { GridSize } from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { LinkAdornment, openInternalLink, TimetableButton } from "ish-ui";
+import * as React from "react";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import { State } from "../../../../reducers/state";
+import { change, FieldArray } from "redux-form";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { openInternalLink } from "../../../../common/utils/links";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
-import { openSiteLink } from "../../sites/utils";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { openSiteLink } from "../../sites/utils";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
 

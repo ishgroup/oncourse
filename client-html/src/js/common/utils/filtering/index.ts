@@ -1,8 +1,8 @@
 import { FilterGroup } from "../../../model/common/ListView";
-import { MenuTag } from "../../../model/tags";
+import { FormMenuTag } from "../../../model/tags";
 import { getActiveTags } from "../../components/list-view/utils/listFiltersUtils";
 
-export const getFiltersString = (filterGroups: FilterGroup[], tags: MenuTag[]) => {
+export const getFiltersString = (filterGroups: FilterGroup[], tags: FormMenuTag[]) => {
   const activeFiltersString = filterGroups
     .map(group => {
       const activeFilters = group.filters.filter(i => i.active).map(j => j.expression);

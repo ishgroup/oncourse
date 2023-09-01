@@ -1,6 +1,4 @@
-import {
- Diff, ProductItem, ProductItemApi, ProductItemCancel 
-} from "@api/model";
+import { Diff, ProductItem, ProductItemApi, ProductItemCancel } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class SalesService {

@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { withStyles, createStyles } from "@mui/styles";
-import clsx from "clsx";
 import Delete from "@mui/icons-material/Delete";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 

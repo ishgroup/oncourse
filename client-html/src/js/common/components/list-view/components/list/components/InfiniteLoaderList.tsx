@@ -6,21 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  createContext,
-  forwardRef,
-  memo,
-  useMemo,
-  useState
-} from "react";
-import {
-  flexRender
-} from '@tanstack/react-table';
-import { FixedSizeList, areEqual } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import InfiniteLoader from "react-window-infinite-loader";
-import clsx from "clsx";
 import Typography from "@mui/material/Typography";
+import { flexRender } from '@tanstack/react-table';
+import clsx from "clsx";
+import { stubFunction } from "ish-ui";
+import React, { createContext, forwardRef, memo, useMemo, useState } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { areEqual, FixedSizeList } from "react-window";
+import InfiniteLoader from "react-window-infinite-loader";
 import {
   APP_BAR_HEIGHT,
   HEADER_ROWS_COUNT,
@@ -28,10 +21,9 @@ import {
   LIST_PAGE_SIZE,
   LIST_TWO_COLUMN_ROW_HEIGHT
 } from "../../../../../../constants/Config";
-import TagDotRenderer from "./TagDotRenderer";
 import StaticProgress from "../../../../progress/StaticProgress";
-import { stubFunction } from "../../../../../utils/common";
 import { CHECKLISTS_COLUMN, COLUMN_WITH_COLORS } from "../constants";
+import TagDotRenderer from "./TagDotRenderer";
 
 const ThreeColumnCell = ({ row }) => (<div>
   <Typography variant="subtitle2" color="textSecondary" component="div" noWrap>
@@ -92,7 +84,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
   );
 
   if (!row) {
-    return <div style={style} className={rowClasses} />;
+    return <div style={style} className={rowClasses}/>;
   }
 
   return (
@@ -103,9 +95,9 @@ const ListRow = memo<any>(({ data, index, style }) => {
       onDoubleClick={() => onRowDoubleClick(row.id)}
     >
       {threeColumn ? (
-        <ThreeColumnCell row={row} />
+        <ThreeColumnCell row={row}/>
       ) : row.getVisibleCells().filter(cell => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(cell.column.id)).map(cell => (
-        <TwoColumnCell cell={cell} key={cell.id} classes={classes} />
+        <TwoColumnCell cell={cell} key={cell.id} classes={classes}/>
       ))}
     </div>
   );
@@ -126,29 +118,31 @@ const innerElementType = forwardRef<any, { children?: React.ReactNode }>(({ chil
 ));
 
 export default ({
-  table,
-  classes,
-  onRowSelect,
-  onLoadMore,
-  recordsCount,
-  listRef,
-  threeColumn,
-  onRowDoubleClick,
-  mainContentWidth,
-  header
-}) => {
+                  table,
+                  classes,
+                  onRowSelect,
+                  onLoadMore,
+                  recordsCount,
+                  listRef,
+                  threeColumn,
+                  onRowDoubleClick,
+                  mainContentWidth,
+                  header
+                }) => {
   const rows = table.getRowModel().rows;
   const totalColumnsWidth = table.getCenterTotalSize();
 
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const isItemLoaded = index => index >= recordsCount ? true : !!rows[index];
 
   const loadMoreItems = isLoading
     ? stubFunction
     : (startIndex, stopIndex) => {
       setIsLoading(true);
-      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => { setIsLoading(false); });
+      return new Promise(resolve => onLoadMore(stopIndex, resolve)).then(() => {
+        setIsLoading(false);
+      });
     };
 
   const itemCountBase = (rows.length + LIST_PAGE_SIZE);
@@ -179,7 +173,6 @@ export default ({
           <AutoSizer>
             {({ height, width }) => (
               <FixedSizeList
-                style={{ overflow: false }}
                 itemCount={itemCount}
                 itemData={itemData}
                 itemSize={threeColumn ? APP_BAR_HEIGHT : LIST_TWO_COLUMN_ROW_HEIGHT}

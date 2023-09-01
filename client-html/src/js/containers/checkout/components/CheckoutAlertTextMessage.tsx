@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
 import Alert from "@mui/lab/Alert";
 import Tooltip from "@mui/material/Tooltip";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { makeAppStyles } from "ish-ui";
+import React from "react";
 
 const useStyles = makeAppStyles(() => ({
   alertRoot: {

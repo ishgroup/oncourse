@@ -3,23 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import {
-  change,
-  FieldArray
-} from "redux-form";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import { AppTheme } from "ish-ui";
+import React from "react";
+import { connect } from "react-redux";
+import { change, FieldArray } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { AppTheme } from "../../../../model/common/Theme";
 import { State } from "../../../../reducers/state";
 import ContactSelectItemRenderer from "../../../entities/contacts/components/ContactSelectItemRenderer";
 import { getContactFullName } from "../../../entities/contacts/utils";

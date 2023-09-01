@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Qualification } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { Qualification } from "@api/model";
+import { initialize } from "redux-form";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import QualificationsEditView from "./components/QualificationsEditView";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 
 const filterGroups: FilterGroup[] = [
   {

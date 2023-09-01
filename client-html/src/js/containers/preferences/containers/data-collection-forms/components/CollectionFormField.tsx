@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
 import Delete from "@mui/icons-material/Delete";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { createStyles, withStyles } from "@mui/styles";
+import clsx from "clsx";
+import * as React from "react";
 import { Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { ToogleCheckbox } from "../../../../../common/components/form/ToogleCheckbox";

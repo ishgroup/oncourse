@@ -1,20 +1,20 @@
-import * as React from "react";
-import withStyles from "@mui/styles/withStyles";
+import { Filter } from "@api/model";
+import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
+import Delete from "@mui/icons-material/Delete";
 import { createStyles } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
-import Tooltip from "@mui/material/Tooltip";
 import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { Filter } from "@api/model";
-import { createCustomFilter, setListSavingFilter } from "../../../actions";
-import { SavingFilterState } from "../../../../../../model/common/ListView";
 import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX } from "../../../../../../constants/Config";
+import { SavingFilterState } from "../../../../../../model/common/ListView";
 import { validateForbiddenSymbols, validateSingleMandatoryField } from "../../../../../utils/validation";
+import { createCustomFilter, setListSavingFilter } from "../../../actions";
 
 const styles = theme =>
   createStyles({

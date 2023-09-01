@@ -1,5 +1,5 @@
-import { Epic } from "redux-observable";
 import { Diff } from "@api/model";
+import { Epic } from "redux-observable";
 import { showMessage } from "../../../../common/actions";
 import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";

@@ -1,8 +1,8 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetCustomFieldTypes } from "./EpicGetCustomFieldTypes";
-import { EpicGetSalesCustomFieldsTypes } from "./EpicGetSalesCustomFieldsTypes";
-import { EpicGetInvoicesCustomFieldsTypes } from "./EpicGetInvoicesCustomFieldsTypes";
 import { EpicGetContactsCustomFieldsTypes } from "./EpicGetContactsCustomFieldTypes";
+import { EpicGetCustomFieldTypes } from "./EpicGetCustomFieldTypes";
+import { EpicGetInvoicesCustomFieldsTypes } from "./EpicGetInvoicesCustomFieldsTypes";
+import { EpicGetSalesCustomFieldsTypes } from "./EpicGetSalesCustomFieldsTypes";
 
 export const EpicCustomFieldTypes = combineEpics(EpicGetCustomFieldTypes, EpicGetSalesCustomFieldsTypes,
   EpicGetInvoicesCustomFieldsTypes, EpicGetContactsCustomFieldsTypes);

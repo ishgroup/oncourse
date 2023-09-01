@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { EnrolmentsState } from "./state";
 import { IAction } from "../../../../common/actions/IshAction";
 import {
   CANCEL_ENROLMENT,
@@ -11,6 +10,7 @@ import {
   SET_ENROLMENTS_DIALOG,
   SET_ENROLMENTS_PROCESSING
 } from "../actions";
+import { EnrolmentsState } from "./state";
 
 const initial: EnrolmentsState = {
   invoiceLines: [],

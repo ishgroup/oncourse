@@ -1,8 +1,7 @@
 import { format } from "date-fns";
 import TransactionsEditView from "../../../js/containers/entities/transactions/components/TransactionsEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
-import { formatCurrency } from "../../../js/common/utils/numbers/numbersNormalizing";
+import { formatCurrency, III_DD_MMM_YYYY } from "ish-ui";
 
 describe("Virtual rendered TransactionsEditView", () => {
   mockedEditView({

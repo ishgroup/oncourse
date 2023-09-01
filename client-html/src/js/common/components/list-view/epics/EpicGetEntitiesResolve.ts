@@ -7,15 +7,15 @@
  */
 
 import { Epic, ofType } from "redux-observable";
-import { mergeMap } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { mergeMap } from "rxjs/operators";
 import { GET_RECORDS_FULFILLED_RESOLVE } from "../actions";
 
 export const EpicGetEntitiesResolve: Epic<any> = (
   action$: Observable<any>,
 ): Observable<any> => action$.pipe(
   ofType(GET_RECORDS_FULFILLED_RESOLVE),
-  mergeMap(({ payload: { resolve } }) => {
+  mergeMap(({payload: {resolve}}) => {
     resolve();
 
     return [];

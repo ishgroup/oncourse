@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ContactRelationType } from "@api/model";
+import { ShowConfirmCaller } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormValues } from "redux-form";
-import { ContactRelationType } from "@api/model";
-import { updateContactRelationTypes, deleteContactRelationType, getContactRelationTypes } from "../../actions";
-import { State } from "../../../../reducers/state";
-import { Fetch } from "../../../../model/common/Fetch";
-import ContactRelationTypesForm from "./components/ContactRelationTypesForm";
-import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
+import { Fetch } from "../../../../model/common/Fetch";
+import { State } from "../../../../reducers/state";
+import { deleteContactRelationType, getContactRelationTypes, updateContactRelationTypes } from "../../actions";
+import ContactRelationTypesForm from "./components/ContactRelationTypesForm";
 
 interface Props {
   getTypes: () => void;

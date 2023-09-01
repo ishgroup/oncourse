@@ -3,31 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
-import React, { RefObject } from "react";
-import createStyles from "@mui/styles/createStyles";
-import debounce from "lodash.debounce";
-import { format } from "date-fns";
 import Collapse from "@mui/material/Collapse";
 import Dialog from "@mui/material/Dialog";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import LinearProgress from "@mui/material/LinearProgress";
-import withTheme from "@mui/styles/withTheme";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import LinearProgress from "@mui/material/LinearProgress";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import createStyles from "@mui/styles/createStyles";
+import withStyles from "@mui/styles/withStyles";
+import withTheme from "@mui/styles/withTheme";
+import clsx from "clsx";
+import { format } from "date-fns";
+import { EditInPlaceSearchSelect, FileUploaderDialog, KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL, stubFunction } from "ish-ui";
+import debounce from "lodash.debounce";
+import React, { RefObject } from "react";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL } from "../../../../../utils/dates/format";
-import FileUploaderDialog from "../../../../file-uploader/FileUploaderDialog";
-import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { State } from "../../../../../../reducers/state";
-import { dialogStyles } from "./dialogStyles";
-import EditInPlaceSearchSelect from "../../../formFields/EditInPlaceSearchSelect";
+import { getDocumentItem, searchDocumentByName } from "../../actions";
 import { DocumentSearchItem as DocumentSearchItemType } from "../../epics/EpicSearchExistingDocumentByName";
-import { stubFunction } from "../../../../../utils/common";
+import { dialogStyles } from "./dialogStyles";
 
 const addDialogStyles = theme => createStyles({
   addDialogMargin: {
@@ -44,9 +41,14 @@ const addDialogStyles = theme => createStyles({
   }
 });
 
-const DocumentSearchItem = React.memo<{ data: DocumentSearchItemType; content: string; classes: any, parentProps: any }>(props => {
+const DocumentSearchItem = React.memo<{
+  data: DocumentSearchItemType;
+  content: string;
+  classes: any,
+  parentProps: any
+}>(props => {
   const {
-   classes, data, content, parentProps
+    classes, data, content, parentProps
   } = props;
 
   const formattedDate = format(new Date(data.added), KK_MM_AAAA_EEE_DD_MMM_YYYY_SPECIAL).replace(/\./g, "");
@@ -138,11 +140,11 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
         this.addDialogRefEvents();
       }
     } else if (this.dialogRef.current) {
-        this.addDraggingEvent(false);
-        this.dialogRef.current.removeEventListener("dragover", () => this.draggingEvent(false));
-        this.dialogRef.current.removeEventListener("dragenter", () => this.draggingEvent(false));
-        this.dialogRef.current.removeEventListener("dragleave", () => this.draggingEvent(false));
-      }
+      this.addDraggingEvent(false);
+      this.dialogRef.current.removeEventListener("dragover", () => this.draggingEvent(false));
+      this.dialogRef.current.removeEventListener("dragenter", () => this.draggingEvent(false));
+      this.dialogRef.current.removeEventListener("dragleave", () => this.draggingEvent(false));
+    }
   }
 
   debounceSearch = debounce(() => {
@@ -194,7 +196,7 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
   };
 
   searchItemsRenderer = (content, data, search, props) => (
-    <DocumentSearchItem classes={this.props.classes} data={data} content={content} parentProps={props} />
+    <DocumentSearchItem classes={this.props.classes} data={data} content={content} parentProps={props}/>
   );
 
   componentWillUnmount() {
@@ -243,14 +245,15 @@ class DocumentAddDialog extends React.PureComponent<any, any> {
               className={clsx("closeAndClearButton", classes.closeAndClearButton, { "zIndex2": isDragging })}
               onClick={this.onClose}
             >
-              <Close className="inputAdornmentIcon" />
+              <Close className="inputAdornmentIcon"/>
             </IconButton>
-            {fetch.pending && <LinearProgress className={classes.documentLoading} />}
+            {fetch.pending && <LinearProgress className={classes.documentLoading}/>}
           </div>
           <Collapse in={!searchValue}>
-            <FileUploaderDialog onChange={this.handleDocumentUpload} disabled={fetch.pending} isBackdropDragging={isDragging} />
+            <FileUploaderDialog onChange={this.handleDocumentUpload} disabled={fetch.pending}
+                                isBackdropDragging={isDragging}/>
           </Collapse>
-          <FileUploaderDialog onChange={this.handleDocumentUpload} disabled={fetch.pending} backdropEnabled />
+          <FileUploaderDialog onChange={this.handleDocumentUpload} disabled={fetch.pending} backdropEnabled/>
         </Dialog>
       </>
     );

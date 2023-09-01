@@ -9,11 +9,9 @@
  *  Public License for more details.
  */
 
-import React from "react";
-import {
-  Dialog, DialogActions, DialogContent, DialogTitle, Button
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
+import React from "react";
 
 const styles = () => createStyles({
 

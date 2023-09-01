@@ -6,40 +6,38 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Dialog } from "@mui/material";
+import { CustomFieldType, Enrolment } from "@api/model";
+import { Dialog, FormControlLabel } from "@mui/material";
+import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
+import { openInternalLink, StyledCheckbox } from "ish-ui";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormInitialValues, getFormValues, initialize } from "redux-form";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import { CustomFieldType, Enrolment } from "@api/model";
-import Button from "@mui/material/Button";
+import { checkPermissions } from "../../../common/actions";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
 import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import OutcomeService from "../outcomes/services/OutcomeService";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getActiveFundingContracts } from "../../avetmiss-export/actions";
+import { getGradingTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
+import { updateEntityRecord } from "../common/actions";
+import OutcomeService from "../outcomes/services/OutcomeService";
 import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
 import EnrolmentEditView from "./components/EnrolmentEditView";
-import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import { State } from "../../../reducers/state";
-import { openInternalLink } from "../../../common/utils/links";
-import { checkPermissions } from "../../../common/actions";
-import { getGradingTypes } from "../../preferences/actions";
-import { updateEntityRecord } from "../common/actions";
 
 const nameCondition = (val: Enrolment) => val.studentName;
 
@@ -150,7 +148,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 ];
 
-const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID"];
+const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID", "vetPurchasingContractScheduleID"];
 
 const getDefaultFieldName = (field: keyof Enrolment) => {
   switch (field) {
@@ -162,6 +160,9 @@ const getDefaultFieldName = (field: keyof Enrolment) => {
     }
     case "vetPurchasingContractID": {
       return "Default purchasing contract identifier";
+    }
+    case "vetPurchasingContractScheduleID": {
+      return "Purchasing Contract Schedule Identifier";
     }
     default:
       return "";
@@ -348,7 +349,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
               <div>
                 <FormControlLabel
                   key={f.name}
-                  className="checkbox pb-3 pt-3"
+                  className="checkbox mb-3 mt-3"
                   control={(
                     <StyledCheckbox
                       checked={changedFields[i].update}

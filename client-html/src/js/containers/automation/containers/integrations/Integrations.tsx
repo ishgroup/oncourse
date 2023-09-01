@@ -1,14 +1,11 @@
+import { Card, CardActions, CardContent, CardMedia, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import { withStyles } from "@mui/styles";
 import React, { useCallback } from "react";
 import { withRouter } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import {
- Card, CardActions, CardContent, CardMedia 
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
-import Button from "@mui/material/Button";
-import IntegrationTypes from "./IntegrationTypes";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
 import IntegrationDescription from "./components/IntegrationDescription";
+import IntegrationTypes from "./IntegrationTypes";
 
 const styles = theme => ({
   image: {

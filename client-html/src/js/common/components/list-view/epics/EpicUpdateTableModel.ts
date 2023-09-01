@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { TableModel } from "@api/model";
+import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../epics/EpicUtils";
 import EntityService from "../../../services/EntityService";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST, UPDATE_TABLE_MODEL_REQUEST, UPDATE_TAGS_ORDER } from "../actions";
 
 const request: EpicUtils.Request<
@@ -40,16 +40,16 @@ const request: EpicUtils.Request<
   processData: (records: any, state: any, payload) => [
     ...(payload.listUpdate
       ? [
-          {
-            type: GET_RECORDS_REQUEST,
-            payload: { entity: payload.entity, listUpdate: !payload.resetScroll }
-          },
+        {
+          type: GET_RECORDS_REQUEST,
+          payload: {entity: payload.entity, listUpdate: !payload.resetScroll}
+        },
         {
           type: UPDATE_TAGS_ORDER,
           payload: payload.model.tagsOrder || state.list.records.tagsOrder,
         }
       ]
-    : [])
+      : [])
   ],
   processError: response => FetchErrorHandler(response, "List settings was not saved")
 };

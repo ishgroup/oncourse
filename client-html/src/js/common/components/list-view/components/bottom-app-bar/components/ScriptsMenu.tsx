@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import MenuItem from "@mui/material/MenuItem";
 import { Script } from "@api/model";
 import { Menu } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import React from "react";
 import { FilterScriptsBy } from "../../../../../../model/common/ListView";
 
 interface ScriptsMenuProps {

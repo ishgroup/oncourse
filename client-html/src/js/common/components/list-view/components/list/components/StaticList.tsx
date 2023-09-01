@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { memo } from "react";
-import { FixedSizeList, areEqual } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import clsx from "clsx";
 import TableCell from "@mui/material/TableCell";
+import { flexRender } from "@tanstack/react-table";
+import clsx from "clsx";
+import React, { memo } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { areEqual, FixedSizeList } from "react-window";
 import { NestedTableColumnsTypes } from "../../../../../../model/common/NestedTable";
 import NestedTableCheckboxCell from "./NestedTableCheckboxCell";
-import NestedTableLinkCell from "./NestedTableLinkCell";
-import { flexRender } from "@tanstack/react-table";
 import NestedTableDeleteCell from "./NestedTableDeleteCell";
+import NestedTableLinkCell from "./NestedTableLinkCell";
 
 const ListCell = React.memo<any>(({
- value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
-} ) => {
+                                    value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
+                                  }) => {
   switch (column.type as NestedTableColumnsTypes) {
     case "delete":
       return (
@@ -25,7 +25,7 @@ const ListCell = React.memo<any>(({
           onRowDelete={onRowDelete}
         />
       );
-      
+
     case "checkbox": {
       return (
         <NestedTableCheckboxCell
@@ -58,7 +58,7 @@ const ListCell = React.memo<any>(({
   }
 });
 
-const ListRow = memo<any>(({ data, index, style }) => {
+const ListRow = memo<any>(({data, index, style}) => {
   const {
     rows,
     classes,
@@ -86,6 +86,7 @@ const ListRow = memo<any>(({ data, index, style }) => {
     >
       {row.getVisibleCells().map(cell => (
         <TableCell
+          key={cell.id}
           style={{
             minWidth: '0px',
             boxSizing: "border-box",
@@ -118,14 +119,14 @@ export default itemData => {
 
   return (
     <AutoSizer>
-      {({ height, width }) => (
+      {({height, width}) => (
         <FixedSizeList
-          style={{ overflow: "hidden auto" }}
+          style={{overflow: "hidden auto"}}
           itemCount={rows.length}
           itemData={itemData}
           itemSize={27}
-          height={height}
-          width={totalColumnsWidth > width ? totalColumnsWidth : width}
+          height={isNaN(height) ? 0 : height}
+          width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
         >
           {ListRow}
         </FixedSizeList>

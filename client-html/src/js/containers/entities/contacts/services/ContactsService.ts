@@ -4,20 +4,20 @@
  */
 
 import {
-  Contact,
-  ContactApi,
-  ContactMergeApi,
-  ContactRelationType,
-  MergeData,
-  MergeRequest,
   ConcessionApi,
   ConcessionType,
-  TaxApi,
-  Tax,
-  UsiVerificationResult,
-  Diff,
+  Contact,
+  ContactApi,
+  ContactInsight,
   ContactInsightApi,
-  ContactInsight
+  ContactMergeApi,
+  ContactRelationType,
+  Diff,
+  MergeData,
+  MergeRequest,
+  Tax,
+  TaxApi,
+  UsiVerificationResult
 } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 

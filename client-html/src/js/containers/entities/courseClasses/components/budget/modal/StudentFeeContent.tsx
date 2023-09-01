@@ -3,34 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useMemo
-} from "react";
-import { arrayInsert, arrayRemove, change } from "redux-form";
 import { CourseClassPaymentPlan, Tax } from "@api/model";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import { addDays, format } from "date-fns";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
 import {
+  AddButton,
+  D_MMM_YYYY,
   decimalDivide,
   decimalMinus,
   decimalMul,
-  decimalPlus
-} from "../../../../../../common/utils/numbers/decimalCalculation";
-import {
+  decimalPlus,
   formatCurrency,
   normalizeNumber
-} from "../../../../../../common/utils/numbers/numbersNormalizing";
-import { accountLabelCondition } from "../../../../accounts/utils";
-import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
+} from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { arrayInsert, arrayRemove, change } from "redux-form";
+import FormField from "../../../../../../common/components/form/formFields/FormField";
+import { IS_JEST } from "../../../../../../constants/EnvironmentConstants";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
+import { accountLabelCondition } from "../../../../accounts/utils";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { getPaymentPlansTotal } from "../utils";
-import AddButton from "../../../../../../common/components/icons/AddButton";
-import { IS_JEST } from "../../../../../../constants/EnvironmentConstants";
 
 const StudentFeePaymentPlan: React.FC<any> = ({
  index, item, onDelete, onBlur, classStart

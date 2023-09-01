@@ -5,14 +5,14 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { change, getFormValues } from "redux-form";
 import { Dispatch } from "redux";
+import { change, getFormValues } from "redux-form";
 import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
 import { State } from "../../../../reducers/state";
+import { getContactFullName } from "../../../entities/contacts/utils";
+import { CheckoutPage } from "../../constants";
 import { HeaderFieldTypo } from "../HeaderField";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
-import { CheckoutPage } from "../../constants";
-import { getContactFullName } from "../../../entities/contacts/utils";
 
 interface Props {
   currencySymbol?: any;

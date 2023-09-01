@@ -1,5 +1,5 @@
-import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { Report } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_AUTOMATION_PDF_REPORTS_LIST = _toRequestType("get/pdf-reports/list");

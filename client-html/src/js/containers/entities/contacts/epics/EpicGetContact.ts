@@ -3,24 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
+import { clearActionsQueue, getUserPreferences } from "../../../../common/actions";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getNoteItems } from "../../../../common/components/form/notes/actions";
+import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from "../../../../constants/Config";
+import { VetReport } from "../../../../model/entities/VetReporting";
+import { getEntityItemById } from "../../common/entityItemsService";
 import {
   GET_CONTACT,
   getContactCertificates,
   getContactEnrolments,
   getContactOutcomes,
-  getContactPriorLearnings, getContactsStoredCc
+  getContactPriorLearnings,
+  getContactsStoredCc
 } from "../actions";
-import { SET_LIST_EDIT_RECORD } from "../../../../common/components/list-view/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { getEntityItemById } from "../../common/entityItemsService";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { AVETMIS_ID_KEY, REPLICATION_ENABLED_KEY } from "../../../../constants/Config";
-import { clearActionsQueue, getUserPreferences } from "../../../../common/actions";
-import { VetReport } from "../../../../model/entities/VetReporting";
 
 export const formatContactRelationIds = relations => relations.map(r => {
     if (r.contactFromId) {

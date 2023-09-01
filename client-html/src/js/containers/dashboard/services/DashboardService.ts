@@ -1,4 +1,4 @@
-import { DashboardApi, StatisticData, SearchGroup } from "@api/model";
+import { DashboardApi, SearchGroup, StatisticData } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class DashboardService {

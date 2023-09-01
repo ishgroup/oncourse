@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Tax } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { Tax } from "@api/model";
-import ContactsService from "../services/ContactsService";
 import { GET_CONTACTS_TAX_TYPES, GET_CONTACTS_TAX_TYPES_FULFILLED } from "../actions";
+import ContactsService from "../services/ContactsService";
 
 const request: EpicUtils.Request = {
   type: GET_CONTACTS_TAX_TYPES,

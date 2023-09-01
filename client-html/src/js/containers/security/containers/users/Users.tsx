@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import UsersForm from "./components/UsersForm";
-import { State } from "../../../../reducers/state";
-import * as SecuritySettingsModel from "../../../../model/preferences/security/SecuritySettings";
 import history from "../../../../constants/History";
+import * as SecuritySettingsModel from "../../../../model/preferences/security/SecuritySettings";
+import { State } from "../../../../reducers/state";
 import { getAdministrationSites } from "../../../entities/sites/actions";
+import UsersForm from "./components/UsersForm";
 
 class Users extends React.Component<any, any> {
   private unlisten;

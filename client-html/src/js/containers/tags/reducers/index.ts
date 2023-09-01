@@ -1,8 +1,5 @@
 import { IAction } from "../../../common/actions/IshAction";
-import {
-  GET_ALL_TAGS_FULFILLED,
-  GET_ENTITY_TAGS_REQUEST_FULFILLED,
-} from "../actions";
+import { GET_ALL_TAGS_FULFILLED, GET_ENTITY_TAGS_REQUEST_FULFILLED, } from "../actions";
 import { TagsState } from "./state";
 
 class TagsInitialState implements TagsState {

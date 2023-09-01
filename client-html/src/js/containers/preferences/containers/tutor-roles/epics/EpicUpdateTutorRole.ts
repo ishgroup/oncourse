@@ -3,10 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DefinedTutorRole } from "@api/model";
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import {
   GET_TUTOR_ROLE_REQUEST,
   GET_TUTOR_ROLES_REQUEST,
@@ -14,8 +16,6 @@ import {
   UPDATE_TUTOR_ROLE_REQUEST
 } from "../../../actions";
 import PreferencesService from "../../../services/PreferencesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
-import { DefinedTutorRole } from "@api/model";
 
 const request: EpicUtils.Request<any,  { tutorRole: DefinedTutorRole }> = {
   type: UPDATE_TUTOR_ROLE_REQUEST,

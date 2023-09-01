@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse, Tax } from "@api/model";
 import { Epic } from "redux-observable";
-
-import { GET_PLAIN_TAX_ITEMS, GET_PLAIN_TAX_ITEMS_FULFILLED } from "../actions";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { DataResponse, Tax } from "@api/model";
+
+import { GET_PLAIN_TAX_ITEMS, GET_PLAIN_TAX_ITEMS_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request = {
   type: GET_PLAIN_TAX_ITEMS,

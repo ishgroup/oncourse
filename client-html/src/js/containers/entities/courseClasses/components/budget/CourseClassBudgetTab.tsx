@@ -6,39 +6,47 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Popover } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { createStyles, withStyles } from "@mui/styles";
+import { ClassCost, CourseClassTutor, Discount, Tax } from "@api/model";
+import { Grid, Popover } from "@mui/material";
 import { darken } from "@mui/material/styles";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { connect } from "react-redux";
-import {
- arrayInsert, arraySplice, change, initialize 
-} from "redux-form";
+import { createStyles, withStyles } from "@mui/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { isAfter, isBefore, isEqual } from 'date-fns';
-import {
- ClassCost, CourseClassTutor, Discount, Tax 
-} from "@api/model";
 import Decimal from "decimal.js-light";
+import {
+  AppTheme,
+  BooleanArgFunction,
+  decimalMinus,
+  decimalMul,
+  decimalPlus,
+  formatCurrency,
+  stopEventPropagation,
+  StringArgFunction,
+  stubFunction
+} from "ish-ui";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { arrayInsert, arraySplice, change, initialize } from "redux-form";
+import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
+import {
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from "../../../../../common/actions/CommonPlainRecordsActions";
+import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
-import { stubFunction } from "../../../../../common/utils/common";
-import { stopEventPropagation } from "../../../../../common/utils/events";
+import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
+import uniqid from "../../../../../common/utils/uniqid";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
+import history from "../../../../../constants/History";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import DiscountService from "../../../discounts/services/DiscountService";
-import BudgetEnrolmentsFields from "./BudgetEnrolmentsFields";
-import BudgetExpandableItemRenderer from "./BudgetExpandableItemRenderer";
-import history from "../../../../../constants/History";
+import { DefinedTutorRoleExtended } from "../../../../../model/preferences/TutorRole";
 import { State } from "../../../../../reducers/state";
-import { CourseClassState } from "../../reducers";
-import { AppTheme } from "../../../../../model/common/Theme";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
-import BudgetCostModal from "./modal/BudgetCostModal";
-import { decimalMinus, decimalMul, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
+import PreferencesService from "../../../../preferences/services/PreferencesService";
+import DiscountService from "../../../discounts/services/DiscountService";
 import {
   discountSort,
   getDiscountAmountExTax,
@@ -47,28 +55,20 @@ import {
   transformDiscountForNestedList
 } from "../../../discounts/utils";
 import { getCurrentTax } from "../../../taxes/utils";
-import BudgetInvoiceItemRenderer from "./BudgetInvoiceItemRenderer";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import AddBudgetMenu from "./AddBudgetMenu";
-import { DefinedTutorRoleExtended } from "../../../../../model/preferences/TutorRole";
 import { setCourseClassBudgetModalOpened } from "../../actions";
+import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
 import { classCostInitial } from "../../CourseClasses";
-import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
-import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from "./actions";
-import ClassCostService from "./services/ClassCostService";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { CourseClassState } from "../../reducers";
 import { getTutorPayInitial } from "../tutors/utils";
-import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from "./utils";
-import PreferencesService from "../../../../preferences/services/PreferencesService";
+import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from "./actions";
+import AddBudgetMenu from "./AddBudgetMenu";
+import BudgetEnrolmentsFields from "./BudgetEnrolmentsFields";
+import BudgetExpandableItemRenderer from "./BudgetExpandableItemRenderer";
+import BudgetInvoiceItemRenderer from "./BudgetInvoiceItemRenderer";
 import BudgetItemRow from "./BudgetItemRow";
-import uniqid from "../../../../../common/utils/uniqid";
-import {
-  clearCommonPlainRecords,
-  getCommonPlainRecords,
-  setCommonPlainSearch
-} from "../../../../../common/actions/CommonPlainRecordsActions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
+import BudgetCostModal from "./modal/BudgetCostModal";
+import ClassCostService from "./services/ClassCostService";
+import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from "./utils";
 
 const styles = (theme: AppTheme) =>
   createStyles({

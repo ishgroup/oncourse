@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Course, CourseClass, DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_INVOICE_LINE_COURSE, setInvoiceLineCourse } from "../actions";
-import { Course, CourseClass, DataResponse } from "@api/model";
-import CourseService from "../../courses/services/CourseService";
 import EntityService from "../../../../common/services/EntityService";
+import CourseService from "../../courses/services/CourseService";
+import { GET_INVOICE_LINE_COURSE, setInvoiceLineCourse } from "../actions";
 
 const request: EpicUtils.Request<
   { selectedLineCourseClasses: CourseClass[]; selectedLineCourse: Course },

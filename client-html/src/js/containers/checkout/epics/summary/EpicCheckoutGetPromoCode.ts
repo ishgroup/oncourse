@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { change } from "redux-form";
+import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import EntityService from "../../../../common/services/EntityService";
 import { CheckoutDiscount } from "../../../../model/checkout";
 import {
   CHECKOUT_GET_DISCOUNT_PROMO,
   CHECKOUT_SET_PROMO,
   checkoutUpdateSummaryClassesDiscounts
 } from "../../actions/checkoutSummary";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import EntityService from "../../../../common/services/EntityService";
 import { FORM as checkoutDiscountForm } from "../../components/CheckoutSelection";
 import { isPromotionalCodeExist } from "../../utils";
 

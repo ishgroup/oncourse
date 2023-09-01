@@ -3,15 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../../../common/components/list-view/constants";
-import {
-  StudentAttendanceExtended,
-  TrainingPlanExtended,
-} from "../../../../../../model/entities/CourseClass";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
+import { StudentAttendanceExtended, TrainingPlanExtended, } from "../../../../../../model/entities/CourseClass";
 import { GET_COURSE_CLASS_ATTENDANCE } from "../actions";
 import CourseClassAttendanceService from "../services/CourseClassAttendanceService";
 

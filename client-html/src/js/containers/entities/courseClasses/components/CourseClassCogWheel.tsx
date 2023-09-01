@@ -4,13 +4,17 @@
  */
 
 import MenuItem from "@mui/material/MenuItem";
-import React, {
- memo, useCallback, useEffect, useMemo, useState
-} from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import CreateCertificateMenu from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import CreateCertificateMenu
+  from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import { getPluralSuffix } from "../../../../common/utils/strings";
+import { courseClassCancelPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
@@ -18,11 +22,6 @@ import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGene
 import CancelCourseClassModal from "./cancel/CancelCourseClassModal";
 import DuplicateCourseClassModal from "./duplicate-courseClass/DuplicateCourseClassModal";
 import DuplicateTraineeshipModal from "./duplicate-courseClass/DuplicateTraineeshipModal";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
-import { courseClassCancelPath } from "../../../../constants/Api";
-import { getPluralSuffix } from "../../../../common/utils/strings";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 
 const CourseClassCogWheel = memo<any>(props => {
   const {

@@ -3,35 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import React, {
-  useCallback, useMemo, useState
-} from "react";
-import {
-  Cart, ConcessionType, Contact, ContactRelationType, PaymentMethod, StudentConcession, Tax
-} from "@api/model";
-import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
-import IconButton from "@mui/material/IconButton";
-import LockOpen from "@mui/icons-material/LockOpen";
+import { Cart, ConcessionType, Contact, ContactRelationType, PaymentMethod, StudentConcession, Tax } from "@api/model";
 import Lock from "@mui/icons-material/Lock";
+import LockOpen from "@mui/icons-material/LockOpen";
+import { Alert, Divider, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { openInternalLink } from "ish-ui";
+import React, { useCallback, useMemo, useState } from "react";
 import { connect } from "react-redux";
-import { Alert, Grid } from "@mui/material";
+import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { AccessState } from "../../../../common/reducers/accessReducer";
-import { openInternalLink } from "../../../../common/utils/links";
-import { State } from "../../../../reducers/state";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { ContactsState } from "../reducers";
-import { EditViewProps } from "../../../../model/common/ListView";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import Divider from "@mui/material/Divider";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import { MembershipContent, MembershipHeader } from "./MembershipLines";
-import { RelationsContent, RelationsHeader } from "./RelationsLines";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { AccessState } from "../../../../common/reducers/accessReducer";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import { State } from "../../../../reducers/state";
+import { ContactsState } from "../reducers";
 import { getContactFullName } from "../utils";
 import { ConcessionsContent, ConcessionsHeader } from "./ConcessionsLines";
+import { MembershipContent, MembershipHeader } from "./MembershipLines";
+import { RelationsContent, RelationsHeader } from "./RelationsLines";
 
 interface ContactsFinancialProps extends EditViewProps<Contact> {
   taxTypes?: Tax[];

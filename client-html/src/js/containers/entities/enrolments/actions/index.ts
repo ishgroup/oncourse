@@ -1,5 +1,5 @@
 import { CancelEnrolment } from "@api/model";
-import { _toRequestType, FULFILLED } from "../../../../common/actions/ActionUtils";
+import { _toRequestType } from "../../../../common/actions/ActionUtils";
 import { EnrolmentDialogs } from "../../../../model/entities/Enrolment";
 
 export const GET_ENROLMENT_INVOICE_LINES = _toRequestType("get/enrolment/invoiceLines");

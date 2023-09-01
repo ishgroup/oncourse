@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { Banking, BankingApi } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class BankingService {
   readonly bankingApi = new BankingApi(new DefaultHttpService());

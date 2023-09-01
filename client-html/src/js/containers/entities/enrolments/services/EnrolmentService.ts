@@ -1,6 +1,4 @@
-import {
- CancelEnrolment, Diff, Enrolment, EnrolmentApi 
-} from "@api/model";
+import { CancelEnrolment, Diff, Enrolment, EnrolmentApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class EnrolmentService {

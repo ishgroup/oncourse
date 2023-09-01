@@ -4,10 +4,10 @@
  */
 
 import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { DELETE_FUNDING_CONTACT_FULFILLED, DELETE_FUNDING_CONTACT_REQUEST } from "../actions";
 import FundingContractService from "../services/FundingContractService";
 

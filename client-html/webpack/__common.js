@@ -15,8 +15,8 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { ReactLoadablePlugin }  = require('@react-loadable/revised/webpack');
-const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const { writeFile } = require('fs/promises')
+const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 
 const _info = (NODE_ENV, BUILD_NUMBER) => {
   console.log(`
@@ -91,6 +91,7 @@ const _common = (dirname, options) => {
         },
       ],
     },
+    ignoreWarnings: [/Failed to parse source map/],
     plugins: [
       new ReactLoadablePlugin({
         async callback(manifest) {
@@ -122,10 +123,7 @@ const _common = (dirname, options) => {
       }),
     ],
     devServer: {
-      port: 8100,
-      devMiddleware: {
-        writeToDisk: true,
-      }
+      port: 8100
     },
     devtool: false,
   };

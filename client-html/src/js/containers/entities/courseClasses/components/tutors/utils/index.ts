@@ -5,10 +5,10 @@
 
 import { CourseClassTutor } from "@api/model";
 import { format } from "date-fns";
-import CourseClassTutorService from "../services/CourseClassTutorService";
-import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
-import { classCostInitial } from "../../../CourseClasses";
+import { D_MMM_YYYY } from "ish-ui";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../../model/entities/CourseClass";
+import { classCostInitial } from "../../../CourseClasses";
+import CourseClassTutorService from "../services/CourseClassTutorService";
 
 export const validateTutorCreate = (tutor: CourseClassTutor) => CourseClassTutorService.validatePost(tutor);
 export const validateTutorUpdate = (tutor: CourseClassTutor) => CourseClassTutorService.validatePut(tutor);

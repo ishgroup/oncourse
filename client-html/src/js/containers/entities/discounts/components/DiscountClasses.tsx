@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { change } from "redux-form";
-import { FormControlLabel, Typography } from "@mui/material";
-import { connect } from "react-redux";
 import { Sale } from "@api/model";
-import { Dispatch } from "redux";
+import { FormControlLabel, Typography } from "@mui/material";
 import { createStyles, withStyles } from "@mui/styles";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { validateNonNegative, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { normalizeNumber } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+import { validateNonNegative, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
 import { mapPlainDiscountClasses } from "../utils";
 
 /**

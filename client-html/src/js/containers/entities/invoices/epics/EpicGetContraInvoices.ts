@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse } from "@api/model";
+import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_CONTRA_INVOICES, SET_CONTRA_INVOICES } from "../actions";
-import { DataResponse } from "@api/model";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_CONTRA_INVOICES, SET_CONTRA_INVOICES } from "../actions";
 import { ContraInvoice, ContraInvoiceFormData } from "../reducers/state";
-import { initialize } from "redux-form";
 
 let savedInvoiceToContra: ContraInvoiceFormData;
 

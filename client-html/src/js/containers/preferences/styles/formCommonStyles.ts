@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles } from "@mui/styles";
 import { darken } from "@mui/material";
-import { AppTheme } from "../../../model/common/Theme";
+import { createStyles } from "@mui/styles";
+import { AppTheme } from "ish-ui";
 
 export const formCommonStyles = (theme: AppTheme) => createStyles({
   marginTop: {

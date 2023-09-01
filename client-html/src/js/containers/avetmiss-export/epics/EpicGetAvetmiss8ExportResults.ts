@@ -4,9 +4,10 @@
  */
 
 import { Epic } from "redux-observable";
+import { CLEAR_PROCESS } from "../../../common/actions";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import AvetmissExportService from "../services/AvetmissExportService";
 import {
   CLEAR_AVETMISS8_EXPORT_ID,
   CLEAR_AVETMISS_EXPORT_OUTCOMES,
@@ -14,8 +15,7 @@ import {
   GET_AVETMISS8_EXPORT_RESULTS_FULFILLED,
   GET_FUNDING_UPLOADS_REQUEST
 } from "../actions";
-import { CLEAR_PROCESS } from "../../../common/actions";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import AvetmissExportService from "../services/AvetmissExportService";
 
 const request: EpicUtils.Request = {
   type: GET_AVETMISS8_EXPORT_RESULTS,

@@ -1,7 +1,7 @@
 import { combineEpics } from "redux-observable";
+import { EpicDeleteFundingContract } from "./EpicDeleteFundingContract";
 import { EpicGetFundingContracts } from "./EpicGetFundingContracts";
 import { EpicSaveFundingContracts } from "./EpicSaveFundingContracts";
-import { EpicDeleteFundingContract } from "./EpicDeleteFundingContract";
 
 export const EpicFundingContracts = combineEpics(
   EpicGetFundingContracts,

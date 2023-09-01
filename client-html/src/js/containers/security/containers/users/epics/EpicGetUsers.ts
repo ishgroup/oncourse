@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { User } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import UserService from "../services/UsersService";
 import { GET_USERS_REQUEST, GET_USERS_REQUEST_FULFILLED } from "../../../actions";
-import { User } from "@api/model";
+import UserService from "../services/UsersService";
 
 const request: EpicUtils.Request = {
   type: GET_USERS_REQUEST,

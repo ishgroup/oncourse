@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { createStyles } from "@mui/material";
-import Grid, { GridSize } from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
 import { Holiday } from "@api/model";
+import { createStyles, Grid, GridSize } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import * as React from "react";
 import AvailabilityItem from "./AvailabilityItem";
 
 const styles = theme =>
@@ -28,35 +27,35 @@ const styles = theme =>
 const getLayoutArray = (threeColumn: boolean): { [key: string]: GridSize }[] =>
   (threeColumn
     ? [
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 },
-        { xs: 12 }
-      ]
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12},
+      {xs: 12}
+    ]
     : [
-        { xs: 12 },
-        { xs: 9 },
-        { xs: 12 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 4 },
-        { xs: 3 }
-      ]);
+      {xs: 12},
+      {xs: 9},
+      {xs: 12},
+      {xs: 4},
+      {xs: 4},
+      {xs: 4},
+      {xs: 4},
+      {xs: 4},
+      {xs: 4},
+      {xs: 4},
+      {xs: 3}
+    ]);
 
 const AvailabilityRenderer = ({
- fields, classes, onDelete, threeColumn, dispatch, meta, timezone
-}) => {
+                                fields, classes, onDelete, threeColumn, dispatch, meta, timezone
+                              }) => {
   const availabilityLayout = getLayoutArray(threeColumn);
 
   return (

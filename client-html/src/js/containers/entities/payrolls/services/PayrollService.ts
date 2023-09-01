@@ -1,5 +1,5 @@
-import { DefaultHttpService } from "../../../../common/services/HttpService";
 import { PayrollApi, PayrollRequest, WagesToProcess } from "@api/model";
+import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class PayrollService {
   readonly payrollApi = new PayrollApi(new DefaultHttpService());
