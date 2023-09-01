@@ -240,7 +240,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               label="Default timezone"
               items={timezones}
               labelAdornment={(
-                <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                <Tooltip title="Timetables will be adjusted to user's timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
                   <IconButton classes={{ root: "inputAdornmentButton" }}>
                     <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
                   </IconButton>
