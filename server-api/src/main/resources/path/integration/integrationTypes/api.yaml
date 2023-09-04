@@ -1,0 +1,17 @@
+get:
+  summary: Get added sso integration plugin types
+  operationId: getSsoPluginTypes
+  tags:
+    - Integration
+  description: 'API endpoint to get types of Plugin annotations of SSO Integrations'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          type: integer
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
