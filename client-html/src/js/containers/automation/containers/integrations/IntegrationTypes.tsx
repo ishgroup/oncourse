@@ -26,6 +26,7 @@ import talentlms from "../../../../../images/talentlms.png";
 import usi from "../../../../../images/usi.png";
 import tsci from "../../../../../images/vet_student_loans.png";
 import xero from "../../../../../images/xero.png";
+import okta from "../../../../../images/okta.svg";
 import { IntegrationTypesModel } from "../../../../model/automation/integrations/IntegrationSchema";
 import { AlchemerForm } from "./components/forms/AlchemerForm";
 import { AmazonS3Form } from "./components/forms/AmazonS3Form";
@@ -41,6 +42,7 @@ import { MicropowerForm } from "./components/forms/MicropowerForm";
 import { MoodleForm } from "./components/forms/MoodleForm";
 import { MYOBForm } from "./components/forms/MYOBForm";
 import { NSWForm } from "./components/forms/NSWForm";
+import { OktaForm } from "./components/forms/OktaForm";
 import { SurveyMonkeyForm } from "./components/forms/SurveyMonkeyForm";
 import { TalentLMSForm } from "./components/forms/TalentLMSForm";
 import { UsiForm } from "./components/forms/UsiForm";
@@ -205,6 +207,14 @@ const types: IntegrationTypesModel = {
     image: kronos,
     description:
       "With this integration you can send your tutor session rosters directly to your Kronos Workforce Ready system."
+  },
+  20: {
+    name: "Okta",
+    form: OktaForm,
+    formName: "OktaForm",
+    image: okta,
+    description:
+      "Built to tackle both Consumer and SaaS Apps across every industry. Authenticate, authorize, and secure access for applications, devices, and users."
   },
 };
 
