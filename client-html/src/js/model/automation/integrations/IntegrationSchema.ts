@@ -10,7 +10,7 @@ import {
   MailchimpFields,
   MicropowerFields,
   MoodleFields,
-  MYOBFields,
+  MYOBFields, OktaFields,
   ServiceNSWFields,
   SurveyMonkeyFields,
   XeroFields
@@ -39,6 +39,7 @@ export interface IntegrationSchema {
     | AzureFields
     | ServiceNSWFields
     | KronosFields
+    | OktaFields
 }
 
 export interface IntegrationTypeSchema {
