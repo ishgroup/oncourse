@@ -14,11 +14,19 @@ enum Sso {
     OKTA("okta", 20)
 
     private String name
-    Long integrationType
+    private Integer integrationType
 
-    Sso(String name, Long integrationType) {
+    Sso(String name, Integer integrationType) {
         this.name = name
         this.integrationType = integrationType
+    }
+
+    String getName() {
+        return name
+    }
+
+    Integer getIntegrationType() {
+        return integrationType
     }
 
     static Sso ofType(String name){
