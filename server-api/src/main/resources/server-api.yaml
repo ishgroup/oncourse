@@ -69,8 +69,8 @@ paths:
     $ref: './path/holiday/api.yaml'
   /integration:
     $ref: './path/integration/api.yaml'
-  /integration/integrationTypes:
-    $ref: './path/integration/integrationTypes/api.yaml'
+  /integration/ssoTypes:
+    $ref: './path/integration/ssoTypes/api.yaml'
   /invite:
     $ref: './path/invite/api.yaml'
   /list:
