@@ -3,7 +3,7 @@ get:
   operationId: getSsoPluginTypes
   tags:
     - Integration
-  description: 'API endpoint to get types of Plugin annotations of SSO Integrations'
+  description: 'API endpoint to get types of Plugin annotations of configured SSO Integrations'
   responses:
     '200':
       description: Success response.
