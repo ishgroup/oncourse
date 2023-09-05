@@ -87,6 +87,16 @@ class OktaIntegration implements SsoIntegrationTrait {
 		}
 	}
 
+	@Override
+	String getAuthorizationPageLink() {
+		return """${applicationUrl}/oauth2/default/v1/authorize?client_id=${clientId}
+				&response_type=token
+				&prompt=consent
+				&scope=email
+				&redirect_uri=${webRedirect}
+				&state=myState"""
+	}
+
 	@GetProps
 	static List<IntegrationProperty> getProps(IntegrationConfiguration configuration) {
 		return [configuration.getIntegrationProperty(OKTA_CLIENT_ID),
