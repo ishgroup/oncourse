@@ -14,4 +14,6 @@ import ish.oncourse.server.integration.PluginTrait
 trait SsoIntegrationTrait extends PluginTrait {
 
     abstract String getUserEmailByCode(String accessCode)
+
+    abstract String getAuthorizationPageLink()
 }
