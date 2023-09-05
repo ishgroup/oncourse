@@ -301,11 +301,8 @@ class AuthenticationApiImpl implements AuthenticationApi {
     }
 
     @Override
-    LoginResponseDTO loginSso(String ssoTypeStr, String authorizationCode) {
-        def sso = Sso.ofType(ssoTypeStr)
-        if(!sso){
-            throw new ClientErrorException("Incorrect sso type: ${sso}", Response.Status.BAD_REQUEST)
-        }
+    LoginResponseDTO loginSso(String ssoType, String authorizationCode) {
+        def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
                 .where(IntegrationConfiguration.TYPE.eq(sso.integrationType.intValue()))
@@ -335,6 +332,18 @@ class AuthenticationApiImpl implements AuthenticationApi {
     }
 
     @Override
+    String getSsoLink(String ssoType) {
+        def sso = getSsoByType(ssoType)
+
+        def configuration = ObjectSelect.query(IntegrationConfiguration)
+                .where(IntegrationConfiguration.TYPE.eq(sso.integrationType.intValue()))
+                .selectFirst(cayenneService.newReadonlyContext)
+
+        def ssoProvider = sso.getSsoProvider(configuration: configuration, cayenneService: cayenneService)
+        return ssoProvider.getAuthorizationPageLink()
+    }
+
+    @Override
     String logout() {
         sessionManager.logout(request)
         return ''
@@ -342,5 +351,13 @@ class AuthenticationApiImpl implements AuthenticationApi {
 
     private static void throwUnauthorizedException(LoginResponseDTO content) {
         throw new ClientErrorException(Response.status(Response.Status.UNAUTHORIZED).entity(content).build())
+    }
+
+    private static Sso getSsoByType(String ssoType){
+        def sso = Sso.ofType(ssoType)
+        if(!sso){
+            throw new ClientErrorException("Incorrect sso type: ${sso}", Response.Status.BAD_REQUEST)
+        }
+        sso
     }
 }

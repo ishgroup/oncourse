@@ -261,6 +261,8 @@ paths:
     $ref: './path/login/api.yaml'
   /login/sso:
     $ref: './path/login/sso/api.yaml'
+  /login/sso/link:
+    $ref: './path/login/sso/link/api.yaml'
   /logout:
     $ref: './path/logout/api.yaml'
   /preference:
