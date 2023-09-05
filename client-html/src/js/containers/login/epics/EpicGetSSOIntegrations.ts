@@ -1,5 +1,5 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2023.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
@@ -7,17 +7,19 @@
  */
 
 import { Epic } from "redux-observable";
-import { setSystemUserData } from "../../../common/actions";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_SYSTEM_USER_DATA } from "../actions";
-import LoginService from "../services/LoginService";
+import IntegrationService from "../../automation/containers/integrations/services";
+import { GET_SSO_INTEGRATIONS, GET_SSO_INTEGRATIONS_FULFILLED } from "../actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 
-const request: EpicUtils.Request = {
-  type: GET_SYSTEM_USER_DATA,
-  getData: () => LoginService.getUser(),
-  processData: user => [setSystemUserData(user)],
-  processError: response => LoginServiceErrorsHandler(response, "Failed to get system user")
+const request: EpicUtils.Request<number[]> = {
+  type: GET_SSO_INTEGRATIONS,
+  getData: () => IntegrationService.getSsoPluginTypes(),
+  processData: ssoTypes => [{
+    type: GET_SSO_INTEGRATIONS_FULFILLED,
+    payload: { ssoTypes }
+  }],
+  processError: response => LoginServiceErrorsHandler(response, "Failed to get sso types")
 };
 
-export const EpicGetUser: Epic<any, any> = EpicUtils.Create(request);
+export const EpicGetSSOIntegrations: Epic<any, any> = EpicUtils.Create(request);

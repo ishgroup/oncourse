@@ -7,13 +7,12 @@ import { LoginRequest, LoginResponse } from "@api/model";
 import { Epic } from "redux-observable";
 import {
   CLEAR_LAST_LOCATION,
-  FETCH_SUCCESS,
-  POST_AUTHENTICATION_FULFILLED,
-  POST_AUTHENTICATION_REQUEST,
+  FETCH_SUCCESS
 } from "../../../common/actions";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { bugsnagClient } from "../../../constants/Bugsnag";
 import history from "../../../constants/History";
+import { POST_AUTHENTICATION_FULFILLED, POST_AUTHENTICATION_REQUEST } from "../actions";
 import LoginService from "../services/LoginService";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 
