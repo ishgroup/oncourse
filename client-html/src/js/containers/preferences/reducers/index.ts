@@ -4,10 +4,11 @@
  */
 
 import { Country, Currency, Language } from "@api/model";
-import { GET_MESSAGE_QUEUED_FULFILLED, POST_AUTHENTICATION_FULFILLED } from "../../../common/actions";
+import { GET_MESSAGE_QUEUED_FULFILLED } from "../../../common/actions";
 import { IAction } from "../../../common/actions/IshAction";
 import getTimestamps from "../../../common/utils/timestamps/getTimestamps";
 import { Categories } from "../../../model/preferences";
+import { POST_AUTHENTICATION_FULFILLED } from "../../login/actions";
 
 import {
   CREATE_DATA_COLLECTION_FORM_FULFILLED,

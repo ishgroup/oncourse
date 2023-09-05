@@ -7,7 +7,7 @@
  * Common actions of App
  * */
 
-import { LoginRequest, PermissionRequest, PreferenceEnum, User, UserPreference } from "@api/model";
+import { PermissionRequest, PreferenceEnum, User, UserPreference } from "@api/model";
 import { ShowConfirmCaller } from "ish-ui";
 import { LoginState } from "../../containers/login/reducers/state";
 import { QueuedAction } from "../../model/common/ActionsQueue";
@@ -35,21 +35,6 @@ export const GET_LDAP_CONNECTION_REQUEST = _toRequestType("get/ldapConnection");
 
 export const GET_MESSAGE_QUEUED_REQUEST = _toRequestType("get/messageQueued");
 export const GET_MESSAGE_QUEUED_FULFILLED = FULFILLED(GET_MESSAGE_QUEUED_REQUEST);
-
-export const POST_AUTHENTICATION_REQUEST = _toRequestType("post/authentication");
-export const POST_AUTHENTICATION_FULFILLED = FULFILLED(POST_AUTHENTICATION_REQUEST);
-
-export const POST_UPDATE_PASSWORD_REQUEST = _toRequestType("post/user/updatePassword");
-export const POST_UPDATE_PASSWORD_FULFILLED = FULFILLED(POST_UPDATE_PASSWORD_REQUEST);
-
-export const POST_CREATE_PASSWORD_REQUEST = _toRequestType("post/user/createPassword");
-export const POST_CREATE_PASSWORD_FULFILLED = FULFILLED(POST_CREATE_PASSWORD_REQUEST);
-
-export const GET_EMAIL_BY_TOKEN_REQUEST = _toRequestType("get/user/email");
-export const GET_EMAIL_BY_TOKEN_FULFILLED = FULFILLED(GET_EMAIL_BY_TOKEN_REQUEST);
-
-export const CHECK_PASSWORD_REQUEST = _toRequestType("get/login");
-export const CHECK_PASSWORD_FULFILLED = FULFILLED(CHECK_PASSWORD_REQUEST);
 
 export const GET_USER_PREFERENCES = _toRequestType("get/user/preference");
 export const GET_USER_PREFERENCES_FULFILLED = FULFILLED(GET_USER_PREFERENCES);
@@ -95,8 +80,6 @@ export const EXECUTE_ACTIONS_QUEUE = "execute/actionsQueue";
 export const CLEAR_ACTIONS_QUEUE = "clear/actionsQueue";
 
 export const NEXT_LOCATION = 'nextLocation';
-
-export const GET_SYSTEM_USER_DATA = "get/systemUser/data";
 
 export const SET_SYSTEM_USER_DATA = "set/systemUser/data";
 
@@ -148,15 +131,6 @@ export const closeSendMessage = () => ({
   type: CLOSE_SEND_MESSAGE
 });
 
-export const checkPassword = (value: string, host?: string, port?: number) => ({
-  type: CHECK_PASSWORD_REQUEST,
-  payload: {
-    value,
-    host,
-    port
-  }
-});
-
 export const setLoginState = (payload: LoginState) => ({
   payload,
   type: SET_LOGIN_STATE
@@ -168,26 +142,6 @@ export const openDrawer = () => ({
 
 export const closeDrawer = () => ({
   type: CLOSE_DRAWER
-});
-
-export const updatePasswordRequest = (value: string) => ({
-  type: POST_UPDATE_PASSWORD_REQUEST,
-  payload: {value}
-});
-
-export const postLoginRequest = (body: LoginRequest, host, port) => ({
-  type: POST_AUTHENTICATION_REQUEST,
-  payload: {body, host, port}
-});
-
-export const createPasswordRequest = (token: string, password: string) => ({
-  type: POST_CREATE_PASSWORD_REQUEST,
-  payload: {token, password}
-});
-
-export const getEmailByToken = (value: string) => ({
-  type: GET_EMAIL_BY_TOKEN_REQUEST,
-  payload: {value}
 });
 
 export const getScripts = (entity: string) => ({
@@ -261,10 +215,6 @@ export const clearMessage = () => ({
 export const setNextLocation = (nextLocation: string) => ({
   type: NEXT_LOCATION,
   payload: nextLocation
-});
-
-export const getSystemUserData = () => ({
-  type: GET_SYSTEM_USER_DATA,
 });
 
 export const setSystemUserData = (systemUserData: User) => ({
