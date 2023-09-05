@@ -1,6 +1,7 @@
 import { combineEpics } from "redux-observable";
 import { EpicCreatePassword } from "./EpicCreatePassword";
 import { EpicGetEmailByToken } from "./EpicGetEmailByToken";
+import { EpicGetSSOIntegrations } from "./EpicGetSSOIntegrations";
 import { EpicGetUser } from "./EpicGetUser";
 import { EpicPostAuthentication } from "./EpicPostAuthentication";
 import { EpicUpdatePassword } from "./EpicUpdatePassword";
@@ -12,5 +13,6 @@ export const EpicLogin = combineEpics(
   EpicUpdatePassword,
   EpicValidatePassword,
   EpicGetEmailByToken,
-  EpicCreatePassword
+  EpicCreatePassword,
+  EpicGetSSOIntegrations
 );

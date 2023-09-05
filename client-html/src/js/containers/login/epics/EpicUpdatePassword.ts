@@ -4,9 +4,9 @@
  */
 
 import { Epic } from "redux-observable";
-import { FETCH_SUCCESS, POST_UPDATE_PASSWORD_FULFILLED, POST_UPDATE_PASSWORD_REQUEST } from "../../../common/actions";
-
+import { FETCH_SUCCESS } from "../../../common/actions";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { POST_UPDATE_PASSWORD_FULFILLED, POST_UPDATE_PASSWORD_REQUEST } from "../actions";
 import LoginService from "../services/LoginService";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 

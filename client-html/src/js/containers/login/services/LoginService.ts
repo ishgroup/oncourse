@@ -51,6 +51,10 @@ class LoginService {
   public getUser(): Promise<User> {
     return this.createCustomAPI("login").getUser();
   }
+
+  public getSsoLink(type: string): Promise<string> {
+    return this.createCustomAPI("login").getSsoLink(type);
+  }
 }
 
 export default new LoginService();

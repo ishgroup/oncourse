@@ -9,7 +9,6 @@ import Tooltip from "@mui/material/Tooltip";
 import { makeAppStyles, ShowConfirmCaller } from "ish-ui";
 import React, { useEffect, useState } from "react";
 import { Dispatch } from "redux";
-import { getSystemUserData } from "../../../common/actions";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
@@ -20,6 +19,7 @@ import {
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_ACTIVITY_STORAGE_NAME
 } from "../../../constants/Config";
+import { getSystemUserData } from "../../login/actions";
 import { ThemeContext } from "../../ThemeContext";
 import DashboardService from "../services/DashboardService";
 
