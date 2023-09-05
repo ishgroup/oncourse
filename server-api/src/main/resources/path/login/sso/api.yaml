@@ -1,4 +1,4 @@
-post:
+get:
   summary: Authenticate user using sso
   operationId: loginSso
   tags:
@@ -9,7 +9,7 @@ post:
       in: path
       required: true
       type: string
-    - name: authorizationCode
+    - name: code
       in: query
       required: true
       type: string
