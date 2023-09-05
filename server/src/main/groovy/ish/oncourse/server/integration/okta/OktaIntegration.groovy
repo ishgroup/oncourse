@@ -29,10 +29,10 @@ import javax.ws.rs.core.Response
 @CompileDynamic
 @Plugin(type = 20)
 class OktaIntegration implements SsoIntegrationTrait {
-	public static final String OKTA_CLIENT_ID = "oktaClientId"
-	public static final String OKTA_CLIENT_SECRET = "oktaClientSecret"
-	public static final String OKTA_WEB_REDIRECT = "oktaWebRedirect"
-	public static final String OKTA_APP_URL = "oktaAppUrl"
+	public static final String OKTA_CLIENT_ID = "clientId"
+	public static final String OKTA_CLIENT_SECRET = "clientSecret"
+	public static final String OKTA_WEB_REDIRECT = "webRedirect"
+	public static final String OKTA_APP_URL = "appUrl"
 
 	String clientId
 	String clientSecret
@@ -61,11 +61,15 @@ class OktaIntegration implements SsoIntegrationTrait {
 		def userToken = null
 
 		RESTClient client = new RESTClient(applicationUrl)
-		client.request(Method.POST, ContentType.JSON) {
+		client.headers.put("accept", "application/json")
+		client.headers.put("content-type", "application/x-www-form-urlencoded")
+		client.request(Method.POST) {
 			uri.path = "/oauth2/default/v1/token"
-			uri.query = [grant_type    : "authorization_code",
-						 redirect_uri : webRedirect,
-						 code         : activationCode]
+			uri.query = [grant_type    	: "authorization_code",
+						 client_id		: clientId,
+						 client_secret	: clientSecret,
+						 redirect_uri 	: webRedirect,
+						 code         	: activationCode]
 
 			response.success = { resp, result ->
 				userToken = result.access_token
@@ -90,9 +94,11 @@ class OktaIntegration implements SsoIntegrationTrait {
 	@Override
 	String getAuthorizationPageLink() {
 		return """${applicationUrl}/oauth2/default/v1/authorize?client_id=${clientId}
-				&response_type=token
+				&response_type=code
 				&prompt=consent
-				&scope=email
+				&scope=openid email
+				&consent_method=REQUIRED
+				&nonce=nonce_value
 				&redirect_uri=${webRedirect}
 				&state=myState"""
 	}
