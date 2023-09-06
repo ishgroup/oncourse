@@ -99,7 +99,7 @@ class OktaIntegration implements SsoIntegrationTrait {
 				&scope=openid email
 				&nonce=nonce_value
 				&redirect_uri=${webRedirect}
-				&state=myState"""
+				&state=OktaSSO"""
 	}
 
 	@GetProps
