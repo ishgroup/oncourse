@@ -97,7 +97,6 @@ class OktaIntegration implements SsoIntegrationTrait {
 				&response_type=code
 				&prompt=consent
 				&scope=openid email
-				&consent_method=REQUIRED
 				&nonce=nonce_value
 				&redirect_uri=${webRedirect}
 				&state=myState"""
