@@ -108,21 +108,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
             throwUnauthorizedException(content)
         }
 
-        if (user.loginAttemptNumber >= prefController.numberOfLoginAttempts) {
-            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Login access was disabled after too many incorrect login attempts. Please contact onCourse Administrator.')
-            throwUnauthorizedException(content)
-        }
-
-        if (prefController.autoDisableInactiveAccounts && !user.isActive) {
-            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'User is disabled. Please contact onCourse Administrator.')
-            throwUnauthorizedException(content)
-        }
-
-        //check max users limit
-        if (sessionManager.checkConcurrentUsersLimit(user, licenseService.max_concurrent_users, prefController.timeoutThreshold)) {
-            LoginResponseDTO content = createAuthenticationContent(TOO_MANY_USERS, 'Reached limit of logged in users.')
-            throwUnauthorizedException(content)
-        }
+        checkUser(user)
 
         //check credentials (ldap/internal verification)
         String errorMessage = !user.isAdmin && prefController.servicesLdapAuthentication ?
@@ -136,145 +122,19 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         // check eula agreements
-        if (licenseService.modified != null) {
-
-            Preference lastAccessDatePreferense = user.preferences.find { preference ->
-                preference.name == PreferenceEnumDTO.EULA_LAST_ACCESS_DATE.toString()
-            }
-
-            if (lastAccessDatePreferense) {
-                LocalDateTime eulaModifiedDate = licenseService.modified
-                LocalDateTime lastAccessDate = LocalDateUtils.stringToTimeValue(lastAccessDatePreferense.valueString)
-
-                if (eulaModifiedDate.isAfter(lastAccessDate)) {
-
-                    if (details.eulaAccess) {
-                        lastAccessDatePreferense.valueString = LocalDateUtils.timeValueToString(LocalDateTime.now())
-                        lastAccessDatePreferense.context.commitChanges()
-                    } else {
-                        LoginResponseDTO content = createAuthenticationContent(EULA_REQUIRED, 'Eula required')
-                        content.eulaUrl = licenseService.url
-                        throwUnauthorizedException(content)
-                    }
-                }
-
-            } else {
-
-                if (details.eulaAccess) {
-                    userPreferenseService.createEula(user, LocalDateUtils.timeValueToString(LocalDateTime.now()))
-                } else {
-                    LoginResponseDTO content = createAuthenticationContent(EULA_REQUIRED, 'Eula required')
-                    content.eulaUrl = licenseService.url
-                    throwUnauthorizedException(content)
-                }
-            }
-
-        }
+        checkEula(user, details.eulaAccess)
 
         //password to check
         String passToCheck = details.newPassword ?: details.password
+        checkPasswordComplexityAndOutDate(user, details.newPassword, passToCheck)
 
-
-        boolean complexityRequired = prefController.passwordComplexity
-
-        //checked forced password update
-        if (user.passwordUpdateRequired && !details.newPassword) {
-            LoginResponseDTO content = createAuthenticationContent(FORCED_PASSWORD_UPDATE, errorMessage)
-            content.passwordComlexity = complexityRequired
-            throwUnauthorizedException(content)
-        }
-
-        //check password complexity
-        errorMessage = validateUserPassword(user.email, user.login, passToCheck, complexityRequired)
-        if (errorMessage) {
-            LoginResponseDTO content = createAuthenticationContent(WEAK_PASSWORD, errorMessage)
-            content.passwordComlexity = complexityRequired
-            throwUnauthorizedException(content)
-        }
-
-        //check requirements for outdate password
-        if (!details.newPassword) {
-            Integer periodOfDays = prefController.passwordExpiryPeriod
-            if (periodOfDays) {
-                if (!user.passwordLastChanged || !user.passwordLastChanged.plusDays(periodOfDays).isAfter(LocalDate.now())) {
-                    errorMessage = 'Password outdated. Update required.'
-                    LoginResponseDTO content = createAuthenticationContent(PASSWORD_OUTDATED, errorMessage)
-                    content.passwordComlexity = complexityRequired
-                    throwUnauthorizedException(content)
-                }
-            }
-        }
-
-
-        if (user.sessionId != null && user.lastAccess.after(prefController.timeoutThreshold) && !details.kickOut) {
-            errorMessage = 'You are currently logged in from another session.'
-            LoginResponseDTO content = createAuthenticationContent(CONCURRENT_SESSIONS_FOUND, errorMessage)
-            throwUnauthorizedException(content)
-        }
-
-        if (details.kickOut) {
-            sessionManager.doKickOut(user)
-        }
+        checkAnotherSession(user, details.kickOut)
 
         //check 2FA security options
+        checkTfa(user, details.secretCode, details.token, details.skipTfa)
 
-        boolean noDataForTFA = !(user.token || (details.secretCode && details.token))
-
-        switch (prefController.twoFactorAuthStatus) {
-            case DISABLED:
-                if (!details.skipTfa && noDataForTFA) {
-                    LoginResponseDTO content = createAuthenticationContent(TFA_OPTIONAL, '', totpService.generateKey(user.email).url)
-                    throwUnauthorizedException(content)
-                }
-                break
-            case ENABLED_FOR_ADMIN:
-                if (user.isAdmin && noDataForTFA) {
-                    errorMessage = 'Two factor authentication required for this user.'
-                }
-                break
-            case ENABLED_FOR_ALL:
-                if (!user.token && noDataForTFA) {
-                    errorMessage = 'Two factor authentication required for this user.'
-                }
-                break
-        }
-
-        if (errorMessage) {
-            LoginResponseDTO content = createAuthenticationContent(TFA_REQUIRED, errorMessage, totpService.generateKey(user.email).url)
-            throwUnauthorizedException(content)
-        }
-
-        boolean cookieTokenValid = false
         //if user has totp token we need to verify it
-        if (user.token) {
-            String skipTotpCookie = getTotpCookie(request)
-
-            if (!details.token && !skipTotpCookie) {
-                LoginResponseDTO content = createAuthenticationContent(TOKEN_REQUIRED, 'Auth Token required')
-                throwUnauthorizedException(content)
-            }
-
-            cookieTokenValid = validateCookieToken(skipTotpCookie, passToCheck, user.token)
-
-            if (!cookieTokenValid) {
-                if (!details.token) {
-                    LoginResponseDTO content = createAuthenticationContent(TOKEN_REQUIRED, 'Auth Token required')
-                    throwUnauthorizedException(content)
-                }
-
-                if ((errorMessage = checkTokenAuth(user, details.token))) {
-                    LoginResponseDTO content = createAuthenticationContent(INVALID_OR_EXPIRED_TOKEN, errorMessage)
-                    throwUnauthorizedException(content)
-                }
-            }
-        } else if (details.secretCode && details.token) {
-            if (totpService.checkToken(details.secretCode, details.token)) {
-                user.token = details.secretCode
-            } else {
-                LoginResponseDTO content = createAuthenticationContent(INVALID_OR_EXPIRED_TOKEN, errorMessage)
-                throwUnauthorizedException(content)
-            }
-        }
+        boolean cookieTokenValid = checkToken(user, details.token, details.secretCode, passToCheck)
 
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
@@ -313,14 +173,28 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         def ssoProvider = sso.getSsoProvider(configuration: configuration, cayenneService: cayenneService)
-        def userEmail = ssoProvider.getUserEmailByCode(authorizationCode)
+
+        String userEmail = null
+        try {
+            userEmail = ssoProvider.getUserEmailByCode(authorizationCode)
+        } catch(ClientErrorException e){
+            throwUnauthorizedException(createAuthenticationContent(INVALID_CREDENTIALS, e.getMessage()))
+        }
 
         def context = cayenneService.newContext
         SystemUser user = UserDao.getByEmail(context, userEmail)
 
-        if(!user)
-            throw new ClientErrorException("User with related ${userEmail} OKTA email not found in onCourse", Response.Status.UNAUTHORIZED)
+        if(!user) {
+            def content = createAuthenticationContent(INVALID_CREDENTIALS, "User with related ${userEmail} OKTA email not found in onCourse")
+            throwUnauthorizedException(content)
+        }
 
+        checkUser(user)
+        checkEula(user)
+        checkPasswordComplexityAndOutDate(user, null, user.password)
+        checkAnotherSession(user)
+        checkTfa(user)
+        checkToken(user)
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
         LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)
@@ -329,6 +203,174 @@ class AuthenticationApiImpl implements AuthenticationApi {
         user.loginAttemptNumber = 0
         context.commitChanges()
         return createAuthenticationContent(LOGIN_SUCCESSFUL, null, null, lastLoginOn)
+    }
+
+    private void checkUser(SystemUser user){
+        if (user.loginAttemptNumber >= prefController.numberOfLoginAttempts) {
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'Login access was disabled after too many incorrect login attempts. Please contact onCourse Administrator.')
+            throwUnauthorizedException(content)
+        }
+
+        if (prefController.autoDisableInactiveAccounts && !user.isActive) {
+            LoginResponseDTO content = createAuthenticationContent(INVALID_CREDENTIALS, 'User is disabled. Please contact onCourse Administrator.')
+            throwUnauthorizedException(content)
+        }
+
+        //check max users limit
+        if (sessionManager.checkConcurrentUsersLimit(user, licenseService.max_concurrent_users, prefController.timeoutThreshold)) {
+            LoginResponseDTO content = createAuthenticationContent(TOO_MANY_USERS, 'Reached limit of logged in users.')
+            throwUnauthorizedException(content)
+        }
+    }
+
+
+    private void checkEula(SystemUser user, Boolean eulaAccess = null){
+        if (licenseService.modified != null) {
+
+            Preference lastAccessDatePreferense = user.preferences.find { preference ->
+                preference.name == PreferenceEnumDTO.EULA_LAST_ACCESS_DATE.toString()
+            }
+
+            if (lastAccessDatePreferense) {
+                LocalDateTime eulaModifiedDate = licenseService.modified
+                LocalDateTime lastAccessDate = LocalDateUtils.stringToTimeValue(lastAccessDatePreferense.valueString)
+
+                if (eulaModifiedDate.isAfter(lastAccessDate)) {
+
+                    if (eulaAccess) {
+                        lastAccessDatePreferense.valueString = LocalDateUtils.timeValueToString(LocalDateTime.now())
+                        lastAccessDatePreferense.context.commitChanges()
+                    } else {
+                        LoginResponseDTO content = createAuthenticationContent(EULA_REQUIRED, 'Eula required')
+                        content.eulaUrl = licenseService.url
+                        throwUnauthorizedException(content)
+                    }
+                }
+
+            } else {
+
+                if (eulaAccess) {
+                    userPreferenseService.createEula(user, LocalDateUtils.timeValueToString(LocalDateTime.now()))
+                } else {
+                    LoginResponseDTO content = createAuthenticationContent(EULA_REQUIRED, 'Eula required')
+                    content.eulaUrl = licenseService.url
+                    throwUnauthorizedException(content)
+                }
+            }
+
+        }
+    }
+
+    private void checkPasswordComplexityAndOutDate(SystemUser user, String newPassword = null, String passToCheck = null){
+        boolean complexityRequired = prefController.passwordComplexity
+        String errorMessage = null
+
+        //checked forced password update
+        if (user.passwordUpdateRequired && !newPassword) {
+            LoginResponseDTO content = createAuthenticationContent(FORCED_PASSWORD_UPDATE, errorMessage)
+            content.passwordComlexity = complexityRequired
+            throwUnauthorizedException(content)
+        }
+
+        //check password complexity
+        if(passToCheck)
+            errorMessage = validateUserPassword(user.email, user.login, passToCheck, complexityRequired)
+
+        if (errorMessage) {
+            LoginResponseDTO content = createAuthenticationContent(WEAK_PASSWORD, errorMessage)
+            content.passwordComlexity = complexityRequired
+            throwUnauthorizedException(content)
+        }
+
+        //check requirements for outdate password
+        if (!newPassword) {
+            Integer periodOfDays = prefController.passwordExpiryPeriod
+            if (periodOfDays) {
+                if (!user.passwordLastChanged || !user.passwordLastChanged.plusDays(periodOfDays).isAfter(LocalDate.now())) {
+                    errorMessage = 'Password outdated. Update required.'
+                    LoginResponseDTO content = createAuthenticationContent(PASSWORD_OUTDATED, errorMessage)
+                    content.passwordComlexity = complexityRequired
+                    throwUnauthorizedException(content)
+                }
+            }
+        }
+    }
+
+    private void checkAnotherSession(SystemUser user, Boolean kickOut = null) {
+        if (user.sessionId != null && user.lastAccess.after(prefController.timeoutThreshold) && !kickOut) {
+            def errorMessage = 'You are currently logged in from another session.'
+            LoginResponseDTO content = createAuthenticationContent(CONCURRENT_SESSIONS_FOUND, errorMessage)
+            throwUnauthorizedException(content)
+        }
+
+        if (kickOut) {
+            sessionManager.doKickOut(user)
+        }
+    }
+
+    private void checkTfa(SystemUser user, String secretCode = null, Integer token = null, Boolean skipTfa = null){
+        boolean noDataForTFA = !(user.token || (secretCode && token))
+        String errorMessage = null
+
+        switch (prefController.twoFactorAuthStatus) {
+            case DISABLED:
+                if (!skipTfa && noDataForTFA) {
+                    LoginResponseDTO content = createAuthenticationContent(TFA_OPTIONAL, '', totpService.generateKey(user.email).url)
+                    throwUnauthorizedException(content)
+                }
+                break
+            case ENABLED_FOR_ADMIN:
+                if (user.isAdmin && noDataForTFA) {
+                    errorMessage = 'Two factor authentication required for this user.'
+                }
+                break
+            case ENABLED_FOR_ALL:
+                if (!user.token && noDataForTFA) {
+                    errorMessage = 'Two factor authentication required for this user.'
+                }
+                break
+        }
+
+        if (errorMessage) {
+            LoginResponseDTO content = createAuthenticationContent(TFA_REQUIRED, errorMessage, totpService.generateKey(user.email).url)
+            throwUnauthorizedException(content)
+        }
+    }
+
+    private boolean checkToken(SystemUser user, Integer token = null, String secretCode = null, String passToCheck = null){
+        boolean cookieTokenValid = false
+        String errorMessage = null
+        //if user has totp token we need to verify it
+        if (user.token) {
+            String skipTotpCookie = getTotpCookie(request)
+
+            if (!token && !skipTotpCookie) {
+                LoginResponseDTO content = createAuthenticationContent(TOKEN_REQUIRED, 'Auth Token required')
+                throwUnauthorizedException(content)
+            }
+
+            cookieTokenValid = validateCookieToken(skipTotpCookie, passToCheck, user.token)
+
+            if (!cookieTokenValid) {
+                if (!token) {
+                    LoginResponseDTO content = createAuthenticationContent(TOKEN_REQUIRED, 'Auth Token required')
+                    throwUnauthorizedException(content)
+                }
+
+                if ((errorMessage = checkTokenAuth(user, token))) {
+                    LoginResponseDTO content = createAuthenticationContent(INVALID_OR_EXPIRED_TOKEN, errorMessage)
+                    throwUnauthorizedException(content)
+                }
+            }
+        } else if (secretCode && token) {
+            if (totpService.checkToken(secretCode, token)) {
+                user.token = secretCode
+            } else {
+                LoginResponseDTO content = createAuthenticationContent(INVALID_OR_EXPIRED_TOKEN, errorMessage)
+                throwUnauthorizedException(content)
+            }
+        }
+        cookieTokenValid
     }
 
     @Override
