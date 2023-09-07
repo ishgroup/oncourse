@@ -6,16 +6,37 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import okta from "../../../../../../images/okta.svg";
+import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { useAppDispatch } from "../../../../../common/utils/hooks";
+import { IntegrationTypesEnum } from "../../../../../model/automation/integrations/IntegrationSchema";
 import LoginService from "../../../../login/services/LoginService";
 
 export const OktaButton = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    
+    const code = params.get("code");
+    
+    if (code) {
+      LoginService.loginSso("okta", code).then(res => {
+        console.log('!!!!!!!!!', res);
+      });
+    }
+    
+  }, []);
   
   const openOktaConcent = async () => {
-    const link = await LoginService.getSsoLink("okta");
-    window.open(link);
+    try {
+      const link = await LoginService.getSsoLink("okta");
+      window.open(link, "_self");
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e);
+    }
   };
   
   return <Button
@@ -35,7 +56,7 @@ export const SSOProviders = ({ providers }: SSOProvidersProps) => {
   
   const getProvider = useCallback((provider: number) => {
     switch (provider) {
-      case 20:
+      case IntegrationTypesEnum.Okta:
         return <OktaButton key={provider} />;
       default:
         return null;
