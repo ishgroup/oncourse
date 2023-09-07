@@ -134,7 +134,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         checkTfa(user, details.secretCode, details.token, details.skipTfa)
 
         //if user has totp token we need to verify it
-        boolean cookieTokenValid = checkToken(user, details.token, details.secretCode, passToCheck)
+        boolean cookieTokenValid = checkToken(user, passToCheck, details.token, details.secretCode)
 
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
@@ -194,7 +194,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         checkPasswordComplexityAndOutDate(user, null, user.password)
         checkAnotherSession(user)
         checkTfa(user)
-        checkToken(user)
+        checkToken(user, user.password)
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
         LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)
@@ -337,7 +337,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
     }
 
-    private boolean checkToken(SystemUser user, Integer token = null, String secretCode = null, String passToCheck = null){
+    private boolean checkToken(SystemUser user, String passToCheck = null, Integer token = null, String secretCode = null){
         boolean cookieTokenValid = false
         String errorMessage = null
         //if user has totp token we need to verify it
