@@ -51,7 +51,7 @@ class OktaIntegration implements SsoIntegrationTrait {
 	}
 
 
-	String getUserEmailByCode(String activationCode){
+	String getUserEmailByCode(String activationCode) throws ClientErrorException{
 		Closure failureHandler = { resp, result ->
 			logger.error(resp)
 			logger.error(result)
