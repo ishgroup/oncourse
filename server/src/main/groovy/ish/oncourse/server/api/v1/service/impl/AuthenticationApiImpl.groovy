@@ -190,11 +190,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         }
 
         checkUser(user)
-        checkEula(user)
-        checkPasswordComplexityAndOutDate(user, null, user.password)
         checkAnotherSession(user)
-        checkTfa(user)
-        checkToken(user, user.password)
         sessionManager.createUserSession(user, prefController.timeoutSec, request)
 
         LocalDateTime lastLoginOn = LocalDateUtils.dateToTimeValue(user.lastLoginOn != null ? user.lastLoginOn : user.createdOn)
