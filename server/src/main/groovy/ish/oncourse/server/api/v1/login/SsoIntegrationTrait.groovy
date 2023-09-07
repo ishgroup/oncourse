@@ -11,9 +11,11 @@ package ish.oncourse.server.api.v1.login
 
 import ish.oncourse.server.integration.PluginTrait
 
+import javax.ws.rs.ClientErrorException
+
 trait SsoIntegrationTrait extends PluginTrait {
 
-    abstract String getUserEmailByCode(String accessCode)
+    abstract String getUserEmailByCode(String accessCode) throws ClientErrorException
 
     abstract String getAuthorizationPageLink()
 }
