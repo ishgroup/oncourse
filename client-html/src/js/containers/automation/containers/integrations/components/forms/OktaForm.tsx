@@ -40,8 +40,8 @@ class OktaBaseForm extends React.Component<any, any> {
         <AppBarContent>
           <FormField name="fields.clientId" label="Client id" type="text" className="mb-2" />
           <FormField name="fields.clientSecret" label="Client secret" type="password" className="mb-2" />
-          <FormField name="fields.appUrl" label="App url" type="text" className="mb-2" />
-          <FormField name="fields.webRedirect" label="Web redirect" type="text" className="mb-2" />
+          <FormField name="fields.appUrl"  label="Okta app url in form https://*********.okta.com" type="text" className="mb-2" />
+          <FormField name="fields.webRedirect" disabled label="Sign-in redirect URI" type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );
