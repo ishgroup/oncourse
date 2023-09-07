@@ -12,6 +12,7 @@ import okta from "../../../../../../images/okta.svg";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { useAppDispatch } from "../../../../../common/utils/hooks";
 import { IntegrationTypesEnum } from "../../../../../model/automation/integrations/IntegrationSchema";
+import { postSsoAuthenticationRequest } from "../../../../login/actions";
 import LoginService from "../../../../login/services/LoginService";
 
 export const OktaButton = () => {
@@ -19,15 +20,11 @@ export const OktaButton = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    
     const code = params.get("code");
     
     if (code) {
-      LoginService.loginSso("okta", code).then(res => {
-        console.log('!!!!!!!!!', res);
-      });
+      dispatch(postSsoAuthenticationRequest("okta", code));
     }
-    
   }, []);
   
   const openOktaConcent = async () => {
