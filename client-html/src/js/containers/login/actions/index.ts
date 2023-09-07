@@ -6,7 +6,6 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-
 import { LoginRequest } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 
@@ -17,6 +16,7 @@ export const GET_EMAIL_BY_TOKEN_REQUEST = _toRequestType("get/user/email");
 export const GET_EMAIL_BY_TOKEN_FULFILLED = FULFILLED(GET_EMAIL_BY_TOKEN_REQUEST);
 
 export const POST_AUTHENTICATION_REQUEST = _toRequestType("post/authentication");
+export const POST_SSO_AUTHENTICATION_REQUEST = _toRequestType("post/sso/authentication");
 export const POST_AUTHENTICATION_FULFILLED = FULFILLED(POST_AUTHENTICATION_REQUEST);
 
 export const POST_UPDATE_PASSWORD_REQUEST = _toRequestType("post/user/updatePassword");
@@ -36,7 +36,7 @@ export const getSsoIntegrations = () => ({
 
 export const getEmailByToken = (value: string) => ({
   type: GET_EMAIL_BY_TOKEN_REQUEST,
-  payload: {value}
+  payload: { value }
 });
 
 export const checkPassword = (value: string, host?: string, port?: number) => ({
@@ -50,12 +50,17 @@ export const checkPassword = (value: string, host?: string, port?: number) => ({
 
 export const updatePasswordRequest = (value: string) => ({
   type: POST_UPDATE_PASSWORD_REQUEST,
-  payload: {value}
+  payload: { value }
 });
 
 export const postLoginRequest = (body: LoginRequest, host, port) => ({
   type: POST_AUTHENTICATION_REQUEST,
-  payload: {body, host, port}
+  payload: { body, host, port }
+});
+
+export const postSsoAuthenticationRequest = (ssoType: string, code: string) => ({
+  type: POST_SSO_AUTHENTICATION_REQUEST,
+  payload: { ssoType, code }
 });
 
 export const getSystemUserData = () => ({
@@ -64,5 +69,5 @@ export const getSystemUserData = () => ({
 
 export const createPasswordRequest = (token: string, password: string) => ({
   type: POST_CREATE_PASSWORD_REQUEST,
-  payload: {token, password}
+  payload: { token, password }
 });

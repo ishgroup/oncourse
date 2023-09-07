@@ -4,6 +4,7 @@ import { EpicGetEmailByToken } from "./EpicGetEmailByToken";
 import { EpicGetSSOIntegrations } from "./EpicGetSSOIntegrations";
 import { EpicGetUser } from "./EpicGetUser";
 import { EpicPostAuthentication } from "./EpicPostAuthentication";
+import { EpicPostSSOAuthentication } from "./EpicPostSSOAuthentification";
 import { EpicUpdatePassword } from "./EpicUpdatePassword";
 import { EpicValidatePassword } from "./EpicValidatePassword";
 
@@ -14,5 +15,6 @@ export const EpicLogin = combineEpics(
   EpicValidatePassword,
   EpicGetEmailByToken,
   EpicCreatePassword,
-  EpicGetSSOIntegrations
+  EpicGetSSOIntegrations,
+  EpicPostSSOAuthentication
 );
