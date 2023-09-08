@@ -108,7 +108,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
             "publicTransportDirections":"somePublicTransportDirections_upd",
             "specialInstructions":"someSpecialInstructions_upd",
             "tags":[208],
-            "rooms":[{"id":"#number","name":"room1","seatedCapacity":75,"siteId":"#number","siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+            "rooms":[{"id":"#number","name":"room1","seatedCapacity":75,"siteId":"#number","siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"customFields":{},"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
             "documents":[],
             "rules":[{"id":"#ignore","description":"fff","startDate":"2020-01-01","endDate":"2020-02-29","startDateTime":null,"endDateTime":null,"repeat":"hour","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}],
             }

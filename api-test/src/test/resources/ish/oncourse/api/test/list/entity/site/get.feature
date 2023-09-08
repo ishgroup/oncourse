@@ -74,11 +74,12 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
             "tags":[],
             "rooms":
                 [
-                {"id":1,"name":"room1","seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
-                {"id":2,"name":"room2","seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
+                {"id":1,"name":"room1","customFields":{},"seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
+                {"id":2,"name":"room2","customFields":{},"seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
                 ],
             "documents":[],
             "rules":[],
+            "customFields":{}
             }
             """
 
@@ -126,11 +127,12 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
             "tags":[],
             "rooms":
                 [
-                {"id":1,"name":"room1","seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
-                {"id":2,"name":"room2","seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
+                {"id":1,"name":"room1","customFields":{},"seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
+                {"id":2,"name":"room2","customFields":{},"seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
                 ],
             "documents":[],
             "rules":[],
+            "customFields":{}
             }
             """
 
