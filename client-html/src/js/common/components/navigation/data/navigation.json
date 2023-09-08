@@ -122,7 +122,6 @@
         "changeMyPassword",
         "communitySupport",
         "documentation",
-        "onCoursenews",
         "releaseNotes",
         "sendSupportRequest"
       ]
@@ -447,12 +446,6 @@
       "key": "messages",
       "link": "/message",
       "description": "A list of every email and SMS message sent to a contact via the onCourse messaging system."
-    },
-    {
-      "title": "onCourse news",
-      "key": "onCoursenews",
-      "link": "https://ish.com.au/blog",
-      "description": "Catch up on the latest updates and news from onCourse HQ."
     },
     {
       "title": "Outcomes",
