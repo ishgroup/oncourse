@@ -28,3 +28,7 @@ properties:
     description: generate and save preview for report
     required: false
     type: boolean
+  emailToSent:
+    description: for daemon pdf requests this parameter must be specified to sent the result to this address
+    required: false
+    type: string

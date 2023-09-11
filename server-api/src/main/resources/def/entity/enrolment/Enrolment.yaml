@@ -115,3 +115,5 @@ properties:
     type: array
     items:
       $ref: "../AssessmentSubmission.yaml"
+  vetPurchasingContractScheduleID:
+    type: string

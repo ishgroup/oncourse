@@ -12,6 +12,7 @@ import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErr
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import EntityService from "../../../../../services/EntityService";
 import { GET_OVERLAY_ITEMS, GET_OVERLAY_ITEMS_FULFILLED } from "../actions";
+import { LIST_SHARE_FORM_NAME } from "../constants";
 
 const request: EpicUtils.Request<any, { overlayToSelect?: string }> = {
   type: GET_OVERLAY_ITEMS,
@@ -33,7 +34,7 @@ const request: EpicUtils.Request<any, { overlayToSelect?: string }> = {
         type: GET_OVERLAY_ITEMS_FULFILLED,
         payload: {overlays}
       },
-      ...(selectItem ? [change("ListShareForm", "backgroundId", selectItem.id)] : [])
+      ...(selectItem ? [change(LIST_SHARE_FORM_NAME, "backgroundId", selectItem.id)] : [])
     ];
   },
   processError: response => {

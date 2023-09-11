@@ -14,7 +14,7 @@ import {
 } from "../actions";
 import ScriptsService from "../services/ScriptsService";
 
-const request: EpicUtils.Request<any, any> = {
+const request: EpicUtils.Request = {
   type: POST_SCRIPT_RUN_REQUEST,
   hideLoadIndicator: true,
   getData: ({ executeScriptRequest }) => ScriptsService.runScript(executeScriptRequest),

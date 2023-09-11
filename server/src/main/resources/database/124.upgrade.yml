@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 124-1
+      comment: add a vetPurchasingContractScheduleID for specific enrolments
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Enrolment
+          not:
+            - columnExists:
+                tableName: Enrolment
+                columnName: vetPurchasingContractScheduleID
+      changes:
+        - addColumn:
+            tableName: Enrolment
+            columns:
+              - column:
+                  name: vetPurchasingContractScheduleID
+                  type: VARCHAR(3)

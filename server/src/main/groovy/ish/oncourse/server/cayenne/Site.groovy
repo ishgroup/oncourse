@@ -32,7 +32,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, SiteTrait {
+class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, SiteTrait, ExpandableTrait {
 
 	public static final String DEFAULT_SITE_NAME = "Default site"
 	public static final String ACTIVE_CLASSES_COUNT_KEY = "activeClassesCount"
@@ -334,5 +334,10 @@ class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, Si
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
 		return SiteTagRelation.class
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return SiteCustomField
 	}
 }

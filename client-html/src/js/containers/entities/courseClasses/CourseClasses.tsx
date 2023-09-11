@@ -415,7 +415,8 @@ const enrolmentUpdateFields: Array<keyof Enrolment> = [
   "fundingSource",
   "relatedFundingSourceId",
   "vetFundingSourceStateID",
-  "vetPurchasingContractID"
+  "vetPurchasingContractID",
+  "vetPurchasingContractScheduleID",
 ];
 
 const getDefaultFieldName = (field: keyof CourseClass) => {

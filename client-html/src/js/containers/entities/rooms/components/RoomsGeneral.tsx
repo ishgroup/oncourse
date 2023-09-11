@@ -18,6 +18,7 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { openSiteLink } from "../../sites/utils";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
@@ -110,44 +111,50 @@ class RoomsGeneral extends React.PureComponent<any, any> {
           <TimetableButton onClick={this.onCalendarClick} />
         </Grid>
 
-        <Grid item xs={layoutArray[1].xs}>
-          <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={layoutArray[3].xs}>
-              <FormField
-                type="text"
-                name="seatedCapacity"
-                label="Seated Capacity"
-                required
-                normalize={normalizeSeatedCapacity}
-                debounced={false}
-              />
-            </Grid>
-
-            <Grid item xs={layoutArray[4].xs}>
-              {sites && (
-                <FormField
-                  type="select"
-                  name="siteId"
-                  label="Site"
-                  selectLabelMark="name"
-                  selectValueMark="id"
-                  labelAdornment={
-                  isNew ? undefined : (
-                    <LinkAdornment
-                      link={values && values.siteId}
-                      disabled={!values.siteId}
-                      clickHandler={() => openSiteLink(values.siteId)}
-                    />
-                  )
-                }
-                  items={sites}
-                  onInnerValueChange={this.onSiteChange}
-                  required
-                />
-                )}
-            </Grid>
-          </Grid>
+        <Grid item xs={layoutArray[3].xs}>
+          <FormField
+            type="text"
+            name="seatedCapacity"
+            label="Seated Capacity"
+            required
+            normalize={normalizeSeatedCapacity}
+            debounced={false}
+          />
         </Grid>
+
+        <Grid item xs={layoutArray[4].xs}>
+          {sites && (
+            <FormField
+              type="select"
+              name="siteId"
+              label="Site"
+              selectLabelMark="name"
+              selectValueMark="id"
+              labelAdornment={
+              isNew ? undefined : (
+                <LinkAdornment
+                  link={values && values.siteId}
+                  disabled={!values.siteId}
+                  clickHandler={() => openSiteLink(values.siteId)}
+                />
+              )
+            }
+              items={sites}
+              onInnerValueChange={this.onSiteChange}
+              required
+            />
+            )}
+        </Grid>
+
+        <CustomFields
+          entityName="Room"
+          fieldName="customFields"
+          entityValues={values}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 4 : 12,
+          }}
+        />
 
         <Grid item xs={layoutArray[5].xs}>
           <FormEditorField name="facilities" label="Facilities" />
