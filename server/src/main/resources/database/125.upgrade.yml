@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 124-1
+      id: 125-1
       comment: add a new table for checkout to entities relations
       author: dmitars
       preConditions:
@@ -62,7 +62,7 @@ databaseChangeLog:
                     nullable: false
 
   - changeSet:
-      id: 124-2
+      id: 125-2
       comment: add constraints to new foreign keys
       author: dmitars
       preConditions:
@@ -87,7 +87,7 @@ databaseChangeLog:
             referencedColumnNames: id
 
   - changeSet:
-      id: 124-3
+      id: 125-3
       comment: add checkoutUrl column to Checkout
       author: dmitars
       preConditions:
@@ -107,7 +107,7 @@ databaseChangeLog:
                     nullable: false
 
   - changeSet:
-      id: 124-4
+      id: 125-4
       comment: set shopping cart column to nullable
       author: dmitars
       preConditions:
@@ -122,7 +122,7 @@ databaseChangeLog:
             columnDataType: LONGTEXT
 
   - changeSet:
-      id: 124-5
+      id: 125-5
       comment: drop shopping cart column
       author: dmitars
       preConditions:
