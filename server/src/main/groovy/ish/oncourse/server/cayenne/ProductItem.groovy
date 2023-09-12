@@ -60,7 +60,7 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait, Conta
 			List<CheckoutContactRelation> checkoutRelations = CartFunctions.checkoutsByContactId(context, contact.willowId)
 
 			def productRelations = checkoutRelations.findAll { it instanceof CheckoutProductRelation && it.relatedObjectId == product.id }
-			context.deleteObject(productRelations.collect {it.checkout}.unique())
+			context.deleteObjects(productRelations.collect {it.checkout}.unique())
 			context.commitChanges()
 		}
 	}
