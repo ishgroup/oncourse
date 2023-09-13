@@ -13,7 +13,7 @@ package ish.oncourse.server.payroll;
 import com.google.inject.Inject;
 import ish.common.types.AttendanceType;
 import ish.common.types.ClassCostFlowType;
-import ish.common.types.PayslipPayType;
+import ish.common.types.CourseClassType;
 import ish.math.Money;
 import ish.oncourse.entity.services.SessionService;
 import ish.oncourse.server.ICayenneService;
@@ -172,7 +172,7 @@ public class PayrollService {
         return ClassCost.FLOW_TYPE.eq(WAGES)
                 .andExp(ClassCost.TUTOR_ROLE.isNotNull())
                 .andExp(ClassCost.COURSE_CLASS.dot(CourseClass.START_DATE_TIME_KEY).lt(until)
-                        .orExp(ClassCost.COURSE_CLASS.dot(CourseClass.IS_DISTANT_LEARNING_COURSE).eq(true)))
+                        .orExp(ClassCost.COURSE_CLASS.dot(CourseClass.TYPE).eq(CourseClassType.DISTANT_LEARNING)))
                 .andExp(ClassCost.IS_SUNK.eq(true).orExp(ClassCost.COURSE_CLASS.dot(CourseClass.IS_CANCELLED).eq(false)));
     }
 
@@ -310,7 +310,7 @@ public class PayrollService {
         var result = false;
         var courseClass = classCost.getCourseClass();
 
-        var fetchUntilDate = isDistantCourseClass(courseClass) ? untilDate : courseClass.getStartDateTime();
+        var fetchUntilDate = (isDistantCourseClass(courseClass) || (isHybridCourseClass(courseClass) && courseClass.getStartDateTime() == null)) ? untilDate : courseClass.getStartDateTime();
 
         switch (classCost.getRepetitionType()) {
             case FIXED:
@@ -344,7 +344,7 @@ public class PayrollService {
                         && hasClassStarted(courseClass, untilDate);
                 break;
             case PER_STUDENT_CONTACT_HOUR:
-                if (!isDistantCourseClass(courseClass)) {
+                if (!isDistantCourseClass(courseClass) && !(isHybridCourseClass(courseClass) && courseClass.getStartDateTime() == null)) {
                     result = !hasPaylines(classCost)
                             && hasEligibleRateOnDate(classCost, courseClass.getStartDateTime())
                             && hasZeroOrMorePayableEnrolments(courseClass);
@@ -385,6 +385,10 @@ public class PayrollService {
 
     private boolean isDistantCourseClass(CourseClass courseClass) {
         return courseClass.getIsDistantLearningCourse();
+    }
+
+    private boolean isHybridCourseClass(CourseClass courseClass) {
+        return courseClass.getIsHybrid();
     }
 
     private boolean hasValidEnrolments(CourseClass courseClass) {

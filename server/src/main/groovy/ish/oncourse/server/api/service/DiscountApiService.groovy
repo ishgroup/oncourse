@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.api.service
 
+import ish.common.types.CourseClassType
 import ish.common.types.DiscountAvailabilityType
 import ish.common.types.DiscountType
 import ish.math.MoneyRounding
@@ -78,7 +79,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
                     sale.code = (item[7] as String) + "-" + (item[2] as String)
                     sale.name = item[3] as String
                     sale.type = SaleTypeDTO.CLASS
-                    sale.active = CourseClassMixin.isActual(item[4] as Boolean, item[5] as Boolean, item[6] as Date)
+                    sale.active = CourseClassMixin.isActual(item[4] as Boolean, item[5] as CourseClassType, item[6] as Date)
                     sale
                 }
             }
@@ -134,7 +135,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.CODE),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.COURSE.dot(Course.NAME)),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.IS_CANCELLED),
-                        DiscountCourseClass.COURSE_CLASS.dot(CourseClass.IS_DISTANT_LEARNING_COURSE),
+                        DiscountCourseClass.COURSE_CLASS.dot(CourseClass.TYPE),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.END_DATE_TIME),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.COURSE.dot(Course.CODE)))
                 .where(DiscountCourseClass.DISCOUNT.eq(dbDiscount))

@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 125-1
+      comment: rename isDistantLearningCourse to type for course class
+      author: dmitriyl
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: CourseClass
+            columnName: isDistantLearningCourse
+      changes:
+        - renameColumn:
+            columnDataType: smallint(6)
+            newColumnName: type
+            oldColumnName: isDistantLearningCourse
+            tableName: CourseClass
+        - addNotNullConstraint:
+            columnDataType: smallint(6)
+            columnName: type
+            tableName: CourseClass
+
+  - changeSet:
+      id: 125-2
+      comment: add a minimumSessionsToComplete for course class
+      author: dmitriyl
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: CourseClass
+          not:
+            - columnExists:
+                tableName: CourseClass
+                columnName: minimumSessionsToComplete
+      changes:
+        - addColumn:
+            tableName: CourseClass
+            columns:
+              - column:
+                  name: minimumSessionsToComplete
+                  type: INTEGER

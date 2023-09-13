@@ -9,6 +9,7 @@
 package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
+import ish.common.types.CourseClassType
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.query.ObjectSelect
 
@@ -24,7 +25,7 @@ trait RoomTrait {
                         .andExp(CourseClass.IS_CANCELLED.isFalse())
                         .andExp(
                                 CourseClass.END_DATE_TIME.gt(new Date())
-                                        .orExp(CourseClass.IS_DISTANT_LEARNING_COURSE.isTrue())
+                                        .orExp(CourseClass.TYPE.eq(CourseClassType.DISTANT_LEARNING))
                         )
                 )
                 .selectCount(cayenneService.newReadonlyContext)

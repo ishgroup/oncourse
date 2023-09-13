@@ -38,7 +38,7 @@
       </cost>
       <fundingSource>Domestic full fee paying student</fundingSource>
       <isCancelled>true</isCancelled>
-      <isDistantLearningCourse>true</isDistantLearningCourse>
+      <type>Distant Learning</type>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
       <message />
@@ -140,7 +140,7 @@
       </cost>
       <fundingSource>Domestic full fee paying student</fundingSource>
       <isCancelled>true</isCancelled>
-      <isDistantLearningCourse>true</isDistantLearningCourse>
+      <type>Distant Learning</type>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
       <message />
@@ -251,7 +251,7 @@
       </cost>
       <fundingSource>Domestic full fee paying student</fundingSource>
       <isCancelled>true</isCancelled>
-      <isDistantLearningCourse>true</isDistantLearningCourse>
+      <type>Distant Learning</type>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
       <message />
@@ -308,7 +308,7 @@
       </cost>
       <fundingSource>Domestic full fee paying student</fundingSource>
       <isCancelled>true</isCancelled>
-      <isDistantLearningCourse>true</isDistantLearningCourse>
+      <type>Distant Learning</type>
       <isWebVisible>true</isWebVisible>
       <maximumPlaces>100</maximumPlaces>
       <message />

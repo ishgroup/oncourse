@@ -9,7 +9,7 @@ records.each { CourseClass cc ->
 			"endDateTime"                       : cc.endDateTime?.format("yyyy-MM-dd'T'HH:mm:ssXXX", cc.timeZone),
 			"isCancelled"                       : cc.isCancelled,
 			"fundingSource"                     : cc.fundingSource?.displayName,
-			"isDistantLearningCourse"           : cc.isDistantLearningCourse,
+			"type"           					: cc.type,
 			"isWebVisible"                      : cc.isShownOnWeb,
 			"maximumPlaces"                     : cc.maximumPlaces,
 			"minimumPlaces"                     : cc.minimumPlaces,

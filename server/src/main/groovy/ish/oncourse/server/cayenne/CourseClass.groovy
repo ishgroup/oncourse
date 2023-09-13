@@ -92,6 +92,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	public static final String HAS_ZERO_WAGES = "hasZeroWages"
 	public static final String IS_TRAINEESHIP = "isTraineeship"
 	public static final String SESSIONS_COUNT = "sessionsCount"
+	public static final String IS_DISTANT_LEARNING_COURSE = "isDistantLearningCourse"
 
 	/**
 	 * @return
@@ -215,8 +216,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
@@ -528,8 +529,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
@@ -803,13 +804,32 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return
+	 * @return true if class is hybrid, this means that class type is Hybrid
+	 */
+	@Nonnull
+	@API
+	Boolean getIsHybrid() {
+		return getType() == CourseClassType.HYBRID
+	}
+
+	/**
+	 * @return true if class is distant learning, this means that class type is Distant Learning
 	 */
 	@Nonnull
 	@API
 	@Override
 	Boolean getIsDistantLearningCourse() {
-		return super.getIsDistantLearningCourse()
+		return getType() == CourseClassType.DISTANT_LEARNING
+	}
+
+	/**
+	 * @return class type like With Sessions, Distant Learning, Hybrid
+	 */
+	@Nonnull
+	@API
+	@Override
+	CourseClassType getType() {
+		return super.getType()
 	}
 
 	/**
