@@ -56,7 +56,7 @@ xml.data() {
 					}
 					fundingSource(cc.fundingSource?.displayName)
 					isCancelled(cc.isCancelled)
-					isDistantLearningCourse(cc.isDistantLearningCourse)
+					type(cc.type)
 					isWebVisible(cc.isShownOnWeb)
 					maximumPlaces(cc.maximumPlaces)
 					message(cc.message)

@@ -48,7 +48,7 @@
        taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CourseClass id="1" code="123" taxAdjustment="0.0" taxId="1" minimumPlaces="1" maximumPlaces="100"
-               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1"
+               isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1" isCancelled="1"
                isActive="1" incomeAccountId="1" fundingSource="3" deliveryMode="1" courseId="1"
                feeExGst="100.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"

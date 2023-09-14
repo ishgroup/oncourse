@@ -412,7 +412,7 @@
 		<db-attribute name="isActive" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="isCancelled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isClassFeeApplicationOnly" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="isDistantLearningCourse" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="type" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isShownOnWeb" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="materials" type="CLOB" length="32000"/>
 		<db-attribute name="maxStudentAge" type="INTEGER"/>
@@ -434,6 +434,7 @@
 		<db-attribute name="vetPurchasingContractID" type="VARCHAR" length="12"/>
 		<db-attribute name="vetPurchasingContractScheduleID" type="VARCHAR" length="3"/>
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
+		<db-attribute name="minimumSessionsToComplete" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CourseClassPaymentPlanLine">
@@ -2108,7 +2109,7 @@
 		<obj-attribute name="isActive" type="java.lang.Boolean" db-attribute-path="isActive"/>
 		<obj-attribute name="isCancelled" type="java.lang.Boolean" db-attribute-path="isCancelled"/>
 		<obj-attribute name="isClassFeeApplicationOnly" type="java.lang.Boolean" db-attribute-path="isClassFeeApplicationOnly"/>
-		<obj-attribute name="isDistantLearningCourse" type="java.lang.Boolean" db-attribute-path="isDistantLearningCourse"/>
+		<obj-attribute name="type" type="ish.common.types.CourseClassType" db-attribute-path="type"/>
 		<obj-attribute name="isShownOnWeb" type="java.lang.Boolean" db-attribute-path="isShownOnWeb"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="maxStudentAge" type="java.lang.Integer" db-attribute-path="maxStudentAge"/>
@@ -2128,6 +2129,7 @@
 		<obj-attribute name="vetPurchasingContractID" type="java.lang.String" db-attribute-path="vetPurchasingContractID"/>
 		<obj-attribute name="vetPurchasingContractScheduleID" type="java.lang.String" db-attribute-path="vetPurchasingContractScheduleID"/>
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
+		<obj-attribute name="minimumSessionsToComplete" type="java.lang.Integer" db-attribute-path="minimumSessionsToComplete"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="CourseClassAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.CourseClassAttachmentRelation" clientClassName="ish.oncourse.cayenne.CourseClassAttachmentRelation">

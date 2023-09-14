@@ -56,7 +56,7 @@ records.each { Enrolment e ->
 			"classEndDateTime"                  : e.courseClass.endDateTime?.format("yyyy-MM-dd'T'HH:mm:ssXXX", e.courseClass.timeZone),
 			"classIsCancelled"                  : e.courseClass.isCancelled,
 			"classFundingSource"                : e.courseClass.fundingSource?.displayName,
-			"classIsDistantLearningCourse"      : e.courseClass.isDistantLearningCourse,
+			"classType"                         : e.courseClass.type,
 			"classIsWebVisible"                 : e.courseClass.isShownOnWeb,
 			"classMaximumPlaces"                : e.courseClass.maximumPlaces,
 			"classMinimumPlaces"                : e.courseClass.minimumPlaces,

@@ -52,8 +52,8 @@ properties:
     type: boolean
   isCancelled:
     type: boolean
-  isDistantLearningCourse:
-    type: boolean
+  type:
+    $ref: './CourseClassType.yaml'
   isShownOnWeb:
     type: boolean
   maxStudentAge:
@@ -150,3 +150,5 @@ properties:
       type: string
   feeHelpClass:
     type: boolean
+  minimumSessionsToComplete:
+    type: integer
