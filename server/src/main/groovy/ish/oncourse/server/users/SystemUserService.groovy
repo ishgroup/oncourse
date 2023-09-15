@@ -14,11 +14,13 @@ package ish.oncourse.server.users
 import com.google.inject.Inject
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.api.servlet.ApiFilter
 import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.cayenne.ACLRole
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -49,6 +51,9 @@ class SystemUserService implements ISystemUserService {
     }
 
     SystemUser getCurrentUser() {
-        sessionManager.currentUser
+        if(ApiFilter.CLIENT_MODE)
+            return SelectById.query(SystemUser, 1l).selectOne(cayenneService.newContext)
+
+        return sessionManager.currentUser
     }
 }
