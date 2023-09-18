@@ -155,7 +155,8 @@ const CourseClassTimetableTab = ({
   sessionWarnings,
   sessionSelection,
   bulkSessionModalOpened,
-  addTutorWage
+  addTutorWage,
+  syncErrors
 }: Props) => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [copyDialogAnchor, setCopyDialogAnchor] = useState(null);
@@ -166,8 +167,10 @@ const CourseClassTimetableTab = ({
   const onSelfPacedChange = (e, value) => {
     e.preventDefault();
 
+    const type: CourseClassType = 'Distant Learning';
+
     const onSetSelfPaced = () => {
-      dispatch(change(form, "type", 'Distant Learning'));
+      dispatch(change(form, "type", type));
       dispatch(change(form, "sessions", []));
       dispatch(change(form, "trainingPlan", []));
       dispatch(change(form, "studentAttendance", []));
@@ -754,6 +757,7 @@ const CourseClassTimetableTab = ({
           setExpanded={setExpanded}
           onAdd={twoColumn && !isDistantLearning ? addSession : null}
           onChange={onExpand}
+          formErrors={syncErrors}
           headerAdornment={(
             <>
               <div>
@@ -784,9 +788,20 @@ const CourseClassTimetableTab = ({
             </>
           )}
           >
-          {isDistantLearning && (
+          {["Distant Learning", "Hybrid"].includes(values.type) && (
             <Grid container columnSpacing={3}>
-              <Grid item xs={twoColumn ? 4 : 12}>
+              {isHybrid && <Grid item xs={twoColumn ? 3 : 12}>
+                <FormField
+                  type="number"
+                  label="Minimum sessions to complete"
+                  name="minimumSessionsToComplete"
+                  step="1"
+                  normalize={normalizeNumberToPositive}
+                  debounced={false}
+                  required
+                />
+              </Grid>}
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
                   label="Maximum days to complete"
@@ -798,7 +813,7 @@ const CourseClassTimetableTab = ({
                   debounced={false}
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 4 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
                   label="Expected study hours"
@@ -811,27 +826,13 @@ const CourseClassTimetableTab = ({
                   required
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 4 : 12}>
+              <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="select"
                   label="Virtual site"
                   name="virtualSiteId"
                   items={virualSites}
                   allowEmpty
-                />
-              </Grid>
-            </Grid>
-          )}
-          {isHybrid && (
-            <Grid container columnSpacing={3}>
-              <Grid item xs={twoColumn ? 4 : 12}>
-                <FormField
-                  type="number"
-                  label="Minimum sessions to complete"
-                  name="minimumSessionsToComplete"
-                  step="1"
-                  normalize={normalizeNumberToPositive}
-                  debounced={false}
                 />
               </Grid>
             </Grid>

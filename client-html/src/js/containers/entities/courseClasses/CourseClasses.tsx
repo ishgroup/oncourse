@@ -10,7 +10,7 @@ import {
   Account,
   ClassCost,
   ClassFundingSource,
-  CourseClass,
+  CourseClass, CourseClassType,
   DeliveryMode,
   Enrolment,
   Outcome,
@@ -222,6 +222,11 @@ const filterGroups: FilterGroup[] = [
         active: true
       },
       {
+        name: "Hybrid classes",
+        expression: "type is HYBRID and isCancelled is false",
+        active: true
+      },
+      {
         name: "Unscheduled classes",
         expression:
           "(startDateTime is null or endDateTime is null) and type is WITH_SESSIONS and isCancelled is false",
@@ -357,21 +362,21 @@ const formatSelfPaced = (v, row, columns) => {
     .findIndex(c => c.attribute === "type");
 
   let timezone = null;
-  let isSelfPaced = false;
 
   if (timezoneIndex !== -1) {
     timezone = row.values[timezoneIndex];
   }
 
   if (selfPacedIndex !== -1) {
-    isSelfPaced = row.values[selfPacedIndex] === "true";
+    const type: CourseClassType = row.values[selfPacedIndex]
+
+    if (type === "Distant Learning" ) return "Self paced";
+    if (type === "Hybrid") return "Hybrid";
   }
 
-  return isSelfPaced
-    ? "Self paced"
-    : v
-      ? format(timezone ? appendTimezone(new Date(v), timezone) : new Date(v), III_DD_MMM_YYYY_HH_MM)
-      : "";
+  return v
+    ? format(timezone ? appendTimezone(new Date(v), timezone) : new Date(v), III_DD_MMM_YYYY_HH_MM)
+    : "";
 };
 
 const formatSelfPacedSessions = (v, row, columns) => {
