@@ -180,7 +180,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   clearSearchResult: (pending: boolean) => dispatch(clearSales(pending)),
   searchCourseClassSales: (search: string) => {
-    dispatch(setCommonPlainSearch("CourseClass", `${search ? `(${search}) AND ` : ""}(isDistantLearningCourse is true OR endDateTime > now) AND isCancelled is false`));
+    dispatch(setCommonPlainSearch("CourseClass", `${search ? `(${search}) AND ` : ""}(type is DISTANT_LEARNING OR endDateTime > now) AND isCancelled is false`));
     dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscountClasses)));
   },
   clearCourseClassSales: (pending: boolean) => dispatch(clearCommonPlainRecords("CourseClass", pending))

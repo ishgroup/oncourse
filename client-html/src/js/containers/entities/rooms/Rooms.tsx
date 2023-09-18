@@ -61,7 +61,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Current classes",
     list: "class",
-    expression: "(endDateTime > today or isDistantLearningCourse == true) and sessions.room.id"
+    expression: "(endDateTime > today or type is DISTANT_LEARNING) and sessions.room.id"
   },
   {
     title: "Documents",
