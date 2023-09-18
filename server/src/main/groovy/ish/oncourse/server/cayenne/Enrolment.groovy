@@ -129,10 +129,10 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		List<CheckoutContactRelation> checkouts = CartFunctions.checkoutsByContactId(context, contact.id)
 
 		def waitingCoursesRelations = checkouts
-				.findAll {it instanceof  CheckoutWaitingCourseRelation && it.relatedObjectId == courseClass.course.id}
+				.findAll {it instanceof CheckoutWaitingCourseRelation && it.relatedObjectId == courseClass.course.id}
 
 		def courseClassRelations =  checkouts
-				.findAll {it instanceof  CheckoutWaitingCourseRelation && it.relatedObjectId == courseClass.id}
+				.findAll {it instanceof CheckoutCourseClassRelation && it.relatedObjectId == courseClass.id}
 
 		context.deleteObjects(waitingCoursesRelations.collect {it.checkout}.unique())
 		context.deleteObjects(courseClassRelations.collect {it.checkout}.unique())
