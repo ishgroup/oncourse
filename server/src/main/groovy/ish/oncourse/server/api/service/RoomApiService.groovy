@@ -19,13 +19,12 @@ import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 
 import java.time.ZoneOffset
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.GetKioskUrl.getKioskUrl
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
@@ -62,6 +61,7 @@ class RoomApiService extends TaggableApiService<RoomDTO, Room, RoomDao> {
             room.siteTimeZone = dbRoom.site.localTimezone
             room.createdOn = dbRoom.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             room.modifiedOn = dbRoom.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+            room.customFields = dbRoom?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
             room
         }
     }
@@ -77,6 +77,7 @@ class RoomApiService extends TaggableApiService<RoomDTO, Room, RoomDao> {
         updateTags(dbRoom, dbRoom.taggingRelations, dto.tags, RoomTagRelation, dbRoom.context)
         updateAvailabilityRules(dbRoom, dbRoom.unavailableRuleRelations*.rule, dto.rules, RoomUnavailableRuleRelation)
         updateDocuments(dbRoom, dbRoom.attachmentRelations, dto.documents, RoomAttachmentRelation, dbRoom.context)
+        updateCustomFields(dbRoom.context, dbRoom, dto.customFields, RoomCustomField)
 
         dbRoom
     }

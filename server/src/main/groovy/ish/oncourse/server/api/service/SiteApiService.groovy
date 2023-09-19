@@ -37,6 +37,7 @@ import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static org.apache.commons.lang3.StringUtils.trimToNull
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 
 class SiteApiService extends TaggableApiService<SiteDTO, Site, SiteDao> {
 
@@ -83,6 +84,7 @@ class SiteApiService extends TaggableApiService<SiteDTO, Site, SiteDao> {
             site.rules = dbSite.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
             site.createdOn = dbSite.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             site.modifiedOn = dbSite.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+            site.customFields = dbSite?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
             site
         }
     }
@@ -112,6 +114,7 @@ class SiteApiService extends TaggableApiService<SiteDTO, Site, SiteDao> {
         updateTags(dbSite, dbSite.taggingRelations, dto.tags, SiteTagRelation, dbSite.context)
         updateAvailabilityRules(dbSite, dbSite.unavailableRuleRelations*.rule, dto.rules, SiteUnavailableRuleRelation)
         updateDocuments(dbSite, dbSite.attachmentRelations, dto.documents, SiteAttachmentRelation, dbSite.context)
+        updateCustomFields(dbSite.context, dbSite, dto.customFields, SiteCustomField)
 
         dbSite
     }
