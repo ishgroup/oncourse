@@ -4,7 +4,7 @@ import ish.oncourse.server.cayenne.WaitingList
 import org.apache.cayenne.query.ObjectSelect
 
 def updatedCoursesIds = ObjectSelect.columnQuery(Course, Course.ID)
-        .where(Course.COURSE_CLASSES.dot(CourseClass.CREATED_ON).gte(new Date().minus(7)))
+        .where(Course.COURSE_CLASSES.dot(CourseClass.CREATED_ON).gte(new Date().minus(daysToCheckNumber.intValue())))
         .select(context)
 
 def waitingLists = ObjectSelect.query(WaitingList)
