@@ -179,6 +179,12 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     dispatch(change(form, "leadId", value.id));
     dispatch(change(form, "contactId", value["customer.id"]));
     dispatch(change(form, "contactName", value["customer.fullName"]));
+    onContactChange(Object.keys(value).reduce((p,c) => {
+      if (c.includes('customer.')) {
+        p[c.replace('customer.','')] = value[c];
+      }
+      return p;
+    }, {}))
   };
 
   const onContactChange = value => {

@@ -8,6 +8,7 @@ import debounce from "lodash.debounce";
 import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { getDefaultRemoteColumns } from "../../../../containers/entities/common/entityConstants";
 import { EditInPlaceRemoteDataSelectFieldProps, } from "../../../../model/common/Fields";
 import { State } from "../../../../reducers/state";
 import {
@@ -69,29 +70,6 @@ const mapStateToProps = (state: State, ownProps) => ({
   remoteRowCount: state.plainSearchRecords[ownProps.entity]?.rowsCount,
 });
 
-const getDefaultColumns = entity => {
-  switch (entity) {
-    case "CourseClass":
-      return "course.name,course.code,code,feeIncGst";
-    case "Contact":
-      return "firstName,lastName,middleName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id";
-    case "Site":
-      return "name,localTimezone";
-    case "Room":
-      return "name,site.name,site.localTimezone,site.id";
-    case "Qualification":
-      return "nationalCode,title,level,fieldOfEducation,isOffered";
-    case "Course":
-      return "code,name,currentlyOffered,isShownOnWeb";
-    case "Assessment":
-      return "code,name";
-    case "Module":
-      return "nationalCode,title";
-    case "Lead":
-      return "id,customer.fullName,customer.id,items.course.code,estimatedValue";
-  }
-  return "";
-};
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
   const getSearch = search => ownProps.getCustomSearch
@@ -107,7 +85,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
       getCommonPlainRecords(
         ownProps.entity,
         offset,
-        ownProps.aqlColumns || getDefaultColumns(ownProps.entity),
+        ownProps.aqlColumns || getDefaultRemoteColumns(ownProps.entity),
         true
       )
     ),
