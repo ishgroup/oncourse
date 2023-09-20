@@ -30,7 +30,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import RelationsCommon from "../../common/components/RelationsCommon";
-import { RELATION_COURSE_COLUMNS } from "../../common/entityConstants";
+import { RELATION_COURSE_COLUMNS_DEFAULT } from "../../common/entityConstants";
 import { formatRelatedSalables, mapRelatedSalables } from "../../common/utils";
 import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
 import { getContactFullName } from "../../contacts/utils";
@@ -140,10 +140,10 @@ const LeadGeneral = (props: Props) => {
       if (courseIds) {
         EntityService.getPlainRecords(
           'Course',
-          RELATION_COURSE_COLUMNS,
+          RELATION_COURSE_COLUMNS_DEFAULT,
           `id in (${courseIds})`,
         ).then(({ rows }) => {
-          const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS));
+          const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS_DEFAULT));
           const relatedSellables = formatRelatedSalables(items, 'Course').map(mapRelatedSalables);
           dispatch(change(form, "relatedSellables", relatedSellables));
         })

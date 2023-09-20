@@ -21,7 +21,7 @@ import { EntityName } from "../../../../model/entities/common";
 import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
 import { State } from "../../../../reducers/state";
 import { clearSales, getSales } from "../../sales/actions";
-import { RELATION_COURSE_COLUMNS } from "../entityConstants";
+import { RELATION_COURSE_COLUMNS_DEFAULT } from "../entityConstants";
 import { formatRelatedSalables, formattedEntityRelationTypes, mapRelatedSalables, salesSort } from "../utils";
 import NestedListRelationCell from "./NestedListRelationCell";
 
@@ -269,7 +269,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearSalesSearch: (loading?: boolean) => dispatch(clearSales(loading)),
   searchCourses: (search: string) => {
     dispatch(setCommonPlainSearch("Course", search));
-    dispatch(getCommonPlainRecords("Course", 0, RELATION_COURSE_COLUMNS, true, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Course", 0, RELATION_COURSE_COLUMNS_DEFAULT, true, null, PLAIN_LIST_MAX_PAGE_SIZE));
   },
   clearCoursesSearch: (loading?: boolean) => dispatch(clearCommonPlainRecords("Course", loading))
 });
