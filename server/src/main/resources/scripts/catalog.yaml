@@ -720,13 +720,28 @@
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.voucherEmailTemplate"
 
-- name: send waiting list reminder
+- name: send waiting list reminder (old)
   keyCode: ish.script.sendWaitingListReminder
   body: ish.script.sendWaitingListReminder.groovy
   status: NOT_INSTALLED
   triggerType: CRON
   schedule: "@weekly"
   description: Send contacts on the waiting list a notification when classes become available in those courses. waitingListReminderTemplate defines the message template sent to contacts.
+  short: Let contacts on a waiting list know when new classes become available for enrolment.
+  category: Marketing
+  tag:
+  options:
+    - name: waitingListReminderTemplate
+      dataType: MESSAGE_TEMPLATE
+      value: "ish.email.waitingListReminder"
+
+- name: send waiting list reminder (new)
+  keyCode: ish.script.sendWaitingListReminder.new
+  body: ish.script.sendWaitingListReminder.new.groovy
+  status: NOT_INSTALLED
+  triggerType: CRON
+  schedule: "@weekly"
+  description: Send contacts on the waiting list a notification when classes become available in those courses. waitingListReminderTemplate defines the message template sent to contacts. daysToCheckNumber - number of days before the script start to check waiting lists for courses, created during these days
   short: Let contacts on a waiting list know when new classes become available for enrolment.
   category: Marketing
   tag:
