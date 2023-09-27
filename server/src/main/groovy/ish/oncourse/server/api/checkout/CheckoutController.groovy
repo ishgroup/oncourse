@@ -12,15 +12,21 @@
 package ish.oncourse.server.api.checkout
 
 import groovy.transform.CompileStatic
+import ish.common.types.ApplicationStatus
 import ish.common.types.EntityRelationCartAction
 import ish.common.types.OutcomeStatus
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.api.dao.ModuleDao
+import ish.oncourse.server.cayenne.Application
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.FundingSource
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Outcome
+import org.apache.cayenne.exp.Expression
+import org.apache.cayenne.exp.ExpressionFactory
+import org.apache.cayenne.query.Ordering
+import org.apache.cayenne.query.SelectQuery
 
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
@@ -599,8 +605,30 @@ class CheckoutController {
         invoiceLine.recalculateTaxEach()
 
         new UpdateAttendancesAndOutcomes(context, enrolment, true).update()
+        updateApplicationStatusToAcceptedByEnrolment(enrolment)
 
         return enrolment
+    }
+
+    private static void updateApplicationStatusToAcceptedByEnrolment(Enrolment enrolment) {
+        def context = enrolment.context
+        Expression exp = Application.STATUS.eq(ApplicationStatus.OFFERED)
+                        .andExp(Application.COURSE.eq(enrolment.courseClass.course))
+                        .andExp(Application.STUDENT.eq(enrolment.student))
+                        .andExp(Application.ENROL_BY.gt(new Date()).orExp(Application.ENROL_BY.isNull()))
+
+        List<Application> applications = SelectQuery.query(Application, exp).select(context)
+
+        Ordering ordering = new Ordering()
+        ordering.setSortSpecString(Application.FEE_OVERRIDE.name)
+        ordering.setNullSortedFirst(false)
+        ordering.setAscending()
+        ordering.orderList(applications)
+
+        if (!applications.isEmpty()) {
+            Application app = enrolment.getObjectContext().localObject(applications.get(0));
+            app.setStatus(ApplicationStatus.ACCEPTED);
+        }
     }
 
     private void applyDiscount(BigDecimal totalOverride, InvoiceLine invoiceLine, CourseClass courseClass, Discount discount) {
