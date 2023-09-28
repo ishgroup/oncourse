@@ -20,7 +20,7 @@ const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
   } = props;
 
   const tags = type === "tags" ? props.tags : [];
-  const required = type !== "stub" ? props.required : false;
+  const required = type !== "stub" && type !== "color" ? props.required : false;
 
   const validateResolver = useMemo(() => {
     const result = [];
@@ -49,7 +49,8 @@ const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
       validate={validateResolver}
       props={{
         ref,
-        format: rest.format
+        format: rest.format,
+        placeholder: (props as any).placeholder || 'No value'
       }}
       {...rest}
     />
