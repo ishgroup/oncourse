@@ -14,10 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.getIntegrationById
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.validateForCreate
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.validateForDelete
-import static ish.oncourse.server.api.v1.function.IntegrationFunctions.validateForUpdate
+import ish.oncourse.server.api.v1.login.Sso
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -32,6 +29,8 @@ import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.lang.reflect.Method
 import java.time.ZoneOffset
+
+import static ish.oncourse.server.api.v1.function.IntegrationFunctions.*
 
 @CompileStatic
 class IntegrationApiImpl implements IntegrationApi {
@@ -75,6 +74,13 @@ class IntegrationApiImpl implements IntegrationApi {
                 i
             }
         }
+    }
+
+    @Override
+    List<Integer> getSsoPluginTypes() {
+        return ObjectSelect.columnQuery(IntegrationConfiguration, IntegrationConfiguration.TYPE)
+                .where(IntegrationConfiguration.TYPE.in(Sso.values().collect {it.integrationType}))
+                .select(cayenneService.newReadonlyContext)
     }
 
     @Override
