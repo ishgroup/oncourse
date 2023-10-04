@@ -108,6 +108,7 @@
 		<db-attribute name="markedOn" type="TIMESTAMP"/>
 		<db-attribute name="grade" type="DECIMAL" length="6" scale="2"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="effectiveFrom" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="Attendance">
 		<db-attribute name="attendanceType" type="INTEGER" isMandatory="true"/>
@@ -2321,6 +2322,7 @@
 		<obj-attribute name="vetTrainingContractID" type="java.lang.String" db-attribute-path="vetTrainingContractID"/>
 		<obj-attribute name="vetPurchasingContractScheduleID" type="java.lang.String" db-attribute-path="vetPurchasingContractScheduleID"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="effectiveFrom" type="java.util.Date" db-attribute-path="effectiveFrom"/>
 	</obj-entity>
 	<obj-entity name="EnrolmentAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.EnrolmentAttachmentRelation" clientClassName="ish.oncourse.cayenne.EnrolmentAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "Enrolment"]]></qualifier>
