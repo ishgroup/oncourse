@@ -30,13 +30,13 @@ import { useAppSelector } from "../../../utils/hooks";
 import EditInPlaceQuerySelect from "./EditInPlaceQuerySelect";
 import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
 
-const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null };
+const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null, placeholder: null };
 
 const FormFieldBase = (props: AngelFormFieldProps) => {
 
   const { type, ...rest } = props;
 
-  const { input, format, debounced = true } = type !== "stub"
+  const { input, format, debounced = true } = type !== "stub" && type !== "color"
     ? props
     : stubFieldMocks;
 

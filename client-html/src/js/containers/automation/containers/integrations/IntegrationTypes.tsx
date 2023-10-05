@@ -26,7 +26,8 @@ import talentlms from "../../../../../images/talentlms.png";
 import usi from "../../../../../images/usi.png";
 import tsci from "../../../../../images/vet_student_loans.png";
 import xero from "../../../../../images/xero.png";
-import { IntegrationTypesModel } from "../../../../model/automation/integrations/IntegrationSchema";
+import okta from "../../../../../images/okta.svg";
+import { IntegrationTypesEnum, IntegrationTypesModel } from "../../../../model/automation/integrations/IntegrationSchema";
 import { AlchemerForm } from "./components/forms/AlchemerForm";
 import { AmazonS3Form } from "./components/forms/AmazonS3Form";
 import { AzureForm } from "./components/forms/AzureForm";
@@ -41,6 +42,7 @@ import { MicropowerForm } from "./components/forms/MicropowerForm";
 import { MoodleForm } from "./components/forms/MoodleForm";
 import { MYOBForm } from "./components/forms/MYOBForm";
 import { NSWForm } from "./components/forms/NSWForm";
+import { OktaForm } from "./components/forms/OktaForm";
 import { SurveyMonkeyForm } from "./components/forms/SurveyMonkeyForm";
 import { TalentLMSForm } from "./components/forms/TalentLMSForm";
 import { UsiForm } from "./components/forms/UsiForm";
@@ -48,143 +50,143 @@ import { VetStudentLoansForm } from "./components/forms/VetStudentLoansForm";
 import { XeroForm } from "./components/forms/XeroForm";
 
 const types: IntegrationTypesModel = {
-  1: {
-    name: "Moodle",
+  [IntegrationTypesEnum.Moodle]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Moodle],
     image: moodle,
     form: MoodleForm,
     formName: "MoodleForm",
     description:
       "Moodle is an open source Learning Managment System (LMS) for delivering training to students. onCourse can create enrolments in Moodle whenever a succesful enrolment is created in corresponding class in onCourse."
   },
-  2: {
-    name: "Mailchimp",
+  [IntegrationTypesEnum.Mailchimp]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Mailchimp],
     form: MailchimpForm,
     formName: "MailchimpForm",
     image: mailchimp,
     description:
       "MailChimp helps you email the right people at the right time. Send automated emails based on customer behavior and preferences."
   },
-  3: {
-    name: "SurveyMonkey",
+  [IntegrationTypesEnum.SurveyMonkey]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.SurveyMonkey],
     form: SurveyMonkeyForm,
     formName: "SurveyMonkeyForm",
     image: surveymonkey,
     description:
       "Create and publish online surveys in minutes, and view results graphically in real time SurveyMonkey provides free online questionnaire and survey software."
   },
-  4: {
-    name: "Alchemer",
+  [IntegrationTypesEnum.Alchemer]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Alchemer],
     form: AlchemerForm,
     formName: "SurveyGizmoForm",
     image: alchemer,
     description:
       "Alchemer is an exeptionally powerful survey tool designed to make even the most advanced survey projects fun, easy & affordable."
   },
-  5: {
-    name: "Xero",
+  [IntegrationTypesEnum.Xero]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Xero],
     form: XeroForm,
     formName: "XeroForm",
     image: xero,
     description:
       "Xero is online accouting software for small business. Use Xero to manage invoicing bank reconciliation, bookkeeping & more."
   },
-  6: {
-    name: "MYOB",
+  [IntegrationTypesEnum.MYOB]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.MYOB],
     form: MYOBForm,
     formName: "MYOBForm",
     image: myob,
     description:
       "MYOB, Mind Your Own Business, is an Australian multinational corporation that provides tax, accounting and other services to small and medium businesses."
   },
-  7: {
-    name: "Cloud Assess",
+  [IntegrationTypesEnum["Cloud Assess"]]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum["Cloud Assess"]],
     form: CloudAssessForm,
     formName: "CloudAssessForm",
     image: cloudassess,
     description:
       "Cloud Assess is a flexible assessment platform designed specifically for vocational education assessment."
   },
-  8: {
-    name: "Canvas",
+  [IntegrationTypesEnum.Canvas]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Canvas],
     form: CanvasForm,
     formName: "CanvasForm",
     image: canvas,
     description:
       "Canvas is an open source Learning Management System (LMS) for delivering training to students. This integration allows you to automatically create classes, students and enrolments in Canvas as needed."
   },
-  9: {
-    name: "Micropower",
+  [IntegrationTypesEnum.Micropower]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Micropower],
     form: MicropowerForm,
     formName: "MicropowerForm",
     image: micropower,
     description: "Micropower is a powerful users and memberships management platform."
   },
-  10: {
-    name: "USI Agency",
+  [IntegrationTypesEnum["USI Agency"]]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum["USI Agency"]],
     form: UsiForm,
     formName: "UsiForm",
     image: usi,
     description:
       "Unique Student Identifier is a reference number for every student of accredited training in Australia. Automatically add and verify USIs for your students."
   },
-  11: {
-    name: "VET Student Loans",
+  [IntegrationTypesEnum["VET Student Loans"]]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum["VET Student Loans"]],
     formName: "VetStudentLoansForm",
     form: VetStudentLoansForm,
     image: tsci,
     description:
       "This integration feeds data from onCourse directly into the HEIMS data collection system (sometimes called TCSI)."
   },
-  12: {
-    name: "Google Classroom",
+  [IntegrationTypesEnum["Google Classroom"]]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum["Google Classroom"]],
     form: GoogleClassroomForm,
     formName: "GoogleClassroomForm",
     image: googleclassroom,
     description:
       "Google Classroom is mission control for your classes. As a free service for teachers and students, you can create classes, distribute assignments, send feedback, and see everything in one place. Instant. Paperless. Easy."
   },
-  13: {
-    name: "Coassemble",
+  [IntegrationTypesEnum.Coassemble]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Coassemble],
     form: CoassembleForm,
     formName: "CoassembleForm",
     image: coassemble,
     description:
       "Coassemble is a powerful and intuitive platform for organizations to create and deliver quality online training. The first of its kind, Coassemble combines a user-friendly Learning Management System with outstanding rapid authoring capabilities. With Coassemble, organizations can create and deliver online training from a single integrated platform."
   },
-  14: {
-    name: "TalentLMS",
+  [IntegrationTypesEnum.TalentLMS]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.TalentLMS],
     form: TalentLMSForm,
     formName: "TalentLMSForm",
     image: talentlms,
     description:
       "TalentLMS is a cloud-based learning management system that provides an online tool to deliver your course materials."
   },
-  15: {
-    name: "LearnDash",
+  [IntegrationTypesEnum.LearnDash]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.LearnDash],
     form: LearnDashForm,
     formName: "LearnDashForm",
     image: learndash,
     description:
       "LearnDash is a learning management system plugin for Wordpress websites only. It can provide an online space for you to deliver your course materials to students."
   },
-  16: {
-    name: "Amazon S3",
+  [IntegrationTypesEnum["Amazon S3"]]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum["Amazon S3"]],
     form: AmazonS3Form,
     formName: "AmazonS3Form",
     image: amazons3,
     description:
       "Experience Reliability & Scalability With AWS Online Storage Solutions. Sign Up For Free"
   },
-  17: {
-    name: "Microsoft Azure",
+  [IntegrationTypesEnum["Microsoft Azure"]]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum["Microsoft Azure"]],
     form: AzureForm,
     formName: "AzureForm",
     image: azure,
     description:
       "Massively-Scalable Object Storage for Unstructured Data. Try Blob Storage Free. Learn by Doing. 25+ Free Services. Build Your Idea. Get Free Credit. Try Free Products."
   },
-  18: {
-    name: "Service NSW voucher",
+  [IntegrationTypesEnum["Service NSW voucher"]]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum["Service NSW voucher"]],
     form: NSWForm,
     formName: "NSWForm",
     image: servicensw,
@@ -198,13 +200,21 @@ const types: IntegrationTypesModel = {
       </span>
     )
   },
-  19: {
-    name: "Kronos",
+  [IntegrationTypesEnum.Kronos]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Kronos],
     form: KronosForm,
     formName: "KronosForm",
     image: kronos,
     description:
       "With this integration you can send your tutor session rosters directly to your Kronos Workforce Ready system."
+  },
+  [IntegrationTypesEnum.Okta]: {
+    name: IntegrationTypesEnum[IntegrationTypesEnum.Okta],
+    form: OktaForm,
+    formName: "OktaForm",
+    image: okta,
+    description:
+      "Built to tackle both Consumer and SaaS Apps across every industry. Authenticate, authorize, and secure access for applications, devices, and users."
   },
 };
 

@@ -24,6 +24,10 @@ class IntegrationService {
   public deleteIntegrationItem(id: string): Promise<any> {
     return this.integrationApi.remove(id);
   }
+
+  public getSsoPluginTypes(): Promise<number[]> {
+    return this.integrationApi.getSsoPluginTypes();
+  }
 }
 
 export default new IntegrationService();

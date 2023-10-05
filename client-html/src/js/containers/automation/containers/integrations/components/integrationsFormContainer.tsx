@@ -21,7 +21,10 @@ import RouteChangeConfirm from "../../../../../common/components/dialog/RouteCha
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
+import {
+  IntegrationSchema,
+  IntegrationTypesEnum
+} from "../../../../../model/automation/integrations/IntegrationSchema";
 import { State } from "../../../../../reducers/state";
 import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
 import IntegrationTypes from "../IntegrationTypes";
@@ -62,7 +65,16 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     const { match, integrations } = this.props;
 
     if (match.params.id === "new") {
-      return { id: "", type: match.params.type, fields: {} } as any;
+      let fields = {};
+
+      // Initial fields for Okta intrgration
+      if (Number(match.params.type) === IntegrationTypesEnum.Okta) {
+        fields = {
+          webRedirect: window.location.origin + "/login"
+        };
+      }
+      
+      return { id: "", type: match.params.type, fields } as any;
     }
     return integrations.find(item => String(item.id) === match.params.id);
   }

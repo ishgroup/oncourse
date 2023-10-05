@@ -5,9 +5,9 @@
 
 import { PasswordComplexity } from "@api/model";
 import { Epic } from "redux-observable";
-import { CHECK_PASSWORD_FULFILLED, CHECK_PASSWORD_REQUEST, FETCH_FAIL, FETCH_SUCCESS } from "../../../common/actions";
-
+import { FETCH_FAIL, FETCH_SUCCESS } from "../../../common/actions";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { CHECK_PASSWORD_FULFILLED, CHECK_PASSWORD_REQUEST } from "../actions";
 import LoginService from "../services/LoginService";
 
 const request: EpicUtils.Request = {

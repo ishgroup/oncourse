@@ -1,0 +1,20 @@
+get:
+  summary: Get link to authorization page of sso
+  operationId: getSsoLink
+  tags:
+    - Authentication
+  description: 'API endpoint which is used for user sso authorization'
+  parameters:
+    - name: ssoType
+      in: path
+      required: true
+      type: string
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED
