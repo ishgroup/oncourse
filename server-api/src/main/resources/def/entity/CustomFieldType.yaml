@@ -38,3 +38,16 @@ properties:
     type: string
     format: date-time
     description: date and time when record was modified
+  relatedTypeId:
+    type: integer
+    format: int64
+    description: Id of related custom field types, that affects this type display
+  relatedTypeValue:
+    type: string
+    description: Related custom field type value, that allows this type to be shown
+  dependentTypes:
+    type: array
+    items:
+      type: integer
+      format: int64
+    description: Dependent custom field types ids, that cannot be shown without specific value at this field

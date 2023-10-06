@@ -137,6 +137,13 @@ class CustomFieldTypeFunctions {
             }
         }
 
+        if(type.relatedTypeId){
+            if(!type.relatedTypeValue)
+                return new ValidationErrorDTO(type.id, 'relatedTypeValue', "Related custom field type cannot be specified without expected field value")
+            def relatedType = SelectById.query(CustomFieldType, type.relatedTypeId).selectOne(context)
+            if(!relatedType)
+                return new ValidationErrorDTO(type.id, 'relatedTypeId', "Related custom field type with id ${type.relatedTypeId} not found")
+        }
         return null
     }
 
@@ -162,6 +169,12 @@ class CustomFieldTypeFunctions {
         dbType.sortOrder = type.sortOrder
         dbType.dataType = type.dataType.dbType
         dbType.pattern = type.pattern
+
+        if(type.relatedTypeId){
+            dbType.relatedType = SelectById.query(CustomFieldType, type.relatedTypeId).selectOne(context)
+            dbType.relatedTypeValue = type.relatedTypeValue
+        }
+
         dbType
     }
 

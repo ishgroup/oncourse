@@ -64,6 +64,9 @@ class CustomFieldApiImpl implements CustomFieldApi {
                 type.mandatory = dbType.isMandatory
                 type.dataType = DataTypeDTO.values()[0].fromDbType(dbType.dataType)
                 type.pattern = dbType.pattern
+                type.relatedTypeId = dbType.relatedType?.id
+                type.relatedTypeValue = dbType.relatedTypeValue
+                type.dependentTypes = dbType.dependentTypes.collect {it.id}
                 type
             }
         }
