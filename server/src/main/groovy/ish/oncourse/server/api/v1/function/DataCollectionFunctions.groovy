@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.function
 
-import groovy.transform.CompileStatic
+import groovy.transform.CompileDynamic
 import ish.oncourse.server.cayenne.ArticleFieldConfiguration
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.MembershipFieldConfiguration
@@ -59,7 +59,7 @@ import org.apache.cayenne.query.SelectById
 
 import java.time.ZoneOffset
 
-@CompileStatic
+@CompileDynamic
 class DataCollectionFunctions {
 
     private static final List<FieldTypeDTO> VISIBLE_FIELDS
@@ -200,6 +200,12 @@ class DataCollectionFunctions {
             return  new ValidationErrorDTO(null, 'uniqueKey', "Field types: ${fieldNames} are not available for the form")
         }
 
+        List<String> relatedFieldKeys = form.fields.collect{it.relatedFieldKey}
+        List<String> fieldKeys = form.fields.collect{it.type.uniqueKey}
+        relatedFieldKeys.each {fieldKey ->
+            if(!fieldKeys.contains(fieldKey))
+                return  new ValidationErrorDTO(null, 'relatedFieldId', "Field with key: ${fieldKey} not found on this form")
+        }
         return null
 
     }
@@ -298,6 +304,11 @@ class DataCollectionFunctions {
                 }
             }
             form.fields.each { field -> dbForm.addToFields toDbField(context, dbForm, field, order++) }
+            dbForm.fields.findAll{it.relatedFieldValue}.each {
+                def dto = form.fields.find{dto -> dto.type.uniqueKey == it.property}
+                it.relatedField = dbForm.fields.find{field -> field.property == dto.relatedFieldKey}
+            }
+
             if (dbForm instanceof SurveyFieldConfiguration) {
                 (dbForm as SurveyFieldConfiguration).deliverySchedule = DeliverySchedule.valueOf(form.deliverySchedule.name())
             }
@@ -313,6 +324,7 @@ class DataCollectionFunctions {
             dbField.name = field.label
             dbField.description = field.helpText
             dbField.mandatory = field.mandatory
+            dbField.relatedFieldValue = field.relatedFieldValue
             dbField
         }
     }
@@ -353,6 +365,8 @@ class DataCollectionFunctions {
             field.label = dbField.name
             field.helpText = dbField.description
             field.mandatory = dbField.mandatory
+            field.relatedFieldValue = dbField.relatedFieldValue
+            field.relatedFieldKey = dbField.relatedField?.property
             field
         }
     }
