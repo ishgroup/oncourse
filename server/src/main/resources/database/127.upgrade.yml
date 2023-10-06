@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 127-1
+      comment: add a related custom field Field id column to field Fields and its value
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Field
+          not:
+            - columnExists:
+                tableName: Field
+                columnName: relatedFieldId
+            - columnExists:
+                tableName: Field
+                columnName: relatedFieldValue
+      changes:
+        - addColumn:
+            tableName: Field
+            columns:
+              - column:
+                  name: relatedFieldId
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    referencedTableName: Field
+                    referencedColumnNames: id
+                    foreignKeyName: Field_Field_FK
+              - column:
+                  name: relatedFieldValue
+                  type: TEXT
