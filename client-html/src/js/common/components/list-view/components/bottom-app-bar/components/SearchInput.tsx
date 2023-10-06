@@ -464,8 +464,8 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
                   value: userAQLSearch
                 }}
                 performSearch={this.debounceSearch}
-                onFocus={alwaysExpanded ? undefined : this.onFocus}
                 onBlur={this.onBlur}
+                onClick={this.onFocus}
                 itemRenderer={searchMenuItemsRenderer}
                 disableUnderline
                 disableErrorText

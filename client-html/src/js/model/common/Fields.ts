@@ -54,6 +54,7 @@ export interface EditInPlaceQueryFieldProps {
   performSearch?: () => void;
   theme?: any;
   onFocus?: any;
+  onClick?: any;
   onBlur?: any;
   placeholder?: string;
   labelAdornment?: any;
