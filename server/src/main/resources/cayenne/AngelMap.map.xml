@@ -492,6 +492,8 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
 		<db-attribute name="sortOrder" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="relatedTypeId" type="BIGINT"/>
+		<db-attribute name="relatedTypeValue" type="CLOB" length="32000"/>
 	</db-entity>
 	<db-entity name="DefinedTutorRole">
 		<db-attribute name="active" type="SMALLINT" isMandatory="true"/>
@@ -2201,6 +2203,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="sortOrder" type="java.lang.Long" db-attribute-path="sortOrder"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="relatedTypeValue" type="java.lang.String" db-attribute-path="relatedTypeValue"/>
 	</obj-entity>
 	<obj-entity name="DefinedTutorRole" className="ish.oncourse.server.cayenne.DefinedTutorRole" clientClassName="ish.oncourse.cayenne.DefinedTutorRole" dbEntityName="DefinedTutorRole" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="active" type="java.lang.Boolean" db-attribute-path="active"/>
@@ -4026,6 +4029,12 @@
 	<db-relationship name="customFields" source="CustomFieldType" target="CustomField" toMany="true">
 		<db-attribute-pair source="id" target="customFieldTypeId"/>
 	</db-relationship>
+	<db-relationship name="relatedType" source="CustomFieldType" target="CustomFieldType" toMany="false">
+		<db-attribute-pair source="relatedTypeId" target="id"/>
+	</db-relationship>
+	<db-relationship name="dependentTypes" source="CustomFieldType" target="CustomFieldType" toMany="true">
+		<db-attribute-pair source="id" target="relatedTypeId"/>
+	</db-relationship>
 	<db-relationship name="payRates" source="DefinedTutorRole" target="PayRate" toMany="true">
 		<db-attribute-pair source="id" target="definedTutorRoleId"/>
 	</db-relationship>
@@ -5352,6 +5361,8 @@
 	<obj-relationship name="course" source="CourseUnavailableRuleRelation" target="Course" deleteRule="Nullify" db-relationship-path="course"/>
 	<obj-relationship name="customFieldType" source="CustomField" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="customFieldType"/>
 	<obj-relationship name="customFields" source="CustomFieldType" target="CustomField" deleteRule="Cascade" db-relationship-path="customFields"/>
+	<obj-relationship name="dependentTypes" source="CustomFieldType" target="CustomFieldType" deleteRule="Deny" db-relationship-path="dependentTypes"/>
+	<obj-relationship name="relatedType" source="CustomFieldType" target="CustomFieldType" deleteRule="Nullify" db-relationship-path="relatedType"/>
 	<obj-relationship name="payRates" source="DefinedTutorRole" target="PayRate" deleteRule="Cascade" db-relationship-path="payRates"/>
 	<obj-relationship name="tutorRoles" source="DefinedTutorRole" target="CourseClassTutor" deleteRule="Deny" db-relationship-path="tutorRoles"/>
 	<obj-relationship name="corporatePassDiscount" source="Discount" target="CorporatePassDiscount" deleteRule="Deny" db-relationship-path="corporatePassDiscount"/>
