@@ -220,14 +220,15 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.code = dto.code
 
         courseClass.type = dto.type.dbType
-        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING) {
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING || dto.type == CourseClassTypeDTO.HYBRID) {
             courseClass.maximumDays = dto.maximumDays
             courseClass.expectedHours = dto.expectedHours
             if (dto.virtualSiteId != null) {
                 courseClass.room = siteDao.getById(courseClass.context, dto.virtualSiteId).rooms[0]
             }
-        } else if (dto.type == CourseClassTypeDTO.HYBRID) {
-            courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
+            if (dto.type == CourseClassTypeDTO.HYBRID) {
+                courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
+            }
         }
         courseClass.isActive = dto.isActive
         courseClass.isShownOnWeb = dto.isShownOnWeb
