@@ -53,7 +53,7 @@ public class DateTimeLiteralConverter implements Converter<AqlParser.DateTimeLit
         }
 
         if(date != null) {
-            return new LazyDateScalar(DateTimeInterval.of(date));
+            return new LazyDateTimeScalar(DateTimeInterval.of(date));
         }
 
         if(time != null) {

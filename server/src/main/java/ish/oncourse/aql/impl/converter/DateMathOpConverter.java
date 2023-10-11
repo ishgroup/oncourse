@@ -37,7 +37,7 @@ class DateMathOpConverter implements Converter<AqlParser.MathOperatorContext> {
         ctx.pushLevel();
         if(value instanceof LocalDate) {
             var localDate = (LocalDate) value;
-            return new LazyDateScalar(DateTimeInterval.of(localDate));
+            return new LazyDateTimeScalar(DateTimeInterval.of(localDate));
         }
 
         return new ASTScalar(value);
@@ -82,8 +82,8 @@ class DateMathOpConverter implements Converter<AqlParser.MathOperatorContext> {
                 }
             } else if (node instanceof ASTCurrentTimestamp) {
                 result.value = LocalDateTime.now();
-            } else if (node instanceof LazyDateScalar) {
-                result.value = ((LazyDateScalar)node).getInterval().getStart().toLocalDate();
+            } else if (node instanceof LazyDateTimeScalar) {
+                result.value = ((LazyDateTimeScalar)node).getInterval().getStart().toLocalDate();
             }
         }
 

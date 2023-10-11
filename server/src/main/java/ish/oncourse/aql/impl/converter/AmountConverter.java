@@ -40,6 +40,8 @@ class AmountConverter implements Converter<AqlParser.AmountContext> {
     AmountConverter() {
         // create all available specific converters
         unitConverters.put(TypeClassifier.DATE, new DateUnitConverter());
+        unitConverters.put(TypeClassifier.CUSTOM_FIELD_DATE, new DateUnitConverter());
+        unitConverters.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new DateUnitConverter());
         unitConverters.put(TypeClassifier.NUMERIC, new NumericUnitConverter());
     }
 

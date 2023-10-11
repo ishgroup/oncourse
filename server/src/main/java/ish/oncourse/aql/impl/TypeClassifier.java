@@ -11,6 +11,8 @@
 
 package ish.oncourse.aql.impl;
 
+import ish.oncourse.aql.model.CustomFieldDateMarker;
+import ish.oncourse.aql.model.CustomFieldDateTimeMarker;
 import ish.oncourse.aql.model.CustomFieldMarker;
 import org.apache.cayenne.Persistent;
 
@@ -132,6 +134,16 @@ public enum TypeClassifier {
     BANKING,
 
     /**
+     * Custom field with date type
+     */
+    CUSTOM_FIELD_DATE,
+
+    /**
+     * Custom field with date time type
+     */
+    CUSTOM_FIELD_DATE_TIME,
+
+    /**
      * Everything else
      */
     UNKNOWN;
@@ -161,6 +173,14 @@ public enum TypeClassifier {
 
         if(javaType == CustomFieldMarker.class) {
             return CUSTOM_FIELD;
+        }
+
+        if(javaType == CustomFieldDateMarker.class) {
+            return CUSTOM_FIELD_DATE;
+        }
+
+        if(javaType == CustomFieldDateTimeMarker.class) {
+            return CUSTOM_FIELD_DATE;
         }
 
         if(Boolean.class == javaType || boolean.class == javaType) {
