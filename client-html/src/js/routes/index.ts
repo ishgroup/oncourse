@@ -76,7 +76,7 @@ type SystemCategories =
   | "Duplicate course classes"
   | "Not found";
 
-export interface Route<T> {
+export interface Route<T = string> {
   title?: T; // route title, displayed on sidebar
   path?: string; // route path (regexp)
   url?: string; // route link
