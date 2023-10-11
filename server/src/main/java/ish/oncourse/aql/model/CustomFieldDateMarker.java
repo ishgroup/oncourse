@@ -6,14 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.aql.impl.converter;
+package ish.oncourse.aql.model;
 
-import ish.oncourse.aql.impl.DateTimeInterval;
-import org.apache.cayenne.exp.parser.SimpleNode;
-
-public class DateIdentifierConverter extends DateTimeIdentifierConverter{
-    @Override
-    protected SimpleNode nodeOfInterval(DateTimeInterval interval) {
-        return new LazyDateScalar(interval);
-    }
+public interface CustomFieldDateMarker extends CustomFieldMarker{
 }
