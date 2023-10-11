@@ -4,10 +4,10 @@
  */
 
 import { ExpandMore } from "@mui/icons-material";
+import { ListItemButton } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
 import clsx from "clsx";
@@ -174,10 +174,9 @@ const CollapseMenuListBase = React.memo<Props>(
 
     return (
       <List disablePadding className="pt-1">
-        <ListItem
+        <ListItemButton
           disableGutters
           className={classes.listHeadingPadding}
-          button
           onClick={onClickCollapse}
         >
           <div className={clsx("heading", classes.listLabelPadding)}>
@@ -198,7 +197,7 @@ const CollapseMenuListBase = React.memo<Props>(
               <AddButton className="p-1" onClick={onClickPlus}/>
             </div>
           )}
-        </ListItem>
+        </ListItemButton>
 
         <Collapse in={Boolean(search) || !collapsed} mountOnEnter unmountOnExit>
           {filtered.map((item, index) => {
