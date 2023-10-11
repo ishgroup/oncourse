@@ -7,6 +7,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AddButton, AppTheme } from "ish-ui";
@@ -16,6 +17,7 @@ import { FormErrors } from "redux-form";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { animateFormErrors } from "../../../utils/highlightFormErrors";
 import { getFirstErrorNodePath } from "../../../utils/validation";
+import FormField from "../../form/formFields/FormField";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -39,6 +41,7 @@ interface Props {
   header: React.ReactNode;
   expanded: any[];
   index: any;
+  name?: string;
   formErrors?: FormErrors;
   setExpanded: (arg: number[]) => void;
   headerAdornment?: React.ReactNode;
@@ -61,7 +64,8 @@ const ExpandableContainer: React.FC<Props> = ({
   index,
   noDivider,
   formErrors,
-  className
+  className,
+  name
 }) => {
   const [hasErrors, setHasErrors] = useState(false);
 
@@ -117,6 +121,18 @@ const ExpandableContainer: React.FC<Props> = ({
 
   const clickHandler = hasErrors ? () => animateFormErrors(childrenRef.current) : toggleExpand;
 
+  const nameError = useMemo(
+    () =>
+      formErrors && formErrors[name] && (
+        <div className="shakingError mb-2">
+          <Typography color="error" variant="body2" className="text-pre-wrap">
+            {formErrors[name]}
+          </Typography>
+        </div>
+      ),
+    [formErrors, name]
+  );
+
   return (
     <div className={className}>
       <Divider className={clsx("mb-2 mb-3", noDivider && "invisible")}/>
@@ -124,7 +140,7 @@ const ExpandableContainer: React.FC<Props> = ({
         <div className={clsx("centeredFlex mb-2", classes.controls)}>
           <div className="centeredFlex">
             <div
-              className={clsx("heading headingHover", isExpanded && classes.expanded)}
+              className={clsx("heading headingHover", isExpanded && classes.expanded, hasErrors && 'errorColor')}
               onClick={clickHandler}>
               {header}
             </div>
@@ -142,7 +158,10 @@ const ExpandableContainer: React.FC<Props> = ({
         </div>
       </div>
 
-      <div ref={childrenRef}>
+      {nameError}
+
+      <div ref={childrenRef} id={name}>
+        {name && <FormField type="stub" name={name} />}
         <Collapse in={isExpanded}>
           {children}
         </Collapse>

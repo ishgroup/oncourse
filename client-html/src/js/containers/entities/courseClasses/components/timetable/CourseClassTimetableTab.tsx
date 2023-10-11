@@ -401,7 +401,7 @@ const CourseClassTimetableTab = ({
   const onExpand = useCallback(
     (e, expanded) => {
       if (!twoColumn && expanded.includes(6)) {
-        e.preventDefault();
+        e?.preventDefault();
 
         const search = new URLSearchParams(window.location.search);
         search.append("expandTab", tabIndex.toString());
@@ -751,6 +751,7 @@ const CourseClassTimetableTab = ({
       )}
       <div>
         <ExpandableContainer
+          name="sessions"
           header="Timetable"
           index={tabIndex}
           expanded={isDistantLearning ? [tabIndex] : expanded}
@@ -761,7 +762,7 @@ const CourseClassTimetableTab = ({
           headerAdornment={(
             <>
               <div>
-                {isDistantLearning && values.sessions && values.sessions.length > 0 && (
+                {!isDistantLearning && values.sessions && values.sessions.length > 0 && (
                   <>
                     <Checkbox
                       name="selectAllSession"

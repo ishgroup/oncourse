@@ -30,7 +30,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getFormInitialValues, getFormValues, initialize } from "redux-form";
+import { FormErrors, getFormInitialValues, getFormValues, initialize } from "redux-form";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -367,16 +367,18 @@ const formatSelfPaced = (v, row, columns) => {
     timezone = row.values[timezoneIndex];
   }
 
-  if (selfPacedIndex !== -1) {
-    const type: CourseClassType = row.values[selfPacedIndex]
-
-    if (type === "Distant Learning" ) return "Self paced";
-    if (type === "Hybrid") return "Hybrid";
-  }
-
-  return v
+  const dateValue =  v
     ? format(timezone ? appendTimezone(new Date(v), timezone) : new Date(v), III_DD_MMM_YYYY_HH_MM)
     : "";
+
+  if (selfPacedIndex !== -1) {
+    const type: CourseClassType = row.values[selfPacedIndex];
+
+    if (type === "Distant Learning" ) return "Self paced";
+    if (type === "Hybrid") return  dateValue || "Hybrid";
+  }
+
+  return dateValue;
 };
 
 const formatSelfPacedSessions = (v, row, columns) => {
@@ -447,6 +449,16 @@ const getDefaultFieldName = (field: keyof CourseClass) => {
     default:
       return "";
   }
+};
+
+const validate = (values: CourseClassExtended) => {
+  const errors: FormErrors<CourseClassExtended> = {};
+
+  if (values.type === 'Hybrid' && !values.sessions.length) {
+    errors.sessions = "At least one timetable session must exist";
+  }
+
+  return errors;
 };
 
 const CourseClasses: React.FC<CourseClassesProps> = props => {
@@ -626,6 +638,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          validate,
           nameCondition,
           asyncValidate,
           asyncBlurFields: [

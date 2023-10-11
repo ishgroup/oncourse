@@ -322,8 +322,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
       </div>
       {discounts}
     </div>
-
-);
+  );
 };
 
 const CourseClassEditView: React.FC<Props> = ({
@@ -362,7 +361,7 @@ const CourseClassEditView: React.FC<Props> = ({
       if (!hasBudgetPermissions && i.type === "BUDGET") {
         return false;
       }
-      if (values.type && i.type === "ATTENDANCE") {
+      if (values.type === "Distant Learning" && i.type === "ATTENDANCE") {
         return false;
       }
       return !(!values.isTraineeship && i.type === "DET export");
