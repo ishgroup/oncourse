@@ -289,9 +289,9 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
 
                   <Tooltip
                     title="No email address"
-                    disableFocusListener={contact.email}
-                    disableHoverListener={contact.email}
-                    disableTouchListener={contact.email}
+                    disableFocusListener={Boolean(contact.email)}
+                    disableHoverListener={Boolean(contact.email)}
+                    disableTouchListener={Boolean(contact.email)}
                   >
                     <FormControlLabel
                       control={(
@@ -334,9 +334,9 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                   )}
               <Tooltip
                 title="No email address"
-                disableFocusListener={contact.email}
-                disableHoverListener={contact.email}
-                disableTouchListener={contact.email}
+                disableFocusListener={Boolean(contact.email)}
+                disableHoverListener={Boolean(contact.email)}
+                disableTouchListener={Boolean(contact.email)}
               >
                 <FormControlLabel
                   control={(
