@@ -274,7 +274,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * not displayed in gui at the moment and it caused problems me and Ari agreed on this, marcin 31 Jan 2011)
 	 */
 	void updateClassRoom() {
-		if (!isDistantLearningCourse) {
+		if (!isDistantLearningCourse && !isHybrid) {
 			setRoom(getSessions().sort {it.startDatetime}.find {it.room != null}?.room)
 		}
 	}
