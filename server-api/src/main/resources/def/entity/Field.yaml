@@ -14,9 +14,3 @@ properties:
   relatedFieldValue:
     type: string
     description: Related field value, that allows this type to be shown
-  dependentFields:
-    type: array
-    items:
-      type: integer
-      format: int64
-    description: Dependent field ids, that cannot be shown without specific value at this field
