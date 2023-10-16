@@ -65,14 +65,14 @@
   <CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                taxid="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountid="100" deliveryMode="1" courseid="100" feeExGst="100.00"
                suppressAvetmissExport="0" roomid="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="2" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                taxid="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountid="100" deliveryMode="1" courseid="200" feeExGst="100.00"
                suppressAvetmissExport="0" roomid="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>

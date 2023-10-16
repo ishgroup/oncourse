@@ -887,7 +887,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Cancelled', attribute: CourseClass.IS_CANCELLED.name, sortable: true, width: W200, visible: true, system: true,  type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Web visible', attribute: CourseClass.IS_SHOWN_ON_WEB.name, sortable: true, width: W200, visible: true, system: true,  type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Enabled', attribute: CourseClass.IS_ACTIVE.name, sortable: true, width: W200, visible: true, system: true, type: ColumnTypeDTO.BOOLEAN),
-                new ColumnDTO(title: 'Self paced', attribute: CourseClass.IS_DISTANT_LEARNING_COURSE.name, sortable: true, width: W100, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Type', attribute: CourseClass.TYPE.name, sortable: true, width: W100, visible: false, system: true),
                 new ColumnDTO(title: 'Time zone', attribute: CourseClass.TIME_ZONE_ID, sortable: false, width: W200, visible: false, system: true)
         ]
         it.sortings = [

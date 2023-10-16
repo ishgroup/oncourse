@@ -868,3 +868,14 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.ChangeCurrentVersionDocumentsDefenitionJob
+  - changeSet:
+      id: 124-6
+      author: dmitry
+      comment: remove all checkout with replication to prevent desynchronization
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Checkout
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.DeleteCheckouts

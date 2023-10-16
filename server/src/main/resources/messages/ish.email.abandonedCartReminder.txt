@@ -18,4 +18,4 @@ You recently visited the ${Preferences.get("college.name")} website and added at
 <% } %>
 Click here to return to your cart and complete the checkout process.
 
-${checkout?.data?.get("checkoutURL") + "?payerId=" + checkout.payer.willowId}
+${checkout?.checkoutUrl + "?payerId=" + checkout.payer.willowId}

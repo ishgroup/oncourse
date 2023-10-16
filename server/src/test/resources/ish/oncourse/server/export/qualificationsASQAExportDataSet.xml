@@ -49,7 +49,7 @@
           currentlyOffered="0" reportableHours="95" enrolmentType="2" fieldConfigurationSchemaId="1" feeHelpClass="0"/>
 
   <CourseClass id="1" createdOn="2015-07-29 11:59:44" modifiedOn="2015-07-29 11:59:44" code="1" roomId="1" courseId="1"
-               feeExGst="113" incomeAccountId="100" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="1"
+               feeExGst="113" incomeAccountId="100" isCancelled="0" type="0" isShownOnWeb="1"
                maximumPlaces="4" minimumPlaces="1" taxId="100" deliveryMode="1" fundingSource="0"
                budgetedPlaces="0" reportableHours="95" isClassFeeApplicationOnly="0" taxAdjustment="0" isActive="1"
                suppressAvetmissExport="0" expectedHours="0" attendanceType="9"/>

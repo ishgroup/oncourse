@@ -32,15 +32,12 @@ class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, Co
 	protected void postPersist() {
 		super.postPersist()
 
-		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, student.contact.willowId)
+		List<CheckoutContactRelation> checkoutRelations = CartFunctions.checkoutsByContactId(context, student.contact.id)
 
-		checkouts.each {checkout ->
-			def productIds = CartFunctions.idsOfCurrentItems(checkout, student.contact.willowId, CartFunctions.WAITING_KEY)
-			if (productIds.contains(course.willowId)) {
-				context.deleteObject(checkout)
-				context.commitChanges()
-			}
-		}
+		context.deleteObjects(checkoutRelations
+				.findAll { it instanceof CheckoutWaitingCourseRelation && it.relatedObjectId == course.id }
+				.collect {it.checkout}.unique())
+		context.commitChanges()
 	}
 
 

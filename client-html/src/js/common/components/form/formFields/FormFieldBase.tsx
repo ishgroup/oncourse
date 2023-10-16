@@ -163,7 +163,7 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
       return <EditInPlaceField<WrappedFieldInputProps, WrappedFieldMetaProps>
         {...sharedProps} multiline/>;
     case "stub":
-      return <div className="invisible"/>;
+      return <input className="d-none" name={sharedProps?.input?.name}/>;
     case "tags":
       return <TagInputList<Tag, WrappedFieldInputProps, WrappedFieldMetaProps>
         {...sharedProps}

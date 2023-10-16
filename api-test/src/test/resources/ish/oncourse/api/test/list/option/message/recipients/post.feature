@@ -21,7 +21,7 @@ Feature: Main feature for all GET requests with path 'list/option/message/recipi
         And param entity = 'CourseClass'
         And param messageType = 'Sms'
         And param templateId = 2
-        And request {"search":"course.courseClasses.id is 1","pageSize":2,"offset":1,"filter":"(course.isTraineeship == false) and ( (startDateTime < tomorrow and endDateTime >= today and isCancelled is false) or (startDateTime >= tomorrow and endDateTime >= tomorrow and isCancelled is false) or (isDistantLearningCourse is true and isCancelled is false) )","tagGroups":[]}
+        And request {"search":"course.courseClasses.id is 1","pageSize":2,"offset":1,"filter":"(course.isTraineeship == false) and ( (startDateTime < tomorrow and endDateTime >= today and isCancelled is false) or (startDateTime >= tomorrow and endDateTime >= tomorrow and isCancelled is false) or (type is DISTANT_LEARNING and isCancelled is false) )","tagGroups":[]}
         When method POST
         Then status 200
         And match $ contains
