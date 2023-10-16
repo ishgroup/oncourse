@@ -11,6 +11,7 @@ import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from "ish-ui"
 import React, { useCallback, useEffect, useState } from "react";
 import { change, getFormValues } from "redux-form";
 import { useAppSelector } from "../../../../../common/utils/hooks";
+import { CollectionFormSchema } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import CollectionFormField from "./CollectionFormField";
 import CollectionFormHeading from "./CollectionFormHeading";
 import { DATA_COLLECTION_FORM } from "./DataCollectionForm";
@@ -92,7 +93,7 @@ const CollectionFormFieldBase = (
   }
 ) => {
   
-  const values: any = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state));
+  const values  = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state)) as CollectionFormSchema;
 
   const [isEditing, setIsEditing] = useState(false);
 
