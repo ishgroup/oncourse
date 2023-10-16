@@ -39,11 +39,11 @@ const styles = (theme: AppTheme) => createStyles({
     marginRight: "10px"
   },
   actionIcon: {
-    color: theme.palette.action.focus,
+    color: theme.palette.action.active,
     fontSize: "20px"
   },
   actionIconInactive: {
-    color: theme.palette.action.hover,
+    color: theme.palette.action.focus,
     fontSize: "20px"
   },
   cardRoot: {
@@ -54,9 +54,6 @@ const styles = (theme: AppTheme) => createStyles({
     borderRadius: `${theme.shape.borderRadius}px`,
     cursor: "pointer",
     backgroundColor: alpha(theme.palette.text.primary, 0.025),
-    "&:hover $actionIcon": {
-      color: theme.palette.action.active
-    },
     "&:hover $actionIconInactive": {
       color: theme.palette.action.focus
     }
@@ -97,13 +94,6 @@ const styles = (theme: AppTheme) => createStyles({
   },
   urlEditable: {
     fontSize: "14px",
-  },
-  placeholder: {
-    border: `2px dashed ${theme.palette.action.focus}`,
-    borderRadius: `${theme.shape.borderRadius}px`,
-    position: "absolute",
-    boxSizing: "border-box",
-    zIndex: 0
   }
 });
 
@@ -186,7 +176,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     this.counter = 1;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const {
       fetch
     } = this.props;
