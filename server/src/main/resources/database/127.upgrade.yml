@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 127-1
-      comment: add a related custom field Field id column to field Fields and its value
+      comment: add a related Field id column to Fields and its value
       author: dmitars
       preConditions:
         - onFail: HALT
