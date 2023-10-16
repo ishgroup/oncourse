@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DeliveryScheduleType } from "@api/model";
+import { DataCollectionForm, DeliveryScheduleType } from "@api/model";
 import { TreeData } from "@atlaskit/tree/types";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
@@ -17,6 +17,7 @@ import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import * as React from "react";
 import { connect } from "react-redux";
+import { RouteChildrenProps } from "react-router";
 import { Dispatch } from "redux";
 import {
   change,
@@ -27,6 +28,7 @@ import {
   reduxForm,
   SubmissionError
 } from "redux-form";
+import { DecoratedFormState, InjectedFormProps } from "redux-form/lib/reduxForm";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -34,6 +36,12 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { Fetch } from "../../../../../model/common/Fetch";
+import {
+  CollectionFormField, CollectionFormHeading,
+  CollectionFormItem,
+  CollectionFormSchema
+} from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import { State } from "../../../../../reducers/state";
 import Tree from "../../../../tags/components/TagTreeBasis";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
@@ -90,7 +98,7 @@ const setParents = targets => {
   return targets;
 };
 
-export const parseDataCollectionFormData = form => {
+export const parseDataCollectionFormData = (form: DataCollectionForm): CollectionFormItem[] => {
   const fieldsArr = [];
   form.fields.forEach(field => {
     fieldsArr.push({
@@ -116,7 +124,19 @@ export const parseDataCollectionFormData = form => {
   return fieldsArr;
 };
 
-class DataCollectionWrapper extends React.Component<any, { treeState: TreeData }> {
+interface Props extends RouteChildrenProps<any> {
+  values?: CollectionFormSchema;
+  dispatch?: Dispatch;
+  classes?: any;
+  fetch?: Fetch;
+  nextLocation?: string;
+  onUpdate: (id, form) => void;
+  onCreate: (form) => void;
+  onDelete: (id) => void;
+  collectionForms?: DataCollectionForm[];
+}
+
+class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & DecoratedFormState<CollectionFormSchema, any>, { treeState: TreeData }> {
   private resolvePromise;
 
   private rejectPromise;
@@ -184,7 +204,7 @@ class DataCollectionWrapper extends React.Component<any, { treeState: TreeData }
           return;
         }
         const items = parseDataCollectionFormData(currentForm);
-        const state = {
+        const state: CollectionFormSchema = {
           items,
           form: currentForm
         };
@@ -259,7 +279,7 @@ class DataCollectionWrapper extends React.Component<any, { treeState: TreeData }
   onHistoryChange = location => {
     const locationParts = location.pathname.split("/");
     if (locationParts[2] === "collectionForms" && locationParts[3] === "new") {
-      const state = {
+      const state: CollectionFormSchema = {
         form: {
           id: null,
           type: locationParts[4]
@@ -272,7 +292,7 @@ class DataCollectionWrapper extends React.Component<any, { treeState: TreeData }
 
   addField = type => {
     const { items } = this.props.values;
-    const field = {
+    const field: CollectionFormField = {
       type,
       baseType: "field",
       parent: null,
@@ -294,10 +314,10 @@ class DataCollectionWrapper extends React.Component<any, { treeState: TreeData }
 
   addHeading = () => {
     const { items } = this.props.values;
-    const heading = {
+    const heading: CollectionFormHeading = {
       baseType: "heading",
       name: "",
-      description: ""
+      description: "",
     };
 
     this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [heading, ...items]));
@@ -590,4 +610,4 @@ const DataCollectionForm = reduxForm({
   connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DataCollectionWrapper))
 );
 
-export default DataCollectionForm as any;
+export default DataCollectionForm;
