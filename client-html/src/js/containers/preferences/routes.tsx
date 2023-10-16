@@ -1,3 +1,5 @@
+import * as path from "path";
+import { Route } from "../../routes";
 import Avetmiss from "./containers/avetmiss/Avetmiss";
 import Class from "./containers/class/ClassDefaults";
 import College from "./containers/college/College";
@@ -19,7 +21,7 @@ import PaymentTypes from "./containers/payment-types/PaymentTypes";
 import TaxTypes from "./containers/tax-types/TaxTypes";
 import TutorRoleForm from "./containers/tutor-roles/TutorRoleFormContainer";
 
-const preferencesRoutes = [
+const preferencesRoutes: Route[] = [
   {
     title: "AVETMISS",
     path: "/preferences/avetmiss",
@@ -123,18 +125,21 @@ const preferencesRoutes = [
     main: TaxTypes
   },
   {
+    title: "Data collection rules",
     path: "/preferences/collectionRules/:action/:id?",
     url: "/preferences/collectionRules",
     noMenuLink: true,
     main: CollectionRules
   },
   {
+    title: "Data collection forms",
     path: "/preferences/collectionForms/:action/:type/:id?",
     url: "/preferences/collectionForms",
     noMenuLink: true,
     main: CollectionForms
   },
   {
+    title: "Tutor roles",
     path: "/preferences/tutorRoles/:id?",
     url: "/preferences/tutorRoles",
     noMenuLink: true,
