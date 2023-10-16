@@ -7,6 +7,7 @@
  */
 
 import { DeliveryScheduleType } from "@api/model";
+import { TreeData } from "@atlaskit/tree/types";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Divider from "@mui/material/Divider";
@@ -19,7 +20,6 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import {
   change,
-  FieldArray,
   Form,
   getFormSyncErrors,
   getFormValues,
@@ -35,6 +35,7 @@ import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../.
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
+import Tree from "../../../../tags/components/TagTreeBasis";
 import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
@@ -115,7 +116,7 @@ export const parseDataCollectionFormData = form => {
   return fieldsArr;
 };
 
-class DataCollectionWrapper extends React.Component<any, any> {
+class DataCollectionWrapper extends React.Component<any, { treeState: TreeData }> {
   private resolvePromise;
 
   private rejectPromise;
@@ -130,6 +131,13 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
+    
+    this.state = {
+      treeState: {
+        rootId: "root",
+        items: {}
+      }
+    };
 
     if (props.match.params.action === "edit" && props.collectionForms) {
       const currentForm = this.getCollectionForm(props);
@@ -164,12 +172,14 @@ class DataCollectionWrapper extends React.Component<any, any> {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.collectionForms) {
+    const { collectionForms } = this.props;
+
+    if (collectionForms) {
       const isExactForm = this.props.match.params.id === prevProps.match.params.id;
       const isEditing = this.props.match.params.action === "edit";
       const currentForm = this.getCollectionForm(this.props);
 
-      if ((isEditing && !this.props.collectionForms) || (isEditing && (!isExactForm || !prevProps.collectionForms))) {
+      if ((isEditing && !collectionForms) || (isEditing && (!isExactForm || !prevProps.collectionForms))) {
         if (!currentForm) {
           return;
         }
@@ -179,6 +189,28 @@ class DataCollectionWrapper extends React.Component<any, any> {
           form: currentForm
         };
         this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+
+        this.setState({
+          treeState: {
+            rootId: "root",
+            items: items.reduce((p, c, index) => {
+              p[index] = {
+                id: index,
+                children: [],
+                hasChildren: false,
+                isExpanded: true,
+                data: c
+              };
+              return p;
+            }, { root: { 
+              id: "root",
+              children: items.map((i, index) => index),
+              hasChildren: true,
+              isExpanded: true,
+              data: items
+            } })
+          }
+        });
       }
     }
 
@@ -412,11 +444,19 @@ class DataCollectionWrapper extends React.Component<any, any> {
       });
     }, 100);
   };
+  
+  onDragEnd = () => {
+    
+  };
 
   render() {
     const {
-      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form, syncErrors
+      classes, values, handleSubmit, match, dirty, history, valid, form, syncErrors
     } = this.props;
+
+    const {
+      treeState
+    } = this.state;
 
     const isNew = match.params.action === "new";
 
@@ -439,7 +479,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
             hideHelpMenu={isNew}
             createdOn={v => new Date(v.form.created)}
             modifiedOn={v => new Date(v.form.modified)}
-            opened={getDeepValue(syncErrors, "form.name")}
+            opened={Boolean(getDeepValue(syncErrors, "form.name"))}
             fields={(
               <Grid item xs={8}>
                 <FormField
@@ -512,16 +552,12 @@ class DataCollectionWrapper extends React.Component<any, any> {
                   </Grid>
 
                   <Grid item xs={12} className="mb-3">
-                    {values && values.items && (
-                      <FieldArray
-                        name="items"
-                        component={renderCollectionFormFields}
-                        deleteField={this.deleteField}
-                        dispatch={dispatch}
-                        classes={classes}
-                        rerenderOnEveryChange
-                      />
-                    )}
+                    <Tree
+                      tree={treeState}
+                      renderItem={renderCollectionFormFields}
+                      onDragEnd={this.onDragEnd}
+                      isDragEnabled
+                    />
                   </Grid>
                 </Grid>
               </Grid>

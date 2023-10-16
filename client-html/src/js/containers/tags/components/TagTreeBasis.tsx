@@ -7,6 +7,10 @@
  */
 
 import Tree from "@atlaskit/tree";
+import { Props } from "@atlaskit/tree/dist/types/components/Tree/Tree-types";
+import { createStyles } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import { AppTheme } from "ish-ui";
 import isEmpty from "lodash.isempty";
 import * as React from "react";
 import * as ReactBeautifulDnD from "react-beautiful-dnd-next";
@@ -14,6 +18,16 @@ import * as ReactBeautifulDnD from "react-beautiful-dnd-next";
 const TAG_ITEMS_SPACING = 8;
 
 const getDraggedDom = draggableId => document.querySelector(`[data-draggable-id='${draggableId}']`) as any;
+
+const styles = (theme: AppTheme) => createStyles({
+  placeholder: {
+    border: `2px dashed ${theme.palette.action.focus}`,
+    borderRadius: `${theme.shape.borderRadius}px`,
+    position: "absolute",
+    boxSizing: "border-box",
+    zIndex: 0
+  }
+})
 
 class PatchTree extends Tree {
   setPlaceholderProps = placeholderProps => {
@@ -151,4 +165,4 @@ class PatchTree extends Tree {
   }
 }
 
-export default PatchTree;
+export default withStyles(styles)(PatchTree) as React.ClassicComponentClass<Partial<Props>>;
