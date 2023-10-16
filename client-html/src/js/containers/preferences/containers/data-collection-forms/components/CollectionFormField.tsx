@@ -4,41 +4,46 @@
  */
 
 import { TreeItem } from "@atlaskit/tree";
-import Delete from "@mui/icons-material/Delete";
-import DragIndicator from "@mui/icons-material/DragIndicator";
 import { Grid } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
 import { useMemo } from "react";
 import * as React from "react";
 import { change, Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { ToogleCheckbox } from "../../../../../common/components/form/ToogleCheckbox";
 import { useAppDispatch } from "../../../../../common/utils/hooks";
+import {
+  CollectionFormField,
+  CollectionFormItem
+} from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import { DATA_COLLECTION_FORM } from "./DataCollectionForm";
 
 interface Props {
   item: TreeItem;
-  field: Field;
+  field: CollectionFormField;
+  fields: CollectionFormItem[];
 }
 
 const CollectionFormField = ({
    item,
    field,
    fields
-}) => {
+}: Props) => {
 
   const dispatch = useAppDispatch();
   
   const onRelatedKeyChange = (e, newValue) => {
-    if (!newValue) dispatch(change(DATA_COLLECTION_FORM, `items[${item.id}].relatedFIeldValue`, null));
+    if (!newValue) dispatch(change(DATA_COLLECTION_FORM, `items[${item.id}].relatedFieldValue`, null));
   };
 
   const availableRelations = useMemo(() => {
+    const result = [];
 
-  }, [fields])
+    // for (const fieldItem of fields) {
+    //   if (fieldItem.type)
+    // }
+
+    return result;
+  }, [fields]);
 
   return (
     <Grid container columnSpacing={3}>
@@ -74,7 +79,7 @@ const CollectionFormField = ({
         <Grid item xs={12}>
           <FormField
             type="text"
-            name={`items[${item.id}].relatedFIeldValue`}
+            name={`items[${item.id}].relatedFieldValue`}
             label="Display condition value"
             required={Boolean(field.relatedFieldKey)}
             disabled={!field.relatedFieldKey}
