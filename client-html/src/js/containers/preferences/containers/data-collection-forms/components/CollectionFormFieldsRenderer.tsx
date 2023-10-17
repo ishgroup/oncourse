@@ -13,7 +13,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { arrayRemove, getFormSyncErrors, getFormValues } from "redux-form";
 import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
 import { CollectionFormSchema } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
-import { CustomField } from "../../../../entities/customFieldTypes/components/CustomFieldsTypes";
 import CollectionFormField from "./CollectionFormField";
 import CollectionFormHeading from "./CollectionFormHeading";
 import { DATA_COLLECTION_FORM } from "./DataCollectionForm";
