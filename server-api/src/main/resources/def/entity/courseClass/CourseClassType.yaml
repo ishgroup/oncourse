@@ -1,0 +1,6 @@
+type: string
+description: CourseClass types.
+enum:
+  - With Sessions
+  - Distant Learning
+  - Hybrid

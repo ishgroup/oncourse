@@ -14,7 +14,7 @@ import {
   Invoice,
   AbstractInvoiceLine,
   InvoicePaymentPlan,
-  ProductType
+  ProductType, CourseClassType
 } from "@api/model";
 import { differenceInMinutes, format, isBefore } from "date-fns";
 import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from "ish-ui";
@@ -480,6 +480,7 @@ export const getUpdatedVoucherDiscounts = (
 };
 
 export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
+  const type: CourseClassType = values[15];
   const cc = {
     id: Number(id),
     name: `${values[1]}-${values[2]} ${values[0]}`,
@@ -499,7 +500,7 @@ export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
     hours: 0,
     hasPaymentPlans: Boolean(JSON.parse(values[13]).length),
     isVet: JSON.parse(values[14]),
-    isSelfPaced: JSON.parse(values[15]),
+    isSelfPaced: type === 'Distant Learning',
     message: values[16],
     relatedFundingSourceId: JSON.parse(values[17]),
     sessionIds: JSON.parse(values[18]),
