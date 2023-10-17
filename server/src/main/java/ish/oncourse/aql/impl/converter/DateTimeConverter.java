@@ -48,7 +48,7 @@ class DateTimeConverter implements Converter<AqlParser.DateTimeContext> {
         }
 
         if(date != null) {
-            return new LazyDateTimeScalar(DateTimeInterval.of(date));
+            return new LazyDateScalar(DateTimeInterval.of(date));
         }
 
         if(time != null) {

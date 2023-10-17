@@ -38,7 +38,7 @@ class IdentifierConverter implements Converter<AqlParser.IdContext> {
         classifierMap.put(TypeClassifier.STRING, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.CUSTOM_FIELD, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.CUSTOM_FIELD_DATE, new DateIdentifierConverter());
-        classifierMap.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new DateTimeIdentifierConverter());
+        classifierMap.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new CustomFieldDateTimeConverter());
         classifierMap.put(TypeClassifier.CONTACT, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.SITE, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.ROOM, new StringIdentifierConverter());
