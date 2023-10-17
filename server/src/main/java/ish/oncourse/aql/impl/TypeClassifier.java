@@ -180,7 +180,7 @@ public enum TypeClassifier {
         }
 
         if(javaType == CustomFieldDateTimeMarker.class) {
-            return CUSTOM_FIELD_DATE;
+            return CUSTOM_FIELD_DATE_TIME;
         }
 
         if(Boolean.class == javaType || boolean.class == javaType) {
