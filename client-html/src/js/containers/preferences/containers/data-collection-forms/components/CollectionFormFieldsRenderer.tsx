@@ -13,6 +13,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { arrayRemove, getFormSyncErrors, getFormValues } from "redux-form";
 import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
 import { CollectionFormSchema } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
+import { CustomField } from "../../../../entities/customFieldTypes/components/CustomFieldsTypes";
 import CollectionFormField from "./CollectionFormField";
 import CollectionFormHeading from "./CollectionFormHeading";
 import { DATA_COLLECTION_FORM } from "./DataCollectionForm";
@@ -102,10 +103,16 @@ const CollectionFormFieldBase = (
   }, [field]);
 
   const hoverClasses = useHoverShowStyles();
+  
+  const relationTip = useMemo(() => {
+    const releatedFieldIndex = isField && values.items.findIndex(i => i.baseType === "field" && i.type.uniqueKey === field.relatedFieldKey);
+    
+    if (releatedFieldIndex !== -1) {
+      return `Only visible when ${(values.items[releatedFieldIndex] as any)?.label} value is ${(document.querySelector(`[name="items[${item.id}].relatedFieldValue"]`) as any)?.value || null}`;
+    }
 
-  const relationTip = useMemo(() => isField && field.relatedFieldKey
-    && `Only visible when ${(values.items.find(i => i.baseType === "field" && i.type.uniqueKey === field.relatedFieldKey) as CollectionFormField)?.label} value is ${field.relatedFieldValue}`,
-    [field]);
+    return null;
+  }, [field, item.id]);
 
   return (
     <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.id}>
@@ -160,7 +167,7 @@ const CollectionFormFieldBase = (
           </IconButton>
         </div>
 
-        <Collapse in={isEditing || hasErrors} mountOnEnter unmountOnExit>
+        <Collapse in={isEditing || hasErrors}>
           <div onClick={stopEventPropagation} className="p-3">
             {isHeading
               ? <CollectionFormHeading
