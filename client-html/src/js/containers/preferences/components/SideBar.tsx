@@ -64,7 +64,16 @@ const SideBar = React.memo<any>(
     );
 
     const preferencesItems = routes
-      .filter(r => r.main !== LDAP || accessLicense)
+      .filter(r => {
+        if ([
+          "Data collection rules",
+          "Data collection forms",
+          "Tutor roles"
+        ].includes(r.title)) {
+          return false;
+        }
+        return r.main !== LDAP || accessLicense; 
+      })
       .map(({ url, title }) => ({
         url,
         name: title

@@ -7,7 +7,7 @@
  */
 
 import { DataCollectionForm, DeliveryScheduleType } from "@api/model";
-import { TreeData } from "@atlaskit/tree/types";
+import { TreeData, TreeDestinationPosition, TreeSourcePosition } from "@atlaskit/tree/types";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Divider from "@mui/material/Divider";
@@ -15,6 +15,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import { NoArgFunction } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteChildrenProps } from "react-router";
@@ -44,7 +45,12 @@ import {
 } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import { State } from "../../../../../reducers/state";
 import Tree from "../../../../tags/components/TagTreeBasis";
-import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
+import {
+  createDataCollectionForm,
+  deleteDataCollectionForm,
+  getCustomFields,
+  updateDataCollectionForm
+} from "../../../actions";
 import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
 
@@ -124,6 +130,14 @@ export const parseDataCollectionFormData = (form: DataCollectionForm): Collectio
   return fieldsArr;
 };
 
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
 interface Props extends RouteChildrenProps<any> {
   values?: CollectionFormSchema;
   dispatch?: Dispatch;
@@ -133,10 +147,16 @@ interface Props extends RouteChildrenProps<any> {
   onUpdate: (id, form) => void;
   onCreate: (form) => void;
   onDelete: (id) => void;
+  getCustomFields: NoArgFunction;
   collectionForms?: DataCollectionForm[];
 }
 
-class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & DecoratedFormState<CollectionFormSchema, any>, { treeState: TreeData }> {
+interface DataCollectionWrapperState {
+  treeState: TreeData,
+  availableRelations: CollectionFormField[];
+}
+
+class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & DecoratedFormState<CollectionFormSchema, any>, DataCollectionWrapperState> {
   private resolvePromise;
 
   private rejectPromise;
@@ -147,8 +167,6 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
 
   private skipValidation: boolean;
 
-  private formRef: HTMLFormElement;
-
   constructor(props) {
     super(props);
     
@@ -156,7 +174,8 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       treeState: {
         rootId: "root",
         items: {}
-      }
+      },
+      availableRelations: []
     };
 
     if (props.match.params.action === "edit" && props.collectionForms) {
@@ -180,15 +199,37 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
     }
   }
-
-  getFormRef = node => {
-    this.formRef = node;
+  
+  setTreeState = items => {
+    this.setState({
+      treeState: {
+        rootId: "root",
+        items: items.reduce((p, c, index) => {
+          p[index] = {
+            id: index,
+            children: [],
+            hasChildren: false,
+            isExpanded: true,
+            data: c
+          };
+          return p;
+        }, { root: {
+            id: "root",
+            children: items.map((i, index) => index),
+            hasChildren: true,
+            isExpanded: true,
+            data: items
+          } })
+      }
+    });
   };
 
   componentDidMount() {
     this.unlisten = this.props.history.listen(location => {
       this.onHistoryChange(location);
     });
+
+    this.props.getCustomFields();
   }
 
   componentDidUpdate(prevProps) {
@@ -210,27 +251,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
         };
         this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
 
-        this.setState({
-          treeState: {
-            rootId: "root",
-            items: items.reduce((p, c, index) => {
-              p[index] = {
-                id: index,
-                children: [],
-                hasChildren: false,
-                isExpanded: true,
-                data: c
-              };
-              return p;
-            }, { root: { 
-              id: "root",
-              children: items.map((i, index) => index),
-              hasChildren: true,
-              isExpanded: true,
-              data: items
-            } })
-          }
-        });
+        this.setTreeState(items);
       }
     }
 
@@ -303,13 +324,11 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
 
     delete type.formattedLabel;
 
-    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [field, ...items]));
+    const updated = [field, ...items];
 
-    this.formRef.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", updated));
+
+    this.setTreeState(updated);
   };
 
   addHeading = () => {
@@ -320,23 +339,13 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       description: "",
     };
 
-    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [heading, ...items]));
-
-    this.formRef.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
-  };
-
-  deleteField = index => {
-    const { items } = this.props.values;
-    const updated = [...items];
-    updated.splice(index, 1);
+    const updated = [heading, ...items];
 
     this.props.dispatch(change(DATA_COLLECTION_FORM, "items", updated));
-  };
 
+    this.setTreeState(updated);
+  };
+  
   onSave = value => {
     this.isPending = true;
 
@@ -465,8 +474,23 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
     }, 100);
   };
   
-  onDragEnd = () => {
+  onDragEnd = (sourcePosition: TreeSourcePosition, destinationPosition?: TreeDestinationPosition) => {
+    const { values: { items }, dispatch } = this.props;
     
+    if (!destinationPosition) {
+      return;
+    }
+
+    // dropped on the same position
+    if (sourcePosition.index === destinationPosition.index) {
+      return;
+    }
+
+    const reordered = reorder(items, sourcePosition.index, destinationPosition.index);
+
+    dispatch(change(DATA_COLLECTION_FORM, "items", reordered));
+
+    this.setTreeState(items);
   };
 
   render() {
@@ -484,7 +508,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
     const id = !isNew && values && values.form.id;
 
     return (
-      <div ref={this.getFormRef}>
+      <div>
         <Form className="container" onSubmit={handleSubmit(this.onSave)} role={DATA_COLLECTION_FORM}>
           <RouteChangeConfirm form={form} when={dirty} />
           <AppBarContainer
@@ -599,7 +623,8 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (id, form) => dispatch(updateDataCollectionForm(id, form)),
   onCreate: form => dispatch(createDataCollectionForm(form)),
-  onDelete: id => dispatch(deleteDataCollectionForm(id))
+  onDelete: id => dispatch(deleteDataCollectionForm(id)),
+  getCustomFields: () => dispatch(getCustomFields())
 });
 
 const DataCollectionForm = reduxForm({

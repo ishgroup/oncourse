@@ -27,14 +27,14 @@ const styles = (theme: AppTheme) => createStyles({
     boxSizing: "border-box",
     zIndex: 0
   }
-})
+});
 
 class PatchTree extends Tree {
   setPlaceholderProps = placeholderProps => {
     this.setState({
       placeholderProps
     } as any);
-  }
+  };
 
   onDragStartCustom = event => {
     const draggedDOM = getDraggedDom(event.draggableId);
