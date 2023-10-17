@@ -129,7 +129,7 @@ interface CustomFieldProps {
   fieldName?: string;
 }
 
-const CustomField: React.FC<CustomFieldProps> = ({
+export const CustomField: React.FC<CustomFieldProps> = ({
  type,
  value,
  dispatch,

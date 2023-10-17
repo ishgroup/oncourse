@@ -5,12 +5,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import { alpha } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { change, getFormValues } from "redux-form";
-import { useAppSelector } from "../../../../../common/utils/hooks";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { arrayRemove, getFormSyncErrors, getFormValues } from "redux-form";
+import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
 import { CollectionFormSchema } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import CollectionFormField from "./CollectionFormField";
 import CollectionFormHeading from "./CollectionFormHeading";
@@ -61,30 +62,6 @@ const useStyles = makeAppStyles(theme => ({
   },
 }));
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-const onDragEnd = (result, items, dispatch) => {
-  // dropped outside the list
-  if (!result.destination) {
-    return;
-  }
-
-  // dropped on the same position
-  if (result.source.index === result.destination.index) {
-    return;
-  }
-
-  const reordered = reorder(items, result.source.index, result.destination.index);
-
-  dispatch(change("DataCollectionForm", "items", reordered));
-};
-
 const CollectionFormFieldBase = (
   {
     item,
@@ -92,9 +69,12 @@ const CollectionFormFieldBase = (
     snapshot
   }
 ) => {
-  
   const values  = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state)) as CollectionFormSchema;
-
+  const errors  = useAppSelector(state => getFormSyncErrors(DATA_COLLECTION_FORM)(state))  as CollectionFormSchema;
+  const dispatch = useAppDispatch();
+  
+  const hasErrors = Boolean(errors?.items && errors?.items[item.id]);
+  
   const [isEditing, setIsEditing] = useState(false);
 
   const field = values?.items[item.id];
@@ -107,16 +87,25 @@ const CollectionFormFieldBase = (
 
   const onEditClick = () => setIsEditing(!isEditing);
 
-  const onDeleteClick = useCallback(e => {
-    stopEventPropagation(e);
-    // onDelete(item);
+  const onDeleteClick = useCallback(() => {
+    dispatch(arrayRemove(DATA_COLLECTION_FORM, "items", item.id));
   }, [item]);
   
   useEffect(() => {
     setIsEditing(false);
   }, [values.form.id]);
 
+  useEffect(() => {
+    if (field.baseType === "heading" && !field.name) {
+      setIsEditing(true);
+    }
+  }, [field]);
+
   const hoverClasses = useHoverShowStyles();
+
+  const relationTip = useMemo(() => isField && field.relatedFieldKey
+    && `Only visible when ${(values.items.find(i => i.baseType === "field" && i.type.uniqueKey === field.relatedFieldKey) as CollectionFormField)?.label} value is ${field.relatedFieldValue}`,
+    [field]);
 
   return (
     <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.id}>
@@ -145,7 +134,7 @@ const CollectionFormFieldBase = (
 
           <div>
             {isField && <Typography  variant="subtitle2" color="textSecondary" >
-              {item.data.type.label}
+              {item.data?.type?.label}
             </Typography>}
           </div>
 
@@ -156,12 +145,12 @@ const CollectionFormFieldBase = (
             <Edit className={clsx(classes.actionIcon, classes.actionIconActive)} />
           </IconButton>
 
-          {isField && <IconButton
+          {isField && <Tooltip title={relationTip}><IconButton
             className="dndActionIconButton"
-            disabled
+            disabled={!relationTip}
           >
-            <VisibilityIcon className={clsx(classes.actionIcon, classes.actionIconInactive)}  />
-          </IconButton>}
+            <VisibilityIcon className={clsx(classes.actionIcon, relationTip ? classes.actionIconActive : classes.actionIconInactive)}  />
+          </IconButton></Tooltip> }
 
           <IconButton
             className={clsx("dndActionIconButton", hoverClasses.target)}
@@ -171,7 +160,7 @@ const CollectionFormFieldBase = (
           </IconButton>
         </div>
 
-        <Collapse in={isEditing} mountOnEnter unmountOnExit>
+        <Collapse in={isEditing || hasErrors} mountOnEnter unmountOnExit>
           <div onClick={stopEventPropagation} className="p-3">
             {isHeading
               ? <CollectionFormHeading
