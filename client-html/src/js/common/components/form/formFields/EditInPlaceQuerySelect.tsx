@@ -872,8 +872,12 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     const { rootEntity, customFields, customFieldTypes } = this.props;
 
     if (customFields && customFields.includes(tokenText)) {
-
-      const isDateField = customFieldTypes?.types[rootEntity]?.some(t => t.fieldKey === tokenText && ["Date time", "Date"].includes(t.dataType));
+      
+      const types = rootEntity === "ProductItem" 
+        ? [...customFieldTypes?.types["Article"] || [], ...customFieldTypes?.types["Voucher"] || [], ...customFieldTypes?.types["Membership"] || []]  
+        : customFieldTypes?.types[rootEntity]; 
+      
+      const isDateField = types?.some(t => t.fieldKey === tokenText && ["Date time", "Date"].includes(t.dataType));
       this.operatorsFilter = isDateField ? "Date" : "String";
       return;
     }
