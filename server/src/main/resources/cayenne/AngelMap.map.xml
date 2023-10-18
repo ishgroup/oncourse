@@ -5402,7 +5402,7 @@
 	<obj-relationship name="relatedObject" source="ExportTemplateAutomationBinding" target="ExportTemplate" deleteRule="Nullify" db-relationship-path="exportTemplate"/>
 	<obj-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
 	<obj-relationship name="fieldHeading" source="Field" target="FieldHeading" deleteRule="Nullify" db-relationship-path="fieldHeading"/>
-	<obj-relationship name="dependentFields" source="Field" target="Field" deleteRule="Deny" db-relationship-path="dependentFields"/>
+	<obj-relationship name="dependentFields" source="Field" target="Field" deleteRule="Nullify" db-relationship-path="dependentFields"/>
 	<obj-relationship name="relatedField" source="Field" target="Field" deleteRule="Nullify" db-relationship-path="relatedField"/>
 	<obj-relationship name="createdBy" source="FieldConfiguration" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
