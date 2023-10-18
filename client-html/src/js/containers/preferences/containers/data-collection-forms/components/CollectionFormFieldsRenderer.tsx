@@ -9,8 +9,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { arrayRemove, getFormSyncErrors, getFormValues } from "redux-form";
+import React, { useEffect, useMemo, useState } from "react";
+import { getFormSyncErrors, getFormValues } from "redux-form";
 import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
 import { CollectionFormSchema } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import CollectionFormField from "./CollectionFormField";
@@ -62,17 +62,16 @@ const useStyles = makeAppStyles(theme => ({
   },
 }));
 
-const CollectionFormFieldBase = (
+const CollectionFormFieldsRenderer = (
   {
     item,
     provided,
-    snapshot
+    snapshot,
+    onDeleteClick
   }
 ) => {
   const values  = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state)) as CollectionFormSchema;
   const errors  = useAppSelector(state => getFormSyncErrors(DATA_COLLECTION_FORM)(state))  as CollectionFormSchema;
-  const dispatch = useAppDispatch();
-  
   const hasErrors = Boolean(errors?.items && errors?.items[item.id]);
   
   const [isEditing, setIsEditing] = useState(false);
@@ -86,10 +85,6 @@ const CollectionFormFieldBase = (
   const classes = useStyles();
 
   const onEditClick = () => setIsEditing(!isEditing);
-
-  const onDeleteClick = useCallback(() => {
-    dispatch(arrayRemove(DATA_COLLECTION_FORM, "items", item.id));
-  }, [item]);
   
   useEffect(() => {
     setIsEditing(false);
@@ -112,6 +107,11 @@ const CollectionFormFieldBase = (
 
     return null;
   }, [field, item.id]);
+  
+  const handleDelete = e => {
+    stopEventPropagation(e);
+    onDeleteClick(item.id);
+  };
 
   return (
     <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.id}>
@@ -160,13 +160,13 @@ const CollectionFormFieldBase = (
 
           <IconButton
             className={clsx("dndActionIconButton", hoverClasses.target)}
-            onClick={onDeleteClick}
+            onClick={handleDelete}
           >
             <Delete className={clsx(classes.actionIcon, classes.actionIconActive)} />
           </IconButton>
         </div>
 
-        <Collapse in={isEditing || hasErrors}>
+        <Collapse in={isEditing || hasErrors} mountOnEnter unmountOnExit>
           <div onClick={stopEventPropagation} className="p-3">
             {isHeading
               ? <CollectionFormHeading
@@ -186,6 +186,4 @@ const CollectionFormFieldBase = (
   );
 };
 
-const renderCollectionFormFields = props => <CollectionFormFieldBase {...props} />;
-
-export default renderCollectionFormFields;
+export default CollectionFormFieldsRenderer;
