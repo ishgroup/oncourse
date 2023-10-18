@@ -51,7 +51,7 @@ import {
   getCustomFields,
   updateDataCollectionForm
 } from "../../../actions";
-import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
+import CollectionFormFieldsRenderer from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
 
 const manualUrl = getManualLink("dataCollection");
@@ -493,6 +493,22 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
     this.setTreeState(items);
   };
 
+  onDeleteClick = index => {
+    const { dispatch, values: { items } } = this.props;
+    
+    const updated = [...items];
+
+    updated.splice(index, 1);
+
+    dispatch(change(DATA_COLLECTION_FORM, "items", updated));
+    
+    this.setTreeState(updated);
+  };
+  
+  renderCollectionField = renderProps => {
+    return <CollectionFormFieldsRenderer {...renderProps} onDeleteClick={this.onDeleteClick} />;
+  };
+
   render() {
     const {
       classes, values, handleSubmit, match, dirty, history, valid, form, syncErrors
@@ -598,7 +614,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
                   <Grid item xs={12} className="mb-3">
                     <Tree
                       tree={treeState}
-                      renderItem={renderCollectionFormFields}
+                      renderItem={this.renderCollectionField}
                       onDragEnd={this.onDragEnd}
                       isDragEnabled
                     />
