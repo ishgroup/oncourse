@@ -202,6 +202,7 @@ class DataCollectionFunctions {
 
         List<String> relatedFieldKeys = form.fields.collect{it.relatedFieldKey}
         List<String> fieldKeys = form.fields.collect{it.type.uniqueKey}
+        fieldKeys.addAll((form.headings.collect {it.fields}.flatten() as List<FieldDTO>).collect{it.type.uniqueKey})
         relatedFieldKeys.each {fieldKey ->
             if(!fieldKeys.contains(fieldKey))
                 return  new ValidationErrorDTO(null, 'relatedFieldId', "Field with key: ${fieldKey} not found on this form")
@@ -305,8 +306,10 @@ class DataCollectionFunctions {
             }
             form.fields.each { field -> dbForm.addToFields toDbField(context, dbForm, field, order++) }
             dbForm.fields.findAll{it.relatedFieldValue}.each {
-                def dto = form.fields.find{dto -> dto.type.uniqueKey == it.property}
-                it.relatedField = dbForm.fields.find{field -> field.property == dto.relatedFieldKey}
+                def fieldDTO = form.fields.find{dto -> dto.type.uniqueKey == it.property}
+                if(!fieldDTO)
+                    fieldDTO = (form.headings.collect {it.fields}.flatten() as List<FieldDTO>).find{dto -> dto.type.uniqueKey == it.property}
+                it.relatedField = dbForm.fields.find{field -> field.property == fieldDTO.relatedFieldKey}
             }
 
             if (dbForm instanceof SurveyFieldConfiguration) {
