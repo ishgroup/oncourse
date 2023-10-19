@@ -58,22 +58,22 @@ const reduceSelection = selection => selection.reduce((p, c) => {
 }, {});
 
 const Table = ({
-                 columnsBase,
-                 data,
-                 onLoadMore,
-                 onChangeColumns,
-                 onChangeColumnsSort,
-                 sortingInitial,
-                 threeColumn,
-                 onSelectionChange,
-                 onRowDoubleClick,
-                 selection,
-                 getContainerNode,
-                 onChangeColumnsOrder,
-                 mainContentWidth,
-                 sidebarWidth,
-                 recordsCount
-               }: ListTableProps) => {
+   columnsBase,
+   data,
+   onLoadMore,
+   onChangeColumns,
+   onChangeColumnsSort,
+   sortingInitial,
+   threeColumn,
+   onSelectionChange,
+   onRowDoubleClick,
+   selection,
+   getContainerNode,
+   onChangeColumnsOrder,
+   mainContentWidth,
+   sidebarWidth,
+   recordsCount
+ }: ListTableProps) => {
 
   const [isDraggingColumn, setColumnIsDragging] = useState(false);
   const [sorting, onSortingChange] = useState<ColumnSort[]>([]);
@@ -98,7 +98,7 @@ const Table = ({
         id: SELECTION_COLUMN,
         disableResizing: true,
         size: 40,
-        cell: ({row}) => {
+        cell: ({ row }) => {
           const colorsCell: any = row.getVisibleCells().find(c => c.column.id === COLUMN_WITH_COLORS);
           return <>
             <StyledCheckbox
@@ -148,12 +148,6 @@ const Table = ({
     onRowSelectionChange(reduceSelection(selection));
   }, [selection]);
 
-  const onScroll = e => {
-    if (listRef.current) {
-      listRef.current.scrollTo(e.currentTarget.scrollTop as any);
-    }
-  };
-
   const table = useReactTable({
     data,
     columns,
@@ -201,7 +195,7 @@ const Table = ({
   }, 500), []);
 
   const toggleRowSelect = id => {
-    const updated = {...table.getState().rowSelection};
+    const updated = { ...table.getState().rowSelection };
     if (updated[id]) {
       delete updated[id];
     } else {
@@ -236,7 +230,7 @@ const Table = ({
       toggleRowSelect(row.id);
       return;
     }
-    onRowSelectionChange({[row.id]: true});
+    onRowSelectionChange({ [row.id]: true });
     onSelectionChangeHangler();
   };
 
@@ -288,7 +282,7 @@ const Table = ({
     return {
       userSelect: 'none',
       ...draggableStyle,
-      ...isDragging ? {left: draggableStyle.left - sidebarWidth + tableRef.current.scrollLeft} : {}
+      ...isDragging ? { left: draggableStyle.left - sidebarWidth + tableRef.current.scrollLeft } : {}
     };
   };
 
@@ -314,9 +308,9 @@ const Table = ({
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={classes.headerRow}
-                style={{...snapshot.isDraggingOver ? {pointerEvents: "none"} : {}}}
+                style={{ ...snapshot.isDraggingOver ? { pointerEvents: "none" } : {} }}
               >
-                {headerGroup.headers.filter(({column}) => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map(({
+                {headerGroup.headers.filter(({ column }) => ![COLUMN_WITH_COLORS, CHECKLISTS_COLUMN].includes(column.id)).map(({
                                                                                                                                column,
                                                                                                                                getContext,
                                                                                                                                getResizeHandler
@@ -346,7 +340,7 @@ const Table = ({
                             )}
                           >
                             <div
-                              style={{width: column.getSize()}}
+                              style={{ width: column.getSize() }}
                               className={clsx(
                                 classes.draggableCellItem,
                                 "text-truncate text-nowrap",
@@ -461,8 +455,7 @@ const Table = ({
     <div
       ref={tableRef}
       className={classes.table}
-      style={threeColumn ? {overflowX: "hidden"} : null}
-      onScroll={onScroll}
+      style={threeColumn ? { overflowX: "hidden" } : null}
     >
       {!threeColumn &&
         <ColumnChooser columns={table.getAllLeafColumns()} classes={classes} onHiddenChange={onHiddenChange}/>}
@@ -519,26 +512,27 @@ const RenderCell = props => {
   return value;
 };
 
-const ListRoot = React.memo<TableListProps>(({
-                                               records,
-                                               shortCurrencySymbol,
-                                               onLoadMore,
-                                               onChangeModel,
-                                               customColumnFormats,
-                                               setRowClasses,
-                                               threeColumn,
-                                               primaryColumn,
-                                               secondaryColumn,
-                                               primaryColumnCondition,
-                                               secondaryColumnCondition,
-                                               onRowDoubleClick,
-                                               onSelectionChange,
-                                               selection,
-                                               firstColumnName,
-                                               getContainerNode,
-                                               sidebarWidth,
-                                               mainContentWidth
-                                             }) => {
+const ListRoot = React.memo<TableListProps>(
+  ({
+   records,
+   shortCurrencySymbol,
+   onLoadMore,
+   onChangeModel,
+   customColumnFormats,
+   setRowClasses,
+   threeColumn,
+   primaryColumn,
+   secondaryColumn,
+   primaryColumnCondition,
+   secondaryColumnCondition,
+   onRowDoubleClick,
+   onSelectionChange,
+   selection,
+   firstColumnName,
+   getContainerNode,
+   sidebarWidth,
+   mainContentWidth
+ }) => {
   const columns = useMemo(
     () => {
       let firstVisibleIndex;
@@ -587,7 +581,7 @@ const ListRoot = React.memo<TableListProps>(({
     [records.columns, firstColumnName]
   );
 
-  const sortingInitial = useMemo(() => records.sort.map(s => ({id: s.attribute, desc: !s.ascending})), [records.sort]);
+  const sortingInitial = useMemo(() => records.sort.map(s => ({ id: s.attribute, desc: !s.ascending })), [records.sort]);
 
   const rows = useMemo(() => getTableRows(
     records,
@@ -622,7 +616,7 @@ const ListRoot = React.memo<TableListProps>(({
 
   const onChangeColumnsSort = sortings => {
     onChangeModel({
-      sortings: sortings.map(({id, desc}) => ({
+      sortings: sortings.map(({ id, desc }) => ({
         attribute: id,
         ascending: !desc,
         complexAttribute: records.columns.find(c => c.attribute === id).sortFields

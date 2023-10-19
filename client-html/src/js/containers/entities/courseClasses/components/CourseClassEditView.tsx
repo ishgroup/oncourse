@@ -322,8 +322,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
       </div>
       {discounts}
     </div>
-
-);
+  );
 };
 
 const CourseClassEditView: React.FC<Props> = ({
@@ -362,12 +361,12 @@ const CourseClassEditView: React.FC<Props> = ({
       if (!hasBudgetPermissions && i.type === "BUDGET") {
         return false;
       }
-      if (values.isDistantLearningCourse && i.type === "ATTENDANCE") {
+      if (values.type === "Distant Learning" && i.type === "ATTENDANCE") {
         return false;
       }
       return !(!values.isTraineeship && i.type === "DET export");
     }));
-  }, [hasBudgetPermissions, values.isDistantLearningCourse, values.isTraineeship]);
+  }, [hasBudgetPermissions, values.type, values.isTraineeship]);
 
   const currentTax = useMemo(() => getCurrentTax(taxes, values.taxId), [values.taxId, taxes]);
 

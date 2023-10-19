@@ -3,6 +3,7 @@ package ish.oncourse.server.payroll
 
 import groovy.transform.CompileStatic
 import ish.common.types.ClassCostRepetitionType
+import ish.common.types.CourseClassType
 import ish.math.Money
 import ish.oncourse.entity.services.SessionService
 import ish.oncourse.server.ICayenneService
@@ -45,7 +46,7 @@ class PayrollGenerationSelfPacedTest {
         when(classCost.getContact().getTutor()).thenReturn(tutor)
 
         CourseClass courseClass = mock(CourseClass.class)
-        when(courseClass.getIsDistantLearningCourse()).thenReturn(true)
+        when(courseClass.getType()).thenReturn(CourseClassType.DISTANT_LEARNING)
         when(classCost.getCourseClass()).thenReturn(courseClass)
 
         PayrollService service = new PayrollService(cayenneService, sessionService)
@@ -122,18 +123,18 @@ class PayrollGenerationSelfPacedTest {
 
     private List<DataObject> createClassCostDataSetForFiltering() {
         List<DataObject> classCosts = new ArrayList<>()
-        classCosts.add(createClassCostMock(1L, new Date(0L), false))
-        classCosts.add(createClassCostMock(2L, new Date(0L), true))
-        classCosts.add(createClassCostMock(3L, new Date(2L), false))
-        classCosts.add(createClassCostMock(4L, new Date(2L), true))
+        classCosts.add(createClassCostMock(1L, new Date(0L), CourseClassType.WITH_SESSIONS))
+        classCosts.add(createClassCostMock(2L, new Date(0L), CourseClassType.DISTANT_LEARNING))
+        classCosts.add(createClassCostMock(3L, new Date(2L), CourseClassType.WITH_SESSIONS))
+        classCosts.add(createClassCostMock(4L, new Date(2L), CourseClassType.DISTANT_LEARNING))
         return classCosts
     }
 
     
-    private DataObject createClassCostMock(Long id, Date startDateTime, boolean isDistant) {
+    private DataObject createClassCostMock(Long id, Date startDateTime, CourseClassType classType) {
         DataObject o = mock(DataObject.class)
 
-        fillByCourseClassProps(o, startDateTime, isDistant)
+        fillByCourseClassProps(o, startDateTime, classType)
 
         when(o.readNestedProperty(ClassCost.FLOW_TYPE.getName())).thenReturn(WAGES)
         when(o.readNestedProperty(ClassCost.IS_SUNK.getName())).thenReturn(true)
@@ -142,11 +143,11 @@ class PayrollGenerationSelfPacedTest {
         return o
     }
 
-    private void fillByCourseClassProps(DataObject o, Date startDateTime, boolean isDistant) {
+    private void fillByCourseClassProps(DataObject o, Date startDateTime, CourseClassType classType) {
         String startDateTimePropName = ClassCost.COURSE_CLASS.dot(CourseClass.START_DATE_TIME).getName()
-        String isDistantPropName = ClassCost.COURSE_CLASS.dot(CourseClass.IS_DISTANT_LEARNING_COURSE).getName()
+        String isDistantPropName = ClassCost.COURSE_CLASS.dot(CourseClass.TYPE).getName()
 
-        when(o.readNestedProperty(isDistantPropName)).thenReturn(isDistant)
+        when(o.readNestedProperty(isDistantPropName)).thenReturn(classType)
         when(o.readNestedProperty(startDateTimePropName)).thenReturn(startDateTime)
     }
 }
