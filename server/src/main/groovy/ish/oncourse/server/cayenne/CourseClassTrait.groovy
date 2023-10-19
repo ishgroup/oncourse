@@ -118,13 +118,13 @@ trait CourseClassTrait {
 
         Date now = new Date()
 
-        Expression validToExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).isNull())
+        Expression validToExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).isNull().orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).eq(0)))
         validToExp = validToExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).gt(CommonExpressionFactory.previousMidnight(now))))
 
-        Expression validFromExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).isNull())
+        Expression validFromExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).isNull().orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).eq(0)))
         validFromExp = validFromExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).lt(CommonExpressionFactory.nextMidnight(now))))
 
-        // apply discounts with offsets (valid from offset, valid to offset) only when courseClass has start date time.
+//         apply discounts with offsets (valid from offset, valid to offset) only when courseClass has start date time.
         Date classStart = getStartDateTime()
         if (classStart != null) {
             int startClassOffsetInDays = DateTimeUtil.getDaysLeapYearDaylightSafe(classStart, now)
@@ -146,6 +146,13 @@ trait CourseClassTrait {
                             (Product.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in productIds)
                 }
         List<Discount> discountsViaRelations = relations*.relationType*.discount.findAll { it != null }
+
+        def a = ObjectSelect.query(DiscountCourseClass)
+                .where(DiscountCourseClass.COURSE_CLASS.dot(CourseClass.ID).eq(id)
+                        .andExp(DiscountCourseClass.DISCOUNT.dot(Discount.AVAILABLE_FOR).ne(DiscountAvailabilityType.ONLINE_ONLY))
+                        .andExp(getDiscountDateFilter()))
+                .select(objectContext)
+                .collect{ it.discount.name}
 
         ObjectSelect.query(DiscountCourseClass)
                 .where(DiscountCourseClass.COURSE_CLASS.dot(CourseClass.ID).eq(id)
