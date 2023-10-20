@@ -20,7 +20,7 @@ import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from "../../../../constants/Confi
 import { Fetch } from "../../../../model/common/Fetch";
 import { FilterGroup, SavingFilterState } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
-import { clearTimetableMonths, setTimetableFilters, setTimetableSavingFilter, setTimetableSearch } from "../../actions";
+import { clearTimetableMonths, setTimetableSavingFilter, setTimetableSearch } from "../../actions";
 
 interface Props {
   classes?: any;
@@ -29,7 +29,6 @@ interface Props {
   setTimetableSearch?: StringArgFunction;
   clearTimetableMonths?: AnyArgFunction;
   setSavingFilter?: (savingFilter?: SavingFilterState) => void;
-  setTimetableFilters?: (filterGroups?: FilterGroup[]) => void;
   searchUrlParameter?: boolean;
   savingFilter?: SavingFilterState;
   search?: string;
@@ -63,7 +62,8 @@ const styles = ({
       justifyContent: "space-between",
       alignItems: "center",
       padding: spacing(2),
-      position: "relative"
+      position: "relative",
+      zIndex: 1
     }
   });
 
@@ -71,7 +71,6 @@ const SearchBar = React.memo<Props>(
   ({
     classes,
     search,
-    setTimetableFilters,
     setSavingFilter,
     setTimetableSearch,
     clearTimetableMonths,
@@ -113,7 +112,6 @@ const SearchBar = React.memo<Props>(
             setListUserAQLSearch={setTimetableSearch}
             onQuerySearch={onQuerySearch}
             setListMenuTags={stubFunction}
-            setFilterGroups={setTimetableFilters}
             setListSavingFilter={setSavingFilter}
             searchServerError={searchServerError}
             placeholder="Find..."
@@ -135,11 +133,6 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setTimetableSearch: (search: string) => dispatch(setTimetableSearch(search)),
   setSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setTimetableSavingFilter(savingFilter)),
-  setTimetableFilters: (filterGroups?: FilterGroup[]) => {
-    if (filterGroups.length) {
-      dispatch(setTimetableFilters(filterGroups[0].filters));
-    }
-  },
   clearTimetableMonths: () => dispatch(clearTimetableMonths())
 });
 
