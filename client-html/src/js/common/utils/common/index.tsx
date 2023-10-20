@@ -8,6 +8,22 @@ import { format as formatDateTime } from "date-fns";
 import React from "react";
 import { IS_JEST } from "../../../constants/EnvironmentConstants";
 import { SelectItemDefault } from "../../../model/entities/common";
+import history from "../../../constants/History";
+
+export const updateHistory = (params, url) => {
+  const paramsString = decodeURIComponent(params.toString());
+
+  const updatedSearch = paramsString ? "?" + paramsString : "";
+
+  const newUrl = window.location.origin + url + updatedSearch;
+
+  if (newUrl !== window.location.href) {
+    history.push({
+      pathname: url,
+      search: updatedSearch
+    });
+  }
+};
 
 export const getDeepValue = (source, path) => {
   if (path.match(/[.,[]/)) {
@@ -40,13 +56,13 @@ export const getDeepValue = (source, path) => {
 export const sortDefaultSelectItems = (a: SelectItemDefault, b: SelectItemDefault) =>
   (a.label[0].toLowerCase() > b.label[0].toLowerCase() ? 1 : -1);
 
-export const mapSelectItems = (i): SelectItemDefault => ({label: i, value: i});
+export const mapSelectItems = (i): SelectItemDefault => ({ label: i, value: i });
 
 export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any => {
   const colArr: string[] = columns.split(",");
   const booleanArr = ["true", "false"];
 
-  return ({id, values}) => ({
+  return ({ id, values }) => ({
     id: Number(id),
     ...colArr.reduce((prev, cur, i) => ({
       ...prev,
@@ -116,7 +132,7 @@ export const createAndDownloadBase64File = (data: any, name: string, type: strin
 
 export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
-  return {field: match[2], index: Number(match[1])};
+  return { field: match[2], index: Number(match[1]) };
 };
 
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
