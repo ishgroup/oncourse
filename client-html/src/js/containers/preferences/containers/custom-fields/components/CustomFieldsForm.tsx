@@ -216,7 +216,7 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             disableInteraction
             createdOn={() => created}
             modifiedOn={() => modified}
-            onAddMenu={() => this.onAddNew()}
+            onAddMenu={this.onAddNew}
           >
             <Grid container className="mt-2">
               <Grid item lg={10}>

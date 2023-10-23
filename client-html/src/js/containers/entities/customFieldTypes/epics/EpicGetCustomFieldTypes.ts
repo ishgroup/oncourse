@@ -15,7 +15,7 @@ const request: EpicUtils.Request<any, string> = {
   getData: entity => EntityService.getPlainRecords(
       "CustomFieldType",
       "key,name,defaultValue,isMandatory,dataType,sortOrder,pattern",
-      `entityIdentifier=${entity}`
+      `entityIdentifier=${entity} and dataType !== "File"`
     ),
   processData: (response: DataResponse, state, entity: string) => {
     const types = response.rows.map(mapCustomFieldsResponse);
