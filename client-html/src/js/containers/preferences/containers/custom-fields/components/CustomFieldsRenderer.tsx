@@ -64,7 +64,7 @@ const EntityTypes = Object.keys(EntityType)
 EntityTypes.sort(sortDefaultSelectItems);
 
 const DataTypes = Object.keys(DataType)
-  .filter(val => !['Record', 'File', 'Message template'].includes(val))
+  .filter(val => !['Record', 'Message template'].includes(val))
   .map(mapSelectItems);
 
 DataTypes.sort(sortDefaultSelectItems);
