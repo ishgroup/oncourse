@@ -13,11 +13,9 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._ReportOverlay
-import ish.util.ImageHelper
+import ish.util.ExtendedImageHelper
 
 import javax.annotation.Nonnull
-
-
 /**
  * A report can be printed with an overlay to add logos, headers or other graphics. More correctly this 'overlay'
  * is an 'underlay' since it is added to the output PDF underneath the report itself.
@@ -70,7 +68,7 @@ class ReportOverlay extends _ReportOverlay {
 
 	@API
 	Boolean isPortrait() {
-		ImageHelper.isPortrait(this.overlay)
+		ExtendedImageHelper.isPortrait(this.overlay)
 	}
 }
 
