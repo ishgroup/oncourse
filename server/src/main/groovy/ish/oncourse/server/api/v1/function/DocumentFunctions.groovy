@@ -21,7 +21,7 @@ import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
-import ish.util.ThumbnailGenerator
+import ish.common.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -35,7 +35,7 @@ import java.nio.file.Path
 import static ish.oncourse.server.api.v1.function.ContactFunctions.getProfilePictureDocument
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.Constants.BILLING_APP_LINK
-import static ish.util.ImageHelper.*
+import static ish.common.util.ImageHelper.*
 import static org.apache.commons.lang3.StringUtils.isBlank
 import static org.apache.commons.lang3.StringUtils.trimToNull
 

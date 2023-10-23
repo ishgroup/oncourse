@@ -18,7 +18,8 @@ import ish.oncourse.server.api.v1.model.ReportDTO
 import ish.oncourse.server.api.v1.service.PdfTemplateApi
 import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.preference.UserPreferenceService
-import ish.util.ImageHelper
+import ish.common.util.ImageHelper
+import ish.util.ExtendedImageHelper
 
 import java.util.function.Function
 
@@ -80,9 +81,9 @@ class PdfTemplateApiImpl implements PdfTemplateApi {
         def preview = apiService.getPreview(id)
         if(!preview)
             return preview
-        return compressed ? ImageHelper.generatePdfPreview(preview) : ImageHelper.generateHighQualityPdfPreview(
+        return compressed ? ImageHelper.generatePdfPreview(preview) : ExtendedImageHelper.generateHighQualityPdfPreview(
                 preview,
-                ImageHelper.getBackgroundQualityScale(userPreferenceService)
+                ExtendedImageHelper.getBackgroundQualityScale(userPreferenceService)
         )
     }
 
