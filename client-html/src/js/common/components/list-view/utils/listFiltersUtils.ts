@@ -29,16 +29,11 @@ export const getFiltersString = (filterGroups: FilterGroup[]) => filterGroups
   .filter(v => v.trim())
   .join(" and ");
 
-export const setActiveFiltersBySearch = (search: string, filters: FilterGroup[]) => {
+export const setActiveFiltersBySearch = (search: string, filters: FilterGroup[]): FilterGroup[]  => {
   const filterNames = search ? search.replace(/[@_]/g, " ")
     .split(",")
     .map(f => f.trim()) : [];
-  filters.forEach(g => {
-    g.filters.forEach(f => {
-      // eslint-disable-next-line no-param-reassign
-      f.active = filterNames.includes(f.name);
-    });
-  });
+  return filters.map(g => ({ ...g, filters: g.filters.map(f => ({ ...f, active: filterNames.includes(f.name) })) }));
 };
 
 export const getActiveTags = (tags: FormMenuTag[], res?: FormMenuTag[]): FormMenuTag[] => {
@@ -105,7 +100,7 @@ export const updateIndeterminateState = (tags: FormMenuTag[], id: string) => {
 };
 
 export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: FormMenuTag, allActive?: boolean) => tags.map(t => {
-  const updated = {...t, parent};
+  const updated = { ...t, parent };
   let toggleChildrenActive = false;
 
   if (allActive || updated.prefix + updated.tagBody.id.toString() === id) {
@@ -122,7 +117,7 @@ export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: For
 });
 
 export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[]) => tags.map(t => {
-  const updated = {...t};
+  const updated = { ...t };
 
   updated.active = activeIds.includes(updated.tagBody.id);
 
