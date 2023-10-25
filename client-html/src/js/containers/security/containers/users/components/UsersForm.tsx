@@ -213,8 +213,6 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
       syncErrors
     } = this.props;
 
-    const { showMessage, messageText } = this.state;
-
     return (
       <Form onSubmit={handleSubmit(this.onSave)} className={className}>
         {!isNew && dirty && <RouteChangeConfirm form={form} when={dirty} />}
