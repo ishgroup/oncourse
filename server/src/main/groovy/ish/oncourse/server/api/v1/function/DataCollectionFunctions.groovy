@@ -200,7 +200,7 @@ class DataCollectionFunctions {
             return  new ValidationErrorDTO(null, 'uniqueKey', "Field types: ${fieldNames} are not available for the form")
         }
 
-        List<String> relatedFieldKeys = form.fields.collect{it.relatedFieldKey}
+        List<String> relatedFieldKeys = (form.fields.collect{it.relatedFieldKey} + (form.headings.fields.relatedFieldKey.flatten() as List<String>)).findAll{it}
         List<String> fieldKeys = form.fields.collect{it.type.uniqueKey}
         fieldKeys.addAll((form.headings.collect {it.fields}.flatten() as List<FieldDTO>).collect{it.type.uniqueKey})
         relatedFieldKeys.each {fieldKey ->
@@ -292,6 +292,8 @@ class DataCollectionFunctions {
 
     static FieldConfiguration toDbForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistRecord = null) {
         FieldConfiguration formToUpdate = persistRecord?:context.newObject(CONFIGURATION_MAP[form.type] as Class<? extends  FieldConfiguration>)
+        Map<String, Field> addedFields = new HashMap<>()
+        Map<Field, String> fieldsWithRelatedKeys = new HashMap<>()
         return formToUpdate.with { dbForm ->
             int order = 0
             dbForm.name = form.name
@@ -300,16 +302,28 @@ class DataCollectionFunctions {
                     dbHeading.fieldOrder = order++
                     dbHeading.name = heading.name
                     dbHeading.description = heading.description
-                    heading.fields.each { field -> dbHeading.addToFields toDbField(context, dbForm, field, order++)}
+                    heading.fields.each { field ->
+                        def dbField = toDbField(context, dbForm, field, order++)
+                        addedFields.put(dbField.property, dbField)
+                        if(field.relatedFieldKey)
+                            fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
+                        dbHeading.addToFields dbField
+                    }
                     dbHeading
                 }
             }
-            form.fields.each { field -> dbForm.addToFields toDbField(context, dbForm, field, order++) }
-            dbForm.fields.findAll{it.relatedFieldValue}.each {
-                def fieldDTO = form.fields.find{dto -> dto.type.uniqueKey == it.property}
-                if(!fieldDTO)
-                    fieldDTO = (form.headings.collect {it.fields}.flatten() as List<FieldDTO>).find{dto -> dto.type.uniqueKey == it.property}
-                it.relatedField = dbForm.fields.find{field -> field.property == fieldDTO.relatedFieldKey}
+
+            form.fields.each { field ->
+                def dbField = toDbField(context, dbForm, field, order++)
+                addedFields.put(dbField.property, dbField)
+                if(field.relatedFieldKey)
+                    fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
+                dbForm.addToFields dbField
+            }
+
+            fieldsWithRelatedKeys.entrySet().each {entry ->
+                def relatedField = addedFields.get(entry.value)
+                entry.key.setRelatedField(relatedField)
             }
 
             if (dbForm instanceof SurveyFieldConfiguration) {
