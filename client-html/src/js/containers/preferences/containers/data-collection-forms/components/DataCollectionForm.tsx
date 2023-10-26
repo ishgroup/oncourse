@@ -186,6 +186,11 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
         form: currentForm
       };
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+
+      this.state = {
+        ...this.state,
+        ...this.getTreeState(items)
+      };
     }
 
     if (props.match.params.action === "new") {
@@ -197,31 +202,37 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
         }
       };
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+      this.state = {
+        ...this.state,
+        ...this.getTreeState([])
+      };
     }
   }
   
+  getTreeState = items => ({
+    treeState: {
+      rootId: "root",
+      items: items.reduce((p, c, index) => {
+        p[index] = {
+          id: index,
+          children: [],
+          hasChildren: false,
+          isExpanded: true,
+          data: c
+        };
+        return p;
+      }, { root: {
+          id: "root",
+          children: items.map((i, index) => index),
+          hasChildren: true,
+          isExpanded: true,
+          data: items
+        } })
+    }
+  });
+
   setTreeState = items => {
-    this.setState({
-      treeState: {
-        rootId: "root",
-        items: items.reduce((p, c, index) => {
-          p[index] = {
-            id: index,
-            children: [],
-            hasChildren: false,
-            isExpanded: true,
-            data: c
-          };
-          return p;
-        }, { root: {
-            id: "root",
-            children: items.map((i, index) => index),
-            hasChildren: true,
-            isExpanded: true,
-            data: items
-          } })
-      }
-    });
+    this.setState(this.getTreeState(items));
   };
 
   componentDidMount() {
@@ -308,6 +319,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
         items: []
       };
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+      this.setTreeState([]);
     }
   };
 
@@ -345,7 +357,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
 
     this.setTreeState(updated);
   };
-  
+
   onSave = value => {
     this.isPending = true;
 
@@ -376,6 +388,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
         };
         this.skipValidation = true;
         this.props.dispatch(initialize(DATA_COLLECTION_FORM, updatedData));
+        this.setTreeState(items);
 
         if (nextLocation) {
           history.push(nextLocation);
@@ -465,6 +478,8 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       })
     );
 
+    this.setTreeState(items);
+
     setTimeout(() => {
       this.unlisten();
       history.push(`/preferences/collectionForms/new/${form.type}/`);
@@ -522,7 +537,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
 
     const type = this.props.match.params.type;
     const id = !isNew && values && values.form.id;
-
+    
     return (
       <div>
         <Form className="container" onSubmit={handleSubmit(this.onSave)} role={DATA_COLLECTION_FORM}>

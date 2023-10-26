@@ -11,7 +11,7 @@ import clsx from "clsx";
 import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from "ish-ui";
 import React, { useEffect, useMemo, useState } from "react";
 import { getFormSyncErrors, getFormValues } from "redux-form";
-import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
+import { useAppSelector } from "../../../../../common/utils/hooks";
 import { CollectionFormSchema } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import CollectionFormField from "./CollectionFormField";
 import CollectionFormHeading from "./CollectionFormHeading";
@@ -77,7 +77,7 @@ const CollectionFormFieldsRenderer = (
   const [isEditing, setIsEditing] = useState(false);
 
   const field = values?.items[item.id];
-  
+
   const isHeading = field.baseType === "heading";
 
   const isField = field.baseType === "field";
@@ -100,9 +100,9 @@ const CollectionFormFieldsRenderer = (
   
   const relationTip = useMemo(() => {
     const releatedFieldIndex = isField && values.items.findIndex(i => i.baseType === "field" && i.type.uniqueKey === field.relatedFieldKey);
-    
-    if (releatedFieldIndex !== -1) {
-      return `Only visible when ${(values.items[releatedFieldIndex] as any)?.label} value is ${(document.querySelector(`[name="items[${item.id}].relatedFieldValue"]`) as any)?.value || null}`;
+
+    if (releatedFieldIndex !== -1 && isField) {
+      return `Only visible when ${(values.items[releatedFieldIndex] as any)?.label} value is ${(document.querySelector(`[name="items[${item.id}].relatedFieldValue"]`) as any)?.value || field.relatedFieldValue}`;
     }
 
     return null;
@@ -140,7 +140,7 @@ const CollectionFormFieldsRenderer = (
 
           <div>
             {isField && <Typography  variant="subtitle2" color="textSecondary" >
-              {item.data?.type?.label}
+              {field?.type?.label}
             </Typography>}
           </div>
 
@@ -166,7 +166,7 @@ const CollectionFormFieldsRenderer = (
           </IconButton>
         </div>
 
-        <Collapse in={isEditing || hasErrors} mountOnEnter unmountOnExit>
+        <Collapse in={isEditing || hasErrors}>
           <div onClick={stopEventPropagation} className="p-3">
             {isHeading
               ? <CollectionFormHeading
