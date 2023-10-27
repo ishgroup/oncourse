@@ -1,6 +1,7 @@
-def waitingLists = query {
-    entity "WaitingList"
-}
+import ish.oncourse.server.cayenne.WaitingList
+
+def waitingLists = ObjectSelect.query(WaitingList).select(context)
+
 waitingLists.each() { waitingList ->
     def classes = waitingList.course.courseClasses.findAll() { courseClass ->
         courseClass.isActive && courseClass.isShownOnWeb && courseClass.successAndQueuedEnrolments.size() < courseClass.maximumPlaces && (courseClass.isDistantLearningCourse || new Date() < courseClass.startDateTime)
