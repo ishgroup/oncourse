@@ -53,6 +53,22 @@ const CollectionFormField = ({
     return result;
   }, [fields]);
 
+  const relatedValueField = useMemo(() => {
+    return customFieldType  ? <CustomField
+        type={{ ...customFieldType, fieldKey: "relatedFieldValue", name: "Display condition value" }}
+        value={field.relatedFieldValue}
+        fieldName={`items[${item.id}]`}
+        dispatch={dispatch}
+        form={DATA_COLLECTION_FORM}
+      />
+      : <FormField
+        type="text"
+        name={`items[${item.id}].relatedFieldValue`}
+        label="Display condition value"
+        disabled={!field.relatedFieldKey}
+      />;
+  }, [customFieldType, field.relatedFieldValue, field.relatedFieldKey, item.id]);
+
   return (
     <Grid container columnSpacing={3}>
       <Grid item container xs={4} rowSpacing={2}>
@@ -87,21 +103,7 @@ const CollectionFormField = ({
           />
         </Grid>
         <Grid item xs={12}>
-          {customFieldType
-            ? <CustomField
-              type={{ ...customFieldType, fieldKey: "relatedFieldValue", name: "Display condition value" }}
-              value={field.relatedFieldValue}
-              fieldName={`items[${item.id}]`}
-              dispatch={dispatch}
-              form={DATA_COLLECTION_FORM}
-              />
-            : <FormField
-              type="text"
-              name={`items[${item.id}].relatedFieldValue`}
-              label="Display condition value"
-              disabled={!field.relatedFieldKey}
-            />
-          }
+          {relatedValueField}
         </Grid>
       </Grid>
 
