@@ -510,13 +510,19 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
 
   onDeleteClick = index => {
     const { dispatch, values: { items } } = this.props;
-    
-    const updated = [...items];
+
+    const deleted = items[index];
+
+    const updated = items.map(i => ({
+      ...i,
+      ...deleted.baseType === 'field' && i.baseType === 'field' && i.relatedFieldKey === deleted.type.uniqueKey
+        ? { relatedFieldKey: null, relatedFieldValue: null }
+        : {}
+    }));
 
     updated.splice(index, 1);
 
     dispatch(change(DATA_COLLECTION_FORM, "items", updated));
-    
     this.setTreeState(updated);
   };
   

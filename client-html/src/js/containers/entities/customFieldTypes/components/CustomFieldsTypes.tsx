@@ -25,11 +25,11 @@ import { EntityName } from "../../../../model/entities/common";
 import { State } from "../../../../reducers/state";
 
 const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
-  const validate = type.mandatory ? validateSingleMandatoryField : undefined;
   const validateFieldPattern = val => validatePattern(val, type.pattern);
-
+  const required =  type.mandatory;
+  
   let fieldType = "text";
-  let componentProps: any = { validate };
+  let componentProps: any = { required };
 
   switch (type.dataType) {
     case "Checkbox": {
@@ -41,37 +41,30 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
     }
     case "Date": {
       fieldType = "date";
-      componentProps = {
-        validate
-      };
       break;
     }
     case "Date time": {
       fieldType = "dateTime";
-      componentProps = {
-        validate
-      };
+
       break;
     }
     case "Email": {
       componentProps = {
-        validate: type.mandatory ? [validateSingleMandatoryField, validateEmail] : validateEmail
+        ...componentProps,
+        validate: validateEmail,
       };
       break;
     }
     case "Long text": {
       fieldType = "multiline";
-      componentProps = {
-        validate
-      };
       break;
     }
     case "List": {
       const isCreatable = type.defaultValue && type.defaultValue.includes("*");
       fieldType = "select";
       componentProps = {
+        ...componentProps,
         allowEmpty: !type.mandatory,
-        validate,
         ...(isCreatable
           ? {
             creatable: true,
@@ -85,33 +78,26 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
     case "Map": {
       fieldType = "select";
       componentProps = {
+        ...componentProps,
         allowEmpty: !type.mandatory,
-        validate
       };
       break;
     }
     case "Money": {
       fieldType = "money";
-      componentProps = {
-        validate
-      };
       break;
     }
     case "URL": {
       componentProps = {
-        validate: type.mandatory ? [validateSingleMandatoryField, validateURL] : validateURL
-      };
-      break;
-    }
-    case "Text": {
-      componentProps = {
-        validate
+        ...componentProps,
+        validate: validateURL
       };
       break;
     }
     case "Pattern text": {
       componentProps = {
-        validate: type.mandatory ? [validateSingleMandatoryField, validateFieldPattern] : validateFieldPattern
+        validate: validateFieldPattern,
+        required
       };
       break;
     }
