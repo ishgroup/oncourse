@@ -1,6 +1,7 @@
-import ish.oncourse.server.cayenne.WaitingList
-
-def waitingLists = ObjectSelect.query(WaitingList).select(context)
+def waitingLists = query {
+    entity "WaitingList"
+    query "createdOn after today - ${numberOfDays.intValue()} days"
+}
 
 waitingLists.each() { waitingList ->
     def classes = waitingList.course.courseClasses.findAll() { courseClass ->
