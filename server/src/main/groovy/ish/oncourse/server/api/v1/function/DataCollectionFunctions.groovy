@@ -67,28 +67,28 @@ class DataCollectionFunctions {
     private static final Map<DataCollectionTypeDTO, Class<? extends FieldConfiguration>> CONFIGURATION_MAP
 
     static {
-            VISIBLE_FIELDS = [ STREET, SUBURB, POSTCODE, STATE, COUNTRY, HOME_PHONE_NUMBER, BUSINESS_PHONE_NUMBER, FAX_NUMBER,
-                               MOBILE_PHONE_NUMBER, DATE_OF_BIRTH, ABN, IS_MALE, IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY,
-                               IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY, CITIZENSHIP, COUNTRY_OF_BIRTH, LANGUAGE_HOME,
-                               YEAR_SCHOOL_COMPLETED, ENGLISH_PROFICIENCY, INDIGENOUS_STATUS, HIGHEST_SCHOOL_LEVEL, IS_STILL_AT_SCHOOL,
-                               PRIOR_EDUCATION_CODE, LABOUR_FORCE_STATUS, DISABILITY_TYPE, SPECIAL_NEEDS, MIDDLE_NAME, HONORIFIC, TITLE ]
-                                .collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
-        
-            WAITING_LIST_FIELDS = [DETAIL, STUDENTS_COUNT].collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
-            ENROLMENT_LIST_FIELDS = [STUDY_REASON].collect {new FieldTypeDTO(uniqueKey: it.key, label: it.displayName)}
-        }
+        VISIBLE_FIELDS = [STREET, SUBURB, POSTCODE, STATE, COUNTRY, HOME_PHONE_NUMBER, BUSINESS_PHONE_NUMBER, FAX_NUMBER,
+                          MOBILE_PHONE_NUMBER, DATE_OF_BIRTH, ABN, IS_MALE, IS_MARKETING_VIA_EMAIL_ALLOWED_PROPERTY,
+                          IS_MARKETING_VIA_POST_ALLOWED_PROPERTY, IS_MARKETING_VIA_SMS_ALLOWED_PROPERTY, CITIZENSHIP, COUNTRY_OF_BIRTH, LANGUAGE_HOME,
+                          YEAR_SCHOOL_COMPLETED, ENGLISH_PROFICIENCY, INDIGENOUS_STATUS, HIGHEST_SCHOOL_LEVEL, IS_STILL_AT_SCHOOL,
+                          PRIOR_EDUCATION_CODE, LABOUR_FORCE_STATUS, DISABILITY_TYPE, SPECIAL_NEEDS, MIDDLE_NAME, HONORIFIC, TITLE]
+                .collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName) }
+
+        WAITING_LIST_FIELDS = [DETAIL, STUDENTS_COUNT].collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName) }
+        ENROLMENT_LIST_FIELDS = [STUDY_REASON].collect { new FieldTypeDTO(uniqueKey: it.key, label: it.displayName) }
+    }
 
     static {
         CONFIGURATION_MAP = [
-                (DataCollectionTypeDTO.ENROLMENT) : EnrolmentFieldConfiguration,
-                (DataCollectionTypeDTO.APPLICATION) : ApplicationFieldConfiguration,
-                (DataCollectionTypeDTO.WAITINGLIST) : WaitingListFieldConfiguration,
-                (DataCollectionTypeDTO.SURVEY) : SurveyFieldConfiguration,
-                (DataCollectionTypeDTO.PAYER) : PayerFieldConfiguration,
-                (DataCollectionTypeDTO.PARENT) : ParentFieldConfiguration,
-                (DataCollectionTypeDTO.PRODUCT) : ArticleFieldConfiguration,
+                (DataCollectionTypeDTO.ENROLMENT)  : EnrolmentFieldConfiguration,
+                (DataCollectionTypeDTO.APPLICATION): ApplicationFieldConfiguration,
+                (DataCollectionTypeDTO.WAITINGLIST): WaitingListFieldConfiguration,
+                (DataCollectionTypeDTO.SURVEY)     : SurveyFieldConfiguration,
+                (DataCollectionTypeDTO.PAYER)      : PayerFieldConfiguration,
+                (DataCollectionTypeDTO.PARENT)     : ParentFieldConfiguration,
+                (DataCollectionTypeDTO.PRODUCT)    : ArticleFieldConfiguration,
                 (DataCollectionTypeDTO.MEMBERSHIP) : MembershipFieldConfiguration,
-                (DataCollectionTypeDTO.VOUCHER) : VoucherFieldConfiguration
+                (DataCollectionTypeDTO.VOUCHER)    : VoucherFieldConfiguration
         ]
     }
 
@@ -154,7 +154,7 @@ class DataCollectionFunctions {
                 .selectOne(context)
     }
 
-    static ValidationErrorDTO validateForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration  persistForm = null) {
+    static ValidationErrorDTO validateForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistForm = null) {
 
         if (!form.name || form.name.empty) {
             return new ValidationErrorDTO(null, 'name', "Form name can not be empty")
@@ -169,7 +169,7 @@ class DataCollectionFunctions {
             return new ValidationErrorDTO(null, 'name', "Form name should be unique")
         }
 
-        if (persistForm && persistForm.type.displayName.replace(' ', '') !=  form.type.toString()) {
+        if (persistForm && persistForm.type.displayName.replace(' ', '') != form.type.toString()) {
             return new ValidationErrorDTO(null, 'type', "Form type can not be changed")
         }
 
@@ -177,27 +177,27 @@ class DataCollectionFunctions {
             return new ValidationErrorDTO(null, 'deliverySchedule', "Delivery schedule required for Survey form")
         }
 
-        List<String> headerNames =  form.headings*.name.flatten() as List<String>
-        List<String> headerDuplicates = headerNames.findAll{headerNames.count(it) > 1}.unique()
+        List<String> headerNames = form.headings*.name.flatten() as List<String>
+        List<String> headerDuplicates = headerNames.findAll { headerNames.count(it) > 1 }.unique()
 
         if (!headerDuplicates.empty) {
             return new ValidationErrorDTO(null, 'name', "Header name should be unique: ${headerDuplicates.join(', ')}")
         }
 
-        List<String>  allFields = form.fields*.type*.uniqueKey.flatten() + form.headings*.fields*.type*.uniqueKey.flatten() as List<String>
-        List<String> duplicates = allFields.findAll{allFields.count(it) > 1}.unique()
+        List<String> allFields = form.fields*.type*.uniqueKey.flatten() + form.headings*.fields*.type*.uniqueKey.flatten() as List<String>
+        List<String> duplicates = allFields.findAll { allFields.count(it) > 1 }.unique()
 
         if (!duplicates.empty) {
             return new ValidationErrorDTO(null, 'uniqueKey', "Field duplication found for type: ${duplicates.join(', ')}")
         }
 
-        List<String> availableTypes =  getFieldTypes(form.type.toString(), context).collect {it.uniqueKey}
-        List<String> unavailableTypes =  allFields.findAll {!(it in availableTypes)}
+        List<String> availableTypes = getFieldTypes(form.type.toString(), context).collect { it.uniqueKey }
+        List<String> unavailableTypes = allFields.findAll { !(it in availableTypes) }
 
         if (!unavailableTypes.empty) {
             List<FieldDTO> fields = form.fields + (form.headings*.fields.flatten() as List<FieldDTO>)
-            String fieldNames =  unavailableTypes.collect { t -> fields.find {f -> f.type.uniqueKey == t}?.label}.join(', ')
-            return  new ValidationErrorDTO(null, 'uniqueKey', "Field types: ${fieldNames} are not available for the form")
+            String fieldNames = unavailableTypes.collect { t -> fields.find { f -> f.type.uniqueKey == t }?.label }.join(', ')
+            return new ValidationErrorDTO(null, 'uniqueKey', "Field types: ${fieldNames} are not available for the form")
         }
 
         return null
@@ -237,7 +237,7 @@ class DataCollectionFunctions {
     }
 
     static void validateConfiguration(ObjectContext context, String configurationName, String propertyName,
-                                                    Class<? extends FieldConfiguration> clzz, boolean isAllowEmpty) {
+                                      Class<? extends FieldConfiguration> clzz, boolean isAllowEmpty) {
         if (!isAllowEmpty && (configurationName == null || configurationName.empty)) {
             throwError(new ValidationErrorDTO(null, propertyName, "Form name can not be empty"))
         }
@@ -269,7 +269,7 @@ class DataCollectionFunctions {
             forms += rule.parentFormName
         }
 
-        FieldConfigurationScheme ruleToUpdate = persistRule?:context.newObject(FieldConfigurationScheme)
+        FieldConfigurationScheme ruleToUpdate = persistRule ?: context.newObject(FieldConfigurationScheme)
 
         return ruleToUpdate.with { dbRule ->
             dbRule.name = rule.name
@@ -284,20 +284,28 @@ class DataCollectionFunctions {
     }
 
     static FieldConfiguration toDbForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistRecord = null) {
-        FieldConfiguration formToUpdate = persistRecord?:context.newObject(CONFIGURATION_MAP[form.type] as Class<? extends  FieldConfiguration>)
+        FieldConfiguration formToUpdate = persistRecord ?: context.newObject(CONFIGURATION_MAP[form.type] as Class<? extends FieldConfiguration>)
         return formToUpdate.with { dbForm ->
             int order = 0
             dbForm.name = form.name
             form.headings.each { heading ->
-                dbForm.addToFieldHeadings context.newObject(FieldHeading).with { dbHeading ->
-                    dbHeading.fieldOrder = order++
-                    dbHeading.name = heading.name
-                    dbHeading.description = heading.description
-                    heading.fields.each { field -> dbHeading.addToFields toDbField(context, dbForm, field, order++)}
-                    dbHeading
-                }
+                def dbHeading = heading.id ? SelectById.query(FieldHeading, heading.id).selectFirst(context) : context.newObject(FieldHeading)
+                dbHeading.fieldOrder = order++
+                dbHeading.name = heading.name
+                dbHeading.description = heading.description
+                if (!heading.id)
+                    dbForm.addToFieldHeadings dbHeading
+
+                def newFields = updateAndGetNewFields(heading.fields, dbHeading.fields, context, dbForm, order)
+                order += newFields.size()
+                newFields.each { field -> dbHeading.addToFields field }
+                dbHeading
             }
-            form.fields.each { field -> dbForm.addToFields toDbField(context, dbForm, field, order++) }
+
+            def newFields = updateAndGetNewFields(form.fields, dbForm.fields, context, dbForm, order)
+            order += newFields.size()
+            newFields.each { field -> dbForm.addToFields field }
+
             if (dbForm instanceof SurveyFieldConfiguration) {
                 (dbForm as SurveyFieldConfiguration).deliverySchedule = DeliverySchedule.valueOf(form.deliverySchedule.name())
             }
@@ -305,31 +313,48 @@ class DataCollectionFunctions {
         }
     }
 
-    static Field toDbField(ObjectContext context, FieldConfiguration dbForm, FieldDTO field, int order) {
-        context.newObject(Field).with { dbField ->
-            dbField.order = order
-            dbField.property = field.type.uniqueKey
-            dbField.fieldConfiguration = dbForm
-            dbField.name = field.label
-            dbField.description = field.helpText
-            dbField.mandatory = field.mandatory
-            dbField
+    private static List<Field> updateAndGetNewFields(List<FieldDTO> updatedFields,
+                                                     List<Field> dbFields,
+                                                     ObjectContext context, FieldConfiguration dbForm, int order) {
+        def formFieldsIds = updatedFields.collect { it.id }.findAll { it }
+        def fieldsToDelete = dbFields.findAll { !formFieldsIds.contains(it.id) }
+        context.deleteObjects(fieldsToDelete)
+
+        def newFields = new ArrayList<Field>()
+
+        updatedFields.each { field ->
+            def dbField = toDbField(context, dbForm, field, order++)
+            if (!dbField.id)
+                newFields.add dbField
         }
+
+        newFields
+    }
+
+    static Field toDbField(ObjectContext context, FieldConfiguration dbForm, FieldDTO field, int order) {
+        def dbField = field.id ? SelectById.query(Field, field.id).selectFirst(context) : context.newObject(Field)
+        dbField.order = order
+        dbField.property = field.type.uniqueKey
+        dbField.fieldConfiguration = dbForm
+        dbField.name = field.label
+        dbField.description = field.helpText
+        dbField.mandatory = field.mandatory
+        dbField
     }
 
 
     static DataCollectionFormDTO toRestForm(FieldConfiguration dbForm) {
 
         DataCollectionTypeDTO formType = DataCollectionTypeDTO.fromValue(dbForm.type.displayName.replace(' ', ''))
-        List<FieldTypeDTO> availableTypes =  getFieldTypes(formType.toString(), dbForm.context)
+        List<FieldTypeDTO> availableTypes = getFieldTypes(formType.toString(), dbForm.context)
         new DataCollectionFormDTO().with { form ->
             form.id = dbForm.id.toString()
-            form.created =  dbForm.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
-            form.modified =  dbForm.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+            form.created = dbForm.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+            form.modified = dbForm.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             form.name = dbForm.name
             form.type = formType
             form.headings = dbForm.fieldHeadings.sort().collect { toRestHeading(it, availableTypes) }
-            form.fields = dbForm.fields.findAll {it.fieldHeading == null}.sort().collect { toRestField(it, availableTypes) }
+            form.fields = dbForm.fields.findAll { it.fieldHeading == null }.sort().collect { toRestField(it, availableTypes) }
 
             if (dbForm instanceof SurveyFieldConfiguration) {
                 form.deliverySchedule = DeliveryScheduleTypeDTO.fromValue((dbForm as SurveyFieldConfiguration).deliverySchedule?.displayName)
@@ -339,17 +364,19 @@ class DataCollectionFunctions {
     }
 
     static HeadingDTO toRestHeading(FieldHeading dbHeading, List<FieldTypeDTO> availableTypes) {
-        new  HeadingDTO().with { header ->
+        new HeadingDTO().with { header ->
+            header.id = dbHeading.id
             header.name = dbHeading.name
             header.description = dbHeading.description
-            header.fields = dbHeading.fields.sort {it.order}.collect { toRestField(it, availableTypes)}
+            header.fields = dbHeading.fields.sort { it.order }.collect { toRestField(it, availableTypes) }
             header
         }
     }
 
     static FieldDTO toRestField(Field dbField, List<FieldTypeDTO> availableTypes) {
         return new FieldDTO().with { field ->
-            field.type = availableTypes.find{it.uniqueKey == dbField.property}?:new FieldTypeDTO(uniqueKey:dbField.property)
+            field.id = dbField.id
+            field.type = availableTypes.find { it.uniqueKey == dbField.property } ?: new FieldTypeDTO(uniqueKey: dbField.property)
             field.label = dbField.name
             field.helpText = dbField.description
             field.mandatory = dbField.mandatory
@@ -360,19 +387,20 @@ class DataCollectionFunctions {
     static DataCollectionRuleDTO toRestRule(FieldConfigurationScheme dbRule) {
         return new DataCollectionRuleDTO().with { rule ->
             rule.id = dbRule.id.toString()
-            rule.created =  dbRule.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
-            rule.modified =  dbRule.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+            rule.created = dbRule.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
+            rule.modified = dbRule.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             rule.name = dbRule.name
-            rule.applicationFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.APPLICATION}.fieldConfiguration.name
-            rule.enrolmentFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.ENROLMENT}.fieldConfiguration.name
-            rule.waitingListFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.WAITING_LIST}.fieldConfiguration.name
-            rule.payerFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PAYER}?.fieldConfiguration?.name
-            rule.parentFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.PARENT}?.fieldConfiguration?.name
-            rule.surveyForms = dbRule.fieldConfigurationLinks.findAll {it.fieldConfiguration.type == FieldConfigurationType.SURVEY}.collect {it.fieldConfiguration.name}
-            rule.productFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.ARTICLE}.fieldConfiguration.name
-            rule.membershipFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.MEMBERSHIP}.fieldConfiguration.name
-            rule.voucherFormName = dbRule.fieldConfigurationLinks.find {it.fieldConfiguration.type == FieldConfigurationType.VOUCHER}.fieldConfiguration.name
+            rule.applicationFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.APPLICATION }.fieldConfiguration.name
+            rule.enrolmentFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.ENROLMENT }.fieldConfiguration.name
+            rule.waitingListFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.WAITING_LIST }.fieldConfiguration.name
+            rule.payerFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.PAYER }?.fieldConfiguration?.name
+            rule.parentFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.PARENT }?.fieldConfiguration?.name
+            rule.surveyForms = dbRule.fieldConfigurationLinks.findAll { it.fieldConfiguration.type == FieldConfigurationType.SURVEY }.collect { it.fieldConfiguration.name }
+            rule.productFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.ARTICLE }.fieldConfiguration.name
+            rule.membershipFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.MEMBERSHIP }.fieldConfiguration.name
+            rule.voucherFormName = dbRule.fieldConfigurationLinks.find { it.fieldConfiguration.type == FieldConfigurationType.VOUCHER }.fieldConfiguration.name
             rule
         }
     }
+
 }
