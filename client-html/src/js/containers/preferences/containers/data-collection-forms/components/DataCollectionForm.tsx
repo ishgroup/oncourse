@@ -100,6 +100,7 @@ export const parseDataCollectionFormData = form => {
   });
   form.headings.forEach(item => {
     fieldsArr.push({
+      id: item.id,
       baseType: "heading",
       name: item.name,
       description: item.description
@@ -241,6 +242,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
   addField = type => {
     const { items } = this.props.values;
     const field = {
+      id: null,
       type,
       baseType: "field",
       parent: null,
@@ -263,6 +265,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
   addHeading = () => {
     const { items } = this.props.values;
     const heading = {
+      id: null,
       baseType: "heading",
       name: "",
       description: ""
