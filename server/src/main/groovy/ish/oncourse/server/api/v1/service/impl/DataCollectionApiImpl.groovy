@@ -172,9 +172,6 @@ class DataCollectionApiImpl implements DataCollectionApi {
         } else {
             try {
                 cayenneService.serverRuntime.performInTransaction {
-                    context.deleteObjects(dbForm.fields)
-                    context.deleteObjects(dbForm.fieldHeadings)
-                    context.commitChanges()
                     toDbForm(context, form, dbForm)
                     context.commitChanges()
                 }
