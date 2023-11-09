@@ -100,7 +100,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     @Override
     public Report toCayenneModel(ReportDTO dto, Report cayenneModel) {
         cayenneModel = super.toCayenneModel(dto, cayenneModel);
-        cayenneModel.setIsVisible(dto.isSubreport());
+        cayenneModel.setIsVisible(dto.getSubreport());
         cayenneModel.setSortOn(dto.getSortOn() != null ? dto.getSortOn() : "");
         if (dto.getBackgroundId() != null) {
             cayenneModel.setBackground(overlayDao.getById(cayenneModel.getContext(), dto.getBackgroundId()));

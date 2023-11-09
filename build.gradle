@@ -12,7 +12,7 @@ buildscript {
 		jettyVersion = '10.0.7'
         mariadbVersion = '2.7.4'
 		googleGuiceVersion = '4.2.2'
-		groovyVersion = '2.5.15'
+		groovyVersion = '4.0.2'
 		bouncycastleVersion = '1.67'
 		bootiqueVersion = '1.2'
 		cfxVersion = '3.3.5'
@@ -72,15 +72,14 @@ subprojects {
 		api "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 		api "org.apache.logging.log4j:log4j-jcl:$log4j2Version"
 
-		api "org.codehaus.groovy:groovy:$groovyVersion"
-		api "org.codehaus.groovy:groovy-datetime:$groovyVersion"
-		api "org.codehaus.groovy:groovy-json:$groovyVersion"
-		api "org.codehaus.groovy:groovy-jsr223:$groovyVersion"
-		api "org.codehaus.groovy:groovy-macro:$groovyVersion"
-		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
-		api "org.codehaus.groovy:groovy-templates:$groovyVersion"
-		api "org.codehaus.groovy:groovy-xml:$groovyVersion"
-		api "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
+		api "org.apache.groovy:groovy:$groovyVersion"
+		api "org.apache.groovy:groovy-datetime:$groovyVersion"
+		api "org.apache.groovy:groovy-json:$groovyVersion"
+		api "org.apache.groovy:groovy-jsr223:$groovyVersion"
+		api "org.apache.groovy:groovy-macro:$groovyVersion"
+		api "org.apache.groovy:groovy-templates:$groovyVersion"
+		api "org.apache.groovy:groovy-xml:$groovyVersion"
+		api "org.apache.groovy:groovy-dateutil:$groovyVersion"
 
 		implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
@@ -91,8 +90,8 @@ subprojects {
 		testImplementation 'org.junit.vintage:junit-vintage-engine:5.8.0' // needed for dbunit https://sourceforge.net/p/dbunit/feature-requests/222/
 		testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 		testImplementation 'org.dbunit:dbunit:2.7.0'
-		testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
-		testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
+		testImplementation "org.apache.groovy:groovy-test-junit5:$groovyVersion"
+		testImplementation "org.apache.groovy:groovy-sql:$groovyVersion"
 	}
 // uncomment when dbunit is detached from junit
 //	configurations {

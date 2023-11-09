@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage
 
 import static ish.util.ImageHelper.*
 
-def class Size {
+class Size {
     private int weight
     private int height
 

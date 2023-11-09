@@ -11,12 +11,14 @@
 
 package ish.oncourse.server.api.service
 
+import groovy.transform.CompileDynamic
 import ish.oncourse.server.api.dao.CayenneLayer
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.traits._DTOTrait
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 
+@CompileDynamic
 abstract class TaggableApiService <T extends _DTOTrait, K extends TaggableCayenneDataObject, M extends CayenneLayer<K>> extends EntityApiService<T, K, M> {
 
     Closure getAction(String key, String value) {
