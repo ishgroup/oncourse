@@ -14,6 +14,7 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
+import { COMMON_PLACEHOLDER } from "../../../../../constants/Forms";
 import * as Model from "../../../../../model/preferences/College";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
@@ -101,7 +102,7 @@ class CollegeBaseForm extends React.Component<any, any> {
                 Security key
               </Typography>
               <Typography variant="body1">
-                {secKey || <span className={classes.placeholderContent}>No Value</span>}
+                {secKey || <span className={classes.placeholderContent}>{COMMON_PLACEHOLDER}</span>}
               </Typography>
             </Grid>
           </Grid>

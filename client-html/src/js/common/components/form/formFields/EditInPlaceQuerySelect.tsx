@@ -30,6 +30,7 @@ import {
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { CustomFieldTypesState } from "../../../../containers/entities/customFieldTypes/reducers/state";
 import { EditInPlaceQueryFieldProps, QueryFieldSuggestion } from "../../../../model/common/Fields";
 import { State } from "../../../../reducers/state";
@@ -1140,7 +1141,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
                 onBlur={this.onBlur}
                 onClick={onClick}
                 label={label}
-                placeholder={placeholder || "No value"}
+                placeholder={placeholder || COMMON_PLACEHOLDER}
               />
             )}
             popupIcon={stubComponent()}
