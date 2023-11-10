@@ -87,7 +87,7 @@ export const addActionToQueue = (
   actionBody: IAction,
   method: ApiMethods,
   entity: string,
-  id: number | string,
+  id?: number | string,
   bindedActionId?: number | string
 ): IAction<QueuedAction> => ({
   type: ADD_ACTION_TO_QUEUE,

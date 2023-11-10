@@ -27,6 +27,7 @@ import {
 } from "ish-ui";
 import React, { useRef, useState } from "react";
 import { Field, WrappedFieldProps } from "redux-form";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 
 const useStyles = makeAppStyles(theme => ({
   hoverIcon: {
@@ -364,7 +365,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                     ? contentMode === "md"
                       ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }}/>
                       : removeContentMarker(value)
-                    : placeholder || "No value"
+                    : placeholder || COMMON_PLACEHOLDER
                 }
               </span>
             {!disabled
