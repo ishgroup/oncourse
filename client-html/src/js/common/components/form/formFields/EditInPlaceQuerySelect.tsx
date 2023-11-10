@@ -11,6 +11,7 @@ import { AqlParser } from "@aql/AqlParser";
 import * as Entities from "@aql/queryLanguageModel";
 import DateRange from "@mui/icons-material/DateRange";
 import QueryBuilder from "@mui/icons-material/QueryBuilder";
+import { ListItemButton } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { createStyles, withStyles } from "@mui/styles";
@@ -21,14 +22,17 @@ import clsx from "clsx";
 import { format as formatDate } from "date-fns";
 import { DD_MM_YYYY_SLASHED, getHighlightedPartLabel, HH_MM_COLONED, selectStyles, stubComponent } from "ish-ui";
 import getCaretCoordinates from "ish-ui/dist/utils/DOM/getCaretCoordinates";
-import React from "react";
+import React, { createRef, RefObject } from "react";
+import { connect } from "react-redux";
 import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
 } from "../../../../constants/Config";
+import { CustomFieldTypesState } from "../../../../containers/entities/customFieldTypes/reducers/state";
 import { EditInPlaceQueryFieldProps, QueryFieldSuggestion } from "../../../../model/common/Fields";
+import { State } from "../../../../reducers/state";
 
 const queryStyles = theme => createStyles({
   queryMenuItem: {
@@ -63,12 +67,6 @@ const queryStyles = theme => createStyles({
   editable: {
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
-  },
-  noOptions: {
-    display: "none",
-    "& $menuCorner": {
-      display: "none"
-    }
   }
 });
 
@@ -223,17 +221,24 @@ const completeSuggestions = (
   }));
 };
 
-interface State {
+const getPickerValue = (pickerOpened, pickerValue) => pickerOpened === "DATE" ? formatDate(pickerValue, DD_MM_YYYY_SLASHED) + " " : formatDate(pickerValue, HH_MM_COLONED) + " ";
+
+interface OwnState {
   value: object[];
   options: QueryFieldSuggestion[];
   menuIsOpen: boolean;
   pickerOpened: "DATE" | "TIME";
+  pickerValue: Date;
   inputValue: string;
   searchValue: string;
   caretCoordinates: any;
 }
 
-class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldProps, State> {
+interface OwnProps {
+  customFieldTypes?: CustomFieldTypesState;
+}
+
+class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldProps & OwnProps, OwnState> {
   private inputNode: any;
 
   private pathFilter: string;
@@ -244,6 +249,8 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
   private autoQuotesAdded: boolean;
 
+  private dateAnchor: RefObject<any> = createRef();
+
   constructor(props) {
     super(props);
 
@@ -252,6 +259,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       options: [],
       menuIsOpen: false,
       pickerOpened: null,
+      pickerValue: null,
       inputValue: (props.input && props.input.value) || "",
       searchValue: "",
       caretCoordinates: null
@@ -499,10 +507,12 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
     const rightAligned = caretCoordinates && caretCoordinates.left >= this.inputNode.clientWidth;
 
+    const isDisplayed = menuIsOpen && Boolean(options.filter(this.filterOptions).length);
+
     return {
       className: clsx(classes.menuCorner, rightAligned ? classes.cornerRight : classes.cornerLeft),
       style: {
-        display: menuIsOpen && Boolean(options.length) ? "block" : "none",
+        display: isDisplayed ? "block" : "none",
         position: "absolute" as any,
         marginBottom: "12px",
         width: "auto",
@@ -534,25 +544,29 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
   closePicker = () => {
     this.setState({
-      pickerOpened: null
+      pickerOpened: null,
+      pickerValue: null
     });
+
+    this.updateAutocomplete(this.state.inputValue);
+    this.props.performSearch && this.props.performSearch();
   };
 
-  handlePickerChange = (type, date) => {
-    if (!date) return;
+  handlePickerChange = newPickerValue => {
+    const { pickerOpened, pickerValue } = this.state;
+    
+    this.setState({ pickerValue: newPickerValue });
 
-    const dateTime = type === "DATE" ? formatDate(date, DD_MM_YYYY_SLASHED) + " " : formatDate(date, HH_MM_COLONED) + " ";
+    if (!newPickerValue) return;
 
-    const inputValue = this.state.inputValue + dateTime;
+    const dateTimeCurrent = getPickerValue(pickerOpened, newPickerValue);
+    const dateTimePrev = pickerValue && getPickerValue(pickerOpened, pickerValue);
+
+    const inputValue = this.state.inputValue.replace(dateTimePrev, '') + dateTimeCurrent;
+
     this.setState(
       {
         inputValue
-      },
-      () => {
-        this.updateAutocomplete(inputValue);
-        this.setCaret();
-        this.closePicker();
-        this.props.performSearch && this.props.performSearch();
       }
     );
   };
@@ -855,10 +869,16 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   };
 
   setIdentifierFilters = tokenText => {
-    const { rootEntity, customFields } = this.props;
+    const { rootEntity, customFields, customFieldTypes } = this.props;
 
     if (customFields && customFields.includes(tokenText)) {
-      this.operatorsFilter = "String";
+      
+      const types = rootEntity === "ProductItem" 
+        ? [...customFieldTypes?.types["Article"] || [], ...customFieldTypes?.types["Voucher"] || [], ...customFieldTypes?.types["Membership"] || []]  
+        : customFieldTypes?.types[rootEntity]; 
+      
+      const isDateField = types?.some(t => t.fieldKey === tokenText && ["Date time", "Date"].includes(t.dataType));
+      this.operatorsFilter = isDateField ? "Date" : "String";
       return;
     }
 
@@ -991,17 +1011,15 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
 
     const label = this.getOptionLabel(data);
 
-    const content = getHighlightedPartLabel(label, searchValue, optionProps);
-
-    let option = content;
+    let option = getHighlightedPartLabel(label, searchValue, optionProps);
 
     if (label === "DATE" || label === "TIME") {
       option = (
-        <div className={clsx("heading", "centeredFlex")}>
-          {content}
+        <ListItemButton {...optionProps} ref={this.dateAnchor} className="heading centeredFlex">
+          {label}
           {label === "DATE" && <DateRange className="ml-1"/>}
           {label === "TIME" && <QueryBuilder className="ml-1"/>}
-        </div>
+        </ListItemButton>
       );
     }
 
@@ -1029,29 +1047,40 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
       disableUnderline,
       disableErrorText,
       fieldClasses = {},
+      onClick
     } = this.props;
 
     const {
-      menuIsOpen, options, value, inputValue, pickerOpened
+      pickerValue, menuIsOpen, options, value, inputValue, pickerOpened
     } = this.state;
 
     return (
       <div className={className} id={input.name}>
         <div className="d-none">
           <DatePicker
-            value=""
-            onChange={date => this.handlePickerChange("DATE", date)}
+            value={pickerValue}
+            closeOnSelect={false}
+            onChange={this.handlePickerChange}
             onClose={this.closePicker}
             open={pickerOpened === "DATE"}
             renderInput={props => <TextField {...props} />}
+            PopperProps={{
+              placement: "top",
+              anchorEl: this.dateAnchor.current
+            }}
           />
 
           <TimePicker
-            value=""
-            onChange={date => this.handlePickerChange("TIME", date)}
+            value={pickerValue}
+            closeOnSelect={false}
+            onChange={this.handlePickerChange}
             onClose={this.closePicker}
             open={pickerOpened === "TIME"}
             renderInput={props => <TextField {...props} />}
+            PopperProps={{
+              placement: "top",
+              anchorEl: this.dateAnchor.current
+            }}
           />
         </div>
 
@@ -1075,8 +1104,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
               paper: classes.menuShadow,
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
               hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear,
-              noOptions: classes.noOptions
+              hasClearIcon: classes.hasClear
             } : undefined}
             renderInput={params => (
               <TextField
@@ -1110,6 +1138,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
                 inputRef={this.setInputNode}
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
+                onClick={onClick}
                 label={label}
                 placeholder={placeholder || "No value"}
               />
@@ -1125,6 +1154,10 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
   }
 }
 
-export default withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
+const mapStateToProps = (state: State) => ({
+  customFieldTypes: state.customFieldTypes
+});
+
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
   EditInPlaceQuerySelect
-) as React.FC<EditInPlaceQueryFieldProps>;
+)) as React.FC<EditInPlaceQueryFieldProps>;

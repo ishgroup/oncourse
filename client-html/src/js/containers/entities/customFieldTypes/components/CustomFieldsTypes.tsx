@@ -23,6 +23,7 @@ import {
 } from "../../../../common/utils/validation";
 import { EntityName } from "../../../../model/entities/common";
 import { State } from "../../../../reducers/state";
+import { CustomFieldTypesState } from "../reducers/state";
 
 const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
   const validateFieldPattern = val => validatePattern(val, type.pattern);
@@ -187,7 +188,7 @@ export const CustomField: React.FC<CustomFieldProps> = ({
 };
 
 interface CustomFieldsProps {
-  customFieldTypes?: { key: string; value: CustomFieldType[] };
+  customFieldTypes?: CustomFieldTypesState['types'];
   entityName: EntityName;
   fieldName: string;
   entityValues: any;

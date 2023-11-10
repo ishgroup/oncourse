@@ -9,11 +9,17 @@
 package ish.oncourse.aql.impl.converter;
 
 import ish.oncourse.aql.impl.DateTimeInterval;
-import org.apache.cayenne.exp.parser.SimpleNode;
+import ish.util.LocalDateUtils;
 
-public class DateIdentifierConverter extends DateTimeIdentifierConverter{
+import java.time.LocalDateTime;
+
+public class LazyCustomDateTimeScalar extends LazyDateTimeScalar {
+    public LazyCustomDateTimeScalar(DateTimeInterval interval) {
+        super(interval);
+    }
+
     @Override
-    protected SimpleNode nodeOfInterval(DateTimeInterval interval) {
-        return new LazyDateScalar(interval);
+    protected Object convertedDateOf(LocalDateTime localDateTime) {
+        return LocalDateUtils.timeValueToString(localDateTime);
     }
 }

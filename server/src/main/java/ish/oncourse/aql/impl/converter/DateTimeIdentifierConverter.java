@@ -17,21 +17,38 @@ import ish.oncourse.aql.impl.DateTimeInterval;
 import org.apache.cayenne.exp.parser.ASTCurrentTimestamp;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
-public class DateUnaryTermConverter implements Converter<AqlParser.UnaryTermContext> {
+/**
+ * Converts identifiers in context of date type.
+ *
+ * @see DateTimeInterval
+ *
+
+ */
+class DateTimeIdentifierConverter implements Converter<AqlParser.IdContext> {
 
     @Override
-    public SimpleNode apply(AqlParser.UnaryTermContext unaryTermContext, CompilationContext compilationContext) {
-        var identifier = unaryTermContext.unaryOperator().getText();
+    public SimpleNode apply(AqlParser.IdContext id, CompilationContext ctx) {
+        var identifier = id.Identifier() == null
+                ? id.unaryOperator().getText()
+                : id.Identifier().getText();
+
         if ("now".equals(identifier)) {
             return new ASTCurrentTimestamp();
         }
         var interval = DateTimeInterval.of(identifier);
+        
         if(interval == null) {
-            compilationContext.reportError(unaryTermContext.start.getLine(), unaryTermContext.start.getCharPositionInLine(),
+            ctx.reportError(id.start.getLine(), id.start.getCharPositionInLine(),
                     "Unknown date value '" + identifier + "'");
             return null;
         }
 
+        return nodeOfInterval(interval);
+    }
+
+    protected SimpleNode nodeOfInterval(DateTimeInterval interval){
         return new LazyDateTimeScalar(interval);
     }
+
+
 }

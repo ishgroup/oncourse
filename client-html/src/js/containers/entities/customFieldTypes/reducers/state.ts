@@ -5,6 +5,6 @@ export interface CustomFieldTypesState {
    * key - entity name
    * value - retrieved items
    */
-  types: { key?: string; value?: CustomFieldType[] };
+  types: Record<string, CustomFieldType[]>;
   updating: boolean;
 }
