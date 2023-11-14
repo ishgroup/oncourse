@@ -92,6 +92,10 @@ class BulkChangeApiService {
 
         List<? extends PersistentObjectI> entities = getBulkEntities(clzz, dto, context)
 
+        if (entities.empty) {
+            validator.throwClientErrorException("diff", "Records for bulk delete are not found")
+        }
+
         if(clzz.equals(Message)){
             if(entities.find {(it as Message).status != MessageStatus.QUEUED})
                 validator.throwClientErrorException("diff", "Request returned messages with disallowed status. Bulk remove of messages that are not queued is not allowed")
@@ -107,7 +111,7 @@ class BulkChangeApiService {
 
 
     private List<? extends PersistentObjectI> getBulkEntities(Class<? extends PersistentObjectI> clzz, DiffDTO dto, ObjectContext context){
-        List<? extends PersistentObjectI> entities = null
+        List<? extends PersistentObjectI> entities = []
 
         if (dto.ids)
             entities = EntityUtil.getObjectsByIds(context, clzz, dto.ids)
@@ -115,10 +119,6 @@ class BulkChangeApiService {
             ObjectSelect query = ObjectSelect.query(clzz)
             query = parseSearchQuery(query as ObjectSelect, context, aql, clzz.simpleName, dto.search, dto.filter, dto.tagGroups)
             entities = query.select(context)
-        }
-
-        if (entities == null || entities.empty) {
-            validator.throwClientErrorException("diff", "Records for bulk change are not found")
         }
 
         if (entities.contains(null)) {

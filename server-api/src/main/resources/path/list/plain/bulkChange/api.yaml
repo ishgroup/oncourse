@@ -24,4 +24,4 @@ patch:
   x-permission:
     mask: edit
     keyCode: LAZY/entity
-    errorMessage: Sorry, you have no permissions to delete this entity. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to edit this entity. Please contact your administrator
