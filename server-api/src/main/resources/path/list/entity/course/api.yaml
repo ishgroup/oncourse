@@ -98,26 +98,3 @@ delete:
     mask: delete
     keyCode: COURSE
     errorMessage: Sorry, you have no permissions to delete course. Please contact your administrator
-
-patch:
-  operationId: bulkChange
-  tags:
-    - Course
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: course for update
-  responses:
-    '200':
-      description: Success responc
-    '400':
-      description: Bad request error.
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: edit
-    keyCode: COURSE
-    errorMessage: Sorry, you have no permissions to edit course. Please contact your administrator

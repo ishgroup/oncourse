@@ -29,10 +29,6 @@ class MembershipProductApiImpl implements MembershipProductApi {
     @Inject
     private MembershipProductApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void create(MembershipProductDTO membershipProductDTO) {

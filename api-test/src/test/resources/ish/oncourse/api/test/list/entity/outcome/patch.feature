@@ -5,6 +5,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/outcome'
+        * def ishPatchPath = 'list/plain/bulkChange?entity=Outcome'
         * def ishPathLogin = 'login'
         * def ishPathPlain = 'list/plain'
         
@@ -21,7 +22,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -51,7 +52,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
             }
             """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -71,7 +72,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
               }
               """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -96,7 +97,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
         * def outcomeToUpdate =
                 """
                 {
-                "ids":null,
+                "ids":[101,102,103],
                 "diff":{"status":"Satisfactorily completed (81)"},
                 "search":"createdOn before now ",
                 "filter":"((status == STATUS_ASSESSABLE_PASS) or (status == STATUS_NON_ASSESSABLE_COMPLETED))",
@@ -104,7 +105,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
                 }
                 """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -121,7 +122,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -151,7 +152,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
             }
             """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -168,7 +169,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -198,7 +199,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
             }
             """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -221,7 +222,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -251,7 +252,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
             }
             """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -274,7 +275,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -304,7 +305,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
             }
             """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -327,7 +328,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -357,7 +358,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
             }
             """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 204
@@ -380,11 +381,11 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to edit outcome. Please contact your administrator."
+        And match $.errorMessage == "Sorry, you have no permissions to edit this entity. Please contact your administrator"
 
 
 
@@ -404,11 +405,11 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to edit outcome. Please contact your administrator."
+        And match $.errorMessage == "Sorry, you have no permissions to edit this entity. Please contact your administrator"
 
 
 
@@ -428,11 +429,11 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to edit outcome. Please contact your administrator."
+        And match $.errorMessage == "Sorry, you have no permissions to edit this entity. Please contact your administrator"
 
 
 
@@ -446,7 +447,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 400
@@ -464,7 +465,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 400
@@ -482,7 +483,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 400
@@ -500,7 +501,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 400
@@ -518,7 +519,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 400
@@ -536,7 +537,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/outcome'
           }
           """
 
-        Given path ishPath
+        Given path ishPatchPath
         And request outcomeToUpdate
         When method PATCH
         Then status 400

@@ -43,24 +43,3 @@ delete:
       description: Unexpected error
   x-permission:
     keyCode: UNDEFINED
-
-patch:
-  operationId: bulkChange
-  tags:
-    - Message
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: Messages for update
-  responses:
-    '200':
-      description: Success response
-    '400':
-      description: Bad request error
-    default:
-      description: Unexpected error
-  x-permission:
-    keyCode: UNDEFINED

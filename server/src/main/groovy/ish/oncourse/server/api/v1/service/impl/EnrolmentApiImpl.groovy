@@ -23,10 +23,6 @@ class EnrolmentApiImpl implements EnrolmentApi {
     @Inject
     private EnrolmentApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void cancel(CancelEnrolmentDTO cancelEnrolmentDTO) {

@@ -5,6 +5,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/courseClass'
       * configure headers = { Authorization: 'admin' }
       * url 'https://127.0.0.1:8182/a/v1'
       * def ishPath = 'list/entity/courseClass'
+      * def ishPatchPath = 'list/plain/bulkChange?entity=CourseClass'
       * def ishPathLogin = 'login'
       * def ishPathList = 'list/plain'
       
@@ -13,7 +14,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/courseClass'
 
     Scenario: (+) Hide/Show Class on website by admin
 
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["2","4"],"diff":{"isShownOnWeb":"false"}}
         When method PATCH
         Then status 204
@@ -30,7 +31,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/courseClass'
         And match $.isShownOnWeb == false
 
 #       <--->  Scenario have been finished. Now change back statuses:
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["2","4"],"diff":{"isShownOnWeb":"true"}}
         When method PATCH
         Then status 204
@@ -55,7 +56,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/courseClass'
         
 #       <--->
 
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["2","4"],"diff":{"isShownOnWeb":"false"}}
         When method PATCH
         Then status 204
@@ -72,7 +73,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/courseClass'
         And match $.isShownOnWeb == false
 
 #       <--->  Scenario have been finished. Now change back statuses:
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["2","4"],"diff":{"isShownOnWeb":"true"}}
         When method PATCH
         Then status 204
@@ -97,8 +98,8 @@ Feature: Main feature for all PATCH requests with path 'list/entity/courseClass'
         
 #       <--->
 
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["2","4"],"diff":{"isShownOnWeb":"false"}}
         When method PATCH
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to edit class. Please contact your administrator"
+        And match $.errorMessage == "Sorry, you have no permissions to edit this entity. Please contact your administrator"

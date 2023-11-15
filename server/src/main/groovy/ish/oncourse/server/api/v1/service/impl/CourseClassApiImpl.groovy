@@ -26,10 +26,6 @@ class CourseClassApiImpl implements CourseClassApi {
     @Inject
     private CourseClassApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void cancelClass(CancelCourseClassDTO cancelCourseClass) {

@@ -42,8 +42,4 @@ class AssessmentApiImpl implements AssessmentApi {
         service.update(id, assessment)
     }
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 }

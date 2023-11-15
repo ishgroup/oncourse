@@ -22,10 +22,6 @@ class InvoiceApiImpl implements InvoiceApi {
     @Inject
     private InvoiceApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void contraInvoice(Long id, List<Long> invoicesToPay) {

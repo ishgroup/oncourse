@@ -32,11 +32,6 @@ class CourseApiImpl implements CourseApi {
     private CourseApiService courseApiService
 
     @Override
-    void bulkChange(DiffDTO diff) {
-        courseApiService.bulkChange(diff)
-    }
-
-    @Override
     void create(CourseDTO courseDTO) {
         Course dbModel = courseApiService.create(courseDTO)
         EntityRelationFunctions.updateRelatedEntities(dbModel.context, dbModel.id, Course.simpleName, courseDTO.relatedSellables)

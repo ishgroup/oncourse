@@ -143,9 +143,5 @@ class DocumentApiImpl implements DocumentApi {
         context.commitChanges()
     }
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
 }

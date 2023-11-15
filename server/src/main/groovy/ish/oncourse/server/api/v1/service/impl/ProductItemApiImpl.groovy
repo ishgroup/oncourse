@@ -23,10 +23,7 @@ class ProductItemApiImpl implements ProductItemApi {
     @Inject
     ProductItemApiService entityService
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        entityService.bulkChange(diff)
-    }
+
 
     @Override
     void cancel(ProductItemCancelDTO productItemCancel) {

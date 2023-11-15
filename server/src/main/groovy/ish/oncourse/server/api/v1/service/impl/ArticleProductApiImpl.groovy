@@ -29,10 +29,6 @@ class ArticleProductApiImpl implements ArticleProductApi {
     @Inject
     private ArticleProductApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void create(ArticleProductDTO articleDTO) {

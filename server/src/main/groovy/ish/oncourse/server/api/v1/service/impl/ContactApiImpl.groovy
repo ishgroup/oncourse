@@ -54,11 +54,6 @@ class ContactApiImpl implements ContactApi {
     }
 
     @Override
-    void bulkChange(DiffDTO diff) {
-        contactApiService.bulkChange(diff)
-    }
-
-    @Override
     void removeContact(Long id) {
         contactApiService.remove(id)
     }
