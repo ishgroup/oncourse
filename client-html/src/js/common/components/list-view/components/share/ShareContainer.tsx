@@ -18,7 +18,7 @@ import Delete from '@mui/icons-material/Delete';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { CircularProgress, Grid, ListItem, ListItemButton, MenuItem } from "@mui/material";
+import { CircularProgress, Grid, ListItemButton, MenuItem } from "@mui/material";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Drawer from "@mui/material/Drawer";
@@ -33,6 +33,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, Field, FieldArray, getFormValues, initialize, reduxForm, } from "redux-form";
+import { COMMON_PLACEHOLDER } from "../../../../../constants/Forms";
 import {
   exportTemplateFullScreenPreview,
 } from "../../../../../containers/automation/containers/export-templates/actions";
@@ -607,6 +608,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   
                   <EditInPlaceField
                     label="Send result on email"
+                    placeholder={COMMON_PLACEHOLDER}
                     fieldClasses={{
                       text: classes.text,
                       label: classes.customLabel,
@@ -872,7 +874,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   </ListItemButton>
                 )}
                 {exportTemplateTypesArr.map((t, i) => (
-                  <ListItem
+                  <ListItemButton
                     classes={{
                       root: classes.listItems,
                       selected: classes.listItemsSelected,
@@ -886,7 +888,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     </Typography>
 
                     {selectedPrimary === i + 1 && <div className={classes.menuCorner}/>}
-                  </ListItem>
+                  </ListItemButton>
                 ))}
               </List>
             </Grid>
@@ -894,7 +896,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
               <List disablePadding className={classes.list}>
                 {pdfSelected
                   && pdfReports.map((i, index) => (
-                    <ListItem
+                    <ListItemButton
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -910,13 +912,13 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       </Typography>
 
                       {selectedSecondary === index && <div className={classes.menuCorner}/>}
-                    </ListItem>
+                    </ListItemButton>
                   ))}
 
                 {templateSelected
                   && Boolean(exportTemplateTypesArr.length)
                   && exportTemplateTypes[exportTemplateTypesArr[selectedPrimary - 1]].map((t, index) => (
-                    <ListItem
+                    <ListItemButton
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected,
@@ -932,7 +934,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                       </Typography>
 
                       {selectedSecondary === index && <div className={classes.menuCorner}/>}
-                    </ListItem>
+                    </ListItemButton>
                   ))}
               </List>
             </Grid>
