@@ -20,6 +20,7 @@ import React, { useCallback } from "react";
 import { Field } from "redux-form";
 import { FormEditorField } from "../../../common/components/form/formFields/FormEditor";
 import FormField from "../../../common/components/form/formFields/FormField";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 import { FormTagProps } from "../../../model/tags";
 
 const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
@@ -52,7 +53,7 @@ const TagItem = React.memo<FormTagProps>(({
     ? "/" + item.urlPath.trim().toLowerCase().replaceAll(" ", "+")
     : item.name
       ? "/" + item.name.trim().toLowerCase().replaceAll(" ", "+")
-      : "No value";
+      : COMMON_PLACEHOLDER;
 
   return (
     <div

@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { compareAsc, format as formatDate } from "date-fns";
 import { Decimal } from "decimal.js-light";
-import { DD_MMM_YYYY_MINUSED, formatCurrency, III_DD_MMM_YYYY } from "ish-ui";
+import { DD_MMM_YYYY_MINUSED, formatCurrency, III_DD_MMM_YYYY, validateMinMaxDate } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { change, FieldArray, getFormInitialValues } from "redux-form";
@@ -23,7 +23,8 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { openSiteLink } from "../../sites/utils";
@@ -162,7 +163,7 @@ class BankingEditView extends React.PureComponent<any, any> {
     if (!values || !values.payments) {
       return (
         <Typography component="span" variant="body1" className="placeholderContent">
-          No value
+          {COMMON_PLACEHOLDER}
         </Typography>
       );
     }

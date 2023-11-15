@@ -17,7 +17,7 @@ const styles = theme =>
     calendar: {
       display: "grid",
       gridTemplateColumns: `repeat(7, ${theme.spacing(3.75)})`,
-      gridGap: 4,
+      gap: 4,
       gridAutoRows: theme.spacing(3.75),
       padding: theme.spacing(0, 1),
       justifyContent: "center"

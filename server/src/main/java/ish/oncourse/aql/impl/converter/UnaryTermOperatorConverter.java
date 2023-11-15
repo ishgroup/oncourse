@@ -26,6 +26,8 @@ public class UnaryTermOperatorConverter implements Converter<AqlParser.UnaryTerm
 
     UnaryTermOperatorConverter() {
         converters.put(TypeClassifier.DATE, new DateUnaryTermConverter());
+        converters.put(TypeClassifier.CUSTOM_FIELD_DATE, new DateUnaryTermConverter());
+        converters.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new DateUnaryTermConverter());
     }
 
     @Override
