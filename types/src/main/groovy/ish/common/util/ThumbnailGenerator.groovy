@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.util
+package ish.common.util
 
 import com.spire.doc.Document
 import com.spire.doc.FileFormat
@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger
 
 import java.awt.image.BufferedImage
 
-import static ish.util.ImageHelper.*
+import static ish.common.util.ImageHelper.*
 
 def class Size {
     private int weight

@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.util.DocumentVersionInterface
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.v1.function.DocumentFunctions
@@ -26,7 +27,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class DocumentVersion extends _DocumentVersion implements Queueable {
+class DocumentVersion extends _DocumentVersion implements Queueable, DocumentVersionInterface {
 
 
 

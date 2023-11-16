@@ -17,14 +17,14 @@ import {
   EditInPlaceField,
   formatDurationMinutes,
   III_DD_MMM_YYYY_HH_MM_SS,
-  stubFunction
+  stubFunction, validateMinMaxDate
 } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { AttandanceChangeType, StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
 import { TimetableSession } from "../../../../../model/timetable";
 import { State } from "../../../../../reducers/state";

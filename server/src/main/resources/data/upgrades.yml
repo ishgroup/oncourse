@@ -879,3 +879,14 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.DeleteCheckouts
+  - changeSet:
+      id: 127-2
+      author: dmitry
+      comment: replicate all hashes of document versions to willow side
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: DocumentVersion
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.ReplicateHashes

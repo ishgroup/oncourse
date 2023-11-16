@@ -9,12 +9,11 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import clsx from "clsx";
 import { format } from "date-fns";
-import { normalizeNumberToPositive, StyledCheckbox, YYYY_MM_DD_MINUSED } from "ish-ui";
+import { normalizeNumberToPositive, StyledCheckbox, validateMinMaxDate, YYYY_MM_DD_MINUSED } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { repeatEndListItems, repeatListItems } from "../../../../containers/preferences/containers/holidays/ListItems";
-import { validateMinMaxDate } from "../../../utils/validation";
 import FormField from "../formFields/FormField";
 import AvailabilityNextHint from "./AvailabilityNextHint";
 

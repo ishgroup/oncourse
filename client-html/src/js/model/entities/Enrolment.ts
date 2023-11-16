@@ -8,6 +8,13 @@
 
 import { Assessment, Enrolment } from "@api/model";
 
+export interface OutcomeChangeField {
+  name: string;
+  value: any;
+  update: boolean;
+  label: string;
+}
+
 export interface EnrolmentAssessmentExtended extends Assessment {
   tutors: {
     contactId: number;

@@ -507,9 +507,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
       const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
       const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
 
-      if (filtersSearch) {
-        this.onChangeFilters(setActiveFiltersBySearch(filtersSearch, targetFilters), "filters");
-      }
+      this.onChangeFilters(filtersSearch ? setActiveFiltersBySearch(filtersSearch, targetFilters) : targetFilters, "filters");
 
       // Sync tags by search
       if (tagsSearch && menuTags) {
