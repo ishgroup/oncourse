@@ -185,13 +185,14 @@ const CourseClassTutorItem: React.FC<Props> = ({
               />
               )}
             alwaysDisplayDefault
-            className="mb-2"
+            className={!(!tutor.id && hasWage) && "mb-2"}
             warning={nameWarning}
             required
           />
           {!tutor.id && hasWage
               && (
               <WarningMessage
+                className="mb-2"
                 warning="Tutor wage should be removed before changing role"
               />
             )}

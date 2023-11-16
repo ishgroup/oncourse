@@ -15,7 +15,7 @@ import groovy.transform.CompileStatic
 import ish.oncourse.server.api.v1.model.ReportOverlayDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.ReportOverlay
-import ish.util.ImageHelper
+import ish.common.util.ImageHelper
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.FileUtils

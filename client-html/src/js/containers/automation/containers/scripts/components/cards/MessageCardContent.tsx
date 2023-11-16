@@ -18,6 +18,7 @@ import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { validateEmail } from "../../../../../../common/utils/validation";
 import { ADMIN_EMAIL_KEY } from "../../../../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../../../../constants/Forms";
 import { CatalogItemType } from "../../../../../../model/common/Catalog";
 import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
 import { State } from "../../../../../../reducers/state";
@@ -91,7 +92,7 @@ const MessageCardContent = React.memo<Props>(props => {
         type="text"
         name={`${name}.from`}
         label="From"
-        placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || 'No value'}
+        placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || COMMON_PLACEHOLDER}
         disabled={disabled}
         validate={validateEmail}
               />

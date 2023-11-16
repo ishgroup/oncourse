@@ -74,7 +74,7 @@ abstract class LazyEntityComparisonNode extends LazyExpressionNode {
     private boolean validateArgs() {
         if(jjtGetNumChildren() == 1) {
             var node = jjtGetChild(0);
-            if(!(node instanceof ASTScalar) && !(node instanceof LazyDateScalar)) {
+            if(!(node instanceof ASTScalar) && !(node instanceof LazyDateTimeScalar)) {
                 return false;
             }
             jjtAddChild(node, 1);

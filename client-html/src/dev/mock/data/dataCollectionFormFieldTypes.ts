@@ -1,7 +1,7 @@
 import { FieldType } from "@api/model";
-import { collectionFormFieldTypesEnum } from "../../../js/model/preferences/data-collection-forms/collectionFormSchema";
+import { CollectionFormFieldTypesEnum } from "../../../js/model/preferences/data-collection-forms/collectionFormSchema";
 
-const fieldTypes = Object.keys(collectionFormFieldTypesEnum)
+const fieldTypes = Object.keys(CollectionFormFieldTypesEnum)
   .filter(val => isNaN(Number(val)))
   .map((val, index) => ({
     uniqueKey: val.replace(/\s/g, ""),

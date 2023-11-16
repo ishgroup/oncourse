@@ -494,15 +494,16 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         flowType: "Income",
         repetitionType: "Per enrolment"
       };
+
       const custom: CourseClassExtended = {
         ...populatedInitial,
         ...updatedInitial || {},
         budget: [studentFee],
         minimumPlaces: normalizeNumberToZero(userPreferences[DEFAULT_MINIMUM_PLACES_KEY]),
         maximumPlaces: normalizeNumberToZero(userPreferences[DEFAULT_MAXIMUM_PLACES_KEY]),
-        deliveryMode: DeliveryMode[userPreferences[DEFAULT_DELIVERY_MODE_KEY]],
+        deliveryMode: DeliveryMode[userPreferences[DEFAULT_DELIVERY_MODE_KEY]] || Initial.deliveryMode,
         startDateTime: new Date().toISOString(),
-        fundingSource: ClassFundingSource[userPreferences[DEFAULT_FUNDING_SOURCE_KEY]]
+        fundingSource: ClassFundingSource[userPreferences[DEFAULT_FUNDING_SOURCE_KEY]] || Initial.fundingSource
       };
 
       dispatch(setListEditRecord(custom));

@@ -8,3 +8,9 @@ properties:
     type: string
   mandatory:
     type: boolean
+  relatedFieldKey:
+    type: string
+    description: key of related field, that affects this type display
+  relatedFieldValue:
+    type: string
+    description: Related field value, that allows this type to be shown

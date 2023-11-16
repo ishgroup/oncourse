@@ -7,6 +7,7 @@
  */
 import React, { useMemo } from "react";
 import { Field } from "redux-form";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { FormFieldWrapperProps } from "../../../../model/common/Fields";
 import { validateSingleMandatoryField, validateTagsList } from "../../../utils/validation";
 import FormFieldBase from "./FormFieldBase";
@@ -50,7 +51,7 @@ const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
       props={{
         ref,
         format: rest.format,
-        placeholder: (props as any).placeholder || 'No value'
+        placeholder: (props as any).placeholder || COMMON_PLACEHOLDER
       }}
       {...rest}
     />
