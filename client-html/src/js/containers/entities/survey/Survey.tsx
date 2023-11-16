@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import BulkDeleteCogwheelOption from "../common/components/BulkDeleteCogwheelOption";
 import SurveyEditView from "./components/SurveyEditView";
 
 interface StudentFeedbackProps {
@@ -84,6 +85,7 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
         hideTitle: true
       }}
       EditViewContent={SurveyEditView}
+      CogwheelAdornment={BulkDeleteCogwheelOption}
       rootEntity="Survey"
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}

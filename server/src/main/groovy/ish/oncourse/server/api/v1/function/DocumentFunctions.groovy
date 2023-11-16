@@ -13,6 +13,8 @@ package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
 import ish.common.types.AttachmentInfoVisibility
+import ish.common.util.DocumentUploadException
+import ish.common.util.DocumentVersionUtils
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.DocumentDao
 import ish.oncourse.server.api.v1.model.*
@@ -21,7 +23,6 @@ import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
 import ish.util.LocalDateUtils
 import ish.util.SecurityUtil
-import ish.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -35,7 +36,6 @@ import java.nio.file.Path
 import static ish.oncourse.server.api.v1.function.ContactFunctions.getProfilePictureDocument
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.Constants.BILLING_APP_LINK
-import static ish.util.ImageHelper.*
 import static org.apache.commons.lang3.StringUtils.isBlank
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
@@ -179,37 +179,11 @@ class DocumentFunctions {
         version.fileName = trimToNull(filename)
         version.createdByUser = context.localObject(user)
         version.current = versionDTO.current
-        if (isImage(versionDTO.content, version.mimeType)) {
-            version.pixelWidth = imageWidth(versionDTO.content)
-            version.pixelHeight = imageHeight(versionDTO.content)
-            try {
-                version.thumbnail = ThumbnailGenerator.generateForImg(versionDTO.content, version.mimeType)
-            } catch (IOException e) {
-                logger.warn("Attempted to process document with name $document.name as an image, but it wasn't.")
-                logger.catching(e)
-            }
-        } else {
-            try {
-                switch (version.mimeType) {
-                    case {it instanceof String && isDoc(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForDoc(versionDTO.content)
-                        break
-                    case {it instanceof String && isExcel(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForExcel(versionDTO.content)
-                        break
-                    case {it instanceof String && isCsv(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForCsv(versionDTO.content)
-                        break
-                    case {it instanceof String && isText(it as String)}:
-                        version.thumbnail = ThumbnailGenerator.generateForText(versionDTO.content)
-                        break
-                    default:
-                        version.thumbnail = generatePdfPreview(versionDTO.content)
-                }
-            } catch (NotActiveException e) {
-                logger.warn("Attempted to process document with name $document.name failed. Angel can not generate privew")
-                logger.catching(e)
-            }
+
+        try {
+            DocumentVersionUtils.initVersionSizesAndThumbnail(version, versionDTO.content, document.name, logger)
+        }catch(DocumentUploadException ignored){
+            //ignored. Angel side logic remains them in logs only
         }
 
         if (s3Service) {

@@ -16,6 +16,7 @@ import ish.oncourse.server.util.DateCalculator
 import ish.common.types.AttendanceType
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.OutcomeInterface
+import ish.oncourse.server.util.StartDateCalculator
 import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate
@@ -213,7 +214,7 @@ trait OutcomeTrait {
         // this is a flexible delivery class so the start date varies for each enrolment
         // 'No sessions' means CourseClass.endDateTime or CourseClass.startDateTime is null
         CourseClassInterface courseClass = enrolment.courseClass;
-        if (hasNoSessions(courseClass)) {
+        if (hasNoSessions(courseClass) || (courseClass.isHybrid && calculator instanceof StartDateCalculator)) {
             return calculator.getDateIfNoSessions(enrolment)
         }
 

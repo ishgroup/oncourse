@@ -82,9 +82,14 @@ export const setTimetableSearch = (search: string) => ({
   payload: { search }
 });
 
-export const findTimetableSessions = (request: SearchRequest) => ({
+export const findTimetableSessions = (request: SearchRequest, reset?: boolean) => ({
   type: FIND_TIMETABLE_SESSIONS,
-  payload: { request }
+  payload: { request, reset }
+});
+
+export const findTimetableSessionsFulfilled = months => ({
+  type: FIND_TIMETABLE_SESSIONS_FULFILLED,
+  payload: { months }
 });
 
 export const getTimetableSessionsDays = (month: number, year: number) => ({

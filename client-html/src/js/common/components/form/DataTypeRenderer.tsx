@@ -14,6 +14,7 @@ import {
   FormSwitch
 } from "ish-ui";
 import React from "react";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 import { useAppSelector } from "../../utils/hooks";
 
 interface Props {
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const DataTypeRenderer = React.memo<Props & any>(props => {
-  const {type, ...rest} = props;
+  const { type, ...rest } = props;
 
   const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
   const processActionId = useAppSelector(state => state.fieldProcessing[rest.name]);
@@ -84,4 +85,4 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
   }
 });
 
-export default DataTypeRenderer;
+export default props => <DataTypeRenderer {...props} placeholder={COMMON_PLACEHOLDER}/>;
