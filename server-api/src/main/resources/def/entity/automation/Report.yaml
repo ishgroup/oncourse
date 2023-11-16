@@ -32,11 +32,6 @@ properties:
     type: string
     required: true
     descriptio: report body
-  subreport:
-    type: boolean
-    description: is subreport
-    required: true
-    example: true
   backgroundId:
     type: integer
     format: int64
