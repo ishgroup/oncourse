@@ -44,6 +44,12 @@ plugins {
 
 subprojects {
 	repositories {
+		maven {
+			url = uri("https://repo.e-iceblue.com/nexus/content/groups/public/")
+			content {
+				includeGroup "e-iceblue"
+			}
+		}
 		mavenCentral()
 		maven {
 			//needed for itext
