@@ -21,7 +21,6 @@ export function mockReports() {
         "To provide students with the information retained in onCourse regarding their enrolment and current status of their outcomes.This report prints in Portrait format.",
       preview: "",
       body: null,
-      subreport: true,
       backgroundId: 1,
       sortOn: "",
       variables: [],

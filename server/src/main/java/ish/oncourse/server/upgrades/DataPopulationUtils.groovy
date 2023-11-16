@@ -98,9 +98,11 @@ class DataPopulationUtils {
 
     static fillReportWithCommonFields(Report report, Map<String, Object> props){
         report.entity = getString(props, ENTITY_CLASS) ?: report.entity
-        report.isVisible = getBoolean(props, IS_VISIBLE) ?: report.isVisible
         report.sortOn = getString(props, SORT_ON) ?: report.sortOn
-
+        Boolean enabled = getBoolean(props, IS_VISIBLE)
+        if (enabled != null) {
+            report.automationStatus = enabled ? AutomationStatus.ENABLED : AutomationStatus.INSTALLED_DISABLED
+        }
         configureAutomationWithCommonFields(report, props)
     }
 
@@ -149,7 +151,6 @@ class DataPopulationUtils {
 
 
     static void updateScript(ObjectContext context, Map<String, Object> props) {
-        boolean keepOldScript = false
         String name = getString(props, NAME)
         String keyCode = getString(props, KEY_CODE)
 
