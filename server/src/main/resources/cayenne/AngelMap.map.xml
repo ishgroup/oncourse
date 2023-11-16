@@ -3618,7 +3618,7 @@
 	<db-relationship name="checkoutRelatedProduct" source="CheckoutContactRelation" target="Product">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
-	<db-relationship name="checkoutRelatedApplication" source="CheckoutContactRelation" target="Application">
+	<db-relationship name="checkoutRelatedApplicationCourseClass" source="CheckoutContactRelation" target="CourseClass">
 		<db-attribute-pair source="foreignId" target="id"/>
 	</db-relationship>
 	<db-relationship name="checkoutRelatedWaitingCourse" source="CheckoutContactRelation" target="Course">
@@ -3626,9 +3626,6 @@
 	</db-relationship>
 	<db-relationship name="checkoutRelatedCourseClass" source="CheckoutContactRelation" target="CourseClass">
 		<db-attribute-pair source="foreignId" target="id"/>
-	</db-relationship>
-	<db-relationship name="checkoutRelations" source="Application" target="CheckoutContactRelation" toMany="true">
-		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
 	<db-relationship name="checkoutRelations" source="Product" target="CheckoutContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
@@ -5209,12 +5206,12 @@
 	<obj-relationship name="applications" source="Checkout" target="CheckoutApplicationRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
 	<obj-relationship name="waitingCourses" source="Checkout" target="CheckoutWaitingCourseRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
 	<obj-relationship name="classes" source="Checkout" target="CheckoutCourseClassRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
-	<obj-relationship name="checkoutRelations" source="Application" target="CheckoutApplicationRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
+	<obj-relationship name="checkoutApplicationRelations" source="CourseClass" target="CheckoutApplicationRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
 	<obj-relationship name="checkoutRelations" source="Product" target="CheckoutProductRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
 	<obj-relationship name="checkoutRelations" source="Course" target="CheckoutWaitingCourseRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
-	<obj-relationship name="checkoutRelations" source="CourseClass" target="CheckoutCourseClassRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
+	<obj-relationship name="checkoutCourseClassRelations" source="CourseClass" target="CheckoutCourseClassRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
 	<obj-relationship name="relatedObject" source="CheckoutProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="checkoutRelatedProduct"/>
-	<obj-relationship name="relatedObject" source="CheckoutApplicationRelation" target="Application" deleteRule="Nullify" db-relationship-path="checkoutRelatedApplication"/>
+	<obj-relationship name="relatedObject" source="CheckoutApplicationRelation" target="CourseClass" deleteRule="Nullify" db-relationship-path="checkoutRelatedApplicationCourseClass"/>
 	<obj-relationship name="relatedObject" source="CheckoutWaitingCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="checkoutRelatedWaitingCourse"/>
 	<obj-relationship name="relatedObject" source="CheckoutCourseClassRelation" target="CourseClass" deleteRule="Nullify" db-relationship-path="checkoutRelatedCourseClass"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
