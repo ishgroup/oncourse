@@ -295,7 +295,7 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
 
   await costUpdateAsyncActions
     .map(c => () => {
-      const costBody = c.actionBody.payload.cost;
+      const { temporaryTutorId, ...costBody } = c.actionBody.payload.cost;
 
       if (!costBody.courseClassid) {
         costBody.courseClassid = createdClassId;

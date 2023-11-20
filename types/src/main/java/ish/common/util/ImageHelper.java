@@ -8,18 +8,13 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
-package ish.util;
+package ish.common.util;
 
-import ish.oncourse.server.api.v1.model.PreferenceEnumDTO;
-import ish.oncourse.server.preference.UserPreferenceService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
@@ -40,81 +35,25 @@ import java.util.List;
  */
 public class ImageHelper {
 
-	private static final Logger logger = LogManager.getLogger();
-
+	public static final int PDF_PREVIEW_WIDTH = 165;
+	public static final int PDF_PREVIEW_HEIGHT = 240;
+	public static final int A4_PIXELS_WIDTH = 595;
+	public static final int A4_PIXELS_HEIGHT = 845;
+	public static final String PDF_PREVIEW_FORMAT = "png";
 	protected static final String MIME_TYPE_IMAGE_PREFIX = "image/";
-
-
-	protected static final int PDF_PREVIEW_WIDTH = 165;
-	protected static final int PDF_PREVIEW_HEIGHT = 240;
-	protected static final int A4_PIXELS_WIDTH = 595;
-	protected static final int A4_PIXELS_HEIGHT = 845;
-
-	protected static final String PDF_PREVIEW_FORMAT = "png";
-
-	public static final int DEFAULT_MAX_IMAGE_SCALE = 4;
-	public static final int MAX_IMAGE_SCALE = 10;
-
+	private static final Logger logger = LogManager.getLogger();
 
 	public static BufferedImage scaleImageToSize(int nMaxWidth, int nMaxHeight, BufferedImage imgSrc) {
 		return scaleImageToSize(nMaxWidth, nMaxHeight, imgSrc, false);
 	}
 
-	public static byte[] convertImageToPdf(byte[] imageSrc) throws IOException {
-		var image = getAsBufferedImage(imageSrc);
-		if(image == null)
-			return null;
-		final PDDocument doc = new PDDocument();
-		PDPageContentStream contentStream;
-
-		int width = image.getWidth();
-		int height = image.getHeight();
-
-		width = width < height ? A4_PIXELS_WIDTH : A4_PIXELS_HEIGHT;
-		height = image.getWidth() < height ? A4_PIXELS_HEIGHT : A4_PIXELS_WIDTH;
-
-		var scaledImage = smoothScaleImageTo(width, height, image);
-		imageSrc = getAsByteArray(scaledImage, PDF_PREVIEW_FORMAT);
-
-		PDPage page = new PDPage(new PDRectangle(width, height));
-		doc.addPage(page);
-
-		PDImageXObject pdImage = PDImageXObject.createFromByteArray(doc, imageSrc, null);
-		contentStream = new PDPageContentStream(doc, page, PDPageContentStream.AppendMode.APPEND, true, true);
-
-		contentStream.drawImage(pdImage, 0, 0, pdImage.getWidth(), pdImage.getHeight());
-
-		IOUtils.closeQuietly(contentStream);
-
-		var stream = new ByteArrayOutputStream();
-		doc.save(stream);
-		return stream.toByteArray();
-	}
-
-	private static BufferedImage smoothScaleImageTo(int width, int height, BufferedImage image){
+	public static BufferedImage smoothScaleImageTo(int width, int height, BufferedImage image){
 		Image tmp = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-		var scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
+		BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_USHORT_565_RGB);
 		Graphics2D g2d = scaledImage.createGraphics();
 		g2d.drawImage(tmp, 0, 0, null);
 		g2d.dispose();
 		return scaledImage;
-	}
-
-	public static byte[] scaleImageToPreviewSize(byte[] imgSrc) {
-		try {
-			if(imgSrc == null)
-				return null;
-			var image = getAsBufferedImage(imgSrc);
-			if(image == null)
-				return imgSrc;
-			int width = image.getWidth() > image.getHeight() ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
-			int height = image.getWidth() > image.getHeight() ? PDF_PREVIEW_WIDTH : PDF_PREVIEW_HEIGHT;
-			var scaledImage = scaleImageToSize(width, height, image, false);
-			return imageAsPdfPreviewByteArray(scaledImage);
-		} catch (IOException e) {
-			logger.error("Preview of pdf report was not an image on formatting stage");
-			return null;
-		}
 	}
 
 	public static BufferedImage scaleImageToSize(int nMaxWidth, int nMaxHeight, BufferedImage imgSrc, boolean returnNewImage) {
@@ -237,59 +176,10 @@ public class ImageHelper {
 				.a4FormatRequired(true)
 				.cutRequired(true)
 				.build();
-		var result = generateQualityPreview(imageRequest);
+		List<byte[]> result = generateQualityPreview(imageRequest);
 		return result == null ? null : result.get(0);
 	}
 
-
-	/**
-	 * Generates 400x564 (A4 format demention) preview from pdf byte array.
-	 *
-	 * @param pdfContent - pdf byte array
-	 * @return - binary content of generated preview, null - if transformation can't be performed
-	 */
-	public static byte[] generateHighQualityPdfPreview(byte[] pdfContent, int quality) {
-		var request = new ImageRequest.Builder(pdfContent)
-				.qualityScale(quality)
-				.a4FormatRequired(true)
-				.build();
-
-		var result = generateQualityPreview(request);
-		return result == null ? null : result.get(0);
-	}
-
-	public static int getBackgroundQualityScale(UserPreferenceService userPreferenceService){
-		var highQualityScaleStr = userPreferenceService.get(PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE);
-		if(highQualityScaleStr != null){
-			try {
-				var highQualityScale = Integer.parseInt(highQualityScaleStr);
-				if(highQualityScale <= 0)
-					highQualityScale = 2;
-				if(highQualityScale > MAX_IMAGE_SCALE)
-					highQualityScale = MAX_IMAGE_SCALE;
-				return highQualityScale;
-			} catch(Exception ignore){}
-		}
-		return MAX_IMAGE_SCALE;
-	}
-
-	/**
-	 * Generates 400x564 (A4 format demention) background from pdf byte array.
-	 *
-	 * @param pdfContent - pdf byte array
-	 * @return - binary content of generated preview, null - if transformation can't be performed
-	 */
-	public static byte[] generateBackgroundImage(byte[] pdfContent, UserPreferenceService userPreferenceService) {
-		return generateHighQualityPdfPreview(pdfContent, getBackgroundQualityScale(userPreferenceService));
-	}
-
-	public static List<byte[]> generateOriginalHighQuality(byte[] pdfContent) {
-		var request = new ImageRequest.Builder(pdfContent)
-				.qualityScale(ImageHelper.DEFAULT_MAX_IMAGE_SCALE)
-				.fullBackgroundRequired(true)
-				.build();
-		return generateQualityPreview(request);
-	}
 
 	/**
 	 * Generates 400x564 (A4 format demention) preview from pdf or image byte array.
@@ -298,12 +188,12 @@ public class ImageHelper {
 	 * @return - binary content of generated preview, null - if transformation can't be performed
 	 */
 	public static List<byte[]> generateQualityPreview(ImageRequest imageRequest) {
-		var parsedBackground = parseBackground(imageRequest);
+		List<BackgroundData> parsedBackground = parseBackground(imageRequest);
 		if(parsedBackground == null) {
 			return null;
 		}
-		var result = new ArrayList<byte[]>();
-		for(var backgroundData:parsedBackground){
+		ArrayList<byte[]> result = new ArrayList<>();
+		for(BackgroundData backgroundData:parsedBackground){
 			result.add(processImageToPreview(backgroundData, imageRequest));
 		}
 		return result;
@@ -318,7 +208,7 @@ public class ImageHelper {
 				if (image == null)
 					throw new Exception();
 				boolean landscape = image.getWidth() > image.getHeight();
-				return List.of(new BackgroundData(image, landscape));
+				return new ArrayList<BackgroundData>(){{add(new BackgroundData(image, landscape));}};
 			} catch (Exception ex) {
 				logger.error("Unable to load background" );
 				logger.catching(e);
@@ -347,8 +237,8 @@ public class ImageHelper {
 	}
 
 	private static byte[] processImageToPreview(BackgroundData parsedBackground, ImageRequest imageRequest){
-		var landscape = parsedBackground.isLandscape();
-		var image = parsedBackground.getBufferedImage();
+		boolean landscape = parsedBackground.isLandscape();
+		BufferedImage image = parsedBackground.getBufferedImage();
 
 		if(imageRequest.isA4FormatRequired()) {
 			int width = landscape ? PDF_PREVIEW_HEIGHT : PDF_PREVIEW_WIDTH;
@@ -365,7 +255,7 @@ public class ImageHelper {
 		return imageAsPdfPreviewByteArray(image);
 	}
 
-	private static byte[] imageAsPdfPreviewByteArray(BufferedImage image){
+	public static byte[] imageAsPdfPreviewByteArray(BufferedImage image){
 		try {
 			return getAsByteArray(image, PDF_PREVIEW_FORMAT);
 		} catch (IOException e) {
@@ -376,26 +266,9 @@ public class ImageHelper {
 	}
 
 	public static Boolean isPortrait(PDPage page) {
-			PDRectangle rectangle = page.getMediaBox();
-			int rotation = page.getRotation();
+		PDRectangle rectangle = page.getMediaBox();
+		int rotation = page.getRotation();
 
-			return !((rectangle.getWidth() > rectangle.getHeight()) || rotation == 90 || rotation == 270);
-	}
-
-	public static Boolean isPortrait(byte[] content) {
-		try(PDDocument doc = PDDocument.load(content)) {
-			return isPortrait(doc.getPage(0));
-		} catch (IOException e) {
-			try {
-				var image = getAsBufferedImage(content);
-				if (image == null)
-					throw new IOException();
-				return image.getHeight() > image.getWidth();
-			} catch (IOException ex) {
-				logger.error("Unable to read image or pdf doc.");
-				logger.catching(e);
-				return null;
-			}
-		}
+		return !((rectangle.getWidth() > rectangle.getHeight()) || rotation == 90 || rotation == 270);
 	}
 }

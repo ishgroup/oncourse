@@ -14,7 +14,7 @@ import ish.oncourse.server.cayenne.glue._CheckoutApplicationRelation
 class CheckoutApplicationRelation extends _CheckoutApplicationRelation {
     @Override
     void setRelatedObject(CayenneDataObject object) {
-        super.setRelatedObject(object as Application)
+        super.setRelatedObject(object as CourseClass)
     }
 
     @Override

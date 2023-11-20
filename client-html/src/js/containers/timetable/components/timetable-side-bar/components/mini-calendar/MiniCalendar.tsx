@@ -7,10 +7,9 @@
  */
 
 import { addMonths, format } from "date-fns";
-import { CalendarHeader, CalendarWeekPanel } from "ish-ui";
+import { CalendarHeader, CalendarWeekPanel, validateDate } from "ish-ui";
 import React, { useContext } from "react";
 import { connect } from "react-redux";
-import { validateDate } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 import { TimetableContext } from "../../../../Timetable";
 import CalendarBody from "./components/CalendarBody";
