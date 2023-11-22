@@ -7,7 +7,7 @@
           feeHelpClass="0"/>
 
   <CourseClass code="1" courseId="1" createdOn="2023-02-01 00:46:54" endDateTime="2045-01-30 17:00:00" feeExGst="454.55"
-               id="1" incomeAccountId="7" isCancelled="0" isDistantLearningCourse="0" isShownOnWeb="0" maximumPlaces="999"
+               id="1" incomeAccountId="7" isCancelled="0" type="0" isShownOnWeb="0" maximumPlaces="999"
                minimumPlaces="1" modifiedOn="2023-02-01 00:47:12" taxId="1" startDateTime="2045-01-30 16:00:00"
                deliveryMode="1" fundingSource="3" detBookingId="null" budgetedPlaces="0" reportableHours="0"
                isClassFeeApplicationOnly="0" taxAdjustment="-0.01" deposit="454.55" isActive="1"

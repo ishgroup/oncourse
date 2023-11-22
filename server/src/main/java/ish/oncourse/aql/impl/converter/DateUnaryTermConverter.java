@@ -32,6 +32,6 @@ public class DateUnaryTermConverter implements Converter<AqlParser.UnaryTermCont
             return null;
         }
 
-        return new LazyDateScalar(interval);
+        return new LazyDateTimeScalar(interval);
     }
 }

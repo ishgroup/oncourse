@@ -10,7 +10,7 @@ import {
   MailchimpFields,
   MicropowerFields,
   MoodleFields,
-  MYOBFields,
+  MYOBFields, OktaFields,
   ServiceNSWFields,
   SurveyMonkeyFields,
   XeroFields
@@ -39,6 +39,7 @@ export interface IntegrationSchema {
     | AzureFields
     | ServiceNSWFields
     | KronosFields
+    | OktaFields
 }
 
 export interface IntegrationTypeSchema {
@@ -49,6 +50,29 @@ export interface IntegrationTypeSchema {
   description: React.ReactNode;
 }
 
-export interface IntegrationTypesModel {
-  [key: number]: IntegrationTypeSchema
+export enum IntegrationTypesEnum {
+  'Moodle' = 1,
+  'Mailchimp',
+  'SurveyMonkey',
+  'Alchemer',
+  'Xero',
+  'MYOB',
+  'Cloud Assess',
+  'Canvas',
+  'Micropower',
+  'USI Agency',
+  'VET Student Loans',
+  'Google Classroom',
+  'Coassemble',
+  'TalentLMS',
+  'LearnDash',
+  'Amazon S3',
+  'Microsoft Azure',
+  'Service NSW voucher',
+  'Kronos',
+  'Okta'
+}
+
+export type IntegrationTypesModel = {
+  [key in IntegrationTypesEnum]: IntegrationTypeSchema
 }

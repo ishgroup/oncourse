@@ -13,7 +13,7 @@ import {
   EditInPlaceSearchSelect,
   LinkAdornment,
   stubFunction,
-  StyledCheckbox,
+  StyledCheckbox, validateMinMaxDate,
   YYYY_MM_DD_MINUSED
 } from "ish-ui";
 import * as React from "react";
@@ -22,8 +22,8 @@ import { change, FieldArray, getFormInitialValues, initialize } from "redux-form
 import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { validateMinMaxDate } from "../../../../common/utils/validation";
 import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { getFormattedTotal } from "../../common/bankingPaymentUtils";
@@ -107,7 +107,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
     if (!values || !values.payments) {
       return (
         <Typography variant="body1" className="placeholderContent">
-          No value
+          {COMMON_PLACEHOLDER}
         </Typography>
       );
     }

@@ -1,6 +1,7 @@
 import { Currency, Payment } from "@api/model";
 import { Decimal } from "decimal.js-light";
 import { formatCurrency } from "ish-ui";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 
 export const defaultCurrencySymbol = "$";
 
@@ -22,7 +23,7 @@ export const calculatePaymentsTotal = (payments: Payment[], onlySelected: boolea
 
 export const getFormattedTotal = (payments: Payment[], currency: Currency, onlySelected: boolean): string => {
   if (!payments) {
-    return "No value";
+    return COMMON_PLACEHOLDER;
   }
   const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : defaultCurrencySymbol;
   return formatCurrency(calculatePaymentsTotal(payments, onlySelected), shortCurrencySymbol);

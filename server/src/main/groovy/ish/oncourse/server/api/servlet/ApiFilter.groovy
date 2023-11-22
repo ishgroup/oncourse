@@ -41,6 +41,7 @@ class ApiFilter implements Filter {
     private static final String LOGIN_PATH_INFO = 'login'
     private static final String CHECK_PASSWORD_INFO = 'user/checkPassword/'
     private static final String INVITATION = 'invite/'
+    private static final String SSO_TYPES = 'integration/ssoTypes'
     private static final String X_VALIDATE_ONLY = 'x-validate-only'
     private static final String XVALIDATEONLY = 'XValidateOnly'
 
@@ -73,7 +74,8 @@ class ApiFilter implements Filter {
 
         validateOnly.set(Boolean.valueOf(request.getHeader(X_VALIDATE_ONLY)) || Boolean.valueOf(request.getHeader(XVALIDATEONLY)))
 
-        if (request.pathInfo.contains(LOGIN_PATH_INFO) || request.pathInfo.contains(CHECK_PASSWORD_INFO) || request.pathInfo.contains(INVITATION)) {
+        if (request.pathInfo.contains(LOGIN_PATH_INFO) || request.pathInfo.contains(CHECK_PASSWORD_INFO)
+                || request.pathInfo.contains(INVITATION) || request.pathInfo.contains(SSO_TYPES)) {
             allowCrossOriginRequest(response)
         } else if (unautorized(request, response) || !permissionService.authorize(request, response)) {
             return

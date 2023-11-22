@@ -69,6 +69,8 @@ paths:
     $ref: './path/holiday/api.yaml'
   /integration:
     $ref: './path/integration/api.yaml'
+  /integration/ssoTypes:
+    $ref: './path/integration/ssoTypes/api.yaml'
   /invite:
     $ref: './path/invite/api.yaml'
   /list:
@@ -257,6 +259,10 @@ paths:
     $ref: './path/list/plain/bulkDelete/api.yaml'
   /login:
     $ref: './path/login/api.yaml'
+  /login/sso:
+    $ref: './path/login/sso/api.yaml'
+  /login/sso/link:
+    $ref: './path/login/sso/link/api.yaml'
   /logout:
     $ref: './path/logout/api.yaml'
   /preference:

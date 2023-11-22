@@ -5,6 +5,7 @@ export interface Fetch {
   pending?: boolean;
   number?: number;
   message?: string;
+  persist?: boolean;
   formError?: ValidationError;
   hideIndicator?: boolean;
 }

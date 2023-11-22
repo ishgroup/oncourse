@@ -7,7 +7,7 @@
  */
 
 import { createStyles, withStyles } from "@mui/styles";
-import { getDay } from "date-fns";
+import { getDay, isSameDay } from "date-fns";
 import { CalendarDay, getCalendarDays } from "ish-ui";
 import React, { useContext } from "react";
 import { TimetableContext } from "../../../../../Timetable";
@@ -17,7 +17,7 @@ const styles = theme =>
     calendar: {
       display: "grid",
       gridTemplateColumns: `repeat(7, ${theme.spacing(3.75)})`,
-      gridGap: 4,
+      gap: 4,
       gridAutoRows: theme.spacing(3.75),
       padding: theme.spacing(0, 1),
       justifyContent: "center"
@@ -34,16 +34,24 @@ const CalendarBody = ({
 
   return (
     <div className={classes.calendar}>
-      {getCalendarDays(month).map((el, id) => (
-        <CalendarDay
-          key={id}
+      {getCalendarDays(month).map((el, id) => {
+        const dayIndexValue = selectedMonthSessionDays[el.day - 1];
+        const hasSession = selectedMonthSessionDays.length && el.status === 'current' &&  dayIndexValue !== 0;
+        const isSameAsTarget = isSameDay(null, el.date);
+        const isToday = isSameDay(new Date(), el.date);
+        
+        return <CalendarDay
           {...el}
+          key={id}
+          dayIndexValue={dayIndexValue}
+          hasSession={hasSession}
+          isSameAsTarget={isSameAsTarget}
+          isToday={isToday}
           disabled={isDisabled(el, selectedWeekDays)}
-          selectedMonthSessionDays={selectedMonthSessionDays}
           setTargetDay={setTargetDay}
           targetDay={targetDay}
-        />
-      ))}
+        />;
+      })}
     </div>
   );
 };

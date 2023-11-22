@@ -17,7 +17,7 @@ import AppBarContainer from "../../../../common/components/layout/AppBarContaine
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import ContactEditView from "../../../entities/contacts/components/ContactEditView";
-import { formatRelationsBeforeSave, getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
+import { getDisabledSubmitCondition } from "../../../entities/contacts/Contacts";
 import { checkoutCreateContact, checkoutUpdateContact } from "../../actions/checkoutContact";
 
 export const CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME = "CheckoutContactEditForm";
@@ -62,8 +62,6 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
     const contactModel = { ...contact };
     if (contactModel.student) delete contactModel.student.education;
     if (contactModel.isCompany) delete contactModel.firstName;
-
-    contactModel.relations = formatRelationsBeforeSave(contactModel.relations);
     onContactSave(contact.id, contactModel);
   }, []);
 
@@ -71,9 +69,6 @@ const QuickEnrolContactEditViewForm: React.FC<Props> = props => {
     const contactModel = { ...contact };
     if (contactModel.student) delete contactModel.student.education;
     if (contactModel.isCompany) delete contactModel.firstName;
-
-    contactModel.relations = formatRelationsBeforeSave(contactModel.relations);
-
     onContactCreate(contactModel);
   }, []);
 

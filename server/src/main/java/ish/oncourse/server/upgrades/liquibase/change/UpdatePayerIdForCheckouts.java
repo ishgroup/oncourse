@@ -8,54 +8,17 @@
 
 package ish.oncourse.server.upgrades.liquibase.change;
 
-import groovy.json.JsonSlurper;
 import ish.liquibase.IshTaskChange;
-import ish.math.Money;
-import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.Checkout;
-import ish.oncourse.server.cayenne.Contact;
-import ish.oncourse.server.db.SchemaUpdateService;
 import liquibase.database.Database;
 import liquibase.exception.CustomChangeException;
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.ObjectSelect;
-
-import java.util.List;
-import java.util.Map;
 
 public class UpdatePayerIdForCheckouts extends IshTaskChange {
     @Override
     public void execute(Database database) throws CustomChangeException {
-        ICayenneService cayenneService = SchemaUpdateService.sharedCayenneService;
-        DataContext context = cayenneService.getNewNonReplicatingContext();
-
-        long lastCheckoutId = 0;
-
-        List<Checkout> checkouts;
-
-        do {
-            checkouts = ObjectSelect.query(Checkout.class)
-                    .where(Checkout.PAYER.isNull().andExp(Checkout.ID.gt(lastCheckoutId)))
-                    .limit(100)
-                    .select(context);
-            for (var checkout : checkouts) {
-                var slurper = new JsonSlurper();
-                var parsedCart = (Map) slurper.parseText(checkout.getShoppingCart());
-                Long payerId = Long.parseLong((String) parsedCart.get("payerId"));
-                var contacts = ObjectSelect.query(Contact.class)
-                        .where(Contact.WILLOW_ID.eq(payerId))
-                        .select(context);
-                if (!contacts.isEmpty()) {
-                    checkout.setPayer(contacts.get(0));
-                    if (checkout.getTotalValue() == null) {
-                        checkout.setTotalValue(new Money((String) parsedCart.get("total")));
-                    }
-                } else
-                    context.deleteObject(checkout);
-                context.commitChanges();
-            }
-
-            lastCheckoutId = checkouts.isEmpty() ? lastCheckoutId : checkouts.get(checkouts.size() - 1).getId();
-        } while (!checkouts.isEmpty());
+        /**
+         * This upgrade updated payerId column of Checkout from payerId property in shoppingCart json column.
+         * After shoppingCart column is deleted from database, this upgrade is useless and cannot be compiled, but
+         * also cannot be deleted due to name of its class into upgrades.yml
+         */
     }
 }
