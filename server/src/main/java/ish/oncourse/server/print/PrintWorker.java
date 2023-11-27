@@ -54,7 +54,7 @@ import java.net.URL;
 import java.rmi.server.UID;
 import java.util.*;
 
-import static ish.util.ImageHelper.*;
+import static ish.util.ExtendedImageHelper.generateBackgroundImage;
 
 /**
  * Worker which is serving specific {@link PrintRequest} identified by unique id.

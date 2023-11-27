@@ -24,7 +24,7 @@ ${render(headerKeycode)}
                         <% } %>
                     <% } %>
                     <br><br>
-                    <a href="${checkout?.data?.get('checkoutURL')}?payerId=${checkout.payer.willowId}" style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" target="_blank">Click here</a> to return to your cart and complete the checkout process.
+                    <a href="${checkout?.checkoutUrl}?payerId=${checkout.payer.willowId}" style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" target="_blank">Click here</a> to return to your cart and complete the checkout process.
                     <br>
                 </p>
             </div>

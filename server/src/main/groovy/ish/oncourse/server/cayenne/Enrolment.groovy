@@ -126,17 +126,21 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		if(contact == null)
 			return
 
-		List<Checkout> checkouts = CartFunctions.checkoutsByContactId(context, contact.willowId)
+		List<CheckoutContactRelation> checkouts = CartFunctions.checkoutsByContactId(context, contact.id)
 
-		checkouts.each {checkout ->
-			def classesIds = CartFunctions.idsOfCurrentItems(checkout, contact.getWillowId(), CartFunctions.CLASSES_KEY)
-			def waitingCoursesIds = CartFunctions.idsOfCurrentItems(checkout, contact.getWillowId(), CartFunctions.WAITING_KEY)
+		def waitingCoursesRelations = checkouts
+				.findAll {it instanceof CheckoutWaitingCourseRelation && it.relatedObjectId == courseClass.course.id}
 
-			if (classesIds.contains(courseClass.willowId) || waitingCoursesIds.contains(courseClass.course.willowId)) {
-				context.deleteObject(checkout)
-				context.commitChanges()
-			}
-		}
+		def courseClassRelations =  checkouts
+				.findAll {it instanceof CheckoutCourseClassRelation && it.relatedObjectId == courseClass.id}
+
+		def applicationRelations =  checkouts
+				.findAll {it instanceof CheckoutApplicationRelation && it.relatedObjectId == courseClass.id}
+
+		context.deleteObjects(waitingCoursesRelations.collect {it.checkout}.unique())
+		context.deleteObjects(courseClassRelations.collect {it.checkout}.unique())
+		context.deleteObjects(applicationRelations.collect {it.checkout}.unique())
+		context.commitChanges()
 	}
 
 	/**

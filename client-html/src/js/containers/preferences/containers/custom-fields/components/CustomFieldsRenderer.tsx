@@ -64,7 +64,7 @@ const EntityTypes = Object.keys(EntityType)
 EntityTypes.sort(sortDefaultSelectItems);
 
 const DataTypes = Object.keys(DataType)
-  .filter(val => !['Record', 'File', 'Message template'].includes(val))
+  .filter(val => !['Record', 'Message template'].includes(val))
   .map(mapSelectItems);
 
 DataTypes.sort(sortDefaultSelectItems);
@@ -209,10 +209,23 @@ const ExpandableCustomFields = React.memo<any>(props => {
     isListOrMap,
     expanded,
     onChange,
+    form,
+    dispatch
   } = props;
 
   const isExpanded = useMemo(() => ((expanded !== null && [index].includes(expanded)) || !field.id || !field.name), [expanded, field]);
 
+  const onEntityChange = () => {
+    dispatch(change(form, `${item}.dataType`, null));
+  };
+
+  const availableDataTypes = useMemo(() => {
+    if (field.entityType === "WaitingList") {
+      return DataTypes.filter(t => t.label !== 'File');
+    }
+    return DataTypes;
+  }, [field.entityType]);
+  
   return (
     <ExpandableItem
       expanded={isExpanded}
@@ -273,7 +286,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="text"
               name={`${item}.fieldKey`}
               label="Custom field key"
-                            disabled={!!field.id}
+              disabled={!!field.id}
               className={classes.field}
               required
             />
@@ -284,7 +297,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="select"
               name={`${item}.dataType`}
               label="Data Type"
-              items={DataTypes}
+              items={availableDataTypes}
               disabled={!!field.id}
               onChange={onDataTypeChange}
               debounced={false}
@@ -302,6 +315,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               items={EntityTypes}
               disabled={!!field.id}
               className={classes.field}
+              onChange={onEntityChange}
               sort
               required
             />
@@ -384,7 +398,6 @@ const renderCustomFields = React.memo<any>(props => {
         value.splice(otherIndex, 1);
       }
     }
-
     dispatch(change(form, `${fields.name}[${index}].defaultValue`, value.length ? JSON.stringify(value) : null));
   };
 
@@ -426,6 +439,8 @@ const renderCustomFields = React.memo<any>(props => {
                           isListOrMap={isListOrMap}
                           expanded={expanded}
                           onChange={() => setExpanded(expanded === index ? null : index)}
+                          dispatch={dispatch}
+                          form={form}
                         />
                       </Card>
                     </div>

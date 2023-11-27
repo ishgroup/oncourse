@@ -38,7 +38,6 @@ import {
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import NestedList from "../../../../../common/components/form/nestedList/NestedList";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import uniqid from "../../../../../common/utils/uniqid";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
 import history from "../../../../../constants/History";
 import { EditViewProps } from "../../../../../model/common/ListView";
@@ -439,18 +438,14 @@ const CourseClassBudgetTab = React.memo<Props>(
         delete postData.index;
 
         if (postData.id === null) {
-          const savedId = postData.temporaryId;
-          delete postData.temporaryId;
-          delete postData.temporaryTutorId;
+          const { temporaryId, temporaryTutorId, ...validateData } = postData;
 
-          ClassCostService.validatePost(postData)
+          ClassCostService.validatePost(validateData)
             .then(() => {
-              const temporaryId = savedId || uniqid();
-
-              if (!savedId) {
-                dispatch(arrayInsert(form, "budget", 0, { ...postData, temporaryId }));
+              if (!postData.id) {
+                dispatch(arrayInsert(form, "budget", 0, postData));
               } else {
-                dispatch(change(form, `budget[${data.index}]`, { ...postData, temporaryId }));
+                dispatch(change(form, `budget[${data.index}]`, postData));
               }
               dispatch(
                 addActionToQueue(postCourseClassCost(postData), "POST", "ClassCost", temporaryId, bindedActionId)

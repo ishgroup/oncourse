@@ -18,13 +18,12 @@ import { CacheProvider } from '@emotion/react';
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import {
-  AnyArgFunction,
+  AnyArgFunction, AppTheme,
   BrowserWarning,
   currentTheme,
   DefaultThemeKey,
   getTheme,
   GlobalStylesProvider,
-  Message,
   ThemeValues
 } from "ish-ui";
 import React, { useEffect } from "react";
@@ -32,7 +31,7 @@ import { connect } from "react-redux";
 import { Route, Switch, withRouter } from "react-router-dom";
 import { Dispatch } from "redux";
 import { getFormNames, isDirty } from "redux-form";
-import { getUserPreferences } from "../common/actions";
+import { getUserPreferences, showMessage } from "../common/actions";
 import ConfirmProvider from "../common/components/dialog/ConfirmProvider";
 import MessageProvider from "../common/components/dialog/MessageProvider";
 import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
@@ -46,6 +45,7 @@ import {
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
+import { AppMessage } from "../model/common/Message";
 import { State } from "../reducers/state";
 import { loginRoute, routes } from "../routes";
 import { getDashboardBlogPosts } from "./dashboard/actions";
@@ -79,6 +79,7 @@ const RouteRenderer = route => (
 );
 
 interface Props {
+  showMessage: AnyArgFunction<void, AppMessage>;
   getPreferencesTheme: AnyArgFunction;
   history: any;
   preferencesTheme: ThemeValues;
@@ -89,16 +90,18 @@ interface Props {
   match: any;
 }
 
-export class MainBase extends React.PureComponent<Props, any> {
+interface MainState {
+  themeName: string;
+  theme: AppTheme;
+}
+
+export class MainBase extends React.PureComponent<Props, MainState> {
   constructor(props) {
     super(props);
 
     this.state = {
       themeName: DefaultThemeKey,
       theme: getTheme(),
-      showMessage: false,
-      successMessage: false,
-      messageText: ""
     };
   }
 
@@ -191,10 +194,9 @@ export class MainBase extends React.PureComponent<Props, any> {
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     console.error(error, errorInfo);
 
-    this.setState({
-      showMessage: true,
-      successMessage: false,
-      messageText: "Something unusual happened in onCourse. Our quality assurance team have been notified."
+    this.props.showMessage({
+      success: false,
+      message: "Something unusual happened in onCourse. Our quality assurance team have been notified."
     });
   }
 
@@ -217,17 +219,9 @@ export class MainBase extends React.PureComponent<Props, any> {
     LSSetItem(APPLICATION_THEME_STORAGE_NAME, name);
   };
 
-  clearMessage = () => {
-    this.setState({
-      showMessage: false,
-      successMessage: false,
-      messageText: ""
-    });
-  };
-
   render() {
     const {
-     themeName, theme, showMessage, successMessage, messageText
+     themeName, theme
     } = this.state;
 
     const { isLogged } = this.props;
@@ -244,12 +238,6 @@ export class MainBase extends React.PureComponent<Props, any> {
             <CssBaseline />
             <GlobalStylesProvider>
               <BrowserWarning />
-              <Message
-                opened={showMessage}
-                isSuccess={successMessage}
-                text={messageText}
-                clearMessage={this.clearMessage}
-              />
               <Switch>
                 {isLogged ? (
                   routes.map((route, i) => <RouteRenderer key={i} {...route} />)
@@ -275,6 +263,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  showMessage: message => dispatch(showMessage(message)),
   isLoggedIn: () => dispatch(isLoggedIn()),
   getPreferencesTheme: () => dispatch(getUserPreferences([DASHBOARD_THEME_KEY])),
   onInit: () => {

@@ -13,9 +13,7 @@ package ish.oncourse.aql.impl.converter;
 
 import ish.oncourse.aql.impl.AqlParser;
 import ish.oncourse.aql.impl.CompilationContext;
-import ish.oncourse.aql.model.CustomFieldMarker;
-import ish.oncourse.aql.model.Entity;
-import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
+import ish.oncourse.aql.model.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.apache.cayenne.exp.parser.ASTObjPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
@@ -76,7 +74,9 @@ class PathConverter implements Converter<AqlParser.PathContext> {
         } else if(attributeType.isPresent()) {
             ctx.setCurrentPathJavaType(attributeType.get());
             // custom field, translate path
-            if(CustomFieldMarker.class == attributeType.get()) {
+            if(CustomFieldMarker.class == attributeType.get()
+                    || CustomFieldDateMarker.class == attributeType.get()
+                    || CustomFieldDateTimeMarker.class == attributeType.get()) {
                 return translateCustomField(pathSegments, last);
             }
         } else if(relationshipType.isPresent()) {

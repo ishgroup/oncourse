@@ -202,9 +202,21 @@
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="willowId" type="BIGINT"/>
-		<db-attribute name="shoppingCart" type="CLOB" length="5000"/>
+		<db-attribute name="checkoutUrl" type="VARCHAR" length="200"/>
 		<db-attribute name="payerId" type="BIGINT"/>
 		<db-attribute name="totalValue" type="DECIMAL" length="10" scale="2"/>
+	</db-entity>
+	<db-entity name="CheckoutContactRelation">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="checkoutId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="contactId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="quantity" type="INTEGER"/>
+		<db-attribute name="selected" type="BOOLEAN"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
+		<db-attribute name="entityName" type="VARCHAR" isMandatory="true" length="45"/>
+		<db-attribute name="foreignId" type="BIGINT" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="ClassCost">
 		<db-attribute name="contactId" type="BIGINT"/>
@@ -400,7 +412,7 @@
 		<db-attribute name="isActive" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="isCancelled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isClassFeeApplicationOnly" type="SMALLINT" isMandatory="true"/>
-		<db-attribute name="isDistantLearningCourse" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="type" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="isShownOnWeb" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="materials" type="CLOB" length="32000"/>
 		<db-attribute name="maxStudentAge" type="INTEGER"/>
@@ -422,6 +434,7 @@
 		<db-attribute name="vetPurchasingContractID" type="VARCHAR" length="12"/>
 		<db-attribute name="vetPurchasingContractScheduleID" type="VARCHAR" length="3"/>
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
+		<db-attribute name="minimumSessionsToComplete" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CourseClassPaymentPlanLine">
@@ -700,6 +713,8 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="property" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="relatedFieldId" type="BIGINT"/>
+		<db-attribute name="relatedFieldValue" type="CLOB" length="32000"/>
 	</db-entity>
 	<db-entity name="FieldConfiguration">
 		<db-attribute name="createdById" type="BIGINT"/>
@@ -1292,7 +1307,6 @@
 		<db-attribute name="enabled" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="entity" type="VARCHAR" isMandatory="true" length="150"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="isVisible" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="keyCode" type="VARCHAR" isMandatory="true" length="80"/>
 		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="100"/>
@@ -1887,8 +1901,29 @@
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
-		<obj-attribute name="shoppingCart" type="java.lang.String" db-attribute-path="shoppingCart"/>
+		<obj-attribute name="checkoutUrl" type="java.lang.String" db-attribute-path="checkoutUrl"/>
 		<obj-attribute name="totalValue" type="ish.math.Money" db-attribute-path="totalValue"/>
+	</obj-entity>
+	<obj-entity name="CheckoutContactRelation" abstract="true" className="ish.oncourse.server.cayenne.CheckoutContactRelation" dbEntityName="CheckoutContactRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="relatedEntityName" type="java.lang.String" db-attribute-path="entityName"/>
+		<obj-attribute name="selected" type="java.lang.Boolean" db-attribute-path="selected"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+	</obj-entity>
+	<obj-entity name="CheckoutProductRelation" abstract="false" superEntityName="CheckoutContactRelation" className="ish.oncourse.server.cayenne.CheckoutProductRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<qualifier><![CDATA[relatedEntityName = "Product"]]></qualifier>
+		<obj-attribute name="quantity" type="java.lang.Integer" db-attribute-path="quantity"/>
+	</obj-entity>
+	<obj-entity name="CheckoutCourseClassRelation" abstract="false" superEntityName="CheckoutContactRelation" className="ish.oncourse.server.cayenne.CheckoutCourseClassRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<qualifier><![CDATA[relatedEntityName = "CourseClass"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="CheckoutWaitingCourseRelation" abstract="false" superEntityName="CheckoutContactRelation" className="ish.oncourse.server.cayenne.CheckoutWaitingCourseRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<qualifier><![CDATA[relatedEntityName = "Course"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="CheckoutApplicationRelation" abstract="false" superEntityName="CheckoutContactRelation" className="ish.oncourse.server.cayenne.CheckoutApplicationRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<qualifier><![CDATA[relatedEntityName = "Application"]]></qualifier>
 	</obj-entity>
 	<obj-entity name="ClassCost" className="ish.oncourse.server.cayenne.ClassCost" clientClassName="ish.oncourse.cayenne.ClassCost" dbEntityName="ClassCost" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2075,7 +2110,7 @@
 		<obj-attribute name="isActive" type="java.lang.Boolean" db-attribute-path="isActive"/>
 		<obj-attribute name="isCancelled" type="java.lang.Boolean" db-attribute-path="isCancelled"/>
 		<obj-attribute name="isClassFeeApplicationOnly" type="java.lang.Boolean" db-attribute-path="isClassFeeApplicationOnly"/>
-		<obj-attribute name="isDistantLearningCourse" type="java.lang.Boolean" db-attribute-path="isDistantLearningCourse"/>
+		<obj-attribute name="type" type="ish.common.types.CourseClassType" db-attribute-path="type"/>
 		<obj-attribute name="isShownOnWeb" type="java.lang.Boolean" db-attribute-path="isShownOnWeb"/>
 		<obj-attribute name="materials" type="java.lang.String" db-attribute-path="materials"/>
 		<obj-attribute name="maxStudentAge" type="java.lang.Integer" db-attribute-path="maxStudentAge"/>
@@ -2095,6 +2130,7 @@
 		<obj-attribute name="vetPurchasingContractID" type="java.lang.String" db-attribute-path="vetPurchasingContractID"/>
 		<obj-attribute name="vetPurchasingContractScheduleID" type="java.lang.String" db-attribute-path="vetPurchasingContractScheduleID"/>
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
+		<obj-attribute name="minimumSessionsToComplete" type="java.lang.Integer" db-attribute-path="minimumSessionsToComplete"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
 	<obj-entity name="CourseClassAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.CourseClassAttachmentRelation" clientClassName="ish.oncourse.cayenne.CourseClassAttachmentRelation">
@@ -2390,6 +2426,7 @@
 		<obj-attribute name="order" type="java.lang.Integer" db-attribute-path="fieldOrder"/>
 		<obj-attribute name="property" type="java.lang.String" db-attribute-path="property"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="relatedFieldValue" type="java.lang.String" db-attribute-path="relatedFieldValue"/>
 	</obj-entity>
 	<obj-entity name="FieldConfiguration" abstract="true" className="ish.oncourse.server.cayenne.FieldConfiguration" clientClassName="ish.oncourse.cayenne.FieldConfiguration" dbEntityName="FieldConfiguration" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2859,7 +2896,6 @@
 		<obj-attribute name="automationStatus" type="ish.common.types.AutomationStatus" db-attribute-path="enabled"/>
 		<obj-attribute name="entity" type="java.lang.String" db-attribute-path="entity"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
-		<obj-attribute name="isVisible" type="java.lang.Boolean" db-attribute-path="isVisible"/>
 		<obj-attribute name="keyCode" type="java.lang.String" db-attribute-path="keyCode"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
@@ -3568,6 +3604,36 @@
 	<db-relationship name="payer" source="Checkout" target="Contact">
 		<db-attribute-pair source="payerId" target="id"/>
 	</db-relationship>
+	<db-relationship name="checkout" source="CheckoutContactRelation" target="Checkout">
+		<db-attribute-pair source="checkoutId" target="id"/>
+	</db-relationship>
+	<db-relationship name="checkoutContactRelations" source="Checkout" target="CheckoutContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="checkoutId"/>
+	</db-relationship>
+	<db-relationship name="contact" source="CheckoutContactRelation" target="Contact">
+		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelatedProduct" source="CheckoutContactRelation" target="Product">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelatedApplicationCourseClass" source="CheckoutContactRelation" target="CourseClass">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelatedWaitingCourse" source="CheckoutContactRelation" target="Course">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelatedCourseClass" source="CheckoutContactRelation" target="CourseClass">
+		<db-attribute-pair source="foreignId" target="id"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelations" source="Product" target="CheckoutContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelations" source="CourseClass" target="CheckoutContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelations" source="Course" target="CheckoutContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="foreignId"/>
+	</db-relationship>
 	<db-relationship name="contact" source="ClassCost" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
@@ -4074,6 +4140,12 @@
 	</db-relationship>
 	<db-relationship name="automationBindings" source="ExportTemplate" target="AutomationBinding" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="relatedField" source="Field" target="Field" toMany="false">
+		<db-attribute-pair source="relatedFieldId" target="id"/>
+	</db-relationship>
+	<db-relationship name="dependentFields" source="Field" target="Field" toMany="true">
+		<db-attribute-pair source="id" target="relatedFieldId"/>
 	</db-relationship>
 	<db-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration">
 		<db-attribute-pair source="fieldConfigurationId" target="id"/>
@@ -5125,6 +5197,21 @@
 	<obj-relationship name="createdBy" source="ConcessionType" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>
+	<obj-relationship name="contact" source="CheckoutContactRelation" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
+	<obj-relationship name="checkout" source="CheckoutContactRelation" target="Checkout" deleteRule="Nullify" db-relationship-path="checkout"/>
+	<obj-relationship name="products" source="Checkout" target="CheckoutProductRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
+	<obj-relationship name="contactRelations" source="Checkout" target="CheckoutContactRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
+	<obj-relationship name="applications" source="Checkout" target="CheckoutApplicationRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
+	<obj-relationship name="waitingCourses" source="Checkout" target="CheckoutWaitingCourseRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
+	<obj-relationship name="classes" source="Checkout" target="CheckoutCourseClassRelation" deleteRule="Cascade" db-relationship-path="checkoutContactRelations"/>
+	<obj-relationship name="checkoutApplicationRelations" source="CourseClass" target="CheckoutApplicationRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
+	<obj-relationship name="checkoutRelations" source="Product" target="CheckoutProductRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
+	<obj-relationship name="checkoutRelations" source="Course" target="CheckoutWaitingCourseRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
+	<obj-relationship name="checkoutCourseClassRelations" source="CourseClass" target="CheckoutCourseClassRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
+	<obj-relationship name="relatedObject" source="CheckoutProductRelation" target="Product" deleteRule="Nullify" db-relationship-path="checkoutRelatedProduct"/>
+	<obj-relationship name="relatedObject" source="CheckoutApplicationRelation" target="CourseClass" deleteRule="Nullify" db-relationship-path="checkoutRelatedApplicationCourseClass"/>
+	<obj-relationship name="relatedObject" source="CheckoutWaitingCourseRelation" target="Course" deleteRule="Nullify" db-relationship-path="checkoutRelatedWaitingCourse"/>
+	<obj-relationship name="relatedObject" source="CheckoutCourseClassRelation" target="CourseClass" deleteRule="Nullify" db-relationship-path="checkoutRelatedCourseClass"/>
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
 	<obj-relationship name="attachmentRelations" source="Contact" target="ContactAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="abandonedCarts" source="Contact" target="Checkout" deleteRule="Cascade" db-relationship-path="abandonedCarts"/>
@@ -5310,6 +5397,8 @@
 	<obj-relationship name="relatedObject" source="ExportTemplateAutomationBinding" target="ExportTemplate" deleteRule="Nullify" db-relationship-path="exportTemplate"/>
 	<obj-relationship name="fieldConfiguration" source="Field" target="FieldConfiguration" deleteRule="Nullify" db-relationship-path="fieldConfiguration"/>
 	<obj-relationship name="fieldHeading" source="Field" target="FieldHeading" deleteRule="Nullify" db-relationship-path="fieldHeading"/>
+	<obj-relationship name="dependentFields" source="Field" target="Field" deleteRule="Nullify" db-relationship-path="dependentFields"/>
+	<obj-relationship name="relatedField" source="Field" target="Field" deleteRule="Nullify" db-relationship-path="relatedField"/>
 	<obj-relationship name="createdBy" source="FieldConfiguration" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy">
 		<info:property xmlns:info="http://cayenne.apache.org/schema/10/info" name="comment" value="createdBy"/>
 	</obj-relationship>

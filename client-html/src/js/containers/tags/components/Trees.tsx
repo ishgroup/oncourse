@@ -52,7 +52,7 @@ const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTreeProps) 
 
 const tagToTreeItem = (tag: FormTag): TreeItem => ({
   id: tag.id,
-  children: tag.childTags.map(t => t.id),
+  children: tag.childTags?.map(t => t.id),
   hasChildren: Boolean(tag.childTags.length),
   isExpanded: true,
   data: tag
@@ -200,8 +200,6 @@ export const TagTree = React.memo<TagsTreeProps>(props => {
       />
       <div className="ml-2">
         <Tree
-          // @ts-ignore
-          classes={classes}
           tree={treeState}
           renderItem={renderItem}
           onDragEnd={onDragEnd}
@@ -261,8 +259,6 @@ export const ChecklistTree = React.memo<TagsTreeProps>(props => {
 
   return treeState ? (
     <Tree
-      // @ts-ignore
-      classes={classes}
       tree={treeState}
       renderItem={renderItem}
       onDragEnd={onDragEnd}

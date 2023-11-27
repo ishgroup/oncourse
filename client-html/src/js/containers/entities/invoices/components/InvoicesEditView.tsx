@@ -11,7 +11,15 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { addDays } from "date-fns";
-import { AnyArgFunction, decimalPlus, formatCurrency, formatToDateOnly, LinkAdornment, usePrevious } from "ish-ui";
+import {
+  AnyArgFunction,
+  decimalPlus,
+  formatCurrency,
+  formatToDateOnly,
+  LinkAdornment,
+  usePrevious,
+  validateMinMaxDate
+} from "ish-ui";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -22,7 +30,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import { validateMinMaxDate, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { InvoiceLineWithTotal, InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
@@ -179,6 +187,12 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     dispatch(change(form, "leadId", value.id));
     dispatch(change(form, "contactId", value["customer.id"]));
     dispatch(change(form, "contactName", value["customer.fullName"]));
+    onContactChange(Object.keys(value).reduce((p,c) => {
+      if (c.includes('customer.')) {
+        p[c.replace('customer.','')] = value[c];
+      }
+      return p;
+    }, {}))
   };
 
   const onContactChange = value => {

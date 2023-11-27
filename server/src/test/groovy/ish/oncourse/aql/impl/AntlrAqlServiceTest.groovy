@@ -1,6 +1,7 @@
 package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
+import ish.common.types.DataType
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
@@ -939,7 +940,14 @@ class AntlrAqlServiceTest {
 
         ObjectContext context = mock(ObjectContext.class)
         when(context.getEntityResolver()).thenReturn(resolver)
-        when(context.select(any(Select.class))).thenReturn(asList("field1", "field2"))
+
+        Object[] field1Obj = new Object[2]
+        field1Obj[0] = "field1"
+        field1Obj[1] = DataType.TEXT
+        Object[] field2Obj = new Object[2]
+        field2Obj[0] = "field2"
+        field2Obj[1] = DataType.TEXT
+        when(context.select(any(Select.class))).thenReturn(asList(field1Obj, field2Obj))
 
         return context
     }

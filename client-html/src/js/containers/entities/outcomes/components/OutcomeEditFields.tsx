@@ -12,7 +12,7 @@ import { Card, Chip, Grid, Tooltip, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import { AppTheme, LinkAdornment, normalizeNumberToZero, StringKeyObject } from "ish-ui";
+import { AppTheme, LinkAdornment, normalizeNumberToZero, StringKeyObject, validateMinMaxDate } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -28,7 +28,6 @@ import EntityService from "../../../../common/services/EntityService";
 import { mapSelectItems } from "../../../../common/utils/common";
 import {
   validateFundingSourse,
-  validateMinMaxDate,
   validatePurchasingContractScheduleIdentifier,
   validateSingleMandatoryField,
   validateSpecificProgramIdentifier,

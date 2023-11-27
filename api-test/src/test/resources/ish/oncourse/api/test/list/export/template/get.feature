@@ -98,7 +98,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Module'              | "Module CSV"          |
             | 'Site'                | "Site CSV"            |
             | 'Room'                | "Room CSV"            |
-            | 'AccountTransaction'  | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","grouped MYOB"    |
+            | 'AccountTransaction'  | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV", "Account Transaction XML", "grouped MYOB"    |
             | 'Account'             | "Account CSV"                                                                      |
             | 'Payslip'             | "MYOB Activity Payslip CSV","Payslip CSV","Payslip MicroPay"         |
             | 'CorporatePass'       | "CorporatePass CSV"                                                                |
