@@ -659,6 +659,7 @@
 		<db-attribute name="vetTrainingContractID" type="VARCHAR" length="10"/>
 		<db-attribute name="vetPurchasingContractScheduleID" type="VARCHAR" length="3"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="effectiveFrom" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="EntityRelation">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
