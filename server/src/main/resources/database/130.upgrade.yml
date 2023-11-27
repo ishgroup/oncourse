@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 125-1
+      id: 130-1
       comment: add a specific effective from date for specific enrolments
       author: dmitars
       preConditions:
