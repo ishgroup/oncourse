@@ -77,7 +77,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "modifiedOn":"#ignore",
         "assessments":[],
         "submissions":[],
-        "feeHelpClass":false
+        "feeHelpClass":false,
+        "effectiveFrom":null
         }
         """
 
@@ -159,7 +160,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/enrolment'
         "modifiedOn":"#ignore",
         "assessments":[],
         "submissions":[],
-        "feeHelpClass":false
+        "feeHelpClass":false,
+        "effectiveFrom":null
         }
         """
 
