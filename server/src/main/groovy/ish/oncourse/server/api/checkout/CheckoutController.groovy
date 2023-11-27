@@ -23,6 +23,7 @@ import ish.oncourse.server.cayenne.EntityRelation
 import ish.oncourse.server.cayenne.FundingSource
 import ish.oncourse.server.cayenne.Module
 import ish.oncourse.server.cayenne.Outcome
+import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.Ordering
@@ -611,6 +612,9 @@ class CheckoutController {
     }
 
     private static void updateApplicationStatusToAcceptedByEnrolment(Enrolment enrolment) {
+        if(enrolment.student.getPersistenceState() == PersistenceState.NEW)
+            return
+
         def context = enrolment.context
         Expression exp = Application.STATUS.eq(ApplicationStatus.OFFERED)
                         .andExp(Application.COURSE.eq(enrolment.courseClass.course))
@@ -619,13 +623,13 @@ class CheckoutController {
 
         List<Application> applications = SelectQuery.query(Application, exp).select(context)
 
-        Ordering ordering = new Ordering()
-        ordering.setSortSpecString(Application.FEE_OVERRIDE.name)
-        ordering.setNullSortedFirst(false)
-        ordering.setAscending()
-        ordering.orderList(applications)
-
         if (!applications.isEmpty()) {
+            Ordering ordering = new Ordering()
+            ordering.setSortSpecString(Application.FEE_OVERRIDE.name)
+            ordering.setNullSortedFirst(false)
+            ordering.setAscending()
+            ordering.orderList(applications)
+
             Application app = enrolment.getObjectContext().localObject(applications.get(0));
             app.setStatus(ApplicationStatus.ACCEPTED);
         }
@@ -651,7 +655,7 @@ class CheckoutController {
         }
         invoiceLine.cosAccount = discountCourseClass.discount.cosAccount
     }
-    
+
     private InvoiceDueDate createDueDate(Money amount, LocalDate date) {
         InvoiceDueDate dueDate = context.newObject(InvoiceDueDate)
 
