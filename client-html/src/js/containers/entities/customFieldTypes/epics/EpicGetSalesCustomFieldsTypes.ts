@@ -23,7 +23,7 @@ const request: EpicUtils.Request<any, string> = {
       result[entity] = await EntityService.getPlainRecords(
         "CustomFieldType",
         "key,name,defaultValue,isMandatory,dataType,sortOrder,pattern",
-        `entityIdentifier=${entity}`
+        `entityIdentifier=${entity} and dataType !== "File"`
       ).then((response: DataResponse) => {
         const types = response.rows.map(mapCustomFieldsResponse);
         types.sort((a, b) => (a.sortOrder > b.sortOrder ? 1 : -1));

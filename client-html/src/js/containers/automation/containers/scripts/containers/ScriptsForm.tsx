@@ -167,7 +167,9 @@ const entityNameTypes: TriggerType[] = [
   'On create and edit',
   'On delete',
   'Checklist task checked',
-  'Checklist completed'
+  'Checklist completed',
+  'Tag added',
+  'Tag removed'
 ];
 
 const TriggerTypeItems = Object.keys(TriggerType).map(mapSelectItems);

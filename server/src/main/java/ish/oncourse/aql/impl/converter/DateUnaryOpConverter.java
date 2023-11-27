@@ -19,6 +19,8 @@ import org.apache.cayenne.exp.parser.ASTBetween;
 import org.apache.cayenne.exp.parser.ASTScalar;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
+import java.time.LocalDateTime;
+
 /**
  * Date/time unary operators converter.
  *
@@ -37,8 +39,12 @@ class DateUnaryOpConverter implements Converter<AqlParser.UnaryOperatorContext> 
             return null;
         }
         var between = new ASTBetween();
-        ExpressionUtil.addChild(between, new ASTScalar(interval.getStart()), 1);
-        ExpressionUtil.addChild(between, new ASTScalar(interval.getEnd()), 2);
+        ExpressionUtil.addChild(between, new ASTScalar(scalarOf(interval.getStart())), 1);
+        ExpressionUtil.addChild(between, new ASTScalar(scalarOf(interval.getEnd())), 2);
         return between;
+    }
+
+    protected Object scalarOf(LocalDateTime localDateTime){
+        return localDateTime;
     }
 }

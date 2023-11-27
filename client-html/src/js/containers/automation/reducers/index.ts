@@ -6,6 +6,7 @@
 import { IAction } from "../../../common/actions/IshAction";
 import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
 import { CatalogItemType } from "../../../model/common/Catalog";
+import { GET_SSO_INTEGRATIONS_FULFILLED } from "../../login/actions";
 import { GET_INTEGRATIONS_FULFILLED, } from "../actions";
 import { GET_EMAIL_TEMPLATES_LIST_FULFILLED } from "../containers/email-templates/actions";
 import { GET_EXPORT_TEMPLATES_LIST_FULFILLED } from "../containers/export-templates/actions";
@@ -21,6 +22,7 @@ import { GET_SCRIPTS_LIST_FULFILLED, GET_TIMEZONE_FULFILLED } from "../container
 export interface AutomationState {
   integration: {
     integrations: IntegrationSchema[];
+    ssoTypes: number[]
   };
   script: {
     scripts: CatalogItemType[];
@@ -47,6 +49,7 @@ export interface AutomationState {
 const Initial: AutomationState = {
   integration: {
     integrations: [],
+    ssoTypes: []
   },
   script: {
     scripts: []
@@ -82,6 +85,18 @@ export const automationReducer = (state: AutomationState = Initial, action: IAct
           integrations
         }
       };
+    }
+
+    case GET_SSO_INTEGRATIONS_FULFILLED: {
+      const { ssoTypes } = action.payload;
+
+      return  {
+        ...state,
+        integration: {
+          ...state.integration,
+          ssoTypes
+        }
+      }
     }
 
     case GET_SCRIPTS_LIST_FULFILLED: {

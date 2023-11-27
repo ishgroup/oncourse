@@ -100,3 +100,10 @@ export interface KronosFields {
   companyShortName: string;
   CID: string;
 }
+
+export interface OktaFields {
+  clientId: string;
+  clientSecret: string;
+  appUrl: string;
+  webRedirect: string;
+}

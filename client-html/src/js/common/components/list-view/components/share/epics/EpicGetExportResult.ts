@@ -13,6 +13,7 @@ import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErr
 import * as EpicUtils from "../../../../../epics/EpicUtils";
 import { createAndDownloadFile } from "../../../../../utils/common";
 import { GET_EXPORT_RESULT } from "../actions";
+import { LIST_SHARE_FORM_NAME } from "../constants";
 import ExportService from "../services/ExportService";
 
 const request: EpicUtils.Request<any, {
@@ -39,7 +40,7 @@ const request: EpicUtils.Request<any, {
     }
 
     return [
-      stopSubmit("ListShareForm"),
+      stopSubmit(LIST_SHARE_FORM_NAME),
       noContent ? {
           type: FETCH_FAIL,
           payload: {message: "No export content was found for chosen template"}
@@ -50,7 +51,7 @@ const request: EpicUtils.Request<any, {
         }
     ];
   },
-  processError: response => [stopSubmit("ListShareForm"), ...FetchErrorHandler(response)]
+  processError: response => [stopSubmit(LIST_SHARE_FORM_NAME), ...FetchErrorHandler(response)]
 };
 
 export const EpicGetExportResult: Epic<any, any> = EpicUtils.Create(request);

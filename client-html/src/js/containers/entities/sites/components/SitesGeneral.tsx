@@ -26,6 +26,7 @@ import { greaterThanNullValidation, validateSingleMandatoryField } from "../../.
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { validateDeleteRoom } from "../../rooms/actions";
 import { openRoomLink } from "../../rooms/utils";
 
@@ -239,7 +240,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               label="Default timezone"
               items={timezones}
               labelAdornment={(
-                <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                <Tooltip title="Timetables will be adjusted to user's timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
                   <IconButton classes={{ root: "inputAdornmentButton" }}>
                     <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
                   </IconButton>
@@ -297,6 +298,16 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             </Grid>
           </Grid>
         </Collapse>
+
+        <CustomFields
+          entityName="Site"
+          fieldName="customFields"
+          entityValues={values}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 6 : 12,
+          }}
+        />
 
         <Grid item xs={layoutArray[8].xs}>
           <MinifiedEntitiesList

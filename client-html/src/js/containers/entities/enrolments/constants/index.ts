@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { EnrolmentExemptionType, EnrolmentStudyReason, PaymentSource } from "@api/model";
+import { Enrolment, EnrolmentExemptionType, EnrolmentStudyReason, PaymentSource } from "@api/model";
 import { mapSelectItems } from "../../../../common/utils/common";
 
 export const paymentSourceItems = Object.keys(PaymentSource).map(mapSelectItems);
@@ -14,3 +14,24 @@ export const paymentSourceItems = Object.keys(PaymentSource).map(mapSelectItems)
 export const enrolmentStudyReasonItems = Object.keys(EnrolmentStudyReason).map(mapSelectItems);
 
 export const enrolmentExemptionTypeItems = Object.keys(EnrolmentExemptionType).map(mapSelectItems);
+
+export const outcomeCommonFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID", "vetPurchasingContractScheduleID"];
+
+export const getOutcomeCommonFieldName = (field: keyof Enrolment) => {
+  switch (field) {
+    case "fundingSource": {
+      return "Default funding source national";
+    }
+    case "vetFundingSourceStateID": {
+      return "Default funding source - State";
+    }
+    case "vetPurchasingContractID": {
+      return "Default purchasing contract identifier";
+    }
+    case "vetPurchasingContractScheduleID": {
+      return "Purchasing Contract Schedule Identifier";
+    }
+    default:
+      return "";
+  }
+};

@@ -24,6 +24,7 @@ import ish.oncourse.server.api.service.ContactApiService
 import ish.oncourse.server.api.service.CourseClassApiService
 import ish.oncourse.server.api.service.DiscountApiService
 import ish.oncourse.server.api.service.MembershipProductApiService
+import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
 import ish.oncourse.server.cayenne.*
@@ -32,8 +33,6 @@ import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
-
-import static ish.oncourse.server.api.v1.function.CartFunctions.cartDataIdsOf
 
 @CompileStatic
 class CheckoutApiImpl implements CheckoutApi {
@@ -70,8 +69,8 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Override
     CartIdsDTO getCartDataIds(Long checkoutId) {
-        def checkout = SelectById.query(ish.oncourse.server.cayenne.Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
-        return cartDataIdsOf(checkout)
+        def checkout = SelectById.query(Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
+        return CartFunctions.toRestCartIds(checkout)
     }
 
     @Override

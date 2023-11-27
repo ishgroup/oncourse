@@ -16,14 +16,14 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { addDays, format } from "date-fns";
-import { EEE_D_MMM_YYYY, openInternalLink, StringArgFunction, StyledCheckbox } from "ish-ui";
+import { EEE_D_MMM_YYYY, openInternalLink, StringArgFunction, StyledCheckbox, validateMinMaxDate } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { DecoratedComponentClass, getFormValues, reduxForm } from "redux-form";
 import FormField from "../../common/components/form/formFields/FormField";
 import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
-import { validateMinMaxDate, validateSingleMandatoryField } from "../../common/utils/validation";
+import { validateSingleMandatoryField } from "../../common/utils/validation";
 import { State } from "../../reducers/state";
 import { getFinaliseInfo, updateFinaliseDate } from "./actions";
 

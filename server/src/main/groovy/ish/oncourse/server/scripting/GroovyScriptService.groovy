@@ -21,14 +21,8 @@ import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.accounting.AccountTransactionService
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
-import ish.oncourse.server.cayenne.Preference
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Script
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
@@ -48,7 +42,6 @@ import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.AuditAction
 import ish.persistence.Preferences
 import ish.scripting.ScriptResult
-import ish.util.AbstractEntitiesUtil
 import ish.util.TimeZoneUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
@@ -467,6 +460,8 @@ class GroovyScriptService {
 
     ScriptResult runScript(Script script, ScriptParameters parameters, ObjectContext context) {
         logger.warn("Running script {}. Parameters: {}", script.getName(), parameters.asMap())
+        logger.warn("Number of threads {}", Thread.activeCount())
+        logger.warn("Heap size taken in bytes {}", Runtime.getRuntime().totalMemory())
         if (script == null) {
             throw new IllegalArgumentException("Script cannot be null.")
         }
@@ -497,6 +492,7 @@ class GroovyScriptService {
                     String.format(PREPARE_LOGGER, script.getName()) +
                     script.getScript(), bindings)
 
+            logger.warn("Script executed {}", script.getName())
             return ScriptResult.success(result)
         } catch (ScriptException e) {
             logger.error("Execution failed for '{}'.", script.getName(), e)

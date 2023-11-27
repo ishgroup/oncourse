@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: onCourse REST Api
-  description: An API for interacting with the backend of the onCourse server. It uses the HTTP 2.0 protocol, so only those testing tools that support it can be used for testing
+  description: An API for interacting with the backend of the onCourse server. "Basic" prefix for token authentication is not required. It uses the HTTP 2.0 protocol, so only those testing tools that support it can be used for testing
   contact:
     name: ish group pty ltd
     url: https://www.ish.com.au
@@ -69,6 +69,8 @@ paths:
     $ref: './path/holiday/api.yaml'
   /integration:
     $ref: './path/integration/api.yaml'
+  /integration/ssoTypes:
+    $ref: './path/integration/ssoTypes/api.yaml'
   /invite:
     $ref: './path/invite/api.yaml'
   /list:
@@ -257,6 +259,10 @@ paths:
     $ref: './path/list/plain/bulkDelete/api.yaml'
   /login:
     $ref: './path/login/api.yaml'
+  /login/sso:
+    $ref: './path/login/sso/api.yaml'
+  /login/sso/link:
+    $ref: './path/login/sso/link/api.yaml'
   /logout:
     $ref: './path/logout/api.yaml'
   /preference:

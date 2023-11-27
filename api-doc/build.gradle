@@ -2,7 +2,7 @@ apply from: "$rootDir/nodeSetup.gradle"
 
 task apiDoc(type: NpmTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'npmInstall']) {
     inputs.dir('src')
-    inputs.files('webpack.api.doc.config.js', 'yarn.lock', 'tsconfig.json')
+    inputs.files('webpack.api.doc.config.js', 'package-lock.json', 'tsconfig.json')
     inputs.property('version', version)
 
     group = "documentation"

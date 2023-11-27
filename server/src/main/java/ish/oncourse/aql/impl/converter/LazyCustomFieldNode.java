@@ -60,7 +60,7 @@ class LazyCustomFieldNode extends LazyExpressionNode {
             return null;
         }
 
-        var arg = args.get(1);
+        var arg = args.size() > 1 ? args.get(1) : (SimpleNode) parent.jjtGetChild(1);
         if(arg instanceof LazyEmptyNode)
             arg = new ASTScalar(null);
 

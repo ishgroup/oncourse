@@ -67,7 +67,7 @@ public enum  ResourceProperty {
     BODY_HTML("bodyHtml"),
 
     //reports
-    IS_VISIBLE("visible"),
+    IS_VISIBLE("isVisible"),
     SORT_ON("sortOn");
 
 

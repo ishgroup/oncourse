@@ -30,16 +30,19 @@ import { DecoratedFormProps } from "redux-form/lib/reduxForm";
 import ishLogoSmall from "../../../images/logo_small.png";
 import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
 import {
-  checkPassword,
-  createPasswordRequest,
-  getEmailByToken,
-  postLoginRequest,
-  setLoginState,
-  updatePasswordRequest
+  setLoginState
 } from "../../common/actions";
 import { validateSingleMandatoryField } from "../../common/utils/validation";
 import { State } from "../../reducers/state";
+import { SSOProviders } from "../automation/containers/integrations/components/SSOProviders";
 import { isComplexPassRequired } from "../preferences/actions";
+import {
+  checkPassword,
+  createPasswordRequest,
+  getEmailByToken, getSsoIntegrations,
+  postLoginRequest,
+  updatePasswordRequest
+} from "./actions";
 import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
 import Credits from "./components/Credits";
 import EulaDialog from "./components/EulaDialog";
@@ -217,11 +220,13 @@ interface Props extends LoginState {
   setLoginState: (value: LoginState) => void;
   isComplexPassRequired: () => void;
   submit: () => void;
+  getSSO: () => void;
   dispatch: (action: Action) => void;
   getEmailByToken: (value: string) => void;
   createPasswordRequest: (token: string, password: string) => void;
   email?: string;
   eulaUrl?: string;
+  ssoTypes?: number[];
 }
 
 export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProps, any> {
@@ -277,17 +282,21 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
   }
 
   componentDidMount() {
+    const { getSSO } = this.props;
+
+    getSSO();
+
     if (this.isInviteForm) {
       this.token = window.location.pathname.match(/(\w+)$/g)[0];
       this.token && this.props.getEmailByToken(this.token);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.passwordComplexity && nextProps.asyncValidating) {
+  componentDidUpdate() {
+    if (this.props.passwordComplexity && this.props.asyncValidating) {
       const {
         passwordComplexity: { score, feedback }
-      } = nextProps;
+      } = this.props;
       const { passwordScore, passwordFeedback } = this.state;
 
       if (passwordScore !== score) {
@@ -413,7 +422,8 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
       complexPass,
       dispatch,
       email,
-      eulaUrl
+      eulaUrl,
+      ssoTypes
     } = this.props;
 
     const { passwordScore, passwordFeedback, openCredits } = this.state;
@@ -752,6 +762,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                       <Credits wrapperClass={classes.creditsWrapper} itemClass={classes.creditHeader} />
                     </Collapse>
                   </Grid>
+                  <SSOProviders providers={ssoTypes}/>
                   <div className="flex-fill" />
                   <Grid container columnSpacing={3} alignItems="center">
                     <div className="flex-fill">
@@ -789,18 +800,20 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
 
 const mapStateToProps = (state: State) => ({
   ...state.login,
-  complexPass: state.preferences && state.preferences.complexPass
+  complexPass: state.preferences && state.preferences.complexPass,
+  ssoTypes: state.automation.integration.ssoTypes
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
-      dispatch(postLoginRequest(body, host, port)),
-    updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
-    setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
-    isComplexPassRequired: () => dispatch(isComplexPassRequired()),
-    getEmailByToken: (token: string) => dispatch(getEmailByToken(token)),
-    createPasswordRequest: (token: string, password: string) => dispatch(createPasswordRequest(token, password)),
-  });
+  postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
+    dispatch(postLoginRequest(body, host, port)),
+  getSSO: () => dispatch(getSsoIntegrations()),
+  updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
+  setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
+  isComplexPassRequired: () => dispatch(isComplexPassRequired()),
+  getEmailByToken: (token: string) => dispatch(getEmailByToken(token)),
+  createPasswordRequest: (token: string, password: string) => dispatch(createPasswordRequest(token, password)),
+});
 
 const shouldAsyncValidate = params => {
   const { syncValidationPasses, trigger } = params;

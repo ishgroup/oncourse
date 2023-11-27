@@ -13,6 +13,7 @@ package ish.oncourse.server.api.service;
 
 import groovy.transform.CompileStatic;
 import groovy.transform.TypeCheckingMode;
+import ish.common.util.ThumbnailGenerator;
 import ish.oncourse.server.api.dao.ExportTemplateDao;
 import ish.oncourse.server.api.function.BindingFunctions;
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO;
@@ -22,7 +23,6 @@ import ish.oncourse.server.cayenne.ExportTemplate;
 import ish.oncourse.server.configs.AutomationModel;
 import ish.oncourse.server.configs.ExportModel;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
-import ish.util.ThumbnailGenerator;
 import org.apache.cayenne.ObjectContext;
 import ish.oncourse.server.cayenne.Report;
 import org.apache.cayenne.query.ObjectSelect;
