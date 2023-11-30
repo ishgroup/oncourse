@@ -5,15 +5,14 @@
 
 import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } from "@api/model";
 import Settings from "@mui/icons-material/Settings";
-import { FormControlLabel, Grid } from "@mui/material";
+import { FormControlLabel, Grid, MenuItem } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from "date-fns";
-import { appendTimezone, normalizeNumber, normalizeNumberToPositive } from "ish-ui";
+import { appendTimezone, normalizeNumber, normalizeNumberToPositive, SelectItemDefault } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
@@ -25,7 +24,6 @@ import uniqid from "../../../../../common/utils/uniqid";
 import { instantAsyncValidateFieldArrayItemCallback } from "../../../../../common/utils/validation";
 import history from "../../../../../constants/History";
 import { EditViewProps } from "../../../../../model/common/ListView";
-import { SelectItemDefault } from "../../../../../model/entities/common";
 import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import { State } from "../../../../../reducers/state";

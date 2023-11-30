@@ -1,10 +1,7 @@
-import { DefaultEpic } from "../common/Default.Epic";
-import {
-  GET_ENUM_FULFILLED,
-  getEnum
-} from "../../js/containers/preferences/actions";
+import { sortDefaultSelectItems } from "ish-ui";
+import { GET_ENUM_FULFILLED, getEnum } from "../../js/containers/preferences/actions";
 import { EpicGetEnum } from "../../js/containers/preferences/epics/EpicGetEnum";
-import { sortDefaultSelectItems } from "../../js/common/utils/common";
+import { DefaultEpic } from "../common/Default.Epic";
 
 const enumName = "ExportJurisdiction";
 

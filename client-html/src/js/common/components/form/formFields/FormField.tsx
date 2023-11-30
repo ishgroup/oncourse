@@ -21,7 +21,7 @@ const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
   } = props;
 
   const tags = type === "tags" ? props.tags : [];
-  const required = type !== "stub" && type !== "color" ? props.required : false;
+  const required = type !== "stub" && type !== "color" && type !== "radio" ? props.required : false;
 
   const validateResolver = useMemo(() => {
     const result = [];

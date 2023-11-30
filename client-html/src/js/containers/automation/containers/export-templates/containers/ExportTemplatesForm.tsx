@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid";
 import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
@@ -21,7 +21,6 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";

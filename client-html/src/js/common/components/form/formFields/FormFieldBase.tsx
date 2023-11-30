@@ -36,7 +36,7 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
 
   const { type, ...rest } = props;
 
-  const { input, format, debounced = true } = type !== "stub" && type !== "color"
+  const { input, format, debounced = true } = type !== "stub" && type !== "color" && type !== "radio"
     ? props
     : stubFieldMocks;
 

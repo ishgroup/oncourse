@@ -6,12 +6,11 @@
 import { CourseClassAttendanceType, DeliveryMode, FundingSource } from "@api/model";
 import { Divider, FormControlLabel, Grid } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
-import { normalizeNumber, normalizeNumberToZero } from "ish-ui";
+import { mapSelectItems, normalizeNumber, normalizeNumberToZero } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import {
   validateCourseSiteIdentifier,
   validateDefaultPurchasingContractIdentifier,

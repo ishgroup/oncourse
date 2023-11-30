@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { SelectItemDefault } from "ish-ui";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { SelectItemDefault } from "../../../model/entities/common";
 import { GET_TIMEZONES_FULFILLED, GET_TIMEZONES_REQUEST } from "../actions";
 import PreferencesService from "../services/PreferencesService";
 
