@@ -1343,6 +1343,10 @@ public abstract class CommonPreferenceController {
 		setValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL, false, value);
 	}
 
+	public String getPortalUrl() {
+		return getValue(PORTAL_WEBSITE_URL, false);
+	}
+
 	private static final boolean DEF_INACTIVE_ACCOUNT = true;
 	private static final boolean DEF_PASSWORD_COMPLEXITY = false;
 	private static final Integer DEF_NUMBER_LOGIN_ATTEMPTS = 5;
