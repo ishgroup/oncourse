@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 public class UrlUtil {
 
-	public static final String PORTAL_URL = "https://www.skillsoncourse.com.au/portal";
+	public static final String PORTAL_URL = "http://www.skillsoncourse.com.au/portal";
 
 	public static final String EXPIRY_DATE_FORMAT = "yyyyMMdd";
 
