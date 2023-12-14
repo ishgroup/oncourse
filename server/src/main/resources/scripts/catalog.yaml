@@ -58,7 +58,7 @@
       dataType: TEXT
       value: ""
 
-name: Canvas enrol for today activated Hybrid classes
+- name: Canvas enrol for today activated Hybrid classes
   keyCode: ish.script.canvasEnrolmentHybridClassesDaily
   body: ish.script.canvasEnrolmentHybridClassesDaily.groovy
   status: NOT_INSTALLED
