@@ -33,9 +33,9 @@ trait EnrolmentTrait {
      */
     @API
     String getDisplayStatus() {
-        if (EnrolmentStatus.SUCCESS == getStatus() && (getCourseClass().isHybrid &&
-                getAttendances().findAll { it.attendanceType.equals(AttendanceType.ATTENDED)}.size() >= getCourseClass().minimumSessionsToComplete ||
-                getCourseClass().endDateTime != null && getCourseClass().endDateTime.before(new Date()))) {
+        if (EnrolmentStatus.SUCCESS == getStatus() && getCourseClass().endDateTime != null && getCourseClass().endDateTime.before(new Date()) &&
+                (!getCourseClass().isHybrid ||
+                        getCourseClass().isHybrid && getAttendances().findAll { it.attendanceType.equals(AttendanceType.ATTENDED)}.size() >= getCourseClass().minimumSessionsToComplete)) {
             return STATUS_COMPLETE
         } else {
             getStatus() ? getStatus().displayName : null
