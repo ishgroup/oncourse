@@ -1,7 +1,6 @@
 if (tagName == "" || record.courseClass.course.hasTag(tagName, true)) {
-    def today = new Date().clearTime()
     if (!record.courseClass.isHybrid ||
-            (record.courseClass.isHybrid && record.courseClass.startDateTime <= today && record.courseClass.endDateTime >= today)) {
+            (record.courseClass.isHybrid && record.courseClass.startDateTime <= new Date() && record.courseClass.endDateTime >= new Date())) {
         canvas {
             enrolment record
             course_code record.courseClass.course.code
