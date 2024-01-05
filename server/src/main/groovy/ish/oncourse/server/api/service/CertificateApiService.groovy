@@ -101,6 +101,7 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
             certificateDTO.code = certificate.printedOn != null && certificate.revokedOn == null ? certificate.uniqueCode : null
             certificateDTO.createdOn = LocalDateUtils.dateToTimeValue(certificate.createdOn)
             certificateDTO.modifiedOn = LocalDateUtils.dateToTimeValue(certificate.modifiedOn)
+            certificateDTO.portalLink = UrlUtil.buildCertificatePortalUrl(certificate.uniqueCode, preferenceController)
             certificateDTO
         }
     }
