@@ -16,6 +16,7 @@ import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.OutcomeStatus
 import ish.common.types.UsiStatus
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.CertificateCreateForEnrolmentsRequestDTO
 import ish.oncourse.server.api.v1.model.CertificateDTO
@@ -24,6 +25,7 @@ import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.CertificatePrintStatus
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
+import ish.util.UrlUtil
 import org.apache.cayenne.ObjectContext
 
 import java.time.LocalDate
@@ -50,6 +52,9 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
 
     @Inject
     private EnrolmentDao enrolmentDao
+
+    @Inject
+    private PreferenceController preferenceController
 
     @Override
     Class<Certificate> getPersistentClass() {
@@ -278,5 +283,9 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
         context.commitChanges()
         return  processedCertificates.collect {it.id}
 
+    }
+
+    String generateLink(String key) {
+        return UrlUtil.buildCertificatePortalUrl(key, preferenceController)
     }
 }

@@ -50,6 +50,11 @@ class CertificateApiImpl implements CertificateApi {
     }
 
     @Override
+    String generateLink(String key) {
+        return service.generateLink(key)
+    }
+
+    @Override
     CertificateDTO get(Long id) {
         service.get(id)
     }
