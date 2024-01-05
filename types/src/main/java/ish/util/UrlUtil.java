@@ -251,6 +251,18 @@ public class UrlUtil {
         return Base64.encodeBase64URLSafeString(hash);
     }
 
+    public static String buildCertificatePortalUrl(String certificateKey, CommonPreferenceController preferenceController){
+        String portalUrl = preferenceController.getPortalUrl();
+        if (portalUrl == null)
+            throw new IllegalArgumentException("portal.website.url preference not configured on website");
+
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append(URL_PART_DELIMITER);
+        urlBuilder.append("certificate/statement/");
+        urlBuilder.append(certificateKey);
+        return buildPortalUrl(portalUrl, urlBuilder);
+    }
+
 	private static String buildPortalUrl(String portalWebsiteUrl, StringBuilder urlBuilder){
 		try {
 			URL url = new URL(portalWebsiteUrl);

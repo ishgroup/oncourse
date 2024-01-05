@@ -107,6 +107,8 @@ paths:
     $ref: './path/list/entity/certificate/validation/api.yaml'
   /list/entity/certificate/enrolment:
     $ref: './path/list/entity/certificate/enrolment/api.yaml'
+  /list/entity/certificate/link:
+    $ref: './path/list/entity/certificate/link/api.yaml'
   /list/entity/corporatepass:
     $ref: './path/list/entity/corporatepass/api.yaml'
   /list/entity/course:
