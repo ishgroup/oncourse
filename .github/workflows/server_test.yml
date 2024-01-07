@@ -105,7 +105,7 @@ jobs:
     steps:
       - uses: ankane/setup-mariadb@v1
         with:
-          mariadb-version: "10.10"
+          mariadb-version: "10.10.7"
           database: angelTest_trunk
 
       - uses: actions/checkout@v2
@@ -169,4 +169,4 @@ jobs:
 #          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
 #        with:
 #          workingDirectory: '${{github.workspace}}/server/src/main/java'
-#          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco' 
+#          coverageLocations: '${{github.workspace}}/**/build/reports/jacoco/test/jacocoTestReport.xml:jacoco'
