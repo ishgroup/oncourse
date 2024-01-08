@@ -13,10 +13,6 @@ package ish.oncourse.common.field;
 import static ish.oncourse.common.field.PropertyGetSetFields.*;
 
 public enum FieldProperty {
-
-	FIRST_NAME(ContextType.CONTACT, "First name", "firstName"),
-	LAST_NAME(ContextType.CONTACT, "Last name", "lastName"),
-	EMAIL_ADDRESS(ContextType.CONTACT, "Email address", "emailAddress"),
 	MIDDLE_NAME(ContextType.CONTACT, "Middle name", "middleName"),
 	HONORIFIC(ContextType.CONTACT, "Honorific", "honorific"),
 	TITLE(ContextType.CONTACT, "Title", "title"),
@@ -70,12 +66,7 @@ public enum FieldProperty {
 	CUSTOM_FIELD_COURSE_CLASS(ContextType.COURSE_CLASS, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.COURSE_CLASS.getIdentifier()),
 	CUSTOM_FIELD_ARTICLE(ContextType.ARTICLE, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.ARTICLE.getIdentifier()),
 	CUSTOM_FIELD_MEMBERSHIP(ContextType.MEMBERSHIP, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.MEMBERSHIP.getIdentifier()),
-	CUSTOM_FIELD_VOUCHER(ContextType.VOUCHER, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.VOUCHER.getIdentifier()),
-
-	TAG(ContextType.CONTACT, "Tag field", TAG_PATTERN),
-	S_TAG_GROUP(ContextType.CONTACT, "Single tag field", TAG_S_PATTERN),
-	M_TAG_GROUP(ContextType.CONTACT, "Multiple tag filed", TAG_M_PATTERN),
-	MAILING_LIST(ContextType.CONTACT, "Mailing List Field", MAILING_LIST_FIELD_PATTERN);
+	CUSTOM_FIELD_VOUCHER(ContextType.VOUCHER, "Custom field", CUSTOM_FIELD_PROPERTY_PATTERN + ContextType.VOUCHER.getIdentifier());
 
 	private ContextType contextType;
 	private String displayName;
@@ -141,10 +132,6 @@ public enum FieldProperty {
 					return CUSTOM_FIELD_VOUCHER;
                 default: throw new UnsupportedOperationException("Custom fields supported for Contact only");
 			}
-		} else if (key.startsWith(TAG_PATTERN)) {
-			return TAG;
-		} else if (key.startsWith(MAILING_LIST_FIELD_PATTERN)) {
-			return MAILING_LIST;
 		}
 
 		for (FieldProperty property : FieldProperty.values()) {
