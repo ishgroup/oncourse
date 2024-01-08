@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: ankane/setup-mariadb@v1
         with:
-          mariadb-version: "10.10"
+          mariadb-version: "10.11"
           database: angel_selenuim_test
 
       - uses: actions/checkout@v2
