@@ -13,6 +13,9 @@ package ish.oncourse.common.field;
 import static ish.oncourse.common.field.PropertyGetSetFields.*;
 
 public enum FieldProperty {
+	FIRST_NAME(ContextType.CONTACT, "First name", "firstName"),
+	LAST_NAME(ContextType.CONTACT, "Last name", "lastName"),
+	EMAIL_ADDRESS(ContextType.CONTACT, "Email address", "emailAddress"),
 	MIDDLE_NAME(ContextType.CONTACT, "Middle name", "middleName"),
 	HONORIFIC(ContextType.CONTACT, "Honorific", "honorific"),
 	TITLE(ContextType.CONTACT, "Title", "title"),
