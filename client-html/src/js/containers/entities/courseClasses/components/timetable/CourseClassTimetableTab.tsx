@@ -5,15 +5,14 @@
 
 import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } from "@api/model";
 import Settings from "@mui/icons-material/Settings";
-import { FormControlLabel, Grid } from "@mui/material";
+import { FormControlLabel, Grid, MenuItem } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from "date-fns";
-import { appendTimezone, normalizeNumber, normalizeNumberToPositive } from "ish-ui";
+import { appendTimezone, normalizeNumber, normalizeNumberToPositive, validateMinMaxDate } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
@@ -89,6 +88,10 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
 }
 
 let pendingSessionActionArgs = null;
+
+const validateStartDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, '', allValues?.sessions[0]?.start, '', 'Start date cannot be after the first session');
+
+const validateEndDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, allValues?.sessions[allValues?.sessions?.length - 1]?.start, '', 'End date cannot be before the last session');
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
   const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
@@ -791,29 +794,52 @@ const CourseClassTimetableTab = ({
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
             <Grid container columnSpacing={3}>
-              {isHybrid && <Grid item xs={twoColumn ? 3 : 12}>
-                <FormField
-                  type="number"
-                  label="Minimum sessions to complete"
-                  name="minimumSessionsToComplete"
-                  step="1"
-                  normalize={normalizeNumberToPositive}
-                  debounced={false}
-                  required
-                />
-              </Grid>}
-              <Grid item xs={twoColumn ? 3 : 12}>
-                <FormField
-                  type="number"
-                  label="Maximum days to complete"
-                  name="maximumDays"
-                  min="1"
-                  max="99"
-                  step="1"
-                  normalize={normalizeNumber}
-                  debounced={false}
-                />
-              </Grid>
+              {isHybrid && <>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class start date"
+                    name="startDateTime"
+                    validate={validateStartDate}
+                    timezone={values.sessions[0]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class end date"
+                    name="endDateTime"
+                    validate={validateEndDate}
+                    timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+              </>}
+              {!isHybrid && <><Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Minimum sessions to complete"
+                    name="minimumSessionsToComplete"
+                    step="1"
+                    normalize={normalizeNumberToPositive}
+                    debounced={false}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Maximum days to complete"
+                    name="maximumDays"
+                    min="1"
+                    max="99"
+                    step="1"
+                    normalize={normalizeNumber}
+                    debounced={false}
+                  />
+                </Grid>
+              </>}
               <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
