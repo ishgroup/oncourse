@@ -444,10 +444,10 @@ class Avetmiss120Factory extends AvetmissFactory {
 
             // ------------------
             // fee exemption/concession type identifier
-            if (vfssId != null && (vfssId.startsWith("CS") || vfssId.startsWith("TSS"))) {
-                line.setFeeExemption("Y")
-            } else if (VETFeeExemptionType.OS == outcome.enrolment?.vetFeeExemptionType) {
+            if (VETFeeExemptionType.OS == outcome.enrolment?.vetFeeExemptionType) {
                 line.setFeeExemption("OS")
+            } else if (vfssId != null && (vfssId.startsWith("CS") || vfssId.startsWith("TSS"))) {
+                line.setFeeExemption("Y")
             } else {
                 switch (jurisdiction) {
 
