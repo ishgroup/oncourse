@@ -17,27 +17,14 @@ package au.com.ish.docs
 
 import groovyjarjarantlr.RecognitionException
 import groovyjarjarantlr.TokenStreamException
-import groovyjarjarantlr.collections.AST
-import org.codehaus.groovy.antlr.AntlrASTProcessor
-import org.codehaus.groovy.antlr.SourceBuffer
-import org.codehaus.groovy.antlr.UnicodeEscapingReader
-import org.codehaus.groovy.antlr.java.Groovifier
-import org.codehaus.groovy.antlr.java.Java2GroovyConverter
-import org.codehaus.groovy.antlr.java.JavaLexer
-import org.codehaus.groovy.antlr.java.JavaRecognizer
-import org.codehaus.groovy.antlr.parser.GroovyLexer
-import org.codehaus.groovy.antlr.parser.GroovyRecognizer
-import org.codehaus.groovy.antlr.treewalker.PreOrderTraversal
-import org.codehaus.groovy.antlr.treewalker.SourceCodeTraversal
-import org.codehaus.groovy.antlr.treewalker.Visitor
 import org.codehaus.groovy.groovydoc.GroovyClassDoc
 import org.codehaus.groovy.groovydoc.GroovyRootDoc
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.codehaus.groovy.tools.groovydoc.LinkArgument
-import org.codehaus.groovy.tools.groovydoc.SimpleGroovyClassDocAssembler
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyExecutableMemberDoc
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyPackageDoc
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyRootDoc
+import org.codehaus.groovy.tools.groovydoc.antlr4.GroovyDocParser
 
 import java.util.regex.Matcher
 
@@ -60,39 +47,9 @@ class DslGroovyRootDocBuilder {
 			throws RecognitionException, TokenStreamException {
 		boolean isJava = file.endsWith(".java")
 
-		SourceBuffer sourceBuffer = new SourceBuffer()
-		UnicodeEscapingReader unicodeReader = new UnicodeEscapingReader(new StringReader(src), sourceBuffer)
-
-		def parser
-
-		if (isJava) {
-			JavaLexer lexer = new JavaLexer(unicodeReader)
-			unicodeReader.setLexer(lexer)
-			parser = JavaRecognizer.make(lexer)
-		} else {
-			GroovyLexer lexer = new GroovyLexer(unicodeReader)
-			unicodeReader.setLexer(lexer)
-			parser = GroovyRecognizer.make(lexer)
-		}
-		parser.setSourceBuffer(sourceBuffer)
-        parser.compilationUnit()
-		AST ast = parser.getAST()
-
-		if (isJava) {
-			// modify the Java AST into a Groovy AST (just token types)
-			Visitor java2groovyConverter = new Java2GroovyConverter(parser.getTokenNames())
-			AntlrASTProcessor java2groovyTraverser = new PreOrderTraversal(java2groovyConverter)
-			java2groovyTraverser.process(ast)
-
-			// now mutate (groovify) the ast into groovy
-			Visitor groovifier = new Groovifier(parser.getTokenNames(), false)
-			AntlrASTProcessor groovifierTraverser = new PreOrderTraversal(groovifier)
-			groovifierTraverser.process(ast)
-		}
-		Visitor visitor = new SimpleGroovyClassDocAssembler(packagePath, file, sourceBuffer, links, properties, !isJava)
-		AntlrASTProcessor traverser = new SourceCodeTraversal(visitor)
-		traverser.process(ast)
-		return ((SimpleGroovyClassDocAssembler)visitor).getGroovyClassDocs()
+		GroovyDocParser groovyDocParser = new GroovyDocParser(links, properties)
+		def GroovyClassDocMap = groovyDocParser.getClassDocsFromSingleSource(packagePath, file, src)
+		return GroovyClassDocMap
 	}
 
 	protected void setOverview() {
