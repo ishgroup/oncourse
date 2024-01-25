@@ -91,7 +91,7 @@ public class UrlUtil {
         urlBuilder.append(KEY).append('=');
         urlBuilder.append(hashKey);
 
-        return buildPortalUrl(portalUrl, urlBuilder);
+        return buildPortalUrl(portalUrl, urlBuilder, true);
     }
 
     /**
@@ -196,7 +196,7 @@ public class UrlUtil {
         urlBuilder.append(KEY).append('=');
         urlBuilder.append(hashKey);
 
-        return buildPortalUrl(portalUrl, urlBuilder);
+        return buildPortalUrl(portalUrl, urlBuilder, true);
     }
 
     /**
@@ -258,15 +258,18 @@ public class UrlUtil {
 
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(URL_PART_DELIMITER);
-        urlBuilder.append("certificate/statement/");
+        urlBuilder.append("certificate/");
         urlBuilder.append(certificateKey);
-        return buildPortalUrl(portalUrl, urlBuilder);
+        return buildPortalUrl(portalUrl, urlBuilder, false);
     }
 
-	private static String buildPortalUrl(String portalWebsiteUrl, StringBuilder urlBuilder){
+	private static String buildPortalUrl(String portalWebsiteUrl, StringBuilder urlBuilder, boolean prefixRequred){
 		try {
 			URL url = new URL(portalWebsiteUrl);
-			return url.getProtocol() + "://" + url.getAuthority() + "/portal" + urlBuilder.toString();
+            String urlStr = url.getProtocol() + "://" + url.getAuthority();
+            if(prefixRequred)
+                urlStr = urlStr + "/portal";
+			return urlStr + urlBuilder.toString();
 		} catch (MalformedURLException e) {
 			throw new IllegalArgumentException("Incorrect portal.website.url preference value. Connect your administrator");
 		}
