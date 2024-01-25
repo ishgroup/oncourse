@@ -283,10 +283,5 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
 
         context.commitChanges()
         return  processedCertificates.collect {it.id}
-
-    }
-
-    String generateLink(String key) {
-        return UrlUtil.buildCertificatePortalUrl(key, preferenceController)
     }
 }
