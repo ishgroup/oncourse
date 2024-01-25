@@ -208,7 +208,7 @@
 					<printWhenExpression><![CDATA[$F{global.print_qr_code}]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$F{certificate}.getQRCodeImage()]]></imageExpression>
-				<hyperlinkReferenceExpression><![CDATA["http://www.skills.courses/" + $F{certificate}.qrUniqueCode.toString()]]></hyperlinkReferenceExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{certificate}.getPortalUrl()]]></hyperlinkReferenceExpression>
 			</image>
 			<staticText>
 				<reportElement x="450" y="184" width="58" height="22" uuid="c5c63e8e-b0aa-4939-95d1-6da0fbb64173">
