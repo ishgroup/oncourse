@@ -81,7 +81,8 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/r
         "revokedOn":"#ignore",
         "code":"#ignore",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"#ignore"
         }
         """
         And match $.privateNotes contains "-- REVOKED ON"
@@ -168,7 +169,8 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/r
         "revokedOn":"#ignore",
         "code":"#ignore",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"#ignore"
         }
         """
         And match $.privateNotes contains "-- REVOKED ON"
