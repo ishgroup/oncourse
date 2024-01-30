@@ -7,6 +7,7 @@ import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } fr
 import Settings from "@mui/icons-material/Settings";
 import { FormControlLabel, Grid, MenuItem } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import createStyles from "@mui/styles/createStyles";
@@ -179,7 +180,7 @@ const CourseClassTimetableTab = ({
       dispatch(change(form, "studentAttendance", []));
       dispatch(change(form, "startDateTime", null));
       dispatch(change(form, "endDateTime", null));
-    }
+    };
 
     if (value) {
       isNew
@@ -203,9 +204,7 @@ const CourseClassTimetableTab = ({
   const onHybridChange = (e, value) => {
     e.preventDefault();
     dispatch(change(form, "type", value ? 'Hybrid' : 'With Sessions'));
-    if (!value) {
-      dispatch(change(form, "minimumSessionsToComplete", null));
-    }
+    dispatch(change(form, "minimumSessionsToComplete", value ? values.sessions.length : null));
   };
 
   useEffect(() => {
@@ -793,7 +792,7 @@ const CourseClassTimetableTab = ({
           )}
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
-            <Grid container columnSpacing={3}>
+            <Grid container columnSpacing={3} rowSpacing={2}>
               {isHybrid && <>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
@@ -815,8 +814,7 @@ const CourseClassTimetableTab = ({
                     required
                   />
                 </Grid>
-              </>}
-              {!isHybrid && <><Grid item xs={twoColumn ? 3 : 12}>
+                <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
                     label="Minimum sessions to complete"
@@ -827,6 +825,8 @@ const CourseClassTimetableTab = ({
                     required
                   />
                 </Grid>
+              </>}
+              {!isHybrid && <>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
@@ -853,7 +853,7 @@ const CourseClassTimetableTab = ({
                   required
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
                   type="select"
                   label="Virtual site"
