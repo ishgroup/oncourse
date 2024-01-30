@@ -7,7 +7,6 @@ import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } fr
 import Settings from "@mui/icons-material/Settings";
 import { FormControlLabel, Grid, MenuItem } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import createStyles from "@mui/styles/createStyles";
