@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 131-1
+      author: dmitrij
+      preConditions:
+        - onFail: HALT
+        - not:
+            columnExists:
+              tableName: Note
+              columnName: createdByTutorId
+        - not:
+            columnExists:
+              tableName: Note
+              columnName: willowId
+      changes:
+        - addColumn:
+            tableName: Note
+            columns:
+              - column:
+                  name: createdByTutorId
+                  type: BIGINT
+        - addColumn:
+            tableName: Note
+            columns:
+              - column:
+                  name: willowId
+                  type: BIGINT
+        - addForeignKeyConstraint:
+            baseColumnNames: createdByTutorId
+            baseTableName: Note
+            constraintName: fk_Note_UTutor_Id
+            referencedColumnNames: id
+            referencedTableName: Tutor
