@@ -66,6 +66,9 @@
         "products",
         "quotes",
         "sales",
+        "productSales",
+        "voucherSales",
+        "membershipSales",
         "voucherTypes",
         "waitingLists"
       ]
@@ -526,10 +529,28 @@
       "description": "A list of the rooms within every site created in your system."
     },
     {
-      "title": "Sold Items",
+      "title": "Sales",
       "key": "sales",
       "link": "/sale",
       "description": "A list of all the product, voucher and membership sales in your system."
+    },
+    {
+      "title": "Sold Products",
+      "key": "productSales",
+      "link": "/sale?filter=@Product,@Active",
+      "description": "A list of all product sales in your system."
+    },
+    {
+      "title": "Sold Vouchers",
+      "key": "voucherSales",
+      "link": "/sale?filter=@Voucher,@Active",
+      "description": "A list of all voucher sales in your system."
+    },
+    {
+      "title": "Sold Memberships",
+      "key": "membershipSales",
+      "link": "/sale?filter=@Membership,@Active",
+      "description": "A list of all membership sales in your system."
     },
     {
       "title": "Scripts",
