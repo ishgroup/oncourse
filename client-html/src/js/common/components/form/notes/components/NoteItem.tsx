@@ -37,6 +37,7 @@ const NoteItem = (props: Props) => {
             <FormField
               type="text"
               name={messageName}
+              disabled={item.readonly}
               required
               multiline
             />
@@ -78,6 +79,7 @@ const NoteItem = (props: Props) => {
                   className="lightGrayIconButton"
                   color="secondary"
                   onClick={() => onDelete(index)}
+                  disabled={item.readonly}
                 >
                   <DeleteIcon fontSize="inherit" color="inherit"/>
                 </IconButton>
