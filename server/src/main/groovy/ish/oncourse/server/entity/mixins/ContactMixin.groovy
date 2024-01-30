@@ -52,7 +52,7 @@ class ContactMixin {
 	 */
 	@API
 	static String getPortalLoginURL(Contact self) {
-		"$UrlUtil.PORTAL_URL/login${self.email ? "?e=$self.email" : ''}"
+		"$self.portalUrl/login${self.email ? "?e=$self.email" : ''}"
 	}
 
 	/**

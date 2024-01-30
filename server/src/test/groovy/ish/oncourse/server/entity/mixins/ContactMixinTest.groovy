@@ -15,10 +15,13 @@ class ContactMixinTest extends TestWithBootique {
     void testPortalLoginURL() {
         Contact contactWitoutEmail = Mockito.mock(Contact)
         Mockito.when(contactWitoutEmail.email).thenReturn(null)
-        Assertions.assertEquals("https://www.skillsoncourse.com.au/portal/login", contactWitoutEmail.portalLoginURL)
+        Mockito.when(contactWitoutEmail.portalUrl).thenReturn("https://www.skillsoncourse.com.au")
+
+        Assertions.assertEquals("https://www.skillsoncourse.com.au/login", contactWitoutEmail.portalLoginURL)
 
         Contact contactWithEmail = Mockito.mock(Contact)
+        Mockito.when(contactWithEmail.portalUrl).thenReturn("https://www.skillsoncourse.com.au")
         Mockito.when(contactWithEmail.email).thenReturn("test.email@ish.com.au")
-        Assertions.assertEquals("https://www.skillsoncourse.com.au/portal/login?e=test.email@ish.com.au", contactWithEmail.portalLoginURL)
+        Assertions.assertEquals("https://www.skillsoncourse.com.au/login?e=test.email@ish.com.au", contactWithEmail.portalLoginURL)
     }
 }

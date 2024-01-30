@@ -412,6 +412,7 @@ public interface Preferences {
 	// **************************************
 	String PORTAL_HIDE_CLASS_ROLL_CONTACT_PHONE = "portal.hideClassRollContactPhone";
 	String PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL = "portal.hideClassRollContactEmail";
+	String PORTAL_WEBSITE_URL = "portal.website.url";
 
 
 
