@@ -25,6 +25,7 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.StringUtils
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.toRestConcessionType
 import static ish.oncourse.server.api.v1.function.DiscountFunctions.toRestDiscountCorporatePass
@@ -326,6 +327,13 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
                 validator.throwClientErrorException(discountDTO?.id, "corporatePassDiscounts[$i].id", "CorporatePass with id=$corporatePass.id not found.")
             }
         }
+
+        if (discountDTO.minEnrolmentsForAnyCourses != null && discountDTO.minEnrolmentsForAnyCourses <= 0) {
+            validator.throwClientErrorException(discountDTO?.id, 'minEnrolmentsForAnyCourses', 'Student Age should be positive.')
+        }
+
+        if(discountDTO.courseIdMustEnrol && !getRecordById(context, Course, discountDTO.courseIdMustEnrol))
+            validator.throwClientErrorException(discountDTO?.id, 'courseIdMustEnrol', "Course with id=$discountDTO.courseIdMustEnrol not found.")
     }
 
     @Override
