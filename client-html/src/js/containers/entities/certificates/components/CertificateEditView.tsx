@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CertificateOutcome, Contact } from "@api/model";
+import { Certificate, CertificateOutcome, Contact } from "@api/model";
 import { FormControlLabel, Grid, Theme } from "@mui/material";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
@@ -34,7 +34,7 @@ import { getContactFullName } from "../../contacts/utils";
 import { openQualificationLink } from "../../qualifications/utils";
 import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
 
-interface Props extends EditViewProps {
+interface Props extends EditViewProps<Certificate> {
   status?: string;
   getCertificateOutcomes?: NumberArgFunction;
   clearCertificateOutcomes?: AnyArgFunction;
@@ -237,13 +237,13 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <Typography variant="body2">{values.code}</Typography>
           <Link
             target="_blank"
-            href={`http://www.skills.courses/${values.code}`}
+            href={values.portalLink}
             variant="body2"
             className={classes.link}
           >
-            www.skills.courses
+            {values.portalLink}
           </Link>
-          <QRCode size={106} value={`www.skills.courses/${values.code}`} />
+          <QRCode size={106} value={values.portalLink} />
         </div>
       ),
     [values.code, isNew]

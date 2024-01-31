@@ -45,6 +45,8 @@ public abstract class CommonPreferenceController {
 		DEPRECATED_PREFERENCES.add("print.header");
 	}
 
+	private static final String DEFAULT_PORTAL_URL = "https://www.skillsoncourse.com.au";
+
 	protected static CommonPreferenceController sharedController;
 
 	/**
@@ -1341,6 +1343,11 @@ public abstract class CommonPreferenceController {
 
 	public void setPortalHideClassRollContactEmail(String value) {
 		setValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL, false, value);
+	}
+
+	public String getPortalUrl() {
+		String value = getValue(PORTAL_WEBSITE_URL, false);
+		return value == null ? DEFAULT_PORTAL_URL : value;
 	}
 
 	private static final boolean DEF_INACTIVE_ACCOUNT = true;
