@@ -83,3 +83,8 @@ properties:
     required: true
   relationDiscount:
     type: boolean
+  courseIdMustEnrol:
+    type: integer
+    format: int64
+  minEnrolmentsForAnyCourses:
+    type: integer
