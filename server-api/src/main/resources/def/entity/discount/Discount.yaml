@@ -86,5 +86,7 @@ properties:
   courseIdMustEnrol:
     type: integer
     format: int64
+  courseNameMustEnrol:
+    type: string
   minEnrolmentsForAnyCourses:
     type: integer

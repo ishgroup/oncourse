@@ -4037,6 +4037,9 @@
 	<db-relationship name="corporatePassDiscount" source="Discount" target="CorporatePass_Discount" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
+	<db-relationship name="courseMustEnrol" source="Discount" target="Course">
+		<db-attribute-pair source="courseIdMustEnrol" target="id"/>
+	</db-relationship>
 	<db-relationship name="cosAccount" source="Discount" target="Account">
 		<db-attribute-pair source="cosAccountId" target="id"/>
 	</db-relationship>
@@ -5361,6 +5364,7 @@
 	<obj-relationship name="tutorRoles" source="DefinedTutorRole" target="CourseClassTutor" deleteRule="Deny" db-relationship-path="tutorRoles"/>
 	<obj-relationship name="corporatePassDiscount" source="Discount" target="CorporatePassDiscount" deleteRule="Deny" db-relationship-path="corporatePassDiscount"/>
 	<obj-relationship name="cosAccount" source="Discount" target="Account" deleteRule="Nullify" db-relationship-path="cosAccount"/>
+	<obj-relationship name="courseMustEnrol" source="Discount" target="Course" deleteRule="Nullify" db-relationship-path="courseMustEnrol"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discount_concessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discount_courseclasses"/>
 	<obj-relationship name="discountMemberships" source="Discount" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discount_membershipProducts"/>

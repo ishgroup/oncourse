@@ -92,7 +92,8 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
             dto.createdOn = LocalDateUtils.dateToTimeValue(dbDiscount.createdOn)
             dto.modifiedOn = LocalDateUtils.dateToTimeValue(dbDiscount.modifiedOn)
             dto.limitPreviousEnrolment = dbDiscount.limitPreviousEnrolment
-            dto.courseIdMustEnrol = dbDiscount.courseIdMustEnrol
+            dto.courseIdMustEnrol = dbDiscount.courseMustEnrol?.id
+            dto.courseNameMustEnrol = dbDiscount.courseMustEnrol?.name
             dto.minEnrolmentsForAnyCourses = dbDiscount.minEnrolmentsForAnyCourses
 
             dto
@@ -185,7 +186,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
         dbDiscount.minValue = toMoneyValue(dto.minValue)
         dbDiscount.limitPreviousEnrolment = dto.limitPreviousEnrolment != null ? dto.limitPreviousEnrolment : false
         dbDiscount.minEnrolmentsForAnyCourses = dto.minEnrolmentsForAnyCourses
-        dbDiscount.courseIdMustEnrol = dto.courseIdMustEnrol
+        dbDiscount.courseMustEnrol = dto.courseIdMustEnrol ? getRecordById(dbDiscount.context, Course, dto.courseIdMustEnrol) : null
         updateCorporatePassDiscount(dbDiscount.context, dbDiscount, dto.corporatePassDiscounts)
         dbDiscount
     }
