@@ -2241,7 +2241,6 @@
 		<obj-attribute name="validToOffset" type="java.lang.Integer" db-attribute-path="validToOffset"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="minEnrolmentsForAnyCourses" type="java.lang.Integer" db-attribute-path="minEnrolmentsForAnyCourses"/>
-		<obj-attribute name="courseIdMustEnrol" type="java.lang.Long" db-attribute-path="courseIdMustEnrol"/>
 	</obj-entity>
 	<obj-entity name="DiscountConcessionType" className="ish.oncourse.server.cayenne.DiscountConcessionType" clientClassName="ish.oncourse.cayenne.DiscountConcessionType" dbEntityName="Discount_ConcessionType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>

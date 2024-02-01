@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.api.service
 
+import groovy.transform.CompileDynamic
 import ish.common.types.CourseClassType
 import ish.common.types.DiscountAvailabilityType
 import ish.common.types.DiscountType
@@ -39,6 +40,8 @@ import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.*
 import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
+
+@CompileDynamic
 class DiscountApiService extends EntityApiService<DiscountDTO, Discount, DiscountDao>{
 
     private static final BidiMap<DiscountType, DiscountTypeDTO> discountTypeMap = new BidiMap<DiscountType, DiscountTypeDTO>() {{
