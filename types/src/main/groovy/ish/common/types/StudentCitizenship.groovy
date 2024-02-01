@@ -82,7 +82,10 @@ public enum StudentCitizenship implements DisplayableExtendedEnumeration<Integer
 	 * No information
 	 */
 	@API
-	NO_INFORMATION(9, "No information", "No information");
+	NO_INFORMATION(9, "No information", "No information"),
+
+	@API
+	STUDENT_WITH_PACIFIC_ENGAGEMENT_VISA(10, "Students/Applicants with Pacific Engagement Visa (PEV)", "Students/Applicants with Pacific Engagement Visa (PEV)");
 
 	private String displayValue;
 	private String description;
