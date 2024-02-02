@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassTimetablePlanning" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="bebcee18-0bcb-4123-a446-55832a9a6e59">
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://jasperreports.sourceforge.net/jasperreports" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassTimetablePlanning" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="bebcee18-0bcb-4123-a446-55832a9a6e59">
 	<property name="ish.oncourse.additionalProperty" value="promotionalRange"/>
 	<property name="ish.oncourse.additionalProperty.displayLabel1" value="from"/>
 	<property name="ish.oncourse.additionalProperty.displayLabel2" value="to"/>
@@ -106,7 +106,11 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band/>
+			<band height="1">
+				<break>
+					<reportElement x="0" y="0" width="0" height="0"/>
+				</break>
+			</band>
 		</groupFooter>
 	</group>
 	<background>

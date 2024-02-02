@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne
 import com.google.inject.Inject
 import ish.common.types.ProductStatus
 import ish.oncourse.API
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.license.LicenseService
 import ish.util.RuntimeUtil
@@ -42,6 +43,9 @@ trait ContactTrait {
 
     @Inject
     private LicenseService licenseService
+
+    @Inject
+    private PreferenceController preferenceController
     
     boolean hasMembership(MembershipProduct membership) {
         memberships.any { it.status == ProductStatus.ACTIVE && it.expiryDate > new Date() && it.product.id == membership.id  }
@@ -177,11 +181,20 @@ trait ContactTrait {
         Date expiryDate = parseExpiryDate(timeout)
         String hashSalt = licenseService.getSecurity_key()
         if (PORTAL_USI_TARGET.equals(target)) {
-            return UrlUtil.createPortalUsiLink(this.uniqueCode, expiryDate, hashSalt)
+            return UrlUtil.createPortalUsiLink(preferenceController, this.uniqueCode, expiryDate, hashSalt)
         } else {
             String path = parsePortalTarget(target)
-            return UrlUtil.createSignedPortalUrl(path, expiryDate, hashSalt)
+            return UrlUtil.createSignedPortalUrl(preferenceController, path, expiryDate, hashSalt)
         }
+    }
+
+    /**
+     * @see ish.oncourse.server.entity.mixins.ContactMixin#getPortalLoginURL(ish.oncourse.server.cayenne.Contact)
+     * May be used in other message templates
+     * @return
+     */
+    String getPortalUrl(){
+        return preferenceController.getPortalUrl()
     }
 
     private Date parseExpiryDate(Object timeout) {
