@@ -32,6 +32,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="invoices" ref="Invoice"/>
         <attribute name="class" ref="CourseClass"/>
         <attribute name="tags" ref="Tag"/>
+        <attribute name="isClassCompleted" ref="Boolean"/>
     </entity>
     <entity name="PaymentOut">
         <attribute name="accountTransactions" ref="AccountTransaction"/>
