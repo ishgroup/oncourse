@@ -29,7 +29,8 @@ Feature: Main feature for all GET requests with path 'list/entity/note'
             "createdBy":"onCourse Administrator",
             "modifiedBy":null,
             "entityName":"Course",
-            "entityId":5
+            "entityId":5,
+            "readonly": false
             }
         ]
         """
@@ -61,7 +62,8 @@ Feature: Main feature for all GET requests with path 'list/entity/note'
             "createdBy":"onCourse Administrator",
             "modifiedBy":null,
             "entityName":"Course",
-            "entityId":5
+            "entityId":5,
+            readonly: false
             }
         ]
         """
