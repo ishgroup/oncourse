@@ -74,6 +74,10 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         statusCheckNode.jjtAddChild(new ASTObjPath(prefix + "status"), 0);
         statusCheckNode.jjtAddChild(new ASTScalar(EnrolmentStatus.SUCCESS.getDatabaseValue()), 1);
 
+        var endDateNullCheck = new ASTNotEqual();
+        endDateNullCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.endDateTime"), 0);
+        endDateNullCheck.jjtAddChild(new ASTScalar(null), 1);
+
         var endDateCheck = new ASTLess();
         endDateCheck.jjtAddChild(new ASTObjPath(prefix + "courseClass.endDateTime"), 0);
         endDateCheck.jjtAddChild(new ASTScalar(LocalDateTime.now()), 1);
@@ -116,8 +120,9 @@ class SyntheticEnrolmentIsClassCompletedNode extends LazyExpressionNode {
         hybridMainCheck.jjtAddChild(hybridCheck, 1);
 
         isClassCompletedNode.jjtAddChild(statusCheckNode, 0);
-        isClassCompletedNode.jjtAddChild(endDateCheck, 1);
-        isClassCompletedNode.jjtAddChild(hybridMainCheck, 2);
+        isClassCompletedNode.jjtAddChild(endDateNullCheck, 1);
+        isClassCompletedNode.jjtAddChild(endDateCheck, 2);
+        isClassCompletedNode.jjtAddChild(hybridMainCheck, 3);
 
         parent.jjtAddChild(isClassCompletedNode, 0);
         parent.jjtAddChild(args.get(2), 1);
