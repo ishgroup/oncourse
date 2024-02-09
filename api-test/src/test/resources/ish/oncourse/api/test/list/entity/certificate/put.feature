@@ -624,7 +624,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/certificate'
         "revokedOn":"2018-05-20",
         "code":null,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"https:\/\/www.skillsoncourse.com.au\/certificate\/cAxWbE3dFwT4"
         }
         """
 
