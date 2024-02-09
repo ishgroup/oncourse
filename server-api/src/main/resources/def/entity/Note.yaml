@@ -28,3 +28,5 @@ properties:
     type: integer
     format: int64
     required: true
+  readonly:
+    type: boolean
