@@ -166,6 +166,10 @@ class DocumentVersion extends _DocumentVersion implements Queueable, DocumentVer
 	String getCreatedByName() {
 		def firstName = createdByTutor ? createdByTutor.contact.firstName : createdByUser?.firstName
 		def lastName = createdByTutor ? createdByTutor.contact.lastName : createdByUser?.lastName
+
+		firstName = firstName ?: ""
+		lastName = lastName ?: ""
+
 		return "${firstName} ${lastName}"
 	}
 
