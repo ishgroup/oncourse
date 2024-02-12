@@ -22,9 +22,12 @@ import javax.annotation.Nonnull
  * a comprehensive audit trail.
  */
 @API
-class Note extends _Note implements ContactActivityTrait{
+class Note extends _Note implements ContactActivityTrait, Queueable {
 
-
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return false
+	}
 
 	@Override
 	void postAdd() {

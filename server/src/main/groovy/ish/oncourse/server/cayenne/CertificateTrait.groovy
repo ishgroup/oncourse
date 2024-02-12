@@ -1,0 +1,45 @@
+/*
+ * Copyright ish group pty ltd 2020.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ */
+
+package ish.oncourse.server.cayenne
+
+import com.google.inject.Inject
+import ish.common.types.ProductStatus
+import ish.oncourse.API
+import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.api.dao.PaymentInDao
+import ish.oncourse.server.license.LicenseService
+import ish.util.RuntimeUtil
+import ish.util.UrlUtil
+import org.apache.commons.lang3.StringUtils
+
+import java.text.ParseException
+import java.time.LocalDate
+import java.time.Period
+
+trait CertificateTrait {
+
+    @Inject
+    private PreferenceController preferenceController
+    
+    abstract String getUniqueCode()
+
+    /**
+     * A certificate can be issued for outcomes toward a certain qualification even if the qualification
+     * itself is not issued. Check getIsQualification() to see whether this was a full qualification.
+     *
+     * @return the qualification
+     */
+    @API
+    String getPortalUrl() {
+        return UrlUtil.buildCertificatePortalUrl(uniqueCode, preferenceController)
+    }
+}

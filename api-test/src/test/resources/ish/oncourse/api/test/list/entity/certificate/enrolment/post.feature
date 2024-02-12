@@ -51,7 +51,8 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/e
         "revokedOn":null,
         "code":null,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"#ignore"
         }
         """
 
@@ -107,7 +108,8 @@ Feature: Main feature for all POST requests with path 'list/entity/certificate/e
         "revokedOn":null,
         "code":null,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"#ignore"
         }
         """
 
