@@ -582,6 +582,7 @@
 	<db-entity name="DocumentVersion">
 		<db-attribute name="byteSize" type="BIGINT"/>
 		<db-attribute name="createdByUserId" type="BIGINT"/>
+		<db-attribute name="createdByTutorId" type="BIGINT"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="description" type="CLOB" length="32000"/>
 		<db-attribute name="documentId" type="BIGINT" isMandatory="true"/>
@@ -4090,6 +4091,9 @@
 	<db-relationship name="createdByUser" source="DocumentVersion" target="SystemUser">
 		<db-attribute-pair source="createdByUserId" target="id"/>
 	</db-relationship>
+	<db-relationship name="createdByTutor" source="DocumentVersion" target="Tutor">
+		<db-attribute-pair source="createdByTutorId" target="id"/>
+	</db-relationship>
 	<db-relationship name="document" source="DocumentVersion" target="Document">
 		<db-attribute-pair source="documentId" target="id"/>
 	</db-relationship>
@@ -5376,6 +5380,7 @@
 	<obj-relationship name="versions" source="Document" target="DocumentVersion" deleteRule="Cascade" db-relationship-path="versions"/>
 	<obj-relationship name="taggedDocument" source="DocumentTagRelation" target="Document" deleteRule="Nullify" db-relationship-path="taggedDocument"/>
 	<obj-relationship name="createdByUser" source="DocumentVersion" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
+	<obj-relationship name="createdByTutor" source="DocumentVersion" target="Tutor" deleteRule="Nullify" db-relationship-path="createdByTutor"/>
 	<obj-relationship name="document" source="DocumentVersion" target="Document" deleteRule="Nullify" db-relationship-path="document"/>
 	<obj-relationship name="automationBindings" source="EmailTemplate" target="EmailTemplateAutomationBinding" deleteRule="Cascade" db-relationship-path="automationBindings"/>
 	<obj-relationship name="relatedObject" source="EmailTemplateAutomationBinding" target="EmailTemplate" deleteRule="Nullify" db-relationship-path="emailTemplate"/>

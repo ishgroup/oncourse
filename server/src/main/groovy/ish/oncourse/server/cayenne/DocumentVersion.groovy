@@ -159,6 +159,17 @@ class DocumentVersion extends _DocumentVersion implements Queueable, DocumentVer
 	}
 
 	/**
+	 * @return onCourse user / portal tutor name, who created this document version
+	 */
+	@Nullable
+	@API
+	String getCreatedByName() {
+		def firstName = createdByTutor ? createdByTutor.contact.firstName : createdByUser?.firstName
+		def lastName = createdByTutor ? createdByTutor.contact.lastName : createdByUser?.lastName
+		return "${firstName} ${lastName}"
+	}
+
+	/**
 	 * @return linked document
 	 */
 	@Nonnull
