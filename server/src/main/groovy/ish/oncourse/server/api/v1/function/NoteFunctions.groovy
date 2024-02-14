@@ -49,7 +49,7 @@ class NoteFunctions {
                 note.modifiedBy = "$dbNote.changedBy.firstName $dbNote.changedBy.lastName"
             }
 
-            note.readonly = dbNote.createdByTutor
+            note.readonly = dbNote.createdByTutor ?: false
             note
         }
     }
