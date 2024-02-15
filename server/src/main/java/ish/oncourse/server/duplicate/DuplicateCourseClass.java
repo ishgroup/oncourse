@@ -90,7 +90,9 @@ public class DuplicateCourseClass {
         newClass.setType(oldClass.getType());
         if (oldClass.getIsDistantLearningCourse() || oldClass.getIsHybrid()) {
             newClass.setExpectedHours(oldClass.getExpectedHours());
-            newClass.setMaximumDays(oldClass.getMaximumDays());
+            if (oldClass.getIsDistantLearningCourse()) {
+                newClass.setMaximumDays(oldClass.getMaximumDays());
+            }
             if (oldClass.getIsHybrid()) {
                 newClass.setMinimumSessionsToComplete(oldClass.getMinimumSessionsToComplete());
             }

@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.v1.function
 
+import ish.common.types.AttendanceType
 import ish.common.types.CreditLevel
 import ish.common.types.CreditProviderType
 import ish.common.types.CreditType
@@ -89,4 +90,10 @@ class EnrolmentFunctions {
         put(CreditLevel.STATEMENT_OF_ATTEINMENT_AT_CERTIFICATE_1_LEVEL, EnrolmentCreditLevelDTO.STATEMENT_OF_ATTAINMENT_AT_CERTIFICATE_I_LEVEL)
         put(CreditLevel.OTHER, EnrolmentCreditLevelDTO.OTHER_QUALIFICATION)
     }}
+
+
+    static List<Long> filterEnrolmentsWithCompletedClasses(List<Enrolment> enrolments){
+        return enrolments.findAll {e -> e.attendances.findAll {it.attendanceType = AttendanceType.ATTENDED }.size() >= e.courseClass.minimumSessionsToComplete}
+                .collect {it.id}
+    }
 }
