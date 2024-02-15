@@ -4,8 +4,7 @@
  */
 
 import { ConcessionType, Discount, DiscountMembership } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
+import { Collapse, FormControlLabel, Grid } from "@mui/material";
 import clsx from "clsx";
 import { CheckboxField, LinkAdornment, normalizeNumber } from "ish-ui";
 import * as React from "react";
@@ -222,10 +221,10 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     );
   };
 
-  onCouresMastEnrolChange(course) {
+  onCouresMastEnrolChange = course => {
     const { dispatch, form } = this.props;
     dispatch(change(form, "courseNameMustEnrol", course.name));
-  }
+  };
 
   render() {
     const {
@@ -328,7 +327,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               <FormField
                 type="remoteDataSelect"
                 entity="Course"
-                aqlFilter="(currentlyOffered == true) and (isShownOnWeb == false)"
+                aqlFilter="currentlyOffered is true"
                 name="courseIdMustEnrol"
                 label="Course student must be enrolled"
                 selectValueMark="id"
