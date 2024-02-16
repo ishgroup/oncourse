@@ -16,7 +16,6 @@ import groovy.transform.CompileDynamic
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
-import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
@@ -25,15 +24,29 @@ import java.time.LocalDate
 trait DiscountTrait {
 
     abstract Long getId()
+
     abstract Integer getStudentEnrolledWithinDays()
+
     abstract String getStudentAge()
+
     abstract List<DiscountConcessionType> getDiscountConcessionTypes()
+
     abstract List<String> getStudentPostcodes()
+
     abstract List<DiscountMembership> getDiscountMemberships()
+
     abstract Boolean getLimitPreviousEnrolment()
+
     abstract List<CorporatePassDiscount> getCorporatePassDiscount()
+
     abstract Integer getMinEnrolments()
+
     abstract Money getMinValue()
+
+    abstract Integer getMinEnrolmentsForAnyCourses()
+
+    abstract Long getCourseIdMustEnrol()
+
     abstract ObjectContext getObjectContext()
 
     /**
@@ -44,17 +57,39 @@ trait DiscountTrait {
      * @return true if student is eligible
      */
     @API
-    boolean isStudentEligibile(Contact contact, List<MembershipProduct> newMemberships, CourseClassTrait courseClass, List<CourseClass> enrolledClasses, Money purchaseTotal ) {
+    boolean isStudentEligibile(Contact contact, List<MembershipProduct> newMemberships, CourseClassTrait courseClass, List<CourseClass> enrolledClasses, Money purchaseTotal) {
 
-        return  (enrolledWithinDaysEligibile(contact)
+        return (enrolledWithinDaysEligibile(contact)
                 && studenAgeDateEligibile(contact)
                 && concessionEligibile(contact)
                 && postcodesEligibile(contact)
                 && membershipEligibile(contact, newMemberships)
                 && previousEnrolmentEligibile(contact, courseClass)
                 && countEnrolmentsEligible(enrolledClasses)
+                && hasRequiredNumberOfCompletedEnrolmentsForAllCourses(contact)
+                && enrolledAndCompletedOnRequiredCourse(contact)
                 && purchaseTotal >= minValue)
+    }
 
+    private boolean hasRequiredNumberOfCompletedEnrolmentsForAllCourses(Contact contact) {
+        if (!minEnrolmentsForAnyCourses)
+            return true
+
+        if (!contact.student)
+            return false
+
+        return contact.student.enrolments.findAll {it.completed}.size() >= minEnrolmentsForAnyCourses
+    }
+
+
+    private boolean enrolledAndCompletedOnRequiredCourse(Contact contact) {
+        if (!courseIdMustEnrol)
+            return true
+
+        if (!contact.student)
+            return false
+
+        return contact.student.enrolments.find { it.courseClass.course.id == courseIdMustEnrol && it.completed }
     }
 
 
@@ -64,7 +99,7 @@ trait DiscountTrait {
         } else if (contact.student == null) {
             return false
         } else {
-            return contact.student.enrolments.any {  it.status == EnrolmentStatus.SUCCESS && courseClass.course.id ==  it.courseClass.course.id }
+            return contact.student.enrolments.any { it.status == EnrolmentStatus.SUCCESS && courseClass.course.id == it.courseClass.course.id }
         }
 
     }
@@ -86,7 +121,7 @@ trait DiscountTrait {
     }
 
     boolean studenAgeDateEligibile(Contact contact) {
-        if (studentAge == null  || !studentAge.matches(/[<>]\s\d+/) ) {
+        if (studentAge == null || !studentAge.matches(/[<>]\s\d+/)) {
             return true
         } else if (contact.birthDate == null) {
             return false
@@ -98,7 +133,7 @@ trait DiscountTrait {
             LocalDate thresholdYear = LocalDate.now().minusYears(age)
             switch (opator) {
                 case Discount.AGE_UNDER:
-                    return  thresholdYear < contact.birthDate
+                    return thresholdYear < contact.birthDate
                 case Discount.AGE_OVER:
                     return thresholdYear > contact.birthDate
                 default:
@@ -137,12 +172,12 @@ trait DiscountTrait {
             return true
         } else {
             //appay membership discounts if contact buy memberchip in one go with enrolment
-            if (newMemberships.any { it in  discountMemberships*.membershipProduct }) {
+            if (newMemberships.any { it in discountMemberships*.membershipProduct }) {
                 return true
             }
 
-            for (DiscountMembership dm: discountMemberships) {
-                if (contact.hasMembership(dm.membershipProduct) ) {
+            for (DiscountMembership dm : discountMemberships) {
+                if (contact.hasMembership(dm.membershipProduct)) {
                     return true
                 } else if (!dm.discountMembershipRelationTypes.empty) {
                     List<Long> relationTypes = dm.discountMembershipRelationTypes*.contactRelationType*.id
@@ -150,8 +185,8 @@ trait DiscountTrait {
                     relatedContacts += contact.toContacts.findAll { it.relationType.id in relationTypes }.collect { it.toContact }.toSet()
                     relatedContacts += contact.fromContacts.findAll { it.relationType.id in relationTypes }.collect { it.fromContact }.toSet()
 
-                    if (relatedContacts.any { it -> it.hasMembership(dm.membershipProduct)}) {
-                        return  true
+                    if (relatedContacts.any { it -> it.hasMembership(dm.membershipProduct) }) {
+                        return true
                     }
                 }
 
@@ -163,7 +198,7 @@ trait DiscountTrait {
 
     private boolean countEnrolmentsEligible(List<CourseClass> enrolledClasses) {
         int currentAppropriateEnrolmentCount = 0
-        enrolledClasses.each {courseClass ->
+        enrolledClasses.each { courseClass ->
             if (courseClass.discounts*.id.contains(id)) {
                 currentAppropriateEnrolmentCount++
             }

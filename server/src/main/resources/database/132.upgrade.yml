@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 132-1
+      comment: add new column for extended discounts logic
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Discount
+          not:
+            - columnExists:
+                tableName: Discount
+                columnName: courseIdMustEnrol
+            - columnExists:
+                tableName: Discount
+                columnName: minEnrolmentsForAnyCourses
+      changes:
+        - addColumn:
+            tableName: Discount
+            columns:
+              - column:
+                  name: courseIdMustEnrol
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    referencedTableName: Course
+                    referencedColumnNames: id
+                    foreignKeyName: Discount_Course_FK
+              - column:
+                  name: minEnrolmentsForAnyCourses
+                  type: INTEGER
