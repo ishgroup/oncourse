@@ -223,7 +223,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
 
   onCouresMastEnrolChange = course => {
     const { dispatch, form } = this.props;
-    dispatch(change(form, "courseNameMustEnrol", course.name));
+    dispatch(change(form, "courseNameMustEnrol", course ? course.name : null));
   };
 
   render() {
@@ -329,7 +329,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 entity="Course"
                 aqlFilter="currentlyOffered is true"
                 name="courseIdMustEnrol"
-                label="Course student must be enrolled"
+                label="Must have completed enrolment in"
                 selectValueMark="id"
                 selectLabelMark="name"
                 selectFilterCondition={courseFilterCondition}
@@ -345,13 +345,14 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 itemRenderer={CourseItemRenderer}
                 onInnerValueChange={this.onCouresMastEnrolChange}
                 rowHeight={55}
+                allowEmpty
               />
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
                 type="number"
                 name="minEnrolmentsForAnyCourses"
-                label="Minimal enrolments for any course"
+                label="Minimal completed enrolments in any course"
                 parse={normalizeNumber}
                 validate={greaterThanZeroIncludeValidation}
                 debounced={false}
