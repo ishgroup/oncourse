@@ -103,7 +103,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":true,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -154,7 +157,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":null,
         "validTo":null,
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -213,7 +219,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -263,7 +272,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":"2019-07-01",
         "validFromOffset":null,
         "validTo":"2037-07-31",
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -322,7 +334,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -378,7 +393,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":null,
         "validTo":null,
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -434,7 +452,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -487,7 +508,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":null,
         "validTo":null,
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -531,7 +555,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -575,7 +602,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -620,7 +650,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -661,7 +694,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -702,7 +738,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -746,7 +785,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -791,7 +833,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -840,7 +885,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -889,7 +937,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -934,7 +985,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -975,7 +1029,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -1016,7 +1073,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -1035,7 +1095,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount16","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,
         "validFrom":"2019-07-11","validFromOffset":null,
-        "validTo":"2019-07-01","validToOffset":null
+        "validTo":"2019-07-01","validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
