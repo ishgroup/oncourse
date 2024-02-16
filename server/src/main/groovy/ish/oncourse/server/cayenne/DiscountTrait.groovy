@@ -16,7 +16,6 @@ import groovy.transform.CompileDynamic
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
-import ish.oncourse.cayenne.CourseClassUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
@@ -67,30 +66,30 @@ trait DiscountTrait {
                 && membershipEligibile(contact, newMemberships)
                 && previousEnrolmentEligibile(contact, courseClass)
                 && countEnrolmentsEligible(enrolledClasses)
-                && hasRequiredNumberOfEnrolmentsForAllCourses(contact)
-                && enrolledOnRequiredCourse(contact)
+                && hasRequiredNumberOfCompletedEnrolmentsForAllCourses(contact)
+                && enrolledAndCompletedOnRequiredCourse(contact)
                 && purchaseTotal >= minValue)
     }
 
-    private boolean hasRequiredNumberOfEnrolmentsForAllCourses(Contact contact) {
+    private boolean hasRequiredNumberOfCompletedEnrolmentsForAllCourses(Contact contact) {
         if (!minEnrolmentsForAnyCourses)
             return true
 
         if (!contact.student)
             return false
 
-        return CourseClassUtil.getSuccessAndQueuedEnrolments(contact.student.enrolments).size() >= minEnrolmentsForAnyCourses
+        return contact.student.enrolments.findAll {it.completed}.size() >= minEnrolmentsForAnyCourses
     }
 
 
-    private boolean enrolledOnRequiredCourse(Contact contact) {
+    private boolean enrolledAndCompletedOnRequiredCourse(Contact contact) {
         if (!courseIdMustEnrol)
             return true
 
         if (!contact.student)
             return false
 
-        return contact.student.enrolments.find { it.courseClass.course.id == courseIdMustEnrol && it.status in EnrolmentStatus.STATUSES_LEGIT }
+        return contact.student.enrolments.find { it.courseClass.course.id == courseIdMustEnrol && it.completed }
     }
 
 
