@@ -214,7 +214,7 @@ trait OutcomeTrait {
         // this is a flexible delivery class so the start date varies for each enrolment
         // 'No sessions' means CourseClass.endDateTime or CourseClass.startDateTime is null
         CourseClassInterface courseClass = enrolment.courseClass;
-        if (hasNoSessions(courseClass) || (courseClass.isHybrid && calculator instanceof StartDateCalculator)) {
+        if (hasNoSessions(courseClass)) {
             return calculator.getDateIfNoSessions(enrolment)
         }
 

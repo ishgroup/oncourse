@@ -530,6 +530,8 @@
 		<db-attribute name="validTo" type="TIMESTAMP"/>
 		<db-attribute name="validToOffset" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="minEnrolmentsForAnyCourses" type="INTEGER"/>
+		<db-attribute name="courseIdMustEnrol" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="Discount_ConcessionType">
 		<db-attribute name="concessionTypeId" type="BIGINT" isMandatory="true"/>
@@ -2239,6 +2241,7 @@
 		<obj-attribute name="validTo" type="java.util.Date" db-attribute-path="validTo"/>
 		<obj-attribute name="validToOffset" type="java.lang.Integer" db-attribute-path="validToOffset"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="minEnrolmentsForAnyCourses" type="java.lang.Integer" db-attribute-path="minEnrolmentsForAnyCourses"/>
 	</obj-entity>
 	<obj-entity name="DiscountConcessionType" className="ish.oncourse.server.cayenne.DiscountConcessionType" clientClassName="ish.oncourse.cayenne.DiscountConcessionType" dbEntityName="Discount_ConcessionType" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -4034,6 +4037,9 @@
 	<db-relationship name="corporatePassDiscount" source="Discount" target="CorporatePass_Discount" toMany="true">
 		<db-attribute-pair source="id" target="discountId"/>
 	</db-relationship>
+	<db-relationship name="courseMustEnrol" source="Discount" target="Course">
+		<db-attribute-pair source="courseIdMustEnrol" target="id"/>
+	</db-relationship>
 	<db-relationship name="cosAccount" source="Discount" target="Account">
 		<db-attribute-pair source="cosAccountId" target="id"/>
 	</db-relationship>
@@ -5361,6 +5367,7 @@
 	<obj-relationship name="tutorRoles" source="DefinedTutorRole" target="CourseClassTutor" deleteRule="Deny" db-relationship-path="tutorRoles"/>
 	<obj-relationship name="corporatePassDiscount" source="Discount" target="CorporatePassDiscount" deleteRule="Deny" db-relationship-path="corporatePassDiscount"/>
 	<obj-relationship name="cosAccount" source="Discount" target="Account" deleteRule="Nullify" db-relationship-path="cosAccount"/>
+	<obj-relationship name="courseMustEnrol" source="Discount" target="Course" deleteRule="Nullify" db-relationship-path="courseMustEnrol"/>
 	<obj-relationship name="discountConcessionTypes" source="Discount" target="DiscountConcessionType" deleteRule="Deny" db-relationship-path="discount_concessionTypes"/>
 	<obj-relationship name="discountCourseClasses" source="Discount" target="DiscountCourseClass" deleteRule="Deny" db-relationship-path="discount_courseclasses"/>
 	<obj-relationship name="discountMemberships" source="Discount" target="DiscountMembership" deleteRule="Deny" db-relationship-path="discount_membershipProducts"/>

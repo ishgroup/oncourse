@@ -45,7 +45,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":-30,
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -96,7 +99,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "minEnrolments":2,
         "minValue":"5",
         "corporatePassDiscounts":[],
-        "limitPreviousEnrolment":false
+        "limitPreviousEnrolment":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -145,7 +151,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "corporatePassDiscounts":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "limitPreviousEnrolment":false
+        "limitPreviousEnrolment":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -197,7 +206,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":null,
         "validTo":null,
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -248,7 +260,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "minEnrolments":"10",
         "minValue":"222",
         "corporatePassDiscounts":[],
-        "limitPreviousEnrolment":true
+        "limitPreviousEnrolment":true,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -297,7 +312,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "corporatePassDiscounts":[],
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "limitPreviousEnrolment":true
+        "limitPreviousEnrolment":true,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -348,7 +366,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "validFrom":"2019-07-01",
         "validFromOffset":null,
         "validTo":"2037-07-31",
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -398,7 +419,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":true,
         "minEnrolments":"5",
         "minValue":"205",
-        "corporatePassDiscounts":[{"id":1001,"contactFullName":"company #1"}]
+        "corporatePassDiscounts":[{"id":1001,"contactFullName":"company #1"}],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -446,7 +470,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "minValue":205.00,
         "corporatePassDiscounts":[{"id":1001,"contactFullName":"company #1"}],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -497,7 +524,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":-30,
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -552,7 +582,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":2,
         "minValue":"5",
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -600,7 +633,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "minValue":5.00,
         "corporatePassDiscounts":[],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -655,7 +691,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":-30,
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -710,7 +749,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":2,
         "minValue":"5",
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -785,7 +827,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":5,
         "minValue":50,
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -827,7 +872,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":5,
         "minValue":50,
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -869,7 +917,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":5,
         "minValue":50,
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -911,7 +962,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":5,
         "minValue":50,
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -953,7 +1007,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":null,
         "minValue":50,
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -995,7 +1052,10 @@ Feature: Main feature for all PUT requests with path 'list/entity/discount'
         "addByDefault":false,
         "minEnrolments":5,
         "minValue":null,
-        "corporatePassDiscounts":[]
+        "corporatePassDiscounts":[],
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 

@@ -1,27 +1,31 @@
 databaseChangeLog:
   - changeSet:
       id: 132-1
-      author: dmitrij
+      comment: add new column for extended discounts logic
+      author: dmitars
       preConditions:
         - onFail: HALT
-        - not:
-            columnExists:
-              tableName: DocumentVersion
-              columnName: createdByTutorId
-        - not:
-            foreignKeyConstraintExists:
-              tableName: DocumentVersion
-              foreignKeyName: fk_DocumentVersion_Tutor
+        - tableExists:
+            tableName: Discount
+          not:
+            - columnExists:
+                tableName: Discount
+                columnName: courseIdMustEnrol
+            - columnExists:
+                tableName: Discount
+                columnName: minEnrolmentsForAnyCourses
       changes:
         - addColumn:
-            tableName: DocumentVersion
+            tableName: Discount
             columns:
               - column:
-                  name: createdByTutorId
+                  name: courseIdMustEnrol
                   type: BIGINT
-        - addForeignKeyConstraint:
-            baseColumnNames: createdByTutorId
-            baseTableName: DocumentVersion
-            constraintName: fk_DocumentVersion_Tutor_Id
-            referencedColumnNames: id
-            referencedTableName: Tutor
+                  constraints:
+                    nullable: true
+                    referencedTableName: Course
+                    referencedColumnNames: id
+                    foreignKeyName: Discount_Course_FK
+              - column:
+                  name: minEnrolmentsForAnyCourses
+                  type: INTEGER
