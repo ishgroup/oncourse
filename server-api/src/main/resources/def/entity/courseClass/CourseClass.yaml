@@ -138,6 +138,11 @@ properties:
     items:
       type: integer
       format: int64
+  hiddenTags:
+    type: array
+    items:
+      type: integer
+      format: int64
   documents:
     type: array
     items:
