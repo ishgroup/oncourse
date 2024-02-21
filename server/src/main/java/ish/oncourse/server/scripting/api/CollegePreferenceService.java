@@ -124,7 +124,7 @@ public class CollegePreferenceService {
 		var expiryDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
 		expiryDate = DateUtils.addDays(expiryDate, expiryDays);
 
-		return UrlUtil.createPortalUsiLink(
+		return UrlUtil.createPortalUsiLink(preferenceController,
 				student.getContact().getUniqueCode(), expiryDate, licenseService.getSecurity_key());
 	}
 
@@ -149,7 +149,7 @@ public class CollegePreferenceService {
 		var expiryDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
 		expiryDate = DateUtils.addDays(expiryDate, expiryDays);
 
-		return UrlUtil.createSignedPortalUrl(path, expiryDate, licenseService.getSecurity_key());
+		return UrlUtil.createSignedPortalUrl(preferenceController, path, expiryDate, licenseService.getSecurity_key());
 	}
 
 	/**

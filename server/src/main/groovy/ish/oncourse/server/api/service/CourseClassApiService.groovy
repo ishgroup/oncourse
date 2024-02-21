@@ -221,13 +221,17 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         courseClass.type = dto.type.dbType
         if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING || dto.type == CourseClassTypeDTO.HYBRID) {
-            courseClass.maximumDays = dto.maximumDays
             courseClass.expectedHours = dto.expectedHours
             if (dto.virtualSiteId != null) {
                 courseClass.room = siteDao.getById(courseClass.context, dto.virtualSiteId).rooms[0]
             }
+            if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING) {
+                courseClass.maximumDays = dto.maximumDays
+            }
             if (dto.type == CourseClassTypeDTO.HYBRID) {
                 courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
+                courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
+                courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
             }
         }
         courseClass.isActive = dto.isActive
@@ -332,6 +336,13 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         if (dto.type == CourseClassTypeDTO.HYBRID && dto.minimumSessionsToComplete == null) {
             validator.throwClientErrorException(id, "minimumSessionsToComplete", "minimumSessionsToComplete field is required for hybrid class")
+        }
+
+        if (dto.type == CourseClassTypeDTO.HYBRID && dto.startDateTime == null) {
+            validator.throwClientErrorException(id, "startDateTime", "Start date field is required for hybrid class")
+        }
+        if (dto.type == CourseClassTypeDTO.HYBRID && dto.endDateTime == null) {
+            validator.throwClientErrorException(id, "endDateTime", "End date field is required for hybrid class")
         }
     }
 

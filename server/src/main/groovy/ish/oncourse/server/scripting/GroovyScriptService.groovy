@@ -461,7 +461,7 @@ class GroovyScriptService {
     ScriptResult runScript(Script script, ScriptParameters parameters, ObjectContext context) {
         logger.warn("Running script {}. Parameters: {}", script.getName(), parameters.asMap())
         logger.warn("Number of threads {}", Thread.activeCount())
-        logger.warn("Heap size taken in bytes {}", Runtime.getRuntime().totalMemory())
+        logger.warn("Heap size taken in bytes {}, free memory: {}", Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory())
         if (script == null) {
             throw new IllegalArgumentException("Script cannot be null.")
         }

@@ -166,6 +166,19 @@
   category: 
   sortOn: ""
   visible: true
+
+- name: "Class Timetable Report - Planning w/ page breaks"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.ClassSessionReportPlanningWithPageBreaks"
+  report: "CourseClass/ClassTimetablePlanningWithPageBreaks.jrxml"
+  short:
+  description: "This report is for venue planning purposes, to show all the sessions\
+    \ of the selected classes printed in date order. This can be useful for one class,\
+    \ or a group of classes sharing a venue or tutor. This report prints in Landscape\
+    \ format. Has page breaks before new dates "
+  category:
+  sortOn: ""
+  visible: true
   
 - name: "Individual Assessment Plan Subreport"
   entityClass: "AssessmentClass"
