@@ -23,6 +23,7 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRequirement
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.parser.ASTTrue
@@ -45,7 +46,8 @@ class TagApiImpl implements TagApi {
     @Override
     List<TagDTO> getChecklists(String entityName, Long id) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
-        def checklists = getTagsForEntityAndType(NodeType.CHECKLIST, taggableClassesForEntity)
+        def expr = tagExprFor(NodeType.CHECKLIST, taggableClassesForEntity)
+        def checklists = getTagsForExpression(expr)
         if (id != null)
             checklists = checklists.findAll { checklistAllowed(it, taggableClassesForEntity, id, aqlService) }
         checklists.collect { toRestTag(it) }
@@ -82,13 +84,15 @@ class TagApiImpl implements TagApi {
     @Override
     List<TagDTO> getHiddenTags(String entityName) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
-        return getTagsForEntityAndType(NodeType.HIDDEN_TAG, taggableClassesForEntity).collect {toRestTag(it)}
+        def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
+        expr = expr.andExp(Tag.SPECIAL_TYPE.in(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
+        def hiddenTags = getTagsForExpression(expr)
+        return hiddenTags.collect {toRestTag(it)}
     }
 
-    private List<Tag> getTagsForEntityAndType(NodeType nodeType, List<TaggableClasses> taggableClassesForEntity){
-        def expr = tagExprFor(nodeType, taggableClassesForEntity)
+    private List<Tag> getTagsForExpression(Expression expression){
         ObjectSelect.query(Tag)
-                .where(expr)
+                .where(expression)
                 .prefetch(tagGroupPrefetch)
                 .orderBy(Tag.CREATED_ON.name)
                 .select(cayenneService.newContext)
