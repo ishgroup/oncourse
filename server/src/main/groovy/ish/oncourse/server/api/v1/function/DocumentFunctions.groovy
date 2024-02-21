@@ -105,7 +105,7 @@ class DocumentFunctions {
         new DocumentVersionDTO().with { dv ->
             dv.id = dbDocumentVersion.id
             dv.added = LocalDateUtils.dateToTimeValue(dbDocumentVersion.timestamp)
-            dv.createdBy = "${dbDocumentVersion.createdByUser?.firstName} ${dbDocumentVersion.createdByUser?.lastName}"
+            dv.createdBy = dbDocumentVersion.createdByName
             dv.size = getDisplayableSize(dbDocumentVersion.byteSize)
             dv.mimeType = dbDocumentVersion.mimeType
             dv.fileName = dbDocumentVersion.fileName

@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 133-1
+      author: dmitrij
+      preConditions:
+        - onFail: HALT
+        - not:
+            columnExists:
+              tableName: DocumentVersion
+              columnName: createdByTutorId
+        - not:
+            foreignKeyConstraintExists:
+              tableName: DocumentVersion
+              foreignKeyName: fk_DocumentVersion_Tutor
+      changes:
+        - addColumn:
+            tableName: DocumentVersion
+            columns:
+              - column:
+                  name: createdByTutorId
+                  type: BIGINT
+        - addForeignKeyConstraint:
+            baseColumnNames: createdByTutorId
+            baseTableName: DocumentVersion
+            constraintName: fk_DocumentVersion_Tutor_Id
+            referencedColumnNames: id
+            referencedTableName: Tutor
