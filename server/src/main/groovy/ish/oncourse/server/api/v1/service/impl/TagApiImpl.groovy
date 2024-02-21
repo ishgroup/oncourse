@@ -18,6 +18,7 @@ import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.v1.model.TagDTO
+import ish.oncourse.server.api.v1.model.TagTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
@@ -44,31 +45,26 @@ class TagApiImpl implements TagApi {
     @Override
     List<TagDTO> getChecklists(String entityName, Long id) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
-        def expr = tagExprFor(NodeType.CHECKLIST, taggableClassesForEntity)
-        def checklists = ObjectSelect.query(Tag)
-                .where(expr)
-                .prefetch(tagGroupPrefetch)
-                .orderBy(Tag.CREATED_ON.name)
-                .select(cayenneService.newContext)
-        if(id != null)
-            checklists = checklists.findAll {checklistAllowed(it, taggableClassesForEntity, id, aqlService)}
-        checklists.collect {toRestTag(it)}
+        def checklists = getTagsForEntityAndType(NodeType.CHECKLIST, taggableClassesForEntity)
+        if (id != null)
+            checklists = checklists.findAll { checklistAllowed(it, taggableClassesForEntity, id, aqlService) }
+        checklists.collect { toRestTag(it) }
     }
 
     @Override
     void create(TagDTO tag) {
-        ObjectContext context = cayenneService.newContext
+        createTag(tag)
+    }
 
-        ValidationErrorDTO error = validateForSave(context, tag)
-        if (error) {
-            context.rollbackChanges()
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
-        }
-        toDbTag(context, tag, context.newObject(Tag))
+    @Override
+    void createHidden(TagDTO tag) {
+        if (tag.type != TagTypeDTO.HIDDEN)
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ValidationErrorDTO(tag.id?.toString(), "type",
+                            "You can create only special tags with this endpoint"))
+                    .build())
 
-        context.commitChanges()
-
-
+        createTag(tag)
     }
 
     @Override
@@ -81,6 +77,21 @@ class TagApiImpl implements TagApi {
         }
 
         toRestTag(tag)
+    }
+
+    @Override
+    List<TagDTO> getHiddenTags(String entityName) {
+        def taggableClassesForEntity = taggableClassesFor(entityName)
+        return getTagsForEntityAndType(NodeType.HIDDEN_TAG, taggableClassesForEntity).collect {toRestTag(it)}
+    }
+
+    private List<Tag> getTagsForEntityAndType(NodeType nodeType, List<TaggableClasses> taggableClassesForEntity){
+        def expr = tagExprFor(nodeType, taggableClassesForEntity)
+        ObjectSelect.query(Tag)
+                .where(expr)
+                .prefetch(tagGroupPrefetch)
+                .orderBy(Tag.CREATED_ON.name)
+                .select(cayenneService.newContext)
     }
 
     @Override
@@ -106,24 +117,39 @@ class TagApiImpl implements TagApi {
                 .collect { toRestTag(it, childCountMap) }
     }
 
-    private static Expression tagExprFor(NodeType nodeType, List<TaggableClasses> taggableClasses){
+
+    private void createTag(TagDTO tag) {
+
+        ObjectContext context = cayenneService.newContext
+
+        ValidationErrorDTO error = validateForSave(context, tag)
+        if (error) {
+            context.rollbackChanges()
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
+        }
+        toDbTag(context, tag, context.newObject(Tag))
+
+        context.commitChanges()
+    }
+
+    private static Expression tagExprFor(NodeType nodeType, List<TaggableClasses> taggableClasses) {
         Tag.PARENT_TAG.isNull()
                 .andExp(Tag.NODE_TYPE.eq(nodeType))
                 .andExp(buildTagExprFor(taggableClasses))
     }
 
-    private static Expression buildTagExprFor(List<TaggableClasses> taggableClasses){
-        if(taggableClasses.isEmpty())
+    private static Expression buildTagExprFor(List<TaggableClasses> taggableClasses) {
+        if (taggableClasses.isEmpty())
             return new ASTTrue()
         Expression tagExpr = Tag.TAG_REQUIREMENTS
                 .dot(TagRequirement.ENTITY_IDENTIFIER).in(taggableClasses)
         tagExpr
     }
 
-    private static List<TaggableClasses> taggableClassesFor(String entityName){
+    private static List<TaggableClasses> taggableClassesFor(String entityName) {
         TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
         TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
-        def classes = additionalTags.collect {it}
+        def classes = additionalTags.collect { it }
         classes.add(taggableClass)
         return classes
     }

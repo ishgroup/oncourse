@@ -148,7 +148,25 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
 			if (relation.getTag() != null) {
-				result.add(relation.getTag());
+				if(!relation.getTag().getNodeType().equals(NodeType.HIDDEN_TAG))
+					result.add(relation.getTag());
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Get all hidden tags related to this object.
+	 *
+	 * @return List of related tags
+	 */
+	@API
+	public List<Tag> getHiddenTags() {
+		List<Tag> result = new ArrayList<>();
+		for (TagRelation relation : getTaggingRelations()) {
+			if (relation.getTag() != null) {
+				if(relation.getTag().getNodeType().equals(NodeType.HIDDEN_TAG))
+					result.add(relation.getTag());
 			}
 		}
 		return result;

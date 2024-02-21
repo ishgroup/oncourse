@@ -18,6 +18,11 @@ properties:
     items:
       type: integer
       format: int64
+  hiddenTags:
+    type: array
+    items:
+      type: integer
+      format: int64
   enrolmentType:
     $ref: './CourseEnrolmentType.yaml'
   allowWaitingLists:

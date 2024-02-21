@@ -1,0 +1,46 @@
+get:
+  operationId: getHiddenTags
+  description: list of all root hidden tags
+  tags:
+    - Tag
+  parameters:
+    - name: entityName
+      in: query
+      required: true
+      type: string
+      description: entity type identifier, null param returns empty list of checklists
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/Tag.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_EDIT_EXTENDED_TAGS
+    errorMessage: Sorry, you have no permissions to see these entities. Please contact your administrator
+
+
+post:
+  description: Create hidden tag group
+  operationId: createHidden
+  tags:
+    - Tag
+  parameters:
+    - name: tag
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/Tag.yaml'
+  responses:
+    '204':
+      description: Rule item successfully added
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: all
+    keyCode: SPECIAL_EDIT_EXTENDED_TAGS
+    errorMessage: Sorry, you have no permissions to delete note. Please contact your administrator
