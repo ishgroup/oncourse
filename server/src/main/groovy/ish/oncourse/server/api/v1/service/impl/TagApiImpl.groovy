@@ -60,12 +60,11 @@ class TagApiImpl implements TagApi {
 
     @Override
     void createHidden(TagDTO tag) {
-        if (tag.type != TagTypeDTO.HIDDEN)
+        if (!TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.displayName.contains(tag.name))
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ValidationErrorDTO(tag.id?.toString(), "type",
                             "You can create only special tags with this endpoint"))
                     .build())
-
         createTag(tag)
     }
 
