@@ -3,4 +3,3 @@ description: tag types
 enum:
   - Tag
   - Checklist
-  - Hidden

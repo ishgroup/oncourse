@@ -12,6 +12,7 @@ package ish.oncourse.server.cayenne.glue;
 
 
 import com.google.inject.Inject;
+import ish.common.types.NodeSpecialType;
 import ish.common.types.NodeType;
 import ish.common.types.SystemEventType;
 import ish.oncourse.API;
@@ -36,6 +37,8 @@ import java.util.stream.Collectors;
  * Entities which can be tagged. Some helper methods here are useful for manipulating tags.
  */
 public abstract class TaggableCayenneDataObject extends CayenneDataObject implements Taggable {
+
+	public static final List<NodeSpecialType> HIDDEN_SPECIAL_TYPES = List.of(NodeSpecialType.CLASS_EXTENDED_TYPES, NodeSpecialType.COURSE_EXTENDED_TYPES);
 
 	public static final String BULK_TAG_PROPERTY = "bulkTag";
 	public static final String BULK_UNTAG_PROPERTY = "bulkUntag";
@@ -148,7 +151,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
 			if (relation.getTag() != null) {
-				if(!relation.getTag().getNodeType().equals(NodeType.HIDDEN_TAG))
+				if(!HIDDEN_SPECIAL_TYPES.contains(relation.getTag().getSpecialType()))
 					result.add(relation.getTag());
 			}
 		}
@@ -165,7 +168,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
 			if (relation.getTag() != null) {
-				if(relation.getTag().getNodeType().equals(NodeType.HIDDEN_TAG))
+				if(HIDDEN_SPECIAL_TYPES.contains(relation.getTag().getSpecialType()))
 					result.add(relation.getTag());
 			}
 		}

@@ -278,6 +278,14 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 					break
 				case NodeSpecialType.HOME_WEBPAGE:
 					return
+				case NodeSpecialType.CLASS_EXTENDED_TYPES:
+					if(getParentTag() == null)
+						message = "This tag group is required for the classes.";
+					break
+				case NodeSpecialType.COURSE_EXTENDED_TYPES:
+					if(getParentTag() == null)
+						message = "This tag group is required for the courses.";
+					break
 				default:
 					throw new IllegalArgumentException("Unknown special type for tag");
 			}

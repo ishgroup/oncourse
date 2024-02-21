@@ -68,7 +68,27 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 * Tag is used to filter classes on the college website
 	 */
 	@API
-	TERMS(6, "Terms")
+	TERMS(6, "Terms"),
+
+	/**
+	 * Database value: 7
+	 *
+	 * There can only be one tag group called "Class extended types"
+	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter classes on the college website
+	 */
+	@API
+	CLASS_EXTENDED_TYPES(7, "Class extended types"),
+
+	/**
+	 * Database value: 8
+	 *
+	 * There can only be one tag group called "Course extended types" and there must always be one.
+	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter classes on the college website
+	 */
+	@API
+	COURSE_EXTENDED_TYPES(8, "Course extended types")
 
 	private String displayName;
 	private int value;

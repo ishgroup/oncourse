@@ -22,6 +22,7 @@ import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.validation.TagValidation
 import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.function.GetTagGroups
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Property
@@ -111,7 +112,7 @@ class TagFunctions {
                 }
             }
 
-    private static Map<Long,Integer> childCountMapOf(ObjectContext context){
+    private static Map<Long, Integer> childCountMapOf(ObjectContext context) {
         return ObjectSelect.query(Tag)
                 .columns(Tag.ID, Tag.TAG_RELATIONS.count())
                 .select(context)
@@ -144,7 +145,9 @@ class TagFunctions {
                                 (dbTag.specialType == NodeSpecialType.SUBJECTS && tagRequirement.type == TagRequirementTypeDTO.COURSE) ||
                                         (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
                                         (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR) ||
-                                        (dbTag.specialType == NodeSpecialType.TERMS && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS)
+                                        (dbTag.specialType == NodeSpecialType.TERMS && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS) ||
+                                        (dbTag.specialType == NodeSpecialType.CLASS_EXTENDED_TYPES && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS)||
+                                        (dbTag.specialType == NodeSpecialType.COURSE_EXTENDED_TYPES && tagRequirement.type == TagRequirementTypeDTO.COURSE)
                         )
 
                         tagRequirement
@@ -197,6 +200,14 @@ class TagFunctions {
                     break
                 case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
                     errorMessage += ' This tag group is required for the onCourse tutor pay feature.'
+                    break
+                case NodeSpecialType.CLASS_EXTENDED_TYPES:
+                    if(dbTag.parentTag == null)
+                        errorMessage += ' This tag group is required for the onCourse class types.'
+                    break
+                case NodeSpecialType.COURSE_EXTENDED_TYPES:
+                    if(dbTag.parentTag == null)
+                        errorMessage += ' This tag group is required for the onCourse course types.'
                     break
                 default:
                     break
@@ -257,11 +268,17 @@ class TagFunctions {
             case NodeSpecialType.TERMS:
                 requiredEntity = deletedEntityList.find { it == TaggableClasses.COURSE_CLASS }
                 break
+            case NodeSpecialType.CLASS_EXTENDED_TYPES:
+                requiredEntity = deletedEntityList.find { it == TaggableClasses.COURSE_CLASS }
+                break
+            case NodeSpecialType.COURSE_EXTENDED_TYPES:
+                requiredEntity = deletedEntityList.find { it == TaggableClasses.COURSE }
+                break
         }
 
         return requiredEntity == null ? null :
                 new ValidationErrorDTO(null, 'requirements',
-                        "The ${ StringUtils.capitalize(requiredEntity.name().toLowerCase()) } entity is mandatory for the Tag Group.".toString()
+                        "The ${StringUtils.capitalize(requiredEntity.name().toLowerCase())} entity is mandatory for the Tag Group.".toString()
                 )
     }
 
@@ -378,6 +395,10 @@ class TagFunctions {
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
             childTag.parentTag = dbTag
+
+            if (TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(dbTag.specialType)) {
+                childTag.setSpecialType(dbTag.specialType)
+            }
 
             _toDbTag(context, child, childTag, false, deletedEntityList, childTagsToRemove)
 
