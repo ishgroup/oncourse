@@ -58,8 +58,8 @@ class TagApiImpl implements TagApi {
         createTag(tag)
     }
 
-    @Override
-    void createHidden(TagDTO tag) {
+
+    void createSpecial(TagDTO tag) {
         if (!TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(tag.specialType)) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ValidationErrorDTO(tag.id?.toString(), "type",
@@ -82,8 +82,8 @@ class TagApiImpl implements TagApi {
         toRestTag(tag)
     }
 
-    @Override
-    List<TagDTO> getHiddenTags(String entityName) {
+
+    List<TagDTO> getSpecialTags(String entityName) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
         def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
         expr = expr.andExp(Tag.SPECIAL_TYPE.in(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
@@ -165,6 +165,25 @@ class TagApiImpl implements TagApi {
         Tag dbTag = CayenneFunctions
                 .getRecordById(context, Tag, id)
 
+       removeTag(dbTag, context, id)
+    }
+
+    @Override
+    void removeSpecial(Long id) {
+        ObjectContext context = cayenneService.newContext
+        Tag dbTag = CayenneFunctions
+                .getRecordById(context, Tag, id)
+
+        if(!TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(dbTag.specialType))
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ValidationErrorDTO(dbTag.id?.toString(), "type",
+                            "You can remove only special tags with this endpoint"))
+                    .build())
+
+        removeTag(dbTag, context, id)
+    }
+
+    private void removeTag(Tag dbTag, ObjectContext context, Long id){
         ValidationErrorDTO error = validateForDelete(dbTag, id)
         if (error) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
