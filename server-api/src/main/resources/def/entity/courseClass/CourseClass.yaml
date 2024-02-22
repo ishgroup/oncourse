@@ -138,7 +138,7 @@ properties:
     items:
       type: integer
       format: int64
-  hiddenTags:
+  specialTypeTags:
     type: array
     items:
       type: integer

@@ -1,6 +1,6 @@
 get:
-  operationId: getHiddenTags
-  description: list of all root hidden tags
+  operationId: getSpecialTags
+  description: list of all root special tags
   tags:
     - Tag
   parameters:
@@ -25,8 +25,8 @@ get:
 
 
 post:
-  description: Create hidden tag group
-  operationId: createHidden
+  description: Create Special tag group
+  operationId: createSpecial
   tags:
     - Tag
   parameters:
@@ -41,6 +41,29 @@ post:
     default:
       description: Unexpected error
   x-permission:
-    mask: all
+    mask: edit
     keyCode: SPECIAL_EDIT_EXTENDED_TAGS
-    errorMessage: Sorry, you have no permissions to delete note. Please contact your administrator
+    errorMessage: Sorry, you have no permissions to edit special entities. Please contact your administrator
+
+
+delete:
+  description: Delete Special tag group
+  operationId: removeSpecial
+  tags:
+    - Tag
+  parameters:
+    - name: id
+      in: path
+      description: Identifier of root tag which will be deleted.
+      required: true
+      type: integer
+      format: int64
+  responses:
+    '204':
+      description: Rule item successfully added
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: SPECIAL_EDIT_EXTENDED_TAGS
+    errorMessage: Sorry, you have no permissions to remove special entities. Please contact your administrator

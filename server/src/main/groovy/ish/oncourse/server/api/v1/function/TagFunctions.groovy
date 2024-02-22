@@ -204,14 +204,6 @@ class TagFunctions {
                 case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
                     errorMessage += ' This tag group is required for the onCourse tutor pay feature.'
                     break
-                case NodeSpecialType.CLASS_EXTENDED_TYPES:
-                    if (dbTag.parentTag == null)
-                        errorMessage += ' This tag group is required for the onCourse class types.'
-                    break
-                case NodeSpecialType.COURSE_EXTENDED_TYPES:
-                    if (dbTag.parentTag == null)
-                        errorMessage += ' This tag group is required for the onCourse course types.'
-                    break
                 default:
                     break
             }
