@@ -112,4 +112,13 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	public String toString() {
 		return getDisplayName();
 	}
+
+	static NodeSpecialType fromDisplayName(String text) {
+		for (NodeSpecialType b : values()) {
+			if (String.valueOf(b.displayName).equals(text)) {
+				return b
+			}
+		}
+		return null
+	}
 }

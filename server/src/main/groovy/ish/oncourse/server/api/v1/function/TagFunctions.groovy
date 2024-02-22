@@ -146,7 +146,7 @@ class TagFunctions {
                                         (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
                                         (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR) ||
                                         (dbTag.specialType == NodeSpecialType.TERMS && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS) ||
-                                        (dbTag.specialType == NodeSpecialType.CLASS_EXTENDED_TYPES && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS)||
+                                        (dbTag.specialType == NodeSpecialType.CLASS_EXTENDED_TYPES && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS) ||
                                         (dbTag.specialType == NodeSpecialType.COURSE_EXTENDED_TYPES && tagRequirement.type == TagRequirementTypeDTO.COURSE)
                         )
 
@@ -154,6 +154,9 @@ class TagFunctions {
                     }
                 }
             }
+
+            if (TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(dbTag.specialType))
+                tag.specialType = SpecialTagTypeDTO.valueOf(dbTag.specialType.displayName)
 
             tag.childTags = dbTag.childTags.sort { it.weight }.collect { toRestTag(it, childCountMap, false) }
             tag
@@ -202,11 +205,11 @@ class TagFunctions {
                     errorMessage += ' This tag group is required for the onCourse tutor pay feature.'
                     break
                 case NodeSpecialType.CLASS_EXTENDED_TYPES:
-                    if(dbTag.parentTag == null)
+                    if (dbTag.parentTag == null)
                         errorMessage += ' This tag group is required for the onCourse class types.'
                     break
                 case NodeSpecialType.COURSE_EXTENDED_TYPES:
-                    if(dbTag.parentTag == null)
+                    if (dbTag.parentTag == null)
                         errorMessage += ' This tag group is required for the onCourse course types.'
                     break
                 default:
@@ -391,6 +394,7 @@ class TagFunctions {
         }
         dbTag.contents = trimToNull(tag.content)
         dbTag.nodeType = NodeType.fromDisplayName(tag.type.toString())
+        dbTag.specialType = NodeSpecialType.fromDisplayName(tag.specialType?.toString())
 
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
