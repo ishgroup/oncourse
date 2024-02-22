@@ -237,6 +237,17 @@ class TagFunctions {
             return new ValidationErrorDTO(tag.id?.toString(), 'name', 'Name should be unique.')
         }
 
+        if(dbTag == null && tag.specialType){
+            def specialTag = ObjectSelect.query(Tag)
+                    .where(Tag.SPECIAL_TYPE.eq(NodeSpecialType.valueOf(tag.specialType.toString())))
+                    .and(Tag.PARENT_TAG.isNull())
+                    .selectOne(context)
+
+            if(specialTag){
+                return new ValidationErrorDTO(tag.id?.toString(), 'specialType', 'Error of creating entity. Contact ish support.')
+            }
+        }
+
         Set<String> notValidNames = new HashSet<>()
         validateNamesOfNewTag(tag, notValidNames)
         if (notValidNames.size() > 0) {
