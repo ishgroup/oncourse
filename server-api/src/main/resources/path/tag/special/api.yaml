@@ -30,11 +30,13 @@ post:
   tags:
     - Tag
   parameters:
-    - name: tag
+    - name: childTags
       in: body
       required: true
       schema:
-        $ref: './def/entity/Tag.yaml'
+        type: array
+        items:
+          $ref: './def/entity/Tag.yaml'
   responses:
     '204':
       description: Rule item successfully added
