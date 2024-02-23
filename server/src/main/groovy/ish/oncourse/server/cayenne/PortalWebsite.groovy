@@ -11,8 +11,10 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.DataType
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._PortalWebsite
+import org.apache.cayenne.query.ObjectSelect
 
 @QueueableEntity
 class PortalWebsite extends _PortalWebsite implements Queueable {
@@ -20,5 +22,15 @@ class PortalWebsite extends _PortalWebsite implements Queueable {
 	@Override
 	boolean isAsyncReplicationAllowed() {
 		return false
+	}
+
+	@Override
+	protected void preRemove() {
+		def customFields = ObjectSelect.query(CustomField)
+				.where(CustomField.CUSTOM_FIELD_TYPE.dot(CustomFieldType.DATA_TYPE).eq(DataType.PORTAL_SUBDOMAIN))
+				.select(context)
+
+		if(!customFields.empty)
+			context.deleteObjects(customFields)
 	}
 }

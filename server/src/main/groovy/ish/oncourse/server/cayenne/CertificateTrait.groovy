@@ -12,23 +12,14 @@
 package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
-import ish.common.types.ProductStatus
 import ish.oncourse.API
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.dao.PaymentInDao
-import ish.oncourse.server.license.LicenseService
-import ish.util.RuntimeUtil
+import ish.oncourse.server.api.service.PortalWebsiteService
 import ish.util.UrlUtil
-import org.apache.commons.lang3.StringUtils
-
-import java.text.ParseException
-import java.time.LocalDate
-import java.time.Period
 
 trait CertificateTrait {
 
     @Inject
-    private PreferenceController preferenceController
+    private PortalWebsiteService portalWebsiteService
     
     abstract String getUniqueCode()
 
@@ -40,6 +31,6 @@ trait CertificateTrait {
      */
     @API
     String getPortalUrl() {
-        return UrlUtil.buildCertificatePortalUrl(uniqueCode, preferenceController)
+        return UrlUtil.buildCertificatePortalUrl(uniqueCode, portalWebsiteService.getPortalSubdomain())
     }
 }
