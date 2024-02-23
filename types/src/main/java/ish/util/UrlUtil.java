@@ -10,7 +10,6 @@
  */
 package ish.util;
 
-import ish.persistence.CommonPreferenceController;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +34,8 @@ public class UrlUtil {
     private static final String URL_PARAM_DELIMITER = "&";
     private static final String URL_PART_DELIMITER = "/";
     private static final String USI_PART = "usi";
-    private static final Pattern PORTAL_LINK_PATTERN = Pattern.compile("http(s?)://(.*)/portal(.*)&key=");
+    private static final Pattern PORTAL_LINK_PATTERN = Pattern.compile("http(s?)://(.*).skillsoncourse.com.au/portal(.*)&key=");
+    private static final String PORTAL_LINK_FORMAT= "https://%s.skillsoncourse.com.au";
 
     /**
      * Creates link to portal's USI details entry page and signs it with hash.
@@ -51,11 +51,10 @@ public class UrlUtil {
      * @param expiry      - URL expiry date
      * @param hashSalt    - salt for hashing
      * @return - temporary URL to portal USI details collection page
-     * @deprecated use {@link UrlUtil#createSignedPortalUrl(CommonPreferenceController, String, Date, String)} instead
+     * @deprecated use {@link UrlUtil#createSignedPortalUrl(String, Date, String, String)} instead
      */
     @Deprecated
-    public static String createPortalUsiLink(CommonPreferenceController preferenceController,
-                                             String contactCode, Date expiry, String hashSalt, String domain) {
+    public static String createPortalUsiLink(String contactCode, Date expiry, String hashSalt, String domain) {
 
         if (StringUtils.trimToNull(contactCode) == null) {
             throw new IllegalArgumentException("Contact unique code cannot be null.");
@@ -66,10 +65,6 @@ public class UrlUtil {
         if (expiry == null) {
             throw new IllegalArgumentException("Expiry date cannot be null.");
         }
-
-        String portalUrl = preferenceController.getPortalUrl();
-        if (portalUrl == null)
-            throw new IllegalArgumentException("portal.website.url preference not configured on website");
 
         DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
 
@@ -91,7 +86,7 @@ public class UrlUtil {
         urlBuilder.append(KEY).append('=');
         urlBuilder.append(hashKey);
 
-        return buildPortalUrl(portalUrl, urlBuilder, true);
+        return buildPortalUrl(domain, urlBuilder, true);
     }
 
     /**
@@ -156,8 +151,7 @@ public class UrlUtil {
      * @param hashSalt - salt for hashing
      * @return - temporary signed URL
      */
-    public static String createSignedPortalUrl(CommonPreferenceController preferenceController,
-                                               String path, Date expiry, String hashSalt) {
+    public static String createSignedPortalUrl(String path, Date expiry, String hashSalt, String subDomain) {
         if (StringUtils.trimToNull(path) == null) {
             throw new IllegalArgumentException("Path cannot be null.");
         }
@@ -168,9 +162,7 @@ public class UrlUtil {
             throw new IllegalArgumentException("Expiry date cannot be null.");
         }
 
-        String portalUrl = preferenceController.getPortalUrl();
-        if (portalUrl == null)
-            throw new IllegalArgumentException("portal.website.url preference not configured on website");
+        String portalUrl = getPortalUrlFor(subDomain);
 
         DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
 
@@ -251,21 +243,18 @@ public class UrlUtil {
         return Base64.encodeBase64URLSafeString(hash);
     }
 
-    public static String buildCertificatePortalUrl(String certificateKey, CommonPreferenceController preferenceController){
-        String portalUrl = preferenceController.getPortalUrl();
-        if (portalUrl == null)
-            throw new IllegalArgumentException("portal.website.url preference not configured on website");
-
+    public static String buildCertificatePortalUrl(String certificateKey, String portalSubDomain){
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(URL_PART_DELIMITER);
         urlBuilder.append("certificate/");
         urlBuilder.append(certificateKey);
-        return buildPortalUrl(portalUrl, urlBuilder, false);
+        return buildPortalUrl(portalSubDomain, urlBuilder, false);
     }
 
-	private static String buildPortalUrl(String portalWebsiteUrl, StringBuilder urlBuilder, boolean prefixRequred){
+	private static String buildPortalUrl(String portalWebsiteSubDomain, StringBuilder urlBuilder, boolean prefixRequred){
 		try {
-			URL url = new URL(portalWebsiteUrl);
+            portalWebsiteSubDomain = getPortalUrlFor(portalWebsiteSubDomain);
+			URL url = new URL(portalWebsiteSubDomain);
             String urlStr = url.getProtocol() + "://" + url.getAuthority();
             if(prefixRequred)
                 urlStr = urlStr + "/portal";
@@ -274,4 +263,12 @@ public class UrlUtil {
 			throw new IllegalArgumentException("Incorrect portal.website.url preference value. Connect your administrator");
 		}
 	}
+
+    public static String getPortalUrlFor(String subDomain){
+        if(subDomain == null || subDomain.isEmpty()){
+            throw new IllegalArgumentException("Incorrect subdomain passed to portal url building");
+        }
+
+        return String.format(PORTAL_LINK_FORMAT, subDomain);
+    }
 }
