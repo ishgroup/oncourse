@@ -14,6 +14,8 @@ import {
   Tax
 } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
+import { IAction } from "../../../common/actions/IshAction";
+import { EntityName } from "../../../model/entities/common";
 import { Categories } from "../../../model/preferences";
 
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST = _toRequestType("get/datacollection/formFieldTypes");
@@ -165,9 +167,22 @@ export const DELETE_TUTOR_ROLE_FULFILLED = FULFILLED(DELETE_TUTOR_ROLE_REQUEST);
 export const GET_GRADING_TYPES_REQUEST = _toRequestType("get/grading/type");
 export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
 
+export const GET_SPECIAL_TAG_TYPES = _toRequestType("get/tag/special");
+
+export const POST_SPECIAL_TAG_TYPES = _toRequestType("post/tag/special");
+export const POST_SPECIAL_TAG_TYPES_FULFILLED = FULFILLED(POST_SPECIAL_TAG_TYPES);
+
+export const DELETE_SPECIAL_TAG_TYPES = _toRequestType("delete/tag/special");
+export const DELETE_SPECIAL_TAG_TYPES_FULFILLED = FULFILLED(DELETE_SPECIAL_TAG_TYPES);
+
 export const DELETE_GRADING_TYPE_REQUEST = _toRequestType("delete/grading/type");
 
 export const UPDATE_GRADING_TYPES_REQUEST = _toRequestType("post/grading/type");
+
+export const getSpecialTagTypes = (entity: EntityName): IAction<EntityName> => ({
+  type: GET_SPECIAL_TAG_TYPES,
+  payload: entity
+});
 
 export const getGradingTypes = () => ({
   type: GET_GRADING_TYPES_REQUEST
