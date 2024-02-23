@@ -27,6 +27,18 @@ class TagsService {
   public remove(id: number): Promise<Tag[]> {
     return this.tagApi.remove(id);
   }
+
+  createSpecial(tag: Tag): Promise<any> {
+    return this.tagApi.createSpecial(tag);
+  }
+
+  getSpecialTags(entityName: string): Promise<Array<Tag>> {
+    return this.tagApi.getSpecialTags(entityName);
+  }
+
+  removeSpecial(id: number): Promise<any> {
+    return this.tagApi.removeSpecial(id);
+  }
 }
 
 export default new TagsService();

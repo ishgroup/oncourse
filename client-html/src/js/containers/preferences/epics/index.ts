@@ -23,6 +23,7 @@ import { EpicGetLanguages } from "./EpicGetLanguages";
 import { EpicGetLockedDate } from "./EpicGetLockedDate";
 import { EpicGetPreferences } from "./EpicGetPreferences";
 import { EpicGetPreferencesByKeys } from "./EpicGetPreferencesByKeys";
+import { EpicGetSpecialTagTypes } from "./EpicGetSpecialTagTypes";
 import { EpicGetTimezones } from "./EpicGetTimezones";
 import { EpicGetUSISortwareId } from "./EpicGetUSISortwareId";
 import { EpicSavePreferences } from "./EpicSavePreferences";
@@ -54,6 +55,7 @@ export const EpicPreferences = combineEpics(
   EpicGetCurrency,
   EpicGetUSISortwareId,
   EpicGetPreferencesByKeys,
+  EpicGetSpecialTagTypes,
   EpicFundingContracts,
   EpicGetLockedDate,
   EpicTutorRoles
