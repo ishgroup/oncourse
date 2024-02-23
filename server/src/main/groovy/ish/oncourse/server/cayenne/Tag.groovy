@@ -18,6 +18,7 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.common.NodeInterface
 import ish.oncourse.server.api.v1.function.TagFunctions
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.cayenne.glue._Tag
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
@@ -472,5 +473,9 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		siblings.remove(this)
 
 		return siblings
+	}
+
+	boolean isHidden(){
+		return specialType && TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(specialType)
 	}
 }

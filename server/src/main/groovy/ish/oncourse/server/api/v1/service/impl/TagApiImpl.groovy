@@ -60,7 +60,7 @@ class TagApiImpl implements TagApi {
 
 
     void createSpecial(TagDTO tag) {
-        if (!TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(tag.specialType)) {
+        if (!tag.specialType || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(tag.specialType)) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ValidationErrorDTO(tag.id?.toString(), "type",
                             "You can create only special tags with this endpoint"))
@@ -174,7 +174,7 @@ class TagApiImpl implements TagApi {
         Tag dbTag = CayenneFunctions
                 .getRecordById(context, Tag, id)
 
-        if(!TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(dbTag.specialType))
+        if(!dbTag.isHidden())
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ValidationErrorDTO(dbTag.id?.toString(), "type",
                             "You can remove only special tags with this endpoint"))

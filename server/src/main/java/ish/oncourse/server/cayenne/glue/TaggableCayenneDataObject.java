@@ -151,7 +151,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
 			if (relation.getTag() != null) {
-				if(!HIDDEN_SPECIAL_TYPES.contains(relation.getTag().getSpecialType()))
+				if(!relation.getTag().isHidden())
 					result.add(relation.getTag());
 			}
 		}
@@ -168,7 +168,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
 			if (relation.getTag() != null) {
-				if(HIDDEN_SPECIAL_TYPES.contains(relation.getTag().getSpecialType()))
+				if(relation.getTag().isHidden())
 					result.add(relation.getTag());
 			}
 		}
