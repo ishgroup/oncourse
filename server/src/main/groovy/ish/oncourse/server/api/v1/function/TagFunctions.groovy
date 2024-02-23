@@ -155,7 +155,7 @@ class TagFunctions {
                 }
             }
 
-            if (TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(dbTag.specialType))
+            if (dbTag.isHidden())
                 tag.specialType = SpecialTagTypeDTO.valueOf(dbTag.specialType.displayName)
 
             tag.childTags = dbTag.childTags.sort { it.weight }.collect { toRestTag(it, childCountMap, false) }
@@ -403,7 +403,7 @@ class TagFunctions {
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
             childTag.parentTag = dbTag
 
-            if (TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(dbTag.specialType)) {
+            if (dbTag.isHidden()) {
                 childTag.setSpecialType(dbTag.specialType)
             }
 
