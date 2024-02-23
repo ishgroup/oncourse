@@ -12,10 +12,12 @@
 package ish.oncourse.server.api.v1.function
 
 import ish.common.types.DataType
+import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.CustomFieldType
 import ish.oncourse.server.cayenne.ExpandableTrait
+import ish.oncourse.server.cayenne.PortalWebsite
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import static org.apache.commons.lang3.StringUtils.isBlank
@@ -32,14 +34,17 @@ class CustomFieldFunctions {
         customFields.each { k, v ->
             CustomField cf = dbCustomFields.find { it.customFieldType.key == k }
 
-            if (cf) {
-                cf.value = trimToNull(v)
-            } else if (v) {
+            if(!cf){
                 cf = context.newObject(relationClass)
                 cf.relatedObject = dbObject
                 cf.customFieldType = getCustomFieldType(context, dbObject.class.simpleName, k)
-                cf.value = trimToNull(v)
             }
+
+            if(cf.customFieldType.dataType == DataType.PORTAL_SUBDOMAIN && cf.value && !cf.value.empty) {
+                validateSubDomain(context, cf.value, cf.id)
+            }
+
+            cf.value = trimToNull(v)
         }
         dbObject.modifiedOn = new Date()
     }
@@ -98,5 +103,17 @@ class CustomFieldFunctions {
                         validator.throwClientErrorException(entityId, 'customFields', "$it.name is required.")
                     }
                 }
+    }
+
+    static void validateSubDomain(ObjectContext context, String value, Long fieldId) {
+        def subdomains = ObjectSelect.query(PortalWebsite)
+                .where(PortalWebsite.SUB_DOMAIN.eq(value))
+                .select(context)
+
+        if(subdomains.empty) {
+            String errorMessage = "Portal website for subdomain ${value} not exists in database"
+            ValidationErrorDTO error = new ValidationErrorDTO(fieldId?.toString(), "subdomain", errorMessage)
+            EntityValidator.throwClientErrorException(error)
+        }
     }
 }

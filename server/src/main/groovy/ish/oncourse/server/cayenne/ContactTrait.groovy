@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
+import ish.common.types.DataType
 import ish.common.types.ProductStatus
 import ish.oncourse.API
 import ish.oncourse.server.PreferenceController
@@ -51,6 +52,8 @@ trait ContactTrait {
         memberships.any { it.status == ProductStatus.ACTIVE && it.expiryDate > new Date() && it.product.id == membership.id  }
 
     }
+
+    abstract List<? extends CustomField> getCustomFields()
 
     /**
      * Get the age in whole years
@@ -180,11 +183,18 @@ trait ContactTrait {
 
         Date expiryDate = parseExpiryDate(timeout)
         String hashSalt = licenseService.getSecurity_key()
+
+        String overriddenDomain = null
+        def domainCustomField = customFields.find {(it as CustomField).customFieldType.dataType == DataType.PORTAL_SUBDOMAIN}
+        if(domainCustomField && !domainCustomField.value.empty){
+            overriddenDomain = domainCustomField.value
+        }
+
         if (PORTAL_USI_TARGET.equals(target)) {
-            return UrlUtil.createPortalUsiLink(preferenceController, this.uniqueCode, expiryDate, hashSalt)
+            return UrlUtil.createPortalUsiLink(preferenceController, this.uniqueCode, expiryDate, hashSalt, overriddenDomain)
         } else {
             String path = parsePortalTarget(target)
-            return UrlUtil.createSignedPortalUrl(preferenceController, path, expiryDate, hashSalt)
+            return UrlUtil.createSignedPortalUrl(preferenceController, path, expiryDate, hashSalt, overriddenDomain)
         }
     }
 

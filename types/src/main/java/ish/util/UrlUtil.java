@@ -55,7 +55,7 @@ public class UrlUtil {
      */
     @Deprecated
     public static String createPortalUsiLink(CommonPreferenceController preferenceController,
-                                             String contactCode, Date expiry, String hashSalt) {
+                                             String contactCode, Date expiry, String hashSalt, String domain) {
 
         if (StringUtils.trimToNull(contactCode) == null) {
             throw new IllegalArgumentException("Contact unique code cannot be null.");

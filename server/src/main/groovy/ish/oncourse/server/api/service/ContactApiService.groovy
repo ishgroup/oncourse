@@ -439,6 +439,8 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         if (missedCustomFieldTypeKey != null) {
             validator.throwClientErrorException(Contact.CUSTOM_FIELDS.name, "Custom field type '${missedCustomFieldTypeKey}' is mandatory for contact.")
         }
+
+
     }
 
     private boolean isAnyUsiFieldEdited(Contact cayenneModel, ContactDTO dto) {
