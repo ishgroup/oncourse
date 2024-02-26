@@ -28,7 +28,7 @@ class TagsService {
     return this.tagApi.remove(id);
   }
 
-  createSpecial(tag: Tag): Promise<any> {
+  createSpecial(tag: Tag[]): Promise<any> {
     return this.tagApi.createSpecial(tag);
   }
 
