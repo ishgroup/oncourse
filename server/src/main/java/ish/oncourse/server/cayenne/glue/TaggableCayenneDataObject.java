@@ -14,23 +14,20 @@ package ish.oncourse.server.cayenne.glue;
 import com.google.inject.Inject;
 import ish.common.types.NodeSpecialType;
 import ish.common.types.NodeType;
-import ish.common.types.SystemEventType;
 import ish.oncourse.API;
 import ish.oncourse.aql.AqlService;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
-import ish.oncourse.common.SystemEvent;
 import ish.oncourse.entity.services.TagService;
-import ish.oncourse.server.api.v1.function.TagFunctions;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.TagRelation;
-import ish.oncourse.server.integration.EventService;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static ish.oncourse.server.api.v1.function.TagRequirementFunctions.getTaggableClassForName;
 
 
 /**
@@ -66,7 +63,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	 * @return List of tag ids
 	 */
 	public List<Long> getTagIds() {
-		TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName());
+		TaggableClasses taggable = getTaggableClassForName(this.getClass().getSimpleName());
 		if (taggable != null) {
 			return ObjectSelect.columnQuery(Tag.class, Tag.ID)
 					.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
@@ -85,7 +82,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	 * @return List of colors
 	 */
 	public List<String> getTagColors() {
-		TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName());
+		TaggableClasses taggable = getTaggableClassForName(this.getClass().getSimpleName());
 		if (taggable != null) {
 			return ObjectSelect.columnQuery(Tag.class, Tag.COLOUR)
 					.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)

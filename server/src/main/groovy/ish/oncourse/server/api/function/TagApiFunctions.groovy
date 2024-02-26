@@ -22,14 +22,23 @@ import org.apache.cayenne.query.ObjectSelect
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
-import static ish.oncourse.server.api.v1.function.TagFunctions.getAdditionalTaggableClasses
-import static ish.oncourse.server.api.v1.function.TagFunctions.getRequirementTaggableClassForName
+
 import static ish.oncourse.server.api.v1.function.TagFunctions.getTagGroupPrefetch
 import static ish.oncourse.server.api.v1.function.TagFunctions.toDbTag
 import static ish.oncourse.server.api.v1.function.TagFunctions.validateForDelete
 import static ish.oncourse.server.api.v1.function.TagFunctions.validateForSave
+import static ish.oncourse.server.api.v1.function.TagRequirementFunctions.getRequirementTaggableClassForName
 
 class TagApiFunctions {
+
+    private static final Map<TaggableClasses, TaggableClasses[]> additionalTaggableClasses =
+            new HashMap<TaggableClasses, TaggableClasses[]>() {
+                {
+                    put(TaggableClasses.CONTACT, [TaggableClasses.STUDENT, TaggableClasses.TUTOR] as TaggableClasses[])
+                    put(TaggableClasses.PRODUCT_ITEM, [TaggableClasses.ARTICLE, TaggableClasses.VOUCHER, TaggableClasses.MEMBERSHIP] as TaggableClasses[])
+                }
+            }
+
 
     static void createTag(TagDTO tag, ObjectContext context) {
         ValidationErrorDTO error = validateForSave(context, tag)
@@ -80,5 +89,14 @@ class TagApiFunctions {
                 .prefetch(tagGroupPrefetch)
                 .orderBy(Tag.CREATED_ON.name)
                 .select(context)
+    }
+
+
+    static TaggableClasses[] getAdditionalTaggableClasses(TaggableClasses taggableClasses) {
+        TaggableClasses[] taggableClassesArr = additionalTaggableClasses.get(taggableClasses)
+        if (taggableClassesArr == null) {
+            return new TaggableClasses[0]
+        }
+        return taggableClassesArr
     }
 }
