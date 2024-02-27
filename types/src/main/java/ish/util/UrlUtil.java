@@ -162,8 +162,6 @@ public class UrlUtil {
             throw new IllegalArgumentException("Expiry date cannot be null.");
         }
 
-        String portalUrl = getPortalUrlFor(subDomain);
-
         DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
 
         StringBuilder urlBuilder = new StringBuilder();
@@ -188,7 +186,7 @@ public class UrlUtil {
         urlBuilder.append(KEY).append('=');
         urlBuilder.append(hashKey);
 
-        return buildPortalUrl(portalUrl, urlBuilder, true);
+        return buildPortalUrl(subDomain, urlBuilder, true);
     }
 
     /**
