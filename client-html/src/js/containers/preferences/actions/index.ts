@@ -10,7 +10,7 @@ import {
   EnumName,
   GradingType,
   Holiday,
-  PaymentMethod,
+  PaymentMethod, Tag,
   Tax
 } from "@api/model";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
@@ -170,10 +170,8 @@ export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
 export const GET_SPECIAL_TAG_TYPES = _toRequestType("get/tag/special");
 
 export const POST_SPECIAL_TAG_TYPES = _toRequestType("post/tag/special");
-export const POST_SPECIAL_TAG_TYPES_FULFILLED = FULFILLED(POST_SPECIAL_TAG_TYPES);
 
 export const DELETE_SPECIAL_TAG_TYPES = _toRequestType("delete/tag/special");
-export const DELETE_SPECIAL_TAG_TYPES_FULFILLED = FULFILLED(DELETE_SPECIAL_TAG_TYPES);
 
 export const DELETE_GRADING_TYPE_REQUEST = _toRequestType("delete/grading/type");
 
@@ -182,6 +180,11 @@ export const UPDATE_GRADING_TYPES_REQUEST = _toRequestType("post/grading/type");
 export const getSpecialTagTypes = (entity: EntityName): IAction<EntityName> => ({
   type: GET_SPECIAL_TAG_TYPES,
   payload: entity
+});
+
+export const postSpecialTagTypes = (tags: Tag[]): IAction<Tag[]> => ({
+  type: POST_SPECIAL_TAG_TYPES,
+  payload: tags
 });
 
 export const getGradingTypes = () => ({
