@@ -13,6 +13,7 @@ import { EpicMessaging } from "../containers/messaging/epics";
 import { EpicPaymentTypes } from "../containers/payment-types/epics";
 import { EpicTaxTypes } from "../containers/tax-types/epics";
 import { EpicTutorRoles } from "../containers/tutor-roles/epics";
+import { EpicCreateSpecialTagType } from "./EpicCreateSpecialTagType";
 import { EpicGetColumnsWidth } from "./EpicGetColumnsWidth";
 import { EpicGetComplexPath } from "./EpicGetComplexPath";
 import { EpicGetCountries } from "./EpicGetCountries";
@@ -58,5 +59,6 @@ export const EpicPreferences = combineEpics(
   EpicGetSpecialTagTypes,
   EpicFundingContracts,
   EpicGetLockedDate,
-  EpicTutorRoles
+  EpicTutorRoles,
+  EpicCreateSpecialTagType
 );
