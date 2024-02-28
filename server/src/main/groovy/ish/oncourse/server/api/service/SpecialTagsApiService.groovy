@@ -86,7 +86,7 @@ class SpecialTagsApiService {
         def specialType = specialTagDTO.specialType
         def childTags = specialTagDTO.childTags
 
-        if (specialType == null || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(specialType)) {
+        if (specialType == null || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(NodeSpecialType.fromDisplayName(specialType.toString()))) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
                     .entity(new ValidationErrorDTO(childTags.first()?.id?.toString(), "specialType",
                             "You can edit only special tags with this endpoint"))
