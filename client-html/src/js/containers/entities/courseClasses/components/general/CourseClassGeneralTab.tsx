@@ -265,7 +265,20 @@ const CourseClassGeneralTab = React.memo<Props>(
           rowSpacing={2}
         >
           <Grid item xs={twoColumn ? 8 : 12}>
-            <FormField type="tags" name="tags" tags={tags} />
+            <FormField type="tags" name="tags" className="mb-2" tags={tags} />
+
+            <FormField
+              type="remoteDataSelect"
+              entity="Tag"
+              aqlColumns="name"
+              aqlFilter="specialType is CLASS_EXTENDED_TYPES"
+              name="specialTypeTags"
+              label="Type"
+              selectValueMark="id"
+              selectLabelMark="name"
+              preloadEmpty
+              allowEmpty
+            />
             
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">

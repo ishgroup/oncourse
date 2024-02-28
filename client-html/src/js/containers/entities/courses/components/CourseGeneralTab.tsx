@@ -125,6 +125,20 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="tags"
             name="tags"
             tags={tags}
+            className="mb-2"
+          />
+
+          <FormField
+            type="remoteDataSelect"
+            entity="Tag"
+            aqlColumns="name"
+            aqlFilter="specialType is COURSE_EXTENDED_TYPES"
+            name="specialTypeTags"
+            label="Type"
+            selectValueMark="id"
+            selectLabelMark="name"
+            preloadEmpty
+            allowEmpty
           />
         </Grid>
 
