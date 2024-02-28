@@ -198,10 +198,13 @@ public final class KeystoreGenerator {
 						new KeyStore.PasswordProtection(password.toCharArray())
 				);
 				// store chain in KeyStore
-				ks.setEntry(CertificateType.ROOT + "-" + alias,
-						new KeyStore.PrivateKeyEntry(privateKey, new Certificate[]{serverChain[2]}),
-						new KeyStore.PasswordProtection(password.toCharArray())
-				);
+				// CA root certificate is optional
+				if(serverChain.length == 3) {
+					ks.setEntry(CertificateType.ROOT + "-" + alias,
+							new KeyStore.PrivateKeyEntry(privateKey, new Certificate[]{serverChain[2]}),
+							new KeyStore.PasswordProtection(password.toCharArray())
+					);
+				}
 				ks.setEntry(CertificateType.Intermidiate + "-" + alias,
 						new KeyStore.PrivateKeyEntry(privateKey, new Certificate[]{serverChain[1]}),
 						new KeyStore.PasswordProtection(password.toCharArray())
