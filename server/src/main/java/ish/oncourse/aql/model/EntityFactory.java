@@ -53,6 +53,7 @@ public class EntityFactory {
             CourseClassEnrolmentMin.class,
             CourseClassSessionsCount.class,
             CourseClassIsDistantLearningCourse.class,
+            EnrolmentIsClassCompleted.class,
             SessionTutor.class,
             PaymentInBanking.class,
             PaymentInReversalOfId.class,

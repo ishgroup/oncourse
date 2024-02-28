@@ -15,6 +15,9 @@
   <Account id="12" accountCode="accDisc" description="Test discount account" isEnabled="1" type="5" taxId="[NULL]"
            createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
+  <Preference ID="1" NAME="portal.wesite.url" VALUESTRING="https://www.skillsoncourse.com.au/" UNIQUEKEY="portal.wesite.url"
+              CREATEDON="2012-06-20 10:27:50.0" MODIFIEDON="2012-06-20 10:27:50.0"/>
+
   <Country id="1" name="Country1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Country id="2" name="Country2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Country id="3" name="Country3" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>

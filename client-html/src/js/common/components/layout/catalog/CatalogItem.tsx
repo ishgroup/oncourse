@@ -95,7 +95,7 @@ const CatalogItem = (
               {tags?.split(",").map(t => <InfoPill key={t} label={t}/>)}
             </div>
           )}
-          secondary={!hideShortDescription && (shortDescription || "No description")}
+          secondary={!hideShortDescription && (shortDescription || "No short description")}
         />
       </ListItem>
       <Divider light/>
