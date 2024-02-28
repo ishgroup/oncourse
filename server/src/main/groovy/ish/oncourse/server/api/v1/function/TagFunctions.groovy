@@ -50,6 +50,14 @@ class TagFunctions {
                 .collectEntries { [(it[0]): it[1]] }
     }
 
+    static SpecialTagDTO toRestSpecial(NodeSpecialType specialType, List<Tag> childTags){
+        return new SpecialTagDTO().with { dto ->
+            dto.specialType = SpecialTagTypeDTO.fromValue(specialType.displayName)
+            dto.childTags = childTags.collect {toRestTag(it)}
+            dto
+        }
+    }
+
     static TagDTO toRestTag(Tag dbTag, Map<Long, Integer> childCountMap = childCountMapOf(dbTag.context), boolean isParent = true) {
         new TagDTO().with { tag ->
             tag.id = dbTag.id
@@ -69,9 +77,6 @@ class TagFunctions {
                     toRestRequirement(req, dbTag)
                 }
             }
-
-            if (dbTag.isHidden())
-                tag.specialType = SpecialTagTypeDTO.valueOf(dbTag.specialType.displayName)
 
             tag.childTags = dbTag.childTags.sort { it.weight }.collect { toRestTag(it, childCountMap, false) }
             tag
@@ -142,17 +147,6 @@ class TagFunctions {
 
         if (dbTag != null && dbTag.id != tag.id) {
             return new ValidationErrorDTO(tag.id?.toString(), 'name', 'Name should be unique.')
-        }
-
-        if (dbTag == null && tag.specialType) {
-            def specialTag = ObjectSelect.query(Tag)
-                    .where(Tag.SPECIAL_TYPE.eq(NodeSpecialType.valueOf(tag.specialType.toString())))
-                    .and(Tag.PARENT_TAG.isNull())
-                    .selectOne(context)
-
-            if (specialTag) {
-                return new ValidationErrorDTO(tag.id?.toString(), 'specialType', 'Error of creating entity. Contact ish support.')
-            }
         }
 
         Set<String> notValidNames = new HashSet<>()
@@ -277,7 +271,6 @@ class TagFunctions {
         }
         dbTag.contents = trimToNull(tag.content)
         dbTag.nodeType = NodeType.fromDisplayName(tag.type.toString())
-        dbTag.specialType = NodeSpecialType.fromDisplayName(tag.specialType?.toString())
 
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)

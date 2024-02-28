@@ -15,7 +15,7 @@ get:
       schema:
         type: array
         items:
-          $ref: './def/entity/Tag.yaml'
+          $ref: './def/entity/SpecialTag.yaml'
     default:
       description: Unexpected error
   x-permission:
@@ -30,13 +30,11 @@ post:
   tags:
     - Tag
   parameters:
-    - name: childTags
+    - name: specialTag
       in: body
       required: true
       schema:
-        type: array
-        items:
-          $ref: './def/entity/Tag.yaml'
+        $ref: './def/entity/SpecialTag.yaml'
   responses:
     '204':
       description: Rule item successfully added
