@@ -70,15 +70,13 @@ const mapStateToProps = (state: State, ownProps) => ({
   remoteRowCount: state.plainSearchRecords[ownProps.entity]?.rowsCount,
 });
 
-
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
   const getSearch = search => ownProps.getCustomSearch
     ? ownProps.getCustomSearch(search)
     : (search
-      ? `~"${search}"${ownProps.aqlFilter
-        ? ` and ${ownProps.aqlFilter}`
-        : ""}`
-      : "");
+         ? `~"${search}"${ownProps.aqlFilter ? ` and ${ownProps.aqlFilter}` : ''}`
+         : `${ownProps.preloadEmpty ? ownProps.aqlFilter : ''}`
+    );
 
   return {
     onLoadMoreRows: (offset?: number) => dispatch(
