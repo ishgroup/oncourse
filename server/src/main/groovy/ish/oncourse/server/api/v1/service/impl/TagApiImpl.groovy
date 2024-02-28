@@ -23,7 +23,6 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
@@ -61,8 +60,8 @@ class TagApiImpl implements TagApi {
 
 
     @Override
-    void createSpecial(List<TagDTO> childTags) {
-        specialTagsApiService.createSpecial(childTags)
+    void updateSpecial(List<TagDTO> childTags) {
+        specialTagsApiService.updateSpecial(childTags)
     }
 
     @Override
@@ -113,11 +112,6 @@ class TagApiImpl implements TagApi {
                 .getRecordById(context, Tag, id)
 
         removeTag(dbTag, context, id)
-    }
-
-    @Override
-    void removeSpecial(Long id) {
-        specialTagsApiService.removeSpecial(id)
     }
 
     @Override
