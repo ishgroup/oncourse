@@ -192,10 +192,6 @@ class TagFunctions {
             return new ValidationErrorDTO(tag.id?.toString(), 'status', 'Status can not be null.')
         }
 
-        if (!tag.weight) {
-            return new ValidationErrorDTO(tag.id?.toString(), 'weight', 'Weight should be set.')
-        }
-
         if (root) {
             if (tag.requirements.size() < 1) {
                 return new ValidationErrorDTO(tag.id?.toString(), 'requirements', 'At least one requirement should be set for root tag.')
@@ -261,7 +257,7 @@ class TagFunctions {
     }
 
     private static void _toDbTag(ObjectContext context, TagDTO tag, Tag dbTag, boolean isParent = true, List<TaggableClasses> deletedEntityList, Map<Long, Tag> childTagsToRemove = getAllChildTags(dbTag)) {
-        if (!dbTag.specialType) {
+        if (!dbTag.specialType || dbTag.isHidden()) {
             dbTag.name = trimToNull(tag.name)
             dbTag.isWebVisible = tag.status == TagStatusDTO.SHOW_ON_WEBSITE
             dbTag.shortName = trimToNull(tag.urlPath)
