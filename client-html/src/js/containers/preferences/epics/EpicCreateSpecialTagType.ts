@@ -19,7 +19,7 @@ import { getEntityBySpecialTagType } from "../utils";
 
 const request: Request<any, Tag[]> = {
   type: POST_SPECIAL_TAG_TYPES,
-  getData: tags => TagsService.createSpecial(tags),
+  getData: tags => TagsService.updateSpecial(tags),
   processData: (types, state, tags) => [
     getSpecialTagTypes(getEntityBySpecialTagType(tags[0].specialType))
   ]

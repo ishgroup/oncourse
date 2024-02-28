@@ -29,7 +29,7 @@ import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTag
 class SpecialTagsApiService {
 
     private final Map<NodeSpecialType, TagRequirementTypeDTO> SPECIAL_TYPES_REQUIREMENTS = [
-            (NodeSpecialType.COURSE_EXTENDED_TYPES) : TagRequirementTypeDTO.COURSE,
+            (NodeSpecialType.COURSE_EXTENDED_TYPES): TagRequirementTypeDTO.COURSE,
             (NodeSpecialType.CLASS_EXTENDED_TYPES) : TagRequirementTypeDTO.COURSECLASS
     ]
 
@@ -46,7 +46,7 @@ class SpecialTagsApiService {
     }
 
 
-    void createSpecial(List<TagDTO> childTags) {
+    void updateSpecial(List<TagDTO> childTags) {
         validateSpecialTags(childTags)
 
         def specialType = NodeSpecialType.fromDisplayName(childTags.first().specialType.toString())
@@ -55,6 +55,15 @@ class SpecialTagsApiService {
         def specialRootTag = ObjectSelect.query(Tag)
                 .where(Tag.SPECIAL_TYPE.eq(specialType).andExp(Tag.PARENT_TAG.isNull()))
                 .selectFirst(context)
+
+        if (childTags.empty) {
+            if (specialRootTag) {
+                context.deleteObject(specialRootTag)
+                context.commitChanges()
+            }
+
+            return
+        }
 
         TagDTO rootTagDTO = null
         if (!specialRootTag) {
@@ -77,20 +86,6 @@ class SpecialTagsApiService {
 
         rootTagDTO.childTags = childTags
         createTag(rootTagDTO, context)
-    }
-
-    void removeSpecial(Long id) {
-        ObjectContext context = cayenneService.newContext
-        Tag dbTag = CayenneFunctions
-                .getRecordById(context, Tag, id)
-
-        if (!dbTag.isHidden())
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ValidationErrorDTO(dbTag.id?.toString(), "type",
-                            "You can remove only special tags with this endpoint"))
-                    .build())
-
-        removeTag(dbTag, context, id)
     }
 
     private static void validateSpecialTags(List<TagDTO> childTags) {

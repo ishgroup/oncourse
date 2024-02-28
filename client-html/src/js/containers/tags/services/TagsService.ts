@@ -28,16 +28,12 @@ class TagsService {
     return this.tagApi.remove(id);
   }
 
-  createSpecial(tag: Tag[]): Promise<any> {
-    return this.tagApi.createSpecial(tag);
+  updateSpecial(tag: Tag[]): Promise<any> {
+    return this.tagApi.updateSpecial(tag);
   }
 
   getSpecialTags(entityName: string): Promise<Array<Tag>> {
     return this.tagApi.getSpecialTags(entityName);
-  }
-
-  removeSpecial(id: number): Promise<any> {
-    return this.tagApi.removeSpecial(id);
   }
 }
 

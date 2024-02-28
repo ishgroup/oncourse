@@ -26,7 +26,7 @@ get:
 
 post:
   description: Create Special tag group
-  operationId: createSpecial
+  operationId: updateSpecial
   tags:
     - Tag
   parameters:
@@ -46,26 +46,3 @@ post:
     mask: edit
     keyCode: SPECIAL_EDIT_EXTENDED_TAGS
     errorMessage: Sorry, you have no permissions to edit special entities. Please contact your administrator
-
-
-delete:
-  description: Delete Special tag group
-  operationId: removeSpecial
-  tags:
-    - Tag
-  parameters:
-    - name: id
-      in: path
-      description: Identifier of root tag which will be deleted.
-      required: true
-      type: integer
-      format: int64
-  responses:
-    '204':
-      description: Rule item successfully added
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: delete
-    keyCode: SPECIAL_EDIT_EXTENDED_TAGS
-    errorMessage: Sorry, you have no permissions to remove special entities. Please contact your administrator
