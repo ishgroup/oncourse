@@ -65,8 +65,9 @@ class SpecialTagsApiService {
             return
         }
 
-        TagDTO rootTagDTO = null
+        TagDTO rootTagDTO
         if (!specialRootTag) {
+            rootTagDTO = new TagDTO()
             rootTagDTO.specialType = childTags.first().specialType
             rootTagDTO.name = specialType.displayName
             rootTagDTO.type = TagTypeDTO.TAG
