@@ -31,7 +31,7 @@ class CustomFieldFunctions {
         List<CustomField> dbCustomFields = dbObject.customFields as List<CustomField>
 
         context.deleteObjects(dbCustomFields.findAll { !customFieldsToSave.contains(it.customFieldType.key) })
-        customFields.each { k, v ->
+        customFields.each { k, value ->
             CustomField cf = dbCustomFields.find { it.customFieldType.key == k }
 
             if(!cf){
@@ -40,11 +40,11 @@ class CustomFieldFunctions {
                 cf.customFieldType = getCustomFieldType(context, dbObject.class.simpleName, k)
             }
 
-            if(cf.customFieldType.dataType == DataType.PORTAL_SUBDOMAIN && cf.value && !cf.value.empty) {
-                validateSubDomain(context, cf.value, cf.id)
+            if(cf.customFieldType.dataType == DataType.PORTAL_SUBDOMAIN && value && !value.empty) {
+                validateSubDomain(context, value, cf.id)
             }
 
-            cf.value = trimToNull(v)
+            cf.value = trimToNull(value)
         }
         dbObject.modifiedOn = new Date()
     }
