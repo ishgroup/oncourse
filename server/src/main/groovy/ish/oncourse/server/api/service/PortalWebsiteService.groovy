@@ -33,7 +33,7 @@ class PortalWebsiteService {
     String getPortalSubdomain(){
         def portalWebsites = ObjectSelect.query(PortalWebsite).select(cayenneService.newReadonlyContext)
         if(portalWebsites.empty)
-            throw new IllegalArgumentException("portal website not configured for your college. Contact your administrator")
+            return null
 
        return portalWebsites.first().subDomain
     }

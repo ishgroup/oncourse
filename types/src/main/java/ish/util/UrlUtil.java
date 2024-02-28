@@ -36,6 +36,7 @@ public class UrlUtil {
     private static final String USI_PART = "usi";
     private static final Pattern PORTAL_LINK_PATTERN = Pattern.compile("http(s?)://(.*).skillsoncourse.com.au/portal(.*)&key=");
     private static final String PORTAL_LINK_FORMAT= "https://%s.skillsoncourse.com.au";
+    private static final String OLD_PORTAL_URL= "https://skillsoncourse.com.au";
 
     /**
      * Creates link to portal's USI details entry page and signs it with hash.
@@ -251,8 +252,8 @@ public class UrlUtil {
 
 	private static String buildPortalUrl(String portalWebsiteSubDomain, StringBuilder urlBuilder, boolean prefixRequred){
 		try {
-            portalWebsiteSubDomain = getPortalUrlFor(portalWebsiteSubDomain);
-			URL url = new URL(portalWebsiteSubDomain);
+            String portalUrl = getPortalUrlFor(portalWebsiteSubDomain);
+			URL url = new URL(portalUrl);
             String urlStr = url.getProtocol() + "://" + url.getAuthority();
             if(prefixRequred)
                 urlStr = urlStr + "/portal";
@@ -264,7 +265,7 @@ public class UrlUtil {
 
     public static String getPortalUrlFor(String subDomain){
         if(subDomain == null || subDomain.isEmpty()){
-            throw new IllegalArgumentException("Incorrect subdomain passed to portal url building");
+            return OLD_PORTAL_URL;
         }
 
         return String.format(PORTAL_LINK_FORMAT, subDomain);
