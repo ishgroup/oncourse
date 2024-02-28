@@ -9,7 +9,7 @@
 import { Tag } from "@api/model";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Form, getFormValues, InjectedFormProps } from "redux-form";
 import { showConfirm } from "../../../common/actions";
 import RouteChangeConfirm from "../../../common/components/dialog/RouteChangeConfirm";
@@ -35,16 +35,18 @@ function SpecialTagTypeForm(
   const dispatch = useAppDispatch();
   const values = useAppSelector(state => getFormValues(form)(state)) as SpecialTypeTagsFormValues;
 
+  const specialType = useMemo(() => getSpecialTagTypeByEntity(entity), [entity]);
+
   useEffect(() => {
     dispatch(getSpecialTagTypes(entity));
   }, []);
 
   const onSave = ({ types }) => {
-    dispatch(postSpecialTagTypes(types));
+    dispatch(postSpecialTagTypes(types, specialType));
   };
 
   const onAddNew = () => {
-    array.unshift('types', { ...EmptyTag, specialType: getSpecialTagTypeByEntity(entity) } satisfies Tag);
+    array.unshift('types', { ...EmptyTag } satisfies Tag);
     const domNode = document.getElementById("special-tag-type-0");
     if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };

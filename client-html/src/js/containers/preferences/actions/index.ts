@@ -13,10 +13,12 @@ import {
   PaymentMethod, Tag,
   Tax
 } from "@api/model";
+import { ArgumentTypes } from "ish-ui";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 import { IAction } from "../../../common/actions/IshAction";
 import { EntityName } from "../../../model/entities/common";
 import { Categories } from "../../../model/preferences";
+import TagsService from "../../tags/services/TagsService";
 
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST = _toRequestType("get/datacollection/formFieldTypes");
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_FULFILLED = FULFILLED(GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST);
@@ -182,9 +184,9 @@ export const getSpecialTagTypes = (entity: EntityName): IAction<EntityName> => (
   payload: entity
 });
 
-export const postSpecialTagTypes = (tags: Tag[]): IAction<Tag[]> => ({
+export const postSpecialTagTypes = (...args: ArgumentTypes<typeof TagsService.updateSpecial>) => ({
   type: POST_SPECIAL_TAG_TYPES,
-  payload: tags
+  payload: args
 });
 
 export const getGradingTypes = () => ({
