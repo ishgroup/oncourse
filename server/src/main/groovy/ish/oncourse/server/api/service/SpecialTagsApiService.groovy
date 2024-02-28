@@ -12,18 +12,16 @@ import com.google.inject.Inject
 import ish.common.types.NodeSpecialType
 import ish.common.types.NodeType
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.api.function.CayenneFunctions
-import ish.oncourse.server.api.function.TagApiFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
-import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
 import static ish.oncourse.server.api.function.TagApiFunctions.*
+import static ish.oncourse.server.api.v1.function.TagFunctions.toRestSpecial
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTag
 
 class SpecialTagsApiService {
@@ -37,41 +35,35 @@ class SpecialTagsApiService {
     private ICayenneService cayenneService
 
 
-    List<TagDTO> getSpecialTags(String entityName) {
+    List<SpecialTagDTO> getSpecialTags(String entityName) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
         def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
         expr = expr.andExp(Tag.SPECIAL_TYPE.in(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
         def hiddenTags = getTagsForExpression(expr, cayenneService.newContext)
-        return (hiddenTags.collect { it.childTags }.flatten() as List<Tag>).collect { toRestTag(it) }
+        return (hiddenTags.collect { it.childTags }.flatten() as List<Tag>).groupBy {it.specialType}
+                .collect { toRestSpecial(it.key, it.value) }
     }
 
 
-    void updateSpecial(List<TagDTO> childTags) {
-        validateSpecialTags(childTags)
+    void updateSpecial(SpecialTagDTO specialTagDTO) {
+        validateSpecialTag(specialTagDTO)
 
-        def specialType = NodeSpecialType.fromDisplayName(childTags.first().specialType.toString())
+        def specialType = NodeSpecialType.fromDisplayName(specialTagDTO.specialType.toString())
+        def childTags = specialTagDTO.childTags
         def context = cayenneService.newContext
 
         def specialRootTag = ObjectSelect.query(Tag)
                 .where(Tag.SPECIAL_TYPE.eq(specialType).andExp(Tag.PARENT_TAG.isNull()))
                 .selectFirst(context)
 
-        if (childTags.empty) {
-            if (specialRootTag) {
-                context.deleteObject(specialRootTag)
-                context.commitChanges()
-            }
-
-            return
-        }
-
         TagDTO rootTagDTO
         if (!specialRootTag) {
             rootTagDTO = new TagDTO()
-            rootTagDTO.specialType = childTags.first().specialType
             rootTagDTO.name = specialType.displayName
             rootTagDTO.type = TagTypeDTO.TAG
+            rootTagDTO.status = TagStatusDTO.SHOW_ON_WEBSITE
             rootTagDTO.system = true
+            rootTagDTO.weight = 1
 
             TagRequirementTypeDTO requirementTypeDTO = SPECIAL_TYPES_REQUIREMENTS.get(specialType)
             def specialTagRequirementDTO = new TagRequirementDTO()
@@ -86,32 +78,28 @@ class SpecialTagsApiService {
         }
 
         rootTagDTO.childTags = childTags
-        createTag(rootTagDTO, context)
+
+        createOrUpdateTag(rootTagDTO, context, specialRootTag, specialType)
     }
 
-    private static void validateSpecialTags(List<TagDTO> childTags) {
-        def specialTypes = childTags.collect { NodeSpecialType.fromDisplayName(it.specialType?.toString()) }.unique().findAll { it }
+    private static void validateSpecialTag(SpecialTagDTO specialTagDTO) {
+        def specialType = specialTagDTO.specialType
+        def childTags = specialTagDTO.childTags
 
-        if (specialTypes.empty || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.containsAll(specialTypes) ||
-                childTags.any { !it.specialType }) {
+        if (specialType == null || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(specialType)) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ValidationErrorDTO(childTags.first().id?.toString(), "specialType",
-                            "You can create only special tags with this endpoint"))
+                    .entity(new ValidationErrorDTO(childTags.first()?.id?.toString(), "specialType",
+                            "You can edit only special tags with this endpoint"))
                     .build())
         }
 
-        if (specialTypes.size() > 1) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ValidationErrorDTO(childTags.first().id?.toString(), "specialType",
-                            "Special tags cannot have different special types for this endpoint"))
-                    .build())
-        }
-
-        if (childTags.any { it -> !it.childTags.empty }) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ValidationErrorDTO(childTags.first().id?.toString(), "childTags",
-                            "Special tags cannot have second level of hierarchy"))
-                    .build())
+        if(!specialTagDTO.childTags.empty) {
+            if (specialTagDTO.childTags.any { it -> !it.childTags.empty }) {
+                throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
+                        .entity(new ValidationErrorDTO(specialTagDTO.childTags.first().id?.toString(), "childTags",
+                                "Special tags cannot have second level of hierarchy"))
+                        .build())
+            }
         }
     }
 }

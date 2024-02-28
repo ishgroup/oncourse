@@ -8,6 +8,7 @@
 
 package ish.oncourse.server.api.function
 
+import ish.common.types.NodeSpecialType
 import ish.common.types.NodeType
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.v1.model.TagDTO
@@ -18,6 +19,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.parser.ASTTrue
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.cayenne.query.SelectById
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
@@ -40,13 +42,20 @@ class TagApiFunctions {
             }
 
 
-    static void createTag(TagDTO tag, ObjectContext context) {
+    static void createOrUpdateTag(TagDTO tag, ObjectContext context, Tag dbTag = null, NodeSpecialType specialType = null) {
         ValidationErrorDTO error = validateForSave(context, tag)
         if (error) {
             context.rollbackChanges()
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
-        toDbTag(context, tag, context.newObject(Tag))
+
+        if(!dbTag)
+            dbTag = tag.id ? SelectById.query(Tag, tag.id).selectOne(context) : context.newObject(Tag)
+
+        if(specialType && !dbTag.specialType)
+            dbTag.specialType = specialType
+
+        toDbTag(context, tag, dbTag)
 
         context.commitChanges()
     }

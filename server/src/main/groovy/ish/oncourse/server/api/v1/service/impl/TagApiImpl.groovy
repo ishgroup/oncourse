@@ -18,6 +18,7 @@ import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.service.SpecialTagsApiService
+import ish.oncourse.server.api.v1.model.SpecialTagDTO
 import ish.oncourse.server.api.v1.model.TagDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
@@ -55,13 +56,13 @@ class TagApiImpl implements TagApi {
 
     @Override
     void create(TagDTO tag) {
-        createTag(tag, cayenneService.newContext)
+        createOrUpdateTag(tag, cayenneService.newContext)
     }
 
 
     @Override
-    void updateSpecial(List<TagDTO> childTags) {
-        specialTagsApiService.updateSpecial(childTags)
+    void updateSpecial(SpecialTagDTO specialTagDTO) {
+        specialTagsApiService.updateSpecial(specialTagDTO)
     }
 
     @Override
@@ -78,7 +79,7 @@ class TagApiImpl implements TagApi {
 
 
     @Override
-    List<TagDTO> getSpecialTags(String entityName) {
+    List<SpecialTagDTO> getSpecialTags(String entityName) {
         specialTagsApiService.getSpecialTags(entityName)
     }
 

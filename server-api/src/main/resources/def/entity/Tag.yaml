@@ -14,9 +14,6 @@ properties:
   type:
     $ref: '../enum/TagType.yaml'
     required: true
-  specialType:
-    $ref: '../enum/SpecialTagType.yaml'
-    required: true
   system:
     type: boolean
     required: true
