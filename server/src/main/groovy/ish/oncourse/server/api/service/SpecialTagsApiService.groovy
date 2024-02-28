@@ -94,14 +94,14 @@ class SpecialTagsApiService {
         if (specialTypes.empty || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.containsAll(specialTypes) ||
                 childTags.any { !it.specialType }) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ValidationErrorDTO(childTags.first().id?.toString(), "type",
+                    .entity(new ValidationErrorDTO(childTags.first().id?.toString(), "specialType",
                             "You can create only special tags with this endpoint"))
                     .build())
         }
 
         if (specialTypes.size() > 1) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ValidationErrorDTO(childTags.first().id?.toString(), "type",
+                    .entity(new ValidationErrorDTO(childTags.first().id?.toString(), "specialType",
                             "Special tags cannot have different special types for this endpoint"))
                     .build())
         }
