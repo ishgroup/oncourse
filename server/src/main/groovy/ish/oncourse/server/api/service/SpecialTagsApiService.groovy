@@ -89,7 +89,7 @@ class SpecialTagsApiService {
     }
 
     private static void validateSpecialTags(List<TagDTO> childTags) {
-        def specialTypes = childTags.collect { it.specialType }.unique().findAll { it }
+        def specialTypes = childTags.collect { NodeSpecialType.fromDisplayName(it.specialType?.toString()) }.unique().findAll { it }
 
         if (specialTypes.empty || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.containsAll(specialTypes) ||
                 childTags.any { !it.specialType }) {
