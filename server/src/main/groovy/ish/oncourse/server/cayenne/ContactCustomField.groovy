@@ -18,7 +18,7 @@ class ContactCustomField extends _ContactCustomField {
 
 	@Override
 	boolean isAsyncReplicationAllowed() {
-		return customFieldType.dataType != DataType.PORTAL_SUBDOMAIN
+		return customFieldType.isAsyncReplicationAllowed()
 	}
 
 	@Override
