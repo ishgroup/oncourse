@@ -35,8 +35,8 @@ public class UrlUtil {
     private static final String URL_PART_DELIMITER = "/";
     private static final String USI_PART = "usi";
     private static final Pattern PORTAL_LINK_PATTERN = Pattern.compile("http(s?)://(.*).skillsoncourse.com.au/portal(.*)&key=");
-    private static final String PORTAL_LINK_FORMAT= "https://%s.skillsoncourse.com.au";
-    private static final String OLD_PORTAL_URL= "https://www.skillsoncourse.com.au";
+    private static final String PORTAL_LINK_FORMAT= "http://%s.skillsoncourse.com.au";
+    private static final String OLD_PORTAL_URL= "http://www.skillsoncourse.com.au";
 
     /**
      * Creates link to portal's USI details entry page and signs it with hash.
