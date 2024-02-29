@@ -1,4 +1,4 @@
-import { SpecialTagType, Tag, TagApi } from "@api/model";
+import { SpecialTag, SpecialTagType, Tag, TagApi } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class TagsService {
@@ -32,7 +32,7 @@ class TagsService {
     return this.tagApi.updateSpecial({ childTags, specialType });
   }
 
-  getSpecialTags(entityName: string): Promise<Array<Tag>> {
+  getSpecialTags(entityName: string): Promise<SpecialTag> {
     return this.tagApi.getSpecialTags(entityName);
   }
 }
