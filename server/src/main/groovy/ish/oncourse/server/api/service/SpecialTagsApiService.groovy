@@ -35,13 +35,14 @@ class SpecialTagsApiService {
     private ICayenneService cayenneService
 
 
-    List<SpecialTagDTO> getSpecialTags(String entityName) {
+    SpecialTagDTO getSpecialTags(String entityName) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
         def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
         expr = expr.andExp(Tag.SPECIAL_TYPE.in(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
         def hiddenTags = getTagsForExpression(expr, cayenneService.newContext)
-        return (hiddenTags.collect { it.childTags }.flatten() as List<Tag>).groupBy {it.specialType}
-                .collect { toRestSpecial(it.key, it.value) }
+        def hiddenTagsGrouped = (hiddenTags.collect { it.childTags }.flatten() as List<Tag>).groupBy {it.specialType}
+
+        return hiddenTagsGrouped.isEmpty() ? null : toRestSpecial(hiddenTagsGrouped.entrySet().first().key, hiddenTagsGrouped.entrySet().first().value)
     }
 
 

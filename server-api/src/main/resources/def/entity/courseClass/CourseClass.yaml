@@ -138,11 +138,9 @@ properties:
     items:
       type: integer
       format: int64
-  specialTypeTags:
-    type: array
-    items:
-      type: integer
-      format: int64
+  specialTagId:
+    type: integer
+    format: int64
   documents:
     type: array
     items:
