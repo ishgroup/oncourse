@@ -79,7 +79,7 @@ class TagApiImpl implements TagApi {
 
 
     @Override
-    List<SpecialTagDTO> getSpecialTags(String entityName) {
+    SpecialTagDTO getSpecialTags(String entityName) {
         specialTagsApiService.getSpecialTags(entityName)
     }
 

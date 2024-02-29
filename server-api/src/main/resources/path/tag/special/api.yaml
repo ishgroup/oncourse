@@ -13,9 +13,7 @@ get:
     '200':
       description: Success response.
       schema:
-        type: array
-        items:
-          $ref: './def/entity/SpecialTag.yaml'
+        $ref: './def/entity/SpecialTag.yaml'
     default:
       description: Unexpected error
   x-permission:
