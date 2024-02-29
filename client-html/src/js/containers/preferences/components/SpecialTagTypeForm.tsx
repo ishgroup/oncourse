@@ -59,7 +59,7 @@ function SpecialTagTypeForm(
     if (values.types[index]?.id) {
       dispatch(showConfirm({
         confirmMessage: 'All created relations will be removed as well',
-        cancelButtonText: 'Delete',
+        confirmButtonText: 'Delete',
         onConfirm
       }));
     } else {
@@ -80,7 +80,7 @@ function SpecialTagTypeForm(
         {values?.types?.length ? <Grid container className="mt-2">
           <Grid item sm={12} lg={10}>
             <Grid container columnSpacing={3}>
-              {values.types.map((t, index) => <SpecialTagType key={index} index={index} system={t.system} onDelete={onDelete} />)}
+              {values.types.map((t, index) => <SpecialTagType key={index} index={index} onDelete={onDelete} />)}
             </Grid>
           </Grid>
         </Grid> : <div className="noRecordsMessage h-100">

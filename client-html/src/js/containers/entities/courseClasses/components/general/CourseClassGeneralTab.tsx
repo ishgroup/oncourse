@@ -35,6 +35,7 @@ import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
+  specialTags?: Tag[];
   showMessage?: (message: AppMessage) => void;
   classes?: any;
   clearActionsQueue?: any;
@@ -49,6 +50,7 @@ const normalizeClassCode = (value: any, previousValue?: any, allValues?: any) =>
 const CourseClassGeneralTab = React.memo<Props>(
   ({
     tags,
+     specialTags,
     twoColumn,
     values,
     isNew,
@@ -268,15 +270,12 @@ const CourseClassGeneralTab = React.memo<Props>(
             <FormField type="tags" name="tags" className="mb-2" tags={tags} />
 
             <FormField
-              type="remoteDataSelect"
-              entity="Tag"
-              aqlColumns="name"
-              aqlFilter="specialType is CLASS_EXTENDED_TYPES and parentTag not is null"
-              name="specialTypeTags"
+              type="select"
+              items={specialTags}
+              name="specialTagId"
               label="Type"
               selectValueMark="id"
               selectLabelMark="name"
-              preloadEmpty
               allowEmpty
             />
             
@@ -381,6 +380,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["CourseClass"],
+  specialTags: state.tags.entitySpecialTags["CourseClass"],
   tutorRoles: state.preferences.tutorRoles
 });
 

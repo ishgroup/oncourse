@@ -15,12 +15,11 @@ import { cardsFormStyles } from "../styles/formCommonStyles";
 interface SpecialTagTypeProps {
   index: number;
   onDelete: NumberArgFunction;
-  system: boolean;
 }
 
 const useStyles = makeAppStyles(cardsFormStyles);
 
-function SpecialTagType({ index, onDelete, system }: SpecialTagTypeProps) {
+function SpecialTagType({ index, onDelete }: SpecialTagTypeProps) {
   const classes = useStyles();
   return (
     <Grid item xs={12}>
@@ -33,7 +32,6 @@ function SpecialTagType({ index, onDelete, system }: SpecialTagTypeProps) {
                   type="text"
                   name={`types.${index}.name`}
                   label="Name"
-                  disabled={system}
                   className={classes.field}
                   required
                 />
@@ -54,16 +52,14 @@ function SpecialTagType({ index, onDelete, system }: SpecialTagTypeProps) {
                     labelPlacement="start"
                   />
                   <div>
-                    {!system && (
-                      <Button
-                        size="small"
-                        color="secondary"
-                        onClick={() => onDelete(index)}
-                        className={classes.deleteButton}
-                      >
-                        Delete
-                      </Button>
-                    )}
+                    <Button
+                      size="small"
+                      color="secondary"
+                      onClick={() => onDelete(index)}
+                      className={classes.deleteButton}
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </div>
               </Grid>
