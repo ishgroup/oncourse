@@ -4,6 +4,9 @@ properties:
   creditPoints:
     type: number
     exmaple: 6
+  creditPointsStatus:
+    $ref: '../enum/ModuleCreditPointsStatus.yaml'
+    example: Active
   expiryDays:
     type: integer
   fieldOfEducation:
