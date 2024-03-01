@@ -80,6 +80,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     @Inject
     private ModuleApiService moduleApiService
 
+    @Inject
+    private FacultyApiService facultyApiService
+
     @Override
     Class<Course> getPersistentClass() {
         return Course
@@ -140,6 +143,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.rules = course.unavailableRuleRelations.collect{ toRestHoliday(it.rule) }
             courseDTO.feeHelpClass = course.feeHelpClass
             courseDTO.fullTimeLoad = course.fullTimeLoad
+            courseDTO.facultyId = course.faculty?.id
             courseDTO
         }
     }
@@ -191,6 +195,13 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.isVET = courseDTO.isVET
 
         updateTags(course, course.taggingRelations, courseDTO.tags + courseDTO.specialTagId, CourseTagRelation, course.context)
+        if (courseDTO.facultyId != null) {
+            Faculty room = facultyApiService.getEntityAndValidateExistence(course.context, courseDTO.facultyId)
+            course.faculty = room
+        } else {
+            course.faculty = null
+        }
+
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours

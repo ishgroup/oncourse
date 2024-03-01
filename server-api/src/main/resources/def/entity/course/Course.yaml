@@ -98,4 +98,7 @@ properties:
   feeHelpClass:
     type: boolean
   fullTimeLoad:
-    type: string 
+    type: string
+  facultyId:
+    type: integer
+    format: int64
