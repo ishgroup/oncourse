@@ -63,6 +63,7 @@ class TagFunctions {
             put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.ARTICLEPRODUCT)
             put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHERPRODUCT)
             put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIPPRODUCT)
+            put(TaggableClasses.FACULTY, TagRequirementTypeDTO.FACULTY)
         }
     }
 
@@ -92,6 +93,7 @@ class TagFunctions {
             put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
             put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
             put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
+            put(Faculty.simpleName, TaggableClasses.FACULTY)
         }
     }
 

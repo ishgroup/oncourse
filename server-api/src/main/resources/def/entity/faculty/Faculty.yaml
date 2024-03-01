@@ -1,0 +1,32 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  name:
+    type: string
+  code:
+    type: string
+  webDescription:
+    type: string
+  isShownOnWeb:
+    type: boolean
+  createdOn:
+    type: string
+    format: date-time
+  modifiedOn:
+    type: string
+    format: date-time
+  tags:
+    type: array
+    items:
+      type: integer
+      format: int64
+  documents:
+    type: array
+    items:
+      $ref: '../Document.yaml'
+  relatedCourses:
+    type: array
+    items:
+      $ref: '../course/Course.yaml'
