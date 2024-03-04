@@ -9,6 +9,8 @@ properties:
     type: string
   webDescription:
     type: string
+  shortWebDescription:
+    type: string
   isShownOnWeb:
     type: boolean
   createdOn:
