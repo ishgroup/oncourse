@@ -148,7 +148,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       if (i + 1 === self.length) {
         target[l] = getDeepValue(values, selectedKeyCode)?.toString();
       } else {
-        target[l] = {}
+        target[l] = {};
         target = target[l];
       }
     });
