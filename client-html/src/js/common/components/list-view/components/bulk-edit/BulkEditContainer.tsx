@@ -31,6 +31,7 @@ import { getEntityTags } from "../../../../../containers/tags/actions";
 import { EntityName } from "../../../../../model/entities/common";
 import { State } from "../../../../../reducers/state";
 import { addActionToQueue } from "../../../../actions";
+import { getDeepValue } from "../../../../utils/common";
 import DataTypeRenderer from "../../../form/DataTypeRenderer";
 import FormField from "../../../form/formFields/FormField";
 import { bulkChangeRecords } from "../../actions";
@@ -92,7 +93,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   } = props;
 
   const [selectAll, setSelectAll] = useState(false);
-  const [bulkEditFields, setBulkEditFields] = useState(null);
+  const [bulkEditFields, setBulkEditFields] = useState([]);
   const [selectedKeyCode, setSelectedKeyCode] = useState(null);
 
   const getBulkEditFieldData = ():BulkEditField => {
@@ -115,7 +116,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
   useEffect(() => {
     if (getCustomBulkEditFields) {
-      getCustomBulkEditFields().then(fields => setBulkEditFields(fields));
+      getCustomBulkEditFields().then(fields => setBulkEditFields(getBulkEditFields(rootEntity).concat(fields)));
     }
   }, [getCustomBulkEditFields]);
 
@@ -138,9 +139,19 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   const onSave = values => {
     const ids = selectAll ? null : selection.map(s => Number(s));
     const searchObj = selectAll ? searchQuery : {};
-    const diff = {
-      [selectedKeyCode]: values[selectedKeyCode]?.toString()
-    };
+    
+    const diff = {};
+    
+    let target = diff;
+
+    selectedKeyCode.split('.').forEach((l, i, self) => {
+      if (i + 1 === self.length) {
+        target[l] = getDeepValue(values, selectedKeyCode)?.toString();
+      } else {
+        target[l] = {};
+      }
+      target = target[l];
+    });
 
     const changeAction = bulkChangeRecords(rootEntity, {
       ids,
@@ -206,6 +217,21 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
     // eslint-disable-next-line default-case
     switch (field.type) {
+      case "Portal subdomain": {
+        fieldProps = {
+          preloadEmpty: true,
+          entity: 'PortalWebsite',
+          aqlColumns: 'subDomain',
+          selectValueMark: 'subDomain',
+          selectLabelMark: 'subDomain',
+          fieldClasses: {
+            text: classes.text,
+            label: classes.customLabel,
+            placeholder: classes.text
+          }
+        };
+        break;
+      }
       case "Select": {
         fieldProps = {
           items: field.propsItemKey ? props[field.propsItemKey] || [] : field.items,
