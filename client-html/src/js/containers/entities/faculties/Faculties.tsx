@@ -15,7 +15,7 @@ import { clearListState, getFilters, setListEditRecord } from "../../../common/c
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
 import { useAppDispatch } from "../../../common/utils/hooks";
-import { FindRelatedItem } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getEntityRelationTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
 import FacultyEditView from "./components/FacultyEditView";
@@ -32,6 +32,19 @@ const Initial: Faculty = {
   documents: [],
   relatedCourses: [],
 };
+
+const filterGroups: FilterGroup[] = [
+  {
+    title: "CORE FILTER",
+    filters: [
+      {
+        name: "Visible online",
+        expression: "isShownOnWeb == true",
+        active: true
+      }
+    ]
+  }
+];
 
 const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Faculty and entityId" },
@@ -62,11 +75,9 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Waitlist contacts", list: "contact", expression: "student.waitingLists.course.facultyId" }
 ];
 
-const setRowClasses = ({ currentlyOffered, isShownOnWeb }) => {
-  if (currentlyOffered === "Yes" && isShownOnWeb === "Yes") return undefined;
-  if (currentlyOffered === "Yes") return "text-op065";
-  if (currentlyOffered === "No" && isShownOnWeb === "No") return "text-op05";
-
+const setRowClasses = ({ isShownOnWeb }) => {
+  if (isShownOnWeb === "Yes") return undefined;
+  if (isShownOnWeb === "No") return "text-op05";
   return undefined;
 };
 
@@ -105,6 +116,7 @@ function Faculties() {
       rootEntity={ENTITY_NAME}
       onInit={onInit}
       findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
     />
   );
 }

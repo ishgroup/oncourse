@@ -16,7 +16,7 @@ const items: TabsListItem[] = [
     component: props => <FacultyGeneralTab {...props} />
   },
   {
-    label: "Courses",
+    label: "Relations",
     component: props => <FacultyCoursesTab {...props} />
   },
   {
