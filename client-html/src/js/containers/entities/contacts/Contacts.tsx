@@ -9,8 +9,9 @@
 import { Contact } from "@api/model";
 import Typography from "@mui/material/Typography";
 import { isBefore } from "date-fns";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import company from "../../../../images/company.png";
 import person from "../../../../images/person.png";
@@ -18,10 +19,12 @@ import tutorStudent from "../../../../images/student-tutor.png";
 import student from "../../../../images/student.png";
 import tutor from "../../../../images/tutor.png";
 import { checkPermissions } from "../../../common/actions";
+import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
+import EntityService from "../../../common/services/EntityService";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { State } from "../../../reducers/state";
@@ -36,6 +39,7 @@ import { getContactFullName } from "./utils";
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
 export interface ContactsProps {
+  dispatch?: Dispatch<any>;
   onInit?: () => void;
   getRecords?: () => void;
   getFilters?: () => void;
@@ -226,6 +230,7 @@ const setRowClasses = row => {
 
 const Contacts: React.FC<ContactsProps> = props => {
   const {
+    dispatch,
     getFilters,
     clearListState,
     onInit,
@@ -308,6 +313,32 @@ const Contacts: React.FC<ContactsProps> = props => {
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
 
+  const getCustomBulkEditFields = useCallback(async () => {
+    if (!selection || !selection.length) return [];
+
+    const result = [];
+
+    await EntityService.getPlainRecords(
+      "CustomField",
+      "customFieldType.key,customFieldType.name",
+      `entityIdentifier is Contact and customFieldType.dataType is PORTAL_SUBDOMAIN`
+    )
+      .then(res => {
+        if (res.rows.length) {
+          const values = res.rows[0].values;
+          result.push({
+            keyCode: `customFields.${values[0]}`,
+            label: values[1],
+            name: values[1],
+            type: "Portal subdomain"
+          });
+        }
+      })
+      .catch(err => instantFetchErrorHandler(dispatch, err));
+
+    return result;
+  }, [selection]);
+
   return (
     <ListView
       listProps={{
@@ -333,11 +364,13 @@ const Contacts: React.FC<ContactsProps> = props => {
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
+      getCustomBulkEditFields={getCustomBulkEditFields}
     />
   );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  dispatch,
   onInit: () => {
     dispatch(setListEditRecord(ContactInitial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, ContactInitial));

@@ -15,12 +15,7 @@ import { connect } from "react-redux";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { getDeepValue } from "../../../../common/utils/common";
-import {
-  validateEmail,
-  validatePattern,
-  validateSingleMandatoryField,
-  validateURL
-} from "../../../../common/utils/validation";
+import { validateEmail, validatePattern, validateURL } from "../../../../common/utils/validation";
 import { FormFieldWrapperProps } from "../../../../model/common/Fields";
 import { EntityName } from "../../../../model/entities/common";
 import { State } from "../../../../reducers/state";
