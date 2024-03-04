@@ -21,6 +21,7 @@ import org.apache.cayenne.ObjectContext
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static org.apache.commons.lang3.StringUtils.isBlank
+import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import static org.apache.commons.lang3.StringUtils.trimToNull
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 
@@ -42,6 +43,7 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
             facultyDTO.name = faculty.name
             facultyDTO.code = faculty.code
             facultyDTO.webDescription = faculty.webDescription
+            facultyDTO.shortWebDescription = faculty.shortWebDescription
             facultyDTO.isShownOnWeb = faculty.isShownOnWeb
             facultyDTO.createdOn = LocalDateUtils.dateToTimeValue(faculty.createdOn)
             facultyDTO.modifiedOn = LocalDateUtils.dateToTimeValue(faculty.modifiedOn)
@@ -57,6 +59,7 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
         faculty.name = trimToNull(facultyDTO.name)
         faculty.code = trimToNull(facultyDTO.code)
         faculty.webDescription = trimToNull(facultyDTO.webDescription)
+        faculty.shortWebDescription = trimToNull(facultyDTO.shortWebDescription)
         faculty.isShownOnWeb = facultyDTO.isShownOnWeb
 
         updateTags(faculty, faculty.taggingRelations, facultyDTO.tags, FacultyTagRelation, faculty.context)
@@ -92,6 +95,14 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
 
         if (facultyDTO.isShownOnWeb == null) {
             validator.throwClientErrorException(id, 'isShownOnWeb', 'Visibility is required.')
+        }
+
+        if (trimToEmpty(facultyDTO.webDescription).length() > 32000) {
+            validator.throwClientErrorException(id, 'webDescription', 'Web description must be shorter then 32000 characters.')
+        }
+
+        if (trimToEmpty(facultyDTO.shortWebDescription).length() > 32000) {
+            validator.throwClientErrorException(id, 'shortWebDescription', 'Short web description must be shorter then 32000 characters.')
         }
 
         TagFunctions.validateTagForSave(Faculty, context, facultyDTO.tags)
