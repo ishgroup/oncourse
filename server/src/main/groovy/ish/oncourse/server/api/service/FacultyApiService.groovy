@@ -12,6 +12,7 @@ import com.google.inject.Inject
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.FacultyDao
 import ish.oncourse.server.api.v1.function.TagFunctions
+import ish.oncourse.server.api.v1.model.CourseDTO
 import ish.oncourse.server.api.v1.model.FacultyDTO
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
@@ -30,6 +31,8 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
     @Inject
     private DocumentService documentService
 
+    @Inject
+    private CourseApiService courseApiService
 
     @Override
     Class<Faculty> getPersistentClass() {
@@ -49,6 +52,14 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
             facultyDTO.modifiedOn = LocalDateUtils.dateToTimeValue(faculty.modifiedOn)
             facultyDTO.tags = faculty.allTags.collect { it.id }
             facultyDTO.documents = faculty.activeAttachments.collect { toRestDocument(it.document, documentService) }
+            facultyDTO.relatedCourses = faculty.courses.collect { course ->
+                new CourseDTO().with { courseDTO ->
+                    courseDTO.id = course.id
+                    courseDTO.name = course.name
+                    courseDTO.code = course.code
+                    courseDTO
+                }
+            }
             facultyDTO
         }
     }
@@ -61,6 +72,8 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
         faculty.webDescription = trimToNull(facultyDTO.webDescription)
         faculty.shortWebDescription = trimToNull(facultyDTO.shortWebDescription)
         faculty.isShownOnWeb = facultyDTO.isShownOnWeb
+
+        updateCourses(faculty, facultyDTO.relatedCourses)
 
         updateTags(faculty, faculty.taggingRelations, facultyDTO.tags, FacultyTagRelation, faculty.context)
         updateDocuments(faculty, faculty.attachmentRelations, facultyDTO.documents, FacultyAttachmentRelation, faculty.context)
@@ -110,6 +123,17 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
 
         TagFunctions.validateRelationsForSave(Faculty, context, facultyDTO.tags, TaggableClasses.FACULTY)
                 ?.with { validator.throwClientErrorException(it) }
+    }
+
+    void updateCourses(Faculty faculty, List<CourseDTO> courseDTOS) {
+        List<Long> coursesToSave = courseDTOS*.id ?: [] as List<Long>
+        List<Course> coursesToRemove = faculty.courses.findAll {!coursesToSave.contains(it.id)}
+        List<Course> coursesToAdd = courseDTOS.findAll { !faculty.courses*.id.contains(it.id) }.collect { courseDTO ->
+            Course course = courseApiService.getEntityAndValidateExistence(faculty.context, courseDTO.id)
+            course
+        }
+        coursesToAdd.each {faculty.addToCourses(it)}
+        coursesToRemove.each {faculty.removeFromCourses(it)}
     }
 
     @Override
