@@ -12,7 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
-import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import ish.common.types.AttachmentSpecialType
 import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
@@ -52,7 +52,7 @@ import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.upd
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static org.apache.commons.lang.StringUtils.*
 
-@CompileDynamic
+@CompileStatic
 class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactDao> {
 
     @Inject
@@ -713,7 +713,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                 }
                 action = { Contact contact ->
                     def customFieldKey = keyStructure[1]
-                    contact."$customFieldKey" = value
+                    contact.setProperty(customFieldKey, value)
                 }
             } else
                 validator.throwClientErrorException(key, "Unsupported attribute")
