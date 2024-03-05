@@ -139,19 +139,9 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
   const onSave = values => {
     const ids = selectAll ? null : selection.map(s => Number(s));
     const searchObj = selectAll ? searchQuery : {};
-    
-    const diff = {};
-    
-    let target = diff;
-
-    selectedKeyCode.split('.').forEach((l, i, self) => {
-      if (i + 1 === self.length) {
-        target[l] = getDeepValue(values, selectedKeyCode)?.toString();
-      } else {
-        target[l] = {};
-        target = target[l];
-      }
-    });
+    const diff = {
+      [`${selectedKeyCode}`]: getDeepValue(values, selectedKeyCode)?.toString()
+    };
 
     const changeAction = bulkChangeRecords(rootEntity, {
       ids,
