@@ -122,7 +122,7 @@ class CustomFieldTypeFunctions {
                         .select(context)
 
                 if(!existedType.empty)
-                    return new ValidationErrorDTO(type.id, 'dateType', "You already have custom field type for overridden sub domains. Two of them are useless")
+                    return new ValidationErrorDTO(type.id, 'dateType', "You already have custom field type for portal subdomains. Only one is allowed in onCourse")
             }
         }
 
