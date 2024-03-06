@@ -124,7 +124,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/course'
         "isVET":true,
         "fieldOfEducation":"0403",
         "reportableHours":33.0,
-        "modules":[{"creditPoints":null,"expiryDays":null,"fieldOfEducation":null,"id":4,"isCustom":null,"type":"UNIT OF COMPETENCY","isOffered":true,"nationalCode":"AUM1002A","nominalHours":32.0,"specialization":null,"title":"Select and use tools and equipment in an automotive manufacturing environment","createdOn":"#ignore","modifiedOn":"#ignore"}],
+        "modules":[{"creditPoints":null,"expiryDays":null,"fieldOfEducation":null,"id":4,"isCustom":null,"type":"UNIT OF COMPETENCY","isOffered":true,"nationalCode":"AUM1002A","nominalHours":32.0,"specialization":null,"title":"Select and use tools and equipment in an automotive manufacturing environment","createdOn":"#ignore","modifiedOn":"#ignore","creditPointsStatus":null}],
         "customFields":{},
         "rules":[{"id":"#ignore","description":"test","startDate":"2020-02-01","endDate":"2020-02-29","startDateTime":null,"endDateTime":null,"repeat":"hour","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2020-02-29","created":"#ignore","modified":"#ignore"}],
         "isTraineeship":false,
