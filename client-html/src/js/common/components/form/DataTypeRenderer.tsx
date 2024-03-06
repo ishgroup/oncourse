@@ -16,6 +16,7 @@ import {
 import React from "react";
 import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 import { useAppSelector } from "../../utils/hooks";
+import EditInPlaceRemoteDataSearchSelect from "./formFields/EditInPlaceRemoteDataSearchSelect";
 
 interface Props {
   type: string;
@@ -41,6 +42,10 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
       return <EditInPlaceDateTimeField type="datetime" {...rest} processActionId={processActionId}/>;
     }
 
+    case "Portal subdomain": {
+      return <EditInPlaceRemoteDataSearchSelect {...rest}/>;  
+    }
+    
     case "Message template":
     case "Select": {
       return <EditInPlaceSearchSelect {...rest} />;

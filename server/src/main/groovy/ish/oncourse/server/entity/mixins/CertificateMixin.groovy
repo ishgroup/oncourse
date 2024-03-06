@@ -22,10 +22,6 @@ import net.glxn.qrgen.javase.QRCode
 
 class CertificateMixin {
 
-	public static final String VERIFICATION_SERVICE_HOST = "skills.courses"
-	public static final String PROTOCOL_PREFIX = "http://"
-	public static final String HUMAN_REDABLE_PREFIX = "www"
-
 	@Deprecated
 	static isCompleteQualification(Certificate self) {
 		getService(CertificateService).isQualification(self)
@@ -80,7 +76,7 @@ class CertificateMixin {
      */
 	@API
 	static getQRCodeImage(Certificate self) {
-		return new ByteArrayInputStream(QRCode.from("${PROTOCOL_PREFIX}${VERIFICATION_SERVICE_HOST}/${self.uniqueCode}").to(ImageType.PNG).withSize(128, 128).stream().toByteArray())
+		return new ByteArrayInputStream(QRCode.from(self.portalUrl).to(ImageType.PNG).withSize(128, 128).stream().toByteArray())
 	}
 
 	/**
@@ -90,7 +86,7 @@ class CertificateMixin {
      */
 	@API
 	static getVerificationURL(Certificate self) {
-		return "${HUMAN_REDABLE_PREFIX}.${VERIFICATION_SERVICE_HOST}/${self.uniqueCode}"
+		return self.portalUrl
 	}
 
 	/**
