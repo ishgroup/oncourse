@@ -42,6 +42,7 @@ import ish.oncourse.server.api.service.ModuleApiService
 import ish.oncourse.server.api.service.NoteApiService
 import ish.oncourse.server.api.service.OutcomeApiService
 import ish.oncourse.server.api.service.PayslipApiService
+import ish.oncourse.server.api.service.PortalWebsiteService
 import ish.oncourse.server.api.service.PriorLearningApiService
 import ish.oncourse.server.api.service.QualificationApiService
 import ish.oncourse.server.api.service.ReportApiService
@@ -130,6 +131,7 @@ class ApiServiceModule implements Module {
         binder.bind(TutorRoleApiService).in(Scopes.SINGLETON)
         binder.bind(VoucherProductApiService).in(Scopes.SINGLETON)
         binder.bind(WaitingListApiService).in(Scopes.NO_SCOPE)
+        binder.bind(PortalWebsiteService).in(Scopes.SINGLETON)
 
     }
 }
