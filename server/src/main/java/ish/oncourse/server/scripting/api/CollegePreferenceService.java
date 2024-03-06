@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 import ish.common.types.DeliverySchedule;
 import ish.oncourse.API;
 import ish.oncourse.server.PreferenceController;
+import ish.oncourse.server.api.service.PortalWebsiteService;
 import ish.oncourse.server.cayenne.Student;
 import ish.oncourse.server.cayenne.SurveyFieldConfiguration;
 import ish.oncourse.server.license.LicenseService;
@@ -43,16 +44,20 @@ public class CollegePreferenceService {
 	private PreferenceController preferenceController;
 	private PreferenceHelper preferenceHelper;
 	private LicenseService licenseService;
+	private PortalWebsiteService portalWebsiteService;
 
 	private static final String HTTP_PREFIX = "https";
 	private static final String PROTOCOL_DELIMITER = "://";
 
 
 	@Inject
-	public CollegePreferenceService(PreferenceController preferenceController, LicenseService licenseService) {
+	public CollegePreferenceService(PreferenceController preferenceController,
+									LicenseService licenseService,
+									PortalWebsiteService portalWebsiteService) {
 		this.preferenceController = preferenceController;
 		this.preferenceHelper = new PreferenceHelper(preferenceController);
 		this.licenseService = licenseService;
+		this.portalWebsiteService = portalWebsiteService;
 	}
 
 	/**
@@ -124,8 +129,8 @@ public class CollegePreferenceService {
 		var expiryDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
 		expiryDate = DateUtils.addDays(expiryDate, expiryDays);
 
-		return UrlUtil.createPortalUsiLink(preferenceController,
-				student.getContact().getUniqueCode(), expiryDate, licenseService.getSecurity_key());
+		return UrlUtil.createPortalUsiLink(student.getContact().getUniqueCode(), expiryDate,
+				licenseService.getSecurity_key(), student.getContact().getPortalSubDomain());
 	}
 
 	/**
@@ -149,7 +154,7 @@ public class CollegePreferenceService {
 		var expiryDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
 		expiryDate = DateUtils.addDays(expiryDate, expiryDays);
 
-		return UrlUtil.createSignedPortalUrl(preferenceController, path, expiryDate, licenseService.getSecurity_key());
+		return UrlUtil.createSignedPortalUrl(path, expiryDate, licenseService.getSecurity_key(), portalWebsiteService.getPortalSubdomain());
 	}
 
 	/**
