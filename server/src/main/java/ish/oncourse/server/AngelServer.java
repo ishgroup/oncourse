@@ -28,6 +28,7 @@ import ish.oncourse.server.modules.*;
 import ish.oncourse.server.security.api.PermissionModule;
 
 public class AngelServer {
+    //test
     public static final String UTF_8 = "UTF-8";
 
     public static final String ONCOURSE_CONFIG_PATH = "onCourse.yml";
