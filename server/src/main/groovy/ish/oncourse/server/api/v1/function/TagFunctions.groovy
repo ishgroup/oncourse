@@ -53,7 +53,7 @@ class TagFunctions {
     static SpecialTagDTO toRestSpecial(NodeSpecialType specialType, List<Tag> childTags){
         return new SpecialTagDTO().with { dto ->
             dto.specialType = SpecialTagTypeDTO.fromValue(specialType.displayName)
-            dto.childTags = childTags.collect {toRestTag(it)}
+            dto.childTags = childTags.sort{it.name}.collect {toRestTag(it)}
             dto
         }
     }
