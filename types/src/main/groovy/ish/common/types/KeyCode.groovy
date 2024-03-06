@@ -736,7 +736,16 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	TUTOR_ATTENDANCE(112, "TutorAttendance", VIEW)
+	TUTOR_ATTENDANCE(112, "TutorAttendance", VIEW),
+
+	/**
+	 * Database value: 113
+	 *
+	 * Permission to work with any Portal website instances
+	 * Always enabled: view
+	 */
+	@API
+	PORTAL_WEBSITE(113, "PortalWebsite", VIEW)
 
 
 	private int value

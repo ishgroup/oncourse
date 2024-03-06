@@ -7,9 +7,16 @@
  */
 package ish.oncourse.server.monitoring.servlet
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import ish.oncourse.server.monitoring.MonitoringModel
+import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.monitoring.MonitoringService
+import ish.oncourse.server.monitoring.MonitoringStatisticService
+import ish.oncourse.server.monitoring.model.MonitoringStatictic
+import ish.oncourse.server.monitoring.model.datasource.ConnectionStatistic
+import ish.oncourse.server.monitoring.model.datasource.HikariConfig
+import ish.oncourse.server.monitoring.model.memory.MemoryStatistic
+import ish.oncourse.server.monitoring.model.system.SystemStatistic
+import ish.oncourse.server.monitoring.service.HtmlPrinter
+import ish.oncourse.server.monitoring.util.MonitoringPrinter
 
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
@@ -25,18 +32,43 @@ class MonitoringServlet extends HttpServlet {
 
 	private final MonitoringService monitoringService
 
-	MonitoringServlet(MonitoringService monitoringService) {
+	private final MonitoringStatisticService monitoringStatisticService
+
+	MonitoringServlet(MonitoringService monitoringService, MonitoringStatisticService monitoringStatisticService) {
 		this.monitoringService = monitoringService
+		this.monitoringStatisticService = monitoringStatisticService
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException {
 		if (monitoringService.isEnable()) {
-			def mapper = new ObjectMapper()
-			response.setContentType("application/json")
-			response.setCharacterEncoding("UTF-8")
-			MonitoringModel monitoringMetrics = monitoringService.getMonitoringMetrics()
-			response.getWriter().print(mapper.writeValueAsString(monitoringMetrics))
+
+			StringBuilder output = new StringBuilder(MonitoringPrinter.printText(ResourcesUtil.getReleaseVersionString()))
+
+			// display datasource connection/memory/hikari config/system statistic/environment props/network props/license props/onCourse props
+			ConnectionStatistic connectionStatistic = monitoringStatisticService.getDatabaseConnectionStatictic("angel")
+			MemoryStatistic memoryStatistic = monitoringStatisticService.getMemoryStatictic()
+			HikariConfig currentHikariConfig = monitoringStatisticService.getHikariConfig("angel")
+			SystemStatistic systemStatistic = monitoringStatisticService.getSystemStatictic()
+			Properties environmentProperties = monitoringStatisticService.getEnvironmentProperties()
+			Map networkProperties = monitoringStatisticService.getNetworkProperties()
+			Map licenseProperties = monitoringStatisticService.getLicenseProperties()
+			Map onCourseProperties = monitoringStatisticService.getOnCourseProperties()
+
+			output.append(new HtmlPrinter().print(new MonitoringStatictic.Builder()
+					.setConnectionStatistic(connectionStatistic)
+					.setMemoryStatistic(memoryStatistic)
+					.setHikariConfig(currentHikariConfig)
+					.setSystemStatistic(systemStatistic)
+					.setEnvironmentProperties(environmentProperties)
+					.setNetworkProperties(networkProperties)
+					.setLicenseProperties(licenseProperties)
+					.setOnCourseProperties(onCourseProperties)
+					.build()
+			))
+
+			response.setHeader('Content-Type', 'text/html')
+			response.outputStream.write("<div style=\"font-family: monospace;\">${output.toString()}</div>".getBytes())
 		} else {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND)
 		}

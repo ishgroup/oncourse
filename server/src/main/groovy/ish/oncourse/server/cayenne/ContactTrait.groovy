@@ -16,9 +16,11 @@ import ish.common.types.ProductStatus
 import ish.oncourse.API
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.PaymentInDao
+import ish.oncourse.server.api.service.PortalWebsiteService
 import ish.oncourse.server.license.LicenseService
 import ish.util.RuntimeUtil
 import ish.util.UrlUtil
+import org.apache.cayenne.ObjectContext
 import org.apache.commons.lang3.StringUtils
 
 import java.text.ParseException
@@ -41,16 +43,23 @@ trait ContactTrait {
     abstract String getSuburb()
     abstract String getUniqueCode()
 
+    abstract ObjectContext getObjectContext()
+
     @Inject
     private LicenseService licenseService
 
     @Inject
     private PreferenceController preferenceController
+
+    @Inject
+    private PortalWebsiteService portalWebsiteService
     
     boolean hasMembership(MembershipProduct membership) {
         memberships.any { it.status == ProductStatus.ACTIVE && it.expiryDate > new Date() && it.product.id == membership.id  }
 
     }
+
+    abstract List<? extends CustomField> getCustomFields()
 
     /**
      * Get the age in whole years
@@ -180,11 +189,12 @@ trait ContactTrait {
 
         Date expiryDate = parseExpiryDate(timeout)
         String hashSalt = licenseService.getSecurity_key()
+
         if (PORTAL_USI_TARGET.equals(target)) {
-            return UrlUtil.createPortalUsiLink(preferenceController, this.uniqueCode, expiryDate, hashSalt)
+            return UrlUtil.createPortalUsiLink(this.uniqueCode, expiryDate, hashSalt, portalSubDomain)
         } else {
             String path = parsePortalTarget(target)
-            return UrlUtil.createSignedPortalUrl(preferenceController, path, expiryDate, hashSalt)
+            return UrlUtil.createSignedPortalUrl(path, expiryDate, hashSalt, portalSubDomain)
         }
     }
 
@@ -194,7 +204,14 @@ trait ContactTrait {
      * @return
      */
     String getPortalUrl(){
-        return preferenceController.getPortalUrl()
+        return UrlUtil.getPortalUrlFor(portalSubDomain)
+    }
+
+    /**
+     * @return portal sub domain for this contact or throws error if it is not configured for this college
+     */
+    String getPortalSubDomain(){
+        portalWebsiteService.getSubdomainFor(this)
     }
 
     private Date parseExpiryDate(Object timeout) {
