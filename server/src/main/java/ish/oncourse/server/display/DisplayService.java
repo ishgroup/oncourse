@@ -18,9 +18,9 @@ import org.apache.logging.log4j.Logger;
 public class DisplayService {
     private static final Logger logger = LogManager.getLogger();
 
-    private boolean subjectsAsEntity = false;
+    private Boolean subjectsAsEntity = null;
 
-    public boolean isSubjectsAsEntity() {
+    public Boolean isSubjectsAsEntity() {
         return subjectsAsEntity;
     }
 

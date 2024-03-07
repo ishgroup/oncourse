@@ -66,7 +66,8 @@ public class PreferenceController extends CommonPreferenceController {
 		sharedController = this;
 
 
-		setSubjectsAsEntity(displayService.isSubjectsAsEntity());
+		if(displayService.isSubjectsAsEntity() != null)
+			setSubjectsAsEntity(displayService.isSubjectsAsEntity());
 	}
 
 
