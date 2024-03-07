@@ -51,10 +51,10 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
     private SystemUserService systemUserService
 
     @Inject
-    private EnrolmentDao enrolmentDao
+    private PortalWebsiteService portalWebsiteService
 
     @Inject
-    private PreferenceController preferenceController
+    private EnrolmentDao enrolmentDao
 
     @Override
     Class<Certificate> getPersistentClass() {
@@ -101,7 +101,7 @@ class CertificateApiService extends EntityApiService<CertificateDTO, Certificate
             certificateDTO.code = certificate.printedOn != null && certificate.revokedOn == null ? certificate.uniqueCode : null
             certificateDTO.createdOn = LocalDateUtils.dateToTimeValue(certificate.createdOn)
             certificateDTO.modifiedOn = LocalDateUtils.dateToTimeValue(certificate.modifiedOn)
-            certificateDTO.portalLink = UrlUtil.buildCertificatePortalUrl(certificate.uniqueCode, preferenceController)
+            certificateDTO.portalLink = UrlUtil.buildCertificatePortalUrl(certificate.uniqueCode, portalWebsiteService.portalSubdomain)
             certificateDTO
         }
     }

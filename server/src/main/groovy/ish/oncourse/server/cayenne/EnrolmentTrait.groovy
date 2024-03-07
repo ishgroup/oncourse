@@ -18,8 +18,6 @@ import ish.oncourse.API
 
 trait EnrolmentTrait {
 
-    public static final String STATUS_COMPLETE = 'Complete'
-
     abstract EnrolmentStatus getStatus()
 
     abstract CourseClass getCourseClass()
@@ -33,13 +31,21 @@ trait EnrolmentTrait {
      */
     @API
     String getDisplayStatus() {
-        if (EnrolmentStatus.SUCCESS == getStatus() && (getCourseClass().isHybrid &&
-                getAttendances().findAll { it.attendanceType.equals(AttendanceType.ATTENDED)}.size() >= getCourseClass().minimumSessionsToComplete ||
-                getCourseClass().endDateTime != null && getCourseClass().endDateTime.before(new Date()))) {
-            return STATUS_COMPLETE
+        if (completed) {
+            return EnrolmentStatus.STATUS_COMPLETE
         } else {
             getStatus() ? getStatus().displayName : null
         }
+    }
+
+    /**
+     * @return if enrolment is completed
+     */
+    @API
+    boolean isCompleted() {
+        return EnrolmentStatus.SUCCESS == getStatus() && getCourseClass().endDateTime != null && getCourseClass().endDateTime.before(new Date()) &&
+                (!getCourseClass().isHybrid ||
+                        getCourseClass().isHybrid && getAttendances().findAll { it.attendanceType.equals(AttendanceType.ATTENDED) }.size() >= getCourseClass().minimumSessionsToComplete)
     }
 
     /**
@@ -48,11 +54,11 @@ trait EnrolmentTrait {
     @API
     List<Attendance> getAttendances() {
         List<Attendance> attendances = []
-        if (! (status in EnrolmentStatus.STATUSES_LEGIT) || courseClass.sessions.empty) {
+        if (!(status in EnrolmentStatus.STATUSES_LEGIT) || courseClass.sessions.empty) {
             return attendances
         }
 
-        for (Session session :  courseClass.sessions) {
+        for (Session session : courseClass.sessions) {
             for (Attendance a : session.attendance) {
                 if (a.student.equals(student)) {
                     attendances.add(a)

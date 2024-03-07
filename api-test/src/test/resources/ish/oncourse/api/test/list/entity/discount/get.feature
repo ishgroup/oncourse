@@ -79,7 +79,10 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -134,7 +137,10 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 

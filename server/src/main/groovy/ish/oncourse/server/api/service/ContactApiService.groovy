@@ -49,7 +49,6 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.*
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
 import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.toRestConcession
 import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.updateStudentConcessions
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static org.apache.commons.lang.StringUtils.*
 
@@ -439,6 +438,8 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         if (missedCustomFieldTypeKey != null) {
             validator.throwClientErrorException(Contact.CUSTOM_FIELDS.name, "Custom field type '${missedCustomFieldTypeKey}' is mandatory for contact.")
         }
+
+
     }
 
     private boolean isAnyUsiFieldEdited(Contact cayenneModel, ContactDTO dto) {
@@ -705,7 +706,17 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
     Closure getAction (String key, String value) {
         Closure action = super.getAction(key, value)
         if (!action) {
-            validator.throwClientErrorException(key, "Unsupported attribute")
+            if(key.startsWith("customFields")) {
+                def keyStructure = key.split("\\.")
+                if(keyStructure.size() != 2) {
+                    validator.throwClientErrorException(key, "Custom field key required")
+                }
+                action = { Contact contact ->
+                    def customFieldKey = keyStructure[1]
+                    contact.setProperty(customFieldKey, value)
+                }
+            } else
+                validator.throwClientErrorException(key, "Unsupported attribute")
         }
         action
     }

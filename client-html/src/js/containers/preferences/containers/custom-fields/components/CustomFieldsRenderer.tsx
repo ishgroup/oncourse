@@ -219,12 +219,26 @@ const ExpandableCustomFields = React.memo<any>(props => {
     dispatch(change(form, `${item}.dataType`, null));
   };
 
+  const onTypeChange = type => {
+    if (type === 'Portal subdomain' && field.entityType !== 'Contact') {
+      dispatch(change(form, `${item}.entityType`, 'Contact'));
+    }
+    onDataTypeChange(type);
+  };
+
   const availableDataTypes = useMemo(() => {
     if (field.entityType === "WaitingList") {
       return DataTypes.filter(t => t.label !== 'File');
     }
     return DataTypes;
   }, [field.entityType]);
+  
+  const availableEntities = useMemo(() => {
+    if (field.dataType === 'Portal subdomain') {
+      return EntityTypes.filter(t => t.value === 'Contact');
+    }
+    return EntityTypes;
+  }, [field.dataType]);
   
   return (
     <ExpandableItem
@@ -299,9 +313,9 @@ const ExpandableCustomFields = React.memo<any>(props => {
               label="Data Type"
               items={availableDataTypes}
               disabled={!!field.id}
-              onChange={onDataTypeChange}
               debounced={false}
               className={classes.field}
+              onChange={onTypeChange}
               required
             />
           </Grid>
@@ -312,7 +326,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               name={`${item}.entityType`}
               selectLabelCondition={entityTypeCondition}
               label="Record Type"
-              items={EntityTypes}
+              items={availableEntities}
               disabled={!!field.id}
               className={classes.field}
               onChange={onEntityChange}
