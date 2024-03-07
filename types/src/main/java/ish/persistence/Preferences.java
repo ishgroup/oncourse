@@ -484,4 +484,11 @@ public interface Preferences {
 	String BACKGROUND_QUALITY_SCALE = "background.quality.scale";
 
 	String DEFAULT_INVOICE_LINE_ACCOUNT = "account.default.invoiceline.id";
+
+
+	// **************************************
+	// DISPLAY
+	// **************************************
+
+	String SUBJECTS_AS_ENTITY = "ish.display.subjectsAsEntity";
 }
