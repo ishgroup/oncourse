@@ -10,7 +10,10 @@
  */
 package ish.persistence;
 
-import ish.common.types.*;
+import ish.common.types.ClassFundingSource;
+import ish.common.types.DeliveryMode;
+import ish.common.types.TwoFactorAuthorizationStatus;
+import ish.common.types.TypesUtil;
 import ish.math.Country;
 import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
@@ -19,7 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -1217,6 +1221,8 @@ public abstract class CommonPreferenceController {
 			setBackgroundQualityScale((String) value);
 		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
 			setDefaultInvoiceLineAccount((Long) value);
+		} else if(Preferences.SUBJECTS_AS_ENTITY.equals(key)){
+			setSubjectsAsEntity((Boolean) value);
 		}
 	}
 
@@ -1432,5 +1438,14 @@ public abstract class CommonPreferenceController {
 
 	public void setDefaultInvoiceLineAccount(Long value){
 		setValue(DEFAULT_INVOICE_LINE_ACCOUNT, false, String.valueOf(value));
+	}
+
+	public Boolean getSubjectsAsEntity(){
+		String value = getValue(SUBJECTS_AS_ENTITY, false);
+		return Boolean.parseBoolean(value);
+	}
+
+	public void setSubjectsAsEntity(Boolean value){
+		setValue(SUBJECTS_AS_ENTITY, false, String.valueOf(value));
 	}
 }

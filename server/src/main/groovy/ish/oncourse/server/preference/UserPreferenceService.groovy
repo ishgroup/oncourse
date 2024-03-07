@@ -176,6 +176,8 @@ class UserPreferenceService {
                 return preferenceController.getPaymentGatewayType()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
+            case PreferenceEnumDTO.ISH_DISPLAY_SUBJECTSASENTITY:
+                return preferenceController.getSubjectsAsEntity()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)
