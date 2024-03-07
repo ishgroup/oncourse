@@ -84,11 +84,11 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
     @Override
     void validateModelBeforeSave(FacultyDTO facultyDTO, ObjectContext context, Long id) {
 
-        if (isBlank(FacultyDTO.name)) {
+        if (isBlank(facultyDTO.name)) {
             validator.throwClientErrorException(id, 'name', 'Name is required.')
         }
 
-        if(FacultyDTO.name.length() > Faculty.FACULTY_NAME_MAX_LENGTH) {
+        if(facultyDTO.name.length() > Faculty.FACULTY_NAME_MAX_LENGTH) {
             validator.throwClientErrorException(id, 'name',
                     "Faculty name cannot be greater than " + Faculty.FACULTY_NAME_MAX_LENGTH + " characters.")
         }
@@ -98,7 +98,7 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
         } else if (!trimToNull(facultyDTO.code).matches('^\\w+(\\.\\w+)*$')) {
             validator.throwClientErrorException(id, 'code', 'Faculty code must start and end with letters or numbers and can contain full stops.')
         } else if (trimToNull(facultyDTO.code).length() > Faculty.FACULTY_CODE_MAX_LENGTH) {
-            validator.throwClientErrorException(id, 'code', "Faculty code cannot be greater than " +  Faculty.FACULTY_CODE_MAX_LENGTH + "characters.")
+            validator.throwClientErrorException(id, 'code', "Faculty code cannot be greater than " +  Faculty.FACULTY_CODE_MAX_LENGTH + " characters.")
         } else {
             Long facultyId = entityDao.getFacultyByCode(context, trimToNull(facultyDTO.code))?.id
             if (facultyId && facultyId != id) {
