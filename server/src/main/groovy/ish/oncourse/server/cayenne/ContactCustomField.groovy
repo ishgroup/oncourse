@@ -11,11 +11,15 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.API
-import ish.oncourse.cayenne.IExpandable
+import ish.common.types.DataType
 import ish.oncourse.server.cayenne.glue._ContactCustomField
 
 class ContactCustomField extends _ContactCustomField {
+
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return customFieldType.isAsyncReplicationAllowed()
+	}
 
 	@Override
 	void setRelatedObject(ExpandableTrait relatedObject) {

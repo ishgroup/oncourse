@@ -144,6 +144,9 @@ public class PrintService {
 			throw new IllegalArgumentException("No report with such key code exist: " + request.getReportCode());
 		}
 
+		if(report == null)
+			throw new IllegalArgumentException("No report with such key code exist: " + request.getReportCode());
+
 		fillWithTransformations(request, reportSpec.getEntityRecords(), report.getEntity(), request.getReportCode());
 
 		try {

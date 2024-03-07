@@ -20,7 +20,7 @@ export interface BulkEditField {
   keyCode: string;
   label: string;
   name: string;
-  type: "Select" | "Text" | "Date" | "Number" | "Switch" | "Checkbox" | "Tag" | "Money";
+  type: "Select" | "Text" | "Date" | "Number" | "Switch" | "Checkbox" | "Tag" | "Money" | "Portal subdomain";
   items?: SelectItemDefault[];
   propsItemKey?: string;
   selectValueMark?: string;

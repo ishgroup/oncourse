@@ -65,7 +65,8 @@ Feature: Main feature for all GET requests with path 'list/entity/certificate'
         "revokedOn":null,
         "code":null,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"https:\/\/www.skillsoncourse.com.au\/certificate\/cAxWbE3dFwT3"
         }
         """
 
@@ -100,7 +101,8 @@ Feature: Main feature for all GET requests with path 'list/entity/certificate'
         "revokedOn":null,
         "code":null,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"https:\/\/www.skillsoncourse.com.au\/certificate\/cAxWbE3dFwT5"
         }
         """
 
@@ -134,7 +136,8 @@ Feature: Main feature for all GET requests with path 'list/entity/certificate'
         "revokedOn":null,
         "code":"cBxWbE3dFwT4",
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"https:\/\/www.skillsoncourse.com.au\/certificate\/cBxWbE3dFwT4"
         }
         """
 
@@ -174,7 +177,8 @@ Feature: Main feature for all GET requests with path 'list/entity/certificate'
         "revokedOn":null,
         "code":null,
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "portalLink":"https:\/\/www.skillsoncourse.com.au\/certificate\/cAxWbE3dFwT3"
         }
         """
 

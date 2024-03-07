@@ -15,38 +15,48 @@ import { connect } from "react-redux";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { getDeepValue } from "../../../../common/utils/common";
-import {
-  validateEmail,
-  validatePattern,
-  validateSingleMandatoryField,
-  validateURL
-} from "../../../../common/utils/validation";
+import { validateEmail, validatePattern, validateURL } from "../../../../common/utils/validation";
+import { FormFieldWrapperProps } from "../../../../model/common/Fields";
 import { EntityName } from "../../../../model/entities/common";
 import { State } from "../../../../reducers/state";
 import { CustomFieldTypesState } from "../reducers/state";
 
-const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
+const customFieldComponentResolver = (type: CustomFieldType, onCreateOption, items) => {
   const validateFieldPattern = val => validatePattern(val, type.pattern);
-  const required =  type.mandatory;
-  
-  let fieldType = "text";
-  let componentProps: any = { required };
+  let componentProps: Partial<FormFieldWrapperProps>  = { type: "text", required: type.mandatory };
 
   switch (type.dataType) {
-    case "Checkbox": {
-      fieldType = "checkbox";
+    case "Portal subdomain":
       componentProps = {
+        ...componentProps,
+        type: 'remoteDataSelect',
+        preloadEmpty: true,
+        entity: 'PortalWebsite',
+        aqlColumns: 'subDomain',
+        selectValueMark: 'subDomain',
+        selectLabelMark: 'subDomain'
+      };
+      break;
+    case "Checkbox": {
+      componentProps = {
+        ...componentProps,
+        type: 'checkbox',
         stringValue: true
       };
       break;
     }
     case "Date": {
-      fieldType = "date";
+      componentProps = {
+        ...componentProps,
+        type: 'date'
+      };
       break;
     }
     case "Date time": {
-      fieldType = "dateTime";
-
+      componentProps = {
+        ...componentProps,
+        type: 'dateTime'
+      };
       break;
     }
     case "Email": {
@@ -57,14 +67,18 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
       break;
     }
     case "Long text": {
-      fieldType = "multiline";
+      componentProps = {
+        ...componentProps,
+        type: 'multilineText'
+      };
       break;
     }
     case "List": {
       const isCreatable = type.defaultValue && type.defaultValue.includes("*");
-      fieldType = "select";
       componentProps = {
         ...componentProps,
+        type: 'select',
+        items,
         allowEmpty: !type.mandatory,
         ...(isCreatable
           ? {
@@ -77,15 +91,18 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
       break;
     }
     case "Map": {
-      fieldType = "select";
       componentProps = {
+        type: 'select',
+        items,
         ...componentProps,
         allowEmpty: !type.mandatory,
       };
       break;
     }
     case "Money": {
-      fieldType = "money";
+      componentProps = {
+        type: 'money'
+      };
       break;
     }
     case "URL": {
@@ -97,14 +114,14 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
     }
     case "Pattern text": {
       componentProps = {
+        ...componentProps,
         validate: validateFieldPattern,
-        required
       };
       break;
     }
   }
 
-  return { fieldType, componentProps };
+  return componentProps;
 };
 
 interface CustomFieldProps {
@@ -165,22 +182,21 @@ export const CustomField: React.FC<CustomFieldProps> = ({
     dispatch(change(form, `${fieldName}[${type.fieldKey}]`, value));
   };
 
-  const { fieldType, componentProps } = useMemo(() => customFieldComponentResolver(type, onCreate), [type]);
-
+  const componentProps = useMemo(() => customFieldComponentResolver(type, onCreate, items), [type]);
+  
   return (
-    fieldType === "checkbox"
+    componentProps.type === "checkbox"
     ? (
       <FormControlLabel
-        control={<FormField type="checkbox" name={`${fieldName}.${type.fieldKey}`} color="primary" {...componentProps} />}
+        control={<FormField type={componentProps.type} name={`${fieldName}.${type.fieldKey}`} color="primary" {...componentProps} />}
         label={type.name}
       />
       )
       : (
         <FormField
+          type={componentProps.type as any}
           name={`${fieldName}.${type.fieldKey}`}
           label={type.name}
-          type={fieldType}
-          items={items}
           {...componentProps}
         />
       )

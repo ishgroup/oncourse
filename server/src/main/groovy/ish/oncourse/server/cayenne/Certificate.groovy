@@ -16,6 +16,7 @@ import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Certificate
 import ish.util.SecurityUtil
+import ish.util.UrlUtil
 import ish.validation.ValidationFailure
 import org.apache.cayenne.query.MappedSelect
 import org.apache.cayenne.validation.ValidationResult
@@ -41,7 +42,7 @@ import static ish.oncourse.cayenne.MappedSelectParams.*
  */
 @API
 @QueueableEntity
-class Certificate extends _Certificate implements Queueable, AttachableTrait, ContactActivityTrait {
+class Certificate extends _Certificate implements Queueable, AttachableTrait, ContactActivityTrait, CertificateTrait {
 	private static final Logger logger = LogManager.getLogger()
 
 	public static final SUCCESSFUL_OUTCOMES_PROPERTY = "successful_outcomes";

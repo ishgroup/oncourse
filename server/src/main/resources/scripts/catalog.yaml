@@ -49,8 +49,23 @@
   status: NOT_INSTALLED
   triggerType: ONCOURSE_EVENT
   onCourseEventType: ENROLMENT_SUCCESSFUL
-  description: On successful enrolment, enrol student into a Canvas course. tagName defines the name of the course tag that you'll apply to Canvas courses in onCourse.
-  short: Requires active Canvas integration. When a student enrols into a Canvas-related course in onCourse, send the data and enrol them into the same course in Canvas.
+  description: On successful enrolment, enrol student into a Canvas course. tagName defines the name of the course tag that you'll apply to Canvas courses in onCourse. If class is Hybrid the Script will enrol student into Canvas if Hybrid class is 'active' (class start date in the past and end date in the future)
+  short: Requires active Canvas integration. When a student enrols into a Canvas-related course in onCourse, send the data and enrol them into the same course in Canvas. If class is Hybrid the Script will enrol student into Canvas if Hybrid class is 'active' (class start date in the past and end date in the future)
+  category: Integrations
+  tag:
+  options:
+    - name: tagName
+      dataType: TEXT
+      value: ""
+
+- name: Canvas enrol for today activated Hybrid classes
+  keyCode: ish.script.canvasEnrolmentHybridClassesDaily
+  body: ish.script.canvasEnrolmentHybridClassesDaily.groovy
+  status: NOT_INSTALLED
+  triggerType: CRON
+  schedule: "@daily-morning"
+  description: This script runs daily to enrol student into a Canvas course for today actived Hybrid classes (class start date is today) and for successful enrolmets. tagName defines the name of the course tag that you'll apply to Canvas courses in onCourse.
+  short: Requires active Canvas integration. Runs daily in the morning to enrol student into a Canvas course for Hybrid classes whose start date is today and successful enrolmets.
   category: Integrations
   tag:
   options:
