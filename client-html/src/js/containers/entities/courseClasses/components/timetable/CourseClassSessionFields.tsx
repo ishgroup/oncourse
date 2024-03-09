@@ -47,6 +47,10 @@ const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
 
+export const siteAndRoomSort = (a, b) => {
+  return (roomLabel(a).toLowerCase() > roomLabel(b).toLowerCase() ? 1 : -1);
+};
+
 const CourseClassSessionFields: React.FC<Props> = ({
   form,
   dispatch,
@@ -244,6 +248,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           onInnerValueChange={onRoomIdChange}
           itemRenderer={NoWrapOption}
           hasError={Boolean(warningTypes.Room.length)}
+          sort={siteAndRoomSort}
           allowEmpty
         />
       </Grid>
