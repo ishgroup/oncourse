@@ -113,7 +113,7 @@ class TagFunctions {
             String errorMessage = 'Tag group can not be deleted'
             switch (dbTag.specialType) {
                 case NodeSpecialType.SUBJECTS:
-                    errorMessage += ' This tag group represents the categories of courses on your web site and cannot be deleted.'
+                    errorMessage += ' This tag group represents the categories of courses/products on your web site and cannot be deleted.'
                     break
                 case NodeSpecialType.TERMS:
                     errorMessage += ' This tag group represents the categories of classes on your web site and cannot be deleted.'
