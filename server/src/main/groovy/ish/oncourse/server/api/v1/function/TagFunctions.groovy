@@ -113,7 +113,7 @@ class TagFunctions {
                 }
             }
 
-    private static Map<Long,Integer> childCountMapOf(ObjectContext context){
+    private static Map<Long, Integer> childCountMapOf(ObjectContext context) {
         return ObjectSelect.query(Tag)
                 .columns(Tag.ID, Tag.TAG_RELATIONS.count())
                 .select(context)
@@ -143,7 +143,8 @@ class TagFunctions {
                         tagRequirement.limitToOneTag = !req.manyTermsAllowed
                         tagRequirement.displayRule = req.displayRule
                         tagRequirement.system = tag.system && (
-                                (dbTag.specialType == NodeSpecialType.SUBJECTS && tagRequirement.type == TagRequirementTypeDTO.COURSE) ||
+                                (dbTag.specialType == NodeSpecialType.SUBJECTS && tagRequirement.type == TagRequirementTypeDTO.COURSE ||
+                                        tagRequirement.type == TagRequirementTypeDTO.ARTICLEPRODUCT || tagRequirement.type == TagRequirementTypeDTO.MEMBERSHIPPRODUCT || tagRequirement.type == TagRequirementTypeDTO.VOUCHERPRODUCT) ||
                                         (dbTag.specialType == NodeSpecialType.ASSESSMENT_METHOD && tagRequirement.type == TagRequirementTypeDTO.ASSESSMENT) ||
                                         (dbTag.specialType == NodeSpecialType.PAYROLL_WAGE_INTERVALS && tagRequirement.type == TagRequirementTypeDTO.TUTOR) ||
                                         (dbTag.specialType == NodeSpecialType.TERMS && tagRequirement.type == TagRequirementTypeDTO.COURSECLASS)
@@ -189,7 +190,7 @@ class TagFunctions {
             String errorMessage = 'Tag group can not be deleted'
             switch (dbTag.specialType) {
                 case NodeSpecialType.SUBJECTS:
-                    errorMessage += ' This tag group represents the categories of courses on your web site and cannot be deleted.'
+                    errorMessage += ' This tag group represents the categories of courses/products on your web site and cannot be deleted.'
                     break
                 case NodeSpecialType.TERMS:
                     errorMessage += ' This tag group represents the categories of classes on your web site and cannot be deleted.'
@@ -248,7 +249,10 @@ class TagFunctions {
 
         switch (dbTag.specialType) {
             case NodeSpecialType.SUBJECTS:
-                requiredEntity = deletedEntityList.find { it == TaggableClasses.COURSE }
+                requiredEntity = deletedEntityList.find {
+                    it == TaggableClasses.COURSE || it == TaggableClasses.ARTICLE_PRODUCT ||
+                            it == TaggableClasses.VOUCHER_PRODUCT || it == TaggableClasses.MEMBERSHIP_PRODUCT
+                }
                 break
             case NodeSpecialType.ASSESSMENT_METHOD:
                 requiredEntity = deletedEntityList.find { it == TaggableClasses.ASSESSMENT }
@@ -263,7 +267,7 @@ class TagFunctions {
 
         return requiredEntity == null ? null :
                 new ValidationErrorDTO(null, 'requirements',
-                        "The ${ StringUtils.capitalize(requiredEntity.name().toLowerCase()) } entity is mandatory for the Tag Group.".toString()
+                        "The ${StringUtils.capitalize(requiredEntity.name().toLowerCase())} entity is mandatory for the Tag Group.".toString()
                 )
     }
 
