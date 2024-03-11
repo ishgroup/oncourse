@@ -14,6 +14,11 @@ import ish.oncourse.server.cayenne.glue._Faculty
 
 import javax.annotation.Nonnull
 
+/**
+ * A Faculty is the section of the University offering a course.
+ *
+ */
+@API
 class Faculty extends _Faculty implements NotableTrait, AttachableTrait {
 
     public static final int FACULTY_NAME_MAX_LENGTH = 200
@@ -21,7 +26,7 @@ class Faculty extends _Faculty implements NotableTrait, AttachableTrait {
 
 
     /**
-     * @return The list of tags assigned to site
+     * @return The list of tags assigned to faculty
      */
     @Nonnull
     @API
@@ -52,5 +57,80 @@ class Faculty extends _Faculty implements NotableTrait, AttachableTrait {
     @Override
     Class<? extends AttachmentRelation> getRelationClass() {
         return FacultyAttachmentRelation.class
+    }
+
+    /**
+     * @return the date and time this record was created
+     */
+    @API
+    @Override
+    Date getCreatedOn() {
+        return super.getCreatedOn()
+    }
+
+    /**
+     * @return the date and time this record was modified
+     */
+    @API
+    @Override
+    Date getModifiedOn() {
+        return super.getModifiedOn()
+    }
+
+    /**
+     * @return The name for this faculty.
+     */
+    @Nonnull
+    @API
+    @Override
+    String getName() {
+        return super.getName()
+    }
+
+    /**
+     * This code must be unique across all faculties. It cannot contain spaces or hyphens. Because it is used to generate
+     * a URL for the faculty, it should also be selected for readability, websafe characters and SEO.
+     *
+     * @return course code
+     */
+    @Nonnull
+    @API
+    @Override
+    String getCode() {
+        return super.getCode()
+    }
+
+    /**
+     * The faculty description is displayed on the faculty detail page. It can contain rich text for embedding images,
+     * blocks, video, dynamic text, and more. It also supported unicode for multi-language support.
+     *
+     * @return a rich text field for display on the web
+     */
+    @API
+    @Override
+    String getWebDescription() {
+        return super.getWebDescription()
+    }
+
+    /**
+     * The faculty short description is displayed on the faculties page as a description of faculty under the title.
+     * If value not set, webDescription will be displayed.
+     * It can contain rich text for embedding images, blocks, video, dynamic text, and more. It also supported unicode for multi-language support.
+     *
+     * @return a rich text field for display on the web
+     */
+    @API
+    @Override
+    String getShortWebDescription() {
+        return super.getShortWebDescription()
+    }
+
+    /**
+     * @return courses in which this faculty is assigned
+     */
+    @Nonnull
+    @API
+    List<Course> getCourses() {
+        return super.getCourses()
     }
 }
