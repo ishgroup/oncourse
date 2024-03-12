@@ -15,6 +15,7 @@ import { showConfirm } from "../../../common/actions";
 import RouteChangeConfirm from "../../../common/components/dialog/RouteChangeConfirm";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { useAppDispatch, useAppSelector } from "../../../common/utils/hooks";
+import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
 import { EntityName } from "../../../model/entities/common";
 import { SpecialTypeTagsFormValues } from "../../../model/tags";
 import { EmptyTag } from "../../tags/constants";
@@ -33,6 +34,7 @@ function SpecialTagTypeForm(
   }: Props & InjectedFormProps<SpecialTypeTagsFormValues>
 ) {
   const dispatch = useAppDispatch();
+  const disabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] !== 'true');
   const values = useAppSelector(state => getFormValues(form)(state)) as SpecialTypeTagsFormValues;
 
   const specialType = useMemo(() => getSpecialTagTypeByEntity(entity), [entity]);
@@ -75,12 +77,12 @@ function SpecialTagTypeForm(
         invalid={invalid}
         title={title}
         disableInteraction
-        onAddMenu={onAddNew}
+        onAddMenu={!disabled && onAddNew}
       >
         {values?.types?.length ? <Grid container className="mt-2">
           <Grid item sm={12} lg={10}>
             <Grid container columnSpacing={3}>
-              {values.types.map((t, index) => <SpecialTagType key={index} index={index} onDelete={onDelete} />)}
+              {values.types.map((t, index) => <SpecialTagType disabled={disabled} key={index} index={index} onDelete={onDelete} />)}
             </Grid>
           </Grid>
         </Grid> : <div className="noRecordsMessage h-100">

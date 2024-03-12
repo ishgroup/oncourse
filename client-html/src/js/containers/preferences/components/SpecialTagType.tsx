@@ -15,11 +15,12 @@ import { cardsFormStyles } from "../styles/formCommonStyles";
 interface SpecialTagTypeProps {
   index: number;
   onDelete: NumberArgFunction;
+  disabled?: boolean;
 }
 
 const useStyles = makeAppStyles(cardsFormStyles);
 
-function SpecialTagType({ index, onDelete }: SpecialTagTypeProps) {
+function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
   const classes = useStyles();
   return (
     <Grid item xs={12}>
@@ -33,6 +34,7 @@ function SpecialTagType({ index, onDelete }: SpecialTagTypeProps) {
                   name={`types.${index}.name`}
                   label="Name"
                   className={classes.field}
+                  disabled={disabled}
                   required
                 />
               </Grid>
@@ -41,6 +43,7 @@ function SpecialTagType({ index, onDelete }: SpecialTagTypeProps) {
                 <div className="d-flex">
                   <FormControlLabel
                     className={classes.checkbox}
+                    disabled={disabled}
                     control={<FormField
                       type="switch"
                       name={`types.${index}.status`}
@@ -57,6 +60,7 @@ function SpecialTagType({ index, onDelete }: SpecialTagTypeProps) {
                       color="secondary"
                       onClick={() => onDelete(index)}
                       className={classes.deleteButton}
+                      disabled={disabled}
                     >
                       Delete
                     </Button>
