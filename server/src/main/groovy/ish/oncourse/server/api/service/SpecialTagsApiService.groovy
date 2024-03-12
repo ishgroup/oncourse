@@ -12,13 +12,12 @@ import com.google.inject.Inject
 import ish.common.types.NodeSpecialType
 import ish.common.types.NodeType
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import org.apache.cayenne.query.ObjectSelect
-
-import javax.ws.rs.ClientErrorException
-import javax.ws.rs.core.Response
 
 import static ish.oncourse.server.api.function.TagApiFunctions.*
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestSpecial
@@ -34,8 +33,16 @@ class SpecialTagsApiService {
     @Inject
     private ICayenneService cayenneService
 
+    @Inject
+    private PreferenceController preferenceController
+
 
     SpecialTagDTO getSpecialTags(String entityName) {
+        if(!preferenceController.extendedTypesAllowed) {
+            EntityValidator.throwClientErrorException("specialType", "specialType",
+                    "Special types are not allowed in your college. Contact Ish support, if you want to use them")
+        }
+
         def taggableClassesForEntity = taggableClassesFor(entityName)
         def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
         expr = expr.andExp(Tag.SPECIAL_TYPE.in(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
@@ -83,23 +90,24 @@ class SpecialTagsApiService {
         createOrUpdateTag(rootTagDTO, context, specialRootTag, specialType)
     }
 
-    private static void validateSpecialTag(SpecialTagDTO specialTagDTO) {
+    private void validateSpecialTag(SpecialTagDTO specialTagDTO) {
+        if(!preferenceController.extendedTypesAllowed) {
+            EntityValidator.throwClientErrorException("null", "specialType",
+                    "Special types are not allowed in your college. Contact Ish support, if you want to use them")
+        }
+
         def specialType = specialTagDTO.specialType
         def childTags = specialTagDTO.childTags
 
         if (specialType == null || !TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(NodeSpecialType.fromDisplayName(specialType.toString()))) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ValidationErrorDTO(childTags.first()?.id?.toString(), "specialType",
-                            "You can edit only special tags with this endpoint"))
-                    .build())
+            EntityValidator.throwClientErrorException(childTags.first()?.id?.toString(), "specialType",
+                    "You can edit only special tags with this endpoint")
         }
 
         if(!specialTagDTO.childTags.empty) {
             if (specialTagDTO.childTags.any { it -> !it.childTags.empty }) {
-                throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST)
-                        .entity(new ValidationErrorDTO(specialTagDTO.childTags.first().id?.toString(), "childTags",
-                                "Special tags cannot have second level of hierarchy"))
-                        .build())
+                EntityValidator.throwClientErrorException(specialTagDTO.childTags.first().id?.toString(), "childTags",
+                        "Special tags cannot have second level of hierarchy")
             }
         }
     }

@@ -491,4 +491,6 @@ public interface Preferences {
 	// **************************************
 
 	String SUBJECTS_AS_ENTITY = "ish.display.subjectsAsEntity";
+
+	String EXTENDED_TYPES = "ish.display.extendedTypes";
 }

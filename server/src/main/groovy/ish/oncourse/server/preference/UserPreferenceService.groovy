@@ -178,6 +178,8 @@ class UserPreferenceService {
                 return getReadNews()
             case PreferenceEnumDTO.ISH_DISPLAY_SUBJECTSASENTITY:
                 return preferenceController.getSubjectsAsEntity()
+            case PreferenceEnumDTO.ISH_DISPLAY_EXTENDEDTYPES:
+                return preferenceController.getExtendedTypesAllowed()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)

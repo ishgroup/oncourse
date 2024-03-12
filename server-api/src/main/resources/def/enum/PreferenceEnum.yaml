@@ -33,3 +33,4 @@ enum:
 - account.default.invoiceline.id
 - payment.gateway.type
 - ish.display.subjectsAsEntity
+- ish.display.extendedTypes

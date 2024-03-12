@@ -20,13 +20,25 @@ public class DisplayService {
 
     private Boolean subjectsAsEntity = null;
 
+    private Boolean extendedTypes = null;
+
     public Boolean isSubjectsAsEntity() {
         return subjectsAsEntity;
+    }
+
+    public Boolean getExtendedTypes() {
+        return extendedTypes;
     }
 
     @BQConfigProperty
     public void setSubjectsAsEntity(boolean subjectsAsEntity) {
         logger.warn("server has subjectsAsEntity = " + subjectsAsEntity);
         this.subjectsAsEntity = subjectsAsEntity;
+    }
+
+    @BQConfigProperty
+    public void setExtendedTypes(boolean extendedTypes) {
+        logger.warn("server has extendedTypes = " + extendedTypes);
+        this.extendedTypes = extendedTypes;
     }
 }
