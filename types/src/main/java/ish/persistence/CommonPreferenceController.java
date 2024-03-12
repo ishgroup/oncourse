@@ -1448,4 +1448,13 @@ public abstract class CommonPreferenceController {
 	public void setSubjectsAsEntity(Boolean value){
 		setValue(SUBJECTS_AS_ENTITY, false, String.valueOf(value));
 	}
+
+	public Boolean getExtendedTypesAllowed(){
+		String value = getValue(EXTENDED_TYPES, false);
+		return Boolean.parseBoolean(value);
+	}
+
+	public void setExtendedTypesAllowed(Boolean value){
+		setValue(EXTENDED_TYPES, false, String.valueOf(value));
+	}
 }

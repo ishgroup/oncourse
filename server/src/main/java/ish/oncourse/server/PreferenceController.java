@@ -65,9 +65,15 @@ public class PreferenceController extends CommonPreferenceController {
 		this.pluginsPrefsService = pluginsPrefsService;
 		sharedController = this;
 
+		initDisplayPreferencesFromConfigFile(displayService);
+	}
 
+	private void initDisplayPreferencesFromConfigFile(DisplayService displayService) {
 		if(displayService.isSubjectsAsEntity() != null)
 			setSubjectsAsEntity(displayService.isSubjectsAsEntity());
+
+		if(displayService.getExtendedTypes() != null)
+			setExtendedTypesAllowed(displayService.getExtendedTypes());
 	}
 
 
