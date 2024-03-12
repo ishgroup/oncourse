@@ -5,6 +5,7 @@
 
 import { Binding, ExecuteScriptRequest, OutputType, Script, SearchQuery } from "@api/model";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -238,6 +239,8 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     );
   }
 
+  console.log('!!!!!!!', selectAll, values);
+
   return values ? (
     <Dialog open={opened} onClose={onClose} maxWidth="md" fullWidth scroll="body">
       <form autoComplete="off" onSubmit={handleSubmit(handleRunScript)}>
@@ -268,6 +271,9 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
 
             <FieldArray name="variables" component={templatesRenderer} />
           </Grid>
+
+          {(values.trigger.type === 'On demand' && !filteredCount)
+            && <Alert severity="warning">Attention! This script will be executed against <strong>all</strong> records of the selected entity</Alert>}
         </DialogContent>
 
         <DialogActions className="p-3">
