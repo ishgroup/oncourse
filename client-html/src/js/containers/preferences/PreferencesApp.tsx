@@ -59,6 +59,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getGradingTypes());
     dispatch(getPreferences(Categories.licences));
     dispatch(getPreferences(Categories.plugins));
+    dispatch(getPreferences(Categories.classTypes));
   },
   updateColumnsWidth: (preferenceLeftColumnWidth: number) => dispatch(updateColumnsWidth({ preferenceLeftColumnWidth }))
 });

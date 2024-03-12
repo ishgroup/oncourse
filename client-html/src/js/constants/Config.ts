@@ -108,6 +108,8 @@ export const LISTVIEW_MAIN_CONTENT_WIDTH: PreferenceEnum = "listview.main.conten
 
 export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default";
 
+export const SPECIAL_TYPES_DISPLAY_KEY: PreferenceEnum = "ish.display.extendedTypes";
+
 export const ADMIN_EMAIL_KEY = 'email.admin';
 
 export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";
