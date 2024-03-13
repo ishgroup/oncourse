@@ -1050,8 +1050,10 @@ public abstract class CommonPreferenceController {
 			return getNumberOfLoginAttempts();
 		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
 			return getTutorialSkipSystemUser();
-		} else if (DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)) {
-			return getDefaultInvoiceLineAccount();
+		} else if (SUBJECTS_AS_ENTITY.equals(key)) {
+			return getSubjectsAsEntity();
+		} else if (EXTENDED_TYPES.equals(key)) {
+			return getExtendedTypesAllowed();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
