@@ -69,11 +69,8 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	private void initDisplayPreferencesFromConfigFile(DisplayService displayService) {
-		if(displayService.isSubjectsAsEntity() != null)
-			setSubjectsAsEntity(displayService.isSubjectsAsEntity());
-
-		if(displayService.getExtendedTypes() != null)
-			setExtendedTypesAllowed(displayService.getExtendedTypes());
+		if(displayService.getExtendedSearchTypes() != null)
+			setExtendedTypesAllowed(displayService.getExtendedSearchTypes());
 	}
 
 

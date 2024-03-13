@@ -1050,10 +1050,8 @@ public abstract class CommonPreferenceController {
 			return getNumberOfLoginAttempts();
 		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
 			return getTutorialSkipSystemUser();
-		} else if (SUBJECTS_AS_ENTITY.equals(key)) {
-			return getSubjectsAsEntity();
-		} else if (EXTENDED_TYPES.equals(key)) {
-			return getExtendedTypesAllowed();
+		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
+			return getExtendedSearchTypesAllowed();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1223,8 +1221,6 @@ public abstract class CommonPreferenceController {
 			setBackgroundQualityScale((String) value);
 		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
 			setDefaultInvoiceLineAccount((Long) value);
-		} else if(Preferences.SUBJECTS_AS_ENTITY.equals(key)){
-			setSubjectsAsEntity((Boolean) value);
 		}
 	}
 
@@ -1442,21 +1438,12 @@ public abstract class CommonPreferenceController {
 		setValue(DEFAULT_INVOICE_LINE_ACCOUNT, false, String.valueOf(value));
 	}
 
-	public Boolean getSubjectsAsEntity(){
-		String value = getValue(SUBJECTS_AS_ENTITY, false);
-		return Boolean.parseBoolean(value);
-	}
-
-	public void setSubjectsAsEntity(Boolean value){
-		setValue(SUBJECTS_AS_ENTITY, false, String.valueOf(value));
-	}
-
-	public Boolean getExtendedTypesAllowed(){
-		String value = getValue(EXTENDED_TYPES, false);
+	public Boolean getExtendedSearchTypesAllowed(){
+		String value = getValue(EXTENDED_SEARCH_TYPES, false);
 		return Boolean.parseBoolean(value);
 	}
 
 	public void setExtendedTypesAllowed(Boolean value){
-		setValue(EXTENDED_TYPES, false, String.valueOf(value));
+		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
 	}
 }

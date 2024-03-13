@@ -490,7 +490,5 @@ public interface Preferences {
 	// DISPLAY
 	// **************************************
 
-	String SUBJECTS_AS_ENTITY = "ish.display.subjectsAsEntity";
-
-	String EXTENDED_TYPES = "ish.display.extendedTypes";
+	String EXTENDED_SEARCH_TYPES = "ish.display.extendedSearchTypes";
 }

@@ -38,7 +38,7 @@ class SpecialTagsApiService {
 
 
     SpecialTagDTO getSpecialTags(String entityName) {
-        if(!preferenceController.extendedTypesAllowed) {
+        if(!preferenceController.extendedSearchTypesAllowed) {
             EntityValidator.throwClientErrorException("specialType", "specialType",
                     "Special types are not allowed in your college. Contact Ish support, if you want to use them")
         }
@@ -91,7 +91,7 @@ class SpecialTagsApiService {
     }
 
     private void validateSpecialTag(SpecialTagDTO specialTagDTO) {
-        if(!preferenceController.extendedTypesAllowed) {
+        if(!preferenceController.extendedSearchTypesAllowed) {
             EntityValidator.throwClientErrorException("null", "specialType",
                     "Special types are not allowed in your college. Contact Ish support, if you want to use them")
         }

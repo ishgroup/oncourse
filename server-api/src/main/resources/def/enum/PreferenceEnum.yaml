@@ -32,5 +32,4 @@ enum:
 - background.quality.scale
 - account.default.invoiceline.id
 - payment.gateway.type
-- ish.display.subjectsAsEntity
-- ish.display.extendedTypes
+- ish.display.extendedSearchTypes
