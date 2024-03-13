@@ -8,9 +8,7 @@
 
 package ish.oncourse.server.display;
 
-import com.google.inject.Inject;
 import io.bootique.annotation.BQConfigProperty;
-import ish.oncourse.server.PreferenceController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,27 +16,16 @@ import org.apache.logging.log4j.Logger;
 public class DisplayService {
     private static final Logger logger = LogManager.getLogger();
 
-    private Boolean subjectsAsEntity = null;
+    private Boolean extendedSearchTypes = null;
 
-    private Boolean extendedTypes = null;
-
-    public Boolean isSubjectsAsEntity() {
-        return subjectsAsEntity;
+    public Boolean getExtendedSearchTypes() {
+        return extendedSearchTypes;
     }
 
-    public Boolean getExtendedTypes() {
-        return extendedTypes;
-    }
 
     @BQConfigProperty
-    public void setSubjectsAsEntity(boolean subjectsAsEntity) {
-        logger.warn("server has subjectsAsEntity = " + subjectsAsEntity);
-        this.subjectsAsEntity = subjectsAsEntity;
-    }
-
-    @BQConfigProperty
-    public void setExtendedTypes(boolean extendedTypes) {
-        logger.warn("server has extendedTypes = " + extendedTypes);
-        this.extendedTypes = extendedTypes;
+    public void setExtendedSearchTypes(boolean extendedSearchTypes) {
+        logger.warn("server has extendedSearchTypes = " + extendedSearchTypes);
+        this.extendedSearchTypes = extendedSearchTypes;
     }
 }
