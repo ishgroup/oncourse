@@ -13,7 +13,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { getUserPreferences } from "../../common/actions";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
+import { SPECIAL_TYPES_DISPLAY_KEY } from "../../constants/Config";
 import { Categories } from "../../model/preferences";
 import { State } from "../../reducers/state";
 import {
@@ -59,7 +61,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getGradingTypes());
     dispatch(getPreferences(Categories.licences));
     dispatch(getPreferences(Categories.plugins));
-    dispatch(getPreferences(Categories.classTypes));
+    dispatch(getUserPreferences([SPECIAL_TYPES_DISPLAY_KEY]));
   },
   updateColumnsWidth: (preferenceLeftColumnWidth: number) => dispatch(updateColumnsWidth({ preferenceLeftColumnWidth }))
 });
