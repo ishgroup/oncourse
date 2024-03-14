@@ -272,11 +272,6 @@ class PreferencesService {
 
   private getCategoryKeys(category: Categories): PreferenceEnum[] {
     switch (category) {
-      case Categories.classTypes:
-      case Categories.courseTypes: {
-        return ['ish.display.extendedSearchTypes'];
-      }
-
       case Categories.college: {
         return Object.keys(ModelCollege).map(item => ModelCollege[item].uniqueKey);
       }
