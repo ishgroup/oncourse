@@ -274,7 +274,7 @@ class PreferencesService {
     switch (category) {
       case Categories.classTypes:
       case Categories.courseTypes: {
-        return ['ish.display.extendedTypes'];
+        return ['ish.display.extendedSearchTypes'];
       }
 
       case Categories.college: {
