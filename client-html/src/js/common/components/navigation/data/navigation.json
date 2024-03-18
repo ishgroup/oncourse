@@ -395,7 +395,7 @@
       "title": "Faculties",
       "key": "faculties",
       "link": "/faculty",
-      "description": "A Faculty is the section of the University offering a course"
+      "description": "Faculty records can be used to group Courses by 'Faculty' on your onCourse website"
     },
     {
       "title": "Finalise period",
