@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Button, Card, FormControlLabel, Grid } from "@mui/material";
+import { Button, FormControlLabel, Grid } from "@mui/material";
 import { makeAppStyles, NumberArgFunction } from "ish-ui";
 import React from "react";
 import FormField from "../../../common/components/form/formFields/FormField";
@@ -23,54 +23,46 @@ const useStyles = makeAppStyles(cardsFormStyles);
 function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
   const classes = useStyles();
   return (
-    <Grid item xs={12}>
-      <Card id={`special-tag-type-${index}`} className="card">
-        <Grid container columnSpacing={3} spacing={2} className="relative">
-          <Grid item xs={12}>
-            <Grid container columnSpacing={3}>
-              <Grid item xs={6}>
-                <FormField
-                  type="text"
-                  name={`types.${index}.name`}
-                  label="Name"
-                  className={classes.field}
-                  disabled={disabled}
-                  required
-                />
-              </Grid>
+    <Grid container columnSpacing={3} id={`special-tag-type-${index}`} className="relative">
+      <Grid item xs={6}>
+        <FormField
+          type="text"
+          name={`types.${index}.name`}
+          label="Name"
+          className={classes.field}
+          disabled={disabled}
+          required
+        />
+      </Grid>
 
-              <Grid item xs={6}>
-                <div className="d-flex">
-                  <FormControlLabel
-                    className={classes.checkbox}
-                    disabled={disabled}
-                    control={<FormField
-                      type="switch"
-                      name={`types.${index}.status`}
-                      format={v => v === "Show on website"}
-                      parse={v => (v ? "Show on website" : "Private")}
-                      debounced={false}
-                    />}
-                    label="Is wisible on web"
-                    labelPlacement="start"
-                  />
-                  <div>
-                    <Button
-                      size="small"
-                      color="secondary"
-                      onClick={() => onDelete(index)}
-                      className={classes.deleteButton}
-                      disabled={disabled}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Card>
+      <Grid item xs={6}>
+        <div className="d-flex">
+          <FormControlLabel
+            className={classes.checkbox}
+            disabled={disabled}
+            control={<FormField
+              type="switch"
+              name={`types.${index}.status`}
+              format={v => v === "Show on website"}
+              parse={v => (v ? "Show on website" : "Private")}
+              debounced={false}
+            />}
+            label="Is wisible on web"
+            labelPlacement="start"
+          />
+          <div>
+            <Button
+              size="small"
+              color="secondary"
+              onClick={() => onDelete(index)}
+              className={classes.deleteButton}
+              disabled={disabled}
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </Grid>
     </Grid>
   );
 }

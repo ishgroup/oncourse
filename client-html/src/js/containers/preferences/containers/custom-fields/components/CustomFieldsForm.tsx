@@ -1,6 +1,7 @@
 import { CustomFieldType } from "@api/model";
+import { Grid } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { createStyles, withStyles } from "@mui/styles";
+import { withStyles } from "@mui/styles";
 import { idsToString } from "ish-ui";
 import isEqual from "lodash.isequal";
 import * as React from "react";
@@ -15,6 +16,7 @@ import uniqid from "../../../../../common/utils/uniqid";
 import { Fetch } from "../../../../../model/common/Fetch";
 import { State } from "../../../../../reducers/state";
 import { getCustomFields } from "../../../actions";
+import { styles } from "../../../styles/dragablePreferenceItemStyles";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
 import CustomFieldsRenderer from "./CustomFieldsRenderer";
@@ -22,33 +24,6 @@ import CustomFieldsRenderer from "./CustomFieldsRenderer";
 const manualUrl = getManualLink("generalPrefs_customFields");
 
 export const CUSTOM_FIELDS_FORM: string = "CustomFieldsForm";
-
-const styles = theme => createStyles({
-  dragIcon: {
-    fill: "#e0e0e0"
-  },
-  container: {
-    width: "100%"
-  },
-  expansionPanelRoot: {
-    margin: "0px !important",
-    width: "100%",
-  },
-  expansionPanelDetails: {
-    padding: 0,
-    marginTop: `-${theme.spacing(9.75)}`,
-  },
-  expandIcon: {
-    marginTop: -5,
-    "& > button": {
-      padding: 5,
-    }
-  },
-  deleteButtonCustom: {
-    padding: theme.spacing(1),
-    marginTop: -5,
-  }
-});
 
 const setOrder = items =>
   items.forEach((i, index) => {
@@ -219,16 +194,16 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             onAddMenu={this.onAddNew}
           >
             <Grid container className="mt-2">
-              <Grid item lg={10}>
+              <Grid item lg={10} xs={12}>
                 {data && data.types && (
-                <FieldArray
-                  name="types"
-                  component={CustomFieldsRenderer}
-                  dispatch={dispatch}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
+                  <FieldArray
+                    name="types"
+                    component={CustomFieldsRenderer}
+                    dispatch={dispatch}
+                    onDelete={this.onClickDelete}
+                    classes={classes}
+                  />
+                )}
               </Grid>
             </Grid>
           </AppBarContainer>
