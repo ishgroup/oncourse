@@ -1,5 +1,4 @@
 import { CustomFieldType } from "@api/model";
-import { Grid } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
 import { idsToString } from "ish-ui";
