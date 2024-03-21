@@ -10,6 +10,7 @@ import { Tag } from "@api/model";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import EntityService from "../../../common/services/EntityService";
+import UserPreferenceService from "../../../common/services/UserPreferenceService";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
 import history from "../../../constants/History";
 import { CatalogItemType } from "../../../model/common/Catalog";
@@ -19,14 +20,13 @@ import { plainTagToCatalogItem } from "../utils";
 const request: EpicUtils.Request = {
   type: GET_ALL_TAGS_REQUEST,
   getData: async ({ nameToSelect }, state) => {
-    const extendedSearchTypes = state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true';
+    const searchTypesPref = await UserPreferenceService.getUserPreferencesByKeys([SPECIAL_TYPES_DISPLAY_KEY]);
+    const extendedSearchTypes = searchTypesPref[SPECIAL_TYPES_DISPLAY_KEY] === 'true';
 
     const tagsResponse = await EntityService.getPlainRecords(
       "Tag",
-      "name",
-      `nodeType = TAG and parentTag = null${extendedSearchTypes 
-        ? " and specialType != CLASS_EXTENDED_TYPES and specialType != COURSE_EXTENDED_TYPES" 
-        : ""}`,
+      "name,specialType",
+      "nodeType = TAG and parentTag = null",
       null,
       null,
       "name",
@@ -34,7 +34,13 @@ const request: EpicUtils.Request = {
     );
     const checklistsResponse = await EntityService.getPlainRecords("Tag", "name", "nodeType = CHECKLIST and parentTag = null", null, null, "name", true);
 
-    const allTags: CatalogItemType[] = tagsResponse.rows.map(plainTagToCatalogItem);
+    // TODO: Fix AQL and refactor
+    const allTags: CatalogItemType[] = tagsResponse.rows.filter(r => {
+      if (extendedSearchTypes) {
+        return r.values[1] !== 'Class extended types';
+      }
+      return true;
+    }).map(plainTagToCatalogItem);
     const allChecklists: CatalogItemType[] = checklistsResponse.rows.map(plainTagToCatalogItem);
     
     return { allTags, allChecklists, nameToSelect };
