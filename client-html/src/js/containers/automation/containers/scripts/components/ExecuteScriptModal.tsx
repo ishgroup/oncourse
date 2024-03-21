@@ -239,8 +239,6 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     );
   }
 
-  console.log('!!!!!!!', selectAll, values);
-
   return values ? (
     <Dialog open={opened} onClose={onClose} maxWidth="md" fullWidth scroll="body">
       <form autoComplete="off" onSubmit={handleSubmit(handleRunScript)}>
