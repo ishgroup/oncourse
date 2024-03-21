@@ -71,6 +71,7 @@ class TagFunctions {
             tag.modified = dbTag.modifiedOn?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDateTime()
             tag.taggedRecordsCount = getTaggedRecordsCount(dbTag, childCountMap)
             tag.childrenCount = getChildrenCount(dbTag)
+            tag.weight = dbTag.weight
             tag.color = dbTag.colour
             if (isParent) {
                 tag.requirements = dbTag.tagRequirements.collect { req ->
@@ -262,9 +263,10 @@ class TagFunctions {
             dbTag.isWebVisible = tag.status == TagStatusDTO.SHOW_ON_WEBSITE
             dbTag.shortName = trimToNull(tag.urlPath)
             dbTag.nodeType = NodeType.TAG
-            dbTag.weight = tag.weight
             dbTag.colour = tag.color
+            dbTag.weight = tag.weight
         }
+
         dbTag.contents = trimToNull(tag.content)
         dbTag.nodeType = NodeType.fromDisplayName(tag.type.toString())
 
