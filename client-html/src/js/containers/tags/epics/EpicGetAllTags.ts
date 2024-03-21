@@ -37,7 +37,7 @@ const request: EpicUtils.Request = {
     // TODO: Fix AQL and refactor
     const allTags: CatalogItemType[] = tagsResponse.rows.filter(r => {
       if (extendedSearchTypes) {
-        return r.values[1] !== 'Class extended types';
+        return !['Class extended types','Class extended types'].includes(r.values[1]);
       }
       return true;
     }).map(plainTagToCatalogItem);
