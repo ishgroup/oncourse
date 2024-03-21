@@ -23,6 +23,7 @@ import ish.oncourse.server.api.v1.model.TagDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -48,6 +49,7 @@ class TagApiImpl implements TagApi {
     List<TagDTO> getChecklists(String entityName, Long id) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
         def expr = tagExprFor(NodeType.CHECKLIST, taggableClassesForEntity)
+                .andExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
         def checklists = getTagsForExpression(expr, cayenneService.newContext)
         if (id != null)
             checklists = checklists.findAll { checklistAllowed(it, taggableClassesForEntity, id, aqlService) }
@@ -70,6 +72,8 @@ class TagApiImpl implements TagApi {
         ObjectContext context = cayenneService.newContext
 
         def tag = SelectById.query(Tag, id).selectOne(context)
+
+
         if (tag == null) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Record with id = " + id + " doesn't exist.").build())
         }
@@ -97,7 +101,10 @@ class TagApiImpl implements TagApi {
         if (entityName) {
             taggableClassesForEntity = taggableClassesFor(entityName)
         }
+
         def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
+                .andExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
+
         ObjectSelect.query(Tag)
                 .where(expr)
                 .prefetch(tagGroupPrefetch)
