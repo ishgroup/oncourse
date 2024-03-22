@@ -1,6 +1,6 @@
 
 db:
-  uri: 'jdbc:mysql://127.0.0.1:3306/angel_api_test?user=dmitars&password=mysql'
+  uri: '${dbUrl}'
 
 license:
   college_key: mamoth
@@ -11,6 +11,3 @@ smtp:
   host: 127.0.0.1
   port: 11111
   mode: mock
-
-display:
-  extendedSearchTypes: True
