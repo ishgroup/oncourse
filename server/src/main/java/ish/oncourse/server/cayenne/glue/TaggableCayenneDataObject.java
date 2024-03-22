@@ -39,6 +39,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 
 	public static final String BULK_TAG_PROPERTY = "bulkTag";
 	public static final String BULK_UNTAG_PROPERTY = "bulkUntag";
+	public static final String SPECIAL_TAG_ID = "specialTagId";
 
 	@Inject
 	private transient TagService tagService;
