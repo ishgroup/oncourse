@@ -49,7 +49,7 @@ class TagApiImpl implements TagApi {
     List<TagDTO> getChecklists(String entityName, Long id) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
         def expr = tagExprFor(NodeType.CHECKLIST, taggableClassesForEntity)
-                .andExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
+                .andExp(Tag.SPECIAL_TYPE.isNull().orExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES)))
         def checklists = getTagsForExpression(expr, cayenneService.newContext)
         if (id != null)
             checklists = checklists.findAll { checklistAllowed(it, taggableClassesForEntity, id, aqlService) }
@@ -103,7 +103,7 @@ class TagApiImpl implements TagApi {
         }
 
         def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
-                .andExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES))
+                .andExp(Tag.SPECIAL_TYPE.isNull().orExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES)))
 
         ObjectSelect.query(Tag)
                 .where(expr)
