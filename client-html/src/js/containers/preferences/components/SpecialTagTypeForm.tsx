@@ -93,7 +93,8 @@ function SpecialTagTypeForm(
       return;
     }
 
-    const reordered = reorder(values.types, result.source.index, result.destination.index);
+    const reordered = reorder<Tag>(values.types, result.source.index, result.destination.index)
+      .map((t, weight) => ({ ...t, weight }));
 
     dispatch(change(form, "types", reordered));
   };
