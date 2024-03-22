@@ -12,7 +12,7 @@ Feature: Main feature for all requests for special tags (tag/special)
 
     * def newTagGroup =
         """
-        {"childTags":[{"id":null,"name":"third course type","type":"Tag","status":"Private","system":false,"urlPath":null,"content":"","weight":1,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]},{"id":null,"name":"second course type","type":"Tag","status":"Show on website","system":false,"urlPath":null,"content":"","weight":1,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]},{"id":null,"name":"first course type","type":"Tag","status":"Private","system":false,"urlPath":null,"content":"","weight":1,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]}],"specialType":"Course extended types"}
+        {"childTags":[{"id":null,"name":"third course type","type":"Tag","status":"Private","system":false,"urlPath":null,"content":"","weight":3,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]},{"id":null,"name":"second course type","type":"Tag","status":"Show on website","system":false,"urlPath":null,"content":"","weight":2,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]},{"id":null,"name":"first course type","type":"Tag","status":"Private","system":false,"urlPath":null,"content":"","weight":1,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]}],"specialType":"Course extended types"}
         """
 
     Given path ishPath
@@ -38,7 +38,7 @@ Feature: Main feature for all requests for special tags (tag/special)
             "urlPath": null,
             "content": null,
             "color": "74add1",
-            "weight": null,
+            "weight": 1,
             "taggedRecordsCount": 0,
             "childrenCount": 0,
             "created": #ignore,
@@ -55,7 +55,7 @@ Feature: Main feature for all requests for special tags (tag/special)
             "urlPath": null,
             "content": null,
             "color": "74add1",
-            "weight": null,
+            "weight": 2,
             "taggedRecordsCount": 0,
             "childrenCount": 0,
             "created": #ignore,
@@ -72,7 +72,7 @@ Feature: Main feature for all requests for special tags (tag/special)
             "urlPath": null,
             "content": null,
             "color": "74add1",
-            "weight": null,
+            "weight": 3,
             "taggedRecordsCount": 0,
             "childrenCount": 0,
             "created": #ignore,
@@ -88,7 +88,7 @@ Feature: Main feature for all requests for special tags (tag/special)
 
     * def updateGroup =
     """
-    {"childTags":[{"id":"#(thirdTypeId)","name":"third course type","type":"Tag","status":"Private","system":false,"urlPath":null,"content":"","weight":1,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]},{"id":"#(secondTypeId)","name":"second course type","type":"Tag","status":"Show on website","system":false,"urlPath":null,"content":"","weight":1,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]}],"specialType":"Course extended types"}
+    {"childTags":[{"id":"#(thirdTypeId)","name":"third course type","type":"Tag","status":"Private","system":false,"urlPath":null,"content":"","weight":3,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]},{"id":"#(secondTypeId)","name":"second course type","type":"Tag","status":"Show on website","system":false,"urlPath":null,"content":"","weight":2,"taggedRecordsCount":0,"created":null,"modified":null,"color":"74add1","requirements":[],"childTags":[]}],"specialType":"Course extended types"}
     """
 
 
@@ -115,7 +115,7 @@ Feature: Main feature for all requests for special tags (tag/special)
             "urlPath": null,
             "content": null,
             "color": "74add1",
-            "weight": null,
+            "weight": 2,
             "taggedRecordsCount": 0,
             "childrenCount": 0,
             "created": #ignore,
@@ -132,7 +132,7 @@ Feature: Main feature for all requests for special tags (tag/special)
             "urlPath": null,
             "content": null,
             "color": "74add1",
-            "weight": null,
+            "weight": 3,
             "taggedRecordsCount": 0,
             "childrenCount": 0,
             "created": #ignore,
