@@ -19,14 +19,14 @@ import { plainTagToCatalogItem } from "../utils";
 
 const request: EpicUtils.Request = {
   type: GET_ALL_TAGS_REQUEST,
-  getData: async ({ nameToSelect }, state) => {
+  getData: async ({ nameToSelect }) => {
     const searchTypesPref = await UserPreferenceService.getUserPreferencesByKeys([SPECIAL_TYPES_DISPLAY_KEY]);
     const extendedSearchTypes = searchTypesPref[SPECIAL_TYPES_DISPLAY_KEY] === 'true';
 
     const tagsResponse = await EntityService.getPlainRecords(
       "Tag",
       "name,specialType",
-      "nodeType = TAG and parentTag = null",
+      `nodeType = TAG and parentTag = null${extendedSearchTypes ? " and (specialType = null OR (specialType != CLASS_EXTENDED_TYPES and specialType != COURSE_EXTENDED_TYPES))" : ""}`,
       null,
       null,
       "name",
@@ -34,13 +34,7 @@ const request: EpicUtils.Request = {
     );
     const checklistsResponse = await EntityService.getPlainRecords("Tag", "name", "nodeType = CHECKLIST and parentTag = null", null, null, "name", true);
 
-    // TODO: Fix AQL and refactor
-    const allTags: CatalogItemType[] = tagsResponse.rows.filter(r => {
-      if (extendedSearchTypes) {
-        return !['Class extended types','Class extended types'].includes(r.values[1]);
-      }
-      return true;
-    }).map(plainTagToCatalogItem);
+    const allTags: CatalogItemType[] = tagsResponse.rows.map(plainTagToCatalogItem);
     const allChecklists: CatalogItemType[] = checklistsResponse.rows.map(plainTagToCatalogItem);
     
     return { allTags, allChecklists, nameToSelect };
