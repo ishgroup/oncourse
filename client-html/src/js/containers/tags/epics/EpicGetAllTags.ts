@@ -25,8 +25,8 @@ const request: EpicUtils.Request = {
 
     const tagsResponse = await EntityService.getPlainRecords(
       "Tag",
-      "name,specialType",
-      `nodeType = TAG and parentTag = null${extendedSearchTypes ? " and (specialType = null OR (specialType != CLASS_EXTENDED_TYPES and specialType != COURSE_EXTENDED_TYPES))" : ""}`,
+      "name",
+      `nodeType = TAG and parentTag = null${extendedSearchTypes ? " and (specialType = null OR (specialType != CLASS_EXTENDED_TYPES and specialType != COURSE_EXTENDED_TYPES and specialType != SUBJECTS))" : ""}`,
       null,
       null,
       "name",

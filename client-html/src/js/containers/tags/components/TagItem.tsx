@@ -33,7 +33,8 @@ const TagItem = React.memo<FormTagProps>(({
   snapshot,
   provided,
   isEditing,
-  setIsEditing
+  setIsEditing,
+  hideColor
 }) => {
   const onEditClick = () => setIsEditing(item.id);
 
@@ -65,15 +66,15 @@ const TagItem = React.memo<FormTagProps>(({
       <div className={classes.cardGrid}>
         <div {...provided.dragHandleProps}>
           <DragIndicator
-            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none")}
+            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none disabled")}
           />
         </div>
 
-        <div className="pr-3">
+        {hideColor ? <span/> : (<div className="pr-3">
           {isEditing
             ? (<Field name={getFieldName(item.parent, "color")} component={ColorPicker} />)
             : (<div className={classes.tagColorDot} style={{ background: "#" + item.color }} />)}
-        </div>
+        </div>)}
 
         <div>
           {isEditing

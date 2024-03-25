@@ -8,9 +8,8 @@
 
 import { Tag } from "@api/model";
 import { TreeData } from "@atlaskit/tree";
-import { alpha } from "@mui/material/styles";
-import { createStyles, withStyles } from "@mui/styles";
-import { AppTheme, ShowConfirmCaller } from "ish-ui";
+import { withStyles } from "@mui/styles";
+import { ShowConfirmCaller } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -23,79 +22,11 @@ import { CatalogItemType } from "../../../model/common/Catalog";
 import { FormTag } from "../../../model/tags";
 import { State } from "../../../reducers/state";
 import { createTag, deleteTag, updateTag } from "../actions";
+import { treeDataToTags } from "../components/Trees";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
+import { styles } from "../styles/TagItemsStyles";
 import { COLORS, getAllTags } from "../utils";
 import { validate } from "../utils/validation";
-
-const styles = (theme: AppTheme) => createStyles({
-  dragIcon: {
-    margin: theme.spacing(0, 2),
-    color: theme.palette.action.focus,
-    "&:hover": {
-      color: theme.palette.action.active
-    }
-  },
-  actionButton: {
-    marginRight: "10px"
-  },
-  actionIcon: {
-    color: theme.palette.action.active,
-    fontSize: "20px"
-  },
-  actionIconInactive: {
-    color: theme.palette.action.focus,
-    fontSize: "20px"
-  },
-  cardRoot: {
-    paddingTop: theme.spacing(1),
-  },
-  card: {
-    zIndex: 1,
-    borderRadius: `${theme.shape.borderRadius}px`,
-    cursor: "pointer",
-    backgroundColor: alpha(theme.palette.text.primary, 0.025),
-    "&:hover $actionIconInactive": {
-      color: theme.palette.action.focus
-    }
-  },
-  cardGrid: {
-    gridTemplateColumns: "auto auto 1fr 1fr auto auto auto",
-    display: "grid",
-    alignItems: "center",
-  },
-  checklistCardGrid: {
-    gridTemplateColumns: "auto 1fr auto",
-    display: "grid",
-    alignItems: "center",
-  },
-  dragOver: {
-    boxShadow: theme.shadows[2]
-  },
-  tagColorDot: {
-    width: "1em",
-    height: "1em",
-    borderRadius: "100%"
-  },
-  legend: {
-    gridTemplateColumns: "1fr 1fr 108px",
-    display: "grid",
-    alignItems: "center",
-    paddingLeft: "94px",
-    marginBottom: theme.spacing(1)
-  },
-  fieldEditable: {
-    paddingRight: theme.spacing(2),
-    position: "relative",
-    top: 2
-  },
-  nameEditable: {
-    fontSize: "14px",
-    fontWeight: 500
-  },
-  urlEditable: {
-    fontSize: "14px",
-  }
-});
 
 interface Props {
   tags: CatalogItemType[];
@@ -143,14 +74,6 @@ const setWeight = items =>
 
     return item;
 });
-
-const treeItemDataToTag = (id: number | string, tree: TreeData, allTags: Tag[]): Tag => {
-  const tag = { ...allTags.find(t => t.id === id) };
-  tag.childTags = tree.items[id].children.map(id => treeItemDataToTag(id, tree, allTags));
-  return tag;
-};
-
-const treeDataToTags = (tree: TreeData, allTags: Tag[]): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree, allTags));
 
 interface FormState {
   editingIds: number[];
