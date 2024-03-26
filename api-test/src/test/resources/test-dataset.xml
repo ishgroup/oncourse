@@ -425,6 +425,8 @@
 
     <Preference CREATEDON="2023-04-11 10:00:00.759000000" MODIFIEDON="2023-04-11 10:00:00.759000000" NAME="payment.gateway.type" UNIQUEKEY="payment.gateway.type" VALUESTRING="WINDCAVE" ID="870"/>
 
+    <Preference CREATEDON="2023-04-11 10:00:00.759000000" MODIFIEDON="2023-04-11 10:00:00.759000000" NAME="ish.display.extendedSearchTypes" UNIQUEKEY="ish.display.extendedSearchTypes" VALUESTRING="true" ID="871"/>
+
 
 
     <!-- COURSE -->
