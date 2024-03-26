@@ -24,7 +24,7 @@ import {
   HolidayApi,
   PaymentApi,
   PaymentMethod,
-  PreferenceApi,
+  PreferenceApi, PreferenceEnum,
   SystemPreference,
   Tax,
   TaxApi,
@@ -270,7 +270,7 @@ class PreferencesService {
     return this.preferenceApi.getLockedDate();
   }
 
-  private getCategoryKeys(category: Categories) {
+  private getCategoryKeys(category: Categories): PreferenceEnum[] {
     switch (category) {
       case Categories.college: {
         return Object.keys(ModelCollege).map(item => ModelCollege[item].uniqueKey);

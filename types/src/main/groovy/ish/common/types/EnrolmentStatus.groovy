@@ -103,6 +103,9 @@ public enum EnrolmentStatus implements DisplayableExtendedEnumeration<Integer> {
 	@API
 	REFUNDED(9, "Credited");
 
+	
+	public static final String STATUS_COMPLETE = 'Complete'
+
 	/**
 	 * The complete list of statuses that may be returned from the WillowServices soap gateway.
 	 * Note: The list is made up of both transient and final statuses.

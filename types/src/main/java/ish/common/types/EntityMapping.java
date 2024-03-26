@@ -97,6 +97,7 @@ public final class EntityMapping {
 		WILLOW_TO_ANGEL.put("TagGroupRequirement", "TagRequirement");
 		WILLOW_TO_ANGEL.put("Taggable", "TagRelation");
 		WILLOW_TO_ANGEL.put("TaggableTag", "TagRelation");
+		WILLOW_TO_ANGEL.put("CourseClassNote", "Note");
 
 		BINARY_RELATION_MAPPING.put("Certificate", "CertificateAttachmentRelation");
 		BINARY_RELATION_MAPPING.put("Contact", "ContactAttachmentRelation");

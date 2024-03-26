@@ -25,6 +25,7 @@ import FormField from "../../../../../common/components/form/formFields/FormFiel
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
 import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { reorder } from "../../../../../common/utils/DnD";
 import { useAppSelector } from "../../../../../common/utils/hooks";
 import {
   validateEmail,
@@ -68,14 +69,6 @@ const DataTypes = Object.keys(DataType)
   .map(mapSelectItems);
 
 DataTypes.sort(sortDefaultSelectItems);
-
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
 
 const preventStarEnter = e => {
   if (e.key.match(/\*/)) {
@@ -219,12 +212,26 @@ const ExpandableCustomFields = React.memo<any>(props => {
     dispatch(change(form, `${item}.dataType`, null));
   };
 
+  const onTypeChange = type => {
+    if (type === 'Portal subdomain' && field.entityType !== 'Contact') {
+      dispatch(change(form, `${item}.entityType`, 'Contact'));
+    }
+    onDataTypeChange(type);
+  };
+
   const availableDataTypes = useMemo(() => {
     if (field.entityType === "WaitingList") {
       return DataTypes.filter(t => t.label !== 'File');
     }
     return DataTypes;
   }, [field.entityType]);
+  
+  const availableEntities = useMemo(() => {
+    if (field.dataType === 'Portal subdomain') {
+      return EntityTypes.filter(t => t.value === 'Contact');
+    }
+    return EntityTypes;
+  }, [field.dataType]);
   
   return (
     <ExpandableItem
@@ -299,9 +306,9 @@ const ExpandableCustomFields = React.memo<any>(props => {
               label="Data Type"
               items={availableDataTypes}
               disabled={!!field.id}
-              onChange={onDataTypeChange}
               debounced={false}
               className={classes.field}
+              onChange={onTypeChange}
               required
             />
           </Grid>
@@ -312,7 +319,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               name={`${item}.entityType`}
               selectLabelCondition={entityTypeCondition}
               label="Record Type"
-              items={EntityTypes}
+              items={availableEntities}
               disabled={!!field.id}
               className={classes.field}
               onChange={onEntityChange}

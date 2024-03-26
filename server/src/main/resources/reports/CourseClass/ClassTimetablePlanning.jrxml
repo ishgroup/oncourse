@@ -106,11 +106,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="1">
-				<break>
-					<reportElement x="0" y="0" width="0" height="0"/>
-				</break>
-			</band>
+			<band/>
 		</groupFooter>
 	</group>
 	<background>

@@ -309,6 +309,9 @@ paths:
     $ref: './path/tag/list/api.yaml'
   /tag/checklist:
     $ref: './path/tag/checklist/api.yaml'
+
+  /tag/special:
+    $ref: './path/tag/special/api.yaml'
   /timetable/calendar:
     $ref: './path/timetable/calendar/api.yaml'
   /timetable/session:
