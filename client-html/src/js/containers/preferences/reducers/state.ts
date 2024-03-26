@@ -10,7 +10,7 @@ import {
   FieldType,
   FundingSource,
   GradingType,
-  PaymentMethod,
+  PaymentMethod, Tag,
   Tax
 } from "@api/model";
 
@@ -33,6 +33,8 @@ export interface PreferencesState {
   licences?: any;
   messaging?: any;
   classDefaults?: any;
+  classTypes?: Tag[];
+  courseTypes?: Tag[];
   ldap?: any;
   maintenance?: any;
   avetmiss?: any;

@@ -101,6 +101,16 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
     case "CourseClass": {
       return [
         {
+          keyCode: "specialTagId",
+          label: "Type",
+          name: "Type",
+          type: "Select",
+          selectValueMark: "id",
+          selectLabelMark: "name",
+          propsItemKey: "classSpecialTags",
+          defaultValue: []
+        },
+        {
           keyCode: "isActive",
           label: "Enrolments allowed",
           name: "Enrolments allowed",
@@ -150,6 +160,16 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
     }
     case "Course": {
       return [
+        {
+          keyCode: "specialTagId",
+          label: "Type",
+          name: "Type",
+          type: "Select",
+          selectValueMark: "id",
+          selectLabelMark: "name",
+          propsItemKey: "courseSpecialTags",
+          defaultValue: []
+        },
         {
           keyCode: "allowWaitingLists",
           label: "Allow waiting lists",

@@ -205,6 +205,9 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.withdrawnOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN }.size()
         dto.otherOutcomesCount = dto.allOutcomesCount  - dto.passOutcomesCount - dto.failedOutcomesCount - dto.inProgressOutcomesCount - dto.withdrawnOutcomesCount
         dto.tags = cc.allTags.collect { it.id }
+
+        def hiddenTags = cc.hiddenTags
+        dto.specialTagId = hiddenTags.empty ? null as Long : hiddenTags.first().id
         return dto
     }
 
@@ -260,7 +263,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport
         courseClass.finalDETexport = dto.finalDetExport
-        updateTags(courseClass, courseClass.taggingRelations, dto.tags, CourseClassTagRelation, courseClass.context)
+        updateTags(courseClass, courseClass.taggingRelations, dto.tags + dto.specialTagId, CourseClassTagRelation, courseClass.context)
         DocumentFunctions.updateDocuments(courseClass, courseClass.attachmentRelations, dto.documents, CourseClassAttachmentRelation, context)
         updateCustomFields(courseClass.context, courseClass, dto.customFields, CourseClassCustomField)
         courseClass

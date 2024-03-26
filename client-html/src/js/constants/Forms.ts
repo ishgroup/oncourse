@@ -9,3 +9,7 @@
 export const SEND_MESSAGE_FORM_NAME = "SendMessageForm";
 
 export const COMMON_PLACEHOLDER = "No value";
+
+export const CLASS_TYPES_FORM_NAME: string = "ClassTypesForm";
+
+export const COURSE_TYPES_FORM_NAME: string = "CourseTypesForm";
