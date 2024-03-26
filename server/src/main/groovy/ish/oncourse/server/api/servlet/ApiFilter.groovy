@@ -55,6 +55,8 @@ class ApiFilter implements Filter {
 
     public static final ThreadLocal<Boolean> validateOnly = new ThreadLocal<>()
 
+    public static final boolean CLIENT_MODE = "true".equals(System.getProperty("ish.devMode"))
+
     @Inject
     ApiFilter(AuditService auditService, ICayenneService cayenneService, IPermissionService permissionService) {
         this.auditService = auditService
@@ -71,11 +73,11 @@ class ApiFilter implements Filter {
     void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) {
         Request request = (Request) servletRequest
         Response response = (Response) servletResponse
-
         validateOnly.set(Boolean.valueOf(request.getHeader(X_VALIDATE_ONLY)) || Boolean.valueOf(request.getHeader(XVALIDATEONLY)))
 
-        if (request.pathInfo.contains(LOGIN_PATH_INFO) || request.pathInfo.contains(CHECK_PASSWORD_INFO)
-                || request.pathInfo.contains(INVITATION) || request.pathInfo.contains(SSO_TYPES)) {
+        if (CLIENT_MODE || request.pathInfo.contains(LOGIN_PATH_INFO)
+                || request.pathInfo.contains(CHECK_PASSWORD_INFO) || request.pathInfo.contains(INVITATION)
+                || request.pathInfo.contains(SSO_TYPES)) {
             allowCrossOriginRequest(response)
         } else if (unautorized(request, response) || !permissionService.authorize(request, response)) {
             return
@@ -91,8 +93,13 @@ class ApiFilter implements Filter {
 
     private static void allowCrossOriginRequest(Response response) {
         response.addHeader('Access-Control-Allow-Origin', '*')
-        response.addHeader('Access-Control-Allow-Methods', 'PUT, GET, OPTIONS, PATCH')
-        response.addHeader('Access-Control-Allow-Headers', 'Content-Type, Ish-JXBrowser-Header')
+        if (CLIENT_MODE) {
+            response.addHeader('Access-Control-Allow-Methods', '*')
+            response.addHeader('Access-Control-Allow-Headers', '*')
+        } else {
+            response.addHeader('Access-Control-Allow-Methods', 'PUT, GET, OPTIONS, PATCH')
+            response.addHeader('Access-Control-Allow-Headers', 'Content-Type, Ish-JXBrowser-Header')
+        }
     }
 
     private boolean unautorized(HttpServletRequest request, HttpServletResponse response) {

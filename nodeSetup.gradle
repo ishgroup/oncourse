@@ -8,8 +8,10 @@ node {
 }
 
 clean {
-    delete "${projectDir}/node_modules"
-    delete "${projectDir}/.gradle"
-    delete "${projectDir}/build"
+    if("true" != System.getProperty('ish.devNode')) {
+        delete "${projectDir}/node_modules"
+        delete "${projectDir}/.gradle"
+        delete "${projectDir}/build"
+    }
 }
 
