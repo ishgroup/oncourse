@@ -12,17 +12,21 @@
 package ish.print.transformations;
 
 import ish.oncourse.cayenne.PersistentObjectI;
+import ish.oncourse.server.cayenne.Session;
 import ish.persistence.CommonExpressionFactory;
 import ish.print.AdditionalParameters;
+import ish.util.LocalDateUtils;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.QueryCacheStrategy;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CourseClassSessionTransformation extends PrintTransformation {
 
@@ -45,24 +49,49 @@ public class CourseClassSessionTransformation extends PrintTransformation {
 		}
 
 		List<PersistentObjectI> records = new ArrayList<>();
+		var fromDate = (Date) additionalValues.get(AdditionalParameters.DATERANGE_FROM.toString());
+		var toDate = (Date) additionalValues.get(AdditionalParameters.DATERANGE_TO.toString());
+		var fromLocalDate = LocalDateUtils.dateToTimeValue(fromDate, ZoneId.systemDefault());
+		var toLocalDate = LocalDateUtils.dateToTimeValue(toDate, ZoneId.systemDefault());
+
 
 		for (int offset = 0; offset < sourceIds.size(); offset += getBatchSize()) {
 			ObjectSelect<PersistentObjectI> objectSelect = ObjectSelect.query(PersistentObjectI.class, "Session")
 					.where(ExpressionFactory.inExp("courseClass.id", sourceIds.subList(offset, Math.min(offset + getBatchSize(), sourceIds.size()))))
 					.cacheStrategy(QueryCacheStrategy.LOCAL_CACHE_REFRESH);
 
-			if (additionalValues.get(AdditionalParameters.DATERANGE_FROM.toString()) != null) {
+			if (fromDate != null) {
 				objectSelect.and(ExpressionFactory.greaterOrEqualExp("startDatetime",
-						CommonExpressionFactory.previousMidnight((Date) additionalValues.get(AdditionalParameters.DATERANGE_FROM.toString()))));
+						CommonExpressionFactory.previousMidnightMinusDay(fromDate)));
 			}
 
-			if (additionalValues.get(AdditionalParameters.DATERANGE_TO.toString()) != null) {
+			if (toDate != null) {
 				objectSelect.and(ExpressionFactory.lessOrEqualExp("endDatetime",
-						CommonExpressionFactory.nextMidnight((Date) additionalValues.get(AdditionalParameters.DATERANGE_TO.toString()))));
+						CommonExpressionFactory.nextMidnightPlusDay(toDate)));
 			}
 
 			records.addAll(objectSelect.select(context));
 		}
+
+		records = records.stream().filter(entity -> {
+			var session = (Session)entity;
+
+			if(session.getStartDatetime() != null) {
+				var startDate = session.getStartDatetime().toInstant().atZone(session.getTimeZone().toZoneId()).toLocalDateTime();
+				if (fromLocalDate != null) {
+					if (startDate.isBefore(fromLocalDate))
+						return false;
+				}
+			}
+
+			if(session.getEndDatetime() != null) {
+				var endDate = session.getEndDatetime().toInstant().atZone(session.getTimeZone().toZoneId()).toLocalDateTime();
+				if (toLocalDate != null) {
+					return !endDate.isAfter(toLocalDate);
+				}
+			}
+			return true;
+		}).collect(Collectors.toList());
 
 		return records;
 	}
