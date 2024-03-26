@@ -16,7 +16,7 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import { addMinutes, differenceInMinutes, format } from "date-fns";
+import { differenceInMinutes, format } from "date-fns";
 import {
   appendTimezone,
   AppTheme,
@@ -186,21 +186,12 @@ const CourseClassTutorRoosterItem = (
     : ""}`;
 
   const onStartChange = newValue => {
-    const startDate = new Date(newValue);
-    const endDate = addMinutes(startDate, sessionDuration);
+    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, differenceInMinutes(new Date(tutorAttendance.end), new Date(newValue))));
 
-    dispatch(
-      change(
-        form,
-        `${fieldsName}.end`,
-        endDate.toISOString()
-      )
-    );
   };
 
   const onEndChange = newValue => {
-    const minutesOffset = differenceInMinutes(new Date(newValue), new Date(tutorAttendance.start)) - differenceInMinutes(new Date(tutorAttendance.end), new Date(tutorAttendance.start));
-    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, tutorAttendance.actualPayableDurationMinutes + minutesOffset));
+    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, differenceInMinutes(new Date(newValue), new Date(tutorAttendance.start))));
   };
 
   const isExpanded = expanded === index;
