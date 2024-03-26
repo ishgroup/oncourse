@@ -91,7 +91,7 @@ class DslGroovyDocTool {
 
         // only output classes with @API annotation
         def classes = rootDoc.classes().findAll {
-            it.annotations().collect { it.name()}.contains("ish/oncourse/API")
+            it.annotations().collect { it.name()}.contains("API")
         }
         //rootDocBuilder.mergeTraits(classes)
 
@@ -117,7 +117,7 @@ class DslGroovyDocTool {
 
 	}
 
-    private static isVisible = { doc -> doc.annotations().find { ann -> ann.name() == "ish/oncourse/API" } }
+    private static isVisible = { doc -> doc.annotations().find { ann -> ann.name() == "API" } }
 
     private void writeClasses(Collection<GroovyClassDoc> classes, String destdir) throws Exception {
 
