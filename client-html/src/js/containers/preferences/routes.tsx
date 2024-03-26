@@ -19,6 +19,7 @@ import Licences from "./containers/licences/Licences";
 import Maintenance from "./containers/maintenance/Maintenance";
 import Messaging from "./containers/messaging/Messaging";
 import PaymentTypes from "./containers/payment-types/PaymentTypes";
+import Subjects from "./containers/subjects/Subjects";
 import TaxTypes from "./containers/tax-types/TaxTypes";
 import TutorRoleForm from "./containers/tutor-roles/TutorRoleFormContainer";
 
@@ -130,6 +131,12 @@ const preferencesRoutes: Route[] = [
     path: "/preferences/sellableItemsRelationTypes",
     url: "/preferences/sellableItemsRelationTypes",
     main: EntityRelationTypes
+  },
+  {
+    title: "Subjects",
+    path: "/preferences/subjects",
+    url: "/preferences/subjects",
+    main: Subjects
   },
   {
     title: "Tax types",

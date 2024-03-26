@@ -12,6 +12,7 @@
  */
 
 import { ArgumentTypes } from "ish-ui";
+import { showMessage } from "../../../common/actions";
 import { Create, Request } from "../../../common/epics/EpicUtils";
 import TagsService from "../../tags/services/TagsService";
 import { getSpecialTagTypes, POST_SPECIAL_TAG_TYPES } from "../actions";
@@ -21,7 +22,8 @@ const request: Request<any, ArgumentTypes<typeof TagsService.updateSpecial>> = {
   type: POST_SPECIAL_TAG_TYPES,
   getData: ([childTags, specialType]) => TagsService.updateSpecial(childTags, specialType),
   processData: (types, state, [,specialType]) => [
-    getSpecialTagTypes(getEntityBySpecialTagType(specialType))
+    getSpecialTagTypes(getEntityBySpecialTagType(specialType)),
+    showMessage({ success: true, message: `${getEntityBySpecialTagType(specialType)} types was successfully updated` })
   ]
 };
 

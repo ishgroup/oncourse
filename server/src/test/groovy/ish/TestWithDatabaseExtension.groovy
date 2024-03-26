@@ -251,6 +251,7 @@ class TestWithDatabaseExtension implements
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedInvoice"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedProductItem"))
         nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedProduct"))
+        nodeRelationshipsToRemove.add(datamap.getDbEntity("NodeRelation").getRelationship("taggedFaculty"))
         for (Relationship rel : nodeRelationshipsToRemove) {
             datamap.getDbEntity("NodeRelation").removeRelationship(rel.getName())
         }
@@ -276,6 +277,7 @@ class TestWithDatabaseExtension implements
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedLead"))
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedProduct"))
         binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedProductItem"))
+        binaryRelationshipsToRemove.add(datamap.getDbEntity("BinaryRelation").getRelationship("attachedFaculty"))
         for (Relationship rel : binaryRelationshipsToRemove) {
             datamap.getDbEntity("BinaryRelation").removeRelationship(rel.getName())
         }
@@ -305,6 +307,7 @@ class TestWithDatabaseExtension implements
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedLead"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedProduct"))
         noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedProductItem"))
+        noteRelationshipsToRemove.add(datamap.getDbEntity("NoteRelation").getRelationship("notedFaculty"))
         for (Relationship rel : noteRelationshipsToRemove) {
             datamap.getDbEntity("NoteRelation").removeRelationship(rel.getName())
         }

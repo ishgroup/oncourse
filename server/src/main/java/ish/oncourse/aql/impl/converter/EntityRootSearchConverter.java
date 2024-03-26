@@ -52,6 +52,7 @@ public class EntityRootSearchConverter implements Converter<AqlParser.EntityRoot
             case Discount.ENTITY_NAME: return new LazyDiscountComparisonNode(Op.LIKE);
             case Document.ENTITY_NAME: return new LazyDocumentComparisonNode(Op.LIKE);
             case Enrolment.ENTITY_NAME: return new LazyEnrolmentComparisionNode(Op.LIKE);
+            case Faculty.ENTITY_NAME: return new LazyFacultyComparisionNode(Op.LIKE);
             case AbstractInvoice.ENTITY_NAME: return new LazyInvoiceComparisonNode(Op.LIKE);
             case Module.ENTITY_NAME: return new LazyModuleComparisonNode(Op.LIKE);
             case Outcome.ENTITY_NAME: return new LazyOutcomeComparisonNode(Op.LIKE);

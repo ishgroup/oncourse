@@ -16,6 +16,7 @@ import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/
 import StaticProgress from "../../../common/components/progress/StaticProgress";
 import { useAppDispatch } from "../../../common/utils/hooks";
 import { LSGetItem, LSSetItem } from "../../../common/utils/storage";
+import { EntityName } from "../../../model/entities/common";
 import { ENTITY_TAGS_EXPAND_SETTINGS_KEY } from "../constants";
 import TagsService from "../services/TagsService";
 
@@ -119,7 +120,7 @@ const ChecklistItem = ({
 };
 
 interface EntityChecklistsProps {
-  entity: string;
+  entity: EntityName;
   form: string;
   entityId: number;
   checked: number[];

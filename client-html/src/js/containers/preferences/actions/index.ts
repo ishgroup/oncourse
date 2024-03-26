@@ -10,7 +10,7 @@ import {
   EnumName,
   GradingType,
   Holiday,
-  PaymentMethod, Tag,
+  PaymentMethod,
   Tax
 } from "@api/model";
 import { ArgumentTypes } from "ish-ui";
@@ -172,8 +172,6 @@ export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
 export const GET_SPECIAL_TAG_TYPES = _toRequestType("get/tag/special");
 
 export const POST_SPECIAL_TAG_TYPES = _toRequestType("post/tag/special");
-
-export const DELETE_SPECIAL_TAG_TYPES = _toRequestType("delete/tag/special");
 
 export const DELETE_GRADING_TYPE_REQUEST = _toRequestType("delete/grading/type");
 

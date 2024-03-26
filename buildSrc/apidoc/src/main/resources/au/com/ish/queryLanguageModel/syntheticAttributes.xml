@@ -124,6 +124,9 @@ in ish.oncourse.aql.model.EntityFactory in server module.
     <entity name="Invoice">
         <attribute name="tags" ref="Tag"/>
     </entity>
+    <entity name="Faculty">
+        <attribute name="tags" ref="Tag"/>
+    </entity>
     <entity name="Lead">
         <attribute name="tags" ref="Tag"/>
     </entity>

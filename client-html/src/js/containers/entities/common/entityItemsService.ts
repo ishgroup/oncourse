@@ -33,6 +33,7 @@ import CourseService from "../courses/services/CourseService";
 import { processCustomFields } from "../customFieldTypes/utils";
 import DiscountService from "../discounts/services/DiscountService";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
+import FacultyService from "../faculties/services/FacultyService";
 import InvoiceService from "../invoices/services/InvoiceService";
 import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from "../invoices/utils";
 import LeadService from "../leads/services/LeadService";
@@ -165,6 +166,9 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
       });
     }
 
+    case "Faculty":
+      return FacultyService.get(id);
+
     case "Discount": {
       return DiscountService.getDiscount(id).then(discount => {
         discount.discountMemberships.forEach(el => {
@@ -238,6 +242,9 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       
       return EnrolmentService.updateEnrolment(id, withAssessmenProcessed);
     }
+
+    case "Faculty":
+      return FacultyService.update(id, item);
       
     case "AbstractInvoice":
     case "Invoice":
@@ -462,6 +469,9 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       }
       return BankingService.createBanking(newBanking);
     }
+
+    case "Faculty":
+      return FacultyService.create(item);
     
     default:
       return defaultUnknown();
@@ -509,6 +519,8 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
       return PayslipService.removePayslip(id);
     case "PriorLearning":
       return PriorLearningService.removePriorLearning(id);
+    case "Faculty":
+      return FacultyService.remove(id);
     case "Qualification":
       return QualificationService.removeQualification(id);
     case "Room":

@@ -38,6 +38,7 @@ import ish.oncourse.server.cayenne.Discount
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.Faculty
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.GradingType
 import ish.oncourse.server.cayenne.Invoice
@@ -515,6 +516,11 @@ class DefaultUserPreference {
                         sortable: false,
                         width: W200,
                         visible: false),
+                new ColumnDTO(title: 'Faculty',
+                        attribute: Course.FACULTY.dot(Faculty.NAME).name,
+                        sortable: true,
+                        width: W200,
+                        visible: true),
         ]
         it.sortings = [
             new SortingDTO(attribute: Course.NAME.name, ascending: true)
@@ -969,6 +975,22 @@ class DefaultUserPreference {
         it
     }
 
+    private static final TableModelDTO FACULTY_MODEL = new TableModelDTO().with() {
+        it.columns = [
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
+                new ColumnDTO(title: 'Name', attribute: Faculty.NAME.name, sortable: true, width: W400, visible: true),
+                new ColumnDTO(title: 'Code', attribute: Faculty.CODE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Shown on web', attribute: Faculty.IS_SHOWN_ON_WEB.name, sortable: true, width: W100, type: ColumnTypeDTO.BOOLEAN, visible: false, system: true),
+        ]
+        it.sortings = [
+                new SortingDTO(attribute: Faculty.NAME.name, ascending: true)
+        ]
+        it.layout = LayoutTypeDTO.THREE_COLUMN
+        it.filterColumnWidth = W200
+        it
+    }
+
     // must be below model initializations
     public static final Map<String, TableModelDTO> DEFAULT_MODEL_MAP = [
             (Account.ENTITY_NAME)              : ACCOUNT_MODEL,
@@ -1007,6 +1029,7 @@ class DefaultUserPreference {
             (Contact.ENTITY_NAME)             : CONTACT_MODEL,
             (PriorLearning.ENTITY_NAME)       : PRIOR_LEARNING_MODEL,
             (VET_MODEL_NAME)                  : VET_MODEL,
+            (Faculty.ENTITY_NAME)             : FACULTY_MODEL,
 
 
     ] as Map<String, TableModelDTO>

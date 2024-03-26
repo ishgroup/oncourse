@@ -127,6 +127,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
     return result;
   }, [values.modules]);
+
   const moduleSearchItemsTransformed = useMemo(() => {
     const result = moduleItems.map(transformModule);
 

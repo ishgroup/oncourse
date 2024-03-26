@@ -48,6 +48,7 @@ import ish.oncourse.server.api.v1.service.EntityApi
 import ish.oncourse.server.api.v1.service.EntityRelationTypeApi
 import ish.oncourse.server.api.v1.service.ExportApi
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
+import ish.oncourse.server.api.v1.service.FacultyApi
 import ish.oncourse.server.api.v1.service.FilterApi
 import ish.oncourse.server.api.v1.service.FinalisePeriodApi
 import ish.oncourse.server.api.v1.service.FundingContractApi
@@ -129,6 +130,7 @@ import ish.oncourse.server.api.v1.service.impl.EntityApiImpl
 import ish.oncourse.server.api.v1.service.impl.EntityRelationTypeApiImpl
 import ish.oncourse.server.api.v1.service.impl.ExportApiImpl
 import ish.oncourse.server.api.v1.service.impl.ExportTemplateApiImpl
+import ish.oncourse.server.api.v1.service.impl.FacultyApiImpl
 import ish.oncourse.server.api.v1.service.impl.FilterApiImpl
 import ish.oncourse.server.api.v1.service.impl.FinalisePeriodApiImpl
 import ish.oncourse.server.api.v1.service.impl.FundingContractApiImpl
@@ -202,6 +204,7 @@ class ApiImplementationModule implements Module {
         binder.bind(CourseClassApi).to(CourseClassApiImpl)
         binder.bind(ExportApi).to(ExportApiImpl)
         binder.bind(CustomFieldApi).to(CustomFieldApiImpl)
+        binder.bind(FacultyApi).to(FacultyApiImpl)
 
         binder.bind(DashboardApi).to(DashboardApiImpl)
         binder.bind(DataCollectionApi).to(DataCollectionApiImpl)

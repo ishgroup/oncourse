@@ -17,7 +17,7 @@ export interface Request<V = any, P = any> {
   type: string;
   hideLoadIndicator?: boolean;
   getData: (payload: P, state: State) => Promise<V>;
-  retrieveData?: (payload: any, state: State) => Promise<V>;
+  retrieveData?: (payload: P, state: State) => Promise<V>;
   processData: (value: V, state: State, payload?: P) => IAction<any>[] | Observable<any>;
   processError?: (data: any, payload?: P) => IAction<any>[] | Observable<any>;
 }

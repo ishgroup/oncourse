@@ -21,9 +21,9 @@ export const CREATE_TAG_REQUEST = _toRequestType("post/tag");
 
 export const DELETE_TAG_REQUEST = _toRequestType("delete/tag");
 
-export const getTagRequest = (id: number) => ({
+export const getTagRequest = (form: string, id: number) => ({
   type: GET_TAG_REQUEST,
-  payload: id
+  payload: { form, id }
 });
 
 export const deleteTag = (tag: Tag) => ({
@@ -31,14 +31,14 @@ export const deleteTag = (tag: Tag) => ({
   payload: tag
 });
 
-export const createTag = (tag: Tag) => ({
+export const createTag = (form: string, tag: Tag) => ({
   type: CREATE_TAG_REQUEST,
-  payload: tag
+  payload: { form, tag }
 });
 
-export const updateTag = (id: number, tag: Tag) => ({
+export const updateTag = (form: string, tag: Tag) => ({
   type: UPDATE_TAG_REQUEST,
-  payload: { id, tag }
+  payload: { form, tag }
 });
 
 export const getAllTags = (nameToSelect?: string) => ({

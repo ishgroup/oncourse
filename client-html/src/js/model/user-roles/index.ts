@@ -30,6 +30,7 @@ const Categories: UserPermissionCategory[] = [
     headers: ["Hide", "View", "Print", "Edit", "Create", "Delete"],
     permissions: [
       {name: "Course", checkbox: false, alwaysAllowed: ["View"]},
+      {name: "Faculty", checkbox: false, alwaysAllowed: ["View"]},
       {name: "VET Course details", checkbox: true},
       {name: "Class", checkbox: false, alwaysAllowed: ["View"]},
       {name: "Enrolment outcomes", checkbox: true},

@@ -31,6 +31,7 @@ import ish.oncourse.server.api.service.EmailTemplateApiService
 import ish.oncourse.server.api.service.EnrolmentApiService
 import ish.oncourse.server.api.service.EntityRelationTypeApiService
 import ish.oncourse.server.api.service.ExportTemplateApiService
+import ish.oncourse.server.api.service.FacultyApiService
 import ish.oncourse.server.api.service.GradingApiService
 import ish.oncourse.server.api.service.ImportApiService
 import ish.oncourse.server.api.service.InvoiceApiService
@@ -102,6 +103,7 @@ class ApiServiceModule implements Module {
         binder.bind(EnrolmentApiService).in(Scopes.SINGLETON)
         binder.bind(EntityRelationTypeApiService).in(Scopes.NO_SCOPE)
         binder.bind(ExportTemplateApiService).in(Scopes.SINGLETON)
+        binder.bind(FacultyApiService).in(Scopes.SINGLETON)
         binder.bind(GradingApiService).in(Scopes.SINGLETON)
         binder.bind(ImportApiService).in(Scopes.SINGLETON)
         binder.bind(InvoiceApiService).in(Scopes.SINGLETON)

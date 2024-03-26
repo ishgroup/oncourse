@@ -34,7 +34,15 @@ interface TagsTreeProps extends Partial<FormTagProps> {
   syncErrors: any;
 }
 
-const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTreeProps) => {
+export const treeItemDataToTag = (id: number | string, tree: TreeData, allTags: Tag[]): Tag => {
+  const tag = { ...allTags.find(t => t.id === id) };
+  tag.childTags = tree.items[id].children.map(id => treeItemDataToTag(id, tree, allTags));
+  return tag;
+};
+
+export const treeDataToTags = (tree: TreeData, allTags: Tag[]): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree, allTags));
+
+export const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTreeProps) => {
   if (prevProps.rootTag.id !== currentProps.rootTag.id) {
     return false;
   }
@@ -50,7 +58,7 @@ const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTreeProps) 
   return prevProps.editingIds === currentProps.editingIds;
 };
 
-const tagToTreeItem = (tag: FormTag): TreeItem => ({
+export const tagToTreeItem = (tag: FormTag): TreeItem => ({
   id: tag.id,
   children: tag.childTags?.map(t => t.id),
   hasChildren: Boolean(tag.childTags.length),
@@ -58,7 +66,7 @@ const tagToTreeItem = (tag: FormTag): TreeItem => ({
   data: tag
 });
 
-const tagToTreeData = (tag: FormTag, prevResult?: Record<ItemId, TreeItem>): Record<ItemId, TreeItem> => {
+export const tagToTreeData = (tag: FormTag, prevResult?: Record<ItemId, TreeItem>): Record<ItemId, TreeItem> => {
   const result = prevResult || {};
 
   result[tag.id] = tagToTreeItem(tag);
@@ -70,19 +78,19 @@ const tagToTreeData = (tag: FormTag, prevResult?: Record<ItemId, TreeItem>): Rec
   return result;
 };
 
-const setItemParent = (id: string | number, index, items: Record<ItemId, TreeItem>, prev?: string) => {
+export const setItemParent = (id: string | number, index, items: Record<ItemId, TreeItem>, prev?: string) => {
   items[id].data.parent = `${prev ? prev + "." : ""}childTags[${index}]`;
   items[id].children.forEach((cId, cIndex) => setItemParent(cId, cIndex, items, items[id].data.parent));
 };
 
-const setParents = (data: TreeData) => {
+export const setParents = (data: TreeData) => {
   data.items[data.rootId].data.refreshFlag = false;
   data.items[data.rootId].children.forEach((id, index) => setItemParent(id, index, data.items));
 };
 
 const errorKeys: (keyof Tag)[] = ["urlPath", "name", "content"];
 
-const useHasError = (syncErrors, item, editingId, setEditingId) => {
+export const useHasError = (syncErrors, item, editingId, setEditingId) => {
   const hasErrors = Object.keys(getDeepValue(syncErrors, item.data.parent) || {}).some(key => errorKeys.includes(key as any));
 
   useEffect(() => {
@@ -94,7 +102,7 @@ const useHasError = (syncErrors, item, editingId, setEditingId) => {
   return hasErrors;
 };
 
-const useTagTreeHandlers = (rootTag, editingIds, syncErrors, onDrop) => {
+export const useTagTreeHandlers = (rootTag, editingIds, syncErrors, onDrop) => {
   const [treeState, setTreeState] = useState<TreeData>();
 
   useEffect(() => {

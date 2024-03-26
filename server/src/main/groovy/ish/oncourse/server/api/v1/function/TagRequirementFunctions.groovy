@@ -24,6 +24,7 @@ import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.Faculty
 import ish.oncourse.server.cayenne.Invoice
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.Membership
@@ -67,6 +68,7 @@ class TagRequirementFunctions {
             put(TaggableClasses.ARTICLE_PRODUCT, TagRequirementTypeDTO.ARTICLEPRODUCT)
             put(TaggableClasses.VOUCHER_PRODUCT, TagRequirementTypeDTO.VOUCHERPRODUCT)
             put(TaggableClasses.MEMBERSHIP_PRODUCT, TagRequirementTypeDTO.MEMBERSHIPPRODUCT)
+            put(TaggableClasses.FACULTY, TagRequirementTypeDTO.FACULTY)
         }
     }
 
@@ -98,6 +100,7 @@ class TagRequirementFunctions {
             put(ArticleProduct.simpleName, TaggableClasses.ARTICLE_PRODUCT)
             put(VoucherProduct.simpleName, TaggableClasses.VOUCHER_PRODUCT)
             put(MembershipProduct.simpleName, TaggableClasses.MEMBERSHIP_PRODUCT)
+            put(Faculty.simpleName, TaggableClasses.FACULTY)
         }
     }
 

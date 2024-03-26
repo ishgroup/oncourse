@@ -97,6 +97,7 @@ public class EntityFactory {
             TaggingRelationsCourseClass.class,
             TaggingRelationsDocument.class,
             TaggingRelationsEnrolment.class,
+            TaggingRelationsFaculty.class,
             TaggingRelationsLead.class,
             TaggingRelationsMembershipProduct.class,
             TaggingRelationsPayslip.class,

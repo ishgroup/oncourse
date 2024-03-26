@@ -69,6 +69,7 @@ class TagRequirement extends _TagRequirement implements Queueable {
 		taggableClasses.put(Article.class, TaggableClasses.ARTICLE)
 		taggableClasses.put(Membership.class, TaggableClasses.MEMBERSHIP)
 		taggableClasses.put(ProductItem.class, TaggableClasses.PRODUCT_ITEM)
+		taggableClasses.put(Faculty.class, TaggableClasses.FACULTY)
 		TAGGABLE_CLASSES = Collections.unmodifiableMap(taggableClasses)
 	}
 

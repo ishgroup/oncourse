@@ -23,6 +23,7 @@ export interface FormTagProps {
   changeVisibility?: any;
   snapshot?: any;
   provided?: any;
+  hideColor?: boolean;
 }
 
 export interface SpecialTypeTagsFormValues {

@@ -131,5 +131,6 @@ export const NOTE_ENTITIES: EntityName[] = [
   "MembershipProduct",
   "VoucherProduct",
   "Room",
-  "Site"
+  "Site",
+  "Faculty"
 ];

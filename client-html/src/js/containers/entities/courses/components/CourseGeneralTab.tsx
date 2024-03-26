@@ -5,7 +5,7 @@
 
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import { FormControlLabel, Grid } from "@mui/material";
-import { openInternalLink, TimetableButton } from "ish-ui";
+import { LinkAdornment, openInternalLink, TimetableButton } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -20,7 +20,10 @@ import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { openFacultyLink } from "../../faculties/utils";
+import { courseFilterCondition } from "../utils";
 import CourseAvailableClassChart from "./CourseAvailableClassChart";
+import CourseItemRenderer from "./CourseItemRenderer";
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
@@ -138,6 +141,30 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             selectValueMark="id"
             selectLabelMark="name"
             allowEmpty
+          />
+
+          <FormField
+            selectFilterCondition={courseFilterCondition}
+            selectLabelCondition={courseFilterCondition}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openFacultyLink}
+                link={values?.facultyId}
+                disabled={!values?.facultyId}
+              />
+            )}
+            itemRenderer={CourseItemRenderer}
+            rowHeight={55}
+            name='facultyId'
+            type='remoteDataSelect'
+            preloadEmpty={true}
+            label='Faculty'
+            entity='Faculty'
+            aqlColumns='name,code'
+            selectValueMark='id'
+            selectLabelMark='name'
+            className="mt-2"
+            disabled={values.isTraineeship}
           />
         </Grid>
 
