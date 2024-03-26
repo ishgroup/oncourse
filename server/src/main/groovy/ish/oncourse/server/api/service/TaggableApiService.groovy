@@ -11,11 +11,15 @@
 
 package ish.oncourse.server.api.service
 
+import ish.common.types.NodeSpecialType
 import ish.oncourse.server.api.dao.CayenneLayer
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.traits._DTOTrait
+import ish.oncourse.server.cayenne.Course
+import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
+
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 
 abstract class TaggableApiService <T extends _DTOTrait, K extends TaggableCayenneDataObject, M extends CayenneLayer<K>> extends EntityApiService<T, K, M> {
 
@@ -40,6 +44,27 @@ abstract class TaggableApiService <T extends _DTOTrait, K extends TaggableCayenn
                             validator.throwClientErrorException(entity.id, key, "Selected record can’t be tagged with ${dbTag.name}")
                         }
                     }
+                }
+                break
+            case TaggableCayenneDataObject.SPECIAL_TAG_ID:
+                action = { K entity ->
+                    if(entity.class != CourseClass.class && entity.class != Course.class)
+                        validator.throwClientErrorException(entity.id, key, "Selected record can’t be updated with special ${value}")
+
+                    def id = value as Long
+                    def specialType = entity.class == CourseClass.class ? NodeSpecialType.CLASS_EXTENDED_TYPES : NodeSpecialType.COURSE_EXTENDED_TYPES
+                    def dbTag = getRecordById(entity.context, Tag, id)
+                    if (!dbTag || dbTag.specialType != specialType)
+                        validator.throwClientErrorException(entity.id, key, "Cannot find special type with this id")
+
+                    def existedTag = entity.tags.find { it.specialType == specialType }
+                    if (existedTag) {
+                        if (existedTag.id == id)
+                            return
+
+                        entity.removeTag(existedTag)
+                    }
+                    entity.addTag(dbTag)
                 }
                 break
         }

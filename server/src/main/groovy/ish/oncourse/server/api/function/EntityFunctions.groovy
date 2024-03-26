@@ -15,7 +15,7 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
 import ish.oncourse.aql.impl.ExpressionUtil
 import ish.oncourse.cayenne.TaggableClasses
-import ish.oncourse.server.api.v1.function.TagFunctions
+import ish.oncourse.server.api.v1.function.TagRequirementFunctions
 import ish.oncourse.server.api.v1.model.TagGroupDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.Tag
@@ -89,7 +89,7 @@ class EntityFunctions {
         SimpleNode taggableNode = new ASTOr()
 
         for(curEntity in entity.split("\\|")) {
-            TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(curEntity)
+            TaggableClasses taggable = TagRequirementFunctions.getTaggableClassForName(curEntity)
             //special case: taggable class for tutor/student records is actually Contact.class
             if (taggable in [TaggableClasses.TUTOR, TaggableClasses.STUDENT]) {
                 taggable = TaggableClasses.CONTACT

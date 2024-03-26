@@ -398,7 +398,9 @@ const mapStateToProps = (state: State) => ({
   searchQuery: state.list.searchQuery,
   contracts: state.export.contracts,
   dataCollectionRules: state.preferences.dataCollectionRules,
-  entityTags: state.tags.entityTags
+  entityTags: state.tags.entityTags,
+  courseSpecialTags: state.tags.entitySpecialTags.Course,
+  classSpecialTags: state.tags.entitySpecialTags.CourseClass
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
