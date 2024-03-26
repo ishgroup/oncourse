@@ -7,4 +7,7 @@ export interface TagsState {
   entityTags: {
     [key: string]: Tag[];
   };
+  entitySpecialTags: {
+    [key: string]: Tag[];
+  };
 }

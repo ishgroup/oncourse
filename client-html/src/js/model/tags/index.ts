@@ -24,3 +24,7 @@ export interface FormTagProps {
   snapshot?: any;
   provided?: any;
 }
+
+export interface SpecialTypeTagsFormValues {
+  types: Tag[];
+}
