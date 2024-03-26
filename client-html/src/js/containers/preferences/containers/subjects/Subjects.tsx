@@ -22,10 +22,11 @@ import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../constants/Config";
 import { SUBJECTS_ENTITY_FORM_NAME } from "../../../../constants/Forms";
 import { FormTag } from "../../../../model/tags";
+import { updateTag } from "../../../tags/actions";
 import { treeDataToTags } from "../../../tags/components/Trees";
 import { EmptyTag } from "../../../tags/constants";
 import { styles } from "../../../tags/styles/TagItemsStyles";
-import { getAllTags } from "../../../tags/utils";
+import { getAllTags, rootTagToServerModel } from "../../../tags/utils";
 import { getSubjects } from "./actions";
 import SubjectsTree from "./SubjectsTree";
 
@@ -57,8 +58,8 @@ function Subjects(
     dispatch(getSubjects());
   }, []);
 
-  const onSave = () => {
-    
+  const onSave = values => {
+    dispatch(updateTag(form, rootTagToServerModel(values)));
   };
 
   const onAddNew = () => {

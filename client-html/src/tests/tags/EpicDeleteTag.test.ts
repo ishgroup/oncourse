@@ -6,13 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DefaultEpic } from "../common/Default.Epic";
-import {
-  getAllTags,
-  deleteTag
-} from "../../js/containers/tags/actions";
 import { FETCH_SUCCESS } from "../../js/common/actions";
+import { deleteTag, getAllTags } from "../../js/containers/tags/actions";
 import { EpicDeleteTag } from "../../js/containers/tags/epics/EpicDeleteTag";
+import { DefaultEpic } from "../common/Default.Epic";
 
 describe("Delete tag epic tests", () => {
   it("EpicDeleteTag should returns correct values", () => DefaultEpic({
@@ -24,7 +21,7 @@ describe("Delete tag epic tests", () => {
       return [
         {
           type: FETCH_SUCCESS,
-          payload: {message: `${tag.type} was successfully deleted`}
+          payload: { message: `${tag.type} was successfully deleted` }
         },
         getAllTags()
       ];

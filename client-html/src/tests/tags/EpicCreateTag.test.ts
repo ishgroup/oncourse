@@ -15,7 +15,7 @@ import { FETCH_SUCCESS } from "../../js/common/actions";
 
 describe("Create tag epic tests", () => {
   it("EpicCreateTag should returns correct values", () => DefaultEpic({
-    action: mockedApi => createTag(mockedApi.db.getTag(1)),
+    action: mockedApi => createTag(TAGS_FORM_NAME,mockedApi.db.getTag(1)),
     epic: EpicCreateTag,
     processData: mockedApi => {
       const tag = mockedApi.db.getTag(1);

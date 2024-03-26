@@ -36,7 +36,10 @@ const TagItem = React.memo<FormTagProps>(({
   setIsEditing,
   hideColor
 }) => {
-  const onEditClick = () => setIsEditing(item.id);
+  const onEditClick = e => {
+    e.stopPropagation();
+    setIsEditing(item.id);
+  };
 
   const onDeleteClick = useCallback(e => {
     stopEventPropagation(e);

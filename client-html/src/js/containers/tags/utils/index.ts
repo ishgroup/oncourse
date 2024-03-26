@@ -8,6 +8,7 @@
 
 import { DataRow, Tag } from "@api/model";
 import { CatalogItemType } from "../../../model/common/Catalog";
+import { FormTag } from "../../../model/tags";
 
 export const getAllTags = (tags: Tag[], res?: Tag[]): Tag[] => {
   const result = res || [];
@@ -51,3 +52,32 @@ export const plainTagToCatalogItem = (r: DataRow): CatalogItemType => ({
   hideDot: true,
   hideShortDescription: true
 });
+
+export const setChildTagsWeight = (items: FormTag[]): Tag[] =>
+  items.map((i, index) => {
+    let item = { ...i, weight: index + 1 };
+
+    delete item.parent;
+    delete item.refreshFlag;
+
+    if (item.id.toString().includes("new")) {
+      item.id = null;
+    }
+
+    if (item.childTags.length) {
+      item = { ...item, childTags: setChildTagsWeight([...item.childTags]) };
+    }
+
+    return item;
+  });
+
+export const rootTagToServerModel = (formTag: FormTag): Tag => {
+  const tag = { ...formTag, childTags: setChildTagsWeight([...formTag.childTags]) };
+
+  delete tag.parent;
+  delete tag.refreshFlag;
+
+  if (!tag.weight) tag.weight = 1;
+  
+  return  tag;
+};

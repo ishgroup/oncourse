@@ -11,26 +11,25 @@ import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchEr
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import history from "../../../constants/History";
 import { CREATE_TAG_REQUEST, getAllTags } from "../actions";
-import { TAGS_FORM_NAME } from "../constants";
 import TagsService from "../services/TagsService";
 
-const request: EpicUtils.Request<Tag[], Tag> = {
+const request: EpicUtils.Request<Tag[], { form: string, tag: Tag }> = {
   type: CREATE_TAG_REQUEST,
-  getData: tag => TagsService.create(tag),
-  processData: (r, s, tag) => {
+  getData: ({ tag }) => TagsService.create(tag),
+  processData: (r, s, { tag, form }) => {
     if (s.nextLocation) {
       history.push(s.nextLocation);
     }
     return [
-      initialize(TAGS_FORM_NAME, tag),
+      initialize(form, tag),
       {
         type: FETCH_SUCCESS,
-        payload: { message: `${tag.type} was successfully created` }
+        payload: { message: `${tag.name} was successfully created` }
       },
       getAllTags(tag.name)
     ];
   },
-  processError: (r, t) => FetchErrorHandler(r, `Error. ${t.type} was not created`)
+  processError: (r, { tag }) => FetchErrorHandler(r, `Error. ${tag.name} was not created`)
 };
 
 export const EpicCreateTag: Epic<any, any> = EpicUtils.Create(request);

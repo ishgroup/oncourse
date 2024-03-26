@@ -25,7 +25,7 @@ import { createTag, deleteTag, updateTag } from "../actions";
 import { treeDataToTags } from "../components/Trees";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
 import { styles } from "../styles/TagItemsStyles";
-import { COLORS, getAllTags } from "../utils";
+import { COLORS, getAllTags, rootTagToServerModel } from "../utils";
 import { validate } from "../utils/validation";
 
 interface Props {
@@ -47,7 +47,7 @@ interface FormProps extends Props {
   submitSucceeded: boolean;
   fetch: any;
   asyncErrors: any;
-  onUpdate: (id: number, tag: Tag) => void;
+  onUpdate: (tag: Tag) => void;
   onCreate: (tag: Tag) => void;
   onDelete: (tag: Tag) => void;
   openTagEditView: (item: Tag) => void;
@@ -55,25 +55,6 @@ interface FormProps extends Props {
   history: any;
   syncErrors?: any;
 }
-
-const setWeight = items =>
-  items.map((i, index) => {
-    let item = { ...i, weight: index + 1 };
-
-    delete item.dragIndex;
-    delete item.parent;
-    delete item.refreshFlag;
-
-    if (item.id.toString().includes("new")) {
-      item.id = null;
-    }
-
-    if (item.childTags.length) {
-      item = { ...item, childTags: setWeight([...item.childTags]) };
-    }
-
-    return item;
-});
 
 interface FormState {
   editingIds: number[];
@@ -127,13 +108,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
     const isNew = !values.id;
     
-    const tags = { ...values, childTags: setWeight([...values.childTags]) };
-
-    delete tags.dragIndex;
-    delete tags.parent;
-    delete tags.refreshFlag;
-
-    if (!tags.weight) tags.weight = 1;
+    const tags = rootTagToServerModel(values);
 
     this.isPending = true;
 
@@ -144,7 +119,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       if (isNew) {
         onCreate(tags);
       } else {
-        onUpdate(tags.id, tags);
+        onUpdate(tags);
       }
     });
   };
@@ -235,8 +210,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onUpdate: (id: number, tag: Tag) => dispatch(updateTag(id, tag)),
-  onCreate: (tag: Tag) => dispatch(createTag(tag)),
+  onUpdate: (tag: Tag) => dispatch(updateTag(TAGS_FORM_NAME, tag)),
+  onCreate: (tag: Tag) => dispatch(createTag(TAGS_FORM_NAME, tag)),
   onDelete: (tag: Tag) => dispatch(deleteTag(tag)),
   openConfirm: props => dispatch(showConfirm(props)),
 });
