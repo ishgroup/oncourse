@@ -51,9 +51,9 @@ const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
       props={{
         ref,
         format: rest.format,
-        placeholder: (props as any).placeholder || COMMON_PLACEHOLDER
+        placeholder: (props as any).placeholder || COMMON_PLACEHOLDER,
+        ...rest
       }}
-      {...rest}
     />
   );
 });

@@ -158,7 +158,9 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
       return <FormSwitch<WrappedFieldInputProps> {...sharedProps} />;
     case "checkbox":
       return <CheckboxField<WrappedFieldInputProps>
-        {...sharedProps} />;
+        {...sharedProps}
+        color={props.color as any}
+      />;
     case "multilineText":
       return <EditInPlaceField<WrappedFieldInputProps, WrappedFieldMetaProps>
         {...sharedProps} multiline/>;
