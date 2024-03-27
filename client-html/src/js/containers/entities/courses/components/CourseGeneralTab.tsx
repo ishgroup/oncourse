@@ -26,6 +26,7 @@ const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
 
 interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   tags: Tag[];
+  specialTags: Tag[];
   dataCollectionRules: PreferencesState["dataCollectionRules"];
   dispatch: any;
   form: string;
@@ -35,6 +36,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
     showConfirm,
     tags,
+     specialTags,
     dataCollectionRules,
     twoColumn,
     values,
@@ -124,6 +126,17 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="tags"
             name="tags"
             tags={tags}
+            className="mb-2"
+          />
+
+          <FormField
+            type="select"
+            items={specialTags}
+            name="specialTagId"
+            label="Type"
+            selectValueMark="id"
+            selectLabelMark="name"
+            allowEmpty
           />
         </Grid>
 
@@ -238,6 +251,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags.Course,
+  specialTags: state.tags.entitySpecialTags.Course,
   dataCollectionRules: state.preferences.dataCollectionRules
 });
 

@@ -297,11 +297,12 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 					totalTimeInMilis = totalTimeInMilis + s.getEndDatetime().getTime() - s.getStartDatetime().getTime()
 				}
 			}
-			if (start == null || getStartDateTime() == null || start != getStartDateTime()) {
+			//don't update course class StartDateTime/EndDateTime from session for Hybrid class, because class StartDateTime/EndDateTime was set in CourseClass Service (only for Hybrid classes)
+			if (!getIsHybrid() && (start == null || getStartDateTime() == null || start != getStartDateTime())) {
 				setStartDateTime(start)
 			}
 
-			if (end == null || getEndDateTime() == null || end != getEndDateTime()) {
+			if (!getIsHybrid() && (end == null || getEndDateTime() == null || end != getEndDateTime())) {
 				setEndDateTime(end)
 			}
 		}

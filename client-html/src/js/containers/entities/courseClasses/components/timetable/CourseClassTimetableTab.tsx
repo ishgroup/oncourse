@@ -12,7 +12,7 @@ import Menu from "@mui/material/Menu";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from "date-fns";
-import { appendTimezone, normalizeNumber, normalizeNumberToPositive, SelectItemDefault } from "ish-ui";
+import { appendTimezone, normalizeNumber, normalizeNumberToPositive, SelectItemDefault, validateMinMaxDate } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
@@ -87,6 +87,10 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
 }
 
 let pendingSessionActionArgs = null;
+
+const validateStartDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, '', allValues?.sessions[0]?.start, '', 'Start date cannot be after the first session');
+
+const validateEndDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, allValues?.sessions[allValues?.sessions?.length - 1]?.start, '', 'End date cannot be before the last session');
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
   const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
@@ -174,7 +178,7 @@ const CourseClassTimetableTab = ({
       dispatch(change(form, "studentAttendance", []));
       dispatch(change(form, "startDateTime", null));
       dispatch(change(form, "endDateTime", null));
-    }
+    };
 
     if (value) {
       isNew
@@ -198,9 +202,7 @@ const CourseClassTimetableTab = ({
   const onHybridChange = (e, value) => {
     e.preventDefault();
     dispatch(change(form, "type", value ? 'Hybrid' : 'With Sessions'));
-    if (!value) {
-      dispatch(change(form, "minimumSessionsToComplete", null));
-    }
+    dispatch(change(form, "minimumSessionsToComplete", value ? values.sessions.length : null));
   };
 
   useEffect(() => {
@@ -788,30 +790,54 @@ const CourseClassTimetableTab = ({
           )}
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
-            <Grid container columnSpacing={3}>
-              {isHybrid && <Grid item xs={twoColumn ? 3 : 12}>
-                <FormField
-                  type="number"
-                  label="Minimum sessions to complete"
-                  name="minimumSessionsToComplete"
-                  step="1"
-                  normalize={normalizeNumberToPositive}
-                  debounced={false}
-                  required
-                />
-              </Grid>}
-              <Grid item xs={twoColumn ? 3 : 12}>
-                <FormField
-                  type="number"
-                  label="Maximum days to complete"
-                  name="maximumDays"
-                  min="1"
-                  max="99"
-                  step="1"
-                  normalize={normalizeNumber}
-                  debounced={false}
-                />
-              </Grid>
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              {isHybrid && <>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class start date"
+                    name="startDateTime"
+                    validate={validateStartDate}
+                    timezone={values.sessions[0]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class end date"
+                    name="endDateTime"
+                    validate={validateEndDate}
+                    timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Minimum sessions to complete"
+                    name="minimumSessionsToComplete"
+                    step="1"
+                    normalize={normalizeNumberToPositive}
+                    debounced={false}
+                    required
+                  />
+                </Grid>
+              </>}
+              {!isHybrid && <>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Maximum days to complete"
+                    name="maximumDays"
+                    min="1"
+                    max="99"
+                    step="1"
+                    normalize={normalizeNumber}
+                    debounced={false}
+                  />
+                </Grid>
+              </>}
               <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
@@ -825,7 +851,7 @@ const CourseClassTimetableTab = ({
                   required
                 />
               </Grid>
-              <Grid item xs={twoColumn ? 3 : 12}>
+              <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
                   type="select"
                   label="Virtual site"

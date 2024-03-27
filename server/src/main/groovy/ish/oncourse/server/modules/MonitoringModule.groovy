@@ -10,20 +10,17 @@ package ish.oncourse.server.modules
 
 import com.google.inject.Binder
 import com.google.inject.Provides
+import com.google.inject.Scopes
 import com.google.inject.Singleton
 import com.google.inject.TypeLiteral
 import io.bootique.ConfigModule
 import io.bootique.config.ConfigurationFactory
 import io.bootique.jetty.MappedServlet
-import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.servlet.ISessionManager
-import ish.oncourse.server.http.HttpFactory
 import ish.oncourse.server.jetty.AngelJettyModule
-import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.monitoring.MonitoringService
 import ish.oncourse.server.monitoring.MonitoringServiceFactory
 import ish.oncourse.server.monitoring.MonitoringServletContextHandlerExtender
+import ish.oncourse.server.monitoring.MonitoringStatisticService
 import ish.oncourse.server.monitoring.servlet.MonitoringServlet
 
 class MonitoringModule extends ConfigModule {
@@ -34,16 +31,16 @@ class MonitoringModule extends ConfigModule {
 
     @Singleton
     @Provides
-    MonitoringService createMonitoringService(ISessionManager sessionManager, PreferenceController preferenceController, LicenseService licenseService, HttpFactory httpFactory, ICayenneService cayenneService, ConfigurationFactory configFactory) {
+    MonitoringService createMonitoringService(ConfigurationFactory configFactory) {
         return configFactory
                 .config(MonitoringServiceFactory.class, defaultConfigPrefix())
-                .createMonitoringService(sessionManager, preferenceController, licenseService, httpFactory, cayenneService)
+                .createMonitoringService()
     }
 
     @Singleton
     @Provides
-    MappedServlet<MonitoringServlet> createMonitoringServlet(MonitoringService monitoringService) {
-        return new MappedServlet<>(new MonitoringServlet(monitoringService), Collections.singleton(MonitoringServlet.MONITORING_PATH), MonitoringServlet.class.getSimpleName())
+    MappedServlet<MonitoringServlet> createMonitoringServlet(MonitoringService monitoringService, MonitoringStatisticService monitoringStatisticService) {
+        return new MappedServlet<>(new MonitoringServlet(monitoringService, monitoringStatisticService), Collections.singleton(MonitoringServlet.MONITORING_PATH), MonitoringServlet.class.getSimpleName())
     }
 
     @Singleton
@@ -57,5 +54,7 @@ class MonitoringModule extends ConfigModule {
         AngelJettyModule.extend(binder)
         .addMappedServlet(MONITORING_SERVLET)
         .addContextHandlerExtender(MonitoringServletContextHandlerExtender)
+
+        binder.bind(MonitoringStatisticService.class).in(Scopes.SINGLETON)
     }
 }

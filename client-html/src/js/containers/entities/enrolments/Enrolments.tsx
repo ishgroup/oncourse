@@ -111,13 +111,14 @@ const filterGroups: FilterGroup[] = [
       {
         name: "Current active",
         expression:
-          "((courseClass.endDateTime == null) or (courseClass.endDateTime >= today)) and "
-          + "((status == QUEUED) or (status == IN_TRANSACTION) or (status == SUCCESS))",
+          "(((status == QUEUED) or (status == IN_TRANSACTION))" +
+          " and ((courseClass.endDateTime == null) or (courseClass.endDateTime >= today))) or" +
+          "((status == SUCCESS) and (isClassCompleted is false))",
         active: true
       },
       {
         name: "Completed active",
-        expression: "(courseClass.endDateTime != null) and (courseClass.endDateTime < today) and (status == SUCCESS)",
+        expression: "isClassCompleted is true",
         active: false
       },
       {

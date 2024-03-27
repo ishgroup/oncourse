@@ -142,9 +142,6 @@ const styles = (theme: AppTheme) =>
     cardReaderCustomHeading: {
       maxWidth: "calc(100% - 8px)",
     },
-    descriptionText: {
-      fontSize: theme.spacing(1.625),
-    },
     cardLeftIcon: {
       position: "absolute",
       left: -75,
@@ -588,7 +585,7 @@ const ScriptsForm = React.memo<Props>(props => {
                     className="overflow-hidden mb-1"
                     placeholder="Short description"
                   />
-                  <Typography variant="caption">
+                  <Typography variant="caption" fontSize="13px">
                     <FormField
                       type="multilineText"
                       name="description"
@@ -596,7 +593,7 @@ const ScriptsForm = React.memo<Props>(props => {
                       className="overflow-hidden mb-1"
                       placeholder="Description"
                       fieldClasses={{
-                        text: clsx("fw300", classes.descriptionText)
+                        text: "fw300 fsInherit"
                       }}
                     />
                   </Typography>

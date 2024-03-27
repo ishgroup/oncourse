@@ -6,9 +6,11 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getUserPreferences } from "../../../common/actions";
 import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
-import { LICENSE_ACCESS_CONTROL_KEY } from "../../../constants/Config";
+import { LICENSE_ACCESS_CONTROL_KEY, SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
 import { SidebarSharedProps } from "../../../model/common/sidebar";
 import { State } from "../../../reducers/state";
+import ClassTypes from "../containers/class-types/ClassTypes";
+import CourseTypes from "../containers/course-types/CourseTypes";
 import LDAP from "../containers/ldap/LDAP";
 import routes from "../routes";
 
@@ -40,7 +42,7 @@ const DataCollectionTypesMenu = React.memo<any>(({ anchorEl, history, onClose })
 
 const SideBar = React.memo<any>(
   ({
- search, history, match, collectionForms, collectionRules, activeFiltersConditions, tutorRoles, accessLicense, onInit
+ search, history, match, collectionForms, collectionRules, activeFiltersConditions, tutorRoles, accessLicense, accessTypes, onInit
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     useEffect(onInit, []);
@@ -65,19 +67,33 @@ const SideBar = React.memo<any>(
 
     const preferencesItems = routes
       .filter(r => {
-        if ([
+        return ![
           "Data collection rules",
           "Data collection forms",
           "Tutor roles"
-        ].includes(r.title)) {
-          return false;
-        }
-        return r.main !== LDAP || accessLicense; 
+        ].includes(r.title);
       })
-      .map(({ url, title }) => ({
-        url,
-        name: title
-      }));
+      .map(({ url, title, main }) => {
+
+        let disabled = false;
+
+        switch (main) {
+          case LDAP: {
+            disabled = !accessLicense;
+            break;
+          }
+          case ClassTypes:
+          case CourseTypes:
+            disabled = !accessTypes;
+            break;
+        }
+        
+        return {
+          url,
+          name: title,
+          disabled
+        };
+      });
 
     return (
       <>
@@ -130,6 +146,7 @@ const mapStateToProps = (state: State) => ({
   collectionRules: state.preferences.dataCollectionRules,
   tutorRoles: state.preferences.tutorRoles,
   accessLicense: state.userPreferences[LICENSE_ACCESS_CONTROL_KEY] === 'true',
+  accessTypes: state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true'
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
