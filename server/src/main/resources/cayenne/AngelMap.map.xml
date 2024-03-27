@@ -3734,6 +3734,9 @@
 	<db-relationship name="abandonedCarts" source="Contact" target="Checkout" toMany="true">
 		<db-attribute-pair source="id" target="payerId"/>
 	</db-relationship>
+	<db-relationship name="checkoutRelations" source="Contact" target="CheckoutContactRelation" toMany="true">
+		<db-attribute-pair source="contactId" target="id"/>
+	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Product" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
 	</db-relationship>
@@ -5309,6 +5312,7 @@
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
 	<obj-relationship name="attachmentRelations" source="Contact" target="ContactAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="abandonedCarts" source="Contact" target="Checkout" deleteRule="Cascade" db-relationship-path="abandonedCarts"/>
+	<obj-relationship name="checkoutRelations" source="Contact" target="CheckoutContactRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
 	<obj-relationship name="attachmentRelations" source="VoucherProduct" target="VoucherProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="ArticleProduct" target="ArticleProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="MembershipProduct" target="MembershipProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
