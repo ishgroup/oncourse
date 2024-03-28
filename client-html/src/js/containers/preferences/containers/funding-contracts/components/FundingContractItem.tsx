@@ -12,9 +12,9 @@ import Paper from "@mui/material/Paper";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import clsx from "clsx";
+import { mapSelectItems, sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 
 const Flavours = Object.keys(AvetmissExportFlavour)
   .filter(val => isNaN(Number(val)))

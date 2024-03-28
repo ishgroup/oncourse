@@ -10,7 +10,7 @@ import { Lead, LeadStatus, Sale, Tag, User } from "@api/model";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
 import clsx from "clsx";
-import { decimalMul, decimalPlus, makeAppStyles, normalizeNumberToZero } from "ish-ui";
+import { decimalMul, decimalPlus, makeAppStyles, mapSelectItems, normalizeNumberToZero } from "ish-ui";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -24,7 +24,7 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import EntityService from "../../../../common/services/EntityService";
-import { getCustomColumnsMap, mapSelectItems } from "../../../../common/utils/common";
+import { getCustomColumnsMap } from "../../../../common/utils/common";
 import history from "../../../../constants/History";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";

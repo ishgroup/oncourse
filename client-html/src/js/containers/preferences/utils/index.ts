@@ -7,7 +7,7 @@
  */
 
 import { Account, AccountType, SpecialTagType } from "@api/model";
-import { sortDefaultSelectItems } from "../../../common/utils/common";
+import { sortDefaultSelectItems } from "ish-ui";
 import { EntityName } from "../../../model/entities/common";
 
 export const getAccountsList = (accounts: Account[], type: AccountType) => {

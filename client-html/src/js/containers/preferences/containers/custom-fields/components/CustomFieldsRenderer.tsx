@@ -16,6 +16,9 @@ import {
   EditInPlaceDateTimeField,
   EditInPlaceField,
   EditInPlaceMoneyField,
+  mapSelectItems,
+  SelectItemDefault,
+  sortDefaultSelectItems,
   StyledCheckbox
 } from "ish-ui";
 import React, { useMemo, useState } from "react";
@@ -24,7 +27,6 @@ import { change, Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { reorder } from "../../../../../common/utils/DnD";
 import { useAppSelector } from "../../../../../common/utils/hooks";
 import {
@@ -34,7 +36,6 @@ import {
   validateUniqueNamesInArray,
   validateURL
 } from "../../../../../common/utils/validation";
-import { SelectItemDefault } from "../../../../../model/entities/common";
 import ListMapRenderer from "./ListMapRenderer";
 
 const mapEntityType = (entityType: EntityType) => {
@@ -232,7 +233,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
     }
     return EntityTypes;
   }, [field.dataType]);
-  
+
   return (
     <ExpandableItem
       expanded={isExpanded}
