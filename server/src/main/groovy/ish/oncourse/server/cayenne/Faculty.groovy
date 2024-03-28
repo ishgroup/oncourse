@@ -10,6 +10,7 @@ package ish.oncourse.server.cayenne
 
 import ish.common.types.NodeType
 import ish.oncourse.API
+import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Faculty
 
 import javax.annotation.Nonnull
@@ -19,7 +20,8 @@ import javax.annotation.Nonnull
  *
  */
 @API
-class Faculty extends _Faculty implements NotableTrait, AttachableTrait {
+@QueueableEntity
+class Faculty extends _Faculty implements NotableTrait, AttachableTrait, Queueable {
 
     public static final int FACULTY_NAME_MAX_LENGTH = 200
     public static final int FACULTY_CODE_MAX_LENGTH = 32
