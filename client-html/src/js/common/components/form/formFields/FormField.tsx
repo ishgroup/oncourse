@@ -44,16 +44,12 @@ const FormField = React.forwardRef<any, FormFieldWrapperProps>((props, ref) => {
 
   return (
     <Field
+      ref={ref as any}
       type={type}
       name={name}
       component={FormFieldBase}
       validate={validateResolver}
-      props={{
-        ref,
-        format: rest.format,
-        placeholder: (props as any).placeholder || COMMON_PLACEHOLDER,
-        ...rest
-      }}
+      {...rest}
     />
   );
 });

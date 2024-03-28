@@ -25,6 +25,7 @@ import {
 import debounce from "lodash.debounce";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { AngelFormFieldProps } from "../../../../model/common/Fields";
 import { useAppSelector } from "../../../utils/hooks";
 import EditInPlaceQuerySelect from "./EditInPlaceQuerySelect";
@@ -80,7 +81,8 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
 
   const sharedProps = {
     ...rest,
-    ...debounced ? { input: inputProxy } : {}
+    ...debounced ? { input: inputProxy } : {},
+    placeholder: (rest as any).placeholder || COMMON_PLACEHOLDER
   };
 
   switch (type) {
