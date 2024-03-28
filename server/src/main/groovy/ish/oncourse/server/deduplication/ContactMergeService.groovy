@@ -308,6 +308,15 @@ class ContactMergeService {
 
         context.deleteObjects(b.customFields)
 
+        if(b.abandonedCarts) {
+            if (a.abandonedCarts.isEmpty() || a.abandonedCarts.first().createdOn.before(b.abandonedCarts.first().createdOn)) {
+                b.abandonedCarts.first().setPayer(a)
+
+                if(!a.abandonedCarts.empty)
+                    context.deleteObjects(a.abandonedCarts)
+            }
+        }
+
         if (b.student != null) {
             context.deleteObject(b.student)
         }
