@@ -8,6 +8,6 @@
 
 
 import { DiscountAvailabilityType } from "@api/model";
-import { mapSelectItems } from "../../../../common/utils/common";
+import { mapSelectItems } from "ish-ui";
 
 export const DiscountAvailabilityTypes = Object.keys(DiscountAvailabilityType).map(mapSelectItems);
