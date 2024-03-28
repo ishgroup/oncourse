@@ -1,7 +1,7 @@
 import { SelectItemDefault } from "ish-ui";
+import { DefaultEpic } from "../common/Default.Epic";
 import { GET_TIMEZONES_FULFILLED, getTimezones } from "../../js/containers/preferences/actions";
 import { EpicGetTimezones } from "../../js/containers/preferences/epics/EpicGetTimezones";
-import { DefaultEpic } from "../common/Default.Epic";
 
 describe("Get timezones epic tests", () => {
   it("EpicGetTimezones should returns correct values", () => DefaultEpic({
