@@ -14,13 +14,12 @@ import {
   EnrolmentReportingStatus,
 } from "@api/model";
 import { Collapse, Grid } from "@mui/material";
-import { decimalMul } from "ish-ui";
+import { decimalMul, mapSelectItems } from "ish-ui";
 import React, { useMemo } from "react";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);

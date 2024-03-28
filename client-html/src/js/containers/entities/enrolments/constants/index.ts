@@ -7,7 +7,7 @@
  */
 
 import { Enrolment, EnrolmentExemptionType, EnrolmentStudyReason, PaymentSource } from "@api/model";
-import { mapSelectItems } from "../../../../common/utils/common";
+import { mapSelectItems } from "ish-ui";
 
 export const paymentSourceItems = Object.keys(PaymentSource).map(mapSelectItems);
 

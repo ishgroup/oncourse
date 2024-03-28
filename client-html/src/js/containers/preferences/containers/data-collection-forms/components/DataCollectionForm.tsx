@@ -15,31 +15,24 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
-import { NoArgFunction } from "ish-ui";
+import { mapSelectItems, NoArgFunction, sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteChildrenProps } from "react-router";
 import { Dispatch } from "redux";
-import {
-  change,
-  Form,
-  getFormSyncErrors,
-  getFormValues,
-  initialize,
-  reduxForm,
-  SubmissionError
-} from "redux-form";
+import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm, SubmissionError } from "redux-form";
 import { DecoratedFormState, InjectedFormProps } from "redux-form/lib/reduxForm";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { getDeepValue } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { Fetch } from "../../../../../model/common/Fetch";
 import {
-  CollectionFormField, CollectionFormHeading,
+  CollectionFormField,
+  CollectionFormHeading,
   CollectionFormItem,
   CollectionFormSchema
 } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";

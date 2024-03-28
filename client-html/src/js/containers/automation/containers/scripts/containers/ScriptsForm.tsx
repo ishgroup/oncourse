@@ -13,8 +13,8 @@ import CodeIcon from '@mui/icons-material/Code';
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FileCopy from "@mui/icons-material/FileCopy";
-import UploadIcon from "@mui/icons-material/Upload";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import UploadIcon from "@mui/icons-material/Upload";
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { Divider, Grid } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -30,6 +30,7 @@ import {
   DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL,
   formatRelativeDate,
   InfoPill,
+  mapSelectItems,
   ShowConfirmCaller,
   usePrevious
 } from "ish-ui";
@@ -41,7 +42,6 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { CatalogItemType } from "../../../../../model/common/Catalog";

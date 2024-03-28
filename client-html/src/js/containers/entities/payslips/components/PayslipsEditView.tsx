@@ -10,7 +10,7 @@ import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
 import Grid, { GridSize } from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import { AddButton, formatCurrency } from "ish-ui";
+import { AddButton, formatCurrency, mapSelectItems } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
@@ -21,7 +21,6 @@ import {
 import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";

@@ -9,7 +9,7 @@ import { Button, Collapse, FormControlLabel, FormGroup, Grid, Paper, Typography 
 import { withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { format as formatDate } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM_SPECIAL, ShowConfirmCaller } from "ish-ui";
+import { III_DD_MMM_YYYY_HH_MM_SPECIAL, SelectItemDefault, ShowConfirmCaller } from "ish-ui";
 import React, { ComponentClass } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
@@ -22,7 +22,6 @@ import Uneditable from "../../../../../common/components/form/formFields/Unedita
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { SelectItemDefault } from "../../../../../model/entities/common";
 import { State } from "../../../../../reducers/state";
 import { disableUser2FA, resetUserPassword, updateUser } from "../../../actions";
 

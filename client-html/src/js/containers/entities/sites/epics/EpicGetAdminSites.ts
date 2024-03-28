@@ -4,11 +4,10 @@
  */
 
 import { DataResponse } from "@api/model";
+import { SelectItemDefault, sortDefaultSelectItems } from "ish-ui";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
-import { SelectItemDefault } from "../../../../model/entities/common";
 import { GET_ADMINISTRATION_SITES, GET_ADMINISTRATION_SITES_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request = {

@@ -12,12 +12,11 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
-import { normalizeNumberToPositive } from "ish-ui";
+import { mapSelectItems, normalizeNumberToPositive } from "ish-ui";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { getFormValues, reduxForm } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 
 const styles = createStyles(theme => ({

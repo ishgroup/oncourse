@@ -5,9 +5,7 @@
 
 import { DataRow } from "@api/model";
 import { format as formatDateTime } from "date-fns";
-import React from "react";
 import history from "../../../constants/History";
-import { SelectItemDefault } from "../../../model/entities/common";
 
 export const updateHistory = (params, url) => {
   const paramsString = decodeURIComponent(params.toString());
@@ -51,11 +49,6 @@ export const getDeepValue = (source, path) => {
 
   return source[path];
 };
-
-export const sortDefaultSelectItems = (a: SelectItemDefault, b: SelectItemDefault) =>
-  (a.label[0].toLowerCase() > b.label[0].toLowerCase() ? 1 : -1);
-
-export const mapSelectItems = (i): SelectItemDefault => ({ label: i, value: i });
 
 export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any => {
   const colArr: string[] = columns.split(",");

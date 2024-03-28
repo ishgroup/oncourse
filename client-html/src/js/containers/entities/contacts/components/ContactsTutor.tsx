@@ -6,14 +6,13 @@
 import { Contact, PayslipPayType, WorkingWithChildrenStatus } from "@api/model";
 import { Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { makeAppStyles, Switch } from "ish-ui";
+import { makeAppStyles, mapSelectItems, Switch } from "ish-ui";
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
 import { EditViewProps } from "../../../../model/common/ListView";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";

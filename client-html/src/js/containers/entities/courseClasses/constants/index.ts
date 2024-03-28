@@ -4,7 +4,7 @@
  */
 
 import { ClassFundingSource } from "@api/model";
-import { mapSelectItems } from "../../../../common/utils/common";
+import { mapSelectItems } from "ish-ui";
 
 export const COURSE_CLASS_COST_DIALOG_FORM = "CourseClassCostDialogForm";
 

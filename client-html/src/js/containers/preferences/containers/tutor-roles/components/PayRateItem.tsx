@@ -10,10 +10,15 @@ import { ClassCostRepetitionType } from "@api/model";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Card, Grid, IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
-import { formatFieldPercent, parseFieldPercent, preventNegativeOrLogEnter, YYYY_MM_DD_MINUSED } from "ish-ui";
+import {
+  formatFieldPercent,
+  mapSelectItems,
+  parseFieldPercent,
+  preventNegativeOrLogEnter,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
 import React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
 
 const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => !["Discount", "Per student contact hour"].includes(t)).map(mapSelectItems);

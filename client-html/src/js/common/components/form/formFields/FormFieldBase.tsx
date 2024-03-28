@@ -36,7 +36,7 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
 
   const { type, ...rest } = props;
 
-  const { input, format, debounced = true } = type !== "stub" && type !== "color"
+  const { input, format, debounced = true } = type !== "stub" && type !== "color" && type !== "radio"
     ? props
     : stubFieldMocks;
 
@@ -158,7 +158,9 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
       return <FormSwitch<WrappedFieldInputProps> {...sharedProps} />;
     case "checkbox":
       return <CheckboxField<WrappedFieldInputProps>
-        {...sharedProps} />;
+        {...sharedProps}
+        color={props.color as any}
+      />;
     case "multilineText":
       return <EditInPlaceField<WrappedFieldInputProps, WrappedFieldMetaProps>
         {...sharedProps} multiline/>;

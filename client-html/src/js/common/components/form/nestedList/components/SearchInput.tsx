@@ -7,9 +7,8 @@ import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
-import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import { EditInPlaceSearchSelect, mapSelectItems, stubFunction } from "ish-ui";
 import React, { useMemo } from "react";
-import { mapSelectItems } from "../../../../utils/common";
 import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
 
 const getAqlLabel = entity => {
