@@ -10,6 +10,7 @@ export type FormMenuTag = MenuTag<Tag>;
 
 export interface FormTag extends Tag {
   parent?: string;
+  rootTag?: FormTag;
   refreshFlag?: boolean;
   childTags?: FormTag[];
 }

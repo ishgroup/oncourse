@@ -5,7 +5,14 @@
 
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import { FormControlLabel, Grid } from "@mui/material";
-import { mapSelectItems, openInternalLink, TimetableButton } from "ish-ui";
+import {
+  EditInPlaceSearchSelect,
+  LinkAdornment,
+  mapSelectItems,
+  openInternalLink,
+  stubFunction,
+  TimetableButton
+} from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -13,11 +20,15 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { useAppSelector } from "../../../../common/utils/hooks";
+import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { CourseExtended } from "../../../../model/entities/Course";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { getAllFormTags, getAllTags } from "../../../tags/utils";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { openFacultyLink } from "../../faculties/utils";
 import { courseFilterCondition } from "../utils";
@@ -38,8 +49,8 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
     showConfirm,
-    tags,
-     specialTags,
+    tags = [],
+     specialTags = [],
     dataCollectionRules,
     twoColumn,
     values,
@@ -49,6 +60,28 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
+    const specialTypesDisabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] !== 'true');
+    
+    const tagsGrouped = useMemo(() => {
+      const body = {
+        tags,
+        tagsValue: [],
+        subjects: [],
+        subjectsValue: []
+      };
+      if (!specialTypesDisabled && tags.length) {
+        body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
+        body.subjects = getAllTags(tags.filter(t => t.system && t.name === 'Subjects'));
+        const allTags = getAllFormTags(tags);
+        body.subjectsValue = values.tags.filter(id => {
+          const tag = allTags.find(t => t.id === id);
+          return tag.rootTag?.system && tag.rootTag?.name === 'Subjects';
+        });
+        body.tagsValue = values.tags.filter(id => !body.subjectsValue.includes(id));
+      }
+      return body;
+    }, [tags, values.tags, specialTypesDisabled]);
+    
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
     }, [values.id]);
@@ -73,7 +106,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
       ],
       [values.studentWaitingListCount, values.id]
     );
-    
+
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
@@ -128,13 +161,14 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           <FormField
             type="tags"
             name="tags"
-            tags={tags}
+            tags={tagsGrouped.tags}
             className="mb-2"
           />
 
           <FormField
             type="select"
             items={specialTags}
+            disabled={specialTypesDisabled}
             name="specialTagId"
             label="Type"
             selectValueMark="id"
@@ -163,7 +197,27 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             selectValueMark='id'
             selectLabelMark='name'
             className="mt-2"
-            disabled={values.isTraineeship}
+            disabled={values.isTraineeship || specialTypesDisabled}
+          />
+
+          <EditInPlaceSearchSelect
+            input={{ 
+              value: tagsGrouped.subjectsValue,
+              onChange: updated => {
+                dispatch(change(form, 'tags', Array.from(new Set(tagsGrouped.tagsValue.concat(updated)))));
+              },
+              onBlur: stubFunction
+            }}
+            meta={{}}
+            items={tagsGrouped.subjects}
+            disabled={specialTypesDisabled}
+            label="Subjects"
+            selectValueMark="id"
+            selectLabelMark="name"
+            className="mt-2"
+            placeholder={COMMON_PLACEHOLDER}
+            allowEmpty
+            multiple
           />
         </Grid>
 

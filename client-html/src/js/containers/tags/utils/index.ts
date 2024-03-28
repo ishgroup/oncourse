@@ -24,6 +24,22 @@ export const getAllTags = (tags: Tag[], res?: Tag[]): Tag[] => {
   return result;
 };
 
+export const getAllFormTags = (tags: Tag[], res?: FormTag[], rootTag?: FormTag): FormTag[] => {
+  const result = res || [];
+  for (let i = 0; i < tags.length; i++) {
+    result.push({
+      ...tags[i],
+      rootTag
+    });
+
+    if (tags[i].childTags.length) {
+      getAllFormTags(tags[i].childTags, result, rootTag || tags[i]);
+    }
+  }
+
+  return result;
+};
+
 export const getTagNamesSuggestions = (tags: Tag[]) => {
   const allTags = getAllTags(tags);
 
@@ -75,6 +91,7 @@ export const rootTagToServerModel = (formTag: FormTag): Tag => {
   const tag = { ...formTag, childTags: setChildTagsWeight([...formTag.childTags]) };
 
   delete tag.parent;
+  delete tag.rootTag;
   delete tag.refreshFlag;
 
   if (!tag.weight) tag.weight = 1;

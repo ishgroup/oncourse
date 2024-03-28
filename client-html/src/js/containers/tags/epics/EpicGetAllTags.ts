@@ -6,22 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Tag } from "@api/model";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import EntityService from "../../../common/services/EntityService";
-import UserPreferenceService from "../../../common/services/UserPreferenceService";
-import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
 import history from "../../../constants/History";
 import { CatalogItemType } from "../../../model/common/Catalog";
+import { checkSpecialTypesAsync } from "../../preferences/utils";
 import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
 import { plainTagToCatalogItem } from "../utils";
 
 const request: EpicUtils.Request = {
   type: GET_ALL_TAGS_REQUEST,
   getData: async ({ nameToSelect }) => {
-    const searchTypesPref = await UserPreferenceService.getUserPreferencesByKeys([SPECIAL_TYPES_DISPLAY_KEY]);
-    const extendedSearchTypes = searchTypesPref[SPECIAL_TYPES_DISPLAY_KEY] === 'true';
+    const extendedSearchTypes = await checkSpecialTypesAsync();
 
     const tagsResponse = await EntityService.getPlainRecords(
       "Tag",

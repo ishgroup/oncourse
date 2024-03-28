@@ -8,6 +8,8 @@
 
 import { Account, AccountType, SpecialTagType } from "@api/model";
 import { sortDefaultSelectItems } from "ish-ui";
+import UserPreferenceService from "../../../common/services/UserPreferenceService";
+import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
 import { EntityName } from "../../../model/entities/common";
 
 export const getAccountsList = (accounts: Account[], type: AccountType) => {
@@ -41,4 +43,9 @@ export const getSpecialTagTypeByEntity = (entity: EntityName): SpecialTagType =>
     default:
       throw 'Entity not supported!';
   }
+};
+
+export const checkSpecialTypesAsync = async () => {
+  const searchTypesPref = await UserPreferenceService.getUserPreferencesByKeys([SPECIAL_TYPES_DISPLAY_KEY]);
+  return searchTypesPref[SPECIAL_TYPES_DISPLAY_KEY] === 'true';
 };
