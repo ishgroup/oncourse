@@ -3695,7 +3695,7 @@
 		<db-attribute-pair source="id" target="payerId"/>
 	</db-relationship>
 	<db-relationship name="checkoutRelations" source="Contact" target="CheckoutContactRelation" toMany="true">
-		<db-attribute-pair source="contactId" target="id"/>
+		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Product" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
