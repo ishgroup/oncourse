@@ -5,7 +5,7 @@
 
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { Grid, Typography } from "@mui/material";
-import { ConfirmProps, formatCurrency } from "ish-ui";
+import { ConfirmProps, EditInPlaceSearchSelect, formatCurrency, stubFunction } from "ish-ui";
 import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -26,10 +26,12 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import { normalizeString } from "../../../../common/utils/strings";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { clearMinMaxFee, getMinMaxFee } from "../actions";
@@ -179,6 +181,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     syncErrors,
     showConfirm
   } = props;
+
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
   if (redemptionIndex === null) {
@@ -215,7 +218,9 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
 
   const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
-  
+
+  const { specialTypesDisabled, tagsGrouped } = useTagGroups({ tags, tagsValue: values.tags });
+
   const courseHandlers = useMemo(() => {
     if (values.soldVouchersCount === 0) {
       return {
@@ -290,7 +295,28 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
+        />
+
+        <EditInPlaceSearchSelect
+          input={{
+            value: tagsGrouped.subjectsValue,
+            onChange: updated => {
+              dispatch(change(form, 'tags', Array.from(new Set(tagsGrouped.tagsValue.concat(updated)))));
+            },
+            onBlur: stubFunction
+          }}
+          meta={{}}
+          items={tagsGrouped.subjects}
+          disabled={specialTypesDisabled}
+          label="Subjects"
+          selectValueMark="id"
+          selectLabelMark="name"
+          className="mt-2"
+          placeholder={COMMON_PLACEHOLDER}
+          allowEmpty
+          multiple
         />
       </Grid>
 

@@ -6,7 +6,7 @@
 import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import { normalizeNumber } from "ish-ui";
+import { EditInPlaceSearchSelect, normalizeNumber, stubFunction } from "ish-ui";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -17,13 +17,15 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { normalizeString } from "../../../../common/utils/strings";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
-interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
+interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct> {
   accounts?: Account[];
   taxes?: Tax[];
   tags?: Tag[];
@@ -130,7 +132,9 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
 
-  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
+
+  const { specialTypesDisabled, tagsGrouped } = useTagGroups({ tags, tagsValue: values.tags });
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
@@ -184,7 +188,28 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
+        />
+
+        <EditInPlaceSearchSelect
+          input={{
+            value: tagsGrouped.subjectsValue,
+            onChange: updated => {
+              dispatch(change(form, 'tags', Array.from(new Set(tagsGrouped.tagsValue.concat(updated)))));
+            },
+            onBlur: stubFunction
+          }}
+          meta={{}}
+          items={tagsGrouped.subjects}
+          disabled={specialTypesDisabled}
+          label="Subjects"
+          selectValueMark="id"
+          selectLabelMark="name"
+          className="mt-2"
+          placeholder={COMMON_PLACEHOLDER}
+          allowEmpty
+          multiple
         />
       </Grid>
 

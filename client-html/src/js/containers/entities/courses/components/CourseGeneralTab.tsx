@@ -20,15 +20,13 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../constants/Config";
 import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { CourseExtended } from "../../../../model/entities/Course";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { getAllFormTags, getAllTags } from "../../../tags/utils";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { openFacultyLink } from "../../faculties/utils";
 import { courseFilterCondition } from "../utils";
@@ -60,27 +58,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
-    const specialTypesDisabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] !== 'true');
-    
-    const tagsGrouped = useMemo(() => {
-      const body = {
-        tags,
-        tagsValue: [],
-        subjects: [],
-        subjectsValue: []
-      };
-      if (!specialTypesDisabled && tags.length) {
-        body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
-        body.subjects = getAllTags(tags.filter(t => t.system && t.name === 'Subjects'));
-        const allTags = getAllFormTags(tags);
-        body.subjectsValue = values.tags.filter(id => {
-          const tag = allTags.find(t => t.id === id);
-          return tag.rootTag?.system && tag.rootTag?.name === 'Subjects';
-        });
-        body.tagsValue = values.tags.filter(id => !body.subjectsValue.includes(id));
-      }
-      return body;
-    }, [tags, values.tags, specialTypesDisabled]);
+    const { specialTypesDisabled, tagsGrouped } = useTagGroups({ tags, tagsValue: values.tags });
     
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
