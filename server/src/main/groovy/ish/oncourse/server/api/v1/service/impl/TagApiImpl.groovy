@@ -16,6 +16,7 @@ import ish.common.types.NodeType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.service.SpecialTagsApiService
 import ish.oncourse.server.api.v1.model.SpecialTagDTO
@@ -24,7 +25,6 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
-import ish.persistence.CommonPreferenceController
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -47,7 +47,7 @@ class TagApiImpl implements TagApi {
     private SpecialTagsApiService specialTagsApiService
 
     @Inject
-    private CommonPreferenceController preferenceController
+    private PreferenceController preferenceController
 
     @Override
     List<TagDTO> getChecklists(String entityName, Long id) {
