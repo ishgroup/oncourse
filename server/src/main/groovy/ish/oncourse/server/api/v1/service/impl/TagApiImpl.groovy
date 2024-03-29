@@ -24,6 +24,7 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
+import ish.persistence.CommonPreferenceController
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -44,6 +45,9 @@ class TagApiImpl implements TagApi {
 
     @Inject
     private SpecialTagsApiService specialTagsApiService
+
+    @Inject
+    private CommonPreferenceController preferenceController
 
     @Override
     List<TagDTO> getChecklists(String entityName, Long id) {
@@ -129,7 +133,7 @@ class TagApiImpl implements TagApi {
         Tag dbTag = CayenneFunctions
                 .getRecordById(context, Tag, id, tagGroupPrefetch)
 
-        ValidationErrorDTO error = validateForSave(context, tag)
+        ValidationErrorDTO error = validateForSave(context, tag, preferenceController.extendedSearchTypesAllowed)
         if (error) {
             context.rollbackChanges()
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())

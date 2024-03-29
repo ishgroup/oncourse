@@ -890,15 +890,3 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.ReplicateHashes
-
-  - changeSet:
-      id: 136-0
-      author: dmitry
-      comment: extend allowed entities for subjects tag with products
-      preConditions:
-        - onFail: HALT
-        - tableExists:
-            tableName: NodeRequirement
-      changes:
-        - customChange:
-            class: ish.oncourse.server.upgrades.liquibase.change.ExtendSubjectsTagForProducts
