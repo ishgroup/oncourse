@@ -7,9 +7,9 @@
  */
 
 import { CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
+import { mapSelectItems, SelectItemDefault } from "ish-ui";
 import { fundingSourceValues } from "../../../../../../containers/entities/courseClasses/constants";
-import { EntityName, SelectItemDefault } from "../../../../../../model/entities/common";
-import { mapSelectItems } from "../../../../../utils/common";
+import { EntityName } from "../../../../../../model/entities/common";
 import {
   validateFundingSourse,
   validatePurchasingContractScheduleIdentifier,

@@ -6,11 +6,11 @@
 import * as Entities from "@aql/queryLanguageModel";
 import { CircularProgress, Grid, Typography } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
+import { mapSelectItems } from "ish-ui";
 import debounce from "lodash.debounce";
 import React, { useCallback, useEffect, useState } from "react";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import EntityService from "../../../../../../common/services/EntityService";
-import { mapSelectItems } from "../../../../../../common/utils/common";
 import { getPluralSuffix } from "../../../../../../common/utils/strings";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
 
