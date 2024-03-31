@@ -5,7 +5,7 @@
 
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import { FormControlLabel, Grid } from "@mui/material";
-import { openInternalLink, TimetableButton } from "ish-ui";
+import { mapSelectItems, openInternalLink, TimetableButton } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -13,7 +13,6 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { CourseExtended } from "../../../../model/entities/Course";
 import { State } from "../../../../reducers/state";
@@ -27,6 +26,7 @@ const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
 
 interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   tags: Tag[];
+  specialTags: Tag[];
   dataCollectionRules: PreferencesState["dataCollectionRules"];
   dispatch: any;
   form: string;
@@ -36,6 +36,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
     showConfirm,
     tags,
+     specialTags,
     dataCollectionRules,
     twoColumn,
     values,
@@ -125,6 +126,17 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="tags"
             name="tags"
             tags={tags}
+            className="mb-2"
+          />
+
+          <FormField
+            type="select"
+            items={specialTags}
+            name="specialTagId"
+            label="Type"
+            selectValueMark="id"
+            selectLabelMark="name"
+            allowEmpty
           />
         </Grid>
 
@@ -239,6 +251,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags.Course,
+  specialTags: state.tags.entitySpecialTags.Course,
   dataCollectionRules: state.preferences.dataCollectionRules
 });
 

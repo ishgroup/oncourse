@@ -745,7 +745,16 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	PORTAL_WEBSITE(113, "PortalWebsite", VIEW)
+	PORTAL_WEBSITE(113, "PortalWebsite", VIEW),
+
+	/**
+	 * Database value: 114
+	 *
+	 * Permission to work with hidden tags - course/class types
+	 * Always enabled: view
+	 */
+	@API
+	SPECIAL_EDIT_EXTENDED_TAGS(114, "Edit special class/course types", VIEW)
 
 
 	private int value

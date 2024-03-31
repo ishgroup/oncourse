@@ -10,14 +10,14 @@ import {
   Account,
   ClassCost,
   ClassFundingSource,
-  CourseClass, CourseClassType,
+  CourseClass,
+  CourseClassType,
   DeliveryMode,
   Enrolment,
   Outcome,
   TableModel
 } from "@api/model";
-import { Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
+import { Dialog, Button, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
 import { format } from "date-fns";
 import {
   appendTimezone,
@@ -70,6 +70,7 @@ import { State } from "../../../reducers/state";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import PreferencesService from "../../preferences/services/PreferencesService";
+import { getEntitySpecialTags } from "../../tags/actions";
 import { getPlainAccounts } from "../accounts/actions";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
 import OutcomeService from "../outcomes/services/OutcomeService";
@@ -753,6 +754,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onFirstRender: () => {
+    dispatch(getEntitySpecialTags('CourseClass'));
     dispatch(getFilters("CourseClass"));
     dispatch(getCourseClassTags());
     dispatch(

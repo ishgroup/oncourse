@@ -1,10 +1,11 @@
-import * as path from "path";
 import { Route } from "../../routes";
 import Avetmiss from "./containers/avetmiss/Avetmiss";
+import ClassTypes from "./containers/class-types/ClassTypes";
 import Class from "./containers/class/ClassDefaults";
 import College from "./containers/college/College";
 import ConcessionTypes from "./containers/concession-types/ConcessionTypes";
 import ContactRelationTypes from "./containers/contact-relation-types/ContactRelationTypes";
+import CourseTypes from "./containers/course-types/CourseTypes";
 import CustomFields from "./containers/custom-fields/CustomFields";
 import CollectionForms from "./containers/data-collection-forms/CollectionFormContainer";
 import CollectionRules from "./containers/data-collection-rules/CollectionRuleFormContainer";
@@ -27,6 +28,18 @@ const preferencesRoutes: Route[] = [
     path: "/preferences/avetmiss",
     url: "/preferences/avetmiss",
     main: Avetmiss
+  },
+  {
+    title: "Course types",
+    path: "/preferences/courseTypes",
+    url: "/preferences/courseTypes",
+    main: CourseTypes
+  },
+  {
+    title: "Class types",
+    path: "/preferences/classTypes",
+    url: "/preferences/classTypes",
+    main: ClassTypes
   },
   {
     title: "Class defaults",

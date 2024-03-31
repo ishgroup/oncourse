@@ -4,10 +4,10 @@
  */
 
 import { EnumItem } from "@api/model";
+import { sortDefaultSelectItems } from "ish-ui";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { sortDefaultSelectItems } from "../../../common/utils/common";
 import { GET_ENUM_FULFILLED, GET_ENUM_REQUEST } from "../actions";
 import PreferencesService from "../services/PreferencesService";
 

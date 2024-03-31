@@ -94,6 +94,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.name = course.name
             courseDTO.code = course.code
             courseDTO.tags = course.allTags.collect { it.id }
+
+            def hiddenTags = course.hiddenTags
+            courseDTO.specialTagId = hiddenTags.empty ? null as Long : hiddenTags.first().id
             courseDTO.enrolmentType = ENROLMENT_TYPE_MAP[course.enrolmentType]
             courseDTO.allowWaitingLists = course.allowWaitingLists
             courseDTO.dataCollectionRuleId = course.fieldConfigurationSchema.id
@@ -187,7 +190,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         course.isSufficientForQualification = courseDTO.isSufficientForQualification
         course.isVET = courseDTO.isVET
 
-        updateTags(course, course.taggingRelations, courseDTO.tags, CourseTagRelation, course.context)
+        updateTags(course, course.taggingRelations, courseDTO.tags + courseDTO.specialTagId, CourseTagRelation, course.context)
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours

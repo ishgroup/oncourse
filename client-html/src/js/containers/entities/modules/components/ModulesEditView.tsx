@@ -5,10 +5,9 @@
 
 import { ModuleType } from "@api/model";
 import { FormControlLabel, Grid } from "@mui/material";
-import { normalizeNumberToPositive } from "ish-ui";
+import { normalizeNumberToPositive, sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
 
 const moduleTypes = Object.keys(ModuleType).map(key => ({ value: ModuleType[key], label: key }));
 

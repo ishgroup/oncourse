@@ -5,9 +5,6 @@
 
 import { DataRow } from "@api/model";
 import { format as formatDateTime } from "date-fns";
-import React from "react";
-import { IS_JEST } from "../../../constants/EnvironmentConstants";
-import { SelectItemDefault } from "../../../model/entities/common";
 import history from "../../../constants/History";
 
 export const updateHistory = (params, url) => {
@@ -52,11 +49,6 @@ export const getDeepValue = (source, path) => {
 
   return source[path];
 };
-
-export const sortDefaultSelectItems = (a: SelectItemDefault, b: SelectItemDefault) =>
-  (a.label[0].toLowerCase() > b.label[0].toLowerCase() ? 1 : -1);
-
-export const mapSelectItems = (i): SelectItemDefault => ({ label: i, value: i });
 
 export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any => {
   const colArr: string[] = columns.split(",");
@@ -138,9 +130,3 @@ export const getArrayFieldMeta = name => {
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;
 
 export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 1080;
-
-export const isInStandaloneMode = () => (IS_JEST ? false : (
-  (window.matchMedia('(display-mode: standalone)').matches)
-  // @ts-ignore
-  || (window.navigator.standalone)
-  || document.referrer.includes('android-app://')));
