@@ -112,10 +112,6 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 
 	@Override
 	protected void preRemove() {
-		def checkoutRelations = ObjectSelect.query(CheckoutContactRelation)
-				.where(CheckoutContactRelation.CONTACT.eq(this))
-				.select(context)
-
 		if(!checkoutRelations.empty)
 			context.deleteObjects(checkoutRelations.checkout.unique())
 
