@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
+
 import ish.common.types.ContactType
 import ish.common.types.Gender
 import ish.common.types.NodeType
@@ -19,7 +19,6 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.*
 import ish.oncourse.function.GetContactFullName
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.glue._Contact
 import ish.util.InvoiceUtil
 import ish.util.LocalDateUtils
@@ -27,7 +26,6 @@ import ish.util.SecurityUtil
 import ish.validation.AngelContactValidator
 import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
-import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.validation.BeanValidationFailure
 import org.apache.cayenne.validation.ValidationResult
 import org.apache.commons.lang3.StringUtils
@@ -37,8 +35,6 @@ import org.apache.logging.log4j.Logger
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import java.time.LocalDate
-import java.util.stream.Collectors
-
 /**
  * Contacts are at the heart of onCourse. A Contact might be an individual or a company. Contacts can be extended by
  * Student or Tutor classes, however a Contact can also exist on its own.
