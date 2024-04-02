@@ -5,6 +5,7 @@
 
 import { SpecialTag } from "@api/model";
 import { initialize } from "redux-form";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { Create, Request } from "../../../common/epics/EpicUtils";
 import { CLASS_TYPES_FORM_NAME, COURSE_TYPES_FORM_NAME } from "../../../constants/Forms";
 import { EntityName } from "../../../model/entities/common";
@@ -30,6 +31,12 @@ const request: Request<SpecialTag, EntityName> = {
     }
 
     return actions;
+  },
+  processError: res => {
+    if (res.status === 403 || (res.status === 400 && res.data.id === 'specialType')) {
+      return [];
+    }
+    return FetchErrorHandler(res);
   }
 };
 
