@@ -29,7 +29,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Module extends _Module implements Queueable, ModuleInterface {
+class Module extends _Module implements Queueable, ModuleInterface, ModuleTrait {
 
 	public static final String NATIONAL_CODE_KEY = "nationalCode";
 

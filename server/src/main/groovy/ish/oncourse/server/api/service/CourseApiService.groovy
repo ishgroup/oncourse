@@ -135,6 +135,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
                     moduleDTO.title = module.title
                     moduleDTO.type = moduleApiService.bidiModuleType[module.type]
                     moduleDTO.isOffered = module.isOffered
+                    moduleDTO.creditPointsStatus = module.creditPointsStatus
                     moduleDTO.nominalHours = module.nominalHours
                     moduleDTO
                 }
