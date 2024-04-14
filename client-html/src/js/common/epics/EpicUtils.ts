@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { AxiosResponse } from "axios";
 import { Epic, ofType, StateObservable } from "redux-observable";
 import { concat, from, Observable } from "rxjs";
 import { catchError, delay, mergeMap } from "rxjs/operators";
@@ -19,7 +20,7 @@ export interface Request<V = any, P = any> {
   getData: (payload: P, state: State) => Promise<V>;
   retrieveData?: (payload: P, state: State) => Promise<V>;
   processData: (value: V, state: State, payload?: P) => IAction<any>[] | Observable<any>;
-  processError?: (data: any, payload?: P) => IAction<any>[] | Observable<any>;
+  processError?: (data: AxiosResponse, payload?: P) => IAction<any>[] | Observable<any>;
 }
 
 export interface DelayedRequest<V = any, P = any> extends Request<V, P> {
