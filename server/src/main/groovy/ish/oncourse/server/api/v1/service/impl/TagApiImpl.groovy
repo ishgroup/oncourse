@@ -12,7 +12,6 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
-import ish.common.types.NodeSpecialType
 import ish.common.types.NodeType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.TaggableClasses
@@ -81,10 +80,6 @@ class TagApiImpl implements TagApi {
 
         if (tag == null) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Record with id = " + id + " doesn't exist.").build())
-        }
-
-        if(preferenceController.extendedSearchTypesAllowed && tag.specialType == NodeSpecialType.SUBJECTS){
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Tag with id = " + id + " transformed to subject entities.").build())
         }
 
         toRestTag(tag)
