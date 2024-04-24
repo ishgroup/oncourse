@@ -49,7 +49,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
               parse={v => (v ? "Show on website" : "Private")}
               debounced={false}
             />}
-            label="Is wisible on web"
+            label="Visible on web"
             labelPlacement="start"
           />
           <div>
