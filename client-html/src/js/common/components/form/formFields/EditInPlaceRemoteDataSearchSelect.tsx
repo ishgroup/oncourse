@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
     ? ownProps.getCustomSearch(search)
     : (search
          ? `~"${search}"${ownProps.aqlFilter ? ` and ${ownProps.aqlFilter}` : ''}`
-         : `${ownProps.preloadEmpty ? ownProps.aqlFilter : ''}`
+         : `${ownProps.preloadEmpty ? ownProps.aqlFilter || '' : ''}`
     );
 
   return {
