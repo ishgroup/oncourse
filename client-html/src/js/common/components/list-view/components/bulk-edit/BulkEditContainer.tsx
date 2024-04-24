@@ -214,6 +214,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           aqlColumns: 'subDomain',
           selectValueMark: 'subDomain',
           selectLabelMark: 'subDomain',
+          getCustomSearch: s => s ? `subDomain like “${s}”` : '',
           fieldClasses: {
             text: classes.text,
             label: classes.customLabel,
