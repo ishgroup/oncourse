@@ -29,6 +29,7 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption, ite
     case "Portal subdomain":
       componentProps = {
         ...componentProps,
+        getCustomSearch: s => s ? `subDomain like “${s}”` : '',
         type: 'remoteDataSelect',
         preloadEmpty: true,
         entity: 'PortalWebsite',
