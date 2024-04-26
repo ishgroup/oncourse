@@ -176,6 +176,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             selectLabelMark='name'
             className="mt-2"
             disabled={values.isTraineeship || specialTypesDisabled}
+            allowEmpty
           />
 
           <EditInPlaceSearchSelect
