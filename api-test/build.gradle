@@ -38,12 +38,12 @@ task copyConfig(type: Copy) {
         include 'logSetup.xml'
     }
     into "$rootDir/server/build"
-    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost:3306/angel_api_test?user=root&password=11111111'
+    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
     expand(dbUrl: dbUrl)
 }
 
 task prepareTestDatabase (type: PrepareTestDatabase) {
-    databaseUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost:3306/angel_api_test?user=root&password=11111111'
+    databaseUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
     dataSetPath = "$rootDir/api-test/src/test/resources/test-dataset.xml"
 }
 
