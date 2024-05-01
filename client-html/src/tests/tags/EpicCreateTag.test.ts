@@ -24,7 +24,7 @@ describe("Create tag epic tests", () => {
         initialize(TAGS_FORM_NAME, tag),
         {
           type: FETCH_SUCCESS,
-          payload: { message: `${tag.type} was successfully created` }
+          payload: { message: `${tag.name} was successfully created` }
         },
         getAllTags(tag.name)
       ];

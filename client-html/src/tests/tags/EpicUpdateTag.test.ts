@@ -28,7 +28,7 @@ describe("Update tag epic tests", () => {
       return [
         {
           type: FETCH_SUCCESS,
-          payload: { message: `${tag.type} was successfully updated` }
+          payload: { message: `${tag.name} was successfully updated` }
         },
         initialize(TAGS_FORM_NAME, tag),
         getAllTags()
