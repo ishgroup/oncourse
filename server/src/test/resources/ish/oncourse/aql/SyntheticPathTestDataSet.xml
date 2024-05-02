@@ -356,7 +356,7 @@
                  createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <!-- certificates -->
-  <Module id="1" nationalCode="TESTCODE1" title="Test module 1" type="1" isOffered="1" createdOn="2013-01-01 00:00:00"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" nationalCode="TESTCODE1" title="Test module 1" type="1" isOffered="1" createdOn="2013-01-01 00:00:00"
           modifiedOn="2013-02-01"/>
   <Qualification id="1" nationalCode="QUALCODE1" title="Qualification 1" isAccreditedCourse="1" isOffered="1"
                  qualLevel="Level 1"

@@ -6,6 +6,7 @@
 import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
+import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { change, FieldArray } from "redux-form";
@@ -15,10 +16,12 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { normalizeString } from "../../../../common/utils/strings";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
@@ -65,6 +68,8 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
     twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
+
+  const { specialTypesDisabled, tagsGrouped } = useTagGroups({ tags, tagsValue: values.tags });
 
   const gridItemProps = {
     xs: twoColumn ? 6 : 12,
@@ -126,7 +131,28 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
+        />
+
+        <EditInPlaceSearchSelect
+          input={{
+            value: tagsGrouped.subjectsValue,
+            onChange: updated => {
+              dispatch(change(form, 'tags', Array.from(new Set(tagsGrouped.tagsValue.concat(updated)))));
+            },
+            onBlur: stubFunction
+          }}
+          meta={{}}
+          items={tagsGrouped.subjects}
+          disabled={specialTypesDisabled}
+          label="Subjects"
+          selectValueMark="id"
+          selectLabelMark="name"
+          className="mt-2"
+          placeholder={COMMON_PLACEHOLDER}
+          allowEmpty
+          multiple
         />
       </Grid>
 

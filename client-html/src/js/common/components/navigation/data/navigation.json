@@ -149,12 +149,13 @@
     {
       "title": "Education",
       "key": "education",
-      "description": "Whether you offer a small number of courses or thousands, onCourse is scalable to organisations of every size, so we grow with you. With powerful search capability, tagging, auditable notes, document management and full access controls, recording information and categorising your courses is as simple as a click of your mouse. onCourse supports timetabled and self-paced courses of every kind with an intuitive user interface that’s powerful and flexible.<ul><li>Courses</li><li>Classes</li><li>Assessments</li><li>Enrolments</li><li>Traineeships</li><li>Outcomes</li><li>Document management</li><li>Assessment Submissions</li><ul>",
+      "description": "Whether you offer a small number of courses or thousands, onCourse is scalable to organisations of every size, so we grow with you. With powerful search capability, tagging, auditable notes, document management and full access controls, recording information and categorising your courses is as simple as a click of your mouse. onCourse supports timetabled and self-paced courses of every kind with an intuitive user interface that’s powerful and flexible.<ul><li>Faculties</li><li>Courses</li><li>Classes</li><li>Assessments</li><li>Enrolments</li><li>Traineeships</li><li>Outcomes</li><li>Document management</li><li>Assessment Submissions</li><ul>",
       "features": [
         "assessmentSubmissions",
         "assessmentTasks",
         "classes",
         "courses",
+        "faculties",
         "enrolments",
         "messages",
         "outcomes",
@@ -389,6 +390,12 @@
       "key": "exportTemplates",
       "link": "/automation/export-templates",
       "description": "Create and manage export templates allowing you to export your onCourse data into a format readable in other applications. Available formats include CSV, XML, JSON, PDF and more."
+    },
+    {
+      "title": "Faculties",
+      "key": "faculties",
+      "link": "/faculty",
+      "description": "Faculty records can be used to group Courses by 'Faculty' on your onCourse website"
     },
     {
       "title": "Finalise period",

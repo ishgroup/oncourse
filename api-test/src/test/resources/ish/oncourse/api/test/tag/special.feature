@@ -5,10 +5,16 @@ Feature: Main feature for all requests for special tags (tag/special)
     * configure headers = { Authorization: 'admin' }
     * url 'https://127.0.0.1:8182/a/v1'
     * def ishPath = 'tag/special'
+    * def preferencePath = 'preference'
     * def ishSpecialGetPath = 'tag/special'
 
 
   Scenario: (-) Create valid special tags group
+    Given path preferencePath
+    And request [{ uniqueKey: 'ish.display.extendedSearchTypes', valueString: 'True' }]
+    When method POST
+    Then status 204
+
 
     * def newTagGroup =
         """
@@ -188,3 +194,8 @@ Feature: Main feature for all requests for special tags (tag/special)
     When method POST
     Then status 400
     And match response.errorMessage == "Special tags cannot have second level of hierarchy"
+
+    Given path preferencePath
+    And request [{ uniqueKey: 'ish.display.extendedSearchTypes', valueString: 'false' }]
+    When method POST
+    Then status 204

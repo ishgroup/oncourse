@@ -10,7 +10,7 @@ export const listStyles = theme =>
     root: {
       listStyle: "none",
       margin: 0,
-      padding: theme.spacing(1, 0),
+      paddingTop: theme.spacing(1),
       marginBottom: theme.spacing(1)
     },
     root__height: {
