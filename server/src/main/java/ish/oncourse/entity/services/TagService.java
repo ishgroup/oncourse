@@ -150,7 +150,7 @@ public class TagService {
         for (var requirement : subjectTag.getTagRequirements()) {
             if (!SUBJECT_ENTITIES.contains(requirement.getEntityClass())) {
                 context.deleteObject(requirement);
-                return;
+                continue;
             }
 
             existedRequirements.add(requirement.getEntityClass());
@@ -161,8 +161,8 @@ public class TagService {
             if (requirement.getIsRequired())
                 requirement.setIsRequired(false);
 
-            if (requirement.getManyTermsAllowed())
-                requirement.setManyTermsAllowed(false);
+            if (!requirement.getManyTermsAllowed())
+                requirement.setManyTermsAllowed(true);
         }
 
         SUBJECT_ENTITIES.forEach(entityClass -> {
@@ -170,7 +170,7 @@ public class TagService {
 				TagRequirement productRequirement = context.newObject(TagRequirement.class);
 				productRequirement.setEntityIdentifier(TagRequirementFunctions.getTaggableClassForName(entityClass.getSimpleName()));
                 productRequirement.setTag(subjectTag);
-                productRequirement.setManyTermsAllowed(false);
+                productRequirement.setManyTermsAllowed(true);
                 productRequirement.setIsRequired(false);
 			}
         });
