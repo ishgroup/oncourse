@@ -897,7 +897,7 @@ databaseChangeLog:
       preConditions:
         - onFail: HALT
         - tableExists:
-            tableName: TagRelation
+            tableName: NodeRelation
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.UpdateSubjectEntitiesToMultiple
