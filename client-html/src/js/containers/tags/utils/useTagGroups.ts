@@ -31,7 +31,7 @@ export function useTagGroups({ tagsValue, tags }: Props) {
     };
     if (!specialTypesDisabled && tags?.length) {
       body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
-      body.subjects = getAllTags(tags.filter(t => t.system && t.name === 'Subjects')).filter(t => t.childrenCount === 0);
+      body.subjects = getAllTags(tags.filter(t => t.system && t.name === 'Subjects'));
       const allTags = getAllFormTags(tags);
       body.subjectsValue = tagsValue.filter(id => {
         const tag = allTags.find(t => t.id === id);
