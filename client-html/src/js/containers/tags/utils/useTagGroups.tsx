@@ -7,19 +7,25 @@
  */
 
 import { Tag } from "@api/model";
-import { useMemo } from "react";
+import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import React, { useMemo } from "react";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import { useAppSelector } from "../../../common/utils/hooks";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 import { getAllFormTags, getAllTags } from "./index";
 
 interface Props {
   tags: Tag[];
   tagsValue: number[];
+  dispatch: Dispatch;
+  form: string;
 }
 
 const subjectsFilter = (t: Tag) => t.system && t.name === 'Subjects';
 
-export function useTagGroups({ tagsValue, tags }: Props) {
+export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
 
   const specialTypesDisabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] !== 'true');
 
@@ -42,6 +48,26 @@ export function useTagGroups({ tagsValue, tags }: Props) {
     }
     return body;
   }, [tags, tagsValue, specialTypesDisabled]);
+
+  const subjectsField = <EditInPlaceSearchSelect
+    input={{
+      value: tagsGrouped.subjectsValue,
+      onChange: updated => {
+        dispatch(change(form, 'tags', updated ? Array.from(new Set(tagsGrouped.tagsValue.concat(updated))) : []));
+      },
+      onBlur: stubFunction
+    }}
+    meta={{}}
+    items={tagsGrouped.subjects}
+    disabled={specialTypesDisabled}
+    label="Subjects"
+    selectValueMark="id"
+    selectLabelMark="name"
+    className="mt-2"
+    placeholder={COMMON_PLACEHOLDER}
+    allowEmpty
+    multiple
+  />;
   
-  return { specialTypesDisabled, tagsGrouped };
+  return { tagsGrouped, subjectsField, specialTypesDisabled };
 }

@@ -5,14 +5,7 @@
 
 import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import { FormControlLabel, Grid } from "@mui/material";
-import {
-  EditInPlaceSearchSelect,
-  LinkAdornment,
-  mapSelectItems,
-  openInternalLink,
-  stubFunction,
-  TimetableButton
-} from "ish-ui";
+import { LinkAdornment, mapSelectItems, openInternalLink, TimetableButton } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -20,7 +13,6 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { CourseExtended } from "../../../../model/entities/Course";
 import { State } from "../../../../reducers/state";
@@ -58,7 +50,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
-    const { specialTypesDisabled, tagsGrouped } = useTagGroups({ tags, tagsValue: values.tags });
+    const { tagsGrouped, subjectsField, specialTypesDisabled } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
     
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
@@ -179,25 +171,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             allowEmpty
           />
 
-          <EditInPlaceSearchSelect
-            input={{ 
-              value: tagsGrouped.subjectsValue,
-              onChange: updated => {
-                dispatch(change(form, 'tags', Array.from(new Set(tagsGrouped.tagsValue.concat(updated)))));
-              },
-              onBlur: stubFunction
-            }}
-            meta={{}}
-            items={tagsGrouped.subjects}
-            disabled={specialTypesDisabled}
-            label="Subjects"
-            selectValueMark="id"
-            selectLabelMark="name"
-            className="mt-2"
-            placeholder={COMMON_PLACEHOLDER}
-            allowEmpty
-            multiple
-          />
+          {subjectsField}
         </Grid>
 
         <Grid item xs={twoColumn ? 4 : 12}>
