@@ -145,6 +145,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.feeHelpClass = course.feeHelpClass
             courseDTO.fullTimeLoad = course.fullTimeLoad
             courseDTO.facultyId = course.faculty?.id
+            courseDTO.attainmentText = course.attainmentText
             courseDTO
         }
     }
@@ -194,6 +195,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
         course.isSufficientForQualification = courseDTO.isSufficientForQualification
         course.isVET = courseDTO.isVET
+        course.attainmentText = courseDTO.attainmentText
 
         updateTags(course, course.taggingRelations, courseDTO.tags + courseDTO.specialTagId, CourseTagRelation, course.context)
         if (courseDTO.facultyId != null) {
