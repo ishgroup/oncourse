@@ -368,6 +368,7 @@
 	</db-entity>
 	<db-entity name="Course">
 		<db-attribute name="allowWaitingLists" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="attainmentText" type="VARCHAR" length="128"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="currentlyOffered" type="SMALLINT" isMandatory="true"/>
@@ -2094,6 +2095,7 @@
 	</obj-entity>
 	<obj-entity name="Course" className="ish.oncourse.server.cayenne.Course" clientClassName="ish.oncourse.cayenne.Course" dbEntityName="Course" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="allowWaitingLists" type="java.lang.Boolean" db-attribute-path="allowWaitingLists"/>
+		<obj-attribute name="attainmentText" type="java.lang.String" db-attribute-path="attainmentText"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="currentlyOffered" type="java.lang.Boolean" db-attribute-path="currentlyOffered"/>
