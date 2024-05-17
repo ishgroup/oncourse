@@ -6,7 +6,6 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-
 import { Tag } from "@api/model";
 import { useMemo } from "react";
 import { useAppSelector } from "../../../common/utils/hooks";
@@ -17,6 +16,8 @@ interface Props {
   tags: Tag[];
   tagsValue: number[];
 }
+
+const subjectsFilter = (t: Tag) => t.system && t.name === 'Subjects';
 
 export function useTagGroups({ tagsValue, tags }: Props) {
 
@@ -31,7 +32,7 @@ export function useTagGroups({ tagsValue, tags }: Props) {
     };
     if (!specialTypesDisabled && tags?.length) {
       body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
-      body.subjects = getAllTags(tags.filter(t => t.system && t.name === 'Subjects'));
+      body.subjects = getAllTags(tags.filter(subjectsFilter)).filter(t => !subjectsFilter(t));
       const allTags = getAllFormTags(tags);
       body.subjectsValue = tagsValue.filter(id => {
         const tag = allTags.find(t => t.id === id);
