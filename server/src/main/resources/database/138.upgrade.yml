@@ -3,7 +3,7 @@ databaseChangeLog:
       id: 138-1
       author: dmitriy
       preConditions:
-        - onFail: MARK_RAN
+        - onFail: HALT
         - not:
             columnExists:
               columnName: attainmentText
