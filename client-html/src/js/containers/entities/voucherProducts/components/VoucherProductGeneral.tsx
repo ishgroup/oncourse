@@ -30,6 +30,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import { clearMinMaxFee, getMinMaxFee } from "../actions";
@@ -179,6 +180,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     syncErrors,
     showConfirm
   } = props;
+
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
   if (redemptionIndex === null) {
@@ -215,7 +217,9 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
   const expenseAccounts = useMemo(() => accounts.filter(a => a.type === "expense"), [accounts]);
 
   const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
-  
+
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+
   const courseHandlers = useMemo(() => {
     if (values.soldVouchersCount === 0) {
       return {
@@ -290,8 +294,11 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
         />
+
+        {subjectsField}
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>

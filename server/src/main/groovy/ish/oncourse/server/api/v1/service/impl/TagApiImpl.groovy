@@ -16,6 +16,7 @@ import ish.common.types.NodeType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.CayenneFunctions
 import ish.oncourse.server.api.service.SpecialTagsApiService
 import ish.oncourse.server.api.v1.model.SpecialTagDTO
@@ -44,6 +45,9 @@ class TagApiImpl implements TagApi {
 
     @Inject
     private SpecialTagsApiService specialTagsApiService
+
+    @Inject
+    private PreferenceController preferenceController
 
     @Override
     List<TagDTO> getChecklists(String entityName, Long id) {
@@ -129,7 +133,7 @@ class TagApiImpl implements TagApi {
         Tag dbTag = CayenneFunctions
                 .getRecordById(context, Tag, id, tagGroupPrefetch)
 
-        ValidationErrorDTO error = validateForSave(context, tag)
+        ValidationErrorDTO error = validateForSave(context, tag, preferenceController.extendedSearchTypesAllowed)
         if (error) {
             context.rollbackChanges()
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())

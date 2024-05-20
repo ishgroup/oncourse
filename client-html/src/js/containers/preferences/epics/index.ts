@@ -11,6 +11,7 @@ import { EpicHolidays } from "../containers/holidays/epics";
 import { EpicLdap } from "../containers/ldap/epics";
 import { EpicMessaging } from "../containers/messaging/epics";
 import { EpicPaymentTypes } from "../containers/payment-types/epics";
+import { EpicSubjects } from "../containers/subjects/epics";
 import { EpicTaxTypes } from "../containers/tax-types/epics";
 import { EpicTutorRoles } from "../containers/tutor-roles/epics";
 import { EpicCreateSpecialTagType } from "./EpicCreateSpecialTagType";
@@ -43,6 +44,7 @@ export const EpicPreferences = combineEpics(
   EpicGetIsLogged,
   EpicLdap,
   EpicTaxTypes,
+  EpicSubjects,
   EpicPaymentTypes,
   EpicMessaging,
   EpicConcessionTypes,

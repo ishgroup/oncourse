@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <data>
-  <module id='1'>
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id='1'>
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />
@@ -17,7 +17,7 @@
     <isCustom />
     <type>Module</type>
   </module>
-  <module id='2'>
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id='2'>
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />
@@ -34,7 +34,7 @@
     <isCustom />
     <type>Module</type>
   </module>
-  <module id='3'>
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id='3'>
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />
@@ -51,7 +51,7 @@
     <isCustom />
     <type>Module</type>
   </module>
-  <module id='4'>
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id='4'>
     <defaultQualification />
     <defaultQualificationNationalCode />
     <fieldOfEducation />

@@ -331,7 +331,7 @@ export const ChecklistsForm = ({ match: { params: { id } }, history }) => {
         });
       }
     } else {
-      dispatch(getTagRequest(id));
+      dispatch(getTagRequest(TAGS_FORM_NAME, id));
     }
   }, [id]);
 
@@ -345,7 +345,7 @@ export const TagsForm = ({ match: { params: { id } }, history }) => {
     if (id === "new") {
       dispatch(initialize(TAGS_FORM_NAME, EmptyTag));
     } else {
-      dispatch(getTagRequest(id));
+      dispatch(getTagRequest(TAGS_FORM_NAME, id));
     }
   }, [id]);
 

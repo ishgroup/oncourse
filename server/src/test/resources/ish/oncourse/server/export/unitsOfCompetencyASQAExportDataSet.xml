@@ -27,9 +27,9 @@
   <FieldConfigurationScheme id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10"
                             name="Accredited course"/>
 
-  <Module id="1" createdOn="2011-03-26 00:45:56" modifiedOn="2011-03-26 00:45:56" nationalCode="MODULE01"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" createdOn="2011-03-26 00:45:56" modifiedOn="2011-03-26 00:45:56" nationalCode="MODULE01"
           title="module1" isOffered="1" isCustom="0" type="0"/>
-  <Module id="2" createdOn="2011-03-26 01:18:11" modifiedOn="2011-03-26 01:18:11" nationalCode="MODULE02"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="2" createdOn="2011-03-26 01:18:11" modifiedOn="2011-03-26 01:18:11" nationalCode="MODULE02"
           title="module2" isOffered="1" isCustom="0" type="0"/>
 
   <Contact id="1" createdOn="2015-08-24 11:45:57" modifiedOn="2015-08-24 11:45:57" firstName="test"

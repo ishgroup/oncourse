@@ -32,7 +32,7 @@ export const validateTagsList = (tags: Tag[], value, allValues, props, rootEntit
     const match = t.requirements.filter(r => (r.type === (rootEntity || props.rootEntity)) && (r.mandatory || r.limitToOneTag));
 
     if (match.length) {
-      rootTagsWithRequirements[t.id] = {name: t.name, requirements: match[0]};
+      rootTagsWithRequirements[t.id] = { name: t.name, requirements: match[0] };
     }
   });
 
@@ -97,7 +97,7 @@ export const getFirstErrorNodePath = (errors: FormErrors, deepObj?: any, path?: 
     return getFirstErrorNodePath(errors, value, path);
   }
 
-  return path?.replace("._error", "");
+  return path?.replace(/(._error)|]/g, "").replace("[", ".");
 };
 
 export const validateRegex = pattern => {

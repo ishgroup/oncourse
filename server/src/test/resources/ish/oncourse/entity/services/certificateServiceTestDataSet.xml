@@ -119,13 +119,13 @@
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="1" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="CHC02"
                    TITLE="Community Services Training Package (Superseded by CHC08)" TYPE="TrainingPackage"
                    WILLOWID="1"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="1" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="1" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="CHCCHILD3A" TRAININGPACKAGEID="1" WILLOWID="1"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="2" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="XHX02"
                    TITLE="Community Services Training Package (Superseded by XHX08)" TYPE="TrainingPackage"
                    WILLOWID="2"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989490" ID="2" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989490" ID="2" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="XHXXHILD3A" TRAININGPACKAGEID="2" WILLOWID="2"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
 
