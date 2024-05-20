@@ -33,6 +33,7 @@ public class LicenseService {
 
     private String college_key;
     private String security_key;
+    private String services_key;
 
     private LicenseSmsService smsService;
     private static final Logger logger = LogManager.getLogger();
@@ -89,6 +90,15 @@ public class LicenseService {
     public void setEula(LinkedHashMap<String, String> eula) {
         modified = LocalDateUtils.stringToTimeValue(eula.get("modified"));
         url = eula.get("url");
+    }
+
+    public String getServices_key() {
+        return services_key;
+    }
+
+    @BQConfigProperty
+    public void setServices_key(String services_key) {
+        this.services_key = services_key;
     }
 
     public String getUsi_host() {
