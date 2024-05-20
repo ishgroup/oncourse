@@ -8,7 +8,7 @@ def portalSubdomain = ObjectSelect.query(PortalWebsite).selectFirst(context)
 if (portalSubdomain) {
     def todayEnrolments = query {
         entity "Enrolment"
-        query "createdOn is today"
+        query "createdOn yesterday"
     }
 
     def contacts = todayEnrolments.student.contact.unique().sort { it.id }
