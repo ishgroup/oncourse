@@ -7,13 +7,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { getTheme } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import onCourseLogoDark from "../../../../../../images/onCourseLogoDark.png";
-import onCourseLogoLight from "../../../../../../images/onCourseLogoLight.png";
 import { State } from "../../../../../reducers/state";
+import Logo from "../../Logo";
 import { toggleSwipeableDrawer } from "../actions";
 
 interface Props {
@@ -23,9 +21,7 @@ interface Props {
 }
 
 const HamburgerMenu = React.memo<Props>(props => {
-  const {opened, toggleSwipeableDrawer} = props;
-
-  const theme = getTheme();
+  const { opened, toggleSwipeableDrawer } = props;
 
   return (
     <div className="centeredFlex mr-3">
@@ -40,11 +36,13 @@ const HamburgerMenu = React.memo<Props>(props => {
         {opened ? <CloseIcon/> : <MenuIcon/>}
       </IconButton>
       <Divider orientation="vertical" variant="middle" flexItem/>
-      <img
-        src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
-        alt="Logo"
-        height={36}
-      />
+      {/* <img*/}
+      {/*  src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}*/}
+      {/*  alt="Logo"*/}
+      {/*  height={36}*/}
+      {/* />*/}
+
+      <Logo className="ml-2" whiteBackgound={opened}  />
     </div>
   );
 });
