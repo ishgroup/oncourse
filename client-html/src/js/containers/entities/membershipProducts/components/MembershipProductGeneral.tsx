@@ -6,7 +6,7 @@
 import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import { EditInPlaceSearchSelect, normalizeNumber, stubFunction } from "ish-ui";
+import { normalizeNumber } from "ish-ui";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -17,7 +17,6 @@ import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { normalizeString } from "../../../../common/utils/strings";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
@@ -134,7 +133,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
 
   const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
 
-  const { specialTypesDisabled, tagsGrouped } = useTagGroups({ tags, tagsValue: values.tags });
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
@@ -192,25 +191,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           className="mb-2"
         />
 
-        <EditInPlaceSearchSelect
-          input={{
-            value: tagsGrouped.subjectsValue,
-            onChange: updated => {
-              dispatch(change(form, 'tags', Array.from(new Set(tagsGrouped.tagsValue.concat(updated)))));
-            },
-            onBlur: stubFunction
-          }}
-          meta={{}}
-          items={tagsGrouped.subjects}
-          disabled={specialTypesDisabled}
-          label="Subjects"
-          selectValueMark="id"
-          selectLabelMark="name"
-          className="mt-2"
-          placeholder={COMMON_PLACEHOLDER}
-          allowEmpty
-          multiple
-        />
+        {subjectsField}
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
