@@ -19,7 +19,7 @@ import * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../../constants/Config";
+import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY, SPECIAL_TYPES_DISPLAY_KEY } from "../../../../constants/Config";
 import ExecuteScriptModal from "../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
 import { getDashboardSearch } from "../../../../containers/dashboard/actions";
 import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
@@ -111,7 +111,7 @@ const styles = (theme: AppTheme) =>
     paperBorder: {
       borderRight: `1px solid ${theme.palette.divider}`
     },
-    logo: {height: "36px", width: "auto"},
+    logo: { height: "36px", width: "auto" },
   });
 
 interface Props {
@@ -177,13 +177,23 @@ const SwipeableSidebar: React.FC<Props> = props => {
   const [resultIndex, setResultIndex] = useState(-1);
   const [scriptIdSelected, setScriptIdSelected] = useState(null);
   const [execMenuOpened, setExecMenuOpened] = useState(false);
-  const [focusOnSearchInput, setFocusOnSearchInput] = React.useState<boolean>(false);
+  const [focusOnSearchInput, setFocusOnSearchInput] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState({});
 
   const favoritesString = useAppSelector(state => state.userPreferences[PreferenceEnum[DASHBOARD_FAVORITES_KEY]]);
   const favoriteScriptsString = useAppSelector(state => state.userPreferences[PreferenceEnum[FAVORITE_SCRIPTS_KEY]]);
 
   const favorites = useMemo<string[]>(() => (favoritesString ? favoritesString.split(",") : []), [favoritesString]);
   const favoriteScripts = useMemo<string[]>(() => (favoriteScriptsString ? favoriteScriptsString.split(",") : []), [favoriteScriptsString]);
+
+  const accessTypes = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true');
+
+  useEffect(() => {
+    setDisabled({
+      faculties: !accessTypes,
+      subjects: !accessTypes
+    });
+  }, [accessTypes]);
 
   useEffect(() => {
     getFavorites();
@@ -222,13 +232,13 @@ const SwipeableSidebar: React.FC<Props> = props => {
       if (userSearch) {
         navigation.features
           .filter(c => c.title.toLowerCase().includes(userSearch.toLowerCase()))
-          .forEach((c, i) => results.push(Object.assign(c, {entity: "category", htmlId: getResultId(i, c.key)})));
+          .forEach((c, i) => results.push(Object.assign(c, { entity: "category", htmlId: getResultId(i, c.key) })));
       }
 
       if (userSearch && scripts && hasScriptsPermissions) {
         scripts
           .filter(s => s.name.toLowerCase().includes(userSearch.toLowerCase()))
-          .forEach((s, i) => results.push(Object.assign(s, {entity: "script", htmlId: getResultId(i, s.name)})));
+          .forEach((s, i) => results.push(Object.assign(s, { entity: "script", htmlId: getResultId(i, s.name) })));
       }
 
       searchResults.map(res => {
@@ -237,7 +247,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
             return true;
           }
           results.push(
-            Object.assign(item, {entity: res.entity, htmlId: getResultId(index, `${res.entity}-${item.id}`)})
+            Object.assign(item, { entity: res.entity, htmlId: getResultId(index, `${res.entity}-${item.id}`) })
           );
           return false;
         });
@@ -261,7 +271,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
     if (searchResults) {
       const updated = [...searchResults];
 
-      updated.map(res => Object.assign(res, {showAll: false}));
+      updated.map(res => Object.assign(res, { showAll: false }));
 
       formatSearchControlResult(updated);
     }
@@ -440,7 +450,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                 className={clsx(classes.searchResultsWrapper, !showUserSearch ? "d-none" : "")}
               >
                 <SearchResults
-                  classes={{root: classes.searchResultsRoot}}
+                  classes={{ root: classes.searchResultsRoot }}
                   userSearch={userSearch}
                   checkSelectedResult={checkSelectedResult}
                   setExecMenuOpened={setExecMenuOpened}
@@ -462,7 +472,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   scriptId={scriptIdSelected}
                 />
                 <Favorites
-                  classes={{topBar: classes.favoritesTopBar}}
+                  classes={{ topBar: classes.favoritesTopBar }}
                   groupedSortedItems={groupedSortedItems}
                   setScriptIdSelected={setScriptIdSelected}
                   execMenuOpened={execMenuOpened}
@@ -500,6 +510,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
             <NavigationCategory
               selected={selected as string}
               favorites={favorites}
+              disabled={disabled}
               favoriteScripts={favoriteScripts}
               onClose={() => setSelected(null)}
               setScriptIdSelected={setScriptIdSelected}
@@ -551,7 +562,7 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   getScripts: () => dispatch(getOnDemandScripts()),
   getFavoriteScripts: () => dispatch(getUserPreferences([FAVORITE_SCRIPTS_KEY])),
   getFavorites: () => dispatch(getUserPreferences([DASHBOARD_FAVORITES_KEY])),
-  getScriptsPermissions: () => dispatch(checkPermissions({keyCode: "ADMIN"})),
+  getScriptsPermissions: () => dispatch(checkPermissions({ keyCode: "ADMIN" })),
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, {withTheme: true})(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));
