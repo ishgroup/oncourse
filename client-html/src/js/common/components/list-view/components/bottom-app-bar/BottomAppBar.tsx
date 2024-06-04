@@ -182,7 +182,7 @@ const BottomAppBar = (
           }
         });
         
-        scripts.forEach(s => {
+        scripts?.forEach(s => {
           filterGroups[s.entity]?.scripts.push(s);
         });
       }
