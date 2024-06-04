@@ -9,11 +9,10 @@
 package ish.oncourse.server.messaging
 
 import com.google.inject.Inject
-import com.opencsv.CSVWriter
 import com.opencsv.CSVWriterBuilder
 import com.opencsv.ICSVWriter
-import com.opencsv.ResultSetHelperService
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.license.LicenseService
 
 import java.sql.ResultSet
 import java.text.SimpleDateFormat
@@ -24,14 +23,17 @@ class ArchivingMessagesService {
     @Inject
     ICayenneService cayenneService
 
+    @Inject
+    LicenseService licenseService
 
-    void buildCsvFrom(Date date) {
-        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream("output.csv.gz"))
+
+    void buildCompressedCsvForMessagesBefore(Date date) {
+        println "Start time: " + System.currentTimeMillis()
+        def collegeName = licenseService.getCollege_key()
+        def year = date.toInstant().toCalendar().toYear().value
+        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream("$collegeName-$year" + ".csv.gz"))
         PrintWriter printWriter = new PrintWriter(gzipOutputStream)
-        /*ResultSetHelperService service = new ResultSetHelperService();
-        service.setDateFormat("mm/dd/yy");*/
         ICSVWriter csvWriter = new CSVWriterBuilder(printWriter)
-                //.withResultSetHelper(service)
                 .build()
 
         def dateFormat = new SimpleDateFormat("yyyy-MM-dd")
@@ -43,16 +45,19 @@ class ArchivingMessagesService {
         ResultSet resultSet = null
         int iterations = 0
         int lastFetchSize = 0
-        while (resultSet == null || lastFetchSize > 0 && iterations < 5){
+        while (resultSet == null || lastFetchSize > 0) {
             resultSet = statement.executeQuery("Select * from Message m WHERE m.id>${startId} and m.createdOn < '${dateFormat.format(date)}' ORDER BY m.id LIMIT 500")
             csvWriter.writeAll(resultSet, resultSet == null)
             resultSet.last()
-            startId = resultSet.getLong("id")
             lastFetchSize = resultSet.getRow()
+            if (lastFetchSize > 0) {
+                startId = resultSet.getLong("id")
+            }
             iterations++
         }
         statement.close()
         connection.close()
         gzipOutputStream.close()
+        println "End time: " + System.currentTimeMillis()
     }
 }
