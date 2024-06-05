@@ -26,7 +26,7 @@ import { treeDataToTags } from "../components/Trees";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
 import { styles } from "../styles/TagItemsStyles";
 import { COLORS, getAllTags, rootTagToServerModel } from "../utils";
-import { validate } from "../utils/validation";
+import { validateTagsForm } from "../utils/validation";
 
 interface Props {
   tags: CatalogItemType[];
@@ -95,12 +95,16 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     }
   }
 
-  setEditingId = editingId => {
+  setEditingIds = editingIds => {
     this.setState({
-      editingIds: this.state.editingIds.includes(editingId)
-        ? this.state.editingIds.filter(id => id !== editingId)
-        : this.state.editingIds.concat(editingId)
+      editingIds
     });
+  };
+
+  setEditingId = editingId => {
+    this.setEditingIds(this.state.editingIds.includes(editingId)
+      ? this.state.editingIds.filter(id => id !== editingId)
+      : this.state.editingIds.concat(editingId));
   };
 
   onSave = values => {
@@ -219,6 +223,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export const TagsFormWrapper = reduxForm<any, any, any>({
   form: TAGS_FORM_NAME,
   onSubmitFail,
-  validate,
+  validate: validateTagsForm,
   shouldError: () => true
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />)));

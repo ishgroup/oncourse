@@ -5,6 +5,7 @@
 
 import { DataRow } from "@api/model";
 import { format as formatDateTime } from "date-fns";
+import { FormErrors } from "redux-form";
 import history from "../../../constants/History";
 
 export const updateHistory = (params, url) => {
@@ -49,6 +50,21 @@ export const getDeepValue = (source, path) => {
 
   return source[path];
 };
+
+export function getInvalidValueOdjects<D extends {}, V extends any>(errors: FormErrors<D>, values: V, invalid = []) {
+  for (const key in errors) {
+    if (errors[key]) {
+      switch (typeof errors[key]) {
+        case "string":
+          invalid.push(values);
+          break;
+        case "object":
+          getInvalidValueOdjects(errors[key], values[key], invalid);
+      }
+    }
+  }
+  return invalid;
+}
 
 export const getCustomColumnsMap = (columns: string): (dataRow: DataRow) => any => {
   const colArr: string[] = columns.split(",");

@@ -77,7 +77,7 @@ const validateChildTags = (tag: Tag, errors: Tag[]) => {
   });
 };
 
-export const validate = (values: Tag, props: DecoratedFormProps<Tag, { tags: Tag[] }>): any => {
+export const validateTagsForm = (values: Tag, props: DecoratedFormProps<Tag, { tags: Tag[] }>): any => {
   const errors: Tag = {};
   const { tags = [] } = props;
 
@@ -87,13 +87,13 @@ export const validate = (values: Tag, props: DecoratedFormProps<Tag, { tags: Tag
 
   const nameError = validateSingleMandatoryField(values.name)
     || validateForbiddenSymbols(values.name)
-    || validateUniqueTagName(values, tags, "Tag name is not unique");
+    || validateUniqueTagName(values, tags, "Name is not unique");
 
   if (nameError) {
     errors.name = nameError;
   }
 
-  const pathError = validateTagUrlPath(values, tags, "Tag short name is not unique");
+  const pathError = validateTagUrlPath(values, tags, "Short name is not unique");
 
   if (pathError) {
     errors.urlPath = pathError;
