@@ -7,7 +7,7 @@
  */
 
 import { Tag } from "@api/model";
-import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import { stubFunction, TagInputList } from "ish-ui";
 import React, { useMemo } from "react";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
@@ -49,7 +49,7 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
     return body;
   }, [tags, tagsValue, specialTypesDisabled]);
 
-  const subjectsField = <EditInPlaceSearchSelect
+  const subjectsField = <TagInputList
     input={{
       value: tagsGrouped.subjectsValue,
       onChange: updated => {
@@ -58,15 +58,13 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
       onBlur: stubFunction
     }}
     meta={{}}
-    items={tagsGrouped.subjects}
+    tags={tagsGrouped.subjects}
     disabled={specialTypesDisabled}
     label="Subjects"
-    selectValueMark="id"
-    selectLabelMark="name"
     className="mt-2"
     placeholder={COMMON_PLACEHOLDER}
-    allowEmpty
-    multiple
+    allowParentSelect
+    hideColor
   />;
   
   return { tagsGrouped, subjectsField, specialTypesDisabled };
