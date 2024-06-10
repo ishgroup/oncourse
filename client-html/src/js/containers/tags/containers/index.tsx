@@ -139,6 +139,7 @@ class TagsFormRenderer extends TagsFormBase {
                   onDelete={this.removeChildTag}
                   changeVisibility={this.changeVisibility}
                   setEditingId={this.setEditingId}
+                  setEditingIds={this.setEditingIds}
                   onDrop={this.onDrop}
                   editingIds={editingIds}
                   syncErrors={syncErrors}
@@ -287,6 +288,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                   classes={classes}
                   onDelete={this.removeChildTag}
                   setEditingId={this.setEditingId}
+                  setEditingIds={this.setEditingIds}
                   onDrop={this.onDrop}
                   editingIds={editingIds}
                   syncErrors={syncErrors}

@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Tag } from "@api/model";
 import { TreeData } from "@atlaskit/tree";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { makeAppStyles } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import { change, Form, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
+import React, { useEffect, useRef, useState } from "react";
+import { change, Form, FormErrors, getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import AppBarContainer from "src/js/common/components/layout/AppBarContainer";
 import { showConfirm } from "../../../../common/actions";
 import RouteChangeConfirm from "../../../../common/components/dialog/RouteChangeConfirm";
-import { getDeepValue } from "../../../../common/utils/common";
+import { getDeepValue, getInvalidValueOdjects } from "../../../../common/utils/common";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../constants/Config";
@@ -27,6 +26,7 @@ import { treeDataToTags } from "../../../tags/components/Trees";
 import { EmptyTag } from "../../../tags/constants";
 import { styles } from "../../../tags/styles/TagItemsStyles";
 import { getAllTags, rootTagToServerModel } from "../../../tags/utils";
+import { validateTagsForm } from "../../../tags/utils/validation";
 import { getSubjects } from "./actions";
 import SubjectsTree from "./SubjectsTree";
 
@@ -47,12 +47,21 @@ function Subjects(
     handleSubmit, dirty, invalid, form, array
   }: InjectedFormProps<FormTag>
 ) {
+  const counter = useRef(1);
+
   const classes = useStyles();
 
   const dispatch = useAppDispatch();
   const [editingIds, setEditingIds] = useState<number[]>([]);
   const disabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] !== 'true');
   const values = useAppSelector(state => getFormValues(form)(state)) as FormTag;
+  const syncErrors: FormErrors<FormTag> = useAppSelector(state => getFormSyncErrors(form)(state));
+
+  useEffect(() => {
+    if (Object.keys(syncErrors || {}).length) {
+      getInvalidValueOdjects(syncErrors, values).forEach(t => setEditingIds(prev => Array.from(new Set([...prev, t.id]))));
+    }
+  }, [syncErrors]);
 
   useEffect(() => {
     dispatch(getSubjects());
@@ -60,12 +69,6 @@ function Subjects(
 
   const onSave = values => {
     dispatch(updateTag(form, rootTagToServerModel(values)));
-  };
-
-  const onAddNew = () => {
-    array.unshift('types', { ...EmptyTag } satisfies Tag);
-    const domNode = document.getElementById("special-tag-type-0");
-    if (domNode) domNode.scrollIntoView({ behavior: "smooth" });
   };
   
   const changeVisibility = (item: FormTag) => {
@@ -109,6 +112,17 @@ function Subjects(
     dispatch(change(form, "refreshFlag", !values.refreshFlag));
   };
 
+  const onAddNew = () => {
+    const id = `new${counter.current}`;
+    const newSubject = { ...EmptyTag, id };
+    array.unshift('childTags', newSubject);
+    counter.current++;
+    setTimeout(() => {
+      const domNode = document.querySelector(`[data-draggable-id="${id}"]`);
+      if (domNode) domNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  };
+
   return (
     <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)} role={form}>
       <RouteChangeConfirm form={form} when={dirty} />
@@ -134,7 +148,7 @@ function Subjects(
             setEditingId={setEditingId}
             onDrop={onDrop}
             editingIds={editingIds}
-            syncErrors={{}}
+            syncErrors={syncErrors}
           />
         )}
       </AppBarContainer>
@@ -144,6 +158,8 @@ function Subjects(
 
 const Decorated = reduxForm({
   onSubmitFail,
+  shouldError: () => true,
+  validate: validateTagsForm,
   initialValues: { ...EmptyTag },
   form: SUBJECTS_ENTITY_FORM_NAME
 })(Subjects);
