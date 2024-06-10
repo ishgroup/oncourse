@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 137-1
+      author: kristina
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            columnExists:
+              columnName: isCreditPointsShownOnWeb
+              tableName: Module
+        - not:
+            columnExists:
+              columnName: isCreditPointsOffered
+              tableName: Module
+      changes:
+        - addColumn:
+            tableName: Module
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: isCreditPointsShownOnWeb
+                  type: SMALLINT
+                  defaultValue: true
+                  afterColumn: creditPoints
+              - column:
+                  constraints:
+                    nullable: false
+                  name: isCreditPointsOffered
+                  type: SMALLINT
+                  defaultValue: true
+                  afterColumn: isCreditPointsShownOnWeb

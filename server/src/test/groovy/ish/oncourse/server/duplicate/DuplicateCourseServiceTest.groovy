@@ -47,6 +47,8 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         Product product = createProduct(cayenneContext)
 
         Module module = cayenneContext.newObject(Module.class)
+        module.setIsCreditPointsOffered(false)
+        module.setIsCreditPointsShownOnWeb(true)
         module.setType(ModuleType.MODULE)
         module.setNationalCode("test")
         course.addToModules(module)

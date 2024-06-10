@@ -1221,6 +1221,8 @@ public abstract class CommonPreferenceController {
 			setBackgroundQualityScale((String) value);
 		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
 			setDefaultInvoiceLineAccount((Long) value);
+		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
+			setExtendedTypesAllowed((Boolean) value);
 		}
 	}
 

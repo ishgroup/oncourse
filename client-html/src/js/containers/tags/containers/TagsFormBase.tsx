@@ -8,9 +8,8 @@
 
 import { Tag } from "@api/model";
 import { TreeData } from "@atlaskit/tree";
-import { alpha } from "@mui/material/styles";
-import { createStyles, withStyles } from "@mui/styles";
-import { AppTheme, ShowConfirmCaller } from "ish-ui";
+import { withStyles } from "@mui/styles";
+import { ShowConfirmCaller } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -23,79 +22,11 @@ import { CatalogItemType } from "../../../model/common/Catalog";
 import { FormTag } from "../../../model/tags";
 import { State } from "../../../reducers/state";
 import { createTag, deleteTag, updateTag } from "../actions";
+import { treeDataToTags } from "../components/Trees";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
-import { COLORS, getAllTags } from "../utils";
-import { validate } from "../utils/validation";
-
-const styles = (theme: AppTheme) => createStyles({
-  dragIcon: {
-    margin: theme.spacing(0, 2),
-    color: theme.palette.action.focus,
-    "&:hover": {
-      color: theme.palette.action.active
-    }
-  },
-  actionButton: {
-    marginRight: "10px"
-  },
-  actionIcon: {
-    color: theme.palette.action.active,
-    fontSize: "20px"
-  },
-  actionIconInactive: {
-    color: theme.palette.action.focus,
-    fontSize: "20px"
-  },
-  cardRoot: {
-    paddingTop: theme.spacing(1),
-  },
-  card: {
-    zIndex: 1,
-    borderRadius: `${theme.shape.borderRadius}px`,
-    cursor: "pointer",
-    backgroundColor: alpha(theme.palette.text.primary, 0.025),
-    "&:hover $actionIconInactive": {
-      color: theme.palette.action.focus
-    }
-  },
-  cardGrid: {
-    gridTemplateColumns: "auto auto 1fr 1fr auto auto auto",
-    display: "grid",
-    alignItems: "center",
-  },
-  checklistCardGrid: {
-    gridTemplateColumns: "auto 1fr auto",
-    display: "grid",
-    alignItems: "center",
-  },
-  dragOver: {
-    boxShadow: theme.shadows[2]
-  },
-  tagColorDot: {
-    width: "1em",
-    height: "1em",
-    borderRadius: "100%"
-  },
-  legend: {
-    gridTemplateColumns: "1fr 1fr 108px",
-    display: "grid",
-    alignItems: "center",
-    paddingLeft: "94px",
-    marginBottom: theme.spacing(1)
-  },
-  fieldEditable: {
-    paddingRight: theme.spacing(2),
-    position: "relative",
-    top: 2
-  },
-  nameEditable: {
-    fontSize: "14px",
-    fontWeight: 500
-  },
-  urlEditable: {
-    fontSize: "14px",
-  }
-});
+import { styles } from "../styles/TagItemsStyles";
+import { COLORS, getAllTags, rootTagToServerModel } from "../utils";
+import { validateTagsForm } from "../utils/validation";
 
 interface Props {
   tags: CatalogItemType[];
@@ -116,7 +47,7 @@ interface FormProps extends Props {
   submitSucceeded: boolean;
   fetch: any;
   asyncErrors: any;
-  onUpdate: (id: number, tag: Tag) => void;
+  onUpdate: (tag: Tag) => void;
   onCreate: (tag: Tag) => void;
   onDelete: (tag: Tag) => void;
   openTagEditView: (item: Tag) => void;
@@ -124,33 +55,6 @@ interface FormProps extends Props {
   history: any;
   syncErrors?: any;
 }
-
-const setWeight = items =>
-  items.map((i, index) => {
-    let item = { ...i, weight: index + 1 };
-
-    delete item.dragIndex;
-    delete item.parent;
-    delete item.refreshFlag;
-
-    if (item.id.toString().includes("new")) {
-      item.id = null;
-    }
-
-    if (item.childTags.length) {
-      item = { ...item, childTags: setWeight([...item.childTags]) };
-    }
-
-    return item;
-});
-
-const treeItemDataToTag = (id: number | string, tree: TreeData, allTags: Tag[]): Tag => {
-  const tag = { ...allTags.find(t => t.id === id) };
-  tag.childTags = tree.items[id].children.map(id => treeItemDataToTag(id, tree, allTags));
-  return tag;
-};
-
-const treeDataToTags = (tree: TreeData, allTags: Tag[]): Tag[] => tree.items[tree.rootId].children.map(id => treeItemDataToTag(id, tree, allTags));
 
 interface FormState {
   editingIds: number[];
@@ -191,12 +95,16 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     }
   }
 
-  setEditingId = editingId => {
+  setEditingIds = editingIds => {
     this.setState({
-      editingIds: this.state.editingIds.includes(editingId)
-        ? this.state.editingIds.filter(id => id !== editingId)
-        : this.state.editingIds.concat(editingId)
+      editingIds
     });
+  };
+
+  setEditingId = editingId => {
+    this.setEditingIds(this.state.editingIds.includes(editingId)
+      ? this.state.editingIds.filter(id => id !== editingId)
+      : this.state.editingIds.concat(editingId));
   };
 
   onSave = values => {
@@ -204,13 +112,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
 
     const isNew = !values.id;
     
-    const tags = { ...values, childTags: setWeight([...values.childTags]) };
-
-    delete tags.dragIndex;
-    delete tags.parent;
-    delete tags.refreshFlag;
-
-    if (!tags.weight) tags.weight = 1;
+    const tags = rootTagToServerModel(values);
 
     this.isPending = true;
 
@@ -221,7 +123,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       if (isNew) {
         onCreate(tags);
       } else {
-        onUpdate(tags.id, tags);
+        onUpdate(tags);
       }
     });
   };
@@ -312,8 +214,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onUpdate: (id: number, tag: Tag) => dispatch(updateTag(id, tag)),
-  onCreate: (tag: Tag) => dispatch(createTag(tag)),
+  onUpdate: (tag: Tag) => dispatch(updateTag(TAGS_FORM_NAME, tag)),
+  onCreate: (tag: Tag) => dispatch(createTag(TAGS_FORM_NAME, tag)),
   onDelete: (tag: Tag) => dispatch(deleteTag(tag)),
   openConfirm: props => dispatch(showConfirm(props)),
 });
@@ -321,6 +223,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export const TagsFormWrapper = reduxForm<any, any, any>({
   form: TAGS_FORM_NAME,
   onSubmitFail,
-  validate,
+  validate: validateTagsForm,
   shouldError: () => true
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />)));

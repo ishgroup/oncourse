@@ -48,6 +48,7 @@ interface ArticleProductsProps {
 }
 
 const Initial: ArticleProduct = {
+  tags: [],
   code: null,
   corporatePasses: [],
   description: null,
