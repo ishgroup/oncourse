@@ -6,14 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-
 import { RenderItemParams, TreeData } from "@atlaskit/tree";
 import { AnyArgFunction, NumberArgFunction } from "ish-ui";
 import React, { useCallback } from "react";
 import { FormTag, FormTagProps } from "../../../../model/tags";
 import TagItem from "../../../tags/components/TagItem";
 import Tree from "../../../tags/components/TagTreeBasis";
-import { shouldNotUpdate, useHasError, useTagTreeHandlers } from "../../../tags/components/Trees";
+import { shouldNotUpdate, useTagTreeHandlers } from "../../../tags/components/Trees";
 
 interface SubjectsTreeProps extends Partial<FormTagProps> {
   rootTag: FormTag;
@@ -27,15 +26,12 @@ const RenderedSubjectItem = ({
  item,
  provided,
  snapshot,
- syncErrors,
  classes,
  onDelete,
  changeVisibility,
  setEditingId,
  editingIds
 }) => {
-  const hasErrors = useHasError(syncErrors, item, editingIds, setEditingId);
-
   return (
     <div
       className={classes.cardRoot}
@@ -51,12 +47,12 @@ const RenderedSubjectItem = ({
           provided={provided}
           snapshot={snapshot}
           setIsEditing={setEditingId}
-          isEditing={hasErrors || editingIds.includes(item.data.id)}
+          isEditing={editingIds.includes(item.data.id)}
           hideColor
         />
     </div>
   );
-}
+};
 
 const SubjectsTree = React.memo<SubjectsTreeProps>(props => {
   const {
@@ -81,7 +77,6 @@ const SubjectsTree = React.memo<SubjectsTreeProps>(props => {
       item={item as any}
       provided={provided}
       snapshot={snapshot}
-      syncErrors={syncErrors}
       classes={classes}
       onDelete={onDelete}
       changeVisibility={changeVisibility}
