@@ -1223,6 +1223,8 @@ public abstract class CommonPreferenceController {
 			setDefaultInvoiceLineAccount((Long) value);
 		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
 			setExtendedTypesAllowed((Boolean) value);
+		} else if(DATE_MESSAGE_BEFORE_ARCHIVED.equals(key)){
+			setExtendedTypesAllowed((Boolean) value);
 		}
 	}
 
@@ -1447,5 +1449,20 @@ public abstract class CommonPreferenceController {
 
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
+	}
+
+	public Date getDateMessageBeforeArchived(){
+		if (getValue(DATE_MESSAGE_BEFORE_ARCHIVED, false) == null) {
+			return null;
+		}
+		try {
+			return dateFormat.parse(getValue(DATE_MESSAGE_BEFORE_ARCHIVED, false));
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
+	public void setDateMessageBeforeArchived(Date value){
+		setValue(DATE_MESSAGE_BEFORE_ARCHIVED, false, dateFormat.format(value));
 	}
 }

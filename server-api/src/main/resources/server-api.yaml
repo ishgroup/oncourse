@@ -181,6 +181,8 @@ paths:
     $ref: './path/list/entity/lead/api.yaml'
   /list/entity/message:
     $ref: './path/list/entity/message/api.yaml'
+  /list/entity/message/archive:
+    $ref: './path/list/entity/message/archive/api.yaml'
   /list/entity/membershipProduct:
     $ref: './path/list/entity/membershipProduct/api.yaml'
   /list/entity/note:

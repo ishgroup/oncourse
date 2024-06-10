@@ -87,11 +87,24 @@ public class AmazonS3Service {
      */
     public String putFile(String uniqueKey, String fileName, byte[] content, AttachmentInfoVisibility visibility) throws IOException {
         InputStream is = new ByteArrayInputStream(content);
+        return putFileFromStream(uniqueKey, fileName, is, visibility, content.length);
+    }
 
+    /**
+     * Uploads new file to S3 or uploads new file version of file if the file with the same UUID(key) already exist on s3.
+     *
+     * @param uniqueKey - UUID for uploaded file (also uses on s3)
+     * @param fileName - file name which will be appended to UUID
+     * @param is - file stream to upload
+     * @param visibility - visibiluty rules
+     * @return generated versionId under which file is stored in S3
+     */
+    public String putFileFromStream(String uniqueKey, String fileName, InputStream is,
+                                    AttachmentInfoVisibility visibility, int contentLength) throws IOException {
         ObjectMetadata metadata = new ObjectMetadata();
         String otherContentType = Files.probeContentType(of(fileName));
         metadata.setContentType(otherContentType);
-        metadata.setContentLength(content.length);
+        metadata.setContentLength(contentLength);
         metadata.setContentDisposition(format(CONTENT_DISPOSITION_TEMPLATE, fileName));
         metadata.addUserMetadata(METADATA_CacheControl, format(METADATA_CacheControlValueTemplate, ONE_WEEK_IN_SEC));
 
@@ -103,6 +116,10 @@ public class AmazonS3Service {
         return result.getVersionId();
     }
 
+
+    public boolean fileExists(String uniqueKey) {
+        return s3Client.doesObjectExist(bucketName, uniqueKey);
+    }
 
     /**
      * Changes stored file visibility rules. First request fetches current rules which are compared with specified,

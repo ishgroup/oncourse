@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Preference
+import ish.persistence.Preferences
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -39,7 +40,7 @@ class Preference extends _Preference implements Queueable {
 	 */
 	@Override
 	boolean isAsyncReplicationAllowed() {
-		return getUser() == null && SERVICES_COMMUNICATION_KEY != getName()
+		return Preferences.DATE_MESSAGE_BEFORE_ARCHIVED == getName() || getUser() == null && SERVICES_COMMUNICATION_KEY != getName()
 	}
 
 	@Override
