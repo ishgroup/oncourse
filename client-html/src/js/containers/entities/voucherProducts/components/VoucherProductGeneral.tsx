@@ -5,7 +5,7 @@
 
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
 import { Grid, Typography } from "@mui/material";
-import { ConfirmProps, EditInPlaceSearchSelect, formatCurrency, stubFunction } from "ish-ui";
+import { ConfirmProps, formatCurrency } from "ish-ui";
 import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -26,7 +26,6 @@ import { useAppSelector } from "../../../../common/utils/hooks";
 import { normalizeString } from "../../../../common/utils/strings";
 import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
@@ -219,7 +218,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
 
   const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
 
-  const { specialTypesDisabled, tagsGrouped } = useTagGroups({ tags, tagsValue: values.tags });
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   const courseHandlers = useMemo(() => {
     if (values.soldVouchersCount === 0) {
@@ -299,25 +298,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           className="mb-2"
         />
 
-        <EditInPlaceSearchSelect
-          input={{
-            value: tagsGrouped.subjectsValue,
-            onChange: updated => {
-              dispatch(change(form, 'tags', Array.from(new Set(tagsGrouped.tagsValue.concat(updated)))));
-            },
-            onBlur: stubFunction
-          }}
-          meta={{}}
-          items={tagsGrouped.subjects}
-          disabled={specialTypesDisabled}
-          label="Subjects"
-          selectValueMark="id"
-          selectLabelMark="name"
-          className="mt-2"
-          placeholder={COMMON_PLACEHOLDER}
-          allowEmpty
-          multiple
-        />
+        {subjectsField}
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>

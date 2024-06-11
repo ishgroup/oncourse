@@ -47,6 +47,7 @@ interface VoucherProductsProps {
 }
 
 const Initial: VoucherProduct = {
+  tags: [],
   code: null,
   corporatePasses: [],
   courses: [],

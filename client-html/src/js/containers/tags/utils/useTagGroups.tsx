@@ -6,19 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-
 import { Tag } from "@api/model";
-import { useMemo } from "react";
+import { stubFunction, TagInputList } from "ish-ui";
+import React, { useMemo } from "react";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import { useAppSelector } from "../../../common/utils/hooks";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 import { getAllFormTags, getAllTags } from "./index";
 
 interface Props {
   tags: Tag[];
   tagsValue: number[];
+  dispatch: Dispatch;
+  form: string;
 }
 
-export function useTagGroups({ tagsValue, tags }: Props) {
+const subjectsFilter = (t: Tag) => t.system && t.name === 'Subjects';
+
+export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
 
   const specialTypesDisabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] !== 'true');
 
@@ -31,7 +38,7 @@ export function useTagGroups({ tagsValue, tags }: Props) {
     };
     if (!specialTypesDisabled && tags?.length) {
       body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
-      body.subjects = getAllTags(tags.filter(t => t.system && t.name === 'Subjects')).filter(t => t.childrenCount === 0);
+      body.subjects = getAllTags(tags.filter(subjectsFilter)).filter(t => !subjectsFilter(t));
       const allTags = getAllFormTags(tags);
       body.subjectsValue = tagsValue.filter(id => {
         const tag = allTags.find(t => t.id === id);
@@ -41,6 +48,24 @@ export function useTagGroups({ tagsValue, tags }: Props) {
     }
     return body;
   }, [tags, tagsValue, specialTypesDisabled]);
+
+  const subjectsField = <TagInputList
+    input={{
+      value: tagsGrouped.subjectsValue,
+      onChange: updated => {
+        dispatch(change(form, 'tags', updated ? Array.from(new Set(tagsGrouped.tagsValue.concat(updated))) : []));
+      },
+      onBlur: stubFunction
+    }}
+    meta={{}}
+    tags={tagsGrouped.subjects}
+    disabled={specialTypesDisabled}
+    label="Subjects"
+    className="mt-2"
+    placeholder={COMMON_PLACEHOLDER}
+    allowParentSelect
+    hideColor
+  />;
   
-  return { specialTypesDisabled, tagsGrouped };
+  return { tagsGrouped, subjectsField, specialTypesDisabled };
 }

@@ -30,10 +30,11 @@ export const dialogStyles = theme =>
       borderBottomLeftRadius: `${theme.shape.borderRadius}`
     },
     selectContainer: {
-      minWidth: "500px",
-      position: "relative",
+      flex: 1,
       zIndex: 1400,
-      paddingLeft: theme.spacing(1)
+    },
+    selectWrapper: {
+      padding: "6px 6px 6px 12px"
     },
     closeAndClearButton: {
       position: "relative",

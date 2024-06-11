@@ -150,7 +150,7 @@ class TagFunctions {
             return new ValidationErrorDTO(tag.id?.toString(), 'name', 'Name should be unique.')
         }
 
-        if (subjectsAsEntity) {
+        if (dbTag && NodeSpecialType.SUBJECTS == dbTag.specialType && subjectsAsEntity) {
             error = validateSubjectAsEntity(tag, dbTag)
             if (error)
                 return error

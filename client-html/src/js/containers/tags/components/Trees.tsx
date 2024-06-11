@@ -18,7 +18,7 @@ import {
 import { ItemId } from "@atlaskit/tree/types";
 import { AnyArgFunction, NumberArgFunction } from "ish-ui";
 import React, { useCallback, useEffect, useState } from "react";
-import { getDeepValue } from "../../../common/utils/common";
+import { getInvalidValueOdjects } from "../../../common/utils/common";
 import { FormTag, FormTagProps } from "../../../model/tags";
 import ChecklistItem from "./ChecklistItem";
 import TagItem from "./TagItem";
@@ -30,6 +30,7 @@ interface TagsTreeProps extends Partial<FormTagProps> {
   rootTag: FormTag;
   onDrop: AnyArgFunction<void, TreeData>;
   setEditingId: NumberArgFunction;
+  setEditingIds: (ids: number[]) => void;
   editingIds: number[];
   syncErrors: any;
 }
@@ -59,7 +60,7 @@ export const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTree
 };
 
 export const tagToTreeItem = (tag: FormTag): TreeItem => ({
-  id: tag.id,
+  id: tag.id?.toString(),
   children: tag.childTags?.map(t => t.id),
   hasChildren: Boolean(tag.childTags.length),
   isExpanded: true,
@@ -86,20 +87,6 @@ export const setItemParent = (id: string | number, index, items: Record<ItemId, 
 export const setParents = (data: TreeData) => {
   data.items[data.rootId].data.refreshFlag = false;
   data.items[data.rootId].children.forEach((id, index) => setItemParent(id, index, data.items));
-};
-
-const errorKeys: (keyof Tag)[] = ["urlPath", "name", "content"];
-
-export const useHasError = (syncErrors, item, editingId, setEditingId) => {
-  const hasErrors = Object.keys(getDeepValue(syncErrors, item.data.parent) || {}).some(key => errorKeys.includes(key as any));
-
-  useEffect(() => {
-    if (hasErrors && !String(item.data.id).startsWith("new") && editingId !== item.data.id) {
-      setEditingId(item.data.id);
-    }
-  }, [hasErrors, editingId, item.data.id]);
-  
-  return hasErrors;
 };
 
 export const useTagTreeHandlers = (rootTag, editingIds, syncErrors, onDrop) => {
@@ -136,15 +123,12 @@ const RenderedTagItem = ({
   item,
   provided,
   snapshot,
-  syncErrors,
   classes,
   onDelete,
   changeVisibility,
   setEditingId,
   editingIds
 }) => {
-  const hasErrors = useHasError(syncErrors, item, editingIds, setEditingId);
-
   return (
     <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.data.id}>
       <TagItem
@@ -156,7 +140,7 @@ const RenderedTagItem = ({
         provided={provided}
         snapshot={snapshot}
         setIsEditing={setEditingId}
-        isEditing={hasErrors || editingIds.includes(item.data.id)}
+        isEditing={editingIds.includes(item.data.id)}
       />
     </div>
 );
@@ -169,10 +153,17 @@ export const TagTree = React.memo<TagsTreeProps>(props => {
     onDelete,
     changeVisibility,
     setEditingId,
+    setEditingIds,
     editingIds,
     syncErrors,
     onDrop
 } = props;
+
+  useEffect(() => {
+    if (Object.keys(syncErrors || {}).length) {
+      getInvalidValueOdjects(syncErrors, rootTag).forEach(t => setEditingIds(Array.from(new Set([...editingIds, t.id]))));
+    }
+  }, [syncErrors]);
 
   const { onDragEnd, treeState } = useTagTreeHandlers(rootTag, editingIds, syncErrors, onDrop);
 
@@ -185,14 +176,13 @@ export const TagTree = React.memo<TagsTreeProps>(props => {
       item={item as any}
       provided={provided}
       snapshot={snapshot}
-      syncErrors={syncErrors}
       classes={classes}
       onDelete={onDelete}
       changeVisibility={changeVisibility}
       setEditingId={setEditingId}
       editingIds={editingIds}
     />
-), [editingIds, syncErrors]);
+), [editingIds]);
 
   return treeState ? (
     <div>
