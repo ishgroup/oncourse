@@ -15,7 +15,7 @@ import { change, Form, FormErrors, getFormSyncErrors, getFormValues, InjectedFor
 import AppBarContainer from "src/js/common/components/layout/AppBarContainer";
 import { showConfirm } from "../../../../common/actions";
 import RouteChangeConfirm from "../../../../common/components/dialog/RouteChangeConfirm";
-import { getDeepValue, getInvalidValueOdjects } from "../../../../common/utils/common";
+import { getInvalidValueOdjects } from "../../../../common/utils/common";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../constants/Config";
@@ -75,7 +75,7 @@ function Subjects(
     dispatch(change(form, item.parent ? item.parent + ".status" : "status", item.status === "Private" ? "Show on website" : "Private"));
     dispatch(change(form, "refreshFlag", !values.refreshFlag));
   };
-  
+
   const removeChildTag = (item: FormTag) => {
     const confirmMessage = item.childrenCount
       ? `Deleting this Subject will automatically delete ${item.childrenCount} 
@@ -85,18 +85,7 @@ function Subjects(
       : `You are about to delete Subject. After pressing Save it cannot be undone`;
 
     const onConfirm = () => {
-      const clone = JSON.parse(JSON.stringify(values));
-
-      if (item.parent) {
-        const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
-
-        if (removePath) {
-          const deleteItem = item.parent.match(/\[(\d+)]$/);
-          if (deleteItem && deleteItem.length > 0) removePath.splice(Number(deleteItem[1]), 1);
-        }
-      }
-
-      dispatch(change(form, "childTags", clone.childTags));
+      array.remove(item.parent.replace(/\[[0-9]+]$/, ""), parseInt(item.parent.match(/\[([0-9]+)]$/)[1]));
       dispatch(change(form, "refreshFlag", !values.refreshFlag));
     };
 

@@ -83,7 +83,7 @@ const SubjectsTree = React.memo<SubjectsTreeProps>(props => {
       setEditingId={setEditingId}
       editingIds={editingIds}
     />
-  ), [editingIds, syncErrors]);
+  ), [editingIds]);
 
   return treeState ? (
     <div>
