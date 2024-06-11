@@ -34,6 +34,12 @@ public class FieldConfigurationUtil {
                     return PayerFieldConfiguration.class;
                 case PARENT:
                     return ParentFieldConfiguration.class;
+                case ARTICLE:
+                    return ArticleFieldConfiguration.class;
+                case VOUCHER:
+                    return VoucherFieldConfiguration.class;
+                case MEMBERSHIP:
+                    return MembershipFieldConfiguration.class;
                 default:
             }
         }
