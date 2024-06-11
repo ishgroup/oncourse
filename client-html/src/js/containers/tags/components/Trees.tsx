@@ -60,7 +60,7 @@ export const shouldNotUpdate = (prevProps: TagsTreeProps, currentProps: TagsTree
 };
 
 export const tagToTreeItem = (tag: FormTag): TreeItem => ({
-  id: tag.id,
+  id: tag.id?.toString(),
   children: tag.childTags?.map(t => t.id),
   hasChildren: Boolean(tag.childTags.length),
   isExpanded: true,
