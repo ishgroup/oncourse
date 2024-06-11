@@ -73,8 +73,9 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private void initDisplayPreferencesFromConfigFile(DisplayService displayService) {
 		if(displayService.getExtendedSearchTypes() != null) {
+			boolean extendedTypesAlreadyWereAllowed = getExtendedSearchTypesAllowed();
 			setExtendedTypesAllowed(displayService.getExtendedSearchTypes());
-			if(displayService.getExtendedSearchTypes()){
+			if(!extendedTypesAlreadyWereAllowed && displayService.getExtendedSearchTypes()){
 				tagService.updateSubjectsAsEntities(cayenneService.getNewContext());
 			}
 		}
