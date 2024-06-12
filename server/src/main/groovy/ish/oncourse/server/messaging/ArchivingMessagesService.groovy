@@ -80,7 +80,7 @@ class ArchivingMessagesService {
         while (year != null) {
             String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(startDate, endDate)
             uploadArchive(fileName)
-            new File(fileName).delete()
+            new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
             removeMessagesCreatedInInterval(startDate, endDate)
 
             year = nearestYearOfMessagesBefore(startDate)
@@ -156,7 +156,7 @@ class ArchivingMessagesService {
         } finally {
             gzipOutputStream.close()
         }
-        return filePath
+        return fileName
     }
 
     private String getFreeFileName(String collegeName, int year) {
@@ -165,8 +165,8 @@ class ArchivingMessagesService {
         while (new File(TEMP_ARCHIVES_DIRECTORY + "/" + "$collegeName-$year-$fileIndex" + ".csv.gz").exists())
             fileIndex++
 
-        String fileName = null
-        while (fileName == null || s3Service.fileExists(fileName)) {
+        String fileName = "$collegeName-$year-$fileIndex" + ".csv.gz"
+        while (s3Service.fileExists(fileName)) {
             fileIndex++
             fileName = "$collegeName-$year-$fileIndex" + ".csv.gz"
         }
@@ -174,7 +174,7 @@ class ArchivingMessagesService {
     }
 
     private void uploadArchive(String fileName) {
-        def file = new File(fileName)
+        def file = new File("$TEMP_ARCHIVES_DIRECTORY/$fileName")
         def inputStream = new FileInputStream(file)
         s3Service.putFileFromStream(fileName, fileName, inputStream, AttachmentInfoVisibility.PRIVATE, (int) file.length())
     }
