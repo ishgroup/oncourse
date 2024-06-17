@@ -427,6 +427,18 @@ class CourseClassMixin {
 		return getAttendance(self, true)
 	}
 
+	/**
+	* An alias for getAttendance(true)
+	*
+	* @return attendance lines for this particular courseClass including tutors
+	*/
+	@API
+	static getNotCancelledAttendance(CourseClass self) {
+		def attendances = getAttendance(self, true)
+		def cancelledStudents = attendances.findAll {it.enrolment && EnrolmentStatus.STATUSES_CANCELLATIONS.contains(it.enrolment.status)}.student
+		return attendances.findAll {it -> !it.enrolment || !cancelledStudents.contains(it.student)}
+	}
+
 
 	/**
 	* An alias for getAttendance(false)
