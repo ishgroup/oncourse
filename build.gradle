@@ -35,7 +35,7 @@ plugins {
 	id 'com.github.node-gradle.node' version '3.1.1' apply false
 	id 'com.github.psxpaul.execfork' version '0.1.15' apply false
 	id 'idea'
-	id 'org.barfuin.gradle.taskinfo' version '1.2.0' // adds the task 'tiTree [some task]' and the task 'tiOrder [some task]'
+	id 'org.barfuin.gradle.taskinfo' version '2.1.0' // adds the task 'tiTree [some task]' and the task 'tiOrder [some task]'
 
 	id 'java'
 	id 'groovy'
@@ -153,7 +153,7 @@ subprojects {
 		}
 
 		reports {
-			junitXml.enabled = true
+			junitXml.required = true
 		}
 
 		afterSuite { desc, result ->
