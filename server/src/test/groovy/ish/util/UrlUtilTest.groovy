@@ -10,6 +10,7 @@ package ish.util
 import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
+import ish.oncourse.entity.services.TagService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Preference
@@ -46,7 +47,7 @@ class UrlUtilTest {
 
         Assertions.assertTrue(UrlUtil.validatePortalUsiLink(url, "saltstring", format.parse("01/01/2015")))
     }
-	
+
 	@Test
     void testValidatePortalUsiLink_Expired() throws Exception {
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy")
@@ -129,7 +130,8 @@ class UrlUtilTest {
         LicenseService licenseService = Mockito.mock(LicenseService.class)
         PluginsPrefsService pluginsService = Mockito.mock(PluginsPrefsService.class)
         DisplayService displayService = Mockito.mock(DisplayService.class)
+        TagService tagService = Mockito.mock(TagService.class)
 
-        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService, displayService)
+        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService, displayService, tagService)
     }
 }

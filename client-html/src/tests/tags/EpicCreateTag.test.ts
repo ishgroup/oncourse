@@ -15,7 +15,7 @@ import { FETCH_SUCCESS } from "../../js/common/actions";
 
 describe("Create tag epic tests", () => {
   it("EpicCreateTag should returns correct values", () => DefaultEpic({
-    action: mockedApi => createTag(mockedApi.db.getTag(1)),
+    action: mockedApi => createTag(TAGS_FORM_NAME,mockedApi.db.getTag(1)),
     epic: EpicCreateTag,
     processData: mockedApi => {
       const tag = mockedApi.db.getTag(1);
@@ -24,7 +24,7 @@ describe("Create tag epic tests", () => {
         initialize(TAGS_FORM_NAME, tag),
         {
           type: FETCH_SUCCESS,
-          payload: { message: `${tag.type} was successfully created` }
+          payload: { message: `${tag.name} was successfully created` }
         },
         getAllTags(tag.name)
       ];

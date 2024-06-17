@@ -20,7 +20,7 @@ import { EpicUpdateTag } from "../../js/containers/tags/epics/EpicUpdateTag";
 
 describe("Update tag epic tests", () => {
   it("EpicUpdateTag should returns correct values", () => DefaultEpic({
-    action: mockedApi => updateTag(1, mockedApi.db.getTag(1)),
+    action: mockedApi => updateTag(TAGS_FORM_NAME, mockedApi.db.getTag(1)),
     epic: EpicUpdateTag,
     processData: mockedApi => {
       const tag = mockedApi.db.getTag(1);
@@ -28,7 +28,7 @@ describe("Update tag epic tests", () => {
       return [
         {
           type: FETCH_SUCCESS,
-          payload: { message: `${tag.type} was successfully updated` }
+          payload: { message: `${tag.name} was successfully updated` }
         },
         initialize(TAGS_FORM_NAME, tag),
         getAllTags()

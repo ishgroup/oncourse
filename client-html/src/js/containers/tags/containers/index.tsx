@@ -139,6 +139,7 @@ class TagsFormRenderer extends TagsFormBase {
                   onDelete={this.removeChildTag}
                   changeVisibility={this.changeVisibility}
                   setEditingId={this.setEditingId}
+                  setEditingIds={this.setEditingIds}
                   onDrop={this.onDrop}
                   editingIds={editingIds}
                   syncErrors={syncErrors}
@@ -287,6 +288,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                   classes={classes}
                   onDelete={this.removeChildTag}
                   setEditingId={this.setEditingId}
+                  setEditingIds={this.setEditingIds}
                   onDrop={this.onDrop}
                   editingIds={editingIds}
                   syncErrors={syncErrors}
@@ -331,7 +333,7 @@ export const ChecklistsForm = ({ match: { params: { id } }, history }) => {
         });
       }
     } else {
-      dispatch(getTagRequest(id));
+      dispatch(getTagRequest(TAGS_FORM_NAME, id));
     }
   }, [id]);
 
@@ -345,7 +347,7 @@ export const TagsForm = ({ match: { params: { id } }, history }) => {
     if (id === "new") {
       dispatch(initialize(TAGS_FORM_NAME, EmptyTag));
     } else {
-      dispatch(getTagRequest(id));
+      dispatch(getTagRequest(TAGS_FORM_NAME, id));
     }
   }, [id]);
 

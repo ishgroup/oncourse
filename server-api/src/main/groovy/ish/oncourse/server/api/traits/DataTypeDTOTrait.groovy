@@ -50,6 +50,8 @@ trait DataTypeDTOTrait {
                 return DataType.PATTERN_TEXT
             case DataTypeDTO.PORTAL_SUBDOMAIN:
                 return DataType.PORTAL_SUBDOMAIN
+            case DataTypeDTO.NUMBER:
+                return DataType.NUMBER
             default:
                 throw new IllegalArgumentException("${toString()}")
         }

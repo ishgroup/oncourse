@@ -22,3 +22,4 @@ enum:
   - ArticleProduct
   - VoucherProduct
   - MembershipProduct
+  - Faculty

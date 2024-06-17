@@ -30,13 +30,13 @@
           isTraineeship="0" enrolmentType="1" fieldConfigurationSchemaId="1" feeHelpClass="0"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Module id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Module id="3" type="1" isOffered="1" nationalCode="TEST3" title="Test module 3"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="3" type="1" isOffered="1" nationalCode="TEST3" title="Test module 3"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Module id="4" type="1" isOffered="1" nationalCode="TEST4" title="Test module 4"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="4" type="1" isOffered="1" nationalCode="TEST4" title="Test module 4"
           createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Module_Course id="1" courseId="1" moduleId="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>

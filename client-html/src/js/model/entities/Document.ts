@@ -10,3 +10,14 @@
  */
 
 export type DocumentShareOption = "PortalSharing" | "Tutor&Student" | "ShowOnWebsite";
+
+export interface DocumentSearchItemType {
+  id: number;
+  link: string;
+  name: string;
+  added: string;
+  byteSize: string;
+  fileName: string;
+  isShared: boolean;
+  attachedRecordsCount: number;
+}

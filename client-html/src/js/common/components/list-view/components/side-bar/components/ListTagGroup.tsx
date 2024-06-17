@@ -24,7 +24,7 @@ interface Props {
   classes: any;
   showColoredDots: boolean;
   updateActive: (updated: FormMenuTag) => void;
-  dndKey: number;
+  dndKey?: number;
   dndEnabled?: boolean;
 }
 
