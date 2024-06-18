@@ -14,7 +14,7 @@ import { change } from "redux-form";
 import { useAppSelector } from "../../../common/utils/hooks";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
 import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
-import { getAllFormTags, getAllTags } from "./index";
+import { getAllFormTags } from "./index";
 
 interface Props {
   tags: Tag[];
@@ -38,7 +38,7 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
     };
     if (!specialTypesDisabled && tags?.length) {
       body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
-      body.subjects = getAllTags(tags.filter(subjectsFilter)).filter(t => !subjectsFilter(t));
+      body.subjects = tags.filter(subjectsFilter)[0]?.childTags || [];
       const allTags = getAllFormTags(tags);
       body.subjectsValue = tagsValue.filter(id => {
         const tag = allTags.find(t => t.id === id);
