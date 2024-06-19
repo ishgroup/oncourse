@@ -15,6 +15,7 @@ import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.IntegrationConfiguration
+import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.scripting.api.TemplateService
@@ -46,6 +47,8 @@ trait PluginTrait {
 
 	ICayenneService cayenneService
 	EmailService emailService
+
+	//cannot be used for get current user in on_demand triggers. Use loggedInUser instead
 	ISystemUserService systemUserService
 	PreferenceController preferenceController
 	TemplateService templateService
@@ -54,6 +57,8 @@ trait PluginTrait {
 	IntegrationConfiguration configuration
 	ObjectContext context
 	AqlService antlrAqlService
+
+	SystemUser loggedInUser
 
 	/**
 	 * Name of the integration configuration for this plugin
@@ -66,7 +71,7 @@ trait PluginTrait {
 	int type
 
 	void loadConfig(Map args) {
-		
+		loggedInUser = args.get("loggedInUser") as SystemUser
 		configuration = args.get("configuration") as IntegrationConfiguration
 		name = args.get("name") as String
 		
