@@ -19,14 +19,14 @@ const getEditingDocumentAction = (
 ): Promise<IAction<{ editingDocument: Document; editingFormName: string }>> =>
   getInitialDocument(file).then(editingDocument => ({
     type: SET_EDITING_DOCUMENT,
-    payload: {editingDocument, editingFormName}
+    payload: { editingDocument, editingFormName }
   }));
 
 const request: EpicUtils.Request<any, { inputDocument: File; editingFormName: string }> = {
   type: SEARCH_DOCUMENT_BY_HASH,
-  hideLoadIndicator: true,
-  getData: ({inputDocument}) => DocumentsService.searchDocument(inputDocument),
-  processData: (editingDocument: Document, state: any, {inputDocument, editingFormName}) => {
+  // hideLoadIndicator: true,
+  getData: ({ inputDocument }) => DocumentsService.searchDocument(inputDocument),
+  processData: (editingDocument: Document, state: any, { inputDocument, editingFormName }) => {
     if (editingDocument && !editingDocument.shared) {
       return [{
         type: SHOW_MESSAGE,
@@ -47,11 +47,11 @@ const request: EpicUtils.Request<any, { inputDocument: File; editingFormName: st
       ? [
         {
           type: SET_EDITING_DOCUMENT,
-          payload: {editingDocument, editingFormName}
+          payload: { editingDocument, editingFormName }
         },
         {
           type: SET_DOCUMENT_FILE,
-          payload: {documentFile: null}
+          payload: { documentFile: null }
         }
       ]
       : from(getEditingDocumentAction(inputDocument, editingFormName));

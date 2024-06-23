@@ -107,7 +107,9 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
         And match $ contains
             """
             {
-                "creditPoints":null,"expiryDays":null,
+                "creditPoints":null,
+                "creditPointsStatus":"Active",
+                "expiryDays":null,
                 "fieldOfEducation":"030701",
                 "id":1,
                 "isCustom":false,
@@ -135,7 +137,9 @@ Feature: Main feature for all GET requests with path 'list/entity/module'
         And match $ contains
             """
             {
-                "creditPoints":null,"expiryDays":null,
+                "creditPoints":null,
+                "creditPointsStatus":"Active",
+                "expiryDays":null,
                 "fieldOfEducation":"030701",
                 "id":1,
                 "isCustom":false,

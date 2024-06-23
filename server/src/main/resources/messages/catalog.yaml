@@ -659,4 +659,20 @@
       dataType: TEXT
       value: ish.email.footer
 
-
+- name: Student invitation to SkillsOnCourse
+  type: email
+  keyCode: ish.email.studentPortalInvitation
+  txtTemplate: ish.email.studentPortalInvitation.txt
+  htmlTemplate: ish.email.studentPortalInvitation.html
+  subject: "Set password for your ${Preferences.get('college.name')} Student Portal account"
+  entityClass: Student
+  short: An invitation to students to create a password in order to log in to the SkillsOnCourse portal.
+  description: An invitation to students to create a password in order to log in to the SkillsOnCourse portal.
+  category: education
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer

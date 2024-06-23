@@ -10,6 +10,7 @@ import { Button, FormControlLabel, Grid } from "@mui/material";
 import { makeAppStyles, NumberArgFunction } from "ish-ui";
 import React from "react";
 import FormField from "../../../common/components/form/formFields/FormField";
+import { validateUniqueNamesInArray } from "../../../common/utils/validation";
 import { cardsFormStyles } from "../styles/formCommonStyles";
 
 interface SpecialTagTypeProps {
@@ -31,6 +32,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
           label="Name"
           className={classes.field}
           disabled={disabled}
+          validate={validateUniqueNamesInArray}
           required
         />
       </Grid>
@@ -47,7 +49,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
               parse={v => (v ? "Show on website" : "Private")}
               debounced={false}
             />}
-            label="Is wisible on web"
+            label="Visible on web"
             labelPlacement="start"
           />
           <div>

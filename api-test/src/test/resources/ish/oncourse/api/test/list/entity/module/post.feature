@@ -13,7 +13,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (+) Create new custom Module by admin
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -39,7 +39,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (+) Create new custom Module with max length allowed for title, nationalCode, fieldOfEducation
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"123456","isCustom":true,"type":"OTHER","isOffered":true,"nationalCode":"123456789012","nominalHours":7,"specialization":"4","title":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"123456","isCustom":true,"type":"OTHER","isOffered":true,"nationalCode":"123456789012","nominalHours":7,"specialization":"4","title":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A"}
 
         Given path ishPath
         And request newModule
@@ -69,7 +69,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         
 #       <--->
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"notadmin_title1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"notadmin_title1"}
         Given path ishPath
         And request newModule
         When method POST
@@ -86,8 +86,6 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 #       <---->  Scenario have been finished. Now delete created entity from db:
         * configure headers = { Authorization: 'admin'}
 
-        
-
         Given path ishPath + '/' + id
         When method DELETE
         Then status 204
@@ -102,7 +100,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
         
 #       <--->
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -113,13 +111,11 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 #       <---->  Scenario have been finished. Now change back permissions:
         * configure headers = { Authorization: 'admin'}
 
-        
-
 
 
     Scenario: (-) Create new custom Module with empty National Code
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -131,7 +127,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with empty Title
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":""}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":""}
 
         Given path ishPath
         And request newModule
@@ -143,7 +139,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with not unique National Code
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"AUM1001A","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"AUM1001A","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -155,7 +151,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with empty type
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -167,7 +163,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with National Code value >12 symbols
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"SymbolsName13","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"SymbolsName13","nominalHours":7,"specialization":"4","title":"1"}
 
 
         Given path ishPath
@@ -180,7 +176,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with Title value >200 symbols
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A2"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A2"}
 
         Given path ishPath
         And request newModule
@@ -192,7 +188,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with Field of Education value >6 symbols
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"1234567","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"1234567","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -204,7 +200,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with Credit Points = 0
 
-        * def newModule = {"creditPoints":"0.00","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"HJK","nominalHours":7,"specialization":"4","title":"456"}
+        * def newModule = {"creditPoints":"0.00","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"HJK","nominalHours":7,"specialization":"4","title":"456"}
 
         Given path ishPath
         And request newModule
@@ -216,7 +212,7 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
     Scenario: (-) Create new custom Module with Expire Days = 0
 
-        * def newModule = {"creditPoints":"5","expiryDays":"0","fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"KUY","nominalHours":7,"specialization":"4","title":"457"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":"0","fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"KUY","nominalHours":7,"specialization":"4","title":"457"}
 
         Given path ishPath
         And request newModule
@@ -226,5 +222,84 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
 
 
+    Scenario: (-) Create new custom Module with credit points status 'Active'
+
+        * def newModule = {"creditPoints":"15", "creditPointsStatus":"Active", "expiryDays":"5","fieldOfEducation":"620700","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"HJK1","nominalHours":12,"specialization":"4","title":"Custom module with Active credit points"}
+
+        Given path ishPath
+        And request newModule
+        When method POST
+        Then status 204
+
+        Given path ishPathList
+        And param entity = 'Module'
+        When method GET
+        Then status 200
+        And match $.rows[*].values[*] contains ["HJK1"]
+
+        * def id = get[0] response.rows[?(@.values == ["HJK1","Custom module with Active credit points","true"])].id
+
+#       <--->  Scenario have been finished. Now find and remove created object from DB
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
 
 
+
+    Scenario: (-) Create new custom Module with credit points status 'Active but not visible online'
+
+        * def newModule = {"creditPoints":"25.00", "creditPointsStatus":"Active but not visible online", "expiryDays":"20","fieldOfEducation":"205828","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"HJK2","nominalHours":15,"specialization":"4","title":"Custom module with Active but not visible online credit points"}
+
+        Given path ishPath
+        And request newModule
+        When method POST
+        Then status 204
+
+        Given path ishPathList
+        And param entity = 'Module'
+        When method GET
+        Then status 200
+        And match $.rows[*].values[*] contains ["HJK2"]
+
+        * def id = get[0] response.rows[?(@.values == ["HJK2","Custom module with Active but not visible online credit points","true"])].id
+
+#       <--->  Scenario have been finished. Now find and remove created object from DB
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
+
+
+
+    Scenario: (-) Create new custom Module with credit points status 'Disabled'
+
+        * def newModule = {"creditPoints":"9", "creditPointsStatus":"Disabled", "expiryDays":"20","fieldOfEducation":"560721","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"HJK3","nominalHours":17,"specialization":"4","title":"Custom module with Disabled but not visible online credit points"}
+
+        Given path ishPath
+        And request newModule
+        When method POST
+        Then status 204
+
+        Given path ishPathList
+        And param entity = 'Module'
+        When method GET
+        Then status 200
+        And match $.rows[*].values[*] contains ["HJK3"]
+
+        * def id = get[0] response.rows[?(@.values == ["HJK3","Custom module with Disabled but not visible online credit points","true"])].id
+
+#       <--->  Scenario have been finished. Now find and remove created object from DB
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
+
+
+
+    Scenario: (-) Create new custom Module without credit points status
+
+        * def newModule = {"creditPoints":"15", "expiryDays":"10","fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"HJK4","nominalHours":7,"specialization":"4","title":"457"}
+
+        Given path ishPath
+        And request newModule
+        When method POST
+        Then status 400
+        And match $.errorMessage == "Credit points status is required."

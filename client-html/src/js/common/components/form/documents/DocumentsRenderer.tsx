@@ -24,8 +24,7 @@ import {
   createDocument,
   searchDocumentByHash,
   setDocumentFile,
-  setEditingDocument,
-  setSearchDocuments
+  setEditingDocument
 } from "./actions";
 import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
 import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/DocumentEditDialog";
@@ -73,7 +72,6 @@ interface DocumentsRendererProps {
   clearEditingDocument: any;
   searchExistingDocument: any;
   showConfirm: ShowConfirmCaller;
-  clearSearchDocuments: any;
   createDocument: any;
   tags: any;
 }
@@ -102,9 +100,8 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   closeEdit = () => {
-    const {clearEditingDocument, clearSearchDocuments} = this.props;
+    const {clearEditingDocument} = this.props;
 
-    clearSearchDocuments();
     clearEditingDocument();
 
     this.setState({
@@ -274,7 +271,6 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
       form,
       entity,
       setDocumentFile,
-      clearSearchDocuments,
       meta: {dirty}
     } = this.props;
 
@@ -298,7 +294,6 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
           searchDocument={this.searchDocumentItem}
           setDocumentFile={setDocumentFile}
           form={form}
-          clearSearchDocuments={clearSearchDocuments}
           closeAddDialog={this.closeAddDialog}
           isParentDragging={isDragging}
         />
@@ -374,7 +369,6 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearEditingDocument: () => dispatch(clearEditingDocument()),
-  clearSearchDocuments: () => dispatch(setSearchDocuments(null)),
   setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
     dispatch(setEditingDocument(document, editingFormName, viewDocument)),
   setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),

@@ -965,3 +965,13 @@
     - name: expireInterval
       value: "1 year"
       dataType: TEXT
+
+- name: Send portal password notification
+  keyCode: ish.script.sendPortalPasswordNotification
+  body: ish.script.sendPortalPasswordNotification.groovy
+  status: NOT_INSTALLED
+  triggerType: ON_DEMAND
+  description: Send portal password notification for all contacts, that enrolled today but don't have a new portal password
+  short: Send portal password notification for contacts
+  category: Notifications
+  tag:

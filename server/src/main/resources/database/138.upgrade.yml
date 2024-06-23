@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 138-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            columnExists:
+              columnName: attainmentText
+              tableName: Course
+      changes:
+        - addColumn:
+            tableName: Course
+            columns:
+              - column:
+                  name: attainmentText
+                  type: VARCHAR(128)

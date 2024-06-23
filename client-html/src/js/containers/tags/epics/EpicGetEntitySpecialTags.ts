@@ -25,11 +25,11 @@ const request: EpicUtils.Request<SpecialTag, EntityName> = {
       }
     ];
   },
-  processError: response => {
-    if (response && response.status === 403) {
+  processError: res => {
+    if (res.status === 403 || (res.status === 400 && res.data.id === 'specialType')) {
       return [];
     }
-    return FetchErrorHandler(response);
+    return FetchErrorHandler(res);
   }
 };
 

@@ -66,6 +66,7 @@ export const ENTITIES = stringLiterals(
   "Tag",
   "Tutor",
   "TutorAttendance",
+  "Faculty",
   "Voucher",
   "VoucherProduct",
   "WaitingList"
