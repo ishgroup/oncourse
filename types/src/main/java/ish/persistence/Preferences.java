@@ -403,6 +403,7 @@ public interface Preferences {
 	String USE_ONLY_OFFERED_MODULES_AND_QUALIFICATIONS = "use.offered.qualifications.only";
 	String MYOB_LAST_EXPORT_DATE = "myob.last.export.date";
 	String DATE_MESSAGE_BEFORE_ARCHIVED = "ish.message.date.archived";
+	String ARCHIVED_MESSAGES_INTERVALS = "ish.message.archived.intervals"
 
 
 	String FEATURE_CONCESSIONS_IN_ENROLMENT = "feature.concessionsInEnrolment";

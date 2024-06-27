@@ -39,6 +39,7 @@ class ArchivingMessagesService {
     private static final long MIN_YEARS_BEFORE_TO_ARCHIVE = 3
     private static final String TEMP_ARCHIVES_DIRECTORY = "temp-messages-archives"
     private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
+    private static final SimpleDateFormat FILE_NAME_DATE_FORMAT = new SimpleDateFormat("MM_yyyy")
 
 
     private static final Logger logger = LogManager.logger
@@ -65,60 +66,55 @@ class ArchivingMessagesService {
         this.documentService = documentService
     }
 
-    void archiveMessages(LocalDate dateToArchive) {
-        def yearsBetween = ChronoUnit.YEARS.between(dateToArchive, LocalDate.now())
+    void archiveMessages(LocalDate localDateToArchive) {
+        def yearsBetween = ChronoUnit.YEARS.between(localDateToArchive, LocalDate.now())
         if (yearsBetween < MIN_YEARS_BEFORE_TO_ARCHIVE) {
             validator.throwClientErrorException("archiveDate", "You cannot archive all messages before date, less then $MIN_YEARS_BEFORE_TO_ARCHIVE year ago")
         }
 
-        def previousYearEnd = dateToArchive.with(firstDayOfYear()).minus(1)
-        def endDate = dateToArchive.toDate().plus(1)
-        def startDate = previousYearEnd.toDate()
-        Integer year = 0
+        def dateToArchive = localDateToArchive.toDate()
 
         logger.warn("Full start time of archiving: " + System.currentTimeMillis())
-        while (year != null) {
-            String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(startDate, endDate)
-            uploadArchive(fileName)
-            new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
-            removeMessagesCreatedInInterval(startDate, endDate)
+        String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(dateToArchive)
+        uploadArchive(fileName)
+        new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
+        removeMessagesCreatedInInterval(dateToArchive)
 
-            year = nearestYearOfMessagesBefore(startDate)
-            if (year != null) {
-                while (previousYearEnd.year >= year)
-                    previousYearEnd = previousYearEnd.minusYears(1)
+        preferenceController.setDateMessageBeforeArchived(dateToArchive)
 
-                endDate = previousYearEnd.plusYears(1).plusDays(1).toDate()
-                startDate = previousYearEnd.toDate()
-            }
-        }
-
-        preferenceController.setDateMessageBeforeArchived(dateToArchive.toDate())
+        def existedIntervals = preferenceController.getArchivedMessagesIntervals()
+        existedIntervals = existedIntervals == null ? fileName : existedIntervals +";"+fileName
+        preferenceController.setArchivedMessagesIntervals(existedIntervals)
 
         logger.warn("Full end time of archiving: " + System.currentTimeMillis())
     }
 
 
-    private Integer nearestYearOfMessagesBefore(Date date) {
+    private Date firstDateOfMessagesBefore(Date date) {
         def dataSource = cayenneService.getDataSource()
 
-        Closure<Integer> databaseAction = { Statement statement ->
+        Closure<Date> databaseAction = { Statement statement ->
             def resultSet = statement.executeQuery("Select * from Message m WHERE m.createdOn < '${SQL_DATE_FORMAT.format(date)}' ORDER BY m.createdOn DESC LIMIT 1")
             if (!resultSet.next())
                 return null
 
-            return resultSet.getDate("createdOn").toYear().value
+            return resultSet.getDate("createdOn")
         }
 
-        return DbConnectionUtils.executeWithClose(databaseAction, dataSource) as Integer
+        return DbConnectionUtils.executeWithClose(databaseAction, dataSource)
     }
 
-    private String buildCompressedCsvForExcludeIntervalAndGetFilename(Date start, Date end) {
+    private String buildCompressedCsvForExcludeIntervalAndGetFilename(Date endDate) {
         def collegeName = licenseService.getCollege_key()
-        def year = start.plus(1).toYear().value
 
-        logger.warn("Start time of archiving for year $year: " + System.currentTimeMillis())
-        def fileName = getFreeFileName(collegeName, year)
+        logger.warn("Start time of archiving for messages before $endDate: " + System.currentTimeMillis())
+
+        def startDate = firstDateOfMessagesBefore(endDate)
+        if(!startDate){
+            validator.throwClientErrorException("archiveDate", "There are no messages before date $endDate")
+        }
+
+        def fileName = getFreeFileName(collegeName, startDate, endDate)
         def directoryPath = Path.of(TEMP_ARCHIVES_DIRECTORY)
         if (!Files.exists(directoryPath))
             Files.createDirectory(directoryPath)
@@ -138,8 +134,8 @@ class ArchivingMessagesService {
             int iterations = 0
             int lastFetchSize = 0
             while (resultSet == null || lastFetchSize > 0) {
-                resultSet = statement.executeQuery("Select * from Message m WHERE m.id>${startId} and m.createdOn > '${SQL_DATE_FORMAT.format(start)}'" +
-                        " and m.createdOn < '${SQL_DATE_FORMAT.format(end)}' ORDER BY m.id LIMIT 500")
+                resultSet = statement.executeQuery("Select * from Message m WHERE m.id>${startId} and m.createdOn > '${SQL_DATE_FORMAT.format(startDate)}'" +
+                        " and m.createdOn < '${SQL_DATE_FORMAT.format(endDate)}' ORDER BY m.id LIMIT 500")
                 csvWriter.writeAll(resultSet, resultSet == null)
                 resultSet.last()
                 lastFetchSize = resultSet.getRow()
@@ -148,7 +144,7 @@ class ArchivingMessagesService {
                 }
                 iterations++
             }
-            logger.warn("End time of archiving fore year $year: " + System.currentTimeMillis())
+            logger.warn("End time of archiving messages before $endDate: " + System.currentTimeMillis())
         }
 
         try {
@@ -159,16 +155,17 @@ class ArchivingMessagesService {
         return fileName
     }
 
-    private String getFreeFileName(String collegeName, int year) {
-        int fileIndex = 0
+    private String getFreeFileName(String collegeName, Date startDate, Date endDate) {
+        def formattedStart = FILE_NAME_DATE_FORMAT.format(startDate)
+        def formattedEnd = FILE_NAME_DATE_FORMAT.format(endDate)
+        String fileName = "$collegeName-$formattedStart-$formattedEnd" + ".csv.gz"
 
-        while (new File(TEMP_ARCHIVES_DIRECTORY + "/" + "$collegeName-$year-$fileIndex" + ".csv.gz").exists())
-            fileIndex++
+        if(new File(TEMP_ARCHIVES_DIRECTORY + "/" + fileName).exists())
+            validator.throwClientErrorException("archiveDate", "File with this interval already exists in temp files. Contact ish support")
 
-        String fileName = "$collegeName-$year-$fileIndex" + ".csv.gz"
-        while (s3Service.fileExists(fileName)) {
-            fileIndex++
-            fileName = "$collegeName-$year-$fileIndex" + ".csv.gz"
+        if (s3Service.fileExists(fileName)) {
+            validator.throwClientErrorException("archiveDate", "File with this interval already exists in s3 storage. Contact ish support")
+
         }
         return fileName
     }
@@ -179,9 +176,8 @@ class ArchivingMessagesService {
         s3Service.putFileFromStream(fileName, fileName, inputStream, AttachmentInfoVisibility.PRIVATE, (int) file.length())
     }
 
-    private void removeMessagesCreatedInInterval(Date startDate, Date endDate) {
-        SQLTemplate sqlTemplate = new SQLTemplate(Message.class, "Delete from Message where createdOn > '${SQL_DATE_FORMAT.format(startDate)}'" +
-                " and createdOn < '${SQL_DATE_FORMAT.format(endDate)}'")
+    private void removeMessagesCreatedInInterval(Date endDate) {
+        SQLTemplate sqlTemplate = new SQLTemplate(Message.class, "Delete from Message where createdOn < '${SQL_DATE_FORMAT.format(endDate)}'")
         cayenneService.newContext.performGenericQuery(sqlTemplate)
     }
 }

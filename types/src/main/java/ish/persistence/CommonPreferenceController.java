@@ -1465,4 +1465,12 @@ public abstract class CommonPreferenceController {
 	public void setDateMessageBeforeArchived(Date value){
 		setValue(DATE_MESSAGE_BEFORE_ARCHIVED, false, dateFormat.format(value));
 	}
+
+	public String getArchivedMessagesIntervals(){
+		return getValue(ARCHIVED_MESSAGES_INTERVALS, false);
+	}
+
+	public void setArchivedMessagesIntervals(String value){
+		setValue(ARCHIVED_MESSAGES_INTERVALS, false, value);
+	}
 }
