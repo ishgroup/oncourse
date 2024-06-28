@@ -60,6 +60,12 @@
 		<db-attribute name="studentId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
+	<db-entity name="Archive">
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="fileName" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="uniqueCode" type="VARCHAR" isMandatory="true" length="160"/>
+	</db-entity>
 	<db-entity name="Assessment">
 		<db-attribute name="active" type="BOOLEAN" isMandatory="true"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="64"/>
@@ -1724,6 +1730,12 @@
 		<obj-attribute name="source" type="ish.common.types.PaymentSource" db-attribute-path="source"/>
 		<obj-attribute name="status" type="ish.common.types.ApplicationStatus" db-attribute-path="status"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+	</obj-entity>
+	<obj-entity name="Archive" className="ish.oncourse.server.cayenne.Archive" dbEntityName="Archive"  superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" >
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="fileName"/>
+		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="uniqueCode"/>
 	</obj-entity>
 	<obj-entity name="ApplicationAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.ApplicationAttachmentRelation" clientClassName="ish.oncourse.cayenne.ApplicationAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "Application"]]></qualifier>

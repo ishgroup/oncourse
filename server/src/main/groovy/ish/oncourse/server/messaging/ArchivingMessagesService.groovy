@@ -18,8 +18,11 @@ import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.util.DbConnectionUtils
+import ish.oncourse.types.AuditAction
 import ish.s3.AmazonS3Service
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SQLTemplate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -31,16 +34,15 @@ import java.sql.Statement
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import java.util.zip.GZIPOutputStream
-
-import static java.time.temporal.TemporalAdjusters.firstDayOfYear
 
 class ArchivingMessagesService {
     private static final long MIN_YEARS_BEFORE_TO_ARCHIVE = 3
     private static final String TEMP_ARCHIVES_DIRECTORY = "temp-messages-archives"
     private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
     private static final SimpleDateFormat FILE_NAME_DATE_FORMAT = new SimpleDateFormat("MM_yyyy")
-
 
     private static final Logger logger = LogManager.logger
 
@@ -52,6 +54,9 @@ class ArchivingMessagesService {
 
     @Inject
     PreferenceController preferenceController
+
+    @Inject
+    AuditService auditService
 
     @Inject
     private EntityValidator validator
@@ -66,7 +71,7 @@ class ArchivingMessagesService {
         this.documentService = documentService
     }
 
-    void archiveMessages(LocalDate localDateToArchive) {
+    synchronized void archiveMessages(LocalDate localDateToArchive) {
         def yearsBetween = ChronoUnit.YEARS.between(localDateToArchive, LocalDate.now())
         if (yearsBetween < MIN_YEARS_BEFORE_TO_ARCHIVE) {
             validator.throwClientErrorException("archiveDate", "You cannot archive all messages before date, less then $MIN_YEARS_BEFORE_TO_ARCHIVE year ago")
@@ -75,46 +80,47 @@ class ArchivingMessagesService {
         def dateToArchive = localDateToArchive.toDate()
 
         logger.warn("Full start time of archiving: " + System.currentTimeMillis())
-        String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(dateToArchive)
-        uploadArchive(fileName)
-        new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
-        removeMessagesCreatedInInterval(dateToArchive)
-
-        preferenceController.setDateMessageBeforeArchived(dateToArchive)
-
-        def existedIntervals = preferenceController.getArchivedMessagesIntervals()
-        existedIntervals = existedIntervals == null ? fileName : existedIntervals +";"+fileName
-        preferenceController.setArchivedMessagesIntervals(existedIntervals)
-
-        logger.warn("Full end time of archiving: " + System.currentTimeMillis())
-    }
-
-
-    private Date firstDateOfMessagesBefore(Date date) {
-        def dataSource = cayenneService.getDataSource()
-
-        Closure<Date> databaseAction = { Statement statement ->
-            def resultSet = statement.executeQuery("Select * from Message m WHERE m.createdOn < '${SQL_DATE_FORMAT.format(date)}' ORDER BY m.createdOn DESC LIMIT 1")
-            if (!resultSet.next())
-                return null
-
-            return resultSet.getDate("createdOn")
+        def firstMessage = firstByDateMessagesBefore(dateToArchive)
+        if(!firstMessage){
+            validator.throwClientErrorException("archiveDate", "There are no messages before date $dateToArchive")
         }
 
-        return DbConnectionUtils.executeWithClose(databaseAction, dataSource)
+        ExecutorService executorService = Executors.newSingleThreadExecutor()
+        executorService.execute({ runnable ->
+            try {
+                String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(firstMessage.createdOn, dateToArchive)
+                uploadArchive(fileName)
+                new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
+                removeMessagesCreatedInInterval(dateToArchive)
+
+                preferenceController.setDateMessageBeforeArchived(dateToArchive)
+
+                def existedIntervals = preferenceController.getArchivedMessagesIntervals()
+                existedIntervals = existedIntervals == null ? fileName : existedIntervals + ";" + fileName
+                preferenceController.setArchivedMessagesIntervals(existedIntervals)
+
+                auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_COMPLETED, "Messages before $dateToArchive archived successfully")
+                logger.warn("Full end time of archiving: " + System.currentTimeMillis())
+            } catch (Exception e) {
+                auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_FAILED, e.getMessage())
+            }
+        })
     }
 
-    private String buildCompressedCsvForExcludeIntervalAndGetFilename(Date endDate) {
+
+    private Message firstByDateMessagesBefore(Date date) {
+        return ObjectSelect.query(Message)
+                .where(Message.CREATED_ON.lt(date))
+                .orderBy(Message.CREATED_ON.name)
+                .selectFirst(cayenneService.newContext)
+    }
+
+    private String buildCompressedCsvForExcludeIntervalAndGetFilename(Date firstDate, Date endDate) {
         def collegeName = licenseService.getCollege_key()
 
         logger.warn("Start time of archiving for messages before $endDate: " + System.currentTimeMillis())
 
-        def startDate = firstDateOfMessagesBefore(endDate)
-        if(!startDate){
-            validator.throwClientErrorException("archiveDate", "There are no messages before date $endDate")
-        }
-
-        def fileName = getFreeFileName(collegeName, startDate, endDate)
+        def fileName = getFreeFileName(collegeName, firstDate, endDate)
         def directoryPath = Path.of(TEMP_ARCHIVES_DIRECTORY)
         if (!Files.exists(directoryPath))
             Files.createDirectory(directoryPath)
@@ -134,7 +140,7 @@ class ArchivingMessagesService {
             int iterations = 0
             int lastFetchSize = 0
             while (resultSet == null || lastFetchSize > 0) {
-                resultSet = statement.executeQuery("Select * from Message m WHERE m.id>${startId} and m.createdOn > '${SQL_DATE_FORMAT.format(startDate)}'" +
+                resultSet = statement.executeQuery("Select * from Message m WHERE m.id>${startId}" +
                         " and m.createdOn < '${SQL_DATE_FORMAT.format(endDate)}' ORDER BY m.id LIMIT 500")
                 csvWriter.writeAll(resultSet, resultSet == null)
                 resultSet.last()

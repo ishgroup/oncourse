@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 139-1
+      author: dmitry
+      preConditions:
+        - onFail: HALT
+        - not:
+            tableExists:
+              tableName: Archive
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: fileName
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uniqueCode
+                  type: VARCHAR(160)
+                  constraints:
+                    nullable: false
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+            tableName: Archive
