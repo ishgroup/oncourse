@@ -31,4 +31,14 @@ databaseChangeLog:
                   defaultValueComputed: 'NULL'
                   name: createdOn
                   type: datetime
+              - column:
+                  name: dateFrom
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dateTo
+                  type: datetime
+                  constraints:
+                    nullable: false
             tableName: Archive

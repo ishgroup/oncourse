@@ -15,6 +15,7 @@ import ish.common.types.AttachmentInfoVisibility
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.validation.EntityValidator
+import ish.oncourse.server.cayenne.Archive
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.license.LicenseService
@@ -24,6 +25,7 @@ import ish.oncourse.types.AuditAction
 import ish.s3.AmazonS3Service
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SQLTemplate
+import org.apache.cayenne.query.SelectById
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -89,7 +91,7 @@ class ArchivingMessagesService {
         executorService.execute({ runnable ->
             try {
                 String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(firstMessage.createdOn, dateToArchive)
-                uploadArchive(fileName)
+                String uuid = uploadArchiveAndGetKey(fileName)
                 new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
                 removeMessagesCreatedInInterval(dateToArchive)
 
@@ -99,7 +101,15 @@ class ArchivingMessagesService {
                 existedIntervals = existedIntervals == null ? fileName : existedIntervals + ";" + fileName
                 preferenceController.setArchivedMessagesIntervals(existedIntervals)
 
-                auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_COMPLETED, "Messages before $dateToArchive archived successfully")
+                def archive = cayenneService.newContext.newObject(Archive)
+                archive.createdOn = new Date()
+                archive.fileName = fileName
+                archive.uniqueCode = uuid
+                archive.dateFrom = firstMessage.createdOn
+                archive.dateTo = dateToArchive
+                archive.context.commitChanges()
+
+                auditService.submit(archive, AuditAction.MESSAGES_ARCHIVING_COMPLETED, "Messages before $dateToArchive archived successfully")
                 logger.warn("Full end time of archiving: " + System.currentTimeMillis())
             } catch (Exception e) {
                 auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_FAILED, e.getMessage())
@@ -176,14 +186,21 @@ class ArchivingMessagesService {
         return fileName
     }
 
-    private void uploadArchive(String fileName) {
+    private String uploadArchiveAndGetKey(String fileName) {
         def file = new File("$TEMP_ARCHIVES_DIRECTORY/$fileName")
         def inputStream = new FileInputStream(file)
+        String key = UUID.randomUUID().toString();
         s3Service.putFileFromStream(fileName, fileName, inputStream, AttachmentInfoVisibility.PRIVATE, (int) file.length())
+        return key
     }
 
     private void removeMessagesCreatedInInterval(Date endDate) {
         SQLTemplate sqlTemplate = new SQLTemplate(Message.class, "Delete from Message where createdOn < '${SQL_DATE_FORMAT.format(endDate)}'")
         cayenneService.newContext.performGenericQuery(sqlTemplate)
+    }
+
+    String getLink(Long archiveId){
+        def archive = SelectById.query(Archive, archiveId).selectOne(cayenneService.newReadonlyContext)
+        return s3Service.getFileUrl(archive.uniqueCode, AttachmentInfoVisibility.PUBLIC)
     }
 }

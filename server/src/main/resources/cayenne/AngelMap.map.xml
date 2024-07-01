@@ -62,6 +62,8 @@
 	</db-entity>
 	<db-entity name="Archive">
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="dateFrom" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="dateTo" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="fileName" type="VARCHAR" isMandatory="true" length="255"/>
 		<db-attribute name="uniqueCode" type="VARCHAR" isMandatory="true" length="160"/>
@@ -1733,6 +1735,8 @@
 	</obj-entity>
 	<obj-entity name="Archive" className="ish.oncourse.server.cayenne.Archive" dbEntityName="Archive"  superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" >
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="dateFrom" type="java.util.Date" db-attribute-path="dateFrom"/>
+		<obj-attribute name="dateTo" type="java.util.Date" db-attribute-path="dateTo"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="fileName"/>
 		<obj-attribute name="uniqueCode" type="java.lang.String" db-attribute-path="uniqueCode"/>

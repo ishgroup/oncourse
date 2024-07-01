@@ -85,6 +85,10 @@ paths:
     $ref: './path/list/entity/accountTransaction/api.yaml'
   /list/entity/application:
     $ref: './path/list/entity/application/api.yaml'
+  /list/entity/archive:
+    $ref: './path/list/entity/archive/api.yaml'
+  /list/entity/archive/link:
+    $ref: './path/list/entity/archive/link/api.yaml'
   /list/entity/articleProduct:
     $ref: './path/list/entity/articleProduct/api.yaml'
   /list/entity/assessment:
