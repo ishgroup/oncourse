@@ -16,6 +16,7 @@ import com.google.inject.Module
 import ish.oncourse.server.api.v1.service.AccessApi
 import ish.oncourse.server.api.v1.service.AccountApi
 import ish.oncourse.server.api.v1.service.ApplicationApi
+import ish.oncourse.server.api.v1.service.ArchiveApi
 import ish.oncourse.server.api.v1.service.ArticleProductApi
 import ish.oncourse.server.api.v1.service.AssessmentApi
 import ish.oncourse.server.api.v1.service.AssessmentClassApi
@@ -98,6 +99,7 @@ import ish.oncourse.server.api.v1.service.impl.AccessApiImpl
 import ish.oncourse.server.api.v1.service.impl.AccountApiImpl
 import ish.oncourse.server.api.v1.service.impl.ApiTokenApiImpl
 import ish.oncourse.server.api.v1.service.impl.ApplicationApiImpl
+import ish.oncourse.server.api.v1.service.impl.ArchiveApiImpl
 import ish.oncourse.server.api.v1.service.impl.ArticleProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentApiImpl
 import ish.oncourse.server.api.v1.service.impl.AssessmentClassApiImpl
@@ -185,6 +187,7 @@ class ApiImplementationModule implements Module {
         binder.bind(AccountApi).to(AccountApiImpl)
         binder.bind(ApplicationApi).to(ApplicationApiImpl)
         binder.bind(ArticleProductApi).to(ArticleProductApiImpl)
+        binder.bind(ArchiveApi).to(ArchiveApiImpl)
         binder.bind(AssessmentApi).to(AssessmentApiImpl)
         binder.bind(AssessmentSubmissionApi).to(AssessmentSubmissionApiImpl)
         binder.bind(AuditApi).to(AuditApiImpl)

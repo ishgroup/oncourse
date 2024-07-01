@@ -27,7 +27,7 @@ class ArchiveApiImpl implements ArchiveApi {
     @Override
     List<ArchiveDTO> getAllArchives() {
         return ObjectSelect.query(Archive)
-                .orderBy(Archive.FILE_NAME.name)
+                .orderBy(Archive.DATE_FROM.name)
                 .select(cayenneService.newReadonlyContext)
                 .collect { toRest(it) }
     }
