@@ -38,6 +38,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantLock
 import java.util.zip.GZIPOutputStream
 
@@ -47,7 +48,7 @@ class ArchivingMessagesService {
     private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
     private static final SimpleDateFormat FILE_NAME_DATE_FORMAT = new SimpleDateFormat("MM_yyyy")
 
-    private static ReentrantLock mutex = new ReentrantLock();
+    private static AtomicBoolean archiveInProgress = new AtomicBoolean(false)
     private static final Logger logger = LogManager.logger
 
     @Inject
@@ -83,7 +84,10 @@ class ArchivingMessagesService {
 
         def dateToArchive = localDateToArchive.toDate()
 
-        mutex.lock()
+        while(archiveInProgress.get() == Boolean.TRUE)
+            continue
+        archiveInProgress.set(true)
+
         Message firstMessage = null
         try {
             firstMessage = firstByDateMessagesBefore(dateToArchive)
@@ -91,7 +95,7 @@ class ArchivingMessagesService {
                 validator.throwClientErrorException("archiveDate", "There are no messages before date $dateToArchive")
             }
         } catch (Exception e) {
-            mutex.unlock()
+            archiveInProgress.set(false)
             throw e
         }
 
@@ -124,8 +128,7 @@ class ArchivingMessagesService {
             } catch (Exception e) {
                 auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_FAILED, e.getMessage())
             } finally {
-                if(mutex.locked)
-                    mutex.unlock()
+                archiveInProgress.set(false)
             }
         })
     }
