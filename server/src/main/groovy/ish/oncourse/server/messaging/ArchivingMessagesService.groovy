@@ -176,8 +176,9 @@ class ArchivingMessagesService {
         def formattedEnd = FILE_NAME_DATE_FORMAT.format(endDate)
         String fileName = "$collegeName-$formattedStart-$formattedEnd" + ".csv.gz"
 
-        if(new File(TEMP_ARCHIVES_DIRECTORY + "/" + fileName).exists())
-            validator.throwClientErrorException("archiveDate", "File with this interval already exists in temp files. Contact ish support")
+        def file = new File(TEMP_ARCHIVES_DIRECTORY + "/" + fileName)
+        if(file.exists())
+            file.delete()
 
         if (s3Service.fileExists(fileName)) {
             validator.throwClientErrorException("archiveDate", "File with this interval already exists in s3 storage. Contact ish support")
