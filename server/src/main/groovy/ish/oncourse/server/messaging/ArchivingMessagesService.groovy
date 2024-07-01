@@ -38,6 +38,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.locks.ReentrantLock
 import java.util.zip.GZIPOutputStream
 
 class ArchivingMessagesService {
@@ -46,6 +47,7 @@ class ArchivingMessagesService {
     private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
     private static final SimpleDateFormat FILE_NAME_DATE_FORMAT = new SimpleDateFormat("MM_yyyy")
 
+    private static ReentrantLock mutex = new ReentrantLock();
     private static final Logger logger = LogManager.logger
 
     @Inject
@@ -73,7 +75,7 @@ class ArchivingMessagesService {
         this.documentService = documentService
     }
 
-    synchronized void archiveMessages(LocalDate localDateToArchive) {
+    void archiveMessages(LocalDate localDateToArchive) {
         def yearsBetween = ChronoUnit.YEARS.between(localDateToArchive, LocalDate.now())
         if (yearsBetween < MIN_YEARS_BEFORE_TO_ARCHIVE) {
             validator.throwClientErrorException("archiveDate", "You cannot archive all messages before date, less then $MIN_YEARS_BEFORE_TO_ARCHIVE year ago")
@@ -81,15 +83,23 @@ class ArchivingMessagesService {
 
         def dateToArchive = localDateToArchive.toDate()
 
-        logger.warn("Full start time of archiving: " + System.currentTimeMillis())
-        def firstMessage = firstByDateMessagesBefore(dateToArchive)
-        if(!firstMessage){
-            validator.throwClientErrorException("archiveDate", "There are no messages before date $dateToArchive")
+        mutex.lock()
+        Message firstMessage = null
+        try {
+            firstMessage = firstByDateMessagesBefore(dateToArchive)
+            if(!firstMessage){
+                validator.throwClientErrorException("archiveDate", "There are no messages before date $dateToArchive")
+            }
+        } catch (Exception e) {
+            mutex.unlock()
+            throw e
         }
 
         ExecutorService executorService = Executors.newSingleThreadExecutor()
         executorService.execute({ runnable ->
             try {
+                logger.warn("Full start time of archiving: " + System.currentTimeMillis())
+
                 String fileName = buildCompressedCsvForExcludeIntervalAndGetFilename(firstMessage.createdOn, dateToArchive)
                 String uuid = uploadArchiveAndGetKey(fileName)
                 new File("$TEMP_ARCHIVES_DIRECTORY/$fileName").delete()
@@ -113,6 +123,9 @@ class ArchivingMessagesService {
                 logger.warn("Full end time of archiving: " + System.currentTimeMillis())
             } catch (Exception e) {
                 auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_FAILED, e.getMessage())
+            } finally {
+                if(mutex.locked)
+                    mutex.unlock()
             }
         })
     }
@@ -190,8 +203,8 @@ class ArchivingMessagesService {
     private String uploadArchiveAndGetKey(String fileName) {
         def file = new File("$TEMP_ARCHIVES_DIRECTORY/$fileName")
         def inputStream = new FileInputStream(file)
-        String key = UUID.randomUUID().toString();
-        s3Service.putFileFromStream(fileName, fileName, inputStream, AttachmentInfoVisibility.PRIVATE, (int) file.length())
+        String key = UUID.randomUUID().toString()
+        s3Service.putFileFromStream(key, fileName, inputStream, AttachmentInfoVisibility.PRIVATE, (int) file.length())
         return key
     }
 
@@ -202,6 +215,6 @@ class ArchivingMessagesService {
 
     String getLink(Long archiveId){
         def archive = SelectById.query(Archive, archiveId).selectOne(cayenneService.newReadonlyContext)
-        return s3Service.getFileUrl(archive.uniqueCode, AttachmentInfoVisibility.PUBLIC)
+        return s3Service.getFileUrl(archive.uniqueCode, AttachmentInfoVisibility.PRIVATE)
     }
 }
