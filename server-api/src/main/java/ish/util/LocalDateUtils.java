@@ -117,4 +117,9 @@ public class LocalDateUtils {
 				date.toInstant().atZone(UTC).toLocalDateTime();
 	}
 
+	public static LocalDateTime dateToTimeValue(Date date, ZoneId timeZone) {
+		return date == null ? null :
+				date.toInstant().atZone(timeZone).toLocalDateTime();
+	}
+
 }
