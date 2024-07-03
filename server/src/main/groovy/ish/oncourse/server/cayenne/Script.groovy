@@ -19,8 +19,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Script
 
 import javax.annotation.Nonnull
-import java.util.Date
-
 /**
  * Definition of script instance. onCourse supports scripts written in Groovy programming language.
  * Scripts can be executed on demand or scheduled to be executed at certain time (cron schedule) or
@@ -147,5 +145,9 @@ class Script extends _Script implements Queueable, AutomationTrait {
 		return super.getTriggerType()
     }
 
+	@API
+	boolean isCustom() {
+		return !keyCode.startsWith("ish.")
+	}
 
 }

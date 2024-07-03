@@ -322,6 +322,10 @@ class MessageApiService extends EntityApiService<MessageDTO, Message, MessageDao
             validator.throwClientErrorException("templateId", "The message template didn't find out.")
         }
 
+        if (template.type.equals(MessageType.EMAIL) && template.isCustom()) {
+            validator.throwClientErrorException("templateId", "Mailing service is temporarily unavailable. We are already working on a solution to enable it as soon as possible")
+        }
+
         List<Long> entitiesIds = getEntityIds(request.entity, request.searchQuery, context, template)
         String entityName = request.entity
 

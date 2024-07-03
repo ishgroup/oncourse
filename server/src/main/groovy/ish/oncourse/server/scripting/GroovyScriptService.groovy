@@ -478,6 +478,14 @@ class GroovyScriptService {
             return ScriptResult.failure("Have no license to run custom scripts.")
         }
 
+        if (script.isCustom()) {
+            def emailPattern = /email\s*\{[^}]*\}/
+            def messagePattern = /message\s*\{[^}]*\}/
+            if ((script.script =~ emailPattern).find() || (script.script =~ messagePattern).find()) {
+                return ScriptResult.failure("Mailing service is temporarily unavailable. We are already working on a solution to enable it as soon as possible")
+            }
+        }
+
         def engine = engineManager.getEngineByName(GROOVY_SCRIPT_ENGINE)
 
         def bindings = getServiceBindings()
