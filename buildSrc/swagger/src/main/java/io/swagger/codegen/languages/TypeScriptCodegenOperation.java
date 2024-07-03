@@ -20,4 +20,13 @@ public class TypeScriptCodegenOperation extends CodegenOperation {
     public boolean isGetOrDeleteMethod() {
         return "GET".equals(this.httpMethod) || "DELETE".equals(this.httpMethod);
     }
+
+    public String pathWithParams() {
+        String path = this.pathParams.stream()
+                .map( param -> param.paramName)
+                .reduce(this.path, (subtotal, element) ->
+                        subtotal.replaceAll(String.format("\\{%s}", element), String.format("\\${%s}", element))
+                );
+        return path.replaceAll("[^$]\\{.+?}", "");
+    }
 }
