@@ -1,4 +1,5 @@
 import MenuItem from "@mui/material/MenuItem";
+import Tooltip from "@mui/material/Tooltip";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -24,9 +25,13 @@ const SendMessageMenu: React.FC<SendMessageMenuProps> = props => {
   }, [selection, entity]);
 
   return (
-    <MenuItem disabled={isNew} className="listItemPadding" onClick={onSendMessage}>
-      Send message
-    </MenuItem>
+    <Tooltip title="Service is temporarily unavailable. We are already working on a solution to enable it as soon as possible">
+      <div>
+        <MenuItem disabled className="listItemPadding" onClick={onSendMessage}>
+          Send message
+        </MenuItem>
+      </div>
+    </Tooltip>
   );
 };
 
