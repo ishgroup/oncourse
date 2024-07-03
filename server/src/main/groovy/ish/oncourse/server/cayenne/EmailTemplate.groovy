@@ -16,8 +16,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._EmailTemplate
 
 import javax.annotation.Nonnull
-import java.util.Date
-
 /**
  * Email template defines generic structure of an email suited for some particular purpose (enrolment confirmation,
  * invoice, cancellation notice) which is meant to be filled in with specific data and sent out repeatedly.
@@ -102,6 +100,11 @@ class EmailTemplate extends _EmailTemplate implements Queueable, AutomationTrait
 	@Override
 	String getSubject() {
 		return super.getSubject()
+	}
+
+	@API
+	boolean isCustom() {
+		return !keyCode.startsWith("ish.")
 	}
 }
 
