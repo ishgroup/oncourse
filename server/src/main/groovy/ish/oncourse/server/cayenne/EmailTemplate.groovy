@@ -104,7 +104,7 @@ class EmailTemplate extends _EmailTemplate implements Queueable, AutomationTrait
 
 	@API
 	boolean isCustom() {
-		return keyCode != null && !keyCode.startsWith("ish.")
+		return !keyCode.startsWith("ish.")
 	}
 }
 
