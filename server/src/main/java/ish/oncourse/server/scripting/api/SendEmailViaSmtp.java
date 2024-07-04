@@ -62,6 +62,8 @@ public class SendEmailViaSmtp {
                 mailDeliveryService.sendEmail(param);
 
             MessageForSmtp.valueOf(context, parameters.getCreatorKey(), param, batchIsOver).create();
+            if(batchIsOver)
+                throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $maxEmailBatch. Messages created, but set as failed");
         }
     }
 }

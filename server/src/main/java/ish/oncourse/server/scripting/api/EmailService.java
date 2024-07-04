@@ -91,7 +91,10 @@ public class EmailService {
 		} else {
 			SendEmailViaMessage.valueOf(spec, cayenneService.getNewContext(), templateService, preferenceController, collision, batchIsOver).send();
 		}
-    }
+
+		if(batchIsOver)
+			throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $maxEmailBatch. Messages created, but set as failed");
+	}
 
 	@Deprecated
 	public void smtp(@DelegatesTo(SmtpSpec.class) Closure cl) throws MessagingException {
