@@ -22,16 +22,19 @@ public class MessageForSmtp {
     private ObjectContext context;
     private String creatorKey;
     private MailDeliveryParam param;
+    private boolean batchIsOver;
 
     private MessageForSmtp() {
 
     }
 
-    public static MessageForSmtp valueOf(ObjectContext context, String creatorKey, MailDeliveryParam param) {
+    public static MessageForSmtp valueOf(ObjectContext context, String creatorKey,
+                                         MailDeliveryParam param, boolean batchIsOver) {
         var messageForSmtp = new MessageForSmtp();
         messageForSmtp.context = context;
         messageForSmtp.creatorKey = creatorKey;
         messageForSmtp.param = param;
+        messageForSmtp.batchIsOver = batchIsOver;
         return messageForSmtp;
     }
 
@@ -43,7 +46,9 @@ public class MessageForSmtp {
             message.setEmailSubject(param.getGetSubject().get());
             message.setEmailBody(param.getGetContent().getGetEmailPlainBody().get());
             message.setEmailHtmlBody(param.getGetContent().getGetEmailHtmlBody().get());
-            message.setStatus(MessageStatus.SENT);
+
+            var status = batchIsOver ? MessageStatus.FAILED : MessageStatus.SENT;
+            message.setStatus(status);
 
             context.commitChanges();
         }

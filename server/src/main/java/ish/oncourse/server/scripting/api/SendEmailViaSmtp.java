@@ -26,35 +26,42 @@ public class SendEmailViaSmtp {
     private MailDeliveryService mailDeliveryService;
     private TemplateService templateService;
     private Function<Contact, Boolean> collision;
+    private boolean batchIsOver;
 
     private SendEmailViaSmtp(){}
 
-    public static SendEmailViaSmtp valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, MailDeliveryService mailDeliveryService, Function<Contact, Boolean> collision){
+    public static SendEmailViaSmtp valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, MailDeliveryService mailDeliveryService,
+                                           Function<Contact, Boolean> collision, boolean batchIsOver){
         var creator = new SendEmailViaSmtp();
         creator.parameters = new SmtpParameters(spec);
         creator.templateService = templateService;
         creator.mailDeliveryService = mailDeliveryService;
         creator.context = context;
         creator.collision = collision;
+        creator.batchIsOver = batchIsOver;
         return creator;
     }
 
-    public static SendEmailViaSmtp valueOf(SmtpParameters smtpParameters, ObjectContext context, TemplateService templateService, MailDeliveryService mailDeliveryService, Function<Contact, Boolean> collision){
+    public static SendEmailViaSmtp valueOf(SmtpParameters smtpParameters, ObjectContext context, TemplateService templateService,
+                                           MailDeliveryService mailDeliveryService, Function<Contact, Boolean> collision, boolean batchIsOver){
         var creator = new SendEmailViaSmtp();
         creator.parameters = smtpParameters;
         creator.templateService = templateService;
         creator.mailDeliveryService = mailDeliveryService;
         creator.context = context;
         creator.collision = collision;
+        creator.batchIsOver = batchIsOver;
         return creator;
     }
 
     public void send() throws MessagingException {
         if (collision.apply(null)) {
             var param = MailDeliveryParamBuilder.valueOf(parameters, templateService).build();
-            mailDeliveryService.sendEmail(param);
 
-            MessageForSmtp.valueOf(context, parameters.getCreatorKey(), param).create();
+            if(!batchIsOver)
+                mailDeliveryService.sendEmail(param);
+
+            MessageForSmtp.valueOf(context, parameters.getCreatorKey(), param, batchIsOver).create();
         }
     }
 }
