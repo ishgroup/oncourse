@@ -36,7 +36,6 @@ import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.api.EmailService;
-import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.security.api.IPermissionService;
 import ish.oncourse.server.services.AuditService;
 import ish.oncourse.server.services.ISystemUserService;
@@ -155,7 +154,7 @@ public class AngelModule extends ConfigModule {
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
 
         binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
-        binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
+        //binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
         binder.bind(PreferenceController.class);
         binder.bind(PluginsPrefsService.class);
