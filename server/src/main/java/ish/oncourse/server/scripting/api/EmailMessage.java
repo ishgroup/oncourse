@@ -40,6 +40,8 @@ public class EmailMessage {
 	private Map<String, Object> bindings = new HashMap<>();
 	private Map<Contact, String> recipients = new HashMap<>();
 	private SystemUser createdByUser;
+	private boolean batchIsOver = false;
+	private Integer emailBatch = null;
 
 	/**
 	 * Create a new message.
@@ -47,9 +49,16 @@ public class EmailMessage {
 	 * @param template
 	 * @param templateService
 	 */
-	public EmailMessage(EmailTemplate template, TemplateService templateService) {
+	public EmailMessage(EmailTemplate template, TemplateService templateService, boolean batchIsOver) {
 		this.templateService = templateService;
 		this.template = template;
+		this.batchIsOver = batchIsOver;
+	}
+
+	public EmailMessage(EmailTemplate template, TemplateService templateService, Integer emailBatch) {
+		this.templateService = templateService;
+		this.template = template;
+		this.emailBatch = emailBatch;
 	}
 
 	public EmailTemplate getTemplate() {
@@ -118,6 +127,7 @@ public class EmailMessage {
 	public boolean send() {
 		var context = template.getObjectContext();
 
+
 		var messages = createMessages(template, bindings, recipients);
 
 		if (!messages.isEmpty()) {
@@ -153,6 +163,12 @@ public class EmailMessage {
 
 		List<Message> messages = new ArrayList<>();
 
+		MessageStatus status;
+		if(emailBatch != null && emailBatch < recipients.size() || batchIsOver)
+			status = MessageStatus.FAILED;
+		else
+			status = MessageStatus.QUEUED;
+
 		for (var entry : recipients.entrySet()) {
 			if (StringUtils.trimToNull(entry.getValue()) != null) {
 				var localContact = context.localObject(entry.getKey());
@@ -161,7 +177,8 @@ public class EmailMessage {
 				var message = createMessage(template, bindings);
 
 				message.setNumberOfAttempts(0);
-				message.setStatus(MessageStatus.QUEUED);
+
+				message.setStatus(status);
 				message.setType(MessageType.EMAIL);
 				message.setContact(localContact);
 				message.setDestinationAddress(entry.getValue());

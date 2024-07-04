@@ -104,7 +104,7 @@ class MessageService {
 		}
 	}
 
-	def static buildMessage(Message message, Contact contact, MessageType type) {
+	def static buildMessage(Message message, Contact contact, MessageType type, boolean batchIsOver = false) {
 
 		switch (type) {
 			case MessageType.SMS:
@@ -123,7 +123,7 @@ class MessageService {
 				throw new UnsupportedOperationException()
 		}
 		message.numberOfAttempts = 0
-		message.status = MessageStatus.QUEUED
+		message.status = batchIsOver ? MessageStatus.FAILED : MessageStatus.QUEUED
 		message.type = type
 
 		message.contact = contact
@@ -176,8 +176,9 @@ class MessageService {
 
 		if (messageSpec.entityRecords.isEmpty()) {
 			if (!messageSpec.toList.isEmpty() && (messageSpec.templateIdentifier != null || messageSpec.content != null || !messageSpec.attachments.isEmpty())) {
+				def batchIsOver = messageSpec.toList.size() > mailDeliveryService.smtpService.email_batch
 				SmtpParameters parameters = new SmtpParameters(messageSpec)
-				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
+				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision, batchIsOver).send()
 			}
 		} else {
 
@@ -208,6 +209,20 @@ class MessageService {
 			records = messageSpec.entityRecords.collect { it as CayenneDataObject } as List<CayenneDataObject>
 		}
 
+		boolean batchIsOver = false
+		def maxEmailBatch = mailDeliveryService.getSmtpService().email_batch
+		if(records.size() > maxEmailBatch)
+			batchIsOver = true
+
+		def recipientsFullCount = 0
+
+		for(def it: records) {
+			recipientsFullCount += getRecipientsListFromEntity(it).size()
+			if(recipientsFullCount > maxEmailBatch) {
+				batchIsOver = true
+				break
+			}
+		}
 
 		int counter = 0
 		Map<String, Object> bindings = messageSpec.bindings
@@ -237,7 +252,7 @@ class MessageService {
 					SmtpParameters parameters = new SmtpParameters(messageSpec)
 					parameters.toList = List.of(recipient.email)
 
-					SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
+					SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision, batchIsOver).send()
 				}
 			}
 

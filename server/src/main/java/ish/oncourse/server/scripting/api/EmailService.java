@@ -53,7 +53,7 @@ public class EmailService {
 		ObjectContext context = cayenneService.getNewContext();
 
 		var localTemplate = context.localObject(template);
-		var message = new EmailMessage(localTemplate, templateService);
+		var message = new EmailMessage(localTemplate, templateService, mailDeliveryService.getSmtpService().getEmail_batch());
 
 		message.from(preferenceController.getEmailFromAddress());
 
@@ -84,10 +84,12 @@ public class EmailService {
 		Function<Contact, Boolean> collision = spec.getCreatorKey() == null ? c -> true :
 				(contact) -> NeedToSendEmail.valueOf(auditService, spec.getKeyCollision(), spec.getCreatorKey(), cayenneService.getNewContext(), contact).get();
 
+		boolean batchIsOver = spec.getRecipients().size() > mailDeliveryService.getSmtpService().getEmail_batch();
+
 		if (spec.getRecipients().isEmpty()) {
-			SendEmailViaSmtp.valueOf(spec, cayenneService.getNewContext(), templateService, mailDeliveryService, collision).send();
+			SendEmailViaSmtp.valueOf(spec, cayenneService.getNewContext(), templateService, mailDeliveryService, collision, batchIsOver).send();
 		} else {
-			SendEmailViaMessage.valueOf(spec, cayenneService.getNewContext(), templateService, preferenceController, collision).send();
+			SendEmailViaMessage.valueOf(spec, cayenneService.getNewContext(), templateService, preferenceController, collision, batchIsOver).send();
 		}
     }
 
