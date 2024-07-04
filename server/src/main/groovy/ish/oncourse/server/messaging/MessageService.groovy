@@ -264,11 +264,15 @@ class MessageService {
 
 		if(!messageSpec.toList.isEmpty()){
 			SmtpParameters parameters = new SmtpParameters(messageSpec)
-			SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
+			SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision, batchIsOver).send()
 		}
+
 
 		if (counter > 0) {
 			context.commitChanges()
 		}
+
+		if(batchIsOver)
+			throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $maxEmailBatch. Messages created, but set as failed")
 	}
 }
