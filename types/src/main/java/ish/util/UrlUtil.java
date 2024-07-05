@@ -140,6 +140,41 @@ public class UrlUtil {
         return false;
     }
 
+
+    public static String createSignedUrl(String fullPath, Date expiry, String hashSalt) {
+        if (StringUtils.trimToNull(fullPath) == null) {
+            throw new IllegalArgumentException("Path cannot be null.");
+        }
+        if (StringUtils.trimToNull(hashSalt) == null) {
+            throw new IllegalArgumentException("Hash salt cannot be null.");
+        }
+        if (expiry == null) {
+            throw new IllegalArgumentException("Expiry date cannot be null.");
+        }
+
+        DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
+
+        StringBuilder urlBuilder = new StringBuilder(fullPath);
+        if (!fullPath.contains(URL_PARAM_START)) {
+            urlBuilder.append(URL_PARAM_START);
+        } else {
+            urlBuilder.append(URL_PARAM_DELIMITER);
+        }
+
+        urlBuilder.append(VALID_UNTIL).append('=');
+        urlBuilder.append(expiryDateFormat.format(expiry));
+
+        String unsignedUrl = urlBuilder.toString();
+
+        String hashKey = sha1Base64(hashSalt + unsignedUrl);
+
+        urlBuilder.append(URL_PARAM_DELIMITER);
+        urlBuilder.append(KEY).append('=');
+        urlBuilder.append(hashKey);
+
+        return urlBuilder.toString();
+    }
+
     /**
      * Transforms given path into signed portal URL by prepending 'https://www.skillsoncourse.com.au/portal'
      * and appending 'valid' and 'key' parameters.
