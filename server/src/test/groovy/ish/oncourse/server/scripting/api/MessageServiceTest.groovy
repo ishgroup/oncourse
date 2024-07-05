@@ -132,8 +132,8 @@ class MessageServiceTest extends TestWithDatabase {
         Assertions.assertEquals("fromEmail@gmail.com", address.address)
         Assertions.assertEquals("test college", address.personal)
 
-        Assertions.assertNotNull(mailDeliveryParamValue.getContent.get())
-        Multipart multipart = mailDeliveryParamValue.getContent.get()
+        Assertions.assertNotNull(mailDeliveryParamValue.getContent.get("unsubscribe link"))
+        Multipart multipart = mailDeliveryParamValue.getContent.get("unsubscribe link")
         Assertions.assertEquals("That is content.", multipart.getBodyPart(0).content)
         Assertions.assertEquals("text/plain", multipart.getBodyPart(0).contentType)
         Assertions.assertEquals("Example of attachment", multipart.getBodyPart(1).content)
