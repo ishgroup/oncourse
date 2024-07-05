@@ -63,13 +63,13 @@ class GetContent {
         return getEmailHtmlBody
     }
 
-    Multipart get() throws MessagingException {
+    Multipart get(String unsubscribeLink) throws MessagingException {
 
         Multipart multipart = new MimeMultipart()
 
         if (StringUtils.isNotBlank(getEmailHtmlBody.get())) {
             BodyPart htmlPart = new MimeBodyPart()
-            htmlPart.setContent(getEmailHtmlBody.get(), TEXT_HTML)
+            htmlPart.setContent(getEmailHtmlBody.get() + "\n\nPress to unsubscribe from all messages: $unsubscribeLink", TEXT_HTML)
 
             multipart.addBodyPart(htmlPart)
         } else if (StringUtils.isNotBlank(getEmailPlainBody.get())) {

@@ -17,15 +17,14 @@ import com.sun.mail.smtp.SMTPMessage
 import groovy.transform.CompileDynamic
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Contact
 import org.apache.cayenne.query.ObjectSelect
-
-import static javax.mail.Message.RecipientType
 import org.apache.commons.lang3.StringUtils
 
 import javax.mail.MessagingException
 import javax.mail.Transport
+
+import static javax.mail.Message.RecipientType
 
 @CompileDynamic
 class MailDeliveryService {
@@ -76,14 +75,13 @@ class MailDeliveryService {
 
         for(def address: toAddresses) {
             message.setRecipients(RecipientType.TO, address)
-            var contacts = ObjectSelect.query(Contact.class).where(Contact.EMAIL.eq(address.toString()))
+            def contacts = ObjectSelect.query(Contact.class).where(Contact.EMAIL.eq(address.toString()))
                     .select(cayenneService.newContext)
             if(contacts.stream().any {it.isUndeliverable})
                 continue
 
-            def content = param.getContent.get()
             def unsubscribeLink = unsubscribeService.generateLinkFor(address.toString())
-            message.content = content + "\n\nPress to unsubscribe from all messages: $unsubscribeLink"
+            message.content = param.getContent.get(unsubscribeLink)
 
             if (SMTPService.Mode.mock != smtpService.mode) {
                 Transport.send(message)
