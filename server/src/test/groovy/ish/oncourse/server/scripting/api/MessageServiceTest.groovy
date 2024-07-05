@@ -10,6 +10,7 @@ import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.messaging.MailDeliveryParam
 import ish.oncourse.server.messaging.MailDeliveryService
 import ish.oncourse.server.messaging.MessageService
+import ish.oncourse.server.messaging.SMTPService
 import ish.oncourse.server.services.AuditService
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -22,6 +23,7 @@ import javax.mail.internet.InternetAddress
 
 import static org.mockito.Mockito.doNothing
 import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
 
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/scripting/api/messageServiceTestDataSet.xml")
@@ -100,6 +102,7 @@ class MessageServiceTest extends TestWithDatabase {
         AuditService auditService = injector.getInstance(AuditService)
 
         MailDeliveryService mailDeliveryService = mock(MailDeliveryService)
+        when(mailDeliveryService.getSmtpService()).thenReturn(injector.getInstance(SMTPService))
         ArgumentCaptor<MailDeliveryParam> mailDeliveryParamCapture = ArgumentCaptor.forClass(MailDeliveryParam)
         doNothing().when(mailDeliveryService).sendEmail(mailDeliveryParamCapture.capture())
 

@@ -61,14 +61,15 @@ class MailDeliveryService {
         param.getFrom.get() ? message.from = param.getFrom.get() : message.setFrom()
         message.envelopeFrom = param.getEnvelopeFrom.get()
 
-        if (message.getRecipients(RecipientType.TO).length +
-                message.getRecipients(RecipientType.CC).length +
-                message.getRecipients(RecipientType.BCC).length > mailSession.smtpService.email_batch)
+        def toAddresses = param.getAddressesTO.get()
+        def ccAddresses = param.getAddressesCC.get()
+        def bccAddresses = param.getAddressesBCC.get()
+
+        if (toAddresses.length + ccAddresses.length + bccAddresses.length > mailSession.smtpService.email_batch)
             throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch, so message cannot be sent. Contact ish support")
 
-        def toAddresses = param.getAddressesTO.get()
-        message.setRecipients(RecipientType.CC, param.getAddressesCC.get())
-        message.setRecipients(RecipientType.BCC, param.getAddressesBCC.get())
+        message.setRecipients(RecipientType.CC, ccAddresses)
+        message.setRecipients(RecipientType.BCC, bccAddresses)
         message.subject = param.getSubject.get()
         message.setHeader(EMAIL_HEADER, "onCourse ${angelVersion}".toString())
         message.sentDate = param.sentDate
