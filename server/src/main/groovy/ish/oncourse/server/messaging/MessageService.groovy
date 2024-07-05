@@ -104,7 +104,7 @@ class MessageService {
 		}
 	}
 
-	def static buildMessage(Message message, Contact contact, MessageType type, boolean batchIsOver = false) {
+	def static buildMessage(Message message, Contact contact, MessageType type) {
 
 		switch (type) {
 			case MessageType.SMS:
@@ -123,7 +123,7 @@ class MessageService {
 				throw new UnsupportedOperationException()
 		}
 		message.numberOfAttempts = 0
-		message.status = batchIsOver ? MessageStatus.FAILED : MessageStatus.QUEUED
+		message.status = MessageStatus.QUEUED
 		message.type = type
 
 		message.contact = contact
@@ -177,6 +177,9 @@ class MessageService {
 		if (messageSpec.entityRecords.isEmpty()) {
 			if (!messageSpec.toList.isEmpty() && (messageSpec.templateIdentifier != null || messageSpec.content != null || !messageSpec.attachments.isEmpty())) {
 				def batchIsOver = messageSpec.toList.size() > mailDeliveryService.smtpService.email_batch
+				if(batchIsOver)
+					throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $mailDeliveryService.smtpService.email_batch.")
+
 				SmtpParameters parameters = new SmtpParameters(messageSpec)
 				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision, batchIsOver).send()
 			}
@@ -212,17 +215,20 @@ class MessageService {
 		boolean batchIsOver = false
 		def maxEmailBatch = mailDeliveryService.getSmtpService().email_batch
 		if(records.size() > maxEmailBatch)
-			batchIsOver = true
+			throw new IllegalArgumentException("Number of records was more, than max allowed email batch $maxEmailBatch")
 
 		def recipientsFullCount = 0
 
 		for(def it: records) {
 			recipientsFullCount += getRecipientsListFromEntity(it).size()
 			if(recipientsFullCount > maxEmailBatch) {
-				batchIsOver = true
-				break
+				throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $maxEmailBatch")
 			}
 		}
+
+		if(!messageSpec.toList.isEmpty() && messageSpec.toList.size() > maxEmailBatch)
+			throw new IllegalArgumentException("Number of recipients in to list was more, than max allowed email batch $maxEmailBatch")
+
 
 		int counter = 0
 		Map<String, Object> bindings = messageSpec.bindings
@@ -252,7 +258,7 @@ class MessageService {
 					SmtpParameters parameters = new SmtpParameters(messageSpec)
 					parameters.toList = List.of(recipient.email)
 
-					SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision, batchIsOver).send()
+					SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
 				}
 			}
 
@@ -264,15 +270,12 @@ class MessageService {
 
 		if(!messageSpec.toList.isEmpty()){
 			SmtpParameters parameters = new SmtpParameters(messageSpec)
-			SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision, batchIsOver).send()
+			SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
 		}
 
 
 		if (counter > 0) {
 			context.commitChanges()
 		}
-
-		if(batchIsOver)
-			throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $maxEmailBatch. Messages created, but set as failed")
 	}
 }

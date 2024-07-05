@@ -27,30 +27,28 @@ public class SendEmailViaMessage {
     private ObjectContext context;
     private PreferenceController preferenceController;
     private Function<Contact, Boolean> collision;
-    private boolean batchIsOver;
 
 
     private SendEmailViaMessage(){}
 
 
     public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService, PreferenceController preferenceController){
-        return valueOf(spec, context, templateService, preferenceController, (c) -> true, false);
+        return valueOf(spec, context, templateService, preferenceController, (c) -> true);
     }
 
     public static SendEmailViaMessage valueOf(EmailSpec spec, ObjectContext context, TemplateService templateService,
-                                              PreferenceController preferenceController, Function<Contact, Boolean> collision, boolean batchIsOver){
+                                              PreferenceController preferenceController, Function<Contact, Boolean> collision){
         var creator = new SendEmailViaMessage();
         creator.spec = spec;
         creator.templateService = templateService;
         creator.context = context;
         creator.preferenceController = preferenceController;
         creator.collision = collision;
-        creator.batchIsOver = batchIsOver;
         return creator;
     }
 
     public void send(){
-        var message = createEmailMessage(spec.getTemplateName(), batchIsOver);
+        var message = createEmailMessage(spec.getTemplateName());
 
         if (spec.getFromAddress() != null) {
             message.from(spec.getFromAddress());
@@ -68,14 +66,14 @@ public class SendEmailViaMessage {
         message.send();
     }
 
-    private EmailMessage createEmailMessage (String templateName, boolean batchIsOver) {
+    private EmailMessage createEmailMessage (String templateName) {
         var template = templateService.loadTemplate(templateName);
         if (template == null) {
             throw new IllegalArgumentException(String.format("No template with name '%s' found.", templateName));
         }
 
         var localTemplate = context.localObject(template);
-        var message = new EmailMessage(localTemplate, templateService, batchIsOver);
+        var message = new EmailMessage(localTemplate, templateService);
 
         message.from(preferenceController.getEmailFromAddress());
         Map<String, Object> options = template.getOptions().stream().collect(Collectors.toMap(AutomationBinding::getName, AutomationBinding::getObjectValue));

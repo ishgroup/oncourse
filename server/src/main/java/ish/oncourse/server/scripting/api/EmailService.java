@@ -53,7 +53,7 @@ public class EmailService {
 		ObjectContext context = cayenneService.getNewContext();
 
 		var localTemplate = context.localObject(template);
-		var message = new EmailMessage(localTemplate, templateService, mailDeliveryService.getSmtpService().getEmail_batch());
+		var message = new EmailMessage(localTemplate, templateService);
 
 		message.from(preferenceController.getEmailFromAddress());
 
@@ -85,15 +85,15 @@ public class EmailService {
 				(contact) -> NeedToSendEmail.valueOf(auditService, spec.getKeyCollision(), spec.getCreatorKey(), cayenneService.getNewContext(), contact).get();
 
 		boolean batchIsOver = spec.getRecipients().size() > mailDeliveryService.getSmtpService().getEmail_batch();
+		if(batchIsOver)
+			throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch");
+
 
 		if (spec.getRecipients().isEmpty()) {
-			SendEmailViaSmtp.valueOf(spec, cayenneService.getNewContext(), templateService, mailDeliveryService, collision, batchIsOver).send();
+			SendEmailViaSmtp.valueOf(spec, cayenneService.getNewContext(), templateService, mailDeliveryService, collision).send();
 		} else {
-			SendEmailViaMessage.valueOf(spec, cayenneService.getNewContext(), templateService, preferenceController, collision, batchIsOver).send();
+			SendEmailViaMessage.valueOf(spec, cayenneService.getNewContext(), templateService, preferenceController, collision).send();
 		}
-
-		if(batchIsOver)
-			throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $maxEmailBatch. Messages created, but set as failed");
 	}
 
 	@Deprecated
