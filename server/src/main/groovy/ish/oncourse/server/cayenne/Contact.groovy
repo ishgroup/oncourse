@@ -57,6 +57,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	public static final String MESSAGE_KEY = "message"
 
 	private static final Logger logger = LogManager.getLogger()
+	private static final int UNDELIVERABLE_STATUS = 6
 
 	@Override
 	void validateForSave(@Nonnull final ValidationResult result) {
@@ -447,6 +448,16 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@Override
 	Integer getDeliveryStatusEmail() {
 		return super.getDeliveryStatusEmail()
+	}
+
+
+	boolean getIsUndeliverable() {
+		return getDeliveryStatusEmail() == UNDELIVERABLE_STATUS
+	}
+
+
+	void setIsUndeliverable(boolean undeliverable) {
+		setDeliveryStatusEmail(undeliverable ? UNDELIVERABLE_STATUS : 0)
 	}
 
 	/**

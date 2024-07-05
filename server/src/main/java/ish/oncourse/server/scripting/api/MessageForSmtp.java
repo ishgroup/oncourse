@@ -12,9 +12,11 @@
 package ish.oncourse.server.scripting.api;
 
 import ish.common.types.MessageStatus;
+import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.cayenne.Message;
 import ish.oncourse.server.messaging.MailDeliveryParam;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 import org.apache.commons.lang3.StringUtils;
 
 public class MessageForSmtp {
@@ -38,15 +40,24 @@ public class MessageForSmtp {
 
     public void create() {
         if (StringUtils.isNotBlank(creatorKey)) {
-            var message = context.newObject(Message.class);
-            message.setCreatorKey(creatorKey);
-            message.setEmailFrom(param.getGetFrom().get().getAddress());
-            message.setEmailSubject(param.getGetSubject().get());
-            message.setEmailBody(param.getGetContent().getGetEmailPlainBody().get());
-            message.setEmailHtmlBody(param.getGetContent().getGetEmailHtmlBody().get());
-            message.setStatus(MessageStatus.SENT);
+            for(var address: param.getGetAddressesTO().get()) {
 
-            context.commitChanges();
+                var message = context.newObject(Message.class);
+                message.setCreatorKey(creatorKey);
+                message.setEmailFrom(param.getGetFrom().get().getAddress());
+                message.setEmailSubject(param.getGetSubject().get());
+                message.setEmailBody(param.getGetContent().getGetEmailPlainBody().get());
+                message.setEmailHtmlBody(param.getGetContent().getGetEmailHtmlBody().get());
+
+
+                var contacts = ObjectSelect.query(Contact.class).where(Contact.EMAIL.eq(address.toString())).select(context);
+                if(contacts.stream().anyMatch(Contact::getIsUndeliverable))
+                    message.setStatus(MessageStatus.FAILED);
+                else
+                    message.setStatus(MessageStatus.SENT);
+
+                context.commitChanges();
+            }
         }
     }
 }

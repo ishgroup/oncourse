@@ -123,7 +123,12 @@ class MessageService {
 				throw new UnsupportedOperationException()
 		}
 		message.numberOfAttempts = 0
-		message.status = MessageStatus.QUEUED
+
+		if(type == MessageType.EMAIL && contact.isUndeliverable)
+			message.status = MessageStatus.FAILED
+		else
+			message.status = MessageStatus.QUEUED
+		
 		message.type = type
 
 		message.contact = contact
@@ -181,7 +186,7 @@ class MessageService {
 					throw new IllegalArgumentException("Number of recipients was more, than max allowed email batch $mailDeliveryService.smtpService.email_batch.")
 
 				SmtpParameters parameters = new SmtpParameters(messageSpec)
-				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision, batchIsOver).send()
+				SendEmailViaSmtp.valueOf(parameters, cayenneService.newContext, templateService, mailDeliveryService, collision).send()
 			}
 		} else {
 
@@ -212,7 +217,6 @@ class MessageService {
 			records = messageSpec.entityRecords.collect { it as CayenneDataObject } as List<CayenneDataObject>
 		}
 
-		boolean batchIsOver = false
 		def maxEmailBatch = mailDeliveryService.getSmtpService().email_batch
 		if(records.size() > maxEmailBatch)
 			throw new IllegalArgumentException("Number of records was more, than max allowed email batch $maxEmailBatch")

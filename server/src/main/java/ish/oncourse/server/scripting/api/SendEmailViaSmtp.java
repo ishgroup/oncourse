@@ -15,6 +15,7 @@ import ish.oncourse.server.cayenne.Contact;
 import ish.oncourse.server.messaging.MailDeliveryParam;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.query.ObjectSelect;
 
 import javax.mail.MessagingException;
 import java.util.function.Function;
@@ -54,6 +55,7 @@ public class SendEmailViaSmtp {
     public void send() throws MessagingException {
         if (collision.apply(null)) {
             var param = MailDeliveryParamBuilder.valueOf(parameters, templateService).build();
+
             mailDeliveryService.sendEmail(param);
 
             MessageForSmtp.valueOf(context, parameters.getCreatorKey(), param).create();
