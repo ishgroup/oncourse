@@ -10,7 +10,7 @@ import { clearListState, getFilters, } from "../../../common/components/list-vie
 import ListView from "../../../common/components/list-view/ListView";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import MessageEditView from "./components/MessageEditView";
-import QuedMessagesBulkDelete from "./components/QuedMessagesBulkDelete";
+import MessagesCogwheelActions from "./components/MessagesCogwheelActions";
 
 interface MessagesProps {
   onInit?: () => void;
@@ -68,7 +68,7 @@ const Messages: React.FC<MessagesProps> = props => {
         nameCondition: values => (values ? values.subject : "")
       }}
       EditViewContent={MessageEditView}
-      CogwheelAdornment={QuedMessagesBulkDelete}
+      CogwheelAdornment={MessagesCogwheelActions}
       rootEntity="Message"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
