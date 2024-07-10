@@ -147,9 +147,10 @@ public class TagService {
 
         Set<Class<? extends Taggable>> existedRequirements = new HashSet<>();
 
+        List<TagRequirement> requirementsToDelete = new ArrayList<>();
         for (var requirement : subjectTag.getTagRequirements()) {
             if (!SUBJECT_ENTITIES.contains(requirement.getEntityClass())) {
-                context.deleteObject(requirement);
+                requirementsToDelete.add(requirement);
                 continue;
             }
 
@@ -175,6 +176,7 @@ public class TagService {
 			}
         });
 
+        context.deleteObjects(requirementsToDelete);
         context.commitChanges();
     }
 }

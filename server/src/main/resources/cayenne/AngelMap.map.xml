@@ -1006,6 +1006,7 @@
 		<db-attribute name="nodeType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="parentId" type="BIGINT"/>
 		<db-attribute name="shortName" type="VARCHAR" length="128"/>
+		<db-attribute name="shortWebDescription" type="CLOB" length="32000"/>
 		<db-attribute name="specialType" type="SMALLINT"/>
 		<db-attribute name="weight" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -3209,6 +3210,7 @@
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="shortWebDescription" type="java.lang.String" db-attribute-path="shortWebDescription"/>
 		<obj-attribute name="nodeType" type="ish.common.types.NodeType" db-attribute-path="nodeType"/>
 		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
 		<obj-attribute name="specialType" type="ish.common.types.NodeSpecialType" db-attribute-path="specialType"/>
