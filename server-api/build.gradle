@@ -9,9 +9,21 @@
  * See the GNU Affero General Public License for more details.
  */
 
-
 plugins {
+    id 'java'
     id 'java-library'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs += "${project.projectDir}/build/generated-sources/src/main/groovy"
+        }
+    }
 }
 
 configurations {
@@ -23,7 +35,10 @@ sourceSets.main.groovy.srcDir 'src/main/java'
 sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDir 'src/test/java'
 
-sourceCompatibility = 11
+tasks.withType(GroovyCompile).configureEach {
+    options.incremental = true
+}
+compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
 
 dependencies {
     implementation "org.apache.cayenne:cayenne-server:$cayenneVersion"
@@ -46,20 +61,6 @@ dependencies {
     api "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
 }
 
-sourceSets {
-    main {
-        groovy {
-            srcDirs += "${project.projectDir}/build/generated-sources/src/main/groovy"
-        }
-    }
-}
-
-tasks.withType(GroovyCompile).configureEach {
-    options.incremental = true
-}
-compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
-
-
 task swagger (type: Swagger) {
     schema = file("${project.projectDir}/src/main/resources/server-api.yaml")
     sourceFolder = file("${project.projectDir}/src/main/groovy")
@@ -73,7 +74,7 @@ task swagger (type: Swagger) {
 // Some documentation scripts can only work on a single merged swagger file
 task apiDocs_mergeSwagger(type: SwaggerMerge) {
     schema = file("${rootDir}/server-api/src/main/resources/server-api.yaml")
-    outputFile = file("${buildDir}/swagger-merged/swagger.yaml")
+    outputFile = file("${layout.buildDirectory.get()}/swagger-merged/swagger.yaml")
 }
 
 compileGroovy {
@@ -87,7 +88,7 @@ clean.doFirst {
 
 publishing {
     publications {
-        jar(MavenPublication) {
+        create("jar", MavenPublication) {
             from components.java
         }
     }
