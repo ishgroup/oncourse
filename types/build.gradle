@@ -10,7 +10,13 @@
  */
 
 plugins {
+    id 'java'
     id 'java-library'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    group = 'ish.oncourse'
 }
 
 sourceSets.main.java.srcDirs = []
@@ -39,12 +45,9 @@ dependencies {
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
-
-group = 'ish.oncourse'
-sourceCompatibility = 8
 
 publishing {
     publications {

@@ -10,8 +10,13 @@
  */
 
 plugins {
+    id 'java'
     id 'java-gradle-plugin'
     id 'groovy'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {
@@ -21,5 +26,3 @@ repositories {
 dependencies {
     implementation 'io.swagger:swagger-codegen:2.4.0'
 }
-
-sourceCompatibility = JavaVersion.VERSION_11

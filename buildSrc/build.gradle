@@ -9,6 +9,14 @@
  * See the GNU Affero General Public License for more details.
  */
 
+plugins {
+    id 'java'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
 repositories {
     mavenCentral()
 }
@@ -18,5 +26,3 @@ subprojects {
         runtimeOnly project(path)
     }
 }
-
-sourceCompatibility = JavaVersion.VERSION_11
