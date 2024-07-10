@@ -18,6 +18,7 @@ package au.com.ish.docs
 import groovyjarjarantlr.RecognitionException
 import groovyjarjarantlr.TokenStreamException
 import groovyjarjarantlr.collections.AST
+import org.apache.groovy.antlr.override.GroovydocVisitor
 import org.codehaus.groovy.antlr.AntlrASTProcessor
 import org.codehaus.groovy.antlr.SourceBuffer
 import org.codehaus.groovy.antlr.UnicodeEscapingReader
@@ -28,13 +29,13 @@ import org.codehaus.groovy.antlr.java.JavaRecognizer
 import org.codehaus.groovy.antlr.parser.GroovyLexer
 import org.codehaus.groovy.antlr.parser.GroovyRecognizer
 import org.codehaus.groovy.antlr.treewalker.PreOrderTraversal
-import org.codehaus.groovy.antlr.treewalker.SourceCodeTraversal
 import org.codehaus.groovy.antlr.treewalker.Visitor
+import org.codehaus.groovy.ast.ModuleNode
+import org.codehaus.groovy.control.*
 import org.codehaus.groovy.groovydoc.GroovyClassDoc
 import org.codehaus.groovy.groovydoc.GroovyRootDoc
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.codehaus.groovy.tools.groovydoc.LinkArgument
-import org.codehaus.groovy.tools.groovydoc.SimpleGroovyClassDocAssembler
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyExecutableMemberDoc
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyPackageDoc
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyRootDoc
@@ -74,11 +75,11 @@ class DslGroovyRootDocBuilder {
 			unicodeReader.setLexer(lexer)
 			parser = GroovyRecognizer.make(lexer)
 		}
-		parser.setSourceBuffer(sourceBuffer)
-        parser.compilationUnit()
-		AST ast = parser.getAST()
-
 		if (isJava) {
+			parser.setSourceBuffer(sourceBuffer)
+			parser.compilationUnit()
+			AST ast = parser.getAST()
+
 			// modify the Java AST into a Groovy AST (just token types)
 			Visitor java2groovyConverter = new Java2GroovyConverter(parser.getTokenNames())
 			AntlrASTProcessor java2groovyTraverser = new PreOrderTraversal(java2groovyConverter)
@@ -89,10 +90,36 @@ class DslGroovyRootDocBuilder {
 			AntlrASTProcessor groovifierTraverser = new PreOrderTraversal(groovifier)
 			groovifierTraverser.process(ast)
 		}
-		Visitor visitor = new SimpleGroovyClassDocAssembler(packagePath, file, sourceBuffer, links, properties, !isJava)
-		AntlrASTProcessor traverser = new SourceCodeTraversal(visitor)
-		traverser.process(ast)
-		return ((SimpleGroovyClassDocAssembler)visitor).getGroovyClassDocs()
+
+		CompilerConfiguration config = new CompilerConfiguration()
+		config.getOptimizationOptions().put(CompilerConfiguration.GROOVYDOC, true)
+		CompilationUnit compUnit = new CompilationUnit(config)
+		SourceUnit unit = new SourceUnit(file, src, config, null, new ErrorCollector(config));
+		compUnit.addSource(unit);
+		int phase = Phases.CONVERSION;
+		if (properties.containsKey("phaseOverride")) {
+			String raw = properties.getProperty("phaseOverride")
+			try {
+				phase = Integer.parseInt(raw)
+			} catch(NumberFormatException ignore) {
+				raw = raw.toUpperCase();
+				switch(raw) {
+				// some dup here but kept simple since we may swap Phases to an enum
+					case "CONVERSION": phase = 3; break;
+					case "SEMANTIC_ANALYSIS": phase = 4; break;
+					case "CANONICALIZATION": phase = 5; break;
+					case "INSTRUCTION_SELECTION": phase = 6; break;
+					case "CLASS_GENERATION": phase = 7; break;
+					default:
+						System.err.println("Ignoring unrecognised or unsuitable phase and keeping default");
+				}
+			}
+		}
+		compUnit.compile(phase);
+		ModuleNode root = unit.getAST()
+		GroovydocVisitor visitor = new GroovydocVisitor(unit, packagePath, links, properties)
+		root.getClasses().forEach(clazz -> visitor.visitClass(clazz))
+		return visitor.getGroovyClassDocs()
 	}
 
 	protected void setOverview() {
