@@ -1052,6 +1052,8 @@ public abstract class CommonPreferenceController {
 			return getTutorialSkipSystemUser();
 		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
 			return getExtendedSearchTypesAllowed();
+		} else if (List.of(CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_WAITING_LIST, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_APPLICATION, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_ENROLMENT, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_CHECKOUT, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_PORTAL).contains(key)) {
+			return getContactEmailDeliveryDisableLimit(key);
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1223,6 +1225,8 @@ public abstract class CommonPreferenceController {
 			setDefaultInvoiceLineAccount((Long) value);
 		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
 			setExtendedTypesAllowed((Boolean) value);
+		} else if (List.of(CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_WAITING_LIST, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_APPLICATION, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_ENROLMENT, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_CHECKOUT, CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_PORTAL).contains(key)) {
+			setContactEmailDeliveryDisableLimit(key, (Integer) value);
 		}
 	}
 
@@ -1448,4 +1452,21 @@ public abstract class CommonPreferenceController {
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
 	}
+
+	private void validateContactEmailDelivaryDisableLimit(Integer value) {
+		if (value != null && (value < 3 || value > 24)) {
+			throw new IllegalArgumentException("Invalid preference value. You have to set duration between 3-24 months");
+		}
+	}
+
+	public Integer getContactEmailDeliveryDisableLimit(String key) {
+		String value = getValue(key, false);
+		return value != null ? Integer.parseInt(value) : null;
+	}
+
+	public void setContactEmailDeliveryDisableLimit(String key, Integer value) {
+		validateContactEmailDelivaryDisableLimit(value);
+		setValue(key, false, value != null ? String.valueOf(value) : null);
+	}
+
 }

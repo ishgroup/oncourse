@@ -17,19 +17,18 @@ import ish.common.types.TwoFactorAuthorizationStatus
 import ish.common.types.TypesUtil
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.math.Country
-import static ish.oncourse.DefaultAccount.defaultAccountPreferences
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.license.LicenseService
-import static ish.persistence.Preferences.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 
 import java.time.ZoneOffset
+
+import static ish.oncourse.DefaultAccount.defaultAccountPreferences
+import static ish.persistence.Preferences.*
 
 class PreferenceFunctions {
 
@@ -99,6 +98,11 @@ class PreferenceFunctions {
             case PASSWORD_EXPIRY_PERIOD:
             case TFA_EXPIRY_PERIOD:
             case NUMBER_OF_LOGIN_ATTEMPTS:
+            case CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_WAITING_LIST:
+            case CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_APPLICATION:
+            case CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_ENROLMENT:
+            case CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_CHECKOUT:
+            case CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_PORTAL:
                 return Integer.valueOf(value)
             case CLASS_DEFAULTS_DELIVERY_MODE:
                 return TypesUtil.getEnumForDatabaseValue(Integer.valueOf(value), DeliveryMode)
