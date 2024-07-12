@@ -25,7 +25,7 @@ import {
   removeContentMarker,
   WysiwygEditor,
 } from "ish-ui";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Field, WrappedFieldProps } from "redux-form";
 import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 
@@ -237,6 +237,7 @@ interface Props {
   fieldClasses?: any;
   label?: string;
   placeholder?: string;
+  className?: string;
 }
 
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
@@ -246,7 +247,8 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
     disabled,
     label,
     placeholder,
-    fieldClasses = {}
+    fieldClasses = {},
+    className
   }
 ) => {
   const wysiwygRef = useRef<any>();
@@ -255,6 +257,8 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   const [isEditing, setIsEditing] = useState(false);
   const [modeMenu, setModeMenu] = useState(null);
   const classes = useStyles();
+  
+  const contentWithoutMarker = useMemo(() => removeContentMarker(value), [value]);
 
   const modeMenuOpen = e => {
     setModeMenu(e.currentTarget);
@@ -284,12 +288,18 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
     }
   };
 
+  useEffect(() => {
+    if (value && !contentWithoutMarker) {
+      onChange(null);
+    }
+  }, [contentWithoutMarker, value]);
+  
   return (
     <ClickAwayListener
       onClickAway={onClickAway}
       mouseEvent="onMouseDown"
     >
-      <FormControl id={name} error={meta && meta.invalid} variant="standard" fullWidth>
+      <FormControl className={className} id={name} error={meta && meta.invalid} variant="standard" fullWidth>
         <InputLabel
           shrink
           classes={{
@@ -332,7 +342,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                     key={mode.id}
                     onClick={() => {
                       setContentMode(mode.id);
-                      onChange(addContentMarker(removeContentMarker(value), mode.id));
+                      onChange(addContentMarker(contentWithoutMarker, mode.id));
                       modeMenuClose();
                     }}
                     selected={contentMode === mode.id}
@@ -344,7 +354,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             </div>
             <EditorResolver
               contentMode={contentMode}
-              draftContent={removeContentMarker(value)}
+              draftContent={contentWithoutMarker}
               onChange={v => onChange(addContentMarker(removeContentMarker(v), contentMode))}
               wysiwygRef={wysiwygRef}
             />
@@ -355,15 +365,21 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             component="div"
             onClick={onEditButtonFocus}
             className={clsx(classes.editable, {
-              [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
-              [fieldClasses.text]: value,
+              [fieldClasses.text]: value
             })}
           >
-              <span className={clsx(contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden")}>
+              <span
+                className={clsx(
+                  contentMode === "md" ? classes.previewFrame : "centeredFlex overflow-hidden",
+                  {
+                    [fieldClasses.placeholder ? fieldClasses.placeholder : "placeholderContent"]: !value,
+                    [fieldClasses.text]: !value
+                  }
+                )}>
                 {
                   value
                     ? contentMode === "md"
-                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(removeContentMarker(value)) }}/>
+                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(contentWithoutMarker) }}/>
                       : removeContentMarker(value)
                     : placeholder || COMMON_PLACEHOLDER
                 }
@@ -385,7 +401,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             root: "d-none"
           }}
           inputProps={{
-            value: removeContentMarker(value)
+            value: contentWithoutMarker
           }}
         />
       </FormControl>
@@ -393,11 +409,10 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   );
 };
 
-export const FormEditorField = ({ name, label, placeholder }: { name: string, label?: string, placeholder?: string }) => (
+export const FormEditorField = ({ name, ...rest }: Props & { name: string }) => (
   <Field
     name={name}
-    label={label}
-    placeholder={placeholder}
     component={FormEditor}
+    {...rest}
   />
 );

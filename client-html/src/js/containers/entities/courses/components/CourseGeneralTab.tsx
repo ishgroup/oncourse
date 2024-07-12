@@ -51,7 +51,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     form
   }) => {
     const { tagsGrouped, subjectsField, specialTypesDisabled } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
-    
+
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
     }, [values.id]);

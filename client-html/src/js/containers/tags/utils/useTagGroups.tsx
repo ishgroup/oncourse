@@ -7,14 +7,14 @@
  */
 
 import { Tag } from "@api/model";
-import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
+import { stubFunction, TagInputList } from "ish-ui";
 import React, { useMemo } from "react";
 import { Dispatch } from "redux";
 import { change } from "redux-form";
 import { useAppSelector } from "../../../common/utils/hooks";
 import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
 import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
-import { getAllFormTags, getAllTags } from "./index";
+import { getAllFormTags } from "./index";
 
 interface Props {
   tags: Tag[];
@@ -38,7 +38,7 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
     };
     if (!specialTypesDisabled && tags?.length) {
       body.tags = tags.filter(t => !t.system && t.name !== 'Subjects');
-      body.subjects = getAllTags(tags.filter(subjectsFilter)).filter(t => !subjectsFilter(t));
+      body.subjects = tags.filter(subjectsFilter)[0]?.childTags || [];
       const allTags = getAllFormTags(tags);
       body.subjectsValue = tagsValue.filter(id => {
         const tag = allTags.find(t => t.id === id);
@@ -49,7 +49,7 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
     return body;
   }, [tags, tagsValue, specialTypesDisabled]);
 
-  const subjectsField = <EditInPlaceSearchSelect
+  const subjectsField = <TagInputList
     input={{
       value: tagsGrouped.subjectsValue,
       onChange: updated => {
@@ -58,15 +58,13 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
       onBlur: stubFunction
     }}
     meta={{}}
-    items={tagsGrouped.subjects}
+    tags={tagsGrouped.subjects}
     disabled={specialTypesDisabled}
     label="Subjects"
-    selectValueMark="id"
-    selectLabelMark="name"
     className="mt-2"
     placeholder={COMMON_PLACEHOLDER}
-    allowEmpty
-    multiple
+    allowParentSelect
+    hideColor
   />;
   
   return { tagsGrouped, subjectsField, specialTypesDisabled };

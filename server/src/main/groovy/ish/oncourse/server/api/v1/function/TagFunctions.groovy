@@ -73,6 +73,7 @@ class TagFunctions {
             tag.childrenCount = getChildrenCount(dbTag)
             tag.weight = dbTag.weight
             tag.color = dbTag.colour
+            tag.shortWebDescription = dbTag.shortWebDescription
             if (isParent) {
                 tag.requirements = dbTag.tagRequirements.collect { req ->
                     toRestRequirement(req, dbTag)
@@ -275,6 +276,7 @@ class TagFunctions {
 
         dbTag.contents = trimToNull(tag.content)
         dbTag.nodeType = NodeType.fromDisplayName(tag.type.toString())
+        dbTag.shortWebDescription = tag.shortWebDescription
 
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
