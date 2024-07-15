@@ -32,7 +32,7 @@ class MessageApiImpl implements MessageApi {
 
     @Override
     MessageDTO get(Long id) {
-        return service.get(id)
+        return service.getById(id)
     }
 
     @Override
