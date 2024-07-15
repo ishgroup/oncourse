@@ -88,6 +88,7 @@ class ArchivingMessagesService {
             continue
         archiveInProgress.set(true)
 
+        preferenceController.setDateMessageExpectedBeforeArchived(dateToArchive)
         Message firstMessage = null
         try {
             firstMessage = firstByDateMessagesBefore(dateToArchive)
@@ -96,6 +97,7 @@ class ArchivingMessagesService {
             }
         } catch (Exception e) {
             archiveInProgress.set(false)
+            preferenceController.setDateMessageExpectedBeforeArchived(null)
             throw e
         }
 
@@ -111,10 +113,6 @@ class ArchivingMessagesService {
 
                 preferenceController.setDateMessageBeforeArchived(dateToArchive)
 
-                def existedIntervals = preferenceController.getArchivedMessagesIntervals()
-                existedIntervals = existedIntervals == null ? fileName : existedIntervals + ";" + fileName
-                preferenceController.setArchivedMessagesIntervals(existedIntervals)
-
                 def archive = cayenneService.newContext.newObject(Archive)
                 archive.createdOn = new Date()
                 archive.fileName = fileName
@@ -129,6 +127,7 @@ class ArchivingMessagesService {
                 auditService.submit(firstMessage, AuditAction.MESSAGES_ARCHIVING_FAILED, e.getMessage())
             } finally {
                 archiveInProgress.set(false)
+                preferenceController.setDateMessageExpectedBeforeArchived(null)
             }
         })
     }

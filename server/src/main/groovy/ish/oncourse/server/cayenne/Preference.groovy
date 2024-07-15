@@ -40,7 +40,9 @@ class Preference extends _Preference implements Queueable {
 	 */
 	@Override
 	boolean isAsyncReplicationAllowed() {
-		return Preferences.DATE_MESSAGE_BEFORE_ARCHIVED == getName() || getUser() == null && SERVICES_COMMUNICATION_KEY != getName()
+		return Preferences.DATE_MESSAGE_BEFORE_ARCHIVED == getName()
+				|| getUser() == null && SERVICES_COMMUNICATION_KEY != getName()
+				|| Preferences.DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED == getName()
 	}
 
 	@Override

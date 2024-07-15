@@ -21,9 +21,6 @@ class ArchiveApiImpl implements ArchiveApi {
     @Inject
     private CayenneService cayenneService
 
-    @Inject
-    private ArchivingMessagesService messagesService
-
     @Override
     List<ArchiveDTO> getAllArchives() {
         return ObjectSelect.query(Archive)
@@ -41,10 +38,5 @@ class ArchiveApiImpl implements ArchiveApi {
             dto.dateTo = LocalDateUtils.dateToTimeValue(archive.dateTo)
             dto
         }
-    }
-
-    @Override
-    String getLink(Long id) {
-       messagesService.getLink(id)
     }
 }
