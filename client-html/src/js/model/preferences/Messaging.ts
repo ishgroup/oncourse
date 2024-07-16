@@ -53,3 +53,33 @@ export const SMSFromAddress: PreferenceSchema = {
   mandatory: false,
   editable: true
 };
+
+export const EmailDeliveryWaitingListLimit: PreferenceSchema = {
+  uniqueKey: "contact.email.delivery.disable.limit.waiting_list",
+  mandatory: false,
+  editable: true
+};
+
+export const EmailDeliveryEnrolmentLimit: PreferenceSchema = {
+  uniqueKey: "contact.email.delivery.disable.limit.enrolment",
+  mandatory: false,
+  editable: true
+};
+
+export const EmailDeliveryApplicationLimit: PreferenceSchema = {
+  uniqueKey: "contact.email.delivery.disable.limit.application",
+  mandatory: false,
+  editable: true
+};
+
+export const EmailDeliveryCheckoutLimit: PreferenceSchema = {
+  uniqueKey: "contact.email.delivery.disable.limit.checkout",
+  mandatory: false,
+  editable: true
+};
+
+export const EmailDeliveryPortalLimit: PreferenceSchema = {
+  uniqueKey: "contact.email.delivery.disable.limit.portal",
+  mandatory: false,
+  editable: true
+};

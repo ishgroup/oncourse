@@ -10,7 +10,7 @@ class DynamicText extends React.Component<any, any> {
   }
 
   render() {
-    return <span> {(this.props.value ? this.props.value : this.props.defaultValue) + this.props.text} </span>;
+    return <span> {(this.props.value ? this.props.value : this.props.defaultValue)} {this.props.text} </span>;
   }
 
   componentDidMount() {

@@ -50,7 +50,7 @@ const normalizeClassCode = (value: any, previousValue?: any, allValues?: any) =>
 const CourseClassGeneralTab = React.memo<Props>(
   ({
     tags,
-     specialTags,
+    specialTags,
     twoColumn,
     values,
     isNew,
