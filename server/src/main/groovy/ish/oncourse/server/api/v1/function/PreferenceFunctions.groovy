@@ -17,19 +17,19 @@ import ish.common.types.TwoFactorAuthorizationStatus
 import ish.common.types.TypesUtil
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.math.Country
-import static ish.oncourse.DefaultAccount.defaultAccountPreferences
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.license.LicenseService
-import static ish.persistence.Preferences.*
+import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 
 import java.time.ZoneOffset
+
+import static ish.oncourse.DefaultAccount.defaultAccountPreferences
+import static ish.persistence.Preferences.*
 
 class PreferenceFunctions {
 
@@ -44,6 +44,8 @@ class PreferenceFunctions {
 
         if (value != null) {
 
+            if(value instanceof Date)
+                return DateFormatter.formatDateISO8601(value as Date)
 
             if (value instanceof DisplayableExtendedEnumeration) {
                 return (value as DisplayableExtendedEnumeration).databaseValue.toString()

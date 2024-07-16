@@ -1480,6 +1480,7 @@ public abstract class CommonPreferenceController {
 	}
 
 	public void setDateMessageExpectedBeforeArchived(Date value){
-		setValue(DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED, false, dateFormat.format(value));
+		String formattedValue = value == null ? null : dateFormat.format(value);
+		setValue(DATE_MESSAGE_EXPECTED_BEFORE_ARCHIVED, false, formattedValue);
 	}
 }
