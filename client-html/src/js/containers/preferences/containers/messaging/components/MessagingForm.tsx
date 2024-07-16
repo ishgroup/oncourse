@@ -4,12 +4,11 @@
  */
 
 import ExitToApp from "@mui/icons-material/ExitToApp";
+import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
-import Typography from "@mui/material/Typography";
 import { openInternalLink } from "ish-ui";
 import isEmpty from "lodash.isempty";
 import * as React from "react";
@@ -22,11 +21,6 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { validateEmail, validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import {
-  EmailDeliveryApplicationLimit, EmailDeliveryCheckoutLimit,
-  EmailDeliveryEnrolmentLimit, EmailDeliveryPortalLimit,
-  EmailDeliveryWaitingListLimit
-} from "../../../../../model/preferences/Messaging";
 import * as Model from "../../../../../model/preferences/Messaging";
 import { State } from "../../../../../reducers/state";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
@@ -155,7 +149,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               </div>
             </Grid>
 
-            <Grid item xs={12} sm={5} lg={4}>
+            <Grid item xs={12} lg={4}>
               <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
                 Last active Enrolment
                 {" "}
@@ -173,11 +167,11 @@ class MessagingBaseForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Hidden xsDown>
-              <Grid item sm={1} lg={1} />
+            <Hidden lgDown>
+              <Grid item lg={1} />
             </Hidden>
 
-            <Grid item xs={12} sm={5} lg={4}>
+            <Grid item xs={12} lg={4}>
               <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
                 Last Waiting List entry
                 {" "}
@@ -195,7 +189,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={5} lg={4}>
+            <Grid item xs={12} lg={4}>
               <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
                 Last active Application
                 {" "}
@@ -213,11 +207,11 @@ class MessagingBaseForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Hidden xsDown>
-              <Grid item sm={1} lg={1} />
+            <Hidden lgDown>
+              <Grid item lg={1} />
             </Hidden>
 
-            <Grid item xs={12} sm={5} lg={4}>
+            <Grid item xs={12} lg={4}>
               <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
                 Last abandoned shopping cart
                 {" "}
@@ -235,7 +229,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Grid item xs={12} sm={5} lg={4}>
+            <Grid item xs={12} lg={4}>
               <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
                 Last portal login
                 {" "}
@@ -253,8 +247,8 @@ class MessagingBaseForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Hidden xsDown>
-              <Grid item sm={1} lg={1} />
+            <Hidden lgDown>
+              <Grid item lg={1} />
             </Hidden>
 
             <Grid item xs={12} lg={8}>
