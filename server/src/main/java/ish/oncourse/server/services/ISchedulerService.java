@@ -23,6 +23,7 @@ public interface ISchedulerService {
 
 	String AUDIT_PURGE_JOB = "auditPurgeJob";
 	String EMAIL_DEQUEUEING_JOB_ID = "emailDequeueingJob";
+	String CHARGEBEE_JOB_ID = "chargebeeJob";
 	String BACKUP_JOB_ID = "backupJob";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_ID = "delayedEnrolmentIncomePostingJob";
 	String VOUCHER_EXPIRY_JOB_ID = "voucherExpiryJob";

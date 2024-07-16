@@ -27,6 +27,7 @@ import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
 import org.apache.cayenne.access.DataContext;
@@ -190,6 +191,10 @@ public class AngelServerFactory {
                     prefController.getOncourseServerDefaultTimezone(),
                     false,
                     false);
+
+            //Chargebee job. Second day of each month
+            schedulerService.scheduleCronJob(ChargebeeUploadJob.class, CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                    EMAIL_DEQUEUEING_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
 
             LOGGER.warn("Starting cron");
             scheduler.start();

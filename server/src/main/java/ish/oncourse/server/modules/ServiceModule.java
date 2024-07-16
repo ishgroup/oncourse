@@ -31,6 +31,7 @@ import ish.oncourse.server.print.PrintService;
 import ish.oncourse.server.quality.QualityService;
 import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.services.*;
+import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
 import ish.oncourse.server.users.SystemUserService;
 
 /**
@@ -52,6 +53,7 @@ public class ServiceModule implements Module {
 
 		// jobs
 		binder.bind(EmailDequeueJob.class);
+		binder.bind(ChargebeeUploadJob.class);
 		binder.bind(StatsService.class).in(Scopes.SINGLETON);
 
 		binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON);

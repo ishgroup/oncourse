@@ -137,6 +137,8 @@ dependencies {
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.2'
 
+	implementation 'com.chargebee:chargebee-java:3.19.0'
+
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
