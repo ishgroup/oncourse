@@ -19,7 +19,6 @@ import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
 import ish.validation.PreferenceValidator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DurationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +27,6 @@ import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import static ish.persistence.Preferences.*;
@@ -1457,10 +1455,9 @@ public abstract class CommonPreferenceController {
 
 	private void validateContactEmailDelivaryDisableLimit(Integer value) {
 		if (value != null) {
-			long daysCount = DurationUtils.toDuration(value, TimeUnit.MINUTES).toDays();
 			// min days in year = 88: standart year, Feb + 2 month
 			// max days in year = 366: leap year, when February has 29 days.
-			if (daysCount < 88 || daysCount > 366) {
+			if (value < 88 || value > 366) {
 				throw new IllegalArgumentException("Invalid preference value. You have to set duration between 3-24 months");
 			}
 		}
