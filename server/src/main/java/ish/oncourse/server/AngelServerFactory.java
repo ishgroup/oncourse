@@ -194,7 +194,7 @@ public class AngelServerFactory {
 
             //Chargebee job. Second day of each month
             schedulerService.scheduleCronJob(ChargebeeUploadJob.class, CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
-                    EMAIL_DEQUEUEING_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
+                    CHARGEBEE_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
 
             LOGGER.warn("Starting cron");
             scheduler.start();

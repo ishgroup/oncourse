@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import java.sql.Timestamp
+import java.time.Instant
 
 class ChargebeeService {
     private static final Logger logger = LogManager.getLogger()
@@ -78,7 +79,7 @@ class ChargebeeService {
             Usage.create(subscriptionId)
                     .itemPriceId(itemPriceId)
                     .quantity(quantity)
-                    .usageDate(new Timestamp(System.currentTimeMillis()))
+                    .usageDate(new Timestamp(Instant.now().toEpochMilli()))
                     .request()
         } catch (Exception e) {
             logger.error("Chargebee usage upload error: " + e.getMessage())
@@ -86,7 +87,7 @@ class ChargebeeService {
                 subject('onCourse->Chargebee usage upload error. Contact ish support')
                 content("\n Reason: $e.message")
                 from (preferenceController.emailFromAddress)
-                to (preferenceController.emailAdminAddress)
+                to ("accounts@ish.com.au")
             }
         }
     }
