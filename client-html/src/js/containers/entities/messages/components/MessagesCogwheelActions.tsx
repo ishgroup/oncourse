@@ -38,7 +38,7 @@ const DateBeforeForm = reduxForm<any, any>({
       <DialogTitle>Warning</DialogTitle>
       <DialogContent>
         <Alert severity="warning" className="mb-3">
-          Messages in the system from before given date will be archived and will not be able to be seen or access in onCourse. They will only be visible within the exported CSV file that can be requested from onCourse support
+          Messages in the system from before given date will be archived and will not be able to be seen or access in onCourse. They will only be visible within the exported CSV file that can be requested from onCourse support.
         </Alert>
         <FormField
           label="Archive before this date"

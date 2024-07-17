@@ -11,19 +11,24 @@ import { showMessage } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { getRecords } from "../../../../common/components/list-view/actions";
 import { Create, Request } from "../../../../common/epics/EpicUtils";
+import { Categories, MessageDateArchived } from "../../../../model/preferences";
+import { getPreferencesByKeys } from "../../../preferences/actions";
 import { ARCHIVE_MESSAGES } from "../actions";
 import MessageService from "../services/MessageService";
 
 const request: Request<any, ArchiveParam> = {
   type: ARCHIVE_MESSAGES,
   getData: archiveDate => MessageService.archiveMessages(archiveDate),
-  processData: () => [
-    showMessage({
-      success: true,
-      message: "Archive request submitted"
-    }),
-    getRecords({ entity: 'Message', listUpdate: true })
-  ],
+  processData: () => {
+    return [
+      getPreferencesByKeys([MessageDateArchived.uniqueKey], Categories.messaging),
+      showMessage({
+        success: true,
+        message: "Archive request submitted"
+      }),
+      getRecords({ entity: 'Message', listUpdate: true })
+    ];
+  },
   processError: response => FetchErrorHandler(response, "Archive request failed")
 };
 

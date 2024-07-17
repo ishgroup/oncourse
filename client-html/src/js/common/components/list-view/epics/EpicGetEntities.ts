@@ -28,7 +28,7 @@ const request: Request<any, GetRecordsArgs> = {
     return [
       {
         type: GET_RECORDS_FULFILLED,
-        payload: {records, payload, searchQuery}
+        payload: { records, payload, searchQuery }
       },
       ...(!ignoreSelection && !listUpdate && state.list.selection[0] !== "NEW"
         ? savedID && records.rows.find(r => String(r.id) === String(savedID))
@@ -37,7 +37,7 @@ const request: Request<any, GetRecordsArgs> = {
         : []),
       ...resolve ? [{
         type: GET_RECORDS_FULFILLED_RESOLVE,
-        payload: {resolve}
+        payload: { resolve }
       }] : [],
     ];
   },

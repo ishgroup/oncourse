@@ -1,5 +1,11 @@
 import { PreferenceSchema } from "./PreferencesSchema";
 
+export const MessageDateArchived: PreferenceSchema = {
+  uniqueKey: "ish.message.date.expected.archived",
+  mandatory: false,
+  editable: false
+};
+
 export const EmailAdminAddress: PreferenceSchema = {
   uniqueKey: "email.admin",
   mandatory: false,

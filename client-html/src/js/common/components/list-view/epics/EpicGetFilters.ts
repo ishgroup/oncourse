@@ -9,7 +9,7 @@ import { State } from "../../../../reducers/state";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import CustomFiltersService from "../../../services/CustomFiltersService";
-import { GET_FILTERS_FULFILLED, GET_FILTERS_REQUEST, GET_RECORDS_REQUEST } from "../actions/index";
+import { GET_FILTERS_REQUEST, GET_RECORDS_REQUEST, getFiltersFulfilled } from "../actions/index";
 
 const request: EpicUtils.Request = {
   type: GET_FILTERS_REQUEST,
@@ -19,12 +19,12 @@ const request: EpicUtils.Request = {
       f.active = false;
     });
 
-    let filterGroups = state.list.filterGroups.map(f => ({...f}));
+    let filterGroups = state.list.filterGroups.map(f => ({ ...f }));
 
     const customFiltersIndex = state.list.filterGroups.findIndex(i => i.title === "Custom Filters");
 
     if (customFiltersIndex === -1) {
-      filterGroups = [...filterGroups, ...(filters.length ? [{title: "Custom Filters", filters}] : [])];
+      filterGroups = [...filterGroups, ...(filters.length ? [{ title: "Custom Filters", filters }] : [])];
     } else {
       if (filters.length) {
         filterGroups[customFiltersIndex].filters = filters;
@@ -34,13 +34,7 @@ const request: EpicUtils.Request = {
     }
 
     return [
-      {
-        type: GET_FILTERS_FULFILLED,
-        payload: {
-          filterGroups,
-          entity: payload.entity
-        }
-      },
+      getFiltersFulfilled(filterGroups),
       ...(payload.listUpdate
         ? [
           {
