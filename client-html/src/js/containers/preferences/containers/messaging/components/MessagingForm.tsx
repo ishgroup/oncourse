@@ -145,7 +145,7 @@ class MessagingBaseForm extends React.Component<any, any> {
 
             <Grid item xs={12}>
               <div className="heading mt-2">
-                Contact deliverability check
+                Aged Contact check
               </div>
             </Grid>
 
