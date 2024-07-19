@@ -14,6 +14,7 @@ export const MESSAGE_TEMPLATE_ENTITIES = stringLiterals(
   "Contact",
   "CourseClass",
   "CourseClassTutor",
+  "Checkout",
   "Enrolment",
   "Invoice",
   "Lead",
@@ -23,7 +24,7 @@ export const MESSAGE_TEMPLATE_ENTITIES = stringLiterals(
   "Payslip",
   "ProductItem",
   "Voucher",
-  "WaitingList"
+  "WaitingList",
 );
 
 export const MessageTemplateEntityItems = MESSAGE_TEMPLATE_ENTITIES.map(e => ({ label: e, value: e }));
