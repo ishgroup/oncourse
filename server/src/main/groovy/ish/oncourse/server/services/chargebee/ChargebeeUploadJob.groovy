@@ -8,9 +8,12 @@
 
 package ish.oncourse.server.services.chargebee
 
-
+import com.chargebee.Environment
+import com.chargebee.models.Usage
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.util.DbConnectionUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -20,7 +23,9 @@ import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
 
 import java.sql.Statement
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.time.Instant
 
 @DisallowConcurrentExecution
 class ChargebeeUploadJob implements Job {
@@ -47,6 +52,12 @@ class ChargebeeUploadJob implements Job {
     @Inject
     private ChargebeeService chargebeeService
 
+    @Inject
+    private EmailService emailService
+
+    @Inject
+    private PreferenceController preferenceController
+
     @Override
     void execute(JobExecutionContext context) throws JobExecutionException {
         Calendar aCalendar = Calendar.getInstance()
@@ -67,6 +78,7 @@ class ChargebeeUploadJob implements Job {
         }
     }
 
+
     private void uploadUsage(ChargebeeItemType type, String queryFormat, String startDate, String endDate) {
         def getValue = { Statement statement ->
             def query = String.format(queryFormat, startDate, endDate)
@@ -74,7 +86,38 @@ class ChargebeeUploadJob implements Job {
         }
 
         def value = DbConnectionUtils.executeWithClose(getValue, cayenneService.getDataSource())
-        chargebeeService.uploadUsage(type, String.valueOf(value))
+        uploadUsageToSite(type, String.valueOf(value))
+    }
+
+    private void uploadUsageToSite(ChargebeeItemType chargebeeItemType, String quantity) {
+        if (chargebeeService.site == null || chargebeeService.apiKey == null ||
+                chargebeeService.smsItemId == null || chargebeeService.paymentItemId == null) {
+            logger.error("Try to use chargebee, but its configs don't have necessary field")
+            throw new RuntimeException("Try to use chargebee, but its configs don't have necessary field")
+        }
+
+        if(chargebeeItemType == null) {
+            throw new IllegalArgumentException("Try to upload chargebee usage without item type")
+        }
+
+        def itemPriceId = chargebeeItemType == ChargebeeItemType.SMS ? chargebeeService.smsItemId : chargebeeService.paymentItemId
+
+        try {
+            Environment.configure(chargebeeService.site, chargebeeService.apiKey)
+            Usage.create(chargebeeService.subscriptionId)
+                    .itemPriceId(itemPriceId)
+                    .quantity(quantity)
+                    .usageDate(new Timestamp(Instant.now().toEpochMilli()))
+                    .request()
+        } catch (Exception e) {
+            logger.error("Chargebee usage upload error: " + e.getMessage())
+            emailService.email {
+                subject('onCourse->Chargebee usage upload error. Contact ish support')
+                content("\n Reason: $e.message")
+                from (preferenceController.emailFromAddress)
+                to ("accounts@ish.com.au")
+            }
+        }
     }
 
     private static Long getNumberForQueryFromDb(Statement statement, String query) {

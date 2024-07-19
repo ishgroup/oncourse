@@ -8,20 +8,10 @@
 
 package ish.oncourse.server.services.chargebee
 
-import com.chargebee.Environment
-import com.chargebee.models.Usage
-import com.google.inject.Inject
-import io.bootique.annotation.BQConfigProperty
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.scripting.api.EmailService
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
-import java.sql.Timestamp
-import java.time.Instant
+import io.bootique.annotation.BQConfigProperty
 
 class ChargebeeService {
-    private static final Logger logger = LogManager.getLogger()
 
     private String site = null
     private String apiKey = null
@@ -54,41 +44,23 @@ class ChargebeeService {
         this.paymentItemId = paymentItemId
     }
 
-    @Inject
-    private EmailService emailService
+    String getSite() {
+        return site
+    }
 
-    @Inject
-    private PreferenceController preferenceController
+    String getApiKey() {
+        return apiKey
+    }
 
+    String getSubscriptionId() {
+        return subscriptionId
+    }
 
-    //cbdemo_sample_plan - item id? Sms-charge ?  BTLyazUIcA0R518yH - subscription id
-    void uploadUsage(ChargebeeItemType chargebeeItemType, String quantity) {
-        if (site == null || apiKey == null) {
-            logger.error("Try to use chargebee, but its configs don't have site or api key")
-            throw new RuntimeException("Try to use chargebee, but its configs don't have site or api key")
-        }
+    String getSmsItemId() {
+        return smsItemId
+    }
 
-        if(chargebeeItemType == null) {
-            throw new IllegalArgumentException("Try to upload chargebee usage without item type")
-        }
-
-        def itemPriceId = chargebeeItemType == ChargebeeItemType.SMS ? smsItemId : paymentItemId
-
-        try {
-            Environment.configure(site, apiKey)
-            Usage.create(subscriptionId)
-                    .itemPriceId(itemPriceId)
-                    .quantity(quantity)
-                    .usageDate(new Timestamp(Instant.now().toEpochMilli()))
-                    .request()
-        } catch (Exception e) {
-            logger.error("Chargebee usage upload error: " + e.getMessage())
-            emailService.email {
-                subject('onCourse->Chargebee usage upload error. Contact ish support')
-                content("\n Reason: $e.message")
-                from (preferenceController.emailFromAddress)
-                to ("accounts@ish.com.au")
-            }
-        }
+    String getPaymentItemId() {
+        return paymentItemId
     }
 }
