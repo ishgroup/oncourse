@@ -149,7 +149,7 @@
     {
       "title": "Education",
       "key": "education",
-      "description": "Whether you offer a small number of courses or thousands, onCourse is scalable to organisations of every size, so we grow with you. With powerful search capability, tagging, auditable notes, document management and full access controls, recording information and categorising your courses is as simple as a click of your mouse. onCourse supports timetabled and self-paced courses of every kind with an intuitive user interface that’s powerful and flexible.<ul><li>Faculties</li><li>Courses</li><li>Classes</li><li>Assessments</li><li>Enrolments</li><li>Traineeships</li><li>Outcomes</li><li>Document management</li><li>Assessment Submissions</li><ul>",
+      "description": "Whether you offer a small number of courses or thousands, onCourse is scalable to organisations of every size, so we grow with you. With powerful search capability, tagging, auditable notes, document management and full access controls, recording information and categorising your courses is as simple as a click of your mouse. onCourse supports timetabled and self-paced courses of every kind with an intuitive user interface that’s powerful and flexible.<ul><li>Faculties</li><li>Courses</li><li>Classes</li><li>Subjects</li><li>Assessments</li><li>Enrolments</li><li>Traineeships</li><li>Outcomes</li><li>Document management</li><li>Assessment Submissions</li><ul>",
       "features": [
         "assessmentSubmissions",
         "assessmentTasks",
@@ -160,6 +160,7 @@
         "messages",
         "outcomes",
         "priorLearnings",
+        "subjects",
         "traineeshipCourses",
         "traineeships"
       ]
@@ -600,6 +601,12 @@
       "key": "students",
       "link": "/contact?filter=@Students",
       "description": "A list of your student contacts. Specifically, students are contacts who have at least one enrolment in your system."
+    },
+    {
+      "title": "Subjects",
+      "key": "subjects",
+      "link": "/preferences/subjects",
+      "description": "Create subjects and apply them to courses to group them together on your website."
     },
     {
       "title": "Tags",

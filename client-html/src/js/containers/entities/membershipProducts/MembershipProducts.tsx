@@ -64,6 +64,7 @@ const Initial: MembershipProduct = {
   taxId: null,
   totalFee: 0,
   relatedSellables: [],
+  tags: [],
 };
 
 const filterGroups: FilterGroup[] = [

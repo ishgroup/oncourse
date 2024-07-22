@@ -786,12 +786,24 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
 
   checkDirty = (handler, args, reset?: boolean) => {
     const { isDirty, selection, creatingNew } = this.props;
-    if (isDirty || (creatingNew && selection[0] === "new")) {
+    if (isDirty) {
       this.showConfirm({
         onConfirm: () => {
           handler(...args);
-          if (reset && this.props.isDirty) {
+          if (reset) {
             this.props.resetEditView();
+          }
+        }
+      });
+      return;
+    }
+    if (creatingNew && selection[0] === "new") {
+      this.showConfirm({
+        onConfirm: () => {
+          handler(...args);
+          if (reset) {
+            this.props.resetEditView();
+            setTimeout(this.onCreateRecord, 200);
           }
         }
       });

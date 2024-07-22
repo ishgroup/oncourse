@@ -625,7 +625,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/certificate'
         "code":null,
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
-        "portalLink":"https:\/\/www.skillsoncourse.com.au\/certificate\/cAxWbE3dFwT4"
+        "portalLink":"http:\/\/skills.courses\/cAxWbE3dFwT4"
         }
         """
 

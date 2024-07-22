@@ -48,3 +48,5 @@ properties:
     type: array
     items:
       $ref: './Tag.yaml'
+  shortWebDescription:
+    type: string

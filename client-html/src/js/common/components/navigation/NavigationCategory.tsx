@@ -32,17 +32,27 @@ interface Props {
   onClose: any;
   favorites: string[];
   favoriteScripts: string[];
+  disabled: Record<any, any>;
   setExecMenuOpened: BooleanArgFunction,
   setScriptIdSelected: NumberArgFunction,
   updateFavorites: (key: string, type: "category" | "automation") => void;
 }
 
+interface NavigationItemProps {
+  favorites: string[];
+  item,
+  onOpen,
+  onFavoriteClick,
+  disabled?: boolean;
+}
+
 const NavigationItem = ({
- favorites, item, onOpen, onFavoriteClick 
-}) => {
+ favorites, item, onOpen, onFavoriteClick, disabled
+}: NavigationItemProps) => {
   const isFavorite = favorites.includes(item.key);
   return (
     <CatalogItem
+      disabled={disabled}
       onOpen={onOpen}
       item={{
         title: item.title,
@@ -72,7 +82,8 @@ const NavigationCategory = (
     favoriteScripts,
     setScriptIdSelected,
     setExecMenuOpened,
-    updateFavorites
+    updateFavorites,
+    disabled
   }:Props
 ) => {
   const classes = useStyles();
@@ -122,6 +133,7 @@ const NavigationCategory = (
             e.stopPropagation();
             updateFavorites(f.key, "category");
           }}
+          disabled={disabled[f.key]}
         />
       ))}
       {category?.key === "automation" && (

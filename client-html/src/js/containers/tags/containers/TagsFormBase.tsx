@@ -13,12 +13,20 @@ import { ShowConfirmCaller } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { arrayPush, arrayRemove, change, getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
+import {
+  arrayPush,
+  arrayRemove,
+  change,
+  getFormSyncErrors,
+  getFormValues,
+  InjectedFormProps,
+  reduxForm
+} from "redux-form";
 import { showConfirm } from "../../../common/actions";
-import { getDeepValue } from "../../../common/utils/common";
 import { onSubmitFail } from "../../../common/utils/highlightFormErrors";
 import { getPluralSuffix } from "../../../common/utils/strings";
 import { CatalogItemType } from "../../../model/common/Catalog";
+import { Fetch } from "../../../model/common/Fetch";
 import { FormTag } from "../../../model/tags";
 import { State } from "../../../reducers/state";
 import { createTag, deleteTag, updateTag } from "../actions";
@@ -26,27 +34,17 @@ import { treeDataToTags } from "../components/Trees";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
 import { styles } from "../styles/TagItemsStyles";
 import { COLORS, getAllTags, rootTagToServerModel } from "../utils";
-import { validate } from "../utils/validation";
+import { validateTagsForm } from "../utils/validation";
 
 interface Props {
   tags: CatalogItemType[];
   redirectOnDelete?: () => void;
   openConfirm?: ShowConfirmCaller;
-}
-
-interface FormProps extends Props {
   values: FormTag;
   classes: any;
   dispatch: any;
   className: string;
-  form: string;
-  handleSubmit: any;
-  dirty: boolean;
-  asyncValidating: boolean;
-  invalid: boolean;
-  submitSucceeded: boolean;
-  fetch: any;
-  asyncErrors: any;
+  fetch: Fetch;
   onUpdate: (tag: Tag) => void;
   onCreate: (tag: Tag) => void;
   onDelete: (tag: Tag) => void;
@@ -60,7 +58,7 @@ interface FormState {
   editingIds: number[];
 }
 
-export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
+export class TagsFormBase extends React.PureComponent<Props & InjectedFormProps<FormTag>, FormState> {
   resolvePromise;
 
   rejectPromise;
@@ -95,12 +93,16 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
     }
   }
 
-  setEditingId = editingId => {
+  setEditingIds = editingIds => {
     this.setState({
-      editingIds: this.state.editingIds.includes(editingId)
-        ? this.state.editingIds.filter(id => id !== editingId)
-        : this.state.editingIds.concat(editingId)
+      editingIds
     });
+  };
+
+  setEditingId = editingId => {
+    this.setEditingIds(this.state.editingIds.includes(editingId)
+      ? this.state.editingIds.filter(id => id !== editingId)
+      : this.state.editingIds.concat(editingId));
   };
 
   onSave = values => {
@@ -161,7 +163,7 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
   };
 
   removeChildTag = (item: FormTag) => {
-    const { dispatch, values, openConfirm } = this.props;
+    const { dispatch, values, openConfirm, array, form } = this.props;
 
     const confirmMessage = item.childrenCount
       ? `Deleting this tag will automatically delete ${item.childrenCount} 
@@ -171,19 +173,8 @@ export class TagsFormBase extends React.PureComponent<FormProps, FormState> {
       : `You are about to delete ${item.type === "Checklist" ? "checklist item" : "tag"}. After saving the records it cannot be undone`;
 
     const onConfirm = () => {
-      const clone = JSON.parse(JSON.stringify(values));
-
-      if (item.parent) {
-        const removePath = getDeepValue(clone, item.parent.replace(/\[[0-9]+]$/, ""));
-
-        if (removePath) {
-          const deleteItem = item.parent.match(/\[(\d+)]$/);
-          if (deleteItem && deleteItem.length > 0) removePath.splice(Number(deleteItem[1]), 1);
-        }
-      }
-
-      dispatch(change(TAGS_FORM_NAME, "childTags", clone.childTags));
-      dispatch(change(TAGS_FORM_NAME, "refreshFlag", !values.refreshFlag));
+      array.remove(item.parent.replace(/\[[0-9]+]$/, ""), parseInt(item.parent.match(/\[([0-9]+)]$/)[1]));
+      dispatch(change(form, "refreshFlag", !values.refreshFlag));
     };
 
     openConfirm({ onConfirm, confirmMessage, confirmButtonText: "DELETE" });
@@ -219,6 +210,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export const TagsFormWrapper = reduxForm<any, any, any>({
   form: TAGS_FORM_NAME,
   onSubmitFail,
-  validate,
+  validate: validateTagsForm,
   shouldError: () => true
 })(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />)));

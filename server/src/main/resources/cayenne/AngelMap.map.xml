@@ -368,6 +368,7 @@
 	</db-entity>
 	<db-entity name="Course">
 		<db-attribute name="allowWaitingLists" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="attainmentText" type="VARCHAR" length="128"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="currentlyOffered" type="SMALLINT" isMandatory="true"/>
@@ -997,6 +998,7 @@
 		<db-attribute name="nodeType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="parentId" type="BIGINT"/>
 		<db-attribute name="shortName" type="VARCHAR" length="128"/>
+		<db-attribute name="shortWebDescription" type="CLOB" length="32000"/>
 		<db-attribute name="specialType" type="SMALLINT"/>
 		<db-attribute name="weight" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -2094,6 +2096,7 @@
 	</obj-entity>
 	<obj-entity name="Course" className="ish.oncourse.server.cayenne.Course" clientClassName="ish.oncourse.cayenne.Course" dbEntityName="Course" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="allowWaitingLists" type="java.lang.Boolean" db-attribute-path="allowWaitingLists"/>
+		<obj-attribute name="attainmentText" type="java.lang.String" db-attribute-path="attainmentText"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="currentlyOffered" type="java.lang.Boolean" db-attribute-path="currentlyOffered"/>
@@ -3191,6 +3194,7 @@
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="shortWebDescription" type="java.lang.String" db-attribute-path="shortWebDescription"/>
 		<obj-attribute name="nodeType" type="ish.common.types.NodeType" db-attribute-path="nodeType"/>
 		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
 		<obj-attribute name="specialType" type="ish.common.types.NodeSpecialType" db-attribute-path="specialType"/>

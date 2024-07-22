@@ -7,12 +7,13 @@
  */
 
 import { UneditableBase } from "ish-ui";
-import React from "react";
 import { connect } from "react-redux";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { State } from "../../../../reducers/state";
 
-const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol
+const mapStateToProps = (state: State, ownProps) => ({
+  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  placeholder: ownProps.placeholder || COMMON_PLACEHOLDER
 });
 
-export default connect(mapStateToProps, null)(UneditableBase);
+export default connect(mapStateToProps)(UneditableBase);

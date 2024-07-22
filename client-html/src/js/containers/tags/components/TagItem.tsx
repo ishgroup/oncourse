@@ -147,7 +147,17 @@ const TagItem = React.memo<FormTagProps>(({
 
       <Collapse in={isEditing} mountOnEnter unmountOnExit>
         <div className="pl-3 pr-3" onClick={stopEventPropagation}>
-          <FormEditorField name={getFieldName(item.parent, "content")} placeholder="Enter description" />
+          <FormEditorField  name={getFieldName(item.parent, "shortWebDescription")} placeholder="Short description" />
+          <Typography variant="caption" fontSize="13px" >
+            <FormEditorField
+              name={getFieldName(item.parent, "content")}
+              fieldClasses={{
+                text: "fw300 fsInherit"
+              }}
+              placeholder="Description"
+              className="mb-1"
+            />
+          </Typography>
         </div>
       </Collapse>
     </div>
