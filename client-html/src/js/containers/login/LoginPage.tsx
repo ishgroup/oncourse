@@ -27,11 +27,10 @@ import { connect } from "react-redux";
 import { Action, Dispatch } from "redux";
 import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from "redux-form";
 import { DecoratedFormProps } from "redux-form/lib/reduxForm";
-import ishLogoSmall from "../../../images/logo_small.png";
-import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
 import {
   setLoginState
 } from "../../common/actions";
+import Logo from "../../common/components/layout/Logo";
 import { validateSingleMandatoryField } from "../../common/utils/validation";
 import { State } from "../../reducers/state";
 import { SSOProviders } from "../automation/containers/integrations/components/SSOProviders";
@@ -453,7 +452,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                     <Grid container columnSpacing={3} alignItems="center">
                       <Grid item xs={12} sm={9}>
                         <div className={classes.logoWrapper}>
-                          <img src={onCourseLogoDark} height={55} draggable={false} alt="Logo" />
+                          <Logo />
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={3} className={classes.versionText}>
@@ -784,8 +783,8 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                         ish group. All rights reserved.
                       </div>
                     </div>
-                    <div>
-                      <img src={ishLogoSmall} className={classes.footerIshLogo} alt="" />
+                    <div className={classes.footerIshLogo}>
+                      <Logo small />
                     </div>
                   </Grid>
                 </Grid>
