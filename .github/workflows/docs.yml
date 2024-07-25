@@ -1,0 +1,39 @@
+name: Publish OnCourse API documentation
+
+on:
+  push:
+      tags:
+        - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.14.2]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      working-directory: ./api-doc
+      run: |
+        npm install
+        npx build
+
+    - name: Deploy to GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v4
+      with:
+        target_branch: main
+        build_dir: public
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+          
