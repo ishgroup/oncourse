@@ -21,12 +21,24 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+        
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: 11
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew  
+
+    - name: Generate swagger
+      run: ./gradlew clean server-api:apiDocs_mergeSwagger
 
     - name: Build
       working-directory: ./api-doc
       run: |
         npm install
-        npx build
+        npm run build
 
     - name: Deploy to GitHub Pages
       uses: crazy-max/ghaction-github-pages@v4
