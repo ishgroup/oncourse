@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api-doc
 
     strategy:
       matrix:
@@ -35,7 +38,6 @@ jobs:
       run: ./gradlew clean server-api:apiDocs_mergeSwagger
 
     - name: Build
-      working-directory: ./api-doc
       run: |
         npm install
         npm run build
