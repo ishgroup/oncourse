@@ -9,10 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./api-doc
-
     strategy:
       matrix:
         node-version: [16.14.2]
@@ -35,20 +31,16 @@ jobs:
       run: chmod +x gradlew  
 
     - name: Generate swagger
-      working-directory: ./
       run: ./gradlew clean server-api:apiDocs_mergeSwagger
 
     - name: Build
+      working-directory: ./api-doc
       run: |
         npm install
         npm run build
 
     - name: Deploy to GitHub Pages
-      uses: crazy-max/ghaction-github-pages@v4
+      uses: actions/deploy-pages@v4.0.5     
       with:
-        target_branch: main
-        build_dir: build/api-docs
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-          
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifact_name: build/api-docs
