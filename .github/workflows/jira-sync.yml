@@ -13,4 +13,10 @@ jobs:
           method: 'POST'
           username: ${{ secrets.JIRA_USERNAME }}
           password: ${{ secrets.JIRA_PASSWORD }}
-          data: '{"key_1": "value_1", "key_2": "value_2"}'      
+          data: '{"key_1": "value_1", "key_2": "value_2"}'  
+
+      - name: Show Response
+        run: |
+          echo ${{ steps.myRequest.outputs.response }}
+          echo ${{ steps.myRequest.outputs.headers }}
+          echo ${{ steps.myRequest.outputs.status }}
