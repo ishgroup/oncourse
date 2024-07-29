@@ -26,7 +26,14 @@ jobs:
         tag_pattern: 'v[0-9]*.[0-9]*'
         increment: ${{ inputs.type }}
         
+    - name: Format version
+      id: format
+      uses: frabert/replace-string-action@v2
+      with:
+        pattern: '(v)![0-9]*.[0-9]*'
+        string: $LAST_VERSION
+        replace-with: ''
+        
     - name: Print version
       id: display
-      run: echo "TOXENV=${LAST_VERSION//v}" >> $LAST_VERSION
-
+      run: echo "Replaced is ${{ steps.format.outputs.replaced }} "  
