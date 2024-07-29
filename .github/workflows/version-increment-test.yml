@@ -28,4 +28,4 @@ jobs:
         
     - name: Print version
       id: display
-      run: echo "Current is ${{ env.LAST_VERSION }} and next is ${{ env.NEXT_VERSION }}"
+      run: echo "Current is ${{ env.LAST_VERSION//v }} and next is ${{ env.NEXT_VERSION//v }}"
