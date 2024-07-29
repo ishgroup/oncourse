@@ -1,0 +1,33 @@
+name: Test version increment
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: Release type
+        required: true
+        options: 
+        - major
+        - minor
+        default: minor
+
+jobs:
+  test-increment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@latest
+    
+      - name: Get next version
+        uses: reecetech/version-increment@latest
+        id: version
+        with:
+          scheme: semver
+          increment: ${{ inputs.type }}
+    
+      - name: Print version
+        id: display
+        run: |
+          echo 'Result tag is: ${{steps.tagger.outputs.tag}}'
+  
