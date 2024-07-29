@@ -13,18 +13,17 @@ on:
         default: minor
 
 jobs:
-  increment:
+ my_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Get next version
-      - uses: rmeneely/git-next-version@v1
-        with:
-          tag_pattern: 'v[0-9]*.[0-9]*'
-          increment: ${{ inputs.type }}
-    
-      - name: Print version
-        run: |
-          echo 'Current tag is: $LAST_VERSION'
-          echo 'Next tag is: $NEXT_VERSION'
+    - name: Get next version
+    - uses: rmeneely/git-next-version@v1
+      with:
+        tag_pattern: 'v[0-9]*.[0-9]*'
+        increment: ${{ inputs.type }}
+        
+    - name: Print version
+      id: display
+      run: echo "Current is ${{ env.LAST_VERSION }} and next is ${{ env.NEXT_VERSION }}"
 
   
