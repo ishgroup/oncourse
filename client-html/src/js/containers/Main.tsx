@@ -101,9 +101,20 @@ export class MainBase extends React.PureComponent<Props, MainState> {
   constructor(props) {
     super(props);
 
+    const theme = getTheme();
+
     this.state = {
       themeName: DefaultThemeKey,
-      theme: getTheme(),
+      theme: {
+        ...theme,
+        palette: {
+          ...theme.palette,
+          secondary: {
+            ...theme.palette.secondary,
+            main: '#434EA1',
+          }
+        }
+      },
     };
   }
 

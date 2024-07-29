@@ -1,0 +1,23 @@
+name: Test Jira sync
+
+on: [workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test call
+        id: myRequest
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://automation.atlassian.com/pro/hooks/7d15dffd9e447f7d16e7676f3e300f42ee773090'
+          method: 'POST'
+          username: ${{ secrets.JIRA_USERNAME }}
+          password: ${{ secrets.JIRA_PASSWORD }}
+          data: '{"component": "angel", "version": "f123.4266 angel"}'  
+
+      - name: Show Response
+        run: |
+          echo ${{ steps.myRequest.outputs.response }}
+          echo ${{ steps.myRequest.outputs.headers }}
+          echo ${{ steps.myRequest.outputs.status }}

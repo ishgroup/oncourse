@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 139-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            columnExists:
+              columnName: shortWebDescription
+              tableName: Node
+      changes:
+        - addColumn:
+            tableName: Node
+            columns:
+              - column:
+                  name: shortWebDescription
+                  type: LONGTEXT
