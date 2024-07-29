@@ -178,6 +178,5 @@ public class TagService {
         });
 
         context.deleteObjects(requirementsToDelete);
-        context.commitChanges();
     }
 }
