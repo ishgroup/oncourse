@@ -13,9 +13,12 @@ on:
         default: minor
 
 jobs:
- my_job:
+ increment:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
     - name: Get next version
       uses: rmeneely/git-next-version@v1
       with:
