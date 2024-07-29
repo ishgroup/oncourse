@@ -28,12 +28,12 @@ jobs:
         
     - name: Format version
       id: format
-      uses: frabert/replace-string-action@v2
+      uses: mad9000/actions-find-and-replace-string@5
       with:
-        pattern: 'v([0-9]*.[0-9]*)'
-        string: $LAST_VERSION
-        replace-with: '$1'
+        source: ${{ env.LAST_VERSION }} 
+        find: 'v'        
+        replace: ''
         
     - name: Print version
       id: display
-      run: echo "Replaced is ${{ steps.format.outputs.replaced }} "  
+      run: echo "Replaced is ${{ steps.format.outputs.value }} "  
