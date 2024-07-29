@@ -139,6 +139,7 @@ public class TagService {
         return result;
     }
 
+
     public void updateSubjectsAsEntities(ObjectContext context) {
         var subjectTag = ObjectSelect.query(Tag.class)
                 .where(Tag.SPECIAL_TYPE.eq(NodeSpecialType.SUBJECTS))
