@@ -30,7 +30,7 @@ jobs:
       id: format
       uses: mad9000/actions-find-and-replace-string@5
       with:
-        source: ${{ env.LAST_VERSION }} 
+        source: ${{ env.NEXT_VERSION }} 
         find: 'v'        
         replace: ''
         
