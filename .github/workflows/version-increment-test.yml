@@ -23,7 +23,7 @@ jobs:
     - name: Get next version
       uses: rmeneely/git-next-version@v1
       with:
-        tag_pattern: 'v[0-9]*.[0-9]*(.[0-9]*)?'
+        tag_pattern: 'v[0-9]*.[0-9]*'
         increment: ${{ inputs.type }}
         
     - name: Print version
