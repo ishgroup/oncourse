@@ -29,5 +29,7 @@ jobs:
       - name: Print version
         id: display
         run: |
-          echo 'Result tag is: ${{steps.tagger.outputs.tag}}'
+          echo 'Current tag is: ${{steps.version.outputs.current-v-version}}'
+          echo 'Next tag is: ${{steps.version.outputs.v-version}}'
+
   
