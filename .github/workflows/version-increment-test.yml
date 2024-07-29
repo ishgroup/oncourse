@@ -30,9 +30,9 @@ jobs:
       id: format
       uses: frabert/replace-string-action@v2
       with:
-        pattern: '(v)[0-9]*.[0-9]*'
+        pattern: 'v([0-9]*.[0-9]*)'
         string: $LAST_VERSION
-        replace-with: ''
+        replace-with: '$1'
         
     - name: Print version
       id: display
