@@ -13,12 +13,9 @@ on:
         default: minor
 
 jobs:
-  test-increment:
+  increment:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-    
       - name: Get next version
       - uses: rmeneely/git-next-version@v1
         with:
@@ -26,7 +23,6 @@ jobs:
           increment: ${{ inputs.type }}
     
       - name: Print version
-        id: display
         run: |
           echo 'Current tag is: $LAST_VERSION'
           echo 'Next tag is: $NEXT_VERSION'
