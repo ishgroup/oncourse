@@ -15,8 +15,8 @@ import com.google.inject.Inject
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.entity.services.TagService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.glue._Preference
-import ish.persistence.CommonPreferenceController
 import ish.persistence.Preferences
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -32,7 +32,7 @@ import static ish.persistence.Preferences.SERVICES_COMMUNICATION_KEY
 class Preference extends _Preference implements Queueable {
 
 	@Inject
-	private CommonPreferenceController preferenceController
+	private PreferenceController preferenceController
 
 	@Inject
 	private TagService tagService
