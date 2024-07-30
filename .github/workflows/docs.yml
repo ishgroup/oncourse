@@ -1,8 +1,9 @@
 name: Publish OnCourse API documentation
 
 on:
-  release:
-    types: [created]
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
   workflow_dispatch:
   
 permissions:
