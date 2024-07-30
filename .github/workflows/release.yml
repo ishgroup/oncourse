@@ -62,6 +62,7 @@ jobs:
         artifacts: "server/build/distributions/onCourseServer-*"
         allowUpdates: true
         generateReleaseNotes: true
+        commit: main
         tag: ${{ env.NEXT_VERSION }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
