@@ -22,7 +22,6 @@ jobs:
     - name: Get next version
       uses: rmeneely/git-next-version@v1
       with:
-        tag_pattern: 'v[0-9]*.[0-9]*'
         # remove
         next_version: 'v123.42.70'
         increment: ${{ inputs.type }}
@@ -65,3 +64,16 @@ jobs:
         generateReleaseNotes: true
         tag: ${{ env.NEXT_VERSION }}
         token: ${{ secrets.GITHUB_TOKEN }}
+
+  # sync-version:
+  #   runs-on: ubuntu-latest
+  #   needs: release
+  #   steps:
+  #     - name: Sync request
+  #       uses: fjogeleit/http-request-action@v1
+  #       with:
+  #         url: 'https://automation.atlassian.com/pro/hooks/7d15dffd9e447f7d16e7676f3e300f42ee773090'
+  #         method: 'POST'
+  #         username: ${{ secrets.JIRA_USERNAME }}
+  #         password: ${{ secrets.JIRA_PASSWORD }}
+  #         data: '{"component": "angel", "version": "${{ env.NEXT_VERSION }} angel"}' 
