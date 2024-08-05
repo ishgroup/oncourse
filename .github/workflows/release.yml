@@ -1,48 +1,81 @@
 name: Release
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: Release type
+        required: true
+        options: 
+        - major
+        - minor
+        - patch
+        default: patch
 
 jobs:
-
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Get tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-        with:
-          strip_v: true
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Get next version
+      uses: rmeneely/git-next-version@v1
+      with:
+        # remove
+        tag_pattern: 'v[0-9]*.[0-9]*'
+        next_version: 'v123.42.70'
+        increment: ${{ inputs.type }}
+        
+    - name: Format version
+      id: format
+      uses: mad9000/actions-find-and-replace-string@5
+      with:
+        source: ${{ env.NEXT_VERSION }} 
+        find: 'v'        
+        replace: ''    
 
-      - uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: 11
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'
-          java-version: 11
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+    - name: Cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/node_modules
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: 11-
 
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            **/node_modules
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: 11-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: 11-
+    - name: Build artifacts
+      run: ./gradlew clean server:distZip types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.format.outputs.value}}
 
-      - name: Build artifacts
-        run: ./gradlew clean server:distZip types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.tag.outputs.tag}}
+    - name: Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "server/build/distributions/onCourseServer-*"
+        allowUpdates: true
+        generateReleaseNotes: true
+        commit: main
+        tag: ${{ env.NEXT_VERSION }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "server/build/distributions/onCourseServer-*"
-          allowUpdates: true
-          body: "See release notes here https://www.ish.com.au/onCourse/doc/release-notes/${{steps.tag.outputs.tag}}/release-notes.html"
-          token: ${{ secrets.GITHUB_TOKEN }}
+  # sync-version:
+  #   runs-on: ubuntu-latest
+  #   needs: release
+  #   steps:
+  #     - name: Sync request
+  #       uses: fjogeleit/http-request-action@v1
+  #       with:
+  #         url: 'https://automation.atlassian.com/pro/hooks/7d15dffd9e447f7d16e7676f3e300f42ee773090'
+  #         method: 'POST'
+  #         username: ${{ secrets.JIRA_USERNAME }}
+  #         password: ${{ secrets.JIRA_PASSWORD }}
+  #         data: '{"component": "angel", "version": "${{ env.NEXT_VERSION }} angel"}' 
