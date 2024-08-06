@@ -14,7 +14,7 @@ jobs:
           method: 'POST'
           username: ${{ secrets.JIRA_USERNAME }}
           password: ${{ secrets.JIRA_PASSWORD }}
-          data: '{"component": "angel", "version": "f123.4266 angel"}'  
+          data: '{"component": "angel", "version": "v123.42.70 angel"}'  
 
       - name: Show Response
         run: |
