@@ -1,0 +1,67 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: Release type
+        required: true
+        options: 
+        - major
+        - minor
+        - patch
+        default: patch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Get next version
+      uses: rmeneely/git-next-version@v1
+      with:
+        tag_pattern: 'v[0-9]*.[0-9]*.[0-9]*'
+        next_version: 'types_v123.42.65'
+        increment: ${{ inputs.type }}
+        
+    - name: Format version
+      id: format
+      uses: mad9000/actions-find-and-replace-string@5
+      with:
+        source: ${{ env.NEXT_VERSION }} 
+        find: 'types_v'        
+        replace: ''    
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: 11
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          **/node_modules
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: 11-
+
+    - name: Build artifacts
+      run: ./gradlew clean types:build -x test -PreleaseVersion=${{steps.format.outputs.value}}
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "types/build/libs/types-*"
+        allowUpdates: true
+        generateReleaseNotes: true
+        commit: main
+        tag: ${{ env.NEXT_VERSION }}
+        token: ${{ secrets.GITHUB_TOKEN }}
