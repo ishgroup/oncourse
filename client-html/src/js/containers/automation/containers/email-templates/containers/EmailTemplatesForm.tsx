@@ -32,7 +32,7 @@ import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 
-const manualUrl = getManualLink("emailTemplates");
+const manualUrl = getManualLink("message-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
 
 const messageTypes = Object.keys(MessageType).map(mapSelectItems).filter(t => t.value !== "Post");

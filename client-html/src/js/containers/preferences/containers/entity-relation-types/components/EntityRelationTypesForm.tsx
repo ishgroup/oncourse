@@ -15,7 +15,7 @@ import { State } from "../../../../../reducers/state";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
 
-const manualUrl = getManualLink("generalPrefs_sellableItemsRelationTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#sellable-items-relationships");
 
 export const ENTITY_RELATION_TYPES_FORM: string = "EntityRelationTypesForm";
 

@@ -30,7 +30,7 @@ import { Fetch } from "../../../../../model/common/Fetch";
 import { State } from "../../../../../reducers/state";
 import FundingContractItem from "./FundingContractItem";
 
-const manualUrl = getManualLink("generalPrefs-fundingContractsPrefs");
+const manualUrl = getManualLink("setting-your-general-preferences#funding-contracts");
 
 export const FUNDING_CONTRACTS_FORM: string = "FundingContractsForm";
 
