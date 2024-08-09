@@ -120,7 +120,7 @@ interface ShareState {
   wrongPdfReportMsg?: string;
 }
 
-const manualUrl = getManualLink("importExport");
+const manualUrl = getManualLink("importing-and-exporting");
 
 class ShareForm extends React.PureComponent<Props, ShareState> {
   private fileInputNode: HTMLInputElement;

@@ -15,7 +15,7 @@ import { State } from "../../../../../reducers/state";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
 
-const manualUrl = getManualLink("generalPrefs_contactRelationTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#contact-relation-types");
 
 export const CONTACT_RELATION_TYPES_FORM: string = "ContactRelationTypesForm";
 

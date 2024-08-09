@@ -145,7 +145,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     return (
       <AppBarContainer
         values={item}
-        manualUrl={getManualLink("externalintegrations")}
+        manualUrl={getManualLink("external-integrations")}
         getAuditsUrl={getAuditsUrl}
         disabled={!dirty}
         invalid={invalid}

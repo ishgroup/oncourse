@@ -27,7 +27,7 @@ import { State } from "../../../../../reducers/state";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import DynamicText from "./DynamicText";
 
-const manualUrl = getManualLink("generalPrefs_messaging");
+const manualUrl = getManualLink("setting-your-general-preferences#messaging");
 
 class MessagingBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;

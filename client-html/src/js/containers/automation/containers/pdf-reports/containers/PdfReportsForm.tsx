@@ -37,7 +37,7 @@ import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationMod
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { reportFullScreenPreview } from "../actions";
 
-const manualUrl = getManualLink("reports");
+const manualUrl = getManualLink("using-reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps<Report> {

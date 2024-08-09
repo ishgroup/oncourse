@@ -21,7 +21,7 @@ import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 
-const manualUrl = getManualLink("dataCollection");
+const manualUrl = getManualLink("data-collection-forms-and-rules");
 
 export const DATA_COLLECTION_RULES_FORM: string = "CollectionRulesForm";
 

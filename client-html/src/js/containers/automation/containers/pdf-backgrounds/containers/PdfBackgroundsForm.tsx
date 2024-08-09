@@ -24,7 +24,7 @@ import AppBarContainer from "../../../../../common/components/layout/AppBarConta
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
 
-const manualUrl = getManualLink("reports_background");
+const manualUrl = getManualLink("print-backgrounds");
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
