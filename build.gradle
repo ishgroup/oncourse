@@ -107,6 +107,19 @@ subprojects {
 
 	group = 'ish.oncourse.angel'
 
+	publishing {
+		repositories {
+			maven {
+				name = "GitHubPackages"
+				url = "https://maven.pkg.github.com/ishgroup/oncourse"
+				credentials {
+					username = System.getenv("GITHUB_ACTOR")
+					password = System.getenv("GITHUB_TOKEN")
+				}
+			}
+		}
+    }
+
 	ext.sharedManifest = manifest {
 		attributes 'Release-Version': version,
 			'Built-Date': new Date().format("dd-MMM-yyy"),
