@@ -47,7 +47,13 @@ task sourceJar(type: Jar, dependsOn: classes) {
 group = 'ish.oncourse'
 sourceCompatibility = 8
 
+
 publishing {
+    repositories {
+        maven {
+            url = "https://maven.pkg.github.com/ishgroup/oncourse"
+        }
+    }
     publications {
         jar(MavenPublication) {
             from components.java

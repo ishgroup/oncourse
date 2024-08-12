@@ -107,20 +107,6 @@ subprojects {
 
 	group = 'ish.oncourse.angel'
 
-	publishing {
-        repositories {
-            maven {
-                name = "ish"
-                def repo = version.endsWith('SNAPSHOT') ? 'ish-snapshots' : 'ish-releases'
-                url = "https://repo.ish.com.au/content/repositories/${repo}"
-                credentials {
-                    username nexusUsername
-                    password nexusPassword
-                }
-            }
-        }
-    }
-
 	ext.sharedManifest = manifest {
 		attributes 'Release-Version': version,
 			'Built-Date': new Date().format("dd-MMM-yyy"),

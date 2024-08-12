@@ -6,7 +6,7 @@ on:
         type: choice
         description: Release type
         required: true
-        options: 
+        options:
         - major
         - minor
         - patch
@@ -18,21 +18,21 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      
+
     - name: Get next version
       uses: rmeneely/git-next-version@v1
       with:
         tag_pattern: 'v[0-9]*.[0-9]*.[0-9]*'
         next_version: 'types_v123.42.65'
         increment: ${{ inputs.type }}
-        
+
     - name: Format version
       id: format
       uses: mad9000/actions-find-and-replace-string@5
       with:
-        source: ${{ env.NEXT_VERSION }} 
-        find: 'types_v'        
-        replace: ''    
+        source: ${{ env.NEXT_VERSION }}
+        find: 'types_v'
+        replace: ''
 
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -53,8 +53,10 @@ jobs:
         key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: 11-
 
-    - name: Build artifacts
-      run: ./gradlew clean types:build -x test -PreleaseVersion=${{steps.format.outputs.value}}
+    - name: Publish artifacts
+      run: ./gradlew clean types:publish -x test -PreleaseVersion=${{steps.format.outputs.value}}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Release
       uses: ncipollo/release-action@v1
