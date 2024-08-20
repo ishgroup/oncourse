@@ -41,6 +41,7 @@ jobs:
         uses: actions/delete-package-versions@v2
         if: ${{ steps.version.outputs.ids != '' }}
         with:
+          package-type: maven
           package-version-ids: "${{ steps.versions.outputs.ids }}"
 
       - name: Publish artifacts
