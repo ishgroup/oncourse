@@ -116,7 +116,7 @@ function Subjects(
     <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)} role={form}>
       <RouteChangeConfirm form={form} when={dirty} />
       <AppBarContainer
-        disabled={!dirty}
+        disabled={disabled || !dirty}
         invalid={invalid}
         title='Subjects'
         disableInteraction
