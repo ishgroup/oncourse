@@ -30,20 +30,13 @@ jobs:
             ~/.gradle/wrapper
           key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: 11-
-
-      - name: Get snapshot versions
-        id: version
-        uses: castlabs/get-package-version-id-action@v2.0
-        with:
-         version: "99-SNAPSHOT"
         
-      - name: Delete server-jar snapshot
-        uses: actions/delete-package-versions@v5
-        if: ${{ steps.version.outputs.ids != '' }}
+      - name: Delete previous snapshot
+        uses: Savrov/github-action-version-cleaner@v1.0.0
         with:
-          package-version-ids: ${{ steps.version.outputs.ids }}
-          package-name: 'ish.oncourse.angel.server-jar'
-          package-type: 'maven'
+          package-type: maven
+          version-tag: 99-SNAPSHOT
+          github-token: ${{ github.token }}
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
@@ -57,5 +50,5 @@ jobs:
           allowUpdates: true
           generateReleaseNotes: true
           commit: main
-          tag: '99-SNAPSHOT'
+          tag: 99-SNAPSHOT
           token: ${{ secrets.GITHUB_TOKEN }}
