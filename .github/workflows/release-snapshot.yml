@@ -31,17 +31,16 @@ jobs:
           key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: 11-
 
-      - name: Get previous version
+      - name: Get and delete previous version
         id: version
         uses: castlabs/get-package-version-id-action@v2.0
         with:
          version: "99-SNAPSHOT"
-
-      - name: Delete previous version
+        
+      - uses: actions/delete-package-versions@v2
         if: ${{ steps.version.outputs.ids != '' }}
-        uses: actions/delete-package-versions@v2
         with:
-         package-version-ids: ${{ steps.versions.outputs.ids }}
+         package-version-ids: "${{ steps.versions.outputs.ids }}"
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
