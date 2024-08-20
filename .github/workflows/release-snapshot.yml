@@ -38,7 +38,7 @@ jobs:
           version: "99-SNAPSHOT"
           
       - name: Delete SNAPSHOT versions     
-        uses: actions/delete-package-versions@v1
+        uses: actions/delete-package-versions@v2.0.2
         if: ${{ steps.version.outputs.ids != '' }}
         with:
           package-version-ids: "${{ steps.version.outputs.ids }}"
