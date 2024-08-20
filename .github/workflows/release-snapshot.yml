@@ -31,15 +31,17 @@ jobs:
           key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: 11-
         
-      - name: Delete previous SNAPSHOT
-        uses: jackhowa/delete-github-package-versions@v0.4.9
+      - name: Get SNAPSHOT version ids
+        uses: castlabs/get-package-version-id-action@v2.0
+        id: version
         with:
           version: "99-SNAPSHOT"
-          names: |
-            ish.oncourse.angel.test
-            ish.oncourse.angel.server-jar
-            ish.oncourse.angel.dsldocs
-            ish.oncourse.angel.server
+          
+      - name: Delete SNAPSHOT versions     
+        uses: actions/delete-package-versions@v2
+        if: ${{ steps.version.outputs.ids != '' }}
+        with:
+          package-version-ids: "${{ steps.versions.outputs.ids }}"
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
