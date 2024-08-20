@@ -97,7 +97,7 @@
     "assert": "^2.0.0",
     "async": "^3.2.4",
     "autosuggest-highlight": "3.3.4",
-    "axios": "^1.6.1",
+    "axios": "^1.7.4",
     "axios-mock-adapter": "1.21.2",
     "clsx": "1.2.1",
     "d3": "v3",
