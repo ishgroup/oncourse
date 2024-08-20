@@ -31,12 +31,15 @@ jobs:
           key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: 11-
         
-      - name: Delete previous snapshot
-        uses: Savrov/github-action-version-cleaner@v1
+      - name: Delete previous SNAPSHOT
+        uses: WPMedia/delete-github-package-versions@v0.4.10
         with:
-          package-type: maven
-          version-tag: 99-SNAPSHOT
-          github-token: ${{ github.token }}
+          version: 99-SNAPSHOT
+          names: |
+            ish.oncourse.angel.test
+            ish.oncourse.angel.server-jar
+            ish.oncourse.angel.dsldocs
+            ish.oncourse.angel.server
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
