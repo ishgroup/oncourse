@@ -34,7 +34,7 @@ jobs:
       - name: Delete previous SNAPSHOT
         uses: WPMedia/delete-github-package-versions@v0.4.10
         with:
-          version: 99-SNAPSHOT
+          version: '99-SNAPSHOT'
           names: |
             ish.oncourse.angel.test
             ish.oncourse.angel.server-jar
@@ -53,5 +53,5 @@ jobs:
           allowUpdates: true
           generateReleaseNotes: true
           commit: main
-          tag: 99-SNAPSHOT
+          tag: '99-SNAPSHOT'
           token: ${{ secrets.GITHUB_TOKEN }}
