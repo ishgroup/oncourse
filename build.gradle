@@ -113,8 +113,8 @@ subprojects {
 				name = "GitHubPackages"
 				url = "https://maven.pkg.github.com/ishgroup/oncourse"
 				credentials {
-					username = System.getenv("GITHUB_ACTOR")
-					password = System.getenv("GITHUB_TOKEN")
+					username = System.getenv("GITHUB_ACTOR") ?: gitUsername
+					password = System.getenv("GITHUB_TOKEN") ?: gitPassword
 				}
 			}
 		}

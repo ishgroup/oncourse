@@ -1,0 +1,59 @@
+name: Release SNAPSHOT
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: 11-
+
+      - name: Get previous version
+        id: version
+        uses: castlabs/get-package-version-id-action@v2.0
+        with:
+         version: "99-SNAPSHOT"
+
+      - name: Delete previous version
+        uses: actions/delete-package-versions@v5
+        if: ${{ steps.version.outputs.ids != '' }}
+        with:
+         package-version-ids: "${{ steps.versions.outputs.ids }}"
+
+      - name: Publish artifacts
+        run: ./gradlew clean server:publish -x test
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "server/build/distributions/onCourseServer-*"
+          allowUpdates: true
+          generateReleaseNotes: true
+          commit: main
+          tag: '99-SNAPSHOT'
+          token: ${{ secrets.GITHUB_TOKEN }}
