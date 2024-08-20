@@ -31,16 +31,19 @@ jobs:
           key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: 11-
 
-      - name: Get and delete previous version
+      - name: Get snapshot versions
         id: version
         uses: castlabs/get-package-version-id-action@v2.0
         with:
          version: "99-SNAPSHOT"
         
-      - uses: actions/delete-package-versions@v2
+      - name: Delete server-jar snapshot
+        uses: actions/delete-package-versions@v5
         if: ${{ steps.version.outputs.ids != '' }}
         with:
-         package-version-ids: "${{ steps.versions.outputs.ids }}"
+          package-version-ids: ${{ steps.version.outputs.ids }}
+          package-name: 'ish.oncourse.angel.server-jar'
+          package-type: 'maven'
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
