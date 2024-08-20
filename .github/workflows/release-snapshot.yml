@@ -38,11 +38,10 @@ jobs:
           version: "99-SNAPSHOT"
           
       - name: Delete SNAPSHOT versions     
-        uses: actions/delete-package-versions@v5
+        uses: actions/delete-package-versions@v2
         if: ${{ steps.version.outputs.ids != '' }}
         with:
-          package-version-ids: "${{ steps.versions.outputs.ids }}"
-          package-type: maven
+          package-version-ids: '${{ steps.versions.outputs.ids }}'
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
