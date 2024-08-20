@@ -36,10 +36,10 @@ jobs:
         with:
           version: '99-SNAPSHOT'
           names: |
-            ish.oncourse.angel.test
-            ish.oncourse.angel.server-jar
-            ish.oncourse.angel.dsldocs
-            ish.oncourse.angel.server
+            'ish.oncourse.angel.test'
+            'ish.oncourse.angel.server-jar'
+            'ish.oncourse.angel.dsldocs'
+            'ish.oncourse.angel.server'
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
