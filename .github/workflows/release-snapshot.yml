@@ -32,7 +32,7 @@ jobs:
           restore-keys: 11-
         
       - name: Delete previous snapshot
-        uses: Savrov/github-action-version-cleaner@v1.0.0
+        uses: Savrov/github-action-version-cleaner@v1
         with:
           package-type: maven
           version-tag: 99-SNAPSHOT
