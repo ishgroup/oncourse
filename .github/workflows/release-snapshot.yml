@@ -34,7 +34,7 @@ jobs:
       - name: Delete previous SNAPSHOT
         uses: jackhowa/delete-github-package-versions@v0.4.9
         with:
-          version: 99-SNAPSHOT
+          version: "99-SNAPSHOT"
           names: |
             ish.oncourse.angel.test
             ish.oncourse.angel.server-jar
