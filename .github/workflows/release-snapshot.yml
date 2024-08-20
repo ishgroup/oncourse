@@ -41,7 +41,7 @@ jobs:
         uses: actions/delete-package-versions@v1
         if: ${{ steps.version.outputs.ids != '' }}
         with:
-          package-version-ids: ${{ steps.version.outputs.ids }}
+          package-version-ids: "${{ steps.version.outputs.ids }}"
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
