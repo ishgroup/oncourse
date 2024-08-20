@@ -32,14 +32,14 @@ jobs:
           restore-keys: 11-
         
       - name: Delete previous SNAPSHOT
-        uses: WPMedia/delete-github-package-versions@v0.4.10
+        uses: jackhowa/delete-github-package-versions@v0.4.9
         with:
-          version: '99-SNAPSHOT'
+          version: 99-SNAPSHOT
           names: |
-            'ish.oncourse.angel.test'
-            'ish.oncourse.angel.server-jar'
-            'ish.oncourse.angel.dsldocs'
-            'ish.oncourse.angel.server'
+            ish.oncourse.angel.test
+            ish.oncourse.angel.server-jar
+            ish.oncourse.angel.dsldocs
+            ish.oncourse.angel.server
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
