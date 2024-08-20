@@ -38,10 +38,10 @@ jobs:
          version: "99-SNAPSHOT"
 
       - name: Delete previous version
-        uses: actions/delete-package-versions@v2
         if: ${{ steps.version.outputs.ids != '' }}
+        uses: actions/delete-package-versions@v2
         with:
-         package-version-ids: "${{ steps.versions.outputs.ids }}"
+         package-version-ids: ${{ steps.versions.outputs.ids }}
 
       - name: Publish artifacts
         run: ./gradlew clean server:publish -x test
