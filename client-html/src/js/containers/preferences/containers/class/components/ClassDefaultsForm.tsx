@@ -18,7 +18,7 @@ import * as Model from "../../../../../model/preferences/ClassDefaults";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
-const manualUrl = getManualLink("generalPrefs_classdefaults");
+const manualUrl = getManualLink("setting-your-general-preferences#class-defaults");
 
 class ClassDefaultsBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;

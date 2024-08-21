@@ -100,7 +100,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Sales", list: "sale", expression: "type is ARTICLE AND product.id" },
 ];
 
-const manualLink = getManualLink("product");
+const manualLink = getManualLink("navigating-around-the-product-window");
 
 const preformatBeforeSubmit = (value: ArticleProduct): ArticleProduct => {
   if (value.relatedSellables.length) {

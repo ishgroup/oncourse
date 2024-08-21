@@ -13,7 +13,7 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import TaxTypesRenderer from "./TaxTypesRenderer";
 
-const manualUrl = getManualLink("generalPrefs_taxTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#tax-types");
 
 interface Props {
   data: any;

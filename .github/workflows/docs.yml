@@ -1,9 +1,9 @@
 name: Publish OnCourse API documentation
 
 on:
-  push:
-      tags:
-        - 'v*'
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
   workflow_dispatch:
   
 permissions:

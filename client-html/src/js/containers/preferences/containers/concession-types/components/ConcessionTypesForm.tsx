@@ -15,7 +15,7 @@ import { State } from "../../../../../reducers/state";
 import { cardsFormStyles } from "../../../styles/formCommonStyles";
 import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
 
-const manualUrl = getManualLink("generalPrefs_concessionTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#concession-types");
 
 export const CONCESSION_TYPES_FORM: string = "ConcessionTypesForm";
 

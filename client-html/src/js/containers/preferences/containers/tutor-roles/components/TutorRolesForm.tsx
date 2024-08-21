@@ -38,7 +38,7 @@ interface Props extends InjectedFormProps {
   fetch?: any;
 }
 
-const manualUrl = getManualLink("advancedSetup_Tutor");
+const manualUrl = getManualLink("tutor-pay-rates");
 
 export const TUTOR_ROLES_FORM: string = "TutorRolesForm";
 

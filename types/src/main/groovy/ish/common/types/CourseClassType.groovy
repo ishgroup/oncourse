@@ -50,6 +50,14 @@ public enum CourseClassType implements DisplayableExtendedEnumeration<Integer> {
         this.displayName = displayName;
     }
 
+    static CourseClassType fromDatabaseValue(Integer value) {
+        values().find { it.value == value }
+    }
+
+    static CourseClassType fromDisplayName(String displayName) {
+        values().find { it.displayName == displayName }
+    }
+
     @Override
     public Integer getDatabaseValue() {
         return this.value;
