@@ -44,7 +44,7 @@ jobs:
           package-version-ids: "${{ steps.version.outputs.ids }}"
 
       - name: Publish artifacts
-        run: ./gradlew clean server:publish -x test
+        run: ./gradlew clean server:publish server-api:publish types:publish -x test
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
