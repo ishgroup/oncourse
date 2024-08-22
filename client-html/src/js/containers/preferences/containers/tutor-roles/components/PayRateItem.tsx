@@ -10,13 +10,8 @@ import { ClassCostRepetitionType } from "@api/model";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Card, Grid, IconButton } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
-import {
-  formatFieldPercent,
-  mapSelectItems,
-  parseFieldPercent,
-  preventNegativeOrLogEnter,
-  YYYY_MM_DD_MINUSED
-} from "ish-ui";
+import { Decimal } from "decimal.js-light";
+import { decimalMul, mapSelectItems, YYYY_MM_DD_MINUSED } from "ish-ui";
 import React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
@@ -27,8 +22,12 @@ const validateRepetition = val => valiadateSelectItemAvailable(val, repetitionTy
 
 const validatePercentage = value => (!value && value !== 0 ? "Field is mandatory" : undefined);
 
+const parseFieldPercent = val => val && val > 0 ? new Decimal(val).div(100).toDecimalPlaces(4).toNumber() : 0;
+
+const formatFieldPercent  = val => decimalMul(val, 100);
+
 const PayRateItem = props => {
-  const {fields, onDelete} = props;
+  const { fields, onDelete } = props;
 
   return fields.map((item, index) => (
     <Card key={index} className="card flex-fill mb-4">
@@ -68,9 +67,7 @@ const PayRateItem = props => {
               step="0.01"
               format={formatFieldPercent}
               parse={parseFieldPercent}
-              onKeyPress={preventNegativeOrLogEnter}
               validate={validatePercentage}
-              debounced={false}
             />
             <Tooltip title="Remove pay rate">
               <IconButton
