@@ -58,7 +58,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Students", list: "contact", expression: "student.enrolments.outcomes.module.id" }
 ];
 
-const manualLink = getManualLink("rto_createModules");
+const manualLink = getManualLink("cpd-and-oncourse-modules");
 
 class Modules extends React.Component<any, any> {
   componentDidMount() {

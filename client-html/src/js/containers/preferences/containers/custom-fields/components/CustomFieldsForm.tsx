@@ -20,7 +20,7 @@ import { formCommonStyles } from "../../../styles/formCommonStyles";
 import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
 import CustomFieldsRenderer from "./CustomFieldsRenderer";
 
-const manualUrl = getManualLink("generalPrefs_customFields");
+const manualUrl = getManualLink("setting-your-general-preferences#custom-field-types");
 
 export const CUSTOM_FIELDS_FORM: string = "CustomFieldsForm";
 

@@ -170,7 +170,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 const secondaryColumnCondition = row => row.birthDate || "Birthday not specified";
 
-const manualLink = getManualLink("contacts");
+const manualLink = getManualLink("creating-and-modifying-contacts");
 
 const getContactTypeImage = (type: ContactType) => {
   switch (type) {
