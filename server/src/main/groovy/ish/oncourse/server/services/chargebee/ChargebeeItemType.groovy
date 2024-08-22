@@ -9,5 +9,5 @@
 package ish.oncourse.server.services.chargebee
 
 enum ChargebeeItemType {
-    SMS, PAYMENT
+    SMS, PAYMENT, BILLING_USERS
 }

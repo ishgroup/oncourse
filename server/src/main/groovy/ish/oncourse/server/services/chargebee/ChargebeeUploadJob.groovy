@@ -46,6 +46,10 @@ class ChargebeeUploadJob implements Job {
             "          AND m.createdOn >= '%s'" +
             "          AND m.createdOn <= '%s'"
 
+    private static final String BILLING_USERS_QUERY = "SELECT s.value" +
+            "          FROM Settings s" +
+            "          WHERE s.name = 'billing.users'"
+
     @Inject
     private ICayenneService cayenneService
 
@@ -70,8 +74,9 @@ class ChargebeeUploadJob implements Job {
         String firstDateOfCurrentMonth = SQL_DATE_FORMAT.format(aCalendar.getTime())
 
         try {
-            uploadUsage(ChargebeeItemType.PAYMENT, PAYMENT_AMOUNT_QUERY_FORMAT, firstDateOfPreviousMonth, firstDateOfCurrentMonth)
-            uploadUsage(ChargebeeItemType.SMS, SMS_LENGTH_QUERY_FORMAT, firstDateOfPreviousMonth, firstDateOfCurrentMonth)
+            uploadUsage(ChargebeeItemType.PAYMENT, String.format(PAYMENT_AMOUNT_QUERY_FORMAT, firstDateOfPreviousMonth, firstDateOfCurrentMonth))
+            uploadUsage(ChargebeeItemType.SMS, String.format(SMS_LENGTH_QUERY_FORMAT, firstDateOfPreviousMonth, firstDateOfCurrentMonth))
+            uploadUsage(ChargebeeItemType.BILLING_USERS, BILLING_USERS_QUERY)
         } catch (Exception e) {
             logger.error(e.getMessage())
             throw e
@@ -79,9 +84,8 @@ class ChargebeeUploadJob implements Job {
     }
 
 
-    private void uploadUsage(ChargebeeItemType type, String queryFormat, String startDate, String endDate) {
+    private void uploadUsage(ChargebeeItemType type, String query) {
         def getValue = { Statement statement ->
-            def query = String.format(queryFormat, startDate, endDate)
             return getNumberForQueryFromDb(statement, query)
         }
 
@@ -91,7 +95,7 @@ class ChargebeeUploadJob implements Job {
 
     private void uploadUsageToSite(ChargebeeItemType chargebeeItemType, String quantity) {
         if (chargebeeService.site == null || chargebeeService.apiKey == null ||
-                chargebeeService.smsItemId == null || chargebeeService.paymentItemId == null) {
+                chargebeeService.smsItemId == null || chargebeeService.paymentItemId == null || chargebeeService.billingUsersItemId == null) {
             logger.error("Try to use chargebee, but its configs don't have necessary field")
             throw new RuntimeException("Try to use chargebee, but its configs don't have necessary field")
         }
@@ -100,7 +104,20 @@ class ChargebeeUploadJob implements Job {
             throw new IllegalArgumentException("Try to upload chargebee usage without item type")
         }
 
-        def itemPriceId = chargebeeItemType == ChargebeeItemType.SMS ? chargebeeService.smsItemId : chargebeeService.paymentItemId
+        String itemPriceId
+        switch (chargebeeItemType) {
+            case ChargebeeItemType.SMS:
+                itemPriceId = chargebeeService.smsItemId
+                break
+            case ChargebeeItemType.PAYMENT:
+                itemPriceId = chargebeeService.paymentItemId
+                break
+            case ChargebeeItemType.BILLING_USERS:
+                itemPriceId = chargebeeService.billingUsersItemId
+                break
+            default:
+                throw new IllegalArgumentException("Unexpected chargebee usage item type")
+        }
 
         try {
             Environment.configure(chargebeeService.site, chargebeeService.apiKey)

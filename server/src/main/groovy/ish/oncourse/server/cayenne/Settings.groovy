@@ -10,5 +10,9 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.server.cayenne.glue._Settings
 
-class Settings extends _Settings{
+class Settings extends _Settings implements Queueable {
+    @Override
+    boolean isAsyncReplicationAllowed() {
+        return false
+    }
 }

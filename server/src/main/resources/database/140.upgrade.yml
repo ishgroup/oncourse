@@ -19,6 +19,11 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
+                  constraints:
+                    nullable: false
+                  name: willowId
+                  type: BIGINT
+              - column:
                   defaultValueComputed: 'NULL'
                   name: createdOn
                   type: datetime

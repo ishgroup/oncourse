@@ -17,6 +17,7 @@ class ChargebeeService {
     private String apiKey = null
     private String subscriptionId = null
     private String smsItemId = null
+    private String billingUsersItemId = null
     private String paymentItemId = null
 
     @BQConfigProperty
@@ -42,6 +43,15 @@ class ChargebeeService {
     @BQConfigProperty
     void setPaymentItemId(String paymentItemId) {
         this.paymentItemId = paymentItemId
+    }
+
+    String getBillingUsersItemId() {
+        return billingUsersItemId
+    }
+
+    @BQConfigProperty
+    void setBillingUsersItemId(String billingUsersItemId) {
+        this.billingUsersItemId = billingUsersItemId
     }
 
     String getSite() {
