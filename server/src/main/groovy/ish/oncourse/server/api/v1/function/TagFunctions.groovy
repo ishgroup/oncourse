@@ -50,10 +50,10 @@ class TagFunctions {
                 .collectEntries { [(it[0]): it[1]] }
     }
 
-    static SpecialTagDTO toRestSpecial(NodeSpecialType specialType, List<Tag> childTags){
+    static SpecialTagDTO toRestSpecial(NodeSpecialType specialType, List<Tag> childTags) {
         return new SpecialTagDTO().with { dto ->
             dto.specialType = SpecialTagTypeDTO.fromValue(specialType.displayName)
-            dto.childTags = childTags.sort { it.weight }.collect {toRestTag(it)}
+            dto.childTags = childTags.sort { it.weight }.collect { toRestTag(it) }
             dto
         }
     }
@@ -73,6 +73,7 @@ class TagFunctions {
             tag.childrenCount = getChildrenCount(dbTag)
             tag.weight = dbTag.weight
             tag.color = dbTag.colour
+            tag.shortWebDescription = dbTag.shortWebDescription
             if (isParent) {
                 tag.requirements = dbTag.tagRequirements.collect { req ->
                     toRestRequirement(req, dbTag)
@@ -114,7 +115,7 @@ class TagFunctions {
             String errorMessage = 'Tag group can not be deleted'
             switch (dbTag.specialType) {
                 case NodeSpecialType.SUBJECTS:
-                    errorMessage += ' This tag group represents the categories of courses on your web site and cannot be deleted.'
+                    errorMessage += ' This entity represents the categories of courses/products on your web site and cannot be deleted.'
                     break
                 case NodeSpecialType.TERMS:
                     errorMessage += ' This tag group represents the categories of classes on your web site and cannot be deleted.'
@@ -134,7 +135,7 @@ class TagFunctions {
         null
     }
 
-    static ValidationErrorDTO validateForSave(ObjectContext context, TagDTO tag) {
+    static ValidationErrorDTO validateForSave(ObjectContext context, TagDTO tag, boolean subjectsAsEntity = false) {
 
         ValidationErrorDTO error = validateTag(tag)
         if (error) {
@@ -148,6 +149,12 @@ class TagFunctions {
 
         if (dbTag != null && dbTag.id != tag.id) {
             return new ValidationErrorDTO(tag.id?.toString(), 'name', 'Name should be unique.')
+        }
+
+        if (dbTag && NodeSpecialType.SUBJECTS == dbTag.specialType && subjectsAsEntity) {
+            error = validateSubjectAsEntity(tag, dbTag)
+            if (error)
+                return error
         }
 
         Set<String> notValidNames = new HashSet<>()
@@ -269,6 +276,7 @@ class TagFunctions {
 
         dbTag.contents = trimToNull(tag.content)
         dbTag.nodeType = NodeType.fromDisplayName(tag.type.toString())
+        dbTag.shortWebDescription = tag.shortWebDescription
 
         tag.childTags.each { child ->
             Tag childTag = child.id ? childTagsToRemove.remove(child.id) : context.newObject(Tag)
@@ -437,5 +445,19 @@ class TagFunctions {
             return new ValidationErrorDTO(null, 'tags', "The $duplicatedRootTad.name tag group can be set only once.")
         }
         return null
+    }
+
+
+    private static ValidationErrorDTO validateSubjectAsEntity(TagDTO tagDTO, Tag tag) {
+        if (tagDTO.requirements.find { !it.id })
+            return new ValidationErrorDTO(null, 'subjects', "You cannot update requirement for subject entity")
+
+        if (tagDTO.requirements.id.find { !tag.tagRequirements.id.contains(it) }) {
+            return new ValidationErrorDTO(null, 'subjects', "You cannot add new requirement for subject entity")
+        }
+
+        if (tag.tagRequirements.id.find { !tagDTO.requirements.id.contains(it) }) {
+            return new ValidationErrorDTO(null, 'subjects', "You cannot remove requirement for subject entity")
+        }
     }
 }

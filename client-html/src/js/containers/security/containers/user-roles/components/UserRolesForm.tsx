@@ -22,7 +22,7 @@ import { State } from "../../../../../reducers/state";
 import { removeUserRole, updateUserRole } from "../../../actions";
 import UserRolePreference from "./UserRolePreference";
 
-const manualUrl = getManualLink("users_roles");
+const manualUrl = getManualLink("user-roles");
 
 const initialRights: { [key: string]: string } = {};
 

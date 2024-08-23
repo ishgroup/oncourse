@@ -29,6 +29,7 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption, ite
     case "Portal subdomain":
       componentProps = {
         ...componentProps,
+        getCustomSearch: s => s ? `subDomain like “${s}”` : '',
         type: 'remoteDataSelect',
         preloadEmpty: true,
         entity: 'PortalWebsite',
@@ -92,9 +93,9 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption, ite
     }
     case "Map": {
       componentProps = {
+        ...componentProps,
         type: 'select',
         items,
-        ...componentProps,
         allowEmpty: !type.mandatory,
       };
       break;
@@ -175,14 +176,14 @@ export const CustomField: React.FC<CustomFieldProps> = ({
     return () => {
       setItems([]);
     };
-  }, [type]);
+  }, [type, value]);
 
   const onCreate = value => {
     setItems(prev => [...prev, { value, label: value }]);
     dispatch(change(form, `${fieldName}[${type.fieldKey}]`, value));
   };
 
-  const componentProps = useMemo(() => customFieldComponentResolver(type, onCreate, items), [type]);
+  const componentProps = useMemo(() => customFieldComponentResolver(type, onCreate, items), [type, items]);
   
   return (
     componentProps.type === "checkbox"
@@ -225,7 +226,7 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
   }) => {
     const value = getDeepValue(entityValues, fieldName);
     
-    return (value && customFieldTypes && customFieldTypes[entityName]
+    return <>{value && customFieldTypes && customFieldTypes[entityName]
       ? customFieldTypes[entityName].map((type, i) => (
         <Grid key={i} item {...gridItemProps} className="pr-2">
           <CustomField
@@ -236,7 +237,7 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
             form={form}
           />
         </Grid>))
-      : null);
+      : null}</>;
   }
 );
 

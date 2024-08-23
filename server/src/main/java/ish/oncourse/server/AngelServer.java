@@ -15,7 +15,6 @@ import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
 import io.bootique.jdbc.hikaricp.JdbcHikariCPModule;
-import ish.oncourse.server.display.DisplayModule;
 import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;
@@ -58,7 +57,6 @@ public class AngelServer {
                 .module(HttpModule.class)
                 .module(DbModule.class)
                 .module(LicenseModule.class)
-                .module(DisplayModule.class)
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
                 .module(JasperReportsModule.class)

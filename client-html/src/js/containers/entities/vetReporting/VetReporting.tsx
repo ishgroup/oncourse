@@ -140,7 +140,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 const secondaryColumnCondition = row => row.email && row.birthDate ? `${row.birthDate}  |  ${row.email}` : row.birthDate || row.email;
 
-const manualLink = getManualLink("contacts");
+const manualLink = getManualLink("vet-reporting");
 
 const getContactTypeImage = (type: ContactType) => {
   switch (type) {

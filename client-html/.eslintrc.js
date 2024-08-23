@@ -117,7 +117,6 @@ module.exports = {
         "quote-props": "off",
         "radix": "error",
         "react/no-this-in-sfc": "off",
-        "react/require-default-props": "off",
         "react/prop-types": "off",
         "react/state-in-constructor": "off",
         "react/sort-comp": "off",

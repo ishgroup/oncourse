@@ -65,19 +65,19 @@ const request: EpicUtils.Request = {
     const vouchersItem = vouchers.rows.map(v => defaultVoucherColunmsMap(v as any))[0];
 
     if (!vouchersItem || !["Redeemed", "Expired", "Active"].includes(vouchersItem.statusValue)) {
-      throw { message: "The code you have entered was incorrect or not available" };
+      throw { data: { message: "The code you have entered was incorrect or not available" } };
     }
 
     if (vouchersItem.statusValue === "Redeemed") {
-      throw { message: "The voucher code you have entered has already been redeemed" };
+      throw { data: { message: "The voucher code you have entered has already been redeemed" } };
     }
 
     if (vouchersItem.statusValue === "Expired") {
-      throw { message: "The voucher code you have entered has expired and cannot be used" };
+      throw { data:{ message: "The voucher code you have entered has expired and cannot be used" } };
     }
 
     if (vouchersItem.redeemableById && checkout.summary.vouchers.some(sv => sv.redeemableById)) {
-      throw { message: "Can only have one payer with redeemable voucher." };
+      throw { data:{ message: "Can only have one payer with redeemable voucher." } };
     }
 
     return EntityService.getPlainRecords(
@@ -127,7 +127,7 @@ const request: EpicUtils.Request = {
       ...actions
     ];
   },
-  processError: response => FetchErrorHandler(response, response.message ? response.message : "")
+  processError: response => FetchErrorHandler(response, response.data?.message ? response.data.message : "")
 };
 
 export const EpicCheckoutGetVoucherToRedeem: Epic<any, any> = EpicUtils.Create(request);

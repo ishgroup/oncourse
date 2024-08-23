@@ -127,6 +127,7 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
 
     return result;
   }, [values.modules]);
+
   const moduleSearchItemsTransformed = useMemo(() => {
     const result = moduleItems.map(transformModule);
 
@@ -164,34 +165,16 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
-        <Uneditable value={values.qualLevel} label="Level" />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormControlLabel
-          className="checkbox"
-          control={<FormField type="checkbox" name="isSufficientForQualification" />}
-          label="Satisfies complete qualification or skill set"
-          disabled={!values.qualificationId || values.isTraineeship}
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 6 : 12}>
-        <FormControlLabel
-          className="checkbox"
-          control={<FormField type="checkbox" name="isVET" />}
-          label="VET course"
-          disabled={Boolean(values.qualificationId) || values.isTraineeship}
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="text"
           name="fieldOfEducation"
           label="Field of education"
           disabled={Boolean(values.qualificationId || values.isTraineeship)}
         />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <Uneditable value={values.qualLevel} label="Level" />
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -208,8 +191,32 @@ const CourseVetTab = React.memo<CourseVetTab>(props => {
         />
       </Grid>
 
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormField
+          type="text"
+          name="attainmentText"
+          label="Attainment web label"
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormControlLabel
+          control={<FormField type="checkbox" name="isSufficientForQualification" />}
+          label="Satisfies complete qualification or skill set"
+          disabled={!values.qualificationId || values.isTraineeship}
+        />
+      </Grid>
+
+      <Grid item xs={twoColumn ? 6 : 12}>
+        <FormControlLabel
+          control={<FormField type="checkbox" name="isVET" />}
+          label="VET course"
+          disabled={Boolean(values.qualificationId) || values.isTraineeship}
+        />
+      </Grid>
+
       <Grid item xs={12}>
-        <div className="heading">Vet student loans</div>
+        <div className="heading mt-2">Vet student loans</div>
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>

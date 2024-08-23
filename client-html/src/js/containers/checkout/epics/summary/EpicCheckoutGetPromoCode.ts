@@ -43,7 +43,7 @@ const defaultDiscountColunmsMap = ({ values }): CheckoutDiscount => ({
 const request: EpicUtils.Request = {
   type: CHECKOUT_GET_DISCOUNT_PROMO,
   getData: ({ code }, { checkout }) => (isPromotionalCodeExist(code, checkout)
-      ? Promise.reject({ message: "This code was already added." })
+      ? Promise.reject({ data: { message: "This code was already added." } })
       : EntityService.getPlainRecords(
           "Discount",
           checkoutPromocodeColumns,
@@ -70,7 +70,7 @@ const request: EpicUtils.Request = {
     ];
   },
   processError: response => [change(checkoutDiscountForm, "promocodes", ""),
-    ...FetchErrorHandler(response, response && response.message ? response.message : "Failed to get discounts by code")]
+    ...FetchErrorHandler(response, response && response.data?.message ? response.data.message : "Failed to get discounts by code")]
 };
 
 export const EpicCheckoutGetPromoCode: Epic<any, any> = EpicUtils.Create(request);

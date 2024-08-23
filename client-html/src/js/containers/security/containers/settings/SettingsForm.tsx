@@ -22,7 +22,7 @@ import * as Model from "../../../../model/preferences/security/SecuritySettings"
 import { State } from "../../../../reducers/state";
 import { PREFERENCES_AUDITS_LINK } from "../../../preferences/constants";
 
-const manualUrl = getManualLink("users_Users");
+const manualUrl = getManualLink("security-settings");
 
 class SettingsForm extends React.Component<any, any> {
   private formModel: FormModelSchema;

@@ -96,7 +96,7 @@ const secondaryColumnCondition = rows => {
   return rows["suburb"] || rows["street"] || "No Address";
 };
 
-const manualLink = getManualLink("sitesRooms");
+const manualLink = getManualLink("working-with-sites-and-rooms");
 
 class Sites extends React.Component<any, any> {
   componentDidMount() {

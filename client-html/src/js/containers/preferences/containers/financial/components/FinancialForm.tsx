@@ -26,7 +26,7 @@ import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { getAccountsList } from "../../../utils";
 import { currency, postPrepaidFees } from "../ListItems";
 
-const manualUrl = getManualLink("generalPrefs_financial");
+const manualUrl = getManualLink("setting-your-general-preferences#financial");
 
 class FinancialBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;

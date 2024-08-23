@@ -41,7 +41,7 @@ import { getOutcomeCommonFieldName, outcomeCommonFields } from "./constants";
 
 const nameCondition = (val: Enrolment) => val.studentName;
 
-const manualLink = getManualLink("processingEnrolments");
+const manualLink = getManualLink("terms-and-definitions");
 
 interface EnrolmentsProps {
   onInit?: (initial: Enrolment) => void;
