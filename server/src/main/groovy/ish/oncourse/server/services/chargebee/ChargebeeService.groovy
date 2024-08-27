@@ -17,8 +17,10 @@ class ChargebeeService {
     private String apiKey = null
     private String subscriptionId = null
     private String smsItemId = null
-    private String billingUsersItemId = null
-    private String paymentItemId = null
+    private String totalPaymentInItemId = null
+    private String totalPaymentItemId = null
+    private String totalWebPaymentInItemId = null
+    private String totalCorporatePassItemId = null
 
     @BQConfigProperty
     void setSite(String site) {
@@ -41,17 +43,23 @@ class ChargebeeService {
     }
 
     @BQConfigProperty
-    void setPaymentItemId(String paymentItemId) {
-        this.paymentItemId = paymentItemId
-    }
-
-    String getBillingUsersItemId() {
-        return billingUsersItemId
+    void setTotalPaymentItemId(String paymentItemId) {
+        this.totalPaymentInItemId = paymentItemId
     }
 
     @BQConfigProperty
-    void setBillingUsersItemId(String billingUsersItemId) {
-        this.billingUsersItemId = billingUsersItemId
+    void setTotalPaymentInItemId(String totalPaymentInItemId) {
+        this.totalPaymentInItemId = totalPaymentInItemId
+    }
+
+    @BQConfigProperty
+    void setTotalWebPaymentInItemId(String totalWebPaymentItemId) {
+        this.totalWebPaymentInItemId = totalWebPaymentItemId
+    }
+
+    @BQConfigProperty
+    void setTotalCorporatePassItemId(String totalCorporatePassItemId) {
+        this.totalCorporatePassItemId = totalCorporatePassItemId
     }
 
     String getSite() {
@@ -70,7 +78,19 @@ class ChargebeeService {
         return smsItemId
     }
 
-    String getPaymentItemId() {
-        return paymentItemId
+    String getTotalPaymentItemId() {
+        return totalPaymentItemId
+    }
+
+    String getTotalPaymentInItemId() {
+        return totalPaymentInItemId
+    }
+
+    String getTotalWebPaymentInItemId() {
+        return totalWebPaymentInItemId
+    }
+
+    String getTotalCorporatePassItemId() {
+        return totalCorporatePassItemId
     }
 }
