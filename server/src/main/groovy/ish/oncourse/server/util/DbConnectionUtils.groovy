@@ -27,4 +27,20 @@ class DbConnectionUtils {
                 connection.close()
         }
     }
+
+    static Long getLongForDbQuery(String query, DataSource dataSource) {
+        def getValue = { Statement statement ->
+            return getNumberForQueryFromDb(statement, query)
+        }
+
+        return executeWithClose(getValue, dataSource) as Long
+    }
+
+    private static Long getNumberForQueryFromDb(Statement statement, String query) {
+        def resultSet = statement.executeQuery(query)
+        resultSet.last()
+        return resultSet.getLong(1)
+    }
+
+
 }
