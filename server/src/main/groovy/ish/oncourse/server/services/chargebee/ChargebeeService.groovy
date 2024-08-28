@@ -21,6 +21,7 @@ class ChargebeeService {
     private String totalPaymentItemId = null
     private String totalWebPaymentInItemId = null
     private String totalCorporatePassItemId = null
+    private Boolean localMode = null
 
     @BQConfigProperty
     void setSite(String site) {
@@ -44,7 +45,7 @@ class ChargebeeService {
 
     @BQConfigProperty
     void setTotalPaymentItemId(String paymentItemId) {
-        this.totalPaymentInItemId = paymentItemId
+        this.totalPaymentItemId = paymentItemId
     }
 
     @BQConfigProperty
@@ -60,6 +61,11 @@ class ChargebeeService {
     @BQConfigProperty
     void setTotalCorporatePassItemId(String totalCorporatePassItemId) {
         this.totalCorporatePassItemId = totalCorporatePassItemId
+    }
+
+    @BQConfigProperty
+    void setLocalMode(Boolean localMode) {
+        this.localMode = localMode
     }
 
     String getSite() {
@@ -92,5 +98,26 @@ class ChargebeeService {
 
     String getTotalCorporatePassItemId() {
         return totalCorporatePassItemId
+    }
+
+    Boolean getLocalMode() {
+        return localMode
+    }
+
+    String configOf(ChargebeeItemType type) {
+        switch (type) {
+            case ChargebeeItemType.SMS:
+                return smsItemId
+            case ChargebeeItemType.TOTAL_CREDIT_PAYMENT_IN:
+                return totalPaymentInItemId
+            case ChargebeeItemType.TOTAL_CREDIT_PAYMENT:
+                return totalPaymentItemId
+            case ChargebeeItemType.TOTAL_CORPORATE_PASS:
+                return totalCorporatePassItemId
+            case ChargebeeItemType.TOTAL_CREDIT_WEB_PAYMENT_IN:
+                return totalWebPaymentInItemId
+            default:
+                throw new IllegalArgumentException("Unexpected chargebee usage item type")
+        }
     }
 }

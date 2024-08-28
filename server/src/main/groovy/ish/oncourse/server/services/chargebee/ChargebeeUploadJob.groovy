@@ -14,12 +14,16 @@ import com.google.inject.Inject
 import ish.common.types.PaymentSource
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.PaymentOutLine
 import ish.oncourse.server.scripting.api.EmailService
+import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.util.DbConnectionUtils
+import ish.oncourse.types.AuditAction
+import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.quartz.DisallowConcurrentExecution
@@ -71,8 +75,14 @@ class ChargebeeUploadJob implements Job {
     @Inject
     private PreferenceController preferenceController
 
+    @Inject
+    private AuditService auditService
+
+
     @Override
     void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.warn("ChargebeeUploadJob started")
+
         Calendar aCalendar = Calendar.getInstance()
         aCalendar.add(Calendar.MONTH, -1)
         aCalendar.set(Calendar.DATE, 1)
@@ -81,6 +91,8 @@ class ChargebeeUploadJob implements Job {
         aCalendar.add(Calendar.MONTH, 1)
         aCalendar.set(Calendar.DATE, 1)
         String firstDateOfCurrentMonth = SQL_DATE_FORMAT.format(aCalendar.getTime())
+
+        logger.warn("Chargebee Start date including $firstDateOfPreviousMonth , end date $firstDateOfCurrentMonth")
 
         try {
             uploadUsage(ChargebeeItemType.TOTAL_CREDIT_PAYMENT_IN, String.format(TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT, PaymentIn.simpleName, firstDateOfPreviousMonth, firstDateOfCurrentMonth))
@@ -92,6 +104,8 @@ class ChargebeeUploadJob implements Job {
             logger.error(e.getMessage())
             throw e
         }
+
+        logger.warn("ChargeebeeUploadJob executed successfully")
     }
 
 
@@ -101,6 +115,7 @@ class ChargebeeUploadJob implements Job {
     }
 
     private void uploadUsageToSite(ChargebeeItemType chargebeeItemType, String quantity) {
+
         if (chargebeeService.site == null || chargebeeService.apiKey == null ||
                 chargebeeService.smsItemId == null || chargebeeService.totalPaymentItemId == null ||
                 chargebeeService.totalPaymentInItemId == null || chargebeeService.totalCorporatePassItemId == null ||
@@ -113,27 +128,16 @@ class ChargebeeUploadJob implements Job {
             throw new IllegalArgumentException("Try to upload chargebee usage without item type")
         }
 
-        String itemPriceId
-        switch (chargebeeItemType) {
-            case ChargebeeItemType.SMS:
-                itemPriceId = chargebeeService.smsItemId
-                break
-            case ChargebeeItemType.TOTAL_CREDIT_PAYMENT_IN:
-                itemPriceId = chargebeeService.totalPaymentInItemId
-                break
-            case ChargebeeItemType.TOTAL_CREDIT_PAYMENT:
-                itemPriceId = chargebeeService.totalPaymentItemId
-                break
-            case ChargebeeItemType.TOTAL_CORPORATE_PASS:
-                itemPriceId = chargebeeService.totalCorporatePassItemId
-                break
-            case ChargebeeItemType.TOTAL_CREDIT_WEB_PAYMENT_IN:
-                itemPriceId = chargebeeService.totalWebPaymentInItemId
-                break
-            default:
-                throw new IllegalArgumentException("Unexpected chargebee usage item type")
-        }
+        String itemPriceId = chargebeeService.configOf(chargebeeItemType)
+        logger.warn("Try to upload to chargebee $chargebeeItemType with id $itemPriceId value $quantity")
 
+        if(Boolean.TRUE == chargebeeService.localMode)
+            auditService.submit(cayenneService.newContext.newObject(Audit), AuditAction.CREATE, "$quantity $chargebeeItemType")
+        else
+            uploadToChargebee(itemPriceId, quantity)
+    }
+
+    private void uploadToChargebee(String itemPriceId, String quantity) {
         try {
             Environment.configure(chargebeeService.site, chargebeeService.apiKey)
             Usage.create(chargebeeService.subscriptionId)
@@ -184,10 +188,11 @@ class ChargebeeUploadJob implements Job {
                 "          AND p.createdOn < '$endDate'" +
                 "          AND i.corporatePassId IS NOT NULL" +
                 "          AND p.status IN (3, 6)"
-        String paymentsInQuery = String.format(query, PaymentInLine.simpleName, PaymentIn.simpleName, "paymentIn")
+
+        String paymentsInQuery = String.format(query, PaymentInLine.simpleName, PaymentIn.simpleName, StringUtils.toRootLowerCase(PaymentIn.simpleName))
         def paymentsInTotal = getLongForDbQuery(paymentsInQuery)
 
-        String paymentsOutQuery = String.format(query, PaymentOutLine.simpleName, PaymentOut.simpleName, "paymentOut")
+        String paymentsOutQuery = String.format(query, PaymentOutLine.simpleName, PaymentOut.simpleName, StringUtils.toRootLowerCase(PaymentOut.simpleName))
         def paymentsOutTotal = getLongForDbQuery(paymentsOutQuery)
 
         return paymentsInTotal + paymentsOutTotal
