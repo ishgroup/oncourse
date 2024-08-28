@@ -80,7 +80,7 @@ class ChargebeeUploadJob implements Job {
                 uploadUsageToSite(property)
             }
         } catch (Exception e) {
-            logger.error(e.getMessage())
+            logger.catching(e)
             throw e
         }
 

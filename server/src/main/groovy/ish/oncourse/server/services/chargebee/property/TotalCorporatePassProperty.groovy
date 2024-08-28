@@ -36,11 +36,11 @@ class TotalCorporatePassProperty extends ChargebeePropertyProcessor{
     @Override
     Long getValue(DataSource dataSource) {
         String paymentsInQuery = String.format(QUERY_FORMAT, PaymentInLine.simpleName, PaymentIn.simpleName,
-                StringUtils.toRootLowerCase(PaymentIn.simpleName))
+                StringUtils.toRootLowerCase(PaymentIn.simpleName), formattedStartDate, formattedEndDate)
         def paymentsInTotal = getLongForDbQuery(paymentsInQuery, dataSource)
 
         String paymentsOutQuery = String.format(QUERY_FORMAT, PaymentOutLine.simpleName, PaymentOut.simpleName,
-                StringUtils.toRootLowerCase(PaymentOut.simpleName))
+                StringUtils.toRootLowerCase(PaymentOut.simpleName), formattedStartDate, formattedEndDate)
         def paymentsOutTotal = getLongForDbQuery(paymentsOutQuery, dataSource)
 
         return paymentsInTotal + paymentsOutTotal
