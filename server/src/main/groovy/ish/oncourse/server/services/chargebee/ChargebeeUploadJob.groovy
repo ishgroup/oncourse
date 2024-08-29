@@ -14,11 +14,14 @@ import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Audit
+import ish.oncourse.server.cayenne.Script
+import ish.oncourse.server.cayenne.Settings
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.services.chargebee.property.ChargebeePropertyProcessor
 import ish.oncourse.server.services.chargebee.property.ChargeebeeProcessorFactory
 import ish.oncourse.types.AuditAction
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.quartz.DisallowConcurrentExecution
@@ -98,7 +101,7 @@ class ChargebeeUploadJob implements Job {
         logger.warn("Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
 
         if(Boolean.TRUE == chargebeeService.localMode)
-            auditService.submit(cayenneService.newContext.newObject(Audit), AuditAction.CREATE, "Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
+            auditService.submit(ObjectSelect.query(Script).selectFirst(cayenneService.newReadonlyContext), AuditAction.SCRIPT_EXECUTED, "Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
         else
             uploadToChargebee(itemPriceId, String.valueOf(quantity))
     }
