@@ -131,7 +131,7 @@ const nameCondition = (invoice: Invoice) => {
   return result;
 };
 
-const manualLink = getManualLink("invoice");
+const manualLink = getManualLink("about-invoices");
 
 const secondaryColumnCondition = row => (row.invoiceNumber ? "Invoice #" + row.invoiceNumber : "Quote #" + row.quoteNumber);
 

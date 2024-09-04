@@ -12,6 +12,7 @@ import { State } from "../../../reducers/state";
 import ClassTypes from "../containers/class-types/ClassTypes";
 import CourseTypes from "../containers/course-types/CourseTypes";
 import LDAP from "../containers/ldap/LDAP";
+import Subjects from "../containers/subjects/Subjects";
 import routes from "../routes";
 
 const formTypes = Object.keys(DataCollectionType).map(type => {
@@ -84,6 +85,7 @@ const SideBar = React.memo<any>(
           }
           case ClassTypes:
           case CourseTypes:
+          case Subjects:
             disabled = !accessTypes;
             break;
         }

@@ -89,7 +89,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Students", list: "contact", expression: "student.enrolments.courseClass.course.qualification.id" }
 ];
 
-const manualLink = getManualLink("rto_createQual");
+const manualLink = getManualLink("viewing-qualifications-and-units-of-competency");
 
 const nameCondition = (item: Qualification) => item.title;
 

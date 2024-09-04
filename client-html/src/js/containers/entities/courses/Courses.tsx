@@ -25,7 +25,7 @@ import CourseEditView from "./components/CourseEditView";
 
 export const ENTITY_NAME = "Course";
 
-const manualLink = getManualLink("courses");
+const manualLink = getManualLink("working-with-courses");
 
 interface CoursesProps {
   getArticleProductRecord?: () => void;

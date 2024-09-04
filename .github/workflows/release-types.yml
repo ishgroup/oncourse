@@ -1,4 +1,4 @@
-name: Release
+name: Release types
 on:
   workflow_dispatch:
     inputs:
@@ -6,7 +6,7 @@ on:
         type: choice
         description: Release type
         required: true
-        options: 
+        options:
         - major
         - minor
         - patch
@@ -18,20 +18,20 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      
+
     - name: Get next version
       uses: rmeneely/git-next-version@v1
       with:
-        tag_pattern: 'v[0-9]*.[0-9]*.[0-9]*'
+        tag_pattern: 'types_v[0-9]*.[0-9]*.[0-9]*'
         increment: ${{ inputs.type }}
-        
+
     - name: Format version
       id: format
       uses: mad9000/actions-find-and-replace-string@5
       with:
-        source: ${{ env.NEXT_VERSION }} 
-        find: 'v'        
-        replace: ''    
+        source: ${{ env.NEXT_VERSION }}
+        find: 'types_v'
+        replace: ''
 
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -52,24 +52,17 @@ jobs:
         key: 11-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: 11-
 
-    - name: Build artifacts
-      run: ./gradlew clean server:distZip types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.format.outputs.value}}
+    - name: Publish artifacts
+      run: ./gradlew clean types:publish -x test -PreleaseVersion=${{steps.format.outputs.value}}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "server/build/distributions/onCourseServer-*"
+        artifacts: "types/build/libs/types-*"
         allowUpdates: true
         generateReleaseNotes: true
         commit: main
         tag: ${{ env.NEXT_VERSION }}
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Sync version with Jira
-      uses: fjogeleit/http-request-action@v1
-      with:
-        url: 'https://automation.atlassian.com/pro/hooks/7d15dffd9e447f7d16e7676f3e300f42ee773090'
-        method: 'POST'
-        username: ${{ secrets.JIRA_USERNAME }}
-        password: ${{ secrets.JIRA_PASSWORD }}
-        data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'
