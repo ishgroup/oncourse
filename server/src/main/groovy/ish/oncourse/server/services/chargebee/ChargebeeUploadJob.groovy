@@ -9,13 +9,12 @@
 package ish.oncourse.server.services.chargebee
 
 import com.chargebee.Environment
+import com.chargebee.models.Subscription
 import com.chargebee.models.Usage
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Script
-import ish.oncourse.server.cayenne.Settings
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.services.chargebee.property.ChargebeePropertyProcessor
@@ -51,6 +50,8 @@ class ChargebeeUploadJob implements Job {
     @Inject
     private AuditService auditService
 
+    private static Subscription subscription = null
+
 
     @Override
     void execute(JobExecutionContext context) throws JobExecutionException {
@@ -78,6 +79,9 @@ class ChargebeeUploadJob implements Job {
         logger.warn("Chargebee start date including $firstDateOfPreviousMonth , end date $firstDateOfCurrentMonth")
 
         try {
+            if(!chargebeeService.localMode)
+                Environment.configure(chargebeeService.site, chargebeeService.apiKey)
+
             propertiesToUpload.each { type ->
                 def property = ChargeebeeProcessorFactory.valueOf(type, firstDateOfPreviousMonth, firstDateOfCurrentMonth)
                 uploadUsageToSite(property)
@@ -102,13 +106,18 @@ class ChargebeeUploadJob implements Job {
 
         if(Boolean.TRUE == chargebeeService.localMode)
             auditService.submit(ObjectSelect.query(Script).selectFirst(cayenneService.newReadonlyContext), AuditAction.SCRIPT_EXECUTED, "Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
-        else
+        else {
+            def subscription = getSubscription()
+            if(!subscription.subscriptionItems().find {it.itemPriceId() == itemPriceId}) {
+                logger.warn("Item price id $itemPriceId not allowed for subscription $chargebeeService.subscriptionId and will be ignored")
+                return
+            }
             uploadToChargebee(itemPriceId, String.valueOf(quantity))
+        }
     }
 
     private void uploadToChargebee(String itemPriceId, String quantity) {
         try {
-            Environment.configure(chargebeeService.site, chargebeeService.apiKey)
             Usage.create(chargebeeService.subscriptionId)
                     .itemPriceId(itemPriceId)
                     .quantity(quantity)
@@ -123,5 +132,19 @@ class ChargebeeUploadJob implements Job {
                 to ("accounts@ish.com.au")
             }
         }
+    }
+
+    private Subscription getSubscription(){
+        if(subscription != null)
+            return subscription
+
+
+        def subscriptions = Subscription.list().id().is(chargebeeService.subscriptionId).request()
+        if(subscriptions.empty) {
+            throw new IllegalArgumentException("Subscription with id $chargebeeService.subscriptionId not found!")
+        }
+
+        subscription = subscriptions.first().subscription()
+        return subscription
     }
 }
