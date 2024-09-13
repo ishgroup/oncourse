@@ -22,10 +22,13 @@ import javax.sql.DataSource
 import static ish.oncourse.server.util.DbConnectionUtils.getLongForDbQuery
 
 class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
-    private static final String QUERY_FORMAT = "SELECT COUNT(p) AS value" +
+    private static final String QUERY_FORMAT = "SELECT COUNT(*) AS value" +
             "          FROM PaymentIn p " +
             "          JOIN PaymentMethod pm on p.paymentMethodId = pm.id" +
-            "          WHERE pm.type = 2 AND p.source = $PaymentSource.SOURCE_ONCOURSE.databaseValue"
+            "          WHERE pm.type = 2 "+
+            "          AND pi.createdOn >= '%s'" +
+            "          AND pi.createdOn < '%s'" +
+            "          AND p.source = '$PaymentSource.SOURCE_ONCOURSE.databaseValue'"
 
     TotalOfficePaymentInProperty(Date startDate, Date endDate) {
         super(startDate, endDate)

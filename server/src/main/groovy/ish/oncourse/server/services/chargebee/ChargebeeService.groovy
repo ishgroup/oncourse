@@ -30,10 +30,7 @@ class ChargebeeService {
     }
 
 
-    @Inject
     private ICayenneService cayenneService
-
-    @Inject
     private PreferenceController preferenceController
 
 
@@ -58,5 +55,12 @@ class ChargebeeService {
             throw new IllegalStateException("Attempt to upload $type property to chargebee, but config was not replicated for this college")
 
         return preference.getValueString()
+    }
+
+
+    ChargebeeService createChargebeeService(ICayenneService cayenneService, PreferenceController preferenceController) {
+        this.cayenneService = cayenneService
+        this.preferenceController = preferenceController
+        this
     }
 }

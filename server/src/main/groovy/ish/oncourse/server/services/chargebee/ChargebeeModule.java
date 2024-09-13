@@ -12,12 +12,16 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
+import ish.oncourse.server.ICayenneService;
+import ish.oncourse.server.PreferenceController;
 
 public class ChargebeeModule extends ConfigModule {
 
     @Singleton
     @Provides
-    public ChargebeeService createChargebeeService(ConfigurationFactory configFactory) {
-        return configFactory.config(ChargebeeService.class, getConfigPrefix());
+    public ChargebeeService createChargebeeService(ConfigurationFactory configFactory, ICayenneService cayenneService,
+                                                   PreferenceController preferenceController) {
+        return configFactory.config(ChargebeeService.class, getConfigPrefix())
+                .createChargebeeService(cayenneService, preferenceController);
     }
 }

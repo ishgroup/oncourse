@@ -16,7 +16,10 @@ import ish.common.chargebee.ChargebeePropertyType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
+import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.scripting.api.EmailService
+import ish.oncourse.server.scripting.api.EmailSpec
+import ish.oncourse.server.scripting.api.MessageSpec
 import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.services.chargebee.property.ChargebeePropertyProcessor
 import ish.oncourse.server.services.chargebee.property.ChargeebeeProcessorFactory
@@ -43,7 +46,7 @@ class ChargebeeUploadJob implements Job {
     private ChargebeeService chargebeeService
 
     @Inject
-    private EmailService emailService
+    private MessageService messageService
 
     @Inject
     private PreferenceController preferenceController
@@ -84,6 +87,7 @@ class ChargebeeUploadJob implements Job {
         def firstDateOfCurrentMonth = aCalendar.getTime()
 
         def propertiesToUpload = ChargebeePropertyType.getItems()
+                .findAll {addons.contains(it.getDbPropertyName())}
 
         logger.warn("Chargebee start date including $firstDateOfPreviousMonth , end date $firstDateOfCurrentMonth")
 
@@ -137,12 +141,13 @@ class ChargebeeUploadJob implements Job {
                     .request()
         } catch (Exception e) {
             logger.error("Chargebee usage upload error: " + e.getMessage())
-            emailService.email {
-                subject('onCourse->Chargebee usage upload error. Contact ish support')
-                content("\n Reason: $e.message")
-                from (preferenceController.emailFromAddress)
-                to ("accounts@ish.com.au")
-            }
+            messageService.sendMessage(new MessageSpec().with {
+                it.subject = 'onCourse->Chargebee usage upload error. Contact ish support'
+                it.content ="\n$itemPriceId upload error for college $preferenceController.collegeName. Reason: $e.message"
+                it.from(preferenceController.emailFromAddress)
+                it.to("accounts@ish.com.au")
+                it
+            })
         }
     }
 
