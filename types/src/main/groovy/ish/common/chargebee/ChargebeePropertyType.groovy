@@ -14,7 +14,7 @@ enum ChargebeePropertyType {
     TOTAL_CREDIT_WEB_PAYMENT_IN("chargebee.total.paymentIn.web.item", "Total web payments in item (addon)"),
     TOTAL_CREDIT_PAYMENT("chargebee.total.payment", "Total payment item"),
     TOTAL_CORPORATE_PASS("chargebee.total.corporatePass", "Total corporate pass item"),
-    TOTAL_OFFICE_PAYMENT_IN_NUMBER("chargebee.office.paymentIn.number", "Total card transactions item"),
+    TOTAL_OFFICE_PAYMENT_IN_NUMBER("chargebee.office.paymentIn.number", "Total office payments in item"),
     SITE("chargebee.site", "Site prefix"),
     API_KEY("chargebee.apiKey", "Api key"),
 
