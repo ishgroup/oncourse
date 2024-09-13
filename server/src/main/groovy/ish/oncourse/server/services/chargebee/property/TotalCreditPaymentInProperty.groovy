@@ -9,7 +9,7 @@
 package ish.oncourse.server.services.chargebee.property
 
 import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.services.chargebee.ChargebeeItemType
+import ish.common.chargebee.ChargebeePropertyType
 
 import static ish.oncourse.server.services.chargebee.ChargebeeQueryUtils.TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT
 
@@ -24,7 +24,7 @@ class TotalCreditPaymentInProperty extends ChargebeeSimplePropertyProcessor{
     }
 
     @Override
-    ChargebeeItemType getType() {
-        return ChargebeeItemType.TOTAL_CREDIT_PAYMENT_IN
+    ChargebeePropertyType getType() {
+        return ChargebeePropertyType.TOTAL_CREDIT_PAYMENT_IN
     }
 }

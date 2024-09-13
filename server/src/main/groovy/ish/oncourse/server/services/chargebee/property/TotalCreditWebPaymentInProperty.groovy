@@ -9,7 +9,7 @@
 package ish.oncourse.server.services.chargebee.property
 
 import ish.common.types.PaymentSource
-import ish.oncourse.server.services.chargebee.ChargebeeItemType
+import ish.common.chargebee.ChargebeePropertyType
 
 class TotalCreditWebPaymentInProperty extends ChargebeeSimplePropertyProcessor{
     private static final String WEB_CREDIT_AMOUNT_QUERY_FORMAT = "SELECT SUM(pi.amount) AS value" +
@@ -30,7 +30,7 @@ class TotalCreditWebPaymentInProperty extends ChargebeeSimplePropertyProcessor{
     }
 
     @Override
-    ChargebeeItemType getType() {
-        return ChargebeeItemType.TOTAL_CREDIT_WEB_PAYMENT_IN
+    ChargebeePropertyType getType() {
+        return ChargebeePropertyType.TOTAL_CREDIT_WEB_PAYMENT_IN
     }
 }

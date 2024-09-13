@@ -12,6 +12,7 @@ import com.chargebee.Environment
 import com.chargebee.models.Subscription
 import com.chargebee.models.Usage
 import com.google.inject.Inject
+import ish.common.chargebee.ChargebeePropertyType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
@@ -57,12 +58,20 @@ class ChargebeeUploadJob implements Job {
     void execute(JobExecutionContext context) throws JobExecutionException {
         logger.warn("ChargebeeUploadJob started")
 
-        if (chargebeeService.site == null || chargebeeService.apiKey == null ||
-                chargebeeService.smsItemId == null || chargebeeService.totalPaymentItemId == null ||
-                chargebeeService.totalPaymentInItemId == null || chargebeeService.totalCorporatePassItemId == null ||
-                chargebeeService.totalWebPaymentInItemId == null) {
-            logger.error("Try to use chargebee, but its configs don't have necessary field")
-            throw new RuntimeException("Try to use chargebee, but its configs don't have necessary field")
+        def addons = chargebeeService.getAllowedAddons()
+        if(addons.isEmpty()) {
+            logger.warn("ChargebeeUploadJob is rejected due to allowed addons not configured for this college")
+            return
+        }
+
+        def site = chargebeeService.configOf(ChargebeePropertyType.SITE)
+        def apiKey = chargebeeService.configOf(ChargebeePropertyType.API_KEY)
+
+
+        if (site == null || apiKey == null) {
+            String error = "Try to use chargebee, but its configs don't have necessary field (site or api key)"
+            logger.error(error)
+            throw new RuntimeException(error)
         }
 
         Calendar aCalendar = Calendar.getInstance()
@@ -74,13 +83,13 @@ class ChargebeeUploadJob implements Job {
         aCalendar.set(Calendar.DATE, 1)
         def firstDateOfCurrentMonth = aCalendar.getTime()
 
-        def propertiesToUpload = ChargebeeItemType.values()
+        def propertiesToUpload = ChargebeePropertyType.getItems()
 
         logger.warn("Chargebee start date including $firstDateOfPreviousMonth , end date $firstDateOfCurrentMonth")
 
         try {
             if(!chargebeeService.localMode)
-                Environment.configure(chargebeeService.site, chargebeeService.apiKey)
+                Environment.configure(site, apiKey)
 
             propertiesToUpload.each { type ->
                 def property = ChargeebeeProcessorFactory.valueOf(type, firstDateOfPreviousMonth, firstDateOfCurrentMonth)
@@ -100,8 +109,11 @@ class ChargebeeUploadJob implements Job {
             throw new IllegalArgumentException("Try to upload chargebee usage without item type")
         }
 
-        def quantity = propertyProcessor.getValue(cayenneService.dataSource)
         String itemPriceId = chargebeeService.configOf(propertyProcessor.type)
+        if(itemPriceId == null)
+            throw new IllegalArgumentException("Try to upload usage $propertyProcessor.type without configured item id")
+
+        def quantity = propertyProcessor.getValue(cayenneService.dataSource)
         logger.warn("Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
 
         if(Boolean.TRUE == chargebeeService.localMode)

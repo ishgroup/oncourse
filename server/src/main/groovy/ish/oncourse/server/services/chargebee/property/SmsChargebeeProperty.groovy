@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.services.chargebee.property
 
-import ish.oncourse.server.services.chargebee.ChargebeeItemType
+import ish.common.chargebee.ChargebeePropertyType
 
 class SmsChargebeeProperty extends ChargebeeSimplePropertyProcessor {
     private static final int SMS_LENGTH = 160
@@ -23,8 +23,8 @@ class SmsChargebeeProperty extends ChargebeeSimplePropertyProcessor {
     }
 
     @Override
-    ChargebeeItemType getType() {
-        return ChargebeeItemType.SMS
+    ChargebeePropertyType getType() {
+        return ChargebeePropertyType.SMS
     }
 
     @Override

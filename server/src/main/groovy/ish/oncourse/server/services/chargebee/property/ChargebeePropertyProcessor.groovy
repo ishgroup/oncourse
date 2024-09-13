@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.services.chargebee.property
 
-import ish.oncourse.server.services.chargebee.ChargebeeItemType
+import ish.common.chargebee.ChargebeePropertyType
 
 import javax.sql.DataSource
 import java.text.SimpleDateFormat
@@ -33,5 +33,5 @@ abstract class ChargebeePropertyProcessor {
     }
 
     abstract Long getValue(DataSource dataSource)
-    abstract ChargebeeItemType getType()
+    abstract ChargebeePropertyType getType()
 }

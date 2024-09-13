@@ -8,39 +8,37 @@
 
 package ish.oncourse.server.services.chargebee.property
 
+import ish.common.chargebee.ChargebeePropertyType
+import ish.common.types.AccountTransactionType
+import ish.common.types.PaymentSource
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentInLine
 import ish.oncourse.server.cayenne.PaymentOut
 import ish.oncourse.server.cayenne.PaymentOutLine
-import ish.common.chargebee.ChargebeePropertyType
 import org.apache.commons.lang3.StringUtils
 
 import javax.sql.DataSource
 
 import static ish.oncourse.server.util.DbConnectionUtils.getLongForDbQuery
 
-class TotalCorporatePassProperty extends ChargebeePropertyProcessor{
-    private static final String QUERY_FORMAT = "SELECT SUM(p.amount) AS value" +
-            "          FROM %s pil JOIN %s p ON pil.%sId = p.id JOIN PaymentMethod pm on p.paymentMethodId = pm.id" +
-            "          JOIN Invoice i ON pil.invoiceId = i.id" +
-            "          WHERE pm.type = 2 " +
-            "          AND p.createdOn >= '%s'" +
-            "          AND p.createdOn < '%s'" +
-            "          AND i.corporatePassId IS NOT NULL" +
-            "          AND p.status IN (3, 6)"
+class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
+    private static final String QUERY_FORMAT = "SELECT COUNT(p) AS value" +
+            "          FROM PaymentIn p " +
+            "          JOIN PaymentMethod pm on p.paymentMethodId = pm.id" +
+            "          WHERE pm.type = 2 AND p.source = $PaymentSource.SOURCE_ONCOURSE.databaseValue"
 
-    TotalCorporatePassProperty(Date startDate, Date endDate) {
+    TotalOfficePaymentInProperty(Date startDate, Date endDate) {
         super(startDate, endDate)
     }
 
     @Override
     Long getValue(DataSource dataSource) {
-        String paymentsInQuery = String.format(QUERY_FORMAT, PaymentInLine.simpleName, PaymentIn.simpleName,
-                StringUtils.toRootLowerCase(PaymentIn.simpleName), formattedStartDate, formattedEndDate)
+        String paymentsInQuery = String.format(QUERY_FORMAT, AccountTransactionType.PAYMENT_IN_LINE, PaymentInLine.simpleName,
+                PaymentIn.simpleName, StringUtils.toRootLowerCase(PaymentIn.simpleName), formattedStartDate, formattedEndDate)
         def paymentsInTotal = getLongForDbQuery(paymentsInQuery, dataSource)
 
-        String paymentsOutQuery = String.format(QUERY_FORMAT, PaymentOutLine.simpleName, PaymentOut.simpleName,
-                StringUtils.toRootLowerCase(PaymentOut.simpleName), formattedStartDate, formattedEndDate)
+        String paymentsOutQuery = String.format(QUERY_FORMAT, AccountTransactionType.PAYMENT_OUT_LINE, PaymentOutLine.simpleName,
+                PaymentOut.simpleName, StringUtils.toRootLowerCase(PaymentOut.simpleName), formattedStartDate, formattedEndDate)
         def paymentsOutTotal = getLongForDbQuery(paymentsOutQuery, dataSource)
 
         return paymentsInTotal + paymentsOutTotal
@@ -48,6 +46,6 @@ class TotalCorporatePassProperty extends ChargebeePropertyProcessor{
 
     @Override
     ChargebeePropertyType getType() {
-        return ChargebeePropertyType.TOTAL_CORPORATE_PASS
+        return ChargebeePropertyType.TOTAL_OFFICE_PAYMENT_IN_NUMBER
     }
 }
