@@ -8,13 +8,13 @@
 
 package ish.oncourse.server.services.chargebee.property
 
+import ish.common.chargebee.ChargebeePropertyType
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
-import ish.common.chargebee.ChargebeePropertyType
 
 import javax.sql.DataSource
 
-import static ish.oncourse.server.services.chargebee.ChargebeeQueryUtils.TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT
+import static ish.oncourse.server.services.chargebee.ChargebeeQueryUtils.TOTAL_CREDIT_PAYMENT_COUNT_QUERY_FORMAT
 import static ish.oncourse.server.util.DbConnectionUtils.getBigDecimalForDbQuery
 
 class TotalCreditProperty extends ChargebeePropertyProcessor{
@@ -24,10 +24,10 @@ class TotalCreditProperty extends ChargebeePropertyProcessor{
 
     @Override
     BigDecimal getValue(DataSource dataSource) {
-        String paymentsInQuery = String.format(TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT, PaymentIn.simpleName, formattedStartDate, formattedEndDate)
+        String paymentsInQuery = String.format(TOTAL_CREDIT_PAYMENT_COUNT_QUERY_FORMAT, PaymentIn.simpleName, formattedStartDate, formattedEndDate)
         def paymentsInTotal = getBigDecimalForDbQuery(paymentsInQuery, dataSource)
 
-        String paymentsOutQuery = String.format(TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT, PaymentOut.simpleName, formattedStartDate, formattedEndDate)
+        String paymentsOutQuery = String.format(TOTAL_CREDIT_PAYMENT_COUNT_QUERY_FORMAT, PaymentOut.simpleName, formattedStartDate, formattedEndDate)
         def paymentsOutTotal = getBigDecimalForDbQuery(paymentsOutQuery, dataSource)
 
         return paymentsInTotal.add(paymentsOutTotal)

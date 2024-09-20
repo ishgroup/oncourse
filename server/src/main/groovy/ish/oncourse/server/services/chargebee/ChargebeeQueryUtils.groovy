@@ -16,4 +16,11 @@ class ChargebeeQueryUtils {
             "          AND p.createdOn >= '%s'" +
             "          AND p.createdOn < '%s'" +
             "          AND p.status IN (3, 6)"
+
+    public static final String TOTAL_CREDIT_PAYMENT_COUNT_QUERY_FORMAT = "SELECT COUNT(*) AS value" +
+            "          FROM %s p JOIN PaymentMethod pm on p.paymentMethodId = pm.id" +
+            "          WHERE pm.type = 2 " +
+            "          AND p.createdOn >= '%s'" +
+            "          AND p.createdOn < '%s'" +
+            "          AND p.status IN (3, 6)"
 }
