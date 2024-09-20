@@ -21,30 +21,30 @@ import javax.sql.DataSource
 
 import static ish.oncourse.server.util.DbConnectionUtils.getBigDecimalForDbQuery
 
-class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
+class TotalOfficePaymentProperty extends ChargebeePropertyProcessor{
     private static final String QUERY_FORMAT = "SELECT COUNT(*) AS value" +
-            "          FROM PaymentIn p " +
+            "          FROM %s p " +
             "          JOIN PaymentMethod pm on p.paymentMethodId = pm.id" +
             "          WHERE pm.type = 2 "+
             "          AND p.createdOn >= '%s'" +
             "          AND p.createdOn < '%s'" +
             "          AND p.source = '$PaymentSource.SOURCE_ONCOURSE.databaseValue'"
 
-    TotalOfficePaymentInProperty(Date startDate, Date endDate) {
+    TotalOfficePaymentProperty(Date startDate, Date endDate) {
         super(startDate, endDate)
     }
 
     @Override
     BigDecimal getValue(DataSource dataSource) {
-        String paymentsInQuery = String.format(QUERY_FORMAT, AccountTransactionType.PAYMENT_IN_LINE, PaymentInLine.simpleName,
-                PaymentIn.simpleName, StringUtils.toRootLowerCase(PaymentIn.simpleName), formattedStartDate, formattedEndDate)
+        String paymentsInQuery = String.format(QUERY_FORMAT, PaymentIn.simpleName,
+                formattedStartDate, formattedEndDate)
         def paymentsInTotal = getBigDecimalForDbQuery(paymentsInQuery, dataSource)
 
-        String paymentsOutQuery = String.format(QUERY_FORMAT, AccountTransactionType.PAYMENT_OUT_LINE, PaymentOutLine.simpleName,
-                PaymentOut.simpleName, StringUtils.toRootLowerCase(PaymentOut.simpleName), formattedStartDate, formattedEndDate)
+        String paymentsOutQuery = String.format(QUERY_FORMAT, PaymentOut.simpleName,
+                formattedStartDate, formattedEndDate)
         def paymentsOutTotal = getBigDecimalForDbQuery(paymentsOutQuery, dataSource)
 
-        return paymentsInTotal + paymentsOutTotal
+        return paymentsInTotal.add(paymentsOutTotal)
     }
 
     @Override
