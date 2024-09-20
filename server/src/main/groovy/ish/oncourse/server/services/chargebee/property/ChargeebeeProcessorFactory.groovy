@@ -18,7 +18,7 @@ class ChargeebeeProcessorFactory {
             case ChargebeePropertyType.TOTAL_CORPORATE_PASS:
                 return new TotalCorporatePassProperty(startDate, endDate)
             case ChargebeePropertyType.TOTAL_CREDIT_PAYMENT:
-                return new TotalCreditProperty(startDate, endDate)
+                return new TotalCreditCountProperty(startDate, endDate)
             case ChargebeePropertyType.TOTAL_CREDIT_WEB_PAYMENT_IN:
                 return new TotalCreditWebPaymentInProperty(startDate, endDate)
             case ChargebeePropertyType.TOTAL_CREDIT_PAYMENT_IN:

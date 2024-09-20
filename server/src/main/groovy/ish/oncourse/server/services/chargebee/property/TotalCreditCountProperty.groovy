@@ -17,8 +17,8 @@ import javax.sql.DataSource
 import static ish.oncourse.server.services.chargebee.ChargebeeQueryUtils.TOTAL_CREDIT_PAYMENT_COUNT_QUERY_FORMAT
 import static ish.oncourse.server.util.DbConnectionUtils.getBigDecimalForDbQuery
 
-class TotalCreditProperty extends ChargebeePropertyProcessor{
-    TotalCreditProperty(Date startDate, Date endDate) {
+class TotalCreditCountProperty extends ChargebeePropertyProcessor{
+    TotalCreditCountProperty(Date startDate, Date endDate) {
         super(startDate, endDate)
     }
 
