@@ -15,7 +15,7 @@ import ish.common.chargebee.ChargebeePropertyType
 import javax.sql.DataSource
 
 import static ish.oncourse.server.services.chargebee.ChargebeeQueryUtils.TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT
-import static ish.oncourse.server.util.DbConnectionUtils.getLongForDbQuery
+import static ish.oncourse.server.util.DbConnectionUtils.getBigDecimalForDbQuery
 
 class TotalCreditProperty extends ChargebeePropertyProcessor{
     TotalCreditProperty(Date startDate, Date endDate) {
@@ -23,14 +23,14 @@ class TotalCreditProperty extends ChargebeePropertyProcessor{
     }
 
     @Override
-    Long getValue(DataSource dataSource) {
+    BigDecimal getValue(DataSource dataSource) {
         String paymentsInQuery = String.format(TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT, PaymentIn.simpleName, formattedStartDate, formattedEndDate)
-        def paymentsInTotal = getLongForDbQuery(paymentsInQuery, dataSource)
+        def paymentsInTotal = getBigDecimalForDbQuery(paymentsInQuery, dataSource)
 
         String paymentsOutQuery = String.format(TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT, PaymentOut.simpleName, formattedStartDate, formattedEndDate)
-        def paymentsOutTotal = getLongForDbQuery(paymentsOutQuery, dataSource)
+        def paymentsOutTotal = getBigDecimalForDbQuery(paymentsOutQuery, dataSource)
 
-        return paymentsInTotal + paymentsOutTotal
+        return paymentsInTotal.add(paymentsOutTotal)
     }
 
     @Override

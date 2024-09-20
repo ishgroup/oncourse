@@ -32,6 +32,6 @@ abstract class ChargebeePropertyProcessor {
         return SQL_DATE_FORMAT.format(endDate)
     }
 
-    abstract Long getValue(DataSource dataSource)
+    abstract BigDecimal getValue(DataSource dataSource)
     abstract ChargebeePropertyType getType()
 }

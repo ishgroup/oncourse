@@ -19,8 +19,8 @@ abstract class ChargebeeSimplePropertyProcessor extends ChargebeePropertyProcess
     }
 
     @Override
-    Long getValue(DataSource dataSource) {
-        return DbConnectionUtils.getLongForDbQuery(getQuery(), dataSource)
+    BigDecimal getValue(DataSource dataSource) {
+        return DbConnectionUtils.getBigDecimalForDbQuery(getQuery(), dataSource)
     }
 
     abstract String getQuery()

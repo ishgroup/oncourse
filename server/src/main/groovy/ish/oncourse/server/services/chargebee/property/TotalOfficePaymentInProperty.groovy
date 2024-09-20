@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils
 
 import javax.sql.DataSource
 
-import static ish.oncourse.server.util.DbConnectionUtils.getLongForDbQuery
+import static ish.oncourse.server.util.DbConnectionUtils.getBigDecimalForDbQuery
 
 class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
     private static final String QUERY_FORMAT = "SELECT COUNT(*) AS value" +
@@ -35,14 +35,14 @@ class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
     }
 
     @Override
-    Long getValue(DataSource dataSource) {
+    BigDecimal getValue(DataSource dataSource) {
         String paymentsInQuery = String.format(QUERY_FORMAT, AccountTransactionType.PAYMENT_IN_LINE, PaymentInLine.simpleName,
                 PaymentIn.simpleName, StringUtils.toRootLowerCase(PaymentIn.simpleName), formattedStartDate, formattedEndDate)
-        def paymentsInTotal = getLongForDbQuery(paymentsInQuery, dataSource)
+        def paymentsInTotal = getBigDecimalForDbQuery(paymentsInQuery, dataSource)
 
         String paymentsOutQuery = String.format(QUERY_FORMAT, AccountTransactionType.PAYMENT_OUT_LINE, PaymentOutLine.simpleName,
                 PaymentOut.simpleName, StringUtils.toRootLowerCase(PaymentOut.simpleName), formattedStartDate, formattedEndDate)
-        def paymentsOutTotal = getLongForDbQuery(paymentsOutQuery, dataSource)
+        def paymentsOutTotal = getBigDecimalForDbQuery(paymentsOutQuery, dataSource)
 
         return paymentsInTotal + paymentsOutTotal
     }

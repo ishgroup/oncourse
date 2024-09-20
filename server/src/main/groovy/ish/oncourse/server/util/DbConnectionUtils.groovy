@@ -28,7 +28,7 @@ class DbConnectionUtils {
         }
     }
 
-    static Long getLongForDbQuery(String query, DataSource dataSource) {
+    static BigDecimal getBigDecimalForDbQuery(String query, DataSource dataSource) {
         def getValue = { Statement statement ->
             return getNumberForQueryFromDb(statement, query)
         }
@@ -36,10 +36,10 @@ class DbConnectionUtils {
         return executeWithClose(getValue, dataSource) as Long
     }
 
-    private static Long getNumberForQueryFromDb(Statement statement, String query) {
+    private static BigDecimal getNumberForQueryFromDb(Statement statement, String query) {
         def resultSet = statement.executeQuery(query)
         resultSet.last()
-        return resultSet.getLong(1)
+        return resultSet.getBigDecimal(1)
     }
 
 
