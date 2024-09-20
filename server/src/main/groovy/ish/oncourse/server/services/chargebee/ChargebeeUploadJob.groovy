@@ -128,7 +128,7 @@ class ChargebeeUploadJob implements Job {
                 logger.warn("Item price id $itemPriceId not allowed for subscription $chargebeeService.subscriptionId and will be ignored")
                 return
             }
-            uploadToChargebee(itemPriceId, String.valueOf(quantity))
+            uploadToChargebee(itemPriceId, quantity.toPlainString())
         }
     }
 
