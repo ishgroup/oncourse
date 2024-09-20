@@ -26,8 +26,8 @@ class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
             "          FROM PaymentIn p " +
             "          JOIN PaymentMethod pm on p.paymentMethodId = pm.id" +
             "          WHERE pm.type = 2 "+
-            "          AND pi.createdOn >= '%s'" +
-            "          AND pi.createdOn < '%s'" +
+            "          AND p.createdOn >= '%s'" +
+            "          AND p.createdOn < '%s'" +
             "          AND p.source = '$PaymentSource.SOURCE_ONCOURSE.databaseValue'"
 
     TotalOfficePaymentInProperty(Date startDate, Date endDate) {
