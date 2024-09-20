@@ -21,30 +21,23 @@ import javax.sql.DataSource
 
 import static ish.oncourse.server.util.DbConnectionUtils.getBigDecimalForDbQuery
 
-class TotalOfficePaymentProperty extends ChargebeePropertyProcessor{
+class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
     private static final String QUERY_FORMAT = "SELECT COUNT(*) AS value" +
-            "          FROM %s p " +
+            "          FROM PaymentIn p " +
             "          JOIN PaymentMethod pm on p.paymentMethodId = pm.id" +
             "          WHERE pm.type = 2 "+
             "          AND p.createdOn >= '%s'" +
             "          AND p.createdOn < '%s'" +
             "          AND p.source = '$PaymentSource.SOURCE_ONCOURSE.databaseValue'"
 
-    TotalOfficePaymentProperty(Date startDate, Date endDate) {
+    TotalOfficePaymentInProperty(Date startDate, Date endDate) {
         super(startDate, endDate)
     }
 
     @Override
     BigDecimal getValue(DataSource dataSource) {
-        String paymentsInQuery = String.format(QUERY_FORMAT, PaymentIn.simpleName,
-                formattedStartDate, formattedEndDate)
-        def paymentsInTotal = getBigDecimalForDbQuery(paymentsInQuery, dataSource)
-
-        String paymentsOutQuery = String.format(QUERY_FORMAT, PaymentOut.simpleName,
-                formattedStartDate, formattedEndDate)
-        def paymentsOutTotal = getBigDecimalForDbQuery(paymentsOutQuery, dataSource)
-
-        return paymentsInTotal.add(paymentsOutTotal)
+        String paymentsInQuery = String.format(QUERY_FORMAT, formattedStartDate, formattedEndDate)
+        return getBigDecimalForDbQuery(paymentsInQuery, dataSource)
     }
 
     @Override

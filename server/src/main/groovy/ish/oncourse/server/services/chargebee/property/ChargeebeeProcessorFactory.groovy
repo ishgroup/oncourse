@@ -24,7 +24,7 @@ class ChargeebeeProcessorFactory {
             case ChargebeePropertyType.TOTAL_CREDIT_PAYMENT_IN:
                 return new TotalCreditPaymentInProperty(startDate, endDate)
             case ChargebeePropertyType.TOTAL_OFFICE_PAYMENT_IN_NUMBER:
-                return new TotalOfficePaymentProperty(startDate, endDate)
+                return new TotalOfficePaymentInProperty(startDate, endDate)
             default:
                 throw new IllegalArgumentException("Try to upload chargebee usage for unsupported item type: " + type)
         }
