@@ -98,7 +98,6 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   manualLink?: any;
   isNested?: boolean;
   match?: any;
-  nestedIndex?: number;
   nameCondition?: AnyArgFunction;
   updateCaption?: (arg: string) => React.Component;
   threeColumn?: boolean;
@@ -119,7 +118,6 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   onScroll?: AnyArgFunction;
   twoColumn?: boolean;
   isNested?: boolean;
-  nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
   syncErrors?: FormErrors<V>;
   tabIndex?: number;
