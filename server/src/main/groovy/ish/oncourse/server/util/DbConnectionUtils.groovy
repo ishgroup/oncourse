@@ -39,7 +39,10 @@ class DbConnectionUtils {
     private static BigDecimal getNumberForQueryFromDb(Statement statement, String query) {
         def resultSet = statement.executeQuery(query)
         resultSet.last()
-        return resultSet.getBigDecimal(1)
+
+        //we need this to avoid null cases
+        def doubleValue = resultSet.getDouble(1)
+        return BigDecimal.valueOf(doubleValue)
     }
 
 
