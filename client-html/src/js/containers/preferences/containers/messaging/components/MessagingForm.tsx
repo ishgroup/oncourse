@@ -4,12 +4,11 @@
  */
 
 import ExitToApp from "@mui/icons-material/ExitToApp";
+import { Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
-import Typography from "@mui/material/Typography";
 import { openInternalLink } from "ish-ui";
 import isEmpty from "lodash.isempty";
 import * as React from "react";
@@ -88,9 +87,9 @@ class MessagingBaseForm extends React.Component<any, any> {
           createdOn={v => v.created}
           modifiedOn={v => v.modified}
         >
-          <Typography variant="body1" className="heading mb-2">
+          <div className="heading mb-2">
             Outgoing Emails
-          </Typography>
+          </div>
 
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12} sm={5} lg={4}>
@@ -129,7 +128,7 @@ class MessagingBaseForm extends React.Component<any, any> {
 
             <Grid item xs={12} className="mb-1">
               <Typography variant="subtitle1" className="centeredFlex">
-                <DynamicText defaultValue="0" text=" Emails queued" value={emailCount} function={emailQueued} />
+                <DynamicText defaultValue="0" text="Emails queued" value={emailCount} function={emailQueued} />
                 <Button
                   size="small"
                   variant="text"
@@ -140,13 +139,129 @@ class MessagingBaseForm extends React.Component<any, any> {
               </Typography>
             </Grid>
 
-            <Grid item xs={12} container>
-              <Grid item xs={12} lg={8}>
-                <Divider />
-              </Grid>
+            <Grid item xs={12} lg={8}>
+              <Divider />
             </Grid>
 
-            <Grid item xs={12} className="mb-2 mt-2">
+            <Grid item xs={12}>
+              <div className="heading mt-2">
+                Aged Contact check
+              </div>
+            </Grid>
+
+            <Grid item xs={12} lg={4}>
+              <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
+                Last active Enrolment
+                {" "}
+                <FormField
+                  type="number"
+                  name={this.formModel.EmailDeliveryEnrolmentLimit.uniqueKey}
+                  min="90"
+                  max="724"
+                  step="1"
+                  placeholder="182"
+                  inline
+                />
+                {" "}
+                days ago
+              </Typography>
+            </Grid>
+
+            <Hidden lgDown>
+              <Grid item lg={1} />
+            </Hidden>
+
+            <Grid item xs={12} lg={4}>
+              <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
+                Last Waiting List entry
+                {" "}
+                <FormField
+                  type="number"
+                  name={this.formModel.EmailDeliveryWaitingListLimit.uniqueKey}
+                  min="90"
+                  max="724"
+                  step="1"
+                  placeholder="365"
+                  inline
+                />
+                {" "}
+                days ago
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} lg={4}>
+              <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
+                Last active Application
+                {" "}
+                <FormField
+                  type="number"
+                  name={this.formModel.EmailDeliveryApplicationLimit.uniqueKey}
+                  min="90"
+                  max="724"
+                  step="1"
+                  placeholder="182"
+                  inline
+                />
+                {" "}
+                days ago
+              </Typography>
+            </Grid>
+
+            <Hidden lgDown>
+              <Grid item lg={1} />
+            </Hidden>
+
+            <Grid item xs={12} lg={4}>
+              <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
+                Last abandoned shopping cart
+                {" "}
+                <FormField
+                  type="number"
+                  name={this.formModel.EmailDeliveryCheckoutLimit.uniqueKey}
+                  min="90"
+                  max="724"
+                  step="1"
+                  placeholder="182"
+                  inline
+                />
+                {" "}
+                days ago
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} lg={4}>
+              <Typography variant="body2" color="inherit" component="div" className="pb-1" noWrap>
+                Last portal login
+                {" "}
+                <FormField
+                  type="number"
+                  name={this.formModel.EmailDeliveryPortalLimit.uniqueKey}
+                  min="90"
+                  max="724"
+                  step="1"
+                  placeholder="182"
+                  inline
+                />
+                {" "}
+                days ago
+              </Typography>
+            </Grid>
+
+            <Hidden lgDown>
+              <Grid item lg={1} />
+            </Hidden>
+
+            <Grid item xs={12} lg={8}>
+              <Divider />
+            </Grid>
+
+            <Grid item xs={12}>
+              <div className="heading mt-2">
+                Email Bounce
+              </div>
+            </Grid>
+
+            <Grid item xs={12}>
               <FormControlLabel
                 classes={{
                   root: classes.checkbox
@@ -184,9 +299,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                 validate={emailBounceEnabled ? [validateSingleMandatoryField, validateEmail] : validateEmail}
               />
             </Grid>
-          </Grid>
 
-          <Grid container columnSpacing={3} className="mb-1 mt-2">
             <Grid item xs={12} sm={5} lg={4}>
               <FormField
                 type="text"
@@ -207,19 +320,17 @@ class MessagingBaseForm extends React.Component<any, any> {
                 label="Password"
               />
             </Grid>
+
+          <Grid item xs={12} lg={8} className="mb-1">
+            <Divider />
           </Grid>
 
-          <Grid container className="mb-1">
-            <Grid item xs={12} lg={8}>
-              <Divider />
-            </Grid>
+          <Grid item xs={12}>
+            <div className="heading">
+              SMS
+            </div>
           </Grid>
 
-          <Typography variant="body1" className="heading">
-            SMS
-          </Typography>
-
-          <Grid container columnSpacing={3}>
             <Grid item xs={12} sm={5} lg={4}>
               <Typography variant="subtitle1" className="centeredFlex mt-1">
                 <DynamicText defaultValue="0" text=" SMS queued" value={smsCount} function={smsQueued} />

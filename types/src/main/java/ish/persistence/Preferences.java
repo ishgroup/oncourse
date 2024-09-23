@@ -491,4 +491,16 @@ public interface Preferences {
 	// **************************************
 
 	String EXTENDED_SEARCH_TYPES = "ish.display.extendedSearchTypes";
+
+
+	// **************************************
+	// Contact email delivery disable settings
+	// **************************************
+
+	String CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_WAITING_LIST = "contact.email.delivery.disable.limit.waiting_list";
+	String CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_ENROLMENT = "contact.email.delivery.disable.limit.enrolment";
+	String CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_APPLICATION = "contact.email.delivery.disable.limit.application";
+	String CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_CHECKOUT = "contact.email.delivery.disable.limit.checkout";
+	String CONTACT_EMAIL_DELIVERY_DISABLE_LIMIT_PORTAL = "contact.email.delivery.disable.limit.portal";
+
 }
