@@ -328,7 +328,6 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
 const CourseClassEditView: React.FC<Props> = ({
   isNew,
   isNested,
-  nestedIndex,
   values,
   dispatch,
   dirty,
@@ -554,7 +553,6 @@ const CourseClassEditView: React.FC<Props> = ({
       itemProps={{
         isNew,
         isNested,
-        nestedIndex,
         values,
         dispatch,
         dirty,
