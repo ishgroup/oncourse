@@ -138,7 +138,6 @@ export interface GetRecordsArgs {
   ignoreSelection?: boolean;
   stopIndex?: number;
   resolve?: AnyArgFunction;
-  tableModel?: string;
 }
 
 export interface CustomColumnFormats {

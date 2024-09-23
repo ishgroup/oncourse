@@ -8,7 +8,7 @@
 
 import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
 import { AnyArgFunction } from "ish-ui";
-import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
+import { FilterGroup, GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
 import { MessageData } from "../../../../model/common/Message";
 import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
 import { FormMenuTag } from "../../../../model/tags";
@@ -74,24 +74,29 @@ export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
 
 export const SET_LIST_EDIT_RECORD_FETCHING = "set/listView/editRecordFetching";
 
+export const getFiltersFulfilled = (filterGroups: FilterGroup[]) => ({
+  type: GET_FILTERS_FULFILLED,
+  payload: { filterGroups }
+});
+
 export const findRelatedByFilter = (filter: string | AnyArgFunction<string, string>, list: string) => ({
   type: FIND_RELATED_BY_FILTER,
-  payload: {filter, list}
+  payload: { filter, list }
 });
 
 export const deleteCustomFilter = (id: number, entity: string, checked: boolean) => ({
   type: DELETE_FILTER_REQUEST,
-  payload: {id, entity, checked}
+  payload: { id, entity, checked }
 });
 
 export const createCustomFilter = (filter: Filter, entity: string) => ({
   type: POST_FILTER_REQUEST,
-  payload: {filter, entity}
+  payload: { filter, entity }
 });
 
 export const setListUserAQLSearch = (userAQLSearch: string) => ({
   type: SET_LIST_USER_AQL_SEARCH,
-  payload: {userAQLSearch}
+  payload: { userAQLSearch }
 });
 
 export const setListLayout = (layout: LayoutType) => ({
@@ -101,7 +106,7 @@ export const setListLayout = (layout: LayoutType) => ({
 
 export const setListMenuTags = (menuTags: FormMenuTag[], checkedChecklists: FormMenuTag[], uncheckedChecklists: FormMenuTag[]) => ({
   type: SET_LIST_MENU_TAGS,
-  payload: {menuTags, checkedChecklists, uncheckedChecklists}
+  payload: { menuTags, checkedChecklists, uncheckedChecklists }
 });
 
 export const getRecords = (
@@ -113,12 +118,12 @@ export const getRecords = (
 
 export const getPlainRecords = (entity: string, columns: string) => ({
   type: GET_PLAIN_RECORDS_REQUEST,
-  payload: {entity, columns}
+  payload: { entity, columns }
 });
 
 export const getFilters = (entity: string) => ({
   type: GET_FILTERS_REQUEST,
-  payload: {entity}
+  payload: { entity }
 });
 
 export const getRecipientsMessageData = (entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[], templateId: number) => ({
@@ -147,7 +152,7 @@ export const setListEditRecordFetching = () => ({
 
 export const updateTableModel = (entity: string, model: TableModel, listUpdate?: boolean) => ({
   type: UPDATE_TABLE_MODEL_REQUEST,
-  payload: {entity, model, listUpdate}
+  payload: { entity, model, listUpdate }
 });
 
 export const setListSavingFilter = (savingFilter?: SavingFilterState) => ({
@@ -157,27 +162,27 @@ export const setListSavingFilter = (savingFilter?: SavingFilterState) => ({
 
 export const setListSelection = (selection: string[]) => ({
   type: SET_LIST_SELECTION,
-  payload: {selection}
+  payload: { selection }
 });
 
 export const setFilterGroups = filterGroups => ({
   type: SET_LIST_CORE_FILTERS,
-  payload: {filterGroups}
+  payload: { filterGroups }
 });
 
 export const setSearch = (search: string, entity: string) => ({
   type: SET_LIST_SEARCH,
-  payload: {search, entity}
+  payload: { search, entity }
 });
 
 export const setListSearchError = (searchError: boolean) => ({
   type: SET_LIST_SEARCH_ERROR,
-  payload: {searchError}
+  payload: { searchError }
 });
 
 export const setListEditRecord = (editRecord: any) => ({
   type: SET_LIST_EDIT_RECORD,
-  payload: {editRecord}
+  payload: { editRecord }
 });
 
 export const setListCreatingNew = (creatingNew: boolean) => ({
@@ -187,7 +192,7 @@ export const setListCreatingNew = (creatingNew: boolean) => ({
 
 export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({
   type: BULK_CHANGE_RECORDS,
-  payload: {entity, diff}
+  payload: { entity, diff }
 });
 
 export const setListEntity = (entity: EntityName) => ({

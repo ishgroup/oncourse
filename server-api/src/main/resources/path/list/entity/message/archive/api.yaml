@@ -1,0 +1,21 @@
+post:
+  operationId: archiveMessages
+  description: Creates archives of message before passed date, passes them to s3 and removes from databases
+  tags:
+    - Message
+  parameters:
+    - name: archiveDate
+      in: body
+      description: date of messages created on before to archive
+      required: true
+      schema:
+        $ref: './def/entity/archive/ArchiveParam.yaml'
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

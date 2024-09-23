@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { MessageApi, MessageType, Recipients, SearchQuery, SendMessageRequest } from "@api/model";
+import { ArchiveParam, MessageApi, MessageType, Recipients, SearchQuery, SendMessageRequest } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class MessageService {
@@ -33,6 +33,10 @@ class MessageService {
 
   public getRecipients(entity: string, messageType: MessageType, search: SearchQuery, templateId: number): Promise<Recipients> {
     return this.messageApi.getRecipients(entity, messageType, search, templateId);
+  }
+
+  public archiveMessages(archiveDate: ArchiveParam): Promise<any> {
+    return this.messageApi.archiveMessages(archiveDate);
   }
 }
 

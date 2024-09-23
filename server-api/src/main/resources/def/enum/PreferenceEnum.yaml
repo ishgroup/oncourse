@@ -33,3 +33,4 @@ enum:
 - account.default.invoiceline.id
 - payment.gateway.type
 - ish.display.extendedSearchTypes
+- ish.message.date.expected.archived
