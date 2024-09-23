@@ -33,7 +33,7 @@ class DbConnectionUtils {
             return getNumberForQueryFromDb(statement, query)
         }
 
-        return executeWithClose(getValue, dataSource) as Long
+        return executeWithClose(getValue, dataSource) as BigDecimal
     }
 
     private static BigDecimal getNumberForQueryFromDb(Statement statement, String query) {
