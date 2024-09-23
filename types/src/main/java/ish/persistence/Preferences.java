@@ -491,4 +491,12 @@ public interface Preferences {
 	// **************************************
 
 	String EXTENDED_SEARCH_TYPES = "ish.display.extendedSearchTypes";
+
+
+	// **************************************
+	// CHARGEBEE
+	// **************************************
+
+	String CHARGEBEE_ALLOWED_ADDONS = "ish.chargebee.allowed.addons";
+	String CHARGEBEE_SUBSCRIPTION_ID = "ish.chargebee.subscription.id";
 }

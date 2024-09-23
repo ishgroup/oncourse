@@ -1448,4 +1448,14 @@ public abstract class CommonPreferenceController {
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
 	}
+
+
+
+	public String getChargebeeSubscriptionId() {
+		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
+	}
+
+	public String getChargebeeAllowedAddons() {
+		return getValue(CHARGEBEE_ALLOWED_ADDONS, false);
+	}
 }
