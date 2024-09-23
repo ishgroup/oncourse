@@ -121,7 +121,7 @@ class ChargebeeUploadJob implements Job {
         logger.warn("Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
 
         if(Boolean.TRUE == chargebeeService.localMode)
-            auditService.submit(ObjectSelect.query(Script).selectFirst(cayenneService.newReadonlyContext), AuditAction.SCRIPT_EXECUTED, "Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
+            auditService.submit(ObjectSelect.query(Script).selectFirst(cayenneService.newReadonlyContext), AuditAction.SCRIPT_EXECUTED, "Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value " + quantity.toPlainString())
         else {
             def subscription = getSubscription()
             if(!subscription.subscriptionItems().find {it.itemPriceId() == itemPriceId}) {
