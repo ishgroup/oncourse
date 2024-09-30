@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { MergeData, MergeLine, MergeRequest } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppTheme, StyledCheckbox, Switch } from "ish-ui";
-import React, { Dispatch, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Field, getFormValues, initialize, reduxForm } from "redux-form";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { State } from "../../../../../reducers/state";
-import { getMergeContacts, postMergeContacts } from "../../actions";
-import { getContactFullName } from "../../utils";
-import InfoCard from "./components/InfoCard";
-import RadioLabelGroup from "./components/RadioLabelGroup";
+import { MergeData, MergeLine, MergeRequest } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme, StyledCheckbox, Switch } from 'ish-ui';
+import React, { Dispatch, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Field, getFormValues, initialize, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { State } from '../../../../../reducers/state';
+import { getMergeContacts, postMergeContacts } from '../../actions';
+import { getContactFullName } from '../../utils';
+import InfoCard from './components/InfoCard';
+import RadioLabelGroup from './components/RadioLabelGroup';
 
 export interface MergeContactsFormValues {
   mergeData?: MergeData;
@@ -44,7 +44,7 @@ const FORM: string = "MergeContactsForm";
 
 const initialValues = { mergeData: { mergeLines: [], infoLines: [] }, mergeRequest: {} };
 
-const styles = createStyles(({ spacing }: AppTheme) => ({
+const styles = (({ spacing }: AppTheme) => ({
   switcherGroup: {
     gridAutoFlow: "column",
     gridGap: spacing(1)
@@ -276,4 +276,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default reduxForm({
   form: FORM,
   initialValues
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MergeContacts))) as any;
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(MergeContacts, styles))) as any;

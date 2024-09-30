@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Collapse } from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import React from "react";
-import { connect } from "react-redux";
-import { DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { State } from "../../../../reducers/state";
-import { formatFundingSourceId } from "../../../entities/common/utils";
-import CheckoutAppBar from "../CheckoutAppBar";
+import { Collapse } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import clsx from 'clsx';
+import React from 'react';
+import { connect } from 'react-redux';
+import { DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { CheckoutFundingInvoice } from '../../../../model/checkout/fundingInvoice';
+import { State } from '../../../../reducers/state';
+import { formatFundingSourceId } from '../../../entities/common/utils';
+import CheckoutAppBar from '../CheckoutAppBar';
 import CheckoutFundingInvoiceSummaryList, {
   CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
-} from "./CheckoutFundingInvoiceSummaryList";
+} from './CheckoutFundingInvoiceSummaryList';
 
-const styles = createStyles(() => ({
+const styles = (() => ({
   fundingInvoiceSourceId: {
     marginTop: -12,
     flex: 0.5
@@ -134,4 +134,7 @@ export default reduxForm<{ fundingInvoices?: CheckoutFundingInvoice[] }, any>({
   initialValues: {
     fundingInvoices: []
   }
-})(withStyles(styles)(connect<any, any, any>(mapStateToProps, null)(CheckoutFundingInvoiceFormBase)));
+})(withStyles(
+  connect<any, any, any>(mapStateToProps, null)(CheckoutFundingInvoiceFormBase),
+  styles
+));

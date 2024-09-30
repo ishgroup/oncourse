@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@mui/styles/createStyles";
-
-const itemStyles = createStyles(theme => ({
+const itemStyles = ((theme, p, classes) => ({
   quickEnrollItem: {
     lineHeight: "1.46429em"
   },
@@ -23,7 +21,7 @@ const itemStyles = createStyles(theme => ({
     "&:hover .invisible": {
       visibility: "visible"
     },
-    "&$listItemEditing": {
+    [`&.${classes.listItemEditing}`]: {
       display: "inline-flex"
     },
     "&.d-none": {

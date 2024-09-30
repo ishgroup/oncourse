@@ -6,46 +6,46 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DataCollectionForm, DeliveryScheduleType } from "@api/model";
-import { TreeData, TreeDestinationPosition, TreeSourcePosition } from "@atlaskit/tree/types";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { mapSelectItems, NoArgFunction, sortDefaultSelectItems } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { RouteChildrenProps } from "react-router";
-import { Dispatch } from "redux";
-import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm, SubmissionError } from "redux-form";
-import { DecoratedFormState, InjectedFormProps } from "redux-form/lib/reduxForm";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getDeepValue } from "../../../../../common/utils/common";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { Fetch } from "../../../../../model/common/Fetch";
+import { DataCollectionForm, DeliveryScheduleType } from '@api/model';
+import { TreeData, TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree/types';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import FileCopy from '@mui/icons-material/FileCopy';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { mapSelectItems, NoArgFunction, sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteChildrenProps } from 'react-router';
+import { Dispatch } from 'redux';
+import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { DecoratedFormState, InjectedFormProps } from 'redux-form/lib/reduxForm';
+import { withStyles } from 'tss-react/mui';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getDeepValue } from '../../../../../common/utils/common';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { Fetch } from '../../../../../model/common/Fetch';
 import {
   CollectionFormField,
   CollectionFormHeading,
   CollectionFormItem,
   CollectionFormSchema
-} from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
-import { State } from "../../../../../reducers/state";
-import Tree from "../../../../tags/components/TagTreeBasis";
+} from '../../../../../model/preferences/data-collection-forms/collectionFormSchema';
+import { State } from '../../../../../reducers/state';
+import Tree from '../../../../tags/components/TagTreeBasis';
 import {
   createDataCollectionForm,
   deleteDataCollectionForm,
   getCustomFields,
   updateDataCollectionForm
-} from "../../../actions";
-import CollectionFormFieldsRenderer from "./CollectionFormFieldsRenderer";
-import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
+} from '../../../actions';
+import CollectionFormFieldsRenderer from './CollectionFormFieldsRenderer';
+import CollectionFormFieldTypesMenu from './CollectionFormFieldTypesMenu';
 
 const manualUrl = getManualLink("data-collection-forms-and-rules");
 
@@ -55,7 +55,7 @@ const deliveryScheduleTypes = Object.keys(DeliveryScheduleType).map(mapSelectIte
 
 deliveryScheduleTypes.sort(sortDefaultSelectItems);
 
-const styles = theme => createStyles({
+const styles = theme => ({
   mainContainer: {
     margin: theme.spacing(-3),
     height: `calc(100% + ${theme.spacing(6)})`
@@ -508,9 +508,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
 
     const updated = items.map(i => ({
       ...i,
-      ...deleted.baseType === 'field' && i.baseType === 'field' && i.relatedFieldKey === deleted.type.uniqueKey
-        ? { relatedFieldKey: null, relatedFieldValue: null }
-        : {}
+      ...(deleted.baseType === 'field' && i.baseType === 'field' && i.relatedFieldKey === deleted.type.uniqueKey ? { relatedFieldKey: null, relatedFieldValue: null } : {})
     }));
 
     updated.splice(index, 1);
@@ -662,7 +660,7 @@ const DataCollectionForm = reduxForm({
     onSubmitFail(errors, dispatch, submitError, props, { behavior: "smooth", block: "end" }),
   form: DATA_COLLECTION_FORM
 })(
-  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DataCollectionWrapper))
+  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(DataCollectionWrapper, styles))
 );
 
 export default DataCollectionForm;

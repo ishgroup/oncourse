@@ -74,6 +74,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
       plugins: [
         new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, './tsconfig.json') }),
       ],
+      fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
       rules: [

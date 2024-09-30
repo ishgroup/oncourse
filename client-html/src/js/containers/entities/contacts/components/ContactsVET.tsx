@@ -17,28 +17,27 @@ import {
   Language,
   UsiStatus,
   UsiVerificationResult
-} from "@api/model";
-import ExitToApp from "@mui/icons-material/ExitToApp";
-import { FormControlLabel, Grid } from "@mui/material";
-import Chip from "@mui/material/Chip";
-import Link from "@mui/material/Link";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { mapSelectItems, SettingsAdornment, usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { validateNonNegative } from "../../../../common/utils/validation";
-import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { clearUSIVerificationResult, verifyUSI } from "../actions";
-import { TFNInputMask } from "./ContactsTutor";
+} from '@api/model';
+import ExitToApp from '@mui/icons-material/ExitToApp';
+import { FormControlLabel, Grid } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { mapSelectItems, SettingsAdornment, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
+import { validateNonNegative } from '../../../../common/utils/validation';
+import { formatTFN, parseTFN, validateTFN } from '../../../../common/utils/validation/tfnValidation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { clearUSIVerificationResult, verifyUSI } from '../actions';
+import { TFNInputMask } from './ContactsTutor';
 
 const indigenousStatuses = Object.keys(AvetmissStudentIndigenousStatus).map(mapSelectItems);
 const englishProficiencies = Object.keys(AvetmissStudentEnglishProficiency).map(mapSelectItems);
@@ -53,7 +52,7 @@ const openUpgradeLink = () => {
   window.open("https://www.ish.com.au/oncourse/signup?securityKey=%s", "_blank");
 };
 
-const styles = () => createStyles({
+const styles = () => ({
   exitToCreateUSI: {
     fontSize: "1.2rem"
   },
@@ -572,4 +571,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(verifyUSI(firstName, lastName, birthDate, usiCode))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ContactsVET));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(ContactsVET, styles));

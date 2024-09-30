@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AttendanceType, TutorAttendanceType } from "@api/model";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createStyles, withStyles } from "@mui/styles";
-import React from "react";
+import { AttendanceType, TutorAttendanceType } from '@api/model';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles = () =>
-  createStyles({
+  ({
     iconRemove: {
       color: "red"
     },
@@ -49,4 +49,4 @@ const AttendanceIcon: React.FC<AttendanceIconProps> = ({ type, classes }) => {
   }
 };
 
-export default withStyles(styles)(AttendanceIcon);
+export default withStyles(AttendanceIcon, styles);

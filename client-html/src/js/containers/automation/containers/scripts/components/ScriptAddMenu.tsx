@@ -1,13 +1,12 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Menu, MenuItem } from "@mui/material";
-import Fab from "@mui/material/Fab";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import * as React from "react";
-import { change } from "redux-form";
+import AddIcon from '@mui/icons-material/Add';
+import { Menu, MenuItem, Typography } from '@mui/material';
+import Fab from '@mui/material/Fab';
+import * as React from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 
 const styles = theme =>
-  createStyles({
+  ({
     menuWrapper: {
       marginTop: theme.spacing(2)
     },
@@ -149,4 +148,4 @@ class ScriptAddMenu extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles)(ScriptAddMenu);
+export default withStyles(ScriptAddMenu, styles);
