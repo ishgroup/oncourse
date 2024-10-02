@@ -29,7 +29,7 @@ import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
 import { State } from "../../../../../reducers/state";
 
-const manualUrl = getManualLink("generalPrefs_holidays");
+const manualUrl = getManualLink("setting-your-general-preferences#holidays");
 
 export const HOLIDAYS_FORM: string = "HolidaysForm";
 

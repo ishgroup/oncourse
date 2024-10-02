@@ -313,7 +313,7 @@ interface Props {
   };
 }
 
-const manualUrl = getManualLink("batchpayments_batchpayments");
+const manualUrl = getManualLink("batch-payments-in");
 
 const getContacts = (dispatch, setContactsLoading, onComplete?) => {
   EntityService.getPlainRecords(

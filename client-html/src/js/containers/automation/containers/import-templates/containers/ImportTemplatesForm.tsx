@@ -32,7 +32,7 @@ import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import ExecuteImportModal from "../components/ExecuteImportModal";
 
-const manualUrl = getManualLink("advancedSetup_Import");
+const manualUrl = getManualLink("importing");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps {

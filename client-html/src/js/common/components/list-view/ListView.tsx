@@ -785,8 +785,9 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
   };
 
   checkDirty = (handler, args, reset?: boolean) => {
-    const { isDirty, selection, creatingNew } = this.props;
-    if (isDirty) {
+    const { isDirty, selection, creatingNew, fullScreenEditView, records } = this.props;
+
+    if (isDirty && (records.layout === 'Two column' ? fullScreenEditView : true)) {
       this.showConfirm({
         onConfirm: () => {
           handler(...args);

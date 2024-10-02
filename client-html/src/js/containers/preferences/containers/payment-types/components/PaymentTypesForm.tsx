@@ -15,7 +15,7 @@ import { State } from "../../../../../reducers/state";
 import { formCommonStyles } from "../../../styles/formCommonStyles";
 import PaymentTypesRenderer from "./PaymentTypesRenderer";
 
-const manualUrl = getManualLink("generalPrefs_paymentTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#payment-types");
 
 export const PAYMENT_TYPES_FORM: string = "PaymentTypesForm";
 

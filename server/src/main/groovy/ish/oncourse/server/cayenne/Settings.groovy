@@ -6,19 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.display;
+package ish.oncourse.server.cayenne
 
-import com.google.inject.Binder;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import io.bootique.ConfigModule;
-import io.bootique.config.ConfigurationFactory;
+import ish.oncourse.server.cayenne.glue._Settings
 
-public class DisplayModule extends ConfigModule {
-
-    @Singleton
-    @Provides
-    public DisplayService createDisplayService(ConfigurationFactory configFactory) {
-        return configFactory.config(DisplayService.class, getConfigPrefix());
+class Settings extends _Settings implements Queueable {
+    @Override
+    boolean isAsyncReplicationAllowed() {
+        return false
     }
 }

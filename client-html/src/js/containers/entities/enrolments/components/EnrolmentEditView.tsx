@@ -31,7 +31,6 @@ const EnrolmentEditView = props => {
   const {
     isNew,
     isNested,
-    nestedIndex,
     values,
     classes,
     dispatch,
@@ -65,7 +64,6 @@ const EnrolmentEditView = props => {
           dirty,
           invalid,
           form,
-          nestedIndex,
           rootEntity,
           twoColumn,
           submitSucceeded,

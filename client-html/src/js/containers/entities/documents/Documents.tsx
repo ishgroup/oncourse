@@ -136,7 +136,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   }
 ];
 
-const manualLink = getManualLink("documentManagement");
+const manualLink = getManualLink("document-management-documents-in-oncourse");
 
 const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   e.stopPropagation();

@@ -187,7 +187,7 @@ const todayMonth = today.getMonth();
 
 const formated = setMonth(new Date(), todayMonth);
 
-const manualUrl = getManualLink("AVETMISS");
+const manualUrl = getManualLink("avetmiss-reporting");
 
 // Australian quarters
 const getCurrentQuarter = () => {

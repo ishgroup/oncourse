@@ -32,7 +32,7 @@ import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationMod
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 
-const manualUrl = getManualLink("advancedSetup_Export");
+const manualUrl = getManualLink("export-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
 
 const outputTypes = Object.keys(OutputType).map(mapSelectItems);
