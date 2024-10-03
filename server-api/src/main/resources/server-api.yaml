@@ -53,6 +53,8 @@ paths:
     $ref: './path/dashboard/search/api.yaml'
   /datacollection/field/type:
     $ref: './path/datacollection/field/type/api.yaml'
+  /datacollection/field/validationType:
+    $ref: './path/datacollection/field/validationType/api.yaml'
   /datacollection/form:
     $ref: './path/datacollection/form/api.yaml'
   /datacollection/rule:
