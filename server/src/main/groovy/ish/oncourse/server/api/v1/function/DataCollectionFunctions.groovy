@@ -68,7 +68,7 @@ class DataCollectionFunctions {
     private static final List<FieldTypeDTO> VISIBLE_FIELDS
     private static final List<FieldTypeDTO> WAITING_LIST_FIELDS, ENROLMENT_LIST_FIELDS;
     private static final Map<DataCollectionTypeDTO, Class<? extends FieldConfiguration>> CONFIGURATION_MAP
-    private static final Map<FieldValidationTypeDTO, Set<DataCollectionTypeDTO>> ALLOWED_VALIDATION_TYPES
+    public static final Map<FieldValidationTypeDTO, Set<DataCollectionTypeDTO>> ALLOWED_VALIDATION_TYPES
 
     static {
             VISIBLE_FIELDS = [ STREET, SUBURB, POSTCODE, STATE, COUNTRY, HOME_PHONE_NUMBER, BUSINESS_PHONE_NUMBER, FAX_NUMBER,
