@@ -366,3 +366,6 @@ definitions:
 
   ExecuteImportRequest:
     $ref: './def/entity/import/ExecuteImportRequest.yaml'
+
+  FieldValidationType:
+    $ref: './def/enum/FieldValidationType.yaml'
