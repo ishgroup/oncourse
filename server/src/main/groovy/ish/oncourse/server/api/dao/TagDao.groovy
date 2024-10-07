@@ -11,13 +11,15 @@
 
 package ish.oncourse.server.api.dao
 
-import ish.oncourse.server.api.v1.function.TagFunctions
+
 import ish.oncourse.server.cayenne.Queueable
 import ish.oncourse.server.cayenne.Tag
 import ish.oncourse.server.cayenne.TagRelation
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
+
+import static ish.oncourse.server.api.v1.function.TagRequirementFunctions.getTaggableClassForName
 
 class TagDao implements CayenneLayer<Tag> {
 
@@ -37,10 +39,11 @@ class TagDao implements CayenneLayer<Tag> {
     }
 
     List<Tag> getRelatedForQueueableId(ObjectContext context, String entityName, Long id) {
+        def taggableClases = getTaggableClassForName(entityName).databaseValue
         ObjectSelect
                 .query(Tag)
                 .where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID_PROPERTY).eq(id)
-                        .andExp(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER).eq(TagFunctions.getTaggableClassForName(entityName).databaseValue)))
+                        .andExp(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER).eq(taggableClases)))
                 .select(context)
     }
 }

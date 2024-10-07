@@ -1,6 +1,5 @@
 import * as Entities from "@aql/queryLanguageModel";
-import { StringValueType } from "ish-ui";
-import { mapSelectItems } from "../../../common/utils/common";
+import { mapSelectItems, StringValueType } from "ish-ui";
 import { stringLiterals } from "../../../common/utils/stringLiteral";
 
 export const AQL_ENTITIES = Object
@@ -10,21 +9,23 @@ export const AQL_ENTITIES = Object
 export const AQL_ENTITY_ITEMS = AQL_ENTITIES.map(mapSelectItems);
 
 export const MESSAGE_TEMPLATE_ENTITIES = stringLiterals(
-  "Application",
-  "Article",
-  "Contact",
-  "CourseClass",
-  "CourseClassTutor",
-  "Enrolment",
-  "Invoice",
-  "Lead",
-  "Membership",
-  "PaymentIn",
-  "PaymentOut",
-  "Payslip",
-  "ProductItem",
-  "Voucher",
-  "WaitingList"
+    "Application",
+    "Article",
+    "Checkout",
+    "Contact",
+    "CourseClass",
+    "CourseClassTutor",
+    "Enrolment",
+    "Invoice",
+    "Lead",
+    "Membership",
+    "PaymentIn",
+    "PaymentOut",
+    "Payslip",
+    "ProductItem",
+    "Quote",
+    "Voucher",
+    "WaitingList"
 );
 
 export const MessageTemplateEntityItems = MESSAGE_TEMPLATE_ENTITIES.map(e => ({ label: e, value: e }));

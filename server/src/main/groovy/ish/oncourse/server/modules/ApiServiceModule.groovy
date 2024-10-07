@@ -34,6 +34,7 @@ import ish.oncourse.server.api.service.EnrolmentApiService
 import ish.oncourse.server.api.service.EntityApiService
 import ish.oncourse.server.api.service.EntityRelationTypeApiService
 import ish.oncourse.server.api.service.ExportTemplateApiService
+import ish.oncourse.server.api.service.FacultyApiService
 import ish.oncourse.server.api.service.GradingApiService
 import ish.oncourse.server.api.service.ImportApiService
 import ish.oncourse.server.api.service.InvoiceApiService
@@ -45,6 +46,7 @@ import ish.oncourse.server.api.service.ModuleApiService
 import ish.oncourse.server.api.service.NoteApiService
 import ish.oncourse.server.api.service.OutcomeApiService
 import ish.oncourse.server.api.service.PayslipApiService
+import ish.oncourse.server.api.service.PortalWebsiteService
 import ish.oncourse.server.api.service.PriorLearningApiService
 import ish.oncourse.server.api.service.QualificationApiService
 import ish.oncourse.server.api.service.ReportApiService
@@ -121,6 +123,12 @@ class ApiServiceModule implements Module {
         binder.bind(CourseClassTutorApiService).in(Scopes.SINGLETON)
         binder.bind(EmailTemplateApiService).in(Scopes.SINGLETON)
         binder.bind(EntityRelationTypeApiService).in(Scopes.NO_SCOPE)
+        binder.bind(ExportTemplateApiService).in(Scopes.SINGLETON)
+        binder.bind(FacultyApiService).in(Scopes.SINGLETON)
+        binder.bind(GradingApiService).in(Scopes.SINGLETON)
+        binder.bind(ImportApiService).in(Scopes.SINGLETON)
+        binder.bind(InvoiceApiService).in(Scopes.SINGLETON)
+        binder.bind(LeadApiService).in(Scopes.SINGLETON)
         binder.bind(LogsApiService).in(Scopes.SINGLETON)
         binder.bind(CheckoutApiService).in(Scopes.SINGLETON)
         binder.bind(EWayPaymentAPI).in(Scopes.SINGLETON)
@@ -138,5 +146,9 @@ class ApiServiceModule implements Module {
         binder.bind(SurveyApiService).in(Scopes.SINGLETON)
         binder.bind(TutorRoleApiService).in(Scopes.SINGLETON)
         binder.bind(BulkChangeApiService).in(Scopes.SINGLETON)
+        binder.bind(VoucherProductApiService).in(Scopes.SINGLETON)
+        binder.bind(WaitingListApiService).in(Scopes.NO_SCOPE)
+        binder.bind(PortalWebsiteService).in(Scopes.SINGLETON)
+
     }
 }

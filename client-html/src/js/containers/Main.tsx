@@ -18,7 +18,8 @@ import { CacheProvider } from '@emotion/react';
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import {
-  AnyArgFunction, AppTheme,
+  AnyArgFunction,
+  AppTheme,
   BrowserWarning,
   currentTheme,
   DefaultThemeKey,
@@ -42,6 +43,7 @@ import {
   DASHBOARD_THEME_KEY,
   LICENSE_SCRIPTING_KEY,
   READ_NEWS,
+  SPECIAL_TYPES_DISPLAY_KEY,
   SYSTEM_USER_ADMINISTRATION_CENTER
 } from "../constants/Config";
 import { EnvironmentConstants } from "../constants/EnvironmentConstants";
@@ -99,9 +101,20 @@ export class MainBase extends React.PureComponent<Props, MainState> {
   constructor(props) {
     super(props);
 
+    const theme = getTheme();
+
     this.state = {
       themeName: DefaultThemeKey,
-      theme: getTheme(),
+      theme: {
+        ...theme,
+        palette: {
+          ...theme.palette,
+          secondary: {
+            ...theme.palette.secondary,
+            main: '#434EA1',
+          }
+        }
+      },
     };
   }
 
@@ -269,7 +282,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY]));
+    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
     dispatch(getDashboardBlogPosts());
   }
 });

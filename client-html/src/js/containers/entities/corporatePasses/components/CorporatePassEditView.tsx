@@ -24,7 +24,6 @@ const CorporatePassEditView = props => {
   const {
     isNew,
     isNested,
-    nestedIndex,
     values,
     classes,
     dispatch,
@@ -45,7 +44,6 @@ const CorporatePassEditView = props => {
         isNew,
         isNested,
         syncErrors,
-        nestedIndex,
         values,
         classes,
         dispatch,

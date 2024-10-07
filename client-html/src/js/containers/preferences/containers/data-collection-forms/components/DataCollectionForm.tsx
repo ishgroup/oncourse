@@ -6,7 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DeliveryScheduleType } from "@api/model";
+import { DataCollectionForm, DeliveryScheduleType } from "@api/model";
+import { TreeData, TreeDestinationPosition, TreeSourcePosition } from "@atlaskit/tree/types";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Divider from "@mui/material/Divider";
@@ -14,32 +15,39 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
+import { mapSelectItems, NoArgFunction, sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
+import { RouteChildrenProps } from "react-router";
 import { Dispatch } from "redux";
-import {
-  change,
-  FieldArray,
-  Form,
-  getFormSyncErrors,
-  getFormValues,
-  initialize,
-  reduxForm,
-  SubmissionError
-} from "redux-form";
+import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm, SubmissionError } from "redux-form";
+import { DecoratedFormState, InjectedFormProps } from "redux-form/lib/reduxForm";
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getDeepValue, mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { getDeepValue } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { Fetch } from "../../../../../model/common/Fetch";
+import {
+  CollectionFormField,
+  CollectionFormHeading,
+  CollectionFormItem,
+  CollectionFormSchema
+} from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
 import { State } from "../../../../../reducers/state";
-import { createDataCollectionForm, deleteDataCollectionForm, updateDataCollectionForm } from "../../../actions";
-import renderCollectionFormFields from "./CollectionFormFieldsRenderer";
+import Tree from "../../../../tags/components/TagTreeBasis";
+import {
+  createDataCollectionForm,
+  deleteDataCollectionForm,
+  getCustomFields,
+  updateDataCollectionForm
+} from "../../../actions";
+import CollectionFormFieldsRenderer from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
 
-const manualUrl = getManualLink("dataCollection");
+const manualUrl = getManualLink("data-collection-forms-and-rules");
 
 export const DATA_COLLECTION_FORM: string = "DataCollectionForm";
 
@@ -89,7 +97,7 @@ const setParents = targets => {
   return targets;
 };
 
-export const parseDataCollectionFormData = form => {
+export const parseDataCollectionFormData = (form: DataCollectionForm): CollectionFormItem[] => {
   const fieldsArr = [];
   form.fields.forEach(field => {
     fieldsArr.push({
@@ -115,7 +123,33 @@ export const parseDataCollectionFormData = form => {
   return fieldsArr;
 };
 
-class DataCollectionWrapper extends React.Component<any, any> {
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+interface Props extends RouteChildrenProps<any> {
+  values?: CollectionFormSchema;
+  dispatch?: Dispatch;
+  classes?: any;
+  fetch?: Fetch;
+  nextLocation?: string;
+  onUpdate: (id, form) => void;
+  onCreate: (form) => void;
+  onDelete: (id) => void;
+  getCustomFields: NoArgFunction;
+  collectionForms?: DataCollectionForm[];
+}
+
+interface DataCollectionWrapperState {
+  treeState: TreeData,
+  availableRelations: CollectionFormField[];
+}
+
+class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & DecoratedFormState<CollectionFormSchema, any>, DataCollectionWrapperState> {
   private resolvePromise;
 
   private rejectPromise;
@@ -126,10 +160,16 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
   private skipValidation: boolean;
 
-  private formRef: HTMLFormElement;
-
   constructor(props) {
     super(props);
+    
+    this.state = {
+      treeState: {
+        rootId: "root",
+        items: {}
+      },
+      availableRelations: []
+    };
 
     if (props.match.params.action === "edit" && props.collectionForms) {
       const currentForm = this.getCollectionForm(props);
@@ -139,6 +179,11 @@ class DataCollectionWrapper extends React.Component<any, any> {
         form: currentForm
       };
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+
+      this.state = {
+        ...this.state,
+        ...this.getTreeState(items)
+      };
     }
 
     if (props.match.params.action === "new") {
@@ -150,35 +195,67 @@ class DataCollectionWrapper extends React.Component<any, any> {
         }
       };
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+      this.state = {
+        ...this.state,
+        ...this.getTreeState([])
+      };
     }
   }
+  
+  getTreeState = items => ({
+    treeState: {
+      rootId: "root",
+      items: items.reduce((p, c, index) => {
+        p[index] = {
+          id: index,
+          children: [],
+          hasChildren: false,
+          isExpanded: true,
+          data: c
+        };
+        return p;
+      }, { root: {
+          id: "root",
+          children: items.map((i, index) => index),
+          hasChildren: true,
+          isExpanded: true,
+          data: items
+        } })
+    }
+  });
 
-  getFormRef = node => {
-    this.formRef = node;
+  setTreeState = items => {
+    this.setState(this.getTreeState(items));
   };
 
   componentDidMount() {
     this.unlisten = this.props.history.listen(location => {
       this.onHistoryChange(location);
     });
+
+    this.props.getCustomFields();
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.collectionForms) {
+    const { collectionForms } = this.props;
+
+    if (collectionForms) {
       const isExactForm = this.props.match.params.id === prevProps.match.params.id;
       const isEditing = this.props.match.params.action === "edit";
       const currentForm = this.getCollectionForm(this.props);
 
-      if ((isEditing && !this.props.collectionForms) || (isEditing && (!isExactForm || !prevProps.collectionForms))) {
+      if ((isEditing && !collectionForms) || (isEditing && (!isExactForm || !prevProps.collectionForms))) {
         if (!currentForm) {
           return;
         }
         const items = parseDataCollectionFormData(currentForm);
-        const state = {
+        const state: CollectionFormSchema = {
           items,
           form: currentForm
         };
         this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+
+        this.setTreeState(items);
       }
     }
 
@@ -227,7 +304,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
   onHistoryChange = location => {
     const locationParts = location.pathname.split("/");
     if (locationParts[2] === "collectionForms" && locationParts[3] === "new") {
-      const state = {
+      const state: CollectionFormSchema = {
         form: {
           id: null,
           type: locationParts[4]
@@ -235,12 +312,13 @@ class DataCollectionWrapper extends React.Component<any, any> {
         items: []
       };
       this.props.dispatch(initialize(DATA_COLLECTION_FORM, state));
+      this.setTreeState([]);
     }
   };
 
   addField = type => {
     const { items } = this.props.values;
-    const field = {
+    const field: CollectionFormField = {
       type,
       baseType: "field",
       parent: null,
@@ -251,38 +329,26 @@ class DataCollectionWrapper extends React.Component<any, any> {
 
     delete type.formattedLabel;
 
-    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [field, ...items]));
+    const updated = [field, ...items];
 
-    this.formRef.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
+    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", updated));
+
+    this.setTreeState(updated);
   };
 
   addHeading = () => {
     const { items } = this.props.values;
-    const heading = {
+    const heading: CollectionFormHeading = {
       baseType: "heading",
       name: "",
-      description: ""
+      description: "",
     };
 
-    this.props.dispatch(change(DATA_COLLECTION_FORM, "items", [heading, ...items]));
-
-    this.formRef.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    });
-  };
-
-  deleteField = index => {
-    const { items } = this.props.values;
-    const updated = [...items];
-    updated.splice(index, 1);
+    const updated = [heading, ...items];
 
     this.props.dispatch(change(DATA_COLLECTION_FORM, "items", updated));
+
+    this.setTreeState(updated);
   };
 
   onSave = value => {
@@ -315,6 +381,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
         };
         this.skipValidation = true;
         this.props.dispatch(initialize(DATA_COLLECTION_FORM, updatedData));
+        this.setTreeState(items);
 
         if (nextLocation) {
           history.push(nextLocation);
@@ -404,6 +471,8 @@ class DataCollectionWrapper extends React.Component<any, any> {
       })
     );
 
+    this.setTreeState(items);
+
     setTimeout(() => {
       this.unlisten();
       history.push(`/preferences/collectionForms/new/${form.type}/`);
@@ -412,19 +481,64 @@ class DataCollectionWrapper extends React.Component<any, any> {
       });
     }, 100);
   };
+  
+  onDragEnd = (sourcePosition: TreeSourcePosition, destinationPosition?: TreeDestinationPosition) => {
+    const { values: { items }, dispatch } = this.props;
+    
+    if (!destinationPosition) {
+      return;
+    }
+
+    // dropped on the same position
+    if (sourcePosition.index === destinationPosition.index) {
+      return;
+    }
+
+    const reordered = reorder(items, sourcePosition.index, destinationPosition.index);
+
+    dispatch(change(DATA_COLLECTION_FORM, "items", reordered));
+
+    this.setTreeState(items);
+  };
+
+  onDeleteClick = index => {
+    const { dispatch, values: { items } } = this.props;
+
+    const deleted = items[index];
+
+    const updated = items.map(i => ({
+      ...i,
+      ...deleted.baseType === 'field' && i.baseType === 'field' && i.relatedFieldKey === deleted.type.uniqueKey
+        ? { relatedFieldKey: null, relatedFieldValue: null }
+        : {}
+    }));
+
+    updated.splice(index, 1);
+
+    dispatch(change(DATA_COLLECTION_FORM, "items", updated));
+    this.setTreeState(updated);
+  };
+  
+  renderCollectionField = renderProps => {
+    return <CollectionFormFieldsRenderer {...renderProps} onDeleteClick={this.onDeleteClick} />;
+  };
 
   render() {
     const {
-      classes, dispatch, values, handleSubmit, match, dirty, history, valid, form, syncErrors
+      classes, values, handleSubmit, match, dirty, history, valid, form, syncErrors
     } = this.props;
+
+    const {
+      treeState
+    } = this.state;
 
     const isNew = match.params.action === "new";
 
     const type = this.props.match.params.type;
     const id = !isNew && values && values.form.id;
-
+    
     return (
-      <div ref={this.getFormRef}>
+      <div>
         <Form className="container" onSubmit={handleSubmit(this.onSave)} role={DATA_COLLECTION_FORM}>
           <RouteChangeConfirm form={form} when={dirty} />
           <AppBarContainer
@@ -439,7 +553,7 @@ class DataCollectionWrapper extends React.Component<any, any> {
             hideHelpMenu={isNew}
             createdOn={v => new Date(v.form.created)}
             modifiedOn={v => new Date(v.form.modified)}
-            opened={getDeepValue(syncErrors, "form.name")}
+            opened={Boolean(getDeepValue(syncErrors, "form.name"))}
             fields={(
               <Grid item xs={8}>
                 <FormField
@@ -512,16 +626,12 @@ class DataCollectionWrapper extends React.Component<any, any> {
                   </Grid>
 
                   <Grid item xs={12} className="mb-3">
-                    {values && values.items && (
-                      <FieldArray
-                        name="items"
-                        component={renderCollectionFormFields}
-                        deleteField={this.deleteField}
-                        dispatch={dispatch}
-                        classes={classes}
-                        rerenderOnEveryChange
-                      />
-                    )}
+                    <Tree
+                      tree={treeState}
+                      renderItem={this.renderCollectionField}
+                      onDragEnd={this.onDragEnd}
+                      isDragEnabled
+                    />
                   </Grid>
                 </Grid>
               </Grid>
@@ -543,7 +653,8 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onUpdate: (id, form) => dispatch(updateDataCollectionForm(id, form)),
   onCreate: form => dispatch(createDataCollectionForm(form)),
-  onDelete: id => dispatch(deleteDataCollectionForm(id))
+  onDelete: id => dispatch(deleteDataCollectionForm(id)),
+  getCustomFields: () => dispatch(getCustomFields())
 });
 
 const DataCollectionForm = reduxForm({
@@ -554,4 +665,4 @@ const DataCollectionForm = reduxForm({
   connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DataCollectionWrapper))
 );
 
-export default DataCollectionForm as any;
+export default DataCollectionForm;

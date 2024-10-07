@@ -22,6 +22,7 @@ import ish.oncourse.server.configs.AutomationModel;
 import ish.oncourse.server.configs.ReportModel;
 import ish.oncourse.server.upgrades.DataPopulationUtils;
 import ish.print.PrintTransformationsFactory;
+import ish.util.ExtendedImageHelper;
 import ish.util.LocalDateUtils;
 import org.apache.cayenne.query.ObjectSelect;
 
@@ -45,7 +46,7 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     @Override
     public ReportDTO toRestModel(Report dbReport) {
         var dto = toRestWithoutBodyAndPreviewModel(dbReport);
-        dto.setPreview(ish.util.ImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
+        dto.setPreview(ExtendedImageHelper.scaleImageToPreviewSize(dbReport.getPreview()));
         dto.setBody(dbReport.getBody());
         return dto;
     }
@@ -56,7 +57,6 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
         if ( dbReport.getBackground() != null) {
             dto.setBackgroundId(dbReport.getBackground().getId());
         }
-        dto.setSubreport(dbReport.getIsVisible());
         dto.setSortOn(dbReport.getSortOn() != null ? dbReport.getSortOn() : "");
         dto.setPreview(null);
         dto.setBody(null);
@@ -100,7 +100,6 @@ public class ReportApiService extends AutomationApiService<ReportDTO, Report, Re
     @Override
     public Report toCayenneModel(ReportDTO dto, Report cayenneModel) {
         cayenneModel = super.toCayenneModel(dto, cayenneModel);
-        cayenneModel.setIsVisible(dto.isSubreport());
         cayenneModel.setSortOn(dto.getSortOn() != null ? dto.getSortOn() : "");
         if (dto.getBackgroundId() != null) {
             cayenneModel.setBackground(overlayDao.getById(cayenneModel.getContext(), dto.getBackgroundId()));

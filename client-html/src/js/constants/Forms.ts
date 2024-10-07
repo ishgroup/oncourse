@@ -6,6 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-export const NESTED_EDIT_VIEW_FORM_NAME = "NestedEditViewForm";
-
 export const SEND_MESSAGE_FORM_NAME = "SendMessageForm";
+
+export const COMMON_PLACEHOLDER = "No value";
+
+export const CLASS_TYPES_FORM_NAME: string = "ClassTypesForm";
+
+export const COURSE_TYPES_FORM_NAME: string = "CourseTypesForm";
+
+export const SUBJECTS_ENTITY_FORM_NAME: string = "SubjectsEntityForm";

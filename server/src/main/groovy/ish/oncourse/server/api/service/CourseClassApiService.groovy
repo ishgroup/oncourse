@@ -205,6 +205,9 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.withdrawnOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN }.size()
         dto.otherOutcomesCount = dto.allOutcomesCount  - dto.passOutcomesCount - dto.failedOutcomesCount - dto.inProgressOutcomesCount - dto.withdrawnOutcomesCount
         dto.tags = cc.allTags.collect { it.id }
+
+        def hiddenTags = cc.hiddenTags
+        dto.specialTagId = hiddenTags.empty ? null as Long : hiddenTags.first().id
         return dto
     }
 
@@ -221,13 +224,17 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         courseClass.type = dto.type.dbType
         if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING || dto.type == CourseClassTypeDTO.HYBRID) {
-            courseClass.maximumDays = dto.maximumDays
             courseClass.expectedHours = dto.expectedHours
             if (dto.virtualSiteId != null) {
                 courseClass.room = siteDao.getById(courseClass.context, dto.virtualSiteId).rooms[0]
             }
+            if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING) {
+                courseClass.maximumDays = dto.maximumDays
+            }
             if (dto.type == CourseClassTypeDTO.HYBRID) {
                 courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
+                courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
+                courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
             }
         }
         courseClass.isActive = dto.isActive
@@ -256,7 +263,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport
         courseClass.finalDETexport = dto.finalDetExport
-        updateTags(courseClass, courseClass.taggingRelations, dto.tags, CourseClassTagRelation, courseClass.context)
+        updateTags(courseClass, courseClass.taggingRelations, dto.tags + dto.specialTagId, CourseClassTagRelation, courseClass.context)
         DocumentFunctions.updateDocuments(courseClass, courseClass.attachmentRelations, dto.documents, CourseClassAttachmentRelation, context)
         updateCustomFields(courseClass.context, courseClass, dto.customFields, CourseClassCustomField)
         courseClass
@@ -332,6 +339,13 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         if (dto.type == CourseClassTypeDTO.HYBRID && dto.minimumSessionsToComplete == null) {
             validator.throwClientErrorException(id, "minimumSessionsToComplete", "minimumSessionsToComplete field is required for hybrid class")
+        }
+
+        if (dto.type == CourseClassTypeDTO.HYBRID && dto.startDateTime == null) {
+            validator.throwClientErrorException(id, "startDateTime", "Start date field is required for hybrid class")
+        }
+        if (dto.type == CourseClassTypeDTO.HYBRID && dto.endDateTime == null) {
+            validator.throwClientErrorException(id, "endDateTime", "End date field is required for hybrid class")
         }
     }
 

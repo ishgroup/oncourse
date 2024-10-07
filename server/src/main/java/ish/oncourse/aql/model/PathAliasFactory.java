@@ -59,6 +59,7 @@ class PathAliasFactory {
         createAlias(Course.class, "taggingRelations.tag", "tags", Tag.class);
         createAlias(Document.class, "taggingRelations.tag", "tags", Tag.class);
         createAlias(Enrolment.class, "taggingRelations.tag", "tags", Tag.class);
+        createAlias(Faculty.class, "taggingRelations.tag", "tags", Tag.class);
         createAlias(Invoice.class, "taggingRelations.tag", "tags", Tag.class);
         createAlias(Lead.class, "taggingRelations.tag", "tags", Tag.class);
         createAlias(Message.class, "taggingRelations.tag", "tags", Tag.class);

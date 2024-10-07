@@ -215,7 +215,7 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} mountOnEnter unmountOnExit />
 ));
 
-const manualUrl = getManualLink("messages");
+const manualUrl = getManualLink("sending-messages");
 
 const EntitiesToMessageTemplateEntitiesMap = {
   Invoice: ["Contact", "Invoice", "AbstractInvoice"],
@@ -261,8 +261,6 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
   const htmlRef = useRef<HTMLDivElement>();
 
   const [preview, setPreview] = useState(null);
-  const [isMarketing, setIsMarketing] = useState(true);
-
   const [suppressed, setSuppressed] = useState(false);
 
   const [selected, setSelected] = useState({
@@ -380,6 +378,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
         dispatch(change(form, "messageType", "Sms"));
       }
 
+      setSuppressed(true);
+
       getRecipientsMessageData(listEntity, selectedTemplate.type, listSearchQuery, values.selectAll ? null : selection, selectedTemplate.id);
     }
   };
@@ -472,7 +472,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                 </IconButton>
               </Typography>
             )}
-            {isMarketing && totalCounter[recipientsName].suppressToSendIds?.length !== 0 && (
+            {!suppressed && totalCounter[recipientsName].suppressToSendIds?.length !== 0 && (
               <Typography variant="body2">
                 {`Skipping ${totalCounter[recipientsName].suppressToSendIds?.length || 0} not accepting marketing material`}
                 <IconButton size="small" color="primary" onClick={() => openLink(totalCounter[recipientsName].suppressToSendIds)}>
@@ -484,7 +484,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
         ) : null}
       </Fragment>
     );
-  }), [isMarketing, totalCounter, suppressed, selected]);
+  }), [totalCounter, suppressed, selected]);
 
   useEffect(() => {
     let recipientsCount = 0;
@@ -575,9 +575,8 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                   className="mb-2"
                   control={(
                     <StyledCheckbox
-                      checked={isMarketing}
+                      checked={!suppressed}
                       onChange={() => {
-                        setIsMarketing(!isMarketing);
                         setSuppressed(!suppressed);
                       }}
                       color="primary"

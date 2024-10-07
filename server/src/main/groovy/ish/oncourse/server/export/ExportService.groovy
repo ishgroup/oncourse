@@ -26,7 +26,7 @@ import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.ExportSpec
 import ish.util.EntityUtil
-import ish.util.ThumbnailGenerator
+import ish.common.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.FilenameUtils

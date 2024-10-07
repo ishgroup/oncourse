@@ -10,8 +10,6 @@ package ish.oncourse.server.monitoring
 
 interface MonitoringService {
 
-    MonitoringModel getMonitoringMetrics()
-
     boolean isEnable()
 
     String getUserName()

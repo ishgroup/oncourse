@@ -17,6 +17,7 @@ import {
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getEntityTags } from "../../tags/actions";
 import CorporatePassEditView from "./components/CorporatePassEditView";
@@ -63,9 +64,9 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Invoices", list: "invoice", expression: "corporatePassUsed.id" }
 ];
 
-const manualLink = getManualLink("corporatePass");
+const manualLink = getManualLink("corporate-pass");
 
-const secondaryColumnCondition = dataRow => dataRow["expiryDate"] || "No Value";
+const secondaryColumnCondition = dataRow => dataRow["expiryDate"] || COMMON_PLACEHOLDER;
 
 class CorporatePasses extends React.Component<any, any> {
   componentDidMount() {

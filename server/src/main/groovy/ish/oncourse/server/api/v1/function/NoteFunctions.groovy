@@ -32,7 +32,14 @@ class NoteFunctions {
         new NoteDTO().with { note ->
             note.id = dbNote.id
             note.message = dbNote.note
-            note.createdBy = dbNote.systemUser? "$dbNote.systemUser.firstName $dbNote.systemUser.lastName" : 'system'
+
+            if(dbNote.systemUser)
+                note.createdBy = "$dbNote.systemUser.firstName $dbNote.systemUser.lastName"
+            else if(dbNote.createdByTutor)
+                note.createdBy = dbNote.createdByTutor.contact.fullName
+            else
+                note.createdBy = 'system'
+
             note.created = LocalDateUtils.dateToTimeValue(dbNote.createdOn)
             note.modified = LocalDateUtils.dateToTimeValue(dbNote.modifiedOn)
             note.entityId = dbNote.noteRelations?.notableEntity?.id
@@ -41,6 +48,8 @@ class NoteFunctions {
             if (dbNote.changedBy) {
                 note.modifiedBy = "$dbNote.changedBy.firstName $dbNote.changedBy.lastName"
             }
+
+            note.readonly = dbNote.createdByTutor ?: false
             note
         }
     }

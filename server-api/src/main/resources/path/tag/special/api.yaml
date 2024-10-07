@@ -1,0 +1,44 @@
+get:
+  operationId: getSpecialTags
+  description: list of all root special tags
+  tags:
+    - Tag
+  parameters:
+    - name: entityName
+      in: query
+      required: true
+      type: string
+      description: entity type identifier, null param returns empty list of checklists
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/SpecialTag.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SPECIAL_EDIT_EXTENDED_TAGS
+    errorMessage: Sorry, you have no permissions to see these entities. Please contact your administrator
+
+
+post:
+  description: Create Special tag group
+  operationId: updateSpecial
+  tags:
+    - Tag
+  parameters:
+    - name: specialTag
+      in: body
+      required: true
+      schema:
+        $ref: './def/entity/SpecialTag.yaml'
+  responses:
+    '204':
+      description: Rule item successfully added
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SPECIAL_EDIT_EXTENDED_TAGS
+    errorMessage: Sorry, you have no permissions to edit special entities. Please contact your administrator

@@ -20,6 +20,7 @@ import React, { useCallback } from "react";
 import { Field } from "redux-form";
 import { FormEditorField } from "../../../common/components/form/formFields/FormEditor";
 import FormField from "../../../common/components/form/formFields/FormField";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
 import { FormTagProps } from "../../../model/tags";
 
 const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
@@ -32,9 +33,13 @@ const TagItem = React.memo<FormTagProps>(({
   snapshot,
   provided,
   isEditing,
-  setIsEditing
+  setIsEditing,
+  hideColor
 }) => {
-  const onEditClick = () => setIsEditing(item.id);
+  const onEditClick = e => {
+    e.stopPropagation();
+    setIsEditing(item.id);
+  };
 
   const onDeleteClick = useCallback(e => {
     stopEventPropagation(e);
@@ -52,7 +57,7 @@ const TagItem = React.memo<FormTagProps>(({
     ? "/" + item.urlPath.trim().toLowerCase().replaceAll(" ", "+")
     : item.name
       ? "/" + item.name.trim().toLowerCase().replaceAll(" ", "+")
-      : "No value";
+      : COMMON_PLACEHOLDER;
 
   return (
     <div
@@ -64,15 +69,15 @@ const TagItem = React.memo<FormTagProps>(({
       <div className={classes.cardGrid}>
         <div {...provided.dragHandleProps}>
           <DragIndicator
-            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none")}
+            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none disabled")}
           />
         </div>
 
-        <div className="pr-3">
+        {hideColor ? <span/> : (<div className="pr-3">
           {isEditing
             ? (<Field name={getFieldName(item.parent, "color")} component={ColorPicker} />)
             : (<div className={classes.tagColorDot} style={{ background: "#" + item.color }} />)}
-        </div>
+        </div>)}
 
         <div>
           {isEditing
@@ -142,7 +147,17 @@ const TagItem = React.memo<FormTagProps>(({
 
       <Collapse in={isEditing} mountOnEnter unmountOnExit>
         <div className="pl-3 pr-3" onClick={stopEventPropagation}>
-          <FormEditorField name={getFieldName(item.parent, "content")} placeholder="Enter description" />
+          <FormEditorField  name={getFieldName(item.parent, "shortWebDescription")} placeholder="Short description" />
+          <Typography variant="caption" fontSize="13px" >
+            <FormEditorField
+              name={getFieldName(item.parent, "content")}
+              fieldClasses={{
+                text: "fw300 fsInherit"
+              }}
+              placeholder="Description"
+              className="mb-1"
+            />
+          </Typography>
         </div>
       </Collapse>
     </div>

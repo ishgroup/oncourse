@@ -14,6 +14,9 @@ package ish.oncourse.server.cayenne
 import ish.common.types.DataType
 import ish.math.Money
 import ish.oncourse.API
+import ish.oncourse.server.api.v1.function.CustomFieldFunctions
+import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -158,6 +161,14 @@ trait ExpandableTrait {
                     } else {
                         throw new IllegalArgumentException("$value cannot be the value for $key field")
                     }
+                } else {
+                    throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
+                }
+                break
+            case PORTAL_SUBDOMAIN:
+                 if (value instanceof String && !value.empty) {
+                     CustomFieldFunctions.validateSubDomain(context, value, customField.id)
+                     customField.value = value
                 } else {
                     throw new IllegalArgumentException(value.class.simpleName + " is not supported for $key field")
                 }

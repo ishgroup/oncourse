@@ -11,7 +11,8 @@
 
 package ish.oncourse.server.api.v1.function
 
-import groovy.transform.CompileStatic
+import groovy.transform.CompileDynamic
+import ish.oncourse.server.api.service.SurveyApiService
 import ish.oncourse.server.cayenne.ArticleFieldConfiguration
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.MembershipFieldConfiguration
@@ -59,7 +60,7 @@ import org.apache.cayenne.query.SelectById
 
 import java.time.ZoneOffset
 
-@CompileStatic
+@CompileDynamic
 class DataCollectionFunctions {
 
     private static final List<FieldTypeDTO> VISIBLE_FIELDS
@@ -98,12 +99,7 @@ class DataCollectionFunctions {
 
 
         if (Survey.simpleName == formType) {
-            fieldTypes = ObjectSelect.query(CustomFieldType)
-                    .where(CustomFieldType.ENTITY_IDENTIFIER.eq(Survey.class.simpleName))
-                    .and(CustomFieldType.DATA_TYPE.in(TEXT, LIST, MAP))
-                    .orderBy(CustomFieldType.SORT_ORDER.asc())
-                    .select(context)
-                    .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
+            fieldTypes = getFieldTypes(context, Survey.class.simpleName)
 
             fieldTypes << new FieldTypeDTO(uniqueKey: NET_PROMOTER_SCORE.key, label: NET_PROMOTER_SCORE.displayName)
             fieldTypes << new FieldTypeDTO(uniqueKey: COURSE_SCORE.key, label: COURSE_SCORE.displayName)
@@ -111,12 +107,7 @@ class DataCollectionFunctions {
             fieldTypes << new FieldTypeDTO(uniqueKey: TUTOR_SCORE.key, label: TUTOR_SCORE.displayName)
             fieldTypes << new FieldTypeDTO(uniqueKey: COMMENT.key, label: COMMENT.displayName)
         } else {
-            fieldTypes = ObjectSelect.query(CustomFieldType)
-                    .where(CustomFieldType.ENTITY_IDENTIFIER.in(Contact.class.simpleName, formType == 'Product' ? 'Article' : formType))
-                    .orderBy(CustomFieldType.SORT_ORDER.asc())
-                    .select(context)
-                    .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
-
+            fieldTypes = getFieldTypes(context, Contact.class.simpleName, formType == 'Product' ? 'Article' : formType)
             fieldTypes += VISIBLE_FIELDS
 
             switch (formType) {
@@ -129,6 +120,14 @@ class DataCollectionFunctions {
         }
 
         return fieldTypes
+    }
+
+    static List<FieldTypeDTO> getFieldTypes(ObjectContext context, String... identifiers) {
+        ObjectSelect.query(CustomFieldType)
+                .where(CustomFieldType.ENTITY_IDENTIFIER.in(identifiers.toList()))
+                .orderBy(CustomFieldType.SORT_ORDER.asc())
+                .select(context)
+                .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
     }
 
     static FieldConfiguration getFormByName(ObjectContext context, String name) {
@@ -200,6 +199,13 @@ class DataCollectionFunctions {
             return  new ValidationErrorDTO(null, 'uniqueKey', "Field types: ${fieldNames} are not available for the form")
         }
 
+        List<String> relatedFieldKeys = (form.fields.collect{it.relatedFieldKey} + (form.headings.fields.relatedFieldKey.flatten() as List<String>)).findAll{it}
+        List<String> fieldKeys = form.fields.collect{it.type.uniqueKey}
+        fieldKeys.addAll((form.headings.collect {it.fields}.flatten() as List<FieldDTO>).collect{it.type.uniqueKey})
+        relatedFieldKeys.each {fieldKey ->
+            if(!fieldKeys.contains(fieldKey))
+                return  new ValidationErrorDTO(null, 'relatedFieldId', "Field with key: ${fieldKey} not found on this form")
+        }
         return null
 
     }
@@ -285,6 +291,8 @@ class DataCollectionFunctions {
 
     static FieldConfiguration toDbForm(ObjectContext context, DataCollectionFormDTO form, FieldConfiguration persistRecord = null) {
         FieldConfiguration formToUpdate = persistRecord?:context.newObject(CONFIGURATION_MAP[form.type] as Class<? extends  FieldConfiguration>)
+        Map<String, Field> addedFields = new HashMap<>()
+        Map<Field, String> fieldsWithRelatedKeys = new HashMap<>()
         return formToUpdate.with { dbForm ->
             int order = 0
             dbForm.name = form.name
@@ -293,11 +301,30 @@ class DataCollectionFunctions {
                     dbHeading.fieldOrder = order++
                     dbHeading.name = heading.name
                     dbHeading.description = heading.description
-                    heading.fields.each { field -> dbHeading.addToFields toDbField(context, dbForm, field, order++)}
+                    heading.fields.each { field ->
+                        def dbField = toDbField(context, dbForm, field, order++)
+                        addedFields.put(dbField.property, dbField)
+                        if(field.relatedFieldKey)
+                            fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
+                        dbHeading.addToFields dbField
+                    }
                     dbHeading
                 }
             }
-            form.fields.each { field -> dbForm.addToFields toDbField(context, dbForm, field, order++) }
+
+            form.fields.each { field ->
+                def dbField = toDbField(context, dbForm, field, order++)
+                addedFields.put(dbField.property, dbField)
+                if(field.relatedFieldKey)
+                    fieldsWithRelatedKeys.put(dbField, field.relatedFieldKey)
+                dbForm.addToFields dbField
+            }
+
+            fieldsWithRelatedKeys.entrySet().each {entry ->
+                def relatedField = addedFields.get(entry.value)
+                entry.key.setRelatedField(relatedField)
+            }
+
             if (dbForm instanceof SurveyFieldConfiguration) {
                 (dbForm as SurveyFieldConfiguration).deliverySchedule = DeliverySchedule.valueOf(form.deliverySchedule.name())
             }
@@ -313,6 +340,7 @@ class DataCollectionFunctions {
             dbField.name = field.label
             dbField.description = field.helpText
             dbField.mandatory = field.mandatory
+            dbField.relatedFieldValue = field.relatedFieldValue
             dbField
         }
     }
@@ -353,6 +381,8 @@ class DataCollectionFunctions {
             field.label = dbField.name
             field.helpText = dbField.description
             field.mandatory = dbField.mandatory
+            field.relatedFieldValue = dbField.relatedFieldValue
+            field.relatedFieldKey = dbField.relatedField?.property
             field
         }
     }

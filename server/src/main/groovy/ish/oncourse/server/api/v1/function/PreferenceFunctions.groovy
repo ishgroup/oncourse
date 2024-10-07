@@ -88,6 +88,7 @@ class PreferenceFunctions {
             case AVETMISS_SHOW_GUI:
             case AUTO_DISABLE_INACTIVE_ACCOUNT:
             case PASSWORD_COMPLEXITY:
+            case EXTENDED_SEARCH_TYPES:
                 return Boolean.valueOf(value)
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:

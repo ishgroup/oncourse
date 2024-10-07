@@ -13,7 +13,8 @@ import Grid from "@mui/material/Grid";
 import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
+import Typography from "@mui/material/Typography";
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
@@ -21,7 +22,6 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 import { EntityItems, EntityName } from "../../../../../model/entities/common";
@@ -32,7 +32,7 @@ import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationMod
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 
-const manualUrl = getManualLink("advancedSetup_Export");
+const manualUrl = getManualLink("export-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
 
 const outputTypes = Object.keys(OutputType).map(mapSelectItems);
@@ -214,6 +214,27 @@ const ExportTemplatesForm = React.memo<Props>(
             )}
           >
             <Grid container columnSpacing={3}>
+              <Grid item xs={12} sm={9}>
+                <FormField
+                  type="multilineText"
+                  name="shortDescription"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Short description"
+                />
+                <Typography variant="caption" fontSize="13px">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    placeholder="Description"
+                    fieldClasses={{
+                      text: "fw300 fsInherit"
+                    }}
+                  />
+                </Typography>
+              </Grid>
               <Grid item xs={9} className="pr-3">
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={6}>
@@ -269,14 +290,6 @@ const ExportTemplatesForm = React.memo<Props>(
                   disabled={!isNew}
                   className="mb-2"
                   required
-                />
-
-                <FormField
-                  type="text"
-                  label="Description"
-                  name="description"
-                  disabled={isInternal}
-                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>
