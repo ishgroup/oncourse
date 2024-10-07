@@ -115,6 +115,7 @@ class ApiServiceModule implements Module {
         entityServicesBinder.addBinding().to(SiteApiService).in(Scopes.NO_SCOPE)
         entityServicesBinder.addBinding().to(VoucherProductApiService).in(Scopes.SINGLETON)
         entityServicesBinder.addBinding().to(WaitingListApiService).in(Scopes.NO_SCOPE)
+        entityServicesBinder.addBinding().to(FacultyApiService).in(Scopes.SINGLETON)
 
         binder.bind(AccountApiService).in(Scopes.SINGLETON)
         binder.bind(ApiTokenApiService).in(Scopes.NO_SCOPE)
