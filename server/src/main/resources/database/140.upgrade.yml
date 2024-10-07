@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 140-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - tableExists:
+                tableName: Settings
+      changes:
+        - createTable:
+            tableName: Settings
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: willowId
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+              - column:
+                  name: name
+                  type: VARCHAR(128)
+              - column:
+                  name: value
+                  type: TEXT

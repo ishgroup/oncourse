@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileDynamic
+import ish.oncourse.server.api.service.SurveyApiService
 import ish.oncourse.server.cayenne.ArticleFieldConfiguration
 import ish.oncourse.server.cayenne.Enrolment
 import ish.oncourse.server.cayenne.MembershipFieldConfiguration
@@ -98,12 +99,7 @@ class DataCollectionFunctions {
 
 
         if (Survey.simpleName == formType) {
-            fieldTypes = ObjectSelect.query(CustomFieldType)
-                    .where(CustomFieldType.ENTITY_IDENTIFIER.eq(Survey.class.simpleName))
-                    .and(CustomFieldType.DATA_TYPE.in(TEXT, LIST, MAP))
-                    .orderBy(CustomFieldType.SORT_ORDER.asc())
-                    .select(context)
-                    .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
+            fieldTypes = getFieldTypes(context, Survey.class.simpleName)
 
             fieldTypes << new FieldTypeDTO(uniqueKey: NET_PROMOTER_SCORE.key, label: NET_PROMOTER_SCORE.displayName)
             fieldTypes << new FieldTypeDTO(uniqueKey: COURSE_SCORE.key, label: COURSE_SCORE.displayName)
@@ -111,12 +107,7 @@ class DataCollectionFunctions {
             fieldTypes << new FieldTypeDTO(uniqueKey: TUTOR_SCORE.key, label: TUTOR_SCORE.displayName)
             fieldTypes << new FieldTypeDTO(uniqueKey: COMMENT.key, label: COMMENT.displayName)
         } else {
-            fieldTypes = ObjectSelect.query(CustomFieldType)
-                    .where(CustomFieldType.ENTITY_IDENTIFIER.in(Contact.class.simpleName, formType == 'Product' ? 'Article' : formType))
-                    .orderBy(CustomFieldType.SORT_ORDER.asc())
-                    .select(context)
-                    .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
-
+            fieldTypes = getFieldTypes(context, Contact.class.simpleName, formType == 'Product' ? 'Article' : formType)
             fieldTypes += VISIBLE_FIELDS
 
             switch (formType) {
@@ -129,6 +120,14 @@ class DataCollectionFunctions {
         }
 
         return fieldTypes
+    }
+
+    static List<FieldTypeDTO> getFieldTypes(ObjectContext context, String... identifiers) {
+        ObjectSelect.query(CustomFieldType)
+                .where(CustomFieldType.ENTITY_IDENTIFIER.in(identifiers.toList()))
+                .orderBy(CustomFieldType.SORT_ORDER.asc())
+                .select(context)
+                .collect { new FieldTypeDTO(uniqueKey: "${CUSTOM_FIELD_PROPERTY_PATTERN}${it.entityIdentifier.toLowerCase()}.${it.key}", label: it.name) }
     }
 
     static FieldConfiguration getFormByName(ObjectContext context, String name) {
