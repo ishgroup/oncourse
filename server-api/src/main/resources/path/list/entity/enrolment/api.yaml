@@ -47,26 +47,3 @@ put:
     mask: edit
     keyCode: ENROLMENT
     errorMessage: Sorry, you have no permissions to update enrolment. Please contact your administrator
-
-patch:
-  operationId: bulkChange
-  tags:
-    - Enrolment
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: enrolments for update
-  responses:
-    '200':
-      description: Success response
-    '400':
-      description: Bad request error
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: edit
-    keyCode: ENROLMENT
-    errorMessage: Sorry, you have no permissions to edit enrolment. Please contact your administrator.

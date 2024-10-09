@@ -6,15 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Diff, Faculty, FacultyApi } from "@api/model";
+import { Faculty, FacultyApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class FacultyService {
   readonly facultyApi = new FacultyApi(new DefaultHttpService());
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.facultyApi.bulkChange(diff);
-  }
 
   public create(faculty: Faculty): Promise<number> {
     return this.facultyApi.create(faculty);

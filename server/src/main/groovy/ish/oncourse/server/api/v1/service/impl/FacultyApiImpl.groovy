@@ -10,7 +10,6 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.api.service.FacultyApiService
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.FacultyDTO
 import ish.oncourse.server.api.v1.service.FacultyApi
 
@@ -37,10 +36,5 @@ class FacultyApiImpl implements FacultyApi {
     @Override
     void update(Long id, FacultyDTO facultyDTO) {
         facultyApiService.update(id, facultyDTO)
-    }
-
-    @Override
-    void bulkChange(DiffDTO diffDTO) {
-        facultyApiService.bulkChange(diffDTO)
     }
 }
