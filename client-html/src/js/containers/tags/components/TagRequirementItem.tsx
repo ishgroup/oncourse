@@ -1,17 +1,17 @@
-import { TagRequirement } from "@api/model";
-import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppTheme, ShowConfirmCaller, useHoverShowStyles } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { Dispatch } from "redux";
-import { change, Field } from "redux-form";
-import { ToogleCheckbox } from "../../../common/components/form/ToogleCheckbox";
-import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
+import { TagRequirement } from '@api/model';
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme, ShowConfirmCaller, useHoverShowStyles } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { change, Field } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { ToogleCheckbox } from '../../../common/components/form/ToogleCheckbox';
+import GetTagRequirementDisplayName from '../utils/GetTagRequirementDisplayName';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   deleteIcon: {
     fontSize: "20px"
   },
@@ -24,7 +24,7 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 interface Props {
-  classes: any;
+  classes?: any;
   disabled: boolean;
   item: TagRequirement;
   parent: any;
@@ -62,7 +62,7 @@ const TagRequirementItem: React.FC<Props> = props => {
   
   const header = useMemo(() => GetTagRequirementDisplayName(item.type), [item.type]);
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   return (
     <div className={clsx(classes.root, hoverClasses.container)}>
@@ -108,4 +108,4 @@ const TagRequirementItem: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(styles)(TagRequirementItem);
+export default withStyles(TagRequirementItem, styles);

@@ -3,25 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { AppTheme } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { State } from "../../../../../reducers/state";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import { State } from '../../../../../reducers/state';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
   root: {
     "&:hover": {
-      "& $deleteIcon": {
+      [`& .${classes.deleteIcon}`]: {
         visibility: "visible"
       },
-      "& $priceDeleteIcon": {
+      [`& .${classes.priceDeleteIcon}`]: {
         transform: "translateX(0px)"
       }
     }
@@ -126,7 +125,7 @@ const Item = props => {
   );
 };
 
-const SelectedPromoCodesRenderer = React.memo<any>(props => {
+const SelectedPromoCodesRenderer = React.memo<{ items?, selectedDiscount?, className?, disabled?, openRow?, onDelete?, classes?, isSelected?, item?, type? }>(props => {
   const {
     items, selectedDiscount, className, ...rest
   } = props;
@@ -148,4 +147,4 @@ const mapStateToProps = (state: State) => ({
   summaryList: state.checkout.summary.list
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(SelectedPromoCodesRenderer));
+export default connect(mapStateToProps)(withStyles(SelectedPromoCodesRenderer, styles as any));

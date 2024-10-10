@@ -1,10 +1,10 @@
-import { MergeLine } from "@api/model";
-import { Theme } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import React, { useCallback } from "react";
-import { Selected } from "./RadioLabelGroup";
-import RadioLabelPill from "./RadioPill";
+import { MergeLine } from '@api/model';
+import { Theme } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import React, { useCallback } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { Selected } from './RadioLabelGroup';
+import RadioLabelPill from './RadioPill';
 
 interface RadioLabelProps {
   line: MergeLine;
@@ -14,7 +14,7 @@ interface RadioLabelProps {
   isDifferent?: boolean;
 }
 
-const styles = createStyles(({ spacing }: Theme) => ({
+const styles = (({ spacing }: Theme) => ({
   root: {
     gridGap: spacing(1),
     gridAutoFlow: "column"
@@ -43,4 +43,4 @@ const RadioLabel = React.memo(({
   );
 });
 
-export default withStyles(styles)(RadioLabel);
+export default withStyles(RadioLabel, styles);

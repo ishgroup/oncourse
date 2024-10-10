@@ -3,25 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AttendanceType } from "@api/model";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faAdjust, faCheck, faCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
-import ChevronLeft from "@mui/icons-material/ChevronLeft";
-import ChevronRight from "@mui/icons-material/ChevronRight";
-import { Divider, Grid } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppTheme } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { change, initialize } from "redux-form";
-import { addActionToQueue } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import uniqid from "../../../../../common/utils/uniqid";
-import history from "../../../../../constants/History";
-import { EditViewProps } from "../../../../../model/common/ListView";
+import { AttendanceType } from '@api/model';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faAdjust, faCheck, faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import { Divider, Grid } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { change, initialize } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { addActionToQueue } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import uniqid from '../../../../../common/utils/uniqid';
+import history from '../../../../../constants/History';
+import { EditViewProps } from '../../../../../model/common/ListView';
 import {
   AttandanceChangeType,
   AttandanceStepItem,
@@ -29,18 +29,18 @@ import {
   ContactAttendanceItem,
   CourseClassExtended,
   StudentAttendanceExtended
-} from "../../../../../model/entities/CourseClass";
-import { TimetableSession } from "../../../../../model/timetable";
-import { updateCourseClassStudentAttendance, updateCourseClassTrainingPlans } from "./actions";
-import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
-import AttendanceDayBase from "./AttendanceDayBase";
-import AttendanceGridItem from "./AttendanceGridItem";
-import CourseClassAttendanceService from "./services/CourseClassAttendanceService";
+} from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
+import { updateCourseClassStudentAttendance, updateCourseClassTrainingPlans } from './actions';
+import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from './AttendanceActionModal';
+import AttendanceActionsMenu from './AttendanceActionsMenu';
+import AttendanceDayBase from './AttendanceDayBase';
+import AttendanceGridItem from './AttendanceGridItem';
+import CourseClassAttendanceService from './services/CourseClassAttendanceService';
 
 library.add(faAdjust, faCheck, faTimes, faCircle);
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
     timeline: {
       marginLeft: theme.spacing(-1),
       background: theme.palette.background.default,
@@ -904,4 +904,4 @@ const CourseClassAttendanceTab = React.memo<Props>(
   }
 );
 
-export default withStyles(styles)(CourseClassAttendanceTab);
+export default withStyles(CourseClassAttendanceTab, styles);

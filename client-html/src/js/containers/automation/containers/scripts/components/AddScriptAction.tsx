@@ -1,25 +1,23 @@
-import AddIcon from "@mui/icons-material/Add";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import CloseIcon from "@mui/icons-material/Close";
-import CodeIcon from "@mui/icons-material/Code";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
-import UploadIcon from "@mui/icons-material/Upload";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { transition } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { change } from "redux-form";
+import AddIcon from '@mui/icons-material/Add';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
+import CodeIcon from '@mui/icons-material/Code';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
+import UploadIcon from '@mui/icons-material/Upload';
+import { Button, Collapse } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { transition } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 
-const styles = createStyles(theme => ({
+const styles = ((theme, p, classes) => ({
   addActionButton: {
     position: "relative",
     marginLeft: theme.spacing(-9),
@@ -28,17 +26,17 @@ const styles = createStyles(theme => ({
   },
   addActionButtonHover: {
     "&:hover": {
-      "& $cardLeftIcon": {
+      [`& .${classes.cardLeftIcon}`]: {
         color: theme.heading.color
       },
-      "& $buttonRoot": {
+      [`& .${classes.buttonRoot}`]: {
         height: "auto",
         padding: theme.spacing(3.5, 2),
         border: `2px dashed ${theme.palette.divider}`,
         visibility: "visible",
         opacity: 1,
       },
-      "&:not($active) $addActionWrapper": {
+      [`&:not(.${classes.active}) .${classes.addActionWrapper}`]: {
         margin: theme.spacing(3, 0),
       }
     },
@@ -58,7 +56,7 @@ const styles = createStyles(theme => ({
   },
   activeStep: {
     marginTop: theme.spacing(3),
-    "& $buttonRoot": {
+    [`& .${classes.buttonRoot}`]: {
       height: "auto",
       padding: theme.spacing(3.5, 2),
       border: `2px dashed ${theme.palette.divider}`,
@@ -280,4 +278,4 @@ const AddScriptAction: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(AddScriptAction);
+export default withStyles(AddScriptAction, styles);

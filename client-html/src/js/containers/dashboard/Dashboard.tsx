@@ -3,26 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PreferenceEnum } from "@api/model";
-import { Grid } from "@mui/material";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { AppTheme, ThemeValues } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { checkPermissions, getUserPreferences, setUserPreference, showConfirm } from "../../common/actions";
-import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
-import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
-import { DASHBOARD_CATEGORY_WIDTH_KEY, DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP, } from "../../constants/Config";
-import { State } from "../../reducers/state";
-import ActionBody from "./components/action-body/ActionBody";
-import DashboardHeader from "./components/DashboardHeader";
+import { PreferenceEnum } from '@api/model';
+import { Grid } from '@mui/material';
+import clsx from 'clsx';
+import { AppTheme, ThemeValues } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { checkPermissions, getUserPreferences, setUserPreference, showConfirm } from '../../common/actions';
+import { toggleSwipeableDrawer } from '../../common/components/layout/swipeable-sidebar/actions';
+import { SWIPEABLE_SIDEBAR_WIDTH } from '../../common/components/layout/swipeable-sidebar/SwipeableSidebar';
+import { VARIANTS } from '../../common/components/layout/swipeable-sidebar/utils';
+import { DASHBOARD_CATEGORY_WIDTH_KEY, DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP, } from '../../constants/Config';
+import { State } from '../../reducers/state';
+import ActionBody from './components/action-body/ActionBody';
+import DashboardHeader from './components/DashboardHeader';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     container: {
       minWidth: "1024px",
       overflowX: "auto",
@@ -124,4 +123,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   }
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dashboard));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(Dashboard, styles));

@@ -9,48 +9,45 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { LoginRequest } from "@api/model";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import { createStyles, darken, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Slide from "@mui/material/Slide";
+import { LoginRequest } from '@api/model';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import { Button, darken, Grid, Typography } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import { withStyles } from "@mui/styles";
-import { FormTextField } from "ish-ui";
-import QRCode from "qrcode.react";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Action, Dispatch } from "redux";
-import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from "redux-form";
-import { DecoratedFormProps } from "redux-form/lib/reduxForm";
-import {
-  setLoginState
-} from "../../common/actions";
-import Logo from "../../common/components/layout/Logo";
-import { validateSingleMandatoryField } from "../../common/utils/validation";
-import { State } from "../../reducers/state";
-import { SSOProviders } from "../automation/containers/integrations/components/SSOProviders";
-import { isComplexPassRequired } from "../preferences/actions";
+import { FormTextField } from 'ish-ui';
+import QRCode from 'qrcode.react';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
+import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from 'redux-form';
+import { DecoratedFormProps } from 'redux-form/lib/reduxForm';
+import { withStyles } from 'tss-react/mui';
+import { setLoginState } from '../../common/actions';
+import Logo from '../../common/components/layout/Logo';
+import { validateSingleMandatoryField } from '../../common/utils/validation';
+import { State } from '../../reducers/state';
+import { SSOProviders } from '../automation/containers/integrations/components/SSOProviders';
+import { isComplexPassRequired } from '../preferences/actions';
 import {
   checkPassword,
   createPasswordRequest,
-  getEmailByToken, getSsoIntegrations,
+  getEmailByToken,
+  getSsoIntegrations,
   postLoginRequest,
   updatePasswordRequest
-} from "./actions";
-import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
-import Credits from "./components/Credits";
-import EulaDialog from "./components/EulaDialog";
-import NewPasswordField from "./components/NewPasswordField";
-import { LoginState } from "./reducers/state";
+} from './actions';
+import AuthCodeFieldRenderer from './components/AuthCodeFieldRenderer';
+import Credits from './components/Credits';
+import EulaDialog from './components/EulaDialog';
+import NewPasswordField from './components/NewPasswordField';
+import { LoginState } from './reducers/state';
 
 const FORM_NAME = "LoginForm";
 
-const styles = createStyles(theme => ({
+const styles = (theme => ({
   loginFormWrapper: {
     maxWidth: "520px",
     display: "flex",
@@ -807,6 +804,6 @@ const LoginPage = reduxForm({
   form: FORM_NAME,
   touchOnChange: true,
   asyncChangeFields: ["newPasswordAsync"]
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPageBase)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(LoginPageBase, styles)));
 
 export default LoginPage;

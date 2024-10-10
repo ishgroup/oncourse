@@ -3,23 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Document, Tag } from "@api/model";
-import Button from "@mui/material/Button";
-import ButtonBase from "@mui/material/ButtonBase";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Grid from "@mui/material/Grid";
-import LinearProgress from "@mui/material/LinearProgress";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { DocumentIconsChooser } from "ish-ui";
-import React from "react";
-import { getLatestDocumentItem } from "../../../../../utils/documents";
-import FormField from "../../../formFields/FormField";
-import DocumentShare from "../../DocumentShare";
-import { dialogStyles } from "./dialogStyles";
+import { Document, Tag } from '@api/model';
+import { Button, Grid, Typography } from '@mui/material';
+import ButtonBase from '@mui/material/ButtonBase';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import LinearProgress from '@mui/material/LinearProgress';
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { DocumentIconsChooser } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { getLatestDocumentItem } from '../../../../../utils/documents';
+import FormField from '../../../formFields/FormField';
+import DocumentShare from '../../DocumentShare';
+import { dialogStyles } from './dialogStyles';
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -207,4 +205,4 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
   }
 }
 
-export default withStyles(dialogStyles)(DocumentEditDialog) as React.ComponentClass<Props>;
+export default withStyles(DocumentEditDialog, dialogStyles) as React.ComponentClass<Props>;

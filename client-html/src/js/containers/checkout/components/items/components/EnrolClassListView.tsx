@@ -2,24 +2,20 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-import { Grid, List, Radio } from "@mui/material";
-import Button from "@mui/material/Button";
-import ListItem from "@mui/material/ListItem";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { isBefore } from "date-fns";
-import { appendTimezone, AppTheme, formatCurrency } from "ish-ui";
-import React from "react";
-import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
-import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import { filterPastClasses } from "../../../utils";
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import { Button, Grid, List, ListItemButton, Radio, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { isBefore } from 'date-fns';
+import { appendTimezone, AppTheme, formatCurrency } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import CalendarDayBase from '../../../../timetable/components/calendar/components/day/CalendarDayBase';
+import CalendarMonthBase from '../../../../timetable/components/calendar/components/month/CalendarMonthBase';
+import CalendarSession from '../../../../timetable/components/calendar/components/session/CalendarSession';
+import { getAllMonthsWithSessions } from '../../../../timetable/utils';
+import { filterPastClasses } from '../../../utils';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
     list: {
       padding: 0
     },
@@ -27,7 +23,7 @@ const styles = (theme: AppTheme) => createStyles({
       paddingBottom: 5
     },
     showPastButtonPressed: {
-      "& $showPastShevron": {
+      [`& .${classes.showPastShevron}`]: {
         transform: "rotate(180deg)"
       }
     },
@@ -42,7 +38,7 @@ const styles = (theme: AppTheme) => createStyles({
     },
     disabledSessionButton: {
       color: `${theme.palette.text.disabled}`,
-      "& $disabledWarningColor": {
+      [`& .${classes.disabledWarningColor}`]: {
         color: "#fdc5c1"
       }
     },
@@ -55,7 +51,9 @@ const isSelectedPassedClass = course => {
   return course.class && course.class.endDateTime && isBefore(new Date(course.class.endDateTime), today);
 };
 
-const EnrolClassListView = React.memo<any>(props => {
+const EnrolClassListView = React.memo<{
+  course, courseClasses, classes?, onSelect, isClassesEmpty, currencySymbol, selectedItems
+}>(props => {
   const {
    course, courseClasses, classes, onSelect, isClassesEmpty, currencySymbol, selectedItems
   } = props;
@@ -182,13 +180,13 @@ const EnrolClassListView = React.memo<any>(props => {
     </div>
   ) : (
     <div className={clsx("p-2 overflow-auto", classes.root)}>
-      <ListItem alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
+      <ListItemButton alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
         <Typography component="div" variant="body1">
           There are no classes available for this course.
         </Typography>
-      </ListItem>
+      </ListItemButton>
     </div>
   );
 });
 
-export default withStyles(styles)(EnrolClassListView);
+export default withStyles(EnrolClassListView, styles);

@@ -2,11 +2,11 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { Card } from "@mui/material";
-import { makeAppStyles } from "ish-ui";
-import React, { useMemo } from "react";
-import { NestedListRow } from "../../../../../common/components/form/nestedList/components/ListRenderer";
-import { CheckoutItem, CheckoutSaleRelationExtended } from "../../../../../model/checkout";
+import { Card } from '@mui/material';
+import { makeAppStyles } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { NestedListRow } from '../../../../../common/components/form/nestedList/components/ListRenderer';
+import { CheckoutItem, CheckoutSaleRelationExtended } from '../../../../../model/checkout';
 
 interface Props {
   relations: CheckoutSaleRelationExtended[];
@@ -14,7 +14,7 @@ interface Props {
   onSelect?: any;
 }
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   listRoot: {
     listStyle: "none",
     padding: theme.spacing(1, 0, 0, 0),
@@ -23,7 +23,7 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 const SaleRelations: React.FC<Props> = ({ relations, cartItems, onSelect }) => {
-  const classes  = useStyles();
+  const { classes }  = useStyles();
 
   const groupedRelations = useMemo(() => {
     const result = {};

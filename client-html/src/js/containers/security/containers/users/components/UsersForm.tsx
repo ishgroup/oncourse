@@ -3,31 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { User, UserRole } from "@api/model";
-import IconPhoneLocked from "@mui/icons-material/ScreenLockPortrait";
-import { Button, Collapse, FormControlLabel, FormGroup, Grid, Paper, Typography } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM_SPECIAL, SelectItemDefault, ShowConfirmCaller } from "ish-ui";
-import React, { ComponentClass } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Dispatch } from "redux";
-import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
-import { showConfirm } from "../../../../../common/actions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
-import { disableUser2FA, resetUserPassword, updateUser } from "../../../actions";
+import { User, UserRole } from '@api/model';
+import IconPhoneLocked from '@mui/icons-material/ScreenLockPortrait';
+import { Button, Collapse, FormControlLabel, FormGroup, Grid, Paper, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM_SPECIAL, SelectItemDefault, ShowConfirmCaller } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { showConfirm } from '../../../../../common/actions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { disableUser2FA, resetUserPassword, updateUser } from '../../../actions';
 
 const manualUrl = getManualLink("users");
 
 const styles = theme => ({
+  root: {},
   paperPadding: {
     padding: "26px"
   },
@@ -406,6 +407,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const UsersForm = reduxForm({
   form: "UsersForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(UsersFormBase))));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(withRouter(UsersFormBase), styles)));
 
-export default UsersForm as ComponentClass<Props>;
+export default UsersForm;

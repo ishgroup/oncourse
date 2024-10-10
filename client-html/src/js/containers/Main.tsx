@@ -15,8 +15,8 @@
 
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import {
   AnyArgFunction,
   AppTheme,
@@ -26,18 +26,19 @@ import {
   getTheme,
   GlobalStylesProvider,
   ThemeValues
-} from "ish-ui";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { Dispatch } from "redux";
-import { getFormNames, isDirty } from "redux-form";
-import { getUserPreferences, showMessage } from "../common/actions";
-import ConfirmProvider from "../common/components/dialog/ConfirmProvider";
-import MessageProvider from "../common/components/dialog/MessageProvider";
-import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
-import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
+} from 'ish-ui';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { getFormNames, isDirty } from 'redux-form';
+import { TssCacheProvider } from 'tss-react';
+import { getUserPreferences, showMessage } from '../common/actions';
+import ConfirmProvider from '../common/components/dialog/ConfirmProvider';
+import MessageProvider from '../common/components/dialog/MessageProvider';
+import { getGoogleTagManagerParameters } from '../common/components/google-tag-manager/actions';
+import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/SwipeableSidebar';
+import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_THEME_KEY,
@@ -45,18 +46,22 @@ import {
   READ_NEWS,
   SPECIAL_TYPES_DISPLAY_KEY,
   SYSTEM_USER_ADMINISTRATION_CENTER
-} from "../constants/Config";
-import { EnvironmentConstants } from "../constants/EnvironmentConstants";
-import { AppMessage } from "../model/common/Message";
-import { State } from "../reducers/state";
-import { loginRoute, routes } from "../routes";
-import { getDashboardBlogPosts } from "./dashboard/actions";
-import { getCurrency, isLoggedIn } from "./preferences/actions";
-import { ThemeContext } from "./ThemeContext";
+} from '../constants/Config';
+import { EnvironmentConstants } from '../constants/EnvironmentConstants';
+import { AppMessage } from '../model/common/Message';
+import { State } from '../reducers/state';
+import { loginRoute, routes } from '../routes';
+import { getDashboardBlogPosts } from './dashboard/actions';
+import { getCurrency, isLoggedIn } from './preferences/actions';
+import { ThemeContext } from './ThemeContext';
 
 export const muiCache = createCache({
   key: 'mui',
   prepend: true,
+});
+
+const tssCache = createCache({
+  key: "tss"
 });
 
 const RouteContentWrapper = props => {
@@ -241,29 +246,31 @@ export class MainBase extends React.PureComponent<Props, MainState> {
 
     return (
       <CacheProvider value={muiCache}>
-        <ThemeContext.Provider
-          value={{
-            themeHandler: this.themeHandler,
-            themeName
-          }}
-        >
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <GlobalStylesProvider>
-              <BrowserWarning />
-              <Switch>
-                {isLogged ? (
-                  routes.map((route, i) => <RouteRenderer key={i} {...route} />)
-                ) : (
-                  loginRoute.map((route, i) => <RouteRenderer key={i} {...route} />)
-                )}
-              </Switch>
-              <ConfirmProvider />
-              {isLogged && <SwipeableSidebar />}
-            </GlobalStylesProvider>
-            <MessageProvider />
-          </ThemeProvider>
-        </ThemeContext.Provider>
+        <TssCacheProvider value={tssCache}>
+          <ThemeContext.Provider
+            value={{
+              themeHandler: this.themeHandler,
+              themeName
+            }}
+          >
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <GlobalStylesProvider>
+                <BrowserWarning />
+                <Switch>
+                  {isLogged ? (
+                    routes.map((route, i) => <RouteRenderer key={i} {...route} />)
+                  ) : (
+                    loginRoute.map((route, i) => <RouteRenderer key={i} {...route} />)
+                  )}
+                </Switch>
+                <ConfirmProvider />
+                {isLogged && <SwipeableSidebar />}
+              </GlobalStylesProvider>
+              <MessageProvider />
+            </ThemeProvider>
+          </ThemeContext.Provider>
+        </TssCacheProvider>
       </CacheProvider>
     );
   }

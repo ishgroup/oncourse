@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Binding, DataType } from "@api/model";
-import Button from "@mui/material/Button";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Grow from "@mui/material/Grow";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import { makeAppStyles, NoArgFunction } from "ish-ui";
-import React, { useCallback, useEffect, useRef } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { BindingsItemType } from "./Bindings";
+import { Binding, DataType } from '@api/model';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grow from '@mui/material/Grow';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { makeAppStyles, NoArgFunction } from 'ish-ui';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import FormField from '../../../common/components/form/formFields/FormField';
+import { BindingsItemType } from './Bindings';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   popper: {
     zIndex: theme.zIndex.modal + 1
   },
@@ -67,7 +67,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
     const nameRef = useRef<any>();
     const popperRef = useRef<any>();
 
-    const classes  = useStyles();
+    const { classes }  = useStyles();
 
     const setPopperRef = useCallback(node => {
       if (node) {

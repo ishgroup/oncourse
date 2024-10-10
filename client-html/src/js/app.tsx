@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider } from "react-redux";
-import AppEntry from "./AppEntry";
-import { ErrorBoundary } from "./constants/Bugsnag";
-import { DEFAULT_CONFIG } from "./constants/Config";
-import { EnvironmentConstants } from "./constants/EnvironmentConstants";
-import store from "./constants/Store";
+import { Provider } from 'react-redux';
+import AppEntry from './AppEntry';
+import { ErrorBoundary } from './constants/Bugsnag';
+import { DEFAULT_CONFIG } from './constants/Config';
+import { EnvironmentConstants } from './constants/EnvironmentConstants';
+import store from './constants/Store';
 
 if (process.env.NODE_ENV === EnvironmentConstants.production) {
   if ("serviceWorker" in navigator) {

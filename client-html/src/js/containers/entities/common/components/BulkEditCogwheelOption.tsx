@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import React, { memo, useCallback } from "react";
-import { useSelector } from "react-redux";
-import { State } from "../../../../reducers/state";
+import MenuItem from '@mui/material/MenuItem';
+import React, { memo, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { State } from '../../../../reducers/state';
 
-export default memo<any>(({
+export default memo<{menuItemClass?, closeMenu?, toggleBulkEditDrawer?, selection?}>(({
  menuItemClass, closeMenu, toggleBulkEditDrawer, selection
 }) => {
   const hasAql = useSelector<State, any>(state => state.list.searchQuery

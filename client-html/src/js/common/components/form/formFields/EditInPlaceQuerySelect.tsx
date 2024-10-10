@@ -6,36 +6,47 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AqlLexer } from "@aql/AqlLexer";
-import { AqlParser } from "@aql/AqlParser";
-import * as Entities from "@aql/queryLanguageModel";
-import DateRange from "@mui/icons-material/DateRange";
-import QueryBuilder from "@mui/icons-material/QueryBuilder";
-import { ListItemButton } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import { createStyles, withStyles } from "@mui/styles";
-import { DatePicker, TimePicker as Time } from "@mui/x-date-pickers";
-import { CodeCompletionCore } from "antlr4-c3";
-import { ANTLRInputStream, CommonTokenStream } from "antlr4ts";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { DD_MM_YYYY_SLASHED, getHighlightedPartLabel, HH_MM_COLONED, selectStyles, stubComponent } from "ish-ui";
-import getCaretCoordinates from "ish-ui/dist/utils/DOM/getCaretCoordinates";
-import React, { createRef, RefObject } from "react";
-import { connect } from "react-redux";
+import { AqlLexer } from '@aql/AqlLexer';
+import { AqlParser } from '@aql/AqlParser';
+import * as Entities from '@aql/queryLanguageModel';
+import DateRange from '@mui/icons-material/DateRange';
+import QueryBuilder from '@mui/icons-material/QueryBuilder';
+import { ListItemButton } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { DatePicker, TimePicker as Time } from '@mui/x-date-pickers';
+import { CodeCompletionCore } from 'antlr4-c3';
+import { ANTLRInputStream, CommonTokenStream } from 'antlr4ts';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import {
+  DD_MM_YYYY_SLASHED,
+  getHighlightedPartLabel,
+  HH_MM_COLONED,
+  makeAppStyles,
+  stubComponent,
+  useSelectStyles
+} from 'ish-ui';
+import getCaretCoordinates from 'ish-ui/dist/utils/DOM/getCaretCoordinates';
+import React, { createRef, RefObject } from 'react';
+import { connect } from 'react-redux';
 import {
   FILTER_TAGS_REGEX,
   SIMPLE_SEARCH_QUOTES_AND_NO_WHITESPACE_REGEX,
   SIMPLE_SEARCH_QUOTES_REGEX,
   TAGS_REGEX
-} from "../../../../constants/Config";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
-import { CustomFieldTypesState } from "../../../../containers/entities/customFieldTypes/reducers/state";
-import { EditInPlaceQueryFieldProps, QueryFieldSuggestion } from "../../../../model/common/Fields";
-import { State } from "../../../../reducers/state";
+} from '../../../../constants/Config';
+import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
+import { CustomFieldTypesState } from '../../../../containers/entities/customFieldTypes/reducers/state';
+import { EditInPlaceQueryFieldProps, QueryFieldSuggestion } from '../../../../model/common/Fields';
+import { State } from '../../../../reducers/state';
 
-const queryStyles = theme => createStyles({
+const useQueryStyles = makeAppStyles()(theme => ({
+  inputRoot: {
+    '&&&': {
+      paddingRight: 0
+    }
+  },
   queryMenuItem: {
     minHeight: "unset",
     fontSize: "0.9rem"
@@ -69,7 +80,7 @@ const queryStyles = theme => createStyles({
     color: theme.palette.text.primaryEditable,
     fontWeight: 400,
   }
-});
+}));
 
 const TimePicker: any = Time;
 
@@ -519,13 +530,11 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
         width: "auto",
         transform: "translateY(calc(-100% - 8px))",
         top: 0,
-        ...rightAligned
-          ? {
+        ...(rightAligned ? {
             left: this.inputNode.clientWidth,
-          }
-          : {
+          } : {
             left: caretCoordinates ? caretCoordinates.left : 0,
-          }
+          })
       }
     };
   };
@@ -875,7 +884,7 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
     if (customFields && customFields.includes(tokenText)) {
       
       const types = rootEntity === "ProductItem" 
-        ? [...customFieldTypes?.types["Article"] || [], ...customFieldTypes?.types["Voucher"] || [], ...customFieldTypes?.types["Membership"] || []]  
+        ? [...(customFieldTypes?.types["Article"] || []), ...(customFieldTypes?.types["Voucher"] || []), ...(customFieldTypes?.types["Membership"] || [])]  
         : customFieldTypes?.types[rootEntity]; 
       
       const isDateField = types?.some(t => t.fieldKey === tokenText && ["Date time", "Date"].includes(t.dataType));
@@ -1064,10 +1073,14 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
             onChange={this.handlePickerChange}
             onClose={this.closePicker}
             open={pickerOpened === "DATE"}
-            renderInput={props => <TextField {...props} />}
-            PopperProps={{
-              placement: "top",
-              anchorEl: this.dateAnchor.current
+            slots={{
+              field: TextField
+            }}
+            slotProps={{
+              popper: {
+                placement: "top",
+                anchorEl: this.dateAnchor.current
+              }
             }}
           />
 
@@ -1105,8 +1118,9 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
               paper: classes.menuShadow,
               listbox: "p-0 relative zIndex1 paperBackgroundColor",
               hasPopupIcon: classes.hasPopup,
-              hasClearIcon: classes.hasClear
-            } : undefined}
+              hasClearIcon: classes.hasClear,
+              inputRoot: classes.inputRoot
+            } : null}
             renderInput={params => (
               <TextField
                 {...params}
@@ -1124,7 +1138,6 @@ class EditInPlaceQuerySelect extends React.PureComponent<EditInPlaceQueryFieldPr
                   },
                   endAdornment
                 }}
-                // eslint-disable-next-line react/jsx-no-duplicate-props
                 inputProps={{
                   ...params.inputProps,
                   value: inputValue || ""
@@ -1159,6 +1172,13 @@ const mapStateToProps = (state: State) => ({
   customFieldTypes: state.customFieldTypes
 });
 
-export default connect(mapStateToProps, null, null, { forwardRef: true })(withStyles(theme => ({ ...selectStyles(theme), ...queryStyles(theme) }))(
-  EditInPlaceQuerySelect
-)) as React.FC<EditInPlaceQueryFieldProps>;
+const Connected = connect(mapStateToProps, null, null, { forwardRef: true })(EditInPlaceQuerySelect) ;
+
+export default React.forwardRef<any, EditInPlaceQueryFieldProps>((props, ref) => {
+  const { classes: selectClasses } = useSelectStyles();
+  const { classes: queryClasses } = useQueryStyles();
+  
+  const classes = { ...selectClasses, ...queryClasses };
+  
+  return <Connected {...props} ref={ref} classes={classes}/>;
+});

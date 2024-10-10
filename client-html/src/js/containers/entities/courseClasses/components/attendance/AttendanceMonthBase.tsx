@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import { format } from "date-fns";
-import React from "react";
-import { AttandanceMonth } from "../../../../../model/entities/CourseClass";
+import Typography from '@mui/material/Typography';
+import { format } from 'date-fns';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { AttandanceMonth } from '../../../../../model/entities/CourseClass';
 
 const styles = () =>
-  createStyles({
+  ({
     manyDaysWrapper: {
       marginTop: 10,
       visibility: "hidden"
@@ -58,4 +58,4 @@ const AttendanceMonthBase: React.FC<MonthBaseProps> = props => {
   );
 };
 
-export default withStyles(styles)(AttendanceMonthBase) as React.FC<MonthBaseProps>;
+export default withStyles(AttendanceMonthBase, styles) as React.FC<MonthBaseProps>;

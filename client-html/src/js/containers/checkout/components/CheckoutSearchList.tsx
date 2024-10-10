@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import React from "react";
+import { ListItemButton } from '@mui/material';
+import List from '@mui/material/List';
+import ListItemText from '@mui/material/ListItemText';
+import React from 'react';
 
 interface Props {
   Title?: any;
@@ -31,8 +31,7 @@ const CheckoutSearchList = React.memo<Props>(props => {
         <List disablePadding component="nav">
           {items.map((item, i) => (
             <React.Fragment key={i}>
-              <ListItem
-                button
+              <ListItemButton
                 disableGutters
                 dense
                 className="justify-content-space-between p-0-5"
@@ -49,7 +48,7 @@ const CheckoutSearchList = React.memo<Props>(props => {
                   secondary={secondaryText && secondaryText(item)}
                   disableTypography
                 />
-              </ListItem>
+              </ListItemButton>
             </React.Fragment>
           ))}
         </List>

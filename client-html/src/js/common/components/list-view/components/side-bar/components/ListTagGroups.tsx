@@ -1,19 +1,19 @@
-import { DataResponse, TableModel } from "@api/model";
-import { createStyles, withStyles } from "@mui/styles";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd-next";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../../../constants/Config";
-import { FormMenuTag } from "../../../../../../model/tags";
-import { State } from "../../../../../../reducers/state";
-import { useAppSelector } from "../../../../../utils/hooks";
-import { updateTableModel } from "../../../actions";
-import { COLUMN_WITH_COLORS } from "../../list/constants";
-import ListTagGroup from "./ListTagGroup";
+import { DataResponse, TableModel } from '@api/model';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd-next';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../../../../constants/Config';
+import { FormMenuTag } from '../../../../../../model/tags';
+import { State } from '../../../../../../reducers/state';
+import { useAppSelector } from '../../../../../utils/hooks';
+import { updateTableModel } from '../../../actions';
+import { COLUMN_WITH_COLORS } from '../../list/constants';
+import ListTagGroup from './ListTagGroup';
 
 const styles = theme =>
-  createStyles({
+  ({
     container: {
       marginLeft: theme.spacing(-0.5)
     },
@@ -154,4 +154,4 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(ListTagGroups));
+)(withStyles(ListTagGroups, styles));

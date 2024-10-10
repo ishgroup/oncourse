@@ -3,30 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { change, FieldArray } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { validateVetPurchasingContractIdentifier } from "../../../../common/utils/validation";
-import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import ContactSelectItemRenderer from "../../../entities/contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../../entities/contacts/utils";
-import { summaryListStyles } from "../../styles/summaryListStyles";
-import CheckoutFundingInvoicePaymentPlans from "./CheckoutFundingInvoicePaymentPlans";
-import CheckoutFundingInvoiceSummaryExpandableItemRenderer from "./CheckoutFundingInvoiceSummaryExpandableItemRenderer";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { change, FieldArray } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { validateVetPurchasingContractIdentifier } from '../../../../common/utils/validation';
+import { CheckoutFundingInvoice } from '../../../../model/checkout/fundingInvoice';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import ContactSelectItemRenderer from '../../../entities/contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import { summaryListStyles } from '../../styles/summaryListStyles';
+import CheckoutFundingInvoicePaymentPlans from './CheckoutFundingInvoicePaymentPlans';
+import CheckoutFundingInvoiceSummaryExpandableItemRenderer from './CheckoutFundingInvoiceSummaryExpandableItemRenderer';
 
 export const CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM = "checkout_funding_invoice_summary_list_form";
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   tableTabRow: {
     padding: theme.spacing(0, 2.625, 0, 2)
   }
@@ -156,4 +155,7 @@ const mapStateToProps = (state: State) => ({
 
 export default connect<any, any, any>(
   mapStateToProps
-)(withStyles((theme: AppTheme) => ({ ...summaryListStyles(theme), ...styles(theme) }))(CheckoutFundingInvoiceSummaryList));
+)(withStyles(
+  CheckoutFundingInvoiceSummaryList,
+  (theme: AppTheme, p, classes) => ({ ...summaryListStyles(theme, p, classes), ...styles(theme) })
+));

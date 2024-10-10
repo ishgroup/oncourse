@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import debounce from "lodash.debounce";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Field, Validator } from "redux-form";
-import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX, TAGS_REGEX } from "../../../../constants/Config";
-import { getTagNamesSuggestions } from "../../../../containers/tags/utils";
-import { QueryFieldSuggestion } from "../../../../model/common/Fields";
-import { State } from "../../../../reducers/state";
-import { InputSection, InputSectionWithToggle } from "./components/InputSections";
-import ListRenderer from "./components/ListRenderer";
-import PaperListRenderer, { PanelItemChangedMessage } from "./components/PaperListRenderer";
+import { Typography } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import debounce from 'lodash.debounce';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Field, Validator } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { SIMPLE_SEARCH_QUOTES_REGEX, SIMPLE_SEARCH_REGEX, TAGS_REGEX } from '../../../../constants/Config';
+import { getTagNamesSuggestions } from '../../../../containers/tags/utils';
+import { QueryFieldSuggestion } from '../../../../model/common/Fields';
+import { State } from '../../../../reducers/state';
+import { InputSection, InputSectionWithToggle } from './components/InputSections';
+import ListRenderer from './components/ListRenderer';
+import PaperListRenderer, { PanelItemChangedMessage } from './components/PaperListRenderer';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   root__search: {
     minHeight: theme.spacing(6)
   },
@@ -378,7 +377,6 @@ class NestedList extends React.Component<Props, NestedListState> {
         return (
           <InputSectionWithToggle
             classes={classes}
-            searchEnabled={searchEnabled}
             title={title}
             searchExpression={searchExpression}
             searchPlaceholder={searchPlaceholder}
@@ -396,7 +394,6 @@ class NestedList extends React.Component<Props, NestedListState> {
             aqlComponentRef={this.aqlComponentRef}
             titleCaption={titleCaption}
             toggleEnabled={toggleEnabled}
-            hideAddButton={hideAddButton}
             formError={formError}
             disabled={disabled}
             setSelectedEntity={this.setSelectedEntity}
@@ -420,7 +417,6 @@ class NestedList extends React.Component<Props, NestedListState> {
             searchPlaceholder={searchPlaceholder}
             aqlPlaceholderPrefix={aqlPlaceholderPrefix}
             searchValuesToShow={searchValuesToShow}
-            searchType={searchType}
             onAqlSearchClear={this.onAqlSearchClear}
             onSearchChange={this.onSearchChange}
             onAqlSearchChange={this.onAqlSearchChange}
@@ -550,4 +546,4 @@ const mapStateToProps = (state: State) => ({
   entityTags: state.tags.entityTags
 });
 
-export default connect<any, any, Props>(mapStateToProps)(withStyles(styles)(NestedList));
+export default connect<any, any, Props>(mapStateToProps)(withStyles(NestedList, styles));

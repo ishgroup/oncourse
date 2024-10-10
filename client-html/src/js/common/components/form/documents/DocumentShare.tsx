@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Document, DocumentAttachmentRelation, DocumentVisibility } from "@api/model";
+import { Document, DocumentAttachmentRelation, DocumentVisibility } from '@api/model';
 import {
   Attachment,
   Directions,
@@ -15,33 +15,31 @@ import {
   LockOutlined,
   OpenInNew,
   SupervisorAccount
-} from "@mui/icons-material";
-import { Alert, AlertTitle, CardContent, FormControlLabel } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { makeAppStyles, openInternalLink, StyledCheckbox, Switch } from "ish-ui";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { mapEntityDisplayName } from "../../../../containers/entities/common/utils";
-import { DocumentShareOption } from "../../../../model/entities/Document";
-import { showMessage } from "../../../actions";
+} from '@mui/icons-material';
+import { Alert, AlertTitle, CardContent, Collapse, FormControlLabel, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { makeAppStyles, openInternalLink, StyledCheckbox, Switch } from 'ish-ui';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { mapEntityDisplayName } from '../../../../containers/entities/common/utils';
+import { DocumentShareOption } from '../../../../model/entities/Document';
+import { showMessage } from '../../../actions';
 import {
   getAvailableOptions,
   getDocumentShareSummary,
   groupAttachmentsByEntity,
   isSingleContactAttachment
-} from "../../../utils/documents";
+} from '../../../utils/documents';
 
 const typesAllowedForWebsite = ["Course", "Contact"];
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   linkButton: {
     fontSize: "1.2em",
     padding: theme.spacing(0.5)
@@ -180,7 +178,7 @@ const DocumentShare: React.FC<Props> = ({
 
   const linkInput = useRef<any>();
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onCopyLink = () => {
     linkInput.current.select();

@@ -6,19 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Check, Clear } from "@mui/icons-material";
-import { Grid, Link, List, ListItem, Tooltip, Typography } from "@mui/material";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { differenceInHours, differenceInMinutes, format } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM, openInternalLink } from "ish-ui";
-import React, { createRef, useEffect, useState } from "react";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EntityService from "../../../../../common/services/EntityService";
-import AnimateList from "../../../../../common/utils/animation/AnimateList";
+import { Check, Clear } from '@mui/icons-material';
+import { Grid, Link, List, ListItem, Tooltip, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { differenceInHours, differenceInMinutes, format } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM, openInternalLink } from 'ish-ui';
+import React, { createRef, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../../common/services/EntityService';
+import AnimateList from '../../../../../common/utils/animation/AnimateList';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   icon: {
     top: "0.3rem",
     marginRight: theme.spacing(1),
@@ -42,7 +41,7 @@ const styles = theme => createStyles({
   }
 });
 
-const ScriptStatistic = ({ dispatch, classes }) => {
+const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
   const [scripts, setScripts] = useState([]);
 
   const getScriptsData = async () => {
@@ -168,4 +167,4 @@ const ScriptStatistic = ({ dispatch, classes }) => {
   );
 };
 
-export default (withStyles(styles)(ScriptStatistic));
+export default withStyles(ScriptStatistic, styles);

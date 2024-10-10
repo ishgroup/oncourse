@@ -3,22 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { InvoicePaymentPlan } from "@api/model";
-import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import StepContent from "@mui/material/StepContent";
-import StepLabel from "@mui/material/StepLabel";
-import Stepper from "@mui/material/Stepper";
-import Typography from "@mui/material/Typography";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import { paymentPlanStyles } from "../styles/paymentPlanStyles";
-import { sortInvoicePaymentPlans } from "../utils";
-import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from "./InvoicePaymentPlanComponents";
+import { InvoicePaymentPlan } from '@api/model';
+import Step from '@mui/material/Step';
+import StepButton from '@mui/material/StepButton';
+import StepContent from '@mui/material/StepContent';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { paymentPlanStyles } from '../styles/paymentPlanStyles';
+import { sortInvoicePaymentPlans } from '../utils';
+import { InvoicePaymentPlanContent, InvoicePaymentPlanHeader } from './InvoicePaymentPlanComponents';
 
 interface PaymentPlansProps {
   classes?: any;
@@ -212,4 +212,4 @@ const InvoicePaymentPlansWrapper: React.FC<WrapperProps> = props => {
   );
 };
 
-export default withStyles(paymentPlanStyles)(InvoicePaymentPlansWrapper) as React.FC<WrapperProps>;
+export default withStyles(InvoicePaymentPlansWrapper, paymentPlanStyles) as React.FC<WrapperProps>;

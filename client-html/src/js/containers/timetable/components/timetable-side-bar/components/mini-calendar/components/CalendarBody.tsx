@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { createStyles, withStyles } from "@mui/styles";
-import { getDay, isSameDay } from "date-fns";
-import { CalendarDay, getCalendarDays } from "ish-ui";
-import React, { useContext } from "react";
-import { TimetableContext } from "../../../../../Timetable";
+import { getDay, isSameDay } from 'date-fns';
+import { CalendarDay, getCalendarDays } from 'ish-ui';
+import React, { useContext } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { TimetableContext } from '../../../../../Timetable';
 
 const styles = theme =>
-  createStyles({
+  ({
     calendar: {
       display: "grid",
       gridTemplateColumns: `repeat(7, ${theme.spacing(3.75)})`,
@@ -28,8 +28,8 @@ const isDisabled = (el, selectedWeekDays): boolean =>
   (selectedWeekDays.every(el => el === false) ? el.status !== "current" : !selectedWeekDays[getDay(el.date)]);
 
 const CalendarBody = ({
- classes, month, selectedWeekDays, selectedMonthSessionDays 
-}) => {
+ classes, month, selectedWeekDays, selectedMonthSessionDays
+}: { classes?, month, selectedWeekDays, selectedMonthSessionDays }) => {
   const { setTargetDay, targetDay } = useContext(TimetableContext);
 
   return (
@@ -56,4 +56,4 @@ const CalendarBody = ({
   );
 };
 
-export default withStyles(styles)(CalendarBody);
+export default withStyles(CalendarBody, styles);

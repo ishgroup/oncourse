@@ -3,16 +3,44 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Close from "@mui/icons-material/Close";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { AddButton, Switch } from "ish-ui";
-import React from "react";
-import SearchInput from "./SearchInput";
+import Close from '@mui/icons-material/Close';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AddButton, Switch } from 'ish-ui';
+import React from 'react';
+import SearchInput from './SearchInput';
 
-export const InputSection = React.memo<any>(props => {
+export const InputSection = React.memo<{
+  classes,
+  title,
+  searchExpression,
+  searchPlaceholder,
+  aqlPlaceholderPrefix,
+  searchValuesToShow,
+  onSearchChange,
+  onAqlSearchChange,
+  onSearchEscape,
+  onFocus,
+  onAddEvent,
+  toggleSearch,
+  inputRef,
+  aqlComponentRef,
+  titleCaption,
+  formError,
+  disabled,
+  setSelectedEntity,
+  aqlEntity,
+  aqlQueryError,
+  searchTags,
+  secondaryHeading,
+  disableAddAll,
+  searchEnabled,
+  hideAddButton,
+  aqlEntities,
+  onAqlSearchClear
+}>(props => {
   const {
     classes,
     title,
@@ -124,7 +152,35 @@ export const InputSection = React.memo<any>(props => {
   );
 });
 
-export const InputSectionWithToggle = React.memo<any>(props => {
+export const InputSectionWithToggle = React.memo<{
+  classes?,
+  title,
+  searchExpression,
+  searchPlaceholder,
+  aqlPlaceholderPrefix,
+  searchValuesToShow,
+  onSearchChange,
+  onAqlSearchChange,
+  onSearchEscape,
+  onFocus,
+  onAddEvent,
+  toggleSearch,
+  onSwitchToggle,
+  inputRef,
+  aqlComponentRef,
+  titleCaption,
+  toggleEnabled,
+  formError,
+  disabled,
+  setSelectedEntity,
+  aqlEntity,
+  aqlQueryError,
+  searchTags,
+  secondaryHeading,
+  disableAddAll,
+  aqlEntities,
+  onAqlSearchClear
+}>(props => {
   const {
     classes,
     title,

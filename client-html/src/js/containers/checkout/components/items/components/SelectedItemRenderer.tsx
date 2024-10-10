@@ -3,24 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { appendTimezone, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA } from "ish-ui";
-import React, { memo, useEffect, useState } from "react";
-import CheckoutAlertTextMessage from "../../CheckoutAlertTextMessage";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { appendTimezone, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA } from 'ish-ui';
+import React, { memo, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import CheckoutAlertTextMessage from '../../CheckoutAlertTextMessage';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
   root: {
     paddingTop: "3px",
     paddingBottom: "3px",
     alignItems: "flex-start",
-    "&:hover $deleteIcon": {
+    [`&:hover .${classes.deleteIcon}`]: {
       visibility: "visible"
     }
   },
@@ -85,7 +84,7 @@ const CourseItemRenderer: React.FC<any> = props => {
   );
 };
 
-export const StyledCourseItemRenderer = withStyles(styles)(CourseItemRenderer);
+export const StyledCourseItemRenderer = withStyles(CourseItemRenderer, styles);
 
 const CommonItemRenderer: React.FC<any> = props => {
   const {
@@ -159,4 +158,4 @@ const SelectedItemRenderer = memo<any>(({
   </div>
   ));
 
-export default withStyles(styles)(SelectedItemRenderer);
+export default withStyles(SelectedItemRenderer, styles) as any;

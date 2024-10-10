@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Drawer from "@mui/material/Drawer";
-import Hidden from "@mui/material/Hidden";
-import { createStyles, withStyles } from "@mui/styles";
-import { AppTheme } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { State } from "../../../reducers/state";
-import { closeDrawer } from "../../actions";
+import Drawer from '@mui/material/Drawer';
+import Hidden from '@mui/material/Hidden';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { State } from '../../../reducers/state';
+import { closeDrawer } from '../../actions';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     drawerPaper: {
       position: "relative",
       height: "100%",
@@ -86,4 +86,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   closeDrawer: () => dispatch(closeDrawer())
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(appDrawer));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(appDrawer, styles));

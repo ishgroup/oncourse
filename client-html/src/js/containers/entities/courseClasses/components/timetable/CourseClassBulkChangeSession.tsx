@@ -3,37 +3,37 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { TutorAttendance } from "@api/model";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { addDays, differenceInMinutes, format as formatDate, subDays } from "date-fns";
-import { DD_MMM_YYYY, EditInPlaceDurationField, NoWrapOption, stubFunction } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit } from "redux-form";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
-import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { State } from "../../../../../reducers/state";
-import { courseClassCloseBulkUpdateModal } from "./actions";
-import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { TutorAttendance } from '@api/model';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { addDays, differenceInMinutes, format as formatDate, subDays } from 'date-fns';
+import { AppTheme, DD_MMM_YYYY, EditInPlaceDurationField, NoWrapOption, stubFunction } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { getCommonPlainRecords, setCommonPlainSearch } from '../../../../../common/actions/CommonPlainRecordsActions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { greaterThanNullValidation } from '../../../../../common/utils/validation';
+import { IS_JEST } from '../../../../../constants/EnvironmentConstants';
+import { CourseClassTutorExtended } from '../../../../../model/entities/CourseClass';
+import { State } from '../../../../../reducers/state';
+import { courseClassCloseBulkUpdateModal } from './actions';
+import CourseClassTutorRooster from './CourseClassTutorRooster';
 
 export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
-const styles = theme => createStyles({
+const styles = (theme: AppTheme) => ({
+  root: {},
   paperDialog: {
     background: theme.palette.background.default
   },
@@ -491,6 +491,6 @@ const CourseClassBulkChangeSession = reduxForm({
   initialValues
 })(CourseClassBulkChangeSessionForm);
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(CourseClassBulkChangeSession)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(CourseClassBulkChangeSession, styles)
 );

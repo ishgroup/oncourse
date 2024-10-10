@@ -6,37 +6,37 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Tag } from "@api/model";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { makeAppStyles } from "ish-ui";
-import React, { useEffect, useMemo } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import { change, Form, getFormValues, InjectedFormProps } from "redux-form";
-import { showConfirm } from "../../../common/actions";
-import RouteChangeConfirm from "../../../common/components/dialog/RouteChangeConfirm";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
-import { reorder } from "../../../common/utils/DnD";
-import { useAppDispatch, useAppSelector } from "../../../common/utils/hooks";
-import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
-import { EntityName } from "../../../model/entities/common";
-import { SpecialTypeTagsFormValues } from "../../../model/tags";
-import { EmptyTag } from "../../tags/constants";
-import { getSpecialTagTypes, postSpecialTagTypes } from "../actions";
-import { styles } from "../styles/dragablePreferenceItemStyles";
-import { cardsFormStyles } from "../styles/formCommonStyles";
-import { getSpecialTagTypeByEntity } from "../utils";
-import SpecialTagType from "./SpecialTagType";
+import { Tag } from '@api/model';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { makeAppStyles } from 'ish-ui';
+import React, { useEffect, useMemo } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
+import { change, Form, getFormValues, InjectedFormProps } from 'redux-form';
+import { showConfirm } from '../../../common/actions';
+import RouteChangeConfirm from '../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../common/components/layout/AppBarContainer';
+import { reorder } from '../../../common/utils/DnD';
+import { useAppDispatch, useAppSelector } from '../../../common/utils/hooks';
+import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../constants/Config';
+import { EntityName } from '../../../model/entities/common';
+import { SpecialTypeTagsFormValues } from '../../../model/tags';
+import { EmptyTag } from '../../tags/constants';
+import { getSpecialTagTypes, postSpecialTagTypes } from '../actions';
+import { styles } from '../styles/dragablePreferenceItemStyles';
+import { cardsFormStyles } from '../styles/formCommonStyles';
+import { getSpecialTagTypeByEntity } from '../utils';
+import SpecialTagType from './SpecialTagType';
 
 interface Props {
   title: string;
   entity: EntityName;
 }
 
-const useStyles = makeAppStyles(theme => ({ ...cardsFormStyles(theme), ...styles(theme) }));
+const useStyles = makeAppStyles()(theme => ({ ...cardsFormStyles(theme) as any, ...styles(theme) as any }));
 
 function SpecialTagTypeForm(
   {
@@ -44,7 +44,7 @@ function SpecialTagTypeForm(
   }: Props & InjectedFormProps<SpecialTypeTagsFormValues>
 ) {
   
-  const classes = useStyles();
+  const { classes }: any = useStyles();
   
   const dispatch = useAppDispatch();
   const disabled = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] !== 'true');

@@ -7,11 +7,10 @@
  */
 
 import { alpha } from '@mui/material/styles';
-import { createStyles } from "@mui/styles";
-import { AppTheme } from "ish-ui";
-import { HEADER_ROWS_COUNT, LIST_TWO_COLUMN_ROW_HEIGHT } from "../../../../../constants/Config";
+import { AppTheme } from 'ish-ui';
+import { HEADER_ROWS_COUNT, LIST_TWO_COLUMN_ROW_HEIGHT } from '../../../../../constants/Config';
 
-export default (theme: AppTheme) => createStyles({
+export default (theme: AppTheme, p, classes) => ({
   infiniteLoaderListRoot: {
     "& > .resize-triggers": {
       display: "none"
@@ -60,7 +59,7 @@ export default (theme: AppTheme) => createStyles({
     position: "relative",
     padding: theme.spacing(2, 1),
     top: "1px",
-    "&:hover $resizer": {
+    [`&:hover .${classes.resizer}`]: {
       opacity: 1
     }
   },
@@ -74,25 +73,25 @@ export default (theme: AppTheme) => createStyles({
     }),
     "&:hover": {
       paddingLeft: theme.spacing(3),
-      "& $dragIndicator": {
+      [`& .${classes.dragIndicator}`]: {
         visibility: "visible",
         fill: theme.palette.action.active
       }
     },
-    "&:hover $resizer": {
+    [`&:hover .${classes.resizer}`]: {
       opacity: 1
     },
-    "&:hover:not($activeRight) $canSort": {
+    [`&:hover:not(.${classes.activeRight}) .${classes.canSort}`]: {
       transition: theme.transitions.create("padding", {
         duration: theme.transitions.duration.standard,
         easing: theme.transitions.easing.easeInOut
       }),
       paddingRight: theme.spacing(3)
     },
-    "&$activeRight $rightSort": {
+    [`&.${classes.activeRight} .${classes.rightSort}`]: {
       position: "static"
     },
-    "& $visibleDragIndicator": {
+    [`& .${classes.visibleDragIndicator}`]: {
       visibility: "visible",
       fill: theme.palette.action.active
     }
@@ -107,10 +106,10 @@ export default (theme: AppTheme) => createStyles({
     background: theme.palette.background.paper,
     transition: "none",
     paddingLeft: theme.spacing(3),
-    "&$rightAlighed:not($activeRight)": {
+    [`&.${classes.rightAlighed}:not(.${classes.activeRight})`]: {
       paddingRight: theme.spacing(4)
     },
-    "&$rightAlighed:has( $noSort)": {
+    [`&.${classes.rightAlighed}:has( .${classes.noSort})`]: {
       paddingRight: theme.spacing(1)
     }
   },
@@ -133,27 +132,27 @@ export default (theme: AppTheme) => createStyles({
     fontSize: "13px",
     fontWeight: 400,
     borderBottom: "none",
-    "&:hover $selectionCheckbox": {
+    [`&:hover .${classes.selectionCheckbox}`]: {
       display: "inline-flex",
     },
-    "&:hover $listDots": {
+    [`&:hover .${classes.listDots}`]: {
       display: "none",
     }
   },
   row: {
     cursor: "pointer",
     display: "flex",
-    "&$selected": {
+    [`&.${classes.selected}`]: {
       backgroundColor: theme.palette.action.selected,
       opacity: 1
     },
-    "&$selected $selectionCheckbox": {
+    [`&.${classes.selected} .${classes.selectionCheckbox}`]: {
       display: "inline-flex",
     },
-    "&$selected $listDots": {
+    [`&.${classes.selected} .${classes.listDots}`]: {
       display: "none",
     },
-    "&:hover $deleteCell, &$selected $deleteCell": {
+    [`&:hover .${classes.deleteCell}, &.${classes.selected} .${classes.deleteCell}`]: {
       display: "inline-flex",
     },
   },
@@ -240,4 +239,4 @@ export default (theme: AppTheme) => createStyles({
     position: "absolute",
     right: 0
   }
-});
+} as const);

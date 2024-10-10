@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ButtonBase, IconButton, Typography } from "@mui/material";
-import { makeAppStyles } from "ish-ui";
-import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ButtonBase, IconButton, Typography } from '@mui/material';
+import { makeAppStyles } from 'ish-ui';
+import React from 'react';
 
 interface AssessmentSubmissionIconButtonProps {
   onClick?: any;
   grade?: string;
 }
 
-const useStyles = makeAppStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   iconGrey: {
     color: "#d4d4d4"
   },
@@ -33,7 +33,7 @@ const GradeButton: React.FC<AssessmentSubmissionIconButtonProps> = (
    grade
  }
 ) => {
-  const classes  = useStyles();
+  const { classes }  = useStyles();
 
   return grade ? (
     <ButtonBase className="p-0" onClick={onClick}>

@@ -1,29 +1,28 @@
-import PaletteIcon from "@mui/icons-material/PaletteOutlined";
-import LogoutIcon from "@mui/icons-material/PowerSettingsNewOutlined";
-import { Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
-import { makeAppStyles, ShowConfirmCaller } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import { Dispatch } from "redux";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
-import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
-import { useAppSelector } from "../../../common/utils/hooks";
-import { LSRemoveItem } from "../../../common/utils/storage";
+import PaletteIcon from '@mui/icons-material/PaletteOutlined';
+import LogoutIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import { Grid, MenuItem, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Tooltip from '@mui/material/Tooltip';
+import { makeAppStyles, ShowConfirmCaller } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import { Dispatch } from 'redux';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import HamburgerMenu from '../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu';
+import { VARIANTS } from '../../../common/components/layout/swipeable-sidebar/utils';
+import { useAppSelector } from '../../../common/utils/hooks';
+import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   APP_BAR_HEIGHT,
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_ACTIVITY_STORAGE_NAME
-} from "../../../constants/Config";
-import { getSystemUserData } from "../../login/actions";
-import { ThemeContext } from "../../ThemeContext";
-import DashboardService from "../services/DashboardService";
+} from '../../../constants/Config';
+import { getSystemUserData } from '../../login/actions';
+import { ThemeContext } from '../../ThemeContext';
+import DashboardService from '../services/DashboardService';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   appBar: {
     backgroundColor: theme.palette.background.default,
     height: APP_BAR_HEIGHT,
@@ -68,7 +67,7 @@ const DashboardHeader = (
     drawerOpened,
   }: Props
 ) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [themeMenu, setThemeMenu] = useState();
 

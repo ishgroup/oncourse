@@ -3,22 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Contact, PayslipPayType, WorkingWithChildrenStatus } from "@api/model";
-import { Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { makeAppStyles, mapSelectItems, Switch } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import NumberFormat from "react-number-format";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import ContactCourseClass from "./ContactCourseClass";
+import { Contact, PayslipPayType, WorkingWithChildrenStatus } from '@api/model';
+import { Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { makeAppStyles, mapSelectItems, Switch } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import NumberFormat from 'react-number-format';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import { formatTFN, parseTFN, validateTFN } from '../../../../common/utils/validation/tfnValidation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import ContactCourseClass from './ContactCourseClass';
 
-const useStyles = makeAppStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   switchWrapper: {
     display: "flex",
     flexDirection: "column",
@@ -46,7 +46,7 @@ const ContactsTutor: React.FC<EditViewProps<Contact>> = props => {
   const [switchChanged, setSwitchChangedValue] = useState(false);
   const [switchValue, setSwitchValue] = useState(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   useEffect(() => {
     if (isNew && !switchChanged) setSwitchValue(true);

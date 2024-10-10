@@ -3,14 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { getHighlightedPartLabel } from "ish-ui";
-import React from "react";
-import EnrolItemListRenderer from "./components/EnrolItemListRenderer";
-import SaleRelations from "./components/SaleRelations";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { getHighlightedPartLabel } from 'ish-ui';
+import React from 'react';
+import EnrolItemListRenderer from './components/EnrolItemListRenderer';
+import SaleRelations from './components/SaleRelations';
 
-const EnrolItemListView = React.memo<any>(props => {
+const EnrolItemListView = React.memo<{
+  courses,
+  products,
+  vouchers,
+  membershipProducts,
+  onChangeHandler,
+  disabledHandler,
+  selectedItems,
+  searchString,
+  salesRelations
+}>(props => {
   const {
     courses,
     products,

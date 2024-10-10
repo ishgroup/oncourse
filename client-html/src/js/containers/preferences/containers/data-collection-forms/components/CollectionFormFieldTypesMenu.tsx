@@ -1,15 +1,15 @@
-import { DataCollectionType, FieldType } from "@api/model";
-import AddIcon from "@mui/icons-material/Add";
-import { Menu, MenuItem, Typography } from "@mui/material";
-import Fab from "@mui/material/Fab";
-import { withStyles, createStyles } from "@mui/styles";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { State } from "../../../../../reducers/state";
-import { getDataCollectionFormFieldTypes } from "../../../actions";
+import { DataCollectionType, FieldType } from '@api/model';
+import AddIcon from '@mui/icons-material/Add';
+import { Menu, MenuItem, Typography } from '@mui/material';
+import Fab from '@mui/material/Fab';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { State } from '../../../../../reducers/state';
+import { getDataCollectionFormFieldTypes } from '../../../actions';
 
-const styles = () => createStyles({
+const styles = () => ({
   menu: {
     marginLeft: "52px"
   },
@@ -151,4 +151,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CollectionFormFieldTypesMenu));
+)(withStyles(CollectionFormFieldTypesMenu, styles));

@@ -2,26 +2,24 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { DiscountType } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { format } from "date-fns-tz";
-import { decimalMinus, decimalPlus, formatCurrency, III_DD_MMM_YYYY, StyledCheckbox } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { CheckoutDiscount, CheckoutSummary } from "../../../../../model/checkout";
-import { State } from "../../../../../reducers/state";
-import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
-import CheckoutAppBar from "../../CheckoutAppBar";
-import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
+import { DiscountType } from '@api/model';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { format } from 'date-fns-tz';
+import { decimalMinus, decimalPlus, formatCurrency, III_DD_MMM_YYYY, StyledCheckbox } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { CheckoutDiscount, CheckoutSummary } from '../../../../../model/checkout';
+import { State } from '../../../../../reducers/state';
+import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from '../../../actions/checkoutSummary';
+import CheckoutAppBar from '../../CheckoutAppBar';
+import { StyledCourseItemRenderer } from '../../items/components/SelectedItemRenderer';
 
-const styles = () => createStyles({
+const styles = () => ({
     history: {
       paddingBottom: "5px",
       width: "100%"
@@ -291,4 +289,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CheckoutDiscountEditView));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutDiscountEditView, styles));

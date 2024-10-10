@@ -3,26 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { InvoicePaymentPlan } from "@api/model";
-import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import StepContent from "@mui/material/StepContent";
-import StepLabel from "@mui/material/StepLabel";
-import Stepper from "@mui/material/Stepper";
-import Typography from "@mui/material/Typography";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import { getDeepValue } from "../../../../common/utils/common";
+import { InvoicePaymentPlan } from '@api/model';
+import Step from '@mui/material/Step';
+import StepButton from '@mui/material/StepButton';
+import StepContent from '@mui/material/StepContent';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { getDeepValue } from '../../../../common/utils/common';
 import {
   InvoicePaymentPlanContent,
   InvoicePaymentPlanHeader
-} from "../../../entities/invoices/components/InvoicePaymentPlanComponents";
-import { paymentPlanStyles } from "../../../entities/invoices/styles/paymentPlanStyles";
-import { sortInvoicePaymentPlans } from "../../../entities/invoices/utils";
+} from '../../../entities/invoices/components/InvoicePaymentPlanComponents';
+import { paymentPlanStyles } from '../../../entities/invoices/styles/paymentPlanStyles';
+import { sortInvoicePaymentPlans } from '../../../entities/invoices/utils';
 
 interface PaymentPlansProps {
   classes?: any;
@@ -212,4 +212,4 @@ const CheckoutFundingInvoicePaymentPlans: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(paymentPlanStyles)(CheckoutFundingInvoicePaymentPlans) as React.FC<Props>;
+export default withStyles(CheckoutFundingInvoicePaymentPlans, paymentPlanStyles) as React.FC<Props>;

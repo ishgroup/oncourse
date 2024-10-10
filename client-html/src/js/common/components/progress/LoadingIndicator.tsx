@@ -6,16 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@mui/material/CircularProgress";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import * as React from "react";
-import { connect } from "react-redux";
-import { State } from "../../../reducers/state";
+import CircularProgress from '@mui/material/CircularProgress';
+import clsx from 'clsx';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import { State } from '../../../reducers/state';
 
-const styles: any = theme => ({
+const styles: any = (theme, _params, classes) => ({
   transparentBackdrop: {
-    "&$backdrop": {
+    [`&.${classes.backdrop}`]: {
       background: "unset"
     }
   },
@@ -135,4 +135,4 @@ const mapStateToProps = (state: State) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   null
-)(withStyles(styles)(LoadingIndicator));
+)(withStyles(LoadingIndicator, styles));

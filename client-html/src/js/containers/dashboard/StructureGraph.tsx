@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { alpha } from "@mui/material/styles";
-import * as d3 from "d3";
-import { makeAppStyles, useWindowSize } from "ish-ui";
-import React, { useEffect, useRef } from "react";
+import { alpha } from '@mui/material/styles';
+import * as d3 from 'd3';
+import { makeAppStyles, useWindowSize } from 'ish-ui';
+import React, { useEffect, useRef } from 'react';
 
 // Returns a list of all nodes under the root.
 function flatten(nodes) {
@@ -130,7 +130,7 @@ function color(d) {
       : "#fd8d3c"; // leaf node
 }
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     width: "100%",
     height: 300,
@@ -172,7 +172,7 @@ const StructureGraph = ({ root }) => {
     forceRef.current?.stop();
   }, []);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   useEffect(() => {
     const { width, height } =  ref.current.getBoundingClientRect();

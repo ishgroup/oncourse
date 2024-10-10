@@ -3,15 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassTutor } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
+import { CourseClassTutor } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, FormControlLabel, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import {
   AppTheme,
   DD_MM_YYYY_SLASHED,
@@ -20,16 +17,17 @@ import {
   normalizeNumber,
   openInternalLink,
   WarningMessage
-} from "ish-ui";
-import React from "react";
-import { ContactLinkAdornment } from "../../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../../contacts/utils";
-import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
+} from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { ContactLinkAdornment } from '../../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import ExpandableItem from '../../../../../common/components/layout/expandable/ExpandableItem';
+import ContactSelectItemRenderer from '../../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../../contacts/utils';
+import { CourseClassTutorsTabProps } from './CourseClassTutorsTab';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   tutorRoot: {
     gridTemplateRows: "auto auto"
   },
@@ -214,4 +212,4 @@ const CourseClassTutorItem: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(CourseClassTutorItem);
+export default withStyles(CourseClassTutorItem, styles);

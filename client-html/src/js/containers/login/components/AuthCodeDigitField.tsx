@@ -1,7 +1,7 @@
-import Input from "@mui/material/Input";
-import { withStyles } from "@mui/styles";
-import { AppTheme } from "ish-ui";
-import * as React from "react";
+import Input from '@mui/material/Input';
+import { AppTheme } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles = (theme: AppTheme) => ({
   inputWrapper: {
@@ -47,7 +47,7 @@ class AuthDigitInputBase extends React.Component<any, any> {
   }
 }
 
-const AuthDigitInput = withStyles(styles)(AuthDigitInputBase);
+const AuthDigitInput = withStyles(AuthDigitInputBase, styles);
 
 // Redux Form field auth code digit input component creator
 export const AuthDigitField = props => {

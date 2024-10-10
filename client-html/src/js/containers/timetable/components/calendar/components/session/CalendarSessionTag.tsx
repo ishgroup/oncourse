@@ -6,24 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Theme } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
-import React from "react";
-import { CalendarTagsState } from "../../../../../../model/timetable";
+import { Theme } from '@mui/material';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { CalendarTagsState } from '../../../../../../model/timetable';
 
 const styles = (theme: Theme) => ({
-  "@global": {
-    ".tagColorDot": {
-      isolate: false,
-      width: theme.spacing(2),
-      height: theme.spacing(2),
-      borderRadius: "100%",
-      marginRight: theme.spacing(0.5),
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shorter,
-        easing: theme.transitions.easing.easeInOut
-      })
-    }
+  tagColorDot: {
+    isolate: false,
+    width: theme.spacing(2),
+    height: theme.spacing(2),
+    borderRadius: "100%",
+    marginRight: theme.spacing(0.5),
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shorter,
+      easing: theme.transitions.easing.easeInOut
+    })
   },
   tagName: {
     transition: theme.transitions.create("width", {
@@ -47,7 +45,7 @@ const CalendarSessionTag: React.FC<SessionTagProps> = ({
   classes, color, tagsState, name
 }) => (
   <span className="d-inline-flex align-items-center mr-1">
-    <span className="tagColorDot" style={{ background: color }} />
+    <span className={classes.tagColorDot} style={{ background: color }} />
     <span className={classes.tagName} style={{ width: tagsState === "Tag names" ? "calc(100% - 20px)" : "0px" }}>
       #
       {name}
@@ -55,4 +53,4 @@ const CalendarSessionTag: React.FC<SessionTagProps> = ({
   </span>
 );
 
-export default withStyles(styles as any)(CalendarSessionTag);
+export default withStyles(CalendarSessionTag, styles as any);

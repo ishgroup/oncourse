@@ -6,23 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@mui/material/CircularProgress";
-import { withStyles } from "@mui/styles";
-import createStyles from "@mui/styles/createStyles";
-import { isSameMonth, parse, setDate, startOfMonth } from "date-fns";
-import { DD_MMM_YYYY_MINUSED } from "ish-ui";
-import React, { createContext, useEffect, useReducer } from "react";
-import { useAppDispatch, useAppSelector } from "../../common/utils/hooks";
-import { LSGetItem, LSSetItem } from "../../common/utils/storage";
-import { TimetableContextState } from "../../model/timetable";
-import { getTimetableFilters } from "./actions";
-import Calendar from "./components/calendar/Calendar";
-import SearchBar from "./components/search-bar/SearchBar";
-import TimetableSideBar from "./components/timetable-side-bar/TimetableSideBar";
-import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from "./constants";
+import CircularProgress from '@mui/material/CircularProgress';
+import { isSameMonth, parse, setDate, startOfMonth } from 'date-fns';
+import { DD_MMM_YYYY_MINUSED } from 'ish-ui';
+import React, { createContext, useEffect, useReducer } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { useAppDispatch, useAppSelector } from '../../common/utils/hooks';
+import { LSGetItem, LSSetItem } from '../../common/utils/storage';
+import { TimetableContextState } from '../../model/timetable';
+import { getTimetableFilters } from './actions';
+import Calendar from './components/calendar/Calendar';
+import SearchBar from './components/search-bar/SearchBar';
+import TimetableSideBar from './components/timetable-side-bar/TimetableSideBar';
+import { LS_TIMETABLE_CALENDAR_MODE, LS_TIMETABLE_GROUPING_MODE, LS_TIMETABLE_TAGS_MODE } from './constants';
 
 const styles = () =>
-  createStyles({
+  ({
     container: {
       height: "100vh",
       gridTemplateColumns: "260px 1fr"
@@ -115,7 +114,7 @@ export const TimetableContextProvider = props => {
   );
 };
 
-const Timetable = ({ classes }) => {
+const Timetable = ({ classes }: { classes? }) => {
   const filtersLoading = useAppSelector(state => state.timetable.filtersLoading);
 
   const dispatch = useAppDispatch();
@@ -139,4 +138,4 @@ const Timetable = ({ classes }) => {
 );
 };
 
-export default withStyles(styles)(Timetable);
+export default withStyles(Timetable, styles);

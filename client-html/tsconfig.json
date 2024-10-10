@@ -12,7 +12,8 @@
     "paths": {
       "@aql/*": ["build/generated-sources/aql-parser/*", "build/generated-sources/aql-model/*"],
       "@api/model": ["build/generated-sources/swagger-js/api.ts"],
-      "@api/configuration": ["build/generated-sources/swagger-js/configuration.ts"]
+      "@api/configuration": ["build/generated-sources/swagger-js/configuration.ts"],
+      "@src": ["src"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop":true,

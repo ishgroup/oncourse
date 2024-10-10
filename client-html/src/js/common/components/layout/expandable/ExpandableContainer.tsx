@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AddButton, AppTheme } from "ish-ui";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { findDOMNode } from "react-dom";
-import { FormErrors } from "redux-form";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
-import { animateFormErrors } from "../../../utils/highlightFormErrors";
-import { getFirstErrorNodePath } from "../../../utils/validation";
-import FormField from "../../form/formFields/FormField";
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AddButton, AppTheme } from 'ish-ui';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { findDOMNode } from 'react-dom';
+import { FormErrors } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { IS_JEST } from '../../../../constants/EnvironmentConstants';
+import { animateFormErrors } from '../../../utils/highlightFormErrors';
+import { getFirstErrorNodePath } from '../../../utils/validation';
+import FormField from '../../form/formFields/FormField';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     expandButton: {
       position: "absolute",
       right: 0,
@@ -170,4 +170,4 @@ const ExpandableContainer: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(ExpandableContainer);
+export default withStyles(ExpandableContainer, styles);
