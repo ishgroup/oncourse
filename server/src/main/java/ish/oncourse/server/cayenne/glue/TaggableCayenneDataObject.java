@@ -19,11 +19,11 @@ import ish.oncourse.aql.AqlService;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.entity.services.TagService;
+import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.cayenne.Course;
 import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.TagRelation;
-import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
@@ -51,7 +51,7 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	private AqlService aqlService;
 
 	@Inject
-	private CommonPreferenceController preferenceController;
+	private PreferenceController preferenceController;
 
 	/**
 	 * @see Taggable#getId()
