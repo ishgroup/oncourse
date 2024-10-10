@@ -19,8 +19,11 @@ import ish.oncourse.aql.AqlService;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.entity.services.TagService;
+import ish.oncourse.server.cayenne.Course;
+import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.TagRelation;
+import ish.persistence.CommonPreferenceController;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
@@ -47,6 +50,8 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	@Inject
 	private AqlService aqlService;
 
+	@Inject
+	private CommonPreferenceController preferenceController;
 
 	/**
 	 * @see Taggable#getId()
@@ -171,6 +176,24 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Get extended search type for this object (CourseClass and Course entities only)
+	 *
+	 * @throws IllegalAccessException if extended types are not allowed; IllegalArgumentException if entity is incorrect
+	 * @return string of type name or null
+	 */
+	@API
+	String getExtendedSearchType() throws IllegalAccessException {
+		if(!preferenceController.getExtendedSearchTypesAllowed())
+			throw new IllegalAccessException("Extended search types now allowed on your college");
+
+		if(!(this instanceof CourseClass || this instanceof Course))
+			throw new IllegalArgumentException("Extended search types now allowed on your college");
+
+		var hidden = getHiddenTags();
+		return hidden.isEmpty() ? null : hidden.get(0).getName();
 	}
 
 	/**
