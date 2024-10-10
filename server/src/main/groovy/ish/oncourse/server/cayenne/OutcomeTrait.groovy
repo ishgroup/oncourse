@@ -16,6 +16,7 @@ import ish.oncourse.server.util.DateCalculator
 import ish.common.types.AttendanceType
 import ish.oncourse.cayenne.CourseClassInterface
 import ish.oncourse.cayenne.OutcomeInterface
+import ish.oncourse.server.util.StartDateCalculator
 import org.apache.commons.lang3.StringUtils
 
 import java.time.LocalDate

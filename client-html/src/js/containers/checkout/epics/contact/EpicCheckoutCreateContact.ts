@@ -10,7 +10,7 @@ import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { CheckoutContact } from "../../../../model/checkout";
-import ContactsService from "../../../entities/contacts/services/ContactsService";
+import { createEntityItem } from "../../../entities/common/entityItemsService";
 import { CHECKOUT_ADD_CONTACT } from "../../actions";
 import { CHECKOUT_CREATE_CONTACT } from "../../actions/checkoutContact";
 import { CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS } from "../../actions/checkoutSummary";
@@ -18,7 +18,7 @@ import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "../../components/contact/C
 
 const request: EpicUtils.Request<any, Contact> = {
   type: CHECKOUT_CREATE_CONTACT,
-  getData: contact => ContactsService.createContact(contact),
+  getData: contact => createEntityItem("Contact", contact),
   processData: (res, s, p) => {
     const contact: CheckoutContact = {
       id: res[0],

@@ -46,13 +46,13 @@
           enrolmentType="1" fieldConfigurationSchemaId="1" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1" createdOn="2021-12-21 12:00:10.0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
-  <Module id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2" createdOn="2021-12-21 12:00:10.0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="2" type="1" isOffered="1" nationalCode="TEST2" title="Test module 2" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
-  <Module id="3" type="1" isOffered="1" nationalCode="TEST3" title="Test module 3" createdOn="2021-12-21 12:00:10.0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="3" type="1" isOffered="1" nationalCode="TEST3" title="Test module 3" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
-  <Module id="4" type="1" isOffered="1" nationalCode="TEST4" title="Test module 4" createdOn="2021-12-21 12:00:10.0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="4" type="1" isOffered="1" nationalCode="TEST4" title="Test module 4" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Module_Course id="1" courseId="2" moduleId="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
@@ -75,31 +75,31 @@
        taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CourseClass id="1" code="123" fundingSource="3" taxAdjustment="0.1" taxId="3" minimumPlaces="1"
-               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               maximumPlaces="100" isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1"
                isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="1"
                feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseClass id="2" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" minimumPlaces="1"
-               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               maximumPlaces="100" isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1"
                isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="2"
                feeExGst="400.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseClass id="3" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" minimumPlaces="1"
-               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               maximumPlaces="100" isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1"
                isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="3"
                feeExGst="800.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseClass id="4" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" minimumPlaces="1"
-               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               maximumPlaces="100" isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1"
                isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="4"
                feeExGst="1600.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
   <CourseClass id="5" code="124" fundingSource="3" taxAdjustment="0.1" taxId="3" minimumPlaces="1"
-               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+               maximumPlaces="100" isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1"
                isCancelled="1" isActive="1" incomeAccountId="5" deliveryMode="1" courseId="5"
                feeExGst="3200.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"

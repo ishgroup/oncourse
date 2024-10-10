@@ -13,8 +13,8 @@ import CodeIcon from '@mui/icons-material/Code';
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FileCopy from "@mui/icons-material/FileCopy";
-import UploadIcon from "@mui/icons-material/Upload";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import UploadIcon from "@mui/icons-material/Upload";
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import { Divider, Grid } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
@@ -30,6 +30,7 @@ import {
   DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL,
   formatRelativeDate,
   InfoPill,
+  mapSelectItems,
   ShowConfirmCaller,
   usePrevious
 } from "ish-ui";
@@ -41,7 +42,6 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { ApiMethods } from "../../../../../model/common/apiHandlers";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
@@ -59,7 +59,7 @@ import TriggerCardContent from "../components/cards/TriggerCardContent";
 import ExecuteScriptModal from "../components/ExecuteScriptModal";
 import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent } from "../constants";
 
-const manualUrl = getManualLink("scripts");
+const manualUrl = getManualLink("navigating-the-automations-view-and-library");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
 
 const styles = (theme: AppTheme) =>
@@ -141,9 +141,6 @@ const styles = (theme: AppTheme) =>
     },
     cardReaderCustomHeading: {
       maxWidth: "calc(100% - 8px)",
-    },
-    descriptionText: {
-      fontSize: theme.spacing(1.625),
     },
     cardLeftIcon: {
       position: "absolute",
@@ -588,7 +585,7 @@ const ScriptsForm = React.memo<Props>(props => {
                     className="overflow-hidden mb-1"
                     placeholder="Short description"
                   />
-                  <Typography variant="caption">
+                  <Typography variant="caption" fontSize="13px">
                     <FormField
                       type="multilineText"
                       name="description"
@@ -596,7 +593,7 @@ const ScriptsForm = React.memo<Props>(props => {
                       className="overflow-hidden mb-1"
                       placeholder="Description"
                       fieldClasses={{
-                        text: clsx("fw300", classes.descriptionText)
+                        text: "fw300 fsInherit"
                       }}
                     />
                   </Typography>

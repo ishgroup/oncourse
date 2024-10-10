@@ -87,11 +87,15 @@ public class DuplicateCourseClass {
 
         newClass.setAttendanceType(oldClass.getAttendanceType());
         newClass.setIsCancelled(Boolean.FALSE);
-        var isDistantLearning = oldClass.getIsDistantLearningCourse();
-        newClass.setIsDistantLearningCourse(isDistantLearning);
-        if (Boolean.TRUE.equals(isDistantLearning)) {
+        newClass.setType(oldClass.getType());
+        if (oldClass.getIsDistantLearningCourse() || oldClass.getIsHybrid()) {
             newClass.setExpectedHours(oldClass.getExpectedHours());
-            newClass.setMaximumDays(oldClass.getMaximumDays());
+            if (oldClass.getIsDistantLearningCourse()) {
+                newClass.setMaximumDays(oldClass.getMaximumDays());
+            }
+            if (oldClass.getIsHybrid()) {
+                newClass.setMinimumSessionsToComplete(oldClass.getMinimumSessionsToComplete());
+            }
         }
         newClass.setIsShownOnWeb(Boolean.FALSE);
         newClass.setMaximumPlaces(oldClass.getMaximumPlaces());

@@ -8,6 +8,8 @@
 
 package ish.oncourse.server.api.service
 
+import groovy.transform.CompileDynamic
+import ish.common.types.CourseClassType
 import ish.common.types.DiscountAvailabilityType
 import ish.common.types.DiscountType
 import ish.math.MoneyRounding
@@ -24,6 +26,7 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.StringUtils
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.toRestConcessionType
 import static ish.oncourse.server.api.v1.function.DiscountFunctions.toRestDiscountCorporatePass
@@ -37,6 +40,8 @@ import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.*
 import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
+
+@CompileDynamic
 class DiscountApiService extends EntityApiService<DiscountDTO, Discount, DiscountDao>{
 
     private static final BidiMap<DiscountType, DiscountTypeDTO> discountTypeMap = new BidiMap<DiscountType, DiscountTypeDTO>() {{
@@ -78,7 +83,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
                     sale.code = (item[7] as String) + "-" + (item[2] as String)
                     sale.name = item[3] as String
                     sale.type = SaleTypeDTO.CLASS
-                    sale.active = CourseClassMixin.isActual(item[4] as Boolean, item[5] as Boolean, item[6] as Date)
+                    sale.active = CourseClassMixin.isActual(item[4] as Boolean, item[5] as CourseClassType, item[6] as Date)
                     sale
                 }
             }
@@ -90,6 +95,9 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
             dto.createdOn = LocalDateUtils.dateToTimeValue(dbDiscount.createdOn)
             dto.modifiedOn = LocalDateUtils.dateToTimeValue(dbDiscount.modifiedOn)
             dto.limitPreviousEnrolment = dbDiscount.limitPreviousEnrolment
+            dto.courseIdMustEnrol = dbDiscount.courseMustEnrol?.id
+            dto.courseNameMustEnrol = dbDiscount.courseMustEnrol?.name
+            dto.minEnrolmentsForAnyCourses = dbDiscount.minEnrolmentsForAnyCourses
 
             dto
         }
@@ -134,7 +142,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.CODE),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.COURSE.dot(Course.NAME)),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.IS_CANCELLED),
-                        DiscountCourseClass.COURSE_CLASS.dot(CourseClass.IS_DISTANT_LEARNING_COURSE),
+                        DiscountCourseClass.COURSE_CLASS.dot(CourseClass.TYPE),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.END_DATE_TIME),
                         DiscountCourseClass.COURSE_CLASS.dot(CourseClass.COURSE.dot(Course.CODE)))
                 .where(DiscountCourseClass.DISCOUNT.eq(dbDiscount))
@@ -180,6 +188,8 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
         dbDiscount.minEnrolments = dto.minEnrolments
         dbDiscount.minValue = toMoneyValue(dto.minValue)
         dbDiscount.limitPreviousEnrolment = dto.limitPreviousEnrolment != null ? dto.limitPreviousEnrolment : false
+        dbDiscount.minEnrolmentsForAnyCourses = dto.minEnrolmentsForAnyCourses
+        dbDiscount.courseMustEnrol = dto.courseIdMustEnrol ? getRecordById(dbDiscount.context, Course, dto.courseIdMustEnrol) : null
         updateCorporatePassDiscount(dbDiscount.context, dbDiscount, dto.corporatePassDiscounts)
         dbDiscount
     }
@@ -321,6 +331,13 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
                 validator.throwClientErrorException(discountDTO?.id, "corporatePassDiscounts[$i].id", "CorporatePass with id=$corporatePass.id not found.")
             }
         }
+
+        if (discountDTO.minEnrolmentsForAnyCourses != null && discountDTO.minEnrolmentsForAnyCourses <= 0) {
+            validator.throwClientErrorException(discountDTO?.id, 'minEnrolmentsForAnyCourses', 'Student Age should be positive.')
+        }
+
+        if(discountDTO.courseIdMustEnrol && !getRecordById(context, Course, discountDTO.courseIdMustEnrol))
+            validator.throwClientErrorException(discountDTO?.id, 'courseIdMustEnrol', "Course with id=$discountDTO.courseIdMustEnrol not found.")
     }
 
     @Override

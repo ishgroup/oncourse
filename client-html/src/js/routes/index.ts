@@ -35,6 +35,7 @@ import CourseApp from "../containers/entities/courses/index";
 import DiscountApp from "../containers/entities/discounts/index";
 import DocumentsApp from "../containers/entities/documents/index";
 import EnrolmentApp from "../containers/entities/enrolments/index";
+import Faculties from "../containers/entities/faculties/Faculties";
 import InvoicesApp from "../containers/entities/invoices/index";
 import LeadsApp from "../containers/entities/leads/index";
 import MembershipProductApp from "../containers/entities/membershipProducts/index";
@@ -76,7 +77,7 @@ type SystemCategories =
   | "Duplicate course classes"
   | "Not found";
 
-export interface Route<T> {
+export interface Route<T = string> {
   title?: T; // route title, displayed on sidebar
   path?: string; // route path (regexp)
   url?: string; // route link
@@ -391,6 +392,13 @@ export const routes: MainRoute[] = [
     path: "/course/:id?",
     url: "/course",
     main: CourseApp,
+    group: "Products"
+  },
+  {
+    title: "Faculties",
+    path: "/faculty/:id?",
+    url: "/faculty",
+    main: Faculties,
     group: "Products"
   },
   {

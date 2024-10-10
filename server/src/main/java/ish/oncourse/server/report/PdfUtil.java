@@ -13,7 +13,8 @@ package ish.oncourse.server.report;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.*;
-import ish.util.ImageHelper;
+import ish.common.util.ImageHelper;
+import ish.util.ExtendedImageHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -119,7 +120,7 @@ public final class PdfUtil {
 			}
 		} catch (Exception e) {
 			try {
-				background = ImageHelper.convertImageToPdf(background);
+				background = ExtendedImageHelper.convertImageToPdf(background);
 			} catch (IOException ex) {
 				logger.error("cannot read background for report");
 				logger.catching(e);

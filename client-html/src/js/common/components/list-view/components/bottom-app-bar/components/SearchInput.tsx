@@ -26,7 +26,7 @@ import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../
 import { FormMenuTag } from "../../../../../../model/tags";
 import { State } from "../../../../../../reducers/state";
 import EditInPlaceQuerySelect from "../../../../form/formFields/EditInPlaceQuerySelect";
-import { setFilterGroups, setListSavingFilter, setListUserAQLSearch } from "../../../actions";
+import { setListSavingFilter, setListUserAQLSearch } from "../../../actions";
 import { setIndeterminate } from "../../../utils/listFiltersUtils";
 import QuerySaveMenu from "./QuerySaveMenu";
 
@@ -93,7 +93,6 @@ interface Props {
   filterGroups: FilterGroup[];
   setListUserAQLSearch: StringArgFunction;
   onQuerySearch: StringArgFunction;
-  setFilterGroups: (groups: FilterGroup[]) => void;
   setListSavingFilter: (saving: SavingFilterState) => void;
   classes?: any;
   changeQueryView?: any;
@@ -464,8 +463,8 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
                   value: userAQLSearch
                 }}
                 performSearch={this.debounceSearch}
-                onFocus={alwaysExpanded ? undefined : this.onFocus}
                 onBlur={this.onBlur}
+                onClick={this.onFocus}
                 itemRenderer={searchMenuItemsRenderer}
                 disableUnderline
                 disableErrorText
@@ -538,7 +537,6 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
-  setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
 });
 

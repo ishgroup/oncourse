@@ -427,9 +427,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
       if (prevUrlSearch.get("filter") !== filtersUrlString) {
         const filtersString = getFiltersNameString(filterGroups);
         if (filtersString !== filtersUrlString) {
-          const updated = [...filterGroups];
-          setActiveFiltersBySearch(filtersUrlString, filterGroups);
-          this.onChangeFilters(updated, "filters");
+          this.onChangeFilters(setActiveFiltersBySearch(filtersUrlString, filterGroups), "filters");
         }
       }
 
@@ -509,10 +507,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
       const checkedChecklistsUrlString = searchParams.get("checkedChecklists");
       const uncheckedChecklistsUrlString = searchParams.get("uncheckedChecklists");
 
-      if (filtersSearch) {
-        setActiveFiltersBySearch(filtersSearch, targetFilters);
-      }
-      this.onChangeFilters(targetFilters, "filters");
+      this.onChangeFilters(filtersSearch ? setActiveFiltersBySearch(filtersSearch, targetFilters) : targetFilters, "filters");
 
       // Sync tags by search
       if (tagsSearch && menuTags) {
@@ -790,13 +785,26 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
   };
 
   checkDirty = (handler, args, reset?: boolean) => {
-    const { isDirty, selection, creatingNew } = this.props;
-    if (isDirty || (creatingNew && selection[0] === "new")) {
+    const { isDirty, selection, creatingNew, fullScreenEditView, records } = this.props;
+
+    if (isDirty && (records.layout === 'Two column' ? fullScreenEditView : true)) {
       this.showConfirm({
         onConfirm: () => {
           handler(...args);
-          if (reset && this.props.isDirty) {
+          if (reset) {
             this.props.resetEditView();
+          }
+        }
+      });
+      return;
+    }
+    if (creatingNew && selection[0] === "new") {
+      this.showConfirm({
+        onConfirm: () => {
+          handler(...args);
+          if (reset) {
+            this.props.resetEditView();
+            setTimeout(this.onCreateRecord, 200);
           }
         }
       });

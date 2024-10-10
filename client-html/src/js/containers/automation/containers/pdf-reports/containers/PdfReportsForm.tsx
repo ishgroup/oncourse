@@ -37,7 +37,7 @@ import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationMod
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import { reportFullScreenPreview } from "../actions";
 
-const manualUrl = getManualLink("reports");
+const manualUrl = getManualLink("using-reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps<Report> {
@@ -305,7 +305,28 @@ const PdfReportsForm = React.memo<Props>(
               </>
             )}
           >
-            <Grid container>
+            <Grid container rowSpacing={2}>
+              <Grid item xs={12} sm={9}>
+                <FormField
+                  type="multilineText"
+                  name="shortDescription"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Short description"
+                />
+                <Typography variant="caption" fontSize="13px">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    placeholder="Description"
+                    fieldClasses={{
+                      text: "fw300 fsInherit"
+                    }}
+                  />
+                </Typography>
+              </Grid>
               <Grid item container columnSpacing={3} rowSpacing={2} xs={7} className="pr-3">
                 <Grid item xs={12}>
                   <div className="heading">Type</div>
@@ -328,16 +349,6 @@ const PdfReportsForm = React.memo<Props>(
 
                 <Grid item xs={12}>
                   <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
-                </Grid>
-                
-                <Grid item xs={12}>
-                  <FormField
-                    type="text"
-                    label="Description"
-                    name="description"
-                    disabled={isInternal}
-                    multiline
-                  />
                 </Grid>
 
                 <Grid item xs={12}>

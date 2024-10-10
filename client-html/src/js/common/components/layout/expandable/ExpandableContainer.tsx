@@ -7,6 +7,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AddButton, AppTheme } from "ish-ui";
@@ -16,6 +17,7 @@ import { FormErrors } from "redux-form";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { animateFormErrors } from "../../../utils/highlightFormErrors";
 import { getFirstErrorNodePath } from "../../../utils/validation";
+import FormField from "../../form/formFields/FormField";
 
 const styles = (theme: AppTheme) =>
   createStyles({
@@ -39,6 +41,7 @@ interface Props {
   header: React.ReactNode;
   expanded: any[];
   index: any;
+  name?: string;
   formErrors?: FormErrors;
   setExpanded: (arg: number[]) => void;
   headerAdornment?: React.ReactNode;
@@ -50,19 +53,20 @@ interface Props {
 }
 
 const ExpandableContainer: React.FC<Props> = ({
-                                                children,
-                                                header,
-                                                headerAdornment,
-                                                onAdd,
-                                                onChange,
-                                                classes,
-                                                expanded,
-                                                setExpanded,
-                                                index,
-                                                noDivider,
-                                                formErrors,
-                                                className
-                                              }) => {
+  children,
+  header,
+  headerAdornment,
+  onAdd,
+  onChange,
+  classes,
+  expanded,
+  setExpanded,
+  index,
+  noDivider,
+  formErrors,
+  className,
+  name
+}) => {
   const [hasErrors, setHasErrors] = useState(false);
 
   const childrenRef = useRef<HTMLDivElement>();
@@ -117,17 +121,30 @@ const ExpandableContainer: React.FC<Props> = ({
 
   const clickHandler = hasErrors ? () => animateFormErrors(childrenRef.current) : toggleExpand;
 
+  const nameError = useMemo(
+    () =>
+      formErrors && formErrors[name] && (
+        <div className="shakingError mb-2">
+          <Typography color="error" variant="body2" className="text-pre-wrap">
+            {formErrors[name]}
+          </Typography>
+        </div>
+      ),
+    [formErrors, name]
+  );
+
   return (
     <div className={className}>
-      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")}/>
+      <Divider className={clsx("mb-2 mb-3", noDivider && "invisible")}/>
       <div ref={headerRef}>
-        <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
+        <div className={clsx("centeredFlex mb-2", classes.controls)}>
           <div className="centeredFlex">
-            <div className={clsx("heading headingHover", isExpanded && classes.expanded)}
-                 onClick={clickHandler}>{header}</div>
-            {onAdd && (
-              <AddButton onClick={onAdd}/>
-            )}
+            <div
+              className={clsx("heading headingHover", isExpanded && classes.expanded, hasErrors && 'errorColor')}
+              onClick={clickHandler}>
+              {header}
+            </div>
+            <AddButton className={onAdd ? null : "invisible"} onClick={onAdd} />
           </div>
           {headerAdornment}
           <IconButton
@@ -141,7 +158,10 @@ const ExpandableContainer: React.FC<Props> = ({
         </div>
       </div>
 
-      <div ref={childrenRef}>
+      {nameError}
+
+      <div ref={childrenRef} id={name}>
+        {name && <FormField type="stub" name={name} />}
         <Collapse in={isExpanded}>
           {children}
         </Collapse>

@@ -25,7 +25,6 @@ interface MessageEditViewProps {
   dispatch?: Dispatch<any>;
   dirty?: boolean;
   form?: string;
-  nestedIndex?: number;
   rootEntity?: string;
   twoColumn?: boolean;
   showConfirm?: any;

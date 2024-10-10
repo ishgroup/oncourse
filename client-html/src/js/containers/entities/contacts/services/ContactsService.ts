@@ -12,7 +12,6 @@ import {
   ContactInsightApi,
   ContactMergeApi,
   ContactRelationType,
-  Diff,
   MergeData,
   MergeRequest,
   Tax,
@@ -62,10 +61,6 @@ class ContactsService {
 
   public getContactsRelationTypes(): Promise<ContactRelationType[]> {
     return this.contactApi.get();
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.contactApi.bulkChange(diff);
   }
 
   public verifyUSI(

@@ -1,0 +1,5 @@
+Dear ${student.contact.firstName}
+
+As a student at ${preference.college.name} you have been granted access to the ${subDomain} Portal. Please click the link below to set a password for your portal access.
+
+${student.contact.getPortalUrl()}

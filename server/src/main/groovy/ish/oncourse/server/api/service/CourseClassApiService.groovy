@@ -26,6 +26,7 @@ import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.SessionModuleDao
 import ish.oncourse.server.api.dao.SiteDao
+import ish.oncourse.server.api.v1.model.CourseClassTypeDTO
 import ish.oncourse.server.document.DocumentService
 
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
@@ -156,7 +157,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.initialDetExport = cc.initialDETexport
         dto.isActive = cc.isActive
         dto.isCancelled = cc.isCancelled
-        dto.isDistantLearningCourse = cc.isDistantLearningCourse
+        dto.type = CourseClassTypeDTO.values()[0].fromDbType(cc.type)
         dto.isShownOnWeb = cc.isShownOnWeb
         dto.isTraineeship = cc.isTraineeship
         dto.maximumDays = cc.maximumDays
@@ -179,6 +180,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.feeHelpClass = cc.course.feeHelpClass
         int toProceed = classService.getEnrolmentsToProceed(cc)
         dto.enrolmentsToProfitLeftCount =  toProceed > 0 ? toProceed : 0
+        dto.minimumSessionsToComplete = cc.minimumSessionsToComplete
 
         dto.taxId = cc.costs.find(ClassCostDao.studentFee)?.tax?.id
         dto.reportableHours = cc.reportableHours
@@ -203,6 +205,9 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.withdrawnOutcomesCount = outcomes.findAll { it.status == OutcomeStatus.STATUS_ASSESSABLE_WITHDRAWN }.size()
         dto.otherOutcomesCount = dto.allOutcomesCount  - dto.passOutcomesCount - dto.failedOutcomesCount - dto.inProgressOutcomesCount - dto.withdrawnOutcomesCount
         dto.tags = cc.allTags.collect { it.id }
+
+        def hiddenTags = cc.hiddenTags
+        dto.specialTagId = hiddenTags.empty ? null as Long : hiddenTags.first().id
         return dto
     }
 
@@ -217,15 +222,20 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         courseClass.code = dto.code
 
-        if (dto.isDistantLearningCourse) {
-            courseClass.isDistantLearningCourse = true
-            courseClass.maximumDays = dto.maximumDays
+        courseClass.type = dto.type.dbType
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING || dto.type == CourseClassTypeDTO.HYBRID) {
             courseClass.expectedHours = dto.expectedHours
             if (dto.virtualSiteId != null) {
                 courseClass.room = siteDao.getById(courseClass.context, dto.virtualSiteId).rooms[0]
             }
-        } else {
-            courseClass.isDistantLearningCourse = false
+            if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING) {
+                courseClass.maximumDays = dto.maximumDays
+            }
+            if (dto.type == CourseClassTypeDTO.HYBRID) {
+                courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
+                courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
+                courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
+            }
         }
         courseClass.isActive = dto.isActive
         courseClass.isShownOnWeb = dto.isShownOnWeb
@@ -253,7 +263,7 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         courseClass.initialDETexport = dto.initialDetExport
         courseClass.midwayDETexport = dto.midwayDetExport
         courseClass.finalDETexport = dto.finalDetExport
-        updateTags(courseClass, courseClass.taggingRelations, dto.tags, CourseClassTagRelation, courseClass.context)
+        updateTags(courseClass, courseClass.taggingRelations, dto.tags + dto.specialTagId, CourseClassTagRelation, courseClass.context)
         DocumentFunctions.updateDocuments(courseClass, courseClass.attachmentRelations, dto.documents, CourseClassAttachmentRelation, context)
         updateCustomFields(courseClass.context, courseClass, dto.customFields, CourseClassCustomField)
         courseClass
@@ -299,8 +309,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (dto.maximumPlaces < dto.minimumPlaces ) {
             validator.throwClientErrorException(id, 'maximumPlaces', 'Maximum places cannot be less than minimum places.')
         }
-        if (dto.isDistantLearningCourse == null) {
-            validator.throwClientErrorException(id, 'isDistantLearningCourse', 'Is self paced flag is required')
+        if (dto.type == null) {
+            validator.throwClientErrorException(id, 'type', 'Class type is required')
         }
         if (dto.isActive == null) {
             validator.throwClientErrorException(id, 'isActive', 'Is active flag required')
@@ -323,8 +333,19 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         validateLength(id, trimToEmpty(dto.vetPurchasingContractScheduleID), 'vetPurchasingContractScheduleID', 3)
 
         Course dbCourse = courseService.getEntityAndValidateExistence(context, dto.courseId)
-        if (dto.expectedHours == null && dto.isDistantLearningCourse && (dbCourse.modules == null || dbCourse.modules.size() == 0)) {
+        if (dto.expectedHours == null && dto.type == CourseClassTypeDTO.DISTANT_LEARNING && (dbCourse.modules == null || dbCourse.modules.size() == 0)) {
             validator.throwClientErrorException(id, 'expectedHours', 'Expected study hours is required for self-paced non-VET class')
+        }
+
+        if (dto.type == CourseClassTypeDTO.HYBRID && dto.minimumSessionsToComplete == null) {
+            validator.throwClientErrorException(id, "minimumSessionsToComplete", "minimumSessionsToComplete field is required for hybrid class")
+        }
+
+        if (dto.type == CourseClassTypeDTO.HYBRID && dto.startDateTime == null) {
+            validator.throwClientErrorException(id, "startDateTime", "Start date field is required for hybrid class")
+        }
+        if (dto.type == CourseClassTypeDTO.HYBRID && dto.endDateTime == null) {
+            validator.throwClientErrorException(id, "endDateTime", "End date field is required for hybrid class")
         }
     }
 

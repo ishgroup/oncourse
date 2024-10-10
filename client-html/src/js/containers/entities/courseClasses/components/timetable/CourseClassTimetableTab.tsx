@@ -3,18 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassTutor, SessionWarning, TutorAttendance } from "@api/model";
+import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } from "@api/model";
 import Settings from "@mui/icons-material/Settings";
-import { FormControlLabel, Grid } from "@mui/material";
+import { FormControlLabel, Grid, MenuItem } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from "date-fns";
-import { appendTimezone, normalizeNumber, normalizeNumberToPositive } from "ish-ui";
+import { appendTimezone, normalizeNumber, normalizeNumberToPositive, SelectItemDefault, validateMinMaxDate } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
@@ -26,7 +24,6 @@ import uniqid from "../../../../../common/utils/uniqid";
 import { instantAsyncValidateFieldArrayItemCallback } from "../../../../../common/utils/validation";
 import history from "../../../../../constants/History";
 import { EditViewProps } from "../../../../../model/common/ListView";
-import { SelectItemDefault } from "../../../../../model/entities/common";
 import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
 import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
 import { State } from "../../../../../reducers/state";
@@ -90,6 +87,10 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
 }
 
 let pendingSessionActionArgs = null;
+
+const validateStartDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, '', allValues?.sessions[0]?.start, '', 'Start date cannot be after the first session');
+
+const validateEndDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, allValues?.sessions[allValues?.sessions?.length - 1]?.start, '', 'End date cannot be before the last session');
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
   const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
@@ -156,7 +157,8 @@ const CourseClassTimetableTab = ({
   sessionWarnings,
   sessionSelection,
   bulkSessionModalOpened,
-  addTutorWage
+  addTutorWage,
+  syncErrors
 }: Props) => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [copyDialogAnchor, setCopyDialogAnchor] = useState(null);
@@ -164,19 +166,27 @@ const CourseClassTimetableTab = ({
   const [months, setMonths] = useState<TimetableMonth[]>([]);
   const [sessionMenu, setSessionMenu] = useState(null);
 
-  const onSelfPacedChange = useCallback(
-    (e, value) => {
-      if (!values.isDistantLearningCourse && !isNew) {
-        e.preventDefault();
-        showConfirm({
+  const onSelfPacedChange = (e, value) => {
+    e.preventDefault();
+
+    const type: CourseClassType = 'Distant Learning';
+
+    const onSetSelfPaced = () => {
+      dispatch(change(form, "type", type));
+      dispatch(change(form, "sessions", []));
+      dispatch(change(form, "trainingPlan", []));
+      dispatch(change(form, "studentAttendance", []));
+      dispatch(change(form, "startDateTime", null));
+      dispatch(change(form, "endDateTime", null));
+    };
+
+    if (value) {
+      isNew
+        ? onSetSelfPaced()
+        : showConfirm({
           onConfirm: () => CourseClassTimetableService.validateUpdate(values.id, [])
             .then(sessionWarnings => {
-              dispatch(change(form, "isDistantLearningCourse", value));
-              dispatch(change(form, "sessions", []));
-              dispatch(change(form, "trainingPlan", []));
-              dispatch(change(form, "studentAttendance", []));
-              dispatch(change(form, "startDateTime", null));
-              dispatch(change(form, "endDateTime", null));
+              onSetSelfPaced();
               dispatch(addActionToQueue(postCourseClassSessions(values.id, []), "POST", "Session", values.id));
               dispatch(setCourseClassSessionsWarnings(sessionWarnings));
             })
@@ -184,10 +194,16 @@ const CourseClassTimetableTab = ({
           confirmMessage: "You are about to delete all sessions from this class. This will also remove any attendance records and any training plan details",
           confirmButtonText: "Delete"
         });
-      }
-    },
-    [values.isDistantLearningCourse, values.sessions, isNew]
-  );
+      return;
+    }
+    dispatch(change(form, "type", 'With Sessions'));
+  };
+
+  const onHybridChange = (e, value) => {
+    e.preventDefault();
+    dispatch(change(form, "type", value ? 'Hybrid' : 'With Sessions'));
+    dispatch(change(form, "minimumSessionsToComplete", value ? values.sessions.length : null));
+  };
 
   useEffect(() => {
     if (!values.sessions || !values.sessions.length) {
@@ -385,7 +401,7 @@ const CourseClassTimetableTab = ({
   const onExpand = useCallback(
     (e, expanded) => {
       if (!twoColumn && expanded.includes(6)) {
-        e.preventDefault();
+        e?.preventDefault();
 
         const search = new URLSearchParams(window.location.search);
         search.append("expandTab", tabIndex.toString());
@@ -682,23 +698,45 @@ const CourseClassTimetableTab = ({
     [months, values.tutors, values.budget, sessionSelection, sessionWarnings, openCopyDialog]
   );
 
-  const selfPacedField = (
-    <FormControlLabel
-      className="switchWrapper"
-      control={(
-        <FormField
-          type="switch"
-          name="isDistantLearningCourse"
-          color="primary"
-          onChangeHandler={onSelfPacedChange}
-        />
-      )}
-      label="Self-paced"
-      labelPlacement="start"
-    />
+  const typeFields = (
+    <div>
+      <FormControlLabel
+        className="switchWrapper mr-1"
+        control={(
+          <FormField
+            type="switch"
+            name="type"
+            color="primary"
+            format={(type: CourseClassType) => type === "Distant Learning"}
+            onChangeHandler={onSelfPacedChange}
+            debounced={false}
+          />
+        )}
+        label="Self-paced"
+        labelPlacement="start"
+      />
+      <FormControlLabel
+        className="switchWrapper"
+        control={(
+          <FormField
+            type="switch"
+            name="type"
+            color="primary"
+            format={(type: CourseClassType) => type === "Hybrid"}
+            onChangeHandler={onHybridChange}
+            debounced={false}
+          />
+        )}
+        label="Hybrid"
+        labelPlacement="start"
+      />
+    </div>
   );
 
   const disabledMenuItem = sessionSelection.length === 0;
+
+  const isDistantLearning = values.type === "Distant Learning";
+  const isHybrid = values.type === "Hybrid";
 
   return (
     <div className="pl-3 pr-3">
@@ -711,131 +749,155 @@ const CourseClassTimetableTab = ({
           budget={values.budget}
         />
       )}
-      {values.isDistantLearningCourse ? (
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} className="pb-2 centeredFlex">
-            <div>
-              <div className="heading pb-1">Timetable</div>
-              {isNew && (
-                <Typography variant="caption" color="textSecondary">
-                  Please save your new class before editing timetable
-                </Typography>
-              )}
-            </div>
-            <div className="flex-fill" />
-            {selfPacedField}
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="number"
-              label="Maximum days to complete"
-              name="maximumDays"
-              min="1"
-              max="99"
-              step="1"
-              normalize={normalizeNumber}
-              debounced={false}
-                          />
-          </Grid>
-
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="number"
-              label="Expected study hours"
-              name="expectedHours"
-              min="1"
-              max="99"
-              step="1"
-              normalize={normalizeNumberToPositive}
-              debounced={false}
-              required
-                          />
-          </Grid>
-
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="select"
-              label="Virtual site"
-              name="virtualSiteId"
-              items={virualSites}
-              allowEmpty
-            />
-          </Grid>
-        </Grid>
-      ) : (
-        <>
-          <div>
-            <ExpandableContainer
-              header="Timetable"
-              index={tabIndex}
-              expanded={expanded}
-              setExpanded={setExpanded}
-              onAdd={twoColumn ? addSession : null}
-              onChange={onExpand}
-              headerAdornment={(
-                <>
-                  <div>
-                    {values.sessions && values.sessions.length > 0 && (
-                      <>
-                        <Checkbox
-                          name="selectAllSession"
-                          size="small"
-                          onClick={onSelectAllSession}
-                          checked={sessionSelection.length === values.sessions.length}
-                        />
-                        <IconButton
-                          color="inherit"
-                          aria-owns={sessionMenu ? "sessionSettings" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleSessionMenu}
-                          size="small"
-                        >
-                          <Settings />
-                        </IconButton>
-                      </>
-                    )}
-                  </div>
-                  <div className="flex-fill" />
-                  {selfPacedField}
-                </>
-              )}
-            >
-              <CopySessionDialog
-                popupAnchorEl={copyDialogAnchor}
-                onCancel={closeCopyDialog}
-                onSave={onSaveRepeatHandler}
-              />
-              {renderedMonths}
-            </ExpandableContainer>
-          </div>
-          <Menu
-            id="sessionSettings"
-            anchorEl={sessionMenu}
-            open={Boolean(sessionMenu)}
-            onClose={handleSessionMenuClose}
-            disableAutoFocusItem
+      <div>
+        <ExpandableContainer
+          name="sessions"
+          header="Timetable"
+          index={tabIndex}
+          expanded={isDistantLearning ? [tabIndex] : expanded}
+          setExpanded={setExpanded}
+          onAdd={twoColumn && !isDistantLearning ? addSession : null}
+          onChange={onExpand}
+          formErrors={syncErrors}
+          headerAdornment={(
+            <>
+              <div>
+                {!isDistantLearning && values.sessions && values.sessions.length > 0 && (
+                  <>
+                    <Checkbox
+                      name="selectAllSession"
+                      size="small"
+                      onClick={onSelectAllSession}
+                      checked={sessionSelection.length === values.sessions.length}
+                    />
+                    <IconButton
+                      color="inherit"
+                      aria-owns={sessionMenu ? "sessionSettings" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleSessionMenu}
+                      size="small"
+                    >
+                      <Settings />
+                    </IconButton>
+                  </>
+                )}
+              </div>
+              <div className="flex-fill" />
+              <div>
+                {typeFields}
+              </div>
+            </>
+          )}
           >
-            <MenuItem
-              classes={{
-                root: "listItemPadding"
-              }}
-              onClick={onDeleteTimetableEvents}
-              disabled={disabledMenuItem}
-            >
-              {`Delete ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
-            </MenuItem>
-            <MenuItem
-              classes={{
-                root: "listItemPadding"
-              }}
-              onClick={onChangeTimetableEvents}
-              disabled={disabledMenuItem}
-            >
-              {`Bulk change ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
-            </MenuItem>
-          </Menu>
-        </>
-      )}
+          {["Distant Learning", "Hybrid"].includes(values.type) && (
+            <Grid container columnSpacing={3} rowSpacing={2}>
+              {isHybrid && <>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class start date"
+                    name="startDateTime"
+                    validate={validateStartDate}
+                    timezone={values.sessions[0]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class end date"
+                    name="endDateTime"
+                    validate={validateEndDate}
+                    timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Minimum sessions to complete"
+                    name="minimumSessionsToComplete"
+                    step="1"
+                    normalize={normalizeNumberToPositive}
+                    debounced={false}
+                    required
+                  />
+                </Grid>
+              </>}
+              {!isHybrid && <>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Maximum days to complete"
+                    name="maximumDays"
+                    min="1"
+                    max="99"
+                    step="1"
+                    normalize={normalizeNumber}
+                    debounced={false}
+                  />
+                </Grid>
+              </>}
+              <Grid item xs={twoColumn ? 3 : 12}>
+                <FormField
+                  type="number"
+                  label="Expected study hours"
+                  name="expectedHours"
+                  min="1"
+                  max="99"
+                  step="1"
+                  normalize={normalizeNumberToPositive}
+                  debounced={false}
+                  required
+                />
+              </Grid>
+              <Grid item xs={twoColumn ? 6 : 12}>
+                <FormField
+                  type="select"
+                  label="Virtual site"
+                  name="virtualSiteId"
+                  items={virualSites}
+                  allowEmpty
+                />
+              </Grid>
+            </Grid>
+          )}
+          {["With Sessions", "Hybrid"].includes(values.type) && <>
+            <CopySessionDialog
+              popupAnchorEl={copyDialogAnchor}
+              onCancel={closeCopyDialog}
+              onSave={onSaveRepeatHandler}
+            />
+            {renderedMonths}
+          </>}
+        </ExpandableContainer>
+      </div>
+      <Menu
+        id="sessionSettings"
+        anchorEl={sessionMenu}
+        open={Boolean(sessionMenu)}
+        onClose={handleSessionMenuClose}
+        disableAutoFocusItem
+      >
+        <MenuItem
+          classes={{
+            root: "listItemPadding"
+          }}
+          onClick={onDeleteTimetableEvents}
+          disabled={disabledMenuItem}
+        >
+          {`Delete ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
+        </MenuItem>
+        <MenuItem
+          classes={{
+            root: "listItemPadding"
+          }}
+          onClick={onChangeTimetableEvents}
+          disabled={disabledMenuItem}
+        >
+          {`Bulk change ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
+        </MenuItem>
+      </Menu>
     </div>
   );
 };

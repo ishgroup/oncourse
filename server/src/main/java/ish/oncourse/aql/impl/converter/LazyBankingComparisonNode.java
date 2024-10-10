@@ -48,8 +48,8 @@ public class LazyBankingComparisonNode extends LazyEntityComparisonNode {
 		}
 
 		var child = jjtGetChild(1);
-		if(child instanceof LazyDateScalar) {
-			return ((LazyDateScalar) child).getInterval();
+		if(child instanceof LazyDateTimeScalar) {
+			return ((LazyDateTimeScalar) child).getInterval();
 		}
 
 		if(child instanceof ASTScalar) {

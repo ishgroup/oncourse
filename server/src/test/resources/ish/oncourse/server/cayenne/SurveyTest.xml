@@ -24,7 +24,7 @@
           fieldConfigurationSchemaId="1" feeHelpClass="0" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1" createdOn="2021-12-21 12:00:10.0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Module_Course id="1" courseId="1" moduleId="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
@@ -39,7 +39,7 @@
        taxrate="0.1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <CourseClass id="1" code="123" taxAdjustment="0.1" taxId="3" minimumPlaces="1" maximumPlaces="100"
-               isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1"
+               isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1" isCancelled="1"
                isActive="1" incomeAccountId="5" deliveryMode="1" courseId="1"
                feeExGst="200.00" suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>

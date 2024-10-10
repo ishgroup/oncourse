@@ -12,7 +12,8 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import { Grid, Grow } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
+import Typography from "@mui/material/Typography";
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
@@ -20,7 +21,6 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
@@ -32,7 +32,7 @@ import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../
 import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 
-const manualUrl = getManualLink("emailTemplates");
+const manualUrl = getManualLink("message-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
 
 const messageTypes = Object.keys(MessageType).map(mapSelectItems).filter(t => t.value !== "Post");
@@ -234,6 +234,27 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           )}
         >
           <Grid container>
+            <Grid item xs={12} sm={9}>
+              <FormField
+                type="multilineText"
+                name="shortDescription"
+                disabled={isInternal}
+                className="overflow-hidden mb-1"
+                placeholder="Short description"
+              />
+              <Typography variant="caption" fontSize="13px">
+                <FormField
+                  type="multilineText"
+                  name="description"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Description"
+                  fieldClasses={{
+                    text: "fw300 fsInherit"
+                  }}
+                />
+              </Typography>
+            </Grid>
             <Grid item xs={9} className="pr-3">
               <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
                 <Grid item xs={6}>
@@ -321,14 +342,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 disabled={!isNew}
                 className="mt-2 mb-2"
                 required
-              />
-
-              <FormField
-                type="text"
-                label="Description"
-                name="description"
-                disabled={isInternal}
-                                multiline
               />
             </Grid>
             <Grid item xs={3}>

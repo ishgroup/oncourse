@@ -8,27 +8,15 @@
 
 package ish.oncourse.server.api.v1.function
 
-import groovy.json.JsonSlurper
 import ish.common.types.ProductType
 import ish.common.types.TypesUtil
-import ish.oncourse.server.api.v1.model.CartContactIdsDTO
-import ish.oncourse.server.api.v1.model.CartDTO
-import ish.oncourse.server.api.v1.model.CartIdsDTO
-import ish.oncourse.server.api.v1.model.CartObjectDataDTO
-import ish.oncourse.server.api.v1.model.ProductTypeDTO
-import ish.oncourse.server.cayenne.Checkout
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.WaitingList
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
 
 import java.time.ZoneOffset
-
-import static java.lang.String.format
 
 class CartFunctions {
     public static final String CLASSES_KEY = "classes"
@@ -52,104 +40,43 @@ class CartFunctions {
         }
     }
 
-    static CartIdsDTO cartDataIdsOf(Checkout checkout) {
-        def cartAsMap = cartAsMapOf(checkout)
-        if(cartAsMap == null)
-            return new CartIdsDTO()
-
-        new CartIdsDTO().with { it ->
-            it.payerId = checkout.payer.getId()
-            it.contacts = cartContactIdsOf(cartAsMap.contacts as List<Map>, checkout.getContext())
-            it
+    static CartIdsDTO toRestCartIds(Checkout checkout) {
+        new CartIdsDTO().with {dto ->
+            dto.payerId = checkout.payer.id
+            dto.contacts = checkout.contactRelations.groupBy {it.contact}.collect {toRestCartContactIds(it.key, it.value)}
+            dto
         }
     }
 
-    static List<CartContactIdsDTO> contactCartsOf(Checkout checkout, Long contactWillowId, String column) {
-        contactCartsOf(checkout, contactWillowId, Set.of(column))
+    static CartContactIdsDTO toRestCartContactIds(Contact contact, List<CheckoutContactRelation> contactRelations){
+        new CartContactIdsDTO().with {dto ->
+            dto.contactId = contact.id
+            dto.waitingCoursesIds = contactRelations.findAll {it instanceof CheckoutWaitingCourseRelation}
+                                                    .collect {toRestCartObjectData(it)}
+            dto.classIds = contactRelations.findAll {it instanceof CheckoutCourseClassRelation || it instanceof CheckoutApplicationRelation}
+                    .collect {toRestCartObjectData(it)}
+            dto.productIds = contactRelations.findAll {it instanceof CheckoutProductRelation}
+                    .collect {toRestCartObjectData(it)}
+            dto
+        }
     }
 
-    static List<Long> idsOfCurrentItems(Checkout checkout, Long contactId, String column){
-        def checkoutCart = cartAsMapOf(checkout)
-        def suitableContacts = (checkoutCart.contacts as List<Map>).findAll { parseAsLong(it.contactId) == contactId }
-        return (suitableContacts.collect{(it.getOrDefault(column, new ArrayList<Map>()) as List<Map>)}.flatten() as List<Map>).collect {parseAsLong(it.id) }
-    }
-
-    static List<CartContactIdsDTO> contactCartsOf(Checkout checkout, Long contactId, Set<String> columns = classes.keySet()){
-        def checkoutCart = cartAsMapOf(checkout)
-
-        if (checkoutCart == null)
-            return new ArrayList<CartContactIdsDTO>()
-
-        def suitableContacts = (checkoutCart.contacts as List<Map>).findAll { parseAsLong(it.contactId) == contactId }
-        return cartContactIdsOf(suitableContacts, checkout.getContext(), columns)
-    }
-
-    static Map cartAsMapOf(Checkout checkout){
-        def cartAsJson = checkout.shoppingCart
-        if (cartAsJson == null)
-            return null
-
-        new JsonSlurper().parseText(cartAsJson) as Map
-    }
-
-    private static List<CartContactIdsDTO> cartContactIdsOf(List<Map> cartContacts, ObjectContext context, Set<String> columns = classes.keySet()) {
-        return cartContacts.collect { cartContactIdsOf(it, context, columns) }
-    }
-
-    private static CartContactIdsDTO cartContactIdsOf(Map cartContact, ObjectContext context, Set<String> columns) {
-        def cartContactIds = new CartContactIdsDTO()
-        cartContactIds.contactId = cayenneObjectFrom(parseAsLong(cartContact.contactId), Contact, context).getId()
-
-        if(columns.contains(CLASSES_KEY))
-            cartContactIds.classIds = mapToCartObjects(cartContact, CLASSES_KEY, context)
-
-        if(columns.contains(PRODUCTS_KEY))
-            cartContactIds.productIds = mapToCartObjects(cartContact, PRODUCTS_KEY, context)
-
-        if(columns.contains(WAITING_KEY))
-            cartContactIds.waitingCoursesIds = mapToCartObjects(cartContact, WAITING_KEY, context)
-        cartContactIds
-    }
-
-    private static List<CartObjectDataDTO> mapToCartObjects(Map cartContact, String listKey, ObjectContext context) {
-        def maps = mapToSubList(cartContact, listKey)
-        Class<? extends CayenneDataObject> myClass = classes.get(listKey)
-        maps.collect { mapToCartObject(it, myClass, context) }
-    }
-
-    private static List<Map> mapToSubList(Map map, String listKey) {
-        map.containsKey(listKey) ? map.get(listKey) as List<Map> : new ArrayList<Map>()
-    }
-
-    private static CartObjectDataDTO mapToCartObject(Map data, Class<? extends CayenneDataObject> angelClass, ObjectContext context) {
-        new CartObjectDataDTO().with { it ->
-            it.selected = data.selected
-            def cayenneObject = cayenneObjectFrom(parseAsLong(data.id), angelClass, context)
-            it.id = cayenneObject.getValueForKey("id") as Long
-            if (angelClass.equals(Product.class)) {
-                it.productType = ProductTypeDTO.fromValue(TypesUtil.getEnumForDatabaseValue((cayenneObject as Product).type, ProductType).toString())
-                if (data.containsKey("quantity"))
-                    it.quantity = parseAsLong(data.quantity)
+    static CartObjectDataDTO toRestCartObjectData(CheckoutContactRelation contactRelation) {
+        new CartObjectDataDTO().with {dto ->
+            dto.id = contactRelation.relatedObjectId
+            dto.selected = contactRelation.selected
+            if(contactRelation instanceof CheckoutProductRelation) {
+                def productRelation = contactRelation as CheckoutProductRelation
+                dto.quantity = productRelation.quantity
+                dto.productType = ProductTypeDTO.fromValue(TypesUtil.getEnumForDatabaseValue(productRelation.getRelatedObject().type, ProductType).toString())
             }
-            it
+            dto
         }
     }
 
-    private static Long parseAsLong(Object value) {
-        Long.parseLong(value as String)
-    }
-
-    private static <T extends CayenneDataObject> T cayenneObjectFrom(Long willowId, Class<T> angelClass, ObjectContext context) {
-        def willowIdProperty = Property.create("willowId", Long.class)
-        return ObjectSelect.query(angelClass)
-                .where(willowIdProperty.eq(willowId))
-                .selectOne(context)
-    }
-
-    static List<Checkout> checkoutsByContactId(ObjectContext context, Long contactWillowId){
-        String formattedCartContact = format("\"contactId\":\"%d\"", contactWillowId)
-        return ObjectSelect.query(Checkout.class)
-                .where(Checkout.SHOPPING_CART.contains(formattedCartContact))
+    static List<CheckoutContactRelation> checkoutsByContactId(ObjectContext context, Long contactId){
+        return ObjectSelect.query(CheckoutContactRelation.class)
+                .where(CheckoutContactRelation.CONTACT.dot(Contact.ID).eq(contactId))
                 .select(context)
     }
 }

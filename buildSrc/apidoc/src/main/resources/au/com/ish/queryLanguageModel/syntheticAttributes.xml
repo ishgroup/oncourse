@@ -32,6 +32,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="invoices" ref="Invoice"/>
         <attribute name="class" ref="CourseClass"/>
         <attribute name="tags" ref="Tag"/>
+        <attribute name="isClassCompleted" ref="Boolean"/>
     </entity>
     <entity name="PaymentOut">
         <attribute name="accountTransactions" ref="AccountTransaction"/>
@@ -77,6 +78,7 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="isMaxEnrolments" ref="Boolean"/>
         <attribute name="isMinEnrolments" ref="Boolean"/>
         <attribute name="sessionsCount" ref="Number"/>
+        <attribute name="isDistantLearningCourse" ref="Boolean"/>
     </entity>
     <entity name="Course">
         <attribute name="allRelatedCourses" ref="Course"/>
@@ -120,6 +122,9 @@ in ish.oncourse.aql.model.EntityFactory in server module.
         <attribute name="tags" ref="Tag"/>
     </entity>
     <entity name="Invoice">
+        <attribute name="tags" ref="Tag"/>
+    </entity>
+    <entity name="Faculty">
         <attribute name="tags" ref="Tag"/>
     </entity>
     <entity name="Lead">

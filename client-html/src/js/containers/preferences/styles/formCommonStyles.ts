@@ -36,7 +36,6 @@ export const cardsFormStyles = (theme: AppTheme) => createStyles({
   },
   deleteButton: {
     right: 0,
-    top: 0,
     color: theme.palette.error.main,
     position: "absolute"
   },

@@ -458,4 +458,9 @@ class Discount extends _Discount implements DiscountTrait, DiscountInterface, Qu
 	Account getCosAccount() {
 		return super.getCosAccount()
 	}
+
+	@Override
+	Long getCourseIdMustEnrol() {
+		return courseMustEnrol?.id
+	}
 }

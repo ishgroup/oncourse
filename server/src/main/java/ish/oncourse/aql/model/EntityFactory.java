@@ -11,6 +11,7 @@
 
 package ish.oncourse.aql.model;
 
+import ish.common.types.DataType;
 import ish.oncourse.aql.model.attribute.*;
 import ish.oncourse.aql.model.attribute.tagging.relations.*;
 import ish.oncourse.server.cayenne.CustomFieldType;
@@ -51,6 +52,8 @@ public class EntityFactory {
             CourseClassEnrolmentMax.class,
             CourseClassEnrolmentMin.class,
             CourseClassSessionsCount.class,
+            CourseClassIsDistantLearningCourse.class,
+            EnrolmentIsClassCompleted.class,
             SessionTutor.class,
             PaymentInBanking.class,
             PaymentInReversalOfId.class,
@@ -94,6 +97,7 @@ public class EntityFactory {
             TaggingRelationsCourseClass.class,
             TaggingRelationsDocument.class,
             TaggingRelationsEnrolment.class,
+            TaggingRelationsFaculty.class,
             TaggingRelationsLead.class,
             TaggingRelationsMembershipProduct.class,
             TaggingRelationsPayslip.class,
@@ -157,12 +161,21 @@ public class EntityFactory {
                 ? List.of("Article","Voucher","Membership")
                 : List.of(entityName);
         var customFieldsNames = ObjectSelect
-                .columnQuery(CustomFieldType.class, CustomFieldType.KEY)
+                .columnQuery(CustomFieldType.class, CustomFieldType.KEY, CustomFieldType.DATA_TYPE)
                 .where(CustomFieldType.ENTITY_IDENTIFIER.in(entityNames))
                 .select(context);
 
         Map<String, Class<?>> customFields = new HashMap<>();
-        customFieldsNames.forEach(field -> customFields.put(field, CustomFieldMarker.class));
+        customFieldsNames.forEach(field -> {
+            Class<? extends CustomFieldMarker> marker;
+            if(field[1] == DataType.DATE)
+                marker = CustomFieldDateMarker.class;
+            else if(field[1] == DataType.DATE_TIME)
+                marker = CustomFieldDateTimeMarker.class;
+            else
+                marker = CustomFieldMarker.class;
+            customFields.put((String) field[0], marker);
+        });
         return customFields;
     }
 

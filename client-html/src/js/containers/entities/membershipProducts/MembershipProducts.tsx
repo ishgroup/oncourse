@@ -64,6 +64,7 @@ const Initial: MembershipProduct = {
   taxId: null,
   totalFee: 0,
   relatedSellables: [],
+  tags: [],
 };
 
 const filterGroups: FilterGroup[] = [
@@ -99,7 +100,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Sales", list: "sale", expression: "type is MEMBERSHIP AND product.id" },
 ];
 
-const manualLink = getManualLink("concessions_creatingMemberships");
+const manualLink = getManualLink("concessions-and-memberships-1");
 
 const preformatBeforeSubmit = (value: MembershipProduct): MembershipProduct => {
   if (value.relatedSellables.length) {

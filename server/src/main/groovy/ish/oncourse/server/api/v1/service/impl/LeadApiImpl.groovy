@@ -20,11 +20,6 @@ class LeadApiImpl implements LeadApi {
     private LeadApiService leadApiService
 
     @Override
-    void bulkChange(DiffDTO diff) {
-        leadApiService.bulkChange(diff)
-    }
-
-    @Override
     void create(LeadDTO lead) {
         leadApiService.create(lead)
     }

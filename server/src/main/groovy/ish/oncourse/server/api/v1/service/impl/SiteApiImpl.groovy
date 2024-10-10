@@ -42,9 +42,4 @@ class SiteApiImpl implements SiteApi {
     void update(Long id, SiteDTO site) {
         entityApiService.update(id, site)
     }
-
-    @Override
-    void bulkChange(DiffDTO diff) {
-        entityApiService.bulkChange(diff)
-    }
 }

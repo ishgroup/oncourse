@@ -1,0 +1,94 @@
+databaseChangeLog:
+  - changeSet:
+      id: 135-1
+      author: dmitryL
+      preConditions:
+        - onFail: HALT
+        - not:
+            tableExists:
+              tableName: Faculty
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(200)
+              - column:
+                  name: code
+                  type: VARCHAR(128)
+              - column:
+                  name: webDescription
+                  type: LONGTEXT
+              - column:
+                  name: shortWebDescription
+                  type: LONGTEXT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: isShownOnWeb
+                  type: SMALLINT
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: modifiedOn
+                  type: datetime
+            tableName: Faculty
+        - createIndex:
+            columns:
+              - column:
+                  defaultValueComputed: 'NULL'
+                  name: willowId
+            indexName: Faculty_willowId
+            tableName: Faculty
+        - createIndex:
+            columns:
+              - column:
+                  name: code
+            indexName: Faculty_code
+            tableName: Faculty
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+            indexName: Faculty_name
+            tableName: Faculty
+  - changeSet:
+      id: 135-2
+      author: dmitryL
+      preConditions:
+        - onFail: HALT
+        - not:
+            columnExists:
+              tableName: Course
+              columnName: facultyId
+        - not:
+            foreignKeyConstraintExists:
+              tableName: Course
+              foreignKeyName: fk_Course_Faculty_Id
+      changes:
+        - addColumn:
+            tableName: Course
+            columns:
+              - column:
+                  name: facultyId
+                  type: BIGINT
+        - addForeignKeyConstraint:
+            baseColumnNames: facultyId
+            baseTableName: Course
+            constraintName: fk_Course_Faculty_Id
+            referencedColumnNames: id
+            referencedTableName: Faculty

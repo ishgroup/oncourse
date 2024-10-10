@@ -12,7 +12,7 @@
 import { LoginRequest } from "@api/model";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { darken, Grid } from "@mui/material";
+import { createStyles, darken, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -27,11 +27,10 @@ import { connect } from "react-redux";
 import { Action, Dispatch } from "redux";
 import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from "redux-form";
 import { DecoratedFormProps } from "redux-form/lib/reduxForm";
-import ishLogoSmall from "../../../images/logo_small.png";
-import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
 import {
   setLoginState
 } from "../../common/actions";
+import Logo from "../../common/components/layout/Logo";
 import { validateSingleMandatoryField } from "../../common/utils/validation";
 import { State } from "../../reducers/state";
 import { SSOProviders } from "../automation/containers/integrations/components/SSOProviders";
@@ -51,7 +50,7 @@ import { LoginState } from "./reducers/state";
 
 const FORM_NAME = "LoginForm";
 
-const styles: any = theme => ({
+const styles = createStyles(theme => ({
   loginFormWrapper: {
     maxWidth: "520px",
     display: "flex",
@@ -123,6 +122,9 @@ const styles: any = theme => ({
     backgroundColor: alpha(theme.palette.primary.main, 0.5)
   },
   sideImageWrapper: {
+    background: 'url("https://ish-oncourse-sttrianians.s3.ap-southeast-2.amazonaws.com/88d2fb9a-0141-4014-be17-9ed898197727") no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     position: "absolute",
     width: "100%",
     height: "100%",
@@ -132,23 +134,7 @@ const styles: any = theme => ({
     display: "none",
     [theme.breakpoints.up("md")]: {
       display: "block"
-    },
-    "& > iframe": {
-      position: "relative",
-      maxWidth: "100%",
-      minWidth: "100%",
-      minHeight: "100%",
-      top: "50%",
-      left: "50%",
-      transform: "translateX(-50%) translateY(-50%)",
-      objectFit: "cover"
     }
-  },
-  splashIframe: {
-    width: "100%",
-    height: "100%",
-    border: "0",
-    overflow: "hidden",
   },
   loginFormRight: {
     position: "relative"
@@ -180,7 +166,7 @@ const styles: any = theme => ({
       }
     }
   }
-});
+}));
 
 const validatePasswordConfirm = (value, allValues) => {
   if (!value) {
@@ -434,13 +420,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
           <Grid item xs={1} md={6} />
           <Grid item xs={12} md={6} className={classes.loginFormRight}>
             <Slide direction="right" in timeout={300}>
-              <span className={classes.sideImageWrapper}>
-                <iframe
-                  src="https://www.ish.com.au/oncourse-news/splash.html"
-                  title="splash image"
-                  className={classes.splashIframe}
-                />
-              </span>
+              <span className={classes.sideImageWrapper} />
             </Slide>
             <Slide direction="left" in timeout={300}>
               <div className={classes.loginFormWrapper}>
@@ -453,7 +433,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                     <Grid container columnSpacing={3} alignItems="center">
                       <Grid item xs={12} sm={9}>
                         <div className={classes.logoWrapper}>
-                          <img src={onCourseLogoDark} height={55} draggable={false} alt="Logo" />
+                          <Logo />
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={3} className={classes.versionText}>
@@ -784,8 +764,8 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                         ish group. All rights reserved.
                       </div>
                     </div>
-                    <div>
-                      <img src={ishLogoSmall} className={classes.footerIshLogo} alt="" />
+                    <div className={classes.footerIshLogo}>
+                      <Logo small />
                     </div>
                   </Grid>
                 </Grid>

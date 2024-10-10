@@ -16,6 +16,9 @@ import {
   EditInPlaceDateTimeField,
   EditInPlaceField,
   EditInPlaceMoneyField,
+  mapSelectItems,
+  SelectItemDefault,
+  sortDefaultSelectItems,
   StyledCheckbox
 } from "ish-ui";
 import React, { useMemo, useState } from "react";
@@ -24,7 +27,7 @@ import { change, Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
 import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { reorder } from "../../../../../common/utils/DnD";
 import { useAppSelector } from "../../../../../common/utils/hooks";
 import {
   validateEmail,
@@ -33,7 +36,6 @@ import {
   validateUniqueNamesInArray,
   validateURL
 } from "../../../../../common/utils/validation";
-import { SelectItemDefault } from "../../../../../model/entities/common";
 import ListMapRenderer from "./ListMapRenderer";
 
 const mapEntityType = (entityType: EntityType) => {
@@ -64,18 +66,10 @@ const EntityTypes = Object.keys(EntityType)
 EntityTypes.sort(sortDefaultSelectItems);
 
 const DataTypes = Object.keys(DataType)
-  .filter(val => !['Record', 'File', 'Message template'].includes(val))
+  .filter(val => !['Record', 'Message template'].includes(val))
   .map(mapSelectItems);
 
 DataTypes.sort(sortDefaultSelectItems);
-
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
 
 const preventStarEnter = e => {
   if (e.key.match(/\*/)) {
@@ -209,9 +203,36 @@ const ExpandableCustomFields = React.memo<any>(props => {
     isListOrMap,
     expanded,
     onChange,
+    form,
+    dispatch
   } = props;
 
   const isExpanded = useMemo(() => ((expanded !== null && [index].includes(expanded)) || !field.id || !field.name), [expanded, field]);
+
+  const onEntityChange = () => {
+    dispatch(change(form, `${item}.dataType`, null));
+  };
+
+  const onTypeChange = type => {
+    if (type === 'Portal subdomain' && field.entityType !== 'Contact') {
+      dispatch(change(form, `${item}.entityType`, 'Contact'));
+    }
+    onDataTypeChange(type);
+  };
+
+  const availableDataTypes = useMemo(() => {
+    if (field.entityType === "WaitingList") {
+      return DataTypes.filter(t => t.label !== 'File');
+    }
+    return DataTypes;
+  }, [field.entityType]);
+  
+  const availableEntities = useMemo(() => {
+    if (field.dataType === 'Portal subdomain') {
+      return EntityTypes.filter(t => t.value === 'Contact');
+    }
+    return EntityTypes;
+  }, [field.dataType]);
 
   return (
     <ExpandableItem
@@ -273,7 +294,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="text"
               name={`${item}.fieldKey`}
               label="Custom field key"
-                            disabled={!!field.id}
+              disabled={!!field.id}
               className={classes.field}
               required
             />
@@ -284,11 +305,11 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="select"
               name={`${item}.dataType`}
               label="Data Type"
-              items={DataTypes}
+              items={availableDataTypes}
               disabled={!!field.id}
-              onChange={onDataTypeChange}
               debounced={false}
               className={classes.field}
+              onChange={onTypeChange}
               required
             />
           </Grid>
@@ -299,9 +320,10 @@ const ExpandableCustomFields = React.memo<any>(props => {
               name={`${item}.entityType`}
               selectLabelCondition={entityTypeCondition}
               label="Record Type"
-              items={EntityTypes}
+              items={availableEntities}
               disabled={!!field.id}
               className={classes.field}
+              onChange={onEntityChange}
               sort
               required
             />
@@ -384,7 +406,6 @@ const renderCustomFields = React.memo<any>(props => {
         value.splice(otherIndex, 1);
       }
     }
-
     dispatch(change(form, `${fields.name}[${index}].defaultValue`, value.length ? JSON.stringify(value) : null));
   };
 
@@ -426,6 +447,8 @@ const renderCustomFields = React.memo<any>(props => {
                           isListOrMap={isListOrMap}
                           expanded={expanded}
                           onChange={() => setExpanded(expanded === index ? null : index)}
+                          dispatch={dispatch}
+                          form={form}
                         />
                       </Card>
                     </div>

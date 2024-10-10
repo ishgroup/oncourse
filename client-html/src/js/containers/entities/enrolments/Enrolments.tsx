@@ -15,33 +15,33 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import { openInternalLink, StyledCheckbox } from "ish-ui";
+import { AnyArgFunction, openInternalLink, StyledCheckbox } from "ish-ui";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormInitialValues, getFormValues, initialize } from "redux-form";
 import { checkPermissions } from "../../../common/actions";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import ListView from "../../../common/components/list-view/ListView";
-import EntityService from "../../../common/services/EntityService";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { OutcomeChangeField } from "../../../model/entities/Enrolment";
 import { State } from "../../../reducers/state";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
 import { getGradingTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
 import { updateEntityRecord } from "../common/actions";
-import OutcomeService from "../outcomes/services/OutcomeService";
+import { processOtcomeChangeFields, setOtcomeChangeFields } from "./actions";
 import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
 import EnrolmentEditView from "./components/EnrolmentEditView";
+import { getOutcomeCommonFieldName, outcomeCommonFields } from "./constants";
 
 const nameCondition = (val: Enrolment) => val.studentName;
 
-const manualLink = getManualLink("processingEnrolments");
+const manualLink = getManualLink("terms-and-definitions");
 
 interface EnrolmentsProps {
   onInit?: (initial: Enrolment) => void;
@@ -58,6 +58,10 @@ interface EnrolmentsProps {
   initialValues?: Enrolment;
   values?: Enrolment;
   dispatch?: Dispatch;
+  changedOutcomeFields?: OutcomeChangeField[],
+  setChangedFields?: AnyArgFunction<OutcomeChangeField[]>
+  processOtcomeChangeFields?: AnyArgFunction<number[]>
+  selection?: number[];
 }
 
 const Initial: Enrolment = {
@@ -107,13 +111,14 @@ const filterGroups: FilterGroup[] = [
       {
         name: "Current active",
         expression:
-          "((courseClass.endDateTime == null) or (courseClass.endDateTime >= today)) and "
-          + "((status == QUEUED) or (status == IN_TRANSACTION) or (status == SUCCESS))",
+          "(((status == QUEUED) or (status == IN_TRANSACTION))" +
+          " and ((courseClass.endDateTime == null) or (courseClass.endDateTime >= today))) or" +
+          "((status == SUCCESS) and (isClassCompleted is false))",
         active: true
       },
       {
         name: "Completed active",
-        expression: "(courseClass.endDateTime != null) and (courseClass.endDateTime < today) and (status == SUCCESS)",
+        expression: "isClassCompleted is true",
         active: false
       },
       {
@@ -148,27 +153,6 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 ];
 
-const defaultFields: Array<keyof Enrolment> = ["fundingSource", "vetFundingSourceStateID", "vetPurchasingContractID", "vetPurchasingContractScheduleID"];
-
-const getDefaultFieldName = (field: keyof Enrolment) => {
-  switch (field) {
-    case "fundingSource": {
-      return "Default funding source national";
-    }
-    case "vetFundingSourceStateID": {
-      return "Default funding source - State";
-    }
-    case "vetPurchasingContractID": {
-      return "Default purchasing contract identifier";
-    }
-    case "vetPurchasingContractScheduleID": {
-      return "Purchasing Contract Schedule Identifier";
-    }
-    default:
-      return "";
-  }
-};
-
 const Enrolments: React.FC<EnrolmentsProps> = props => {
   const {
     onInit,
@@ -184,12 +168,14 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     hasQePermissions,
     initialValues,
     values,
-    dispatch
+    changedOutcomeFields,
+    setChangedFields,
+    processOtcomeChangeFields,
+    selection
   } = props;
 
   const [initNew, setInitNew] = useState(false);
   const [createMenuOpened, setCreateMenuOpened] = useState(false);
-  const [changedFields, setChangedFields] = useState([]);
 
   useEffect(() => {
     getFilters();
@@ -205,14 +191,6 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
     if (initNew && customFieldTypes && !customFieldTypesUpdating) {
       setInitNew(false);
       const customFields = {};
-      // customFieldTypes.forEach((field: CustomFieldType) => {
-      //   if (field.mandatory) {
-      //     customFields[field.fieldKey] = null;
-      //   }
-      //   if (field.defaultValue && !field.defaultValue.match(/[;*]/g)) {
-      //     customFields[field.fieldKey] = field.defaultValue;
-      //   }
-      // });
       onInit({ ...Initial, customFields });
     }
   }, [initNew, customFieldTypes, customFieldTypesUpdating]);
@@ -237,11 +215,11 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
   const onBeforeSave = ({ onSaveArgs }) => {
     const changedValues = [];
 
-    defaultFields.forEach(f => {
+    outcomeCommonFields.forEach(f => {
       if (initialValues[f] !== onSaveArgs[1][f]) {
         changedValues.push({
           name: f,
-          label: getDefaultFieldName(f),
+          label: getOutcomeCommonFieldName(f),
           value: onSaveArgs[1][f],
           update: false
         });
@@ -256,32 +234,19 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
   };
 
   const onSaveOutcomeFieldChange = (value, index) => {
-    const updated = [...changedFields];
+    const updated = [...changedOutcomeFields];
     updated[index].update = value;
     setChangedFields(updated);
   };
 
   const onConfirm = () => {
-    const outcomeFieldsToUpdate = changedFields.filter(f => f.update);
+    processOtcomeChangeFields(values?.id ? [values.id] : selection);
 
-    if (outcomeFieldsToUpdate.length && values && values.id) {
-      EntityService.getPlainRecords("Outcome", "id", `enrolment.id is ${values.id}`)
-        .then(res => {
-          const ids = res.rows.map(r => Number(r.id));
-          return OutcomeService.bulkChange({
-            ids,
-            diff: outcomeFieldsToUpdate.reduce((p, o) => {
-              p[o.name] = o.value;
-              return p;
-            }, {})
-          });
-        })
-        .catch(res => instantFetchErrorHandler(dispatch, res, "Failed to update related outcomes"));
+    if (values?.id) {
+      onSave(values.id, values);
     }
 
     setChangedFields([]);
-
-    if (values && values.id) onSave(values.id, values);
   };
 
   return (
@@ -336,32 +301,32 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
         </MenuItem>
       </Menu>
 
-      <Dialog open={Boolean(changedFields.length)} disableEscapeKeyDown>
+      <Dialog open={Boolean(changedOutcomeFields.length)} disableEscapeKeyDown>
         <DialogTitle classes={{
           root: "pb-0"
         }}
         >
-          You have updated the following default fields for the selected enrolment:
+          You have updated the following enrolment default fields:
         </DialogTitle>
-        <DialogContent>
-          {
-            changedFields.map((f, i) => (
-              <div>
+        <DialogContent className="pb-0">
+          <div className="mt-2 mb-2">
+            {
+              changedOutcomeFields.map((f, i) => (
                 <FormControlLabel
                   key={f.name}
-                  className="checkbox mb-3 mt-3"
+                  className="checkbox"
                   control={(
                     <StyledCheckbox
-                      checked={changedFields[i].update}
+                      checked={changedOutcomeFields[i].update}
                       onChange={(e, checked) => onSaveOutcomeFieldChange(checked, i)}
                     />
                   )}
-                  label={changedFields[i].label}
+                  label={changedOutcomeFields[i].label}
                 />
-              </div>
-            ))
-          }
-          <Typography className="mt-1" variant="caption" color="textSecondary">
+              ))
+            }
+          </div>
+          <Typography variant="caption" color="textSecondary">
             To update these same fields in any associated outcomes, click the checkbox next to each field.
           </Typography>
           <Typography variant="caption" color="textSecondary" gutterBottom paragraph>
@@ -372,7 +337,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
             NOTE: This action will override any values previously set in these outcomes.
           </Typography>
         </DialogContent>
-        <DialogActions className="pr-2 pb-2">
+        <DialogActions>
           <Button color="primary" onClick={onConfirm}>
             OK
           </Button>
@@ -387,7 +352,9 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(LIST_EDIT_VIEW_FORM_NAME)(state),
   customFieldTypesUpdating: state.customFieldTypes.updating,
   customFieldTypes: state.customFieldTypes.types["Enrolment"],
-  hasQePermissions: state.access.ENROLMENT_CREATE
+  hasQePermissions: state.access.ENROLMENT_CREATE,
+  changedOutcomeFields: state.enrolments.changedOutcomeFields,
+  selection: state.list.selection
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -404,7 +371,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onSave: (id: number, enrolment: Enrolment) => dispatch(updateEntityRecord(id, "Enrolment", enrolment)),
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
-  }
+  },
+  setChangedFields: fields => dispatch(setOtcomeChangeFields(fields)),
+  processOtcomeChangeFields: ids => dispatch(processOtcomeChangeFields(ids))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Enrolments);

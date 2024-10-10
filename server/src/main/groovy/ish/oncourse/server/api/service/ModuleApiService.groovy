@@ -20,7 +20,9 @@ import org.apache.cayenne.query.SelectById
 
 import java.time.ZoneOffset
 
-class ModuleApiService extends EntityApiService<ModuleDTO, Module, ModuleDao>{
+import static ish.oncourse.server.api.v1.model.ModuleCreditPointsStatusDTO.*
+
+class ModuleApiService extends EntityApiService<ModuleDTO, Module, ModuleDao> {
 
     static BidiMap<ModuleType, ModuleTypeDTO> bidiModuleType = new BidiMap<>()
 
@@ -41,6 +43,7 @@ class ModuleApiService extends EntityApiService<ModuleDTO, Module, ModuleDao>{
         ModuleDTO dto = new ModuleDTO()
         dto.id = module.id
         dto.creditPoints = module.creditPoints
+        dto.creditPointsStatus = module.creditPointsStatus
         dto.expiryDays = module.expiryDays
         dto.fieldOfEducation = module.fieldOfEducation
         dto.isCustom = module.isCustom
@@ -70,7 +73,23 @@ class ModuleApiService extends EntityApiService<ModuleDTO, Module, ModuleDao>{
         module.isOffered = dto.isOffered
         module.nominalHours = dto.nominalHours
         module.specialization = dto.specialization?.trim()
+
         module.creditPoints = dto.creditPoints
+        switch (dto.creditPointsStatus) {
+            case DISABLED:
+                module.isCreditPointsOffered = false
+                module.isCreditPointsShownOnWeb = false
+                break
+            case ACTIVE_BUT_NOT_VISIBLE_ONLINE:
+                module.isCreditPointsShownOnWeb = false
+                module.isCreditPointsOffered = true
+                break
+            case ACTIVE:
+                module.isCreditPointsShownOnWeb = true
+                module.isCreditPointsOffered = true
+                break
+        }
+
         module.expiryDays = dto.expiryDays
         module.type = bidiModuleType.getByValue(dto.type)
         module
@@ -128,6 +147,10 @@ class ModuleApiService extends EntityApiService<ModuleDTO, Module, ModuleDao>{
             }
 
         }
+        if (dto.creditPointsStatus == null) {
+            validator.throwClientErrorException(dto.id, 'creditPointsStatus', "Credit points status is required.")
+        }
+
 
         if ((dto.expiryDays != null) && (dto.expiryDays <= 0)) {
             validator.throwClientErrorException(dto.id, 'isOffered', "Expiry days should be greater than 0.")

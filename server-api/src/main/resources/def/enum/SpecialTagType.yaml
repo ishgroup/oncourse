@@ -1,0 +1,5 @@
+type: string
+description: special tag types, tags with that can be created on client
+enum:
+  - Class extended types
+  - Course extended types

@@ -54,7 +54,8 @@ class UserRoleFunctions {
             SPECIAL_SMS_MASS,
             SPECIAL_CHANGE_ADMINISTRATION_CENTRE,
             SPECIAL_TWO_FACTOR_AUTHENTICATION,
-            VET_COURSE
+            VET_COURSE,
+            SPECIAL_EDIT_EXTENDED_TAGS
     ]
 
     static UserRoleDTO toRestUserRole(ACLRole aclRole) {

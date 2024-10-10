@@ -32,7 +32,7 @@ import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
 import ExecuteImportModal from "../components/ExecuteImportModal";
 
-const manualUrl = getManualLink("advancedSetup_Import");
+const manualUrl = getManualLink("importing");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps {
@@ -220,6 +220,27 @@ const ImportTemplatesForm = React.memo<Props>(
             )}
           >
             <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={12} sm={9}>
+                <FormField
+                  type="multilineText"
+                  name="shortDescription"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Short description"
+                />
+                <Typography variant="caption" fontSize="13px">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    placeholder="Description"
+                    fieldClasses={{
+                      text: "fw300 fsInherit"
+                    }}
+                  />
+                </Typography>
+              </Grid>
               <FieldArray
                 name="options"
                 itemsType="component"
@@ -252,14 +273,6 @@ const ImportTemplatesForm = React.memo<Props>(
                   disabled={!isNew}
                   className="mb-2"
                   required
-                />
-
-                <FormField
-                  type="text"
-                  label="Description"
-                  name="description"
-                  disabled={isInternal}
-                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>

@@ -11,13 +11,13 @@ import {
   ClassCost,
   ClassFundingSource,
   CourseClass,
+  CourseClassType,
   DeliveryMode,
   Enrolment,
   Outcome,
   TableModel
 } from "@api/model";
-import { Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
 import { format } from "date-fns";
 import {
   appendTimezone,
@@ -30,7 +30,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getFormInitialValues, getFormValues, initialize } from "redux-form";
+import { FormErrors, getFormInitialValues, getFormValues, initialize } from "redux-form";
 import { checkPermissions, getUserPreferences } from "../../../common/actions";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
 import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
@@ -70,9 +70,8 @@ import { State } from "../../../reducers/state";
 import { getActiveFundingContracts } from "../../avetmiss-export/actions";
 import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import PreferencesService from "../../preferences/services/PreferencesService";
+import { getEntitySpecialTags } from "../../tags/actions";
 import { getPlainAccounts } from "../accounts/actions";
-import EnrolmentService from "../enrolments/services/EnrolmentService";
-import OutcomeService from "../outcomes/services/OutcomeService";
 import { getVirtualSites } from "../sites/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { getCourseClassTags, updateCourseClass } from "./actions";
@@ -151,7 +150,7 @@ const Initial: CourseClassExtended = {
   initialDetExport: null,
   isActive: true,
   isCancelled: false,
-  isDistantLearningCourse: false,
+  type: "With Sessions",
   isShownOnWeb: false,
   maxStudentAge: null,
   maximumDays: null,
@@ -218,13 +217,18 @@ const filterGroups: FilterGroup[] = [
       },
       {
         name: "Self paced classes",
-        expression: "isDistantLearningCourse is true and isCancelled is false",
+        expression: "type is DISTANT_LEARNING and isCancelled is false",
+        active: true
+      },
+      {
+        name: "Hybrid classes",
+        expression: "type is HYBRID and isCancelled is false",
         active: true
       },
       {
         name: "Unscheduled classes",
         expression:
-          "(startDateTime is null or endDateTime is null) and isDistantLearningCourse is false and isCancelled is false",
+          "(startDateTime is null or endDateTime is null) and type is WITH_SESSIONS and isCancelled is false",
         active: false
       },
       {
@@ -354,30 +358,32 @@ const formatSelfPaced = (v, row, columns) => {
     .findIndex(c => c.attribute === "clientTimeZoneId");
   const selfPacedIndex = columns
     .filter(c => c.visible === true || c.system === true)
-    .findIndex(c => c.attribute === "isDistantLearningCourse");
+    .findIndex(c => c.attribute === "type");
 
   let timezone = null;
-  let isSelfPaced = false;
 
   if (timezoneIndex !== -1) {
     timezone = row.values[timezoneIndex];
   }
 
+  const dateValue =  v
+    ? format(timezone ? appendTimezone(new Date(v), timezone) : new Date(v), III_DD_MMM_YYYY_HH_MM)
+    : "";
+
   if (selfPacedIndex !== -1) {
-    isSelfPaced = row.values[selfPacedIndex] === "true";
+    const type: CourseClassType = row.values[selfPacedIndex];
+
+    if (type === "Distant Learning" ) return "Self paced";
+    if (type === "Hybrid") return  dateValue || "Hybrid";
   }
 
-  return isSelfPaced
-    ? "Self paced"
-    : v
-      ? format(timezone ? appendTimezone(new Date(v), timezone) : new Date(v), III_DD_MMM_YYYY_HH_MM)
-      : "";
+  return dateValue;
 };
 
 const formatSelfPacedSessions = (v, row, columns) => {
   const selfPacedIndex = columns
     .filter(c => c.visible === true || c.system === true)
-    .findIndex(c => c.attribute === "isDistantLearningCourse");
+    .findIndex(c => c.attribute === "type");
 
   let isSelfPaced = false;
 
@@ -444,6 +450,16 @@ const getDefaultFieldName = (field: keyof CourseClass) => {
   }
 };
 
+const validate = (values: CourseClassExtended) => {
+  const errors: FormErrors<CourseClassExtended> = {};
+
+  if (values.type === 'Hybrid' && !values.sessions.length) {
+    errors.sessions = "At least one timetable session must exist";
+  }
+
+  return errors;
+};
+
 const CourseClasses: React.FC<CourseClassesProps> = props => {
   const {
     onFirstRender,
@@ -477,15 +493,16 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         flowType: "Income",
         repetitionType: "Per enrolment"
       };
+
       const custom: CourseClassExtended = {
         ...populatedInitial,
         ...updatedInitial || {},
         budget: [studentFee],
         minimumPlaces: normalizeNumberToZero(userPreferences[DEFAULT_MINIMUM_PLACES_KEY]),
         maximumPlaces: normalizeNumberToZero(userPreferences[DEFAULT_MAXIMUM_PLACES_KEY]),
-        deliveryMode: DeliveryMode[userPreferences[DEFAULT_DELIVERY_MODE_KEY]],
+        deliveryMode: DeliveryMode[userPreferences[DEFAULT_DELIVERY_MODE_KEY]] || Initial.deliveryMode,
         startDateTime: new Date().toISOString(),
-        fundingSource: ClassFundingSource[userPreferences[DEFAULT_FUNDING_SOURCE_KEY]]
+        fundingSource: ClassFundingSource[userPreferences[DEFAULT_FUNDING_SOURCE_KEY]] || Initial.fundingSource
       };
 
       dispatch(setListEditRecord(custom));
@@ -578,7 +595,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
-            return OutcomeService.bulkChange({
+            return EntityService.bulkChange('Outcome', {
               ids,
               diff: outcomeFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;
@@ -594,7 +611,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
 
-            return EnrolmentService.bulkChange({
+            return EntityService.bulkChange('Enrolment', {
               ids,
               diff: enrolmentFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;
@@ -621,6 +638,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         }}
         editViewProps={{
           manualLink,
+          validate,
           nameCondition,
           asyncValidate,
           asyncBlurFields: [
@@ -734,6 +752,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onFirstRender: () => {
+    dispatch(getEntitySpecialTags('CourseClass'));
     dispatch(getFilters("CourseClass"));
     dispatch(getCourseClassTags());
     dispatch(

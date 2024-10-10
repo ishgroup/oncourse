@@ -8,6 +8,7 @@ import DeleteForever from "@mui/icons-material/DeleteForever";
 import Grid from "@mui/material/Grid";
 import { withStyles } from "@mui/styles";
 import createStyles from "@mui/styles/createStyles";
+import { sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -16,12 +17,11 @@ import AppBarActions from "../../../../../common/components/appBar/AppBarActions
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
 
-const manualUrl = getManualLink("dataCollection");
+const manualUrl = getManualLink("data-collection-forms-and-rules");
 
 export const DATA_COLLECTION_RULES_FORM: string = "CollectionRulesForm";
 

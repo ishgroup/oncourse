@@ -29,7 +29,7 @@ import {
 import { createStyles, withStyles } from "@mui/styles";
 import clsx from "clsx";
 import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
-import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, YYYY_MM_DD_MINUSED } from "ish-ui";
+import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, YYYY_MM_DD_MINUSED, validateMinMaxDate } from "ish-ui";
 import React from "react";
 import posed from "react-pose";
 import { connect } from "react-redux";
@@ -39,7 +39,6 @@ import { interruptProcess } from "../../../common/actions";
 import FormField from "../../../common/components/form/formFields/FormField";
 import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { validateMinMaxDate } from "../../../common/utils/validation";
 import { AvetmissExportSettingsReqired } from "../../../model/preferences";
 import { State } from "../../../reducers/state";
 import {
@@ -188,7 +187,7 @@ const todayMonth = today.getMonth();
 
 const formated = setMonth(new Date(), todayMonth);
 
-const manualUrl = getManualLink("AVETMISS");
+const manualUrl = getManualLink("avetmiss-reporting");
 
 // Australian quarters
 const getCurrentQuarter = () => {
