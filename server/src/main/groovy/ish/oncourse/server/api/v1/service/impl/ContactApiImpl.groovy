@@ -14,6 +14,8 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ContactApiService
+import ish.oncourse.server.messaging.UnsubscribeService
+
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.toRestContactRelationType
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.updateContactRelation
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.validateForDelete
@@ -41,6 +43,9 @@ class ContactApiImpl implements ContactApi {
     @Inject
     private ContactApiService contactApiService
 
+    @Inject
+    private UnsubscribeService unsubscribeService
+
     @Override
     List<Long> createContact(ContactDTO contact) {
         List<Long> id = []
@@ -56,6 +61,11 @@ class ContactApiImpl implements ContactApi {
     @Override
     void removeContact(Long id) {
         contactApiService.remove(id)
+    }
+
+    @Override
+    void unsubscribe(String link) {
+        unsubscribeService.unsubscribe(link)
     }
 
     @Override

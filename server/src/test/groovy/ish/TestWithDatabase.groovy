@@ -17,6 +17,7 @@ import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.license.LicenseModule
+import ish.oncourse.server.messaging.SMTPModule
 import ish.oncourse.server.modules.ApiCayenneLayerModule
 import ish.util.AccountUtil
 import org.apache.cayenne.Persistent
@@ -83,10 +84,11 @@ abstract class TestWithDatabase extends TestWithBootique {
 
     protected void createInjectors() throws Exception {
         BootiqueTestFactory.Builder builder = testFactory
-                .app("--config=classpath:application-test.yml")
+                .app("--config=classpath:application-test.yml", "--config=classpath:smtp.yml")
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
                 .module(LicenseModule.class)
+                .module(SMTPModule.class)
                 .module(new Module() {
                     @Override
                     void configure(Binder binder) {

@@ -13,6 +13,7 @@ import javax.mail.MessagingException
  * Manual test of sending email through our implementation
  */
 @CompileStatic
+//@TODO: need to be moved to integration tests!
 class MailDeliveryServiceTest {
 
     //need to set all these parameters(could be extended with additional parameters)
@@ -21,6 +22,7 @@ class MailDeliveryServiceTest {
     private static final String SMTP_PASSWORD = 'example'
     private static final boolean SMTP_START_TLS = true
     private static final int SMTP_PORT = 25
+    private static final int SMTP_EMAIL_BATCH = 20
 
     private static final String ANGEL_VERSION = 'test_development'
 
@@ -49,8 +51,9 @@ class MailDeliveryServiceTest {
         Mockito.when(smtpService.userName).thenReturn(SMTP_USERNAME)
         Mockito.when(smtpService.password).thenReturn(SMTP_PASSWORD)
         Mockito.when(smtpService.port).thenReturn(SMTP_PORT)
+        Mockito.when(smtpService.email_batch).thenReturn(SMTP_EMAIL_BATCH)
         MailSession mailSession = new MailSession(smtpService)
-        service = new MailDeliveryService(smtpService, mailSession, ANGEL_VERSION)
+        service = new MailDeliveryService(smtpService, mailSession, null, null, ANGEL_VERSION)
         fillTestParameters()
     }
 
