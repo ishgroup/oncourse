@@ -5,6 +5,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/course'
       * configure headers = { Authorization: 'admin' }
       * url 'https://127.0.0.1:8182/a/v1'
       * def ishPath = 'list/entity/course'
+      * def ishPatchPath = 'list/plain/bulkChange?entity=Course'
       * def ishPathLogin = 'login'
       * def ishPathList = 'list/plain'
       
@@ -13,7 +14,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/course'
 
     Scenario: (+) Hide/Show Course on website by admin
 
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["4","3"],"diff":{"isShownOnWeb":"false"}}
         When method PATCH
         Then status 204
@@ -30,7 +31,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/course'
         And match $.status == "Enabled"
 
 #       <--->  Scenario have been finished. Now change back statuses:
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["4","3"],"diff":{"isShownOnWeb":"true"}}
         When method PATCH
         Then status 204
@@ -55,7 +56,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/course'
         
 #       <--->
 
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["4","3"],"diff":{"isShownOnWeb":"false"}}
         When method PATCH
         Then status 204
@@ -72,7 +73,7 @@ Feature: Main feature for all PATCH requests with path 'list/entity/course'
         And match $.status == "Enabled"
 
 #       <--->  Scenario have been finished. Now change back statuses:
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["4","3"],"diff":{"isShownOnWeb":"true"}}
         When method PATCH
         Then status 204
@@ -97,8 +98,8 @@ Feature: Main feature for all PATCH requests with path 'list/entity/course'
         
 #       <--->
 
-        Given path ishPath
+        Given path ishPatchPath
         And request {"ids":["4","3"],"diff":{"isShownOnWeb":"false"}}
         When method PATCH
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to edit course. Please contact your administrator"
+        And match $.errorMessage == "Sorry, you have no permissions to edit this entity. Please contact your administrator"

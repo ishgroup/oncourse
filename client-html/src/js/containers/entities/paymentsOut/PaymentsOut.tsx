@@ -33,7 +33,7 @@ import AddPaymentOutEditView from "./components/AddPaymentOutEditView";
 import PaymentsOutEditView from "./components/PaymentOutEditView";
 import { PaymentOutModel } from "./reducers/state";
 
-const manualLink = getManualLink("processingEnrolments_PaymentOut");
+const manualLink = getManualLink("refunding-a-credit-note-via-payment-out");
 
 const nameCondition = (paymentOut: PaymentOutModel) => paymentOut.type;
 

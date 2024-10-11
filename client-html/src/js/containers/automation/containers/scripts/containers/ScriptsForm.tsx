@@ -59,7 +59,7 @@ import TriggerCardContent from "../components/cards/TriggerCardContent";
 import ExecuteScriptModal from "../components/ExecuteScriptModal";
 import { getMessageComponent, getQueryComponent, getReportComponent, getScriptComponent } from "../constants";
 
-const manualUrl = getManualLink("scripts");
+const manualUrl = getManualLink("navigating-the-automations-view-and-library");
 const getAuditsUrl = (id: number) => `audit?search=~"Script" and entityId == ${id}`;
 
 const styles = (theme: AppTheme) =>

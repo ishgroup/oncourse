@@ -215,7 +215,7 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
   <Slide direction="up" ref={ref} {...props as any} mountOnEnter unmountOnExit />
 ));
 
-const manualUrl = getManualLink("messages");
+const manualUrl = getManualLink("sending-messages");
 
 const EntitiesToMessageTemplateEntitiesMap = {
   Invoice: ["Contact", "Invoice", "AbstractInvoice"],

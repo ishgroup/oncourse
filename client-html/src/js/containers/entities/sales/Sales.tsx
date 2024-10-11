@@ -100,7 +100,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Invoice", list: "invoice", expression: "invoiceLines.productItems.id" }
 ];
 
-const manualLink = getManualLink("sales");
+const manualLink = getManualLink("navigating-the-sales-list-window");
 
 const setRowClasses = ({ displayStatus }: { displayStatus: ProductItemStatus }) => {
   if (['Credited', 'Redeemed', 'Delivered'].includes(displayStatus)) return "text-op065";

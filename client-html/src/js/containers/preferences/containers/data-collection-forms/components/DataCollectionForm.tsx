@@ -47,7 +47,7 @@ import {
 import CollectionFormFieldsRenderer from "./CollectionFormFieldsRenderer";
 import CollectionFormFieldTypesMenu from "./CollectionFormFieldTypesMenu";
 
-const manualUrl = getManualLink("dataCollection");
+const manualUrl = getManualLink("data-collection-forms-and-rules");
 
 export const DATA_COLLECTION_FORM: string = "DataCollectionForm";
 

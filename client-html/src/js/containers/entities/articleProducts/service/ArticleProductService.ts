@@ -1,4 +1,4 @@
-import { ArticleProduct, ArticleProductApi, Diff } from "@api/model";
+import { ArticleProduct, ArticleProductApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class ArticleProductService {
@@ -14,10 +14,6 @@ class ArticleProductService {
 
   public createArticleProduct(articleProduct: ArticleProduct): Promise<any> {
     return this.articleProductApi.create(articleProduct);
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.articleProductApi.bulkChange(diff);
   }
 }
 

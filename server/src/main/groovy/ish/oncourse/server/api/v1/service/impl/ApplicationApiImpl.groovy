@@ -42,8 +42,4 @@ class ApplicationApiImpl implements ApplicationApi {
         entityService.update(id, application)
     }
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        entityService.bulkChange(diff)
-    }
 }

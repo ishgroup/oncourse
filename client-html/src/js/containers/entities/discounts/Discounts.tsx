@@ -89,7 +89,7 @@ const customColumnFormats = {
   validTo: formatDiscountDate
 };
 
-const manualLink = getManualLink("discounts");
+const manualLink = getManualLink("introduction-to-discounts");
 
 class Discounts extends React.PureComponent<any, any> {
   componentDidMount() {
