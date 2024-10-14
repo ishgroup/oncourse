@@ -438,6 +438,8 @@
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
 		<db-attribute name="minimumSessionsToComplete" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="portalDocAccessStart" type="TIMESTAMP"/>
+		<db-attribute name="portalDocAccessEnd" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="CourseClassPaymentPlanLine">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -2169,6 +2171,8 @@
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
 		<obj-attribute name="minimumSessionsToComplete" type="java.lang.Integer" db-attribute-path="minimumSessionsToComplete"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="portalDocAccessStart" type="java.util.Date" db-attribute-path="portalDocAccessStart"/>
+		<obj-attribute name="portalDocAccessEnd" type="java.util.Date" db-attribute-path="portalDocAccessEnd"/>
 	</obj-entity>
 	<obj-entity name="CourseClassAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.CourseClassAttachmentRelation" clientClassName="ish.oncourse.cayenne.CourseClassAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "CourseClass"]]></qualifier>
