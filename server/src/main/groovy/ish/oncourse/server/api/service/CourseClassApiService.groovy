@@ -352,6 +352,9 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (dto.type == CourseClassTypeDTO.HYBRID && dto.endDateTime == null) {
             validator.throwClientErrorException(id, "endDateTime", "End date field is required for hybrid class")
         }
+
+        if(dto.type == CourseClassTypeDTO.HYBRID && (dto.portalDocAccessStart || dto.portalDocAccessEnd))
+            validator.throwClientErrorException(id, "portalDocAccess", "Hybrid class cannot have doc control fields")
     }
 
     @Override
