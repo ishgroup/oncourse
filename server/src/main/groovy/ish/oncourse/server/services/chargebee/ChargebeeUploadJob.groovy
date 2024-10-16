@@ -24,6 +24,7 @@ import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.services.chargebee.property.ChargebeePropertyProcessor
 import ish.oncourse.server.services.chargebee.property.ChargeebeeProcessorFactory
 import ish.oncourse.types.AuditAction
+import ish.util.LocalDateUtils
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -78,25 +79,22 @@ class ChargebeeUploadJob implements Job {
         }
 
         Calendar aCalendar = Calendar.getInstance()
-        aCalendar.add(Calendar.MONTH, -1)
-        aCalendar.set(Calendar.DATE, 1)
-        def firstDateOfPreviousMonth = aCalendar.getTime()
+        def startOfCurrentDay = LocalDateUtils.calendarToValue(aCalendar).toDate()
 
-        aCalendar.add(Calendar.MONTH, 1)
-        aCalendar.set(Calendar.DATE, 1)
-        def firstDateOfCurrentMonth = aCalendar.getTime()
+        aCalendar.add(Calendar.DAY_OF_YEAR, -1)
+        def startOfPreviousDay = LocalDateUtils.calendarToValue(aCalendar).toDate()
 
         def propertiesToUpload = ChargebeePropertyType.getItems()
                 .findAll {addons.contains(it.getDbPropertyName())}
 
-        logger.warn("Chargebee start date including $firstDateOfPreviousMonth , end date $firstDateOfCurrentMonth")
+        logger.warn("Chargebee start date including $startOfPreviousDay , end date $startOfCurrentDay")
 
         try {
             if(!chargebeeService.localMode)
                 Environment.configure(site, apiKey)
 
             propertiesToUpload.each { type ->
-                def property = ChargeebeeProcessorFactory.valueOf(type, firstDateOfPreviousMonth, firstDateOfCurrentMonth)
+                def property = ChargeebeeProcessorFactory.valueOf(type, startOfPreviousDay, startOfCurrentDay)
                 uploadUsageToSite(property)
             }
         } catch (Exception e) {
@@ -128,7 +126,9 @@ class ChargebeeUploadJob implements Job {
                 logger.warn("Item price id $itemPriceId not allowed for subscription $chargebeeService.subscriptionId and will be ignored")
                 return
             }
-            uploadToChargebee(itemPriceId, quantity.toPlainString())
+
+            if(!quantity.equals(BigDecimal.ZERO))
+                uploadToChargebee(itemPriceId, quantity.toPlainString())
         }
     }
 
