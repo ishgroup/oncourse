@@ -29,6 +29,8 @@ import org.apache.cayenne.exp.ExpressionFactory
 import org.apache.cayenne.query.Ordering
 import org.apache.cayenne.query.SelectQuery
 
+import java.time.Period
+
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
 import ish.common.types.EnrolmentStatus
@@ -232,7 +234,17 @@ class CheckoutController {
                 Integer minAge = courseClass.minStudentAge
                 Integer maxAge = courseClass.maxStudentAge
 
-                if ((minAge != null && studentAge < minAge) || (maxAge != null && studentAge > maxAge)) {
+                // Calculate the student's age at the start of future classes (only for WITH_SESSION class type). This student cannot enroll today because he is too young, but this student will have a birthday before the class starts.
+                // And when the class starts his age will pass age restrictions. Therefore, today we must allow such students to enroll in the class. And the same case with maxStudentAge. OD-18685.
+                LocalDate startDateClass = LocalDateUtils.dateToValue(courseClass.startDateTime)
+                Integer studentAgeWhenClassStarted = null
+                if (!courseClass.isHybrid && !courseClass.isDistantLearningCourse && startDateClass != null && startDateClass > LocalDate.now()) {
+                    studentAgeWhenClassStarted = Period.between(contact.getBirthDate(), startDateClass).years
+                } else {
+                    studentAgeWhenClassStarted = studentAge
+                }
+
+                if ((minAge != null && studentAgeWhenClassStarted < minAge) || (maxAge != null && studentAgeWhenClassStarted > maxAge)) {
                     result << new CheckoutValidationErrorDTO(nodeId: contact.id, itemId: dto.classId, itemType: SaleTypeDTO.CLASS, error: "$contact.fullName is unable to enrol in this class. They do not meet the age requirements")
                 }
             }
