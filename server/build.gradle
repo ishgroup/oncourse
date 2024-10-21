@@ -161,6 +161,7 @@ application {
 }
 
 compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
+compileGroovy.mustRunAfter(":api-test:copyConfig")
 
 jar {
 	manifest {
@@ -170,6 +171,7 @@ jar {
 	}
 
 	archiveFileName = 'onCourseServer.jar'
+	dependsOn "copyWebApp"
 }
 
 task expandTestConfig(type: Copy) {
