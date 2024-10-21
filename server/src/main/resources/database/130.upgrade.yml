@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 130-1
+      comment: add a specific effective from date for specific enrolments
+      author: dmitars
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Enrolment
+          not:
+            - columnExists:
+                tableName: Enrolment
+                columnName: effectiveFrom
+      changes:
+        - addColumn:
+            tableName: Enrolment
+            columns:
+              - column:
+                  name: effectiveFrom
+                  type: datetime
