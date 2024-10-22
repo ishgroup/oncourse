@@ -14,3 +14,5 @@ properties:
   relatedFieldValue:
     type: string
     description: Related field value, that allows this type to be shown
+  validationType:
+    $ref: '../enum/FieldValidationType.yaml'

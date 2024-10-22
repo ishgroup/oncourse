@@ -171,6 +171,8 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         dto.virtualSiteId = (cc.room?.site?.isVirtual ? cc.room.site.id : null) as Long
         dto.startDateTime = LocalDateUtils.dateToTimeValue(cc.startDateTime)
         dto.endDateTime =  LocalDateUtils.dateToTimeValue(cc.endDateTime)
+        dto.portalDocAccessStart = LocalDateUtils.dateToTimeValue(cc.portalDocAccessStart)
+        dto.portalDocAccessEnd = LocalDateUtils.dateToTimeValue(cc.portalDocAccessEnd)
         dto.suppressAvetmissExport = cc.suppressAvetmissExport
         dto.vetCourseSiteID = cc.vetCourseSiteID
         dto.vetFundingSourceStateID = cc.vetFundingSourceStateID
@@ -237,6 +239,9 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
                 courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
             }
         }
+
+        courseClass.portalDocAccessStart = LocalDateUtils.timeValueToDate(dto.portalDocAccessStart)
+        courseClass.portalDocAccessEnd = LocalDateUtils.timeValueToDate(dto.portalDocAccessEnd)
         courseClass.isActive = dto.isActive
         courseClass.isShownOnWeb = dto.isShownOnWeb
         courseClass.message = dto.message
@@ -347,6 +352,9 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
         if (dto.type == CourseClassTypeDTO.HYBRID && dto.endDateTime == null) {
             validator.throwClientErrorException(id, "endDateTime", "End date field is required for hybrid class")
         }
+
+        if(dto.type == CourseClassTypeDTO.HYBRID && (dto.portalDocAccessStart || dto.portalDocAccessEnd))
+            validator.throwClientErrorException(id, "portalDocAccess", "Hybrid class cannot have doc control fields")
     }
 
     @Override

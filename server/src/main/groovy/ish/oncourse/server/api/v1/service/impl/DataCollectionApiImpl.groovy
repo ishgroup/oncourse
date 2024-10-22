@@ -13,6 +13,9 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.api.v1.function.DataCollectionFunctions
+import ish.oncourse.server.api.v1.model.FieldValidationTypeDTO
+
 import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.getFieldTypes
 import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.getFormById
 import static ish.oncourse.server.api.v1.function.DataCollectionFunctions.getRuleById
@@ -61,6 +64,17 @@ class DataCollectionApiImpl implements DataCollectionApi {
         } else {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'type', "Data collection type $formType is not exist")).build())
         }
+    }
+
+    @Override
+    List<FieldValidationTypeDTO> getFieldValidationTypes(String formTypeParameter) {
+        def formType = fromValue(formTypeParameter)
+        if(!formType)
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(null, 'type', "Data collection type $formType is not exist")).build())
+
+        return DataCollectionFunctions.ALLOWED_VALIDATION_TYPES.entrySet()
+                .findAll{it.value.contains(formType)}
+                .collect {it.key}
     }
 
     @Override

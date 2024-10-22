@@ -1,0 +1,4 @@
+type: string
+description: List of field validation statuses.
+enum:
+  - RELATED_CONTACT_EMAIL
