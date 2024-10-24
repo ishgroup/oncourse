@@ -34,7 +34,7 @@ import { calculateInvoiceLineTotal } from "../utils";
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)
     .minus(discountEachExTax || 0)
     .mul(taxRate)
-    .toDecimalPlaces(2)
+    .toDecimalPlaces(2, Decimal.ROUND_DOWN)
     .toNumber();
 
 const calculateInvoiceLineTaxAndPrice = (
