@@ -47,7 +47,7 @@ const calculateInvoiceLineTaxAndPrice = (
     new Decimal(total || 0)
       .div(quantity || 1)
       .div(new Decimal(taxRate).plus(1))
-      .toDecimalPlaces(2, Decimal.ROUND_DOWN)
+      .toDecimalPlaces(2)
   );
 
   return [
