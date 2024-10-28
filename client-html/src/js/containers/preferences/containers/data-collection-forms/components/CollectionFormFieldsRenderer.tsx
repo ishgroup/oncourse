@@ -2,11 +2,10 @@ import Delete from "@mui/icons-material/Delete";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import Edit from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Collapse from "@mui/material/Collapse";
+import { Collapse, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { alpha } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import clsx from "clsx";
 import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from "ish-ui";
 import React, { useEffect, useMemo, useState } from "react";
@@ -67,7 +66,8 @@ const CollectionFormFieldsRenderer = (
     item,
     provided,
     snapshot,
-    onDeleteClick
+    onDeleteClick,
+    formType
   }
 ) => {
   const values  = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state)) as CollectionFormSchema;
@@ -178,6 +178,7 @@ const CollectionFormFieldsRenderer = (
                 item={item}
                 field={field}
                 fields={values.items}
+                formType={formType}
               />}
           </div>
         </Collapse>
