@@ -284,6 +284,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       .map(item => {
         delete item.baseType;
         delete item.parent;
+        delete item.type.formattedLabel;
         return item;
       });
     form.headings = items.filter(item => item.baseType === "heading");
@@ -326,9 +327,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
       helpText: "",
       mandatory: false
     };
-
-    delete type.formattedLabel;
-
+    
     const updated = [field, ...items];
 
     this.props.dispatch(change(DATA_COLLECTION_FORM, "items", updated));
