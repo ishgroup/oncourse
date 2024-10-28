@@ -520,7 +520,8 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
   };
   
   renderCollectionField = renderProps => {
-    return <CollectionFormFieldsRenderer {...renderProps} onDeleteClick={this.onDeleteClick} />;
+    const type = this.props.match.params.type;
+    return <CollectionFormFieldsRenderer {...renderProps} formType={type} onDeleteClick={this.onDeleteClick} />;
   };
 
   render() {
