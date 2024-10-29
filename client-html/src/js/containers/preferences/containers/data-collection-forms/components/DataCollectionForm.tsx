@@ -295,6 +295,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
         .map(item => {
           delete item.baseType;
           delete item.parent;
+          delete item.type.formattedLabel;
           return item;
         });
     });
