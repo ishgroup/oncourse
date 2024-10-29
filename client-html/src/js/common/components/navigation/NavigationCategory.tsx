@@ -93,9 +93,9 @@ const NavigationCategory = (
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
   
   const features = useMemo(() => (category 
-    ? navigation.features.filter(f => category.features.includes(f.key))
+    ? navigation.features.filter(f => category.features.includes(f.key) && !disabled[f.key])
     : []
-  ), [category]);
+  ), [category, disabled]);
 
   const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
 
@@ -133,7 +133,6 @@ const NavigationCategory = (
             e.stopPropagation();
             updateFavorites(f.key, "category");
           }}
-          disabled={disabled[f.key]}
         />
       ))}
       {category?.key === "automation" && (

@@ -34,8 +34,4 @@ class AssessmentSubmissionApiImpl implements AssessmentSubmissionApi {
         service.remove(id)
     }
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 }

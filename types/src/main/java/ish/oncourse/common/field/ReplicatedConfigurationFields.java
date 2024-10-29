@@ -10,7 +10,8 @@ package ish.oncourse.common.field;
 
 public enum ReplicatedConfigurationFields {
 
-    S3_DOCUMENT_STORAGE_LIMIT ("document.limit");
+    S3_DOCUMENT_STORAGE_LIMIT ("document.limit"),
+    BILLING_USERS("billing.users");
 
     private final String value;
 

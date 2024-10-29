@@ -157,7 +157,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       dispatch,
       rootEntity,
       isNested,
-      nestedIndex,
       nameCondition,
       showConfirm,
       manualLink,
@@ -246,7 +245,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               manualLink={manualLink}
               rootEntity={rootEntity}
               isNested={isNested}
-              nestedIndex={nestedIndex}
               form={form}
               isNew={creatingNew}
               values={values}

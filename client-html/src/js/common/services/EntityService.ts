@@ -71,7 +71,7 @@ class EntityService {
   }
 
   public getRecordsByListSearch(entity: EntityName, search: SearchQuery): Promise<DataResponse> {
-    return this.entityApi.getAll(entity, {...search, pageSize: PLAIN_LIST_MAX_PAGE_SIZE, offset: 0});
+    return this.entityApi.getAll(entity, { ...search, pageSize: PLAIN_LIST_MAX_PAGE_SIZE, offset: 0 });
   }
 
   public getPlainRecords(
@@ -88,6 +88,10 @@ class EntityService {
 
   public bulkDelete(entity: ListActionEntity, diff: Diff): Promise<any> {
     return this.entityApi.bulkDelete(entity, diff);
+  }
+
+  public bulkChange(entity: EntityName, diff: Diff): Promise<any> {
+    return this.entityApi.bulkChange(entity, diff);
   }
 }
 

@@ -11,8 +11,11 @@ import { SidebarSharedProps } from "../../../model/common/sidebar";
 import { State } from "../../../reducers/state";
 import ClassTypes from "../containers/class-types/ClassTypes";
 import CourseTypes from "../containers/course-types/CourseTypes";
+import CollectionForms from "../containers/data-collection-forms/CollectionFormContainer";
+import CollectionRules from "../containers/data-collection-rules/CollectionRuleFormContainer";
 import LDAP from "../containers/ldap/LDAP";
 import Subjects from "../containers/subjects/Subjects";
+import TutorRoleForm from "../containers/tutor-roles/TutorRoleFormContainer";
 import routes from "../routes";
 
 const formTypes = Object.keys(DataCollectionType).map(type => {
@@ -67,35 +70,22 @@ const SideBar = React.memo<any>(
     );
 
     const preferencesItems = routes
-      .filter(r => {
-        return ![
-          "Data collection rules",
-          "Data collection forms",
-          "Tutor roles"
-        ].includes(r.title);
-      })
-      .map(({ url, title, main }) => {
-
-        let disabled = false;
-
+      .filter(({ main }) => {
         switch (main) {
-          case LDAP: {
-            disabled = !accessLicense;
-            break;
-          }
+          case CollectionRules:
+          case CollectionForms:
+          case TutorRoleForm:
+            return false;
+          case LDAP: 
+            return accessLicense;
           case ClassTypes:
           case CourseTypes:
           case Subjects:
-            disabled = !accessTypes;
-            break;
+            return accessTypes;
         }
-        
-        return {
-          url,
-          name: title,
-          disabled
-        };
-      });
+        return true;
+      })
+      .map(item => ({ ...item, name: item.title }));
 
     return (
       <>

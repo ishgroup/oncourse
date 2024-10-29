@@ -26,6 +26,7 @@ import ish.oncourse.server.license.LicenseModule;
 import ish.oncourse.server.messaging.SMTPModule;
 import ish.oncourse.server.modules.*;
 import ish.oncourse.server.security.api.PermissionModule;
+import ish.oncourse.server.services.chargebee.ChargebeeModule;
 
 public class AngelServer {
     public static final String UTF_8 = "UTF-8";
@@ -57,6 +58,7 @@ public class AngelServer {
                 .module(HttpModule.class)
                 .module(DbModule.class)
                 .module(LicenseModule.class)
+                .module(ChargebeeModule.class)
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
                 .module(JasperReportsModule.class)

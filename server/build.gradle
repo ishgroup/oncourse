@@ -137,6 +137,8 @@ dependencies {
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.2'
 
+	implementation 'com.chargebee:chargebee-java:3.19.0'
+
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
@@ -151,6 +153,8 @@ project.ext {
 	appName = "onCourseServer"
 }
 
+def DEV_MODE_PROPERTY = "ish.devMode"
+
 application {
 	mainClass.set('ish.oncourse.server.AngelServer')
 	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
@@ -164,6 +168,7 @@ jar {
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
 		attributes 'Class-Path': configurations.runtimeClasspath.collect { "./" + it.name }.join(' ')
 	}
+
 	archiveFileName = 'onCourseServer.jar'
 }
 
@@ -243,10 +248,18 @@ tasks.withType(CreateStartScripts).each { task ->
 	}
 }
 
-task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
-	from('../client-html/build/assets') {
-		include '**/*.*'
+task copyWebApp(type: Copy) {
+	if(!project.hasProperty(DEV_MODE_PROPERTY) || project.property(DEV_MODE_PROPERTY) != "true"){
+		dependsOn ':client-html:build'
+		from('../client-html/build/assets') {
+			include '**/*.*'
+		}
+	} else {
+		from('../client-html') {
+			include 'package.json'
+		}
 	}
+
 	into 'build/resources/main/static'
 }
 
@@ -356,9 +369,15 @@ cgen {
 
 compileJava {
 	dependsOn queryGrammar, cgen
+	if(project.hasProperty(DEV_MODE_PROPERTY) && project.property(DEV_MODE_PROPERTY) == "true"){
+		dependsOn copyWebApp
+	}
 }
 
 task runServer(dependsOn: [classes], type: JavaExec) {
+	if(project.hasProperty(DEV_MODE_PROPERTY)) {
+		systemProperty DEV_MODE_PROPERTY, project.property(DEV_MODE_PROPERTY)
+	}
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true', 'disableReplication=true']

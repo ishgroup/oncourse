@@ -1,4 +1,4 @@
-import { Diff, MembershipProduct, MembershipProductApi } from "@api/model";
+import { MembershipProduct, MembershipProductApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class MembershipProductService {
@@ -14,10 +14,6 @@ class MembershipProductService {
 
   public createMembershipProduct(membershipProduct: MembershipProduct): Promise<any> {
     return this.membershipProductApi.create(membershipProduct);
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.membershipProductApi.bulkChange(diff);
   }
 }
 
