@@ -1458,4 +1458,9 @@ public abstract class CommonPreferenceController {
 	public String getChargebeeAllowedAddons() {
 		return getValue(CHARGEBEE_ALLOWED_ADDONS, false);
 	}
+
+	public Boolean ifCollegeActive() {
+		String value = getValue(COLLEGE_ACTIVE, false);
+		return value == null || Boolean.parseBoolean(value);
+	}
 }
