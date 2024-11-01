@@ -35,6 +35,7 @@ import org.quartz.JobExecutionException
 
 import java.sql.Timestamp
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @DisallowConcurrentExecution
 class ChargebeeUploadJob implements Job {
@@ -137,7 +138,7 @@ class ChargebeeUploadJob implements Job {
             Usage.create(chargebeeService.subscriptionId)
                     .itemPriceId(itemPriceId)
                     .quantity(quantity)
-                    .usageDate(new Timestamp(Instant.now().toEpochMilli()))
+                    .usageDate(new Timestamp(Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()))
                     .request()
         } catch (Exception e) {
             logger.error("Chargebee usage upload error: " + e.getMessage())
