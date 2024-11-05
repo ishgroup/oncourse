@@ -15,10 +15,8 @@ import ish.common.types.ExpiryType;
 import ish.common.types.PaymentSource;
 import ish.common.types.ProductStatus;
 import ish.oncourse.server.ICayenneService;
+import ish.oncourse.server.api.v1.function.MembershipFunctions;
 import ish.oncourse.server.cayenne.Membership;
-import ish.persistence.CommonExpressionFactory;
-import ish.util.DateTimeUtil;
-import ish.util.ProductUtil;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.annotation.PostPersist;
 import org.apache.cayenne.annotation.PostUpdate;
@@ -68,25 +66,12 @@ public class MembershipLifecycleListener {
 
     private void updateRenweval(final Membership membership) {
         toProcess.remove(membership);
-        var context = cayenneService.getNewContext();
-        var expiry = CommonExpressionFactory.nextMidnightMinusOne(new Date());
-            membership.getContact().getMemberships().stream()
-                    .filter(it -> it.getProduct().equalsIgnoreContext(membership.getProduct())
-                            && ProductStatus.ACTIVE.equals(it.getStatus())
-                            && !it.equalsIgnoreContext(membership)
-                            && it.getExpiryDate() != null
-                            && it.getExpiryDate().after(expiry))
-                    .forEach(it ->
-                        expiry.setTime(expiry.after(it.getExpiryDate()) ? expiry.getTime() : it.getExpiryDate().getTime())
-                    );
-
-
-            if (DateTimeUtil.getDaysLeapYearDaylightSafe(new Date(), expiry) > 0) {
-                var renewalDate = ProductUtil.calculateExpiryDate(expiry, membership.getProduct().getExpiryType(), membership.getProduct().getExpiryDays());
-                var localMembership = context.localObject(membership);
-                localMembership.setExpiryDate(renewalDate);
-            }
-
-        context.commitChanges();
+        Date renewalDate = MembershipFunctions.getRenwevalExpiryDate(membership.getContact(), membership);
+        if (renewalDate != null) {
+            DataContext context = cayenneService.getNewContext();
+            var localMembership = context.localObject(membership);
+            localMembership.setExpiryDate(renewalDate);
+            context.commitChanges();
+        }
     }
 }
