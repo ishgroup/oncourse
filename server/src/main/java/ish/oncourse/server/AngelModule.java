@@ -191,7 +191,7 @@ public class AngelModule extends ConfigModule {
     @Provides
     MappedFilter<ActiveCollegeFilter> createActiveCollegeFilter(Injector injector) {
         final Set<String> paths = new HashSet<>();
-        paths.add("/a/*");
+        paths.add("/*");
 
         return new MappedFilter<>(
                 new ActiveCollegeFilter(injector.getInstance(PreferenceController.class)),
