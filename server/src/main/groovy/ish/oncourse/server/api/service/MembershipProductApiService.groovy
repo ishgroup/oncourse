@@ -20,6 +20,7 @@ import ish.oncourse.server.api.v1.function.MembershipFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
+import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
@@ -96,8 +97,8 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
             membershipProductDTO.membershipDiscounts = membershipProduct.discountMemberships.collect { toRestMembershipDiscount(it) }
             membershipProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestToEntityRelation(it) })
-            membershipProductDTO.createdOn = toLocalDateTime(membershipProduct.createdOn)
-            membershipProductDTO.modifiedOn = toLocalDateTime(membershipProduct.modifiedOn)
+            membershipProductDTO.createdOn = LocalDateUtils.dateToTimeValue(membershipProduct.createdOn)
+            membershipProductDTO.modifiedOn = LocalDateUtils.dateToTimeValue(membershipProduct.modifiedOn)
             membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
             membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, documentService) }
             membershipProductDTO.tags = membershipProduct.allTags.collect { it.id }
@@ -316,7 +317,7 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
             if (contactId != null) {
                 Contact contact = getRecordById(context, Contact.class, contactId, Contact.PRODUCT_ITEMS.joint())
                 Date renewalDate = MembershipFunctions.getRenwevalExpiryDate(contact, membershipItem)
-                dto.expiresOn = toLocalDate(renewalDate ?: expiryDate)
+                dto.expiresOn = LocalDateUtils.dateToValue(renewalDate ?: expiryDate)
             }
             dto
         }
