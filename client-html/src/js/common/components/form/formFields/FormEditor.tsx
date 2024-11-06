@@ -365,7 +365,8 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             component="div"
             onClick={onEditButtonFocus}
             className={clsx(classes.editable, {
-              [fieldClasses.text]: value
+              [fieldClasses.text]: value,
+              'pointer-events-none': disabled
             })}
           >
               <span
