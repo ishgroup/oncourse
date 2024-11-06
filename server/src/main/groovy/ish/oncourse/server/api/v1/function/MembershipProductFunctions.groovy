@@ -14,10 +14,6 @@ package ish.oncourse.server.api.v1.function
 import ish.oncourse.server.api.v1.model.MembershipDiscountDTO
 import ish.oncourse.server.cayenne.DiscountMembership
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
-
 class MembershipProductFunctions {
 
     static MembershipDiscountDTO toRestMembershipDiscount(DiscountMembership discountMembership) {
@@ -28,14 +24,6 @@ class MembershipProductFunctions {
             it.contactRelationTypes = discountMembership.discountMembershipRelationTypes.collect{ it.contactRelationType.id }
             it
         }
-    }
-
-    static LocalDate toLocalDate(Date date) {
-        return  date?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDate()
-    }
-
-    static LocalDateTime toLocalDateTime(Date date) {
-        return  date?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
     }
 
     static Date calculateNextDate(Integer day, Integer month) {
