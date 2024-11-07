@@ -30,7 +30,7 @@ class ActiveCollegeFilter implements Filter {
 
     @Override
     void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (preferenceController.ifCollegeActive() && !(request as HttpServletRequest).getPathInfo().contains(FORBIDDEN_PAGE_NAME)) {
+        if (!preferenceController.ifCollegeActive() && !(request as HttpServletRequest).getPathInfo().contains(FORBIDDEN_PAGE_NAME)) {
             if ((request as HttpServletRequest).getRequestURI().startsWith(REST_API_PREFIX)) {
                 (response as HttpServletResponse).sendError(Response.Status.FORBIDDEN.statusCode, "College is inactive. Connect your administrator")
             } else {
