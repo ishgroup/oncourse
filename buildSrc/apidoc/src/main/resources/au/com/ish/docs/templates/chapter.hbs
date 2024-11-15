@@ -1,0 +1,49 @@
+## {{docName classDoc}}
+{{{methodDoc classDoc.rawCommentText}~}}
+
+{{#each enumConstants~}}
+  {{~call this "name"~}}
+  {{{trim (methodDoc rawCommentText)}}}
+{{~/each~}}
+
+{{#each visibleConstructors~}}
+  ## Constructor {{~call this "name"~}}({{~#each (call this "parameters")}}{{~call this "name"~}}{{~#unless
+    @last~}}, {{~/unless~}}{{~/each~}})
+  {{{trim (methodDoc rawCommentText)}}}
+  {{~#each (call this "parameters")~}}
+    * {{call this "name"~}}:{{space}}{{~linkable (call this "type")~}}{{~trim (paramDoc (call this "name") rawCommentText)~}}
+  {{~/each~}}
+{{~/each~}}
+
+{{#each (sort visibleMethods "name")~}}
+  {{~newLine~}}{{~newLine~}}
+  **{{~capitalize (removePrefix (docName this) "get")~}}(
+  {{~#if (call this "parameters")}}
+    {{~#each (call this "parameters")}}
+      {{~call this "name"~}}{{~#unless @last~}},{{~space~}}{{~/unless~}}
+    {{~/each~}}
+  {{~/if~}})**{{~newLine~}}
+
+  {{~#unless (isEmpty (methodDoc rawCommentText))~}}
+    {{~newLine~}}{{~newLine~}}
+    {{~{trim (methodDoc rawCommentText)}~}}
+  {{~/unless~}}
+
+  {{~#each (call this "parameters")~}}
+    {{~newLine~}}
+    {{~space~}}* {{call this "name"}}:{{~space~}}
+    {{~#if (call this "type")}}
+      {{~linkable (call this "type")~}}
+    {{~else}}
+      {{~call this "typeName"~}}
+    {{~/if~}}
+    {{~space~}}{{~{trim (paramDoc (call this "name") rawCommentText)}~}}
+  {{~/each~}}
+
+  {{~#if (call this "returnType")~}}
+    {{~#unless (in (call (call this "returnType") "typeName") "void" "def" "")~}}
+      {{~newLine~}}{{~newLine~}}
+      {{~space~}}* Returns:{{~space~}}{{linkable (call this "returnType")}} {{{trim (returnDoc rawCommentText)}~}}
+    {{~/unless~}}
+  {{~/if}}
+{{~/each}}

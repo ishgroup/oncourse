@@ -1,0 +1,17 @@
+# Enumerations
+
+These are Java classes which represent a list of options, where that list is hardcoded into the application and
+cannot be extended by the user.
+In normal use you would not care about the database value and instead use the enumeration by name.
+For example:
+
+```
+if (myAccount.type == AccountType.ASSET) {
+  # do something
+}
+```
+{{#splitClasses classes}}
+{{#each (sort enums "name")}}
+{{{renderChapter this}}}
+{{/each}}
+{{/splitClasses}}
