@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain ssh copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package au.com.ish.docs
 
-import groovy.text.GStringTemplateEngine
-import groovy.text.Template
+import au.com.ish.docs.generator.DSLGenerator
+import au.com.ish.docs.generator.chapter.ChapterDSLGenerator
+import au.com.ish.docs.generator.root.SectionDSLGenerator
+import au.com.ish.docs.utils.GroovyDocUtils
 import groovyjarjarantlr.RecognitionException
 import groovyjarjarantlr.TokenStreamException
 import org.codehaus.groovy.groovydoc.GroovyClassDoc
@@ -34,13 +37,14 @@ import java.nio.charset.Charset
  * immediately parsed). And then finally we generate the documentation by rendering the groovy templates.
  */
 class DslGroovyDocTool {
-	private final DslGroovyRootDocBuilder rootDocBuilder
-	private final GStringTemplateEngine engine = new GStringTemplateEngine()
-    private final OutputTool output = new FileOutputTool()
-    private Template docTemplate, classTemplate
-    Project project
+
     def log
 
+    private final DslGroovyRootDocBuilder rootDocBuilder
+    private final OutputTool output = new FileOutputTool()
+    Project project
+
+    private Configuration configuration
 
     /**
 	 * Let's set everything up.
@@ -49,14 +53,11 @@ class DslGroovyDocTool {
 	 * @param classTemplate A template per class.
 	 * @param links Some external links to other javadocs we might want to link to
 	 */
-	DslGroovyDocTool(File docTemplateURL, File classTemplateURL, List<LinkArgument> links, Project project) {
-
+	DslGroovyDocTool(Configuration configuration, List<LinkArgument> links, Project project) {
 		this.project = project
         this.log = project.logger
 		this.rootDocBuilder = new DslGroovyRootDocBuilder(this, links)
-
-        docTemplate = engine.createTemplate(docTemplateURL)
-        classTemplate = engine.createTemplate(classTemplateURL)
+        this.configuration = configuration;
     }
 
 	/**
@@ -86,17 +87,14 @@ class DslGroovyDocTool {
 	 */
 	void renderToOutput(String destdir) throws Exception {
 		GroovyRootDoc rootDoc = rootDocBuilder.resolve()
-
         rootDocBuilder.mergeMixins()
 
         // only output classes with @API annotation
-        def classes = rootDoc.classes().findAll {
-            it.annotations().collect { it.name()}.contains("ish/oncourse/API")
-        }
-        //rootDocBuilder.mergeTraits(classes)
+        def classes = rootDoc.classes().findAll { GroovyDocUtils.isVisible(it) }.toList()
+//        rootDocBuilder.mergeTraits(classes)
 
-		writeRoot(classes, destdir)
-		writeClasses(classes, destdir)
+        writeClasses(classes, destdir)
+        writeRoot(classes, project, destdir)
 
         // clean up by deleting all the empty folders
         def emptyDirs = []
@@ -117,36 +115,21 @@ class DslGroovyDocTool {
 
 	}
 
-    private static isVisible = { doc -> doc.annotations().find { ann -> ann.name() == "ish/oncourse/API" } }
+	private void writeClasses(Collection<GroovyClassDoc> classes, String destdir) throws Exception {
+		DSLGenerator generator = new ChapterDSLGenerator()
+		generator.generate(classes, destdir)
+	}
 
-    private void writeClasses(Collection<GroovyClassDoc> classes, String destdir) throws Exception {
-
-        for (GroovyClassDoc classDoc : classes ) {
-            log.debug("Generating asciidoc for " + classDoc.simpleTypeName())
-            def binding = new HashMap<String, Object>()
-            def helper = new DslTemplateHelper(this)
-            binding.put("classDoc", classDoc)
-            binding.put("helper", helper)
-            binding.put("visibleMethods", (classDoc.methods().findAll(isVisible) + classDoc.superclass()?.methods()?.findAll(isVisible)).findAll())
-            binding.put("visibleConstructors", classDoc.constructors().findAll(isVisible))
-
-            String destFileName = destdir + "/" + classDoc.getFullPathName() + ".adoc"
-            log.debug("Generating " + destFileName)
-            String renderedSrc = classTemplate.make(binding).toString()
-            output.writeToOutput(destFileName, renderedSrc, Charset.defaultCharset().name())
-        }
-    }
-
-    private void writeRoot(Collection<GroovyClassDoc> classes, String destdir) throws Exception {
-        log.debug("Generating asciidoc index")
+    private void writeRoot(Collection<GroovyClassDoc> classes, Project project, String destdir) throws Exception {
+		//todo
+        String path = destdir + "/index.md"
         output.makeOutputArea(destdir)
-        String destFileName = destdir + "/" + "index.adoc"
+        new File(path).createNewFile()
 
-        def binding = new HashMap<String, Object>()
-        binding.put("classes", classes)
-        String renderedSrc = docTemplate.make(binding).toString()
+        SectionDSLGenerator sectionDSLGenerator = new SectionDSLGenerator(output, project, destdir)
+        def renderedSrc = sectionDSLGenerator.generate(classes, configuration.roomTemplate)
 
-        output.writeToOutput(destFileName, renderedSrc, Charset.defaultCharset().name())
+        output.writeToOutput(path, renderedSrc, Charset.defaultCharset().name())
     }
 
 }

@@ -1,0 +1,66 @@
+# onCourse Domain Specific Language (DSL)
+
+<!--
+Name: onCourse Domain Specific Language (DSL)
+Owner: Ish
+doctype: book
+-->
+
+onCourse implements a DSL built on top of Apache Groovy.
+This provides you a powerful language for creating scripts, exports and reports inside onCourse.
+
+This document only describes the DSL extensions to Groovy. You have the entire language at your disposal,
+and you should take the time to read the [excellent documentation available](http://groovy-lang.org/documentation.html).
+Note that you cannot use closures inside JasperReport templates. For exports only, you can also make use of the
+[SuperCSV project](http://super-csv.github.io/super-csv/) to simplify the generation of CSV export data.
+
+{{!-- 
+// This funny hack is necessary since we aren't parsing the entire src tree, so we can't get the
+// superclass of the superclass and check it is a CayenneDataObject
+--}}
+
+
+{{render 'ScriptBlocksAndOther'}}
+
+{{include 'ScriptBlocksAndOther.hbs'}}
+{{include 'DataEntities.hbs'}}
+{{include 'Enumerrations.hbs'}}
+
+{{#splitClasses classes}}
+
+# Script blocks and other
+
+{{#each (sort other "name")}}
+{{include fullPathName}}
+{{/each}}
+
+# Data Entities
+
+These are objects which represent the data stored in onCourse.
+You will typically search for them using the onCourse query language.
+These objects will be in the Cayenne Context named 'context' by default, so you can make changes and store them back
+into onCourse using context.commitChanges(). The database tables often don't match the description of
+the entities here since we use inheritance and different naming to better describe the data schema in code.
+
+{{#each (sort entities "name")}}
+{{include fullPathName}}
+{{/each}}
+
+# Enumerations
+
+These are Java classes which represent a list of options, where that list is hardcoded into the application and
+cannot be extended by the user.
+In normal use you would not care about the database value and instead use the enumeration by name.
+For example:
+
+  ```
+  if (myAccount.type == AccountType.ASSET) {
+  # do something
+  }
+  ```
+
+{{#each (sort enums "name")}}
+{{include fullPathName}}
+{{/each}}
+
+{{/splitClasses}}
