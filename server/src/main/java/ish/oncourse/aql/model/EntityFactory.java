@@ -15,7 +15,7 @@ import ish.common.types.DataType;
 import ish.oncourse.aql.model.attribute.*;
 import ish.oncourse.aql.model.attribute.tagging.*;
 import ish.oncourse.aql.model.attribute.tagging.relations.*;
-import ish.oncourse.server.api.v1.function.TagFunctions;
+import ish.oncourse.server.api.v1.function.TagRequirementFunctions;
 import ish.oncourse.server.cayenne.CustomFieldType;
 import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject;
 import org.apache.cayenne.ObjectContext;
@@ -109,11 +109,10 @@ public class EntityFactory {
             TaggingRelationsRoom.class,
             TaggingRelationsSite.class,
             TaggingRelationsVoucherProduct.class,
-            TaggingRelationsWaitingList.class,
             EnrolmentAbstractInvoiceLines.class,
             CourseClassAbstractInvoiceLines.class,
             TaxAbstractInvoiceLines.class,
-            AccountAbstractInvoiceLines.class
+            AccountAbstractInvoiceLines.class,
             TaggingRelationsWaitingList.class,
             TagsAttribute.class,
             CheckedTasksAttribute.class,
@@ -193,7 +192,7 @@ public class EntityFactory {
     }
 
     private boolean entityIsTaggable(String entityName){
-        return TagFunctions.taggableClassesBidiMap.containsKey(entityName);
+        return TagRequirementFunctions.taggableClassesBidiMap.containsKey(entityName);
     }
 
 }

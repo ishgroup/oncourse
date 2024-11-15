@@ -58,14 +58,17 @@ class TagRelation extends _TagRelation implements Queueable {
 					context.commitChanges()
 				}
 			}
-		}
-
-    	if(tag.nodeType.equals(NodeType.CHECKLIST)){
 			def eventType = tag.parentTag ? SystemEventType.CHECKLIST_TASK_CHECKED : SystemEventType.CHECKLIST_COMPLETED
 			eventService.postEvent(SystemEvent.valueOf(eventType, this))
 		} else {
 			eventService.postEvent(SystemEvent.valueOf(SystemEventType.TAG_ADDED, this))
 		}
+	}
+
+	private boolean checklistCompleted(){
+		def allTagChilds = tag.parentTag.allChildren.values().collect {it.id}
+		def recordTagIds = taggedRelation.tagIds
+		return recordTagIds.containsAll(allTagChilds)
 	}
 
 	@Override
