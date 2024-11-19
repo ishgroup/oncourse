@@ -207,6 +207,8 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "documents":[],
         "isTraineeship":false,
         "customFields":{},
-        "specialTagId":null
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
