@@ -441,7 +441,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                           variant="body1"
                           component="span"
                           className="cursor-pointer linkDecoration"
-                          onClick={() => window.open("https://ishoncourse.readme.io/changelog", "_blank")}
+                          onClick={() => window.open("https://ishoncourse.readme.io/changelog/release-123", "_blank")}
                         >
                           Version
                           {' '}
