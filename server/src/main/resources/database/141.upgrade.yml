@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 141-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: CourseClass
+                columnName: portalDocAccessStart
+            - columnExists:
+                tableName: CourseClass
+                columnName: portalDocAccessEnd
+      changes:
+        - addColumn:
+            tableName: CourseClass
+            columns:
+              - column:
+                  name: portalDocAccessStart
+                  type: datetime
+              - column:
+                  name: portalDocAccessEnd
+                  type: datetime

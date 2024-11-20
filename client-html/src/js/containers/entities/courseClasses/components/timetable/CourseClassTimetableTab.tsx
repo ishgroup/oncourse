@@ -795,7 +795,7 @@ const CourseClassTimetableTab = ({
           )}
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
-            <Grid container columnSpacing={3} rowSpacing={2}>
+            <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
               {isHybrid && <>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField

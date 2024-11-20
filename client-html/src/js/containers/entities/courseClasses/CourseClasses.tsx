@@ -17,7 +17,7 @@ import {
   Outcome,
   TableModel
 } from "@api/model";
-import { Dialog, Button, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
 import { format } from "date-fns";
 import {
   appendTimezone,
@@ -72,8 +72,6 @@ import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
 import PreferencesService from "../../preferences/services/PreferencesService";
 import { getEntitySpecialTags } from "../../tags/actions";
 import { getPlainAccounts } from "../accounts/actions";
-import EnrolmentService from "../enrolments/services/EnrolmentService";
-import OutcomeService from "../outcomes/services/OutcomeService";
 import { getVirtualSites } from "../sites/actions";
 import { getPlainTaxes } from "../taxes/actions";
 import { getCourseClassTags, updateCourseClass } from "./actions";
@@ -597,7 +595,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
-            return OutcomeService.bulkChange({
+            return EntityService.bulkChange('Outcome', {
               ids,
               diff: outcomeFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;
@@ -613,7 +611,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
 
-            return EnrolmentService.bulkChange({
+            return EntityService.bulkChange('Enrolment', {
               ids,
               diff: enrolmentFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;

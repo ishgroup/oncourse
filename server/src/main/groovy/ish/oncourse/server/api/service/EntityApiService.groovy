@@ -82,45 +82,6 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         context.commitChanges()
     }
 
-    final void bulkChange(DiffDTO dto) {
-
-        Map.Entry<String, String> nullEntry = dto.diff.entrySet().find { it.value == null }
-        if (nullEntry) {
-            validator.throwClientErrorException('diff', "Attribute ${nullEntry.key} has null value")
-        }
-        ObjectContext context = cayenneService.newContext
-
-        if (dto.search || dto.filter || !dto.tagGroups.empty) {
-            List<K> entities = getBulkEntities(dto, context)
-
-            entities.each { entity ->
-                dto.diff.entrySet().each { entry ->
-                    Closure action = getAction(entry.key, entry.value)
-                    action.call(entity)
-                }
-            }
-
-        } else {
-
-            dto.ids.each { id ->
-                dto.diff.entrySet().each { entry ->
-                    Closure action = getAction(entry.key, entry.value)
-                    action.call(getEntityAndValidateExistence(context, id))
-                }
-            }
-
-        }
-
-        save(context)
-    }
-
-    final List<K> getBulkEntities(DiffDTO dto, ObjectContext context) {
-        Class<K> clzz = getPersistentClass()
-        ObjectSelect query = ObjectSelect.query(clzz)
-        query = parseSearchQuery(query as ObjectSelect, context, aqlService, clzz.simpleName, dto.search, dto.filter, dto.tagGroups)
-        query.select(context) as List<K>
-    }
-
     void remove(K persistent, ObjectContext context) {
         context.deleteObject(persistent)
     }

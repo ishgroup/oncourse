@@ -1,12 +1,8 @@
-import { Assessment, AssessmentApi, Diff } from "@api/model";
+import { Assessment, AssessmentApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class AssessmentService {
   readonly assessmentApi = new AssessmentApi(new DefaultHttpService());
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.assessmentApi.bulkChange(diff);
-  }
 
   public getAssessment(id: number): Promise<any> {
     return this.assessmentApi.get(id);

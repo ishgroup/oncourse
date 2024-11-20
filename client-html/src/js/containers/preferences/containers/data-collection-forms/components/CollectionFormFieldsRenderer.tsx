@@ -67,7 +67,8 @@ const CollectionFormFieldsRenderer = (
     item,
     provided,
     snapshot,
-    onDeleteClick
+    onDeleteClick,
+    formType
   }
 ) => {
   const values  = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state)) as CollectionFormSchema;
@@ -178,6 +179,7 @@ const CollectionFormFieldsRenderer = (
                 item={item}
                 field={field}
                 fields={values.items}
+                formType={formType}
               />}
           </div>
         </Collapse>

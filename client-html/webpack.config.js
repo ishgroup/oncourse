@@ -143,6 +143,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               " https://*.googletagmanager.com" +
               " https://*.googleapis.com" +
               " https://*.google.com" +
+              " https://*.s3.ap-southeast-2.amazonaws.com" +
               " https://*.ish.com.au" +
               " 'unsafe-inline';" +
               " img-src * 'self' data: https:;" +
