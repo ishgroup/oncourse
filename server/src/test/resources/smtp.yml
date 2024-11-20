@@ -1,0 +1,7 @@
+smtp:
+  host: localhost
+  port: 11000
+  username:
+  password:
+  mode: starttls
+  email_batch: 30

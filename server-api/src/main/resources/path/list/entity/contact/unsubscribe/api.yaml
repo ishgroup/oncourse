@@ -1,0 +1,21 @@
+post:
+  operationId: unsubscribe
+  description: unsubscribe contacts by unsubscribe link
+  tags:
+    - Contact
+  parameters:
+    - name: link
+      in: body
+      description: link to unsubscribe
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

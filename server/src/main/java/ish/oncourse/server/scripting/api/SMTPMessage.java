@@ -251,7 +251,7 @@ public class SMTPMessage {
 		return new GetContent() {
 
 			@Override
-			public Multipart get() throws MessagingException {
+			public Multipart get(String link) throws MessagingException {
 				Multipart mp = new MimeMultipart(multipartType);
 
 				for (var part : parts) {

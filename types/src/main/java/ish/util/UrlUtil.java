@@ -35,6 +35,7 @@ public class UrlUtil {
     private static final String URL_PART_DELIMITER = "/";
     private static final String USI_PART = "usi";
     private static final Pattern PORTAL_LINK_PATTERN = Pattern.compile("http(s?)://(.*).skillsoncourse.com.au/portal(.*)&key=");
+    private static final Pattern ANGEL_LINK_PATTERN = Pattern.compile("http(s?)://(.*).cloud.oncourse.cc/unsubscribe(.*)&key=");
     private static final String PORTAL_LINK_FORMAT = "https://%s.skillsoncourse.com.au";
     private static final String OLD_PORTAL_URL = "https://www.skillsoncourse.com.au";
     private static final String CERTIFICATE_OLD_PORTAL_URL = "http://skills.courses";
@@ -103,60 +104,16 @@ public class UrlUtil {
      */
     @Deprecated
     public static boolean validatePortalUsiLink(String link, String salt, Date validUntil) {
-        Matcher linkMatcher = PORTAL_LINK_PATTERN.matcher(link);
-
-        if (linkMatcher.find()) {
-            String strippedLink = linkMatcher.group(3);
-
-            Pattern expiryPattern = Pattern.compile("valid=(.*)");
-            Matcher expiryMatcher = expiryPattern.matcher(strippedLink);
-
-            if (expiryMatcher.find()) {
-                DateFormat expiryDateFormat = new SimpleDateFormat(EXPIRY_DATE_FORMAT);
-
-                String dateStr = expiryMatcher.group(1);
-
-                Date expiryDate;
-
-                try {
-                    expiryDate = expiryDateFormat.parse(dateStr);
-                } catch (ParseException e) {
-                    return false;
-                }
-
-                if (DateUtils.truncatedCompareTo(validUntil, expiryDate, Calendar.DAY_OF_MONTH) < 0) {
-                    Pattern signPattern = Pattern.compile("&key=(.*)");
-                    Matcher signMatcher = signPattern.matcher(link);
-
-                    if (signMatcher.find()) {
-                        String signature = signMatcher.group(1);
-
-                        return signature.equals(sha1Base64(salt + strippedLink));
-                    }
-                }
-            }
-        }
-
-        return false;
+        return validateSignedUrl(PORTAL_LINK_PATTERN, link, salt, validUntil);
     }
 
-    /**
-     * Transforms given path into signed portal URL by prepending 'https://www.skillsoncourse.com.au/portal'
-     * and appending 'valid' and 'key' parameters.
-     * <p>
-     * Complete URL will look like this:
-     * <p>
-     * https://www.skillsoncourse.com.au/portal/usi/uniqueCode?valid=21140101&key=k9_S8uk68W5PoCvq5lSUp70sqQY
-     *
-     * @param path     - portal page path
-     * @param expiry   - URL expiry date
-     * @param hashSalt - salt for hashing
-     * @return - temporary signed URL
-     */
-    public static String createSignedPortalUrl(String path, Date expiry, String hashSalt, String subDomain) {
-        if (StringUtils.trimToNull(path) == null) {
-            throw new IllegalArgumentException("Path cannot be null.");
-        }
+
+    public static String createSignedUrl(String fullPath, Date expiry, String hashSalt) {
+        StringBuilder urlBuilder = createSignedUrlParams("", expiry, hashSalt);
+        return fullPath + urlBuilder;
+    }
+
+    private static StringBuilder createSignedUrlParams(String path, Date expiry, String hashSalt) {
         if (StringUtils.trimToNull(hashSalt) == null) {
             throw new IllegalArgumentException("Hash salt cannot be null.");
         }
@@ -188,21 +145,34 @@ public class UrlUtil {
         urlBuilder.append(KEY).append('=');
         urlBuilder.append(hashKey);
 
-        return buildPortalUrl(subDomain, urlBuilder, true);
+        return urlBuilder;
     }
 
     /**
-     * Checks validity of given signed portal URL.
+     * Transforms given path into signed portal URL by prepending 'https://www.skillsoncourse.com.au/portal'
+     * and appending 'valid' and 'key' parameters.
+     * <p>
+     * Complete URL will look like this:
+     * <p>
+     * https://www.skillsoncourse.com.au/portal/usi/uniqueCode?valid=21140101&key=k9_S8uk68W5PoCvq5lSUp70sqQY
      *
-     * @param url        - signed URL
-     * @param salt       - salt used to verify hash
-     * @param validUntil - URL will be considered expired and therefore invalid its expiry date is
-     *                   before this date
-     * @return - true if URL is valid and not expired
+     * @param path     - portal page path
+     * @param expiry   - URL expiry date
+     * @param hashSalt - salt for hashing
+     * @return - temporary signed URL
      */
-    public static boolean validateSignedPortalUrl(String url, String salt, Date validUntil) {
-        Matcher linkMatcher = PORTAL_LINK_PATTERN.matcher(url);
+    public static String createSignedPortalUrl(String path, Date expiry, String hashSalt, String subDomain) {
+        if (StringUtils.trimToNull(path) == null) {
+            throw new IllegalArgumentException("Path cannot be null.");
+        }
 
+        StringBuilder urlBuilder = createSignedUrlParams(path, expiry, hashSalt);
+        return buildPortalUrl(subDomain, urlBuilder, true);
+    }
+
+
+    public static boolean validateSignedUrl(Pattern pattern, String url, String salt, Date validUntil) {
+        Matcher linkMatcher = pattern.matcher(url);
         if (linkMatcher.find()) {
             String strippedLink = linkMatcher.group(3);
 
@@ -238,6 +208,24 @@ public class UrlUtil {
         return false;
     }
 
+
+    public static boolean validateSignedAngelUrl(String url, String salt, Date validUntil) {
+        return validateSignedUrl(ANGEL_LINK_PATTERN, url, salt, validUntil);
+    }
+
+    /**
+     * Checks validity of given signed portal URL.
+     *
+     * @param url        - signed URL
+     * @param salt       - salt used to verify hash
+     * @param validUntil - URL will be considered expired and therefore invalid its expiry date is
+     *                   before this date
+     * @return - true if URL is valid and not expired
+     */
+    public static boolean validateSignedPortalUrl(String url, String salt, Date validUntil) {
+        return validateSignedUrl(PORTAL_LINK_PATTERN, url, salt, validUntil);
+    }
+
     private static String sha1Base64(String str) {
         byte[] hash = DigestUtils.sha1(str);
         return Base64.encodeBase64URLSafeString(hash);
@@ -251,6 +239,8 @@ public class UrlUtil {
         urlBuilder.append(certificateKey);
         return portalSubDomain != null ? buildPortalUrl(portalSubDomain, urlBuilder, false) : CERTIFICATE_OLD_PORTAL_URL + urlBuilder;
     }
+
+
 
     private static String buildPortalUrl(String portalWebsiteSubDomain, StringBuilder urlBuilder, boolean prefixRequred) {
         try {

@@ -243,6 +243,8 @@ paths:
     $ref: './path/list/entity/contact/merge/api.yaml'
   /list/entity/contact/usi:
     $ref: './path/list/entity/contact/usi/api.yaml'
+  /list/entity/contact/unsubscribe:
+    $ref: './path/list/entity/contact/unsubscribe/api.yaml'
   /list/export:
     $ref: './path/list/export/api.yaml'
   /list/export/template:
