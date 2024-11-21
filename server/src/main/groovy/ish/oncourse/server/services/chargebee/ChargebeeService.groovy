@@ -50,16 +50,24 @@ class ChargebeeService {
     }
 
     String configOf(ChargebeePropertyType type) {
-        def preference = ObjectSelect.query(Preference)
-                .where(Preference.NAME.eq(type.getDbPropertyName()))
-                .selectOne(cayenneService.newContext)
-
+        def preference = preferenceOf(type)
         if(preference == null) {
             logger.error("Attempt to upload $type property to chargebee, but config was not replicated for this college")
             throw new IllegalStateException("Attempt to upload $type property to chargebee, but config was not replicated for this college")
         }
 
         return preference.getValueString()
+    }
+
+    String nullableConfigOf(ChargebeePropertyType type) {
+        def preference = preferenceOf(type)
+        return preference?.getValueString()
+    }
+
+    private Preference preferenceOf(ChargebeePropertyType type) {
+        ObjectSelect.query(Preference)
+                .where(Preference.NAME.eq(type.getDbPropertyName()))
+                .selectOne(cayenneService.newContext)
     }
 
 
