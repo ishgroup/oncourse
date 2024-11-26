@@ -93,7 +93,7 @@ class EnrolmentFunctions {
 
 
     static List<Long> filterEnrolmentsWithCompletedClasses(List<Enrolment> enrolments){
-        return enrolments.findAll {e -> e.attendances.findAll {it.attendanceType = AttendanceType.ATTENDED }.size() >= e.courseClass.minimumSessionsToComplete}
+        return enrolments.findAll {e -> e.attendances.findAll {it.attendanceType == AttendanceType.ATTENDED }.size() >= e.courseClass.minimumSessionsToComplete}
                 .collect {it.id}
     }
 }
