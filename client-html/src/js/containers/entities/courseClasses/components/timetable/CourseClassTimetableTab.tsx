@@ -12,7 +12,13 @@ import Menu from "@mui/material/Menu";
 import createStyles from "@mui/styles/createStyles";
 import withStyles from "@mui/styles/withStyles";
 import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from "date-fns";
-import { appendTimezone, normalizeNumber, normalizeNumberToPositive, SelectItemDefault, validateMinMaxDate } from "ish-ui";
+import {
+  appendTimezone,
+  normalizeNumber,
+  normalizeNumberToPositive,
+  SelectItemDefault,
+  validateMinMaxDate
+} from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from "redux-form";
@@ -790,7 +796,7 @@ const CourseClassTimetableTab = ({
           )}
           >
           {["Distant Learning", "Hybrid"].includes(values.type) && (
-            <Grid container columnSpacing={3} rowSpacing={2}>
+            <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
               {isHybrid && <>
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
