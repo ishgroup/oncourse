@@ -82,11 +82,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
         },

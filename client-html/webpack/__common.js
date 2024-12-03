@@ -73,11 +73,7 @@ const _common = (dirname, options) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
           include: [
