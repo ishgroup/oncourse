@@ -3,24 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Delete from "@mui/icons-material/Delete";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
-import { getDeepValue } from "../../../utils/common";
+import Delete from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { IS_JEST } from '../../../../constants/EnvironmentConstants';
+import { getDeepValue } from '../../../utils/common';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     root: {
       width: "100%"
     },
@@ -163,4 +162,4 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(MinifiedEntitiesRenderer) as React.FC<any>;
+export default withStyles(MinifiedEntitiesRenderer, styles) as React.FC<any>;

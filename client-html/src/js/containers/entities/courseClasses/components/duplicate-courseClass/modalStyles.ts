@@ -3,10 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@mui/styles/createStyles";
-import { AppTheme } from "ish-ui";
+import { AppTheme } from 'ish-ui';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   root: {
     maxWidth: "unset",
     minWidth: "1200px"

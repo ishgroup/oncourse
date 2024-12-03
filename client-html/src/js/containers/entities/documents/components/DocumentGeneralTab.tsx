@@ -6,45 +6,45 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Document, DocumentVersion } from "@api/model";
-import { Delete, ExpandMore, OpenWith } from "@mui/icons-material";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { addDays, format } from "date-fns";
+import { Document, DocumentVersion } from '@api/model';
+import { Delete, ExpandMore, OpenWith } from '@mui/icons-material';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import clsx from 'clsx';
+import { addDays, format } from 'date-fns';
 import {
   AppTheme,
   D_MMM_YYYY,
   FileTypeIcon,
   getDocumentContent,
-  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, ShowConfirmCaller,
+  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL,
+  ShowConfirmCaller,
   useAppTheme,
   useHoverShowStyles
-} from "ish-ui";
-import React, { useCallback, useRef } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { change, FieldArray, WrappedFieldArrayProps, } from "redux-form";
-import DocumentShare from "../../../../common/components/form/documents/DocumentShare";
-import FormField from "../../../../common/components/form/formFields/FormField";
+} from 'ish-ui';
+import React, { useCallback, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, FieldArray, WrappedFieldArrayProps, } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import DocumentShare from '../../../../common/components/form/documents/DocumentShare';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { getLatestDocumentItem } from "../../../../common/utils/documents";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { getLatestDocumentItem } from '../../../../common/utils/documents';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
   previewPaper: {
     width: 200,
     height: 200,
     "&:hover": {
-      "& $viewDocument": {
+      [`& .${classes.viewDocument}`]: {
         display: "flex"
       }
     }
@@ -132,12 +132,12 @@ const DocumentVersionComp = ({
     });
   };
 
-  const hoverShowClasses = useHoverShowStyles();
+  const { classes: hoverShowClasses } = useHoverShowStyles();
 
   const theme = useAppTheme();
 
   return (
-    <div className={hoverShowClasses.container}>
+    (<div className={hoverShowClasses.container}>
       <div className={clsx("d-grid mb-2", classes.rootPanel)}>
         <div className="text-truncate">
           <Typography variant="body2" noWrap>
@@ -168,7 +168,7 @@ const DocumentVersionComp = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>)
   );
 };
 
@@ -428,4 +428,4 @@ const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Document"]
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(DocumentGeneralTab));
+export default connect<any, any, any>(mapStateToProps, null)(withStyles(DocumentGeneralTab, styles));
