@@ -8,50 +8,49 @@
 
 package au.com.ish.docs.generator.root
 
-
 import au.com.ish.docs.generator.DSLGenerator
 import au.com.ish.docs.helpers.CollectionHelper
 import au.com.ish.docs.helpers.DocHelper
 import au.com.ish.docs.helpers.FileHelper
 import com.github.jknack.handlebars.Handlebars
-import org.codehaus.groovy.groovydoc.GroovyClassDoc
-import org.codehaus.groovy.tools.groovydoc.OutputTool
-import org.gradle.api.Project
 import org.slf4j.LoggerFactory
 
-import static au.com.ish.docs.utils.FileUtils.convertPathToPackage
 import static au.com.ish.docs.utils.FileUtils.getTemplateSourceRootPath
 
-class SectionDSLGenerator implements DSLGenerator {
+/**
+ * Implementation of the Handlebars generator for generating DSL documentation sections.
+ * This class uses a specified Handlebars template to render documentation for a given {@link SectionContext},
+ * leveraging the context's project-specific details and predefined helpers.
+ *
+ * <p> To find example of class usage, see {@link au.com.ish.docs.helpers.FileHelper} </p>
+ *
+ * <h5>Dependencies:</h5>
+ * <ul>
+ *   <li>{@link Handlebars} - Template engine for processing section templates.</li>
+ *   <li>{@link DocHelper}, {@link FileHelper}, {@link CollectionHelper} - Helper classes for content processing and rendering.</li>
+ *   <li>{@link SectionContext} -  Provides information required for generating a documentation section.</li>
+ * </ul>
+ *
+ * @see DSLGenerator
+ * @see SectionContext
+ */
+class SectionDSLGenerator implements DSLGenerator<SectionContext> {
 
     private static final LOGGER = LoggerFactory.getLogger(SectionDSLGenerator.class)
 
-    protected OutputTool output
-    protected String distributionDirectory
-    protected Project project
+    protected String templateName
 
     protected Handlebars generator
 
-    SectionDSLGenerator(OutputTool output, Project project, String distributionDirectory) {
-        this.output = output
-        this.distributionDirectory = distributionDirectory
-        this.project = project
+    SectionDSLGenerator(String templateName) {
+        this.templateName = templateName
         this.generator = buildGenerator()
     }
 
     @Override
-    String generate(Collection<GroovyClassDoc> classes, String templateName) throws Exception {
+    String generate(SectionContext context) throws Exception {
         LOGGER.debug("Generating doc index")
-        String path = getTemplateSourceRootPath(templateName, project)
-        def context = new Context.Builder()
-                .setTemplateLocation(convertPathToPackage(path))
-                .setClasses(classes)
-                .setDistDir(distributionDirectory)
-                .setProject(project)
-                .setOutput(output)
-                .setProject(project)
-                .build()
-
+        String path = getTemplateSourceRootPath(templateName, context.project)
         return generator.compile(path).apply(context)
     }
 

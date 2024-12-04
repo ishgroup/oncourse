@@ -24,13 +24,7 @@ class DslDocsPlugin implements Plugin<Project> {
 
     void apply(Project project) {
 
-        def TEMPLATE_BASEDIR = "/au/com/ish/docs/templates/"
-        Configuration configuration = new Configuration(
-                TEMPLATE_BASEDIR,
-                "index.hbs",
-                TEMPLATE_BASEDIR + "chapter",
-                project.extensions.create(PLUGIN_NAME, DslDocsPluginExtension)
-        )
+        Configuration configuration = new Configuration(project.extensions.create(PLUGIN_NAME, DslDocsPluginExtension))
 
         project.configurations.create(PLUGIN_NAME)
                 .setVisible(false)
@@ -47,15 +41,10 @@ class DslDocsPlugin implements Plugin<Project> {
                 groovyLink.setPackages("groovy.,org.codehaus.groovy.")
                 groovyLink.setHref("http://groovy.codehaus.org/api")
 
-                DslGroovyDocTool docTool = new DslGroovyDocTool(
-                        configuration,
-                        [groovyLink, javaLink].toList(),
-                        project
-                )
-
+                DslGroovyDocTool docTool = new DslGroovyDocTool([groovyLink, javaLink].toList(), project)
+                docTool.cleanUpDirectory(configuration.distationDir)
                 docTool.add(configuration.sourceFiles)
                 docTool.renderToOutput(configuration.distationDir)
-
             }
         }
     }

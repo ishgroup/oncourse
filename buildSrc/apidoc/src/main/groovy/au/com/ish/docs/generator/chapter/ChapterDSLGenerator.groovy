@@ -8,75 +8,80 @@
 
 package au.com.ish.docs.generator.chapter
 
-
+import au.com.ish.docs.Configuration
 import au.com.ish.docs.generator.DSLGenerator
+import au.com.ish.docs.generator.root.SectionContext
 import au.com.ish.docs.helpers.CollectionHelper
 import au.com.ish.docs.helpers.DocHelper
 import au.com.ish.docs.helpers.RenderHelper
 import au.com.ish.docs.helpers.StringHelper
 import com.github.jknack.handlebars.Handlebars
 import com.github.jknack.handlebars.Template
-import org.apache.commons.lang3.StringUtils
-import org.codehaus.groovy.groovydoc.GroovyClassDoc
 import org.slf4j.LoggerFactory
 
-import static au.com.ish.docs.utils.GroovyDocUtils.getIsVisible
+/**
+ * Implementation of the Handlebars generator for creating DSL documentation for classes annotated with {@code @API}
+ * according to the `chapter.md` template.
+ *
+ * <p> To find example of class usage, see {@link au.com.ish.docs.helpers.FileHelper} </p>
+ *
+ * <h5>Dependencies:</h5>
+ * <ul>
+ *   <li>{@link Handlebars} - Template engine for processing the chapter template.</li>
+ *   <li>Helper classes:
+ *     <ul>
+ *       <li>{@link DocHelper}</li>
+ *       <li>{@link RenderHelper}</li>
+ *       <li>{@link StringHelper}</li>
+ *       <li>{@link CollectionHelper}</li>
+ *     </ul>
+ *   </li>
+ *   <li>{@link SectionContext} - Provides the information required for rendering templates.</li>
+ * </ul>
+ *
+ * @see DSLGenerator
+ * @see ChapterContext
+ */
 
-class ChapterDSLGenerator implements DSLGenerator {
+class ChapterDSLGenerator implements DSLGenerator<ChapterContext> {
 
     private def LOGGER = LoggerFactory.getLogger(ChapterDSLGenerator.class)
 
+    protected SectionContext templateContext
     protected Handlebars generator
 
-    ChapterDSLGenerator() {
+    ChapterDSLGenerator(SectionContext templateContext) {
+        this.templateContext = templateContext
         generator = buildGenerator()
     }
 
     @Override
-    String generate(Collection<GroovyClassDoc> classes, String templateName) throws Exception {
-        //todo
-        Template template = generator.compile('/au/com/ish/docs/templates/chapter')
-
-        for (GroovyClassDoc classDoc : classes ) {
-            LOGGER.debug("Generating DSL documentation for " + classDoc.simpleTypeName())
-            def binding = new HashMap<String, Object>() {{
-                put('classDoc', classDoc)
-                put('visibleMethods', getVisibleMethods.call(classDoc))
-                put('visibleConstructors', getVisibleConstructors.call(classDoc))
-                put('distDir', templateName)
-            }}
-            return template.apply(binding)
-        }
-
-        return StringUtils.EMPTY
-    }
-
-    private static getVisibleMethods = { doc ->
-        (doc.methods().findAll(isVisible) + doc.superclass()?.methods()?.findAll(isVisible)).findAll()
-    }
-
-    private static getVisibleConstructors = { doc ->
-        doc.constructors().findAll(isVisible)
+    String generate(ChapterContext context) throws Exception {
+        Template template = generator.compile(Configuration.CHAPTER_TEMPLATE)
+        LOGGER.debug("Generating DSL documentation for " + context.classDoc.simpleTypeName())
+        return template.apply(context)
     }
 
     protected Handlebars buildGenerator() {
-        Handlebars handlebars = new Handlebars() {{
-            registerHelper("docName", DocHelper.&docName)
-            registerHelper("methodDoc", DocHelper.&methodDoc)
-            registerHelper("linkable", DocHelper.&linkable)
-            registerHelper("paramDoc", DocHelper.&paramDoc)
-            registerHelper("returnDoc", DocHelper.&returnDoc)
-            registerHelper("getNullability", DocHelper.&getNullability)
-            registerHelper("sort", CollectionHelper.&sort)
-            registerHelper("removePrefix", StringHelper.&removePrefix)
-            registerHelper("capitalize", StringHelper.&capitalize)
-            registerHelper("trim", StringHelper.&trim)
-            registerHelper("call", DocHelper.&callMethod)
-            registerHelper("in", DocHelper.&inMethod)
-            registerHelper("newLine", RenderHelper.&getNewLineOuput)
-            registerHelper("space", RenderHelper.&getSpace)
-            registerHelper("isEmpty", StringHelper.&isEmpty)
-        }}
+        Handlebars handlebars = new Handlebars() {
+            {
+                registerHelper("docName", DocHelper.&docName)
+                registerHelper("methodDoc", DocHelper.&methodDoc)
+                registerHelper("linkable", DocHelper.&linkable)
+                registerHelper("paramDoc", DocHelper.&paramDoc)
+                registerHelper("returnDoc", DocHelper.&returnDoc)
+                registerHelper("getNullability", DocHelper.&getNullability)
+                registerHelper("sort", CollectionHelper.&sort)
+                registerHelper("removePrefix", StringHelper.&removePrefix)
+                registerHelper("capitalize", StringHelper.&capitalize)
+                registerHelper("trim", StringHelper.&trim)
+                registerHelper("call", DocHelper.&callMethod)
+                registerHelper("in", DocHelper.&inMethod)
+                registerHelper("newLine", RenderHelper.&getNewLineOuput)
+                registerHelper("space", RenderHelper.&getSpace)
+                registerHelper("isEmpty", StringHelper.&isEmpty)
+            }
+        }
         return handlebars
     }
 

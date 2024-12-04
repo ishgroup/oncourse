@@ -14,11 +14,6 @@ and you should take the time to read the [excellent documentation available](htt
 Note that you cannot use closures inside JasperReport templates. For exports only, you can also make use of the
 [SuperCSV project](http://super-csv.github.io/super-csv/) to simplify the generation of CSV export data.
 
-{{!-- 
-// This funny hack is necessary since we aren't parsing the entire src tree, so we can't get the
-// superclass of the superclass and check it is a CayenneDataObject
---}}
-
 {{{render 'ScriptBlocksAndOther.hbs'}}}
 {{{render 'DataEntities.hbs'}}}
 {{{render 'Enumerations.hbs'}}}

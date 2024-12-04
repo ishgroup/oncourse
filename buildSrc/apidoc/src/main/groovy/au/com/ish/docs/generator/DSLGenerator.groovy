@@ -8,10 +8,10 @@
 
 package au.com.ish.docs.generator
 
-import org.codehaus.groovy.groovydoc.GroovyClassDoc
+import au.com.ish.docs.generator.root.SectionContext
 
-interface DSLGenerator {
+interface DSLGenerator<T extends SectionContext> {
 
-    String generate(Collection<GroovyClassDoc> classes, String templateName) throws Exception
+    String generate(T context) throws Exception
 
 }
