@@ -17,36 +17,6 @@ import java.util.stream.IntStream
 class TextUtils {
 
     /**
-     * Updates markdown links within a text by computing relative paths based on file locations.
-     *
-     * This method scans a given markdown text for inline links (formatted as `[label](path)`)
-     * and updates each link's path by computing the relative path from the specified `template`
-     * file location to the target `rootTemplate` file location, and then further adjusts each
-     * link using the relative path in {@code link}. The output contains updated links that
-     * are correctly adjusted to be accessible from the template file’s location.
-     *
-     * @param text the original text containing markdown links
-     * @param template the file representing the starting location for relative path computation
-     * @param rootTemplate the root directory from which all links should be relative
-     * @return the modified text with updated link paths to be relative from {@code template} to {@code rootTemplate}.
-     */
-    static String updateLinksWithRelativePaths(String text, File template, File rootTemplate) {
-        String linkRegex = "\\[(.*?)\\]\\((.*?)\\)"
-        Matcher matcher = Pattern.compile(linkRegex).matcher(text)
-
-        String relativePathToRoot = computeRelativePath(template.getAbsolutePath(), rootTemplate.getAbsolutePath())
-        StringBuilder sb = new StringBuilder()
-        while (matcher.find()) {
-            String link = matcher.group(2)
-            String updatedPath = concatenateRelativePaths(relativePathToRoot, link)
-            matcher.appendReplacement(sb, "[${matcher.group(1)}](${updatedPath})")
-        }
-
-        matcher.appendTail(sb)
-        return sb.toString()
-    }
-
-    /**
      * Computes the relative path required to navigate from {@code to} to {@code from}.
      *
      * This method determines the relative path needed to traverse from one directory
@@ -64,20 +34,50 @@ class TextUtils {
         String[] toPath = StringUtils.isNotEmpty(to) ? to.split("/") : []
         String[] fromPath = StringUtils.isNotEmpty(from) ? from.split("/") : []
 
-        int differences = Math.max(toPath.length - fromPath.length, 0)
         int common = 0
         for (int i = 0; i < Math.min(toPath.length, fromPath.length) - 1; i++) {
             if (toPath[i].equals(fromPath[i])) {
                 common++
             } else {
-                differences++
+                break
             }
         }
+        int differences = fromPath.length - 1 - common
 
         IntStream.range(0, differences).forEach { i -> prefix += "../" }
-        IntStream.range(common, fromPath.length - 1).forEach { i -> prefix += fromPath[i] + "/" }
+        IntStream.range(common, toPath.length - 1).forEach { i -> prefix += toPath[i] + "/" }
 
         return prefix.isEmpty() ? "./" : prefix
+    }
+
+    /**
+     * Updates markdown links within a text by computing relative paths based on file locations.
+     *
+     * This method scans a given markdown text for inline links (formatted as `[label](path)`)
+     * and updates each link's path by computing the relative path from the specified `template`
+     * file location to the target `rootTemplate` file location, and then further adjusts each
+     * link using the relative path in {@code link}. The output contains updated links that
+     * are correctly adjusted to be accessible from the template file’s location.
+     *
+     * @param text the original text containing markdown links
+     * @param template the file representing the starting location for relative path computation
+     * @param rootTemplate the root directory from which all links should be relative
+     * @return the modified text with updated link paths to be relative from {@code template} to {@code rootTemplate}.
+     */
+    static String updateLinksWithRelativePaths(String text, File template, File rootTemplate) {
+        String linkRegex = "\\[(.*?)]\\((.*?)\\)"
+        Matcher matcher = Pattern.compile(linkRegex).matcher(text)
+
+        String relativePathToRoot = computeRelativePath(rootTemplate.getAbsolutePath(), template.getAbsolutePath())
+        StringBuilder sb = new StringBuilder()
+        while (matcher.find()) {
+            String link = matcher.group(2)
+            String updatedPath = concatenateRelativePaths(relativePathToRoot, link)
+            matcher.appendReplacement(sb, "[${matcher.group(1)}](${updatedPath})")
+        }
+
+        matcher.appendTail(sb)
+        return sb.toString()
     }
 
     /**

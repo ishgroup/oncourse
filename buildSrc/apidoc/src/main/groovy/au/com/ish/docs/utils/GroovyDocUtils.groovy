@@ -9,13 +9,13 @@
 package au.com.ish.docs.utils
 
 import au.com.ish.docs.Configuration
-import org.codehaus.groovy.tools.groovydoc.SimpleGroovyClassDoc;
+import org.codehaus.groovy.tools.groovydoc.SimpleGroovyClassDoc
 
 class GroovyDocUtils {
 
     static isVisible = { doc -> doc.annotations().find { ann -> ann.type().fullPathName == Configuration.DSL_ANNONATION }}
 
     static boolean isCayenneEntity(SimpleGroovyClassDoc doc) {
-        return doc.parentClasses.find { it?.fullPathName?.startsWith('ish/oncourse/server/cayenne/') }
+        return doc.parentClasses.find { it?.fullPathName?.startsWith(Configuration.CAYENNE_ENTITIES_PACKAGE) }
     }
 }

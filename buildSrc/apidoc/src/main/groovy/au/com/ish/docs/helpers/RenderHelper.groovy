@@ -9,16 +9,17 @@
 package au.com.ish.docs.helpers
 
 import com.github.jknack.handlebars.Options
+import org.apache.commons.lang3.StringUtils
 
 class RenderHelper {
 
     @Helper
     def static getNewLineOuput(Object self, Options options) {
-        return "\n"
+        return StringUtils.LF
     }
 
     @Helper
     def static getSpace(Object self, Options options) {
-        return " "
+        return StringUtils.SPACE
     }
 }
