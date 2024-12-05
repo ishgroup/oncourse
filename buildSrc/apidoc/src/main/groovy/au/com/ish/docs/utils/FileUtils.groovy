@@ -8,11 +8,11 @@
 
 package au.com.ish.docs.utils
 
-import au.com.ish.docs.Configuration
+
 import org.apache.commons.io.FilenameUtils
-import org.apache.commons.lang3.StringUtils
 import org.gradle.api.Project
 
+import static au.com.ish.docs.Configuration.*
 import static org.apache.commons.io.FileUtils.listFiles
 
 class FileUtils {
@@ -22,13 +22,9 @@ class FileUtils {
         return path.endsWith(File.separator) ? path : path + File.separator
     }
 
-    static String convertPathToPackage(String path) {
-        return StringUtils.removeEnd(path.replace(File.separator, '.'), ".")
-    }
-
     static File findFileInFolder(File folder, String file) {
         if (!folder.exists()) {
-            //todo
+           throw new RuntimeException('DSL Documentation generation failed: can not find destDir')
         }
         return listFiles(folder, [FilenameUtils.getExtension(file)] as String[] , true).toList().find {
             it.absolutePath.endsWith(file)
@@ -36,8 +32,8 @@ class FileUtils {
     }
 
     static String getTemplateSourceRootPath(String template, Project project) {
-        String rootPackagePath = convertPackageToPath(Configuration.TEMPLATE_PACKAGE)
-        File templatesRootDirectory = project.file(Configuration.RESOUCRCES_DIRECTORY + rootPackagePath)
+        String rootPackagePath = convertPackageToPath(TEMPLATES_PACKAGE)
+        File templatesRootDirectory = project.file(RESOUCRCES_DIRECTORY + rootPackagePath)
         if (!templatesRootDirectory.exists()) {
             throw new RuntimeException("Invalid project configuration. Documentation templates not found.")
         }
@@ -45,7 +41,7 @@ class FileUtils {
         String templateBaseName = FilenameUtils.getBaseName(template)
         File templateFile = new File(templatesRootDirectory.getAbsolutePath() + File.separator + formatTemplatePath(template))
         if (!templateFile.exists()) {
-            templateFile = listFiles(templatesRootDirectory, ['hbs'] as String[], true)
+            templateFile = listFiles(templatesRootDirectory, [TEMPLATE_TYPE] as String[], true)
                     .toList()
                     .find { FilenameUtils.getBaseName(it.name) == FilenameUtils.getBaseName(templateBaseName) }
         }
@@ -58,7 +54,7 @@ class FileUtils {
     }
 
     static String getTemplatePackage(String template, Project project) {
-        String rootPackagePath = convertPackageToPath(Configuration.TEMPLATE_PACKAGE)
+        String rootPackagePath = convertPackageToPath(TEMPLATES_PACKAGE)
         String path = getTemplateSourceRootPath(template, project).replaceFirst(rootPackagePath, "")
 
         def tokens = path.split(File.separator).toList()
@@ -70,7 +66,7 @@ class FileUtils {
     private static String formatTemplatePath(String template) {
         String templateExtension = FilenameUtils.getExtension(template)
         if (templateExtension.isEmpty()) {
-            templateExtension = "hbs"
+            templateExtension = TEMPLATE_TYPE
             template += "." + templateExtension
         }
         return convertPackageToPath(template).replaceFirst("${File.separator}${templateExtension}${File.separator}", ".${templateExtension}")

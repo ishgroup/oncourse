@@ -8,5 +8,11 @@
 
 package au.com.ish.docs.helpers;
 
+/**
+ * Marks methods that can be used in Handlebars (.hbs) templates.
+ * <p>
+ *     These methods can then be invoked in the template to perform various operations or data transformations during rendering.
+ * </p>
+ */
 public @interface Helper {
 }

@@ -16,10 +16,13 @@
 
 package au.com.ish.docs
 
-import au.com.ish.docs.generator.DSLGenerator
-import au.com.ish.docs.generator.chapter.ChapterDSLGenerator
-import au.com.ish.docs.generator.root.SectionDSLGenerator
+import au.com.ish.docs.handlebars.EmptyTemplate
+import au.com.ish.docs.handlebars.HandlebarsContext
+import au.com.ish.docs.generator.chapter.ChapterContext
+import au.com.ish.docs.generator.root.SectionContext
+import au.com.ish.docs.helpers.FileHelper
 import au.com.ish.docs.utils.GroovyDocUtils
+import com.github.jknack.handlebars.Options
 import groovyjarjarantlr.RecognitionException
 import groovyjarjarantlr.TokenStreamException
 import org.codehaus.groovy.groovydoc.GroovyClassDoc
@@ -30,7 +33,6 @@ import org.codehaus.groovy.tools.groovydoc.OutputTool
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 
-import java.nio.charset.Charset
 /**
  * This is external interface to the entire tool. First we instantiate the class with the templates
  * and some properties. Then we add all the files we want to document (which causes them to be
@@ -38,27 +40,24 @@ import java.nio.charset.Charset
  */
 class DslGroovyDocTool {
 
-    def log
+	def log
 
-    private final DslGroovyRootDocBuilder rootDocBuilder
-    private final OutputTool output = new FileOutputTool()
-    Project project
+	private Project project
+	private final DslGroovyRootDocBuilder rootDocBuilder
+	private final OutputTool output = new FileOutputTool()
 
-    private Configuration configuration
-
-    /**
+	/**
 	 * Let's set everything up.
 	 *
 	 * @param docTemplate Top level index template for the entire document.
 	 * @param classTemplate A template per class.
 	 * @param links Some external links to other javadocs we might want to link to
 	 */
-	DslGroovyDocTool(Configuration configuration, List<LinkArgument> links, Project project) {
+	DslGroovyDocTool(List<LinkArgument> links, Project project) {
 		this.project = project
-        this.log = project.logger
+		this.log = project.logger
 		this.rootDocBuilder = new DslGroovyRootDocBuilder(this, links)
-        this.configuration = configuration;
-    }
+	}
 
 	/**
 	 * Adding the files to the tool causes them to be parsed by the antlr based groovy or java parser
@@ -87,49 +86,70 @@ class DslGroovyDocTool {
 	 */
 	void renderToOutput(String destdir) throws Exception {
 		GroovyRootDoc rootDoc = rootDocBuilder.resolve()
-        rootDocBuilder.mergeMixins()
+		rootDocBuilder.mergeMixins()
 
-        // only output classes with @API annotation
-        def classes = rootDoc.classes().findAll { GroovyDocUtils.isVisible(it) }.toList()
-//        rootDocBuilder.mergeTraits(classes)
+		// only output classes with @API annotation
+		def classes = rootDoc.classes().findAll { GroovyDocUtils.isVisible(it) }.toList()
+		rootDocBuilder.mergeTraits(classes)
 
-        writeClasses(classes, destdir)
-        writeRoot(classes, project, destdir)
+		writeClasses(classes, destdir)
+		writeRoot(classes, project, destdir)
 
-        // clean up by deleting all the empty folders
-        def emptyDirs = []
+		// clean up by deleting all the empty folders
+		def emptyDirs = []
+		project.fileTree(dir: destdir).visit { v ->
+			File f = v.file
 
-        project.fileTree(dir: destdir).visit { v ->
-            File f = v.file
+			if (f.isDirectory() ) {
+				def children = project.fileTree(f).filter { f.isFile() }.files
+				if (children.size() == 0) {
+					emptyDirs << f
+				}
+			}
+		}
 
-            if (f.isDirectory() ) {
-                def children = project.fileTree(f).filter { f.isFile() }.files
-                if (children.size() == 0) {
-                    emptyDirs << f
-                }
-            }
-        }
+		// reverse so that we do the deepest folders first
+		emptyDirs.reverseEach { it.delete() }
 
-        // reverse so that we do the deepest folders first
-        emptyDirs.reverseEach { it.delete() }
+	}
 
+	void cleanUpDirectory(String destDir) {
+		File dest = new File(destDir)
+		if (dest.exists()) {
+			dest.deleteDir()
+		}
 	}
 
 	private void writeClasses(Collection<GroovyClassDoc> classes, String destdir) throws Exception {
-		DSLGenerator generator = new ChapterDSLGenerator()
-		generator.generate(classes, destdir)
+		classes.each { classDoc ->
+			def context = new ChapterContext.Builder()
+					.setClassDoc(classDoc)
+					.setClasses(classes)
+					.setDistDir(destdir)
+					.setProject(project)
+					.setOutput(output)
+					.setProject(project)
+					.build()
+
+			def _context = new HandlebarsContext(["root": context])
+			def options = new Options(null, null, null, _context, new EmptyTemplate("index.md"), null, null, null, [])
+			FileHelper.renderChapter(classDoc, options)
+		}
 	}
 
-    private void writeRoot(Collection<GroovyClassDoc> classes, Project project, String destdir) throws Exception {
-		//todo
-        String path = destdir + "/index.md"
-        output.makeOutputArea(destdir)
-        new File(path).createNewFile()
+	private void writeRoot(Collection<GroovyClassDoc> classes, Project project, String destdir) throws Exception {
+		String path = destdir + "/index.md"
+		def context = new SectionContext.Builder()
+				.setClasses(classes)
+				.setDistDir(destdir)
+				.setProject(project)
+				.setOutput(output)
+				.setProject(project)
+				.build()
 
-        SectionDSLGenerator sectionDSLGenerator = new SectionDSLGenerator(output, project, destdir)
-        def renderedSrc = sectionDSLGenerator.generate(classes, configuration.roomTemplate)
-
-        output.writeToOutput(path, renderedSrc, Charset.defaultCharset().name())
-    }
+		def _context = new HandlebarsContext(["root": context])
+		def options = new Options(null, null, null, _context, new EmptyTemplate("index.md"), null, null, null, [])
+		FileHelper.render(path, options)
+	}
 
 }

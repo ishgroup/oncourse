@@ -14,28 +14,23 @@ import org.codehaus.groovy.groovydoc.GroovyMethodDoc
 
 /**
  * The {@code CollectionHelper} class provides utility methods for working with collections, specifically
- * tailored for use within Handlebars template generators. This class groups functionality that enhancing
- * the flexibility and customization of template rendering.
+ * for use within Handlebars template generators.
+ *
+ * <p> This class groups functionality that enhancing the flexibility and customization of template rendering. </p>
  */
 class CollectionHelper {
 
     /**
      * Sorts a collection of {@code GroovyMethodDoc} objects based on a specified field from the {@code Options}.
      * If no field is provided in the {@code Options}, the collection is sorted by the default field, {@code 'name'}.
-     * <p>
-     * This method is particularly useful in Handlebars templates where dynamic sorting of data is required
-     * during template generation.
-     * <p>
-     * Example usage in Handlebars:
-     * <pre>{@code
-     *  {{#each (sort enums "name")}}
-     *      ...
-     *  {{/each}}
-     * }</pre>
+     *
+     * <p> This method is used in Handlebars templates. <p>
+     *
+     * Example usage in Handlebars: {@code {{#each (sort enums "name")}} ... {{/each}} }
      *
      * @param methods the collection of {@code GroovyMethodDoc} objects to be sorted
      * @param options the {@code Options} object containing parameters, including the sorting field
-     * @return the sorted collection of {@code GroovyMethodDoc} objects, or the original collection if empty or null
+     * @return the sorted collection of {@code GroovyMethodDoc} objects
      */
     @Helper
     def static sort(Collection<GroovyMethodDoc> methods, Options options) {

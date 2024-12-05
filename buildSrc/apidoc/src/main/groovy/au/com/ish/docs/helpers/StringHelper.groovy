@@ -11,6 +11,12 @@ package au.com.ish.docs.helpers
 import com.github.jknack.handlebars.Options
 import org.apache.commons.lang3.StringUtils
 
+/**
+ * The {@code StringHelper} class provides utility methods for working with strings, specifically
+ * for use within Handlebars template generators.
+ *
+ * <p> This class groups functionality that enhancing the flexibility and customization of template rendering. </p>
+ */
 class StringHelper {
 
     @Helper

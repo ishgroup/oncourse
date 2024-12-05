@@ -8,31 +8,26 @@
 
 package au.com.ish.docs.generator.root
 
+import au.com.ish.docs.helpers.Helper
 import org.codehaus.groovy.groovydoc.GroovyClassDoc
 import org.codehaus.groovy.tools.groovydoc.OutputTool
 import org.gradle.api.Project
 
-class Context {
-
-    private String templateLocation
+class SectionContext {
 
     private Collection<GroovyClassDoc> classes
     private String distDir
     private OutputTool output
     private Project project
 
-    private Context(Builder builder) {
-        this.templateLocation = builder.templateLocation
+    protected SectionContext(Builder builder) {
         this.classes = builder.classes
         this.distDir = builder.distDir
         this.output = builder.output
         this.project = builder.project
     }
 
-    String getTemplateLocation() {
-        return templateLocation
-    }
-
+    @Helper
     Collection<GroovyClassDoc> getClasses() {
         return classes
     }
@@ -49,41 +44,47 @@ class Context {
         return project
     }
 
-    static class Builder {
-        private String templateLocation
-        private Collection<GroovyClassDoc> classes
-        private String distDir
-        private OutputTool output
-        private Project project
+    static class Builder<T extends Builder<T>> {
 
-        Builder setTemplateLocation(String templateLocation) {
-            this.templateLocation = templateLocation
-            return this
+        protected Collection<GroovyClassDoc> classes
+        protected String distDir
+        protected OutputTool output
+        protected Project project
+
+        protected T self() {
+            return (T) this
         }
 
-        Builder setClasses(Collection<GroovyClassDoc> classes) {
+        T setClasses(Collection<GroovyClassDoc> classes) {
             this.classes = classes
-            return this
+            return self()
         }
 
-        Builder setDistDir(String distDir) {
+        T setDistDir(String distDir) {
             this.distDir = distDir
-            return this
+            return self()
         }
 
-        Builder setOutput(OutputTool output) {
+        T setOutput(OutputTool output) {
             this.output = output
-            return this
+            return self()
         }
 
-        Builder setProject(Project project) {
+        T setProject(Project project) {
             this.project = project
-            return this
+            return self()
         }
 
-        Context build() {
-            return new Context(this)
+        T init(SectionContext context) {
+            this.classes = context.classes
+            this.output = context.output
+            this.distDir = context.distDir
+            this.project = context.project
+            return self()
+        }
+
+        SectionContext build() {
+            return new SectionContext(this)
         }
     }
-
 }
