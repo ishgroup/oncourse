@@ -3,22 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import ArrowForward from "@mui/icons-material/ArrowForward";
-import Close from "@mui/icons-material/Close";
-import Search from "@mui/icons-material/Search";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { AppTheme, formatCurrency, FormTextField, makeAppStyles, NoArgFunction, StyledCheckbox } from "ish-ui";
-import React from "react";
-import { change, Field, Validator } from "redux-form";
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import Close from '@mui/icons-material/Close';
+import Search from '@mui/icons-material/Search';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme, formatCurrency, FormTextField, makeAppStyles, NoArgFunction, StyledCheckbox } from 'ish-ui';
+import React from 'react';
+import { change, Field, Validator } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   headerRoot: {
     background: "transparent"
   },
@@ -139,7 +138,7 @@ const HeaderField: React.FC<Props> = props => {
   );
 };
 
-const useHeaderTypoStyles = makeAppStyles(() => ({
+const useHeaderTypoStyles = makeAppStyles()(() => ({
   checkboxRoot: {
     width: 19,
     height: 19,
@@ -185,7 +184,7 @@ export const HeaderFieldTypo = React.memo<HeaderFieldTypoProps>(props => {
     onCheckboxClick
   } = props;
 
-  const classes = useHeaderTypoStyles();
+  const { classes } = useHeaderTypoStyles();
 
   return (
     <div
@@ -227,4 +226,4 @@ export const HeaderFieldTypo = React.memo<HeaderFieldTypoProps>(props => {
   );
 });
 
-export default withStyles(styles)(HeaderField);
+export default withStyles(HeaderField, styles);

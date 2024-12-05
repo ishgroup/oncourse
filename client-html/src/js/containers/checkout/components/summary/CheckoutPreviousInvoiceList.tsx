@@ -3,10 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Chip, FormControlLabel, Grid, Paper, Typography } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
+import { Chip, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import {
   BooleanArgFunction,
   D_MMM_YYYY,
@@ -14,19 +13,20 @@ import {
   LinkAdornment,
   openInternalLink,
   StyledCheckbox
-} from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import { CheckoutPreviousInvoice, PreviousInvoiceState } from "../../../../model/checkout";
-import { State } from "../../../../reducers/state";
+} from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { CheckoutPreviousInvoice, PreviousInvoiceState } from '../../../../model/checkout';
+import { State } from '../../../../reducers/state';
 import {
   checkoutSetPreviousOwingPayDue,
   checkoutTogglePreviousInvoice,
   checkoutUncheckAllPreviousInvoice
-} from "../../actions/checkoutSummary";
-import { summaryListStyles } from "../../styles/summaryListStyles";
-import CheckoutAppBar from "../CheckoutAppBar";
+} from '../../actions/checkoutSummary';
+import { summaryListStyles } from '../../styles/summaryListStyles';
+import CheckoutAppBar from '../CheckoutAppBar';
 
 export const CheckoutPreviousInvoiceListFormRole: string = "CheckoutPreviousInvoiceListform";
 
@@ -189,4 +189,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(summaryListStyles)(CheckoutPreviousInvoiceList));
+)(withStyles(CheckoutPreviousInvoiceList, summaryListStyles));

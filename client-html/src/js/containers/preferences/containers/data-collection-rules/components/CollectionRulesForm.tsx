@@ -3,30 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DataCollectionForm, DataCollectionRule, DataCollectionType } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import createStyles from "@mui/styles/createStyles";
-import { sortDefaultSelectItems } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, reduxForm } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
+import { DataCollectionForm, DataCollectionRule, DataCollectionType } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import Grid from '@mui/material/Grid';
+import { sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getFormSyncErrors, initialize, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
 
 const manualUrl = getManualLink("data-collection-forms-and-rules");
 
 export const DATA_COLLECTION_RULES_FORM: string = "CollectionRulesForm";
 
 const styles = () =>
-  createStyles({
+  ({
     selectField: {
       paddingRight: "60px"
     }
@@ -351,6 +350,9 @@ const mapStateToProps = (state: State) => ({
 const CollectionRulesForm = reduxForm({
   form: DATA_COLLECTION_RULES_FORM,
   onSubmitFail
-})(withStyles(styles)(withRouter(connect<any, any, any>(mapStateToProps)(CollectionRulesBaseForm))) as any);
+})(withStyles(
+  withRouter(connect<any, any, any>(mapStateToProps)(CollectionRulesBaseForm)),
+  styles
+) as any);
 
 export default CollectionRulesForm;

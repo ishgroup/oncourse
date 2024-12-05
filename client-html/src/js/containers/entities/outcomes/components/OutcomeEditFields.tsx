@@ -6,11 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus } from "@api/model";
+import { DeliveryMode, FundingUpload, Module, Outcome, OutcomeStatus } from '@api/model';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Card, Chip, Grid, Tooltip, Typography, IconButton } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
+import { Card, Chip, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import {
   AppTheme,
   LinkAdornment,
@@ -18,33 +16,34 @@ import {
   normalizeNumberToZero,
   StringKeyObject,
   validateMinMaxDate
-} from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import FundingUploadComponent from "../../../../common/components/form/FundingUploadComponent";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import { makeStyles } from 'tss-react/mui';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { HeaderContactTitle } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import FundingUploadComponent from '../../../../common/components/form/FundingUploadComponent';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { AccessState } from "../../../../common/reducers/accessReducer";
-import EntityService from "../../../../common/services/EntityService";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { AccessState } from '../../../../common/reducers/accessReducer';
+import EntityService from '../../../../common/services/EntityService';
 import {
   validateFundingSourse,
   validatePurchasingContractScheduleIdentifier,
   validateSingleMandatoryField,
   validateSpecificProgramIdentifier,
   validateVetPurchasingContractIdentifier
-} from "../../../../common/utils/validation";
-import { fundingUploadsPath } from "../../../../constants/Api";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import FundingUploadService from "../../../avetmiss-export/services/FundingUploadService";
-import { fundingSourceValues } from "../../courseClasses/constants";
-import { openModuleLink } from "../../modules/utils";
-import { AssessmentChart, AttendanceChart } from "./OutcomeProgressionChart";
+} from '../../../../common/utils/validation';
+import { fundingUploadsPath } from '../../../../constants/Api';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import FundingUploadService from '../../../avetmiss-export/services/FundingUploadService';
+import { fundingSourceValues } from '../../courseClasses/constants';
+import { openModuleLink } from '../../modules/utils';
+import { AssessmentChart, AttendanceChart } from './OutcomeProgressionChart';
 
 interface OutcomeEditFieldsProps extends EditViewProps<Outcome> {
   modules?: any[];
@@ -92,7 +91,7 @@ const validateEndtDate = (value, allValues) => {
   return result || ((isPriorLearning || allValues.endDateOverridden) && validateMinDate(value, allValues));
 };
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeStyles()((theme: AppTheme) => ({
   card: {
     margin: "14px 0 14px 0",
     width: "100%",
@@ -150,7 +149,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
     noHeader
   } = props;
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const [fundingUploads, setFundingUploads] = useState<FundingUpload[]>([]);
   const [warnings, setWarnings] = useState<StringKeyObject>({});
@@ -248,7 +247,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
   const today = new Date();
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className={className}>
+    (<Grid container columnSpacing={3} rowSpacing={2} className={className}>
       {!noHeader && <Grid item xs={12}>
         <FullScreenStickyHeader
           disableInteraction
@@ -258,7 +257,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           )}
         />
       </Grid>}
-      
       <Grid container rowSpacing={2} item xs={twoColumn ? 4 : 12}>
         <Grid item xs={12}>
           <FormField
@@ -329,7 +327,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           />
         </Grid>
       </Grid>
-
       <Grid item xs={twoColumn ? 8 : 12}>
         <Card className={classes.card}>
           <Grid container columnSpacing={3} rowSpacing={2}>
@@ -345,7 +342,6 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           </Grid>
         </Card>
       </Grid>
-
       {priorLearningEditView ? (
         <Grid item xs={12}>
           <Grid container columnSpacing={3} rowSpacing={2} item xs={12}>
@@ -374,7 +370,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           <Card className={classes.card}>
             <Grid container columnSpacing={3} rowSpacing={2} className="p-3 pb-0">
               <Grid item xs={twoColumn ? 3 : 12}>
-                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
+                <div className={cx(classes.header, classes.width240, "secondaryHeading")}>Training Plan</div>
                 <Tooltip
                   placement="top-start"
                   title="First session related to this outcome"
@@ -400,7 +396,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 </Tooltip>
               </Grid>
               <Grid item xs={twoColumn ? 3 : 12}>
-                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
+                <div className={cx(classes.header, classes.width240, "secondaryHeading")}>Actual</div>
                 <Tooltip placement="top-start" title="First session related to this outcome where student was not marked as absent">
                   <div className="pb-2">
                     {values.actualStartDate && new Date(values.actualStartDate) > today
@@ -431,8 +427,8 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                 </Tooltip>
               </Grid>
               <Grid item xs={twoColumn ? 3 : 12}>
-                <div className={clsx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
-                <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                <div className={cx(classes.header, classes.width240, "secondaryHeading")}>Override</div>
+                <Grid item className={cx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.startDateOverridden ? (
                       <div className="centeredFlex">
@@ -461,7 +457,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
                     )}
                   </div>
                 </Grid>
-                <Grid item className={clsx(classes.width240, classes.dateWrapper)}>
+                <Grid item className={cx(classes.width240, classes.dateWrapper)}>
                   <div className="pb-2">
                     {values.endDateOverridden ? (
                       <div className="centeredFlex">
@@ -574,7 +570,7 @@ const OutcomeEditFields = React.memo<OutcomeEditFieldsProps>(props => {
           )}
         </Grid>
       </Grid>
-    </Grid>
+    </Grid>)
   );
 });
 

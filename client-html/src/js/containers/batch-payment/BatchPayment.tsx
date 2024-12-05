@@ -3,20 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import Close from '@mui/icons-material/Close';
-import CreditCard from "@mui/icons-material/CreditCard";
+import CreditCard from '@mui/icons-material/CreditCard';
 import Done from '@mui/icons-material/Done';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { FormControlLabel, Grid } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Chip from "@mui/material/Chip";
-import CircularProgress from "@mui/material/CircularProgress";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
-import clsx from "clsx";
-import { format } from "date-fns";
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import {
   D_MMM_YYYY,
   decimalPlus,
@@ -27,27 +26,27 @@ import {
   makeAppStyles,
   openInternalLink,
   Switch
-} from "ish-ui";
-import React, { memo, useCallback, useEffect, useRef, useState, } from "react";
-import { connect } from "react-redux";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { areEqual } from "react-window";
-import { Dispatch } from "redux";
-import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from "redux-form";
-import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../common/components/layout/AppBarContainer";
-import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
-import EntityService from "../../common/services/EntityService";
-import { getManualLink } from "../../common/utils/getManualLink";
-import { getPluralSuffix } from "../../common/utils/strings";
-import { BatchPaymentContact } from "../../model/batch-payment";
-import { State } from "../../reducers/state";
-import CheckoutService from "../checkout/services/CheckoutService";
-import { getContactFullName } from "../entities/contacts/utils";
-import { getBachCheckoutModel } from "./utils";
+} from 'ish-ui';
+import React, { memo, useCallback, useEffect, useRef, useState, } from 'react';
+import { connect } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { areEqual } from 'react-window';
+import { Dispatch } from 'redux';
+import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from 'redux-form';
+import instantFetchErrorHandler from '../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../common/components/layout/AppBarContainer';
+import LoadingIndicator from '../../common/components/progress/LoadingIndicator';
+import EntityService from '../../common/services/EntityService';
+import { getManualLink } from '../../common/utils/getManualLink';
+import { getPluralSuffix } from '../../common/utils/strings';
+import { BatchPaymentContact } from '../../model/batch-payment';
+import { State } from '../../reducers/state';
+import CheckoutService from '../checkout/services/CheckoutService';
+import { getContactFullName } from '../entities/contacts/utils';
+import { getBachCheckoutModel } from './utils';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'openCheckoutButton' | 'panelExpanded'>()((theme, p, classes) => ({
   checkbox: {
     width: "auto",
     height: "auto",
@@ -69,16 +68,16 @@ const useStyles = makeAppStyles(theme => ({
     },
   },
   panelSummary: {
-    "&:hover $openCheckoutButton": {
+    [`&:hover .${classes.openCheckoutButton}`]: {
       visibility: "visible",
     },
     padding: theme.spacing(0, 2, 0, 0),
   },
   panelRoot: {
-    "&$panelExpanded:last-child": {
+    [`&.${classes.panelExpanded}:last-child`]: {
       margin: theme.spacing(2, 0),
     },
-    "&$panelExpanded:first-child": {
+    [`&.${classes.panelExpanded}:first-child`]: {
       margin: theme.spacing(2, 0),
     },
   },
@@ -413,7 +412,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   const [processing, setProcessing] = useState(false);
   const cancel = useRef(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   useEffect(() => {
     setContactsLoading(true);
