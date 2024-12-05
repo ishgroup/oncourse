@@ -11,7 +11,7 @@ package ish.oncourse.util.selenium.service.extension.function;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v109.network.Network;
+import org.openqa.selenium.devtools.v131.network.Network;
 
 import java.util.ArrayList;
 import java.util.List;
