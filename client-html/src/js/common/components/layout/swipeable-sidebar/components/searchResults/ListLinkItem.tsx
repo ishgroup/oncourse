@@ -6,17 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import ListItem from "@mui/material/ListItem";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { formatDistanceStrict } from "date-fns";
-import { openInternalLink } from "ish-ui";
-import React from "react";
-import { getPrivisioningLink } from "../../../../../../routes/routesMapping";
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import { ListItemButton, Typography } from '@mui/material';
+import { formatDistanceStrict } from 'date-fns';
+import { openInternalLink } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { getPrivisioningLink } from '../../../../../../routes/routesMapping';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   chips: {
     color: theme.palette.text.primary,
     height: "18px",
@@ -26,7 +24,10 @@ const styles = theme => createStyles({
   },
   listItem: {
     justifyContent: "space-between",
-    padding: "4px 6px 4px 0"
+    padding: "4px 6px 4px 0",
+    "&:hover": {
+      backgroundColor: 'inherit'
+    }
   },
   favoriteScriptIcon: {
     fontSize: theme.spacing(2),
@@ -43,7 +44,7 @@ const ListLinkItem = props => {
   } = props;
 
   return (
-    <ListItem
+    <ListItemButton
       onClick={openLink ? () => openLink(item.id) : () => openInternalLink(getPrivisioningLink(url))}
       disableGutters
       className={classes.listItem}
@@ -58,11 +59,11 @@ const ListLinkItem = props => {
       </Typography>
       {item.date && (
         <Typography className="graySmallFont12" align="right">
-          {formatDistanceStrict(new Date(item.date), new Date(), {addSuffix: true})}
+          {formatDistanceStrict(new Date(item.date), new Date(), { addSuffix: true })}
         </Typography>
       )}
-    </ListItem>
+    </ListItemButton>
   );
 };
 
-export default withStyles(styles)(ListLinkItem);
+export default withStyles(ListLinkItem, styles);

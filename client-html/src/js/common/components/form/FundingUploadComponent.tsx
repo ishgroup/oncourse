@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AvetmissExportSettings, FundingStatus, FundingUpload } from "@api/model";
-import { KeyboardArrowDown, OpenInNew } from "@mui/icons-material";
-import { Button, ButtonBase, FormControl, MenuItem, Select, Typography } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { AnyArgFunction, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, openInternalLink, stubComponent } from "ish-ui";
-import React, { Component } from "react";
+import { AvetmissExportSettings, FundingStatus, FundingUpload } from '@api/model';
+import { KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
+import { Button, ButtonBase, FormControl, MenuItem, Select, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AnyArgFunction, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, openInternalLink, stubComponent } from 'ish-ui';
+import React, { Component } from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   rootPanel: {
     display: "grid",
     gridTemplateColumns: "1fr auto",
@@ -101,7 +101,7 @@ class FundingUploadComponent extends Component<Props, any> {
     } = this.props;
 
     return (
-      <div ref={setFirstUploadNode} className={clsx(className, classes.rootPanel)}>
+      (<div ref={setFirstUploadNode} className={clsx(className, classes.rootPanel)}>
         <div>
           <Typography variant="body2">
             {format(new Date(fundingUpload.created), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")}
@@ -176,9 +176,9 @@ class FundingUploadComponent extends Component<Props, any> {
             </Button>
           )}
         </div>
-      </div>
+      </div>)
     );
   }
 }
 
-export default withStyles(styles)(FundingUploadComponent);
+export default withStyles(FundingUploadComponent, styles);

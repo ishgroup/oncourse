@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { LinearProgress } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import React from "react";
+import { LinearProgress } from '@mui/material';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles: any = () => ({
   root: {
@@ -62,4 +62,4 @@ class Loading extends React.Component<Props, any> {
   }
 }
 
-export default withStyles(styles)(Loading) as any;
+export default withStyles(Loading, styles) as any;

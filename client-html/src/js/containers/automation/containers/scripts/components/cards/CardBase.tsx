@@ -1,28 +1,28 @@
-import Delete from "@mui/icons-material/Delete";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AddButton } from "ish-ui";
-import * as React from "react";
+import Delete from '@mui/icons-material/Delete';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AddButton } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = theme =>
-  createStyles({
+const styles = (theme, p, classes) =>
+  ({
     panelRoot: {
       "&:before": {
         content: "none"
       },
-      "&$panelExpandedWithoutMargin": {
+      [`&.${classes.panelExpandedWithoutMargin}`]: {
         "&:last-child": {
           marginBottom: 0
         }
       },
-      "&$panelExpanded": {
+      [`&.${classes.panelExpanded}`]: {
         "&:last-child": {
           marginBottom: theme.spacing(0)
         }
@@ -31,7 +31,7 @@ const styles = theme =>
     panelExpanded: {},
     panelExpandedWithoutMargin: {},
     panelDetailsRoot: {
-      "&$panelDetailsPadding": {
+      [`&.${classes.panelDetailsPadding}`]: {
         padding: theme.spacing(0, 3)
       },
       "&.p-0": {
@@ -46,7 +46,7 @@ const styles = theme =>
     summaryRoot: {
       borderBottom: "1px solid transparent",
       padding: theme.spacing(0, 0, 0, 2),
-      "&$noHoverEffect:hover": {
+      [`&.${classes.noHoverEffect}:hover`]: {
         cursor: "inherit"
       }
     },
@@ -146,4 +146,4 @@ const CardBase = props => {
   );
 };
 
-export default withStyles(styles)(CardBase);
+export default withStyles(CardBase, styles);
