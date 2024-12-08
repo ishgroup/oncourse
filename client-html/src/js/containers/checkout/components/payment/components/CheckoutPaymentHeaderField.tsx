@@ -5,16 +5,14 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { addDays, compareAsc, isSameDay } from "date-fns";
-import { format } from "date-fns-tz";
+import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { addDays, compareAsc, isSameDay } from 'date-fns';
+import { format } from 'date-fns-tz';
 import {
   BooleanArgFunction,
   D_MMM_YYYY,
@@ -25,37 +23,38 @@ import {
   StringArgFunction,
   StyledCheckbox,
   YYYY_MM_DD_MINUSED
-} from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, getFormValues } from "redux-form";
-import { checkPermissions } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { UserPreferencesState } from "../../../../../common/reducers/userPreferencesReducer";
-import { CheckoutItem, CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
-import { State } from "../../../../../reducers/state";
-import { getAccountTransactionLockedDate } from "../../../../preferences/actions";
+} from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { checkPermissions } from '../../../../../common/actions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { UserPreferencesState } from '../../../../../common/reducers/userPreferencesReducer';
+import { CheckoutItem, CheckoutPayment, CheckoutSummary } from '../../../../../model/checkout';
+import { State } from '../../../../../reducers/state';
+import { getAccountTransactionLockedDate } from '../../../../preferences/actions';
 import {
   checkoutGetSavedCard,
   checkoutSetPaymentMethod,
   checkoutSetPaymentPlans,
   clearCcIframeUrl
-} from "../../../actions/checkoutPayment";
+} from '../../../actions/checkoutPayment';
 import {
   checkoutGetVoucherPromo,
   checkoutRemoveVoucher,
   checkoutUncheckAllPreviousInvoice,
   checkoutUpdatePromo,
   checkoutUpdateSummaryField
-} from "../../../actions/checkoutSummary";
-import { CheckoutPage } from "../../../constants";
-import HeaderField, { HeaderFieldTypo } from "../../HeaderField";
-import SelectedPromoCodesRenderer from "../../summary/promocode/SelectedPromoCodesRenderer";
-import CheckoutPaymentPlans from "./payment-plans/CheckoutPaymentPlans";
+} from '../../../actions/checkoutSummary';
+import { CheckoutPage } from '../../../constants';
+import HeaderField, { HeaderFieldTypo } from '../../HeaderField';
+import SelectedPromoCodesRenderer from '../../summary/promocode/SelectedPromoCodesRenderer';
+import CheckoutPaymentPlans from './payment-plans/CheckoutPaymentPlans';
 
-const styles = () => createStyles({
+const styles = () => ({
   success: {
     color: "green",
     border: "2px solid",
@@ -691,4 +690,4 @@ const CheckoutPaymentHeaderField = connect<any, any, any>(
   mapDispatchToProps
 )(CheckoutPaymentHeaderFieldForm);
 
-export default withStyles(styles)(CheckoutPaymentHeaderField);
+export default withStyles(CheckoutPaymentHeaderField, styles);

@@ -9,11 +9,11 @@
  *  Public License for more details.
  */
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import React from "react";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = () => createStyles({
+const styles = () => ({
 
   dialogContent: {
     overflow: "hidden",
@@ -124,4 +124,4 @@ const EulaDialog = props => {
   );
 };
 
-export default withStyles(styles)(EulaDialog);
+export default withStyles(EulaDialog, styles);

@@ -65,6 +65,7 @@ const _common = (dirname, options) => {
       ],
       extensions: [".ts", ".tsx", ".js"],
       plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.dev.json') })],
+      fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
       rules: [
@@ -72,11 +73,7 @@ const _common = (dirname, options) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
           include: [

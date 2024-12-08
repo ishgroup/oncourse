@@ -3,21 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PaymentMethod } from "@api/model";
-import Step from "@mui/material/Step";
-import StepButton from "@mui/material/StepButton";
-import StepLabel from "@mui/material/StepLabel";
-import Stepper from "@mui/material/Stepper";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme, normalizeNumberToPositive } from "ish-ui";
-import React from "react";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { paymentPlanStyles } from "../../../../../entities/invoices/styles/paymentPlanStyles";
+import { PaymentMethod } from '@api/model';
+import Step from '@mui/material/Step';
+import StepButton from '@mui/material/StepButton';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import Typography from '@mui/material/Typography';
+import { AppTheme, normalizeNumberToPositive } from 'ish-ui';
+import React from 'react';
+import { FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { paymentPlanStyles } from '../../../../../entities/invoices/styles/paymentPlanStyles';
 
-const styles = () => createStyles({
+const styles = () => ({
   button: {
     padding: "0 9px",
     textTransform: "capitalize",
@@ -61,10 +60,7 @@ const validateDueDate = (date, allValues) => {
   return error;
 };
 
-const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
-  ...paymentPlanStyles(theme),
-  ...styles()
-}))((props: WrappedFieldArrayProps & Props) => {
+const CheckoutPaymentPlansBase = withStyles((props: WrappedFieldArrayProps & Props) => {
   const {
     classes,
     fields,
@@ -175,7 +171,10 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
       </Stepper>
     </div>
   );
-});
+}, (theme: AppTheme, p, classes) => ({
+  ...paymentPlanStyles(theme, p, classes),
+  ...styles()
+}));
 
 export default props => (
   <FieldArray

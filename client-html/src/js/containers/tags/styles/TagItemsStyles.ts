@@ -6,11 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { alpha } from "@mui/material/styles";
-import { createStyles } from "@mui/styles";
-import { AppTheme } from "ish-ui";
+import { alpha } from '@mui/material';
+import { AppTheme } from 'ish-ui';
 
-export const styles = (theme: AppTheme) => createStyles({
+export const styles = (theme: AppTheme, p, classes) =>({
   dragIcon: {
     margin: theme.spacing(0, 2),
     color: theme.palette.action.focus,
@@ -37,7 +36,7 @@ export const styles = (theme: AppTheme) => createStyles({
     borderRadius: `${theme.shape.borderRadius}px`,
     cursor: "pointer",
     backgroundColor: alpha(theme.palette.text.primary, 0.025),
-    "&:hover $actionIconInactive": {
+    [`&:hover .${classes.actionIconInactive}`]: {
       color: theme.palette.action.focus
     }
   },
@@ -78,4 +77,4 @@ export const styles = (theme: AppTheme) => createStyles({
   urlEditable: {
     fontSize: "14px",
   }
-});
+} as const);

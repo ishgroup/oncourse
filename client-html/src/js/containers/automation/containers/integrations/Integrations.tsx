@@ -1,11 +1,10 @@
-import { Card, CardActions, CardContent, CardMedia, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import { withStyles } from "@mui/styles";
-import React, { useCallback } from "react";
-import { withRouter } from "react-router-dom";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import IntegrationDescription from "./components/IntegrationDescription";
-import IntegrationTypes from "./IntegrationTypes";
+import { Button, Card, CardActions, CardContent, CardMedia, Grid } from '@mui/material';
+import React, { useCallback } from 'react';
+import { withRouter } from 'react-router-dom';
+import { withStyles } from 'tss-react/mui';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import IntegrationDescription from './components/IntegrationDescription';
+import IntegrationTypes from './IntegrationTypes';
 
 const styles = theme => ({
   image: {
@@ -69,4 +68,4 @@ const Integrations = React.memo<any>(({
   );
 });
 
-export default (withStyles(styles)(withRouter(Integrations)));
+export default withStyles(withRouter(Integrations), styles);
