@@ -22,7 +22,8 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["2"]
 
@@ -48,7 +49,8 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["123456789012"]
 
@@ -77,7 +79,8 @@ Feature: Main feature for all POST requests with path 'list/entity/module'
 
         Given path ishPathList
         And param entity = 'Module'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
         And match $.rows[*].values[*] contains ["notadmin_title1"]
 

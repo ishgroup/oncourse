@@ -36,7 +36,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[null]",null,"testRoom100","site1","25"])].id
@@ -114,7 +115,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom101","site1","5"])].id
@@ -178,7 +180,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom104","site1","5"])].id
@@ -247,7 +250,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom105","site1","5"])].id
@@ -311,7 +315,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom101","site1","5"])].id
@@ -390,7 +395,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom101","site1","5"])].id
@@ -448,7 +454,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/room'
 
         Given path ishPathList
         And param entity = 'Room'
-        When method GET
+        And request {}
+        When method POST
         Then status 200
 
         * def id = get[0] response.rows[?(@.values == ["[]",null,"testRoom102","site1","5"])].id
