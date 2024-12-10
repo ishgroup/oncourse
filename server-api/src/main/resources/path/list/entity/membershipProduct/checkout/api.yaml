@@ -1,0 +1,31 @@
+get:
+  description: Returns short detailed membership product record for checkout
+  operationId: getCheckoutModel
+  tags:
+    - MembershipProduct
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of membership product record to fetch
+    - name: contactId
+      in: query
+      required: false
+      type: integer
+      format: int64
+      description: Unique identifier of contact making the purchase
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/membershipProduct/CheckoutMembershipProduct.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: MEMBERSHIP
+    errorMessage: Sorry, you have no permissions to get membership product. Please contact your administrator

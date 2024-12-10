@@ -11,11 +11,8 @@
 
 package ish.oncourse.server.api.v1.function
 
-import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
 import ish.oncourse.server.api.v1.model.MembershipDiscountDTO
-import ish.oncourse.server.api.v1.model.MembershipProductDTO
 import ish.oncourse.server.cayenne.DiscountMembership
-import ish.oncourse.server.cayenne.MembershipProduct
 
 class MembershipProductFunctions {
 
@@ -27,5 +24,23 @@ class MembershipProductFunctions {
             it.contactRelationTypes = discountMembership.discountMembershipRelationTypes.collect{ it.contactRelationType.id }
             it
         }
+    }
+
+    static Date calculateNextDate(Integer day, Integer month) {
+        Date now = new Date()
+        Calendar calendar = Calendar.getInstance().with {
+            it.setTime(now)
+            it
+        }
+        Calendar nextDate = Calendar.getInstance().with { it ->
+            it.setTime(now)
+            it.set(MONTH, month)
+            it.set(DAY_OF_MONTH, day)
+            it
+        }
+        if (!nextDate.after(calendar)) {
+            nextDate.add(Calendar.YEAR, 1)
+        }
+        return nextDate.getTime()
     }
 }

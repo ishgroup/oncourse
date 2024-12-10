@@ -29,6 +29,7 @@ import {
   CheckoutSummaryListItem
 } from "../../../model/checkout";
 import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
+import MembershipProductService from "../../entities/membershipProducts/services/MembershipProductService";
 import {
   CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
@@ -185,6 +186,14 @@ export const mergeInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => 
     amount,
     date: new Date(date)
   }));
+};
+
+export const getCheckoutModelMembershipsValidTo = async (model: CheckoutModel) => {
+  for (const node of model.contactNodes) {
+    for (const mem of node.memberships) {
+      mem.validTo = await MembershipProductService.getCheckoutModel(mem.productId, node.contactId).then(res => res.expiresOn);
+    }
+  }
 };
 
 export const getCheckoutModel = (
@@ -358,6 +367,7 @@ export const getInvoiceLineKey = (entity: CheckoutEntity) => {
 };
 
 const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], itemOriginal: CheckoutItem) => {
+
   const id = item.type === "course" && item.class ? item.class.id : item.id;
   const lineKey = getInvoiceLineKey(item.type);
   const targetLine = lines.find(l => l[lineKey] && (l[lineKey].productId === id || l[lineKey].classId === id));
@@ -401,10 +411,15 @@ const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], 
     price: 0
   };
 
+  const validTo = item.type === "membership" ? {
+    validTo: lines[0]?.membership?.validTo
+  } : {};
+
   return {
     ...item,
     ...paymentPlansObj,
-    ...prices
+    ...prices,
+    ...validTo
   };
 };
 
@@ -549,7 +564,7 @@ export const checkoutCourseMap = (courseBase, skipCheck?: boolean): CheckoutCour
   return course;
 };
 
-export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
+export const calculateVoucherExpiry = (item: CheckoutItem) => {
   switch (item.type) {
     case "voucher": {
       if (item.expiryDays) {
@@ -558,25 +573,6 @@ export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
         item.validTo = format(today, YYYY_MM_DD_MINUSED);
       }
       break;
-    }
-    case "membership": {
-      if (item.expiryType === "Never (Lifetime)") {
-        item.expireNever = item.expiryType;
-      } else {
-        if (item.expiryType === "Days") {
-          const today = new Date();
-          today.setDate(today.getDate() + Number(item.expiryDays));
-          item.validTo = format(today, YYYY_MM_DD_MINUSED);
-        }
-        if (item.expiryType === "1st July") {
-          const date = getExpireDate(6);
-          item.validTo = format(date, YYYY_MM_DD_MINUSED);
-        }
-        if (item.expiryType === "1st January") {
-          const date = getExpireDate(0);
-          item.validTo = format(date, YYYY_MM_DD_MINUSED);
-        }
-      }
     }
   }
 };
@@ -592,7 +588,7 @@ export const processCheckoutSale = (row, type) => {
   if ( type === "voucher") {
     row.restrictToPayer = false;
   }
-  calculateVoucherOrMembershipExpiry(row);
+  calculateVoucherExpiry(row);
 };
 
 export const getCheckoutCurrentStep = (step: CheckoutCurrentStepType): number => {

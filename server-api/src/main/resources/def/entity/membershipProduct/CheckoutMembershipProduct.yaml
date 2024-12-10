@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    required: true
+  name:
+    type: string
+  code:
+    type: string
+  description:
+    type: string
+  feeExTax:
+    type: number
+  totalFee:
+    type: number
+  expiresOn:
+    type: string
+    format: date

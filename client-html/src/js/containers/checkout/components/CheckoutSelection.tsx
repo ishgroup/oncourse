@@ -1319,7 +1319,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   removeItem: (itemId: number, itemType: string) => dispatch(removeItem(itemId, itemType)),
   checkoutGetCourseClassList: (search: string) => dispatch(checkoutGetCourseClassList(search)),
   checkoutClearCourseClassList: () => dispatch(checkoutClearCourseClassList()),
-  getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item)),
+  getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item.id)),
   getProductRecord: (id: number) => dispatch(checkoutGetProduct(id)),
   getVoucherRecord: (item: any) => dispatch(checkoutGetVoucher(item)),
   clearItemRecord: () => {
