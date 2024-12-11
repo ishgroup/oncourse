@@ -14,6 +14,10 @@ enum PaymentGatewayType {
 
     EWAY_TEST("EWAY_TEST"),
 
+    STRIPE("STRIPE"),
+
+    STRIPE_TEST("STRIPE_TEST"),
+
     WINDCAVE("WINDCAVE"),
 
     TEST_PAYMENT_SYSTEM("TEST"),
