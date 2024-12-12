@@ -25,7 +25,7 @@ class CardTypeAdapter {
             case "amex":
                 return CreditCardType.AMEX
             default:
-                logger.error("Can't map eWay credit card type ($cardBrand) to CreditCardType.")
+                logger.error("Can't map stripe credit card type ($cardBrand) to CreditCardType.")
         }
     }
 }
