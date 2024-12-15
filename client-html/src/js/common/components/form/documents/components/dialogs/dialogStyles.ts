@@ -1,7 +1,7 @@
-import createStyles from "@mui/styles/createStyles";
+
 
 export const dialogStyles = theme =>
-  createStyles({
+  ({
     paper: {
       background: "transparent",
       boxShadow: "none",
