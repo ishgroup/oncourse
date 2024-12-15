@@ -15,9 +15,12 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Preference
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class ChargebeeService {
     private Boolean localMode = null
+    private static final Logger logger = LogManager.getLogger()
 
 
     @BQConfigProperty
@@ -47,14 +50,24 @@ class ChargebeeService {
     }
 
     String configOf(ChargebeePropertyType type) {
-        def preference = ObjectSelect.query(Preference)
-                .where(Preference.NAME.eq(type.getDbPropertyName()))
-                .selectOne(cayenneService.newContext)
-
-        if(preference == null)
+        def preference = preferenceOf(type)
+        if(preference == null) {
+            logger.error("Attempt to upload $type property to chargebee, but config was not replicated for this college")
             throw new IllegalStateException("Attempt to upload $type property to chargebee, but config was not replicated for this college")
+        }
 
         return preference.getValueString()
+    }
+
+    String nullableConfigOf(ChargebeePropertyType type) {
+        def preference = preferenceOf(type)
+        return preference?.getValueString()
+    }
+
+    private Preference preferenceOf(ChargebeePropertyType type) {
+        ObjectSelect.query(Preference)
+                .where(Preference.NAME.eq(type.getDbPropertyName()))
+                .selectOne(cayenneService.newContext)
     }
 
 

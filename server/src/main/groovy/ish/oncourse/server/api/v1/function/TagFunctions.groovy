@@ -359,7 +359,7 @@ class TagFunctions {
 
         Map<Boolean, List<TagRelation>> map = (tagRelations.groupBy { tags.contains(it.tag.id) } as Map<Boolean, List<TagRelation>>)
 
-        map[Boolean.FALSE]?.each { context.deleteObjects(it) }
+        map[Boolean.FALSE]?.each { if(it.tag?.parentTag) context.deleteObjects(it) }
 
         List<Long> tagsToSkip = map[true] ? map[true]*.tag.id : []
 

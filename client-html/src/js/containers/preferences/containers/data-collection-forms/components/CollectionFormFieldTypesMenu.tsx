@@ -1,15 +1,15 @@
-import { DataCollectionType, FieldType } from "@api/model";
-import AddIcon from "@mui/icons-material/Add";
-import { Menu, MenuItem, Typography } from "@mui/material";
-import Fab from "@mui/material/Fab";
-import { withStyles, createStyles } from "@mui/styles";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { State } from "../../../../../reducers/state";
-import { getDataCollectionFormFieldTypes } from "../../../actions";
+import { DataCollectionType, FieldType } from '@api/model';
+import AddIcon from '@mui/icons-material/Add';
+import { Menu, MenuItem, Typography } from '@mui/material';
+import Fab from '@mui/material/Fab';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { State } from '../../../../../reducers/state';
+import { getDataCollectionFormFieldTypes } from '../../../actions';
 
-const styles = () => createStyles({
+const styles = () => ({
   menu: {
     marginLeft: "52px"
   },
@@ -42,15 +42,16 @@ class CollectionFormFieldTypesMenu extends React.Component<Props, any> {
     this.props.getTypes(this.props.formType);
   }
 
+  componentDidUpdate(prevProps) {
+    const { fieldTypes, formType, items } = this.props;
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.fieldTypes) {
+    if (fieldTypes !== prevProps.fieldTypes) {
       this.setState({
-        filteredTypes: this.filterFieldTypes(nextProps.fieldTypes, nextProps.items)
+        filteredTypes: this.filterFieldTypes(fieldTypes, items)
       });
     }
-    if (nextProps.formType !== this.props.formType) {
-      this.props.getTypes(nextProps.formType);
+    if (prevProps.formType !== formType) {
+      this.props.getTypes(formType);
     }
   }
 
@@ -74,7 +75,7 @@ class CollectionFormFieldTypesMenu extends React.Component<Props, any> {
     filtered.sort((a, b) => (a.label[0].toLowerCase() > b.label[0].toLowerCase() ? 1 : -1));
 
     return filtered;
-  }
+  };
 
   render() {
     const { anchorEl, filteredTypes } = this.state;
@@ -151,4 +152,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CollectionFormFieldTypesMenu));
+)(withStyles(CollectionFormFieldTypesMenu, styles));

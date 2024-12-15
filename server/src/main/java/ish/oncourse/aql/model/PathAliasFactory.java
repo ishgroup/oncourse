@@ -52,25 +52,6 @@ class PathAliasFactory {
         createAlias(Room.class, "courseClasses", "classes", CourseClass.class);
 
         createAlias(Session.class, "courseClass", "class", CourseClass.class);
-
-        createAlias(Application.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Assessment.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Contact.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Course.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Document.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Enrolment.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Faculty.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Invoice.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Lead.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Message.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Payslip.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Quote.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Report.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Room.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Site.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Student.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(Tutor.class, "taggingRelations.tag", "tags", Tag.class);
-        createAlias(WaitingList.class, "taggingRelations.tag", "tags", Tag.class);
     }
 
     private void createAlias(Class<? extends Persistent> entityType,

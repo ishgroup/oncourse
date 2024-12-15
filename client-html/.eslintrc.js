@@ -20,6 +20,7 @@ module.exports = {
     "rules": {
         "jsx-a11y/aria-role": "off",
         "import/no-unresolved": "off",
+        "import/no-extraneous-dependencies": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
         "@typescript-eslint/dot-notation": "off",
@@ -126,7 +127,6 @@ module.exports = {
         "react/jsx-props-no-spreading": "off",
         "react/jsx-boolean-value": "off",
         "react/jsx-props-no-multi-spaces": "off",
-        "react/jsx-indent": [2, 2, {indentLogicalExpressions: true, checkAttributes: true}],
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [

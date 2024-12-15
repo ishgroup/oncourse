@@ -3,18 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AvetmissExportFlavour, FundingSource } from "@api/model";
-import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { mapSelectItems, sortDefaultSelectItems } from "ish-ui";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import { AvetmissExportFlavour, FundingSource } from '@api/model';
+import { Button, Grid } from '@mui/material';
+import { red } from '@mui/material/colors';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Paper from '@mui/material/Paper';
+import clsx from 'clsx';
+import { mapSelectItems, sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
 
 const Flavours = Object.keys(AvetmissExportFlavour)
   .filter(val => isNaN(Number(val)))
@@ -23,7 +21,7 @@ const Flavours = Object.keys(AvetmissExportFlavour)
 Flavours.sort(sortDefaultSelectItems);
 
 const styles = () =>
-  createStyles({
+  ({
     deleteButton: {
       color: red[500]
     },
@@ -88,4 +86,4 @@ const FundingContractItem = props => {
   );
 };
 
-export default withStyles(styles)(FundingContractItem) as any;
+export default withStyles(FundingContractItem, styles) as any;

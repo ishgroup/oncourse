@@ -13,12 +13,11 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
-import ish.common.types.MessageStatus
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.api.service.BulkChangeApiService
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
-import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Survey
@@ -64,48 +63,16 @@ class EntityApiImpl implements EntityApi {
     @Inject
     private AqlService aql
     @Inject
-    private EntityValidator validator
+    private BulkChangeApiService bulkChangeApiService
+
+    @Override
+    void bulkChange(String entityName, DiffDTO dto) {
+        bulkChangeApiService.bulkChange(entityName, dto)
+    }
 
     @Override
     void bulkDelete(String entity, DiffDTO dto) {
-        ObjectContext context = cayenneService.newContext
-        Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
-
-        if(!ALLOWED_BULK_DELETE_ENTITIES.contains(clzz))
-            validator.throwClientErrorException("diff", "Bulk remove of ${entity} is not allowed")
-
-        if(clzz.equals(Message) && !dto.search?.contains(MESSAGE_BULK_DELETE_AQL))
-            validator.throwClientErrorException("diff", "Bulk remove of messages that are not queued is not allowed")
-
-        List<? extends CayenneDataObject> entities = null
-
-        if (dto.ids)
-            entities = EntityUtil.getObjectsByIds(context, clzz, dto.ids)
-        else if (dto.filter || dto.search){
-            ObjectSelect query = ObjectSelect.query(clzz)
-            query = parseSearchQuery(query as ObjectSelect, context, aql, clzz.simpleName, dto.search, dto.filter, dto.tagGroups)
-            entities = query.select(context)
-        }
-
-        if (entities == null || entities.empty) {
-            validator.throwClientErrorException("diff", "Records for bulk remove are not found")
-        }
-
-        if (entities.contains(null)) {
-            validator.throwClientErrorException("diff", "Record with id ${dto.ids.get(entities.indexOf(null))} not found")
-        }
-
-        if(clzz.equals(Message)){
-            if(entities.find {(it as Message).status != MessageStatus.QUEUED})
-                validator.throwClientErrorException("diff", "Request returned messages with disallowed status. Bulk remove of messages that are not queued is not allowed")
-        }
-
-        try {
-            context.deleteObjects(entities)
-            context.commitChanges()
-        } catch (Exception e) {
-            validator.throwClientErrorException("diff", "Unexpected error during delete : ${e.message}")
-        }
+        bulkChangeApiService.bulkDelete(entity, dto)
     }
 
     @Override

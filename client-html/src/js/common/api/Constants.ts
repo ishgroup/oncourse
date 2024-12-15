@@ -7,10 +7,13 @@
  * This file contains api specific constants
  */
 
+import { EnvironmentConstants } from "../../constants/EnvironmentConstants";
+
 /**
  * CONTEXT for api requests
  */
-export const CONTEXT: string = "/a/";
+
+export const CONTEXT: string = process.env.NODE_ENV === "development" ? "https://127.0.0.1:8182/a/" : "/a/";
 
 /**
  * 'X-Origin' header for all api requests, this header contains original college site host name

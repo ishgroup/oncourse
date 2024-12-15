@@ -6,15 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Diff, Lead, LeadApi } from "@api/model";
+import { Lead, LeadApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class LeadService {
   readonly leadApi = new LeadApi(new DefaultHttpService());
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.leadApi.bulkChange(diff);
-  }
 
   public createLead(lead: Lead): Promise<any> {
     return this.leadApi.create(lead);

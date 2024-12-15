@@ -1,15 +1,14 @@
-import { MergeLine } from "@api/model";
-import Check from "@mui/icons-material/Check";
-import { Theme } from "@mui/material";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import React, { useCallback, useMemo } from "react";
-import { change } from "redux-form";
-import { MergeContactsFormValues } from "../MergeContacts";
-import Marker from "./Marker";
-import { Selected } from "./RadioLabelGroup";
+import { MergeLine } from '@api/model';
+import Check from '@mui/icons-material/Check';
+import { Button, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { MergeContactsFormValues } from '../MergeContacts';
+import Marker from './Marker';
+import { Selected } from './RadioLabelGroup';
 
 interface Props {
   classes?: any;
@@ -24,7 +23,7 @@ interface InfoLineProps {
   data: string;
 }
 
-const styles = createStyles(({ spacing }: Theme) => ({
+const styles = (({ spacing }: AppTheme) => ({
   root: {
     padding: spacing(2),
     "& > div": {
@@ -165,4 +164,4 @@ const InfoCard = React.memo<Props>(
   }
 );
 
-export default withStyles(styles)(InfoCard);
+export default withStyles(InfoCard, styles);

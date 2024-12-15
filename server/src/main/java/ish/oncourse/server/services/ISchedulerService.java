@@ -38,7 +38,7 @@ public interface ISchedulerService {
 	String CUSTOM_SCRIPT_JOBS_GROUP_ID = "customScriptJobs";
 
 	String EMAIL_DEQUEUEING_JOB_INTERVAL = "45 * * * * ?";
-	String CHARGEBEE_JOB_INTERVAL = "0 0 0 2 * ?";
+	String CHARGEBEE_JOB_INTERVAL = "0 0 3am * * ?";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_INTERVAL = "0 30 0am * * ?";
 	String VOUCHER_EXPIRY_JOB_CRON_SCHEDULE = "0 45 0am * * ?";
 	String INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 1am * * ?";
