@@ -74,6 +74,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
       plugins: [
         new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, './tsconfig.json') }),
       ],
+      fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
       rules: [
@@ -81,11 +82,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
         },
@@ -142,7 +139,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               " https://*.googletagmanager.com" +
               " https://*.googleapis.com" +
               " https://*.google.com" +
-              " https://ish-oncourse-sttrianians.s3.ap-southeast-2.amazonaws.com" +
+              " https://*.s3.ap-southeast-2.amazonaws.com" +
               " https://*.ish.com.au" +
               " 'unsafe-inline';" +
               " img-src * 'self' data: https:;" +

@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Grid, Theme } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import { format } from "date-fns";
-import { appendTimezone, D_III } from "ish-ui";
-import React from "react";
+import { Grid, Theme } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { format } from 'date-fns';
+import { appendTimezone, D_III } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles = (theme: Theme) =>
-  createStyles({
+  ({
     day: {
       position: "sticky",
       top: 32,
@@ -55,4 +55,4 @@ const CalendarDayBase: React.FC<DayBaseProps> = props => {
   );
 };
 
-export default withStyles(styles)(CalendarDayBase);
+export default withStyles(CalendarDayBase, styles);

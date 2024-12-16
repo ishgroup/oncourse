@@ -1,22 +1,22 @@
-import { DataCollectionType } from "@api/model";
-import { MenuItem } from "@mui/material";
-import Menu from "@mui/material/Menu/Menu";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getUserPreferences } from "../../../common/actions";
-import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
-import { LICENSE_ACCESS_CONTROL_KEY, SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
-import { SidebarSharedProps } from "../../../model/common/sidebar";
-import { State } from "../../../reducers/state";
-import ClassTypes from "../containers/class-types/ClassTypes";
-import CourseTypes from "../containers/course-types/CourseTypes";
+import { DataCollectionType } from '@api/model';
+import { MenuItem } from '@mui/material';
+import Menu from '@mui/material/Menu/Menu';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getUserPreferences } from '../../../common/actions';
+import CollapseMenuList from '../../../common/components/layout/side-bar-list/CollapseSideBarList';
+import { LICENSE_ACCESS_CONTROL_KEY, SPECIAL_TYPES_DISPLAY_KEY } from '../../../constants/Config';
+import { SidebarSharedProps } from '../../../model/common/sidebar';
+import { State } from '../../../reducers/state';
+import ClassTypes from '../containers/class-types/ClassTypes';
+import CourseTypes from '../containers/course-types/CourseTypes';
 import CollectionForms from "../containers/data-collection-forms/CollectionFormContainer";
 import CollectionRules from "../containers/data-collection-rules/CollectionRuleFormContainer";
-import LDAP from "../containers/ldap/LDAP";
-import Subjects from "../containers/subjects/Subjects";
+import LDAP from '../containers/ldap/LDAP';
+import Subjects from '../containers/subjects/Subjects';
 import TutorRoleForm from "../containers/tutor-roles/TutorRoleFormContainer";
-import routes from "../routes";
+import routes from '../routes';
 
 const formTypes = Object.keys(DataCollectionType).map(type => {
   const response = { type, displayName: type };
@@ -27,7 +27,7 @@ const formTypes = Object.keys(DataCollectionType).map(type => {
   return response;
 });
 
-const DataCollectionTypesMenu = React.memo<any>(({ anchorEl, history, onClose }) => {
+const DataCollectionTypesMenu = React.memo<{ anchorEl, history, onClose }>(({ anchorEl, history, onClose }) => {
   const handleMenuClick = useCallback(e => {
     history.push(`/preferences/collectionForms/new/${e.target.getAttribute("role")}/`);
     onClose();
@@ -76,7 +76,7 @@ const SideBar = React.memo<any>(
           case CollectionForms:
           case TutorRoleForm:
             return false;
-          case LDAP: 
+          case LDAP:
             return accessLicense;
           case ClassTypes:
           case CourseTypes:

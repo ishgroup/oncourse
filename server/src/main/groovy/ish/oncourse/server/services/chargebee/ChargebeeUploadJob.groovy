@@ -35,10 +35,13 @@ import org.quartz.JobExecutionException
 
 import java.sql.Timestamp
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @DisallowConcurrentExecution
 class ChargebeeUploadJob implements Job {
     private static final Logger logger = LogManager.getLogger()
+
+    private static final String DEFAULT_EMAIL_FOR_ERRORS = "accounts@ish.com.au"
 
     @Inject
     private ICayenneService cayenneService
@@ -137,15 +140,17 @@ class ChargebeeUploadJob implements Job {
             Usage.create(chargebeeService.subscriptionId)
                     .itemPriceId(itemPriceId)
                     .quantity(quantity)
-                    .usageDate(new Timestamp(Instant.now().toEpochMilli()))
+                    .usageDate(new Timestamp(Instant.now().minus(1L, ChronoUnit.DAYS).toEpochMilli()))
                     .request()
         } catch (Exception e) {
             logger.error("Chargebee usage upload error: " + e.getMessage())
+
+            def configuredEmailForErrors = chargebeeService.nullableConfigOf(ChargebeePropertyType.EMAIL_ADDRESS_FOR_ERRORS)
             messageService.sendMessage(new MessageSpec().with {
                 it.subject = 'onCourse->Chargebee usage upload error. Contact ish support'
                 it.content ="\n$itemPriceId upload error for college $preferenceController.collegeName. Reason: $e.message"
                 it.from(preferenceController.emailFromAddress)
-                it.to("accounts@ish.com.au")
+                it.to(configuredEmailForErrors ?: DEFAULT_EMAIL_FOR_ERRORS)
                 it
             })
         }

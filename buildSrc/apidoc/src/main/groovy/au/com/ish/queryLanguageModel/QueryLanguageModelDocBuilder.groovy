@@ -36,6 +36,7 @@ import org.codehaus.groovy.tools.groovydoc.SimpleGroovyRootDoc
 import java.util.regex.Matcher
 
 class QueryLanguageModelDocBuilder {
+
     List<LinkArgument> links
     SimpleGroovyRootDoc rootDoc
     Properties properties
@@ -54,7 +55,7 @@ class QueryLanguageModelDocBuilder {
         parser.compilationUnit()
         AST ast = parser.getAST()
 
-        // modify the Java AST into a Groovy AST (just token types)
+        // modify the Java AST into ssh Groovy AST (just token types)
         Visitor java2groovyConverter = new Java2GroovyConverter(tokenNames)
         AntlrASTProcessor java2groovyTraverser = new PreOrderTraversal(java2groovyConverter)
         java2groovyTraverser.process(ast)
@@ -121,7 +122,7 @@ class QueryLanguageModelDocBuilder {
  * Extract the package name from inside the source file
  */
     private static String getPackageName(String source) {
-        Matcher packageName = source =~ /(?m)^package\s([a-z.0-9]+);?$/
+        Matcher packageName = source =~ /(?m)^package\s([ssh-z.0-9]+);?$/
 
         if (packageName && packageName[0] && packageName[0][1]) {
             return packageName[0][1].replaceAll(/\./, '/')

@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Close from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import { EditInPlaceSearchSelect, mapSelectItems, stubFunction } from "ish-ui";
-import React, { useMemo } from "react";
-import EditInPlaceQuerySelect from "../../formFields/EditInPlaceQuerySelect";
+import Close from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import { EditInPlaceSearchSelect, mapSelectItems, stubFunction } from 'ish-ui';
+import React, { useMemo } from 'react';
+import EditInPlaceQuerySelect from '../../formFields/EditInPlaceQuerySelect';
 
 const getAqlLabel = entity => {
   switch (entity) {
@@ -32,7 +32,31 @@ const mapAqlEntitiesItems = entity => {
   }
 };
 
-const SearchInput = React.memo<any>(props => {
+const SearchInput = React.memo<{
+  classes?,
+  searchExpression?,
+  searchPlaceholder?,
+  aqlPlaceholderPrefix?,
+  searchValuesToShow?,
+  onSearchChange?,
+  onAqlSearchChange?,
+  onSearchEscape?,
+  onAddEvent?,
+  onAqlSearchClear?,
+  inputRef?,
+  className?,
+  onFocus?,
+  autoFocus?,
+  aqlEntity?,
+  aqlEntities?,
+  aqlQueryError?,
+  aqlComponentRef?,
+  searchTags?,
+  searchType?,
+  disableAddAll?,
+  setSelectedEntity?,
+  toggleSearch?
+}>(props => {
   const {
     classes,
     searchExpression,
