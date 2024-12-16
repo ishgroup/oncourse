@@ -26,12 +26,16 @@ import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+
+import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.SetupFutureUsage.OFF_SESSION
+import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.SetupFutureUsage.ON_SESSION
 
 class StripePaymentService implements PaymentServiceInterface {
+    private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     private static final String CURRENCY_CODE_AUD = "AUD"
-
-
 
     @Inject
     private PreferenceController preferenceController;
@@ -46,6 +50,7 @@ class StripePaymentService implements PaymentServiceInterface {
 
         def price = SessionCreateParams.LineItem.PriceData.builder()
                 .setCurrency(CURRENCY_CODE_AUD)
+                .setUnitAmount(amount.multiply(100).toInteger())
                 .setProductData(product)
                 .build()
 
@@ -54,23 +59,40 @@ class StripePaymentService implements PaymentServiceInterface {
                 .setQuantity(1L)
                 .build()
 
-        SessionCreateParams params =
+        SessionCreateParams.Builder paramsBuilder =
                 SessionCreateParams.builder()
+                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                        .setMode(SessionCreateParams.Mode.PAYMENT)
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setClientReferenceId(merchantReference)
                         .setSuccessUrl(origin + '/checkout?paymentStatus=success')
                         .setCancelUrl(origin + '/checkout?paymentStatus=cancel')
                         .addLineItem(lineItem)
+                        .setCustomerEmail(contact.email)
+                        .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
+                        .setReturnUrl(origin + "/checkout?sessionId={CHECKOUT_SESSION_ID}")
                         .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .build()
 
+        def futureUsage = storeCard ? OFF_SESSION : ON_SESSION
+        paramsBuilder.setPaymentIntentData(
+                SessionCreateParams.PaymentIntentData.builder()
+                        .setSetupFutureUsage(futureUsage) // OFF_SESSION is auto payments
+                        .build()
+        )
         def sessionAttributes = new SessionAttributes()
         try {
-            def session = Session.create(params)
-            sessionAttributes.sessionId = session.id
-            sessionAttributes.ccFormUrl = session.url
-            sessionAttributes.billingId = session.customer
+            def session = Session.create(paramsBuilder.build())
+            def status = StripeSessionStatus.from(session.status)
+            if(status == StripeSessionStatus.Open) {
+                sessionAttributes.sessionId = session.id
+                sessionAttributes.ccFormUrl = session.url
+                sessionAttributes.clientSecret = session.clientSecret
+                sessionAttributes.billingId = session.customer
+            } else {
+                sessionAttributes.errorMessage = "Unable to establish a connection with the Stripe application. Please contact ish support or try again later"
+            }
         } catch (Exception e) {
+            logger.catching(e)
             sessionAttributes.errorMessage = e.message
         }
 
@@ -104,8 +126,6 @@ class StripePaymentService implements PaymentServiceInterface {
             def charge = Charge.retrieve(paymentIntent.latestCharge)
             if (charge) {
                 sessionAttributes.authorised = charge.outcome.type == "authorized"
-                // client receipt, maybe should display on client after payment
-                // sessionAttributes.ccFormUrl = charge.receiptUrl
 
                 // set up info about credit card
                 def creditCard = charge.paymentMethodDetails?.card
