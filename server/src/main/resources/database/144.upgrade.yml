@@ -2,12 +2,12 @@ databaseChangeLog:
   - changeSet:
       id: 144-1
       author: dmitriy
-    preConditions:
-      - onFail: HALT
-      - not:
-          - columnExists:
-              tableName: Room
-              columnName: doubleALabsUrl
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Room
+                columnName: doubleALabsUrl
       changes:
         - addColumn:
             tableName: Room
