@@ -32,6 +32,7 @@ import { change, DecoratedFormProps, Field, FieldArray, getFormValues, initializ
 import { withStyles } from 'tss-react/mui';
 import previewSmsImage from '../../../../../images/preview-sms.png';
 import { closeSendMessage, getEmailTemplatesWithKeyCode, getUserPreferences } from '../../../../common/actions';
+import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import DataTypeRenderer from '../../../../common/components/form/DataTypeRenderer';
 import FormField from '../../../../common/components/form/formFields/FormField';
@@ -114,6 +115,7 @@ const styles = theme => ({
 });
 
 interface MessageEditViewProps {
+  dispatch?: Dispatch<IAction>;
   selection: string[];
   filteredCount: number;
   listEntity: string;
@@ -257,7 +259,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
     clearOnClose
   } = props;
 
-  const htmlRef = useRef<HTMLDivElement>();
+  const htmlRef = useRef<HTMLDivElement>(undefined);
 
   const [preview, setPreview] = useState(null);
   const [suppressed, setSuppressed] = useState(false);
@@ -640,7 +642,7 @@ const mapStateToProps = (state: State) => ({
   recipientsMessageData: state.list.recepients
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   getRecipientsMessageData: (entityName: string, messageType: MessageType, listSearchQuery: SearchQuery, selection: string[], templateId: number) => dispatch(
     getRecipientsMessageData(
       entityName,

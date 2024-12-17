@@ -29,6 +29,7 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { change, Field, WrappedFieldProps } from 'redux-form';
 import { makeStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import { ClassCostExtended, CourseClassTutorExtended } from '../../../../../model/entities/CourseClass';
 import { TimetableSession } from '../../../../../model/timetable';
@@ -139,7 +140,7 @@ interface Props {
   index: number;
   session: TimetableSession;
   sessionDuration: number;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   expanded: number;
   tutors: CourseClassTutorExtended[];
   budget: ClassCostExtended[];

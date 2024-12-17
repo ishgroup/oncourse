@@ -12,6 +12,7 @@ import { makeAppStyles, normalizeNumber } from 'ish-ui';
 import React from 'react';
 import { Dispatch } from 'redux';
 import { change, FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import { validateUniqueNamesInArray } from '../../../../../common/utils/validation';
 import GradingItemsRenderer from './GradingItemsRenderer';
@@ -19,7 +20,7 @@ import GradingItemsRenderer from './GradingItemsRenderer';
 interface Props {
   classes?: any;
   onDelete?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const GradingEntryTypes = Object.keys(GradingEntryType)

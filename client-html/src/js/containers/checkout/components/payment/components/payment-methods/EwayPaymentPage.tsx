@@ -5,14 +5,15 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { LoadingButton } from "@mui/lab";
-import { StringArgFunction } from "ish-ui";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from "../../../../../../model/checkout";
-import { State } from "../../../../../../reducers/state";
+import LoadingButton from '@mui/lab/LoadingButton';
+import { StringArgFunction } from 'ish-ui';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from '../../../../../../model/checkout';
+import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutGetPaymentStatusDetails,
@@ -20,9 +21,9 @@ import {
   checkoutProcessPayment,
   checkoutSetPaymentMethod,
   clearCcIframeUrl
-} from "../../../../actions/checkoutPayment";
-import { FORM } from "../../../CheckoutSelection";
-import PaymentMessageRenderer from "../PaymentMessageRenderer";
+} from '../../../../actions/checkoutPayment';
+import { FORM } from '../../../CheckoutSelection';
+import PaymentMessageRenderer from '../PaymentMessageRenderer';
 
 interface CreditCardPaymentPageProps {
   classes?: any;
@@ -40,7 +41,7 @@ interface CreditCardPaymentPageProps {
   process?: CheckoutPaymentProcess;
   paymentInvoice?: any;
   paymentId?: number;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {

@@ -114,7 +114,7 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
   const [isEditing, setIsEditing] = useState<boolean>(opened);
   const [isStuck, setIsStuck] = useState<boolean>(false);
 
-  const rootRef = useRef<HTMLDivElement>();
+  const rootRef = useRef<HTMLDivElement>(undefined);
   
   useEffect(() => {
     if (!isEditing && opened) {

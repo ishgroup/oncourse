@@ -15,6 +15,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import {
   ContactLinkAdornment,
@@ -51,7 +52,7 @@ interface Props extends EditViewProps<Lead> {
   users?: User[];
 }
 
-const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relatedSellables: Sale[], places: number) => {
+const asyncUpdateEstimatedValue = async (dispatch: Dispatch<IAction>, form: string, relatedSellables: Sale[], places: number) => {
   let sum = 0;
   await relatedSellables.map(sel => () => {
       if (sel.type === 'Course') {

@@ -3,6 +3,7 @@ import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { openSendMessage } from "../../../../../actions";
+import { IAction } from '../../../../../actions/IshAction';
 
 interface SendMessageMenuProps {
   selection: string[];
@@ -30,7 +31,7 @@ const SendMessageMenu: React.FC<SendMessageMenuProps> = props => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   openSendMessageEditView: () => dispatch(
     openSendMessage()
   )
