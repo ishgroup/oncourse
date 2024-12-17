@@ -22,6 +22,7 @@ import { Dispatch } from 'redux';
 import { change, Form, getFormSyncErrors, getFormValues, initialize, reduxForm, SubmissionError } from 'redux-form';
 import { DecoratedFormState, InjectedFormProps } from 'redux-form/lib/reduxForm';
 import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
 import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
 import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
 import FormField from '../../../../../common/components/form/formFields/FormField';
@@ -133,7 +134,7 @@ const reorder = (list, startIndex, endIndex) => {
 
 interface Props extends RouteChildrenProps<any> {
   values?: CollectionFormSchema;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   classes?: any;
   fetch?: Fetch;
   nextLocation?: string;

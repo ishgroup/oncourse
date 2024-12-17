@@ -26,7 +26,7 @@ const AddBudgetMenu: React.FC<Props> = ({
   openAddTutorModal,
   tutors
 }) => {
-  const tutorsRef = useRef();
+  const tutorsRef = useRef(undefined);
 
   return (
     <>

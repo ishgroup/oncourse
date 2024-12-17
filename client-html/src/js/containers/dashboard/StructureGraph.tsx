@@ -164,8 +164,8 @@ const useStyles = makeAppStyles()(theme => ({
 }));
 
 const StructureGraph = ({ root }) => {
-  const ref = useRef<any>();
-  const forceRef = useRef<any>();
+  const ref = useRef<any>(undefined);
+  const forceRef = useRef<any>(undefined);
 
   // Stop on unmount
   useEffect(() => () => {

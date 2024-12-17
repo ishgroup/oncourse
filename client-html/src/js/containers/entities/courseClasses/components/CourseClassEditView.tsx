@@ -28,6 +28,7 @@ import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'reac
 import { connect, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 import { initialize } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
 import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
@@ -216,7 +217,7 @@ interface BudgetAdornmentProps {
   studentFee: ClassCostExtended;
   currencySymbol: string;
   isNew: boolean;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   expandedBudget: string[];
   expandBudgetItem: StringArgFunction;
   currentTax: Tax;

@@ -13,6 +13,7 @@ import { NoArgFunction } from "ish-ui";
 import React, { memo, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { IAction } from '../../../../common/actions/IshAction';
 import { getPluralSuffix } from "../../../../common/utils/strings";
 import { IS_JEST } from "../../../../constants/EnvironmentConstants";
 import { ListState } from "../../../../model/common/ListView";
@@ -90,7 +91,7 @@ const BinCogwheel = memo<Props>(props => {
   ) : null;
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   onDelete: ids => dispatch(removeDocument({
     ids,
     diff: {

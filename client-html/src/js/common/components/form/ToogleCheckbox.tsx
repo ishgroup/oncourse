@@ -37,7 +37,7 @@ const useStyles = makeAppStyles<void, 'button' | 'checked'>()((theme, p, classes
 export const ToogleCheckbox = ({
  input, chackedLabel, uncheckedLabel, className, disabled
 }: Props) => {
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(undefined);
 
   const onClick = useCallback(() => {
     inputRef.current.click();

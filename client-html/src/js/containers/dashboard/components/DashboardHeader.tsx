@@ -8,6 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { makeAppStyles, ShowConfirmCaller } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
 import { Dispatch } from 'redux';
+import { IAction } from '../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import HamburgerMenu from '../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu';
 import { VARIANTS } from '../../../common/components/layout/swipeable-sidebar/utils';
@@ -54,7 +55,7 @@ interface Props {
   upgradePlanLink: any;
   setPreferencesTheme: any;
   openConfirm: ShowConfirmCaller;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   drawerOpened: boolean;
 }
 

@@ -6,30 +6,30 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Course } from "@api/model";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { Decimal } from "decimal.js-light";
-import { decimalPlus, formatCurrency, LinkAdornment, normalizeNumber, usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { State } from "../../../../reducers/state";
-import { accountLabelCondition } from "../../accounts/utils";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import { getDiscountAmountExTax } from "../../discounts/utils";
+import { Course } from '@api/model';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { Decimal } from 'decimal.js-light';
+import { decimalPlus, formatCurrency, LinkAdornment, normalizeNumber, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { State } from '../../../../reducers/state';
+import { accountLabelCondition } from '../../accounts/utils';
+import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
+import { courseFilterCondition, openCourseLink } from '../../courses/utils';
+import { getDiscountAmountExTax } from '../../discounts/utils';
 import {
   getInvoiceLineCourse,
   getInvoiceLineEnrolments,
   setInvoiceLineCourse,
   setInvoiceLineEnrolments
-} from "../actions";
-import { calculateInvoiceLineTotal } from "../utils";
+} from '../actions';
+import { calculateInvoiceLineTotal } from '../utils';
 
 const calculateInvoiceLineTaxEach = (priceEachExTax: number, discountEachExTax: number, taxRate: number) => new Decimal(priceEachExTax || 0)
     .minus(discountEachExTax || 0)
@@ -128,7 +128,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
   const [useAllAccounts, setUseAllAccounts] = useState(false);
   const [courseClassEnrolments, setCourseClassEnrolments] = useState([]);
 
-  const accountRef = useRef<any>();
+  const accountRef = useRef<any>(undefined);
 
   const prevCourseClassId = usePrevious(row.courseClassId);
   

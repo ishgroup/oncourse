@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Dispatch } from 'redux';
+import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { getFiltersNameString, } from '../../../../common/components/list-view/utils/listFiltersUtils';
 import EntityService from '../../../../common/services/EntityService';
@@ -81,7 +82,7 @@ interface Props extends RouteComponentProps {
   filters?: CoreFilter[];
   sessionsLoading?: boolean;
   selectedMonthSessionDays?: number[];
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const MonthRenderer = React.forwardRef<any, any>(({

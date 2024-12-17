@@ -33,6 +33,7 @@ import {
   getCommonPlainRecords,
   setCommonPlainSearch
 } from '../../../../../common/actions/CommonPlainRecordsActions';
+import { IAction } from '../../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import NestedList from '../../../../../common/components/form/nestedList/NestedList';
 import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
@@ -836,7 +837,7 @@ const mapStateToProps = (state: State) => ({
   discountsError: state.plainSearchRecords["Discount"].error,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate)),
   getSearchResult: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", search));

@@ -155,8 +155,8 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
 
     const theme = useAppTheme();
     
-    const maxLabelEl = useRef<SVGAElement>();
-    const minLabelEl = useRef<SVGAElement>();
+    const maxLabelEl = useRef<SVGAElement>(undefined);
+    const minLabelEl = useRef<SVGAElement>(undefined);
 
     const clearData = useCallback(() => {
       setData(prev => prev.map(({ week }) => ({ week, enrolments: 0, value: 0, averageValue: 0 })));

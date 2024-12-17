@@ -3,26 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CertificateCreateForEnrolmentsRequest, Enrolment } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import { openInternalLink, StyledCheckbox } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import CertificateService from "../../../../../../containers/entities/certificates/services/CertificateService";
-import instantFetchErrorHandler from "../../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EntityService from "../../../../../services/EntityService";
+import { CertificateCreateForEnrolmentsRequest, Enrolment } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import { openInternalLink, StyledCheckbox } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import CertificateService from '../../../../../../containers/entities/certificates/services/CertificateService';
+import { IAction } from '../../../../../actions/IshAction';
+import instantFetchErrorHandler from '../../../../../api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../../services/EntityService';
 
 interface CreateCertificateMenuProps {
   entity: "CourseClass" | "Enrolment";
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   selection: string[];
   closeMenu?: any;
   disableMenu?: boolean;

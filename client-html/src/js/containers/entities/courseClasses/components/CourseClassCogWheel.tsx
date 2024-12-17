@@ -8,6 +8,7 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
+import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import CreateCertificateMenu
   from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
@@ -210,7 +211,7 @@ const mapStateToProps = (state: State) => ({
   access: state.access
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   setCourseClassPlainRequest: id => dispatch(setCommonPlainSearch("CourseClass", `id is ${id}`)),
   getCourseClassPlainRecord: () => dispatch(
     getCommonPlainRecords("CourseClass", 0, "cancelWarningMessage,course.name,course.code,code,validEnrolmentCount")

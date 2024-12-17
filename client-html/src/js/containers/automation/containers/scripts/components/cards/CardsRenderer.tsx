@@ -3,29 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Binding } from "@api/model";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import StackedLineChartIcon from "@mui/icons-material/StackedLineChart";
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { ShowConfirmCaller } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next";
-import { Dispatch } from "redux";
-import { WrappedFieldArrayProps } from "redux-form";
-import ScriptIcon from "../../../../../../../images/icon-script.svg";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
-import { getType } from "../../utils";
-import AddScriptAction from "../AddScriptAction";
-import ScriptCard from "./CardBase";
-import MessageCardContent from "./MessageCardContent";
-import QueryCardContent from "./QueryCardContent";
-import ReportCardContent from "./ReportCardContent";
+import { Binding } from '@api/model';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
+import { FormControlLabel } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { ShowConfirmCaller } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
+import { Dispatch } from 'redux';
+import { WrappedFieldArrayProps } from 'redux-form';
+import ScriptIcon from '../../../../../../../images/icon-script.svg';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { ScriptComponent, ScriptExtended } from '../../../../../../model/scripts';
+import { getType } from '../../utils';
+import AddScriptAction from '../AddScriptAction';
+import ScriptCard from './CardBase';
+import MessageCardContent from './MessageCardContent';
+import QueryCardContent from './QueryCardContent';
+import ReportCardContent from './ReportCardContent';
 
 const onDragEnd = ({ destination, source, fields }) => {
   if (destination && destination.index !== source.index) {
@@ -34,7 +35,7 @@ const onDragEnd = ({ destination, source, fields }) => {
 };
 
 interface Props {
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   classes: any;
   showConfirm: ShowConfirmCaller;
   hasUpdateAccess: boolean;

@@ -6,20 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Tag } from "@api/model";
-import { stubFunction, TagInputList } from "ish-ui";
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { useAppSelector } from "../../../common/utils/hooks";
-import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../constants/Config";
-import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
-import { getAllFormTags } from "./index";
+import { Tag } from '@api/model';
+import { stubFunction, TagInputList } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../common/actions/IshAction';
+import { useAppSelector } from '../../../common/utils/hooks';
+import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../constants/Config';
+import { COMMON_PLACEHOLDER } from '../../../constants/Forms';
+import { getAllFormTags } from './index';
 
 interface Props {
   tags: Tag[];
   tagsValue: number[];
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>;
   form: string;
 }
 

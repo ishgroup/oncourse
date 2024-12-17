@@ -6,12 +6,12 @@
 *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 */
 
-import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import { Collapse } from "@mui/material";
-import Button from "@mui/material/Button";
-import React, { useEffect, useRef } from "react";
-import { IS_JEST } from "../../../constants/EnvironmentConstants";
-import { useAppSelector } from "../../utils/hooks";
+import ErrorOutline from '@mui/icons-material/ErrorOutline';
+import { Collapse } from '@mui/material';
+import Button from '@mui/material/Button';
+import React, { useEffect, useRef } from 'react';
+import { IS_JEST } from '../../../constants/EnvironmentConstants';
+import { useAppSelector } from '../../utils/hooks';
 
 interface Props {
   disabled: boolean;
@@ -29,7 +29,7 @@ const FormSubmitButton = React.memo<Props>(({
                                               text = "Save",
                                               className,
                                             }) => {
-  const ref = useRef<HTMLButtonElement>();
+  const ref = useRef<HTMLButtonElement>(undefined);
   const defaultPrevented = useRef(false);
 
   const isFieldProcessing = useAppSelector(state => Boolean(Object.keys(state.fieldProcessing).length));

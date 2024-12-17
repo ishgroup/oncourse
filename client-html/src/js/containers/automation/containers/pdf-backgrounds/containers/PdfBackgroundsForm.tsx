@@ -6,23 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ReportOverlay } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import { FilePreview, usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Dispatch } from "redux";
-import { change, Form, initialize, InjectedFormProps } from "redux-form";
-import { showMessage } from "../../../../../common/actions";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
+import { ReportOverlay } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import { FilePreview, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change, Form, initialize, InjectedFormProps } from 'redux-form';
+import { showMessage } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { PDF_BACKGROUND_FORM_NAME } from '../PdfBackgrounds';
 
 const manualUrl = getManualLink("print-backgrounds");
 
@@ -30,7 +31,7 @@ interface Props extends InjectedFormProps {
   isNew: boolean;
   loading: boolean;
   values: ReportOverlay;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (fileName: string, overlay: File) => void;
   onUpdate: (fileName: string, id: number, overlay: File) => void;
   onDelete: (id: number) => void;
@@ -61,7 +62,7 @@ const PdfBackgroundsForm = React.memo<Props>(
     const [fileIsChosen, setFileIsChosen] = useState(false);
     const [chosenFileName, setChosenFileName] = useState(null);
 
-    const fileRef = useRef<any>();
+    const fileRef = useRef<any>(undefined);
 
     const prevId = usePrevious(values.id);
 

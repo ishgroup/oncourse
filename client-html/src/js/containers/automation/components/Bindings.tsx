@@ -13,6 +13,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Dispatch } from 'redux';
 import { arrayPush, arrayRemove, Field, FieldArray } from 'redux-form';
 import { makeStyles } from 'tss-react/mui';
+import { IAction } from '../../../common/actions/IshAction';
 import DataTypeRenderer from '../../../common/components/form/DataTypeRenderer';
 import { CatalogItemType } from '../../../model/common/Catalog';
 import { IMPORT_TEMPLATES_FORM_NAME } from '../containers/import-templates/ImportTemplates';
@@ -217,7 +218,7 @@ interface BindingsProps {
   form: string;
   disabled?: boolean;
   defaultVariables?: { type: string; name: string }[];
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   itemsType: BindingsItemType;
   emailTemplates?: CatalogItemType[];
 }

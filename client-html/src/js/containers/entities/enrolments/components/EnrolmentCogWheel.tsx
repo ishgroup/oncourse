@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { IAction } from '../../../../common/actions/IshAction';
 import CreateCertificateMenu
   from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
@@ -142,7 +143,7 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch,
   getEnrolmentInvoiceLines: (id: string) => dispatch(getEnrolmentInvoiceLines(id)),
   getAccounts: () => getPlainAccounts(dispatch),

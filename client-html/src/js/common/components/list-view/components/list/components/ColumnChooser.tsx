@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Visibility from "@mui/icons-material/Visibility";
-import { FormControlLabel, List, ListItemButton } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Popover from "@mui/material/Popover";
-import React, { useRef, useState } from "react";
-import { CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from "../constants";
+import Visibility from '@mui/icons-material/Visibility';
+import { Checkbox, FormControlLabel, List, ListItemButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Popover from '@mui/material/Popover';
+import React, { useRef, useState } from 'react';
+import { CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from '../constants';
 
 const ColumnChooserItem = ({
                              classes, column, onHiddenChange
@@ -90,7 +89,7 @@ const ColumnChooserButton = React.forwardRef<any, any>(({className, onToggle}, r
 
 const ColumnChooser = ({classes, columns, onHiddenChange}) => {
   const [visible, setVisible] = useState(false);
-  const buttonRef = useRef<any>();
+  const buttonRef = useRef<any>(undefined);
 
   return (
     <>
