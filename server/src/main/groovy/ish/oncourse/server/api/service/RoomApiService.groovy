@@ -62,6 +62,7 @@ class RoomApiService extends TaggableApiService<RoomDTO, Room, RoomDao> {
             room.createdOn = dbRoom.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             room.modifiedOn = dbRoom.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             room.customFields = dbRoom?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            room.doubleALabsUrl = dbRoom.doubleALabsUrl
             room
         }
     }
@@ -73,6 +74,7 @@ class RoomApiService extends TaggableApiService<RoomDTO, Room, RoomDao> {
         dbRoom.site = getRecordById(dbRoom.context, Site, dto.siteId)
         dbRoom.directions = trimToNull(dto.directions)
         dbRoom.facilities = trimToNull(dto.facilities)
+        dbRoom.doubleALabsUrl = trimToNull(dto.doubleALabsUrl)
 
         updateTags(dbRoom, dbRoom.taggingRelations, dto.tags, RoomTagRelation, dbRoom.context)
         updateAvailabilityRules(dbRoom, dbRoom.unavailableRuleRelations*.rule, dto.rules, RoomUnavailableRuleRelation)

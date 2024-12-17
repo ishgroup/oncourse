@@ -16,6 +16,7 @@ import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
+import ish.validation.ValidationUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
@@ -68,6 +69,12 @@ class RoomFunctions {
 
         if (roomId && roomId != dbRoomId) {
             validator.throwClientErrorException(roomDTO?.id, 'name', 'The name of the room must be unique within the site.')
+        }
+
+        String doubleALabsUrl = StringUtils.trimToNull(roomDTO.doubleALabsUrl)
+        if(doubleALabsUrl != null) {
+            if(!ValidationUtil.isValidUrl(doubleALabsUrl))
+                validator.throwClientErrorException(roomDTO?.doubleALabsUrl, 'doubleALabsUrl', 'The double A Labs url is incorrect.')
         }
     }
 }

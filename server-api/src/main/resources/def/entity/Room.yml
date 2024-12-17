@@ -53,3 +53,5 @@ properties:
     type: object
     additionalProperties:
       type: string
+  doubleALabsUrl:
+    type: string
