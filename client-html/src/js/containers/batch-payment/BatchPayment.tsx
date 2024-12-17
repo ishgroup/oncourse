@@ -33,6 +33,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { areEqual } from 'react-window';
 import { Dispatch } from 'redux';
 import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from 'redux-form';
+import { IAction } from '../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import FormField from '../../common/components/form/formFields/FormField';
 import AppBarContainer from '../../common/components/layout/AppBarContainer';
@@ -305,7 +306,7 @@ const ContactRenderer = ({
 };
 
 interface Props {
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   currencySymbol?: string;
   values?: {
     contacts: BatchPaymentContact[]

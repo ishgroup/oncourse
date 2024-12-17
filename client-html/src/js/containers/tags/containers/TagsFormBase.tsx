@@ -23,6 +23,7 @@ import {
 } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { showConfirm } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
 import { onSubmitFail } from '../../../common/utils/highlightFormErrors';
 import { getPluralSuffix } from '../../../common/utils/strings';
 import { CatalogItemType } from '../../../model/common/Catalog';
@@ -200,7 +201,7 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   onUpdate: (tag: Tag) => dispatch(updateTag(TAGS_FORM_NAME, tag)),
   onCreate: (tag: Tag) => dispatch(createTag(TAGS_FORM_NAME, tag)),
   onDelete: (tag: Tag) => dispatch(deleteTag(tag)),

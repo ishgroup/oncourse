@@ -30,6 +30,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { change, FieldArray, WrappedFieldArrayProps, } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../common/actions/IshAction';
 import DocumentShare from '../../../../common/components/form/documents/DocumentShare';
 import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
@@ -174,7 +175,7 @@ const DocumentVersionComp = ({
 
 interface DocumentVersionsProps {
   classes: any;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   showConfirm: ShowConfirmCaller;
   onCurrentChange: any;
   hasOneVersion: boolean;
@@ -215,7 +216,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     showConfirm
   } = props;
 
-  const fileRef = useRef<any>();
+  const fileRef = useRef<any>(undefined);
 
   const [moreDetailcollapsed, setMoreDetailcollapsed] = React.useState(false);
 

@@ -6,26 +6,27 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DefinedTutorRole } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
-import { ShowConfirmCaller } from "ish-ui";
-import React from "react";
-import { Dispatch } from "redux";
-import { getFormSyncErrors, InjectedFormProps, reduxForm } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { useAppSelector } from "../../../../../common/utils/hooks";
-import PayRates from "./PayRates";
+import { DefinedTutorRole } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import Grid from '@mui/material/Grid';
+import { ShowConfirmCaller } from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { getFormSyncErrors, InjectedFormProps, reduxForm } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { useAppSelector } from '../../../../../common/utils/hooks';
+import PayRates from './PayRates';
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
   value: DefinedTutorRole;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (role: DefinedTutorRole) => void;
   onUpdate: (role: DefinedTutorRole) => void;
   onDelete: any;

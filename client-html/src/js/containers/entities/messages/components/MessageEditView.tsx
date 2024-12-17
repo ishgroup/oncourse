@@ -6,16 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Message } from "@api/model";
-import { CardContent, Grid } from "@mui/material";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import { format } from "date-fns";
-import { III_DD_MMM_YYYY } from "ish-ui";
-import React, { useEffect, useMemo, useRef } from "react";
-import { Dispatch } from "redux";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import { Message } from '@api/model';
+import { CardContent, Grid } from '@mui/material';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import { format } from 'date-fns';
+import { III_DD_MMM_YYYY } from 'ish-ui';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { Dispatch } from 'redux';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
 
 interface MessageEditViewProps {
   values?: Message;
@@ -34,7 +34,7 @@ interface MessageEditViewProps {
 const MessageEditView = React.memo<MessageEditViewProps>(props => {
   const { twoColumn, values } = props;
 
-  const htmlRef = useRef<HTMLDivElement>();
+  const htmlRef = useRef<HTMLDivElement>(undefined);
 
   useEffect(() => {
     if (htmlRef.current && !htmlRef.current.shadowRoot) {

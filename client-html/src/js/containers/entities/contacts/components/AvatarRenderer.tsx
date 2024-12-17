@@ -75,7 +75,7 @@ const AvatarRenderer: React.FC<any> = props => {
 
   const { classes } = useStyles();
 
-  const fileRef = useRef<any>();
+  const fileRef = useRef<any>(undefined);
 
   const handleGravatarError = useCallback(e => {
     const img = e.currentTarget;

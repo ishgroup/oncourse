@@ -208,8 +208,8 @@ const RelationshipView: React.FC<Props> = props => {
 
   const dispatch = useAppDispatch();
 
-  const ref = useRef<any>();
-  const forceRef = useRef<any>();
+  const ref = useRef<any>(undefined);
+  const forceRef = useRef<any>(undefined);
 
   const { classes } = useStyles();
 

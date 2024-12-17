@@ -17,6 +17,7 @@ import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';
+import { IAction } from '../../../common/actions/IshAction';
 import FormField from '../../../common/components/form/formFields/FormField';
 import EntityService from '../../../common/services/EntityService';
 import GetTagRequirementDisplayName from '../utils/GetTagRequirementDisplayName';
@@ -42,7 +43,7 @@ interface Props {
   index: number;
   parent: string;
   form: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 const ChecklistRequirementItem = (props: Props) => {

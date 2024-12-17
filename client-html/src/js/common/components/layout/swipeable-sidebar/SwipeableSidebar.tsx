@@ -26,6 +26,7 @@ import SendMessageEditView from '../../../../containers/entities/messages/compon
 import { DashboardItem } from '../../../../model/dashboard';
 import { State } from '../../../../reducers/state';
 import { checkPermissions, getOnDemandScripts, getUserPreferences, setUserPreference } from '../../../actions';
+import { IAction } from '../../../actions/IshAction';
 import { getEntityDisplayName } from '../../../utils/getEntityDisplayName';
 import { useAppSelector } from '../../../utils/hooks';
 import navigation from '../../navigation/data/navigation.json';
@@ -129,7 +130,7 @@ interface Props {
   getScriptsPermissions: any;
   scripts: any;
   hasScriptsPermissions: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   selected?: number | string;
   setSelected?: AnyArgFunction;
   listEntity?: string;

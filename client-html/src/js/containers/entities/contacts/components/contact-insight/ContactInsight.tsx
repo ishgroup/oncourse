@@ -267,7 +267,7 @@ const Interaction = (interaction: ContactInteraction & { currencySymbol?: string
   const [clamped, setClamped] = useState(true);
   const [descriptionLines, setSescriptionLines] = useState(null);
   
-  const hiddenDescriptionRef = useRef<any>();
+  const hiddenDescriptionRef = useRef<any>(undefined);
 
   useEffect(() => {
     setSescriptionLines(countLines(hiddenDescriptionRef.current));

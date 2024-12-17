@@ -17,6 +17,7 @@ import { Area, AreaChart, CartesianGrid, Tooltip, XAxis } from 'recharts';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
 import { checkPermissions } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
 import { State } from '../../../../../reducers/state';
 import { getDashboardStatistic } from '../../../actions';
 import ScriptStatistic from './ScriptStatistic';
@@ -187,7 +188,7 @@ interface Props {
   isUpdating?: boolean;
   hideChart?: boolean;
   hasAuditPermissions?: boolean;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   getAuditPermissions?: () => void;
 }
 

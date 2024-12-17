@@ -30,6 +30,7 @@ import { getEntityTags } from '../../../../../containers/tags/actions';
 import { EntityName } from '../../../../../model/entities/common';
 import { State } from '../../../../../reducers/state';
 import { addActionToQueue } from '../../../../actions';
+import { IAction } from '../../../../actions/IshAction';
 import { getDeepValue } from '../../../../utils/common';
 import DataTypeRenderer from '../../../form/DataTypeRenderer';
 import FormField from '../../../form/formFields/FormField';
@@ -48,7 +49,7 @@ interface BulkEditProps {
   searchQuery?: SearchQuery;
   sort?: Sorting[];
   classes?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   getBulkEditList?: (entityName: string) => void;
   handleSubmit?: any;
   onSave?: any;

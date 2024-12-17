@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { AddButton, AppTheme } from 'ish-ui';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { findDOMNode } from 'react-dom';
 import { FormErrors } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { IS_JEST } from '../../../../constants/EnvironmentConstants';
@@ -69,9 +68,9 @@ const ExpandableContainer: React.FC<Props> = ({
 }) => {
   const [hasErrors, setHasErrors] = useState(false);
 
-  const childrenRef = useRef<HTMLDivElement>();
+  const childrenRef = useRef<HTMLDivElement>(undefined);
 
-  const headerRef = useRef<any>();
+  const headerRef = useRef<any>(undefined);
 
   const isExpanded = useMemo(() => expanded.includes(index), [expanded, index]);
 
@@ -102,7 +101,7 @@ const ExpandableContainer: React.FC<Props> = ({
 
   useEffect(() => {
     if (formErrors && childrenRef.current) {
-      const domNode = findDOMNode(childrenRef.current) as HTMLDivElement;
+      const domNode = childrenRef.current;
 
       let childrenError = false;
 

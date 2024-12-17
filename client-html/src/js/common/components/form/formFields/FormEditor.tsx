@@ -226,6 +226,7 @@ const EditorResolver = ({ contentMode, draftContent, onChange, wysiwygRef }) => 
           value={draftContent}
           onChange={onChange}
           mode={contentMode}
+          height="250px"
         />
       );
     }
@@ -253,7 +254,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
     className
   }
 ) => {
-  const wysiwygRef = useRef<any>();
+  const wysiwygRef = useRef<any>(undefined);
 
   const [contentMode, setContentMode] = useState(getContentMarker(value));
   const [isEditing, setIsEditing] = useState(false);

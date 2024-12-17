@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import { checkPermissions } from "../../../common/actions";
+import { IAction } from '../../../common/actions/IshAction';
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
@@ -139,7 +140,7 @@ const mapStateToProps = (state: State) => ({
   customFieldTypes: state.customFieldTypes.types["Lead"]
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   onInit: () => {
     dispatch(setListEditRecord(Initial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));

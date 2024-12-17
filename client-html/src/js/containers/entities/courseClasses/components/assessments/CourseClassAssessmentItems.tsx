@@ -15,6 +15,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Dispatch } from 'redux';
 import { change, Field } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
 import { AssessmentsSubmissionType } from './AssessmentSubmissionIconButton';
@@ -26,7 +27,7 @@ import SubmissionModal from './SubmissionModal';
 interface Props {
   form: string;
   item: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   tutors: CourseClassTutor[];
   courseClassEnrolments?: any[],
   twoColumn?: boolean;
@@ -70,8 +71,8 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
   const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
 
-  const tutorsUpdater = useRef<any>();
-  const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
+  const tutorsUpdater = useRef<any>(undefined);
+  const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>(undefined);
 
   const uniqueIds = new Set([]);
   const submissionTutors = useMemo(() => tutors.filter(t => {

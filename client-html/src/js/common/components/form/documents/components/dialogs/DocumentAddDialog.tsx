@@ -131,8 +131,8 @@ const DocumentAddDialog = (
     searchExistingDocsDisabled
   }: OwnProps & StateProps & DispatchProps) => {
   
-  const searchContainerNode = useRef<HTMLDivElement>();
-  const dialogRef = useRef<HTMLDivElement>();
+  const searchContainerNode = useRef<HTMLDivElement>(undefined);
+  const dialogRef = useRef<HTMLDivElement>(undefined);
 
   const [searchValue, setSearchValue] = useState("");
   

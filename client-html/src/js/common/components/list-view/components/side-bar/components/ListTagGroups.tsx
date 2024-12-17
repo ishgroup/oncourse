@@ -7,6 +7,7 @@ import { withStyles } from 'tss-react/mui';
 import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../../../../constants/Config';
 import { FormMenuTag } from '../../../../../../model/tags';
 import { State } from '../../../../../../reducers/state';
+import { IAction } from '../../../../../actions/IshAction';
 import { useAppSelector } from '../../../../../utils/hooks';
 import { updateTableModel } from '../../../actions';
 import { COLUMN_WITH_COLORS } from '../../list/constants';
@@ -147,7 +148,7 @@ const mapStateToProps = (state: State) => ({
   records: state.list.records,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   updateTableModel: (model: TableModel, listUpdate?: boolean) => dispatch(updateTableModel(ownProps.rootEntity, model, listUpdate)),
 });
 

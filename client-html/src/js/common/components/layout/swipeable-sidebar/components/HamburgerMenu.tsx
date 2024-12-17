@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import CloseIcon from "@mui/icons-material/Close";
-import MenuIcon from "@mui/icons-material/Menu";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { State } from "../../../../../reducers/state";
-import Logo from "../../Logo";
-import { toggleSwipeableDrawer } from "../actions";
+import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { State } from '../../../../../reducers/state';
+import { IAction } from '../../../../actions/IshAction';
+import Logo from '../../Logo';
+import { toggleSwipeableDrawer } from '../actions';
 
 interface Props {
   opened?: boolean;
@@ -51,7 +52,7 @@ const mapStateToProps = (state: State) => ({
   opened: state.swipeableDrawer.opened
 });
 
-const mapStateToDispatch = (dispatch: Dispatch, props: Props) => ({
+const mapStateToDispatch = (dispatch: Dispatch<IAction>, props: Props) => ({
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(props.variant))
 });
 

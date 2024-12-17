@@ -60,7 +60,7 @@ const styles = (theme, p, classes) =>
   });
 
 const SliderStepper = React.memo<any>(props => {
-  const prevValue = useRef<number>();
+  const prevValue = useRef<number>(undefined);
   
   const [innerValue, setInnerValue] = useState<string>();
   
