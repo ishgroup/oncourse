@@ -17,6 +17,7 @@ import { withStyles } from 'tss-react/mui';
 import { getEntityTags } from '../../../../containers/tags/actions';
 import { EntityName } from '../../../../model/entities/common';
 import { State } from '../../../../reducers/state';
+import { IAction } from '../../../actions/IshAction';
 import DocumentItem from '../../documents/DocumentItem';
 import {
   clearEditingDocument,
@@ -62,7 +63,7 @@ interface DocumentsRendererProps {
   xsGrid: any;
   mdGrid: any;
   lgGrid: any;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   entity: EntityName;
   setDocumentFile: any;
   getDocumentTags: any;

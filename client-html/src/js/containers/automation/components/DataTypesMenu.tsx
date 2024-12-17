@@ -17,6 +17,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { IAction } from '../../../common/actions/IshAction';
 import FormField from '../../../common/components/form/formFields/FormField';
 import { BindingsItemType } from './Bindings';
 
@@ -64,8 +65,8 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
   ({
      popupAnchorEl, onCancel, onSave, handleSubmit, invalid, values, reset
   }) => {
-    const nameRef = useRef<any>();
-    const popperRef = useRef<any>();
+    const nameRef = useRef<any>(undefined);
+    const popperRef = useRef<any>(undefined);
 
     const { classes }  = useStyles();
 
@@ -161,7 +162,7 @@ interface DataTypesMenuProps {
   anchorEl: HTMLElement;
   handleClose: NoArgFunction;
   handleAdd: (val: Binding) => void;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   itemsType: BindingsItemType;
   isOptionsBindingType?: boolean;
   isVariablesBindingType?: boolean;

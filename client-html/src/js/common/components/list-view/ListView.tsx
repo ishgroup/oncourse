@@ -49,6 +49,7 @@ import { EntityName, FindEntityState } from '../../../model/entities/common';
 import { FormMenuTag } from '../../../model/tags';
 import { State } from '../../../reducers/state';
 import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from '../../actions';
+import { IAction } from '../../actions/IshAction';
 import { UserPreferencesState } from '../../reducers/userPreferencesReducer';
 import { getEntityDisplayName } from '../../utils/getEntityDisplayName';
 import { onSubmitFail } from '../../utils/highlightFormErrors';
@@ -127,7 +128,7 @@ interface OwnProps {
   closeConfirm?: () => void;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   fetch?: Fetch;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
   setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: FormMenuTag[], checkedChecklists: FormMenuTag[], uncheckedChecklists: FormMenuTag[] }) => void;
@@ -1223,7 +1224,7 @@ const mapStateToProps = (state: State) => ({
   preferences: state.userPreferences,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   dispatch,
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),

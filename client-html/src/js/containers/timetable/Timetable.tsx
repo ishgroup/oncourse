@@ -106,7 +106,7 @@ const getActionCreators = dispatch => ({
 });
 
 export const TimetableContextProvider = props => {
-  const [state, dispatch] = useReducer<any, TimetableContextState>(timetableReducer, timetableContextStateInitial, initContext);
+  const [state, dispatch] = useReducer<any, TimetableContextState, any>(timetableReducer, timetableContextStateInitial, initContext);
   return (
     <TimetableContext.Provider value={{ ...state as any, ...getActionCreators(dispatch) }}>
       {props.children}

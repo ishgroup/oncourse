@@ -9,6 +9,7 @@ import { AppTheme, normalizeNumberToZero, preventDecimalEnter } from 'ish-ui';
 import React, { useMemo } from 'react';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
 import { validateNonNegative } from '../../../../../common/utils/validation';
@@ -29,7 +30,7 @@ interface Props {
   classes?: any;
   enrolmentsCount: number;
   form: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 const BudgetEnrolmentsFields = React.memo<Props>(({
