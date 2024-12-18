@@ -21,7 +21,11 @@ import CoordinatesValueUpdater from '../../../../common/components/google-maps/C
 import StaticGoogleMap from '../../../../common/components/google-maps/StaticGoogleMap';
 import FullScreenStickyHeader
   from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
-import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../common/utils/validation';
+import {
+  greaterThanNullValidation,
+  validateSingleMandatoryField,
+  validateURL
+} from '../../../../common/utils/validation';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { State } from '../../../../reducers/state';
 import { EntityChecklists } from '../../../tags/components/EntityChecklists';
@@ -47,7 +51,7 @@ export const validateRoomUniqueName = (value, allValues) => {
   return matches.length > 1 ? "Room name must be unique" : undefined;
 };
 
-const SitesRoomFields = ({ item }) => (
+const SitesRoomFields = ({ item, isParenSiteVirtual }) => (
   <Grid container columnSpacing={3} rowSpacing={2}>
     <Grid item xs={12}>
       <FormField
@@ -70,6 +74,13 @@ const SitesRoomFields = ({ item }) => (
         required
       />
     </Grid>
+
+    {isParenSiteVirtual && <Grid item xs={12}><FormField
+      type="text"
+      label="Virtual room URL"
+      name="virtualRoomUrl"
+      validate={validateURL}
+    /></Grid>}
   </Grid>
 );
 
@@ -321,6 +332,9 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             count={values.rooms && values.rooms.length}
             validate={validateRooms}
             syncErrors={syncErrors}
+            fieldProps={{
+              isParenSiteVirtual: values.isVirtual
+            }}
           />
         </Grid>
       </Grid>
