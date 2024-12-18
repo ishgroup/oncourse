@@ -71,10 +71,10 @@ class RoomFunctions {
             validator.throwClientErrorException(roomDTO?.id, 'name', 'The name of the room must be unique within the site.')
         }
 
-        String doubleALabsUrl = StringUtils.trimToNull(roomDTO.doubleALabsUrl)
-        if(doubleALabsUrl != null) {
-            if(!ValidationUtil.isValidUrl(doubleALabsUrl))
-                validator.throwClientErrorException(roomDTO?.doubleALabsUrl, 'doubleALabsUrl', 'The double A Labs url is incorrect.')
+        String virtualRoomUrl = StringUtils.trimToNull(roomDTO.virtualRoomUrl)
+        if(virtualRoomUrl != null) {
+            if(!ValidationUtil.isValidUrl(virtualRoomUrl))
+                validator.throwClientErrorException(roomDTO?.virtualRoomUrl, 'virtualRoomUrl', 'The virtual room url is incorrect.')
         }
     }
 }

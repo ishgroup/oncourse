@@ -53,5 +53,5 @@ properties:
     type: object
     additionalProperties:
       type: string
-  doubleALabsUrl:
+  virtualRoomUrl:
     type: string

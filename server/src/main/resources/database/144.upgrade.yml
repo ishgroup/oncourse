@@ -7,11 +7,11 @@ databaseChangeLog:
         - not:
             - columnExists:
                 tableName: Room
-                columnName: doubleALabsUrl
+                columnName: virtualRoomUrl
       changes:
         - addColumn:
             tableName: Room
             columns:
               - column:
-                  name: doubleALabsUrl
+                  name: virtualRoomUrl
                   type: VARCHAR(256)
