@@ -199,6 +199,9 @@ class SiteApiService extends TaggableApiService<SiteDTO, Site, SiteDao> {
 
         siteDTO.rooms.eachWithIndex { RoomDTO room, int i ->
             RoomFunctions.validateForSave(room, context, room.id, validator, id != null)
+
+            if(!siteDTO.isVirtual && trimToNull(room.virtualRoomUrl) != null)
+                validator.throwClientErrorException(siteDTO?.id, "rooms[$i]name", "Room named ${duplicates[0].name} cannot have virtual room url if site is not virtual")
         }
 
         TagFunctions.validateTagForSave(Site, context, siteDTO.tags)
