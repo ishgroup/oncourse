@@ -56,6 +56,9 @@ public interface Preferences {
 	@API
 	String COLLEGE_URL = "web.url";
 
+
+	String COLLEGE_ACTIVE = "college.active";
+
 	/**
 	 * Invoice remittance instructions. This additional text will be added to every invoice.
 	 *

@@ -3,10 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { FieldValidationType } from "@api/model";
 import { TreeItem } from "@atlaskit/tree";
 import { Grid } from "@mui/material";
-import { useMemo } from "react";
+import { SelectItemDefault } from "ish-ui";
 import * as React from "react";
+import { useMemo } from "react";
 import { change, Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { ToogleCheckbox } from "../../../../../common/components/form/ToogleCheckbox";
@@ -22,12 +24,16 @@ interface Props {
   item: TreeItem;
   field: CollectionFormField;
   fields: CollectionFormItem[];
+  formType: string;
 }
+
+const validationTypes = Object.keys(FieldValidationType).map<SelectItemDefault>(k => ({ value: k, label: k.toLowerCase().capitalize().replaceAll('_', ' ') }));
 
 const CollectionFormField = ({
    item,
    field,
-   fields
+   fields,
+   formType
 }: Props) => {
 
   const dispatch = useAppDispatch();
@@ -107,16 +113,27 @@ const CollectionFormField = ({
         </Grid>
       </Grid>
 
-      <Grid item container xs={4} display="flex" alignItems="center" justifyContent="center">
-        <Field
-          name={`items[${item.id}].mandatory`}
-          label="Label"
-          margin="none"
-          type="checkbox"
-          chackedLabel="Mandatory"
-          uncheckedLabel="Optional"
-          component={ToogleCheckbox}
-        />
+      <Grid item container xs={4} rowSpacing={2}>
+        <Grid item xs={12}>
+          <Field
+            name={`items[${item.id}].mandatory`}
+            label="Label"
+            margin="none"
+            type="checkbox"
+            chackedLabel="Mandatory"
+            uncheckedLabel="Optional"
+            component={ToogleCheckbox}
+          />
+        </Grid>
+        {formType === 'Enrolment' && <Grid item xs={12}>
+          <FormField
+            type="select"
+            items={validationTypes}
+            name={`items[${item.id}].validationType`}
+            label="Validate against"
+            allowEmpty
+          />
+        </Grid>}
       </Grid>
     </Grid>
   );

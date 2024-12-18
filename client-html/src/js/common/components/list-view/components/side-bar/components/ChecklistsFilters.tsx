@@ -7,15 +7,15 @@
  */
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ButtonBase, Collapse } from "@mui/material";
-import { alpha } from "@mui/material/styles";
-import clsx from "clsx";
-import { ColoredCheckBox, makeAppStyles, stubFunction } from "ish-ui";
-import React, { useState } from "react";
-import { useAppSelector } from "../../../../../utils/hooks";
-import ListTagGroup from "./ListTagGroup";
+import { ButtonBase, Collapse } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import clsx from 'clsx';
+import { ColoredCheckBox, makeAppStyles, stubFunction } from 'ish-ui';
+import React, { useState } from 'react';
+import { useAppSelector } from '../../../../../utils/hooks';
+import ListTagGroup from './ListTagGroup';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   expandable: {
     display: "flex",
     alignItems: "center",
@@ -50,7 +50,7 @@ const ChecklistsFilters = (
 }: Props
 ) => {
   const [expanded, setExpanded] = useState(null);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
   const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);

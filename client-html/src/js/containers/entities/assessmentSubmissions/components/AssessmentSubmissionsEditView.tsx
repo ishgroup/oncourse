@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList from "../../../../common/components/navigation/TabsList";
-import AssessmentSubmissionDocuments from "./AssessmentSubmissionDocument";
-import AssessmentSubmissionGeneralTab from "./AssessmentSubmissionGeneralTab";
+import React from 'react';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList from '../../../../common/components/navigation/TabsList';
+import AssessmentSubmissionDocuments from './AssessmentSubmissionDocument';
+import AssessmentSubmissionGeneralTab from './AssessmentSubmissionGeneralTab';
 
 const items = [
   {
@@ -32,7 +32,7 @@ const AssessmentSubmissionEditView = props =>
      <TabsList
        onParentScroll={props.onScroll}
        items={props.values ? items : []}
-       itemProps={...props}
+       itemProps={{ ...props }}
      />
   );
 export default AssessmentSubmissionEditView;
