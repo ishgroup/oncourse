@@ -2980,7 +2980,7 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
-		<obj-attribute name="virtualRoomUrl" type="java.lang.String" db-attribute-path="doubleALabsUrl"/>
+		<obj-attribute name="virtualRoomUrl" type="java.lang.String" db-attribute-path="virtualRoomUrl"/>
 		<obj-attribute name="seatedCapacity" type="java.lang.Integer" db-attribute-path="seatedCapacity"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>

@@ -64,7 +64,7 @@ function RoomsGeneral({
   const layoutArray = getLayoutArray(twoColumn);
   
   const resetIsVirtualParent = useCallback(debounce(id => {
-    EntityService.getPlainRecords('Site', 'isVirual', `id is ${id}`)
+    EntityService.getPlainRecords('Site', 'isVirtual', `id is ${id}`)
       .then(res => {
           setIsParenSiteVirtual(JSON.parse(res.rows[0].values[0]));
         }
