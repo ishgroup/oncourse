@@ -22,6 +22,7 @@ class SessionAttributes {
     String responceJson
     String errorMessage
     String reCo
+    String clientSecret
 
     String transactionId
     String statusText
