@@ -11,11 +11,13 @@ package ish.oncourse.server.services.chargebee.property
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.common.chargebee.ChargebeePropertyType
 
+import javax.sql.DataSource
+
 import static ish.oncourse.server.services.chargebee.ChargebeeQueryUtils.TOTAL_CREDIT_PAYMENT_AMOUNT_QUERY_FORMAT
 
 class TotalCreditPaymentInProperty extends ChargebeeSimplePropertyProcessor{
-    TotalCreditPaymentInProperty(Date startDate, Date endDate) {
-        super(startDate, endDate)
+    TotalCreditPaymentInProperty(Date startDate, Date endDate, DataSource dataSource) {
+        super(startDate, endDate, dataSource)
     }
 
     @Override
