@@ -134,11 +134,13 @@ class SiteApiService extends TaggableApiService<SiteDTO, Site, SiteDao> {
                 if (dbRoom.seatedCapacity != room.seatedCapacity) {
                     dbRoom.seatedCapacity = room.seatedCapacity
                 }
+                dbRoom.virtualRoomUrl = room.virtualRoomUrl
             } else {
                 context.newObject(Room).with { it ->
                     it.site = site
                     it.name = trimToNull(room.name)
                     it.seatedCapacity = room.seatedCapacity
+                    it.virtualRoomUrl = room.virtualRoomUrl
                 }
             }
         }
@@ -201,7 +203,7 @@ class SiteApiService extends TaggableApiService<SiteDTO, Site, SiteDao> {
             RoomFunctions.validateForSave(room, context, room.id, validator, id != null)
 
             if(!siteDTO.isVirtual && trimToNull(room.virtualRoomUrl) != null)
-                validator.throwClientErrorException(siteDTO?.id, "rooms[$i]name", "Room named ${duplicates[0].name} cannot have virtual room url if site is not virtual")
+                validator.throwClientErrorException(siteDTO?.id, "rooms[$i]name", "Room named ${room.name} cannot have virtual room url if site is not virtual")
         }
 
         TagFunctions.validateTagForSave(Site, context, siteDTO.tags)

@@ -57,19 +57,19 @@ class RoomFunctions {
                 .where(Site.ID.eq(roomDTO.siteId))
                 .selectOne(context)
 
+        String virtualRoomUrl = StringUtils.trimToNull(roomDTO.virtualRoomUrl)
         if (isSiteExists) {
             if (!site?.id) {
                 validator.throwClientErrorException(site?.id, 'siteId', "Can't bind room to nonexistent site")
             }
 
-            String virtualRoomUrl = StringUtils.trimToNull(roomDTO.virtualRoomUrl)
-            if(virtualRoomUrl != null) {
-                if(!site.isVirtual)
-                    validator.throwClientErrorException(virtualRoomUrl, 'virtualRoomUrl', "Cannot set virtual room url for not virtual site")
+            if (!site.isVirtual && virtualRoomUrl != null)
+                validator.throwClientErrorException(virtualRoomUrl, 'virtualRoomUrl', "Cannot set virtual room url for not virtual site")
+        }
 
-                if(!ValidationUtil.isValidUrl(virtualRoomUrl))
-                    validator.throwClientErrorException(roomDTO?.virtualRoomUrl, 'virtualRoomUrl', 'The virtual room url is incorrect.')
-            }
+        if (virtualRoomUrl != null) {
+            if (!ValidationUtil.isValidUrl(virtualRoomUrl))
+                validator.throwClientErrorException(roomDTO?.virtualRoomUrl, 'virtualRoomUrl', 'The virtual room url is incorrect.')
         }
 
         Long roomId = ObjectSelect.query(Room)
