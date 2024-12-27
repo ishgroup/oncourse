@@ -63,6 +63,7 @@ import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentAPI
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
 import ish.oncourse.server.checkout.gateway.stripe.StripePaymentService
+import ish.oncourse.server.checkout.gateway.stripe.StripePaymentTestService
 import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
@@ -141,6 +142,7 @@ class ApiServiceModule implements Module {
         binder.bind(WindcavePaymentAPI).in(Scopes.SINGLETON)
         binder.bind(WindcavePaymentService).in(Scopes.SINGLETON)
         binder.bind(StripePaymentService).in(Scopes.SINGLETON)
+        binder.bind(StripePaymentTestService).in(Scopes.SINGLETON)
         binder.bind(PriorLearningApiService).in(Scopes.SINGLETON)
         binder.bind(QualificationApiService).in(Scopes.SINGLETON)
         binder.bind(ReportApiService).in(Scopes.SINGLETON)

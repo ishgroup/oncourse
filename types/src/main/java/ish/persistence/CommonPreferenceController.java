@@ -186,6 +186,14 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
+	public  String getTestPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException();
+		}
+		return apiKey;
+	}
+
 	/**
 	 * @return payment gateway type (EWAY, EWAY_TEST, WINDCAVE, TEST, DISABLED)
 	 */
