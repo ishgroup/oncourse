@@ -38,6 +38,7 @@ import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
 import ish.oncourse.server.checkout.gateway.stripe.StripePaymentService
+import ish.oncourse.server.checkout.gateway.stripe.StripePaymentTestService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import ish.common.checkout.gateway.SessionAttributes
@@ -226,7 +227,7 @@ class CheckoutApiService {
             case PaymentGatewayType.STRIPE.value:
                 return injector.getInstance(StripePaymentService.class)
             case PaymentGatewayType.STRIPE_TEST.value:
-                return injector.getInstance(StripePaymentService.class)
+                return injector.getInstance(StripePaymentTestService.class)
             case PaymentGatewayType.OFFLINE.value:
                 return injector.getInstance(OfflinePaymentService.class)
             default:

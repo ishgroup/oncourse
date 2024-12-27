@@ -10,6 +10,7 @@ package ish.oncourse.server.checkout.gateway.stripe
 
 import com.google.inject.Inject
 import com.stripe.Stripe
+import com.stripe.model.BalanceTransaction
 import com.stripe.model.Charge
 import com.stripe.model.PaymentIntent
 import com.stripe.model.Refund
@@ -17,6 +18,7 @@ import com.stripe.model.checkout.Session
 import com.stripe.param.PaymentIntentCreateParams
 import com.stripe.param.RefundCreateParams
 import com.stripe.param.checkout.SessionCreateParams
+import groovy.transform.CompileDynamic
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.stripe.CardTypeAdapter
 import ish.common.checkout.gateway.stripe.session.StripeSessionStatus
@@ -32,18 +34,25 @@ import org.apache.logging.log4j.Logger
 import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.SetupFutureUsage.OFF_SESSION
 import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.SetupFutureUsage.ON_SESSION
 
+@CompileDynamic
 class StripePaymentService implements PaymentServiceInterface {
     private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     private static final String CURRENCY_CODE_AUD = "AUD"
 
     @Inject
-    private PreferenceController preferenceController;
+    private PreferenceController preferenceController
+
+
+
+    protected String getApiKey() {
+        return preferenceController.paymentGatewayPassStripe
+    }
 
 
     @Override
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact) {
-        Stripe.apiKey = preferenceController.paymentGatewayPassStripe
+        Stripe.apiKey = apiKey
         def product = SessionCreateParams.LineItem.PriceData.ProductData.builder()
                 .setName("onCourse payment operation")
                 .build()
@@ -62,7 +71,6 @@ class StripePaymentService implements PaymentServiceInterface {
         SessionCreateParams.Builder paramsBuilder =
                 SessionCreateParams.builder()
                         .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setClientReferenceId(merchantReference)
                         .setSuccessUrl(origin + '/checkout?paymentStatus=success')
@@ -106,48 +114,29 @@ class StripePaymentService implements PaymentServiceInterface {
 
     @Override
     SessionAttributes checkStatus(String sessionIdOrAccessCode) {
+        Stripe.apiKey = apiKey
         def session = Session.retrieve(sessionIdOrAccessCode)
+        def sessionAttributes = new SessionAttributes()
 
-        def sessionAttributes = new SessionAttributes().with {
-            it.sessionId = session.id
-            // payment expire time = 10 min - ? check it on server side ???
-            it.complete = StripeSessionStatus.from(session.status) == StripeSessionStatus.Complete
-            it.type = session.mode
-            it.responceJson = session.toJson()
-            it.statusText = session.paymentStatus // paid / unpaid / no_payment_required + message for client
-            it.billingId = session.customer // ? - billingId == customerID
-            it
-        }
-
-        if (session.paymentIntent) {
-            PaymentIntent paymentIntent = PaymentIntent.retrieve(session.paymentIntent)
-            sessionAttributes.transactionId = paymentIntent.id // to make refund could be used
-
-            def charge = Charge.retrieve(paymentIntent.latestCharge)
-            if (charge) {
-                sessionAttributes.authorised = charge.outcome.type == "authorized"
-
-                // set up info about credit card
-                def creditCard = charge.paymentMethodDetails?.card
-                if (creditCard) {
-                    sessionAttributes.creditCardExpiry = "${creditCard.expMonth}/${creditCard.expYear}"
-                    sessionAttributes.creditCardName = charge.billingDetails?.name
-                    sessionAttributes.creditCardNumber = 'XXXXXXXXXXXX' + creditCard.last4
-                    // https://docs.stripe.com/testing?testing-method=payment-methods
-                    sessionAttributes.creditCardType = CardTypeAdapter.convertFromStripeBrand(creditCard.brand)
-                }
-
-                // set up info about payment data
-                Long paymentDateUnix = paymentIntent.getCreated()
-                sessionAttributes.paymentDate = new Date(paymentDateUnix * 1000).toLocalDate()
+        try {
+            sessionAttributes = new SessionAttributes().with {
+                it.sessionId = session.id
+                // payment expire time = 10 min - ? check it on server side ???
+                it.complete = StripeSessionStatus.from(session.status) == StripeSessionStatus.Complete
+                it.type = session.mode
+                it.responceJson = session.toJson()
+                it.statusText = session.paymentStatus // paid / unpaid / no_payment_required + message for client
+                it.billingId = session.customer // ? - billingId == customerID
+                it
             }
 
-            if (paymentIntent.lastPaymentError) {
-                sessionAttributes.errorMessage = paymentIntent.lastPaymentError
-                if (charge?.outcome?.sellerMessage) {
-                    sessionAttributes.errorMessage += '\n' + charge.outcome.sellerMessage
-                }
+            if (session.paymentIntent) {
+                PaymentIntent paymentIntent = PaymentIntent.retrieve(session.paymentIntent)
+                buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
             }
+        } catch (Exception e) {
+            logger.catching(e)
+            sessionAttributes.errorMessage = e.message
         }
 
         return sessionAttributes
@@ -155,24 +144,35 @@ class StripePaymentService implements PaymentServiceInterface {
 
     @Override
     SessionAttributes makeRefund(Money amount, String merchantReference, String transactionId) {
-        def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.longValue())
-                .setCurrency(CURRENCY_CODE_AUD)
-                .setPaymentIntent(transactionId)
-                .build())
+        Stripe.apiKey = apiKey
+        SessionAttributes sessionAttributes = new SessionAttributes()
 
-        def card = refund.destinationDetails.card
+        try {
+            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.longValue())
+                    .setCurrency(CURRENCY_CODE_AUD)
+                    .setPaymentIntent(transactionId)
+                    .build())
 
-        return new SessionAttributes().with {
-            it.transactionId = refund.balanceTransaction
-            it
+            if (refund.failureReason) {
+                sessionAttributes.errorMessage = refund.failureReason
+                return sessionAttributes
+            }
+
+            buildSessionAttributesFromRefund(sessionAttributes, refund)
+        } catch (Exception e) {
+            logger.catching(e)
+            sessionAttributes.errorMessage = e.message
         }
+
+        return sessionAttributes
     }
 
     @Override
     SessionAttributes makeTransaction(Money amount, String merchantReference, String cardId) {
+        Stripe.apiKey = apiKey
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
-                        .setAmount(amount.longValue())
+                        .setAmount(amount.multiply(100).toLong())
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setCustomer(cardId)
                         .build()
@@ -180,12 +180,55 @@ class StripePaymentService implements PaymentServiceInterface {
         def sessionAttributes = new SessionAttributes()
         try {
             def paymentIntent = PaymentIntent.create(params)
-            sessionAttributes.transactionId = paymentIntent.id
+            sessionAttributes.responceJson = paymentIntent.toJson()
+            buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
         } catch (Exception e) {
+            logger.catching(e)
             sessionAttributes.errorMessage = e.message
         }
 
         return sessionAttributes
+    }
+
+
+    private static void buildSessionAttributesFromPaymentIntent(SessionAttributes sessionAttributes, PaymentIntent paymentIntent) {
+        sessionAttributes.transactionId = paymentIntent.id // to make refund could be used
+
+        def charge = Charge.retrieve(paymentIntent.latestCharge)
+        if (charge) {
+            sessionAttributes.authorised = charge.outcome.type == "authorized"
+
+            // set up info about credit card
+            def creditCard = charge.paymentMethodDetails?.card
+            if (creditCard) {
+                sessionAttributes.creditCardExpiry = "${creditCard.expMonth}/${creditCard.expYear}"
+                sessionAttributes.creditCardName = charge.billingDetails?.name
+                sessionAttributes.creditCardNumber = 'XXXXXXXXXXXX' + creditCard.last4
+                // https://docs.stripe.com/testing?testing-method=payment-methods
+                sessionAttributes.creditCardType = CardTypeAdapter.convertFromStripeBrand(creditCard.brand)
+            }
+
+            // set up info about payment data
+            Long paymentDateUnix = paymentIntent.getCreated()
+            sessionAttributes.paymentDate = new Date(paymentDateUnix * 1000).toLocalDate()
+        }
+
+        if (paymentIntent.lastPaymentError) {
+            sessionAttributes.errorMessage = paymentIntent.lastPaymentError
+            if (charge?.outcome?.sellerMessage) {
+                sessionAttributes.errorMessage += '\n' + charge.outcome.sellerMessage
+            }
+        }
+    }
+
+
+    private static void buildSessionAttributesFromRefund(SessionAttributes sessionAttributes, Refund refund) {
+        sessionAttributes.transactionId = refund.paymentIntent
+        sessionAttributes.responceJson = refund.toJson()
+        sessionAttributes.statusText = refund.status
+        Long paymentDateUnix = refund.getCreated()
+        sessionAttributes.paymentDate = new Date(paymentDateUnix * 1000).toLocalDate()
+        sessionAttributes
     }
 
 }
