@@ -131,11 +131,8 @@ subprojects {
 			'Trusted-Library': 'true'
 	}
 
-	ext {
-		testFailed = false
-	}
-
 	test {
+		boolean testFailed = false
 		useJUnitPlatform()
 
 		systemProperties 'java.awt.headless': 'true', 'java.locale.providers': 'COMPAT,SPI'
@@ -158,7 +155,7 @@ subprojects {
 			}
 		}
 		doLast {
-			if (ext.testFailed) {
+			if (testFailed) {
 				throw new Exception("tests failed, exit code == 1")
 			}
 		}

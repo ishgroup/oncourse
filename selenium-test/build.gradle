@@ -72,4 +72,7 @@ test {
     dependsOn "copyConfig"
     dependsOn ":server:startDaemon"
     dependsOn "prepareTestDatabase"
+
+    // ensure tests are always run
+    outputs.upToDateWhen { false }
 }

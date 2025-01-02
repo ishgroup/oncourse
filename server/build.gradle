@@ -338,6 +338,7 @@ distZip.dependsOn(copyWebApp, addVersion)
 distZip.finalizedBy(createChecksums)
 
 compileGroovy.mustRunAfter(":api-test:copyConfig")
+compileGroovy.mustRunAfter(":selenium-test:copyConfig")
 compileTestGroovy.dependsOn(copyWebApp)
 
 compileJava {
