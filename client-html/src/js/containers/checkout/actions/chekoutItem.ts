@@ -29,9 +29,9 @@ export const checkoutGetProduct = (id: number) => ({
   payload: id
 });
 
-export const checkoutGetMembership = (item: CheckoutItem) => ({
+export const checkoutGetMembership = (id: number) => ({
   type: CHECKOUT_GET_ITEM_MEMBERSHIP,
-  payload: item
+  payload: { id }
 });
 
 export const checkoutGetVoucher = (item: CheckoutItem) => ({

@@ -185,6 +185,8 @@ paths:
     $ref: './path/list/entity/message/api.yaml'
   /list/entity/membershipProduct:
     $ref: './path/list/entity/membershipProduct/api.yaml'
+  /list/entity/membershipProduct/checkout:
+    $ref: './path/list/entity/membershipProduct/checkout/api.yaml'
   /list/entity/note:
     $ref: './path/list/entity/note/api.yaml'
   /list/entity/module:
