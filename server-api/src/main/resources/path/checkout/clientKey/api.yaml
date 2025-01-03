@@ -5,10 +5,9 @@ get:
     - Checkout
   responses:
     '200':
-      content:
-        application/json:
-          schema:
-            type: string
+      description: Success response.
+      schema:
+        type: string
     default:
       description: Unexpected error
   x-permission:
