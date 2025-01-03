@@ -6,13 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import LoadingButton from '@mui/lab/LoadingButton';
-import { StringArgFunction } from 'ish-ui';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { change } from 'redux-form';
-import { IAction } from '../../../../../../common/actions/IshAction';
-import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from '../../../../../../model/checkout';
+import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
@@ -25,24 +23,6 @@ import {
 import { FORM } from '../../../CheckoutSelection';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 
-interface CreditCardPaymentPageProps {
-  classes?: any;
-  summary?: CheckoutSummary;
-  payment?: CheckoutPayment;
-  isPaymentProcessing?: boolean;
-  disablePayment?: boolean;
-  iframeUrl?: string;
-  xPaymentSessionId?: string;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
-  clearCcIframeUrl: () => void;
-  checkoutGetPaymentStatusDetails: StringArgFunction;
-  checkoutPaymentSetCustomStatus: StringArgFunction;
-  onCheckoutClearPaymentStatus: () => void;
-  process?: CheckoutPaymentProcess;
-  paymentInvoice?: any;
-  paymentId?: number;
-  dispatch?: Dispatch<IAction>;
-}
 
 const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
