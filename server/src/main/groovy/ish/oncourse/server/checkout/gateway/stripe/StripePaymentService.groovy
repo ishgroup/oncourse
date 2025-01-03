@@ -27,6 +27,7 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -35,14 +36,13 @@ import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.Se
 import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.SetupFutureUsage.ON_SESSION
 
 @CompileDynamic
-class StripePaymentService implements PaymentServiceInterface {
+class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
     private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     private static final String CURRENCY_CODE_AUD = "AUD"
 
     @Inject
     private PreferenceController preferenceController
-
 
 
     protected String getApiKey() {
@@ -190,6 +190,10 @@ class StripePaymentService implements PaymentServiceInterface {
         return sessionAttributes
     }
 
+    @Override
+    String getClientKey() {
+        return preferenceController.paymentGatewayClientPassStripe
+    }
 
     private static void buildSessionAttributesFromPaymentIntent(SessionAttributes sessionAttributes, PaymentIntent paymentIntent) {
         sessionAttributes.transactionId = paymentIntent.id // to make refund could be used

@@ -43,4 +43,9 @@ class StripePaymentTestService extends StripePaymentService {
     protected String getApiKey() {
         return preferenceController.testPaymentGatewayPassStripe
     }
+
+    @Override
+    String getClientKey() {
+        return preferenceController.testPaymentGatewayClientPassStripe
+    }
 }
