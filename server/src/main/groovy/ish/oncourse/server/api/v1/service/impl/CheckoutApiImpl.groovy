@@ -74,7 +74,7 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    void getClientKey() {
+    String getClientKey() {
         checkoutApiService.getClientKey()
     }
 
