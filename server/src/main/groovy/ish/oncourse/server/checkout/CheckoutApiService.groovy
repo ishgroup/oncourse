@@ -245,11 +245,16 @@ class CheckoutApiService {
         throw new ClientErrorException(response)
     }
 
-    public String getClientKey(){
-        def service = getPaymentServiceByGatewayType()
-        if(!(service instanceof EmbeddedFormPaymentServiceInterface))
-            throw new IllegalAccessException("Client key not supported for eway system")
+    String getClientKey(){
+        try {
+            def service = getPaymentServiceByGatewayType()
+            if (!(service instanceof EmbeddedFormPaymentServiceInterface))
+                throw new IllegalAccessException("Client key not supported for selected system")
 
-        return (service as EmbeddedFormPaymentServiceInterface).getClientKey()
+            return (service as EmbeddedFormPaymentServiceInterface).getClientKey()
+        } catch(Exception e) {
+            handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
+            return null
+        }
     }
 }
