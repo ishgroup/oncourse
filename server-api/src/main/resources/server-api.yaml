@@ -43,6 +43,8 @@ paths:
     $ref: './path/checkout/discount/api.yaml'
   /checkout/cartIds:
     $ref: './path/checkout/cartIds/api.yaml'
+  /checkout/clientKey:
+    $ref: './path/checkout/clientKey/api.yaml'
   /checkout/saleRelations:
     $ref: './path/checkout/saleRelations/api.yaml'
   /control:

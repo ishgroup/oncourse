@@ -33,6 +33,7 @@ import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.SessionStatusDTO
 import ish.oncourse.server.cayenne.PaymentIn
+import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
@@ -242,5 +243,13 @@ class CheckoutApiService {
                 .build()
 
         throw new ClientErrorException(response)
+    }
+
+    public String getClientKey(){
+        def service = getPaymentServiceByGatewayType()
+        if(!(service instanceof EmbeddedFormPaymentServiceInterface))
+            throw new IllegalAccessException("Client key not supported for eway system")
+
+        return (service as EmbeddedFormPaymentServiceInterface).getClientKey()
     }
 }

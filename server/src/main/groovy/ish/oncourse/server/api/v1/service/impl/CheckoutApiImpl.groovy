@@ -74,6 +74,11 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
+    void getClientKey() {
+        checkoutApiService.getClientKey()
+    }
+
+    @Override
     List<CourseClassDiscountDTO> getContactDiscounts(Long contactId, Long classId,
                                                      String courseIds, String productIds, String classIds,
                                                      String promoIds, String membershipIds, BigDecimal purchaseTotal, Long payerId) {
