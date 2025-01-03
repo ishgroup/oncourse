@@ -5,6 +5,7 @@
 
 import { decimalPlus } from "ish-ui";
 import { IAction } from "../../../common/actions/IshAction";
+import { LSGetItem, LSRemoveItem } from '../../../common/utils/storage';
 import { CheckoutAddItemsRequiest, CheckoutDiscount, CheckoutItem, CheckoutState } from "../../../model/checkout";
 import { getContactFullName } from "../../entities/contacts/utils";
 import {
@@ -50,7 +51,7 @@ import {
   CHECKOUT_CHANGE_SUMMARY_ITEM_FIELD,
   CHECKOUT_CHANGE_SUMMARY_ITEM_QUANTITY,
   CHECKOUT_REMOVE_PROMOTIONAL_CODE,
-  CHECKOUT_REMOVE_VOUCHER_PROMO,
+  CHECKOUT_REMOVE_VOUCHER_PROMO, CHECKOUT_RESTORE_STATE,
   CHECKOUT_SET_DEFAULT_PAYER,
   CHECKOUT_SET_DISABLE_DISCOUNTS,
   CHECKOUT_SET_PREVIOUS_CREDIT,
@@ -66,7 +67,7 @@ import {
   CHECKOUT_UPDATE_SUMMARY_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED
-} from "../actions/checkoutSummary";
+} from '../actions/checkoutSummary';
 import {
   CHECKOUT_CLEAR_COURSE_CLASS_LIST,
   CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLED,
@@ -75,6 +76,7 @@ import {
   CHECKOUT_GET_ITEM_VOUCHER_FULFILLED,
   CLEAR_CHECKOUT_ITEM_RECORD
 } from "../actions/chekoutItem";
+import { CHECKOUT_STORED_STATE_KEY } from '../constants';
 import {
   getDefaultPayer,
   getUpdatedSummaryItem,
@@ -142,6 +144,16 @@ const initial: CheckoutState = {
 
 export const checkoutReducer = (state: CheckoutState = initial, action: IAction): CheckoutState => {
   switch (action.type) {
+    case CHECKOUT_RESTORE_STATE: {
+      const storedState = LSGetItem(CHECKOUT_STORED_STATE_KEY);
+      LSRemoveItem(CHECKOUT_STORED_STATE_KEY);
+
+      return {
+        ...state,
+        ...storedState ? JSON.parse(storedState) : {}
+      };
+    }
+    
     case CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED: {
       const { invoice } = action.payload;
 
@@ -853,7 +865,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
 
     case CHECKOUT_PROCESS_PAYMENT_FULFILLED: {
       const {
-        sessionId, ccFormUrl, merchantReference, invoice, paymentId
+        sessionId, ccFormUrl, ...rest
       } = action.payload;
 
       return {
@@ -862,9 +874,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           ...state.payment,
           xPaymentSessionId: sessionId,
           wcIframeUrl: ccFormUrl,
-          merchantReference,
-          invoice,
-          paymentId
+          ...rest
         }
       };
     }
@@ -874,6 +884,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         ...state,
         payment: {
           ...state.payment,
+          clientSecret: null,
           wcIframeUrl: ""
         }
       };

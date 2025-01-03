@@ -61,7 +61,7 @@ import {
 } from '../actions';
 import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from '../actions/checkoutContact';
 import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from '../actions/checkoutPayment';
-import { checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
+import { checkoutRestoreState, checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
 import {
   checkoutClearCourseClassList,
   checkoutGetClassPaymentPlans,
@@ -553,10 +553,16 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
     const cartId = query.get("cartId");
+    const sessionId = query.get("sessionId");
 
-    if (window.location.search) {
+    if (!sessionId && window.location.search) {
       history.replace("/checkout");
     }
+    
+    if (sessionId) {
+      dispatch(checkoutRestoreState());
+    }
+
     if (cartId) {
       processCeckoutCartIds(
         cartId,
