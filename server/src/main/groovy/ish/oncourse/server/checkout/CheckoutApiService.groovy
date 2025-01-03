@@ -144,6 +144,7 @@ class CheckoutApiService {
                 if (attributes.sessionId) {
                     dtoResponse.sessionId = attributes.sessionId
                     dtoResponse.ccFormUrl = attributes.ccFormUrl
+                    dtoResponse.clientSecret = attributes.clientSecret
                     dtoResponse.merchantReference = merchantReference
                 } else if (attributes.errorMessage) {
                     paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
