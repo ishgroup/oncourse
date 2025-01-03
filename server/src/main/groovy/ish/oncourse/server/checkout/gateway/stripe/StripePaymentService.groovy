@@ -19,6 +19,7 @@ import com.stripe.param.PaymentIntentCreateParams
 import com.stripe.param.RefundCreateParams
 import com.stripe.param.checkout.SessionCreateParams
 import groovy.transform.CompileDynamic
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.stripe.CardTypeAdapter
 import ish.common.checkout.gateway.stripe.session.StripeSessionStatus
@@ -26,6 +27,7 @@ import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
+import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
@@ -46,7 +48,12 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
 
 
     protected String getApiKey() {
-        return preferenceController.paymentGatewayPassStripe
+        try {
+            return preferenceController.paymentGatewayPassStripe
+        } catch(Exception e) {
+            handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
+            return null
+        }
     }
 
 
