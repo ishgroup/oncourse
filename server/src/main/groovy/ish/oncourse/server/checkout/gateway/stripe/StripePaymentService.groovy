@@ -80,8 +80,6 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setClientReferenceId(merchantReference)
-                        .setSuccessUrl(origin + '/checkout?paymentStatus=success')
-                        .setCancelUrl(origin + '/checkout?paymentStatus=cancel')
                         .addLineItem(lineItem)
                         .setCustomerEmail(contact.email)
                         .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
