@@ -10,9 +10,13 @@ Expected duration: ${enrolment.courseClass.expectedHours ?: "not specified"}
 Start: ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
 End: ${enrolment.courseClass.endDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())}
 <% } %>
-Location:${enrolment.courseClass.displayableLocation}
+Location: ${enrolment.courseClass.room?.virtualRoomUrl ?: enrolment.courseClass.displayableLocation ?: "-"}
 
+<% if (enrolment.courseClass.isDistantLearningCourse && enrolment.courseClass.room?.virtualRoomUrl != null) { %>
+You can start your class any time by clicking here - ${enrolment.courseClass.room.virtualRoomUrl}
+<% } else if (enrolment.courseClass.isHybrid && enrolment.courseClass.room?.virtualRoomUrl == null) { %>
 Please visit ${Preferences.get("web.url")}/class/${enrolment.courseClass.course.code}-${enrolment.courseClass.code} to confirm the class details, directions and course requirements.
+<% } %>
 
 <% if (Preferences.hasSurveyForm()) { %>
 At ${Preferences.get("college.name")} we value honest, constructive feedback to help us continually improve our services.
