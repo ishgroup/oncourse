@@ -11,13 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 import ish.oncourse.server.api.service.ClassCostApiService
 import ish.oncourse.server.api.v1.model.ClassCostDTO
 import ish.oncourse.server.api.v1.service.ClassCostApi
-import ish.oncourse.server.cayenne.ClassCost
-import org.apache.cayenne.CayenneRuntimeException
 import org.apache.cayenne.validation.ValidationException
 
 class ClassCostApiImpl implements ClassCostApi {

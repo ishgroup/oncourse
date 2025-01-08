@@ -8,10 +8,9 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.DataType
 import ish.oncourse.server.ICayenneService
-import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.ContactTrait
 import ish.oncourse.server.cayenne.CustomField
 import ish.oncourse.server.cayenne.PortalWebsite

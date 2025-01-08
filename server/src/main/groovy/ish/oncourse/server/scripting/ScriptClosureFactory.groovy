@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.scripting
 
-import com.google.inject.Injector
+import io.bootique.di.Injector
 import groovy.transform.CompileDynamic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -28,7 +28,6 @@ class ScriptClosureFactory {
 
     public ICayenneService cayenneService
     public Injector injector
-
 
     void setSpecClass(Class<? extends ScriptClosureTrait> specClass) {
         this.specClass = specClass
@@ -93,6 +92,4 @@ class ScriptClosureFactory {
                     .select(cayenneService.newContext)
         }
     }
-
-
 }

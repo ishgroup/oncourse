@@ -8,8 +8,7 @@
 
 package ish.oncourse.server.monitoring
 
-import com.google.inject.Inject
-import com.sun.management.OperatingSystemMXBean
+import javax.inject.Inject
 import com.zaxxer.hikari.HikariConfigMXBean
 import com.zaxxer.hikari.HikariPoolMXBean
 import ish.oncourse.common.ResourcesUtil

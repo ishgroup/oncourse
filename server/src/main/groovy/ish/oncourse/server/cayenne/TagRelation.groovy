@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.NodeType
 import ish.common.types.SystemEventType
 import ish.common.types.TypesUtil
@@ -20,7 +20,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.common.SystemEvent
-import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.cayenne.glue._TagRelation
 import ish.oncourse.server.integration.EventService
 import ish.validation.ValidationFailure
@@ -28,7 +27,6 @@ import org.apache.cayenne.validation.ValidationResult
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-import java.util.Date
 
 /**
  * Object representing relation between tag and entity record tagged with it.

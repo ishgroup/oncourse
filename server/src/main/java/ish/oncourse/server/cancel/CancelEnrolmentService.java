@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.cancel;
 
-import com.google.inject.Inject;
 import ish.cancel.CancelationResult;
 import ish.cancel.EnrolmentCancelationRequest;
 import ish.common.types.EnrolmentStatus;
@@ -20,7 +19,6 @@ import ish.math.Money;
 import ish.oncourse.common.SystemEvent;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.Enrolment;
-import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.InvoiceLine;
 import ish.oncourse.server.cayenne.Tax;
 import ish.oncourse.server.integration.EventService;
@@ -32,9 +30,9 @@ import org.apache.cayenne.validation.ValidationResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class CancelEnrolmentService {
 

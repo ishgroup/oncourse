@@ -11,12 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import ish.oncourse.server.api.service.PayslipApiService
 import static ish.oncourse.server.api.v1.function.PayslipFunctions.markAs
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.PayslipDTO
 import ish.oncourse.server.api.v1.model.PayslipRequestDTO
 import ish.oncourse.server.api.v1.service.PayslipApi

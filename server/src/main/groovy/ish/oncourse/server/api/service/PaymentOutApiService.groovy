@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.ConfirmationStatus

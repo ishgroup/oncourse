@@ -8,7 +8,6 @@
 
 package ish.oncourse.server.services.chargebee
 
-import com.google.inject.Inject
 import io.bootique.annotation.BQConfigProperty
 import ish.common.chargebee.ChargebeePropertyType
 import ish.oncourse.server.ICayenneService

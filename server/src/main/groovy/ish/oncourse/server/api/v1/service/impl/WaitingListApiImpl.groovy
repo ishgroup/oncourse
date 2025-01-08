@@ -11,12 +11,10 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.api.service.WaitingListApiService
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.WaitingListDTO
 import ish.oncourse.server.api.v1.service.WaitingListApi
-
 
 class WaitingListApiImpl implements WaitingListApi {
 

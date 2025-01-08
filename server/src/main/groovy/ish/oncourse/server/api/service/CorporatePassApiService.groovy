@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CorporatePassDao
 import ish.oncourse.server.api.v1.model.CorporatePassDTO

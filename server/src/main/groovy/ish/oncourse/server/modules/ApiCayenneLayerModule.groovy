@@ -11,9 +11,8 @@
 
 package ish.oncourse.server.modules
 
-import com.google.inject.Binder
-import com.google.inject.Module
-import com.google.inject.Scopes
+import io.bootique.di.Binder
+import io.bootique.di.BQModule
 import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.ApiTokenDao
 import ish.oncourse.server.api.dao.ApplicationDao
@@ -71,81 +70,80 @@ import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
 import ish.oncourse.server.api.dao.WaitingListDao
 
-class ApiCayenneLayerModule implements Module {
+class ApiCayenneLayerModule implements BQModule {
 
     @Override
     void configure(Binder binder) {
-        binder.bind(AccountDao).in(Scopes.SINGLETON)
-        binder.bind(ApplicationDao).in(Scopes.SINGLETON)
-        binder.bind(ArticleProductDao).in(Scopes.SINGLETON)
-        binder.bind(AssessmentDao).in(Scopes.SINGLETON)
-        binder.bind(AssessmentSubmissionDao).in(Scopes.SINGLETON)
+        binder.bind(AccountDao).inSingletonScope()
+        binder.bind(ApplicationDao).inSingletonScope()
+        binder.bind(ArticleProductDao).inSingletonScope()
+        binder.bind(AssessmentDao).inSingletonScope()
+        binder.bind(AssessmentSubmissionDao).inSingletonScope()
 
 
-        binder.bind(CertificateDao).in(Scopes.SINGLETON)
-        binder.bind(CertificateOutcomeDao).in(Scopes.SINGLETON)
-        binder.bind(ContactDao).in(Scopes.SINGLETON)
-        binder.bind(ContactRelationTypeDao).in(Scopes.SINGLETON)
-        binder.bind(CorporatePassDao).in(Scopes.SINGLETON)
-        binder.bind(CorporatePassProductDao).in(Scopes.SINGLETON)
-        binder.bind(CourseDao).in(Scopes.SINGLETON)
-        binder.bind(CourseModuleDao).in(Scopes.SINGLETON)
-        binder.bind(CourseClassDao).in(Scopes.SINGLETON)
+        binder.bind(CertificateDao).inSingletonScope()
+        binder.bind(CertificateOutcomeDao).inSingletonScope()
+        binder.bind(ContactDao).inSingletonScope()
+        binder.bind(ContactRelationTypeDao).inSingletonScope()
+        binder.bind(CorporatePassDao).inSingletonScope()
+        binder.bind(CorporatePassProductDao).inSingletonScope()
+        binder.bind(CourseDao).inSingletonScope()
+        binder.bind(CourseModuleDao).inSingletonScope()
+        binder.bind(CourseClassDao).inSingletonScope()
 
-        binder.bind(DefinedTutorRoleDao).in(Scopes.SINGLETON)
-        binder.bind(DiscountDao).in(Scopes.SINGLETON)
-        binder.bind(DiscountMembershipDao).in(Scopes.SINGLETON)
-        binder.bind(DiscountMembershipRelationTypeDao).in(Scopes.SINGLETON)
-        binder.bind(DocumentDao).in(Scopes.SINGLETON)
+        binder.bind(DefinedTutorRoleDao).inSingletonScope()
+        binder.bind(DiscountDao).inSingletonScope()
+        binder.bind(DiscountMembershipDao).inSingletonScope()
+        binder.bind(DiscountMembershipRelationTypeDao).inSingletonScope()
+        binder.bind(DocumentDao).inSingletonScope()
 
-        binder.bind(EmailTemplateDao).in(Scopes.SINGLETON)
-        binder.bind(EnrolmentDao).in(Scopes.SINGLETON)
-        binder.bind(EntityRelationDao).in(Scopes.SINGLETON)
-        binder.bind(EntityRelationTypeDao).in(Scopes.SINGLETON)
-        binder.bind(ExportTemplateDao).in(Scopes.SINGLETON)
+        binder.bind(EmailTemplateDao).inSingletonScope()
+        binder.bind(EnrolmentDao).inSingletonScope()
+        binder.bind(EntityRelationDao).inSingletonScope()
+        binder.bind(EntityRelationTypeDao).inSingletonScope()
+        binder.bind(ExportTemplateDao).inSingletonScope()
 
-        binder.bind(FacultyDao).in(Scopes.SINGLETON)
-        binder.bind(FieldConfigurationSchemeDao).in(Scopes.SINGLETON)
-        binder.bind(GradingTypeDao).in(Scopes.SINGLETON)
+        binder.bind(FacultyDao).inSingletonScope()
+        binder.bind(FieldConfigurationSchemeDao).inSingletonScope()
+        binder.bind(GradingTypeDao).inSingletonScope()
 
-        binder.bind(ImportDao).in(Scopes.SINGLETON)
-        binder.bind(InvoiceDao).in(Scopes.SINGLETON)
-        binder.bind(InvoiceDueDateDao).in(Scopes.SINGLETON)
-        binder.bind(InvoiceLineDao).in(Scopes.SINGLETON)
+        binder.bind(ImportDao).inSingletonScope()
+        binder.bind(InvoiceDao).inSingletonScope()
+        binder.bind(InvoiceDueDateDao).inSingletonScope()
+        binder.bind(InvoiceLineDao).inSingletonScope()
 
-        binder.bind(LeadDao).in(Scopes.SINGLETON)
-        binder.bind(MembershipProductDao).in(Scopes.SINGLETON)
-        binder.bind(MessageDao).in(Scopes.SINGLETON)
-        binder.bind(ModuleDao).in(Scopes.SINGLETON)
+        binder.bind(LeadDao).inSingletonScope()
+        binder.bind(MembershipProductDao).inSingletonScope()
+        binder.bind(MessageDao).inSingletonScope()
+        binder.bind(ModuleDao).inSingletonScope()
 
-        binder.bind(OutcomeDao).in(Scopes.SINGLETON)
+        binder.bind(OutcomeDao).inSingletonScope()
 
-        binder.bind(PaymentInDao).in(Scopes.SINGLETON)
-        binder.bind(PayRateDao).in(Scopes.SINGLETON)
-        binder.bind(PriorLearningDao).in(Scopes.SINGLETON)
-        binder.bind(ProductDao).in(Scopes.SINGLETON)
-        binder.bind(PayslipDao).in(Scopes.SINGLETON)
+        binder.bind(PaymentInDao).inSingletonScope()
+        binder.bind(PayRateDao).inSingletonScope()
+        binder.bind(PriorLearningDao).inSingletonScope()
+        binder.bind(ProductDao).inSingletonScope()
+        binder.bind(PayslipDao).inSingletonScope()
 
-        binder.bind(QualificationDao).in(Scopes.SINGLETON)
+        binder.bind(QualificationDao).inSingletonScope()
 
-        binder.bind(SurveyDao).in(Scopes.SINGLETON)
-        binder.bind(ScriptDao).in(Scopes.SINGLETON)
+        binder.bind(SurveyDao).inSingletonScope()
+        binder.bind(ScriptDao).inSingletonScope()
 
-        binder.bind(TaxDao).in(Scopes.SINGLETON)
+        binder.bind(TaxDao).inSingletonScope()
 
-        binder.bind(VoucherProductCourseDao).in(Scopes.SINGLETON)
-        binder.bind(VoucherProductDao).in(Scopes.SINGLETON)
-        binder.bind(ReportDao).in(Scopes.SINGLETON)
-        binder.bind(ReportOverlayDao).in(Scopes.SINGLETON)
-        binder.bind(NoteDao).in(Scopes.SINGLETON)
-        binder.bind(CourseClassDao).in(Scopes.SINGLETON)
-        binder.bind(CourseClassTutorDao).in(Scopes.SINGLETON)
-        binder.bind(ClassCostDao).in(Scopes.SINGLETON)
+        binder.bind(VoucherProductCourseDao).inSingletonScope()
+        binder.bind(VoucherProductDao).inSingletonScope()
+        binder.bind(ReportDao).inSingletonScope()
+        binder.bind(ReportOverlayDao).inSingletonScope()
+        binder.bind(NoteDao).inSingletonScope()
+        binder.bind(CourseClassDao).inSingletonScope()
+        binder.bind(CourseClassTutorDao).inSingletonScope()
+        binder.bind(ClassCostDao).inSingletonScope()
 
-        binder.bind(UnavailableRuleDao).in(Scopes.SINGLETON)
-        binder.bind(UserDao).in(Scopes.SINGLETON)
-        binder.bind(WaitingListDao).in(Scopes.SINGLETON)
-        binder.bind(ApiTokenDao).in(Scopes.SINGLETON)
-
+        binder.bind(UnavailableRuleDao).inSingletonScope()
+        binder.bind(UserDao).inSingletonScope()
+        binder.bind(WaitingListDao).inSingletonScope()
+        binder.bind(ApiTokenDao).inSingletonScope()
     }
 }

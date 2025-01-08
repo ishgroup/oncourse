@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.ClassFundingSource
 import ish.common.types.DeliveryMode
 import ish.common.types.MessageStatus

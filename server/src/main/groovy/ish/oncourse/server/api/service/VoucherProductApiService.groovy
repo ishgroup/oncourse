@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.AccountType
 import ish.common.types.ExpiryType
@@ -26,13 +26,8 @@ import ish.oncourse.server.api.dao.ProductDao
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.dao.VoucherProductCourseDao
 import ish.oncourse.server.api.dao.VoucherProductDao
-import ish.oncourse.server.api.v1.model.ProductTypeDTO
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.ExpandableTrait
 import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Membership
 import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Voucher
 import ish.oncourse.server.cayenne.VoucherProductTagRelation
 import ish.oncourse.server.cayenne.VoucherProductAttachmentRelation
 import ish.oncourse.server.document.DocumentService
@@ -44,7 +39,6 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocume
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE

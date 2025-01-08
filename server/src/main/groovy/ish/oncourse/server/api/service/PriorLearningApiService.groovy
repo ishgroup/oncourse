@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.OutcomeDao
 import ish.oncourse.server.api.dao.PriorLearningDao

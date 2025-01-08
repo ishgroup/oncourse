@@ -1,8 +1,8 @@
 package ish
 
-import com.google.inject.Binder
-import com.google.inject.Inject
-import com.google.inject.Module
+import io.bootique.di.Binder
+import javax.inject.Inject
+import io.bootique.di.BQModule
 import groovy.transform.CompileStatic
 import io.bootique.cayenne.CayenneModule
 import io.bootique.jdbc.DataSourceListener
@@ -76,7 +76,7 @@ abstract class TestWithDatabase extends TestWithBootique {
 
     @BeforeEach
     @Order(2)
-    private void setup() throws Exception {
+    void setup() throws Exception {
         validateAccountAndTaxDefaults()
         checkPaymentMethods()
     }
@@ -87,7 +87,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
                 .module(LicenseModule.class)
-                .module(new Module() {
+                .module(new BQModule() {
                     @Override
                     void configure(Binder binder) {
                         JdbcModule.extend(binder).addDataSourceListener(new DataSourceListener() {
@@ -107,7 +107,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 })
                 .module(JdbcHikariCPModule.class)
                 .module(CayenneModule.class)
-                .module(new Module() {
+                .module(new BQModule() {
                     @Override
                     void configure(Binder binder) {
                         CayenneModule.extend(binder).addModule(new org.apache.cayenne.di.Module() {
@@ -122,7 +122,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 .module(ish.oncourse.server.modules.TestModule.class)
                 .module(ApiCayenneLayerModule.class)
 
-        def testModules = new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(ish.TestModule) as Set<Class>
+        def testModules = new Reflections(PluginService.PLUGIN_PACKAGE).getTypesAnnotatedWith(TestModule) as Set<Class>
         testModules.each {
             builder.module(it)
         }

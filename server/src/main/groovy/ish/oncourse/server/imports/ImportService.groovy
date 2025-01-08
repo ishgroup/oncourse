@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.imports
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.imports.ImportParameter

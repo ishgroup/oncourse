@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.security.api.permission.custom
 
-import io.bootique.jetty.servlet.DefaultServletEnvironment
+import io.bootique.jetty.servlet.AngelServletEnvironment
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.oncourse.server.security.api.IPermissionService
@@ -39,7 +39,7 @@ class EmailMassCheckPermission extends ResourcePermission {
     PermissionCheckingResult check() {
         IPermissionService permissionService = injector.getInstance(IPermissionService)
         if (!permissionService.currentUserCan(KeyCode.SPECIAL_EMAIL_MASS, Mask.VIEW)) {
-            String queryString = injector.getInstance(DefaultServletEnvironment)?.request()?.get()?.queryString
+            String queryString = injector.getInstance(AngelServletEnvironment)?.request()?.get()?.queryString
             if (trimToEmpty(queryString).contains(PARAM_NAME)) {
                 String values = queryString.split('&').find{ it.contains(PARAM_NAME) }.split('=')[1]
                 if (values.split(',').size() > 50) {

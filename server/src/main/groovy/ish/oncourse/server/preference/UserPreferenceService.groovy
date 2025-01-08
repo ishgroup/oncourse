@@ -12,8 +12,8 @@
 package ish.oncourse.server.preference
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.inject.Inject
-import com.google.inject.Singleton
+import javax.inject.Inject
+import javax.inject.Singleton
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController

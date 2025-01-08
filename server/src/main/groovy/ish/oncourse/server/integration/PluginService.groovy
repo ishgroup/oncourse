@@ -11,9 +11,9 @@
 
 package ish.oncourse.server.integration
 
-import com.google.inject.Binder
-import com.google.inject.Inject
-import com.google.inject.Injector
+import io.bootique.di.Binder
+import javax.inject.Inject
+import io.bootique.di.Injector
 import groovy.transform.CompileStatic
 import io.bootique.cayenne.CayenneModule
 import org.reflections.Reflections

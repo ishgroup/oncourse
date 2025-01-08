@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.checkout.gateway.windcave
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.json.JsonOutput
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode

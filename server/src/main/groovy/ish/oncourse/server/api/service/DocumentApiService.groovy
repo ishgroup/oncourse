@@ -11,11 +11,10 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.dao.DocumentDao
 import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
-import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
 import ish.util.LocalDateUtils

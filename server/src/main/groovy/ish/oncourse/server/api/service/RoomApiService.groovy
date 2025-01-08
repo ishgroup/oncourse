@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.RoomDao
 import ish.oncourse.server.api.v1.function.RoomFunctions

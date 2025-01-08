@@ -11,11 +11,10 @@
 package ish.oncourse.server.services;
 
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.math.Money;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Invoice;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +25,6 @@ import org.quartz.JobExecutionException;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 /**
  * this job runs nightly and processes invoice lines, posting the delayed income between liability and income accounts.

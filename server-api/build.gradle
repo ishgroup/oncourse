@@ -58,7 +58,12 @@ dependencies {
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
     api "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion"
 
-    api "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
+    implementation ("io.bootique.jetty:bootique-jetty:$bootiqueVersion") {
+        exclude group: 'org.eclipse.jetty', module: 'jetty-servlet'
+        exclude group: 'org.eclipse.jetty', module: 'jetty-server'
+    }
+    implementation "org.eclipse.jetty:jetty-servlets:$jettyVersion"
+    implementation "org.eclipse.jetty.http2:http2-server:$jettyVersion"
 }
 
 task swagger (type: Swagger) {

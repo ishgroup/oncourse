@@ -11,7 +11,7 @@
 
 package ish.oncourse.server
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.services.AuditService
 import ish.oncourse.types.AuditAction

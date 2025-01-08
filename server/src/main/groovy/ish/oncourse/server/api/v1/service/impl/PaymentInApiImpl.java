@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.api.service.PaymentInApiService;
 import ish.oncourse.server.api.v1.model.BankingParamDTO;
 import ish.oncourse.server.api.v1.model.PaymentInDTO;
@@ -26,7 +26,6 @@ public class PaymentInApiImpl implements PaymentInApi {
     public PaymentInDTO get(Long id) {
         return service.get(id);
     }
-
 
     @Override
     public void reverse(Long id) {

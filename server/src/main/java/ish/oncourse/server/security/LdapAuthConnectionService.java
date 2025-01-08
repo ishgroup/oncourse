@@ -11,10 +11,9 @@
 
 package ish.oncourse.server.security;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.ACLRole;
-import ish.security.LdapAuthConnection;
 import ish.security.LdapAuthConnectionRequest;
 import ish.security.LdapProperties;
 import ish.security.TestLdapAuthConnection;

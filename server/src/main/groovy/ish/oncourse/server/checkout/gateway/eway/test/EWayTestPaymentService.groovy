@@ -8,8 +8,8 @@
 
 package ish.oncourse.server.checkout.gateway.eway.test
 
-import com.google.inject.Inject
-import com.google.inject.Injector
+import javax.inject.Inject
+import io.bootique.di.Injector
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 
 class EWayTestPaymentService extends EWayPaymentService {

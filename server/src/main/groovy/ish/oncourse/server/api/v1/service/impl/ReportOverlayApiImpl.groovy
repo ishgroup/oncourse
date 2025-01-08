@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.model.ReportOverlayDTO
@@ -51,8 +51,6 @@ class  ReportOverlayApiImpl implements ReportOverlayApi {
 
         context.commitChanges()
     }
-
-
 
     @Override
     void remove(Long id) {

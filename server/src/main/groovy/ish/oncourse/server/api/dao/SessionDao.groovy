@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.NodeType
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.SessionModule

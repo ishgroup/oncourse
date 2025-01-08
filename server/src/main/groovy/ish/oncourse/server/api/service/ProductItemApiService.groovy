@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.ExpiryType
@@ -20,14 +20,12 @@ import ish.common.types.ProductType
 import ish.common.types.TypesUtil
 import ish.math.Money
 import ish.oncourse.cayenne.Taggable
-import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.AccountDao
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.ProductItemDAO
 import ish.oncourse.server.api.dao.TaxDao
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
-import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.document.DocumentService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -43,7 +41,6 @@ import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCus
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.LocalDateUtils.dateToValue
 import static ish.util.LocalDateUtils.valueToDate

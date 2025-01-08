@@ -11,12 +11,10 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
-import ish.common.types.PaymentType
+import javax.inject.Inject
 import ish.oncourse.server.api.service.PaymentOutApiService
 import ish.oncourse.server.api.v1.model.PaymentOutDTO
 import ish.oncourse.server.api.v1.service.PaymentOutApi
-import ish.oncourse.server.cayenne.PaymentOut
 
 class PaymentOutApiImpl implements PaymentOutApi {
     @Inject

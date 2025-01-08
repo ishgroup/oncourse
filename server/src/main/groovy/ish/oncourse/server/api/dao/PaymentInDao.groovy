@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.PaymentStatus
 import ish.common.types.PaymentType
 import ish.math.Money
@@ -20,7 +20,6 @@ import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentMethod
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 

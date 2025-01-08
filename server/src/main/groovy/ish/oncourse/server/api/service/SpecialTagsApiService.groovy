@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.NodeSpecialType
 import ish.common.types.NodeType
 import ish.oncourse.server.ICayenneService

@@ -11,12 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.document.DocumentService
 import ish.s3.AmazonS3Service
 import ish.oncourse.server.api.service.DocumentApiService
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.DocumentDTO
 import ish.oncourse.server.api.v1.model.DocumentVersionDTO
 import ish.oncourse.server.api.v1.model.DocumentVisibilityDTO
@@ -26,8 +25,6 @@ import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
 import org.apache.commons.collections.CollectionUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.deleteDocumentVersion
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocumentVersion

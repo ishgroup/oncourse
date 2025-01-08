@@ -10,12 +10,10 @@
  */
 package ish.oncourse.server.lifecycle;
 
-import com.google.inject.Inject;
-import ish.oncourse.server.PreferenceController;
+import javax.inject.Inject;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.PaymentInLine;
 import ish.util.AccountUtil;
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.annotation.PostAdd;
 
 /**

@@ -18,10 +18,10 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
+import javax.ws.rs.Produces
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.ext.ContextResolver
+import javax.ws.rs.ext.Provider
 
 /**
  * 

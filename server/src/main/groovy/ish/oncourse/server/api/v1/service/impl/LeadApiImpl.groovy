@@ -8,9 +8,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.api.service.LeadApiService
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.LeadDTO
 import ish.oncourse.server.api.v1.service.LeadApi
 

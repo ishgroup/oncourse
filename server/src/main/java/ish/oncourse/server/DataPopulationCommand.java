@@ -11,9 +11,9 @@
 
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Named;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
@@ -30,6 +30,7 @@ public class DataPopulationCommand  extends CommandWithMetadata {
     private String angelVersion;
     private Provider<CayenneService> cayenneServiceProvider;
     private Provider<GroovyScriptService> groovyScriptServiceProvider;
+
     @Inject
     public DataPopulationCommand(@Named(AngelModule.ANGEL_VERSION) String angelVersion,
                                  Provider<CayenneService> cayenneServiceProvider,
@@ -55,6 +56,5 @@ public class DataPopulationCommand  extends CommandWithMetadata {
 
         }
         return CommandOutcome.succeeded();
-
     }
 }

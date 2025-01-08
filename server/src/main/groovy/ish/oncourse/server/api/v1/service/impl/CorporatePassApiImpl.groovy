@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.api.service.CorporatePassApiService
 import ish.oncourse.server.api.v1.model.CorporatePassDTO
 import ish.oncourse.server.api.v1.service.CorporatePassApi

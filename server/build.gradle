@@ -67,7 +67,11 @@ dependencies {
 	api project(":types")
 	api project(':server-api')
 
-	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
+	implementation ("io.bootique.jetty:bootique-jetty:$bootiqueVersion") {
+		exclude group: 'org.eclipse.jetty', module: 'jetty-servlet'
+		exclude group: 'org.eclipse.jetty', module: 'jetty-server'
+	}
+
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
 	implementation "io.bootique.jdbc:bootique-jdbc-hikaricp:$bootiqueVersion"
 
@@ -134,7 +138,6 @@ dependencies {
 	implementation 'commons-io:commons-io:2.6'
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.9.12'
-	api "com.google.inject:guice:$googleGuiceVersion"
 
 	implementation 'net.sf.supercsv:super-csv:2.4.0'
 	implementation 'net.sf.supercsv:super-csv-java8:2.4.0'
@@ -158,6 +161,12 @@ dependencies {
 	implementation 'com.bugsnag:bugsnag:3.6.2'
 
 	implementation 'com.chargebee:chargebee-java:3.19.0'
+
+	implementation('com.google.guava:guava:33.1.0-jre') {
+		attributes {
+			attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+		}
+	}
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'

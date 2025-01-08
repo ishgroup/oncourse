@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.CayenneService
@@ -24,7 +24,6 @@ import ish.oncourse.server.api.v1.service.CertificateApi
 import ish.oncourse.server.api.v1.model.CertificateCreateForEnrolmentsRequestDTO
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.print.CertificatePrintStatus
-import org.apache.cayenne.Cayenne
 import org.apache.cayenne.ObjectContext
 
 @CompileStatic

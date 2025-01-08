@@ -11,17 +11,16 @@
 
 package ish.oncourse.server.modules
 
-import com.google.inject.Binder
-import com.google.inject.Module
-import com.google.inject.Scopes
+import io.bootique.di.BQModule
+import io.bootique.di.Binder
 import ish.oncourse.server.api.service.RefundService
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
 
-class CustomServicesModule implements Module {
+class CustomServicesModule implements BQModule {
 
     @Override
     void configure(Binder binder) {
-        binder.bind(DuplicateInvoiceService).in(Scopes.SINGLETON)
-        binder.bind(RefundService).in(Scopes.SINGLETON)
+        binder.bind(DuplicateInvoiceService).inSingletonScope()
+        binder.bind(RefundService).inSingletonScope()
     }
 }

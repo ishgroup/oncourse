@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
-import com.google.inject.Provider
+import javax.inject.Inject
+import javax.inject.Provider
 import com.nulabinc.zxcvbn.Strength
 import com.nulabinc.zxcvbn.Zxcvbn
 import ish.oncourse.server.ICayenneService

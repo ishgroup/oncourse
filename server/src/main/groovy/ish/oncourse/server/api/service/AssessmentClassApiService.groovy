@@ -11,7 +11,8 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Provider
+import javax.inject.Inject
 import ish.oncourse.server.api.dao.AssessmentClassDao
 import ish.oncourse.server.api.v1.model.AssessmentClassDTO
 import ish.oncourse.server.cayenne.Assessment
@@ -32,7 +33,7 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
     private AssessmentSubmissionApiService submissionApiService
 
     @Inject
-    private CourseClassApiService classService
+    private Provider<CourseClassApiService> classServiceProvider
 
     @Inject
     private ContactApiService contactService
@@ -65,7 +66,7 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
     AssessmentClass toCayenneModel(AssessmentClassDTO dto, AssessmentClass cayenneModel) {
         ObjectContext context = cayenneModel.context
         cayenneModel.assessment = assessmentService.getEntityAndValidateExistence(context, dto.assessmentId)
-        cayenneModel.courseClass = classService.getEntityAndValidateExistence(context, dto.courseClassId)
+        cayenneModel.courseClass = classServiceProvider.get().getEntityAndValidateExistence(context, dto.courseClassId)
 
         context.deleteObjects(cayenneModel.assessmentClassTutors.findAll {!(it.tutor.contact.id in dto.contactIds)})
 
@@ -100,7 +101,7 @@ class AssessmentClassApiService extends EntityApiService<AssessmentClassDTO, Ass
         }
 
         Assessment assessment = assessmentService.getEntityAndValidateExistence(context, dto.assessmentId)
-        CourseClass courseClass = classService.getEntityAndValidateExistence(context, dto.courseClassId)
+        CourseClass courseClass = classServiceProvider.get().getEntityAndValidateExistence(context, dto.courseClassId)
 
         if (entityDao.hasDuplicates(id, courseClass, assessment)) {
             validator.throwClientErrorException(id, 'assessmentCode', "$assessment.name already added to class, please remove existing assessment task first")

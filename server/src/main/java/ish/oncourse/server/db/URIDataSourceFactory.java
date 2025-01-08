@@ -12,7 +12,7 @@
 package ish.oncourse.server.db;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.google.inject.Injector;
+import io.bootique.di.Injector;
 import io.bootique.annotation.BQConfig;
 import io.bootique.jdbc.managed.ManagedDataSourceStarter;
 import io.bootique.jdbc.hikaricp.HikariCPManagedDataSourceFactory;
@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 @BQConfig("Pooling Hikari JDBC DataSource configuration.")
 @JsonTypeName("uri")
 public class URIDataSourceFactory extends HikariCPManagedDataSourceFactory {
+
     private static final Logger logger = LogManager.getLogger();
 
     public ManagedDataSourceStarter create(String dataSourceName, Injector injector) {

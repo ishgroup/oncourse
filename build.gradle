@@ -15,7 +15,7 @@ buildscript {
 		googleGuiceVersion = '4.2.2'
 		groovyVersion = '2.5.15'
 		bouncycastleVersion = '1.67'
-		bootiqueVersion = '1.2'
+		bootiqueVersion = '2.0'
 		cfxVersion = '3.3.5'
 		//latest jackson version 2.12.2 (no any conflicts with spring, see AbstractApplicationContext), same version jasper uses also
 		jacksonVersion = '2.12.2'

@@ -11,13 +11,13 @@
 
 package ish.oncourse.server.api.cxf
 
-import com.google.inject.Binder
-import com.google.inject.Key
-import com.google.inject.Provides
-import com.google.inject.Singleton
-import com.google.inject.multibindings.Multibinder
 import io.bootique.ConfigModule
 import io.bootique.config.ConfigurationFactory
+import io.bootique.di.Binder
+import io.bootique.di.Key
+import io.bootique.di.Provides
+import io.bootique.di.SetBuilder
+import javax.inject.Singleton
 import io.bootique.jetty.JettyModule
 import io.bootique.jetty.MappedServlet
 import org.apache.cxf.interceptor.LoggingInInterceptor
@@ -27,18 +27,18 @@ import javax.ws.rs.core.Application
 
 class CXFModule extends ConfigModule {
 
-    static Multibinder<Object> contributeResources(Binder binder) {
-        return Multibinder.newSetBinder(binder, Key.get(Object.class, CXFResource))
+    static SetBuilder<Object> contributeResources(Binder binder) {
+        return binder.bindSet(Object.class, CXFResource.class)
     }
 
-    static Multibinder<Object> contributeFeatures(Binder binder) {
-        return Multibinder.newSetBinder(binder, Key.get(Object.class, CXFFeature))
+    static SetBuilder<Object> contributeFeatures(Binder binder) {
+        return binder.bindSet(Object.class, CXFFeature.class)
     }
 
     @Override
     void configure(Binder binder) {
         JettyModule.extend(binder).addMappedServlet(Key.get(MappedServlet, CXFServlet))
-        contributeResources(binder).addBinding().to(CXFDefaultService)
+        contributeResources(binder).add(CXFDefaultService)
     }
 
     @CXFServlet

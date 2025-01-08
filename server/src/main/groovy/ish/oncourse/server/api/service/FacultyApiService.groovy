@@ -8,7 +8,8 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
+import javax.inject.Provider
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.FacultyDao
 import ish.oncourse.server.api.v1.function.TagFunctions
@@ -32,7 +33,7 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
     private DocumentService documentService
 
     @Inject
-    private CourseApiService courseApiService
+    private Provider<CourseApiService> courseApiServiceProvider
 
     @Override
     Class<Faculty> getPersistentClass() {
@@ -129,7 +130,7 @@ class FacultyApiService extends TaggableApiService<FacultyDTO, Faculty, FacultyD
         List<Long> coursesToSave = courseDTOS*.id ?: [] as List<Long>
         List<Course> coursesToRemove = faculty.courses.findAll {!coursesToSave.contains(it.id)}
         List<Course> coursesToAdd = courseDTOS.findAll { !faculty.courses*.id.contains(it.id) }.collect { courseDTO ->
-            Course course = courseApiService.getEntityAndValidateExistence(faculty.context, courseDTO.id)
+            Course course = courseApiServiceProvider.get().getEntityAndValidateExistence(faculty.context, courseDTO.id)
             course
         }
         coursesToAdd.each {faculty.addToCourses(it)}

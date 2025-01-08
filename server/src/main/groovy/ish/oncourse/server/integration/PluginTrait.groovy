@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.integration
 
-import com.google.inject.Injector
+import io.bootique.di.Injector
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController

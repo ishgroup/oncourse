@@ -10,8 +10,8 @@
  */
 package ish.oncourse.server.upgrades;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
+import javax.inject.Inject;
+import javax.inject.Named;
 import ish.oncourse.common.ResourceProperty;
 import ish.oncourse.common.ResourceType;
 import ish.oncourse.common.ResourcesUtil;

@@ -11,20 +11,16 @@
 
 package ish.oncourse.server.db;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import io.bootique.di.Provides;
+import javax.inject.Singleton;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
-
-
-import java.util.Map;
 
 public class DbModule extends ConfigModule {
 
     @Singleton
     @Provides
     DbUriProvider createDbFactory(ConfigurationFactory configFactory) {
-        return configFactory
-                .config(DbUriProvider.class, defaultConfigPrefix());
+        return configFactory.config(DbUriProvider.class, defaultConfigPrefix());
     }
 }

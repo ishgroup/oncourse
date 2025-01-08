@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.modules
 
-import com.google.inject.Binder
-import com.google.inject.Module
+import io.bootique.di.Binder
+import io.bootique.di.BQModule
 import ish.oncourse.server.api.v1.service.AccessApi
 import ish.oncourse.server.api.v1.service.AccountApi
 import ish.oncourse.server.api.v1.service.ApplicationApi
@@ -176,7 +176,7 @@ import ish.oncourse.server.api.v1.service.impl.UserRoleApiImpl
 import ish.oncourse.server.api.v1.service.impl.VoucherProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.WaitingListApiImpl
 
-class ApiImplementationModule implements Module {
+class ApiImplementationModule implements BQModule {
 
     @Override
     void configure(Binder binder) {

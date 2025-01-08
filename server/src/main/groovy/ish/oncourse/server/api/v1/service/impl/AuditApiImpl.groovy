@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import static ish.oncourse.server.api.function.EntityFunctions.checkForBadRequest
 import static ish.oncourse.server.api.function.EntityFunctions.validateIdParam

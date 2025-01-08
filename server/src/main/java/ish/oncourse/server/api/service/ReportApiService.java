@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.service;
 
-import com.google.inject.Inject;
 import ish.oncourse.server.api.dao.ReportDao;
 import ish.oncourse.server.api.dao.ReportOverlayDao;
 import ish.oncourse.server.api.v1.model.BindingDTO;
@@ -26,6 +25,7 @@ import ish.util.ExtendedImageHelper;
 import ish.util.LocalDateUtils;
 import org.apache.cayenne.query.ObjectSelect;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;

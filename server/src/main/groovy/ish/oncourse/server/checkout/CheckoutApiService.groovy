@@ -8,8 +8,8 @@
 
 package ish.oncourse.server.checkout
 
-import com.google.inject.Inject
-import com.google.inject.Injector
+import javax.inject.Inject
+import io.bootique.di.Injector
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.PaymentGatewayType
 import ish.common.types.SystemEventType

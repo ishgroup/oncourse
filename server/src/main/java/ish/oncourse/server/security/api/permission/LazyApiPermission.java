@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.security.api.permission;
 
-import io.bootique.jetty.servlet.DefaultServletEnvironment;
+import io.bootique.jetty.servlet.AngelServletEnvironment;
 import ish.common.types.KeyCode;
 import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.*;
@@ -171,7 +171,7 @@ public class LazyApiPermission extends ApiPermission {
             return reserveQueryString;
         }
 
-        var environment = injector.getInstance(DefaultServletEnvironment.class);
+        var environment = injector.getInstance(AngelServletEnvironment.class);
         if (!environment.request().isPresent()) {
             return null;
         }

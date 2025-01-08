@@ -1,9 +1,9 @@
 package ish
 
-import com.google.inject.Binder
-import com.google.inject.Module
-import com.google.inject.Provides
-import com.google.inject.Singleton
+import io.bootique.di.Binder
+import io.bootique.di.BQModule
+import io.bootique.di.Provides
+import javax.inject.Singleton
 import groovy.transform.CompileStatic
 import io.bootique.BQRuntime
 import io.bootique.cayenne.CayenneConfigMerger
@@ -45,7 +45,6 @@ abstract class TestWithBootique {
 
     protected static final String ANGEL_NODE = "AngelNode"
     protected static final String MARIADB = "mariadb"
-
 
     private static boolean loggingInitialised = false
 
@@ -89,7 +88,7 @@ abstract class TestWithBootique {
                 .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(TestModule.class)
-                .module(new Module() {
+                .module(new BQModule() {
 
                     @Provides
                     @Singleton
@@ -129,7 +128,6 @@ abstract class TestWithBootique {
 
                         return runtime
                     }
-
 
                     @Override
                     void configure(Binder binder) {

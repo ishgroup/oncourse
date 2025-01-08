@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.accounting
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.AccountTransactionType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.accounting.builder.JournalTransactionsBuilder

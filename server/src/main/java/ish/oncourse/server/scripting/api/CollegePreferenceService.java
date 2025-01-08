@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.scripting.api;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.common.types.DeliverySchedule;
 import ish.oncourse.API;
 import ish.oncourse.server.PreferenceController;

@@ -11,10 +11,9 @@
 
 package ish.oncourse.aql.impl;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.aql.AqlService;
 import ish.oncourse.aql.CompilationResult;
-import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.users.SystemUserService;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
