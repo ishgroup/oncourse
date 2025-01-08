@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.api.servlet
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.PreferenceController
 
 import javax.servlet.*

@@ -11,35 +11,18 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
-import ish.oncourse.server.api.dao.DiscountDao
-import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
-import ish.common.types.AccountType
-import ish.common.types.ClassCostFlowType
-import ish.common.types.ClassCostRepetitionType
-import ish.common.types.KeyCode
-import ish.common.types.Mask
+import javax.inject.Inject
+import javax.inject.Provider
+import ish.common.types.*
 import ish.math.Money
-import ish.oncourse.server.api.dao.AccountDao
-import ish.oncourse.server.api.dao.ClassCostDao
-import ish.oncourse.server.api.dao.CourseClassDao
-import ish.oncourse.server.api.dao.TaxDao
-import ish.oncourse.server.api.v1.function.DiscountFunctions
-import ish.oncourse.server.api.v1.model.ClassCostDTO
-import ish.oncourse.server.api.v1.model.ClassCostFlowTypeDTO
-import ish.oncourse.server.api.v1.model.ClassCostRepetitionTypeDTO
-import ish.oncourse.server.api.v1.model.CourseClassDiscountDTO
-import ish.oncourse.server.api.v1.model.CourseClassPaymentPlanDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.ClassCost
-import ish.oncourse.server.cayenne.CourseClass
-import ish.oncourse.server.cayenne.CourseClassPaymentPlanLine
-import ish.oncourse.server.cayenne.CourseClassTutor
-import ish.oncourse.server.cayenne.DiscountCourseClass
-import ish.oncourse.server.cayenne.Tax
+import ish.oncourse.server.api.dao.*
+import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.security.api.IPermissionService
 import ish.util.MoneyUtil
 import org.apache.cayenne.ObjectContext
+
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 
 class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, ClassCostDao>{
 
@@ -50,7 +33,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
     private CourseClassDao courseClassDao
 
     @Inject
-    private CourseClassApiService classApiService
+    private Provider<CourseClassApiService> classApiServiceProvider
 
     @Inject
     private TaxDao taxDao
@@ -235,7 +218,7 @@ class ClassCostApiService extends EntityApiService<ClassCostDTO, ClassCost, Clas
 
         CourseClass courseClass = null
         if (!(validateOnly.get() && id == null && dto.courseClassid == null)){
-            courseClass = classApiService.getEntityAndValidateExistence(context, dto.courseClassid)
+            courseClass = classApiServiceProvider.get().getEntityAndValidateExistence(context, dto.courseClassid)
         }
 
         if (dto.flowType == null) {

@@ -11,14 +11,12 @@ package ish.oncourse.server.services.chargebee
 import com.chargebee.Environment
 import com.chargebee.models.Subscription
 import com.chargebee.models.Usage
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.chargebee.ChargebeePropertyType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.messaging.MessageService
-import ish.oncourse.server.scripting.api.EmailService
-import ish.oncourse.server.scripting.api.EmailSpec
 import ish.oncourse.server.scripting.api.MessageSpec
 import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.services.chargebee.property.ChargebeePropertyProcessor

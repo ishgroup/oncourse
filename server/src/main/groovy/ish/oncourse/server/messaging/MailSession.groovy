@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.messaging
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileDynamic
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager

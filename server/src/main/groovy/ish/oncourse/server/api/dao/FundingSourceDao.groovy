@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.dao
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.FundingSource
 import org.apache.cayenne.ObjectContext

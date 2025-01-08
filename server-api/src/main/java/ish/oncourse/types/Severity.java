@@ -65,7 +65,7 @@ public enum Severity {
 	@API
 	SETUP(80);
 
-	private int level;
+	private final int level;
 
 	Severity(int level) {
 		this.level = level;

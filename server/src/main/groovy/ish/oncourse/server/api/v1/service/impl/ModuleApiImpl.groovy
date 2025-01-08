@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.api.service.ModuleApiService
 import ish.oncourse.server.api.v1.model.ModuleDTO

@@ -11,12 +11,11 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.CourseApiService
 import ish.oncourse.server.api.v1.function.EntityRelationFunctions
 import ish.oncourse.server.api.v1.model.CourseDTO
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.service.CourseApi
 import ish.oncourse.server.cayenne.Course

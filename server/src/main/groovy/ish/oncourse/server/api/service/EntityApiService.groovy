@@ -11,19 +11,15 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.CayenneLayer
 import ish.oncourse.server.api.traits._DTOTrait
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
-import org.apache.cayenne.query.ObjectSelect
-
-import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 
 @CompileStatic
 abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M extends CayenneLayer<K>> {

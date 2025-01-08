@@ -11,13 +11,16 @@
 
 package ish.oncourse.server;
 
-import com.google.inject.*;
-import com.google.inject.name.Names;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.command.CommandDecorator;
 import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
+import io.bootique.di.TypeLiteral;
+import io.bootique.jetty.AngelJettyModule;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
@@ -27,7 +30,6 @@ import ish.oncourse.server.db.AngelCayenneModule;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.integration.PluginsPrefsService;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.lifecycle.*;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
@@ -52,6 +54,8 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
 
+import javax.inject.Provider;
+import javax.inject.Singleton;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -157,15 +161,15 @@ public class AngelModule extends ConfigModule {
                 .addMappedServlet(HEALTHCHECK_SERVLET)
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
 
-        binder.bind(ISessionManager.class).to(SessionManager.class).in(Scopes.SINGLETON);
-        binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
-        binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
+        binder.bind(ISessionManager.class).to(SessionManager.class).inSingletonScope();
+        binder.bind(CertificateUpdateWatcher.class).inSingletonScope();
+        binder.bind(ICayenneService.class).to(CayenneService.class).inSingletonScope();
         binder.bind(PreferenceController.class);
         binder.bind(PluginsPrefsService.class);
         binder.bind(UserPreferenceService.class);
-        binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
-        binder.bind(EmailService.class).in(Scopes.SINGLETON);
-        binder.bind(PluginService.class).in(Scopes.SINGLETON);
+        binder.bind(String.class, ANGEL_VERSION).toInstance(getVersion());
+        binder.bind(EmailService.class).inSingletonScope();
+        binder.bind(PluginService.class).inSingletonScope();
         PluginService.configurePlugin(binder);
     }
 

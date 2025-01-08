@@ -11,14 +11,13 @@
 
 package ish.oncourse.server.api.v1.function
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.dao.CourseDao
 import ish.oncourse.server.api.dao.RoomDao
 import ish.oncourse.server.api.dao.UnavailableRuleDao
-import ish.oncourse.server.api.traits.SessionDTOTrait
 import ish.oncourse.server.api.v1.model.TutorAttendanceDTO
 import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.TutorAttendance

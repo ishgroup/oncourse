@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
 /**
- * Use this for static void method that accept single com.google.inject.Binder argument
+ * Use this for static void method that accept single io.bootique.di.Binder argument
  * Is called on DI configuration phase  
  */
 

@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.quality
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.QualityRule
 import org.apache.cayenne.query.ObjectSelect

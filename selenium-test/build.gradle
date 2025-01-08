@@ -1,3 +1,14 @@
+/*
+ * Copyright ish group pty ltd 2020.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ */
+
 import test.PrepareTestDatabase
 
 buildscript {
@@ -10,12 +21,14 @@ plugins {
     id 'java'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 repositories {
     mavenCentral()
 }
-
-sourceCompatibility = 11
-targetCompatibility = 11
 
 dependencies {
 
@@ -49,12 +62,12 @@ task copyConfig(type: Copy) {
         include 'logSetup.xml'
     }
     into "$rootDir/server/build"
-    def dbUrl = project.hasProperty('dbUrl') ? project.getProperty('dbUrl') : 'jdbc:mariadb://localhost/angel_selenium_test?user=root&password=11111111'
+    def dbUrl = project.hasProperty('dbUrl') ? project.getProperty('dbUrl') : 'jdbc:mariadb://localhost/angel_selenium_test'
     expand(dbUrl: dbUrl)
 }
 
 task prepareTestDatabase(type: PrepareTestDatabase) {
-    databaseUrl = project.hasProperty('dbUrl') ? project.getProperty('dbUrl') : 'jdbc:mariadb://localhost/angel_selenium_test?user=root&password=11111111'
+    databaseUrl = project.hasProperty('dbUrl') ? project.getProperty('dbUrl') : 'jdbc:mariadb://localhost/angel_selenium_test'
     dataSetDirectory = "$rootDir/selenium-test/src/test/resources/ish.oncourse.selenium.test"
 }
 
@@ -66,11 +79,14 @@ test {
     jvmArgs = ['-Xmx3000m', '-Xms3000m']
     useJUnitPlatform()
 
-    tasks.getByName('prepareTestDatabase')
+    tasks.named('prepareTestDatabase').get()
             .mustRunAfter(':server:startDaemon')
             .mustRunAfter('copyConfig')
 
     dependsOn "copyConfig"
     dependsOn ":server:startDaemon"
     dependsOn "prepareTestDatabase"
+
+    // ensure tests are always run
+    outputs.upToDateWhen { false }
 }

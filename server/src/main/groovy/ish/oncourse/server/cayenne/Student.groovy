@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import com.sun.istack.NotNull
 import ish.common.types.AttendanceType
 import ish.common.types.AvetmissStudentDisabilityType

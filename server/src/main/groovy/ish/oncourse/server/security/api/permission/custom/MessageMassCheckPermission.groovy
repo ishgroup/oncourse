@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.security.api.permission.custom
 
-import io.bootique.jetty.servlet.DefaultServletEnvironment
+import io.bootique.jetty.servlet.AngelServletEnvironment
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.oncourse.server.api.v1.model.MessageTypeDTO
@@ -43,7 +43,7 @@ class MessageMassCheckPermission extends ResourcePermission {
     @Override
     PermissionCheckingResult check() {
         permissionService = injector.getInstance(IPermissionService)
-        queryString = injector.getInstance(DefaultServletEnvironment)?.request()?.get()?.queryString
+        queryString = injector.getInstance(AngelServletEnvironment)?.request()?.get()?.queryString
         String messageType = getMessageType()
         if (!StringUtils.isEmpty(messageType)) {
             if (messageType.equalsIgnoreCase(MessageTypeDTO.EMAIL.toString())) {

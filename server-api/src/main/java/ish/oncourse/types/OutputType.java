@@ -67,11 +67,11 @@ public enum OutputType implements DisplayableExtendedEnumeration<Integer> {
      */
     @API
     PDF(5, "pdf", "application/pdf", "pdf");
-    private Integer value;
-    private String displayValue;
-    private String mimeType;
-    private String fileExtension;
 
+    private final Integer value;
+    private final String displayValue;
+    private final String mimeType;
+    private final String fileExtension;
 
     OutputType(Integer value, String displayValue, String mimeType, String fileExtension) {
         this.value = value;
@@ -79,7 +79,6 @@ public enum OutputType implements DisplayableExtendedEnumeration<Integer> {
         this.mimeType = mimeType;
         this.fileExtension = fileExtension;
     }
-
 
     public String getMimeType() {
         return mimeType;

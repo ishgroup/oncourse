@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.ContactApiService
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.toRestContactRelationType
@@ -20,7 +20,6 @@ import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.valid
 import static ish.oncourse.server.api.v1.function.ContactRelationFunctions.validateForUpdate
 import ish.oncourse.server.api.v1.model.ContactDTO
 import ish.oncourse.server.api.v1.model.ContactRelationTypeDTO
-import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.v1.model.UsiRequestDTO
 import ish.oncourse.server.api.v1.model.UsiVerificationResultDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO

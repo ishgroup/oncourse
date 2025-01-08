@@ -11,7 +11,6 @@
 
 package ish.oncourse.server.api.v1.function.export
 
-import com.google.inject.Inject
 import ish.common.types.KeyCode
 import ish.common.types.Mask
 import ish.common.types.OutcomeStatus
@@ -21,8 +20,6 @@ import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.security.api.IPermissionService
 import org.apache.cayenne.CayenneDataObject
-
-import javax.ws.rs.BadRequestException
 
 /**
  * PrintFilter for Certificates.

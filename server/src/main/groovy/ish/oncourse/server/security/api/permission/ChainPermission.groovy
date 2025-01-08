@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.security.api.permission
 
-import com.google.inject.Injector
+import io.bootique.di.Injector
 import groovy.transform.CompileStatic
 
 /**

@@ -4,7 +4,7 @@
  */
 package org.eclipse.jetty.testing;
 
-import com.google.inject.Provider;
+import javax.inject.Provider;
 import groovy.transform.CompileStatic;
 import ish.oncourse.server.AngelServerFactory;
 import ish.oncourse.server.PreferenceController;

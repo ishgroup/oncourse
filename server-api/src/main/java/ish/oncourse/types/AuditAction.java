@@ -62,9 +62,8 @@ public enum AuditAction implements DisplayableExtendedEnumeration<String> {
     @API
     API_TOKEN("API_TOKEN", "Api token used");
     
-    
-    private String displayValue;
-    private String value;
+    private final String displayValue;
+    private final String value;
 
     AuditAction(String value, String displayValue) {
         this.value = value;

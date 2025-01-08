@@ -10,9 +10,7 @@
  */
 package ish.oncourse.server.scripting;
 
-import com.google.inject.Inject;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.cayenne.Enrolment;
 import ish.oncourse.server.cayenne.Script;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
@@ -22,6 +20,8 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import javax.inject.Inject;
 
 @DisallowConcurrentExecution
 public class ScriptExecutingJob implements Job {

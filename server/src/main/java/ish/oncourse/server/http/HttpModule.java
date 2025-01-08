@@ -11,13 +11,15 @@
 
 package ish.oncourse.server.http;
 
-import com.google.inject.Provider;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import javax.inject.Provider;
+import io.bootique.di.Provides;
+import javax.inject.Singleton;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
 import org.eclipse.jetty.server.Server;
 
+
+// Configure http settings section from oncCourse.yml
 public class HttpModule extends ConfigModule {
 
     @Singleton

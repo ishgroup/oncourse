@@ -11,10 +11,9 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.cancel.CancelationResult
 import ish.cancel.EnrolmentCancelationRequest
-import ish.common.types.EnrolmentReportingStatus
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.server.api.dao.EnrolmentDao

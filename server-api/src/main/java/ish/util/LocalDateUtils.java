@@ -29,8 +29,6 @@ public class LocalDateUtils {
 	public static final String DATE_PATTERN ="yyyy-MM-dd";
 	public static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-	 ;
-
 	public static final ZoneId UTC = ZoneId.of("UTC");
 
 	/**
@@ -65,7 +63,6 @@ public class LocalDateUtils {
 	public static LocalDate stringToValue(String stringValue, DateTimeFormatter customFormatter) {
 		return LocalDate.parse(stringValue, customFormatter);
 	}
-
 
 	public static String valueToString(LocalDate localDate) {
 		return DATE_FORMAT.format(localDate);

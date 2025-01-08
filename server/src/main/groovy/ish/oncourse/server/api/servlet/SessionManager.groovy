@@ -11,17 +11,12 @@
 
 package ish.oncourse.server.api.servlet
 
-import com.google.inject.Inject
-import com.google.inject.Provider
+import javax.inject.Inject
+import javax.inject.Provider
 import groovy.transform.CompileStatic
-import io.bootique.jetty.servlet.DefaultServletEnvironment
+import io.bootique.jetty.servlet.AngelServletEnvironment
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ApiToken
-
-import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
-
-import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
-import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
 import ish.oncourse.server.cayenne.SystemUser
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -33,6 +28,10 @@ import org.eclipse.jetty.server.session.Session
 
 import javax.servlet.http.HttpServletRequest
 
+import static ish.oncourse.cayenne.SystemUserInterface.DEFAULT_ISH_USER
+import static ish.oncourse.server.api.servlet.AngelSessionDataStore.IS_LOGIN
+import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
+
 @CompileStatic
 class SessionManager implements ISessionManager {
 
@@ -43,7 +42,7 @@ class SessionManager implements ISessionManager {
     private ICayenneService cayenneService
 
     @Inject
-    DefaultServletEnvironment defaultServletEnvironment
+    AngelServletEnvironment defaultServletEnvironment
 
     private static final Logger logger = LogManager.logger
 

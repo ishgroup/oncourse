@@ -8,10 +8,9 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.ApplicationStatus
 import ish.common.types.LeadStatus
-import ish.math.Money
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.ContactDao
 import ish.oncourse.server.api.v1.model.ContactInsightDTO

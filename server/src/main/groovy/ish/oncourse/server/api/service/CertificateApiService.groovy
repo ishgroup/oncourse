@@ -11,12 +11,11 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
 import ish.common.types.OutcomeStatus
 import ish.common.types.UsiStatus
-import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.CertificateCreateForEnrolmentsRequestDTO
 import ish.oncourse.server.api.v1.model.CertificateDTO

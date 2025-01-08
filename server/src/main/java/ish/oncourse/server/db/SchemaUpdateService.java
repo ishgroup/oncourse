@@ -11,7 +11,7 @@
 package ish.oncourse.server.db;
 
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.license.LicenseService;

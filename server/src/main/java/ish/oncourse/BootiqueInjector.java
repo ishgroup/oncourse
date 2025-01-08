@@ -10,16 +10,16 @@
  */
 package ish.oncourse;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
+import io.bootique.di.Injector;
+import javax.inject.Inject;
 
-public class GoogleGuiceInjector {
+public class BootiqueInjector {
 
 	private static Injector injector;
 
 	@Inject
-	public GoogleGuiceInjector(Injector injector) {
-		GoogleGuiceInjector.injector = injector;
+	public BootiqueInjector(Injector injector) {
+		BootiqueInjector.injector = injector;
 	}
 
 	public static Injector getInstance() {

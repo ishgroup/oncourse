@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.checkout.gateway.windcave
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.checkout.gateway.SessionAttributes
 import ish.math.Money
 import ish.oncourse.server.PreferenceController

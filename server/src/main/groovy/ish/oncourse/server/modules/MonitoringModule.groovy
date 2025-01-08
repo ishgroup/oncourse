@@ -8,15 +8,14 @@
 
 package ish.oncourse.server.modules
 
-import com.google.inject.Binder
-import com.google.inject.Provides
-import com.google.inject.Scopes
-import com.google.inject.Singleton
-import com.google.inject.TypeLiteral
+import io.bootique.di.Binder
+import io.bootique.di.Provides
+import javax.inject.Singleton
+import io.bootique.di.TypeLiteral
 import io.bootique.ConfigModule
 import io.bootique.config.ConfigurationFactory
 import io.bootique.jetty.MappedServlet
-import ish.oncourse.server.jetty.AngelJettyModule
+import io.bootique.jetty.AngelJettyModule
 import ish.oncourse.server.monitoring.MonitoringService
 import ish.oncourse.server.monitoring.MonitoringServiceFactory
 import ish.oncourse.server.monitoring.MonitoringServletContextHandlerExtender
@@ -52,9 +51,9 @@ class MonitoringModule extends ConfigModule {
     @Override
     void configure(Binder binder) {
         AngelJettyModule.extend(binder)
-        .addMappedServlet(MONITORING_SERVLET)
-        .addContextHandlerExtender(MonitoringServletContextHandlerExtender)
+                .addMappedServlet(MONITORING_SERVLET)
+                .addContextHandlerExtender(MonitoringServletContextHandlerExtender)
 
-        binder.bind(MonitoringStatisticService.class).in(Scopes.SINGLETON)
+        binder.bind(MonitoringStatisticService.class).inSingletonScope()
     }
 }

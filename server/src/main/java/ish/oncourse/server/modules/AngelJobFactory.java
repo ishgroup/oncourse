@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.modules;
 
-import com.google.inject.Injector;
+import io.bootique.di.Injector;
 import org.quartz.Job;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;

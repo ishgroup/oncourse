@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.security.api.IPermissionService
 import ish.oncourse.types.OutputType
 import ish.oncourse.aql.AqlService

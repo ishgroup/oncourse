@@ -1,3 +1,14 @@
+/*
+ * Copyright ish group pty ltd 2020.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ */
+
 apply from: "$rootDir/nodeSetup.gradle"
 
 task apiDoc(type: NpmTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'npmInstall']) {
@@ -9,10 +20,8 @@ task apiDoc(type: NpmTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'npmI
     npmCommand = ['run']
     args = ['build']
 
-    outputs.dir("${buildDir}/api-docs")
+    outputs.dir("${layout.buildDirectory.get()}/api-docs")
 }
-
-build.dependsOn(apiDoc)
 
 task packageApiDoc (type: Zip, dependsOn: apiDoc) {
     group = "documentation"
@@ -20,11 +29,15 @@ task packageApiDoc (type: Zip, dependsOn: apiDoc) {
     archiveClassifier = 'documentation'
 }
 
+tasks.named('build') {
+    dependsOn apiDoc
+}
+
 publishing {
     publications {
-        docs(MavenPublication) {
+        create("docs", MavenPublication) {
             artifact(packageApiDoc) {
-                artifactId "apiDoc"
+                artifactId = "apiDoc"
             }
         }
     }

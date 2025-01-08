@@ -11,12 +11,10 @@
 
 package ish.oncourse.server.security.api.permission;
 
-import io.bootique.jetty.servlet.DefaultServletEnvironment;
+import io.bootique.jetty.servlet.AngelServletEnvironment;
 import ish.common.types.KeyCode;
 import ish.common.types.Mask;
 import ish.oncourse.server.security.api.IPermissionService;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Permission which checks permission based on query parameter value.
@@ -71,7 +69,7 @@ public class QueryParamBasedPermission extends ResourcePermission {
     }
 
     private String getQueryString() {
-        var environment = injector.getInstance(DefaultServletEnvironment.class);
+        var environment = injector.getInstance(AngelServletEnvironment.class);
         if (!environment.request().isPresent()) {
             return null;
         }

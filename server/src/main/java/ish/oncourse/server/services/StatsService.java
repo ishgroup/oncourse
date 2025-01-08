@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.services;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.common.types.EnrolmentStatus;
 import ish.common.types.PaymentSource;
 import ish.math.Money;

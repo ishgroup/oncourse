@@ -8,8 +8,8 @@
 
 package ish.oncourse.server.checkout.gateway.eway
 
-import com.google.inject.Inject
-import com.google.inject.Injector
+import javax.inject.Inject
+import io.bootique.di.Injector
 import ish.math.Money
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO

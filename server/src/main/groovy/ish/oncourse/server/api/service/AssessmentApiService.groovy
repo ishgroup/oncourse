@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.AssessmentDao
 import ish.oncourse.server.cayenne.GradingType
@@ -19,8 +19,6 @@ import ish.oncourse.server.document.DocumentService
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import ish.oncourse.server.api.v1.function.TagFunctions
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.AssessmentDTO
 import ish.oncourse.server.cayenne.Assessment
 import ish.oncourse.server.cayenne.AssessmentAttachmentRelation
@@ -32,6 +30,8 @@ import org.apache.cayenne.ObjectContext
 import static org.apache.commons.lang3.StringUtils.isBlank
 import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import static org.apache.commons.lang3.StringUtils.trimToNull
+
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 
 class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment, AssessmentDao> {
 

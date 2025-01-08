@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.security.api;
 
-import com.google.inject.Injector;
+import io.bootique.di.Injector;
 import ish.oncourse.server.api.security.Permission;
 import ish.oncourse.server.security.api.permission.OpenApiPermission;
 import ish.oncourse.server.security.api.permission.ResourcePermission;

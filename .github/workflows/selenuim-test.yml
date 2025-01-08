@@ -19,7 +19,7 @@ jobs:
       - uses: ankane/setup-mariadb@v1
         with:
           mariadb-version: "10.11"
-          database: angel_selenuim_test
+          database: angel_selenium_test
 
       - uses: actions/checkout@v2
 
@@ -63,7 +63,7 @@ jobs:
 
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew selenium-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_selenuim_test?user=root --stacktrace
+        run: ./gradlew selenium-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_selenium_test?user=root --stacktrace
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1

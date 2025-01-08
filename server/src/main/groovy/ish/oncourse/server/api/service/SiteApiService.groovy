@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.SiteDao

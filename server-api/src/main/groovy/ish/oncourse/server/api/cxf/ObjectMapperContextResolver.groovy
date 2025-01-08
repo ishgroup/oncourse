@@ -8,20 +8,14 @@
 
 package ish.oncourse.server.api.cxf
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationConfig
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
+import javax.ws.rs.Produces
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.ext.ContextResolver
+import javax.ws.rs.ext.Provider
 
 /**
  * 
@@ -30,7 +24,6 @@ import javax.ws.rs.ext.Provider;
  * The reason of ObjectMapperContextResolver class - register JavaTimeModule only
  * For usage see ish.oncourse.server.api.v1.service.impl.PreferenceApiImpl.getLockedDate()
  */
-
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 class ObjectMapperContextResolver implements ContextResolver<ObjectMapper> {

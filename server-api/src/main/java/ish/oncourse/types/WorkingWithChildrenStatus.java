@@ -51,8 +51,8 @@ public enum WorkingWithChildrenStatus implements DisplayableExtendedEnumeration<
 	@API
 	INTERIM_BARRED(4, "Interim barred");
 
-	private int value;
-	private String displayName;
+	private final int value;
+	private final String displayName;
 
 	WorkingWithChildrenStatus(int value, String displayName) {
 		this.value = value;

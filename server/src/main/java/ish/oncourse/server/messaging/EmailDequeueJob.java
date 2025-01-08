@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.messaging;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 import ish.common.types.MessageStatus;
 import ish.common.types.MessageType;
@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @DisallowConcurrentExecution
 public class EmailDequeueJob implements Job {

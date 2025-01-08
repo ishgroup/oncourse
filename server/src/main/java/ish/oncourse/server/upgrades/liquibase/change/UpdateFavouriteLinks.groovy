@@ -9,7 +9,7 @@
 package ish.oncourse.server.upgrades.liquibase.change
 
 import com.google.common.base.CaseFormat
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.liquibase.IshTaskChange
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.Preference
@@ -23,6 +23,7 @@ import org.apache.cayenne.query.ObjectSelect
 import static ish.oncourse.server.preference.UserPreferenceService.JOIN_DELIMETER
 
 class UpdateFavouriteLinks extends IshTaskChange {
+
     private static final String DASHBOARD_FAVORITE_CATEGORY = "html.dashboard.favorite"
 
     @Inject

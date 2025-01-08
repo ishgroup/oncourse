@@ -11,14 +11,13 @@
 
 package ish.oncourse.server.db;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.common.types.AccountTransactionType;
 import ish.math.Money;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.AccountTransaction;
 import ish.oncourse.server.cayenne.InvoiceLine;
-import ish.oncourse.server.services.TransactionLockedService;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SQLSelect;

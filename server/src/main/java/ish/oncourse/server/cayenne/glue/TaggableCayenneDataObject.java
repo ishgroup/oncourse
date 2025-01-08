@@ -11,7 +11,7 @@
 package ish.oncourse.server.cayenne.glue;
 
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.common.types.NodeSpecialType;
 import ish.common.types.NodeType;
 import ish.oncourse.API;

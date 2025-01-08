@@ -11,13 +11,9 @@
 
 package ish.oncourse.server.api.v1.service.impl
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
-import static ish.oncourse.server.api.v1.function.FilterFunctions.checkForBadRequest
-import static ish.oncourse.server.api.v1.function.FilterFunctions.isFilterNotNull
-import static ish.oncourse.server.api.v1.function.FilterFunctions.isFilterNull
-import static ish.oncourse.server.api.v1.function.FilterFunctions.validateFilter
 import ish.oncourse.server.api.v1.model.FilterDTO
 import ish.oncourse.server.api.v1.service.FilterApi
 import ish.oncourse.server.cayenne.SavedFind
@@ -25,6 +21,11 @@ import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.Cayenne
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+
+import static ish.oncourse.server.api.v1.function.FilterFunctions.checkForBadRequest
+import static ish.oncourse.server.api.v1.function.FilterFunctions.isFilterNotNull
+import static ish.oncourse.server.api.v1.function.FilterFunctions.isFilterNull
+import static ish.oncourse.server.api.v1.function.FilterFunctions.validateFilter
 
 class FilterApiImpl implements FilterApi {
 

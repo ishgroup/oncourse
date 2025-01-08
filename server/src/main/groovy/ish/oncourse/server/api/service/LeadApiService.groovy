@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.math.Money
 import ish.oncourse.server.api.dao.LeadDao
 import ish.oncourse.server.api.v1.function.SaleFunctions
@@ -17,7 +17,6 @@ import ish.oncourse.server.api.v1.model.LeadStatusDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.v1.model.SiteDTO
-import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.LeadAttachmentRelation
 import ish.oncourse.server.cayenne.LeadCustomField

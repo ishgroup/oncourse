@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.API
 import ish.oncourse.server.api.service.PortalWebsiteService
 import ish.util.UrlUtil

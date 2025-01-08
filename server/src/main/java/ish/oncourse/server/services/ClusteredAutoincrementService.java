@@ -14,7 +14,7 @@ import java.sql.Connection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import ish.oncourse.server.ICayenneService;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SQLExec;

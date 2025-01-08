@@ -11,7 +11,7 @@
 
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import io.bootique.annotation.BQConfig;
 import ish.math.Country;
 import ish.math.CurrencyFormat;
@@ -24,7 +24,6 @@ import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
-import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
@@ -60,7 +59,6 @@ public class AngelServerFactory {
 
     public final static String YAML_SYSTEM_USERS_FILE = "createAdminUsers.yaml";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
-
 
     @Inject
     public AngelServerFactory() {

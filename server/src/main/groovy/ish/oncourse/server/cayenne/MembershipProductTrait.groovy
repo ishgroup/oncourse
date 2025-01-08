@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.ProductStatus
 import ish.oncourse.server.ICayenneService
 import org.apache.cayenne.query.ObjectSelect

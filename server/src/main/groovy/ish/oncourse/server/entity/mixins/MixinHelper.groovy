@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.entity.mixins
 
-import com.google.inject.Inject
-import com.google.inject.Injector
+import javax.inject.Inject
+import io.bootique.di.Injector
 import groovy.transform.CompileDynamic
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.cayenne.Account

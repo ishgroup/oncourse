@@ -8,11 +8,11 @@
 
 package ish.oncourse.server.modules
 
-import com.google.inject.Binder
-import com.google.inject.Module
+import io.bootique.di.Binder
+import io.bootique.di.BQModule
 import ish.oncourse.server.jasper.JasperReportsConfig
 
-class JasperReportsModule implements Module {
+class JasperReportsModule implements BQModule {
 
     @Override
     void configure(Binder binder) {

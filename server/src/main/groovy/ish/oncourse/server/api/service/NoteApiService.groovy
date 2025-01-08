@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.service
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.server.api.dao.NoteDao
 import ish.oncourse.server.api.v1.function.NoteFunctions
 import ish.oncourse.server.api.v1.model.NoteDTO
@@ -20,7 +20,7 @@ import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 
-public class NoteApiService extends EntityApiService<NoteDTO, Note, NoteDao> {
+class NoteApiService extends EntityApiService<NoteDTO, Note, NoteDao> {
 
     private Map<String, List<Class>> NOTABLE_MAP  =
             [

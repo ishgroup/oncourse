@@ -8,14 +8,13 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
+
 package ish.oncourse.server.duplicate;
 
-import com.google.inject.Inject;
 import ish.duplicate.ClassDuplicationRequest;
 import ish.duplicate.DuplicationResult;
 import ish.oncourse.entity.services.CourseClassService;
 import ish.oncourse.server.ICayenneService;
-import ish.oncourse.server.PreferenceController;
 import ish.oncourse.server.api.dao.CourseClassDao;
 import ish.oncourse.server.api.v1.model.ClassCostDTO;
 import ish.oncourse.server.cayenne.CourseClass;
@@ -25,6 +24,7 @@ import org.apache.cayenne.validation.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +35,6 @@ public class DuplicateClassService {
 
 	@Inject
 	private CourseClassService courseClassService;
-
-	@Inject
-	private PreferenceController preferenceController;
 
 	@Inject
 	private CourseClassDao courseClassDao;

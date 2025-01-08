@@ -41,8 +41,8 @@ public enum FundingStatus implements DisplayableExtendedEnumeration<Integer> {
     @API
     FAILED(2, "failed");
 
-    private String displayValue;
-    private int value;
+    private final String displayValue;
+    private final int value;
 
     FundingStatus(int value, String displayValue) {
         this.value = value;

@@ -11,8 +11,8 @@
 
 package ish.oncourse.server.bugsnag;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import io.bootique.di.Provides;
+import javax.inject.Singleton;
 import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
 import ish.oncourse.server.license.LicenseService;

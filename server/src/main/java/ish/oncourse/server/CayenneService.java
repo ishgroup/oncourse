@@ -10,8 +10,8 @@
  */
 package ish.oncourse.server;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import ish.math.MoneyType;
 import ish.oncourse.server.cayenne.glue.CayenneDataObject;
 import ish.util.Maps;

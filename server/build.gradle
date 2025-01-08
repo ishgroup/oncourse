@@ -15,10 +15,17 @@ import com.github.psxpaul.task.JavaExecFork
 import java.security.MessageDigest
 
 plugins {
+	id 'java'
 	id 'apidoc'
 	id 'org.apache.cayenne'
 	id 'application'
 	id 'com.github.psxpaul.execfork'
+}
+
+def DEV_MODE_PROPERTY = "ish.devMode"
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
 }
 
 configurations {
@@ -26,6 +33,9 @@ configurations {
 	all*.exclude group: "org.slf4j", module: "slf4j-simple"
 	all*.exclude module: "hessian"
 }
+
+compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
+
 sourceSets {
 	main {
 		groovy {
@@ -44,17 +54,31 @@ sourceSets {
 	}
 }
 
+project.ext {
+	appName = "onCourseServer"
+}
+
+application {
+	mainClass.set('ish.oncourse.server.AngelServer')
+	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
+}
+
 dependencies {
 	api project(":types")
 	api project(':server-api')
 
-	implementation "io.bootique.jetty:bootique-jetty:$bootiqueVersion"
+	implementation ("io.bootique.jetty:bootique-jetty:$bootiqueVersion") {
+		exclude group: 'org.eclipse.jetty', module: 'jetty-servlet'
+		exclude group: 'org.eclipse.jetty', module: 'jetty-server'
+	}
+
 	implementation "io.bootique.cayenne:bootique-cayenne:$bootiqueVersion"
 	implementation "io.bootique.jdbc:bootique-jdbc-hikaricp:$bootiqueVersion"
 
 	api ("org.apache.cxf:cxf-rt-frontend-jaxws:$cfxVersion") {
 		exclude group: 'org.apache.geronimo.specs', module: 'geronimo-javamail_1.4_spec'
 	}
+
 	api 'javax.xml.bind:jaxb-api:2.3.0'
 	api 'javax.xml.ws:jaxws-api:2.3.0'
 
@@ -114,7 +138,6 @@ dependencies {
 	implementation 'commons-io:commons-io:2.6'
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.9.12'
-	api "com.google.inject:guice:$googleGuiceVersion"
 
 	implementation 'net.sf.supercsv:super-csv:2.4.0'
 	implementation 'net.sf.supercsv:super-csv-java8:2.4.0'
@@ -139,6 +162,12 @@ dependencies {
 
 	implementation 'com.chargebee:chargebee-java:3.19.0'
 
+	implementation('com.google.guava:guava:33.1.0-jre') {
+		attributes {
+			attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+		}
+	}
+
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
@@ -146,21 +175,6 @@ dependencies {
 	testImplementation 'org.kohsuke:wordnet-random-name:1.3'
 	testImplementation "io.bootique:bootique-test:$bootiqueVersion"
 }
-
-sourceCompatibility = JavaVersion.VERSION_11
-
-project.ext {
-	appName = "onCourseServer"
-}
-
-def DEV_MODE_PROPERTY = "ish.devMode"
-
-application {
-	mainClass.set('ish.oncourse.server.AngelServer')
-	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
-}
-
-compileGroovy.groovyOptions.configurationScript = file("${rootDir}/gradle/groovyConfig.groovy")
 
 jar {
 	manifest {
@@ -170,6 +184,7 @@ jar {
 	}
 
 	archiveFileName = 'onCourseServer.jar'
+	dependsOn "copyWebApp"
 }
 
 task expandTestConfig(type: Copy) {
@@ -230,7 +245,7 @@ task startDaemon(dependsOn: [classes], type: JavaExecFork) {
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true']
 	jvmArgs = ['-Xmx2048m', '-XX:+HeapDumpOnOutOfMemoryError']
-	workingDir = "$buildDir"
+	workingDir = "${layout.buildDirectory.get()}"
 	waitForOutput = 'Server ready for client connections'
 	timeout = 60 * 3
 }
@@ -271,8 +286,6 @@ task addVersion {
 	}
 }
 
-distZip.dependsOn(copyWebApp,addVersion)
-
 task createChecksums(dependsOn: distZip) {
 	inputs.files(distZip.outputs.files)
 	outputs.files(inputs.files.collect({ it.path + ".sha256"}))
@@ -287,29 +300,19 @@ task createChecksums(dependsOn: distZip) {
 		}
 	}
 }
-distZip.finalizedBy(createChecksums)
-
-distributions {
-	main {
-		distributionBaseName = 'onCourseServer'
-		contents {
-			from "src/packaging/"
-			from addVersion.outputs.files
-		}
-	}
-}
 
 // DSL asciidoc documentation
 dslDocs {
 	source = sourceSets.main.groovy.plus(project(':types').sourceSets.main.groovy).plus(project(':server-api').sourceSets.main.groovy)
-	destinationDir = file("${buildDir}/distributions/dsldoc")
+	destinationDir = file("${project.layout.buildDirectory.get()}/distributions/dsldoc")
 }
+
 task packageDslDoc(type: Zip) {
-	from file("${buildDir}/distributions/dsldoc")
+	from file("${layout.buildDirectory.get()}/distributions/dsldoc")
 	archiveClassifier = 'documentation'
 	archiveBaseName = "dsl"
-	tasks.getByName('dslDocs').mustRunAfter(tasks.getByName('classes'))
-	dependsOn tasks.getByName('classes'),tasks.getByName('dslDocs')
+	tasks.named('dslDocs').get().mustRunAfter(tasks.named('classes').get())
+	dependsOn tasks.named('classes').get(), tasks.named('dslDocs').get()
 }
 
 task testJar(type: Jar) {
@@ -317,35 +320,8 @@ task testJar(type: Jar) {
 	from sourceSets.test.output
 }
 
-
-// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
-publishing {
-	publications {
-		dsldocs(MavenPublication) {
-			artifact (packageDslDoc) {
-				artifactId "dsldocs"
-			}
-		}
-		jar(MavenPublication) {
-			from components.java
-			artifactId 'server-jar'
-		}
-		test(MavenPublication) {
-			artifact (testJar) {
-				artifactId "test"
-			}
-		}
-		executables(MavenPublication) {
-			artifact(distZip) {
-				classifier "executable"
-				extension "zip"
-			}
-		}
-	}
-}
-
 task queryGrammar(type: Aql) {
-	outputDir = file("${buildDir}/generated-resources/antlr/java/ish/oncourse/aql/impl")
+	outputDir = file("${project.layout.buildDirectory.get()}/generated-resources/antlr/java/ish/oncourse/aql/impl")
 	packageDir = 'ish.oncourse.aql.impl'
 	target = 'Java'
 }
@@ -358,14 +334,21 @@ cgen {
 	superTemplate = "${projectDir}/src/main/resources/cayenne/dotemplates/superclass.vm"
 	mode = 'entity'
 	superPkg = 'ish.oncourse.server.cayenne.glue'
-	destDir = file("${buildDir}/generated-resources/cayenne/java")
+	destDir = file("${layout.buildDirectory.get()}/generated-resources/cayenne/java")
 	doLast {
 		// remove subclass files which are already committed inside the app
-		delete fileTree("${buildDir}/generated-resources/cayenne/java/ish/oncourse/server/cayenne") {
+		delete fileTree("${layout.buildDirectory.get()}/generated-resources/cayenne/java/ish/oncourse/server/cayenne") {
 			exclude '**/glue/*'
 		}
 	}
 }
+
+distZip.dependsOn(copyWebApp, addVersion)
+distZip.finalizedBy(createChecksums)
+
+compileGroovy.mustRunAfter(":api-test:copyConfig")
+compileGroovy.mustRunAfter(":selenium-test:copyConfig")
+compileTestGroovy.dependsOn(copyWebApp)
 
 compileJava {
 	dependsOn queryGrammar, cgen
@@ -374,13 +357,48 @@ compileJava {
 	}
 }
 
+distributions {
+	main {
+		distributionBaseName = 'onCourseServer'
+		contents {
+			from "src/packaging/"
+			from addVersion.outputs.files
+		}
+	}
+}
+
+// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
+publishing {
+	publications {
+		create("dsldocs", MavenPublication) {
+			artifact(packageDslDoc) {
+				artifactId = "dsldocs"
+			}
+		}
+		create("jar", MavenPublication) {
+			from components.java
+			artifactId = 'server-jar'
+		}
+		create("test", MavenPublication) {
+			artifact(testJar) {
+				artifactId = "test"
+			}
+		}
+		create("executables", MavenPublication) {
+			artifact(distZip) {
+				classifier = "executable"
+				extension = "zip"
+			}
+		}
+	}
+}
+
 task runServer(dependsOn: [classes], type: JavaExec) {
 	if(project.hasProperty(DEV_MODE_PROPERTY)) {
 		systemProperty DEV_MODE_PROPERTY, project.property(DEV_MODE_PROPERTY)
 	}
 	classpath = sourceSets.main.runtimeClasspath
-	main = 'ish.oncourse.server.AngelServer'
+	mainClass = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true', 'disableReplication=true']
 	jvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
 }
-

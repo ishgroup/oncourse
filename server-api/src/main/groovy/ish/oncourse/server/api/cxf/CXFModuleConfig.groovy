@@ -16,9 +16,9 @@ import io.bootique.annotation.BQConfigProperty
 
 @BQConfig("Configures the servlet that is an entry point to CXF REST API engine.")
 class CXFModuleConfig {
+
     private String urlPattern
     private String welcomeText
-
 
     @BQConfigProperty
     void setUrlPattern(String urlPattern) {

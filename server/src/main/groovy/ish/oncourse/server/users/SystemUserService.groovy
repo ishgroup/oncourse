@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.users
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.oncourse.API
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.servlet.ApiFilter
@@ -51,7 +51,7 @@ class SystemUserService implements ISystemUserService {
     }
 
     SystemUser getCurrentUser() {
-        if(ApiFilter.CLIENT_MODE)
+        if (ApiFilter.CLIENT_MODE)
             return SelectById.query(SystemUser, 1l).selectOne(cayenneService.newContext)
 
         return sessionManager.currentUser

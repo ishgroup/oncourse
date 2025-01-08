@@ -12,7 +12,7 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.inject.Inject
+import javax.inject.Inject
 import ish.common.types.OutcomeStatus
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.entity.services.CertificateService
