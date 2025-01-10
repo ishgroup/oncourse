@@ -94,6 +94,9 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
     devServer: {
       historyApiFallback: true,
       static: "./build/dist",
+      client: {
+        overlay: false
+      }
     },
     performance: {
       hints: false, // don't keep telling us to make the js smaller
@@ -139,6 +142,7 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               " https://*.googletagmanager.com" +
               " https://*.googleapis.com" +
               " https://*.google.com" +
+              " https://*.stripe.com" +
               " https://*.s3.ap-southeast-2.amazonaws.com" +
               " https://*.ish.com.au" +
               " 'unsafe-inline';" +
