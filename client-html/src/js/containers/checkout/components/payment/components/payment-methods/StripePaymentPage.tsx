@@ -14,18 +14,18 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { useAppSelector } from '../../../../../../common/utils/hooks';
-import { LSRemoveItem, LSSetItem } from '../../../../../../common/utils/storage';
+import history from '../../../../../../constants/History';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutGetPaymentStatusDetails,
-  checkoutProcessPayment, clearCcIframeUrl
+  checkoutProcessPayment,
+  clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
-import { CHECKOUT_STORED_STATE_KEY } from '../../../../constants';
 import CheckoutService from '../../../../services/CheckoutService';
+import { clearStoredPaymentsState } from '../../../../utils';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
-import history from '../../../../../../constants/History';
 
 const useStyles = makeAppStyles()({
   iframe: {
@@ -75,24 +75,28 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   }, []);
 
   const clientSecret = useAppSelector(state => state.checkout.payment.clientSecret);
-  const checkoutState = useAppSelector(state => state.checkout);
 
   const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
     clearCcIframeUrl();
+    clearStoredPaymentsState();
     checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
-    LSSetItem(CHECKOUT_STORED_STATE_KEY, JSON.stringify(checkoutState));
   };
 
   useEffect(() => {
     if (summary.payNowTotal > 0) {
       proceedPayment();
     }
-  }, [summary.payNowTotal, summary.allowAutoPay, summary.paymentDate, summary.invoiceDueDate]);
+  }, [
+    summary.payNowTotal,
+    summary.allowAutoPay,
+    summary.paymentDate,
+    summary.invoiceDueDate
+  ]);
 
   useEffect(() => {
-    if (process.status !== "" && !isPaymentProcessing) {
-      LSRemoveItem(CHECKOUT_STORED_STATE_KEY);
+    if (process.status === 'success' && !isPaymentProcessing) {
+      clearStoredPaymentsState();
     }
   }, [process.status, isPaymentProcessing]);
 
@@ -111,6 +115,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           <EmbeddedCheckout />
         </EmbeddedCheckoutProvider>
       }
+
       {process.status !== "" && !isPaymentProcessing && (
         <PaymentMessageRenderer
           tryAgain={proceedPayment}

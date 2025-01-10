@@ -44,8 +44,9 @@ export const CHECKOUT_SET_DISABLE_DISCOUNTS = "set/checkout/disable/summary/clas
 
 export const CHECKOUT_RESTORE_STATE = "checkout/restore/state";
 
-export const checkoutRestoreState = () => ({
-  type: CHECKOUT_RESTORE_STATE
+export const checkoutRestoreState = (restoredState: Object) => ({
+  type: CHECKOUT_RESTORE_STATE,
+  payload: restoredState
 });
 
 export const checkoutGetVoucherRedeemer = (id: number, vouchersItem) => ({

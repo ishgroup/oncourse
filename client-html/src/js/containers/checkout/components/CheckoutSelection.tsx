@@ -26,7 +26,7 @@ import AppBarContainer from '../../../common/components/layout/AppBarContainer';
 import Drawer from '../../../common/components/layout/Drawer';
 import { setListEditRecord } from '../../../common/components/list-view/actions';
 import LoadingIndicator from '../../../common/components/progress/LoadingIndicator';
-import { latestActivityStorageHandler } from '../../../common/utils/storage';
+import { latestActivityStorageHandler, LSGetItem, LSRemoveItem } from '../../../common/utils/storage';
 import uniqid from '../../../common/utils/uniqid';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../constants/Config';
 import history from '../../../constants/History';
@@ -74,7 +74,7 @@ import {
 import {
   CHECKOUT_CONTACT_COLUMNS,
   CHECKOUT_MEMBERSHIP_COLUMNS,
-  CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_PRODUCT_COLUMNS, CHECKOUT_STORED_STATE_KEY,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
   CheckoutCurrentStepType,
@@ -85,8 +85,8 @@ import {
 import {
   checkoutCourseMap,
   checkoutProductMap,
-  checkoutVoucherMap,
-  getCheckoutCurrentStep,
+  checkoutVoucherMap, clearStoredPaymentsState,
+  getCheckoutCurrentStep, getStoredPaymentStateKey,
   processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
@@ -117,7 +117,7 @@ import CheckoutSummaryHeaderField from './summary/CheckoutSummaryHeaderField';
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from './summary/CheckoutSummaryList';
 import CheckoutPromoCodesHeaderField from './summary/promocode/CheckoutPromoCodesHeaderField';
 
-export const FORM: string = "CHECKOUT_SELECTION_FORM";
+export const CHECKOUT_SELECTION_FORM_NAME: string = "CHECKOUT_SELECTION_FORM";
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
 
 const styles = (theme: AppTheme) => ({
@@ -513,7 +513,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           openItem(course);
           addSelectedItem(course);
         }
-        dispatch(change(FORM, "items", ""));
+        dispatch(change(CHECKOUT_SELECTION_FORM_NAME, "items", ""));
         onClearItemsSearch(true);
         break;
       }
@@ -525,7 +525,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           openItem(row);
           addSelectedItem(row);
         }
-        dispatch(change(FORM, "items", ""));
+        dispatch(change(CHECKOUT_SELECTION_FORM_NAME, "items", ""));
         onClearItemsSearch(true);
         break;
     }
@@ -560,7 +560,13 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
     
     if (sessionId) {
-      dispatch(checkoutRestoreState());
+      const storedState = LSGetItem(getStoredPaymentStateKey(sessionId));
+      if (storedState) {
+        dispatch(checkoutRestoreState(JSON.parse(storedState)));
+      } else {
+        clearStoredPaymentsState();
+        history.replace("/checkout");
+      }
     }
 
     if (cartId) {
@@ -1258,7 +1264,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  value: getFormValues(FORM)(state),
+  value: getFormValues(CHECKOUT_SELECTION_FORM_NAME)(state),
   isContactEditViewDirty: isDirty(CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME)(state),
   contactEditRecord: state.checkout.contactEditRecord,
   itemEditRecord: state.checkout.itemEditRecord,
@@ -1341,5 +1347,5 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 export default reduxForm<any, Props>({
-  form: FORM
+  form: CHECKOUT_SELECTION_FORM_NAME
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutSelectionForm, styles)));
