@@ -11,6 +11,9 @@ properties:
     type: string
     example: |
       courseClass.course.code = 'Adobe' AND room.site.name LIKE 'campus'
+  filter:
+    required: false
+    type: string
   from:
     description: Date/time in UTC ISO-8601 format. Looking for sessions starting from certain point of time. Start of this day by default
     required: false

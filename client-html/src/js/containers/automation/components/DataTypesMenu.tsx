@@ -3,25 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useRef } from "react";
-import { Binding, DataType } from "@api/model";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import Popper from "@mui/material/Popper";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { BindingsItemType } from "./Bindings";
-import { NoArgFunction } from "../../../model/common/CommonFunctions";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { Binding, DataType } from '@api/model';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grow from '@mui/material/Grow';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { makeAppStyles, NoArgFunction } from 'ish-ui';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Form, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import FormField from '../../../common/components/form/formFields/FormField';
+import { BindingsItemType } from './Bindings';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   popper: {
     zIndex: theme.zIndex.modal + 1
   },
@@ -51,7 +50,7 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-const DataTypes = Object.keys(DataType).filter(k => !["Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
+const DataTypes = Object.keys(DataType).filter(k => !["Portal subdomain","Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
 
 interface BindingEditPopupProps extends InjectedFormProps {
   popupAnchorEl: any;
@@ -63,12 +62,12 @@ interface BindingEditPopupProps extends InjectedFormProps {
 
 const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
   ({
-     popupAnchorEl, onCancel, onSave, handleSubmit, invalid, itemsType, values, reset
+     popupAnchorEl, onCancel, onSave, handleSubmit, invalid, values, reset
   }) => {
     const nameRef = useRef<any>();
     const popperRef = useRef<any>();
 
-    const classes  = useStyles();
+    const { classes }  = useStyles();
 
     const setPopperRef = useCallback(node => {
       if (node) {
@@ -83,7 +82,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
     useEffect(() => {
       if (popupAnchorEl && nameRef.current) {
-        nameRef.current.edit();
+        nameRef.current.focus();
       }
     }, [popupAnchorEl, nameRef.current]);
 
@@ -99,8 +98,6 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
       onCancel();
     }, [values]);
 
-    const labelType = itemsType === "label";
-
     return (
       <Popper
         open={Boolean(popupAnchorEl)}
@@ -115,26 +112,21 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
             <Paper className={classes.paper} elevation={8}>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <DialogContent className="overflow-hidden">
-                  {labelType && (
-                    <FormField
-                      type="text"
-                      label="Label"
-                      name="label"
-                      ref={nameRef}
-                      className="mb-2"
-                      required
-                      fullWidth
-                    />
-                  )}
+                  <FormField
+                    type="text"
+                    label="Label"
+                    name="label"
+                    inputRef={nameRef}
+                    className="mb-2"
+                    required
+                  />
 
                   <FormField
                     type="text"
                     label="Name"
                     name="name"
                     validate={validateBindingName}
-                    ref={labelType ? undefined : nameRef}
                     required
-                    fullWidth
                   />
                 </DialogContent>
 

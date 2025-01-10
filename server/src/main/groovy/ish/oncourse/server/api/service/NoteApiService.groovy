@@ -41,6 +41,7 @@ public class NoteApiService extends EntityApiService<NoteDTO, Note, NoteDao> {
                     (MembershipProduct.simpleName)        : [MembershipProduct, MembershipProductNoteRelation],
                     (ArticleProduct.simpleName)           : [ArticleProduct, ArticleProductNoteRelation],
                     (ProductItem.simpleName)              : [ProductItem, ProductItemNoteRelation],
+                    (Faculty.simpleName)                  : [Faculty, FacultyNoteRelation]
             ]
 
     @Inject

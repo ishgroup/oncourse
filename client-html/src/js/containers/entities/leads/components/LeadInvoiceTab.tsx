@@ -6,10 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { openInternalLink } from "ish-ui";
 import * as React from "react";
 import { FieldArray } from "redux-form";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { openInternalLink } from "../../../../common/utils/links";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 
 const invoiceColumns: NestedTableColumn[] = [
@@ -55,6 +55,7 @@ const LeadInvoiceTab = props => {
         rerenderOnEveryChange
         sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
         calculateHeight
+        primaryHeader
       />
     </div>
   );

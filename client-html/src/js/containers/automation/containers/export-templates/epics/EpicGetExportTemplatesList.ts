@@ -3,46 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_EXPORT_TEMPLATES_LIST, GET_EXPORT_TEMPLATES_LIST_FULFILLED } from "../actions";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import EntityService from "../../../../../common/services/EntityService";
+import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
 import history from "../../../../../constants/History";
-import { CommonListItem } from "../../../../../model/common/sidebar";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import { GET_EXPORT_TEMPLATES_LIST, getExportTemplatesListFulfilled } from "../actions";
 
 const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
   type: GET_EXPORT_TEMPLATES_LIST,
   getData: () =>
-    EntityService.getPlainRecords("ExportTemplate", "name,keyCode,enabled", null, null, null, "name", true),
+    EntityService.getPlainRecords("ExportTemplate", CATALOG_ITEM_COLUMNS, null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {
-    const exportTemplates: CommonListItem[] = response.rows.map(r => ({
-      id: Number(r.id),
-      name: r.values[0],
-      keyCode: r.values[1],
-      hasIcon: r.values[1].startsWith("ish."),
-      grayOut: r.values[2] === "false"
-    }));
+    const exportTemplates: CatalogItemType[] = response.rows.map(mapListToCatalogItem);
 
-    exportTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+    exportTemplates.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {
         history.push(`/automation/export-templates`);
       }
       if (p.keyCodeToSelect) {
-        history.push(`/automation/export-templates/${exportTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
+        history.push(`/automation/export-template/${exportTemplates.find(t => t.keyCode === p.keyCodeToSelect).id}`);
       }
     }
 
-    return [
-      {
-        type: GET_EXPORT_TEMPLATES_LIST_FULFILLED,
-        payload: { exportTemplates }
-      }
-    ];
+    return [getExportTemplatesListFulfilled(exportTemplates)];
   },
   processError: response => FetchErrorHandler(response, "Failed to get export templates list")
 };

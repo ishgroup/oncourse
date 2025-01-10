@@ -38,6 +38,10 @@ trait TableModelDTOTrait {
                     isEqualColumns = false
                     return
                 }
+                if(entry.system != otherColumn.system){
+                    isEqualColumns = false
+                    return
+                }
             }
 
             return isEqualColumns

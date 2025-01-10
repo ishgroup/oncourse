@@ -4,8 +4,9 @@ import {
   GET_IMPORT_TEMPLATES_LIST,
   GET_IMPORT_TEMPLATES_LIST_FULFILLED
 } from "../../../js/containers/automation/containers/import-templates/actions";
-import { CommonListItem } from "../../../js/model/common/sidebar";
 import { DefaultEpic } from "../../common/Default.Epic";
+import { CatalogItemType } from "../../../js/model/common/Catalog";
+import { mapListToCatalogItem } from "../../../js/common/utils/Catalog";
 
 describe("Get import templates list epic tests", () => {
   it("EpicGetImportTemplatesList should returns correct values", () =>
@@ -17,15 +18,9 @@ describe("Get import templates list epic tests", () => {
       processData: () => {
         const importTemplatesResponse = mockedAPI.db.getImportTemplates();
 
-        const importTemplates: CommonListItem[] = importTemplatesResponse.rows.map(r => ({
-          id: Number(r.id),
-          name: r.values[0],
-          keyCode: r.values[1],
-          hasIcon: r.values[1].startsWith("ish."),
-          grayOut: r.values[2] === "false"
-        }));
+        const importTemplates: CatalogItemType[] = importTemplatesResponse.rows.map(mapListToCatalogItem);
 
-        importTemplates.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+        importTemplates.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
         return [
           {

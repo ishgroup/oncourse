@@ -39,9 +39,9 @@ public class BindingUtils {
 
         if (options != null) {
             for (var option : options) {
-                var name = (String) option.get(NAME.getDisplayName());
-                var value = (String) option.get(ResourceProperty.VALUE.getDisplayName());
-                var dataType = DataType.valueOf((String) option.get(ResourceProperty.DATA_TYPE.getDisplayName()));
+                var name = option.get(NAME.getDisplayName()).toString();
+                var value = option.get(ResourceProperty.VALUE.getDisplayName()).toString();
+                var dataType = DataType.valueOf(option.get(ResourceProperty.DATA_TYPE.getDisplayName()).toString());
 
                 if (StringUtils.isEmpty(name) ||  value == null  || dataType == null) {
                     logger.debug("Options not configured correctly");

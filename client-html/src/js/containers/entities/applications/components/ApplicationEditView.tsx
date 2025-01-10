@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { Application } from "@api/model";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import ApplicationGeneral from "./ApplicationGeneral";
-import ApplicationDocuments from "./ApplicationDocuments";
-import { EditViewProps } from "../../../../model/common/ListView";
+import { Application } from '@api/model';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import { EditViewProps } from '../../../../model/common/ListView';
+import ApplicationDocuments from './ApplicationDocuments';
+import ApplicationGeneral from './ApplicationGeneral';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   documentsRoot: {
     padding: theme.spacing(3)
   }
@@ -26,7 +25,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3" />
   },
   {
     label: "Documents",
@@ -36,9 +35,10 @@ const items: TabsListItem[] = [
 
 const ApplicationEditView: React.FC<EditViewProps<Application> & { classes: any }> = props => (
   <TabsList
+    onParentScroll={props.onScroll}
     items={props.values ? items : []}
     itemProps={props}
   />
   );
 
-export default withStyles(styles)(ApplicationEditView);
+export default withStyles(ApplicationEditView, styles);

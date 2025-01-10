@@ -20,6 +20,7 @@ module.exports = {
     "rules": {
         "jsx-a11y/aria-role": "off",
         "import/no-unresolved": "off",
+        "import/no-extraneous-dependencies": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
         "@typescript-eslint/dot-notation": "off",
@@ -80,13 +81,11 @@ module.exports = {
         "implicit-arrow-linebreak": "off",
         // "linebreak-style": "off",
         "max-len": [
-            "error",
-            {
-                "code": 140
-            }
+            "off",
         ],
         "new-parens": "off",
         "newline-per-chained-call": "off",
+        "no-case-declarations": "off",
         "no-restricted-syntax": "off",
         "no-await-in-loop": "off",
         "no-prototype-builtins": "off",
@@ -108,6 +107,7 @@ module.exports = {
         "no-shadow": "off",
         "no-var": "error",
         "object-shorthand": "error",
+        "object-curly-newline": "off",
         "one-var": [
             "error",
             "never"
@@ -118,14 +118,15 @@ module.exports = {
         "quote-props": "off",
         "radix": "error",
         "react/no-this-in-sfc": "off",
-        "react/require-default-props": "off",
         "react/prop-types": "off",
         "react/state-in-constructor": "off",
         "react/sort-comp": "off",
+        "react/require-default-props": "off",
         "react/destructuring-assignment": "off",
         "react/no-did-update-set-state": "off",
         "react/jsx-props-no-spreading": "off",
         "react/jsx-boolean-value": "off",
+        "react/jsx-props-no-multi-spaces": "off",
         "semi": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [

@@ -13,7 +13,7 @@ package ish.oncourse.server.api.v1.function
 
 import ish.common.types.PaymentStatus
 import ish.math.Money
-import ish.oncourse.server.api.v1.model.InvoiceInvoiceLineDTO
+import ish.oncourse.server.api.v1.model.AbstractInvoiceLineDTO
 import ish.oncourse.server.api.v1.model.InvoicePaymentPlanDTO
 import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.AbstractInvoiceLine
@@ -29,8 +29,8 @@ import java.time.ZoneOffset
 
 class InvoiceFunctions {
 
-    static InvoiceInvoiceLineDTO toRestInvoiceLineModel(AbstractInvoiceLine cayenneModel) {
-        new InvoiceInvoiceLineDTO().with { invoiceLine ->
+    static AbstractInvoiceLineDTO toRestInvoiceLineModel(AbstractInvoiceLine cayenneModel) {
+        new AbstractInvoiceLineDTO().with { invoiceLine ->
             invoiceLine.id = cayenneModel.id
             invoiceLine.title = cayenneModel.title
             invoiceLine.quantity = cayenneModel.quantity

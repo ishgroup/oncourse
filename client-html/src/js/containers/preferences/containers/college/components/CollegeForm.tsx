@@ -3,22 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { reduxForm, initialize, Form } from "redux-form";
 import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { Form, initialize, reduxForm } from "redux-form";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
+import { COMMON_PLACEHOLDER } from "../../../../../constants/Forms";
 import * as Model from "../../../../../model/preferences/College";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
-const manualUrl = getManualLink("generalPrefs_college");
+const manualUrl = getManualLink("setting-your-general-preferences#college");
 
 class CollegeBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
@@ -80,7 +81,7 @@ class CollegeBaseForm extends React.Component<any, any> {
               {timezones && (
                 <>
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     name={this.formModel.CollegeTimezone.uniqueKey}
                     label="Default server time zone"
                     items={timezones}
@@ -101,7 +102,7 @@ class CollegeBaseForm extends React.Component<any, any> {
                 Security key
               </Typography>
               <Typography variant="body1">
-                {secKey || <span className={classes.placeholderContent}>No Value</span>}
+                {secKey || <span className={classes.placeholderContent}>{COMMON_PLACEHOLDER}</span>}
               </Typography>
             </Grid>
           </Grid>

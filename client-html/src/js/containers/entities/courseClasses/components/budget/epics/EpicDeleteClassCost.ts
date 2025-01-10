@@ -4,8 +4,8 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { DELETE_COURSE_CLASS_COST } from "../actions";
 import CourseClassCostService from "../services/ClassCostService";
 

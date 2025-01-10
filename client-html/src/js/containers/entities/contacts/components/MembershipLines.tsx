@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import { buildUrl, productUrl } from "../../sales/utils";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import { productUrl } from "../../sales/utils";
 
 export const MembershipHeader: React.FunctionComponent<any> = ({ row }) => (
   <div className="w-100 d-grid gridTemplateColumns-1fr">
@@ -35,7 +36,9 @@ export const MembershipContent: React.FunctionComponent<any> = ({ row, item, two
         <Uneditable
           value={row.purchasedByName}
           label="Purchased by"
-          url={buildUrl(row.purchasedById, "Contacts")}
+          labelAdornment={
+            <ContactLinkAdornment id={row.purchasedById} />
+          }
         />
       </Grid>
       <Grid item xs={gridSpacing}>

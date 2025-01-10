@@ -3,13 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ActionsObservable, Epic } from "redux-observable";
+import { openInternalLink } from "ish-ui";
+import { Epic, ofType } from "redux-observable";
+import { Observable } from "rxjs";
 import { mergeMap } from "rxjs/operators";
 import { State } from "../../../../reducers/state";
 import { PAYROLL_PROCESS_FINISHED } from "../../payrolls/actions";
-import { openInternalLink } from "../../../../common/utils/links";
 
-export const EpicOnPayslipGenerated: Epic<any, State> = (action$: ActionsObservable<any>): any => action$.ofType(PAYROLL_PROCESS_FINISHED).pipe(
+export const EpicOnPayslipGenerated: Epic<any, State> = (action$: Observable<any>): any => action$.pipe(
+    ofType(PAYROLL_PROCESS_FINISHED),
     mergeMap(action => {
       const { maxPayslipId } = action.payload;
 

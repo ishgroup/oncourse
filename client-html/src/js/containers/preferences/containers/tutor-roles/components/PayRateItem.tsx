@@ -1,32 +1,37 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { Card, IconButton, Grid } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Tooltip from "@mui/material/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
-import clsx from "clsx";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Card, Grid, IconButton } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import {
   formatFieldPercent,
+  mapSelectItems,
   parseFieldPercent,
-  preventNegativeOrLogEnter
-} from "../../../../../common/utils/numbers/numbersNormalizing";
-import { mapSelectItems } from "../../../../../common/utils/common";
+  preventNegativeOrLogEnter,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
+import React from "react";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
 
-const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
+const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => !["Discount", "Per student contact hour"].includes(t)).map(mapSelectItems);
+
+const validateRepetition = val => valiadateSelectItemAvailable(val, repetitionTypes);
 
 const validatePercentage = value => (!value && value !== 0 ? "Field is mandatory" : undefined);
 
 const PayRateItem = props => {
-  const { fields, classes, onDelete } = props;
+  const {fields, onDelete} = props;
 
   return fields.map((item, index) => (
-    <Card key={index} className={clsx("card", classes.payRateItem)}>
+    <Card key={index} className="card flex-fill mb-4">
       <Grid container rowSpacing={2}>
         <Grid item xs={12} container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>
@@ -35,7 +40,6 @@ const PayRateItem = props => {
               name={`${item}.validFrom`}
               label="Valid from"
               formatValue={YYYY_MM_DD_MINUSED}
-              fullWidth
               required
             />
           </Grid>
@@ -53,11 +57,12 @@ const PayRateItem = props => {
               name={`${item}.type`}
               label="Type"
               items={repetitionTypes}
+              validate={validateRepetition}
             />
           </Grid>
           <Grid item xs={2} className="d-flex">
             <FormField
-              type="persent"
+              type="number"
               name={`${item}.oncostRate`}
               label="Oncosts"
               step="0.01"
@@ -65,6 +70,7 @@ const PayRateItem = props => {
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
               validate={validatePercentage}
+              debounced={false}
             />
             <Tooltip title="Remove pay rate">
               <IconButton
@@ -78,7 +84,7 @@ const PayRateItem = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name={`${item}.notes`} label="Description" fullWidth />
+          <FormField type="multilineText" name={`${item}.notes`} label="Description" />
         </Grid>
       </Grid>
     </Card>

@@ -48,6 +48,10 @@ trait DataTypeDTOTrait {
                 return DataType.OBJECT
             case DataTypeDTO.PATTERN_TEXT:
                 return DataType.PATTERN_TEXT
+            case DataTypeDTO.PORTAL_SUBDOMAIN:
+                return DataType.PORTAL_SUBDOMAIN
+            case DataTypeDTO.NUMBER:
+                return DataType.NUMBER
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -86,8 +90,12 @@ trait DataTypeDTOTrait {
                 return DataTypeDTO.MESSAGE_TEMPLATE
             case DataType.OBJECT:
                 return DataTypeDTO.OBJECT
+            case DataType.NUMBER:
+                return DataTypeDTO.NUMBER
             case DataType.PATTERN_TEXT:
                 return DataTypeDTO.PATTERN_TEXT
+            case DataType.PORTAL_SUBDOMAIN:
+                return DataTypeDTO.PORTAL_SUBDOMAIN
             default:
                 throw new IllegalArgumentException("$dataType.displayName")
         }

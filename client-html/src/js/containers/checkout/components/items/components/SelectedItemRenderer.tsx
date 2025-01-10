@@ -3,26 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { memo, useEffect, useState } from "react";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
-import { AppTheme } from "../../../../../model/common/Theme";
-import { III_DD_MMM_YYYY_HH_MM_AAAA } from "../../../../../common/utils/dates/format";
-import CheckoutAlertTextMessage from "../../CheckoutAlertTextMessage";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { appendTimezone, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA } from 'ish-ui';
+import React, { memo, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import CheckoutAlertTextMessage from '../../CheckoutAlertTextMessage';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
   root: {
     paddingTop: "3px",
     paddingBottom: "3px",
     alignItems: "flex-start",
-    "&:hover $deleteIcon": {
+    [`&:hover .${classes.deleteIcon}`]: {
       visibility: "visible"
     }
   },
@@ -52,18 +49,28 @@ const CourseItemRenderer: React.FC<any> = props => {
           </Typography>
           <div className="align-items-center text-truncate">
             <Typography variant="caption">
-              {item.class.courseCode}
-              -
-              {item.class.code}
-              {item.class.startDateTime !== null
-                ? " ( "
-                  + formatDate(item.class.siteTimezone
-                  ? appendTimezone(new Date(item.class.startDateTime), item.class.siteTimezone)
-                  : new Date(item.class.startDateTime), III_DD_MMM_YYYY_HH_MM_AAAA)
-                    .replace("a.m.", "am")
-                    .replace("p.m.", "pm")
-                  + " )"
-                : ""}
+              {item.class 
+                ? (
+                  <>
+                    {item.class.courseCode}
+                    -
+                    {item.class.code}
+                    {item.class.startDateTime !== null
+                    ? " ( "
+                    + formatDate(item.class.siteTimezone
+                      ? appendTimezone(new Date(item.class.startDateTime), item.class.siteTimezone)
+                      : new Date(item.class.startDateTime), III_DD_MMM_YYYY_HH_MM_AAAA)
+                      .replace("a.m.", "am")
+                      .replace("p.m.", "pm")
+                    + " )"
+                    : ""}
+                  </>
+                )
+                : (
+                  <>
+                    No class selected
+                  </>
+                )}
             </Typography>
           </div>
         </div>
@@ -77,12 +84,12 @@ const CourseItemRenderer: React.FC<any> = props => {
   );
 };
 
-export const StyledCourseItemRenderer = withStyles(styles)(CourseItemRenderer);
+export const StyledCourseItemRenderer = withStyles(CourseItemRenderer, styles);
 
 const CommonItemRenderer: React.FC<any> = props => {
   const {
- item, index, classes, onDelete, openRow, selected
-} = props;
+   item, index, classes, onDelete, openRow, selected
+  } = props;
 
   return (
     <>
@@ -136,7 +143,7 @@ const Item = props => {
         <CommonItemRenderer item={item} {...props} selected={selected} />
       )}
       </div>
-      {mounted && item.type === "course" && item.class.message && (
+      {mounted && item.type === "course" && item.class?.message && (
         <CheckoutAlertTextMessage message={item.class.message} />
       )}
     </div>
@@ -145,12 +152,10 @@ const Item = props => {
 
 const SelectedItemRenderer = memo<any>(({
  items, ...rest
-}) => {
-  return (
-    <div className="relative">
-      {items && items.map((item, index) => <Item item={item} index={index} {...rest} />)}
-    </div>
-  );
-});
+}) => (
+  <div className="relative">
+    {items && items.map((item, index) => <Item item={item} index={index} {...rest} />)}
+  </div>
+  ));
 
-export default withStyles(styles)(SelectedItemRenderer);
+export default withStyles(SelectedItemRenderer, styles) as any;

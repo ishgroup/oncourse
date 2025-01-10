@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
 import { Assessment } from "@api/model";
+import React from "react";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
-import AssessmentGeneralTab from "./AssessmentGeneralTab";
-import AssessmentDocuments from "./AssessmentDocuments";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { EditViewProps } from "../../../../model/common/ListView";
+import AssessmentDocuments from "./AssessmentDocuments";
+import AssessmentGeneralTab from "./AssessmentGeneralTab";
 
 
 const items: TabsListItem[] = [
@@ -19,7 +19,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "NOTES",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3" />
   },
   {
     label: "DOCUMENTS",
@@ -41,11 +41,13 @@ const AssessmentEditView: React.FC<EditViewProps<Assessment>> = props => {
     rootEntity,
     onCloseClick,
     toogleFullScreenEditView,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={items}
       itemProps={{
         isNew,

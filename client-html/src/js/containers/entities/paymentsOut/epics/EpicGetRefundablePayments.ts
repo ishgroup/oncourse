@@ -1,9 +1,17 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import { decimalMinus, decimalPlus } from "ish-ui";
 import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import EntityService from "../../../../common/services/EntityService";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { GET_REFUNDABLE_PAYMENTS, GET_REFUNDABLE_PAYMENTS_FULFILLED } from "../actions";
-import EntityService from "../../../../common/services/EntityService";
 
 const request: EpicUtils.Request = {
   type: GET_REFUNDABLE_PAYMENTS,
@@ -12,7 +20,7 @@ const request: EpicUtils.Request = {
     if (contactId) {
       return EntityService.getPlainRecords(
         "PaymentIn",
-        "createdOn,gatewayReference,creditCardClientReference,amount,privateNotes",
+        "createdOn,gatewayReference,creditCardClientReference,amount",
         `payer.id == ${contactId} and paymentMethod.type == CREDIT_CARD and status == SUCCESS and banking.id != null and gatewayReference !== null`,
         PLAIN_LIST_MAX_PAGE_SIZE,
         0,
@@ -59,11 +67,11 @@ const request: EpicUtils.Request = {
     return Promise.resolve(null);
   },
   processData: refundablePayments => [
-      {
-        type: GET_REFUNDABLE_PAYMENTS_FULFILLED,
-        payload: refundablePayments
-      }
-    ]
+    {
+      type: GET_REFUNDABLE_PAYMENTS_FULFILLED,
+      payload: refundablePayments
+    }
+  ]
 };
 
 export const EpicGetRefundablePayents: Epic<any, any> = EpicUtils.Create(request);

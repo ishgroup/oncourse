@@ -6,21 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import { IconButton } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import { change, Field } from "redux-form";
 import { SurveyItem } from "@api/model";
+import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import Launch from "@mui/icons-material/Launch";
+import { openInternalLink } from "ish-ui";
+import React, { useCallback } from "react";
+import { change, Field } from "redux-form";
+import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "../../../../common/utils/links";
-import Score from "./Score";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { openContactLink } from "../../contacts/utils";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import Score from "./Score";
 
 interface Props {
   classes?: any;
@@ -64,12 +62,7 @@ const SurveyEditView = (props: Props) => {
           disableInteraction
           twoColumn={twoColumn}
           title={(
-            <div className="d-inline-flex-center">
-              {values.studentName}
-              <IconButton size="small" color="primary" onClick={() => openContactLink(values?.studentContactId)}>
-                <Launch fontSize="inherit" />
-              </IconButton>
-            </div>
+            <HeaderContactTitle name={values?.studentName} id={values?.studentContactId} />
           )}
         />
       </Grid>
@@ -121,10 +114,8 @@ const SurveyEditView = (props: Props) => {
               dispatch(change(form, "testimonial", values.comment));
             }
           }}
-          props={{
-            label: "Visibility",
-            items: visibilityItems
-          }}
+          label="Visibility"
+          items={visibilityItems}
         />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>

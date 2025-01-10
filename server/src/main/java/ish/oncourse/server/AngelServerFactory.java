@@ -21,36 +21,31 @@ import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
-import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
-import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.*;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Random;
-import java.util.stream.Stream;
+import java.util.*;
 
 import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
@@ -63,8 +58,7 @@ public class AngelServerFactory {
 
     private static final Logger LOGGER =  LogManager.getLogger();
 
-    public final static String TXT_SYSTEM_USERS_FILE = "createAdminUsers.txt";
-    public final static String CSV_SYSTEM_USERS_FILE = "createAdminUsers.csv";
+    public final static String YAML_SYSTEM_USERS_FILE = "createAdminUsers.yaml";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
 
 
@@ -73,19 +67,11 @@ public class AngelServerFactory {
         ResourcesUtil.initialiseLogging(true);
         RuntimeUtil.assertDefaultLocale();
 
-        // ensure that Jasper writes temp files to a directory with write permissions
-        System.setProperty("jasper.reports.compile.temp", System.getProperty("java.io.tmpdir"));
-
-        initJRGroovyCompiler();
-
         /**
          * We need to increase 'org.apache.cxf.stax.maxChildElements' property to 100000 because
          * willow side can replicate more than 50000 (default value for the property) records.
          */
         System.setProperty(StaxUtils.MAX_CHILD_ELEMENTS, "100000");
-
-        // set the location of default Ish jasperreports properties file
-        System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties");
 
         // this.applicationThread = Thread.currentThread();
         LOGGER.debug("AngelServer constructing... [{}:{}]", Thread.currentThread().getThreadGroup().getName(), Thread.currentThread().getName());
@@ -107,7 +93,7 @@ public class AngelServerFactory {
     public void start(PreferenceController prefController,
                       SchemaUpdateService schemaUpdateService,
                       ISchedulerService schedulerService,
-                      Scheduler scheduler, RegisterMBean registerMBean,
+                      Scheduler scheduler,
                       LicenseService licenseService,
                       CayenneService cayenneService,
                       PluginService pluginService,
@@ -204,6 +190,15 @@ public class AngelServerFactory {
                     false,
                     false);
 
+            //Chargebee job. Every day, 3am. May be resheduled due to cron expression changes
+            if(scheduler.checkExists(JobKey.jobKey(CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID))) {
+                Trigger trigger = scheduler.getTrigger(TriggerKey.triggerKey(CHARGEBEE_JOB_ID + TRIGGER_POSTFIX, BACKGROUND_JOBS_GROUP_ID));
+                if(!((CronTrigger)trigger).getCronExpression().equals(CHARGEBEE_JOB_INTERVAL.toUpperCase(Locale.ROOT)))
+                    schedulerService.removeJob(JobKey.jobKey(CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID));
+            }
+            schedulerService.scheduleCronJob(ChargebeeUploadJob.class, CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                    CHARGEBEE_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
+
             LOGGER.warn("Starting cron");
             scheduler.start();
             var preference = prefController.getPreference(ACCOUNT_CURRENCY, false);
@@ -221,43 +216,33 @@ public class AngelServerFactory {
             throw new RuntimeException("Scheduled service failed to initialise, aborting startup", e2);
         }
 
-        try {
-            LOGGER.warn("Initializing monitoring services");
-
-            registerMBean.register();
-        } catch (Exception e) {
-            LOGGER.error("Failed to initialize monitoring MBean.", e);
-        }
-
-        initJRGroovyCompiler();
-
         pluginService.onStart();
 
         LOGGER.warn("Server ready.");
     }
 
-    private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) throws IOException {
-        Path systemUsersFile = Paths.get(CSV_SYSTEM_USERS_FILE);
-        if (!systemUsersFile.toFile().exists()) {
-            systemUsersFile = Paths.get(TXT_SYSTEM_USERS_FILE);
-        }
-        Stream<String> lines;
-        try {
-             lines = Files.lines(systemUsersFile);
-        } catch (NoSuchFileException ignored) {
+    private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) {
+        Yaml yaml = new Yaml();
+        Path systemUsersFile = Paths.get(YAML_SYSTEM_USERS_FILE);
+        List<Map<String, Object>> users;
+        try (InputStream inputStream = new FileInputStream(systemUsersFile.toFile())) {
+            users = yaml.load(inputStream);
+        } catch (FileNotFoundException e) {
             LOGGER.warn("File with system users not found.");
             return;
+        } catch (Exception e) {
+            LOGGER.error("Can not parse system users file.", e);
+            return;
         }
-        lines.forEach(line -> {
-            String[] lineData = line.split("(, )+|([ ,\t])+");
 
-            if (lineData.length != 3) {
-                LOGGER.warn("Incorrect row format. User wasn't created.");
+        users.forEach(userYaml -> {
+            if (userYaml.get("first") == null || userYaml.get("last") == null || userYaml.get("email") == null) {
+                LOGGER.warn("Incorrect user format. User {} wasn't created.", userYaml);
                 return;
             }
-            String email = parseEmail(lineData[2]);
+            String email = parseEmail(String.valueOf(userYaml.get("email")));
             if (email == null) {
-                LOGGER.warn("Specified email for user {} is not valid.", line);
+                LOGGER.warn("Specified email for user {} is not valid.", userYaml.get("email"));
                 return;
             }
             SystemUser user = UserDao.getByEmail(context, email);
@@ -265,13 +250,14 @@ public class AngelServerFactory {
                 user.setPassword(null);
                 user.setPasswordLastChanged(null);
                 user.setLoginAttemptNumber(0);
+                user.setIsActive(true);
             } else {
                 user = UserDao.createSystemUser(context, Boolean.TRUE);
                 user.setEmail(email);
             }
 
-            user.setFirstName(lineData[0]);
-            user.setLastName(lineData[1]);
+            user.setFirstName(String.valueOf(userYaml.get("first")));
+            user.setLastName(String.valueOf(userYaml.get("last")));
 
             try {
                 String invitationToken = sendInvitationEmailToNewSystemUser(null, user, preferenceController, mailDeliveryService, hostName, ipAddress, port);
@@ -279,13 +265,13 @@ public class AngelServerFactory {
                 user.setInvitationTokenExpiryDate(DateUtils.addDays(new Date(), 7));
             } catch (MessagingException ex) {
                 LOGGER.catching(ex);
-                LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", line);
+                LOGGER.warn("An invitation to user {} wasn't sent. Check you SMTP settings.", userYaml);
                 return;
             }
 
             context.commitChanges();
 
-            LOGGER.warn("System user {} has been added successfully.", line);
+            LOGGER.warn("System user {} has been added successfully.", userYaml);
         });
 
         if (systemUsersFile.toFile().delete()) {
@@ -304,10 +290,6 @@ public class AngelServerFactory {
             return specifiedEmail;
         }
         return null;
-    }
-
-    private void initJRGroovyCompiler() {
-        new JRRuntimeConfig().config();
     }
 
 }

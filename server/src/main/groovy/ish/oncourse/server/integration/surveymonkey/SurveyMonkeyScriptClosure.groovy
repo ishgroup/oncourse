@@ -16,7 +16,6 @@ import ish.oncourse.API
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.scripting.ScriptClosure
 import ish.oncourse.server.scripting.ScriptClosureTrait
-import liquibase.pro.packaged.O
 
 /**
  * This integration allows you to push records into SurveyMonkey in order to add them to a survey. Create one integration
@@ -32,6 +31,7 @@ import liquibase.pro.packaged.O
  *     name "name of integration"
  *     contact myContact
  * }
+ * ```
  **/
 @CompileDynamic
 @API

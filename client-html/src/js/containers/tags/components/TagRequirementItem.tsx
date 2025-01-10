@@ -1,42 +1,32 @@
-import React, { useCallback } from "react";
-import clsx from "clsx";
-import { change, Field } from "redux-form";
-import { withStyles, createStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import { Dispatch } from "redux";
-import { PillCheckboxField } from "../../../common/components/form/PillCheckbox";
-import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { TagRequirement } from '@api/model';
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme, ShowConfirmCaller, useHoverShowStyles } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { change, Field } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { ToogleCheckbox } from '../../../common/components/form/ToogleCheckbox';
+import GetTagRequirementDisplayName from '../utils/GetTagRequirementDisplayName';
 
-const styles = () => createStyles({
-  deleteButton: {
-    marginRight: "10px"
-  },
+const styles = (theme: AppTheme) => ({
   deleteIcon: {
     fontSize: "20px"
   },
-  chip: {
-    margin: "0 20px",
-    height: "2em",
-    minWidth: "100px"
-  },
-  chip1: {
-    minWidth: "8em"
-  },
-  chip2: {
-    minWidth: "10em"
-  },
   root: {
-    maxWidth: "33em"
+    display: "grid",
+    gridTemplateColumns: "minmax(100px, 300px) 210px 230px 46px",
+    alignItems: "center",
+    marginBottom: theme.spacing(2)
   }
 });
 
 interface Props {
-  classes: any;
+  classes?: any;
   disabled: boolean;
-  item: any;
+  item: TagRequirement;
   parent: any;
   onDelete: any;
   index: number;
@@ -69,41 +59,45 @@ const TagRequirementItem: React.FC<Props> = props => {
       });
     }
   }, []);
+  
+  const header = useMemo(() => GetTagRequirementDisplayName(item.type), [item.type]);
+
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   return (
-    <div className={clsx("centeredFlex", classes.root)}>
-      <Typography variant="subtitle2" color="textSecondary" className="flex-fill">
-        {GetTagRequirementDisplayName(item.type)}
+    <div className={clsx(classes.root, hoverClasses.container)}>
+      <Typography variant="h5"  fontSize="1.3rem">
+        {header}
       </Typography>
 
-      <div className="d-flex">
-        <Field
-          name={`${parent}.mandatory`}
-          margin="none"
-          type="checkbox"
-          chackedLabel="Mandatory"
-          uncheckedLabel="Optional"
-          component={PillCheckboxField}
-          className={clsx(classes.chip, classes.chip1)}
-          disabled={disabled}
-          onChange={onChange}
-        />
+      <Field
+        name={`${parent}.mandatory`}
+        className="ml-1"
+        margin="none"
+        type="checkbox"
+        chackedLabel="Mandatory"
+        uncheckedLabel="Optional"
+        component={ToogleCheckbox}
+        disabled={disabled}
+        onChange={onChange}
+        debounced={false}
+      />
 
-        <Field
-          name={`${parent}.limitToOneTag`}
-          margin="none"
-          type="checkbox"
-          chackedLabel="Limit to one tag"
-          uncheckedLabel="Unlimited"
-          component={PillCheckboxField}
-          className={clsx(classes.chip, classes.chip2)}
-          disabled={disabled}
-          onChange={onChange}
-        />
-      </div>
+      <Field
+        name={`${parent}.limitToOneTag`}
+        className="ml-1"
+        margin="none"
+        type="checkbox"
+        chackedLabel="One tag only"
+        uncheckedLabel="Unlimited"
+        component={ToogleCheckbox}
+        disabled={disabled}
+        onChange={onChange}
+        debounced={false}
+      />
 
       <IconButton
-        className={clsx(classes.deleteButton, "dndActionIconButton", {
+        className={clsx("dndActionIconButton ml-1", hoverClasses.target,  {
           "invisible": disabled
         })}
         onClick={() => onDelete(index)}
@@ -114,4 +108,4 @@ const TagRequirementItem: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(styles)(TagRequirementItem);
+export default withStyles(TagRequirementItem, styles);

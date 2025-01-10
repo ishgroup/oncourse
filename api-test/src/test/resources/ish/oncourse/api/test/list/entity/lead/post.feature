@@ -23,9 +23,7 @@ Feature: Main feature for all POST requests with path 'list/entity/lead'
           {"id":112,"active":true,"name":"FirstLeadCourse","code":"lead1","type":"Course"},
           {"id":1010,"active":true,"name":"Exclusive Lead Voucher","code":"LFV1","type":"Voucher"}
         ],
-        "tags": [
-          {"id":239,"name":"leads 1","status":"Private","system":false,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":1,"childrenCount":0,"created":"2019-06-05T14:45:50.000Z","modified":"2019-06-05T14:47:01.000Z","requirements":[],"childTags":[]}
-        ],
+        "tags": [239],
         "sites":[
           {"id":203,"name":"Default site 3","suburb":"Adelaide","postcode":"5001"}
         ],

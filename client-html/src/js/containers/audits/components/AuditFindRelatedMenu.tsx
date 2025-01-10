@@ -1,11 +1,11 @@
-import * as React from "react";
-import { MenuItem } from "@mui/material";
 import { DataRow } from "@api/model";
-import { openInternalLink } from "../../../common/utils/links";
+import MenuItem from "@mui/material/MenuItem";
+import { openInternalLink } from "ish-ui";
+import * as React from "react";
 
 const AuditFindRelatedMenu = props => {
   const {
- findRelated, selection, rootEntity, records
+ findRelated = [], selection, rootEntity, records
 } = props;
 
   const ENTITY_IDENTIFIER_INDEX = 2;
@@ -31,6 +31,8 @@ const AuditFindRelatedMenu = props => {
       }&sourceList=${rootEntity}&ids=${concreteFindRelatedItems.join(",")}`;
     }
   };
+
+  findRelated.sort((a, b) => (a.title > b.title ? 1 : -1));
 
   return (
     findRelated

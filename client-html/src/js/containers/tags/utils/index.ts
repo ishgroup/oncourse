@@ -1,5 +1,14 @@
-import { Tag } from "@api/model";
-import { MenuTag } from "../../../model/tags";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import { DataRow, Tag } from "@api/model";
+import { CatalogItemType } from "../../../model/common/Catalog";
+import { FormTag } from "../../../model/tags";
 
 export const getAllTags = (tags: Tag[], res?: Tag[]): Tag[] => {
   const result = res || [];
@@ -15,18 +24,19 @@ export const getAllTags = (tags: Tag[], res?: Tag[]): Tag[] => {
   return result;
 };
 
-export const getAllMenuTags = (tags: MenuTag[], res?: MenuTag[], path = ""): MenuTag[] => {
+export const getAllFormTags = (tags: Tag[], res?: FormTag[], rootTag?: FormTag): FormTag[] => {
   const result = res || [];
-
   for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i];
-    tag.path = path;
-    result.push(tag);
+    result.push({
+      ...tags[i],
+      rootTag
+    });
 
-    if (tag.children.length) {
-      getAllMenuTags(tags[i].children, result, `${path ? `${path} / ` : ""}${(tag.tagBody && tag.tagBody.name) || ""}`);
+    if (tags[i].childTags.length) {
+      getAllFormTags(tags[i].childTags, result, rootTag || tags[i]);
     }
   }
+
   return result;
 };
 
@@ -49,3 +59,42 @@ export const COLORS = [
   "a30fe9", "480fec", "d7e90f", "e0e0e0", "bababa", "878787", "4d4d4d", "abd9e9", "74add1", "66bd63", "1a9850",
   "006837", "a50026", "d73027"
 ];
+
+export const plainTagToCatalogItem = (r: DataRow): CatalogItemType => ({
+  id: Number(r.id),
+  title: r.values[0],
+  installed: true,
+  enabled: true,
+  hideDot: true,
+  hideShortDescription: true
+});
+
+export const setChildTagsWeight = (items: FormTag[]): Tag[] =>
+  items.map((i, index) => {
+    let item = { ...i, weight: index + 1 };
+
+    delete item.parent;
+    delete item.refreshFlag;
+
+    if (item.id.toString().includes("new")) {
+      item.id = null;
+    }
+
+    if (item.childTags.length) {
+      item = { ...item, childTags: setChildTagsWeight([...item.childTags]) };
+    }
+
+    return item;
+  });
+
+export const rootTagToServerModel = (formTag: FormTag): Tag => {
+  const tag = { ...formTag, childTags: setChildTagsWeight([...formTag.childTags]) };
+
+  delete tag.parent;
+  delete tag.rootTag;
+  delete tag.refreshFlag;
+
+  if (!tag.weight) tag.weight = 1;
+  
+  return  tag;
+};

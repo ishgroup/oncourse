@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Outcome, OutcomeApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
-import { Diff, Outcome, OutcomeApi } from "@api/model";
 
 class OutcomeService {
   readonly outcomeApi = new OutcomeApi(new DefaultHttpService());
@@ -23,10 +23,6 @@ class OutcomeService {
 
   public create(outcome: Outcome): Promise<any> {
     return this.outcomeApi.create(outcome);
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.outcomeApi.bulkChange(diff);
   }
 }
 

@@ -6,18 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Diff } from "@api/model";
 import { Epic } from "redux-observable";
-import { Diff, Document } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import { RESTORE_DOCUMENT } from "../actions";
 import { showMessage } from "../../../../common/actions";
+import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import EntityService from "../../../../common/services/EntityService";
+import { RESTORE_DOCUMENT } from "../actions";
 
 const request: EpicUtils.Request<any, Diff> = {
   type: RESTORE_DOCUMENT,
   hideLoadIndicator: true,
-  getData: diff => DocumentsService.bulkChange(diff),
+  getData: diff => EntityService.bulkChange('Document', diff),
   processData: () => [
     showMessage({ message: "Document record restored", success: true }),
     {

@@ -4,20 +4,22 @@
  */
 
 import { Epic } from "redux-observable";
+import { showMessage } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import {
   GET_AUTOMATION_PDF_BACKGROUND,
   getAutomationPdfBackgroundsList,
   UPDATE_AUTOMATION_PDF_BACKGROUND
-} from "../actions/index";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+} from "../actions";
 import ReportOverlayService from "../services/ReportOverlayService";
 
 const request: EpicUtils.Request<any, { fileName: string; id: number; overlay: File }> = {
   type: UPDATE_AUTOMATION_PDF_BACKGROUND,
   getData: ({ fileName, id, overlay }) => ReportOverlayService.updateReportOverlay(fileName, id, overlay),
   processData: (r, s, { id }) => [
+      showMessage({ success: true, message: "PDF background updated" }),
       getAutomationPdfBackgroundsList(),
       {
         type: GET_AUTOMATION_PDF_BACKGROUND,

@@ -3,47 +3,45 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useMemo, useState
-} from "react";
-import { useSelector } from "react-redux";
+import Launch from '@mui/icons-material/Launch';
+import RemoveCircle from '@mui/icons-material/RemoveCircle';
+import IconButton from '@mui/material/IconButton';
+import MaUTable from '@mui/material/Table';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Typography from '@mui/material/Typography';
 import {
-  useTable,
-  useFlexLayout,
-  useRowSelect,
-  useSortBy
-} from "react-table";
-import makeStyles from "@mui/styles/makeStyles";
-import MaUTable from "@mui/material/Table";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Launch from "@mui/icons-material/Launch";
-import RemoveCircle from "@mui/icons-material/RemoveCircle";
-import clsx from "clsx";
-import { NestedTableColumn } from "../../../../../model/common/NestedTable";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { State } from "../../../../../reducers/state";
-import { openInternalLink } from "../../../../utils/links";
-import AddButton from "../../../icons/AddButton";
-import StaticList from "./components/StaticList";
-import styles from "./styles";
-import { getNestedTableCell } from "./utils";
-import { NESTED_TABLE_ROW_HEIGHT } from "../../../../../constants/Config";
+  ColumnDef,
+  ColumnSort,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable
+} from '@tanstack/react-table';
+import clsx from 'clsx';
+import { AddButton, AnyArgFunction, makeAppStyles, openInternalLink } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { NESTED_TABLE_ROW_HEIGHT } from '../../../../../constants/Config';
+import { NestedTableColumn } from '../../../../../model/common/NestedTable';
+import { State } from '../../../../../reducers/state';
+import StaticList from './components/StaticList';
+import styles from './styles';
+import { getNestedTableCell } from './utils';
 
 const DEFAULT_COLUMN_WIDTH = 100;
 
-const useStyles = makeStyles(styles);
+const useStyles = makeAppStyles()(styles);
 
 const getRowId = row => row.id;
 
 interface NestedListTableProps {
   columns: any;
   data: any;
-  selection: any[];
+  selection: string[];
+  onRowDelete?: any;
   onRowDoubleClick?: any;
   onCheckboxChange?: any;
   onSelectionChangeHangler?: any;
@@ -51,61 +49,50 @@ interface NestedListTableProps {
 }
 
 const Table: React.FC<NestedListTableProps> = ({
-  columns,
-  data,
-  selection,
-  onSelectionChangeHangler,
-  onRowDoubleClick,
-  onCheckboxChange,
-  calculateHeight
-  }) => {
-  const classes = useStyles();
+   columns,
+   data,
+   selection,
+   onSelectionChangeHangler,
+   onRowDelete,
+   onRowDoubleClick,
+   onCheckboxChange,
+   calculateHeight
+}) => {
 
-  const selectedRowIdsObj = useMemo(() => (selection ? selection.reduce((p, c) => ({ ...p, [c]: true }), []) : []), [
-    selection
-  ]);
+  const [sorting, onSortingChange] = useState<ColumnSort[]>([]);
 
-  const initialState = useMemo(() => {
+  const { classes, cx } = useStyles();
+
+  useEffect(() => {
+    const sortInitial = [];
     const sortColumn = columns.find(c => c.defaultSort);
-
     if (sortColumn) {
-      return {
-        sortBy: [{
-          id: sortColumn.id,
-          desc: false
-        }]
-      };
+      sortInitial.push({
+        id: sortColumn.id,
+        desc: false
+      });
     }
-    return [];
+    onSortingChange(sortInitial);
   }, [columns]);
 
-  const {
-    rows,
-    prepareRow,
-    headerGroups,
-    getTableProps,
-    totalColumnsWidth
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn: {
-        width: DEFAULT_COLUMN_WIDTH
-      },
-      initialState,
-      getRowId,
-      useControlledState: state => useMemo(
-        () => ({
-          ...state,
-          selectedRowIds: selectedRowIdsObj
-        }),
-        [state, selectedRowIdsObj]
-      )
+  const table = useReactTable({
+    data,
+    columns,
+    onRowSelectionChange: onSelectionChangeHangler,
+    onSortingChange,
+    state: {
+      sorting,
+      rowSelection: selection.reduce((p, c) => {
+        p[c] = true;
+        return p;
+      }, {}),
     },
-    useSortBy,
-    useRowSelect,
-    useFlexLayout
-  );
+    enableRowSelection: true,
+    enableMultiRowSelection: true,
+    getSortedRowModel: getSortedRowModel(),
+    getCoreRowModel: getCoreRowModel(),
+    getRowId
+  });
 
   const onRowSelect = id => {
     onSelectionChangeHangler(selection.includes(id) ? [] : [id]);
@@ -113,39 +100,65 @@ const Table: React.FC<NestedListTableProps> = ({
 
   const Header = useMemo(() => (
     <TableHead component="div" className={classes.header}>
-      {headerGroups.map(headerGroup => (
-        <TableRow key={headerGroup.getHeaderGroupProps().key} className={clsx(classes.headerRow, "w-100")} component="div">
-          {headerGroup.headers.map(column => (
-            <TableCell
-              {...column.getHeaderProps()}
-              className={clsx(classes.headerCell, column.cellClass)}
-              component="div"
-            >
-              <TableSortLabel
-                {...column.getSortByToggleProps()}
-                hideSortIcon={!column.canSort}
-                active={column.isSorted}
-                direction={column.isSortedDesc ? "desc" : "asc"}
-                classes={{
-                    root: clsx(!column.canSort && classes.noSort)
-                  }}
+      {table.getHeaderGroups().map(headerGroup => (
+        <TableRow key={headerGroup.id} className={cx(classes.headerRow, "w-100")} component="div">
+          {headerGroup.headers.map(({ column, getContext }) => {
+            const columnDef: any = column.columnDef;
+            const canSort = column.getCanSort();
+            const direction: any = column.getIsSorted();
+
+            return (
+              <TableCell
+                key={columnDef.id}
+                style={{
+                  minWidth: '0px',
+                  boxSizing: "border-box",
+                  flex: `${column.getSize()} 0 auto`,
+                  width: `${column.getSize()}px`
+                }}
+                className={cx(
+                  classes.headerCell,
+                  columnDef.cellClass,
+                  columnDef.type === "currency" && classes.rightAlighed,
+                  columnDef.type === "currency" && column.getIsSorted() && classes.activeRight
+                )}
+                component="div"
               >
-                {column.render("Header")}
-              </TableSortLabel>
-            </TableCell>
-            ))}
+                {columnDef.header && (<TableSortLabel
+                  hideSortIcon={!canSort}
+                  active={Boolean(direction)}
+                  direction={direction || "asc"}
+                  classes={{
+                    root: cx(
+                      canSort ? classes.canSort : classes.noSort,
+                      "overflow-hidden"
+                    ),
+                    icon: columnDef.type === "currency" && canSort && classes.rightSort
+                  }}
+                  onClick={canSort
+                    ? column.getToggleSortingHandler()
+                    : null
+                  }
+                >
+                  {flexRender(columnDef.header, getContext())}
+                </TableSortLabel>)}
+              </TableCell>
+            );
+          })}
         </TableRow>
       ))}
     </TableHead>
-  ), [headerGroups]);
+  ), [sorting]);
+
+  const rows = table.getRowModel().rows;
 
   const List = useMemo(() => (rows.length ? (
     <StaticList
-      prepareRow={prepareRow}
       rows={rows}
       classes={classes}
-      totalColumnsWidth={totalColumnsWidth}
+      totalColumnsWidth={table.getCenterTotalSize()}
       onRowSelect={onRowSelect}
+      onRowDelete={onRowDelete}
       onRowDoubleClick={onRowDoubleClick}
       onCheckboxChange={onCheckboxChange}
     />
@@ -155,28 +168,25 @@ const Table: React.FC<NestedListTableProps> = ({
         No data
       </Typography>
     </div>
-  )), [rows, totalColumnsWidth, selection, onRowDoubleClick, onCheckboxChange, onRowSelect]);
+  )), [rows, selection, onRowDoubleClick, onCheckboxChange, onRowSelect]);
 
   const tableHeight = useMemo(() => 100 + rows.length * NESTED_TABLE_ROW_HEIGHT,
     [rows.length]);
 
   const bodyStyle = useMemo(() => (rows.length > 10 ? calculateHeight && { height: NESTED_TABLE_ROW_HEIGHT * 10 } : { height: rows.length * NESTED_TABLE_ROW_HEIGHT }), [rows.length]);
 
-  return (
-    <>
-      <MaUTable
-        {...getTableProps()}
-        className={clsx(classes.nestedTable, !bodyStyle && "flex-fill")}
-        style={{ maxHeight: tableHeight }}
-        component="div"
-      >
-        {Header}
-        <div style={bodyStyle} className={classes.tableBody}>
-          {List}
-        </div>
-      </MaUTable>
-    </>
-  );
+  return (<>
+    <MaUTable
+      className={cx(classes.nestedTable, !bodyStyle && "flex-fill")}
+      style={{ maxHeight: tableHeight }}
+      component="div"
+    >
+      {Header}
+      <div style={bodyStyle} className={classes.tableBody}>
+        {List}
+      </div>
+    </MaUTable>
+  </>);
 };
 
 export interface NestedListProps {
@@ -194,29 +204,33 @@ export interface NestedListProps {
   onAdd?: any;
   currencySymbol?: string;
   onRowDoubleClick?: any;
+  onRowDelete?: any;
   onCheckboxChange?: AnyArgFunction;
   meta?: any;
   total?: any;
   goToLink?: string;
+  primaryHeader?: boolean;
 }
 
 const ListRoot = React.memo<NestedListProps>(({
-    columns,
-    removeEnabled,
-    sortable,
-    sortBy,
-    fields,
-    title,
-    className,
-    hideHeader,
-    onAdd,
-    onRowDoubleClick,
-    onCheckboxChange,
-    meta: { invalid, error },
-    total,
-    goToLink,
-    calculateHeight
-  }) => {
+                                                columns,
+                                                removeEnabled,
+                                                sortable,
+                                                sortBy,
+                                                fields,
+                                                title,
+                                                className,
+                                                hideHeader,
+                                                onAdd,
+                                                onRowDelete,
+                                                onRowDoubleClick,
+                                                onCheckboxChange,
+                                                meta: { invalid, error },
+                                                total,
+                                                goToLink,
+                                                calculateHeight,
+                                                primaryHeader
+                                              }) => {
   const [selection, setSelection] = useState([]);
 
   const removeRow = () => {
@@ -226,17 +240,24 @@ const ListRoot = React.memo<NestedListProps>(({
 
   const currencySymbol = useSelector<State, any>(state => state.currency && state.currency.shortCurrencySymbol);
 
-  const columnsFormated = useMemo(
-    () => columns.map(c => ({
-      id: c.name,
-      width: c.width || DEFAULT_COLUMN_WIDTH,
-      Header: c.title,
-      accessor: row => row[`${c.name}`],
-      cellClass: c.type === "currency" ? "money text-end" : null,
-      disableSortBy: c.disableSort || !sortable,
-      ...c
-    })),
-    [columns, sortable]
+  const columnsFormated = useMemo<ColumnDef<Record<any, any>>[]>(
+    () => columns.concat(onRowDelete ? [{
+      name: "delete",
+      type: "delete",
+      cellClass: "p-0 text-center",
+      width: 10
+    }] : [])
+      .map(c => ({
+        id: c.name,
+        size: c.width || DEFAULT_COLUMN_WIDTH,
+        minSize: c.width || DEFAULT_COLUMN_WIDTH,
+        header: c.title,
+        accessorFn: row => row[`${c.name}`],
+        cellClass: c.type === "currency" ? "money text-end justify-content-end" : null,
+        enableSorting: !c.disableSort || sortable,
+        ...c
+      })),
+    [columns, sortable, onRowDelete]
   );
 
   const rows = useMemo(() => {
@@ -248,16 +269,16 @@ const ListRoot = React.memo<NestedListProps>(({
     }
 
     return allFields.map((v, index) => {
-        const row: any = {};
-        row.id = index.toString();
-        row.index = index;
-        columns.forEach(c => {
-          row[c.name] = getNestedTableCell(v[c.name], c.type, currencySymbol);
-        });
-        row.initial = v;
-        row.fieldName = `${fields.name}[${index}]`;
-        return row;
+      const row: any = {};
+      row.id = index.toString();
+      row.index = index;
+      columns.forEach(c => {
+        row[c.name] = getNestedTableCell(v[c.name], c.type, currencySymbol);
       });
+      row.initial = v;
+      row.fieldName = `${fields.name}[${index}]`;
+      return row;
+    });
   }, [fields, columns, sortBy]);
 
   return columns.length
@@ -266,7 +287,7 @@ const ListRoot = React.memo<NestedListProps>(({
         {!hideHeader && (
           <div>
             <div className="centeredFlex">
-              <Typography className="heading pt-1 pb-1">
+              <Typography className={`${primaryHeader ? "heading" : "secondaryHeading"} pt-1 pb-1`}>
                 {rows.length}
                 {" "}
                 {title}
@@ -277,11 +298,11 @@ const ListRoot = React.memo<NestedListProps>(({
                   size="small"
                   onClick={() => openInternalLink(goToLink)}
                 >
-                  <Launch fontSize="inherit" />
+                  <Launch fontSize="inherit"/>
                 </IconButton>
               )}
               {onAdd && (
-                <AddButton size="small" onClick={onAdd} />
+                <AddButton size="small" onClick={onAdd}/>
               )}
               {Boolean(rows.length) && removeEnabled && (
                 <IconButton
@@ -290,22 +311,23 @@ const ListRoot = React.memo<NestedListProps>(({
                   disabled={selection.length !== 1}
                   onClick={removeRow}
                 >
-                  <RemoveCircle color="inherit" fontSize="inherit" />
+                  <RemoveCircle color="inherit" fontSize="inherit"/>
                 </IconButton>
               )}
             </div>
           </div>
         )}
         {Boolean(rows.length) && (
-        <Table
-          columns={columnsFormated}
-          data={rows}
-          selection={selection}
-          onRowDoubleClick={onRowDoubleClick}
-          onCheckboxChange={onCheckboxChange}
-          onSelectionChangeHangler={setSelection}
-          calculateHeight={calculateHeight}
-        />
+          <Table
+            columns={columnsFormated}
+            data={rows}
+            selection={selection}
+            onRowDelete={onRowDelete}
+            onRowDoubleClick={onRowDoubleClick}
+            onCheckboxChange={onCheckboxChange}
+            onSelectionChangeHangler={setSelection}
+            calculateHeight={calculateHeight}
+          />
         )}
         {invalid && (
           <Typography variant="subtitle2" color="error" component="div" className="pt-1">

@@ -10,6 +10,7 @@ records.each { Document document ->
             "isShared"      : document.isShared,
             "isRemoved"     : document.isRemoved,
             "Added"         : document.added,
-            "FileUUID"      : document.fileUUID
+            "FileUUID"      : document.fileUUID,
+            "Attached student" : document.attachedForFirstEnrolmentStudentInfo
     ]
 }

@@ -1,7 +1,7 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
-import { MessageTemplateEntityName } from "../constants";
-import { EntityName } from "../../../model/entities/common";
+import Typography from '@mui/material/Typography';
+import React from 'react';
+import { EntityName } from '../../../model/entities/common';
+import { MessageTemplateEntityName } from '../constants';
 
 export const mapMessageAvailableFrom = (entity: MessageTemplateEntityName) => {
   switch (entity) {
@@ -195,13 +195,13 @@ export const mapAvailableFrom = (entity: EntityName): EntityName[] => {
   return [];
 };
 
-const AvailableFromItem = React.memo<any>(({ item }) => (
+const AvailableFromItem = React.memo<{ item }>(({ item }) => (
   <Typography variant="body2" className="centeredFlex pb-0-5" style={{ maxHeight: "24px" }}>
     {item}
   </Typography>
   ));
 
-const AvailableFrom = React.memo<any>(({ items }) => (
+const AvailableFrom = React.memo<{ items }>(({ items }) => (
   <div>
     <div className="centeredFlex pb-1">
       <div className="heading">Available From</div>

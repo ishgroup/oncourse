@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { EmailTemplate } from "@api/model";
-import * as EpicUtils from "./EpicUtils";
+import { Epic } from "redux-observable";
+import EmailTemplateService from "../../containers/automation/containers/email-templates/services/EmailTemplateService";
 import { GET_EMAIL_TEMPLATES_WITH_KEYCODE, GET_EMAIL_TEMPLATES_WITH_KEYCODE_FULFILLED } from "../actions";
 import FetchErrorHandler from "../api/fetch-errors-handlers/FetchErrorHandler";
-import EmailTemplateService from "../../containers/automation/containers/email-templates/services/EmailTemplateService";
+import * as EpicUtils from "./EpicUtils";
 
 const sortEmailBodyDown = (a, b) => {
   const aName = a.name;
@@ -28,7 +27,7 @@ const sortEmailBodyDown = (a, b) => {
 
 const request: EpicUtils.Request = {
   type: GET_EMAIL_TEMPLATES_WITH_KEYCODE,
-  getData: ({ entities }) => Promise.all(entities.map(entity => EmailTemplateService.getEmailTemplatesWithKeyCode(entity))),
+  getData: ({entities}) => Promise.all(entities.map(entity => EmailTemplateService.getEmailTemplatesWithKeyCode(entity))),
   processData: (records: EmailTemplate[]) => {
     const sortedRecords = records.flat().map(r => {
       if (Array.isArray(r.variables) && r.variables.length) {

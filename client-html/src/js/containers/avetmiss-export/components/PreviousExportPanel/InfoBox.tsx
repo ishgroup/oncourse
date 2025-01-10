@@ -1,18 +1,16 @@
-import React from "react";
-import { Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import clsx from "clsx";
-import ButtonBase from "@mui/material/ButtonBase";
-import { FundingUpload, FundingStatus } from "@api/model";
-import { format } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
-import { AppTheme } from "../../../../model/common/Theme";
+import { FundingStatus, FundingUpload } from '@api/model';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import Button from '@mui/material/Button';
+import ButtonBase from '@mui/material/ButtonBase';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     buttons: {
       "& > *": {
         marginRight: theme.spacing(2)
@@ -96,4 +94,4 @@ const InfoBox = ({
   </div>
 );
 
-export default withStyles(styles)(InfoBox);
+export default withStyles(InfoBox, styles);

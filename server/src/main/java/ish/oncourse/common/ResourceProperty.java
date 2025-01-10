@@ -20,13 +20,17 @@ public enum  ResourceProperty {
 
     //common automation props
     NAME("name"),
-    ENABLED("enabled"),
+    STATUS("status"),
     ENTITY_CLASS("entityClass"),
     ENTITY_ATTRIBUTE("entityAttribute"),
     DESCRIPTION("description"),
     BODY("body"),
+    REPORT_PROPERTY("report"),
     KEY_CODE("keyCode"),
     OUTPUT_TYPE("outputType"),
+    SHORT_DESCRIPTION("short"),
+    CATEGORY("category"),
+    TAG("tag"),
 
     @Deprecated
     MIN_VERSION("minVersion"),
@@ -60,7 +64,12 @@ public enum  ResourceProperty {
     @Deprecated
     BODY_PLAIN("bodyPlain"),
     @Deprecated
-    BODY_HTML("bodyHtml");
+    BODY_HTML("bodyHtml"),
+
+    //reports
+    IS_VISIBLE("isVisible"),
+    SORT_ON("sortOn");
+
 
 
 

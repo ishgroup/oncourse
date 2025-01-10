@@ -11,16 +11,18 @@ import { checkoutSetHasErrors } from "../../actions";
 import {
   CHECKOUT_UPDATE_SUMMARY_PRICES,
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED,
-  checkoutUncheckSummaryItems, checkoutUpdateSummaryPrices
+  checkoutUncheckSummaryItems,
+  checkoutUpdateSummaryPrices
 } from "../../actions/checkoutSummary";
 import CheckoutService from "../../services/CheckoutService";
-import { getCheckoutModel } from "../../utils";
+import { getCheckoutModel, getCheckoutModelMembershipsValidTo } from "../../utils";
 
 const request: EpicUtils.Request = {
   type: CHECKOUT_UPDATE_SUMMARY_PRICES,
   hideLoadIndicator: true,
-  getData: (p, s) => {
+  getData: async (p, s) => {
     const model = getCheckoutModel(s.checkout, [], null, {}, true);
+    await getCheckoutModelMembershipsValidTo(model);
     return CheckoutService.checkoutSubmitPayment(
       model,
       true,

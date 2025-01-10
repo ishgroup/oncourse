@@ -6,8 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { usePrevious } from "ish-ui";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { usePrevious } from "../hooks";
 
 const calculateBoundingBoxes = children => {
   const boundingBoxes = {};
@@ -22,7 +22,7 @@ const calculateBoundingBoxes = children => {
   return boundingBoxes;
 };
 
-const AnimateList = ({ children }) => {
+const AnimateList = ({children}) => {
   const [boundingBox, setBoundingBox] = useState({});
   const [prevBoundingBox, setPrevBoundingBox] = useState({});
   const prevChildren = usePrevious(children);

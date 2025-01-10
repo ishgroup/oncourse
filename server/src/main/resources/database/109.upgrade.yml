@@ -1,0 +1,232 @@
+databaseChangeLog:
+  - changeSet:
+      id: 109-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Script
+                columnName: shortDescription
+            - columnExists:
+                tableName: Import
+                columnName: shortDescription
+            - columnExists:
+                tableName: EmailTemplate
+                columnName: shortDescription
+            - columnExists:
+                tableName: ExportTemplate
+                columnName: shortDescription
+            - columnExists:
+                tableName: Report
+                columnName: shortDescription
+      changes:
+        - addColumn:
+            tableName: Script
+            columns:
+              - column:
+                  name: shortDescription
+                  type: TEXT
+        - addColumn:
+            tableName: Import
+            columns:
+              - column:
+                  name: shortDescription
+                  type: TEXT
+        - addColumn:
+            tableName: Report
+            columns:
+              - column:
+                  name: shortDescription
+                  type: TEXT
+        - addColumn:
+            tableName: ExportTemplate
+            columns:
+              - column:
+                  name: shortDescription
+                  type: TEXT
+        - addColumn:
+            tableName: EmailTemplate
+            columns:
+              - column:
+                  name: shortDescription
+                  type: TEXT
+
+  - changeSet:
+      id: 109-2
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Script
+                columnName: tags
+            - columnExists:
+                tableName: Import
+                columnName: tags
+            - columnExists:
+                tableName: EmailTemplate
+                columnName: tags
+            - columnExists:
+                tableName: ExportTemplate
+                columnName: tags
+            - columnExists:
+                tableName: Report
+                columnName: tags
+      changes:
+        - addColumn:
+            tableName: Script
+            columns:
+              - column:
+                  name: tags
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: Import
+            columns:
+              - column:
+                  name: tags
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: Report
+            columns:
+              - column:
+                  name: tags
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: ExportTemplate
+            columns:
+              - column:
+                  name: tags
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: EmailTemplate
+            columns:
+              - column:
+                  name: tags
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 109-3
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Script
+                columnName: category
+            - columnExists:
+                tableName: Import
+                columnName: category
+            - columnExists:
+                tableName: EmailTemplate
+                columnName: category
+            - columnExists:
+                tableName: ExportTemplate
+                columnName: category
+            - columnExists:
+                tableName: Report
+                columnName: category
+      changes:
+        - addColumn:
+            tableName: Script
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: Import
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: Report
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: ExportTemplate
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+        - addColumn:
+            tableName: EmailTemplate
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 109-4
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Script
+            columnName: enabled
+        - columnExists:
+            tableName: Import
+            columnName: enabled
+        - columnExists:
+            tableName: EmailTemplate
+            columnName: enabled
+        - columnExists:
+            tableName: ExportTemplate
+            columnName: enabled
+        - columnExists:
+            tableName: Report
+            columnName: enabled
+      changes:
+        - sql:
+            - "UPDATE Script SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE Report SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE EmailTemplate SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE ExportTemplate SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+        - sql:
+            - "UPDATE Import SET enabled = CASE WHEN enabled=1 THEN 2
+                                                WHEN enabled=0 AND keyCode LIKE 'ish.%' THEN 1
+                                                ELSE 0 
+                                                END"
+
+  - changeSet:
+      id: 109-5
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Script
+            columnName: keyCode
+      changes:
+        - sql:
+            - "UPDATE Script SET keyCode = CONCAT('legacy.',id) WHERE keyCode IS NULL"
+
+  - changeSet:
+      id: 109-6
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Script
+            columnName: keyCode
+      changes:
+        - addNotNullConstraint:
+            tableName: Script
+            columnName: keyCode
+            columnDataType: VARCHAR(80)

@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataResponse, SaleType } from "@api/model";
 import { Epic } from "redux-observable";
-
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import { GET_SALES, GET_SALES_FULFILLED } from "../actions";
-import { DataResponse, SaleType } from "@api/model";
+import { GET_SALES, GET_SALES_FULFILLED, getSalesRejected } from "../actions";
 
 const withType = (type: string) => {
   switch (type) {
@@ -55,16 +54,12 @@ const request: EpicUtils.Request<any, { search: string; entities: SaleType[] }> 
     };
 
     return payload.entities
-      .map(entity => {
-        return EntityService.getPlainRecords(
-          requestDetails[entity]["entity"],
-          requestDetails[entity]["columns"],
-          requestDetails[entity]["search"]
-        );
-      })
-      .reduce((chain, task) => {
-        return chain.then(result => task.then(current => [...result, current]));
-      }, Promise.resolve([]));
+      .map(entity => EntityService.getPlainRecords(
+        requestDetails[entity]["entity"],
+        requestDetails[entity]["columns"],
+        requestDetails[entity]["search"]
+      ))
+      .reduce((chain, task) => chain.then(result => task.then(current => [...result, current])), Promise.resolve([]));
   },
 
   processData: (response: DataResponse[]) => {
@@ -88,7 +83,8 @@ const request: EpicUtils.Request<any, { search: string; entities: SaleType[] }> 
         payload: { items }
       }
     ];
-  }
+  },
+  processError: () => [getSalesRejected()]
 };
 
 export const EpicGetSales: Epic<any, any> = EpicUtils.Create(request);

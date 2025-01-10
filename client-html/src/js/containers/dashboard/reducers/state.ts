@@ -3,9 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
- StatisticData, CategoryItem, SearchGroup, Script
-} from "@api/model";
+import { SearchGroup, StatisticData } from "@api/model";
 
 export interface DashboardState {
   statistics: {
@@ -16,9 +14,11 @@ export interface DashboardState {
     updating: boolean;
     results: SearchGroup[];
   };
-  categories: CategoryItem[];
-  scripts: Script[];
-  favoriteScripts: number[];
+  scripts: {
+    name: string;
+    description: string;
+    id: number;
+  }[];
   upgradePlanLink?: string;
   userSearch?: string;
   blogPosts?: any;

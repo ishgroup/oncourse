@@ -7,19 +7,14 @@
  * Common actions of App
  * */
 
-import {
-  LoginRequest,
-  PermissionRequest,
-  PreferenceEnum, User,
-  UserPreference
-} from "@api/model";
-import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
+import { PermissionRequest, PreferenceEnum, User, UserPreference } from "@api/model";
+import { ShowConfirmCaller } from "ish-ui";
 import { LoginState } from "../../containers/login/reducers/state";
-import { ShowConfirmCaller } from "../../model/common/Confirm";
-import { IAction } from "./IshAction";
 import { QueuedAction } from "../../model/common/ActionsQueue";
 import { ApiMethods } from "../../model/common/apiHandlers";
 import { AppMessage } from "../../model/common/Message";
+import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
+import { IAction } from "./IshAction";
 
 export const CHECK_PERMISSIONS_REQUEST = _toRequestType("post/access");
 export const CHECK_PERMISSIONS_REQUEST_FULFILLED = FULFILLED(CHECK_PERMISSIONS_REQUEST);
@@ -41,21 +36,6 @@ export const GET_LDAP_CONNECTION_REQUEST = _toRequestType("get/ldapConnection");
 export const GET_MESSAGE_QUEUED_REQUEST = _toRequestType("get/messageQueued");
 export const GET_MESSAGE_QUEUED_FULFILLED = FULFILLED(GET_MESSAGE_QUEUED_REQUEST);
 
-export const POST_AUTHENTICATION_REQUEST = _toRequestType("post/authentication");
-export const POST_AUTHENTICATION_FULFILLED = FULFILLED(POST_AUTHENTICATION_REQUEST);
-
-export const POST_UPDATE_PASSWORD_REQUEST = _toRequestType("post/user/updatePassword");
-export const POST_UPDATE_PASSWORD_FULFILLED = FULFILLED(POST_UPDATE_PASSWORD_REQUEST);
-
-export const POST_CREATE_PASSWORD_REQUEST = _toRequestType("post/user/createPassword");
-export const POST_CREATE_PASSWORD_FULFILLED = FULFILLED(POST_CREATE_PASSWORD_REQUEST);
-
-export const GET_EMAIL_BY_TOKEN_REQUEST = _toRequestType("get/user/email");
-export const GET_EMAIL_BY_TOKEN_FULFILLED = FULFILLED(GET_EMAIL_BY_TOKEN_REQUEST);
-
-export const CHECK_PASSWORD_REQUEST = _toRequestType("get/login");
-export const CHECK_PASSWORD_FULFILLED = FULFILLED(CHECK_PASSWORD_REQUEST);
-
 export const GET_USER_PREFERENCES = _toRequestType("get/user/preference");
 export const GET_USER_PREFERENCES_FULFILLED = FULFILLED(GET_USER_PREFERENCES);
 
@@ -73,6 +53,9 @@ export const CLOSE_DRAWER = "common/drawer/close";
 
 export const OPEN_CONFIRM = "common/confirm/open";
 export const CLOSE_CONFIRM = "common/confirm/close";
+
+export const OPEN_SEND_MESSAGE = "common/sendMessage/open";
+export const CLOSE_SEND_MESSAGE = "common/sendMessage/close";
 
 export const SHOW_MESSAGE = "common/message/show";
 export const CLEAR_MESSAGE = "common/message/clear";
@@ -98,15 +81,13 @@ export const CLEAR_ACTIONS_QUEUE = "clear/actionsQueue";
 
 export const NEXT_LOCATION = 'nextLocation';
 
-export const GET_SYSTEM_USER_DATA = "get/systemUser/data";
-
 export const SET_SYSTEM_USER_DATA = "set/systemUser/data";
 
 export const addActionToQueue = (
   actionBody: IAction,
   method: ApiMethods,
   entity: string,
-  id: number | string,
+  id?: number | string,
   bindedActionId?: number | string
 ): IAction<QueuedAction> => ({
   type: ADD_ACTION_TO_QUEUE,
@@ -122,7 +103,7 @@ interface RemoveQueuedActionMeta {
 
 export const removeActionsFromQueue = (meta: RemoveQueuedActionMeta[]) => ({
   type: REMOVE_ACTIONS_FROM_QUEUE,
-  payload: { meta }
+  payload: {meta}
 });
 
 export const executeActionsQueue = () => ({
@@ -133,32 +114,21 @@ export const clearActionsQueue = () => ({
   type: CLEAR_ACTIONS_QUEUE
 });
 
-export const showConfirm: ShowConfirmCaller = (payload) => {
-  return {
-    type: OPEN_CONFIRM,
-    payload
-  };
-};
+export const showConfirm: ShowConfirmCaller = payload => ({
+  type: OPEN_CONFIRM,
+  payload
+});
 
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM
 });
 
-export const setLastLocation = () => ({
-  type: SET_LAST_LOCATION
+export const openSendMessage = () => ({
+  type: OPEN_SEND_MESSAGE
 });
 
-export const clearLastLocation = () => ({
-  type: CLEAR_LAST_LOCATION
-});
-
-export const checkPassword = (value: string, host?: string, port?: number) => ({
-  type: CHECK_PASSWORD_REQUEST,
-  payload: {
-    value,
-    host,
-    port
-  }
+export const closeSendMessage = () => ({
+  type: CLOSE_SEND_MESSAGE
 });
 
 export const setLoginState = (payload: LoginState) => ({
@@ -174,29 +144,9 @@ export const closeDrawer = () => ({
   type: CLOSE_DRAWER
 });
 
-export const updatePasswordRequest = (value: string) => ({
-  type: POST_UPDATE_PASSWORD_REQUEST,
-  payload: { value }
-});
-
-export const postLoginRequest = (body: LoginRequest, host, port) => ({
-  type: POST_AUTHENTICATION_REQUEST,
-  payload: { body, host, port }
-});
-
-export const createPasswordRequest = (token: string, password: string) => ({
-  type: POST_CREATE_PASSWORD_REQUEST,
-  payload: { token, password }
-});
-
-export const getEmailByToken = (value: string) => ({
-  type: GET_EMAIL_BY_TOKEN_REQUEST,
-  payload: { value }
-});
-
 export const getScripts = (entity: string) => ({
   type: GET_SCRIPTS_REQUEST,
-  payload: { entity }
+  payload: {entity}
 });
 
 export const getOnDemandScripts = () => ({
@@ -205,7 +155,7 @@ export const getOnDemandScripts = () => ({
 
 export const getEmailTemplatesWithKeyCode = (entities: string[]) => ({
   type: GET_EMAIL_TEMPLATES_WITH_KEYCODE,
-  payload: { entities }
+  payload: {entities}
 });
 
 export const getLdapConnection = (host: string, port: string, isSsl: string, baseDn: string, user: string) => ({
@@ -217,7 +167,7 @@ export const getLdapConnection = (host: string, port: string, isSsl: string, bas
 
 export const getMessageQueued = (type: string) => ({
   type: GET_MESSAGE_QUEUED_REQUEST,
-  payload: { type }
+  payload: {type}
 });
 
 export const clearFetch = () => ({
@@ -226,12 +176,12 @@ export const clearFetch = () => ({
 
 export const getProcessStatus = (processId: string, actions: any[]) => ({
   type: START_PROCESS,
-  payload: { processId, actions }
+  payload: {processId, actions}
 });
 
 export const interruptProcess = (processId: string) => ({
   type: INTERRUPT_PROCESS,
-  payload: { processId }
+  payload: {processId}
 });
 
 export const clearProcess = () => ({
@@ -240,7 +190,7 @@ export const clearProcess = () => ({
 
 export const checkPermissions = (permissionRequest: PermissionRequest, onComplete?: IAction[]) => ({
   type: CHECK_PERMISSIONS_REQUEST,
-  payload: { permissionRequest, onComplete }
+  payload: {permissionRequest, onComplete}
 });
 
 export const getUserPreferences = (keys: PreferenceEnum[]) => ({
@@ -265,11 +215,6 @@ export const clearMessage = () => ({
 export const setNextLocation = (nextLocation: string) => ({
   type: NEXT_LOCATION,
   payload: nextLocation
-});
-
-
-export const getSystemUserData = () => ({
-  type: GET_SYSTEM_USER_DATA,
 });
 
 export const setSystemUserData = (systemUserData: User) => ({

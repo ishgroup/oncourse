@@ -1,92 +1,86 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { FormControlLabel, Grid } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
-import { change, Field as FormField } from "redux-form";
 import { CustomFieldType } from "@api/model";
-import { connect } from "react-redux";
+import { Grid } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { GridProps } from "@mui/material/Grid";
-import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
-import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import EditInPlaceMoneyField from "../../../../common/components/form/formFields/EditInPlaceMoneyField";
-import {
-  validateEmail,
-  validateSingleMandatoryField,
-  validateURL,
-  validatePattern
-} from "../../../../common/utils/validation";
-import { State } from "../../../../reducers/state";
-import EditInPlaceSearchSelect from "../../../../common/components/form/formFields/EditInPlaceSearchSelect";
+import React, { useEffect, useMemo, useState } from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import { getDeepValue } from "../../../../common/utils/common";
+import { validateEmail, validatePattern, validateURL } from "../../../../common/utils/validation";
+import { FormFieldWrapperProps } from "../../../../model/common/Fields";
 import { EntityName } from "../../../../model/entities/common";
+import { State } from "../../../../reducers/state";
+import { CustomFieldTypesState } from "../reducers/state";
 
-const Field: any = FormField;
-
-const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => {
-  const validate = type.mandatory ? validateSingleMandatoryField : undefined;
+const customFieldComponentResolver = (type: CustomFieldType, onCreateOption, items) => {
   const validateFieldPattern = val => validatePattern(val, type.pattern);
-
-  let component = EditInPlaceField;
-  let componentProps: any = { validate };
+  let componentProps: Partial<FormFieldWrapperProps>  = { type: "text", required: type.mandatory };
 
   switch (type.dataType) {
-    case "Checkbox": {
-      component = props => (
-        <FormControlLabel
-          className="checkbox mb-2"
-          control={<CheckboxField {...props} color="primary" />}
-          label={type.name}
-        />
-      );
+    case "Portal subdomain":
       componentProps = {
+        ...componentProps,
+        getCustomSearch: s => s ? `subDomain like “${s}”` : '',
+        type: 'remoteDataSelect',
+        preloadEmpty: true,
+        entity: 'PortalWebsite',
+        aqlColumns: 'subDomain',
+        selectValueMark: 'subDomain',
+        selectLabelMark: 'subDomain'
+      };
+      break;
+    case "Checkbox": {
+      componentProps = {
+        ...componentProps,
+        type: 'checkbox',
         stringValue: true
       };
       break;
     }
     case "Date": {
-      component = EditInPlaceDateTimeField;
       componentProps = {
-        type: "date",
-        validate
+        ...componentProps,
+        type: 'date'
       };
       break;
     }
     case "Date time": {
-      component = EditInPlaceDateTimeField;
       componentProps = {
-        type: "datetime",
-        validate
+        ...componentProps,
+        type: 'dateTime'
       };
       break;
     }
     case "Email": {
-      component = EditInPlaceField;
       componentProps = {
-        validate: type.mandatory ? [validateSingleMandatoryField, validateEmail] : validateEmail
+        ...componentProps,
+        validate: validateEmail,
       };
       break;
     }
     case "Long text": {
-      component = EditInPlaceField;
       componentProps = {
-        multiline: true,
-        validate
+        ...componentProps,
+        type: 'multilineText'
       };
       break;
     }
     case "List": {
       const isCreatable = type.defaultValue && type.defaultValue.includes("*");
-      component = isCreatable ? EditInPlaceSearchSelect : EditInPlaceField;
       componentProps = {
-        select: true,
+        ...componentProps,
+        type: 'select',
+        items,
         allowEmpty: !type.mandatory,
-        validate,
         ...(isCreatable
           ? {
             creatable: true,
@@ -98,45 +92,37 @@ const customFieldComponentResolver = (type: CustomFieldType, onCreateOption) => 
       break;
     }
     case "Map": {
-      component = EditInPlaceField;
       componentProps = {
-        select: true,
+        ...componentProps,
+        type: 'select',
+        items,
         allowEmpty: !type.mandatory,
-        validate
       };
       break;
     }
     case "Money": {
-      component = EditInPlaceMoneyField;
       componentProps = {
-        validate
+        type: 'money'
       };
       break;
     }
     case "URL": {
-      component = EditInPlaceField;
       componentProps = {
-        validate: type.mandatory ? [validateSingleMandatoryField, validateURL] : validateURL
-      };
-      break;
-    }
-    case "Text": {
-      component = EditInPlaceField;
-      componentProps = {
-        validate
+        ...componentProps,
+        validate: validateURL
       };
       break;
     }
     case "Pattern text": {
-      component = EditInPlaceField;
       componentProps = {
-        validate: type.mandatory ? [validateSingleMandatoryField, validateFieldPattern] : validateFieldPattern
+        ...componentProps,
+        validate: validateFieldPattern,
       };
       break;
     }
   }
 
-  return { component, componentProps };
+  return componentProps;
 };
 
 interface CustomFieldProps {
@@ -147,7 +133,7 @@ interface CustomFieldProps {
   fieldName?: string;
 }
 
-const CustomField: React.FC<CustomFieldProps> = ({
+export const CustomField: React.FC<CustomFieldProps> = ({
  type,
  value,
  dispatch,
@@ -190,27 +176,36 @@ const CustomField: React.FC<CustomFieldProps> = ({
     return () => {
       setItems([]);
     };
-  }, [type]);
+  }, [type, value]);
 
   const onCreate = value => {
     setItems(prev => [...prev, { value, label: value }]);
     dispatch(change(form, `${fieldName}[${type.fieldKey}]`, value));
   };
 
-  const { component, componentProps } = useMemo(() => customFieldComponentResolver(type, onCreate), [type]);
-    return (
-      <Field
-        name={`${fieldName}.${type.fieldKey}`}
+  const componentProps = useMemo(() => customFieldComponentResolver(type, onCreate, items), [type, items]);
+  
+  return (
+    componentProps.type === "checkbox"
+    ? (
+      <FormControlLabel
+        control={<FormField type={componentProps.type} name={`${fieldName}.${type.fieldKey}`} color="primary" {...componentProps} />}
         label={type.name}
-        component={component}
-        items={items}
-        {...componentProps}
       />
-    );
+      )
+      : (
+        <FormField
+          type={componentProps.type as any}
+          name={`${fieldName}.${type.fieldKey}`}
+          label={type.name}
+          {...componentProps}
+        />
+      )
+  );
 };
 
 interface CustomFieldsProps {
-  customFieldTypes?: { key: string; value: CustomFieldType[] };
+  customFieldTypes?: CustomFieldTypesState['types'];
   entityName: EntityName;
   fieldName: string;
   entityValues: any;
@@ -229,19 +224,20 @@ const CustomFieldsTypes = React.memo<CustomFieldsProps>(
      dispatch,
      form,
   }) => {
-    return (entityValues && entityValues[fieldName] && customFieldTypes && customFieldTypes[entityName]
+    const value = getDeepValue(entityValues, fieldName);
+    
+    return <>{value && customFieldTypes && customFieldTypes[entityName]
       ? customFieldTypes[entityName].map((type, i) => (
         <Grid key={i} item {...gridItemProps} className="pr-2">
           <CustomField
             type={type}
-            value={entityValues[fieldName][type.fieldKey]}
+            value={value[type.fieldKey]}
             fieldName={fieldName}
             dispatch={dispatch}
             form={form}
           />
-        </Grid>
-      ))
-      : null);
+        </Grid>))
+      : null}</>;
   }
 );
 

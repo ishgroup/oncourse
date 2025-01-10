@@ -3,36 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  Binding, ExecuteScriptRequest, OutputType, Script, SearchQuery
-} from "@api/model";
-import Grid from "@mui/material/Grid";
-import { format } from "date-fns";
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
+import { Binding, ExecuteScriptRequest, OutputType, Script, SearchQuery } from "@api/model";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Alert } from "@mui/material";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
+import { format } from "date-fns";
+import { III_DD_MMM_YYYY_HH_MM, usePrevious, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import {
-  destroy, Field, FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
+import { destroy, Field, FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { interruptProcess } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import DataTypeRenderer from "../../../../../common/components/form/DataTypeRenderer";
-import ScriptRunAudit from "../../../../../common/components/layout/swipeable-sidebar/components/SidebarScripts/ScriptRunAudit";
+import ScriptRunAudit
+  from "../../../../../common/components/layout/swipeable-sidebar/components/SidebarScripts/ScriptRunAudit";
 import { getExpression } from "../../../../../common/components/list-view/utils/listFiltersUtils";
 import { ProcessState } from "../../../../../common/reducers/processReducer";
 import EntityService from "../../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY_HH_MM, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
-import { usePrevious } from "../../../../../common/utils/hooks";
+import { getCookie } from "../../../../../common/utils/Cookie";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { LICENSE_SCRIPTING_KEY } from "../../../../../constants/Config";
 import { State } from "../../../../../reducers/state";
 import RecipientsSelectionSwitcher from "../../../../entities/messages/components/RecipientsSelectionSwitcher";
 import { runScript } from "../actions";
@@ -42,7 +39,7 @@ const FORM = "ExecuteScriptForm";
 
 interface Props {
   opened?: boolean;
-  onClose?: any;
+  onClose: any;
   onSave?: any;
   selection?: string[];
   executeScript?: any;
@@ -51,7 +48,7 @@ interface Props {
   resetForm?: () => void;
   initializeForm?: any;
   dispatch?: Dispatch;
-  values?: any;
+  values?: Script;
   classes?: any;
   filteredCount?: number;
   submitting?: boolean;
@@ -59,6 +56,8 @@ interface Props {
   interruptProcess?: (processId: string) => void;
   process?: ProcessState;
   updateAudits?: any;
+  hasScriptingLicense?: boolean;
+  filteredSelection?: string[];
 }
 
 const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.map((f, index) => {
@@ -86,7 +85,6 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
         type={item.type}
         component={DataTypeRenderer}
         validate={validateSingleMandatoryField}
-        fullWidth
         {...fieldProps}
       />
     </Grid>
@@ -109,7 +107,9 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     filteredCount,
     submitting,
     interruptProcess,
+    hasScriptingLicense,
     listSearchQuery,
+    filteredSelection,
     process
   } = props;
 
@@ -160,7 +160,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
   }, [process.processId]);
 
   useEffect(() => {
-    if (scriptId) {
+    if (scriptId && opened) {
       updateAudits();
       ScriptsService.getScriptItem(scriptId)
         .then(s => {
@@ -180,7 +180,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     } else if (prevScriptId) {
       resetForm();
     }
-  }, [scriptId]);
+  }, [scriptId, opened]);
 
   const handleRunScript = values => {
     const modelVariables = values.variables;
@@ -195,7 +195,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
       const searchQuery = { ...listSearchQuery };
 
       if (!selectAll) {
-        searchQuery.search = getExpression(selection);
+        searchQuery.search = getExpression(filteredSelection || selection);
       }
 
       executeScriptRequest = {
@@ -216,6 +216,28 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
   const lastRun = selectedScriptAudits.length
     ? format(new Date(selectedScriptAudits[0].runDate), III_DD_MMM_YYYY_HH_MM)
     : "never";
+  
+  if (opened && !hasScriptingLicense && !values?.keyCode?.startsWith("ish.")) {
+    return (
+      <Dialog open onClose={onDialogClose}>
+        <DialogTitle>
+          Script execution disabled
+        </DialogTitle>
+
+        <DialogContent>
+          Custom scripts execution disabled due to
+          {' '}
+          <a href={`https://provisioning.ish.com.au?token=${getCookie("JSESSIONID")}`}>required license</a>
+        </DialogContent>
+
+        <DialogActions>
+          <Button color="primary" onClick={onDialogClose}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 
   return values ? (
     <Dialog open={opened} onClose={onClose} maxWidth="md" fullWidth scroll="body">
@@ -236,7 +258,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
             {(values.trigger.entityName || values.entity) && (
               <Grid item xs={12} className="centeredFlex mb-2">
                 <RecipientsSelectionSwitcher
-                  selectedRecords={selection.length}
+                  selectedRecords={filteredSelection?.length || selection.length}
                   allRecords={filteredCount}
                   selectAll={selectAll}
                   setSelectAll={setSelectAll}
@@ -247,6 +269,9 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
 
             <FieldArray name="variables" component={templatesRenderer} />
           </Grid>
+
+          {(values.trigger.type === 'On demand' && !filteredCount)
+            && <Alert severity="warning">Attention! This script will be executed against <strong>all</strong> records of the selected entity</Alert>}
         </DialogContent>
 
         <DialogActions className="p-3">
@@ -271,8 +296,10 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues(FORM)(state),
+  hasScriptingLicense: state.userPreferences[LICENSE_SCRIPTING_KEY] && state.userPreferences[LICENSE_SCRIPTING_KEY] === "true",
   submitting: state.fetch.pending,
   listSearchQuery: state.list.searchQuery,
+  selection: state.list.selection,
   process: state.process
 });
 

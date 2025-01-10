@@ -12,7 +12,7 @@ Feature: Re-usable feature to get Document with access rights
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  '#(user)'}
 
-        
+
 #       <--->
 
         Given path ishPath + "/201"
@@ -24,7 +24,6 @@ Feature: Re-usable feature to get Document with access rights
         {
         "id":201,
         "name":"defaultPublicDocument",
-        "versionId":null,
         "added":"#ignore",
         "tags":[],
         "thumbnail":null,
@@ -37,7 +36,9 @@ Feature: Re-usable feature to get Document with access rights
             "mimeType":"text/plain",
             "size":"21 b",
             "url":null,
-            "thumbnail":null
+            "thumbnail":null,
+            "content":null,
+            "current":true
             }],
         "description":"Public description",
         "access":"Public",

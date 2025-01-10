@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { Note } from "@api/model";
-import * as EpicUtils from "../../../../epics/EpicUtils";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../epics/EpicUtils";
 import { POST_NOTE_ITEM } from "../actions";
 import NotesService from "../services/NotesService";
 
 const request: EpicUtils.Request<any, { note: Note }> = {
   type: POST_NOTE_ITEM,
   hideLoadIndicator: true,
-  getData: ({ note }) => NotesService.create(note.entityName, note.entityId, note),
+  getData: ({note}) => NotesService.create(note.entityName, note.entityId, note),
   processData: () => [],
   processError: response => FetchErrorHandler(response, "Failed to create note")
 };

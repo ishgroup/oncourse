@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Invoice } from "@api/model";
+import { formatToDateOnly } from "ish-ui";
+import { initialize } from "redux-form";
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import InvoiceService from "../services/InvoiceService";
 import { DUPLICATE_AND_REVERSE_INVOICE_ITEM } from "../actions/index";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { initialize } from "redux-form";
-import { Invoice } from "@api/model";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
+import InvoiceService from "../services/InvoiceService";
 
 const request: EpicUtils.Request = {
   type: DUPLICATE_AND_REVERSE_INVOICE_ITEM,

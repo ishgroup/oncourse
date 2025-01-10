@@ -13,6 +13,8 @@ package ish.oncourse.server.report;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.*;
+import ish.common.util.ImageHelper;
+import ish.util.ExtendedImageHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,21 +107,34 @@ public final class PdfUtil {
 	 * Overlays pdf over background
 	 *
 	 * @param pdf The PDF to overlay, it will be replaced during the process with the overlayed document
-	 * @param backgroundPdf  The PDF to be in the background. If pdf.numberOfPages() > backgroundPdf.numberOfPages(), the last page of backgroundPdf will be used for the remaining pages.
+	 * @param background  The PDF to be in the background. If pdf.numberOfPages() > backgroundPdf.numberOfPages(), the last page of backgroundPdf will be used for the remaining pages.
 	 *
 	 * Remotelly based on https://github.com/boldt/Okular2PDF
 	 */
-	public static ByteArrayOutputStream overlayPDFs(byte[] pdf, byte[] backgroundPdf) throws Exception {
+	public static ByteArrayOutputStream overlayPDFs(byte[] pdf, byte[] background) throws Exception {
 
 		// if the pdf does not have to be overlayed, return;
-		if (!checkPDFsOverlay(pdf, backgroundPdf)) {
+		try {
+			if (!checkPDFsOverlay(pdf, background)) {
+				return null;
+			}
+		} catch (Exception e) {
+			try {
+				background = ExtendedImageHelper.convertImageToPdf(background);
+			} catch (IOException ex) {
+				logger.error("cannot read background for report");
+				logger.catching(e);
+				return null;
+			}
+		}
+		if (!checkPDFsOverlay(pdf, background)) {
 			return null;
 		}
 
 		var result = new ByteArrayOutputStream();
 
 		var foreground = new PdfReader(pdf);
-		var background = new PdfReader(backgroundPdf);
+		var backgroundPdf = new PdfReader(background);
 
 		var numberOfPages = foreground.getNumberOfPages();
 
@@ -128,7 +143,7 @@ public final class PdfUtil {
 
 		// iterate throught the pages
 		for (var i = 1; i <= numberOfPages; i++) {
-			addTemplate(writer, background, i);
+			addTemplate(writer, backgroundPdf, i);
 		}
 
 		writer.close();

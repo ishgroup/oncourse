@@ -23,6 +23,9 @@ import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.users.SystemUserService
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.commons.lang.time.DateUtils
+
+import java.util.concurrent.TimeUnit
 
 @CompileStatic
 class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, TutorAttendance, TutorAttendanceDao> {
@@ -78,6 +81,9 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         if (dto.end == null) {
             validator.throwClientErrorException(id, 'end', "Roster end is required")
         }
+        if(dto.start != null && dto.end != null && dto.start.isAfter(dto.end)){
+            validator.throwClientErrorException(id, 'end', "Roster end date is before roster start date")
+        }
         if (dto.actualPayableDurationMinutes == null) {
             validator.throwClientErrorException(id, 'actualPayableDurationMinutes', "Roster end is required")
         }
@@ -131,7 +137,28 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
                 attendance = getEntityAndValidateExistence(context, dto.id)
             }
             validateModelBeforeSave(dto, context, dto.id)
-            toCayenneModel(dto, attendance)
+            attendance = toCayenneModel(dto, attendance)
+            checkDates(session, attendance)
+        }
+    }
+
+    private static void checkDates(Session session, TutorAttendance tutorAttendance){
+        def startDatetime = tutorAttendance.startDatetime
+        def endDatetime = tutorAttendance.endDatetime
+        if(!DateUtils.isSameDay(startDatetime, session.startDatetime)){
+            def hoursBetween = TimeUnit.MILLISECONDS.toHours(endDatetime.getTime() - startDatetime.getTime())
+
+            def sessionStartCalendar = new GregorianCalendar()
+            sessionStartCalendar.setTime(session.startDatetime)
+
+            GregorianCalendar calendar = new GregorianCalendar()
+            calendar.setTime(startDatetime)
+            calendar.set(Calendar.YEAR, sessionStartCalendar.get(Calendar.YEAR))
+            calendar.set(Calendar.DAY_OF_YEAR, sessionStartCalendar.get(Calendar.DAY_OF_YEAR))
+
+            tutorAttendance.setStartDatetime(calendar.getTime())
+            calendar.add(Calendar.HOUR, hoursBetween as int)
+            tutorAttendance.setEndDatetime(calendar.getTime())
         }
     }
 }

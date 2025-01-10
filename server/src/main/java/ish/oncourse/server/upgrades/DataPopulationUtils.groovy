@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.upgrades
 
+import ish.common.types.AutomationStatus
 import ish.common.types.EntityEvent
 import ish.common.types.MessageType
 import ish.oncourse.server.cayenne.Report
@@ -24,13 +25,14 @@ import ish.oncourse.server.cayenne.ExportTemplate
 import ish.oncourse.server.cayenne.ExportTemplateAutomationBinding
 import ish.oncourse.server.cayenne.Import
 import ish.oncourse.server.cayenne.ImportAutomationBinding
-import ish.oncourse.server.cayenne.Message
 import ish.oncourse.types.OutputType
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.common.ResourceProperty
 import static ish.oncourse.common.ResourceProperty.*
 import ish.oncourse.common.ResourceType
+
+import static ish.oncourse.common.ResourceType.REPORT
 import static ish.oncourse.common.ResourceType.SCRIPT
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.cayenne.Script
@@ -52,7 +54,9 @@ class DataPopulationUtils {
     }
 
     private static String getBody(Map<String, Object> props, ResourceProperty property, ResourceType type) {
-        String path = type.resourcePath + getString(props, property)
+        String path = getString(props, property)
+        if(!props.get(KEY_CODE.displayName).toString().startsWith("test."))
+            path = type.resourcePath + path
         InputStream iStream = ResourcesUtil.getResourceAsInputStream(path)
         return IOUtils.toString(iStream, Charset.defaultCharset())
     }
@@ -73,14 +77,86 @@ class DataPopulationUtils {
     }
 
 
+    private static configureAutomationWithCommonFields(AutomationTrait automationTrait, Map<String, Object> props){
+        automationTrait.description = getString(props, DESCRIPTION) ?: automationTrait.description
+        automationTrait.shortDescription = getString(props, SHORT_DESCRIPTION) ?: automationTrait.shortDescription
+        automationTrait.category = getString(props, CATEGORY) ?: automationTrait.category
+        automationTrait.automationTags = getString(props, TAG) ?: automationTrait.automationTags
+        automationTrait.name = getString(props, NAME) ?: automationTrait.name
+    }
+
+    static fillScriptWithCommonFields(Script script, Map<String, Object> props){
+        script.entity = getString(props, ENTITY_CLASS) ?: script.entity
+        script.entityAttribute = getString(props, ENTITY_ATTRIBUTE) ?: script.entityAttribute
+        script.triggerType = updateTriggerType(script.triggerType, get(props, TRIGGER_TYPE, TriggerType)) ?: script.triggerType
+        script.outputType = get(props, OUTPUT_TYPE, OutputType) ?: script.outputType
+        script.entityEventType = get(props, ENTITY_EVENT_TYPE, EntityEvent) ?: script.entityEventType
+        script.systemEventType = get(props, ON_COURSE_EVENT_TYPE, SystemEventType) ?: script.systemEventType
+
+        configureAutomationWithCommonFields(script, props)
+    }
+
+    static fillReportWithCommonFields(Report report, Map<String, Object> props){
+        report.entity = getString(props, ENTITY_CLASS) ?: report.entity
+        report.sortOn = getString(props, SORT_ON) ?: report.sortOn
+        Boolean enabled = getBoolean(props, IS_VISIBLE)
+        if (enabled != null) {
+            report.automationStatus = enabled ? AutomationStatus.ENABLED : AutomationStatus.INSTALLED_DISABLED
+        }
+        configureAutomationWithCommonFields(report, props)
+    }
+
+    static fillExportWithCommonFields(ExportTemplate dbExport, Map<String, Object> props){
+        dbExport.entity = getString(props, ENTITY_CLASS) ?: dbExport.entity
+        dbExport.outputType = get(props, OUTPUT_TYPE, OutputType) ?: dbExport.outputType
+
+        configureAutomationWithCommonFields(dbExport, props)
+    }
+
+    static fillEmailTemplateWithCommonFields(EmailTemplate dbMessage, Map<String, Object> props){
+        dbMessage.entity = getString(props, ENTITY_CLASS) ?: dbMessage.entity
+        dbMessage.type = get(props, MESSAGE_TYPE, MessageType) ?: dbMessage.type
+        dbMessage.subject = getString(props, SUBJECT) ?: dbMessage.subject
+
+        configureAutomationWithCommonFields(dbMessage, props)
+    }
+
+    static fillImportWithCommonFields(Import dbImport, Map<String, Object> props){
+        configureAutomationWithCommonFields(dbImport, props)
+    }
+
+
+    static void updateReport(ObjectContext context, Map<String, Object> props) {
+        String keyCode = getString(props, KEY_CODE)
+
+        Report report = ObjectSelect.query(Report).where(Report.KEY_CODE.eq(keyCode)).selectOne(context)
+        if (!report) {
+            report = context.newObject(Report)
+            report.keyCode = keyCode
+            report.automationStatus = AutomationStatus.ENABLED;
+        }
+
+        fillReportWithCommonFields(report, props)
+        report.body = getBody(props, REPORT_PROPERTY, REPORT)
+
+        logger.debug("Report body: {} ", report.body);
+
+        logger.info("{} updated", report.name)
+        logger.info("Saving report {}", report.name)
+
+        context.commitChanges()
+
+        BindingUtils.updateOptions(context, get(props, OPTIONS, List), report, ScriptAutomationBinding)
+    }
+
+
     static void updateScript(ObjectContext context, Map<String, Object> props) {
-        boolean keepOldScript = false
         String name = getString(props, NAME)
         String keyCode = getString(props, KEY_CODE)
 
         Script oldScript = (ObjectSelect.query(Script).where(Script.NAME.eq(name)) & Script.KEY_CODE.ne(keyCode).orExp(Script.KEY_CODE.isNull())).selectOne(context)
         if (oldScript) {
-            if (oldScript.enabled != null && oldScript.enabled) {
+            if (oldScript.enabled != null && oldScript.automationStatus.equals(AutomationStatus.ENABLED)) {
                 oldScript.name = oldScript.name + " (old)"
             } else {
                 logger.warn("remove disabled script $oldScript.name, \n $oldScript.body")
@@ -93,22 +169,12 @@ class DataPopulationUtils {
         if (!newScript) {
             newScript = context.newObject(Script)
             newScript.keyCode = keyCode
-            newScript.enabled = oldScript ? Boolean.FALSE : getBoolean(props, ENABLED)
+            newScript.automationStatus = oldScript ? AutomationStatus.NOT_INSTALLED : get(props, STATUS, AutomationStatus)
             newScript.cronSchedule = getString(props, CRON_SCHEDULE)
         }
 
-        newScript.name = name
-        newScript.entity = getString(props, ENTITY_CLASS)
-        newScript.entityAttribute = getString(props, ENTITY_ATTRIBUTE)
-
-        newScript.triggerType = updateTriggerType(newScript.triggerType, get(props, TRIGGER_TYPE, TriggerType))
-        newScript.outputType = get(props, OUTPUT_TYPE, OutputType)
-        newScript.entityEventType = get(props, ENTITY_EVENT_TYPE, EntityEvent)
-        newScript.systemEventType = get(props, ON_COURSE_EVENT_TYPE, SystemEventType)
-
-        newScript.description = getString(props, DESCRIPTION)
+        fillScriptWithCommonFields(newScript, props)
         newScript.body = getBody(props, BODY, SCRIPT)
-
         context.commitChanges()
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), newScript, ScriptAutomationBinding)
@@ -125,16 +191,16 @@ class DataPopulationUtils {
         if (!dbImport) {
             dbImport = context.newObject(Import)
             dbImport.keyCode = keyCode
-            dbImport.enabled = getBoolean(props, ENABLED)
+            dbImport.automationStatus = get(props, STATUS, AutomationStatus)
         }
-        dbImport.name = getString(props, NAME)
         dbImport.body = getBody(props, BODY, IMPORT)
-        dbImport.description = getString(props, DESCRIPTION)
+        configureAutomationWithCommonFields(dbImport, props)
 
+        fillImportWithCommonFields(dbImport, props)
         context.commitChanges()
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbImport, ImportAutomationBinding)
-        BindingUtils.updateVariables(context, get(props, VARIABLES, List),dbImport, ImportAutomationBinding)
+        BindingUtils.updateVariables(context, get(props, VARIABLES, List), dbImport, ImportAutomationBinding)
     }
 
 
@@ -145,13 +211,10 @@ class DataPopulationUtils {
         if (!dbExport) {
             dbExport = context.newObject(ExportTemplate)
             dbExport.keyCode = keyCode
-            dbExport.enabled = Boolean.TRUE
+            dbExport.automationStatus = AutomationStatus.ENABLED
         }
 
-        dbExport.name = getString(props, NAME)
-        dbExport.entity = getString(props, ENTITY_CLASS)
-        dbExport.description = getString(props, DESCRIPTION)
-        dbExport.outputType = get(props, OUTPUT_TYPE, OutputType)
+        fillExportWithCommonFields(dbExport, props)
         dbExport.body = getBody(props, BODY, EXPORT)
 
         context.commitChanges()
@@ -168,14 +231,11 @@ class DataPopulationUtils {
         if (!dbMessage) {
             dbMessage = context.newObject(EmailTemplate)
             dbMessage.keyCode = keyCode
-            dbMessage.enabled = Boolean.TRUE
+            dbMessage.automationStatus = AutomationStatus.ENABLED
         }
 
-        dbMessage.name = getString(props, NAME)
-        dbMessage.entity = getString(props, ENTITY_CLASS)
-        dbMessage.description = getString(props, DESCRIPTION)
-        dbMessage.type = get(props, MESSAGE_TYPE, MessageType)
-        dbMessage.subject = getString(props, SUBJECT)
+        fillEmailTemplateWithCommonFields(dbMessage, props)
+
         dbMessage.bodyPlain = getBody(props, TXT_TEMPLATE, MESSAGING)
         if (getString(props, HTML_TEMPLATE)) {
             dbMessage.bodyHtml = getBody(props, HTML_TEMPLATE, MESSAGING)
@@ -185,14 +245,6 @@ class DataPopulationUtils {
 
         BindingUtils.updateOptions(context, get(props, OPTIONS, List), dbMessage, EmailTemplateAutomationBinding.class);
         BindingUtils.updateVariables(context, get(props, VARIABLES, List), dbMessage, EmailTemplateAutomationBinding.class);
-    }
-
-    static void removeDeletedReports(ObjectContext context, Set<Long> importedReportIds) {
-        List<? extends AutomationTrait> resourcesToRemove = ObjectSelect.query(Report.class).
-                where(Report.ID.nin(importedReportIds).andExp(Report.KEY_CODE.startsWith("ish."))).
-                select(context)
-
-        context.deleteObjects(resourcesToRemove)
     }
 
 

@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import clsx from "clsx";
+import { ClassCost } from "@api/model";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Grid from "@mui/material/Grid";
-import { ClassCost } from "@api/model";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
 import Decimal from "decimal.js-light";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { formatCurrency, NumberArgFunction, StringArgFunction } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 import { ClassCostType } from "../../../../../model/entities/CourseClass";
 import BudgetItemRow from "./BudgetItemRow";
 

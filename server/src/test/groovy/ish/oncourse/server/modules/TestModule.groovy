@@ -27,8 +27,6 @@ import ish.oncourse.server.lifecycle.InvoiceLineInitHelper
 import ish.oncourse.server.messaging.MessageService
 import ish.oncourse.server.quality.QualityService
 import ish.oncourse.server.querying.QueryService
-import ish.oncourse.server.report.IReportService
-import ish.oncourse.server.report.ReportService
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.services.*
 import ish.oncourse.server.upgrades.DataPopulation
@@ -44,9 +42,6 @@ class TestModule implements Module {
 
     @Override
     void configure(Binder binder) {
-
-        binder.bind(IReportService.class).to(ReportService.class).in(Scopes.SINGLETON)
-
 
         binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON)
         binder.bind(AuditService.class).in(Scopes.SINGLETON)

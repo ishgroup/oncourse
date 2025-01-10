@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import { EntityType } from "ish-ui";
+import React, { useEffect, useState } from "react";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import { EntityType } from "../../../../model/common/NestedEntity";
-import { Classes } from "../../../../model/entities/CourseClass";
 import { getNestedCourseClassItem } from "../../courseClasses/utils";
 
 const CourseClassesTab: React.FC<any> = ({
@@ -64,7 +63,7 @@ const CourseClassesTab: React.FC<any> = ({
           entityName="Classes"
           goToLink="/class"
           entityTypes={classesTypes}
-          addLink={`/${Classes.path}/new?courseId=${values.id}`}
+          addLink={`/class/new?courseId=${values.id}`}
           dirty={dirty}
           showConfirm={showConfirm}
           twoColumn={twoColumn}

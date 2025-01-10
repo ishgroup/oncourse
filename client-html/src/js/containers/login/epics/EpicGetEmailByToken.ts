@@ -4,11 +4,11 @@
  */
 
 import { Epic } from "redux-observable";
-
+import { FETCH_SUCCESS } from "../../../common/actions";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import LoginService from "../services/LoginService";
-import { FETCH_SUCCESS, GET_EMAIL_BY_TOKEN_FULFILLED, GET_EMAIL_BY_TOKEN_REQUEST, } from "../../../common/actions";
 import history from "../../../constants/History";
+import { GET_EMAIL_BY_TOKEN_FULFILLED, GET_EMAIL_BY_TOKEN_REQUEST } from "../actions";
+import LoginService from "../services/LoginService";
 
 const request: EpicUtils.Request = {
   type: GET_EMAIL_BY_TOKEN_REQUEST,

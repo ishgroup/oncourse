@@ -1,26 +1,30 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { useTheme } from "@mui/styles";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
-import ContactsGeneral from "./ContactsGeneral";
-import ContactsFinancial from "./ContactsFinancial";
-import ContactsMessages from "./ContactsMessages";
-import ContactsVET from "./ContactsVET";
-import ContactsEducation from "./ContactsEducation";
-import ContactsDetails from "./ContactDetails";
-import ContactsDocuments from "./ContactsDocuments";
-import ContactsResume from "./ContactsResume";
-import ContactsTutor from "./ContactsTutor";
-import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
-import { State } from "../../../../reducers/state";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from "../../../../model/common/Theme";
+import { Contact } from '@api/model';
+import { formatCurrency, useAppTheme } from 'ish-ui';
+import React, { useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import AvailabilityFormComponent
+  from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import ContactsDetails from './ContactDetails';
+import ContactsDocuments from './ContactsDocuments';
+import ContactsEducation from './ContactsEducation';
+import ContactsFinancial from './ContactsFinancial';
+import ContactsGeneral from './ContactsGeneral';
+import ContactsMessages from './ContactsMessages';
+import ContactsResume from './ContactsResume';
+import ContactsTutor from './ContactsTutor';
+import ContactsVET from './ContactsVET';
 
 const studentItems: TabsListItem[] = [
   {
@@ -37,15 +41,15 @@ const studentItems: TabsListItem[] = [
 
 const tutorItems: TabsListItem[] = [
   {
+    label: "Tutor",
+    component: props => <ContactsTutor {...props} />,
+    expandable: true
+  },
+  {
     label: "Resume",
     component: props => <ContactsResume {...props} />,
     expandable: true
   },
-  {
-    label: "Tutor",
-    component: props => <ContactsTutor {...props} />,
-    expandable: true
-  }
 ];
 
 const items: TabsListItem[] = [
@@ -69,7 +73,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: props => <OwnApiNotes {...props} />
+    component: props => <OwnApiNotes {...props} className="pl-3 pr-3" />
   },
   {
     label: "Documents",
@@ -81,7 +85,13 @@ const items: TabsListItem[] = [
   }
 ];
 
-const ContactEditView = props => {
+interface Props {
+  classes?: any;
+  currencySymbol?: any;
+  leftOffset?: number;
+}
+
+const ContactEditView = (props: EditViewProps<Contact> & Props) => {
   const {
     isNew,
     isNested,
@@ -90,16 +100,15 @@ const ContactEditView = props => {
     dispatch,
     dirty,
     form,
-    nestedIndex,
     rootEntity,
     twoColumn,
     showConfirm,
-    openNestedEditView,
     manualLink,
     invalid,
     currencySymbol,
     syncErrors,
-    onEditViewScroll
+    onScroll,
+    leftOffset
   } = props;
 
   const [isStudent, setIsStudent] = useState(false);
@@ -107,7 +116,7 @@ const ContactEditView = props => {
   const [isCompany, setIsCompany] = useState(false);
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
 
-  const theme = useTheme<AppTheme>();
+  const theme = useAppTheme();
 
   const getActiveItems = () => {
     let activeItems = [...items];
@@ -140,13 +149,14 @@ const ContactEditView = props => {
     return activeItems;
   };
 
-  const getUsiLocked = useCallback(
+  const usiLocked = useMemo(
     () => values && values.student && values.student.usiStatus === "Verified" && usiUpdateLocked,
     [values && values.student && values.student.usiStatus, usiUpdateLocked]
   );
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? getActiveItems() : []}
       newsOffset={twoColumn ? theme.spacing(6) : null}
       itemProps={{
@@ -158,11 +168,9 @@ const ContactEditView = props => {
         dirty,
         invalid,
         form,
-        nestedIndex,
         rootEntity,
         twoColumn,
         showConfirm,
-        openNestedEditView,
         manualLink,
         isStudent,
         isTutor,
@@ -170,10 +178,11 @@ const ContactEditView = props => {
         setIsStudent,
         setIsTutor,
         setIsCompany,
-        usiLocked: getUsiLocked(),
+        usiLocked,
         setUsiUpdateLocked,
         syncErrors,
-        onEditViewScroll,
+        onScroll,
+        leftOffset
       }}
     />
   );

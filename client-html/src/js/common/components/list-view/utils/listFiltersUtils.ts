@@ -1,10 +1,13 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { TagGroup, Tag } from "@api/model";
-import { MenuTag } from "../../../../model/tags";
+import { TagGroup } from "@api/model";
 import { FilterGroup } from "../../../../model/common/ListView";
+import { FormMenuTag } from "../../../../model/tags";
 
 export const getFiltersNameString = (filterGroups: FilterGroup[]) => filterGroups
   .map(group => group.filters.filter(f => f.active).map(f => "@" + f.name.trim().replace(/\s/g, "_")).toString())
@@ -26,7 +29,14 @@ export const getFiltersString = (filterGroups: FilterGroup[]) => filterGroups
   .filter(v => v.trim())
   .join(" and ");
 
-export const getActiveTags = (tags: MenuTag[], res?: MenuTag[]): MenuTag[] => {
+export const setActiveFiltersBySearch = (search: string, filters: FilterGroup[]): FilterGroup[]  => {
+  const filterNames = search ? search.replace(/[@_]/g, " ")
+    .split(",")
+    .map(f => f.trim()) : [];
+  return filters.map(g => ({ ...g, filters: g.filters.map(f => ({ ...f, active: filterNames.includes(f.name) })) }));
+};
+
+export const getActiveTags = (tags: FormMenuTag[], res?: FormMenuTag[]): FormMenuTag[] => {
   const result = res || [];
 
   tags.forEach(i => {
@@ -42,7 +52,7 @@ export const getActiveTags = (tags: MenuTag[], res?: MenuTag[]): MenuTag[] => {
   return result;
 };
 
-export const getTagGroups = (tags: MenuTag[]) => {
+export const getTagGroups = (tags: FormMenuTag[]) => {
   const groups: TagGroup[] = [];
 
   tags.forEach(t => {
@@ -59,39 +69,11 @@ export const getTagGroups = (tags: MenuTag[]) => {
   return groups;
 };
 
-export const getMenuTags = (allTags: Tag[], addedTags: Tag[], prefix?: string, queryPrefix?: string, entity?: string, path?: string, parent?: MenuTag): MenuTag[] => allTags.map(t => {
-  const active = addedTags.find(i => i.id === t.id);
-
-  const tag: MenuTag = {
-    active: Boolean(active),
-    tagBody: t,
-    parent,
-    children: []
-  };
-
-  tag.children = t.childTags.length ? getMenuTags(t.childTags, addedTags, prefix, queryPrefix, entity, path, tag) : [];
-
-  if (prefix) {
-    tag.prefix = prefix;
-  }
-  if (queryPrefix) {
-    tag.queryPrefix = queryPrefix;
-  }
-  if (entity) {
-    tag.entity = entity;
-  }
-  if (path) {
-    tag.path = path;
-  }
-
-  return tag;
-});
-
 const selectionTemplate = str => `id == "${str}"`;
 
 export const getExpression = (selection: string[]): string => selection.map(selectionTemplate).join(" or ");
 
-export const setIndeterminate = (parentTag: MenuTag) => {
+export const setIndeterminate = (parentTag: FormMenuTag) => {
   if (parentTag.children.some(c => !c.active)) {
     parentTag.active = false;
     parentTag.indeterminate = parentTag.children.some(c => c.active || c.indeterminate);
@@ -105,7 +87,7 @@ export const setIndeterminate = (parentTag: MenuTag) => {
   }
 };
 
-export const updateIndeterminateState = (tags: MenuTag[], id: string) => {
+export const updateIndeterminateState = (tags: FormMenuTag[], id: string) => {
   for (let i = 0; i < tags.length; i++) {
     if (tags[i].prefix + tags[i].tagBody.id.toString() === id) {
       if (tags[i].parent) {
@@ -117,24 +99,24 @@ export const updateIndeterminateState = (tags: MenuTag[], id: string) => {
   }
 };
 
-export const getUpdated = (tags: MenuTag[], id: string, active, parent?: MenuTag, allActive?: boolean) => tags.map(t => {
-    const updated = { ...t, parent };
-    let toggleChildrenActive = false;
+export const getUpdated = (tags: FormMenuTag[], id: string, active, parent?: FormMenuTag, allActive?: boolean) => tags.map(t => {
+  const updated = { ...t, parent };
+  let toggleChildrenActive = false;
 
-    if (allActive || updated.prefix + updated.tagBody.id.toString() === id) {
-      updated.active = active;
-      updated.indeterminate = false;
-      toggleChildrenActive = true;
-    }
+  if (allActive || updated.prefix + updated.tagBody.id.toString() === id) {
+    updated.active = active;
+    updated.indeterminate = false;
+    toggleChildrenActive = true;
+  }
 
-    if (updated.children.length) {
-      updated.children = getUpdated(updated.children, id, active, updated, toggleChildrenActive);
-    }
+  if (updated.children.length) {
+    updated.children = getUpdated(updated.children, id, active, updated, toggleChildrenActive);
+  }
 
-    return updated;
-  });
+  return updated;
+});
 
-export const getTagsUpdatedByIds = (tags: MenuTag[], activeIds: number[]) => tags.map(t => {
+export const getTagsUpdatedByIds = (tags: FormMenuTag[], activeIds: number[]) => tags.map(t => {
   const updated = { ...t };
 
   updated.active = activeIds.includes(updated.tagBody.id);

@@ -32,6 +32,10 @@ import static org.apache.commons.lang3.StringUtils.trimToNull;
  */
 class LazyContactComparisionNode extends LazyEntityComparisonNode {
 
+    private static final String START_WITH_NUMBER_REGEX = "^\\d+.*";
+    private static final String START_WITH_PLUS_THEN_NUMBER_REGEX = "^\\+\\d+.*";
+    private static final String ANY_CHARS_EXCEPT_NUMBERS = "[^\\d]";
+
     LazyContactComparisionNode(Op op) {
         super(op);
     }
@@ -46,7 +50,15 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
         var firstNameNode = createComparisionNode(pathString + Contact.FIRST_NAME.getName(), value.getFirstName());
         var lastNameNode = createComparisionNode(pathString + Contact.LAST_NAME.getName(), value.getLastName());
         var companyNameNode = createComparisionNode(pathString + Contact.LAST_NAME.getName(), value.getCompanyName());
-        var studentNumberNode = createComparisionNode(pathString + Contact.STUDENT.dot(Student.STUDENT_NUMBER).getName(), value.getStudentNumber(), Op.EQ);
+        // '+.' - syntacsis to use LEFT JOIN instead of INNER JOIN by default. See: https://cayenne.apache.org/docs/3.0/qualifier-expressions.html
+        var studentNumberNode = createComparisionNode(pathString + Contact.STUDENT.getName() + "+." + Student.STUDENT_NUMBER.getName(), value.getStudentNumber(), Op.EQ);
+        var emailNode = createComparisionNode(pathString + Contact.EMAIL.getName(), value.getEmail());
+        var homePhoneWithoutPlusNode = createComparisionNode(pathString + Contact.HOME_PHONE.getName(), value.getPhoneWithoutPlus());
+        var mobilePhoneWithoutPlusNode = createComparisionNode(pathString + Contact.MOBILE_PHONE.getName(), value.getPhoneWithoutPlus());
+        var workPhoneWithoutPlusNode = createComparisionNode(pathString + Contact.WORK_PHONE.getName(), value.getPhoneWithoutPlus());
+        var homePhoneWithPlusNode = createComparisionNode(pathString + Contact.HOME_PHONE.getName(), value.getPhoneWithPlus());
+        var mobilePhoneWithPlusNode = createComparisionNode(pathString + Contact.MOBILE_PHONE.getName(), value.getPhoneWithPlus());
+        var workPhoneWithPlusNode = createComparisionNode(pathString + Contact.WORK_PHONE.getName(), value.getPhoneWithPlus());
         var isValidStudentNumber = tryParseLong(value.getStudentNumber());
 
         var idx = 0;
@@ -59,15 +71,58 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
             ExpressionUtil.addChild(or, companyNameNode, idx++);
         }
 
-        if(firstNameNode != null && lastNameNode != null) {
+        if (firstNameNode != null && lastNameNode != null && value.getMiddleName() != null) {
+            var middleNameNode = createComparisionNode(pathString + Contact.MIDDLE_NAME.getName(), value.getMiddleName());
             var and = new ASTAnd();
             ExpressionUtil.addChild(and, firstNameNode, 0);
-            ExpressionUtil.addChild(and, lastNameNode, 1);
+            ExpressionUtil.addChild(and, middleNameNode, 1);
+            ExpressionUtil.addChild(and, lastNameNode, 2);
+            ExpressionUtil.addChild(or, and, idx++);
+        }
+        else if (firstNameNode != null && lastNameNode != null) {
+            var and = new ASTAnd();
+            var subOr = new ASTOr();
+            if (param.contains(",")) {
+                var middleNameNode = createComparisionNode(pathString + Contact.MIDDLE_NAME.getName(), value.getFirstName());
+                ExpressionUtil.addChild(subOr, firstNameNode, 0);
+                ExpressionUtil.addChild(subOr, middleNameNode, 1);
+                ExpressionUtil.addChild(and, subOr, 0);
+                ExpressionUtil.addChild(and, lastNameNode, 1);
+            } else {
+                var middleNameNode = createComparisionNode(pathString + Contact.MIDDLE_NAME.getName(), value.getLastName());
+                ExpressionUtil.addChild(subOr, lastNameNode, 0);
+                ExpressionUtil.addChild(subOr, middleNameNode, 1);
+                ExpressionUtil.addChild(and, subOr, 0);
+                ExpressionUtil.addChild(and, firstNameNode, 1);
+            }
             ExpressionUtil.addChild(or, and, idx++);
         } else if(firstNameNode != null) {
             ExpressionUtil.addChild(or, firstNameNode, idx++);
         } else if (lastNameNode != null) {
             ExpressionUtil.addChild(or, lastNameNode, idx++);
+        }
+
+        if (homePhoneWithPlusNode != null && mobilePhoneWithPlusNode != null && workPhoneWithPlusNode != null) {
+            var subOrWithPlus = new ASTOr();
+            ExpressionUtil.addChild(subOrWithPlus, homePhoneWithPlusNode, 0);
+            ExpressionUtil.addChild(subOrWithPlus, mobilePhoneWithPlusNode, 1);
+            ExpressionUtil.addChild(subOrWithPlus, workPhoneWithPlusNode, 2);
+            ExpressionUtil.addChild(or, subOrWithPlus, idx++);
+            var subOrWithoutPlus = new ASTOr();
+            ExpressionUtil.addChild(subOrWithoutPlus, homePhoneWithoutPlusNode, 0);
+            ExpressionUtil.addChild(subOrWithoutPlus, mobilePhoneWithoutPlusNode, 1);
+            ExpressionUtil.addChild(subOrWithoutPlus, workPhoneWithoutPlusNode, 2);
+            ExpressionUtil.addChild(or, subOrWithoutPlus, idx++);
+        } else if (homePhoneWithoutPlusNode != null && mobilePhoneWithoutPlusNode != null && workPhoneWithoutPlusNode != null) {
+            var subOr = new ASTOr();
+            ExpressionUtil.addChild(subOr, homePhoneWithoutPlusNode, 0);
+            ExpressionUtil.addChild(subOr, mobilePhoneWithoutPlusNode, 1);
+            ExpressionUtil.addChild(subOr, workPhoneWithoutPlusNode, 2);
+            ExpressionUtil.addChild(or, subOr, idx++);
+        }
+
+        if (emailNode != null) {
+            ExpressionUtil.addChild(or, emailNode, idx++);
         }
 
         if(idx == 1) {
@@ -89,9 +144,13 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
 
         private final Op op;
         private String firstName;
+        private String middleName;
         private String lastName;
         private String studentNumber;
         private String companyName;
+        private String email;
+        private String phoneWithoutPlus;
+        private String phoneWithPlus;
 
         public NameValue(String nameString, Op op) {
             this.op = op;
@@ -107,19 +166,46 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
 
             var separator = nameString.indexOf(',');
             if(separator >= 0) {
-                firstName = trimToNull(nameString.substring(separator + 1));
                 lastName = trimToNull(nameString.substring(0, separator));
-                companyName = trimToNull(nameString.substring(0, separator));
+                String substring = nameString.substring(separator + 1);
+                var substringSeparator = substring.indexOf(',');
+                if (substringSeparator >= 0) {
+                    firstName = trimToNull(substring.substring(0, substringSeparator));
+                    middleName = trimToNull(substring.substring(substringSeparator + 1));
+                    companyName = trimToNull(nameString.substring(0, separator));
+                } else {
+                    firstName = trimToNull(nameString.substring(separator + 1));
+                    companyName = trimToNull(nameString.substring(0, separator));
+                }
             } else {
                 separator = nameString.indexOf(' ');
                 if (separator >= 0) {
                     firstName = trimToNull(nameString.substring(0, separator));
-                    lastName = trimToNull(nameString.substring(separator + 1));
+                    String substring = nameString.substring(separator + 1);
+//                    Remove spaces to correct parse with more than 1 space beetween firstName and MiddleName. E.g. "Flynn   Alexander Hill". Remove spaces to correct parse with more than 1 space after MiddleName/LastName. E.g. "Flynn Alexander  "
+                    substring = substring.trim();
+                    var substringSeparator = substring.indexOf(' ');
+                    if (substringSeparator >= 0) {
+                        middleName = trimToNull(substring.substring(0, substringSeparator));
+                        lastName = trimToNull(substring.substring(substringSeparator + 1));
+                    } else {
+                        lastName = trimToNull(nameString.substring(separator + 1));
+                    }
                 } else {
                     firstName = null;
                     lastName = trimToNull(nameString);
                 }
                 companyName = trimToNull(nameString);
+            }
+            if (nameString.contains("@") && !nameString.contains(" ")) {
+                email = trimToNull(nameString);
+            }
+            if (nameString.matches(START_WITH_NUMBER_REGEX)) {
+                phoneWithoutPlus = nameString.replaceAll(ANY_CHARS_EXCEPT_NUMBERS, "");
+            }
+            if (nameString.matches(START_WITH_PLUS_THEN_NUMBER_REGEX)) {
+                phoneWithPlus = nameString.replaceAll(ANY_CHARS_EXCEPT_NUMBERS, "");
+                phoneWithoutPlus = nameString.replaceAll(ANY_CHARS_EXCEPT_NUMBERS, "");
             }
         }
 
@@ -137,6 +223,13 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
             return lastName == null ? null : lastName + "%";
         }
 
+        public String getMiddleName() {
+            if(op == Op.EQ || op == Op.NE) {
+                return middleName;
+            }
+            return middleName == null ? null : middleName + "%";
+        }
+
         public String getStudentNumber() {
             return studentNumber;
         }
@@ -149,6 +242,18 @@ class LazyContactComparisionNode extends LazyEntityComparisonNode {
                 return companyName;
             }
             return companyName == null ? null : companyName + "%";
+        }
+
+        public String getEmail() {
+            return email == null ? null : email + "%";
+        }
+
+        public String getPhoneWithoutPlus() {
+            return phoneWithoutPlus == null ? null : phoneWithoutPlus + "%";
+        }
+
+        public String getPhoneWithPlus() {
+            return phoneWithPlus == null ? null : "+" + phoneWithPlus + "%";
         }
     }
 }

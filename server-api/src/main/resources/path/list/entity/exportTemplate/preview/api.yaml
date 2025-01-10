@@ -1,0 +1,54 @@
+get:
+  operationId: getPreview
+  description: retrieves preview of report from database
+  tags:
+    - ExportTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of pdf background record to fetch
+    - name: compressed
+      in: query
+      type: boolean
+      required: false
+      description: Set it to true to get compressed image. False by default
+  produces:
+    - application/pdf
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+        format: byte
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: EXPORT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to get background. Please contact your administrator
+
+delete:
+  operationId: deletePreview
+  description: Set preview of export template to null
+  tags:
+    - ExportTemplate
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: EXPORT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update Export template preview. Please contact your administrator

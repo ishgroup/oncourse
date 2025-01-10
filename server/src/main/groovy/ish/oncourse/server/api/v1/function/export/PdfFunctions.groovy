@@ -15,7 +15,7 @@ import groovy.transform.CompileStatic
 import ish.oncourse.server.api.v1.model.ReportOverlayDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.ReportOverlay
-import ish.util.ImageHelper
+import ish.common.util.ImageHelper
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.io.FileUtils
@@ -49,7 +49,7 @@ class PdfFunctions {
     static ValidationErrorDTO validateAddOverlay(Long id = null, String fileName, File overlay, ObjectContext context) {
         if (!overlay) {
             return new ValidationErrorDTO(null, 'data', 'Data not found.')
-        } else if (FileUtils.readFileToByteArray(overlay).length > 2 * 1024 * 1024) { //file over 2Mb
+        } else if (FileUtils.readFileToByteArray(overlay).length > 5 * 1024 * 1024) { //file over 2Mb
             return new ValidationErrorDTO(null, 'data', 'Files over 2Mb cannot be used as print background.')
         }
 

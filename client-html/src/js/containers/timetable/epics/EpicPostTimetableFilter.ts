@@ -1,14 +1,14 @@
+import { Session } from "@api/model";
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../common/actions";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
+import CustomFiltersService from "../../../common/services/CustomFiltersService";
 import {
   GET_TIMETABLE_FILTERS,
   POST_TIMETABLE_FILTER,
   POST_TIMETABLE_FILTER_FULFILLED,
   SET_TIMETABLE_SAVING_FILTER
 } from "../actions";
-import { Session } from "@api/model";
-import CustomFiltersService from "../../../common/services/CustomFiltersService";
-import { FETCH_SUCCESS } from "../../../common/actions";
 
 const request: EpicUtils.Request = {
   type: POST_TIMETABLE_FILTER,

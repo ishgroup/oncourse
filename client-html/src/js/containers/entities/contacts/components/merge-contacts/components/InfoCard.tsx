@@ -1,21 +1,18 @@
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Check from "@mui/icons-material/Check";
-import { createStyles, withStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
-import { change } from "redux-form";
-import { MergeLine } from "@api/model";
-import { MergeContactsFormValues } from "../MergeContacts";
-import { Selected } from "./RadioLabelGroup";
-import Marker from "./Marker";
+import { MergeLine } from '@api/model';
+import Check from '@mui/icons-material/Check';
+import { Button, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { MergeContactsFormValues } from '../MergeContacts';
+import Marker from './Marker';
+import { Selected } from './RadioLabelGroup';
 
 interface Props {
   classes?: any;
   values: MergeContactsFormValues;
-  selected: Selected[];
-  setSelected: any;
   dispatch: any;
   contactNames: any;
   initiallySameIndices?: Set<number>;
@@ -26,7 +23,7 @@ interface InfoLineProps {
   data: string;
 }
 
-const styles = createStyles(({ spacing }: Theme) => ({
+const styles = (({ spacing }: AppTheme) => ({
   root: {
     padding: spacing(2),
     "& > div": {
@@ -60,7 +57,7 @@ const InfoLine = ({ label, data }: InfoLineProps) => (
   </Typography>
 );
 
-const onGlobalSelectionChange = (mergeLines: MergeLine[], letter: Selected, dispatch, setSelected) => {
+const onGlobalSelectionChange = (mergeLines: MergeLine[], letter: Selected, dispatch) => {
   const newSelected = [];
   const newData = {};
 
@@ -69,33 +66,40 @@ const onGlobalSelectionChange = (mergeLines: MergeLine[], letter: Selected, disp
     newData[l.key] = letter.toUpperCase();
   });
 
-  setSelected(newSelected);
   dispatch(change("MergeContactsForm", "mergeRequest.data", newData));
 };
 
 const InfoCard = React.memo<Props>(
   ({
- classes, selected, contactNames, setSelected, initiallySameIndices, values: { mergeData }, dispatch
+ classes, contactNames, initiallySameIndices, values: { mergeData, mergeRequest }, dispatch
 }) => {
-    const selectedA = useMemo(() => selected.filter((s, i) => !initiallySameIndices.has(i)).every(s => s === "a"), [
-      selected,
+    const selectedA = useMemo(() => mergeData?.mergeLines
+      .filter((l, i) => !initiallySameIndices.has(i))
+      .every(l => mergeRequest.data.hasOwnProperty(l.key) && mergeRequest.data[l.key] === "A"),
+    [
+      mergeData,
+      mergeRequest,
       initiallySameIndices
     ]);
 
-    const selectedB = useMemo(() => selected.filter((s, i) => !initiallySameIndices.has(i)).every(s => s === "b"), [
-      selected,
+    const selectedB = useMemo(() => mergeData?.mergeLines
+      .filter((l, i) => !initiallySameIndices.has(i))
+      .every(l => mergeRequest.data.hasOwnProperty(l.key) && mergeRequest.data[l.key] === "B"),
+    [
+      mergeData,
+      mergeRequest,
       initiallySameIndices
     ]);
 
     const onClickA = useCallback(() => {
       if (!selectedA) {
-        onGlobalSelectionChange(mergeData.mergeLines, "a", dispatch, setSelected);
+        onGlobalSelectionChange(mergeData.mergeLines, "a", dispatch);
       }
     }, [mergeData, selectedA]);
 
     const onClickB = useCallback(() => {
       if (!selectedB) {
-        onGlobalSelectionChange(mergeData.mergeLines, "b", dispatch, setSelected);
+        onGlobalSelectionChange(mergeData.mergeLines, "b", dispatch);
       }
     }, [mergeData, selectedB]);
 
@@ -160,4 +164,4 @@ const InfoCard = React.memo<Props>(
   }
 );
 
-export default withStyles(styles)(InfoCard);
+export default withStyles(InfoCard, styles);

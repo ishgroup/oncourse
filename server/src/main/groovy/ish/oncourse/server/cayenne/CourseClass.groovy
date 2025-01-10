@@ -22,6 +22,7 @@ import ish.oncourse.function.CalculateCourseClassNominalHours
 import ish.oncourse.function.CalculateCourseClassReportableHours
 import ish.oncourse.server.cayenne.glue._CourseClass
 import ish.oncourse.server.cayenne.glue._Session
+import ish.oncourse.server.entity.mixins.CourseClassMixin
 import ish.util.MoneyUtil
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
@@ -90,6 +91,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	public static final String TIME_ZONE_ID = "clientTimeZoneId"
 	public static final String HAS_ZERO_WAGES = "hasZeroWages"
 	public static final String IS_TRAINEESHIP = "isTraineeship"
+	public static final String SESSIONS_COUNT = "sessionsCount"
+	public static final String IS_DISTANT_LEARNING_COURSE = "isDistantLearningCourse"
 
 	/**
 	 * @return
@@ -146,6 +149,29 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return buff.toString()
 	}
 
+	int getAttendancePercentForStudent(Student student){
+		def studentAttendances = student.attendances.findAll { it.session.courseClass.id == id && it.attendanceType != AttendanceType.UNMARKED && it.session.endDatetime.before(new Date()) }
+		if(studentAttendances.isEmpty())
+			return 0
+		def attendancesDuration = ((studentAttendances.collect {getDurationByType(it)}.sum() as Integer) * 100)
+		def sessionsDuration = studentAttendances*.session.durationInMinutes.sum() as Integer
+		return attendancesDuration.div(sessionsDuration) as Integer
+	}
+
+	private Integer getDurationByType(Attendance attendance){
+		switch (attendance.attendanceType){
+			case AttendanceType.ATTENDED:
+			case AttendanceType.DID_NOT_ATTEND_WITH_REASON:
+				return attendance.session.durationInMinutes
+			case AttendanceType.DID_NOT_ATTEND_WITHOUT_REASON:
+				return 0
+			case AttendanceType.PARTIAL:
+				return attendance.durationMinutes
+			default:
+				throw new UnsupportedOperationException("Incorrect attendance type or try to get duration of unmarked")
+		}
+	}
+
     /**
 	 * @return class fee including GST
 	 */
@@ -190,8 +216,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
@@ -242,17 +268,13 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return null
 	}
 
-	void updateSessionCount() {
-		setSessionsCount(getSessions().size())
-	}
-
 	/**
 	 * making the class room match the session room (first session listed chronologically) <br>
 	 * (this code is a result of long going bug, it might be limiting to some customers by not allowing to choose the class room freely, but since there it is
 	 * not displayed in gui at the moment and it caused problems me and Ari agreed on this, marcin 31 Jan 2011)
 	 */
 	void updateClassRoom() {
-		if (!isDistantLearningCourse) {
+		if (!isDistantLearningCourse && !isHybrid) {
 			setRoom(getSessions().sort {it.startDatetime}.find {it.room != null}?.room)
 		}
 	}
@@ -275,21 +297,13 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 					totalTimeInMilis = totalTimeInMilis + s.getEndDatetime().getTime() - s.getStartDatetime().getTime()
 				}
 			}
-			if (start == null || getStartDateTime() == null || start != getStartDateTime()) {
+			//don't update course class StartDateTime/EndDateTime from session for Hybrid class, because class StartDateTime/EndDateTime was set in CourseClass Service (only for Hybrid classes)
+			if (!getIsHybrid() && (start == null || getStartDateTime() == null || start != getStartDateTime())) {
 				setStartDateTime(start)
 			}
 
-			if (end == null || getEndDateTime() == null || end != getEndDateTime()) {
+			if (!getIsHybrid() && (end == null || getEndDateTime() == null || end != getEndDateTime())) {
 				setEndDateTime(end)
-			}
-			setSessionsCount(sess.size())
-			setMinutesPerSession((int) (totalTimeInMilis / 1000 / 60 / sess.size()))
-		} else {
-			if (getSessionRepeatInterval() != null && getSessionsCount() != null && getStartDateTime() != null) {
-				GregorianCalendar gc = new GregorianCalendar()
-				gc.setTime(getStartDateTime())
-				gc.add(GregorianCalendar.DATE, getSessionRepeatInterval() * getSessionsCount())
-				setEndDateTime(gc.getTime())
 			}
 		}
 	}
@@ -320,7 +334,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		int costsSize = getCosts().size()
 
 		updateStartEndDates()
-		updateSessionCount()
 
 		if (sessionSize > 0) {
 			updateClassRoom()
@@ -420,8 +433,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		BigDecimal sum = BigDecimal.ZERO
 		if (sessions != null && !sessions.isEmpty()) {
 			sum = sessions*.payableDurationInHours.sum() as BigDecimal
-		} else if (sessionsCount != null && minutesPerSession != null) {
-			return sessionsCount * minutesPerSession / 60L
 		}
 		return sum
 	}
@@ -454,6 +465,23 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		}
 
 		return list.size()
+	}
+
+	int getCancelledEnrolmentCount() {
+		List<Enrolment> list = getCancelledEnrolments()
+		return list == null ? 0 : list.size()
+	}
+
+	Money getTotalInvoiced(){
+		return CourseClassMixin.getTotalInvoiced(this)
+	}
+
+	Money getTotalCredits(){
+		return CourseClassMixin.getTotalCredits(this)
+	}
+
+	List<InvoiceLine> getEnrolmentsInvoiceLines(){
+		return enrolments*.invoiceLines.flatten() as List<InvoiceLine>
 	}
 
 	/**
@@ -502,17 +530,14 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
 		}
 		if (getIsActive() == null) {
 			setIsActive(true)
-		}
-		if (getSessionsCount() == null) {
-			setSessionsCount(0)
 		}
 		if (getIsClassFeeApplicationOnly() == null) {
 			setIsClassFeeApplicationOnly(false)
@@ -780,13 +805,32 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return
+	 * @return true if class is hybrid, this means that class type is Hybrid
+	 */
+	@Nonnull
+	@API
+	Boolean getIsHybrid() {
+		return getType() == CourseClassType.HYBRID
+	}
+
+	/**
+	 * @return true if class is distant learning, this means that class type is Distant Learning
 	 */
 	@Nonnull
 	@API
 	@Override
 	Boolean getIsDistantLearningCourse() {
-		return super.getIsDistantLearningCourse()
+		return getType() == CourseClassType.DISTANT_LEARNING
+	}
+
+	/**
+	 * @return class type like With Sessions, Distant Learning, Hybrid
+	 */
+	@Nonnull
+	@API
+	@Override
+	CourseClassType getType() {
+		return super.getType()
 	}
 
 	/**
@@ -865,15 +909,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return duration of the session in minutes
-	 */
-	@API
-	@Override
-	Integer getMinutesPerSession() {
-		return super.getMinutesPerSession()
-	}
-
-	/**
 	 * @return the date and time this record was modified
 	 */
 	@API
@@ -889,42 +924,6 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Override
 	BigDecimal getReportableHours() {
 		return super.getReportableHours()
-	}
-
-	/**
-	 * @return
-	 */
-	@API
-	@Override
-	Integer getSessionRepeatInterval() {
-		return super.getSessionRepeatInterval()
-	}
-
-	/**
-	 * @return
-	 */
-	@Override
-	SessionRepetitionType getSessionRepeatType() {
-		return super.getSessionRepeatType()
-	}
-
-	/**
-	 * @return number of sessions class has
-	 */
-	@Nonnull
-	@API
-	@Override
-	Integer getSessionsCount() {
-		return super.getSessionsCount()
-	}
-
-	/**
-	 * @return
-	 */
-	@API
-	@Override
-	Boolean getSessionsSkipWeekends() {
-		return super.getSessionsSkipWeekends()
 	}
 
 	/**
@@ -1059,6 +1058,13 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return super.getEnrolments()
 	}
 
+	List<AbstractInvoiceLine> getAbstractInvoiceLines(){
+		def abstractInvoiceLines = new ArrayList<AbstractInvoiceLine>()
+		abstractInvoiceLines.addAll(abstractInvoiceLines)
+		abstractInvoiceLines.addAll(quoteLines)
+		abstractInvoiceLines
+	}
+
 	/**
 	 * @return
 	 */
@@ -1075,7 +1081,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+		return super.getInvoiceLines()
 	}
 
 	/**
@@ -1084,7 +1090,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	List<QuoteLine> getQuoteLines() {
-		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
+		return super.getQuoteLines()
 	}
 
 	/**
@@ -1148,7 +1154,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (CourseClassTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}
@@ -1198,6 +1205,24 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
+	 * @return attendance records for all SUCCESS enrolments
+	 */
+	@Nonnull
+	@API
+	List<Attendance> getActiveAttendances() {
+		ArrayList<Attendance> result = new ArrayList<>()
+			def students = enrolments.findAll { it.status == EnrolmentStatus.SUCCESS }.student
+		students.attendances.each {
+			it.each {
+				if (it.session.courseClass.id == this.id && it.attendanceType == AttendanceType.UNMARKED) {
+					result.add(it)
+				}
+			}
+		}
+		return result
+	}
+
+	/**
 	 * @return JSR-310 compatible start date of the class
 	 */
 	LocalDate getStart() {
@@ -1222,5 +1247,18 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return CourseClassCustomField
+	}
+
+	int getSessionsCount() {
+		return getSessions().size()
+	}
+
+	@Deprecated
+	Integer getMinutesPerSession() {
+		if (!getSessions().isEmpty()) {
+			int sum = getSessions().sum{it.getDurationInMinutes()} as int
+			return (int) (sum / getSessions().size())
+		}
+		return null
 	}
 }

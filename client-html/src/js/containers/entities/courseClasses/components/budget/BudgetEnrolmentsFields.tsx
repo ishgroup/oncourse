@@ -3,24 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { change } from "redux-form";
-import { withStyles, createStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import debounce from "lodash.debounce";
-import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import { AppTheme } from "../../../../../model/common/Theme";
-import { normalizeNumberToZero, preventDecimalEnter } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { stubFunction } from "../../../../../common/utils/common";
-import { CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
-import { validateNonNegative } from "../../../../../common/utils/validation";
-import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { AppTheme, normalizeNumberToZero, preventDecimalEnter } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import { validateNonNegative } from '../../../../../common/utils/validation';
+import { CourseClassExtended, CourseClassRoom } from '../../../../../model/entities/CourseClass';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   root: {
     background: theme.table.contrastRow.light,
     borderRadius: theme.shape.borderRadius,
@@ -32,14 +26,14 @@ const styles = (theme: AppTheme) => createStyles({
 interface Props {
   values: CourseClassExtended;
   classRooms: CourseClassRoom[];
-  classes: any;
+  classes?: any;
   enrolmentsCount: number;
   form: string;
   dispatch: Dispatch;
 }
 
 const BudgetEnrolmentsFields = React.memo<Props>(({
- values, enrolmentsCount, classes, form, dispatch, classRooms
+ values, enrolmentsCount, classes, classRooms
 }) => {
   const seatedCapacityWarnings = useMemo(() => {
     const warnings = {
@@ -63,85 +57,47 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
     return warnings;
   }, [classRooms, values.maximumPlaces, values.minimumPlaces, values.id]);
 
-  const debounceChange = debounce((field, value) => {
-    dispatch(change(form, field, normalizeNumberToZero(value)));
-  }, 500);
-
-  const errors = useMemo(
-    () => ({
-      minimum: validateNonNegative(values.minimumPlaces),
-      maximum: validateNonNegative(values.maximumPlaces),
-      budgeted: validateNonNegative(values.budgetedPlaces)
-    }),
-    [values.minimumPlaces, values.maximumPlaces, values.budgetedPlaces]
-  );
-
   return (
-    <Grid container direction="row" className={classes.root}>
+    <Grid container direction="row" columnSpacing={3} className={classes.root}>
       <Grid item xs={3} className="centeredFlex pl-2">
         <Typography variant="body1">Enrolments</Typography>
       </Grid>
       <Grid item xs={2} className="text-end">
-        <FormField type="stub" name="minimumPlaces" validate={validateNonNegative} />
-        <FormField type="stub" name="maximumPlaces" validate={validateNonNegative} />
-        <FormField type="stub" name="budgetedPlaces" validate={validateNonNegative} />
-
-        <EditInPlaceField
+        <FormField
           type="number"
+          name="minimumPlaces"
           label="Minimum"
-          defaultValue={values.minimumPlaces || "0"}
-          meta={{
-            error: errors.minimum,
-            invalid: Boolean(errors.minimum)
-          }}
-          input={{
-            onChange: e => debounceChange("minimumPlaces", e.target.value),
-            onFocus: stubFunction,
-            onBlur: stubFunction
-          }}
-          classes={{ fitWidth: "flex-fill" }}
+          className="flex-fill"
           onKeyPress={preventDecimalEnter}
+          normalize={normalizeNumberToZero}
+          format={normalizeNumberToZero}
+          validate={validateNonNegative}
+          warning={seatedCapacityWarnings.min}
           rightAligned
         />
-        {seatedCapacityWarnings.min && <WarningMessage warning={seatedCapacityWarnings.min} />}
       </Grid>
       <Grid item xs={2} className="text-end">
-        <EditInPlaceField
+        <FormField
+          name="maximumPlaces"
           type="number"
           label="Maximum"
-          defaultValue={values.maximumPlaces || "0"}
-          meta={{
-            error: errors.maximum,
-            invalid: Boolean(errors.maximum)
-          }}
-          input={{
-            onChange: e => debounceChange("maximumPlaces", e.target.value),
-            onFocus: stubFunction,
-            onBlur: stubFunction
-          }}
-          classes={{ fitWidth: "flex-fill" }}
+          className="flex-fill"
           onKeyPress={preventDecimalEnter}
+          format={normalizeNumberToZero}
+          warning={seatedCapacityWarnings.max}
+          validate={validateNonNegative}
           rightAligned
         />
-        {seatedCapacityWarnings.max && <WarningMessage warning={seatedCapacityWarnings.max} />}
       </Grid>
       <Grid item xs={2} className="text-end">
-        <EditInPlaceField
-          name="budgetedPlaces"
+        <FormField
           type="number"
+          name="budgetedPlaces"
           label="Projected"
-          defaultValue={values.budgetedPlaces || "0"}
-          meta={{
-            error: errors.budgeted,
-            invalid: Boolean(errors.budgeted)
-          }}
-          input={{
-            onChange: e => debounceChange("budgetedPlaces", e.target.value),
-            onFocus: stubFunction,
-            onBlur: stubFunction
-          }}
-          classes={{ fitWidth: "flex-fill" }}
+          className="flex-fill"
           onKeyPress={preventDecimalEnter}
+          format={normalizeNumberToZero}
+          validate={validateNonNegative}
           rightAligned
         />
       </Grid>
@@ -153,4 +109,4 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
   );
 });
 
-export default withStyles(styles)(BudgetEnrolmentsFields);
+export default withStyles(BudgetEnrolmentsFields, styles);

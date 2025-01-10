@@ -14,31 +14,31 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                                                                          |
-            | 'Qualification'       | "Qualification CSV export"                                                            |
-            | 'Module'              | "Module CSV export"                                                                   |
-            | 'Site'                | "Site CSV export"                                                                     |
-            | 'Room'                | "Room CSV export"                                                                     |
-            | 'AccountTransaction'  | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","grouped MYOB export"    |
-            | 'Account'             | "Account CSV export"                                                                  |
-            | 'Payslip'             | "MYOB Activity Payslip CSV export","Payslip CSV export","Payslip MicroPay export"     |
-            | 'CorporatePass'       | "CorporatePass CSV export"                                                            |
-            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"                |
-            | 'PaymentIn'           | "PaymentIn CSV export"                                                                |
-            | 'Banking'             | "Banking CSV export"                                                                  |
-            | 'WaitingList'         | "WaitingList CSV export"                                                              |
+            | 'Qualification'       | "Qualification CSV"                                                            |
+            | 'Module'              | "Module CSV"                                                                   |
+            | 'Site'                | "Site CSV"                                                                     |
+            | 'Room'                | "Room CSV"                                                                     |
+            | 'AccountTransaction'  | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","grouped MYOB"    |
+            | 'Account'             | "Account CSV"                                                                  |
+            | 'Payslip'             | "MYOB Activity Payslip CSV","Payslip CSV","Payslip MicroPay"     |
+            | 'CorporatePass'       | "CorporatePass CSV"                                                            |
+            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV","InvoiceLine CSV"                |
+            | 'PaymentIn'           | "PaymentIn CSV"                                                                |
+            | 'Banking'             | "Banking CSV"                                                                  |
+            | 'WaitingList'         | "WaitingList CSV"                                                              |
             | 'Application'         | "Smart & Skilled Bulk Upload"                                                         |
-            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV export"                                 |
-            | 'Survey'              | "StudentFeedback CSV export"                                                          |
-            | 'Audit'               | "Audit Logging CSV export"                                                            |
-            | 'Discount'            | "Discount CSV export"                                                                 |
-            | 'Course'              | "Course CSV export"                                                                   |
-            | 'CourseClass'         | "Attendance CSV","Class Budget Summary CSV export","Class outcomes CSV export","CourseClass CSV export","CourseClass Sessions CSV export","Extended outcomes CSV" |
-            | 'Enrolment'           | "Enrolment CSV export","Extended outcomes CSV"                                        |
-            | 'ProductItem'         | "Voucher CSV export"                                                                  |
-            | 'VoucherProduct'      | "Voucher Product CSV export"                                                          |
-            | 'Contact'             | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","Account Transaction XML export","Contact CSV export","Contact XML export","NSW OLGR CSV export","grouped MYOB export" |
-            | 'Outcome'             | "Outcome CSV export"                                                                  |
-            | 'PriorLearning'       | "Prior Learning CSV export"                                                           |
+            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV"                                 |
+            | 'Survey'              | "StudentFeedback CSV"                                                          |
+            | 'Audit'               | "Audit Logs CSV"                                                            |
+            | 'Discount'            | "Discount CSV"                                                                 |
+            | 'Course'              | "Course CSV"                                                                   |
+            | 'CourseClass'         | "Attendance CSV","Class Budget Summary CSV","Class outcomes CSV","CourseClass CSV","CourseClass Sessions CSV","Extended outcomes CSV" |
+            | 'Enrolment'           | "Enrolment CSV","Extended outcomes CSV"                                        |
+            | 'ProductItem'         | "Voucher CSV"                                                                  |
+            | 'VoucherProduct'      | "Voucher Product CSV"                                                          |
+            | 'Contact'             | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","Account Transaction XML","Contact CSV","Contact XML","NSW OLGR CSV","grouped MYOB" |
+            | 'Outcome'             | "Outcome CSV"                                                                  |
+            | 'PriorLearning'       | "Prior Learning CSV"                                                           |
 #            | 'ArticleProduct'      | "" |
 #            | 'MembershipProduct'   | "" |
 
@@ -51,31 +51,31 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                      |
-            | 'Qualification'       | "Qualification XML export"        |
-            | 'Module'              | "Module XML export"               |
-            | 'Site'                | "Site XML export"                 |
-            | 'Room'                | "Room XML export"                 |
-            | 'AccountTransaction'  | "Account Transaction XML export"  |
-            | 'Account'             | "Account XML export"              |
-            | 'Payslip'             | "Payslip XML export"              |
-            | 'CorporatePass'       | "CorporatePass XML export"        |
-            | 'AbstractInvoice'             | "Invoice XML export"              |
-            | 'PaymentIn'           | "PaymentIn XML export"            |
-            | 'Banking'             | "Banking XML export"              |
-            | 'WaitingList'         | "WaitingList XML export"          |
-            | 'Application'         | "Application XML export"          |
-            | 'Certificate'         | "Certificate XML export"          |
-            | 'Survey'              | "StudentFeedback XML export"      |
-            | 'Audit'               | "Audit XML export"                |
-            | 'Discount'            | "Discount XML export"             |
-            | 'Course'              | "Course XML export"               |
-            | 'CourseClass'         | "CourseClass XML export","Indesign Brochure XML export" |
-            | 'Enrolment'           | "Enrolment XML export"            |
-            | 'ProductItem'         | "Voucher XML export"              |
-            | 'VoucherProduct'      | "VoucherProduct XML export"       |
-            | 'Contact'             | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","Account Transaction XML export","Contact CSV export","Contact XML export","NSW OLGR CSV export","grouped MYOB export" |
-            | 'Outcome'             | "Outcome XML export"              |
-            | 'PriorLearning'       | "Prior Learning XML export"       |
+            | 'Qualification'       | "Qualification XML"        |
+            | 'Module'              | "Module XML"               |
+            | 'Site'                | "Site XML"                 |
+            | 'Room'                | "Room XML"                 |
+            | 'AccountTransaction'  | "Account Transaction XML"  |
+            | 'Account'             | "Account XML"              |
+            | 'Payslip'             | "Payslip XML"              |
+            | 'CorporatePass'       | "CorporatePass XML"        |
+            | 'AbstractInvoice'             | "Invoice XML"              |
+            | 'PaymentIn'           | "PaymentIn XML"            |
+            | 'Banking'             | "Banking XML"              |
+            | 'WaitingList'         | "WaitingList XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
+            | 'Certificate'         | "Certificate XML"          |
+            | 'Survey'              | "StudentFeedback XML"      |
+            | 'Audit'               | "Audit Logs XML"                |
+            | 'Discount'            | "Discount XML"             |
+            | 'Course'              | "Course XML"               |
+            | 'CourseClass'         | "CourseClass XML","Indesign Brochure XML" |
+            | 'Enrolment'           | "Enrolment XML"            |
+            | 'ProductItem'         | "Voucher XML"              |
+            | 'VoucherProduct'      | "VoucherProduct XML"       |
+            | 'Contact'             | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","Account Transaction XML","Contact CSV","Contact XML","NSW OLGR CSV","grouped MYOB" |
+            | 'Outcome'             | "Outcome XML"              |
+            | 'PriorLearning'       | "Prior Learning XML"       |
 #            | 'ArticleProduct'      | "" |
 #            | 'MembershipProduct'   | "" |
 
@@ -94,31 +94,31 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                 |
-            | 'Qualification'       | "Qualification CSV export"   |
-            | 'Module'              | "Module CSV export"          |
-            | 'Site'                | "Site CSV export"            |
-            | 'Room'                | "Room CSV export"            |
-            | 'AccountTransaction'  | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","grouped MYOB export"    |
-            | 'Account'             | "Account CSV export"                                                                      |
-            | 'Payslip'             | "MYOB Activity Payslip CSV export","Payslip CSV export","Payslip MicroPay export"         |
-            | 'CorporatePass'       | "CorporatePass CSV export"                                                                |
-            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"                    |
-            | 'PaymentIn'           | "PaymentIn CSV export"                                                                    |
-            | 'Banking'             | "Banking CSV export"                                                                      |
-            | 'WaitingList'         | "WaitingList CSV export"                                                                  |
+            | 'Qualification'       | "Qualification CSV"   |
+            | 'Module'              | "Module CSV"          |
+            | 'Site'                | "Site CSV"            |
+            | 'Room'                | "Room CSV"            |
+            | 'AccountTransaction'  | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV", "Account Transaction XML", "grouped MYOB"    |
+            | 'Account'             | "Account CSV"                                                                      |
+            | 'Payslip'             | "MYOB Activity Payslip CSV","Payslip CSV","Payslip MicroPay"         |
+            | 'CorporatePass'       | "CorporatePass CSV"                                                                |
+            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV","InvoiceLine CSV"                    |
+            | 'PaymentIn'           | "PaymentIn CSV"                                                                    |
+            | 'Banking'             | "Banking CSV"                                                                      |
+            | 'WaitingList'         | "WaitingList CSV"                                                                  |
             | 'Application'         | "Smart & Skilled Bulk Upload"                                                             |
-            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV export"                                     |
-            | 'Survey'              | "StudentFeedback CSV export"                                                              |
-            | 'Audit'               | "Audit Logging CSV export"                                                                |
-            | 'Discount'            | "Discount CSV export"                                                                     |
-            | 'Course'              | "Course CSV export"                                                                       |
-            | 'CourseClass'         | "Attendance CSV","Class Budget Summary CSV export","Class outcomes CSV export","CourseClass CSV export","CourseClass Sessions CSV export","Extended outcomes CSV" |
-            | 'Enrolment'           | "Enrolment CSV export","Extended outcomes CSV"                                            |
-            | 'ProductItem'         | "Voucher CSV export"                                                                      |
-            | 'VoucherProduct'      | "Voucher Product CSV export"                                                              |
-            | 'Contact'             | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","Account Transaction XML export","Contact CSV export","Contact XML export","NSW OLGR CSV export","grouped MYOB export" |
-            | 'Outcome'             | "Outcome CSV export"                                                                  |
-            | 'PriorLearning'       | "Prior Learning CSV export"                                                           |
+            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV"                                     |
+            | 'Survey'              | "StudentFeedback CSV"                                                              |
+            | 'Audit'               | "Audit Logs CSV"                                                                |
+            | 'Discount'            | "Discount CSV"                                                                     |
+            | 'Course'              | "Course CSV"                                                                       |
+            | 'CourseClass'         | "Attendance CSV","Class Budget Summary CSV","Class outcomes CSV","CourseClass CSV","CourseClass Sessions CSV","Extended outcomes CSV" |
+            | 'Enrolment'           | "Enrolment CSV","Extended outcomes CSV"                                            |
+            | 'ProductItem'         | "Voucher CSV"                                                                      |
+            | 'VoucherProduct'      | "Voucher Product CSV"                                                              |
+            | 'Contact'             | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","Account Transaction XML","Contact CSV","Contact XML","NSW OLGR CSV","grouped MYOB" |
+            | 'Outcome'             | "Outcome CSV"                                                                  |
+            | 'PriorLearning'       | "Prior Learning CSV"                                                           |
 #            | 'ArticleProduct'      | "" |
 #            | 'MembershipProduct'   | "" |
 
@@ -137,31 +137,31 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                      |
-            | 'Qualification'       | "Qualification XML export"        |
-            | 'Module'              | "Module XML export"               |
-            | 'Site'                | "Site XML export"                 |
-            | 'Room'                | "Room XML export"                 |
-            | 'AccountTransaction'  | "Account Transaction XML export"  |
-            | 'Account'             | "Account XML export"              |
-            | 'Payslip'             | "Payslip XML export"              |
-            | 'CorporatePass'       | "CorporatePass XML export"        |
-            | 'AbstractInvoice'             | "Invoice XML export"              |
-            | 'PaymentIn'           | "PaymentIn XML export"            |
-            | 'Banking'             | "Banking XML export"              |
-            | 'WaitingList'         | "WaitingList XML export"          |
-            | 'Application'         | "Application XML export"          |
-            | 'Certificate'         | "Certificate XML export"          |
-            | 'Survey'              | "StudentFeedback XML export"      |
-            | 'Audit'               | "Audit XML export"                |
-            | 'Discount'            | "Discount XML export"             |
-            | 'Course'              | "Course XML export"               |
-            | 'CourseClass'         | "CourseClass XML export","Indesign Brochure XML export" |
-            | 'Enrolment'           | "Enrolment XML export"            |
-            | 'ProductItem'         | "Voucher XML export"              |
-            | 'VoucherProduct'      | "VoucherProduct XML export"       |
-            | 'Contact'             | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","Account Transaction XML export","Contact CSV export","Contact XML export","NSW OLGR CSV export","grouped MYOB export" |
-            | 'Outcome'             | "Outcome XML export"              |
-            | 'PriorLearning'       | "Prior Learning XML export"       |
+            | 'Qualification'       | "Qualification XML"        |
+            | 'Module'              | "Module XML"               |
+            | 'Site'                | "Site XML"                 |
+            | 'Room'                | "Room XML"                 |
+            | 'AccountTransaction'  | "Account Transaction XML"  |
+            | 'Account'             | "Account XML"              |
+            | 'Payslip'             | "Payslip XML"              |
+            | 'CorporatePass'       | "CorporatePass XML"        |
+            | 'AbstractInvoice'             | "Invoice XML"              |
+            | 'PaymentIn'           | "PaymentIn XML"            |
+            | 'Banking'             | "Banking XML"              |
+            | 'WaitingList'         | "WaitingList XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
+            | 'Certificate'         | "Certificate XML"          |
+            | 'Survey'              | "StudentFeedback XML"      |
+            | 'Audit'               | "Audit Logs XML"                |
+            | 'Discount'            | "Discount XML"             |
+            | 'Course'              | "Course XML"               |
+            | 'CourseClass'         | "CourseClass XML","Indesign Brochure XML" |
+            | 'Enrolment'           | "Enrolment XML"            |
+            | 'ProductItem'         | "Voucher XML"              |
+            | 'VoucherProduct'      | "VoucherProduct XML"       |
+            | 'Contact'             | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","Account Transaction XML","Contact CSV","Contact XML","NSW OLGR CSV","grouped MYOB" |
+            | 'Outcome'             | "Outcome XML"              |
+            | 'PriorLearning'       | "Prior Learning XML"       |
 #            | 'ArticleProduct'      | "" |
 #            | 'MembershipProduct'   | "" |
 
@@ -180,9 +180,9 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                 |
-            | 'Qualification'       | "Qualification CSV export"   |
-            | 'Module'              | "Module CSV export"          |
-            | 'AccountTransaction'  | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","grouped MYOB export"    |
+            | 'Qualification'       | "Qualification CSV"   |
+            | 'Module'              | "Module CSV"          |
+            | 'AccountTransaction'  | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","grouped MYOB"    |
 
          * call read('getCsvTemplate.feature') getTemplate
 
@@ -199,9 +199,9 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                      |
-            | 'Qualification'       | "Qualification XML export"        |
-            | 'Module'              | "Module XML export"               |
-            | 'AccountTransaction'  | "Account Transaction XML export"  |
+            | 'Qualification'       | "Qualification XML"        |
+            | 'Module'              | "Module XML"               |
+            | 'AccountTransaction'  | "Account Transaction XML"  |
 
          * call read('getXmlTemplate.feature') getTemplate
 
@@ -218,28 +218,28 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                                                                      |
-            | 'Site'                | "Qualification CSV export"                                                        |
-            | 'Room'                | "Room CSV export"                                                                 |
-            | 'Account'             | "Account CSV export"                                                              |
-            | 'Payslip'             | "MYOB Activity Payslip CSV export","Payslip CSV export","Payslip MicroPay export" |
-            | 'CorporatePass'       | "CorporatePass CSV export"                                                        |
-            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV export","InvoiceLine CSV export"            |
-            | 'PaymentIn'           | "PaymentIn CSV export"                                                            |
-            | 'Banking'             | "Banking CSV export"                                                              |
-            | 'WaitingList'         | "WaitingList CSV export"                                                          |
+            | 'Site'                | "Qualification CSV"                                                        |
+            | 'Room'                | "Room CSV"                                                                 |
+            | 'Account'             | "Account CSV"                                                              |
+            | 'Payslip'             | "MYOB Activity Payslip CSV","Payslip CSV","Payslip MicroPay" |
+            | 'CorporatePass'       | "CorporatePass CSV"                                                        |
+            | 'AbstractInvoice'             | "Debtor Payment Summary","Invoice CSV","InvoiceLine CSV"            |
+            | 'PaymentIn'           | "PaymentIn CSV"                                                            |
+            | 'Banking'             | "Banking CSV"                                                              |
+            | 'WaitingList'         | "WaitingList CSV"                                                          |
             | 'Application'         | "Smart & Skilled Bulk Upload"                                                     |
-            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV export"                             |
-            | 'Survey'              | "StudentFeedback CSV export"                                                      |
-            | 'Audit'               | "Audit Logging CSV export"                                                        |
-            | 'Discount'            | "Discount CSV export"                                                             |
-            | 'Course'              | "Course CSV export"                                                               |
-            | 'CourseClass'         | "Attendance CSV","Class Budget Summary CSV export","Class outcomes CSV export","CourseClass CSV export","CourseClass Sessions CSV export","Extended outcomes CSV" |
-            | 'Enrolment'           | "Enrolment CSV export","Extended outcomes CSV"                                    |
-            | 'ProductItem'         | "Voucher CSV export"                                                              |
-            | 'VoucherProduct'      | "Voucher Product CSV export"                                                      |
-            | 'Contact'             | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","Account Transaction XML export","Contact CSV export","Contact XML export","NSW OLGR CSV export","grouped MYOB export" |
-            | 'Outcome'             | "Outcome CSV export"                                                              |
-            | 'PriorLearning'       | "Prior Learning CSV export"                                                       |
+            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV"                             |
+            | 'Survey'              | "StudentFeedback CSV"                                                      |
+            | 'Audit'               | "Audit Logs CSV"                                                        |
+            | 'Discount'            | "Discount CSV"                                                             |
+            | 'Course'              | "Course CSV"                                                               |
+            | 'CourseClass'         | "Attendance CSV","Class Budget Summary CSV","Class outcomes CSV","CourseClass CSV","CourseClass Sessions CSV","Extended outcomes CSV" |
+            | 'Enrolment'           | "Enrolment CSV","Extended outcomes CSV"                                    |
+            | 'ProductItem'         | "Voucher CSV"                                                              |
+            | 'VoucherProduct'      | "Voucher Product CSV"                                                      |
+            | 'Contact'             | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","Account Transaction XML","Contact CSV","Contact XML","NSW OLGR CSV","grouped MYOB" |
+            | 'Outcome'             | "Outcome CSV"                                                              |
+            | 'PriorLearning'       | "Prior Learning CSV"                                                       |
 #            | 'ArticleProduct'      | "" |
 #            | 'MembershipProduct'   | "" |
 
@@ -258,28 +258,28 @@ Feature: Main feature for all GET requests with path 'list/export/template'
         * table getTemplate
 
             | entity                | templateName                      |
-            | 'Site'                | "Site XML export"                 |
-            | 'Room'                | "Room XML export"                 |
-            | 'Account'             | "Account XML export"              |
-            | 'Payslip'             | "Payslip XML export"              |
-            | 'CorporatePass'       | "CorporatePass XML export"        |
-            | 'AbstractInvoice'             | "Invoice XML export"              |
-            | 'PaymentIn'           | "PaymentIn XML export"            |
-            | 'Banking'             | "Banking XML export"              |
-            | 'WaitingList'         | "WaitingList XML export"          |
-            | 'Application'         | "Application XML export"          |
-            | 'Certificate'         | "Certificate XML export"          |
-            | 'Survey'              | "StudentFeedback XML export"      |
-            | 'Audit'               | "Audit XML export"                |
-            | 'Discount'            | "Discount XML export"             |
-            | 'Course'              | "Course XML export"               |
-            | 'CourseClass'         | "CourseClass XML export","Indesign Brochure XML export" |
-            | 'Enrolment'           | "Enrolment XML export"            |
-            | 'ProductItem'         | "Voucher XML export"              |
-            | 'VoucherProduct'      | "VoucherProduct XML export"       |
-            | 'Contact'             | "Account Transaction CSV export","Account Transaction MYOB export","Account Transaction Segmentation CSV export","Account Transaction XML export","Contact CSV export","Contact XML export","NSW OLGR CSV export","grouped MYOB export" |
-            | 'Outcome'             | "Outcome XML export"              |
-            | 'PriorLearning'       | "Prior Learning XML export"       |
+            | 'Site'                | "Site XML"                 |
+            | 'Room'                | "Room XML"                 |
+            | 'Account'             | "Account XML"              |
+            | 'Payslip'             | "Payslip XML"              |
+            | 'CorporatePass'       | "CorporatePass XML"        |
+            | 'AbstractInvoice'             | "Invoice XML"              |
+            | 'PaymentIn'           | "PaymentIn XML"            |
+            | 'Banking'             | "Banking XML"              |
+            | 'WaitingList'         | "WaitingList XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
+            | 'Certificate'         | "Certificate XML"          |
+            | 'Survey'              | "StudentFeedback XML"      |
+            | 'Audit'               | "Audit Logs XML"                |
+            | 'Discount'            | "Discount XML"             |
+            | 'Course'              | "Course XML"               |
+            | 'CourseClass'         | "CourseClass XML","Indesign Brochure XML" |
+            | 'Enrolment'           | "Enrolment XML"            |
+            | 'ProductItem'         | "Voucher XML"              |
+            | 'VoucherProduct'      | "VoucherProduct XML"       |
+            | 'Contact'             | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","Account Transaction XML","Contact CSV","Contact XML","NSW OLGR CSV","grouped MYOB" |
+            | 'Outcome'             | "Outcome XML"              |
+            | 'PriorLearning'       | "Prior Learning XML"       |
 #            | 'ArticleProduct'      | "" |
 #            | 'MembershipProduct'   | "" |
 

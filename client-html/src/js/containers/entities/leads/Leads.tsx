@@ -6,25 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Lead } from "@api/model";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { Lead } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import SendMessageEditView from "../messages/components/SendMessageEditView";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { getEntityTags, getListTags } from "../../tags/actions";
-import { createLead, getLead, removeLead, updateLead } from "./actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { State } from "../../../reducers/state";
-import LeadCogWheel from "./components/LeadCogWheel";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { initialize } from "redux-form";
 import { checkPermissions } from "../../../common/actions";
-import LeadEditView from "./components/LeadEditView";
-import { FilterGroup } from "../../../model/common/ListView";
-import { getActiveUsers } from "../../security/actions";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getActiveUsers } from "../../security/actions";
+import { getEntityTags, getListTags } from "../../tags/actions";
+import LeadCogWheel from "./components/LeadCogWheel";
+import LeadEditView from "./components/LeadEditView";
 
 const Initial: Lead = {
   id: null,
@@ -55,7 +53,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Lead and entityId" },
   { title: "Contacts", list: "contact", expression: "student.leads.id" },
   { title: "Courses", list: "course", expression: "leadItems.lead.id" },
@@ -81,17 +79,13 @@ const findRelatedGroup: any[] = [
   },
 ];
 
-const nestedEditFields = {
-  SendMessage: props => <SendMessageEditView {...props} />
-};
-
 const manualLink = getManualLink("leads");
 
 const setRowClasses = ({ status }) => (status === "Closed" ? "text-op05" : undefined);
 
 const Leads = props => {
   const {
-    getLeadRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+    onInit
   } = props;
 
   useEffect(() => {
@@ -117,34 +111,26 @@ const Leads = props => {
   };
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          setRowClasses,
-          primaryColumn: "estimatedValue",
-          secondaryColumn: "customer.fullName"
-        }}
-        editViewProps={{
-          manualLink,
-          asyncValidate: notesAsyncValidate,
-          asyncBlurFields: ["notes[].message"],
-          hideTitle: true
-        }}
-        updateTableModel={updateTableModel}
-        nestedEditFields={nestedEditFields}
-        EditViewContent={LeadEditView}
-        getEditRecord={getLeadRecord}
-        rootEntity="Lead"
-        onInit={onInit}
-        onCreate={onCreate}
-        onDelete={onDelete}
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        CogwheelAdornment={LeadCogWheel}
-        preformatBeforeSubmit={preformatBeforeSubmit}
-      />
-    </div>
+    <ListView
+      listProps={{
+        setRowClasses,
+        primaryColumn: "estimatedValue",
+        secondaryColumn: "customer.fullName"
+      }}
+      editViewProps={{
+        manualLink,
+        asyncValidate: notesAsyncValidate,
+        asyncChangeFields: ["notes[].message"],
+        hideTitle: true
+      }}
+      EditViewContent={LeadEditView}
+      rootEntity="Lead"
+      onInit={onInit}
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      CogwheelAdornment={LeadCogWheel}
+      preformatBeforeSubmit={preformatBeforeSubmit}
+    />
   );
 };
 
@@ -167,11 +153,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getActiveUsers: () => dispatch(getActiveUsers()),
   getFilters: () => dispatch(getFilters("Lead")),
   getTags: () => dispatch(getListTags("Lead")),
-  clearListState: () => dispatch(clearListState()),
-  getLeadRecord: (id: string) => dispatch(getLead(id)),
-  onSave: (id: string, lead: Lead) => dispatch(updateLead(id, lead)),
-  onCreate: (lead: Lead) => dispatch(createLead(lead)),
-  onDelete: (id: string) => dispatch(removeLead(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Leads);

@@ -3,47 +3,36 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_AUTOMATION_PDF_REPORTS_LIST, GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED } from "../actions/";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { Create, Request } from "../../../../../common/epics/EpicUtils";
 import EntityService from "../../../../../common/services/EntityService";
+import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
 import history from "../../../../../constants/History";
-import { CommonListItem } from "../../../../../model/common/sidebar";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import { GET_AUTOMATION_PDF_REPORTS_LIST, getAutomationPdfReportsListFulfilled } from "../actions";
 
-const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
+const request: Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
   type: GET_AUTOMATION_PDF_REPORTS_LIST,
-  getData: () => EntityService.getPlainRecords("Report", "name,keyCode,enabled", null, null, null, "name", true),
+  getData: () => EntityService.getPlainRecords("Report", CATALOG_ITEM_COLUMNS, null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {
-    const pdfReports: CommonListItem[] = response.rows.map(r => ({
-      id: Number(r.id),
-      name: r.values[0],
-      keyCode: r.values[1],
-      hasIcon: r.values[1].startsWith("ish."),
-      grayOut: r.values[2] === "false"
-    }));
+    const pdfReports: CatalogItemType[] = response.rows.map(mapListToCatalogItem);
 
-    pdfReports.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+    pdfReports.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.selectFirst) {
         history.push(`/automation/pdf-reports`);
       }
       if (p.keyCodeToSelect) {
-        history.push(`/automation/pdf-reports/${pdfReports.find(t => t.keyCode === p.keyCodeToSelect).id}`);
+        history.push(`/automation/pdf-report/${pdfReports.find(t => t.keyCode === p.keyCodeToSelect).id}`);
       }
     }
 
-    return [
-      {
-        type: GET_AUTOMATION_PDF_REPORTS_LIST_FULFILLED,
-        payload: { pdfReports }
-      }
-    ];
+    return [getAutomationPdfReportsListFulfilled(pdfReports)];
   },
   processError: response => FetchErrorHandler(response, "Failed to get PDF reports list")
 };
 
-export const EpicGetPdfReportsList: Epic<any, any> = EpicUtils.Create(request);
+export const EpicGetPdfReportsList: Epic<any, any> = Create(request);

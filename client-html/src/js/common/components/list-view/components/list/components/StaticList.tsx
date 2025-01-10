@@ -3,21 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  memo, useMemo
-} from "react";
-import { FixedSizeList, areEqual } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import clsx from "clsx";
-import TableCell from "@mui/material/TableCell";
-import { NestedTableColumnsTypes } from "../../../../../../model/common/NestedTable";
-import NestedTableCheckboxCell from "./NestedTableCheckboxCell";
-import NestedTableLinkCell from "./NestedTableLinkCell";
+import TableCell from '@mui/material/TableCell';
+import { flexRender } from '@tanstack/react-table';
+import clsx from 'clsx';
+import React, { memo } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { areEqual, FixedSizeList } from 'react-window';
+import { NestedTableColumnsTypes } from '../../../../../../model/common/NestedTable';
+import NestedTableCheckboxCell from './NestedTableCheckboxCell';
+import NestedTableDeleteCell from './NestedTableDeleteCell';
+import NestedTableLinkCell from './NestedTableLinkCell';
 
-const ListCell = React.memo<any>(({
- value, fieldName, column, row, onCheckboxChange, classes
-} ) => {
+const ListCell = React.memo<{
+  value, fieldName, column, row, onCheckboxChange, onRowDelete, classes?
+}>(({
+  value, fieldName, column, row, onCheckboxChange, onRowDelete, classes
+}) => {
   switch (column.type as NestedTableColumnsTypes) {
+    case "delete":
+      return (
+        <NestedTableDeleteCell
+          classes={classes}
+          onRowDelete={onRowDelete}
+        />
+      );
+
     case "checkbox": {
       return (
         <NestedTableCheckboxCell
@@ -50,12 +60,12 @@ const ListCell = React.memo<any>(({
   }
 });
 
-const ListRow = memo<any>(({ data, index, style }) => {
+const ListRow = memo<any>(({data, index, style}) => {
   const {
-    prepareRow,
     rows,
     classes,
     onRowSelect,
+    onRowDelete,
     onRowDoubleClick,
     onCheckboxChange
   } = data;
@@ -64,32 +74,37 @@ const ListRow = memo<any>(({ data, index, style }) => {
   const rowClasses = clsx(
     "d-flex",
     classes.row,
-    row.isSelected && classes.selected,
+    row.getIsSelected() && classes.selected,
     row.original && row.original.customClasses,
     index % 2 && classes.oddRow
   );
-  prepareRow(row);
 
   return (
     <div
-      {...row.getRowProps()}
       style={style}
       className={rowClasses}
       onClick={() => onRowSelect(row.id)}
       onDoubleClick={() => (onRowDoubleClick ? onRowDoubleClick(row.original.initial) : null)}
     >
-      {row.cells.map(cell => (
+      {row.getVisibleCells().map(cell => (
         <TableCell
+          key={cell.id}
+          style={{
+            minWidth: '0px',
+            boxSizing: "border-box",
+            flex: `${cell.column.getSize()} 0 auto`,
+            width: `${cell.column.getSize()}px`
+          }}
           component="div"
-          {...cell.getCellProps()}
-          className={clsx(classes.bodyCell, cell.column.cellClass)}
+          className={clsx(classes.bodyCell, cell.column.columnDef.cellClass)}
         >
           <ListCell
-            value={cell.render("Cell")}
-            column={cell.column}
+            value={flexRender(cell.column.columnDef.cell, cell.getContext())}
+            column={cell.column.columnDef}
             row={row.original.initial}
             fieldName={row.original.fieldName}
             onCheckboxChange={onCheckboxChange}
+            onRowDelete={() => onRowDelete(row.original.initial.id)}
             classes={classes}
           />
         </TableCell>
@@ -98,37 +113,22 @@ const ListRow = memo<any>(({ data, index, style }) => {
   );
 }, areEqual);
 
-export default ({
+export default itemData => {
+  const {
     totalColumnsWidth,
-    prepareRow,
-    rows,
-    classes,
-    onRowDoubleClick,
-    onCheckboxChange,
-    onRowSelect
-  }) => {
-  const itemData = useMemo(
-    () => ({
-      prepareRow,
-      rows,
-      classes,
-      onRowDoubleClick,
-      onCheckboxChange,
-      onRowSelect
-    }),
-    [prepareRow, rows, classes, onRowDoubleClick, onCheckboxChange, onRowSelect, totalColumnsWidth]
-  );
+    rows
+  } = itemData;
 
   return (
     <AutoSizer>
-      {({ height, width }) => (
+      {({height, width}) => (
         <FixedSizeList
-          style={{ overflow: "hidden auto" }}
+          style={{overflow: "hidden auto"}}
           itemCount={rows.length}
           itemData={itemData}
           itemSize={27}
-          height={height}
-          width={totalColumnsWidth > width ? totalColumnsWidth : width}
+          height={isNaN(height) ? 0 : height}
+          width={totalColumnsWidth > width ? totalColumnsWidth : (isNaN(width) ? 0 : width)}
         >
           {ListRow}
         </FixedSizeList>

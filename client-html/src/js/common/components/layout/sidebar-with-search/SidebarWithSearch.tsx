@@ -1,35 +1,47 @@
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
-import { ColumnWidth } from "@api/model";
-import { ListSideBarDefaultWidth } from "../../list-view/ListView";
-import ResizableWrapper from "../resizable/ResizableWrapper";
+import clsx from "clsx";
+import { AnyArgFunction, NumberArgFunction, ResizableWrapper } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Route, Switch } from "react-router-dom";
+import { LIST_SIDE_BAR_DEFAULT_WIDTH } from "../../../../constants/Config";
+import { CommonListFilter } from "../../../../model/common/sidebar";
+import { MainRoute } from "../../../../routes";
+import LoadingIndicator from "../../progress/LoadingIndicator";
 import Drawer from "../Drawer";
-import LoadingIndicator from "../LoadingIndicator";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
 import HamburgerMenu from "../swipeable-sidebar/components/HamburgerMenu";
 import { VARIANTS } from "../swipeable-sidebar/utils";
-import SidebarSearch from "./components/SidebarSearch";
-import { CommonListFilter } from "../../../../model/common/sidebar";
 import FiltersList from "./components/FiltersList";
+import SidebarSearch from "./components/SidebarSearch";
 
 interface Props {
   leftColumnWidth: number;
-  onInit: AnyArgFunction;
-  updateColumnsWidth: (columnsWidth: ColumnWidth) => void;
+  onInit?: AnyArgFunction;
+  updateColumnsWidth: NumberArgFunction;
   SideBar: React.ComponentType<any>;
-  AppFrame: React.ComponentType<any>;
+  AppFrame?: React.ComponentType<any>;
   history: any;
   match: any;
   filters?: CommonListFilter[];
+  noSearch?: boolean;
+  appFrameClass?: string;
+  routes?: MainRoute[];
 }
 
-export const SidebarWithSearch = React.memo<Props>(props => {
+export const SidebarWithSearch = (props: Props) => {
   const {
- leftColumnWidth, updateColumnsWidth, onInit, history, match, SideBar, AppFrame, filters = [] 
-} = props;
+    leftColumnWidth,
+    updateColumnsWidth,
+    onInit,
+    history,
+    match,
+    SideBar,
+    AppFrame,
+    noSearch,
+    routes,
+    filters = [],
+    appFrameClass
+  } = props;
 
-  const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || ListSideBarDefaultWidth);
+  const [sidebarWidth, setSidebarWidth] = useState(leftColumnWidth || LIST_SIDE_BAR_DEFAULT_WIDTH);
   const [activeFilters, setActveFilters] = useState<boolean[]>(Array(filters.length).fill(false));
   const [search, setSearch] = useState("");
 
@@ -66,23 +78,31 @@ export const SidebarWithSearch = React.memo<Props>(props => {
         onResizeStop={handleResizeStopCallback}
         onResize={handleResizeCallback}
         sidebarWidth={sidebarWidth}
+        maxWidth="50%"
       >
         <Drawer>
           <div className="pl-2">
-            <HamburgerMenu variant={VARIANTS.temporary} />
+            <HamburgerMenu variant={VARIANTS.temporary}/>
           </div>
-          <SidebarSearch setParentSearch={setSearch} />
+          {!noSearch && <SidebarSearch setParentSearch={setSearch} smallIcons/>}
           {Boolean(filters.length) && (
-            <FiltersList filters={filters} activeFilters={activeFilters} setActveFilters={setActveFilters} />
+            <FiltersList filters={filters} activeFilters={activeFilters} setActveFilters={setActveFilters}/>
           )}
-          <SideBar search={search} activeFiltersConditions={activeFiltersConditions} history={history} match={match} />
+          <SideBar search={search} activeFiltersConditions={activeFiltersConditions} history={history} match={match}/>
         </Drawer>
       </ResizableWrapper>
 
-      <div className="appFrame">
-        <LoadingIndicator />
-        <AppFrame match={match} />
+      <div className={clsx("appFrame", appFrameClass)}>
+        <LoadingIndicator/>
+        {AppFrame ? <AppFrame match={match} routes={routes}/>
+          : (
+            <Switch>
+              {routes.map((route, index) => (
+                <Route exact key={index} path={route.path} component={route.main}/>
+              ))}
+            </Switch>
+          )}
       </div>
     </div>
   );
-});
+};

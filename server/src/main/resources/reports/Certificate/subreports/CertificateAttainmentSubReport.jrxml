@@ -3,11 +3,7 @@
 <!-- 2019-01-02T13:21:52 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateAttainmentSubReport" language="groovy" pageWidth="514" pageHeight="842" columnWidth="514" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d9b2a5fd-2555-4a98-aa11-b982a558f4f4">
 	<property name="name" value="Certificate-Attainment Subreport"/>
-	<property name="entity" value="Outcome"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.certificate.attainment.subreport"/>
 	<property name="ish.oncourse.title" value="Outcomes"/>
 	<property name="ish.oncourse.filePrefix" value="Outcomes"/>
 	<property name="ish.oncourse.pdfFileName" value="Outcomes.pdf"/>

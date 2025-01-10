@@ -19,8 +19,6 @@ import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
 
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN;
-
 public class DeleteCustomFieldTypeWithRelatedFields {
     private ObjectContext context;
     private CustomFieldType customFieldType;

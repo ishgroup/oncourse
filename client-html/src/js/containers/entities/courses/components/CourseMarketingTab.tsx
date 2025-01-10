@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Course } from "@api/model";
+import Grid from "@mui/material/Grid";
 import React from "react";
 import { FieldArray } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Course } from "@api/model";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import RelationsCommon from "../../common/components/RelationsCommon";
 
 const relationTypesFilter = {
   entities: ["Module" as const],
@@ -20,10 +21,9 @@ const relationTypesFilter = {
     && rel.shoppingCart === "Add but do not allow removal"
 };
 
-const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = props => {
+const CourseMarketingTab: React.FC<EditViewProps<Course>> = props => {
   const {
     twoColumn,
-    classes,
     dispatch,
     form,
     showConfirm,
@@ -41,13 +41,23 @@ const CourseMarketingTab: React.FC<EditViewProps<Course> & { classes: any }> = p
       <Grid item xs={12}>
         <FormEditorField name="webDescription" label="Web description" />
       </Grid>
+      <Grid item xs={12}>
+        <FormEditorField name="shortWebDescription" label="Short web description" />
+      </Grid>
+
+      <Grid item xs={12}>
+        <FormField
+          type="multilineText"
+          name="brochureDescription"
+          label="Print brochure description"
+        />
+      </Grid>
 
       <Grid item xs={12}>
         <FieldArray
           name="documents"
           label="Documents"
           entity="Course"
-          classes={classes}
           component={DocumentsRenderer}
           xsGrid={12}
           mdGrid={twoColumn ? 4 : 12}

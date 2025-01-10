@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.voucher.csv
-entityClass: Voucher
-body: ish.onCourse.voucher.csv.groovy
-name: Voucher CSV export
-outputType: csv

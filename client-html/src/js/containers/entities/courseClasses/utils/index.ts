@@ -5,39 +5,37 @@
 
 import { AssessmentClass, Session } from "@api/model";
 import {
-  differenceInMinutes,
-  addMinutes,
-  addHours,
-  isWeekend,
   addBusinessDays,
   addDays,
+  addHours,
+  addMinutes,
+  addMonths,
   addWeeks,
-  addMonths, addYears
+  addYears,
+  differenceInMinutes,
+  isWeekend
 } from "date-fns";
-import { openInternalLink } from "../../../../common/utils/links";
+import { appendTimezone, decimalMul, decimalPlus, EntityType, openInternalLink } from "ish-ui";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import uniqid from "../../../../common/utils/uniqid";
 import {
   ClassCostExtended,
   ClassCostItem,
   ClassCostTypes,
-  Classes,
   CourseClassStatus,
-  CourseClassTutorExtended, SessionRepeatTypes
+  CourseClassTutorExtended,
+  SessionRepeatTypes
 } from "../../../../model/entities/CourseClass";
-import { EntityType } from "../../../../model/common/NestedEntity";
-import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
-import CourseClassCostService from "../components/budget/services/ClassCostService";
-import { State } from "../../../../reducers/state";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
-import CourseClassAssessmentService from "../components/assessments/services/CourseClassAssessmentService";
-import { getClassCostFee } from "../components/budget/utils";
-import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import { TimetableSession } from "../../../../model/timetable";
+import { State } from "../../../../reducers/state";
+import CourseClassAssessmentService from "../components/assessments/services/CourseClassAssessmentService";
 import CourseClassAttendanceService from "../components/attendance/services/CourseClassAttendanceService";
-import { appendTimezone } from "../../../../common/utils/dates/formatTimezone";
-import uniqid from "../../../../common/utils/uniqid";
+import CourseClassCostService from "../components/budget/services/ClassCostService";
+import { getClassCostFee } from "../components/budget/utils";
+import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
+import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
 
-export const openCourseClassLink = (classId: number) => openInternalLink(`/${Classes.path}/${classId}`);
+export const openCourseClassLink = (classId: number) => openInternalLink(`/class/${classId}`);
 
 export const getNestedCourseClassItem = (status: CourseClassStatus, count: number, id: number): EntityType => {
   switch (status) {
@@ -45,43 +43,43 @@ export const getNestedCourseClassItem = (status: CourseClassStatus, count: numbe
       return {
         name: "Current",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Current_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Current_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
+        timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
       };
     case "Future":
       return {
         name: "Future",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Future_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Future_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
+        timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
       };
     case "Self Paced":
       return {
         name: "Self Paced",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Self_paced_classes`
+        link: `/class?search=course.id is ${id}&filter=@Self_paced_classes`
       };
     case "Unscheduled":
       return {
         name: "Unscheduled",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Unscheduled_classes`
+        link: `/class?search=course.id is ${id}&filter=@Unscheduled_classes`
       };
     case "Finished":
       return {
         name: "Finished",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Finished_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Finished_classes`,
         // eslint-disable-next-line max-len
-        timetableLink: `/timetable/search?query=courseClass.course.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
+        timetableLink: `/timetable?search=courseClass.course.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
       };
     case "Cancelled":
       return {
         name: "Cancelled",
         count,
-        link: `/${Classes.path}?search=course.id is ${id}&filter=@Cancelled_classes`,
+        link: `/class?search=course.id is ${id}&filter=@Cancelled_classes`,
         grayOut: true
       };
     default: {
@@ -136,10 +134,8 @@ export const getClassCostTypes = (
 
   if (budget && budget.length) {
     budget.forEach((value, index) => {
-      value.index = index;
-
       const item = {
-        value,
+        value: { ...value, index },
         max: 0,
         projected: 0,
         actual: 0
@@ -211,7 +207,7 @@ export const getClassCostTypes = (
 
 export const processCourseClassApiActions = async (s: State, createdClassId?: number) => {
   const unprocessedAsyncActions = s.actionsQueue.queuedActions;
-  const savedTutorsIds = s.form[LIST_EDIT_VIEW_FORM_NAME].values.tutors.map(t => t.id);
+  const savedTutorsIds = s.form[LIST_EDIT_VIEW_FORM_NAME] ? s.form[LIST_EDIT_VIEW_FORM_NAME].values.tutors.map(t => t.id) : [];
   const sessionUpdateAction = unprocessedAsyncActions.find(s => s.entity === "Session");
 
   const tutorCreateActions = unprocessedAsyncActions.filter(
@@ -299,7 +295,7 @@ export const processCourseClassApiActions = async (s: State, createdClassId?: nu
 
   await costUpdateAsyncActions
     .map(c => () => {
-      const costBody = c.actionBody.payload.cost;
+      const { temporaryTutorId, ...costBody } = c.actionBody.payload.cost;
 
       if (!costBody.courseClassid) {
         costBody.courseClassid = createdClassId;

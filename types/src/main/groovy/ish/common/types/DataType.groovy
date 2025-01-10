@@ -141,7 +141,23 @@ public enum DataType implements DisplayableExtendedEnumeration<Integer> {
      * Database value: 14
      */
     @API
-    PATTERN_TEXT(14, "Pattern text");
+    PATTERN_TEXT(14, "Pattern text"),
+
+    /**
+     * Number
+     *
+     * Database value: 15
+     */
+    @API
+    NUMBER(15, "Number"),
+
+    /**
+     * Sub domain of portal website url
+     *
+     * Database value: 16
+     */
+    @API
+    PORTAL_SUBDOMAIN(16, "Portal subdomain");
 
 
 

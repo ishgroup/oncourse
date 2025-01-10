@@ -1,5 +1,0 @@
-keyCode: ish.onCourse.priorLearning.csv
-entityClass: PriorLearning
-body: ish.onCourse.priorLearning.csv.groovy
-name: Prior Learning CSV export
-outputType: csv

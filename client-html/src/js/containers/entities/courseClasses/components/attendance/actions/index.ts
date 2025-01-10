@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { StudentAttendance, TrainingPlan } from "@api/model";
 import { _toRequestType } from "../../../../../../common/actions/ActionUtils";
-import { TrainingPlan, StudentAttendance, TutorAttendance } from "@api/model";
 
 export const GET_COURSE_CLASS_ATTENDANCE = _toRequestType("get/courseClass/attendance");
 

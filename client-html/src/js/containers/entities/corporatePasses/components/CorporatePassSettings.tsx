@@ -3,25 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
 import { Contact } from "@api/model";
+import Grid from "@mui/material/Grid";
+import * as React from "react";
+import { change } from "redux-form";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
+import { EditViewProps } from "../../../../model/common/ListView";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
 
 class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
   onContactChange = (value: Contact) => {
     const { form, dispatch } = this.props;
     dispatch(change(form, "invoiceEmail", value.email));
-    dispatch(change(form, "contactFullName", contactLabelCondition(value)));
+    dispatch(change(form, "contactFullName", getContactFullName(value)));
   };
 
   render() {
@@ -40,29 +41,20 @@ class CorporatePassSettings extends React.PureComponent<EditViewProps, any> {
             disableInteraction={!isNew}
             twoColumn={twoColumn}
             title={(
-              <div className="d-inline-flex-center">
-                {values && defaultContactName(values.contactFullName)}
-                <IconButton disabled={!values?.contactId} size="small" color="primary" onClick={() => openContactLink(values?.contactId)}>
-                  <Launch fontSize="inherit" />
-                </IconButton>
-              </div>
+              <HeaderContactTitle name={values?.contactFullName} id={values?.contactId} />
             )}
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   name="contactId"
                   label="Contact (company or person to invoice)"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.contactFullName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultValue={values && values.contactFullName}
                   labelAdornment={(
-                    <LinkAdornment
-                      linkHandler={openContactLink}
-                      link={values && values.contactId}
-                      disabled={!values || !values.contactId}
-                    />
+                    <ContactLinkAdornment id={values?.contactId} />
                   )}
                   onInnerValueChange={this.onContactChange}
                   itemRenderer={ContactSelectItemRenderer}

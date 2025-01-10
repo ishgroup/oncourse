@@ -1,29 +1,13 @@
-plugins {
-    id 'com.github.node-gradle.node'
-}
+apply from: "$rootDir/nodeSetup.gradle"
 
-node {
-    version = '12.19.0'
-    yarnVersion = '1.22.10'
-    download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
-    workDir = file("${project.buildDir}/nodejs")
-}
-
-yarn.outputs.cacheIf { true }
-
-clean {
-    delete "${projectDir}/node_modules"
-}
-
-task apiDoc(type: YarnTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'yarn']) {
-    def swagger_file = tasks.getByPath(':server-api:apiDocs_mergeSwagger').outputs.files.first()
-    inputs.file(swagger_file)
+task apiDoc(type: NpmTask, dependsOn: [':server-api:apiDocs_mergeSwagger', 'npmInstall']) {
     inputs.dir('src')
-    inputs.files('webpack.api.doc.config.js', 'yarn.lock', 'tsconfig.json')
+    inputs.files('webpack.api.doc.config.js', 'package-lock.json', 'tsconfig.json')
     inputs.property('version', version)
 
     group = "documentation"
-    args = ['build', '--env', 'schema', swagger_file.toString()]
+    npmCommand = ['run']
+    args = ['build']
 
     outputs.dir("${buildDir}/api-docs")
 }

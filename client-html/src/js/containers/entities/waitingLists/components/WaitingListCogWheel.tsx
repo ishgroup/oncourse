@@ -3,10 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo, memo, useCallback } from "react";
-import { connect } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
+import React, { memo, useCallback, useMemo } from "react";
+import { connect } from "react-redux";
 import { State } from "../../../../reducers/state";
+import BulkDeleteCogwheelOption from "../../common/components/BulkDeleteCogwheelOption";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 
 const WaitingListCogWheel = memo<any>(props => {
@@ -24,7 +25,6 @@ const WaitingListCogWheel = memo<any>(props => {
 
   return (
     <>
-      <BulkEditCogwheelOption {...props} />
       {hoSelectedOrNew ? null : (
         <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions}>
           Enrol
@@ -35,6 +35,8 @@ const WaitingListCogWheel = memo<any>(props => {
           {selection.length > 1 && "s"}
         </MenuItem>
       )}
+      <BulkEditCogwheelOption {...props} />
+      <BulkDeleteCogwheelOption {...props}  />
     </>
   );
 });
@@ -44,5 +46,4 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(WaitingListCogWheel);
-
+export default connect<any, any, any>(mapStateToProps)(WaitingListCogWheel);

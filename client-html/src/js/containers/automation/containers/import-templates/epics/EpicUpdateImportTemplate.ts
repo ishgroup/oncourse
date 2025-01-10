@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { ImportModel } from "@api/model";
+import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { State } from "../../../../../reducers/state";
 import {
   GET_IMPORT_TEMPLATE,
   GET_IMPORT_TEMPLATES_LIST,
   UPDATE_IMPORT_TEMPLATE,
   UPDATE_IMPORT_TEMPLATE_FULFILLED
 } from "../actions/index";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import ImportTemplatesService from "../services/ImportTemplatesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
-import { State } from "../../../../../reducers/state";
 
 const request: EpicUtils.Request<State, { importTemplate: ImportModel }> = {
   type: UPDATE_IMPORT_TEMPLATE,

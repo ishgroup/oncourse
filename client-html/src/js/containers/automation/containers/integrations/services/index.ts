@@ -1,4 +1,4 @@
-import { IntegrationApi, Integration } from "@api/model";
+import { Integration, IntegrationApi } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class IntegrationService {
@@ -23,6 +23,10 @@ class IntegrationService {
 
   public deleteIntegrationItem(id: string): Promise<any> {
     return this.integrationApi.remove(id);
+  }
+
+  public getSsoPluginTypes(): Promise<number[]> {
+    return this.integrationApi.getSsoPluginTypes();
   }
 }
 

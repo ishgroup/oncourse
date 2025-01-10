@@ -108,7 +108,6 @@ class SessionApiService extends EntityApiService<SessionDTO, Session, SessionDao
                 if (!courseClass.isDistantLearningCourse) {
                     courseClass.room = null
                 }
-                courseClass.sessionsCount = 0
             }
         }
 

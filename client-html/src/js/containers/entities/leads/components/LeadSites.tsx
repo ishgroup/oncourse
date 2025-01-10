@@ -6,20 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { change } from "redux-form";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { Site } from "@api/model";
 import { Grid } from "@mui/material";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
 
 class LeadSites extends React.PureComponent<any, any> {
   sitesToNestedListItems = (sites: Site[]) =>
@@ -62,6 +62,7 @@ class LeadSites extends React.PureComponent<any, any> {
     const {
       foundQuickSearchSites,
       pendingQuickSearchSites,
+      errorQuickSearchSites,
       getQuickSearchSites,
       submitSucceeded,
       twoColumn,
@@ -79,6 +80,7 @@ class LeadSites extends React.PureComponent<any, any> {
             values={values && values.sites ? this.sitesToNestedListItems(values.sites) : []}
             searchValues={foundQuickSearchSites ? this.sitesToNestedListItems(foundQuickSearchSites) : []}
             pending={pendingQuickSearchSites}
+            aqlQueryError={errorQuickSearchSites}
             onAdd={this.onAddSite}
             onDelete={this.onDeleteSite}
             onDeleteAll={this.onDeleteAllSites}
@@ -98,7 +100,8 @@ class LeadSites extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   foundQuickSearchSites: state.plainSearchRecords["Site"].items,
-  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading
+  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading,
+  errorQuickSearchSites: state.plainSearchRecords["Site"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

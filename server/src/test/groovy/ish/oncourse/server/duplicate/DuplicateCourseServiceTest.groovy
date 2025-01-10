@@ -32,6 +32,7 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         course.setCode("Code")
         course.setName("TestCourse")
         course.setWebDescription("Test web description")
+        course.setShortWebDescription("Test short web description")
         course.setIsTraineeship(true)
         course.setIsSufficientForQualification(true)
         course.setCurrentlyOffered(true)
@@ -46,6 +47,8 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         Product product = createProduct(cayenneContext)
 
         Module module = cayenneContext.newObject(Module.class)
+        module.setIsCreditPointsOffered(false)
+        module.setIsCreditPointsShownOnWeb(true)
         module.setType(ModuleType.MODULE)
         module.setNationalCode("test")
         course.addToModules(module)
@@ -64,7 +67,6 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         CourseAttachmentRelation courseAttachmentRelation = cayenneContext.newObject(CourseAttachmentRelation.class)
         courseAttachmentRelation.setAttachedCourse(course)
         courseAttachmentRelation.setDocument(document)
-        courseAttachmentRelation.setDocumentVersion(null)
         courseAttachmentRelation.setSpecialType(null)
 
         cayenneContext.commitChanges()
@@ -100,6 +102,7 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         Assertions.assertEquals("Code1", duplicatedCourse.getCode())
         Assertions.assertEquals("TestCourse", duplicatedCourse.getName())
         Assertions.assertEquals("Test web description", duplicatedCourse.getWebDescription())
+        Assertions.assertEquals("Test short web description", duplicatedCourse.getShortWebDescription())
         Assertions.assertEquals(true, duplicatedCourse.getIsTraineeship())
         Assertions.assertEquals(true, duplicatedCourse.getIsSufficientForQualification())
         Assertions.assertEquals(true, duplicatedCourse.getCurrentlyOffered())

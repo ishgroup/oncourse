@@ -3,36 +3,36 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { createStyles, withStyles } from "@mui/styles";
-import { ClassCostRepetitionType } from "@api/model";
-import { Collapse, Divider } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import LockOpen from "@mui/icons-material/LockOpen";
-import Lock from "@mui/icons-material/Lock";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { PayRateTypes } from "./BudgetCostModal";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
+import { ClassCostRepetitionType } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
+import { Collapse, Divider, FormControlLabel, Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import {
+  decimalMinus,
+  decimalMul,
+  decimalPlus,
   formatCurrency,
   formatFieldPercent,
   normalizeNumberToZero,
   parseFieldPercent,
-  preventNegativeOrLogEnter
-} from "../../../../../../common/utils/numbers/numbersNormalizing";
-import { decimalMinus, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
-import WarningMessage from "../../../../../../common/components/form/fieldMessage/WarningMessage";
-import { getClassCostFee } from "../utils";
+  preventNegativeOrLogEnter,
+  WarningMessage
+} from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../../../common/utils/validation';
+import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
+import { DefinedTutorRoleExtended } from '../../../../../../model/preferences/TutorRole';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
+import { getClassCostFee } from '../utils';
+import { PayRateTypes, validatePayRateTypes } from './BudgetCostModal';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   divider: {
     borderBottom: `1px solid ${theme.palette.divider}`
   },
@@ -72,7 +72,7 @@ const TutorPayContent: React.FC<Props> = ({
   const [onCostLocked, setOnCostLocked] = useState(values.onCostRate === null);
   const onLockClick = () => {
     setOnCostLocked(prev => {
-      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : null));
+      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : 0));
       return !prev;
     });
   };
@@ -84,7 +84,7 @@ const TutorPayContent: React.FC<Props> = ({
     [values.courseClassTutorId, values.temporaryTutorId, classValues.tutors]
   );
 
-  const role = useMemo(() => tutorRoles.find(r => r.id === tutor.roleId), [tutor, tutorRoles]);
+  const role = useMemo(() => tutor && tutorRoles.find(r => r.id === tutor.roleId), [tutor, tutorRoles]);
 
   const rate = useMemo(() => ((role && role["currentPayrate.rate"]) ? parseFloat(role["currentPayrate.rate"]) : 0), [role]);
   const repetitionType = useMemo(() => ((role && role["currentPayrate.type"]) ? role["currentPayrate.type"] : ""), [role]);
@@ -137,12 +137,18 @@ const TutorPayContent: React.FC<Props> = ({
   return (
     <Grid container columnSpacing={3}>
       <Grid item xs={6}>
-        <Uneditable label="Contact" value={values.contactName} url={`/contact/${values.contactId}`} />
+        <Uneditable
+          label="Contact"
+          value={values.contactName}
+          labelAdornment={
+            <ContactLinkAdornment id={values.contactId} />
+          }
+        />
       </Grid>
       <Grid item xs={6} className="pb-2">
         <FormControlLabel
           className="checkbox"
-          control={<FormField type="checkbox" name="isSunk" color="secondary" fullWidth />}
+          control={<FormField type="checkbox" name="isSunk" color="secondary"  />}
           label="Sunk cost (not recoverable if class cancelled)"
         />
       </Grid>
@@ -167,6 +173,8 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Type"
                 items={PayRateTypes}
                 onChange={onRepetitionChange}
+                debounced={false}
+                validate={validatePayRateTypes}
               />
 
               {typeof repetitionType === "string" && repetitionType !== values.repetitionType && (
@@ -181,6 +189,7 @@ const TutorPayContent: React.FC<Props> = ({
                   label="Count"
                   validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                   normalize={normalizeNumberToZero}
+                  debounced={false}
                 />
               </Grid>
             )}
@@ -191,6 +200,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label={costLabel}
                 validate={greaterThanNullValidation}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
               {!isNaN(rate) && rate !== values.perUnitAmountExTax && (
                 <WarningMessage warning="The rate/amount entered differs from, and will override what is defined for the chosen role" />
@@ -215,6 +225,7 @@ const TutorPayContent: React.FC<Props> = ({
                 label="Count"
                 validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                 normalize={normalizeNumberToZero}
+                debounced={false}
               />
             </Typography>
           )}
@@ -227,16 +238,17 @@ const TutorPayContent: React.FC<Props> = ({
         <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className={classes.onCostRate}>
             <FormField
-              type="persent"
+              type="number"
               name="onCostRate"
               format={formatFieldPercent}
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
-              defaultValue={`${defaultOnCostRate * 100}%`}
               disabled={onCostLocked}
-              formatting="inline"
+              defaultValue={0}
+              debounced={false}
+              inline
             />
-            <span>oncost</span>
+            <span>% oncost</span>
             <span className="pl-1">
               <IconButton className="inputAdornmentButton" onClick={onLockClick}>
                 {!onCostLocked && <LockOpen className="inputAdornmentIcon" />}
@@ -278,4 +290,4 @@ const TutorPayContent: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(TutorPayContent);
+export default withStyles(TutorPayContent, styles);

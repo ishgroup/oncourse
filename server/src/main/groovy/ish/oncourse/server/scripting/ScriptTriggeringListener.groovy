@@ -15,6 +15,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.Script
+import ish.oncourse.server.cayenne.TagRelation
 import ish.persistence.Preferences
 import ish.scripting.ScriptResult
 import org.apache.cayenne.DataChannelSyncFilter
@@ -29,6 +30,8 @@ import org.apache.cayenne.map.LifecycleEvent
 import org.apache.cayenne.query.SelectQuery
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+
+import static ish.oncourse.server.api.servlet.ApiFilter.validateOnly
 
 class ScriptTriggeringListener implements DataChannelSyncFilter {
 
@@ -110,15 +113,18 @@ class ScriptTriggeringListener implements DataChannelSyncFilter {
 
 	@PreRemove
 	void preRemove(Object entity) {
-		scriptService.getScriptsForEntity(entity.getClass(), LifecycleEvent.PRE_REMOVE).each {script ->
-			scriptService.runAndWait(script, new ScriptParameters().fillDefaultParameters(entity), { ->
-				ObjectContext context = (ISHDataContext) cayenneService.getNewContext()
-				context.setReadOnly(true)
-				return context
-			},  { Exception e ->
-				logger.catching(e)
-				return ScriptResult.failure(e.getMessage())
-			})
+		// Don't trigger pre_remove event (for 'on Remove' trigger type) if a validation request is called (the request with header "x-validate-only=true")
+		if (!validateOnly.get()) {
+			scriptService.getScriptsForEntity(entity.getClass(), LifecycleEvent.PRE_REMOVE).each {script ->
+				scriptService.runAndWait(script, new ScriptParameters().fillDefaultParameters(entity), { ->
+					ObjectContext context = (ISHDataContext) cayenneService.getNewContext()
+					context.setReadOnly(true)
+					return context
+				},  { Exception e ->
+					logger.catching(e)
+					return ScriptResult.failure(e.getMessage())
+				})
+			}
 		}
 	}
 

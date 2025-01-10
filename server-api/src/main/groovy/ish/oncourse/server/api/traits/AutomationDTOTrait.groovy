@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.api.traits
 
+import ish.oncourse.server.api.v1.model.AutomationStatusDTO
 import ish.oncourse.server.api.v1.model.BindingDTO
 import ish.util.LocalDateUtils
 
@@ -28,7 +29,7 @@ trait AutomationDTOTrait implements _DTOTrait {
 
     abstract void setBody(String body)
 
-    abstract void setEnabled(Boolean enabled)
+    abstract void setStatus(AutomationStatusDTO status)
 
     abstract void setDescription(String description)
 
@@ -39,6 +40,14 @@ trait AutomationDTOTrait implements _DTOTrait {
     abstract void setCreatedOn(LocalDateTime createdOn)
 
     abstract void setModifiedOn(LocalDateTime modifiedOn)
+
+    abstract void setCategory(String category)
+
+    abstract void setAutomationTags(String tags)
+
+    abstract void setShortDescription(String shortDescription)
+
+
 
 
     void setCreatedOnDate(Date date) {
@@ -59,11 +68,17 @@ trait AutomationDTOTrait implements _DTOTrait {
 
     abstract Long getId()
 
-    abstract Boolean isEnabled()
+    abstract AutomationStatusDTO getStatus()
 
     abstract String getDescription()
 
     abstract List<BindingDTO> getVariables()
 
     abstract List<BindingDTO> getOptions()
+
+    abstract String getCategory()
+
+    abstract String getAutomationTags()
+
+    abstract String getShortDescription()
 }

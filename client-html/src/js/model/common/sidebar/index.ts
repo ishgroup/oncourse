@@ -1,5 +1,4 @@
-import { StringKeyObject } from "../CommomObjects";
-import { Category } from "@api/model";
+import { StringKeyObject } from "ish-ui";
 
 export interface CommonListItem extends StringKeyObject<boolean | string | number> {
   id: number;
@@ -7,6 +6,7 @@ export interface CommonListItem extends StringKeyObject<boolean | string | numbe
   custom?: boolean;
   hasIcon?: boolean;
   grayOut?: boolean;
+  disabled?: boolean;
 }
 
 export type CommonListFilterCondition = (item: CommonListItem | any) => boolean;
@@ -21,5 +21,5 @@ export interface SidebarSharedProps {
   activeFiltersConditions: CommonListFilterCondition[];
   history: any;
   search: string;
-  category: Category;
+  category: string;
 }

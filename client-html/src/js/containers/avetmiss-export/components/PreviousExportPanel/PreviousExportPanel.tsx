@@ -1,10 +1,9 @@
-import React from "react";
-import CardContent from "@mui/material/CardContent";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import { Card } from "@mui/material";
 import { FundingStatus, FundingUpload } from "@api/model";
+import { Card, Divider } from "@mui/material";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import React from "react";
 import InfoBox from "./InfoBox";
 
 interface Props {

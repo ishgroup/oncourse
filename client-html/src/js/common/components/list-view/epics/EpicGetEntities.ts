@@ -4,36 +4,50 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../epics/EpicUtils";
-import EntityService from "../../../services/EntityService";
-import { GET_RECORDS_FULFILLED, GET_RECORDS_REQUEST, setListSelection } from "../actions/index";
-import { State } from "../../../../reducers/state";
 import { GetRecordsArgs } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
+import { Create, Request } from "../../../epics/EpicUtils";
+import EntityService from "../../../services/EntityService";
+import {
+  GET_RECORDS_FULFILLED,
+  GET_RECORDS_FULFILLED_RESOLVE,
+  GET_RECORDS_REQUEST,
+  setListSearchError,
+  setListSelection
+} from "../actions";
 
-const request: EpicUtils.Request<any, GetRecordsArgs> = {
+const request: Request<any, GetRecordsArgs> = {
   type: GET_RECORDS_REQUEST,
   getData: (payload, state) => EntityService.getList(payload, state),
   processData: ([records, searchQuery], state: State, payload) => {
     const {
-     listUpdate, savedID, ignoreSelection, resolve
+      listUpdate, savedID, ignoreSelection, resolve
     } = payload;
-
-    if (resolve) {
-      resolve();
-    }
 
     return [
       {
         type: GET_RECORDS_FULFILLED,
-        payload: { records, payload, searchQuery }
+        payload: {records, payload, searchQuery}
       },
       ...(!ignoreSelection && !listUpdate && state.list.selection[0] !== "NEW"
         ? savedID && records.rows.find(r => String(r.id) === String(savedID))
           ? [setListSelection([String(savedID)])]
           : []
-        : [])
+        : []),
+      ...resolve ? [{
+        type: GET_RECORDS_FULFILLED_RESOLVE,
+        payload: {resolve}
+      }] : [],
     ];
+  },
+  processError: response => {
+    if (response && response.status === 400 && response.data.errorMessage.includes("Invalid search expression")) {
+      return [setListSearchError(true)];
+    }
+
+    return FetchErrorHandler(response);
   }
 };
 
-export const EpicGetEntities: Epic<any, any> = EpicUtils.Create(request);
+export const EpicGetEntities: Epic<any, any> = Create(request);

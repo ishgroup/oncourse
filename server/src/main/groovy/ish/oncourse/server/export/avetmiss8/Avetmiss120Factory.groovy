@@ -35,6 +35,7 @@ import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.Month
+
 /**
  * AVETMISS export for outcomes - also known as file 120.
  */
@@ -179,8 +180,8 @@ class Avetmiss120Factory extends AvetmissFactory {
         line.setPredominantDelivery(GetPredominantDeliveryMode.valueOf(deliveryMode).get())
 
         if (outcome.getStatus() in [OutcomeStatus.STATUS_ASSESSABLE_RPL_GRANTED, OutcomeStatus.STATUS_ASSESSABLE_RPL_NOT_GRANTED,
-                OutcomeStatus.STATUS_ASSESSABLE_RCC_GRANTED, OutcomeStatus.STATUS_ASSESSABLE_RCC_NOT_GRANTED,
-                OutcomeStatus.STATUS_ASSESSABLE_CREDIT_TRANSFER]) {
+                                    OutcomeStatus.STATUS_ASSESSABLE_RCC_GRANTED, OutcomeStatus.STATUS_ASSESSABLE_RCC_NOT_GRANTED,
+                                    OutcomeStatus.STATUS_ASSESSABLE_CREDIT_TRANSFER]) {
 
             line.setDeliveryMode("NNN")
         }
@@ -232,8 +233,8 @@ class Avetmiss120Factory extends AvetmissFactory {
             } else {
                 line.setResult(OutcomeStatus.STATUS_NON_ASSESSABLE_COMPLETED.getDatabaseValue().toString())
             }
-        } 
-        
+        }
+
         // outcomes which have not ended
         // if no submittions (and 'ignore' flag is false) - export outcomes as future (not yet started)
         // if the 'ignore assessments' flag enabled - export as commenced
@@ -405,7 +406,7 @@ class Avetmiss120Factory extends AvetmissFactory {
             if (totalHours.intValue() == 0) {
                 hourlyFee = Money.ZERO
             } else {
-                hourlyFee = (outcome.enrolment.invoiceLines*.finalPriceToPayIncTax.inject(Money.ZERO, { a, b -> a.add(b)}) as Money).divide(totalHours)
+                hourlyFee = (outcome.enrolment.invoiceLines*.finalPriceToPayIncTax.inject(Money.ZERO, { a, b -> a.add(b) }) as Money).divide(totalHours)
             }
 
             switch (jurisdiction) {
@@ -431,9 +432,9 @@ class Avetmiss120Factory extends AvetmissFactory {
 
             // If bad outcome, then set the fee back to 0
             if (outcome.getStatus() in [OutcomeStatus.STATUS_SUPERSEDED_QUALIFICATION_QLD,
-                           OutcomeStatus.STATUS_ASSESSABLE_CREDIT_TRANSFER,
-                           OutcomeStatus.STATUS_ASSESSABLE_RCC_GRANTED,
-                           OutcomeStatus.STATUS_ASSESSABLE_RCC_NOT_GRANTED]
+                                        OutcomeStatus.STATUS_ASSESSABLE_CREDIT_TRANSFER,
+                                        OutcomeStatus.STATUS_ASSESSABLE_RCC_GRANTED,
+                                        OutcomeStatus.STATUS_ASSESSABLE_RCC_NOT_GRANTED]
             ) {
                 fee = Money.ZERO
             }
@@ -443,7 +444,9 @@ class Avetmiss120Factory extends AvetmissFactory {
 
             // ------------------
             // fee exemption/concession type identifier
-            if (vfssId != null && (vfssId.startsWith("CS") || vfssId.startsWith("TSS"))) {
+            if (VETFeeExemptionType.OS == outcome.enrolment?.vetFeeExemptionType) {
+                line.setFeeExemption("OS")
+            } else if (vfssId != null && (vfssId.startsWith("CS") || vfssId.startsWith("TSS"))) {
                 line.setFeeExemption("Y")
             } else {
                 switch (jurisdiction) {
@@ -607,7 +610,8 @@ class Avetmiss120Factory extends AvetmissFactory {
                             outcome.vetPurchasingContractID
                     try {
                         line.ish_avetmiss_tasmania_resourcefee = outcome.enrolment.getCustomFieldValue("ish_avetmiss_tasmania_resourcefee") as int
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                     break
 
                 case ExportJurisdiction.VIC:

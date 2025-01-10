@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
 import { Contact } from "@api/model";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import React, { useCallback } from "react";
+import { change } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { defaultContactName, getContactFullName, openContactLink } from "../utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { getContactFullName } from "../utils";
 import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
 
 const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
@@ -24,7 +24,7 @@ const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any
   return (
     <div className="w-100 d-grid gridTemplateColumns-1fr">
       <Typography variant="subtitle2" noWrap>
-        {relationName && relatedContactName ? `${relationName} of ${defaultContactName(relatedContactName)}` : ""}
+        {relationName && relatedContactName ? `${relationName} of ${relatedContactName}` : ""}
       </Typography>
     </div>
   );
@@ -86,20 +86,21 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
     [form]
   );
 
+  // @ts-ignore
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={12} className={classes.select1}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name={`${item}.relatedContactId`}
           label="Related contact"
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
-          defaultDisplayValue={defaultContactName(row.relatedContactName)}
+          defaultValue={row.relatedContactName}
           onInnerValueChange={onRelatedContactChange}
           labelAdornment={
-            <LinkAdornment linkHandler={openContactLink} link={row.relatedContactId} disabled={!row.relatedContactId} />
+            <ContactLinkAdornment id={row?.relatedContactId} />
           }
           itemRenderer={ContactSelectItemRenderer}
           rowHeight={55}

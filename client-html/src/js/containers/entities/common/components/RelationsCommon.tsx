@@ -3,25 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import { change, Validator } from "redux-form";
 import { Course, EntityRelationType, Module, Qualification, Sale } from "@api/model";
+import { BooleanArgFunction, StringArgFunction } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { State } from "../../../../reducers/state";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { formatRelatedSalables, formattedEntityRelationTypes, salesSort } from "../utils";
-import { BooleanArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import NestedListRelationCell from "./NestedListRelationCell";
-import { clearSales, getSales } from "../../sales/actions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { change, Validator } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
-import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+import { getPluralSuffix } from "../../../../common/utils/strings";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import { EntityName } from "../../../../model/entities/common";
+import { EntityRelationTypeRendered } from "../../../../model/entities/EntityRelations";
+import { State } from "../../../../reducers/state";
+import { clearSales, getSales } from "../../sales/actions";
+import { RELATION_COURSE_COLUMNS_DEFAULT } from "../entityConstants";
+import { formatRelatedSalables, formattedEntityRelationTypes, mapRelatedSalables, salesSort } from "../utils";
+import NestedListRelationCell from "./NestedListRelationCell";
 
 interface Props {
   values: any;
@@ -54,6 +56,10 @@ interface Props {
     filter: (relation: EntityRelationTypeRendered) => boolean;
   },
   dataRowClass?: string;
+  coursesError?: boolean;
+  salesError?: boolean;
+  qualificationsError?: boolean;
+  modulesError?: boolean;
 }
 
 const RelationsCommon: React.FC<Props> = (
@@ -84,7 +90,11 @@ const RelationsCommon: React.FC<Props> = (
     rootEntity,
     relationTypesFilter,
     customAqlEntities,
-    dataRowClass = "grid-temp-col-3-fr"
+    dataRowClass = "grid-temp-col-3-fr",
+    coursesError,
+    salesError,
+    qualificationsError,
+    modulesError
   }
 ) => {
   const relationTypes = useMemo<EntityRelationTypeRendered[]>(() =>
@@ -133,18 +143,7 @@ const RelationsCommon: React.FC<Props> = (
 
   const onAdd = (salesToAdd: NestedListItem[]) => {
     const newSalesList = values.relatedSellables.concat(
-      salesToAdd.map(s => ({
-        id: s.entityId,
-        tempId: s.entityId,
-        name: s.primaryText,
-        code: s.secondaryText,
-        active: s.active,
-        type: s.entityName,
-        expiryDate: null,
-        entityFromId: s.entityId,
-        entityToId: null,
-        relationId: -1
-        }))
+      salesToAdd.map(mapRelatedSalables)
     );
     newSalesList.sort(salesSort);
     dispatch(change(form, "relatedSellables", newSalesList));
@@ -185,7 +184,7 @@ const RelationsCommon: React.FC<Props> = (
     <NestedList
       name={name}
       validate={validate ? [validate, validateRelations] : validateRelations}
-      title={`${listValues.length || ""} relation${listValues.length === 1 ? "" : "s"}`}
+      title={`${listValues.length || ""} relation${getPluralSuffix(listValues.length)}`}
       formId={values.id}
       values={listValues}
       searchValues={searchValues}
@@ -229,6 +228,7 @@ const RelationsCommon: React.FC<Props> = (
       resetSearch={submitSucceeded}
       dataRowClass={dataRowClass}
       aqlEntities={customAqlEntities || aqlEntities}
+      aqlQueryError={coursesError || salesError || qualificationsError || modulesError}
       CustomCell={relationCell}
     />
 );
@@ -237,12 +237,16 @@ const RelationsCommon: React.FC<Props> = (
 const mapStateToProps = (state: State) => ({
   courses: state.plainSearchRecords["Course"].items,
   coursesPending: state.plainSearchRecords["Course"].loading,
+  coursesError: state.plainSearchRecords["Course"].error,
   sales: state.sales.items,
   salesPending: state.sales.pending,
+  salesError: state.sales.error,
   qualifications: state.plainSearchRecords["Qualification"].items,
   qualificationsPending: state.plainSearchRecords["Qualification"].loading,
+  qualificationsError: state.plainSearchRecords["Qualification"].error,
   modules: state.plainSearchRecords["Module"].items,
   modulesPending: state.plainSearchRecords["Module"].loading,
+  modulesError: state.plainSearchRecords["Module"].error,
   entityRelationTypes: state.preferences.entityRelationTypes
 });
 
@@ -265,7 +269,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearSalesSearch: (loading?: boolean) => dispatch(clearSales(loading)),
   searchCourses: (search: string) => {
     dispatch(setCommonPlainSearch("Course", search));
-    dispatch(getCommonPlainRecords("Course", 0, "code,name,currentlyOffered,isShownOnWeb", true, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Course", 0, RELATION_COURSE_COLUMNS_DEFAULT, true, null, PLAIN_LIST_MAX_PAGE_SIZE));
   },
   clearCoursesSearch: (loading?: boolean) => dispatch(clearCommonPlainRecords("Course", loading))
 });

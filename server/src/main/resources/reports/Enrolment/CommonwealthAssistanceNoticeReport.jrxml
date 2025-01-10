@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CommonwealthAssistanceNoticeReport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty">
-    <property name="name" value="Commonwealth Assistance Notice"/>
-    <property name="entity" value="Enrolment"/>
     <property name="isSubreport" value="false"/>
-    <property name="isVisible" value="true"/>
-
-    <property name="keyCode" value="ish.oncourse.enrolment.can"/>
     <property name="ish.oncourse.description" value="This report prints in Landscape format. It prints only enrolments from classes with ticked checkbox 'This is a VET Student Loan eligible class'. Other enrolments will be skipped."/>
     <property name="ish.oncourse.pdfFileName" value="CommonwealthAssistanceNoticeReport_report.pdf"/>
     <property name="ireport.scriptlethandling" value="0"/>
@@ -299,7 +294,7 @@
             <textField isBlankWhenNull="true">
                 <reportElement style="header 3 (right)" x="420" y="0" width="60" height="40"/>
                 <textElement verticalAlignment="Top"/>
-                <textFieldExpression><![CDATA[$F{enrolment}.courseClass.course.fullTimeLoad ? $F{enrolment}.courseClass.ccourse.fullTimeLoad.toFloat() : 0]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{enrolment}.courseClass.course.fullTimeLoad ? $F{enrolment}.courseClass.course.fullTimeLoad.toFloat() : 0]]></textFieldExpression>
             </textField>
             <textField isBlankWhenNull="true">
                 <reportElement style="header 3 (right)" x="480" y="0" width="60" height="40"/>

@@ -29,7 +29,7 @@ export const processNotesAsyncQueue = async (actions: QueuedAction[]) => {
   const noteActions = actions.filter(a => a.entity === "Note");
 
   await noteActions.map(a => {
-    const { payload } = a.actionBody;
+    const {payload} = a.actionBody;
 
     switch (a.method) {
       case "POST": {
@@ -44,8 +44,8 @@ export const processNotesAsyncQueue = async (actions: QueuedAction[]) => {
     }
     return () => Promise.resolve();
   })
-  .reduce(async (a, b) => {
-    await a;
-    await b();
-  }, Promise.resolve());
+    .reduce(async (a, b) => {
+      await a;
+      await b();
+    }, Promise.resolve());
 };

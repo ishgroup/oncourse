@@ -3,11 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  CheckoutEnrolmentCustom,
-  CheckoutProductPurchase,
-  CheckoutSaleRelationExtended
-} from "../../../model/checkout";
+import { CheckoutAddItemsRequiest, CheckoutSaleRelationExtended } from "../../../model/checkout";
 
 export const CHECKOUT_ADD_CONTACT = "checkout/add/contact";
 export const CHECKOUT_REMOVE_CONTACT = "checkout/remove/contact";
@@ -87,7 +83,7 @@ export const toggleSendContext = (listIndex: number, type: string) => ({
   payload: { listIndex, type }
 });
 
-export const checkoutAddItems = (items: { enrolments?: CheckoutEnrolmentCustom[], purchases?: CheckoutProductPurchase[] }) => ({
+export const checkoutAddItems = (items: CheckoutAddItemsRequiest) => ({
   type: CHECKOUT_ADD_ITEMS,
   payload: items
 });

@@ -1,25 +1,25 @@
-import * as React from "react";
-import { withStyles } from "@mui/styles";
-import MuiTextField from "@mui/material/TextField";
+import Input from '@mui/material/Input';
+import { AppTheme } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = theme => ({
+const styles = (theme: AppTheme) => ({
   inputWrapper: {
     "&:nth-child(3)": {
       marginRight: "32px"
-    }
-  },
-  root: {
+    },
     padding: "3px"
   },
   input: {
     width: "10px",
-    border: "1px solid #ced4da",
     padding: "21px 25px",
+    border: "1px solid #ced4da",
+    borderRadius: theme.shape.borderRadius,
     color: "#868686",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
     "&:focus": {
-      borderColor: "#d9d8d9",
-      boxShadow: "0 0 0 0.1rem #d9d8d9"
+      borderColor: theme.palette.primary.main,
+      boxShadow: `0 0 0 0.1rem ${theme.palette.primary.main}`
     }
   }
 });
@@ -29,22 +29,17 @@ class AuthDigitInputBase extends React.Component<any, any> {
     const { classes, margin = "dense", ...props } = this.props;
 
     return (
-      <MuiTextField
+      <Input
         type="text"
         classes={{
-          root: classes.inputWrapper
+          root: classes.inputWrapper,
+          input: classes.input
         }}
         name={props.id}
-        InputProps={{
-          disableUnderline: true,
-          classes: {
-            root: classes.root,
-            input: classes.input
-          },
-          inputProps: {
-            maxLength: 1
-          }
+        inputProps={{
+          maxLength: 1
         }}
+        disableUnderline
         margin={margin}
         {...props}
       />
@@ -52,7 +47,7 @@ class AuthDigitInputBase extends React.Component<any, any> {
   }
 }
 
-const AuthDigitInput = withStyles(styles)(AuthDigitInputBase);
+const AuthDigitInput = withStyles(AuthDigitInputBase, styles);
 
 // Redux Form field auth code digit input component creator
 export const AuthDigitField = props => {

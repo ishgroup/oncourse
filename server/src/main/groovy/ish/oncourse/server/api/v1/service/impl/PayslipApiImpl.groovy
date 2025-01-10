@@ -69,9 +69,4 @@ class PayslipApiImpl implements PayslipApi {
     void update(Long id, PayslipDTO payslip) {
         payslipApiService.update(id, payslip)
     }
-
-    @Override
-    void bulkChange(DiffDTO diff) {
-        payslipApiService.bulkChange(diff)
-    }
 }

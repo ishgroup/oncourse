@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne
 import com.google.inject.Inject
 import ish.common.types.EnrolmentStatus
 import ish.common.types.InvoiceType
+import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.InvoiceInterface
@@ -25,6 +26,7 @@ import org.apache.cayenne.exp.Expression
 import org.apache.cayenne.exp.ExpressionFactory
 
 import javax.annotation.Nonnull
+import java.time.LocalDate
 
 /**
  * Invoices are where the accounting side of onCourse meets the training and delivery parts of the
@@ -37,7 +39,7 @@ import javax.annotation.Nonnull
  */
 @API
 @QueueableEntity
-class Invoice extends _Invoice implements InvoiceInterface {
+class Invoice extends _Invoice implements InvoiceInterface, ExpandableTrait {
 
     @Inject
     private transient IAutoIncrementService autoIncrementService
@@ -53,6 +55,13 @@ class Invoice extends _Invoice implements InvoiceInterface {
 
     List<InvoiceLine> getLines() {
         return getInvoiceLines()
+    }
+
+    @Override
+    List<AbstractInvoiceLine> getAbstractInvoiceLines() {
+        new ArrayList<AbstractInvoiceLine>(){{
+            addAll(invoiceLines)
+        }}
     }
 
     @Override
@@ -174,6 +183,24 @@ class Invoice extends _Invoice implements InvoiceInterface {
         return super.getDebtorsAccount()
     }
 
+    CourseClass getAnyCourseClass(){
+        return invoiceLines.find {it.enrolment?.courseClass != null}?.enrolment?.courseClass
+    }
+
+    /**
+     *
+     * @return map of products, related to this invoice, with their profound quantities
+     */
+    List<Map.Entry<Product,BigDecimal>> getProductsWithQuantities(){
+        Map<Product, BigDecimal> result = new HashMap<>()
+        invoiceLines.each { def invoiceLine ->
+            invoiceLine.productItems.each { def productItem ->
+                result.putIfAbsent(productItem.product, invoiceLine.quantity)
+            }
+        }
+        return result.entrySet().toList()
+    }
+
     /**
      * This is the contact to whom the invoice was issued. They are liable for the debt this invoice represents.
      * Note that the invoice contact might not be the same contact as the person enrolled in classes linked to
@@ -244,4 +271,31 @@ class Invoice extends _Invoice implements InvoiceInterface {
         return "#" + getInvoiceNumber() + " " + getDescription()
     }
 
+    void createPaymentDues(Money currentPaymentInWithVoucherAmount, LocalDate currentPaymentInDate) {
+        LocalDate currentDate = LocalDate.now()
+        if (dateDue.isAfter(currentDate)) {
+            createDueDate(currentPaymentInWithVoucherAmount, currentPaymentInDate)
+            Money nextPaymentDueAmount = totalIncTax.subtract(currentPaymentInWithVoucherAmount)
+            if (nextPaymentDueAmount > 0) {
+                createDueDate(nextPaymentDueAmount, dateDue)
+            }
+        } else {
+            createDueDate(totalIncTax, dateDue)
+        }
+    }
+
+    private InvoiceDueDate createDueDate(Money amount, LocalDate date) {
+        InvoiceDueDate dueDate = context.newObject(InvoiceDueDate)
+
+        dueDate.invoice = this
+        dueDate.amount = amount
+        dueDate.dueDate = date
+
+        return dueDate
+    }
+
+    @Override
+    Class<? extends CustomField> getCustomFieldClass() {
+        return InvoiceCustomField
+    }
 }

@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
 import debounce from "lodash.debounce";
+import React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
 import { CheckoutSummary } from "../../../../model/checkout";
 import { CHECKOUT_CONTACT_COLUMNS, CheckoutPage } from "../../constants";
-import SelectedContactRenderer from "./SelectedContactRenderer";
 import HeaderField from "../HeaderField";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
+import SelectedContactRenderer from "./SelectedContactRenderer";
 
 export interface Props {
   setActiveField: (field: string) => void;

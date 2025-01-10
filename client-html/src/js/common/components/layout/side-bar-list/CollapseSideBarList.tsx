@@ -3,69 +3,66 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import IconButton from "@mui/material/IconButton";
-import Collapse from "@mui/material/Collapse";
-import { ExpandMore } from "@mui/icons-material";
-import createStyles from "@mui/styles/createStyles";
-import debounce from "lodash.debounce";
-import { CommonListItem, SidebarSharedProps } from "../../../../model/common/sidebar";
-import { latestActivityStorageHandler } from "../../../utils/storage";
-import AddButton from "../../icons/AddButton";
-import CollapseSideBarListItem from "./CollapseSideBarListItem";
+import { ExpandMore } from '@mui/icons-material';
+import { ListItemButton } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import clsx from 'clsx';
+import { AddButton } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { CommonListItem, SidebarSharedProps } from '../../../../model/common/sidebar';
+import { latestActivityStorageHandler } from '../../../utils/storage';
+import CollapseSideBarListItem from './CollapseSideBarListItem';
 
-const styles = theme => createStyles({
-    listItemPadding: {
-      padding: `${theme.spacing(0.5)} ${theme.spacing(3)}`,
-      minHeight: "unset"
-    },
-    listHeadingPadding: {
-      padding: theme.spacing(0, 0, 0, 3),
-      height: "auto"
-    },
-    listLabelPadding: {
-      padding: theme.spacing(1, 2.5, 1, 0)
-    },
-    expandIcon: {
-      color: theme.palette.text.secondary,
-      marginLeft: theme.spacing(1)
-    },
-    plusIconContainer: {
-      marginLeft: "auto"
-    },
-    inactiveText: {
-      opacity: 0.5
-    },
-    truncateLabel: {
-      display: "block",
-      textOverflow: "ellipsis",
-      overflow: "hidden",
-      whiteSpace: "nowrap"
-    },
-    collapseButton: {
-      position: "absolute",
-      bottom: `-${theme.spacing(0.5)}`,
-      height: theme.spacing(3),
-      width: theme.spacing(3),
-      transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
-      padding: 0,
-      marginLeft: theme.spacing(0.5)
-    },
-    collapseButtonReversed: {
-      transform: "rotate(180deg)"
-    },
-    itemIcon: {
-      fontSize: "14px",
-      verticalAlign: "middle",
-      marginLeft: theme.spacing(1)
-    }
-  });
+const styles = theme => ({
+  listItemPadding: {
+    padding: `${theme.spacing(0.5)} ${theme.spacing(3)}`,
+    minHeight: "unset"
+  },
+  listHeadingPadding: {
+    padding: theme.spacing(0, 0, 0, 3),
+    height: "auto"
+  },
+  listLabelPadding: {
+    padding: theme.spacing(1, 2.5, 1, 0)
+  },
+  expandIcon: {
+    color: theme.palette.text.secondary,
+    marginLeft: theme.spacing(1)
+  },
+  plusIconContainer: {
+    marginLeft: "auto"
+  },
+  inactiveText: {
+    opacity: 0.5
+  },
+  truncateLabel: {
+    display: "block",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap"
+  },
+  collapseButton: {
+    position: "absolute",
+    bottom: `-${theme.spacing(0.5)}`,
+    height: theme.spacing(3),
+    width: theme.spacing(3),
+    transition: `transform ${theme.transitions.duration.shortest}ms ${theme.transitions.easing.easeInOut}`,
+    padding: 0,
+    marginLeft: theme.spacing(0.5)
+  },
+  collapseButtonReversed: {
+    transform: "rotate(180deg)"
+  },
+  itemIcon: {
+    fontSize: "14px",
+    verticalAlign: "middle",
+    marginLeft: theme.spacing(1)
+  }
+});
 
 interface Props {
   data: CommonListItem[] | any[];
@@ -78,29 +75,27 @@ interface Props {
   plusIconFullPath?: string;
   ItemIcon?: React.ComponentType<any>;
   classes?: any;
-  disableCollapse?: boolean;
   defaultCollapsed?: boolean;
-  ItemIconRenderer?: React.ReactNode;
+  ItemIconRenderer?: any;
 }
 
 const CollapseMenuListBase = React.memo<Props>(
   ({
-    classes,
-    plusIconPath,
-    plusIconFullPath,
-    basePath,
-    data = [],
-    name,
-    customPlusHandler,
-    ItemIcon,
-    linkCondition,
-    sharedProps: {
-      search, history, activeFiltersConditions, category
-    },
-    disableCollapse,
-    defaultCollapsed,
-    ItemIconRenderer
-  }) => {
+     classes,
+     plusIconPath,
+     plusIconFullPath,
+     basePath,
+     data = [],
+     name,
+     customPlusHandler,
+     ItemIcon,
+     linkCondition,
+     sharedProps: {
+       search, history, activeFiltersConditions, category
+     },
+     defaultCollapsed,
+     ItemIconRenderer
+   }) => {
     const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed || false);
     const [activeLink, setActiveLink] = useState<string>("");
     const [openedTooltip, setOpenOpenTooltip] = React.useState<number>(null);
@@ -134,7 +129,7 @@ const CollapseMenuListBase = React.memo<Props>(
         if (match && activeLink !== index.toString()) {
           setActiveLink(index.toString());
 
-          latestActivityStorageHandler({ name: itemName, date: new Date().toISOString(), id: to }, category);
+          latestActivityStorageHandler({name: itemName, date: new Date().toISOString(), id: to}, category);
 
           return true;
         }
@@ -171,20 +166,17 @@ const CollapseMenuListBase = React.memo<Props>(
     }, [search, data, activeFiltersConditions]);
 
     useEffect(() => {
-      if (history.location?.pathname?.replaceAll('/', '') === basePath?.replaceAll('/', '') && filtered.length) {
+      if (filtered.length && history.location?.pathname?.replaceAll('/', '') === basePath?.replaceAll('/', '')) {
         history.push(linkCondition ? linkCondition(filtered[0]) : basePath + filtered[0].id);
-        if (collapsed) setCollapsed(false);
-      } else if (history.location?.pathname?.replaceAll('/', '').includes(basePath?.replaceAll('/', ''))) {
-        if (collapsed) setCollapsed(false);
       }
     }, [history.location.pathname, basePath, linkCondition, filtered]);
 
     return (
       <List disablePadding className="pt-1">
-        <ListItem
+        <ListItemButton
           disableGutters
+          disableRipple
           className={classes.listHeadingPadding}
-          button={!disableCollapse as any}
           onClick={onClickCollapse}
         >
           <div className={clsx("heading", classes.listLabelPadding)}>
@@ -192,23 +184,22 @@ const CollapseMenuListBase = React.memo<Props>(
               {name}
               <IconButton
                 className={clsx(classes.collapseButton, "d-inline-flex", {
-                  [classes.collapseButtonReversed]: collapsed,
-                  "invisible": disableCollapse
+                  [classes.collapseButtonReversed]: collapsed
                 })}
               >
-                <ExpandMore />
+                <ExpandMore/>
               </IconButton>
             </span>
           </div>
 
           {(plusIconPath || plusIconFullPath || customPlusHandler) && (
             <div className={classes.plusIconContainer}>
-              <AddButton className="p-1" onClick={onClickPlus} />
+              <AddButton className="p-1" onClick={onClickPlus}/>
             </div>
           )}
-        </ListItem>
+        </ListItemButton>
 
-        <Collapse in={disableCollapse || Boolean(search) || !collapsed} mountOnEnter unmountOnExit>
+        <Collapse in={Boolean(search) || !collapsed} mountOnEnter unmountOnExit>
           {filtered.map((item, index) => {
             const to = linkCondition ? linkCondition(item) : basePath + item.id;
 
@@ -235,4 +226,4 @@ const CollapseMenuListBase = React.memo<Props>(
   }
 );
 
-export default withStyles(styles)(CollapseMenuListBase);
+export default withStyles(CollapseMenuListBase, styles);

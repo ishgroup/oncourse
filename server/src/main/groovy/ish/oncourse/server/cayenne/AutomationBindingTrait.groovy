@@ -61,6 +61,8 @@ trait AutomationBindingTrait {
                     return Boolean.valueOf(valueString)
                 case MONEY:
                     return new Money(valueString)
+                case NUMBER:
+                    return Double.parseDouble(valueString)
                 case ENTITY:
                 case LIST:
                 case MAP:

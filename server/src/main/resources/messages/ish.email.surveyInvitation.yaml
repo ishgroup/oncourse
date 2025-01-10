@@ -1,5 +1,0 @@
-name: survey invitation
-type: email
-keyCode: ish.email.surveyInvitation
-txtTemplate: ish.email.surveyInvitation.txt
-subject: Survey invitation

@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import PaletteIcon from "@mui/icons-material/PaletteOutlined";
-import LogoutIcon from "@mui/icons-material/PowerSettingsNewOutlined";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-import { Dispatch } from "redux";
-import { Typography } from "@mui/material";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { ThemeContext } from "../../ThemeContext";
+import PaletteIcon from '@mui/icons-material/PaletteOutlined';
+import LogoutIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import { Grid, MenuItem, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Tooltip from '@mui/material/Tooltip';
+import { makeAppStyles, ShowConfirmCaller } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import { Dispatch } from 'redux';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import HamburgerMenu from '../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu';
+import { VARIANTS } from '../../../common/components/layout/swipeable-sidebar/utils';
+import { useAppSelector } from '../../../common/utils/hooks';
+import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   APP_BAR_HEIGHT,
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_ACTIVITY_STORAGE_NAME
-} from "../../../constants/Config";
-import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
-import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
-import DashboardService from "../services/DashboardService";
-import { LSGetItem, LSRemoveItem } from "../../../common/utils/storage";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { useAppSelector } from "../../../common/utils/hooks";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
-import { getSystemUserData } from "../../../common/actions";
+} from '../../../constants/Config';
+import { getSystemUserData } from '../../login/actions';
+import { ThemeContext } from '../../ThemeContext';
+import DashboardService from '../services/DashboardService';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   appBar: {
     backgroundColor: theme.palette.background.default,
-    zIndex: theme.zIndex.appBar,
     height: APP_BAR_HEIGHT,
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 3),
     position: "absolute",
     width: "100%",
     display: "flex",
@@ -46,7 +41,7 @@ const useStyles = makeAppStyles(theme => ({
     borderBottom: `1px solid ${theme.palette.divider}`
   },
   toolBarButton: {
-    color: theme.palette.mode === "light" ? theme.palette.primary.main : theme.palette.primary.contrastText
+    color: theme.addButtonColor.color
   },
   upgradeButton: {
     color: theme.palette.primary.contrastText,
@@ -72,7 +67,7 @@ const DashboardHeader = (
     drawerOpened,
   }: Props
 ) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [themeMenu, setThemeMenu] = useState();
 
@@ -102,10 +97,8 @@ const DashboardHeader = (
   const systemUser = useAppSelector(state => state.systemUser);
 
   useEffect(() => {
-    if (!systemUser?.firstName) {
-      dispatch(getSystemUserData());
-    }
-  }, [systemUser]);
+    dispatch(getSystemUserData());
+  }, []);
     
   return (
     <header className={classes.appBar}>

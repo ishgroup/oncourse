@@ -1,30 +1,46 @@
+import { Route } from "../../routes";
+import Avetmiss from "./containers/avetmiss/Avetmiss";
+import ClassTypes from "./containers/class-types/ClassTypes";
 import Class from "./containers/class/ClassDefaults";
 import College from "./containers/college/College";
-import LDAP from "./containers/ldap/LDAP";
-import Licences from "./containers/licences/Licences";
-import Messaging from "./containers/messaging/Messaging";
-import Maintenance from "./containers/maintenance/Maintenance";
-import Avetmiss from "./containers/avetmiss/Avetmiss";
-import FundingContracts from "./containers/funding-contracts/FundingContracts";
-import Financial from "./containers/financial/Financial";
-import Holidays from "./containers/holidays/Holidays";
-import CollectionForms from "./containers/data-collection-forms/CollectionFormContainer";
-import CollectionRules from "./containers/data-collection-rules/CollectionRuleFormContainer";
-import PaymentTypes from "./containers/payment-types/PaymentTypes";
-import TaxTypes from "./containers/tax-types/TaxTypes";
 import ConcessionTypes from "./containers/concession-types/ConcessionTypes";
 import ContactRelationTypes from "./containers/contact-relation-types/ContactRelationTypes";
+import CourseTypes from "./containers/course-types/CourseTypes";
 import CustomFields from "./containers/custom-fields/CustomFields";
-import TutorRoleForm from "./containers/tutor-roles/TutorRoleFormContainer";
+import CollectionForms from "./containers/data-collection-forms/CollectionFormContainer";
+import CollectionRules from "./containers/data-collection-rules/CollectionRuleFormContainer";
 import EntityRelationTypes from "./containers/entity-relation-types/EntityRelationTypes";
+import Financial from "./containers/financial/Financial";
+import FundingContracts from "./containers/funding-contracts/FundingContracts";
 import GradingForm from "./containers/grading/GradingForm";
+import Holidays from "./containers/holidays/Holidays";
+import LDAP from "./containers/ldap/LDAP";
+import Licences from "./containers/licences/Licences";
+import Maintenance from "./containers/maintenance/Maintenance";
+import Messaging from "./containers/messaging/Messaging";
+import PaymentTypes from "./containers/payment-types/PaymentTypes";
+import Subjects from "./containers/subjects/Subjects";
+import TaxTypes from "./containers/tax-types/TaxTypes";
+import TutorRoleForm from "./containers/tutor-roles/TutorRoleFormContainer";
 
-const preferencesRoutes = [
+const preferencesRoutes: Route[] = [
   {
     title: "AVETMISS",
     path: "/preferences/avetmiss",
     url: "/preferences/avetmiss",
     main: Avetmiss
+  },
+  {
+    title: "Course types",
+    path: "/preferences/courseTypes",
+    url: "/preferences/courseTypes",
+    main: CourseTypes
+  },
+  {
+    title: "Class types",
+    path: "/preferences/classTypes",
+    url: "/preferences/classTypes",
+    main: ClassTypes
   },
   {
     title: "Class defaults",
@@ -117,24 +133,33 @@ const preferencesRoutes = [
     main: EntityRelationTypes
   },
   {
+    title: "Subjects",
+    path: "/preferences/subjects",
+    url: "/preferences/subjects",
+    main: Subjects
+  },
+  {
     title: "Tax types",
     path: "/preferences/taxTypes",
     url: "/preferences/taxTypes",
     main: TaxTypes
   },
   {
+    title: "Data collection rules",
     path: "/preferences/collectionRules/:action/:id?",
     url: "/preferences/collectionRules",
     noMenuLink: true,
     main: CollectionRules
   },
   {
+    title: "Data collection forms",
     path: "/preferences/collectionForms/:action/:type/:id?",
     url: "/preferences/collectionForms",
     noMenuLink: true,
     main: CollectionForms
   },
   {
+    title: "Tutor roles",
     path: "/preferences/tutorRoles/:id?",
     url: "/preferences/tutorRoles",
     noMenuLink: true,

@@ -3,31 +3,38 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { getMenuTags } from "ish-ui";
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { setListMenuTags } from "../../../../common/components/list-view/actions";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../tags/actions";
 import TagsService from "../../../tags/services/TagsService";
-import { GET_ENTITY_TAGS_REQUEST_FULFILLED, GET_LIST_TAGS_FULFILLED } from "../../../tags/actions";
-import { SET_LIST_MENU_TAGS } from "../../../../common/components/list-view/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_COURSE_CLASS_TAGS } from "../actions";
 
 const request: EpicUtils.Request<any, never> = {
   type: GET_COURSE_CLASS_TAGS,
-  getData: () => TagsService.getTags("CourseClass").then(courseClassTags => TagsService.getTags("Course").then(courseTags => ({ courseClassTags, courseTags }))),
-  processData: ({ courseClassTags, courseTags }) => {
+  getData: async () => {
+    const courseClassTags = await TagsService.getTags("CourseClass");
+    const courseTags = await TagsService.getTags("Course");
+    const checklists = await TagsService.getChecklists("CourseClass");
+
+    return { courseClassTags, courseTags, checklists };
+  },
+  processData: ({ courseClassTags, courseTags, checklists }) => {
     const menuTags = getMenuTags(courseClassTags, [], null, null, "CourseClass")
       .concat(getMenuTags(courseTags, [], "Courses", null, "Course", "course"));
 
+    const checkedChecklists = getMenuTags(checklists, []);
+    const uncheckedChecklists = [...checkedChecklists];
+
     return [
-      {
-        type: GET_LIST_TAGS_FULFILLED
-      },
-      {
-        type: SET_LIST_MENU_TAGS,
-        payload: { menuTags }
-      },
+      setListMenuTags(
+        menuTags,
+        checkedChecklists,
+        uncheckedChecklists
+      ),
       {
         type: GET_ENTITY_TAGS_REQUEST_FULFILLED,
         payload: { tags: courseClassTags, entityName: "CourseClass" }

@@ -1,12 +1,8 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetPaymentIn } from "./EpicGetPaymentIn";
-import { EpicUpdatePaymentIn } from "./EpicUpdatePaymentIn";
-import { EpicReversePaymentIn } from "./EpicReversePaymentIn";
 import { EpicGetCustomValues } from "./EpicGetCustomValues";
+import { EpicReversePaymentIn } from "./EpicReversePaymentIn";
 
 export const EpicPaymentIn = combineEpics(
-  EpicGetPaymentIn,
-  EpicUpdatePaymentIn,
   EpicReversePaymentIn,
   EpicGetCustomValues
 );

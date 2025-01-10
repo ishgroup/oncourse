@@ -50,6 +50,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	public static final String TRAINING_PLAN_END_DATE_PROPERTY = "trainingPlanEndDate"
 	public static final String PRESENT_ATTENDENCE_PERCENT_KEY = "presentAttendancePercent"
 	public static final String MARKED_ASSESSMENT_PERCENT_KEY = "markedAssessmentPercent"
+	public static final String PRINTED_CERTIFICATE_KEY = "printedCertificate"
 
 	public static final String CODE = "code";
 	public static final String NAME = "name";
@@ -169,6 +170,13 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 		return fundingSource
 	}
 
+	/**
+	 * An AVETMISS reporting requirement for the funding source state ID of an outcome. Returns value from outcome even if it doesn't override
+	 * the same related enrolment property.
+	 *
+	 * @return funding source state ID related to outcome
+	 */
+	@API
 	String getOutcomeVetFundingSourceStateID() {
 		return super.getVetFundingSourceStateID()
 	}
@@ -189,6 +197,13 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 		return contractID
 	}
 
+	/**
+	 * An AVETMISS reporting requirement for the purchasing contract ID of an outcome. If the purchasing contract ID
+	 * is not overridden in the outcome, this function will still return the value from the outcome instead of related enrolment property.
+	 *
+	 * @return purchasing contract ID related to outcome
+	 */
+	@API
 	String getOutcomeVetPurchasingContractID() {
 		return super.getVetPurchasingContractID()
 	}
@@ -204,7 +219,7 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	String getVetPurchasingContractScheduleID() {
 		String contractID = super.getVetPurchasingContractScheduleID()
 		if (getEnrolment() != null && contractID == null) {
-			contractID = getEnrolment().getCourseClass().getVetPurchasingContractScheduleID()
+			contractID = enrolment.vetPurchasingContractScheduleID ?: enrolment.courseClass.vetPurchasingContractScheduleID
 		}
 		return contractID
 	}
@@ -406,6 +421,14 @@ class Outcome extends _Outcome implements Queueable, OutcomeTrait, OutcomeInterf
 	@API
 	LocalDate getActualEndDate() {
 		return LocalDateUtils.dateToValue(calculateEndDate(new AttendanceTakenProcessor()))
+	}
+
+	/**
+	 * @return 'Yes' if outcome linked to at least 1 printed and non-revoked certificate
+	 */
+	@API
+	String getPrintedCertificate() {
+		return (certificateOutcomes?.certificate?.find { it.printedOn && it.revokedOn == null } != null) ? "Yes" : ""
 	}
 
 	Date calculateStartDate(AttendanceProcessor attendanceProcessor) {

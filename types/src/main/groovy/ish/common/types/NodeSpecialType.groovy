@@ -26,6 +26,7 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 *
 	 * There can only be one tag group called "subjects" and there must always be one.
 	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter cources on the college website
 	 */
 	@API
 	SUBJECTS(1, "Subjects"),
@@ -57,7 +58,37 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	 * Assessment methods are a tag group used to mark assessments.
 	 */
 	@API
-	ASSESSMENT_METHOD(5, "Assessment methods");
+	ASSESSMENT_METHOD(5, "Assessment methods"),
+
+	/**
+	 * Database value: 6
+	 *
+	 * There can only be one tag group called "terms" and there must always be one.
+	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter classes on the college website
+	 */
+	@API
+	TERMS(6, "Terms"),
+
+	/**
+	 * Database value: 7
+	 *
+	 * There can only be one tag group called "Class extended types"
+	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter classes on the college website
+	 */
+	@API
+	CLASS_EXTENDED_TYPES(7, "Class extended types"),
+
+	/**
+	 * Database value: 8
+	 *
+	 * There can only be one tag group called "Course extended types" and there must always be one.
+	 * It has special meaning in an onCourse website.
+	 * Tag is used to filter classes on the college website
+	 */
+	@API
+	COURSE_EXTENDED_TYPES(8, "Course extended types")
 
 	private String displayName;
 	private int value;
@@ -80,5 +111,14 @@ public enum NodeSpecialType implements DisplayableExtendedEnumeration<Integer> {
 	@Override
 	public String toString() {
 		return getDisplayName();
+	}
+
+	static NodeSpecialType fromDisplayName(String text) {
+		for (NodeSpecialType b : values()) {
+			if (String.valueOf(b.displayName).equals(text)) {
+				return b
+			}
+		}
+		return null
 	}
 }

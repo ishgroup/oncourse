@@ -3,18 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
-import { State } from "../../../../../../reducers/state";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
+import { State } from "../../../../../../reducers/state";
 
 class CanvasBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -68,7 +65,7 @@ class CanvasBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, AppBarContent, dirty, item, values, form
+     handleSubmit, onSubmit, AppBarContent, item, values
     } = this.props;
 
     const { loading } = this.state;
@@ -77,7 +74,6 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
           {
             !values?.id && (
@@ -89,14 +85,15 @@ class CanvasBaseForm extends React.Component<any, any> {
             )
           }
 
-          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" className="mb-2" />
-          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" className="mb-2" />
-          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" required className="mb-2" />
           <FormField
             disabled={configured}
             type="password"
             name="fields.clientSecret"
             label="Client secret"
+            required
             className="mb-2"
           />
           {values && values.fields && values.fields.baseUrl && values.fields.clientToken && values.fields.clientSecret ? (
@@ -127,7 +124,7 @@ class CanvasBaseForm extends React.Component<any, any> {
                 </>
               )
           ) : (
-            <Typography variant="caption">Fill all fields to proceed proceed with authorising</Typography>
+            <Typography variant="caption">Fill all fields to proceed with authorization</Typography>
           )}
         </AppBarContent>
       </form>

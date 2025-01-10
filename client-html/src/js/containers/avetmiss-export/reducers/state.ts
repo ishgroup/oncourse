@@ -1,9 +1,4 @@
-import {
-  AvetmissExportOutcome,
-  AvetmissExportSettings,
-  FundingSource,
-  FundingUpload
-} from "@api/model";
+import { AvetmissExportOutcome, AvetmissExportSettings, FundingSource, FundingUpload } from "@api/model";
 
 export interface AvetmissExportState {
   contracts?: FundingSource[];

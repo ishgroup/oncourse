@@ -7,7 +7,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         * def ishPath = 'list/entity/corporatepass'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list'
-        
+        * def futureYear = java.lang.String.valueOf(java.util.Calendar.getInstance().get(java.util.Calendar.YEAR) + 2)
 
 
 
@@ -51,7 +51,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         "password":"password1",
         "expiryDate":null,
         "invoiceEmail":"co1@gmail.com",
-        "linkedDiscounts":[{"id":1002,"name":"discount2","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.200,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableOnWeb":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"relationDiscount":null}],
+        "linkedDiscounts":[{"id":1002,"name":"discount2","discountType":"Percent","rounding":null,"discountValue":null,"discountPercent":0.200,"discountMin":null,"discountMax":null,"cosAccount":null,"predictedStudentsPercentage":null,"availableFor":null,"code":null,"validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":null,"description":null,"studentEnrolledWithinDays":null,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":null,"minEnrolments":null,"minValue":null,"corporatePassDiscounts":[],"createdOn":null,"modifiedOn":null,"limitPreviousEnrolment":null,"courseIdMustEnrol":null,"courseNameMustEnrol":null,"minEnrolmentsForAnyCourses":null,"relationDiscount":null}],
         "linkedSalables":"#ignore",
         "createdOn":"#ignore",
         "modifiedOn":"#ignore"
@@ -81,7 +81,7 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         "contactId":8,
         "contactFullName":"company #2",
         "password":"password2",
-        "expiryDate":"2030-04-01",
+        "expiryDate":'#(futureYear+"-04-01")',
         "invoiceEmail":"co2@gmail.com",
         "linkedDiscounts":[],
         "linkedSalables":"#ignore",
@@ -131,5 +131,5 @@ Feature: Main feature for all GET requests with path 'list/entity/corporatepass'
         Given path ishPath + "/9999"
         When method GET
         Then status 400
-        And match $.errorMessage == "CorporatePass with id:9999 doesn't exist"
+        And match $.errorMessage == "Record with id = '9999' doesn't exist."
         

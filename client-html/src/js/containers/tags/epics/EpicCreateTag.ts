@@ -3,34 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
 import { Tag } from "@api/model";
-import { CREATE_TAG_REQUEST, CREATE_TAG_REQUEST_FULFILLED } from "../actions";
+import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import history from "../../../constants/History";
+import { CREATE_TAG_REQUEST, getAllTags } from "../actions";
+import TagsService from "../services/TagsService";
 
-const request: EpicUtils.Request = {
+const request: EpicUtils.Request<Tag[], { form: string, tag: Tag }> = {
   type: CREATE_TAG_REQUEST,
-  getData: payload => TagsService.create(payload.tag),
-  retrieveData: () => TagsService.getTags(),
-  processData: (allTags: Tag[]) => {
+  getData: ({ tag }) => TagsService.create(tag),
+  processData: (r, s, { tag, form }) => {
+    if (s.nextLocation) {
+      history.push(s.nextLocation);
+    }
     return [
-      {
-        type: CREATE_TAG_REQUEST_FULFILLED,
-        payload: { allTags }
-      },
+      initialize(form, tag),
       {
         type: FETCH_SUCCESS,
-        payload: { message: "Tag was successfully created" }
-      }
+        payload: { message: `${tag.name} was successfully created` }
+      },
+      getAllTags(tag.name)
     ];
   },
-  processError: response => {
-    return FetchErrorHandler(response, "Error. Tag was not created");
-  }
+  processError: (r, { tag }) => FetchErrorHandler(r, `Error. ${tag.name} was not created`)
 };
 
 export const EpicCreateTag: Epic<any, any> = EpicUtils.Create(request);

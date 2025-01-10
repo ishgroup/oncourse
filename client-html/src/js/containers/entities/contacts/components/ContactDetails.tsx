@@ -6,40 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Typography from "@mui/material/Typography";
-import React, {
-  useCallback, useMemo, useState
-} from "react";
-import {
-  ConcessionType,
-  Contact, ContactGender, ContactRelationType, StudentCitizenship, StudentConcession
-} from "@api/model";
-import {
-  arrayInsert, arrayRemove, change
-} from "redux-form";
-import { connect } from "react-redux";
-import {
- Alert, FormControlLabel, Grid, IconButton
-} from "@mui/material";
+import { Contact, ContactGender, StudentCitizenship } from "@api/model";
+import OpenInNew from "@mui/icons-material/OpenInNew";
+import { Alert, FormControlLabel, Grid, IconButton } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Checkbox from "@mui/material/Checkbox";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import { mapSelectItems, openInternalLink, SettingsAdornment } from "ish-ui";
+import React, { useCallback, useState } from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { getContactFullName } from "../utils";
-import { EditViewProps } from "../../../../model/common/ListView";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { greaterThanNullValidation, validateEmail, validatePhoneNumber } from "../../../../common/utils/validation";
-import { SettingsAdornment } from "../../../../common/components/form/FieldAdornments";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import { MembershipContent, MembershipHeader } from "./MembershipLines";
-import { RelationsContent, RelationsHeader } from "./RelationsLines";
-import { ConcessionsContent, ConcessionsHeader } from "./ConcessionsLines";
-import { mapSelectItems } from "../../../../common/utils/common";
-import { openInternalLink } from "../../../../common/utils/links";
 
 const NO_MARKETING_MSG = "(no marketing)";
 const UNDELIVERABLE_MSG = "(undeliverable)";
@@ -53,9 +36,9 @@ const validateBirthDate = v => (!v || new Date(v).getTime() - Date.now() < 0 ? u
 const validateABN = v => (!v || (new RegExp(/^\d+$/)).test(v) ? undefined : "Business Number (ABN) should be numeric.");
 
 interface ContactDetailsProps extends EditViewProps<Contact> {
-  relationTypes?: ContactRelationType[];
   classes?: any;
   isStudent?: boolean;
+  noCustomFields?: boolean;
   isTutor?: boolean;
   isCompany?: boolean;
   setIsStudent?: any;
@@ -63,9 +46,9 @@ interface ContactDetailsProps extends EditViewProps<Contact> {
   setIsCompany?: any;
   tags?: any;
   countries?: any;
-  concessionTypes?: ConcessionType[];
   usiLocked?: boolean;
   fullScreenEditView?: boolean;
+  namePrefix?: string;
 }
 
 const ContactDetails: React.FC<ContactDetailsProps> = props => {
@@ -78,12 +61,14 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     dispatch,
     form,
     syncErrors,
-    relationTypes,
     countries,
-    concessionTypes,
     usiLocked,
-    isCompany
+    isCompany,
+    namePrefix,
+    noCustomFields
   } = props;
+
+  const getName = (name: string) => namePrefix ? `${namePrefix}.${name}` : name;
 
   const [showPostalSettingsMenu, setPostalSettingsMenu] = useState(null);
   const [showSmsSettingsMenu, setSmsSettingsMenu] = useState(null);
@@ -107,15 +92,15 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
   };
 
   const handleUndeliverablePostalCheck = () => {
-    dispatch(change(form, "deliveryStatusPost", isUndeliverablePostal() ? 0 : 6));
+    dispatch(change(form, getName("deliveryStatusPost"), isUndeliverablePostal() ? 0 : 6));
   };
 
   const handleUndeliverableSmsCheck = () => {
-    dispatch(change(form, "deliveryStatusSms", isUndeliverableSms() ? 0 : 6));
+    dispatch(change(form, getName("deliveryStatusSms"), isUndeliverableSms() ? 0 : 6));
   };
 
   const handleUndeliverableEmailCheck = () => {
-    dispatch(change(form, "deliveryStatusEmail", isUndeliverableEmail() ? 0 : 6));
+    dispatch(change(form, getName("deliveryStatusEmail"), isUndeliverableEmail() ? 0 : 6));
   };
 
   const setMarketingLabel = (fieldName = ""): string => {
@@ -172,78 +157,16 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
     return fieldName;
   };
 
-  const membershipsCount = useMemo(() => (values.memberships && values.memberships.length) || 0, [values.memberships]);
-  const relationsCount = useMemo(() => (values.relations && values.relations.length) || 0, [values.relations]);
-  const concessionsCount = useMemo(
-    () => (values.student && values.student.concessions && values.student.concessions.length) || 0,
-    [values.student && values.student.concessions]
-  );
-
-  const deleteRelation = useCallback(
-    index => {
-      dispatch(arrayRemove(form, "relations", index));
-    },
-    [values && values.relations, form]
-  );
-
-  const addNewRelation = useCallback(() => {
-    dispatch(
-      arrayInsert(form, "relations", 0, {
-        id: null,
-        relationId: null,
-        relatedContactId: null,
-        relatedContactName: null
-      })
-    );
-  }, [values && values.id, form]);
-
-  const RelationsHeaderLine = useCallback(
-    props => <RelationsHeader relationTypes={relationTypes} contactId={values.id} {...props} />,
-    [values && values.id, relationTypes]
-  );
-  const RelationsContentLine = useCallback(
-    props => (
-      <RelationsContent
-        form={form}
-        dispatch={dispatch}
-        relationTypes={relationTypes}
-        contactId={values.id}
-        contactFullName={getContactFullName(values)}
-        {...props}
-      />
-    ),
-    [values && values.firstName, values && values.lastName, values && values.id, form, relationTypes]
-  );
-
-  const deleteConcession = useCallback(
-    index => {
-      dispatch(arrayRemove(form, "student.concessions", index));
-    },
-    [values && values.student && values.student.concessions, form]
-  );
-
-  const addNewConcession = useCallback(() => {
-    const newLine: StudentConcession = {
-      number: null,
-      expiresOn: null,
-      type: null
-    };
-
-    dispatch(arrayInsert(form, "student.concessions", 0, newLine));
-  }, [values && values.id, form]);
-
-  const ConcessionsHeaderLine = useCallback(props => <ConcessionsHeader {...props} />, [
-    values.student && values.student.concessions
-  ]);
-  const ConcessionsContentLine = useCallback(
-    props => <ConcessionsContent concessionTypes={concessionTypes} {...props} />,
-    []
-  );
-
   return values ? (
     <Grid container className="pt-2 pl-3 pr-3">
       <Grid item xs={12}>
-        <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} mountAll header="Contact">
+        <ExpandableContainer
+          index={tabIndex}
+          expanded={expanded}
+          setExpanded={setExpanded}
+          formErrors={syncErrors}
+          header="Contact"
+        >
           <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
             <Grid item {...gridItemProps}>
               <FormField
@@ -288,7 +211,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
             <Grid item {...gridItemProps}>
               {countries && (
                 <FormField
-                  type="searchSelect"
+                  type="select"
                   selectValueMark="id"
                   selectLabelMark="name"
                   name="country"
@@ -300,7 +223,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField
-                type="text"
+                type="phone"
                 name="mobilePhone"
                 label={setMarketingLabel("mobilePhone")}
                 validate={validatePhoneNumber}
@@ -364,13 +287,13 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               <FormField type="multilineText" name="message" label="Message (alert for operator)" />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
+              <FormField type="phone" name="homePhone" label="Home phone" validate={validatePhoneNumber} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
+              <FormField type="phone" name="workPhone" label="Work phone" validate={validatePhoneNumber} />
             </Grid>
             <Grid item {...gridItemProps}>
-              <FormField type="text" name="fax" label="Fax" />
+              <FormField type="phone" name="fax" label="Fax" />
             </Grid>
             <Grid item {...gridItemProps}>
               <FormField type="text" name="abn" label="Business number (ABN)" validate={validateABN} />
@@ -402,13 +325,25 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
               </>
             ) : null}
 
-            <CustomFields
-              entityName="Contact"
-              fieldName="customFields"
-              entityValues={values}
-              form={form}
-              gridItemProps={gridItemProps}
-            />
+            {!noCustomFields && (
+              <CustomFields
+                entityName="Contact"
+                fieldName="customFields"
+                entityValues={values}
+                form={form}
+                gridItemProps={gridItemProps}
+              />
+            )}
+
+            {values.student && !noCustomFields && (
+              <CustomFields
+                entityName="Student"
+                fieldName="student.customFields"
+                entityValues={values}
+                form={form}
+                gridItemProps={gridItemProps}
+              />
+            )}
 
             {values.student && (
               <>
@@ -447,54 +382,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
           </Grid>
         </ExpandableContainer>
       </Grid>
-      {values.student && (
-        <>
-          <Grid item xs={12} className="pb-1">
-            <Divider className="mb-1" />
-            <MinifiedEntitiesList
-              name="student.concessions"
-              header="Concessions"
-              oneItemHeader="Concession"
-              count={concessionsCount}
-              FieldsContent={ConcessionsContentLine}
-              HeaderContent={ConcessionsHeaderLine}
-              onAdd={addNewConcession}
-              onDelete={deleteConcession}
-              syncErrors={syncErrors}
-              accordion
-            />
-          </Grid>
-        </>
-      )}
-      <Grid item xs={12} className="pb-1">
-        <Divider className="mb-1" />
-        <MinifiedEntitiesList
-          name="memberships"
-          header="Memberships"
-          oneItemHeader="Membership"
-          count={membershipsCount}
-          FieldsContent={MembershipContent}
-          HeaderContent={MembershipHeader}
-          syncErrors={syncErrors}
-          twoColumn={twoColumn}
-          accordion
-        />
-      </Grid>
-      <Grid item xs={12} className="pb-1">
-        <Divider className="mb-1" />
-        <MinifiedEntitiesList
-          name="relations"
-          header="Relations"
-          oneItemHeader="Relation"
-          count={relationsCount}
-          FieldsContent={RelationsContentLine}
-          HeaderContent={RelationsHeaderLine}
-          onAdd={addNewRelation}
-          onDelete={deleteRelation}
-          syncErrors={syncErrors}
-          accordion
-        />
-      </Grid>
+
     </Grid>
   ) : null;
 };
@@ -502,8 +390,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = props => {
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Contact"],
   countries: state.countries,
-  relationTypes: state.contacts.contactsRelationTypes,
-  concessionTypes: state.contacts.contactsConcessionTypes,
   fullScreenEditView: state.list.fullScreenEditView
 });
 

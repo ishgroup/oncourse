@@ -1,36 +1,34 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import clsx from "clsx";
-import { withRouter } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import { createStyles, withStyles } from "@mui/styles";
-import Button from "@mui/material/Button";
-import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
-import { connect } from "react-redux";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import { State } from "../../../../../reducers/state";
-import FormSubmitButton from "../../../form/FormSubmitButton";
-import LoadingIndicator from "../../../layout/LoadingIndicator";
-import { pushGTMEvent } from "../../../google-tag-manager/actions";
-import { EditViewContainerProps } from "../../../../../model/common/ListView";
-import AppBarHelpMenu from "../../../form/AppBarHelpMenu";
-import { getSingleEntityDisplayName } from "../../../../utils/getEntityDisplayName";
-import { LSGetItem } from "../../../../utils/storage";
-import {
-  APPLICATION_THEME_STORAGE_NAME,
-  STICKY_HEADER_EVENT,
-  TAB_LIST_SCROLL_TARGET_ID
-} from "../../../../../constants/Config";
-import FullScreenStickyHeader from "./FullScreenStickyHeader";
-import { useStickyScrollSpy } from "../../../../utils/hooks";
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import clsx from 'clsx';
+import { AppBarHelpMenu } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { APPLICATION_THEME_STORAGE_NAME, TAB_LIST_SCROLL_TARGET_ID } from '../../../../../constants/Config';
+import { EditViewContainerProps } from '../../../../../model/common/ListView';
+import { State } from '../../../../../reducers/state';
+import { getSingleEntityDisplayName } from '../../../../utils/getEntityDisplayName';
+import { LSGetItem } from '../../../../utils/storage';
+import FormSubmitButton from '../../../form/FormSubmitButton';
+import { pushGTMEvent } from '../../../google-tag-manager/actions';
+import LoadingIndicator from '../../../progress/LoadingIndicator';
+import FullScreenStickyHeader from './FullScreenStickyHeader';
 
-const styles = theme => createStyles({
+const styles = (theme, p, classes) => ({
   header: {
     height: "64px",
     display: "flex",
@@ -40,12 +38,12 @@ const styles = theme => createStyles({
     padding: theme.spacing(0, 3),
     background: theme.appBar.header.background,
     color: theme.appBar.header.color,
-    "& $submitButtonAlternate": {
+    [`& .${classes.submitButtonAlternate}`]: {
       background: `${theme.appBar.headerAlternate.color}`,
       color: `${theme.appBar.headerAlternate.background}`,
     },
-    "& $closeButtonAlternate": {
-      color: `${theme.appBar.headerAlternate.color}`,
+    [`& .${classes.closeButtonAlternate}`]: {
+      color: `${theme.appBar.headerAlternate.color}`
     }
   },
   root: {
@@ -59,7 +57,7 @@ const styles = theme => createStyles({
   headerAlternate: {
     background: `${theme.appBar.headerAlternate.background}`,
     color: `${theme.appBar.headerAlternate.color}`,
-    "& $actionsWrapper svg": {
+    [`& .${classes.actionsWrapper} svg`]: {
       color: `${theme.appBar.headerAlternate.color}`,
     }
   },
@@ -79,11 +77,11 @@ const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => (
 class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps, any> {
   state = {
     hasScrolling: false
-  }
+  };
 
   componentDidUpdate(prevProps) {
     const {
-      pending, dispatch, rootEntity, isNested
+      pending, dispatch, rootEntity
     } = this.props;
 
     if (window.performance.getEntriesByName("EditViewStart").length && prevProps.pending && !pending) {
@@ -96,48 +94,20 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       window.performance.clearMarks("EditViewEnd");
       window.performance.clearMeasures("EditView");
     }
-
-    if (
-      isNested
-      && window.performance.getEntriesByName("NestedEditViewStart").length
-      && prevProps.pending
-      && !pending
-    ) {
-      window.performance.mark("NestedEditViewEnd");
-      window.performance.measure("NestedEditView", "NestedEditViewStart", "NestedEditViewEnd");
-      dispatch(
-        pushGTMEvent(
-          "timing",
-          `${rootEntity}EditView`,
-          window.performance.getEntriesByName("NestedEditView")[0].duration
-        )
-      );
-      window.performance.clearMarks("NestedEditViewStart");
-      window.performance.clearMarks("NestedEditViewEnd");
-      window.performance.clearMeasures("NestedEditViewView");
-    }
-  }
-
-  onStickyChange = e => {
-    if (this.state.hasScrolling !== e.detail.stuck) {
-      this.setState({ hasScrolling: e.detail.stuck });
-    }
-  };
-
-  componentDidMount() {
-    document.addEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener(STICKY_HEADER_EVENT, this.onStickyChange);
   }
 
   updateTitle = (title: string) => {
-    const { fullScreenEditView, rootEntity } = this.props;
+    const { fullScreenEditView, customTableModel, rootEntity,  } = this.props;
 
     if (fullScreenEditView && title) {
-      document.title = `${getSingleEntityDisplayName(rootEntity)} (${title})`;
+      document.title = `${getSingleEntityDisplayName(customTableModel || rootEntity)} (${title})`;
     }
+  };
+
+  resetScroll = () => {
+    this.setState({
+      hasScrolling: false
+    });
   };
 
   onCloseClick = () => {
@@ -150,10 +120,25 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
         onConfirm: () => {
           reset();
           toogleFullScreenEditView();
+          this.resetScroll();
         }
       });
     } else {
       toogleFullScreenEditView();
+      this.resetScroll();
+    }
+  };
+
+  onScroll = e => {
+    if (e.target.scrollTop > 0 && !this.state.hasScrolling) {
+      this.setState({
+        hasScrolling: true
+      });
+    }
+    if (e.target.scrollTop <= 0 && this.state.hasScrolling) {
+      this.setState({
+        hasScrolling: false
+      });
     }
   };
 
@@ -172,10 +157,8 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
       dispatch,
       rootEntity,
       isNested,
-      nestedIndex,
       nameCondition,
       showConfirm,
-      openNestedEditView,
       manualLink,
       submitSucceeded,
       syncErrors,
@@ -197,8 +180,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
     this.updateTitle(title);
 
     const isDarkTheme = LSGetItem(APPLICATION_THEME_STORAGE_NAME) === "dark";
-
-    const { scrollSpy } = useStickyScrollSpy();
 
     return (
       <Dialog
@@ -222,7 +203,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
             )}
           >
             <div className={clsx("flex-fill", classes.titleWrapper)}>
-              {!hideTitle && (<FullScreenStickyHeader title={title} twoColumn disableInteraction />)}
+              {!hideTitle && (<FullScreenStickyHeader title={title} customStuck={hasScrolling} twoColumn disableInteraction />)}
             </div>
             <div>
               <div className={classes.actionsWrapper}>
@@ -242,7 +223,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 Close
               </Button>
               <FormSubmitButton
-                disabled={(!creatingNew && !dirty) || Boolean(asyncValidating) || disabledSubmitCondition}
+                disabled={Boolean(asyncValidating) || (!creatingNew && !dirty) || disabledSubmitCondition}
                 invalid={invalid}
                 fab
                 className={isDarkTheme && classes.submitButtonAlternate}
@@ -251,10 +232,11 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
           </AppBar>
           <div
             className={clsx(classes.root, noTabList && "overflow-y-auto", !hideTitle && noTabList && "pt-1")}
-            onScroll={noTabList ? scrollSpy : undefined}
+            onScroll={noTabList ? this.onScroll : undefined}
           >
             <EditViewContent
               twoColumn
+              onScroll={this.onScroll}
               asyncValidating={asyncValidating}
               syncErrors={syncErrors}
               submitSucceeded={submitSucceeded}
@@ -263,7 +245,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               manualLink={manualLink}
               rootEntity={rootEntity}
               isNested={isNested}
-              nestedIndex={nestedIndex}
               form={form}
               isNew={creatingNew}
               values={values}
@@ -271,7 +252,6 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
               dispatch={dispatch}
               dirty={dirty}
               showConfirm={showConfirm}
-              openNestedEditView={openNestedEditView}
               toogleFullScreenEditView={toogleFullScreenEditView}
             />
           </div>
@@ -288,5 +268,5 @@ const mapStateToProps = (state: State, props) => ({
 });
 
 export default reduxForm<any, EditViewContainerProps>({})(
-  connect(mapStateToProps, null)(withStyles(styles)(withRouter(FullScreenEditViewBase as any)))
+  connect(mapStateToProps, null)(withStyles(withRouter(FullScreenEditViewBase as any), styles))
 );

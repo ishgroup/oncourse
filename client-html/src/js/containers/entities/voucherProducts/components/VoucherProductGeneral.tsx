@@ -3,37 +3,37 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
-import { Grid, Typography } from "@mui/material";
-import { change, FieldArray } from "redux-form";
 import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
+import { Grid, Typography } from "@mui/material";
+import { ConfirmProps, formatCurrency } from "ish-ui";
+import React, { useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { State } from "../../../../reducers/state";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { clearMinMaxFee, getMinMaxFee } from "../actions";
-import EditInPlaceMoneyField from "../../../../common/components/form/formFields/EditInPlaceMoneyField";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EditViewProps } from "../../../../model/common/ListView";
+import { change, FieldArray } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { normalizeString } from "../../../../common/utils/strings";
+import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import { useAppSelector } from "../../../../common/utils/hooks";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { normalizeString } from "../../../../common/utils/strings";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
+import RelationsCommon from "../../common/components/RelationsCommon";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { clearMinMaxFee, getMinMaxFee } from "../actions";
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -46,6 +46,7 @@ interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   foundCourses?: Course[];
   submitSucceeded?: any;
   getMinMaxFee?: (ids: string) => void;
+  coursesError?: boolean;
   dataCollectionRules?: PreferencesState["dataCollectionRules"];
 }
 
@@ -65,25 +66,26 @@ const getRedemptionOptions = (): CustomSelectorOption[] => [
       // RedemptionType.Enrolment
       caption: "enrolment in",
       body: "classes from",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "maxCoursesRedemption",
-      validate: [validateNonNegative, validateGreaterThenZero]
+      formFileldProps: {
+        type: "number",
+        name: "maxCoursesRedemption",
+        validate: [validateNonNegative, validateGreaterThenZero]
+      }
     },
     {
       // RedemptionType.Purchase
       caption: "purchase price",
       body: "",
-      type: null
     },
     {
       // RedemptionType.Value
       caption: "value",
       body: "",
-      type: "string",
-      fieldName: "value",
-      component: EditInPlaceMoneyField,
-      validate: validateGreaterThenZero
+      formFileldProps: {
+        type: "money",
+        name: "value",
+        validate: validateGreaterThenZero
+      }
     }
   ];
 
@@ -170,6 +172,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     pendingCourses,
     submitSucceeded,
     getMinMaxFee,
+    coursesError,
     dispatch,
     form,
     rootEntity,
@@ -177,6 +180,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
     syncErrors,
     showConfirm
   } = props;
+
   const [redemptionIndex, setRedemptionIndex] = useState(null);
   const initialRedemptionIndex = getInitialRedemptionIndex(isNew, values);
   if (redemptionIndex === null) {
@@ -214,6 +218,30 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
 
   const tags = useAppSelector(state => state.tags.entityTags["VoucherProduct"]);
 
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+
+  const courseHandlers = useMemo(() => {
+    if (values.soldVouchersCount === 0) {
+      return {
+        onAdd: onAddCourses(props),
+        onDelete: onDeleteCourse(props),
+        onDeleteAll: onDeleteAllCourses(props)
+      };
+    }
+    
+    const confirmProps: ConfirmProps = {
+      title: "INFORMATION",
+      confirmMessage: "Any changes you make to the courses that can be enrolled in with this voucher type will also affect vouchers of this type that have already been sold",
+      confirmButtonText: "Edit"
+    };
+    
+    return {
+      onAdd: arg => showConfirm({ ...confirmProps, onConfirm: () => onAddCourses(props).call(null, arg) }),
+      onDelete: arg => showConfirm({ ...confirmProps, onConfirm: () => onDeleteCourse(props).call(null, arg) }),
+      onDeleteAll: () => showConfirm({ ...confirmProps, onConfirm: onDeleteAllCourses(props) })
+    };
+  }, [ values, dispatch, form, foundCourses]);
+
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3">
       <Grid item container xs={12}>
@@ -243,18 +271,18 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
-                  label="Code"
+                  type="text"
+                  label="SKU"
                   name="code"
                   required
-                  fullWidth
-                />
+                 />
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
-                  label="SKU"
+                  type="text"
+                  label="Name"
                   name="name"
                   required
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -262,11 +290,23 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
+        />
+
+        {subjectsField}
+      </Grid>
+
+      <Grid item xs={twoColumn ? 4 : 12}>
+        <EntityChecklists
+          entity="VoucherProduct"
+          form={form}
+          entityId={values.id}
+          checked={values.tags}
         />
       </Grid>
         
@@ -297,15 +337,16 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
       <Grid item xs={12}>
         <Typography color="inherit" component="div" noWrap>
           Expires
+          {" "}
           <FormField
             type="number"
             name="expiryDays"
-            color="primary"
-            hidePlaceholderInEditMode
             validate={[validateSingleMandatoryField, validateNonNegative]}
             parse={parseFloatValue}
-            formatting="inline"
+            debounced={false}
+            inline
           />
+          {" "}
           days after purchase
         </Typography>
       </Grid>
@@ -334,14 +375,12 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             onSearch={searchCourses}
             clearSearchResult={clearCourses}
             pending={pendingCourses}
-            onAdd={onAddCourses(props)}
-            onDelete={onDeleteCourse(props)}
-            onDeleteAll={onDeleteAllCourses(props)}
             sort={sortCourses}
             resetSearch={submitSucceeded}
             searchType="withToggle"
-            disabled={values && values.soldVouchersCount > 0}
             aqlEntities={["Course"]}
+            aqlQueryError={coursesError}
+            {...courseHandlers}
           />
         </div>
         <Typography color="inherit" component="div">
@@ -415,6 +454,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           form={form}
           submitSucceeded={submitSucceeded}
           rootEntity={rootEntity}
+          customAqlEntities={["Course", "Product"]}
         />
       </Grid>
 
@@ -452,6 +492,7 @@ const mapStateToProps = (state: State) => ({
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
+  coursesError: state.plainSearchRecords["Course"].error,
   pendingCourses: state.plainSearchRecords["Course"].loading,
   dataCollectionRules: state.preferences.dataCollectionRules
 });

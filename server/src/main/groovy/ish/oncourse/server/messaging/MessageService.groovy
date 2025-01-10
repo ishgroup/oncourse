@@ -171,7 +171,7 @@ class MessageService {
 	}
 
 	void sendMessage(MessageSpec messageSpec) throws MessagingException {
-		Function<Contact, Boolean> collision = messageSpec.creatorKey ? { c -> true } :
+		Function<Contact, Boolean> collision = !messageSpec.creatorKey ? { c -> true } :
 				{ contact -> NeedToSendEmail.valueOf(auditService, messageSpec.keyCollision, messageSpec.creatorKey, cayenneService.getNewContext(), contact).get() }
 
 		if (messageSpec.entityRecords.isEmpty()) {
@@ -219,6 +219,7 @@ class MessageService {
 				bindings.put(record.class.simpleName.uncapitalize(), record)
 				bindings.put(templateService.RECORD, record)
 				bindings.put(templateService.TO, recipient)
+				bindings.put(templateService.AUTHOR, messageSpec.createdBy)
 
 				if (templateEntityName != null && templateEntityName.equalsIgnoreCase("contact")) {
 					bindings.put("contact", recipient)
@@ -234,16 +235,23 @@ class MessageService {
 					}
 				} else if (recipient.email) {
 					SmtpParameters parameters = new SmtpParameters(messageSpec)
-					parameters.toList.add(recipient.email)
+					parameters.toList = List.of(recipient.email)
 
 					SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
 				}
 			}
+
 			if (++counter == 50) {
 				context.commitChanges()
 				counter = 0
 			}
 		}
+
+		if(!messageSpec.toList.isEmpty()){
+			SmtpParameters parameters = new SmtpParameters(messageSpec)
+			SendEmailViaSmtp.valueOf(parameters, context, templateService, mailDeliveryService, collision).send()
+		}
+
 		if (counter > 0) {
 			context.commitChanges()
 		}

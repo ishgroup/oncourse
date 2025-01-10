@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
-import { Button } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { TimetableContext, timetableContextStateInitial } from "../../../../Timetable";
-import { MorningIcon, AfternoonIcon, EveningIcon } from "./DayPeriodIcons";
+import { Button } from '@mui/material';
+import clsx from 'clsx';
+import { AfternoonIcon, EveningIcon, MorningIcon } from 'ish-ui';
+import React, { useContext } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { TimetableContext, timetableContextStateInitial } from '../../../../Timetable';
 
 const styles = theme =>
-  createStyles({
+  ({
     root: {
       display: "grid",
       gridAutoFlow: "column",
@@ -87,4 +87,4 @@ const DayPeriodFilter: React.FunctionComponent<Props> = props => {
   );
 };
 
-export default withStyles(styles)(DayPeriodFilter);
+export default withStyles(DayPeriodFilter, styles);

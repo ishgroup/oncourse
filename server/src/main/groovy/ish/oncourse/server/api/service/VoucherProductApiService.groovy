@@ -125,8 +125,8 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                     vcp
                 }
             }
-            voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            voucherProductDTO.tags = voucherProduct.tags.collect{ toRestTagMinimized(it) }
+            voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, documentService) }
+            voucherProductDTO.tags = voucherProduct.allTags.collect{ it.id }
             voucherProductDTO.soldVouchersCount = voucherProduct.getProductItems().size()
             voucherProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestToEntityRelation(it) })
@@ -158,7 +158,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(voucherProduct, voucherProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateDocuments(voucherProduct, voucherProduct.attachmentRelations, voucherProductDTO.documents, VoucherProductAttachmentRelation, context)
-        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags*.id, VoucherProductTagRelation, context)
+        updateTags(voucherProduct, voucherProduct.taggingRelations, voucherProductDTO.tags, VoucherProductTagRelation, context)
         updateCustomFields(voucherProduct.context, voucherProduct, voucherProductDTO.customFields, voucherProduct.customFieldClass)
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
@@ -195,9 +195,6 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
             if (voucherProduct.getProductItems().size() > 0) {
                 if (!isRedemptionTypeEqual(voucherProductDTO, voucherProduct)) {
                     validator.throwClientErrorException(id, 'maxCoursesRedemption | feeExTax', 'Wrong value')
-                }
-                if (!isCoursesEqual(voucherProductDTO, voucherProduct)) {
-                    validator.throwClientErrorException(id, 'courses', 'Wrong value')
                 }
             }
         }

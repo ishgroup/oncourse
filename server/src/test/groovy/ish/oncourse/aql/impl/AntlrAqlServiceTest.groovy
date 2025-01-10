@@ -1,6 +1,7 @@
 package ish.oncourse.aql.impl
 
 import groovy.transform.CompileStatic
+import ish.common.types.DataType
 import ish.common.util.DisplayableExtendedEnumeration
 import ish.oncourse.aql.AqlService
 import ish.oncourse.aql.CompilationResult
@@ -118,7 +119,7 @@ class AntlrAqlServiceTest {
         CompilationResult result = service.compile("#arts"
                 , null, getMockContext("course"))
 
-        assertValid("(arts.entityIdentifier = 1) and (arts.tag+.name = \"arts\")", result)
+        assertValid("(arts.entityIdentifier = 1) and (arts.tag+.nodeType = 1) and (arts.tag+.name = \"arts\")", result)
     }
 
     @Test
@@ -126,7 +127,7 @@ class AntlrAqlServiceTest {
         CompilationResult result = service.compile("contact #arts"
                 , null, getMockContext(Contact.class, "contact", "course"))
 
-        assertValid("(contact.arts.entityIdentifier = 8) and (contact.arts.tag+.name = \"arts\")", result)
+        assertValid("(contact.arts.entityIdentifier = 8) and (contact.arts.tag+.nodeType = 1) and (contact.arts.tag+.name = \"arts\")", result)
     }
 
     @Test
@@ -134,7 +135,7 @@ class AntlrAqlServiceTest {
         CompilationResult result = service.compile("#'health_and_care'"
                 , null, getMockContext("course"))
 
-        assertValid("(health_and_care.entityIdentifier = 1) and (health_and_care.tag+.name = \"health_and_care\")", result)
+        assertValid("(health_and_care.entityIdentifier = 1) and (health_and_care.tag+.nodeType = 1) and (health_and_care.tag+.name = \"health_and_care\")", result)
     }
 
     @Test
@@ -563,7 +564,7 @@ class AntlrAqlServiceTest {
     void testContact() {
         CompilationResult result = service
                 .compile("~ 'Lei Ste'", null, getMockContext("Contact"))
-        assertValid("(lastName likeIgnoreCase 'Lei Ste%') or (firstName likeIgnoreCase 'Lei%' and lastName likeIgnoreCase 'Ste%')", result)
+        assertValid("(lastName likeIgnoreCase 'Lei Ste%') or (((lastName likeIgnoreCase 'Ste%') or (middleName likeIgnoreCase 'Ste%')) and (firstName likeIgnoreCase 'Lei%'))", result)
     }
 
     @Test
@@ -588,7 +589,7 @@ class AntlrAqlServiceTest {
                 .compile("contact = 'John Smith'"
                         , null, getMockContext(Contact.class, "contact", "contact"))
 
-        assertValid("(contact.lastName = 'John Smith') or (contact.firstName = 'John' and contact.lastName = 'Smith')", result)
+        assertValid("(contact.lastName = 'John Smith') or (((contact.lastName = 'Smith') or (contact.middleName = 'Smith')) and (contact.firstName = 'John'))", result)
     }
 
     @Test
@@ -939,7 +940,14 @@ class AntlrAqlServiceTest {
 
         ObjectContext context = mock(ObjectContext.class)
         when(context.getEntityResolver()).thenReturn(resolver)
-        when(context.select(any(Select.class))).thenReturn(asList("field1", "field2"))
+
+        Object[] field1Obj = new Object[2]
+        field1Obj[0] = "field1"
+        field1Obj[1] = DataType.TEXT
+        Object[] field2Obj = new Object[2]
+        field2Obj[0] = "field2"
+        field2Obj[1] = DataType.TEXT
+        when(context.select(any(Select.class))).thenReturn(asList(field1Obj, field2Obj))
 
         return context
     }

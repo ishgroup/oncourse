@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import { connect } from "react-redux";
 import { Account } from "@api/model";
+import Grid from "@mui/material/Grid";
+import * as React from "react";
+import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import { State } from "../../../../reducers/state";
 
@@ -63,8 +63,7 @@ const TransactionsEditView = props => {
           label={isNew ? "From account" : "Account"}
           items={formattedAccounts || []}
           required={isNew}
-          fullWidth
-        />
+                  />
       </Grid>
       {isNew ? (
         <Grid item xs={twoColumn ? 6 : 12}>
@@ -75,8 +74,7 @@ const TransactionsEditView = props => {
             label="To account"
             required={isNew}
             items={formattedAccounts || []}
-            fullWidth
-          />
+                      />
         </Grid>
       ) : null}
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -86,8 +84,7 @@ const TransactionsEditView = props => {
           name="amount"
           label="Amount"
           validate={isNew ? validateAmountField : undefined}
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
@@ -96,8 +93,7 @@ const TransactionsEditView = props => {
           name="transactionDate"
           label="Transaction date"
           required={isNew}
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

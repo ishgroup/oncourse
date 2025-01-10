@@ -8,10 +8,6 @@ properties:
     type: string
     required: true
     example: Class Schedule
-  versionId:
-    type: integer
-    format: int64
-    example: 1
   added:
     type: string
     format: date-time
@@ -21,7 +17,8 @@ properties:
   tags:
     type: array
     items:
-      $ref: './Tag.yaml'
+      type: integer
+      format: int64
   thumbnail:
     type: string
     format: byte
@@ -49,3 +46,5 @@ properties:
     type: string
     format: date-time
     description: date and time when record was modified
+  urlWithoutVersionId:
+    type: string

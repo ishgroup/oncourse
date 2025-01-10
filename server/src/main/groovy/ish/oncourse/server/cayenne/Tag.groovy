@@ -12,11 +12,12 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.NodeSpecialType
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.common.NodeInterface
-import ish.oncourse.server.api.v1.function.TagFunctions
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import ish.oncourse.server.cayenne.glue._Tag
 import ish.validation.ValidationFailure
 import org.apache.cayenne.PersistenceState
@@ -29,6 +30,7 @@ import javax.swing.tree.MutableTreeNode
 import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.UnsupportedFlavorException
 
+import static ish.oncourse.server.api.v1.function.TagRequirementFunctions.getRequirementTaggableClassForName
 /**
  * A tag is a piece of arbitrary information which can be attached to many other types of objects.
  * Tags are arranged hierarchically, and each tree of tags has a root node also called a "tag group"
@@ -69,9 +71,6 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		if (getWeight() == null) {
 			setWeight(1)
 		}
-		if (getIsVocabulary() == null) {
-			setIsVocabulary(false)
-		}
 	}
 
 	/**
@@ -92,7 +91,11 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		return result
 	}
 
-	/**
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return nodeType != NodeType.CHECKLIST
+	}
+/**
 	 * @param type
 	 */
 	void destroyNodeRequirement(final Class<? extends Taggable> type) {
@@ -139,8 +142,9 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	TagRequirement getTagRequirement(@Nullable final Class<? extends Taggable> type) {
 		if (getTagRequirements() != null && type != null) {
 			for (final TagRequirement nr : getTagRequirements()) {
+				def taggableClasses = getRequirementTaggableClassForName(type.getSimpleName())
 				if (nr.getPersistenceState() != PersistenceState.TRANSIENT && nr.getPersistenceState() != PersistenceState.DELETED &&
-						TagFunctions.getRequirementTaggableClassForName(type.getSimpleName()) != null && TagFunctions.getRequirementTaggableClassForName(type.getSimpleName()) == nr.getEntityIdentifier()) {
+						taggableClasses != null && taggableClasses == nr.getEntityIdentifier()) {
 					return nr
 				}
 			}
@@ -260,17 +264,24 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 
 	void validateForDelete(@Nonnull ValidationResult validationResult) {
 		if (getSpecialType() != null) {
-			String message;
+			String message
 			switch (getSpecialType()) {
 				case NodeSpecialType.SUBJECTS:
 					message = "This tag group represents the categories of courses on your web site and cannot be deleted.";
-					break;
+					break
+				case NodeSpecialType.TERMS:
+					message = "This tag group represents the categories of classes on your web site and cannot be deleted."
+					break
 				case NodeSpecialType.PAYROLL_WAGE_INTERVALS:
 					message = "This tag group is required for the onCourse tutor pay feature.";
-					break;
+					break
 				case NodeSpecialType.ASSESSMENT_METHOD:
 					message = "This tag group is required for the assessments.";
-					break;
+					break
+				case NodeSpecialType.HOME_WEBPAGE:
+				case NodeSpecialType.CLASS_EXTENDED_TYPES:
+				case NodeSpecialType.COURSE_EXTENDED_TYPES:
+					return
 				default:
 					throw new IllegalArgumentException("Unknown special type for tag");
 			}
@@ -282,7 +293,7 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	@Override
 	void validateForSave(@Nonnull ValidationResult result) {
 		super.validateForSave(result)
-		if (getTagRequirements().size() > 0 && !getIsVocabulary()) {
+		if (getTagRequirements().size() > 0 && getParentTag() != null) {
 			result.addFailure(new ValidationFailure(this, TAG_REQUIREMENTS.getName(), "Only parent tags cann have requirements."));
 		}
 	}
@@ -343,15 +354,6 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 	@Override
 	Date getCreatedOn() {
 		return super.getCreatedOn()
-	}
-
-		/**
-	 * @return
-	 */
-	@Nonnull
-	@Override
-	Boolean getIsVocabulary() {
-		return super.getIsVocabulary()
 	}
 
 	/**
@@ -466,5 +468,9 @@ class Tag extends _Tag implements NodeInterface, Queueable, AttachableTrait {
 		siblings.remove(this)
 
 		return siblings
+	}
+
+	boolean isHidden(){
+		return specialType && TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES.contains(specialType)
 	}
 }

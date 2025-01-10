@@ -8,7 +8,7 @@ import io.bootique.cayenne.CayenneModule
 import io.bootique.jdbc.DataSourceListener
 import io.bootique.jdbc.JdbcModule
 import io.bootique.jdbc.managed.ManagedDataSourceStarter
-import io.bootique.jdbc.tomcat.JdbcTomcatModule
+import io.bootique.jdbc.hikaricp.JdbcHikariCPModule
 import ish.common.types.PaymentType
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.ICayenneService
@@ -16,6 +16,7 @@ import ish.oncourse.server.cayenne.Account
 import ish.oncourse.server.cayenne.PaymentMethod
 import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.integration.PluginService
+import ish.oncourse.server.license.LicenseModule
 import ish.oncourse.server.modules.ApiCayenneLayerModule
 import ish.util.AccountUtil
 import org.apache.cayenne.Persistent
@@ -85,6 +86,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
+                .module(LicenseModule.class)
                 .module(new Module() {
                     @Override
                     void configure(Binder binder) {
@@ -103,7 +105,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                         })
                     }
                 })
-                .module(JdbcTomcatModule.class)
+                .module(JdbcHikariCPModule.class)
                 .module(CayenneModule.class)
                 .module(new Module() {
                     @Override

@@ -3,14 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { format } from "date-fns";
-import { withStyles, createStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
+import { Grid, Typography } from '@mui/material';
+import { format } from 'date-fns';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = (theme: Theme) => createStyles({
+const styles = (theme: AppTheme) => ({
     manyDaysWrapper: {
       "& > .dayOffset": {
         marginBottom: theme.spacing(1)
@@ -32,6 +31,7 @@ interface MonthBaseProps {
   fullWidth?: boolean;
   parentRef?: any;
   showYear?: boolean;
+  children?: React.ReactNode;
 }
 
 const CalendarMonthBase: React.FC<MonthBaseProps> = props => {
@@ -74,4 +74,4 @@ const CalendarMonthBase: React.FC<MonthBaseProps> = props => {
   );
 };
 
-export default withStyles(styles)(CalendarMonthBase) as React.FC<MonthBaseProps>;
+export default withStyles(CalendarMonthBase, styles) as React.FC<MonthBaseProps>;

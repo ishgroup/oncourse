@@ -107,8 +107,8 @@ class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, Art
             articleProductDTO.createdOn = articleProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.modifiedOn = articleProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
             articleProductDTO.dataCollectionRuleId = articleProduct.fieldConfigurationScheme?.id
-            articleProductDTO.documents = articleProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            articleProductDTO.tags = articleProduct.tags.collect{ toRestTagMinimized(it) }
+            articleProductDTO.documents = articleProduct.activeAttachments.collect { toRestDocument(it.document, documentService) }
+            articleProductDTO.tags = articleProduct.allTags.collect{ it.id }
             articleProductDTO.customFields = articleProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
             articleProductDTO
         }
@@ -132,7 +132,7 @@ class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, Art
                 null as FieldConfigurationScheme
         updateCorporatePassesByIds(articleProduct, articleProductDTO.corporatePasses*.id.findAll(), corporatePassProductDao, corporatePassDao)
         updateDocuments(articleProduct, articleProduct.attachmentRelations, articleProductDTO.documents, ArticleProductAttachmentRelation, context)
-        updateTags(articleProduct, articleProduct.taggingRelations, articleProductDTO.tags*.id, ArticleProductTagRelation, context)
+        updateTags(articleProduct, articleProduct.taggingRelations, articleProductDTO.tags, ArticleProductTagRelation, context)
         updateCustomFields(articleProduct.context, articleProduct, articleProductDTO.customFields, articleProduct.customFieldClass)
         articleProduct
     }

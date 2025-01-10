@@ -6,9 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import Grid from "@mui/material/Grid";
 import React from "react";
 import { FieldArray } from "redux-form";
-import Grid from "@mui/material/Grid";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface AssessmentDocumentsProps {

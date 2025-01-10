@@ -1,6 +1,5 @@
-import { Category } from "@api/model";
-import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
+import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 
 export const LSGetItem = (key: string) => {
   try {
@@ -27,7 +26,7 @@ export const LSRemoveItem = (key: string) => {
   }
 };
 
-export const latestActivityStorageHandler = (item: LatestActivityItem, entity: Category) => {
+export const latestActivityStorageHandler = (item: LatestActivityItem, entity: string) => {
   const today = new Date();
 
   let activitySate: LatestActivityState = LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) as LatestActivityState;
@@ -64,7 +63,7 @@ export const latestActivityStorageHandler = (item: LatestActivityItem, entity: C
 
     activitySate.data = [destination, ...activitySate.data.filter(i => i.entity !== destination.entity)];
   } else {
-    activitySate.data = [{ entity, items: [item] }, ...activitySate.data.slice(0, 19)];
+    activitySate.data = [{entity, items: [item]}, ...activitySate.data.slice(0, 19)];
   }
 
   LSSetItem(DASHBOARD_ACTIVITY_STORAGE_NAME, JSON.stringify(activitySate));

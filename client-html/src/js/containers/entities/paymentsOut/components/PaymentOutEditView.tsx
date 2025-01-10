@@ -1,26 +1,27 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import { FieldArray, getFormInitialValues } from "redux-form";
-import { connect } from "react-redux";
-import { addDays, compareAsc, format } from "date-fns";
-import { Grid } from "@mui/material";
 import { PaymentMethod, PaymentOut } from "@api/model";
+import { Grid } from "@mui/material";
+import { addDays, compareAsc, format } from "date-fns";
+import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from "ish-ui";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { FieldArray, getFormInitialValues } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { openInternalLink } from "../../../../common/utils/links";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -69,7 +70,7 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
@@ -87,7 +88,7 @@ const isDatePayedLocked = (lockedDate: any, datePayed: any, settlementDate: any)
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate), 1),
       new Date(datePayed)
     ) > 0
   );
@@ -125,7 +126,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate ) return undefined;
-      const lockedDateValue = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const lockedDateValue = new Date(lockedDate);
       return compareAsc(lockedDateValue, new Date(settlementDate)) === 1
         ? `You must choose date after "Transaction locked" date (${format(lockedDateValue, D_MMM_YYYY)})`
         : undefined;
@@ -161,25 +162,30 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item {...gridItemProps}>
         <Uneditable
-          value={defaultContactName(values.payeeName)}
+          value={values.payeeName}
           label="Payment to"
-          labelAdornment={<LinkAdornment link={values && values.payeeId} linkHandler={openContactLink} />}
+          labelAdornment={
+            <ContactLinkAdornment id={values?.payeeId} />
+          }
         />
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="searchSelect"
+          type="select"
           name="administrationCenterId"
           label="Site"
-          defaultDisplayValue={values && values.administrationCenterName}
+          defaultValue={values && values.administrationCenterName}
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
           disabled={!!initialValues.dateBanked}
         />
       </Grid>
+      {!twoColumn && <Grid item {...gridItemProps}>
+        <Uneditable value={values.type} label="Payment method type" />
+      </Grid>}
       <Grid item {...gridItemProps}>
-        <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Type" />
+        <Uneditable value={paymentMethods && getPaymentNameById(paymentMethods, values.paymentMethodId)} label="Payment method name" />
       </Grid>
       <Grid item {...gridItemProps}>
         <Uneditable value={values.status} label="Status" />
@@ -209,11 +215,6 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               name="datePayed"
               label="Date paid"
               validate={[validateSettlementDatePayed, validateLockedDate]}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
-                  : undefined
-              }
             />
           )}
       </Grid>
@@ -226,16 +227,11 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               name="dateBanked"
               label="Date banked"
               validate={[validateSettlementDateBanked, validateLockedDate]}
-              minDate={
-              lockedDate
-                ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
-                : undefined
-            }
             />
         )}
       </Grid>
       <Grid item {...gridItemProps}>
-        <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+        <FormField type="multilineText" name="privateNotes" label="Private notes"  />
       </Grid>
       <Grid item {...gridItemProps}>
         <Uneditable value={values.createdBy} label="Created by" />
@@ -266,6 +262,6 @@ const mapStateToProps = (state: State, props) => ({
   adminSites: state.sites.adminSites
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(
+export default connect<any, any, any>(mapStateToProps)(
   (props: any) => (props.values ? <PaymentOutEditView {...props} /> : null)
 );

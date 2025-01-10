@@ -30,7 +30,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Survey extends _Survey implements Queueable, ExpandableTrait {
+class Survey extends _Survey implements Queueable, ExpandableTrait, ContactActivityTrait {
 
 
     @Override
@@ -71,7 +71,11 @@ class Survey extends _Survey implements Queueable, ExpandableTrait {
         return super.getCreatedOn()
     }
 
-    /**
+    @Override
+    String getInteractionName() {
+        return enrolment.courseClass.course.name
+    }
+/**
      * @return the date and time this record was modified
      */
     @Nonnull @Override @API

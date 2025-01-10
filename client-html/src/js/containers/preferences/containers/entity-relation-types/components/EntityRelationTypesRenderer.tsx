@@ -3,16 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Card from "@mui/material/Card";
+import { EntityRelationCartAction, EntityRelationType } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import { EntityRelationType, EntityRelationCartAction } from "@api/model";
+import Card from "@mui/material/Card";
+import { mapSelectItems, sortDefaultSelectItems } from "ish-ui";
+import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
-import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 import Subtitle from "../../../../../common/components/layout/Subtitle";
+import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 
 const CartActions = Object.keys(EntityRelationCartAction)
   .filter(val => isNaN(Number(val)))
@@ -111,7 +110,6 @@ const renderEntityRelationTypes = props => {
                           type="checkbox"
                           name={`${item}.considerHistory`}
                           color="primary"
-                          value="true"
                         />
                       )}
                       label="Consider history"
@@ -139,7 +137,6 @@ const renderEntityRelationTypes = props => {
                       type="checkbox"
                       name={`${item}.isShownOnWeb`}
                       color="primary"
-                      value="true"
                     />
                       )}
                   label="Show on web"

@@ -13,78 +13,56 @@
  * Main app layout
  * */
 
-import React, { useEffect } from "react";
-import { isDirty } from "redux-form";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { connect } from "react-redux";
-import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
-import { Dispatch } from "redux";
-import { BrowserWarning } from "../common/components/dialog/BrowserWarning";
-import { EnvironmentConstants } from "../constants/EnvironmentConstants";
-import store from "../constants/Store";
-import { loginRoute, routes } from "../routes";
-import MessageProvider from "../common/components/dialog/message/MessageProvider";
-import { currentTheme, getTheme } from "../common/themes/ishTheme";
-import { ThemeContext } from "./ThemeContext";
+import { CacheProvider } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import {
+  AnyArgFunction,
+  AppTheme,
+  BrowserWarning,
+  currentTheme,
+  DefaultThemeKey,
+  getTheme,
+  GlobalStylesProvider,
+  ThemeValues
+} from 'ish-ui';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { getFormNames, isDirty } from 'redux-form';
+import { TssCacheProvider } from 'tss-react';
+import { getUserPreferences, showMessage } from '../common/actions';
+import ConfirmProvider from '../common/components/dialog/ConfirmProvider';
+import MessageProvider from '../common/components/dialog/MessageProvider';
+import { getGoogleTagManagerParameters } from '../common/components/google-tag-manager/actions';
+import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/SwipeableSidebar';
+import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY, READ_NEWS,
+  DASHBOARD_THEME_KEY,
+  LICENSE_SCRIPTING_KEY,
+  READ_NEWS,
+  SPECIAL_TYPES_DISPLAY_KEY,
   SYSTEM_USER_ADMINISTRATION_CENTER
-} from "../constants/Config";
-import { DefaultThemeKey, ThemeValues } from "../model/common/Theme";
-import { State } from "../reducers/state";
-import { AnyArgFunction } from "../model/common/CommonFunctions";
-import GlobalStylesProvider from "../common/styles/GlobalStylesProvider";
-import { getUserPreferences } from "../common/actions";
-import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
-import { getCurrency, isLoggedIn } from "./preferences/actions";
-import ConfirmProvider from "../common/components/dialog/confirm/ConfirmProvider";
-import Message from "../common/components/dialog/message/Message";
-import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
-import { getDashboardBlogPosts } from "./dashboard/actions";
+} from '../constants/Config';
+import { EnvironmentConstants } from '../constants/EnvironmentConstants';
+import { AppMessage } from '../model/common/Message';
+import { State } from '../reducers/state';
+import { loginRoute, routes } from '../routes';
+import { getDashboardBlogPosts } from './dashboard/actions';
+import { getCurrency, isLoggedIn } from './preferences/actions';
+import { ThemeContext } from './ThemeContext';
 
 export const muiCache = createCache({
   key: 'mui',
   prepend: true,
 });
 
-const isAnyFormDirty = (state: State) => {
-  const forms = Object.getOwnPropertyNames(state.form);
-
-  if (forms.length) {
-    let response = false;
-
-    forms.forEach(n => {
-      if (n === "NestedEditViewForm") {
-        state.form["NestedEditViewForm"].forEach((n, i) => {
-          response = isDirty(`NestedEditViewForm[${i}]`)(state);
-        });
-      } else {
-        response = isDirty(n)(state);
-      }
-    });
-
-    return response;
-  }
-  return false;
-};
-
-const onWindowClose = e => {
-  if (process.env.NODE_ENV !== EnvironmentConstants.production) {
-    return;
-  }
-
-  const isFormsDirty = isAnyFormDirty(store.getState());
-
-  if (isFormsDirty) {
-    e.preventDefault();
-    e.returnValue = "All unsaved data will be lost. Are you sure want to close window ?";
-  }
-};
+const tssCache = createCache({
+  key: "tss"
+});
 
 const RouteContentWrapper = props => {
   const { route: { title }, route } = props;
@@ -96,7 +74,7 @@ const RouteContentWrapper = props => {
   return <route.main {...props} routes={route.routes} />;
 };
 
-const RouteWithSubRoutes = route => (
+const RouteRenderer = route => (
   <Route
     path={route.path}
     exact={route.exact}
@@ -108,25 +86,40 @@ const RouteWithSubRoutes = route => (
 );
 
 interface Props {
+  showMessage: AnyArgFunction<void, AppMessage>;
   getPreferencesTheme: AnyArgFunction;
   history: any;
   preferencesTheme: ThemeValues;
   onInit: AnyArgFunction;
   isLogged: boolean;
+  isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
   match: any;
 }
 
-export class MainBase extends React.PureComponent<Props, any> {
+interface MainState {
+  themeName: string;
+  theme: AppTheme;
+}
+
+export class MainBase extends React.PureComponent<Props, MainState> {
   constructor(props) {
     super(props);
 
+    const theme = getTheme();
+
     this.state = {
       themeName: DefaultThemeKey,
-      theme: getTheme(),
-      showMessage: false,
-      successMessage: false,
-      messageText: ""
+      theme: {
+        ...theme,
+        palette: {
+          ...theme.palette,
+          secondary: {
+            ...theme.palette.secondary,
+            main: '#434EA1',
+          }
+        }
+      },
     };
   }
 
@@ -137,6 +130,19 @@ export class MainBase extends React.PureComponent<Props, any> {
         : DefaultThemeKey,
       theme: getTheme()
     });
+  };
+
+  onWindowClose = e => {
+    const { isAnyFormDirty } = this.props;
+
+    if (process.env.NODE_ENV !== EnvironmentConstants.production || navigator.webdriver === true) {
+      return;
+    }
+
+    if (isAnyFormDirty) {
+      e.preventDefault();
+      e.returnValue = "All unsaved data will be lost. Are you sure want to close window ?";
+    }
   };
 
   UNSAFE_componentWillMount() {
@@ -182,13 +188,13 @@ export class MainBase extends React.PureComponent<Props, any> {
     }
 
     window.addEventListener("storage", this.updateStateFromStorage);
-    window.addEventListener("beforeunload", onWindowClose, true);
+    window.addEventListener("beforeunload", this.onWindowClose, true);
   }
 
   componentWillUnmount() {
     LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
     window.removeEventListener("storage", this.updateStateFromStorage);
-    window.removeEventListener("beforeunload", onWindowClose);
+    window.removeEventListener("beforeunload", this.onWindowClose);
   }
 
   componentDidUpdate(prevProps) {
@@ -206,10 +212,9 @@ export class MainBase extends React.PureComponent<Props, any> {
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     console.error(error, errorInfo);
 
-    this.setState({
-      showMessage: true,
-      successMessage: false,
-      messageText: "Something unusual happened in onCourse. Our quality assurance team have been notified."
+    this.props.showMessage({
+      success: false,
+      message: "Something unusual happened in onCourse. Our quality assurance team have been notified."
     });
   }
 
@@ -232,52 +237,40 @@ export class MainBase extends React.PureComponent<Props, any> {
     LSSetItem(APPLICATION_THEME_STORAGE_NAME, name);
   };
 
-  clearMessage = () => {
-    this.setState({
-      showMessage: false,
-      successMessage: false,
-      messageText: ""
-    });
-  };
-
   render() {
     const {
-     themeName, theme, showMessage, successMessage, messageText
+     themeName, theme
     } = this.state;
 
     const { isLogged } = this.props;
 
     return (
       <CacheProvider value={muiCache}>
-        <ThemeContext.Provider
-          value={{
-            themeHandler: this.themeHandler,
-            themeName
-          }}
-        >
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <GlobalStylesProvider>
-              <BrowserWarning />
-              <Message
-                opened={showMessage}
-                isSuccess={successMessage}
-                text={messageText}
-                clearMessage={this.clearMessage}
-              />
-              <Switch>
-                {isLogged ? (
-                  routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
-                ) : (
-                  loginRoute.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)
-                )}
-              </Switch>
-              <ConfirmProvider />
-              {isLogged && <SwipeableSidebar />}
-            </GlobalStylesProvider>
-            <MessageProvider />
-          </ThemeProvider>
-        </ThemeContext.Provider>
+        <TssCacheProvider value={tssCache}>
+          <ThemeContext.Provider
+            value={{
+              themeHandler: this.themeHandler,
+              themeName
+            }}
+          >
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <GlobalStylesProvider>
+                <BrowserWarning />
+                <Switch>
+                  {isLogged ? (
+                    routes.map((route, i) => <RouteRenderer key={i} {...route} />)
+                  ) : (
+                    loginRoute.map((route, i) => <RouteRenderer key={i} {...route} />)
+                  )}
+                </Switch>
+                <ConfirmProvider />
+                {isLogged && <SwipeableSidebar />}
+              </GlobalStylesProvider>
+              <MessageProvider />
+            </ThemeProvider>
+          </ThemeContext.Provider>
+        </TssCacheProvider>
       </CacheProvider>
     );
   }
@@ -285,16 +278,18 @@ export class MainBase extends React.PureComponent<Props, any> {
 
 const mapStateToProps = (state: State) => ({
   isLogged: state.preferences.isLogged,
-  preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY]
+  preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY],
+  isAnyFormDirty: getFormNames()(state).reduce((p, name) => isDirty(name)(state) || p, false)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  showMessage: message => dispatch(showMessage(message)),
   isLoggedIn: () => dispatch(isLoggedIn()),
   getPreferencesTheme: () => dispatch(getUserPreferences([DASHBOARD_THEME_KEY])),
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS]));
+    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
     dispatch(getDashboardBlogPosts());
   }
 });

@@ -1,98 +1,191 @@
-import React from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { change } from "redux-form";
-import CollectionFormField from "./CollectionFormField";
-import CollectionFormHeading from "./CollectionFormHeading";
+import Delete from '@mui/icons-material/Delete';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import Edit from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import { alpha } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getFormSyncErrors, getFormValues } from 'redux-form';
+import { useAppSelector } from '../../../../../common/utils/hooks';
+import { CollectionFormSchema } from '../../../../../model/preferences/data-collection-forms/collectionFormSchema';
+import CollectionFormField from './CollectionFormField';
+import CollectionFormHeading from './CollectionFormHeading';
+import { DATA_COLLECTION_FORM } from './DataCollectionForm';
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+const useStyles = makeAppStyles<void, 'actionIcon' | 'actionIconInactive'>()((theme, p, classes) => ({
+  dragIcon: {
+    margin: theme.spacing(0, 2),
+    color: theme.palette.action.focus,
+    "&:hover": {
+      color: theme.palette.action.active
+    }
+  },
+  actionButton: {
+    marginRight: "10px"
+  },
+  actionIcon: {
+    fontSize: "20px"
+  },
+  actionIconActive: {
+    color: theme.palette.action.active,
+  },
+  actionIconInactive: {
+    color: theme.palette.action.focus,
+  },
+  cardRoot: {
+    paddingTop: theme.spacing(1),
+  },
+  card: {
+    zIndex: 1,
+    borderRadius: `${theme.shape.borderRadius}px`,
+    cursor: "pointer",
+    backgroundColor: alpha(theme.palette.text.primary, 0.025),
+    [`&:hover .${classes.actionIcon}`]: {
+      color: theme.palette.action.active
+    },
+    [`&:hover .${classes.actionIconInactive}`]: {
+      color: theme.palette.action.focus
+    }
+  },
+  cardGrid: {
+    gridTemplateColumns: "auto 1fr 1fr auto auto auto",
+    display: "grid",
+    alignItems: "center",
+  },
+  dragOver: {
+    boxShadow: theme.shadows[2]
+  },
+}));
 
-  return result;
-};
-
-const onDragEnd = (result, items, dispatch) => {
-  // dropped outside the list
-  if (!result.destination) {
-    return;
+const CollectionFormFieldsRenderer = (
+  {
+    item,
+    provided,
+    snapshot,
+    onDeleteClick,
+    formType
   }
+) => {
+  const values  = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state)) as CollectionFormSchema;
+  const errors  = useAppSelector(state => getFormSyncErrors(DATA_COLLECTION_FORM)(state))  as CollectionFormSchema;
+  const hasErrors = Boolean(errors?.items && errors?.items[item.id]);
+  
+  const [isEditing, setIsEditing] = useState(false);
 
-  // dropped on the same position
-  if (result.source.index === result.destination.index) {
-    return;
-  }
+  const field = values?.items[item.id];
 
-  const reordered = reorder(items, result.source.index, result.destination.index);
+  const isHeading = field.baseType === "heading";
 
-  dispatch(change("DataCollectionForm", "items", reordered));
-};
+  const isField = field.baseType === "field";
 
-const renderCollectionFormFields = props => {
-  const {
-    fields, classes, deleteField, dispatch, errors
-  } = props;
+  const { classes } = useStyles();
+
+  const onEditClick = () => setIsEditing(!isEditing);
+  
+  useEffect(() => {
+    setIsEditing(false);
+  }, [values.form.id]);
+
+  useEffect(() => {
+    if (field.baseType === "heading" && !field.name) {
+      setIsEditing(true);
+    }
+  }, [field]);
+
+  const { classes: hoverClasses } = useHoverShowStyles();
+  
+  const relationTip = useMemo(() => {
+    const releatedFieldIndex = isField && values.items.findIndex(i => i.baseType === "field" && i.type.uniqueKey === field.relatedFieldKey);
+
+    if (releatedFieldIndex !== -1 && isField) {
+      return `Only visible when ${(values.items[releatedFieldIndex] as any)?.label} value is ${(document.querySelector(`[name="items[${item.id}].relatedFieldValue"]`) as any)?.value || field.relatedFieldValue}`;
+    }
+
+    return null;
+  }, [field, item.id]);
+  
+  const handleDelete = e => {
+    stopEventPropagation(e);
+    onDeleteClick(item.id);
+  };
 
   return (
-    <DragDropContext onDragEnd={result => onDragEnd(result, fields.getAll(), dispatch)}>
-      <Droppable droppableId="droppable">
-        {provided => (
-          <div ref={provided.innerRef}>
-            {fields.map((item, index) => {
-              const field = fields.get(index);
-
-              if (field.baseType === "field") {
-                return (
-                  <Draggable key={field.type.uniqueKey} draggableId={field.type.uniqueKey} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        id={`data-collection-form-${index}`}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <CollectionFormField
-                          item={field}
-                          field={item}
-                          className={snapshot.isDragging ? classes.boxShadow : classes.boxShadowHover}
-                          onDelete={() => deleteField(index)}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                );
-              }
-
-              return (
-                <Draggable key={index} draggableId={field.name + index} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      className={classes.heading}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      id={`data-collection-form-${index}`}
-                    >
-                      <CollectionFormHeading
-                        item={field}
-                        index={index}
-                        field={item}
-                        errors={errors}
-                        className={snapshot.isDragging ? classes.boxShadow : classes.boxShadowHover}
-                        onDelete={() => deleteField(index)}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              );
-            })}
-
-            {provided.placeholder}
+    <div className={classes.cardRoot} ref={provided.innerRef} {...provided.draggableProps} data-draggable-id={item.id}>
+      <div
+        className={clsx(classes.card, {
+          ["mt-4"]: isHeading && item.id !== 0,
+          [clsx("paperBackgroundColor", classes.dragOver)]: snapshot.isDragging || Boolean(snapshot.combineTargetFor)
+        })}
+        onClick={onEditClick}
+      >
+        <div className={clsx(classes.cardGrid, hoverClasses.container)}>
+          <div {...provided.dragHandleProps}>
+            <DragIndicator
+              className={clsx("d-flex", classes.dragIcon)}
+            />
           </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+
+          {isHeading && <div className={"heading"}>
+            {field.name}
+          </div>}
+
+          {isField && <Typography  variant="body2">
+            {field.label}
+            {field.mandatory && "*"}
+          </Typography>}
+
+          <div>
+            {isField && <Typography  variant="subtitle2" color="textSecondary" >
+              {field?.type?.label}
+            </Typography>}
+          </div>
+
+          <IconButton
+            className={clsx("dndActionIconButton", hoverClasses.target)}
+            onClick={onEditClick}
+          >
+            <Edit className={clsx(classes.actionIcon, classes.actionIconActive)} />
+          </IconButton>
+
+          {isField && <Tooltip title={relationTip}><IconButton
+            className="dndActionIconButton"
+            disabled={!relationTip}
+          >
+            <VisibilityIcon className={clsx(classes.actionIcon, relationTip ? classes.actionIconActive : classes.actionIconInactive)}  />
+          </IconButton></Tooltip> }
+
+          <IconButton
+            className={clsx("dndActionIconButton", hoverClasses.target)}
+            onClick={handleDelete}
+          >
+            <Delete className={clsx(classes.actionIcon, classes.actionIconActive)} />
+          </IconButton>
+        </div>
+
+        <Collapse in={isEditing || hasErrors}>
+          <div onClick={stopEventPropagation} className="p-3">
+            {isHeading
+              ? <CollectionFormHeading
+                item={item}
+                provided={provided}
+                snapshot={snapshot}
+              />
+              : <CollectionFormField
+                item={item}
+                field={field}
+                fields={values.items}
+                formType={formType}
+              />}
+          </div>
+        </Collapse>
+      </div>
+    </div>
   );
 };
 
-export default renderCollectionFormFields;
+export default CollectionFormFieldsRenderer;

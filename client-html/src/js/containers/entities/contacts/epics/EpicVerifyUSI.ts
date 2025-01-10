@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { UsiVerificationResult } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import ContactsService from "../services/ContactsService";
-import { VERIFY_USI, VERIFY_USI_FULFILLED } from "../actions";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { VERIFY_USI, VERIFY_USI_FULFILLED } from "../actions";
+import ContactsService from "../services/ContactsService";
 
 const request: EpicUtils.Request<
   any,

@@ -11,9 +11,11 @@
 package ish.oncourse.server.integration
 
 import com.google.inject.Injector
+import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.IntegrationConfiguration
+import ish.oncourse.server.cayenne.SystemUser
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.scripting.api.EmailService
 import ish.oncourse.server.scripting.api.TemplateService
@@ -28,7 +30,8 @@ import org.apache.cayenne.query.ObjectSelect
  *                     emailService: emailService,
  *                     systemUserService: systemUserService,
  *                     preferenceController: preferenceController,
- *                     templateService: templateService)
+ *                     templateService: templateService,
+ *                     antlrAqlService: antlrAqlService)
  *
  * or
  *
@@ -37,12 +40,15 @@ import org.apache.cayenne.query.ObjectSelect
  *                     emailService: emailService,
  *                     systemUserService: systemUserService,
  *                     preferenceController: preferenceController,
- *                     templateService: templateService)
+ *                     templateService: templateService,
+ *                     antlrAqlService: antlrAqlService)
  */
 trait PluginTrait {
 
 	ICayenneService cayenneService
 	EmailService emailService
+
+	//cannot be used for get current user in on_demand triggers. Use loggedInUser instead
 	ISystemUserService systemUserService
 	PreferenceController preferenceController
 	TemplateService templateService
@@ -50,6 +56,9 @@ trait PluginTrait {
 	Injector injector
 	IntegrationConfiguration configuration
 	ObjectContext context
+	AqlService antlrAqlService
+
+	SystemUser loggedInUser
 
 	/**
 	 * Name of the integration configuration for this plugin
@@ -62,7 +71,7 @@ trait PluginTrait {
 	int type
 
 	void loadConfig(Map args) {
-		
+		loggedInUser = args.get("loggedInUser") as SystemUser
 		configuration = args.get("configuration") as IntegrationConfiguration
 		name = args.get("name") as String
 		
@@ -75,6 +84,7 @@ trait PluginTrait {
 			templateService = injector.getInstance(TemplateService)
 			preferenceController = injector.getInstance(PreferenceController)
 			licenseService = injector.getInstance(LicenseService)
+			antlrAqlService = injector.getInstance(AqlService)
 		}
 
 				// check to see whether this plugin with initialised with a configuration

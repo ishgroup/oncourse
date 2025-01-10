@@ -1,9 +1,9 @@
 import * as React from "react";
-import { State } from "../../../reducers/state";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getGeocodeDetails } from "./actions";
 import { change } from "redux-form";
+import { State } from "../../../reducers/state";
+import { getGeocodeDetails } from "./actions";
 
 interface Props {
   dispatch: any;

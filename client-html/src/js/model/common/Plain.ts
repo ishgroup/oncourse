@@ -2,6 +2,7 @@ export interface PlainEntityState<T> {
   items?: T[];
   search?: string;
   loading?: boolean;
+  error?: boolean;
   rowsCount?: number;
 }
 
@@ -9,6 +10,7 @@ export interface CommonPlainSearchEntity {
   items?: any[];
   search?: string;
   loading?: boolean;
+  error?: boolean;
   rowsCount?: number;
 }
 

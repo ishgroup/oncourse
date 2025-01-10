@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import React from "react";
 import { TimetableMonth } from "../../../../../model/timetable";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
+import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
 
 interface Props {
@@ -12,8 +20,6 @@ interface Props {
 }
 
 const DuplicateCourseClassTimetable: React.FunctionComponent<Props> = ({ months, fetching }) => {
-  const [tagsExpanded, setTagsExpanded] = useState(true);
-
   const showMessage = !fetching && !months.length;
 
   return (
@@ -32,9 +38,7 @@ const DuplicateCourseClassTimetable: React.FunctionComponent<Props> = ({ months,
                     <CalendarSession
                       key={s.id}
                       {...s}
-                      setTagsExpanded={setTagsExpanded}
-                      tagsExpanded={tagsExpanded}
-                      inView
+                      tagsState="Tag names"
                     />
                   ))}
                 </CalendarDayBase>

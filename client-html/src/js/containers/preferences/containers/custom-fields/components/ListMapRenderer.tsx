@@ -3,21 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DataType } from "@api/model";
-import clsx from "clsx";
-import React, {
-  useCallback, useState
-} from "react";
-import { Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { WrappedFieldProps } from "redux-form";
-import debounce from "lodash.debounce";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import { useHoverShowStyles } from "../../../../../common/styles/hooks";
-import { stubFunction } from "../../../../../common/utils/common";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import AddButton from "../../../../../common/components/icons/AddButton";
+import { DataType } from '@api/model';
+import Delete from '@mui/icons-material/Delete';
+import { Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { AddButton, EditInPlaceField, stubFunction, useHoverShowStyles } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useState } from 'react';
+import { WrappedFieldProps } from 'redux-form';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
 
 interface Props {
   label: string;
@@ -47,7 +42,7 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
     label, dataType, input: { value, onChange, name }, meta: { error }, onKeyPress
   } = props;
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
   const [fields, setFields] = useState(getDefaultFields(value));
 
   const debounceChange = useCallback<any>(debounce(v => {
@@ -114,16 +109,15 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                           onBlur: stubFunction,
                           value: (isMap ? f.label : f.value) || ""
                         }}
-                          formatting="inline"
+                          inline
                           onKeyPress={onKeyPress}
-                          hidePlaceholderInEditMode
                           multiline
                         />
 
                         {
                           isMap && (
                           <>
-                            (
+                            {" ( "}
                             <EditInPlaceField
                               meta={{
                                 error: valueError,
@@ -136,11 +130,10 @@ const ListMapRenderer: React.FC<WrappedFieldProps & Props> = props => {
                                 value: f.value || ""
                               }}
                               onKeyPress={onKeyPress}
-                              formatting="inline"
-                              hidePlaceholderInEditMode
+                              inline
                               multiline
                             />
-                            )
+                            {" ) "}
                           </>
                         )
                       }

@@ -35,8 +35,6 @@ public class CalculateClassroomHours {
             for (Session s : courseClass.getSessions()) {
                 sum = sum.add(s.getDurationInHours());
             }
-        } else if (courseClass.getSessionsCount() != null && courseClass.getMinutesPerSession() != null) {
-            return BigDecimal.valueOf(courseClass.getSessionsCount() * courseClass.getMinutesPerSession() / 60L);
         }
         return sum;
     }

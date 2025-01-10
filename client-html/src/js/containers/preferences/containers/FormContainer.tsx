@@ -1,34 +1,37 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { withStyles } from "@mui/styles";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { SystemPreference } from "@api/model";
-import { SubmissionError, initialize } from "redux-form";
-import { withRouter, RouteComponentProps } from "react-router";
-import createStyles from "@mui/styles/createStyles";
-import * as college from "../../../model/preferences/College";
-import * as ldap from "../../../model/preferences/Ldap";
-import * as licences from "../../../model/preferences/Licences";
-import * as messaging from "../../../model/preferences/Messaging";
-import * as classDefaults from "../../../model/preferences/ClassDefaults";
-import * as maintenance from "../../../model/preferences/Maintenance";
-import * as avetmiss from "../../../model/preferences/Avetmiss";
-import { getPreferences, savePreferences } from "../actions";
-import { Categories } from "../../../model/preferences";
-import * as financial from "../../../model/preferences/Financial";
-import * as security from "../../../model/preferences/security";
-import { State } from "../../../reducers/state";
-import { Fetch } from "../../../model/common/Fetch";
-import { setNextLocation, showConfirm } from "../../../common/actions";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
+import { SystemPreference } from '@api/model';
+import { ShowConfirmCaller } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import { initialize, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { setUserPreference, showConfirm } from '../../../common/actions';
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../constants/Config';
+import { Fetch } from '../../../model/common/Fetch';
+import { Categories } from '../../../model/preferences';
+import * as avetmiss from '../../../model/preferences/Avetmiss';
+import * as classDefaults from '../../../model/preferences/ClassDefaults';
+import * as college from '../../../model/preferences/College';
+import * as financial from '../../../model/preferences/Financial';
+import * as ldap from '../../../model/preferences/Ldap';
+import * as licences from '../../../model/preferences/Licences';
+import * as maintenance from '../../../model/preferences/Maintenance';
+import * as messaging from '../../../model/preferences/Messaging';
+import * as security from '../../../model/preferences/security';
+import { State } from '../../../reducers/state';
+import { getPreferences, savePreferences } from '../actions';
 
 const styles = () =>
-  createStyles({
+  ({
     subheadingButton: {
       width: "30px",
       minWidth: "unset"
@@ -63,8 +66,7 @@ interface Props {
   skipOnInit?: boolean;
   fetch?: Fetch;
   openConfirm?: ShowConfirmCaller;
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 const FieldsModel = {
@@ -160,13 +162,10 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
     })
       .then(() => {
         const {
-          dispatch, data, formName, nextLocation, setNextLocation, history
+          dispatch, data, formName
         } = this.props;
 
         dispatch(initialize(formName, this.formatData(data)));
-
-        nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isValidating = false;
@@ -223,20 +222,21 @@ class FormContainer extends React.Component<Props & RouteComponentProps, any> {
   }
 }
 
-const getFormName = form => form && Object.keys(form)[0];
-
 const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
-  formName: getFormName(state.form),
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   dispatch,
   onInit: category => dispatch(getPreferences(category)),
-  onSubmit: (category, fields) => dispatch(savePreferences(category, fields)),
-  openConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  onSubmit: (category, {defaultInvoiceLineAccount, ...fields}) => {
+    if (defaultInvoiceLineAccount) {
+      dispatch(setUserPreference({key: ACCOUNT_DEFAULT_INVOICELINE_ID, value: defaultInvoiceLineAccount}));
+    }
+    dispatch(savePreferences(category, fields));
+  },
+  openConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(withRouter(FormContainer), styles));

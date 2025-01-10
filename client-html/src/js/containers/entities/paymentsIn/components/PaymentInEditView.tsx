@@ -3,24 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import { addDays, compareAsc, format as formatDate } from "date-fns";
 import { PaymentIn } from "@api/model";
-import Typography from "@mui/material/Typography";
-import { FieldArray, getFormInitialValues } from "redux-form";
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { addDays, compareAsc, format as formatDate } from "date-fns";
+import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from "ish-ui";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import { FieldArray, getFormInitialValues } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { openInternalLink } from "../../../../common/utils/links";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { SiteState } from "../../sites/reducers/state";
-import { defaultContactName, openContactLink } from "../../contacts/utils";
+import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -71,16 +69,27 @@ const isDateLocked = (lockedDate: any, settlementDate: any) => {
   }
   return (
     compareAsc(
-      addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1),
+      addDays(new Date(lockedDate), 1),
       new Date(settlementDate)
     ) > 0
   );
 };
 
+const validateSettlementDateBanked = (settlementDate, allValues) => {
+  if (!settlementDate) {
+    return undefined;
+  }
+  if (compareAsc(new Date(settlementDate), new Date(allValues.datePayed)) < 0) {
+    return `Date banked must be after or equal to date paid`;
+  }
+
+  return undefined;
+};
+
 const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
   const {
- twoColumn, values, lockedDate, initialValues, adminSites
-} = props;
+   twoColumn, values, lockedDate, initialValues, adminSites
+  } = props;
 
   const validateSettlementDate = useCallback(
     settlementDate => {
@@ -90,7 +99,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       if (!initialValues || initialValues.dateBanked === settlementDate) {
         return undefined;
       }
-      const date = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const date = new Date(lockedDate);
       return compareAsc(addDays(date, 1), new Date(settlementDate)) > 0
         ? `Date must be after ${formatDate(date, D_MMM_YYYY)}`
         : undefined;
@@ -108,17 +117,19 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item {...gridItemProps}>
         <Uneditable
-          value={defaultContactName(values.payerName)}
+          value={values.payerName}
           label="Payment from"
-          labelAdornment={<LinkAdornment link={values && values.payerId} linkHandler={openContactLink} />}
+          labelAdornment={
+            <ContactLinkAdornment id={values?.payerId} />
+          }
         />
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="searchSelect"
+          type="select"
           name="administrationCenterId"
           label="Site"
-          defaultDisplayValue={values && values.administrationCenterName}
+          defaultValue={values && values.administrationCenterName}
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
@@ -191,12 +202,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               type="date"
               name="dateBanked"
               label="Date banked"
-              validate={validateSettlementDate}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth), 1)
-                  : undefined
-              }
+              validate={[validateSettlementDate, validateSettlementDateBanked]}
             />
           )}
       </Grid>

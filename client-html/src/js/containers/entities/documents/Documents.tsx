@@ -3,40 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect } from "react";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import Delete from "@mui/icons-material/Delete";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { Document } from "@api/model";
-import { OpenWith } from "@mui/icons-material";
-import Button from "@mui/material/Button";
-import FileUploaderDialog from "../../../common/components/file-uploader/FileUploaderDialog";
-import { getInitialDocument } from "../../../common/components/form/documents/components/utils";
-import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
-import { BooleanArgFunction } from "../../../model/common/CommonFunctions";
-import { FilterGroup } from "../../../model/common/ListView";
-import ListView from "../../../common/components/list-view/ListView";
+import { Document } from '@api/model';
+import { OpenWith } from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import { BooleanArgFunction, NoArgFunction } from 'ish-ui';
+import React, { useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { clearEditingDocument, searchDocumentByHash } from '../../../common/components/form/documents/actions';
+import DocumentAddDialog from '../../../common/components/form/documents/components/dialogs/DocumentAddDialog';
 import {
-  clearListState,
   getFilters,
   setFilterGroups,
   setListCreatingNew,
   setListEditRecord,
-  setListFullScreenEditView,
   setListSelection
-} from "../../../common/components/list-view/actions";
-import { State } from "../../../reducers/state";
-import { getEntityTags, getListTags } from "../../tags/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { createDocument, getDocument, updateDocument } from "./actions";
-import DocumentEditView from "./components/DocumentEditView";
-import BinCogwheel from "./components/BinCogwheel";
+} from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getEntityTags, getListTags } from '../../tags/actions';
+import BinCogwheel from './components/BinCogwheel';
+import DocumentEditView from './components/DocumentEditView';
 
-const styles = () => createStyles({
+const styles = () => ({
   linkBtnWrapper: {
     height: "19px"
   },
@@ -57,37 +52,21 @@ const styles = () => createStyles({
 });
 
 interface DocumentProps {
-  getDocumentRecord?: () => void;
-  onInit?: () => void;
-  onSave?: (id: string, document: Document) => void;
+  onInit?: (document: Document) => void;
   getRecords?: () => void;
   getFilters?: () => void;
-  clearListState?: () => void;
   getTags?: () => void;
-  onCreate: (document: Document) => void;
   classes?: any;
   setListCreatingNew?: BooleanArgFunction;
   updateSelection?: (selection: string[]) => void;
   history?: any;
-  location?: any;
   match?: any;
-  fullScreenEditView?: boolean;
-  setListFullScreenEditView?: BooleanArgFunction;
+  searchExistingDocument?: (inputDocument: File) => void;
+  editingDocument?: Document;
+  editRecord?: any;
+  clearEditingDocument?: NoArgFunction;
+  threeColumn?: boolean;
 }
-
-let Initial: Document = {
-  id: null,
-  name: null,
-  createdOn: null,
-  modifiedOn: null,
-  thumbnail: null,
-  versionId: null,
-  access: null,
-  shared: true,
-  description: null,
-  versions: [],
-  tags: []
-};
 
 const isRemoved = (value: string) => "isRemoved is " + value;
 
@@ -136,7 +115,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Document and entityId" },
   { title: "Courses", list: "course", expression: "attachmentRelations.entityIdentifier == 'Course' and attachmentRelations.document.id" },
   {
@@ -156,7 +135,7 @@ const findRelatedGroup: any = [
   }
 ];
 
-const manualLink = getManualLink("documentManagement");
+const manualLink = getManualLink("document-management-documents-in-oncourse");
 
 const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   e.stopPropagation();
@@ -165,50 +144,24 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
 
 const setRowClasses = ({ active }) => (active === "No" ? "text-op05" : undefined);
 
-const handleFileSelect = (files, setCreateNew) => {
-  const file = files[0];
-
-  if (file) {
-    DocumentsService.searchDocument(file).then(res => {
-      if (res) {
-        // open edit view with that document
-        Initial = res;
-        setCreateNew();
-      } else {
-        getInitialDocument(file).then(document => {
-          // open edit view with newly created document
-          Initial = document;
-          setCreateNew();
-        });
-      }
-    });
-  }
-};
-
 const Documents: React.FC<DocumentProps> = props => {
   const {
-    getDocumentRecord,
     onInit,
-    onSave,
     getFilters,
-    clearListState,
+    editRecord,
     getTags,
-    onCreate,
     classes,
     setListCreatingNew,
     updateSelection,
     history,
-    location,
+    searchExistingDocument,
+    clearEditingDocument,
     match: { params, url },
-    setListFullScreenEditView
+    editingDocument,
+    threeColumn
   } = props;
 
   const [openFileModal, setOpenFileModal] = React.useState<boolean>(false);
-  const [isDragging, setIsDragging] = React.useState<boolean>(false);
-  const [draggingEventAdded, setSraggingEventAdded] = React.useState<boolean>(false);
-  const [manuallyOpenModal, setManuallyOpenModal] = React.useState<boolean>(false);
-
-  const dialogRef: any = React.useRef<any>(null);
 
   const updateHistory = (pathname, search) => {
     const newUrl = window.location.origin + pathname + search;
@@ -221,38 +174,44 @@ const Documents: React.FC<DocumentProps> = props => {
     }
   };
 
-  const setCreateNew = React.useCallback(() => {
-    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", location.search);
-
-    setListCreatingNew(true);
-    updateSelection(["new"]);
-    onInit();
-  }, [params, location, url]);
-
-  const fileDragEvent = React.useCallback((e, openAddDialog) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setIsDragging(openAddDialog);
-    setOpenFileModal(openAddDialog);
+  const closeAddDialog = useCallback(() => {
+    clearEditingDocument();
+    setOpenFileModal(false);
   }, []);
 
-  const addDialogRefEvents = () => {
-    if (dialogRef.current !== null && !draggingEventAdded) {
-      setSraggingEventAdded(true);
-      dialogRef.current.addEventListener("dragover", e => fileDragEvent(e, true));
-      dialogRef.current.addEventListener("dragenter", e => fileDragEvent(e, true));
-      dialogRef.current.addEventListener("dragleave", e => fileDragEvent(e, false));
-    }
+  const onDragEnter = useCallback(() => {
+    setOpenFileModal(true);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("dragenter", onDragEnter);
+    return () => {
+      window.removeEventListener("dragenter", onDragEnter);
+    };
+  }, []);
+
+  const setCreateNew = (initial: Document) => {
+    updateHistory(params.id ? url.replace(`/${params.id}`, "/new") : url + "/new", window.location.search);
+
+    const processCreate = () => {
+      setListCreatingNew(true);
+      updateSelection(["new"]);
+      onInit(initial);
+      closeAddDialog();
+    };
+
+    setTimeout(processCreate);
   };
+
+  useEffect(() => {
+    if (editingDocument) {
+      setCreateNew(editingDocument);
+    }
+  }, [editingDocument]);
 
   useEffect(() => {
     getFilters();
     getTags();
-    window.addEventListener("dragenter", e => fileDragEvent(e, true));
-    return () => {
-      clearListState();
-      window.removeEventListener("dragenter", e => fileDragEvent(e, false));
-    };
   }, []);
 
   const getCustomColumnFormats = useCallback(() => ({
@@ -271,56 +230,17 @@ const Documents: React.FC<DocumentProps> = props => {
         </Button>
       </div>
     ) : v)
-  }), [classes]);
-
-  const onDocumentCreate = useCallback(doc => {
-    const docModel = { ...doc };
-    onCreate(docModel);
-    setManuallyOpenModal(false);
-  }, []);
+  }), []);
 
   const customOnCreate = () => {
+    if (editRecord && params.id === "new") return;
     setOpenFileModal(true);
-    setIsDragging(true);
-    setManuallyOpenModal(true);
   };
 
-  const handleDocumentUpload = React.useCallback(files => {
-    if (files.length) {
-      handleFileSelect(files, () => {
-        setCreateNew();
-        setIsDragging(false);
-        setOpenFileModal(false);
-        setListFullScreenEditView(false);
-      });
-    }
-  }, [params, location, url]);
-
-  const onDocumentModalClose = React.useCallback(() => {
-    setOpenFileModal(false);
-    setIsDragging(false);
-    setManuallyOpenModal(false);
-    updateHistory(url.replace("/new", ""), location.search);
-  }, [url, location]);
-
-  React.useEffect(() => {
-    if (!manuallyOpenModal) {
-      if (openFileModal) {
-        if (!dialogRef.current) {
-          setTimeout(() => {
-            addDialogRefEvents();
-          }, 100);
-        } else {
-          addDialogRefEvents();
-        }
-      } else if (dialogRef.current) {
-        setSraggingEventAdded(false);
-        dialogRef.current.removeEventListener("dragover", e => fileDragEvent(e, false));
-        dialogRef.current.removeEventListener("dragenter", e => fileDragEvent(e, false));
-        dialogRef.current.removeEventListener("dragleave", e => fileDragEvent(e, false));
-      }
-    }
-  }, [openFileModal, manuallyOpenModal]);
+  const closeHandler = () => {
+    updateHistory(url.replace("/new", ""), window.location.search);
+    closeAddDialog();
+  };
 
   return (
     <>
@@ -337,52 +257,47 @@ const Documents: React.FC<DocumentProps> = props => {
         }}
         CogwheelAdornment={BinCogwheel}
         EditViewContent={DocumentEditView}
-        getEditRecord={getDocumentRecord}
         rootEntity="Document"
-        onInit={onInit}
-        customOnCreate={customOnCreate}
-        onCreate={onDocumentCreate}
-        onSave={onSave}
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
+        customOnCreate={customOnCreate}
         defaultDeleteDisabled
         noListTags
       />
-      <FileUploaderDialog
-        dialog
-        fileRef={dialogRef}
+
+      <DocumentAddDialog
         opened={openFileModal}
-        onChange={handleDocumentUpload}
-        isBackdropDragging={isDragging}
-        backdropEnabled={isDragging}
-        onClose={onDocumentModalClose}
+        onClose={closeHandler}
+        searchDocument={searchExistingDocument}
+        closeAddDialog={closeAddDialog}
+        hideSearch
       />
     </>
   );
 };
 
 const mapStateToProps = (state: State) => ({
-  fullScreenEditView: state.list.fullScreenEditView
+  editingDocument: state.documents.editingDocument,
+  editRecord: state.list.editRecord,
+  threeColumn: state.list.records.layout === "Three column"
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  onInit: () => {
-    dispatch(setListEditRecord(Initial));
-    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, Initial));
+  onInit: initial => {
+    dispatch(setListEditRecord(initial));
+    dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, initial));
   },
   getFilters: () => dispatch(getFilters("Document")),
   getTags: () => {
     dispatch(getEntityTags("Document"));
     dispatch(getListTags("Document"));
   },
-  clearListState: () => dispatch(clearListState()),
-  getDocumentRecord: (id: number) => dispatch(getDocument(id)),
-  onSave: (id: string, document) => dispatch(updateDocument(id, document)),
-  onCreate: document => dispatch(createDocument(document)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
-  setListFullScreenEditView: (fullScreenEditView: boolean) => dispatch(setListFullScreenEditView(fullScreenEditView))
+  searchExistingDocument: (inputDocument: File, editingFormName: string) =>
+    dispatch(searchDocumentByHash(inputDocument, editingFormName)),
+  clearEditingDocument: () => dispatch(clearEditingDocument())
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Documents));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(Documents, styles));

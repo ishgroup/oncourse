@@ -55,11 +55,11 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             assessment.id = cayenneModel.id
             assessment.code = cayenneModel.code
             assessment.name = cayenneModel.name
-            assessment.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
+            assessment.tags = cayenneModel.allTags.collect { it.id }
             assessment.active = cayenneModel.active
             assessment.description = cayenneModel.description
             assessment.gradingTypeId = cayenneModel.gradingType?.id
-            assessment.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            assessment.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, documentService) }
             assessment.createdOn = LocalDateUtils.dateToTimeValue(cayenneModel.createdOn)
             assessment.modifiedOn = LocalDateUtils.dateToTimeValue(cayenneModel.modifiedOn)
             assessment
@@ -76,7 +76,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
                 gradingApiService.getEntityAndValidateExistence(cayenneModel.context, restModel.gradingTypeId) :
                 null as GradingType
 
-        updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags*.id, AssessmentTagRelation, cayenneModel.context)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, restModel.tags, AssessmentTagRelation, cayenneModel.context)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, restModel.documents, AssessmentAttachmentRelation, cayenneModel.context)
 
         cayenneModel
@@ -119,7 +119,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             validator.throwClientErrorException(id, 'active', 'Active flag is required.')
         }
 
-        TagFunctions.validateTagForSave(Assessment, context, restModel.tags*.id)
+        TagFunctions.validateTagForSave(Assessment, context, restModel.tags)
                 ?.with { validator.throwClientErrorException(it) }
 
         for(Long documentId : restModel.documents*.id) {
@@ -130,7 +130,7 @@ class AssessmentApiService extends TaggableApiService<AssessmentDTO, Assessment,
             }
         }
 
-        TagFunctions.validateRelationsForSave(Assessment, context, restModel.tags*.id, TaggableClasses.ASSESSMENT)
+        TagFunctions.validateRelationsForSave(Assessment, context, restModel.tags, TaggableClasses.ASSESSMENT)
                 ?.with { validator.throwClientErrorException(it) }
     }
 

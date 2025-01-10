@@ -21,12 +21,8 @@ import {
   TrainingPlan,
   TutorAttendanceType
 } from "@api/model";
-import { AccountExtended } from "./Account";
 import { TimetableSession } from "../timetable";
-
-export enum Classes {
-  path = "class"
-}
+import { AccountExtended } from "./Account";
 
 export interface CourseClassRoom {
   id: number;
@@ -146,7 +142,7 @@ export type AttandanceChangeType =
   | "allTrainingPlans"
   | "bySession";
 
-export type AttendanceGridType =  "Student" | "Training plan";
+export type AttendanceGridType = "Student" | "Training plan";
 
 export const tutorStatusRoles: TutorAttendanceType[] = [
   "Confirmed for payroll",

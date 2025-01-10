@@ -8,7 +8,7 @@ on:
 jobs:
 
   server-junit:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 60
     strategy:
       matrix:
@@ -96,7 +96,7 @@ jobs:
 
 
   server-integrations:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 60
     strategy:
       matrix:
@@ -105,7 +105,7 @@ jobs:
     steps:
       - uses: ankane/setup-mariadb@v1
         with:
-          mariadb-version: 10.4
+          mariadb-version: "10.11"
           database: angelTest_trunk
 
       - uses: actions/checkout@v2

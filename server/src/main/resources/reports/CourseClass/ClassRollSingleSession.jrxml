@@ -2,11 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassRollSingleSession" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="87571c54-593c-413e-b313-e922cc67fec8">
 	<property name="name" value="Class Roll - Single Session"/>
-	<property name="entity" value="CourseClass"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.ClassRollSingleSession"/>
 	<property name="ish.oncourse.description" value="To be used for classes where the tutors need to return a student-signed copy of the class roll back to the college administration office after each week or session.This report prints in Portrait format."/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -71,7 +67,7 @@
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<field name="subreport.ish.onCourse.classRollTutors" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="datasource.sessions" class="net.sf.jasperreports.engine.JRDataSource"/>
-	<field name="sessionsCount" class="java.lang.Integer"/>
+	<field name="sessions" class="java.util.List"/>
 	<field name="datasource.successAndQueuedEnrolments" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<variable name="subRep" class="java.lang.String"/>
 	<variable name="tutorNumber" class="java.math.BigDecimal"/>
@@ -126,7 +122,7 @@
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" style="data field" x="108" y="77" width="101" height="16" uuid="64e02cdc-f7ab-407a-86ec-1dde9c4e476f"/>
-				<textFieldExpression><![CDATA[$F{sessionsCount}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sessions}.size()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-21" style="Label" x="30" y="77" width="59" height="16" uuid="e5ac306c-70f0-477e-b863-8ae1c74c9568"/>

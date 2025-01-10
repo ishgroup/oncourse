@@ -1,13 +1,18 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { withStyles } from "@mui/styles";
-import {
-  List, ListItem, ListSubheader, ListItemText
-} from "@mui/material";
-import Button from "@mui/material/Button";
-import { State } from "../../../../reducers/state";
-import * as Model from "../../../../model/preferences/Licences";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import { Button, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import * as Model from '../../../../model/preferences/Licences';
+import { State } from '../../../../reducers/state';
 
 const styles: any = () => ({
   disabledList: {
@@ -15,6 +20,7 @@ const styles: any = () => ({
   },
   listItem: {
     paddingBottom: 0,
+    paddingLeft: 0,
     "&:nth-child(2)": {
       paddingTop: 0
     }
@@ -43,7 +49,7 @@ class Licences extends React.Component<any, any> {
   }
 
   render() {
-    const { licences } = this.props;
+    const { licences, plugins, classes } = this.props;
 
     const inactive = licences
       && Object.keys(licences)
@@ -77,7 +83,7 @@ class Licences extends React.Component<any, any> {
             <List
               className="mt-1"
               subheader={(
-                <ListSubheader disableSticky className="heading">
+                <ListSubheader disableSticky className="heading mb-2">
                   Inactive Features
                   <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
                     <Button
@@ -94,6 +100,28 @@ class Licences extends React.Component<any, any> {
               {inactive}
             </List>
           )}
+
+          {
+            plugins && plugins["plugins.names"] && (
+              <List
+                className="mt-1"
+                subheader={(
+                  <ListSubheader disableSticky className="heading pl-0 mb-2">
+                    Enabled Plugins
+                  </ListSubheader>
+                )}
+              >
+                {plugins["plugins.names"].split(",").map(item => {
+                  const splitted = item.split("|");
+                  return (
+                    <ListItem key={item} className={classes.listItem}>
+                      <ListItemText primary={`${splitted[0]} ${splitted[1]}`} />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )
+          }
         </AppBarContainer>
       </div>
     );
@@ -101,9 +129,10 @@ class Licences extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  licences: state.preferences.licences
+  licences: state.preferences.licences,
+  plugins: state.preferences.plugins
 });
 
-const Styled = withStyles(styles)(Licences);
+const Styled = withStyles(Licences, styles);
 
 export default connect(mapStateToProps, null)(Styled as any);

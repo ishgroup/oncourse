@@ -40,6 +40,7 @@ public class TemplateService {
 	public static final String SUBJECT = "subject";
 	public static final String RECORD = "record";
 	public static final String TO = "to";
+	public static final String AUTHOR = "author";
 	public static final String TEMPLATE_BINDING = "Template";
 	public static final String COLLEGE_PREFERENCE_SERVICE = "Preference";
 	public static final String PREFERENCES_BINDING = "Preferences";

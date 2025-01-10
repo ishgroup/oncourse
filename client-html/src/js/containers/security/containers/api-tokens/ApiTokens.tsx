@@ -6,24 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import Grid from "@mui/material/Grid";
-import {
-  arrayInsert, arrayRemove, FieldArray, getFormValues, InjectedFormProps, reduxForm
-} from "redux-form";
-import { Dispatch } from "redux";
-import Alert from "@mui/lab/Alert";
-import { AlertTitle } from "@mui/lab";
-import { connect } from "react-redux";
 import { User } from "@api/model";
+import { AlertTitle } from "@mui/lab";
+import Alert from "@mui/lab/Alert";
+import Grid from "@mui/material/Grid";
+import React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { arrayInsert, arrayRemove, FieldArray, Form, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import { v4 as uuidv4 } from 'uuid';
-import { onSubmitFail } from "../../../../common/utils/highlightFormClassErrors";
-import RouteChangeConfirm from "../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import ApiTokensRenderer from "./components/ApiTokensRenderer";
+import { showConfirm } from "../../../../common/actions";
+import RouteChangeConfirm from "../../../../common/components/dialog/RouteChangeConfirm";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import { deleteApiToken, updateApiTokens } from "../../actions";
-import { showConfirm } from "../../../../common/actions";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import ApiTokensRenderer from "./components/ApiTokensRenderer";
 
 interface Props extends InjectedFormProps {
   security: any;
@@ -74,7 +72,7 @@ const ApiTokensBase:React.FC<Props> = (
   };
 
   return (
-    <form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
+    <Form className="mt-2" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)}>
       <RouteChangeConfirm form={form} when={dirty} />
 
       <AppBarContainer
@@ -107,7 +105,7 @@ const ApiTokensBase:React.FC<Props> = (
           </Grid>
         </Grid>
       </AppBarContainer>
-    </form>
+    </Form>
   );
 };
 

@@ -21,7 +21,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"500",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[{"name":"varName10", "label":"varLabel10", "type":"Text"}],
         "options":[{"name":"optName10", "type":"Date time", "value":"2019-01-01T22:00:00.000Z"}],
         "outputType":"json",
@@ -53,7 +53,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"500",
         "entity":"AccountTransactionUPD",
         "body":"someBodyUPD",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -77,7 +77,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"500",
         "entity":"AccountTransactionUPD",
         "body":"someBodyUPD",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -104,7 +104,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"501",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[{"name":"varName11", "label":"varLabel11", "type":"Text"}],
         "options":[],
         "outputType":"json",
@@ -141,7 +141,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"501",
         "entity":"AccountTransactionUPD",
         "body":"someBodyUPD",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[{"name":"varName11","label":"varLabel11","type":"Text"},{"name":"varName11a","label":"varLabel11a","type":"Date"}],
         "options":[{"name":"optName11", "type":"Text", "value":"some record"}],
         "outputType":"txt",
@@ -165,7 +165,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"501",
         "entity":"AccountTransactionUPD",
         "body":"someBodyUPD",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[{"name":"varName11","label":"varLabel11","type":"Text","value":null,"system":null,"valueDefault":null},{"name":"varName11a","label":"varLabel11a","type":"Date","value":null,"system":null,"valueDefault":null}],
         "options":[{"name":"optName11", "label":null, "type":"Text", "value":"some record","system":null,"valueDefault":null}],
         "outputType":"txt",
@@ -196,7 +196,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"502",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "outputType":"csv",
@@ -233,7 +233,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"502",
         "entity":"AccountTransactionUPD",
         "body":"someBodyUPD",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -266,7 +266,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"504",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"xml",
@@ -298,7 +298,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"504",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"xml",
@@ -329,7 +329,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"505",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"ics",
@@ -361,7 +361,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -392,7 +392,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"505a",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "outputType":"ics",
@@ -424,7 +424,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"other",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "outputType":"ics",
@@ -455,7 +455,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"506",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -487,7 +487,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"506",
         "entity":"",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -518,7 +518,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"507",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -550,7 +550,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"507",
         "entity":"AccountTransaction",
         "body":"",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -581,7 +581,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"507a",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -613,7 +613,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"507a",
         "entity":"AccountTransaction",
         "body":"some body",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":null,
@@ -644,7 +644,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"507b",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -676,7 +676,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"507b",
         "entity":"AccountTransaction",
         "body":"some body",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"exe",
@@ -707,7 +707,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"511",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -739,7 +739,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"511",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -770,7 +770,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"513",
         "entity":"AccountTransaction",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -802,7 +802,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"513",
         "entity":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -832,18 +832,18 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["Room CSV export"])].id
+        * def id = get[0] response.rows[?(@.values == ["Room CSV"])].id
         * print "id = " + id
 
         * def exportTemplateToUpdate =
         """
         {
         "id":#(id),
-        "name":"Room CSV export",
+        "name":"Room CSV",
         "keyCode":"ish.onCourse.room.csv",
         "entity":"Room",
         "body":"records.each { Room r ->\n\tcsv << [\n\t\t\t'name'                         : r.name,\n\t\t\t'seated capacity'              : r.seatedCapacity,\n\t\t\t'directions'                   : r.directions,\n\t\t\t'facilities'                   : r.facilities,\n\t\t\t'notes'                        : r.notes,\n\t\t\t'created on'                   : r.createdOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\"),\n\t\t\t'modified on'                  : r.modifiedOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\"),\n\t\t\t'siteName'                     : r.site.name,\n\t\t\t'site is administration centre': r.site.isAdministrationCentre,\n\t\t\t'site Latitude'                : r.site.latitude,\n\t\t\t'site Longitude'               : r.site.longitude,\n\t\t\t'site Postcode'                : r.site.postcode,\n\t\t\t'site State'                   : r.site.state,\n\t\t\t'site Street'                  : r.site.street,\n\t\t\t'site Suburb'                  : r.site.suburb,\n\t\t\t'site Created on'              : r.site.createdOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\"),\n\t\t\t'site Modified on'             : r.site.modifiedOn?.format(\"yyyy-MM-dd'T'HH:mm:ssXXX\")\n\t]\n}\n",
-        "enabled":false,
+        "status":"Not Installed",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -869,7 +869,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         "keyCode":"513",
         "entity":"Site",
         "body":"someBody",
-        "enabled":true,
+        "status":"Enabled",
         "variables":[],
         "options":[],
         "outputType":"txt",
@@ -884,4 +884,59 @@ Feature: Main feature for all PUT requests with path 'list/entity/exportTemplate
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
 
 
+    Scenario: (+) Update custom Export template configs by admin
+
+#       <----->  Add a new entity to update and define its id:
+        * def newExportTemplate =
+        """
+        {
+        "name":"put ExportTemplate01",
+        "keyCode":"500",
+        "entity":"AccountTransaction",
+        "body":"someBody",
+        "status":"Enabled",
+        "variables":[{"name":"varName10", "label":"varLabel10", "type":"Text"}],
+        "options":[{"name":"optName10", "type":"Date time", "value":"2019-01-01T22:00:00.000Z"}],
+        "outputType":"json",
+        "description":"some description"
+        }
+        """
+
+        Given path ishPath
+        And request newExportTemplate
+        When method POST
+        Then status 204
+
+        Given path ishPathList
+        And param entity = 'ExportTemplate'
+        And param columns = 'name'
+        And param offset = 50
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["put ExportTemplate01"])].id
+        * print "id = " + id
+#       <--->
+
+        * def exportTemplateToUpdate =
+        """
+        {
+            "config":'  name: \"Updated Export template\"\n  short:\n  description: \"Updated export template description\"\n  category:\n  sortOn: \"\"\n  visible: true'
+        }
+        """
+
+        Given path ishPath + '/config/' + id
+        And request exportTemplateToUpdate
+        When method PUT
+        Then status 204
+
+        Given path ishPath + '/config/' + id
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: Updated export template description\ndescription: Updated export template description\nname: Updated Export template\nentityClass: AccountTransaction\noutputType: JSON'
+
+#       <--->  Scenario have been finished. Now remove created object from DB:
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
 

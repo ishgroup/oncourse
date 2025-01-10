@@ -23,6 +23,7 @@ import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.scripting.api.DocumentSpec
 import ish.s3.AmazonS3Service
 import ish.s3.AmazonS3Service.UploadResult
+import ish.common.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -33,7 +34,7 @@ import javax.ws.rs.core.Response
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.validateStoragePlace
 import static ish.oncourse.server.scripting.api.DocumentSpec.ATTACH_ACTION
 import static ish.oncourse.server.scripting.api.DocumentSpec.CREATE_ACTION
-import ish.util.ImageHelper
+import ish.common.util.ImageHelper
 import ish.util.SecurityUtil
 import org.apache.cayenne.query.ObjectSelect
 
@@ -176,10 +177,11 @@ class DocumentService {
 		doc.setWebVisibility(permission)
 		version.setMimeType(mimeType)
 		version.setByteSize(content.size())
+		version.setCurrent(true)
 		if (ImageHelper.isImage(content, mimeType)) {
 			version.setPixelWidth(ImageHelper.imageWidth(content))
 			version.setPixelHeight(ImageHelper.imageHeight(content))
-			version.setThumbnail(ImageHelper.generateThumbnail(content, mimeType))
+			version.setThumbnail(ThumbnailGenerator.generateForImg(content, mimeType))
         }
 		version.setFileName(name)
 		version.setHash(SecurityUtil.hashByteArray(content))

@@ -6,27 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { createRef, useEffect, useState } from "react";
-import { DataResponse } from "@api/model";
-import {
- Grid, Link, List, ListItem, Typography, Tooltip
-} from "@mui/material";
-import clsx from "clsx";
-import {
-  differenceInHours,
-  differenceInMinutes,
-  format
-} from "date-fns";
-import { Check, Clear } from "@mui/icons-material";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import EntityService from "../../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY_HH_MM } from "../../../../../common/utils/dates/format";
-import { openInternalLink } from "../../../../../common/utils/links";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import AnimateList from "../../../../../common/utils/animation/AnimateList";
+import { Check, Clear } from '@mui/icons-material';
+import { Grid, Link, List, ListItem, Tooltip, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { differenceInHours, differenceInMinutes, format } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM, openInternalLink } from 'ish-ui';
+import React, { createRef, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../../common/services/EntityService';
+import AnimateList from '../../../../../common/utils/animation/AnimateList';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   icon: {
     top: "0.3rem",
     marginRight: theme.spacing(1),
@@ -50,54 +41,59 @@ const styles = theme => createStyles({
   }
 });
 
-const ScriptStatistic = ({ dispatch, classes }) => {
+const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
   const [scripts, setScripts] = useState([]);
 
-  const getScriptsData = () => {
+  const getScriptsData = async () => {
     const today = new Date();
+    
+    try {
+      const scriptRes = await EntityService.getPlainRecords(
+        "Script",
+        "name",
+        'automationStatus == ENABLED',
+        null,
+        null,
+        "name",
+        true
+      );
 
-    EntityService.getPlainRecords(
-      "Script",
-      "name",
-      'enabled is true',
-      null,
-      null,
-      "name",
-      true
-    )
-      .then(async (scriptRes: DataResponse) => {
-        const resultForRender = [];
+      if (!Array.isArray(scriptRes?.rows)) return;
 
-        await scriptRes.rows.map(scriptRow => () =>
-          EntityService.getPlainRecords(
-            "Audit",
-            "entityId,created,action",
-            `entityIdentifier is "Script" and entityId is ${scriptRow.id}
+      const resultForRender = [];
+
+      for (const scriptRow of scriptRes.rows) {
+        const auditRes = await EntityService.getPlainRecords(
+          "Audit",
+          "entityId,created,action",
+          `entityIdentifier is "Script" and entityId is ${scriptRow.id}
             and ( action is SCRIPT_FAILED or action is SCRIPT_EXECUTED) `,
-            7,
-            0,
-            'created',
-            false
-          ).then(auditRes => {
-            if (!auditRes.rows.length || !auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
-              return;
-            }
-            const result = auditRes.rows.map(row => ({
-              id: row.values[0],
-              date: row.values[1],
-              status: row.values[2],
-            }));
-            resultForRender.push({ name: scriptRow.values[0], result });
-          })
-          .catch(err => instantFetchErrorHandler(dispatch, err))).reduce(async (a, b) => {
-          await a;
-          await b();
-        }, Promise.resolve());
+          7,
+          0,
+          'created',
+          false
+        );
 
-        resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
-        setScripts(resultForRender);
-      })
-      .catch(err => instantFetchErrorHandler(dispatch, err));
+        if (auditRes.rows.length && auditRes.rows.some(r => differenceInHours(today, new Date(r.values[1])) <= 24)) {
+          const result = []; 
+          auditRes.rows.forEach(row => {
+            if (row.values[1]) {
+              result.push({
+                id: row.values[0],
+                date: row.values[1],
+                status: row.values[2],
+              });
+            }
+          });
+          resultForRender.push({ name: scriptRow.values[0], result });
+        }
+      }
+
+      resultForRender.sort((a, b) => (new Date(a.result[0].date) < new Date(b.result[0].date) ? 1 : -1));
+      setScripts(resultForRender);
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e, "Failed to get automation status");
+    }
   };
 
   useEffect(() => {
@@ -171,4 +167,4 @@ const ScriptStatistic = ({ dispatch, classes }) => {
   );
 };
 
-export default (withStyles(styles)(ScriptStatistic));
+export default withStyles(ScriptStatistic, styles);

@@ -3,11 +3,10 @@
  * which render links to all existing applications
  */
 
-import * as React from "react";
-import { withStyles } from "@mui/styles";
-import { CardContent, Card } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { routeGroups } from "../routes";
+import { Card, CardContent, Typography } from '@mui/material';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { routeGroups } from '../routes';
 
 const styles: any = theme => ({
   root: {
@@ -81,4 +80,4 @@ class Common extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles)(Common);
+export default withStyles(Common, styles);

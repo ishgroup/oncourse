@@ -3,22 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
+import { CheckoutMembershipProduct } from "@api/model";
 import { initialize } from "redux-form";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { CheckoutItem } from "../../../../model/checkout";
-import { getEntityItemById } from "../../../entities/common/entityItemsService";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import MembershipProductService
+  from "../../../../containers/entities/membershipProducts/services/MembershipProductService";
 import { CHECKOUT_GET_ITEM_MEMBERSHIP, CHECKOUT_GET_ITEM_MEMBERSHIP_FULFILLED } from "../../actions/chekoutItem";
 import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "../../components/items/components/CkecoutItemViewForm";
 
-const request: EpicUtils.Request<any, CheckoutItem> = {
+const request: EpicUtils.Request<CheckoutMembershipProduct, { id: number }> = {
   type: CHECKOUT_GET_ITEM_MEMBERSHIP,
-  getData: ({ id }) => getEntityItemById("MembershipProduct", id),
-  processData: (memberShipProduct: any, s, item) => {
-    memberShipProduct.validTo = item.validTo;
-    memberShipProduct.expiryType = item.expiryType;
-
+  getData: ({ id }, s) => MembershipProductService.getCheckoutModel(id, s.checkout.summary.list.find(c => c.payer)?.contact.id),
+  processData: memberShipProduct => {
     return [
       {
         type: CHECKOUT_GET_ITEM_MEMBERSHIP_FULFILLED,

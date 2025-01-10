@@ -3,27 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import { change, Field, Validator } from "redux-form";
-import Search from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import Close from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
-import CardContent from "@mui/material/CardContent";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import ArrowForward from "@mui/icons-material/ArrowForward";
-import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
-import { FormTextField } from "../../../common/components/form/formFields/TextField";
-import { formatCurrency } from "../../../common/utils/numbers/numbersNormalizing";
-import { NoArgFunction } from "../../../model/common/CommonFunctions";
-import { AppTheme } from "../../../model/common/Theme";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import Close from '@mui/icons-material/Close';
+import Search from '@mui/icons-material/Search';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme, formatCurrency, FormTextField, makeAppStyles, NoArgFunction, StyledCheckbox } from 'ish-ui';
+import React from 'react';
+import { change, Field, Validator } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   headerRoot: {
     background: "transparent"
   },
@@ -55,6 +49,7 @@ interface Props {
   showArrowButton?: boolean;
   disabled?: boolean;
   validate?: Validator;
+  children?: React.ReactNode;
 }
 
 const HeaderField: React.FC<Props> = props => {
@@ -133,8 +128,7 @@ const HeaderField: React.FC<Props> = props => {
               )
             }}
             validate={validate}
-            fullWidth
-          />
+                      />
         )}
         <div className="mt-2">
           {SelectedItemView}
@@ -144,7 +138,7 @@ const HeaderField: React.FC<Props> = props => {
   );
 };
 
-const useHeaderTypoStyles = makeAppStyles(() => ({
+const useHeaderTypoStyles = makeAppStyles()(() => ({
   checkboxRoot: {
     width: 19,
     height: 19,
@@ -190,7 +184,7 @@ export const HeaderFieldTypo = React.memo<HeaderFieldTypoProps>(props => {
     onCheckboxClick
   } = props;
 
-  const classes = useHeaderTypoStyles();
+  const { classes } = useHeaderTypoStyles();
 
   return (
     <div
@@ -232,4 +226,4 @@ export const HeaderFieldTypo = React.memo<HeaderFieldTypoProps>(props => {
   );
 });
 
-export default withStyles(styles)(HeaderField);
+export default withStyles(HeaderField, styles);

@@ -3,36 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
+import { ConcessionType, Discount, DiscountMembership } from "@api/model";
+import { Collapse, FormControlLabel, Grid } from "@mui/material";
 import clsx from "clsx";
-import { change } from "redux-form";
-import { FormControlLabel, Theme } from "@mui/material";
+import { CheckboxField, LinkAdornment, normalizeNumber } from "ish-ui";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { ConcessionType, Discount, DiscountMembership } from "@api/model";
-import Collapse from "@mui/material/Collapse";
-import { createStyles, withStyles } from "@mui/styles";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Subtitle from "../../../../common/components/layout/Subtitle";
-import { CheckboxField } from "../../../../common/components/form/formFields/CheckboxField";
-import NestedList, {
-  NestedListItem,
-  NestedListPanelItem
-} from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
-import { clearMembershipSearch, searchMemberships } from "../actions";
-import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
-import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { change } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
+import NestedList, {
+  NestedListItem,
+  NestedListPanelItem
+} from "../../../../common/components/form/nestedList/NestedList";
+import Subtitle from "../../../../common/components/layout/Subtitle";
+import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
+import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
+import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 
 interface DiscountStudentsProps {
-  classes: any;
   twoColumn?: boolean;
   values?: Discount;
   dispatch: Dispatch<any>;
@@ -42,6 +39,8 @@ interface DiscountStudentsProps {
   searchConcessionTypes: (search: string) => void;
   foundConcessionTypes: ConcessionType[];
   concessionTypePending: boolean;
+  concessionTypeError?: boolean;
+  membershipError?: boolean;
   // memberships
   clearMembershipSearch: (pending: boolean) => void;
   searchMemberships: (search: string) => void;
@@ -53,24 +52,36 @@ interface DiscountStudentsProps {
 
 interface DiscountStudentsState {
   limited?: boolean;
-  studentAgeOn?: boolean;
 }
 
-interface DiscountContactRelationType extends NestedListPanelItem {}
+interface DiscountContactRelationType extends NestedListPanelItem {
+}
 
 const concessionTypesField = "discountConcessionTypes";
 
+const plainMembershipToNestedListItem = (items: any[]): NestedListItem[] => (items && items.length > 0
+  ? items.map(membership => ({
+    id: membership.id.toString(),
+    entityId: Number(membership.id),
+    primaryText: membership.name,
+    secondaryText: `(${membership.sku})`,
+    link: `/membership/${membership.id}`,
+    panelItemIds: JSON.parse(membership["discountMemberships.discountMembershipRelationTypes.contactRelationType.id"])?.flatMap(m => m),
+    active: true
+  }))
+  : []);
+
 const membershipToNestedListItem = (items: DiscountMembership[]): NestedListItem[] => (items && items.length > 0
-    ? items.map(membership => ({
-        id: membership.productId.toString(),
-        entityId: Number(membership.productId),
-        primaryText: membership.productName,
-        secondaryText: `(${membership.productSku})`,
-        link: `/membership/${membership.productId}`,
-        panelItemIds: membership.contactRelations,
-        active: true
-      }))
-    : []);
+  ? items.map(membership => ({
+    id: membership.productId.toString(),
+    entityId: Number(membership.productId),
+    primaryText: membership.productName,
+    secondaryText: `(${membership.productSku})`,
+    link: `/membership/${membership.productId}`,
+    panelItemIds: membership.contactRelations,
+    active: true
+  }))
+  : []);
 
 const concessionsToNestedListItems = (items: ConcessionType[]): NestedListItem[] => (items && items.length > 0
     ? items.map(concessionType => ({
@@ -83,43 +94,27 @@ const concessionsToNestedListItems = (items: ConcessionType[]): NestedListItem[]
       }))
     : []);
 
-const styles = createStyles(({ spacing }: Theme) => ({
-  studentsAttributes: {
-    gridColumnGap: spacing(2)
-  }
-}));
-
-const validatePostcode = value => (value && value.length > 500 ? "Up to 500 chars" : undefined)
+const validatePostcode = value => (value && value.length > 500 ? "Up to 500 chars" : undefined);
 
 class DiscountStudents extends React.PureComponent<DiscountStudentsProps, DiscountStudentsState> {
   constructor(props) {
     super(props);
     const limited = this.isLimitedForCertainStudents(this.props.values);
-    const studentAgeOn = this.isStudentAgeOn(this.props.values);
-    this.state = { limited, studentAgeOn };
+    this.state = { limited };
   }
 
   componentDidUpdate(prevProps): void {
     const limited = this.isLimitedForCertainStudents(this.props.values);
-    if (limited !== this.isLimitedForCertainStudents(prevProps.values)) {
+    if (prevProps.values.id !== this.props.values.id && limited !== this.isLimitedForCertainStudents(prevProps.values)) {
       this.setState({ ...this.state, limited });
     }
-    const studentAgeOn = this.isStudentAgeOn(this.props.values);
-    if (this.state.studentAgeOn !== studentAgeOn) {
-      this.setState({ studentAgeOn });
-    }
   }
-
-  isStudentAgeOn = (values: Discount): boolean => {
-    if (!values) {
-      return false;
-    }
-    return values.studentAgeUnder !== null;
-  };
 
   isLimitedForCertainStudents = (values: Discount): boolean => !!(
       values
       && (values.studentAge
+        || values.courseIdMustEnrol
+        || values.minEnrolmentsForAnyCourses
         || values.studentPostcode
         || values.limitPreviousEnrolment
         || values.studentEnrolledWithinDays
@@ -131,10 +126,21 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     const {
       values, dispatch, form, foundMemberships
     } = this.props;
-    const memberships = values.discountMemberships.concat(
-      items.map(item => foundMemberships.find(m => item.entityId === m.productId))
-    );
-    dispatch(change(form, "discountMemberships", memberships));
+
+    const toAdd = items.map(item => {
+      const membership = foundMemberships.find(m => m.id === item.entityId);
+
+      return {
+        productId: item.entityId,
+        productName: membership.name,
+        productSku: membership.sku,
+        contactRelations: item.panelItemIds
+      };
+    });
+
+    if (toAdd) {
+      dispatch(change(form, "discountMemberships", values.discountMemberships.concat(toAdd)));
+    }
   };
 
   onDeleteAllMemberships = () => {
@@ -180,7 +186,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
       dispatch(change(form, "studentPostcode", null));
       dispatch(change(form, "limitPreviousEnrolment", false));
 
-      this.setState({ ...this.state, limited: e, studentAgeOn: e });
+      this.setState({ ...this.state, limited: e });
     } else {
       this.setState({ ...this.state, limited: e });
     }
@@ -190,9 +196,9 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     const { dispatch, form } = this.props;
     if (e === null) {
       dispatch(change(form, "studentAge", null));
-      this.setState({ ...this.state, studentAgeOn: false });
+      this.setState({ ...this.state });
     } else {
-      this.setState({ ...this.state, studentAgeOn: true });
+      this.setState({ ...this.state });
     }
   };
 
@@ -215,9 +221,13 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     );
   };
 
+  onCouresMastEnrolChange = course => {
+    const { dispatch, form } = this.props;
+    dispatch(change(form, "courseNameMustEnrol", course ? course.name : null));
+  };
+
   render() {
     const {
-      classes,
       values,
       clearConcessionTypeSearch,
       searchConcessionTypes,
@@ -225,7 +235,9 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
       clearMembershipSearch,
       searchMemberships,
       concessionTypePending,
+      concessionTypeError,
       foundMemberships,
+      membershipError,
       membershipPending,
       submitSucceeded,
       twoColumn,
@@ -233,8 +245,6 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     } = this.props;
 
     const concessionTypes = values && values.discountConcessionTypes ? concessionsToNestedListItems(values.discountConcessionTypes) : [];
-
-    const memberships = values && values.discountMemberships ? membershipToNestedListItem(values.discountMemberships) : [];
 
     return (
       <div className="pt-3 pl-3 pr-3">
@@ -250,64 +260,106 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 value: this.state.limited ? this.state.limited : undefined,
                 onChange: this.onChangeCertainStudents
               }}
-              meta={{ error: null, invalid: false, touched: false }}
               color="secondary"
-              fullWidth
             />
           )}
           label="Restrict this discount to certain students"
         />
         <Collapse in={this.state.limited}>
-          <FormField
-            type="number"
-            name="studentEnrolledWithinDays"
-            label="Enrolled within (days)"
-            parse={normalizeNumber}
-            validate={greaterThanZeroIncludeValidation}
-          />
-          <div className={clsx("d-grid justify-content-start gridAutoFlow-column", classes.studentsAttributes)}>
-            <FormField
-              type="select"
-              name="studentAgeUnder"
-              onChange={this.onChangeStudentAgeUnder}
-              label="Age"
-              items={[
-                {
-                  value: true,
-                  label: "Under"
-                },
-                {
-                  value: false,
-                  label: "Over"
-                }
-              ]}
-              allowEmpty
-            />
-            {this.state.studentAgeOn && (
+          <Grid container rowSpacing={2} columnSpacing={3}>
+            <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
                 type="number"
-                name="studentAge"
-                label="(years)"
+                name="studentEnrolledWithinDays"
+                label="Enrolled within (days)"
                 parse={normalizeNumber}
-                validate={[validateSingleMandatoryField, greaterThanZeroIncludeValidation]}
+                validate={greaterThanZeroIncludeValidation}
+                debounced={false}
               />
+            </Grid>
+            <Grid item xs={twoColumn ? 3 : 12}>
+              <FormField
+                type="select"
+                name="studentAgeUnder"
+                onChange={this.onChangeStudentAgeUnder}
+                label="Age"
+                items={[
+                  {
+                    value: true,
+                    label: "Under"
+                  },
+                  {
+                    value: false,
+                    label: "Over"
+                  }
+                ]}
+                allowEmpty
+              />
+            </Grid>
+            {typeof values.studentAgeUnder === "boolean" && (
+              <Grid item xs={twoColumn ? 3 : 12}>
+                <FormField
+                  type="number"
+                  name="studentAge"
+                  label="Years"
+                  parse={normalizeNumber}
+                  validate={[validateSingleMandatoryField, greaterThanZeroIncludeValidation]}
+                  debounced={false}
+                />
+              </Grid>
             )}
-          </div>
-
-          <FormField
-            type="text"
-            name="studentPostcode"
-            label="Postcode"
-            validate={validatePostcode}
-          />
-
-          <FormControlLabel
-            className="checkbox pr-3 mb-2"
-            control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" fullWidth />}
-            label="Limit to students previously enrolled in same course"
-          />
-
-          <div className={twoColumn ? "mb-2 mw-400" : "mb-2"}>
+            <Grid item xs={twoColumn ? 6 : 12}>
+              <FormField
+                type="text"
+                name="studentPostcode"
+                label="Postcode"
+                validate={validatePostcode}
+              />
+            </Grid>
+            <Grid item xs={twoColumn ? 6 : 12}>
+              <FormControlLabel
+                className="checkbox"
+                control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" />}
+                label="Limit to students previously enrolled in same course"
+              />
+            </Grid>
+            <Grid item xs={twoColumn ? 6 : 12}>
+              <FormField
+                type="remoteDataSelect"
+                entity="Course"
+                aqlFilter="currentlyOffered is true"
+                name="courseIdMustEnrol"
+                label="Must have completed enrolment in"
+                selectValueMark="id"
+                selectLabelMark="name"
+                selectFilterCondition={courseFilterCondition}
+                selectLabelCondition={courseFilterCondition}
+                defaultValue={values?.courseNameMustEnrol}
+                labelAdornment={(
+                  <LinkAdornment
+                    linkHandler={openCourseLink}
+                    link={values && values.courseIdMustEnrol}
+                    disabled={!values || !values.courseIdMustEnrol}
+                  />
+                )}
+                itemRenderer={CourseItemRenderer}
+                onInnerValueChange={this.onCouresMastEnrolChange}
+                rowHeight={55}
+                allowEmpty
+              />
+            </Grid>
+            <Grid item xs={twoColumn ? 6 : 12}>
+              <FormField
+                type="number"
+                name="minEnrolmentsForAnyCourses"
+                label="Minimal completed enrolments in any course"
+                parse={normalizeNumber}
+                validate={greaterThanZeroIncludeValidation}
+                debounced={false}
+              />
+            </Grid>
+          </Grid>
+          <div className={clsx("mb-2 mt-2", twoColumn && "mw-400")}>
             <NestedList
               formId={values.id}
               title="LIMIT TO STUDENTS WITH CONCESSION"
@@ -317,6 +369,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               searchValues={concessionsToNestedListItems(foundConcessionTypes)}
               onSearch={searchConcessionTypes}
               clearSearchResult={clearConcessionTypeSearch}
+              aqlQueryError={concessionTypeError}
               pending={concessionTypePending}
               onAdd={this.onAddConcessionTypes}
               onDelete={this.onDeleteConcessionType}
@@ -334,8 +387,9 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               title="LIMIT TO STUDENTS WITH MEMBERSHIP"
               titleCaption="This discount will only apply to classes commencing while one of these memberships is valid"
               searchPlaceholder="Add memberships"
-              values={memberships}
-              searchValues={membershipToNestedListItem(foundMemberships)}
+              values={membershipToNestedListItem(values.discountMemberships)}
+              searchValues={plainMembershipToNestedListItem(foundMemberships)}
+              aqlQueryError={membershipError}
               onSearch={searchMemberships}
               clearSearchResult={clearMembershipSearch}
               pending={membershipPending}
@@ -360,21 +414,30 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
 }
 
 const mapStateToProps = (state: State) => ({
-  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items.map(i => ({ id: i.id, name: i.name, allowOnWeb: i.isEnabled })),
+  foundConcessionTypes: state.plainSearchRecords["ConcessionType"].items,
   concessionTypePending: state.plainSearchRecords["ConcessionType"].loading,
-  foundMemberships: state.discounts.membershipItems,
-  membershipPending: state.discounts.pending,
+  concessionTypeError: state.plainSearchRecords["ConcessionType"].error,
+  foundMemberships: state.plainSearchRecords["MembershipProduct"].items,
+  membershipPending: state.plainSearchRecords["MembershipProduct"].loading,
+  membershipError: state.plainSearchRecords["MembershipProduct"].error,
   contactRelationTypes: state.discounts.contactRelationTypes
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchConcessionTypes: (search: string) => {
     dispatch(setCommonPlainSearch("ConcessionType", search));
-    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("ConcessionType", 0, "name,isEnabled", null, null, PLAIN_LIST_MAX_PAGE_SIZE, item => item.map(i => ({
+      id: i.id,
+      name: i.name,
+      allowOnWeb: i.isEnabled
+    }))));
   },
   clearConcessionTypeSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("ConcessionType", pending)),
-  searchMemberships: (search: string) => dispatch(searchMemberships(search)),
-  clearMembershipSearch: (pending: boolean) => dispatch(clearMembershipSearch(pending))
+  searchMemberships: (search: string) => {
+    dispatch(setCommonPlainSearch("MembershipProduct", search));
+    dispatch(getCommonPlainRecords("MembershipProduct", 0, "name,sku,discountMemberships.discountMembershipRelationTypes.contactRelationType.id", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearMembershipSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("MembershipProduct", pending))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DiscountStudents));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(DiscountStudents);

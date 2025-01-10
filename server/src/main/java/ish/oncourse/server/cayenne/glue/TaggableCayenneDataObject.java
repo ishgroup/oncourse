@@ -12,21 +12,25 @@ package ish.oncourse.server.cayenne.glue;
 
 
 import com.google.inject.Inject;
+import ish.common.types.NodeSpecialType;
+import ish.common.types.NodeType;
 import ish.oncourse.API;
+import ish.oncourse.aql.AqlService;
 import ish.oncourse.cayenne.Taggable;
 import ish.oncourse.cayenne.TaggableClasses;
 import ish.oncourse.entity.services.TagService;
-import ish.oncourse.server.api.v1.function.TagFunctions;
+import ish.oncourse.server.PreferenceController;
+import ish.oncourse.server.cayenne.Course;
+import ish.oncourse.server.cayenne.CourseClass;
 import ish.oncourse.server.cayenne.Tag;
 import ish.oncourse.server.cayenne.TagRelation;
 import org.apache.cayenne.Cayenne;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectQuery;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static ish.oncourse.server.api.v1.function.TagRequirementFunctions.getTaggableClassForName;
 
 
 /**
@@ -34,15 +38,20 @@ import java.util.Set;
  */
 public abstract class TaggableCayenneDataObject extends CayenneDataObject implements Taggable {
 
+	public static final List<NodeSpecialType> HIDDEN_SPECIAL_TYPES = List.of(NodeSpecialType.CLASS_EXTENDED_TYPES, NodeSpecialType.COURSE_EXTENDED_TYPES);
+
 	public static final String BULK_TAG_PROPERTY = "bulkTag";
 	public static final String BULK_UNTAG_PROPERTY = "bulkUntag";
+	public static final String SPECIAL_TAG_ID = "specialTagId";
 
 	@Inject
 	private transient TagService tagService;
-	/**
-	 *
-	 */
 
+	@Inject
+	private AqlService aqlService;
+
+	@Inject
+	private PreferenceController preferenceController;
 
 	/**
 	 * @see Taggable#getId()
@@ -57,10 +66,10 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	/**
 	 * Get firts 3   related tags colors.
 	 *
-	 * @return List of colors
+	 * @return List of tag ids
 	 */
 	public List<Long> getTagIds() {
-		TaggableClasses taggable = TagFunctions.taggableClassesBidiMap.get(this.getClass().getSimpleName());
+		TaggableClasses taggable = getTaggableClassForName(this.getClass().getSimpleName());
 		if (taggable != null) {
 			return ObjectSelect.columnQuery(Tag.class, Tag.ID)
 					.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
@@ -74,6 +83,51 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 	}
 
 	/**
+	 * Get related tag colors
+	 *
+	 * @return List of colors
+	 */
+	public List<String> getTagColors() {
+		TaggableClasses taggable = getTaggableClassForName(this.getClass().getSimpleName());
+		if (taggable != null) {
+			return ObjectSelect.columnQuery(Tag.class, Tag.COLOUR)
+					.where(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_IDENTIFIER)
+							.eq(taggable.getDatabaseValue()))
+					.and(Tag.NODE_TYPE.eq(NodeType.TAG))
+					.and(Tag.TAG_RELATIONS.dot(TagRelation.ENTITY_ANGEL_ID).eq(getId()))
+					.limit(3)
+					.select(this.getContext());
+		} else {
+			return Collections.emptyList();
+		}
+
+	}
+
+	/**
+	 * Get related checklists colors
+	 *
+	 * @return List of colors
+	 */
+	public String getChecklistsColor() {
+		var checklists = getChecklists();
+		if(checklists.isEmpty())
+			return null;
+		var firstChecklist = checklists.get(0);
+		var firstParent = firstChecklist.getParentTag();
+		if(firstParent == null)
+			firstParent = firstChecklist;
+		String color = firstParent.getColour();
+		var childChecklists = firstParent.getAllChildren().values();
+		int allChildsNumber = childChecklists.size();
+		long checkedChecklistsNumber = 0;
+		for(var checklist:childChecklists){
+			if(checklists.contains(checklist))
+				checkedChecklistsNumber++;
+		}
+		return color+"|"+(double)checkedChecklistsNumber/allChildsNumber;
+	}
+
+	/**
 	 * Get all tags related to this object.
 	 *
 	 * @return List of related tags
@@ -83,9 +137,85 @@ public abstract class TaggableCayenneDataObject extends CayenneDataObject implem
 		List<Tag> result = new ArrayList<>();
 		for (TagRelation relation : getTaggingRelations()) {
 			if (relation.getTag() != null) {
-				result.add(relation.getTag());
+				if(relation.getTag().getNodeType().equals(NodeType.TAG))
+					result.add(relation.getTag());
 			}
 		}
+		return result;
+	}
+
+	/**
+	 * Get all tags and checked checklists related to this object.
+	 *
+	 * @return List of related tags
+	 */
+	@API
+	public List<Tag> getAllTags() {
+		List<Tag> result = new ArrayList<>();
+		for (TagRelation relation : getTaggingRelations()) {
+			if (relation.getTag() != null && relation.getTag().getParentTag() != null) {
+				if(!relation.getTag().isHidden())
+					result.add(relation.getTag());
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Get all hidden tags related to this object.
+	 *
+	 * @return List of related tags
+	 */
+	@API
+	public List<Tag> getHiddenTags() {
+		List<Tag> result = new ArrayList<>();
+		for (TagRelation relation : getTaggingRelations()) {
+			if (relation.getTag() != null) {
+				if(relation.getTag().isHidden())
+					result.add(relation.getTag());
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Get extended search type for this object (CourseClass and Course entities only)
+	 *
+	 * @throws IllegalAccessException if extended types are not allowed; IllegalArgumentException if entity is incorrect
+	 * @return string of type name or null
+	 */
+	@API
+	String getExtendedSearchType() throws IllegalAccessException {
+		if(!preferenceController.getExtendedSearchTypesAllowed())
+			throw new IllegalAccessException("Extended search types now allowed on your college");
+
+		if(!(this instanceof CourseClass || this instanceof Course))
+			throw new IllegalArgumentException("Extended search types now allowed on your college");
+
+		var hidden = getHiddenTags();
+		return hidden.isEmpty() ? null : hidden.get(0).getName();
+	}
+
+	/**
+	 * Get all checklists related to this object.
+	 *
+	 * @return List of related checklists
+	 */
+	@API
+	public List<? extends Tag> getChecklists() {
+		List<Tag> result = new ArrayList<>();
+		for (TagRelation relation : getTaggingRelations()) {
+			if (relation.getTag() != null) {
+				if(relation.getTag().getNodeType().equals(NodeType.CHECKLIST))
+					result.add(relation.getTag());
+			}
+		}
+		result.sort(new Comparator<Tag>() {
+			@Override
+			public int compare(Tag o1, Tag o2) {
+				return o1.getCreatedOn().compareTo(o2.getCreatedOn());
+			}
+		});
 		return result;
 	}
 

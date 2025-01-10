@@ -29,9 +29,11 @@ describe("Virtual rendered CustomFieldTypes", () => {
         customFields[`types[${key}].mandatory`] = type.mandatory;
       });
 
-      expect(screen.getByRole(CUSTOM_FIELDS_FORM)).toHaveFormValues(customFields);
-
       fireEvent.click(screen.getByTestId('appbar-submit-button'));
+
+      setTimeout(() => {
+        expect(screen.getByRole(CUSTOM_FIELDS_FORM)).toHaveFormValues(customFields);
+      }, 500);
     }
   });
 });

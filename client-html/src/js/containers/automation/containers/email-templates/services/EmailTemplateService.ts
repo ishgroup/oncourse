@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { EmailTemplate, EmailTemplateApi } from "@api/model";
+import { AutomationConfigs, EmailTemplate, EmailTemplateApi } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class EmailTemplateService {
@@ -32,7 +32,14 @@ class EmailTemplateService {
   public getEmailTemplatesWithKeyCode(entityName: string): Promise<EmailTemplate[]> {
     return this.emailTemplateService.getTemplatesWithKeyCode(entityName);
   }
+
+  public getConfigs(id: number): Promise<string> {
+    return this.emailTemplateService.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
+    return this.emailTemplateService.updateConfigs(id, config);
+  }
 }
 
 export default new EmailTemplateService();
-

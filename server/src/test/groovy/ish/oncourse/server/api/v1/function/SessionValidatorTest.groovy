@@ -69,7 +69,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n', warnings[0].message)
 
         //both tutors clash
         dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-03T01:15:00', 2l)
@@ -79,10 +79,10 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(2, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n', warnings[0].message)
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[1].type)
         Assertions.assertEquals(2l, warnings[1].referenceId)
-        Assertions.assertEquals('Jim Tramp is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n', warnings[1].message)
+        Assertions.assertEquals('Clash for Jim Tramp with class ADOBE-1 \n', warnings[1].message)
 
 
         //single tutor clash at other day
@@ -93,7 +93,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n', warnings[0].message)
 
 
         //partial time overlap - end date time
@@ -105,7 +105,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n', warnings[0].message)
 
 
         //partial time overlap - start date time
@@ -116,7 +116,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n', warnings[0].message)
 
 
         //all time overlap
@@ -127,7 +127,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n', warnings[0].message)
 
         //all time overlap
         // new session                    |-----|
@@ -138,7 +138,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n', warnings[0].message)
 
     }
 
@@ -158,7 +158,7 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.ROOM, warnings[0].type)
         Assertions.assertEquals(200l, warnings[0].referenceId)
-        Assertions.assertEquals('Room Test Room1 is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for Room Test Room1 with class ADOBE-1 \n', warnings[0].message)
         
         //new session overlap two existed session by room criteria
         changeSessionTime(dto, '2120-12-03T00:15:00','2120-12-04T01:15:00')
@@ -167,8 +167,8 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(1, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.ROOM, warnings[0].type)
         Assertions.assertEquals(200l, warnings[0].referenceId)
-        Assertions.assertEquals('Room Test Room1 is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n' +
-                'ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for Room Test Room1 with class ADOBE-1 \n' +
+                'ADOBE-1 \n', warnings[0].message)
 
         //class by room and tutors criteria
         dto.tutorAttendances << createAttendance('2120-12-03T00:15:00', '2120-12-04T01:15:00', 1l)
@@ -178,17 +178,17 @@ class SessionValidatorTest extends TestWithDatabase {
         Assertions.assertEquals(3, warnings.size())
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[0].type)
         Assertions.assertEquals(1l, warnings[0].referenceId)
-        Assertions.assertEquals('John Smith is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n' +
-                'ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[0].message)
+        Assertions.assertEquals('Clash for John Smith with class ADOBE-1 \n' +
+                'ADOBE-1 \n', warnings[0].message)
 
         Assertions.assertEquals(ClashTypeDTO.TUTOR, warnings[1].type)
         Assertions.assertEquals(2l, warnings[1].referenceId)
-        Assertions.assertEquals('Jim Tramp is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n', warnings[1].message)
+        Assertions.assertEquals('Clash for Jim Tramp with class ADOBE-1 \n', warnings[1].message)
 
         Assertions.assertEquals(ClashTypeDTO.ROOM, warnings[2].type)
         Assertions.assertEquals(200l, warnings[2].referenceId)
-        Assertions.assertEquals('Room Test Room1 is already booked for ADOBE-1 at Tue. 3 Dec. 3:15(Europe/Minsk) \n' +
-                'ADOBE-1 at Wed. 4 Dec. 3:15(Europe/Minsk) \n', warnings[2].message)
+        Assertions.assertEquals('Clash for Room Test Room1 with class ADOBE-1 \n' +
+                'ADOBE-1 \n', warnings[2].message)
 
     }
 

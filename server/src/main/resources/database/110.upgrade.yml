@@ -1,0 +1,15 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 110
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - columnExists:
+                tableName: Node
+                columnName: isVocabulary
+      changes:
+        - dropColumn:
+            tableName: Node
+            columnName: isVocabulary

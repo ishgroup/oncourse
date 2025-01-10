@@ -27,9 +27,9 @@
   <FieldConfigurationScheme id="1" createdOn="2015-07-28 12:49:10" modifiedOn="2015-07-28 12:49:10"
                             name="Accredited course"/>
 
-  <Module id="1" createdOn="2011-03-26 00:45:56" modifiedOn="2011-03-26 00:45:56" nationalCode="MODULE01"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" createdOn="2011-03-26 00:45:56" modifiedOn="2011-03-26 00:45:56" nationalCode="MODULE01"
           title="module1" isOffered="1" isCustom="0" type="0"/>
-  <Module id="2" createdOn="2011-03-26 01:18:11" modifiedOn="2011-03-26 01:18:11" nationalCode="MODULE02"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="2" createdOn="2011-03-26 01:18:11" modifiedOn="2011-03-26 01:18:11" nationalCode="MODULE02"
           title="module2" isOffered="1" isCustom="0" type="0"/>
 
   <Contact id="1" createdOn="2015-08-24 11:45:57" modifiedOn="2015-08-24 11:45:57" firstName="test"
@@ -48,7 +48,7 @@
 
   <CourseClass id="1" createdOn="2015-07-29 11:59:44" modifiedOn="2015-07-29 11:59:44" code="1" roomId="1" courseId="1"
                endDateTime="2113-12-02 14:30:59" feeExGst="113" incomeAccountId="100" isCancelled="0"
-               isDistantLearningCourse="0" isShownOnWeb="1" maximumPlaces="4" minimumPlaces="1" sessionCount="1"
+               type="0" isShownOnWeb="1" maximumPlaces="4" minimumPlaces="1"
                taxId="100" deliveryMode="1" fundingSource="0" budgetedPlaces="0" reportableHours="95"
                isClassFeeApplicationOnly="0" taxAdjustment="0" isActive="1" suppressAvetmissExport="0" expectedHours="0"
                attendanceType="9"/>

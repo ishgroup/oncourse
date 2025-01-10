@@ -37,6 +37,7 @@ Payment due date
 <% } %>
 <% } %>
 
-<% if (invoice.amountOwing > 0) { %>
+<%
+if (invoice.amountOwing > 0 && Preferences.get("college.paymentInfo") != null) { %>
 	${Preferences.get("college.paymentInfo")}
 <% } %>

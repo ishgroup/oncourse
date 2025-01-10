@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { AssessmentClass } from "@api/model";
-import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../../common/epics/EpicUtils";
 import { CREATE_COURSE_CLASS_ASSESSMENT } from "../actions";
 import CourseClassAssessmentService from "../services/CourseClassAssessmentService";
 

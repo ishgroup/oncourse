@@ -158,6 +158,13 @@ class PaymentInApiService extends EntityApiService<PaymentInDTO, PaymentIn, Paym
             throwDateBankedException("Date banked value must be after ${locked.toString()}")
         }
 
+        if (paymentInDTO.datePayed != null && paymentInDTO.dateBanked != null && paymentInDTO.dateBanked.isBefore(paymentInDTO.datePayed)){
+            throwDateBankedException("Date banked must be after or equal to date paid")
+        }
+        if (paymentInDTO.dateBanked != null && paymentIn.paymentDate != null && paymentInDTO.dateBanked.isBefore(paymentIn.paymentDate)){
+            throwDateBankedException("Date banked must be after or equal to date paid")
+        }
+
 
 
         if (paymentInDTO.administrationCenterId != null ) {

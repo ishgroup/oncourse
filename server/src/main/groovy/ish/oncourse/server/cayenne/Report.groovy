@@ -11,6 +11,8 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.AutomationStatus
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.server.cayenne.glue._Report
 import ish.oncourse.server.print.AbstractReportDataSource
@@ -81,8 +83,7 @@ class Report extends _Report implements AutomationTrait {
 
     private static final Logger logger = LogManager.getLogger()
 
-    public static final String IS_SUBREPORT_PROPERTY = "isSubreport"
-
+    public static String IS_VISIBLE_PROPERTY = "isVisible"
 
     /**
      * Reports can be a list type where every record appears right after the previous, breaking pages only when we run
@@ -159,14 +160,6 @@ class Report extends _Report implements AutomationTrait {
         }
     }
 
-    @Override
-    void postAdd() {
-        super.postAdd()
-        if (getIsVisible() == null) {
-            setIsVisible(true)
-        }
-    }
-
     /**
      * @return the date and time this record was created
      */
@@ -211,9 +204,8 @@ class Report extends _Report implements AutomationTrait {
      */
     @Nonnull
     @API
-    @Override
     Boolean getIsVisible() {
-        return super.getIsVisible()
+        return super.automationStatus == AutomationStatus.ENABLED
     }
 
     /**
@@ -277,7 +269,8 @@ class Report extends _Report implements AutomationTrait {
     List<Tag> getTags() {
         List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
         for (ReportTagRelation relation : getTaggingRelations()) {
-            tagList.add(relation.getTag())
+            if(relation.tag?.nodeType?.equals(NodeType.TAG))
+                tagList.add(relation.getTag())
         }
         return tagList
     }

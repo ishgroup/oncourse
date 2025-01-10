@@ -76,8 +76,8 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
             applicationDTO.enrolBy = application.enrolBy?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDate()
             applicationDTO.createdBy = application.createdByUser ? "$application.createdByUser.firstName $application.createdByUser.lastName" : null
             applicationDTO.reason = application.reason
-            applicationDTO.tags =  application.tags.collect { toRestTagMinimized(it) }
-            applicationDTO.documents = application.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            applicationDTO.tags =  application.allTags.collect { it.id }
+            applicationDTO.documents = application.activeAttachments.collect { toRestDocument(it.document, documentService) }
             applicationDTO.customFields = application.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             applicationDTO.createdOn = application.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
             applicationDTO.modifiedOn = application.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
@@ -102,7 +102,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
             application.student = contactDao.getById(application.context, applicationDTO.contactId).student
         }
 
-        updateTags(application, application.taggingRelations, applicationDTO.tags*.id, ApplicationTagRelation, application.context)
+        updateTags(application, application.taggingRelations, applicationDTO.tags, ApplicationTagRelation, application.context)
         updateDocuments(application, application.attachmentRelations, applicationDTO.documents, ApplicationAttachmentRelation, application.context)
         updateCustomFields(application.context, application, applicationDTO.customFields, ApplicationCustomField)
         application
@@ -144,7 +144,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
         }
 
         ValidationErrorDTO error = validateRelationsForSave(Application,
-                context, applicationDTO.tags*.id, TaggableClasses.APPLICATION)
+                context, applicationDTO.tags, TaggableClasses.APPLICATION)
 
         if (error) {
             validator.throwClientErrorException(error)

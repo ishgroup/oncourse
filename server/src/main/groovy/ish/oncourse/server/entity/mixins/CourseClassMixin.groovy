@@ -13,6 +13,7 @@ package ish.oncourse.server.entity.mixins
 
 import groovy.transform.CompileDynamic
 import ish.budget.ClassBudgetUtil
+import ish.common.types.CourseClassType
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
@@ -58,11 +59,11 @@ class CourseClassMixin {
      */
     @API
     static isActual(CourseClass self){
-		return isActual(self.isCancelled, self.isDistantLearningCourse, self.endDateTime)
+		return isActual(self.isCancelled, self.type, self.endDateTime)
     }
 
-	static isActual(boolean isCancelled, boolean isDistantLearningCourse, Date endDateTime) {
-		return !isCancelled && (isDistantLearningCourse || endDateTime?.after(new Date()))
+	static isActual(boolean isCancelled, CourseClassType type, Date endDateTime) {
+		return !isCancelled && (type == CourseClassType.DISTANT_LEARNING || endDateTime?.after(new Date()))
 	}
 
 	static getBudgetValue(CourseClass self, String key) {
@@ -157,7 +158,7 @@ class CourseClassMixin {
 	/**
 	* @return all enrolments with a CANCELLED or REFUNDED status
 	*/
-	@API
+	@Deprecated
 	static getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass self) {
 		return getService(CourseClassService).getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(self)
 	}
@@ -224,6 +225,20 @@ class CourseClassMixin {
 		return getManuallyDiscountedEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO) {
 			Money sum, InvoiceLine il -> sum.add(il.discountTotalExTax)
 		}
+	}
+
+	static Money getTotalInvoiced(CourseClass courseClass){
+		Money total = courseClass.enrolmentsInvoiceLines
+				.findAll { it -> !it.discountedPriceTotalIncTax.isNegative() }
+				.sum { it -> it.discountedPriceTotalIncTax } as Money
+		return total != null ? total : Money.ZERO
+	}
+
+	static Money getTotalCredits(CourseClass courseClass){
+		Money total = courseClass.enrolmentsInvoiceLines
+				.findAll { it -> it.discountedPriceTotalIncTax.isNegative() }
+				.sum { it -> it.discountedPriceTotalIncTax } as Money
+		return total != null ? total : Money.ZERO
 	}
 
 	/**
@@ -410,6 +425,18 @@ class CourseClassMixin {
 	@API
 	static getAttendance(CourseClass self) {
 		return getAttendance(self, true)
+	}
+
+	/**
+	* An alias for getAttendance(true)
+	*
+	* @return attendance lines for this particular courseClass including tutors
+	*/
+	@API
+	static getNotCancelledAttendance(CourseClass self) {
+		def attendances = getAttendance(self, true)
+		def cancelledStudents = attendances.findAll {it.enrolment && EnrolmentStatus.STATUSES_CANCELLATIONS.contains(it.enrolment.status)}.student
+		return attendances.findAll {it -> !it.enrolment || !cancelledStudents.contains(it.student)}
 	}
 
 

@@ -1,9 +1,9 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetTutorRoles } from "./EpicGetTutorRoles";
-import { EpicGetTutorRole } from "./EpicGetTutorRole";
-import { EpicUpdateTutorRole } from "./EpicUpdateTutorRole";
 import { EpicCreateTutorRole } from "./EpicCreateTutorRole";
 import { EpicDeleteTutorRole } from "./EpicDeleteTutorRole";
+import { EpicGetTutorRole } from "./EpicGetTutorRole";
+import { EpicGetTutorRoles } from "./EpicGetTutorRoles";
+import { EpicUpdateTutorRole } from "./EpicUpdateTutorRole";
 
 export const EpicTutorRoles = combineEpics(
   EpicGetTutorRoles,

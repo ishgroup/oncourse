@@ -10,6 +10,9 @@ properties:
   modified:
     type: string
     format: date-time
+  interactionDate:
+    type: string
+    format: date-time
   message:
     type: string
     required: true
@@ -25,3 +28,5 @@ properties:
     type: integer
     format: int64
     required: true
+  readonly:
+    type: boolean

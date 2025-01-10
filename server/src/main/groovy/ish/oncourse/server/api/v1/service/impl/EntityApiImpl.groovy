@@ -15,8 +15,13 @@ import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.api.service.BulkChangeApiService
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.EntityApi
+import ish.oncourse.server.cayenne.Audit
+import ish.oncourse.server.cayenne.Message
+import ish.oncourse.server.cayenne.Survey
+import ish.oncourse.server.cayenne.WaitingList
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.util.DateFormatter
@@ -47,6 +52,9 @@ class EntityApiImpl implements EntityApi {
     private static final BigDecimal DEF_OFFSET = 0
     private static final BigDecimal DEF_PAGE_SIZE = 50
     private static final String ID_FIELD = "id"
+    private static final List<Class<? extends CayenneDataObject>> ALLOWED_BULK_DELETE_ENTITIES = List.of(WaitingList,
+            Message, Survey)
+    private static final String MESSAGE_BULK_DELETE_AQL = "status is QUEUED"
 
     @Inject
     private ICayenneService cayenneService
@@ -54,7 +62,18 @@ class EntityApiImpl implements EntityApi {
     private UserPreferenceService preference
     @Inject
     private AqlService aql
+    @Inject
+    private BulkChangeApiService bulkChangeApiService
 
+    @Override
+    void bulkChange(String entityName, DiffDTO dto) {
+        bulkChangeApiService.bulkChange(entityName, dto)
+    }
+
+    @Override
+    void bulkDelete(String entity, DiffDTO dto) {
+        bulkChangeApiService.bulkDelete(entity, dto)
+    }
 
     @Override
     DataResponseDTO get(String entity, String search, BigDecimal pageSize, BigDecimal offset) {
@@ -63,15 +82,18 @@ class EntityApiImpl implements EntityApi {
 
     @Override
     DataResponseDTO getAll(String entity, SearchQueryDTO request) {
-        DataResponseDTO response = createResponse(entity, request.search, request.pageSize, request.offset)
+        DataResponseDTO response = createResponse(entity, request)
         ObjectContext context = cayenneService.newReadonlyContext
 
         Class<? extends CayenneDataObject> clzz = EntityUtil.entityClassForName(entity)
         ObjectSelect objectSelect = ObjectSelect.query(clzz)
 
-        ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups)
-        if (request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
-            response.filteredCount = query.column(Property.create("id", Long)).select(context).toSet().size()
+        boolean isAuditEntity = Audit.class.name.equals(clzz.name)
+
+        ObjectSelect<CayenneDataObject> query = parseSearchQuery(objectSelect, context, aql, entity, request.search, request.filter, request.tagGroups, request.uncheckedChecklists)
+        //!isAuditEntity - filteredCount is set for all entities without filter, search, tagGroups except Audit. For Audit filteredCount is set only with filter, search, tagGroups. It was made because Audit table has 10-16 million records, and request to get Count lasts about 10-16 sec. That is why filteredCount is calculated for Audit only with filter, search, tagsGroups.
+        if (!isAuditEntity || request.filter || request.search || (request.tagGroups && !request.tagGroups.empty)) {
+            response.filteredCount = query.column(Property.create("id", Long).countDistinct()).suppressDistinct().selectOne(context) // Can't use query.selectCount(context), because selectCount with Joins can't use Distinct correct. If tables with Joins have same column names (id, createdOn, modifiedOn, ...) 'Select *' and 'Select count(*)' using Distinct will have duplicates
         }
 
         SortOrder sortOrder = null
@@ -152,8 +174,8 @@ class EntityApiImpl implements EntityApi {
     }
 
     @Override
-    void updateTableModel(String entity, TableModelDTO tableModel) {
-        preference.setTableModel(entity, tableModel)
+    void updateTableModel(String tableModelIdentifier, TableModelDTO tableModel) {
+        preference.setTableModel(tableModelIdentifier, tableModel)
     }
 
     private static void populateResponce(List<PersistentObject> records, DataResponseDTO response, List<ColumnDTO> columns = null, List<String> stringColumns = null) {
@@ -183,15 +205,14 @@ class EntityApiImpl implements EntityApi {
         }
     }
 
-    private DataResponseDTO createResponse(String entity, String search, BigDecimal pageSize, BigDecimal offset) {
-
+    private DataResponseDTO createResponse(String entity, SearchQueryDTO request) {
         DataResponseDTO dataResponse = new DataResponseDTO()
 
         dataResponse.entity = entity.capitalize()
-        TableModelDTO model = preference.getTableModel(dataResponse.entity)
-        dataResponse.search = search
-        dataResponse.pageSize = pageSize ? pageSize : DEF_PAGE_SIZE
-        dataResponse.offset = offset ? offset : DEF_OFFSET
+        TableModelDTO model = preference.getTableModel(request.customTableModel ? request.customTableModel : dataResponse.entity)
+        dataResponse.search = request.search
+        dataResponse.pageSize = request.pageSize ? request.pageSize : DEF_PAGE_SIZE
+        dataResponse.offset = request.offset ? request.offset : DEF_OFFSET
         dataResponse.sort = model.sortings
         dataResponse.columns = model.columns
         dataResponse.filterColumnWidth = model.filterColumnWidth

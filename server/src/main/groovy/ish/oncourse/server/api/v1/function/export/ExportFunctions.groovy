@@ -11,13 +11,17 @@
 
 package ish.oncourse.server.api.v1.function.export
 
+import ish.common.types.KeyCode
+import ish.common.types.Mask
 import ish.oncourse.aql.AqlService
+import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.AbstractInvoice
 import ish.oncourse.server.cayenne.AbstractInvoiceLine
 import ish.oncourse.server.cayenne.AssessmentSubmission
 import ish.oncourse.server.cayenne.ClassCost
 import ish.oncourse.server.cayenne.CourseClassTutor
 import ish.oncourse.server.cayenne.DiscountCourseClass
+import ish.oncourse.server.cayenne.Faculty
 import ish.oncourse.server.cayenne.InvoiceLine
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.server.cayenne.Lead
@@ -25,6 +29,11 @@ import ish.oncourse.server.cayenne.Quote
 import ish.oncourse.server.cayenne.QuoteLine
 import ish.oncourse.server.cayenne.Student
 import ish.oncourse.server.cayenne.TrainingPackage
+import ish.oncourse.server.security.api.IPermissionService
+
+import javax.ws.rs.ForbiddenException
+import javax.ws.rs.core.Response
+
 import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import ish.oncourse.server.api.v1.model.ColumnDTO
 import ish.oncourse.server.api.v1.model.SortingDTO
@@ -129,7 +138,8 @@ class ExportFunctions {
             (TRAINEESHIP_CLASSES_ENTITY)                 : [CourseClass.simpleName],
             (PriorLearning.simpleName.toLowerCase())     : [PriorLearning.simpleName],
             (Document.simpleName.toLowerCase())          : [Document.simpleName],
-            (Lead.simpleName.toLowerCase())              : [Lead.simpleName]
+            (Lead.simpleName.toLowerCase())              : [Lead.simpleName],
+            (Faculty.simpleName.toLowerCase())           : [Faculty.simpleName],
     ]
 
     private static ObjectSelect<? extends CayenneDataObject> getSelectedRecordsObjectSelect(String entityName, String search, String filter, List<TagGroupDTO> tagGroups, List<SortingDTO> sorting, AqlService aqlService, ObjectContext context) {
@@ -178,5 +188,22 @@ class ExportFunctions {
 
     static List<Long> getSelectedRecordIds(String entityName, String search, String filter, List<TagGroupDTO> tagGroups, List<SortingDTO> sorting, AqlService aqlService, ObjectContext context) {
         getSelectedRecordsObjectSelect(entityName, search, filter, tagGroups, sorting, aqlService, context).column(Property.create("id", Long)).select(context)
+    }
+
+    static void checkPermissionToExportXMLAndCSV(IPermissionService permissionService) {
+        boolean isUserCanExportXML = permissionService.currentUserCan(KeyCode.SPECIAL_EXPORT_XML, Mask.ALL)
+        if (!isUserCanExportXML) {
+            ValidationErrorDTO error = new ValidationErrorDTO(null, null, "You have no permission to export XML and CSV.")
+            throwForbiddenErrorException(error)
+        }
+    }
+
+    private static void throwForbiddenErrorException(ValidationErrorDTO validationError) {
+        Response response = Response
+                .status(Response.Status.FORBIDDEN)
+                .entity(validationError)
+                .build()
+
+        throw new ForbiddenException(response)
     }
 }

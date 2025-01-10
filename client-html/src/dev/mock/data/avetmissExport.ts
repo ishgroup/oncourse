@@ -6,8 +6,8 @@ import {
   AvetmissExportType
 } from "@api/model";
 import { format, subDays } from "date-fns";
-import { getRandomInt, generateArraysOfRecords } from "../mockUtils";
-import { YYYY_MM_DD_MINUSED } from "../../../js/common/utils/dates/format";
+import { generateArraysOfRecords, getRandomInt } from "../mockUtils";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
 
 const types = Object.keys(AvetmissExportType) as AvetmissExportType[];
 const statuses = Object.keys(AvetmissExportOutcomeStatus) as AvetmissExportOutcomeStatus[];
@@ -76,6 +76,17 @@ export function mockAvetmissExport() {
     response.sort = [];
 
     return response;
+  };
+
+  this.getAvetmissExportPlainListFormatted = () => {
+    const contracts: any[] = this.getAvetmissExportPlainList().rows.map(({ id, values }) => ({
+      id: Number(id),
+      name: values[0],
+      flavour: values[1]
+    }));
+
+    contracts.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+    return contracts;
   };
 
   this.getAvetmissExportUploads = () => generateArraysOfRecords(50, [

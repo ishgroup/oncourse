@@ -17,6 +17,7 @@ import ish.common.types.ProductType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._ProductItem
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -31,7 +32,7 @@ import static ish.persistence.CommonExpressionFactory.previousMidnight
  */
 @API
 @QueueableEntity
-class ProductItem extends _ProductItem implements Queueable, NotableTrait {
+class ProductItem extends _ProductItem implements Queueable, NotableTrait, ContactActivityTrait {
 
 	private static final Logger logger = LogManager.getLogger()
 
@@ -48,7 +49,23 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait {
 		}
 	}
 
-	/**
+	@Override
+	protected void postPersist() {
+		removeAbandonedCartsWithThisProduct()
+		super.postPersist()
+	}
+
+	private void removeAbandonedCartsWithThisProduct(){
+		if(contact != null) {
+			List<CheckoutContactRelation> checkoutRelations = CartFunctions.checkoutsByContactId(context, contact.willowId)
+
+			def productRelations = checkoutRelations.findAll { it instanceof CheckoutProductRelation && it.relatedObjectId == product.id }
+			context.deleteObjects(productRelations.collect {it.checkout}.unique())
+			context.commitChanges()
+		}
+	}
+
+/**
 	 * @return confirmation email sending status: not sent, sent or suppressed from sending
 	 */
 	@Nonnull
@@ -67,7 +84,11 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait {
 		return super.getCreatedOn()
 	}
 
-	/**
+	@Override
+	String getInteractionName() {
+		return product.name
+	}
+/**
 	 * @return date when product item (e.g. membership) expires
 	 */
 	@API

@@ -3,45 +3,34 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { DataResponse } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_SCRIPTS_LIST, GET_SCRIPTS_LIST_FULFILLED } from "../actions";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import EntityService from "../../../../../common/services/EntityService";
-import { CommonListItem } from "../../../../../model/common/sidebar";
+import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
 import history from "../../../../../constants/History";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
+import { GET_SCRIPTS_LIST, getScriptsListFulfilled } from "../actions";
 
 const request: EpicUtils.Request<any, { nameToSelect: string; selectFirst: boolean }> = {
   type: GET_SCRIPTS_LIST,
-  getData: () => EntityService.getPlainRecords("Script", "name,enabled,keyCode", null, null, null, "name", true),
+  getData: () => EntityService.getPlainRecords("Script", CATALOG_ITEM_COLUMNS, null, null, null, "name", true),
   processData: (response: DataResponse, s, p) => {
-    const scripts: CommonListItem[] = response.rows.map(r => ({
-      id: Number(r.id),
-      name: r.values[0],
-      grayOut: r.values[1] === "false",
-      keyCode: r.values[2],
-      hasIcon: r.values[2] && r.values[2].startsWith("ish.")
-    }));
+    const scripts: CatalogItemType[] = response.rows.map(mapListToCatalogItem);
 
-    scripts.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+    scripts.sort((a, b) => (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1));
 
     if (p) {
       if (p.nameToSelect) {
-        history.push(`/automation/script/${scripts.find(s => s.name === p.nameToSelect).id}`);
+        history.push(`/automation/script/${scripts.find(s => s.title === p.nameToSelect).id}`);
       }
       if (p.selectFirst) {
-        history.push(`/automation/script`);
+        history.push(`/automation/scripts`);
       }
     }
 
-    return [
-      {
-        type: GET_SCRIPTS_LIST_FULFILLED,
-        payload: { scripts }
-      }
-    ];
+    return [getScriptsListFulfilled(scripts)];
   },
   processError: response => FetchErrorHandler(response, "Failed to get scripts")
 };

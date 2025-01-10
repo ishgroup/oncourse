@@ -3,18 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import clsx from "clsx";
-import Paper from "@mui/material/Paper";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import { AvetmissExportFlavour, FundingSource } from "@api/model";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
+import { AvetmissExportFlavour, FundingSource } from '@api/model';
+import { Button, Grid } from '@mui/material';
+import { red } from '@mui/material/colors';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Paper from '@mui/material/Paper';
+import clsx from 'clsx';
+import { mapSelectItems, sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
 
 const Flavours = Object.keys(AvetmissExportFlavour)
   .filter(val => isNaN(Number(val)))
@@ -23,7 +21,7 @@ const Flavours = Object.keys(AvetmissExportFlavour)
 Flavours.sort(sortDefaultSelectItems);
 
 const styles = () =>
-  createStyles({
+  ({
     deleteButton: {
       color: red[500]
     },
@@ -52,8 +50,7 @@ const FundingContractItem = props => {
                     name={`${item}.name`}
                     label="Name"
                     className={classes.inputWidth}
-                    fullWidth
-                    required
+                                        required
                   />
                 </Grid>
                 <Grid item xs={7} className="d-flex-start justify-content-end">
@@ -72,13 +69,11 @@ const FundingContractItem = props => {
                   label="Flavour"
                   items={Flavours}
                   className="pr-3"
-                  fullWidth
-                  required
+                                    required
                 />
               </Grid>
               <Grid item xs={5}>
                 <FormControlLabel
-                  className="checkbox p-3"
                   control={<FormField type="checkbox" name={`${item}.active`} color="primary" />}
                   label="Active"
                 />
@@ -91,4 +86,4 @@ const FundingContractItem = props => {
   );
 };
 
-export default withStyles(styles)(FundingContractItem) as any;
+export default withStyles(FundingContractItem, styles) as any;

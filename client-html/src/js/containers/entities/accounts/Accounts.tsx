@@ -3,25 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Account } from "@api/model";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import * as React from "react";
 import { initialize } from "redux-form";
-import { Account } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
-import AccountsEditView from "./components/AccountsEditView";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
-import {
-  getAccount, updateAccount, createAccount, removeAccount
-} from "./actions";
-import { getTaxTypes } from "../../preferences/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { getTaxTypes } from "../../preferences/actions";
+import AccountsEditView from "./components/AccountsEditView";
 
 const Initial: Account = {
   accountCode: null,
@@ -49,7 +42,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Account and entityId" },
   { title: "Invoices", list: "invoice", expression: "invoiceLines.account.id" },
   { title: "Transactions", list: "transaction", expression: "account.id" }
@@ -76,33 +69,27 @@ class Accounts extends React.Component<any, any> {
 
   render() {
     const {
-      onCreate, getAccountRecord, onDelete, onSave, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "description",
-            secondaryColumn: "accountCode"
-          }}
-          editViewProps={{
-            nameCondition,
-            manualLink,
-            hideTitle: true
-          }}
-          EditViewContent={AccountsEditView}
-          getEditRecord={getAccountRecord}
-          rootEntity="Account"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
-          filterGroupsInitial={filterGroups}
-          findRelated={findRelatedGroup}
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "description",
+          secondaryColumn: "accountCode"
+        }}
+        editViewProps={{
+          nameCondition,
+          manualLink,
+          hideTitle: true
+        }}
+        EditViewContent={AccountsEditView}
+        rootEntity="Account"
+        onInit={onInit}
+        filterGroupsInitial={filterGroups}
+        findRelated={findRelatedGroup}
+        noListTags
+      />
     );
   }
 }
@@ -116,11 +103,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => {
     dispatch(getFilters("Account"));
   },
-  clearListState: () => dispatch(clearListState()),
-  getAccountRecord: (id: string) => dispatch(getAccount(id)),
-  onSave: (id: string, account: Account) => dispatch(updateAccount(id, account)),
-  onCreate: (account: Account) => dispatch(createAccount(account)),
-  onDelete: (id: string) => dispatch(removeAccount(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Accounts);

@@ -19,16 +19,18 @@ Feature: Main feature for all DELETE requests with path 'list/entity/report'
         {
         "name":"delete Report01",
         "entity":"AccountTransaction",
-        "enabled":true,
         "keyCode":"delete1",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":1,
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "status":"Enabled",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -69,16 +71,18 @@ Feature: Main feature for all DELETE requests with path 'list/entity/report'
         {
         "name":"delete Report02",
         "entity":"AccountTransaction",
-        "enabled":true,
         "keyCode":"delete2",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":1,
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "status":"Enabled",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -124,16 +128,18 @@ Feature: Main feature for all DELETE requests with path 'list/entity/report'
         {
         "name":"delete Report03",
         "entity":"AccountTransaction",
-        "enabled":true,
         "keyCode":"delete3",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":1,
         "sortOn":"amount",
         "preview":null,
         "variables":[],
-        "options":[]
+        "options":[],
+        "status":"Enabled",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 

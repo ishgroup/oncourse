@@ -38,8 +38,6 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocume
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
-import static ish.oncourse.server.api.v1.function.ModuleFunctions.bidiModuleType
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.CourseStatusDTO.*
 import static org.apache.commons.lang3.StringUtils.*
@@ -79,6 +77,12 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
     @Inject
     private IPermissionService permissionService
 
+    @Inject
+    private ModuleApiService moduleApiService
+
+    @Inject
+    private FacultyApiService facultyApiService
+
     @Override
     Class<Course> getPersistentClass() {
         return Course
@@ -92,7 +96,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.modifiedOn = LocalDateUtils.dateToTimeValue(course.modifiedOn)
             courseDTO.name = course.name
             courseDTO.code = course.code
-            courseDTO.tags = course.tags.collect { toRestTagMinimized(it) }
+            courseDTO.tags = course.allTags.collect { it.id }
+
+            def hiddenTags = course.hiddenTags
+            courseDTO.specialTagId = hiddenTags.empty ? null as Long : hiddenTags.first().id
             courseDTO.enrolmentType = ENROLMENT_TYPE_MAP[course.enrolmentType]
             courseDTO.allowWaitingLists = course.allowWaitingLists
             courseDTO.dataCollectionRuleId = course.fieldConfigurationSchema.id
@@ -109,9 +116,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.studentWaitingListCount = course.waitingLists.size()
             courseDTO.hasEnrolments = course.courseClasses.find { c -> !c.enrolments.empty} != null
             courseDTO.webDescription = course.webDescription
-            courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            courseDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(course.context, Course.simpleName, course.id).collect { it -> toRestFromEntityRelation(it) } +
-                    EntityRelationDao.getRelatedTo(course.context, Course.simpleName, course.id).collect { it -> toRestToEntityRelation(it) })
+            courseDTO.shortWebDescription = course.shortWebDescription
+            courseDTO.documents = course.activeAttachments.collect { toRestDocument(it.document, documentService) }
+            courseDTO.relatedSellables = relatedSellablesOf(course.context, course.id)
             courseDTO.qualificationId = course.qualification?.id
             courseDTO.qualNationalCode = course.qualification?.nationalCode
             courseDTO.qualTitle = course.qualification?.title
@@ -126,8 +133,9 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
                     moduleDTO.id = module.id
                     moduleDTO.nationalCode = module.nationalCode
                     moduleDTO.title = module.title
-                    moduleDTO.type = bidiModuleType[module.type]
+                    moduleDTO.type = moduleApiService.bidiModuleType[module.type]
                     moduleDTO.isOffered = module.isOffered
+                    moduleDTO.creditPointsStatus = module.creditPointsStatus
                     moduleDTO.nominalHours = module.nominalHours
                     moduleDTO
                 }
@@ -136,8 +144,15 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             courseDTO.rules = course.unavailableRuleRelations.collect{ toRestHoliday(it.rule) }
             courseDTO.feeHelpClass = course.feeHelpClass
             courseDTO.fullTimeLoad = course.fullTimeLoad
+            courseDTO.facultyId = course.faculty?.id
+            courseDTO.attainmentText = course.attainmentText
             courseDTO
         }
+    }
+
+    static List<SaleDTO> relatedSellablesOf(ObjectContext context, Long courseId){
+        return (EntityRelationDao.getRelatedFrom(context, Course.simpleName, courseId).collect { it -> toRestFromEntityRelation(it) } +
+                EntityRelationDao.getRelatedTo(context, Course.simpleName, courseId).collect { it -> toRestToEntityRelation(it) })
     }
 
     @Override
@@ -170,6 +185,7 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
         course.printedBrochureDescription = trimToNull(courseDTO.brochureDescription)
         course.webDescription = trimToNull(courseDTO.webDescription)
+        course.shortWebDescription = trimToNull(courseDTO.shortWebDescription)
         if (courseDTO.qualificationId != null) {
             course.qualification =  qualificationDao.getById(course.context, courseDTO.qualificationId)
             course.fieldOfEducation = trimToNull(course.qualification.fieldOfEducation)
@@ -179,8 +195,16 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
         }
         course.isSufficientForQualification = courseDTO.isSufficientForQualification
         course.isVET = courseDTO.isVET
+        course.attainmentText = courseDTO.attainmentText
 
-        updateTags(course, course.taggingRelations, courseDTO.tags*.id, CourseTagRelation, course.context)
+        updateTags(course, course.taggingRelations, courseDTO.tags + courseDTO.specialTagId, CourseTagRelation, course.context)
+        if (courseDTO.facultyId != null) {
+            Faculty room = facultyApiService.getEntityAndValidateExistence(course.context, courseDTO.facultyId)
+            course.faculty = room
+        } else {
+            course.faculty = null
+        }
+
         updateDocuments(course, course.attachmentRelations, courseDTO.documents, CourseAttachmentRelation, course.context)
         updateModules(course, courseDTO.modules)
         course.reportableHours = courseDTO.reportableHours
@@ -274,6 +298,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             validator.throwClientErrorException(id, 'webDescription', 'Web description must be shorter then 32000 characters.')
         }
 
+        if (trimToEmpty(courseDTO.shortWebDescription).length() > 32000) {
+            validator.throwClientErrorException(id, 'shortWebDescription', 'Short web description must be shorter then 32000 characters.')
+        }
+
         if (trimToEmpty(courseDTO.brochureDescription).length() > 32000) {
             validator.throwClientErrorException(id, 'brochureDescription', 'Brochure description must be shorter then 32000 characters.')
         }
@@ -324,10 +352,10 @@ class CourseApiService extends TaggableApiService<CourseDTO, Course, CourseDao> 
             }
         }
 
-        TagFunctions.validateTagForSave(Course, context, courseDTO.tags*.id)
+        TagFunctions.validateTagForSave(Course, context, courseDTO.tags)
                 ?.with { validator.throwClientErrorException(it) }
 
-        TagFunctions.validateRelationsForSave(Course, context, courseDTO.tags*.id, TaggableClasses.COURSE)
+        TagFunctions.validateRelationsForSave(Course, context, courseDTO.tags, TaggableClasses.COURSE)
                 ?.with { validator.throwClientErrorException(it) }
 
         validateCustomFields(context, Course.class.simpleName, courseDTO.customFields, id as String, validator)

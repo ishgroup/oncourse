@@ -3,60 +3,42 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useState, useCallback, useRef, useMemo, useContext } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import { withStyles, createStyles } from "@mui/styles";
-import { darken } from "@mui/material/styles";
-import { Theme } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import MenuItem from "@mui/material/MenuItem";
-import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-import { SearchInputBase } from "../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput";
-import { Fetch } from "../../../../model/common/Fetch";
-import { State } from "../../../../reducers/state";
-import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from "../../../../constants/Config";
+import { Filter } from '@api/model';
+import { Theme } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import { darken } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import { AnyArgFunction, StringArgFunction } from 'ish-ui';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
 import {
-  clearTimetableMonths,
-  findTimetableSessions,
-  getTimetableSessionsDays,
-  setTimetableFilters,
-  setTimetableSavingFilter,
-  setTimetableSearch,
-  setTimetableUsersSearch
-} from "../../actions";
-import { AnyArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { FilterGroup, SavingFilterState } from "../../../../model/common/ListView";
-import { Filter, SearchRequest } from "@api/model";
-import { TimetableContext } from "../../Timetable";
-import { addMonths, endOfMonth, startOfMonth } from "date-fns";
-import { stubFunction } from "../../../../common/utils/common";
+  SearchInputBase
+} from '../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput';
+import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from '../../../../constants/Config';
+import { Fetch } from '../../../../model/common/Fetch';
+import { FilterGroup, SavingFilterState } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { clearTimetableMonths, setTimetableSavingFilter, setTimetableSearch } from '../../actions';
 
 interface Props {
   classes?: any;
   fetch?: Fetch;
   filters?: Filter[];
-  setUsersSearch?: StringArgFunction;
   setTimetableSearch?: StringArgFunction;
   clearTimetableMonths?: AnyArgFunction;
-  getSessions: (request: SearchRequest) => void;
   setSavingFilter?: (savingFilter?: SavingFilterState) => void;
-  setTimetableFilters?: (filterGroups?: FilterGroup[]) => void;
-  getTimetableSessionsDays?: (month: number, year: number) => void;
   searchUrlParameter?: boolean;
   savingFilter?: SavingFilterState;
-  usersSearch?: string;
+  search?: string;
   searchServerError?: boolean;
 }
-interface SearchBarState {
-  searchType: { key: string; entity: string };
-}
 
-const styles = ({ palette, spacing, shadows, shape }: Theme) =>
-  createStyles({
+const styles = ({
+ palette, spacing, shadows, shape 
+}: Theme) =>
+  ({
     root: {
       boxShadow: shadows[0],
       backgroundColor: palette.background.default
@@ -80,49 +62,15 @@ const styles = ({ palette, spacing, shadows, shape }: Theme) =>
       justifyContent: "space-between",
       alignItems: "center",
       padding: spacing(2),
-      position: "relative"
+      position: "relative",
+      zIndex: 1
     }
   });
-
-const selectValues = [
-  { key: "session.", entity: "Session" },
-  { key: "session.tutor.", entity: "Tutor" },
-  { key: "session.tutor.contact.", entity: "Contact" },
-  { key: "session.courseClass.", entity: "CourseClass" },
-  { key: "session.courseClass.course.", entity: "Course" },
-  { key: "session.courseClass.enrolments.student.", entity: "Student" },
-  { key: "session.room.", entity: "Room" },
-  { key: "session.room.site.", entity: "Site" }
-];
-
-const SearchBarSelect = React.memo<any>(({ classes, searchType, selectHandle }) => (
-  <FormControl className={classes.formControl} variant="standard">
-    <Select
-      name="entities"
-      IconComponent={KeyboardArrowDown}
-      value={searchType.key}
-      onChange={selectHandle}
-      disableUnderline
-      displayEmpty
-    >
-      {selectValues.map((el, id) => (
-        <MenuItem key={id} value={el.key}>
-          {el.key}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-));
 
 const SearchBar = React.memo<Props>(
   ({
     classes,
-    fetch,
-    usersSearch,
-    getSessions,
-    getTimetableSessionsDays,
-    setTimetableFilters,
-    setUsersSearch,
+    search,
     setSavingFilter,
     setTimetableSearch,
     clearTimetableMonths,
@@ -130,27 +78,10 @@ const SearchBar = React.memo<Props>(
     filters,
     searchServerError
   }) => {
-    const { selectedMonth } = useContext(TimetableContext);
-
-    const [searchType, setSearchType] = useState<SearchBarState["searchType"]>(selectValues[0]);
 
     const searchNode = useRef(null);
 
     const searchComponent = useRef(null);
-
-    const selectHandle = useCallback(
-      e => {
-        setSearchType(selectValues.find(f => f.key === e.target.value));
-        setUsersSearch("");
-
-        searchComponent.current.reset();
-
-        setTimeout(() => {
-          searchNode.current.focus();
-        }, 200);
-      },
-      [searchNode.current, searchComponent.current]
-    );
 
     const filterGroups = useMemo(() => (filters.length ? [{ filters } as FilterGroup] : []), [filters]);
 
@@ -161,27 +92,9 @@ const SearchBar = React.memo<Props>(
         }
 
         clearTimetableMonths();
-
-        const search = searchString ? searchType.key.replace("session.", "") + searchString : "";
-
-        setTimetableSearch(search);
-
-        const startMonth = startOfMonth(selectedMonth);
-
-        const endMonth = endOfMonth(addMonths(startMonth, 1));
-
-        getSessions({ from: startMonth.toISOString(), to: endMonth.toISOString(), search });
-        getTimetableSessionsDays(selectedMonth.getMonth(), selectedMonth.getFullYear());
+        setTimetableSearch(searchString);
       },
-      [selectedMonth, searchType]
-    );
-
-    const setSavingFilterCustom = useCallback(
-      filter => {
-        filter.aqlSearch = searchType.key.replace("session.", "") + filter.aqlSearch;
-        setSavingFilter(filter);
-      },
-      [searchType]
+      []
     );
 
     return (
@@ -191,17 +104,14 @@ const SearchBar = React.memo<Props>(
             querySearch
             queryComponentRef={searchComponent}
             queryInputRef={searchNode}
-            startAdornment={<SearchBarSelect classes={classes} searchType={searchType} selectHandle={selectHandle} />}
-            rootEntity={searchType.entity}
-            userAQLSearch={usersSearch}
+            rootEntity="Session"
+            userAQLSearch={search}
             savingFilter={savingFilter}
             tags={[]}
             filterGroups={filterGroups}
-            setListUserAQLSearch={setUsersSearch}
+            setListUserAQLSearch={setTimetableSearch}
             onQuerySearch={onQuerySearch}
-            setListMenuTags={stubFunction}
-            setFilterGroups={setTimetableFilters}
-            setListSavingFilter={setSavingFilterCustom}
+            setListSavingFilter={setSavingFilter}
             searchServerError={searchServerError}
             placeholder="Find..."
             alwaysExpanded
@@ -213,25 +123,16 @@ const SearchBar = React.memo<Props>(
 );
 
 const mapStateToProps = (state: State) => ({
-  fetch: state.fetch,
   filters: state.timetable.filters,
-  usersSearch: state.timetable.usersSearch,
+  search: state.timetable.search,
   savingFilter: state.timetable.savingFilter,
   searchServerError: state.timetable.searchError
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  getSessions: (request: SearchRequest) => dispatch(findTimetableSessions(request)),
-  setUsersSearch: (usersSearch: string) => dispatch(setTimetableUsersSearch(usersSearch)),
   setTimetableSearch: (search: string) => dispatch(setTimetableSearch(search)),
   setSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setTimetableSavingFilter(savingFilter)),
-  setTimetableFilters: (filterGroups?: FilterGroup[]) => {
-    if (filterGroups.length) {
-      dispatch(setTimetableFilters(filterGroups[0].filters));
-    }
-  },
-  clearTimetableMonths: () => dispatch(clearTimetableMonths()),
-  getTimetableSessionsDays: (month: number, year: number) => dispatch(getTimetableSessionsDays(month, year))
+  clearTimetableMonths: () => dispatch(clearTimetableMonths())
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SearchBar));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(SearchBar, styles));

@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import AuditsEditView from "../../js/containers/audits/components/AuditsEditView";
-import { III_DD_MMM_YYYY_HH_MM } from "../../js/common/utils/dates/format";
+import { III_DD_MMM_YYYY_HH_MM } from "ish-ui";
 import { mockedEditView } from "../common/MockedEditView.Components";
 
 describe("Virtual rendered AuditsEditView", () => {

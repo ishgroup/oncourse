@@ -1,43 +1,76 @@
 /*
- * Copyright ish group pty ltd 2021.
+ * Copyright ish group pty ltd 2022.
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useMemo } from "react";
-import clsx from "clsx";
-import { Dispatch } from "redux";
+import { CheckoutSaleRelation, ColumnWidth } from '@api/model';
+import Button from '@mui/material/Button';
+import clsx from 'clsx';
+import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues, initialize, isDirty, isInvalid, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { FETCH_FINISH, openDrawer, showConfirm } from '../../../common/actions';
 import {
- change, getFormValues, initialize, isDirty, isInvalid, reduxForm 
-} from "redux-form";
-import { connect } from "react-redux";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { Category, CheckoutSaleRelation, ColumnWidth } from "@api/model";
-import debounce from "lodash.debounce";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
-import history from "../../../constants/History";
-import { CheckoutCourse, CheckoutCourseClass, CheckoutSummary } from "../../../model/checkout";
-import { State } from "../../../reducers/state";
-import ResizableWrapper from "../../../common/components/layout/resizable/ResizableWrapper";
-import Drawer from "../../../common/components/layout/Drawer";
-import { AppTheme } from "../../../model/common/Theme";
-import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
-import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from '../../../common/actions/CommonPlainRecordsActions';
+import AppBarContainer from '../../../common/components/layout/AppBarContainer';
+import Drawer from '../../../common/components/layout/Drawer';
+import { setListEditRecord } from '../../../common/components/list-view/actions';
+import LoadingIndicator from '../../../common/components/progress/LoadingIndicator';
+import { latestActivityStorageHandler } from '../../../common/utils/storage';
+import uniqid from '../../../common/utils/uniqid';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../constants/Config';
+import history from '../../../constants/History';
+import {
+  CheckoutContact,
+  CheckoutCourse,
+  CheckoutCourseClass,
+  CheckoutItem,
+  CheckoutSummary
+} from '../../../model/checkout';
+import { CheckoutFundingInvoice } from '../../../model/checkout/fundingInvoice';
+import { EditViewProps } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
 import {
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
   getContactTags
-} from "../../entities/contacts/actions";
-import { getListNestedEditRecord, setListEditRecord } from "../../../common/components/list-view/actions";
-import LoadingIndicator from "../../../common/components/layout/LoadingIndicator";
-import { EditViewProps } from "../../../model/common/ListView";
-import { NoArgFunction } from "../../../model/common/CommonFunctions";
-import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
-import { latestActivityStorageHandler } from "../../../common/utils/storage";
+} from '../../entities/contacts/actions';
+import { studentInitial } from '../../entities/contacts/components/ContactsGeneral';
+import { ContactInitial } from '../../entities/contacts/Contacts';
+import { getContactFullName } from '../../entities/contacts/utils';
+import { getCountries, getLanguages, updateColumnsWidth } from '../../preferences/actions';
+import {
+  addContact,
+  addItem,
+  checkoutUpdateRelatedItems,
+  removeContact,
+  removeItem,
+  updateClassItem,
+  updateContact
+} from '../actions';
+import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from '../actions/checkoutContact';
+import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from '../actions/checkoutPayment';
+import { checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
+import {
+  checkoutClearCourseClassList,
+  checkoutGetClassPaymentPlans,
+  checkoutGetCourseClassList,
+  checkoutGetMembership,
+  checkoutGetProduct,
+  checkoutGetVoucher,
+  clearCheckoutItemRecord
+} from '../actions/chekoutItem';
 import {
   CHECKOUT_CONTACT_COLUMNS,
   CHECKOUT_MEMBERSHIP_COLUMNS,
@@ -48,12 +81,13 @@ import {
   CheckoutPage,
   CheckoutPageType,
   titles
-} from "../constants";
+} from '../constants';
 import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
   getCheckoutCurrentStep,
+  processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
@@ -61,63 +95,32 @@ import {
   processCheckoutLeadId,
   processCheckoutSale,
   processCheckoutWaitingListIds
-} from "../utils";
-import CheckoutFundingInvoiceForm from "./fundingInvoice/CheckoutFundingInvoiceForm";
-import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./fundingInvoice/CheckoutFundingInvoiceSummaryList";
-import CheckoutFundingThisInvoice from "./fundingInvoice/CheckoutFundingThisInvoice";
-import HeaderField from "./HeaderField";
-import EnrolContactListView from "./contact/EnrolContactListView";
-import CheckoutContactEditView, { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "./contact/CheckoutContactEditView";
-import EnrolItemListView from "./items/EnrolItemListView";
-import SelectedItemRenderer from "./items/components/SelectedItemRenderer";
-import EnrolCourseClassView from "./items/components/EnrolCourseClassView";
-import {
-  addContact,
-  addItem,
-  checkoutUpdateRelatedItems,
-  removeContact,
-  removeItem,
-  updateClassItem,
-  updateContact
-} from "../actions";
-import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from "../actions/checkoutContact";
-import { ContactInitial } from "../../entities/contacts/Contacts";
-import CheckoutPaymentPage from "./payment/CheckoutPaymentPage";
-import CheckoutItemView from "./items/components/CheckoutItemView";
-import {
-  checkoutClearCourseClassList,
-  checkoutGetClassPaymentPlans,
-  checkoutGetCourseClassList,
-  checkoutGetMembership,
-  checkoutGetProduct,
-  checkoutGetVoucher,
-  clearCheckoutItemRecord
-} from "../actions/chekoutItem";
-import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "./items/components/CkecoutItemViewForm";
-import CheckoutSectionExpandableRenderer from "./CheckoutSectionExpandableRenderer";
-import CheckoutPromoCodesHeaderField from "./summary/promocode/CheckoutPromoCodesHeaderField";
-import CheckoutContactSearch from "./contact/CheckoutContactSearch";
-import CheckoutSummaryComp from "./summary/CheckoutSummary";
-import CheckoutPaymentHeaderField from "./payment/components/CheckoutPaymentHeaderField";
-import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from "../actions/checkoutPayment";
-import { checkoutUpdateSummaryClassesDiscounts } from "../actions/checkoutSummary";
-import CheckoutSummaryHeaderField from "./summary/CheckoutSummaryHeaderField";
-import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
-import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
-import {
-  clearCommonPlainRecords,
-  getCommonPlainRecords,
-  setCommonPlainSearch
-} from "../../../common/actions/CommonPlainRecordsActions";
-import uniqid from "../../../common/utils/uniqid";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import CheckoutAppBar from "./CheckoutAppBar";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
+} from '../utils';
+import CheckoutAppBar from './CheckoutAppBar';
+import CheckoutSectionExpandableRenderer from './CheckoutSectionExpandableRenderer';
+import CheckoutContactEditView, { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from './contact/CheckoutContactEditView';
+import CheckoutContactSearch from './contact/CheckoutContactSearch';
+import EnrolContactListView from './contact/EnrolContactListView';
+import CheckoutFundingInvoiceForm from './fundingInvoice/CheckoutFundingInvoiceForm';
+import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from './fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import CheckoutFundingThisInvoice from './fundingInvoice/CheckoutFundingThisInvoice';
+import HeaderField from './HeaderField';
+import CheckoutItemView from './items/components/CheckoutItemView';
+import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from './items/components/CkecoutItemViewForm';
+import EnrolCourseClassView from './items/components/EnrolCourseClassView';
+import SelectedItemRenderer from './items/components/SelectedItemRenderer';
+import EnrolItemListView from './items/EnrolItemListView';
+import CheckoutPaymentPage from './payment/CheckoutPaymentPage';
+import CheckoutPaymentHeaderField from './payment/components/CheckoutPaymentHeaderField';
+import CheckoutSummaryComp from './summary/CheckoutSummary';
+import CheckoutSummaryHeaderField from './summary/CheckoutSummaryHeaderField';
+import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from './summary/CheckoutSummaryList';
+import CheckoutPromoCodesHeaderField from './summary/promocode/CheckoutPromoCodesHeaderField';
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   sideBar: {
     [theme.breakpoints.up("md")]: {
       paddingRight: 0,
@@ -156,11 +159,10 @@ interface Props extends Partial<EditViewProps> {
   openSidebarDrawer?: () => void;
   updateColumnsWidth?: (columnsWidth: ColumnWidth) => void;
   classes?: any;
-  openNestedEditView?: any;
   value?: any;
   contactEditRecord?: any;
   showConfirm?: ShowConfirmCaller;
-  selectedContacts?: any[];
+  selectedContacts?: CheckoutContact[];
   addSelectedContact?: (contact: any) => void;
   removeContact?: (index: number) => void;
   updateContact?: (contact: any, id: number) => void;
@@ -180,7 +182,7 @@ interface Props extends Partial<EditViewProps> {
   getVouchers?: any;
   membershipProducts?: any[];
   getMembershipProducts?: any;
-  selectedItems?: any[];
+  selectedItems?: CheckoutItem[];
   addSelectedItem?: (item: any) => void;
   removeItem?: (itemId: number, itemType: string) => void;
   onChangeStep?: (step: CheckoutCurrentStepType) => void;
@@ -247,7 +249,6 @@ const parseContactSearch = (search: string) => {
 const CheckoutSelectionForm = React.memo<Props>(props => {
   const {
     openSidebarDrawer,
-    openNestedEditView,
     form,
     dispatch,
     reset,
@@ -307,23 +308,23 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     salesRelations
   } = props;
 
-  const [sidebarWidth, setSidebarWidth] = React.useState(SIDEBAR_DEFAULT_WIDTH);
-  const [activeField, setActiveField] = React.useState<CheckoutPageType>(CheckoutPage.default);
-  const [listContacts, setListContacts] = React.useState(contacts);
-  const [selectedContact, setSelectedContact] = React.useState(undefined);
-  const [openContactEditView, setOpenContactEditView] = React.useState(false);
-  const [createNewContact, setCreateNewContact] = React.useState(false);
-  const [selectedCourse, setSelectedCourse] = React.useState(undefined);
-  const [openClassListView, setOpenClassListView] = React.useState(false);
-  const [checkDirtyContactViewOnFocus, setCheckDirtyContactViewOnFocus] = React.useState(true);
-  const [checkDirtyContactViewOnFocusCancel, setCheckDirtyContactViewOnFocusCancel] = React.useState(false);
-  const [openedItem, setOpenedItem] = React.useState(undefined);
-  const [openItemEditView, setOpenItemEditView] = React.useState(false);
-  const [selectedDiscount, setSelectedDiscount] = React.useState(undefined);
-  const [openDiscountView, setOpenDiscountView] = React.useState(false);
-  const [customLoading, setCustomLoading] = React.useState(false);
-  const [disablePayment, setDisablePayment] = React.useState(false);
-  const [itemsSearch, setItemsSearch] = React.useState<string>(null);
+  const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_DEFAULT_WIDTH);
+  const [activeField, setActiveField] = useState<CheckoutPageType>(CheckoutPage.default);
+  const [listContacts, setListContacts] = useState(contacts);
+  const [selectedContact, setSelectedContact] = useState(undefined);
+  const [openContactEditView, setOpenContactEditView] = useState(false);
+  const [createNewContact, setCreateNewContact] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(undefined);
+  const [openClassListView, setOpenClassListView] = useState(false);
+  const [checkDirtyContactViewOnFocus, setCheckDirtyContactViewOnFocus] = useState(true);
+  const [checkDirtyContactViewOnFocusCancel, setCheckDirtyContactViewOnFocusCancel] = useState(false);
+  const [openedItem, setOpenedItem] = useState(undefined);
+  const [openItemEditView, setOpenItemEditView] = useState(false);
+  const [selectedDiscount, setSelectedDiscount] = useState(undefined);
+  const [openDiscountView, setOpenDiscountView] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+  const [disablePayment, setDisablePayment] = useState(false);
+  const [itemsSearch, setItemsSearch] = useState<string>(null);
 
   const mapedProducts = useMemo(() => products.map(checkoutProductMap), [products]);
   const mapedMbershipProducts = useMemo(() => membershipProducts.map(checkoutProductMap), [membershipProducts]);
@@ -344,19 +345,19 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     mapedMbershipProducts
   ]);
 
-  const onCloseItemView = React.useCallback(() => {
+  const onCloseItemView = useCallback(() => {
     setOpenedItem(undefined);
     setOpenItemEditView(false);
     clearItemRecord();
     setActiveField(CheckoutPage.default);
   }, []);
 
-  const clearDiscountView = React.useCallback(() => {
+  const clearDiscountView = useCallback(() => {
     setSelectedDiscount(undefined);
     setOpenDiscountView(false);
   }, []);
 
-  const handleChangeStep = React.useCallback(
+  const handleChangeStep = useCallback(
     (step: CheckoutCurrentStepType) => {
       const currentStep = getCheckoutCurrentStep(step);
       onChangeStep(step);
@@ -375,14 +376,14 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [checkoutStep]
   );
 
-  const onCloseClassList = React.useCallback(() => {
+  const onCloseClassList = useCallback(() => {
     setSelectedCourse(undefined);
     setOpenClassListView(false);
     checkoutClearCourseClassList();
     setActiveField(CheckoutPage.default);
   }, []);
 
-  const getItemRecord = React.useCallback((item, type) => {
+  const getItemRecord = useCallback((item, type) => {
     switch (type) {
       case "membership":
         getMemberShipRecord(item);
@@ -398,7 +399,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, []);
 
-  const openItem = React.useCallback(
+  const openItem = useCallback(
     item => {
       if (checkoutStep > 0) handleChangeStep(CheckoutCurrentStep.shoppingCart);
       switch (item.type) {
@@ -441,7 +442,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedCourse, openClassListView, selectedItems, checkoutStep, openedItem]
   );
 
-  const openContactRow = React.useCallback(
+  const openContactRow = useCallback(
     (item, checkDirty = true) => {
       if (selectedContact && selectedContact.id === item.id) {
         return;
@@ -451,7 +452,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         showConfirm({
           onConfirm: () => openContactRow(item, false),
           confirmMessage: createNewContact ? createConfirmMessage : "",
-          ...createNewContact ? { title: null } : {}
+          ...(createNewContact ? { title: null } : {})
           });
         return;
       }
@@ -469,7 +470,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [openContactEditView, contactEditRecord, selectedContact, isContactEditViewDirty, checkoutStep, createNewContact]
   );
 
-  const onClearItemsSearch = React.useCallback((clearActive = false) => {
+  const onClearItemsSearch = useCallback((clearActive = false) => {
     if (clearActive) {
       setActiveField(CheckoutPage.default);
     }
@@ -510,6 +511,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           const course = checkoutCourseMap(row);
           course.id = uniqid();
           openItem(course);
+          addSelectedItem(course);
         }
         dispatch(change(FORM, "items", ""));
         onClearItemsSearch(true);
@@ -532,7 +534,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }, 500);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(setCommonPlainSearch("Course", "currentlyOffered is true"));
     dispatch(setCommonPlainSearch("ArticleProduct", "isOnSale is true"));
     dispatch(setCommonPlainSearch("VoucherProduct", "isOnSale is true"));
@@ -550,9 +552,19 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const leadId = query.get("leadId");
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
+    const cartId = query.get("cartId");
 
     if (window.location.search) {
       history.replace("/checkout");
+    }
+    if (cartId) {
+      processCeckoutCartIds(
+        cartId,
+        onChangeStep,
+        setActiveField,
+        setCustomLoading,
+        dispatch
+      );
     }
     if (leadId) {
       processCheckoutLeadId(
@@ -561,7 +573,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (waitingListIds) {
       processCheckoutWaitingListIds(
@@ -570,7 +582,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         setActiveField,
         setCustomLoading,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (courseClassId) {
       processCheckoutCourseClassId(
@@ -582,7 +594,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         getClassPaymentPlans,
         openItem,
         dispatch
-      ).catch(e => console.error(e));
+      );
     }
     if (contactId) {
       processCheckoutContactId(contactId, onSelectHandler, dispatch);
@@ -604,7 +616,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) && contactsSearch && contactsSearch.length > 0) {
       setCheckDirtyContactViewOnFocus(true);
       contacts.splice(0, 0, {
@@ -615,7 +627,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, [contacts, contactsSearch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (contactEditRecord) {
       setListContacts(prev => {
         const updated = [...prev];
@@ -624,7 +636,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         if (findIndex !== -1) {
           latestActivityStorageHandler(
             { name: contactEditRecord.name, date: new Date().toISOString(), id: contactEditRecord.id },
-            "Contacts" as Category
+            "Contacts"
           );
 
           updated[findIndex] = contactEditRecord;
@@ -634,7 +646,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, [contactEditRecord]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedContacts.length > 0) {
       const ids = [];
       selectedContacts.forEach(sc => {
@@ -650,26 +662,26 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     }
   }, [selectedContacts]);
 
-  const handleResizeCallback = React.useCallback(
+  const handleResizeCallback = useCallback(
     (...props) => {
       setSidebarWidth(props[2].getClientRects()[0].width);
     },
     [sidebarWidth]
   );
 
-  const handleResizeStopCallback = React.useCallback(
+  const handleResizeStopCallback = useCallback(
     (...props) => {
       updateColumnsWidth(props[2].getClientRects()[0].width);
     },
     [sidebarWidth]
   );
 
-  const onClearContactsSearch = React.useCallback(() => {
+  const onClearContactsSearch = useCallback(() => {
     clearContactsSearch();
     setListContacts([]);
   }, []);
 
-  const handleFocusCallback = React.useCallback(
+  const handleFocusCallback = useCallback(
     (props, name) => {
       if (checkDirtyContactViewOnFocusCancel) {
         setCheckDirtyContactViewOnFocusCancel(false);
@@ -691,7 +703,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             onCancel: () => {
               setCheckDirtyContactViewOnFocusCancel(true);
             },
-            ...createNewContact ? { title: null } : {}
+            ...(createNewContact ? { title: null } : {})
           }
         );
         return;
@@ -729,7 +741,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     ]
   );
 
-  const onClose = React.useCallback(
+  const onClose = useCallback(
     (props?: any, checkDirty = true) => {
       if ((isContactEditViewDirty || createNewContact) && checkDirty) {
         showConfirm({
@@ -748,7 +760,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [isContactEditViewDirty, createNewContact]
   );
 
-  const onSelectDisabledHandler = React.useCallback(
+  const onSelectDisabledHandler = useCallback(
     (row, type) => {
       switch (type) {
         case "contact":
@@ -766,7 +778,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedContacts, selectedItems]
   );
 
-  const onContactDeleteHandler = React.useCallback(
+  const onContactDeleteHandler = useCallback(
     (e, i, row) => {
       removeContact(i);
 
@@ -780,7 +792,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [contactEditRecord, listContacts, selectedContact]
   );
 
-  const onContactSave = React.useCallback(
+  const onContactSave = useCallback(
     (value, dispatch, formProps) => {
       if (formProps.creatingNew) {
         setActiveField(CheckoutPage.default);
@@ -802,9 +814,9 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [listContacts, selectedContacts]
   );
 
-  const onSubmit = React.useCallback(() => { }, []);
+  const onSubmit = useCallback(() => { }, []);
 
-  const onItemDeleteHandler = React.useCallback(
+  const onItemDeleteHandler = useCallback(
     (e, i, row) => {
       const onRemove = () => {
         removeItem(row.id, row.type);
@@ -855,7 +867,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         showConfirm({
           onConfirm: onRemove,
           confirmMessage: "The item you are removing is required by another item in the shopping cart.",
-          cancelButtonText: "Override"
         });
       } else {
         onRemove();
@@ -864,13 +875,13 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedCourse, salesRelations, selectedItems, openedItem]
   );
 
-  const debouncedSearchUpdate = React.useCallback<any>(debounce((name, val) => setItemsSearch(val.trim().toLowerCase()), 800), []);
+  const debouncedSearchUpdate = useCallback<any>(debounce((name, val) => setItemsSearch(val.trim().toLowerCase()), 800), []);
 
   const onClearItemsSearchField = () => {
     setItemsSearch(null);
   };
 
-  const noItemMsg = React.useMemo(() => {
+  const noItemMsg = useMemo(() => {
     if (
       value
       && value.items
@@ -887,7 +898,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     filteredItems
   ]);
 
-  const noContactMsg = React.useMemo(() => {
+  const noContactMsg = useMemo(() => {
     if (value && value.contacts && !contacts.length && !contactsLoading) {
       return `No contacts found for "${value.contacts}"`;
     }
@@ -912,7 +923,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     dispatch({ type: FETCH_FINISH });
   };
 
-  const openDiscount = React.useCallback(
+  const openDiscount = useCallback(
     row => {
       if (selectedDiscount && selectedDiscount.id === row.id && selectedDiscount.type === row.type) {
         return;
@@ -924,34 +935,31 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     [selectedDiscount]
   );
 
-  const onClassSelect = useCallback(
-    (selectedClass: CheckoutCourseClass) => {
-      const updatedCourse: CheckoutCourse = {
-        ...selectedCourse,
-        price: selectedClass.price,
-        animate: true,
-        discount: null,
-        discounts: [],
-        discountExTax: 0,
-        studyReason: "Not stated",
-        class: { ...selectedClass }
-      };
+  const onClassSelect = (selectedClass: CheckoutCourseClass) => {
+    const updatedCourse: CheckoutCourse = {
+      ...selectedCourse,
+      price: selectedClass.price,
+      animate: true,
+      discount: null,
+      discounts: [],
+      discountExTax: 0,
+      studyReason: "Not stated",
+      class: { ...selectedClass }
+    };
 
-      if (selectedItems.some(i => i.id === updatedCourse.id)) {
-        updateSelectedClass(updatedCourse);
-      } else {
-        addSelectedItem(updatedCourse);
-      }
+    if (selectedItems.some(i => i.id === updatedCourse.id)) {
+      updateSelectedClass(updatedCourse);
+    } else {
+      addSelectedItem(updatedCourse);
+    }
 
-      setSelectedCourse(updatedCourse);
-      getClassPaymentPlans(updatedCourse);
-      openSidebarDrawer();
-      setTimeout(() => {
-        checkoutUpdateSummaryClassesDiscounts();
-      }, 500);
-    },
-    [selectedCourse]
-  );
+    setSelectedCourse(updatedCourse);
+    getClassPaymentPlans(updatedCourse);
+    openSidebarDrawer();
+    setTimeout(() => {
+      checkoutUpdateSummaryClassesDiscounts();
+    }, 500);
+  };
 
   const handleFundingInvoiceClick = () => {
     handleChangeStep(CheckoutCurrentStep.fundingInvoice);
@@ -963,6 +971,33 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         active: ind === 0
       }))));
   };
+  
+  const isSummaryAvailable = useMemo(() => selectedContacts.length > 0
+    && ((selectedItems.length > 0 && selectedItems.some(i => i.type !== "course" || i.class))
+      || Boolean(summary.previousOwing.invoices.length)), [selectedContacts, selectedItems, summary.previousOwing.invoices.length]);
+  
+  const isCreateLeadAvailable = useMemo(() => selectedContacts.length === 1
+    && selectedItems.length > 0
+    && !summary.previousOwing.invoices.length
+    && !selectedItems.some(i => i.type !== "course" || i.class),
+    [selectedItems, selectedContacts, summary.previousOwing.invoices.length]);
+  
+  const createLeadButton = useMemo(() => (
+    <div className="centeredFlex justify-content-center mt-3 mb-3">
+      <Button
+        variant="outlined"
+        color="primary"
+        size="large"
+        href={selectedContacts[0]
+          ? `/lead/new?courseIds=${selectedItems.map(s => s.courseId)}&contactId=${selectedContacts[0]?.id}&contactName=${getContactFullName(selectedContacts[0] as any)}`
+          : ""}
+        target="_blank"
+      >
+        Create Lead
+      </Button>
+    </div>
+    ),
+  [selectedItems, selectedContacts]);
 
   return (
     <div className={clsx("root", classes.root)}>
@@ -1022,77 +1057,80 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 />
               </CheckoutSectionExpandableRenderer>
 
-              {selectedContacts.length > 0 && (selectedItems.length > 0 || Boolean(summary.previousOwing.invoices.length)) && (
-              <>
-                <CheckoutSectionExpandableRenderer
-                  title="Summary"
-                  expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.summary)}
-                  onExpanded={handleSummmayClick}
-                  disabled={paymentProcessStatus === "success"}
-                >
-                  <CheckoutPromoCodesHeaderField
-                    setActiveField={setActiveField}
-                    handleFocusCallback={handleFocusCallback}
-                    openDiscountRow={openDiscount}
-                    selectedDiscount={selectedDiscount}
-                    clearDiscountView={clearDiscountView}
-                    dispatch={dispatch}
-                    disabled={summarryInvalid}
-                  />
+              {isCreateLeadAvailable && createLeadButton}
 
-                  <CheckoutSummaryHeaderField
-                    activeField={activeField}
-                    setActiveField={setActiveField}
-                    selectedContacts={selectedContacts}
-                    clearDiscountView={clearDiscountView}
-                  />
-                </CheckoutSectionExpandableRenderer>
-
-                {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
+              {isSummaryAvailable
+                && (
+                <>
                   <CheckoutSectionExpandableRenderer
-                    title="Funding Invoices"
-                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
-                    onExpanded={handleFundingInvoiceClick}
+                    title="Summary"
+                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.summary)}
+                    onExpanded={handleSummmayClick}
                     disabled={paymentProcessStatus === "success"}
                   >
-                    <CheckoutFundingThisInvoice dispatch={dispatch} />
+                    <CheckoutPromoCodesHeaderField
+                      setActiveField={setActiveField}
+                      handleFocusCallback={handleFocusCallback}
+                      openDiscountRow={openDiscount}
+                      selectedDiscount={selectedDiscount}
+                      clearDiscountView={clearDiscountView}
+                      dispatch={dispatch}
+                      disabled={summarryInvalid}
+                    />
+
+                    <CheckoutSummaryHeaderField
+                      activeField={activeField}
+                      setActiveField={setActiveField}
+                      selectedContacts={selectedContacts}
+                      clearDiscountView={clearDiscountView}
+                    />
                   </CheckoutSectionExpandableRenderer>
+
+                  {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
+                    <CheckoutSectionExpandableRenderer
+                      title="Funding Invoices"
+                      expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
+                      onExpanded={handleFundingInvoiceClick}
+                      disabled={paymentProcessStatus === "success"}
+                    >
+                      <CheckoutFundingThisInvoice dispatch={dispatch} />
+                    </CheckoutSectionExpandableRenderer>
                  )}
 
-                <CheckoutSectionExpandableRenderer
-                  title="Payment"
-                  expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
-                  onExpanded={handlePaymentClick}
-                  disabled={
-                        paymentProcessStatus === "success"
-                        || hasErrors
-                        || summarryInvalid
-                        || fundingInvoiceInvalid
-                        || (
-                          !summary.list.some(l => l.items.some(li => li.checked))
-                          && !summary.voucherItems.some(i => i.checked)
-                          && !summary.previousOwing.invoices.length)
-                      }
-                >
-                  <CheckoutPaymentHeaderField
-                    form={form}
-                    dispatch={dispatch}
-                    activeField={activeField}
-                    setActiveField={setActiveField}
-                    selectedDiscount={selectedDiscount}
-                    setSelectedDiscount={setSelectedDiscount}
-                    setDisablePayment={setDisablePayment}
-                    formInvalid={invalid}
-                  />
-                </CheckoutSectionExpandableRenderer>
-              </>
+                  <CheckoutSectionExpandableRenderer
+                    title="Payment"
+                    expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
+                    onExpanded={handlePaymentClick}
+                    disabled={
+                    paymentProcessStatus === "success"
+                    || hasErrors
+                    || summarryInvalid
+                    || fundingInvoiceInvalid
+                    || (
+                      !summary.list.some(l => l.items.some(li => li.checked))
+                      && !summary.voucherItems.some(i => i.checked)
+                      && !summary.previousOwing.invoices.length)
+                  }
+                  >
+                    <CheckoutPaymentHeaderField
+                      form={form}
+                      dispatch={dispatch}
+                      activeField={activeField}
+                      setActiveField={setActiveField}
+                      selectedDiscount={selectedDiscount}
+                      setSelectedDiscount={setSelectedDiscount}
+                      setDisablePayment={setDisablePayment}
+                      formInvalid={invalid}
+                    />
+                  </CheckoutSectionExpandableRenderer>
+                </>
                 )}
             </div>
           </form>
         </Drawer>
       </ResizableWrapper>
 
-      <div className="w-100">
+      <div style={{ width: `calc(100% - ${sidebarWidth}px)` }}>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) })}>
           <div className="appFrame flex-fill root">
             <LoadingIndicator
@@ -1132,7 +1170,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                             disabledHandler={onSelectDisabledHandler}
                             searchString={value && value.contacts}
                             selectedContacts={selectedContacts}
-                            setCreateNewContact={setCreateNewContact}
                             contactsLoading={contactsLoading}
                           />
                         </div>
@@ -1163,8 +1200,8 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 creatingNew={createNewContact}
                 showConfirm={showConfirm}
                 onSave={onContactSave}
-                openNestedEditView={openNestedEditView}
                 onClose={onClose}
+                leftOffset={sidebarWidth}
               />
             )}
 
@@ -1263,8 +1300,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getContactsRelationTypes: () => dispatch(getContactsRelationTypes()),
   getContactsConcessionTypes: () => dispatch(getContactsConcessionTypes()),
   getTaxTypes: () => dispatch(getContactsTaxTypes()),
-  openNestedEditView: (entity: string, id: number, threeColumn: boolean) =>
-    dispatch(getListNestedEditRecord(entity, id, null, threeColumn)),
   showConfirm: props =>
     dispatch(showConfirm(props)),
   getCourses: (offset?: number) => dispatch(
@@ -1284,7 +1319,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   removeItem: (itemId: number, itemType: string) => dispatch(removeItem(itemId, itemType)),
   checkoutGetCourseClassList: (search: string) => dispatch(checkoutGetCourseClassList(search)),
   checkoutClearCourseClassList: () => dispatch(checkoutClearCourseClassList()),
-  getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item)),
+  getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item.id)),
   getProductRecord: (id: number) => dispatch(checkoutGetProduct(id)),
   getVoucherRecord: (item: any) => dispatch(checkoutGetVoucher(item)),
   clearItemRecord: () => {
@@ -1301,4 +1336,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm<any, Props>({
   form: FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CheckoutSelectionForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutSelectionForm, styles)));

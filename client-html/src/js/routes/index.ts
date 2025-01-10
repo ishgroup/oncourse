@@ -9,58 +9,60 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { Category } from "@api/model";
-import BatchPayment from "../containers/batch-payment/BatchPayment";
-import PreferencesApp from "../containers/preferences/index";
+import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import AuditsApp from "../containers/audits/index";
-import LoginApp from "../containers/login/index";
-import Common from "../containers/Common";
-import preferencesRoutes from "../containers/preferences/routes";
-import SecurityApp from "../containers/security/index";
-import securityRoutes from "../containers/security/routes";
-import TagsApp from "../containers/tags/index";
+import Automation from "../containers/automation/index";
 import AvetmissExportApp from "../containers/avetmiss-export/index";
-import QualificationsApp from "../containers/entities/qualifications/index";
-import ModulesApp from "../containers/entities/modules/index";
-import SitesApp from "../containers/entities/sites/index";
-import RoomsApp from "../containers/entities/rooms/index";
-import InvoicesApp from "../containers/entities/invoices/index";
-import PaymentsInApp from "../containers/entities/paymentsIn/index";
-import PaymentsOutApp from "../containers/entities/paymentsOut/index";
-import CorporatePassesApp from "../containers/entities/corporatePasses/index";
-import TransactionsApp from "../containers/entities/transactions/index";
-import PayslipsApp from "../containers/entities/payslips/index";
-import AccountsApp from "../containers/entities/accounts/index";
-import BankingApp from "../containers/entities/bankings/index";
+import BatchPayment from "../containers/batch-payment/BatchPayment";
+import QuickEnrol from "../containers/checkout/index";
+import Common from "../containers/Common";
 import Dashboard from "../containers/dashboard/index";
-import LeadsApp from "../containers/entities/leads/index";
-import WaitingListsApp from "../containers/entities/waitingLists/index";
+import AccountsApp from "../containers/entities/accounts/index";
 import ApplicationApp from "../containers/entities/applications/index";
 import ArticleProductApp from "../containers/entities/articleProducts/index";
-import VoucherProductApp from "../containers/entities/voucherProducts/index";
-import MembershipProductApp from "../containers/entities/membershipProducts/index";
-import CourseApp from "../containers/entities/courses/index";
-import CourseClassApp from "../containers/entities/courseClasses";
-import CertificateApp from "../containers/entities/certificates/index";
-import Survey from "../containers/entities/survey/index";
-import SalesApp from "../containers/entities/sales/index";
-import Timetable from "../containers/timetable/index";
-import DiscountApp from "../containers/entities/discounts/index";
-import DocumentsApp from "../containers/entities/documents/index";
-import OutcomeApp from "../containers/entities/outcomes/index";
 import AssessmentApp from "../containers/entities/assessments/index";
 import AssessmentSubmissionApp from "../containers/entities/assessmentSubmissions/index";
-import EnrolmentApp from "../containers/entities/enrolments/index";
-import PriorLearningApp from "../containers/entities/priorLearnings/index";
-import MessageApp from "../containers/entities/messages/index";
-import FinaliseApp from "../containers/finalise-period/index";
+import BankingApp from "../containers/entities/bankings/index";
+import CertificateApp from "../containers/entities/certificates/index";
 import ContactsApp from "../containers/entities/contacts";
-import { EnvironmentConstants } from "../constants/EnvironmentConstants";
 import MergeContacts from "../containers/entities/contacts/components/merge-contacts/MergeContacts";
-import Automation from "../containers/automation/Automation";
-import { DuplicateCourseClassSwingWrapper } from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
-import QuickEnrol from "../containers/checkout/Checkout";
+import CorporatePassesApp from "../containers/entities/corporatePasses/index";
+import CourseClassApp from "../containers/entities/courseClasses";
+import {
+  DuplicateCourseClassSwingWrapper
+} from "../containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassSwingWrapper";
+import CourseApp from "../containers/entities/courses/index";
+import DiscountApp from "../containers/entities/discounts/index";
+import DocumentsApp from "../containers/entities/documents/index";
+import EnrolmentApp from "../containers/entities/enrolments/index";
+import Faculties from "../containers/entities/faculties/Faculties";
+import InvoicesApp from "../containers/entities/invoices/index";
+import LeadsApp from "../containers/entities/leads/index";
+import MembershipProductApp from "../containers/entities/membershipProducts/index";
+import MessageApp from "../containers/entities/messages/index";
+import ModulesApp from "../containers/entities/modules/index";
+import OutcomeApp from "../containers/entities/outcomes/index";
+import PaymentsInApp from "../containers/entities/paymentsIn/index";
+import PaymentsOutApp from "../containers/entities/paymentsOut/index";
+import PayslipsApp from "../containers/entities/payslips/index";
+import PriorLearningApp from "../containers/entities/priorLearnings/index";
+import QualificationsApp from "../containers/entities/qualifications/index";
+import RoomsApp from "../containers/entities/rooms/index";
+import SalesApp from "../containers/entities/sales/index";
+import SitesApp from "../containers/entities/sites/index";
+import Survey from "../containers/entities/survey/index";
+import TransactionsApp from "../containers/entities/transactions/index";
+import VetReportingApp from "../containers/entities/vetReporting";
+import VoucherProductApp from "../containers/entities/voucherProducts/index";
+import WaitingListsApp from "../containers/entities/waitingLists/index";
+import FinaliseApp from "../containers/finalise-period/index";
+import LoginApp from "../containers/login/index";
+import LoadableLogs from "../containers/logs";
 import NotFound from "../containers/notFound/NotFound";
+import PreferencesApp from "../containers/preferences/index";
+import SecurityApp from "../containers/security/index";
+import TagsApp from "../containers/tags/index";
+import Timetable from "../containers/timetable/index";
 
 type RouteGroupTypes = "Preferences" | "Training" | "Finance" | "Common" | "Activity" | "Products";
 
@@ -75,7 +77,7 @@ type SystemCategories =
   | "Duplicate course classes"
   | "Not found";
 
-export interface Route<T> {
+export interface Route<T = string> {
   title?: T; // route title, displayed on sidebar
   path?: string; // route path (regexp)
   url?: string; // route link
@@ -84,11 +86,10 @@ export interface Route<T> {
   noMenuLink?: boolean; // prevent links menu item rendering
   icon?: string; // icon class for menu item in slim mode
   main: any; // main component for route
-  routes?: Route<string>[]; // sub routes
   group?: RouteGroupTypes;
 }
 
-export type MainRoute = Route<Category | SystemCategories>;
+export type MainRoute = Route<string | SystemCategories>;
 
 export interface RouteGroup {
   title: RouteGroupTypes;
@@ -180,99 +181,11 @@ export const routes: MainRoute[] = [
   {
     title: "Preferences",
     path: "/preferences",
-    url: "/preferences/college",
+    url: "/preferences",
     main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
+    group: "Preferences",
   },
-  {
-    title: "Data collection forms",
-    path: "/preferences/collectionForms",
-    url: "/preferences/collectionForms",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Data collection rules",
-    path: "/preferences/collectionRules",
-    url: "/preferences/collectionRules",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Tutor pay rates",
-    path: "/preferences/tutorRoles",
-    url: "/preferences/tutorRoles",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Holidays",
-    path: "/preferences/holidays",
-    url: "/preferences/holidays",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Payment types",
-    path: "/preferences/paymentTypes",
-    url: "/preferences/paymentTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Tax types",
-    path: "/preferences/taxTypes",
-    url: "/preferences/taxTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Concession types",
-    path: "/preferences/concessionTypes",
-    url: "/preferences/concessionTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Contact relation types",
-    path: "/preferences/contactRelationTypes",
-    url: "/preferences/contactRelationTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Sellable items relation types",
-    path: "/preferences/sellableItemsRelationTypes",
-    url: "/preferences/sellableItemsRelationTypes",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Custom fields",
-    path: "/preferences/customFields",
-    url: "/preferences/customFields",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
-  {
-    title: "Funding Contract",
-    path: "/preferences/fundingContracts",
-    url: "/preferences/fundingContracts",
-    main: PreferencesApp,
-    routes: preferencesRoutes,
-    group: "Preferences"
-  },
+  // Audits
   {
     title: "Audit Logging",
     path: "/audit/:id?",
@@ -285,7 +198,6 @@ export const routes: MainRoute[] = [
     path: "/security",
     url: "/security/settings",
     main: SecurityApp,
-    routes: securityRoutes,
     group: "Preferences"
   },
   {
@@ -439,6 +351,12 @@ export const routes: MainRoute[] = [
     group: "Finance"
   },
   // Common
+  ... process.env.NODE_ENV === EnvironmentConstants.development ? [{
+    title: "Menu",
+    path: "/menu",
+    url: "/menu",
+    main: Common,
+  }] : [],
   {
     title: "Dashboard",
     path: "/",
@@ -454,6 +372,13 @@ export const routes: MainRoute[] = [
     main: Timetable,
     group: "Common"
   },
+  {
+    title: "Server logs",
+    path: "/downloadLogs",
+    url: "/downloadLogs",
+    main: LoadableLogs,
+    group: "Common"
+  },
   // Products
   {
     title: "Products",
@@ -467,6 +392,13 @@ export const routes: MainRoute[] = [
     path: "/course/:id?",
     url: "/course",
     main: CourseApp,
+    group: "Products"
+  },
+  {
+    title: "Faculties",
+    path: "/faculty/:id?",
+    url: "/faculty",
+    main: Faculties,
     group: "Products"
   },
   {
@@ -498,55 +430,6 @@ export const routes: MainRoute[] = [
     group: "Preferences"
   },
   {
-    title: "Import templates",
-    path: "/automation/import-templates",
-    url: "/automation/import-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Export templates",
-    path: "/automation/export-templates",
-    url: "/automation/export-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Message templates",
-    path: "/automation/email-templates",
-    url: "/automation/email-templates",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "PDF backgrounds",
-    path: "/automation/pdf-backgrounds",
-    url: "/automation/pdf-backgrounds",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "PDF reports",
-    path: "/automation/pdf-reports",
-    url: "/automation/pdf-reports",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Integrations",
-    path: "/automation/integrations",
-    url: "/automation/integrations",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
-    title: "Scripts",
-    path: "/automation/script",
-    url: "/automation/script",
-    main: Automation,
-    group: "Preferences"
-  },
-  {
     title: "Classes",
     path: "/class/:id?",
     url: "/class",
@@ -559,6 +442,13 @@ export const routes: MainRoute[] = [
     url: "/duplicateCourseClasses",
     main: DuplicateCourseClassSwingWrapper,
     group: "Products"
+  },
+  {
+    title: "VET reporting",
+    path: "/vetReporting/:id?",
+    url: "/vetReporting",
+    main: VetReportingApp,
+    group: "Activity"
   },
   {
     title: "Contacts",
@@ -593,16 +483,6 @@ export const routes: MainRoute[] = [
     group: "Common"
   },
 ];
-
-if (process.env.NODE_ENV === EnvironmentConstants.development) {
-  routes.push({
-    title: "Menu",
-    exact: true,
-    path: "/menu",
-    url: "/menu",
-    main: Common
-  });
-}
 
 export const routeGroups: RouteGroup[] = [
   {

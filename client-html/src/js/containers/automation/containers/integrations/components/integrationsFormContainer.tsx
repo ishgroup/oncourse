@@ -3,36 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
+import { Integration, IntegrationProp } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import Grid from '@mui/material/Grid';
+import clsx from 'clsx';
+import { ShowConfirmCaller } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { getFormSyncErrors, isDirty, isInvalid } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { showConfirm } from '../../../../../common/actions';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
 import {
-  getFormSyncErrors,
-  initialize, isDirty, isInvalid, SubmissionError
-} from "redux-form";
-import { withStyles } from "@mui/styles";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import createStyles from "@mui/styles/createStyles";
-import { Integration, IntegrationProp } from "@api/model";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import IntegrationDescription from "./IntegrationDescription";
-import { IntegrationSchema } from "../../../../../model/automation/integrations/IntegrationSchema";
-import * as IntegrationTypes from "../../../../../model/automation/integrations/IntegrationTypes";
-import * as IntegrationForms from "./forms/index";
-import IntegrationImages from "../IntegrationImages";
-import { State } from "../../../../../reducers/state";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { createIntegration, deleteIntegrationItem, updateIntegration } from "../../../actions";
-import { setNextLocation, showConfirm } from "../../../../../common/actions";
-import { getByType } from "../utils";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+  IntegrationSchema,
+  IntegrationTypesEnum
+} from '../../../../../model/automation/integrations/IntegrationSchema';
+import { State } from '../../../../../reducers/state';
+import { createIntegration, deleteIntegrationItem, updateIntegration } from '../../../actions';
+import IntegrationTypes from '../IntegrationTypes';
+import IntegrationDescription from './IntegrationDescription';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   root: {
     height: `calc(100% - ${theme.spacing(8)})`,
     marginTop: theme.spacing(8)
@@ -50,9 +47,9 @@ const getAuditsUrl = (id: number) => `audit?search=~"Integration" and entityId =
 interface Props {
   syncErrors: any;
   integrations: IntegrationSchema[];
-  onUpdate: (id: string, item: Integration) => void;
-  onCreate: (item: Integration) => void;
-  onDelete: (id: string) => void;
+  onUpdate: (id: string, item: Integration, form: string) => void;
+  onCreate: (item: Integration, form: string) => void;
+  onDelete: (id: number) => void;
   openConfirm?: ShowConfirmCaller;
   classes: any;
   dispatch: any;
@@ -60,100 +57,36 @@ interface Props {
   dirty: boolean;
   invalid: boolean;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void
 }
 
 class FormContainer extends React.Component<Props & RouteComponentProps<any>, any> {
-  private resolvePromise;
+  getIntegrationItem() {
+    const { match, integrations } = this.props;
 
-  private rejectPromise;
+    if (match.params.id === "new") {
+      let fields = {};
 
-  private isPending: boolean = false;
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isPending: false,
-      integrationItem:
-        props.match.params.action === "new"
-          ? { id: "", type: props.match.params.type, fields: {} }
-          : props.integrations
-          ? this.getIntegrationItem(props)
-          : null
-    };
-  }
-
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.action === "edit" && nextProps.integrations) {
-      this.setState({
-        integrationItem: this.getIntegrationItem(nextProps)
-      });
+      // Initial fields for Okta intrgration
+      if (Number(match.params.type) === IntegrationTypesEnum.Okta) {
+        fields = {
+          webRedirect: window.location.origin + "/login"
+        };
+      }
+      
+      return { id: "", type: match.params.type, fields } as any;
     }
-
-    if (!this.isPending) {
-      return;
-    }
-    if (nextProps.fetch && nextProps.fetch.success === false) {
-      this.rejectPromise(nextProps.fetch.formError);
-    }
-    if (nextProps.fetch && nextProps.fetch.success) {
-      this.resolvePromise();
-      this.isPending = false;
-      this.setState({
-        isPending: false
-      });
-    }
-  }
-
-  getIntegrationItem(source) {
-    return source.integrations.find(item => item.name === decodeURIComponent(source.location.pathname.split("/")[5]));
+    return integrations.find(item => String(item.id) === match.params.id);
   }
 
   handleDelete = () => {
     const {
-     onDelete, history, integrations, openConfirm
+     onDelete, openConfirm
     } = this.props;
 
-    const item = this.state.integrationItem;
-
-    const onConfirm = () => {
-      this.isPending = true;
-      this.setState({
-        isPending: true
-      });
-
-      return new Promise((resolve, reject) => {
-        this.resolvePromise = resolve;
-        this.rejectPromise = reject;
-
-        onDelete(item.id);
-      })
-        .then(() => {
-          if (integrations[0].id === item.id) {
-            integrations.length > 1
-              ? history.push(
-                  `/automation/integrations/edit/${integrations[1].type}/${encodeURIComponent(integrations[1].name)}`
-                )
-              : history.push("/automation/integrations");
-            return;
-          }
-
-          history.push(
-            `/automation/integrations/edit/${integrations[0].type}/${encodeURIComponent(integrations[0].name)}`
-          );
-        })
-        .catch(() => {
-          this.isPending = false;
-          this.setState({
-            isPending: false
-          });
-        });
-    };
+    const item = this.getIntegrationItem();
 
     openConfirm({
-      onConfirm,
+      onConfirm: () => onDelete(item.id),
       confirmMessage: item && `${item.name} will be removed from integrations list`,
       confirmButtonText: "DELETE"
     });
@@ -163,19 +96,18 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
     if (!value) {
       return "Field is mandatory";
     }
-    if (value.includes("%")) {
+    if (value.includes("%") || value.includes("\"")) {
       return "Special symbols not allowed";
     }
     if (!this.props.integrations) {
       return undefined;
     }
     let match;
-    if (this.props.match.params.action === "new") {
+    if (this.props.match.params.id === "new") {
       match = this.props.integrations.find(item => item.name === value.trim());
-    }
-    if (this.props.match.params.action === "edit") {
+    } else {
       match = this.props.integrations
-        .filter(item => item.name !== this.state.integrationItem.name)
+        .filter(item => item.name !== this.getIntegrationItem()?.name)
         .find(item => item.name === value.trim());
     }
     if (match) {
@@ -185,84 +117,50 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
   };
 
   submitForm = integration => {
-    this.isPending = true;
-    this.setState({
-      isPending: true
-    });
-
     const {
-     onUpdate, onCreate, history, dispatch, formName, nextLocation, setNextLocation
+     onUpdate, onCreate
     } = this.props;
+
     const encodedID = encodeURIComponent(integration.id);
     const data: Integration = parseIntegrationSchema(integration);
 
-    return new Promise((resolve, reject) => {
-      this.resolvePromise = resolve;
-      this.rejectPromise = reject;
+    const typeItem = IntegrationTypes[integration.type];
+    const TypeForm = typeItem.formName;
 
-      if (this.props.match.params.action === "new") {
-        onCreate(data);
-      }
-
-      if (this.props.match.params.action === "edit") {
-        onUpdate(encodedID, data);
-      }
-    })
-      .then(() => {
-        dispatch(initialize(formName, this.state.integrationItem));
-        if (nextLocation) {
-          history.push(nextLocation);
-          setNextLocation('');
-        } else {
-          history.push(`/automation/integrations/edit/${integration.type}/${encodeURIComponent(integration.name)}`);
-        }
-      })
-      .catch(error => {
-        this.isPending = false;
-        this.setState({
-          isPending: false
-        });
-        const errors: any = {
-          fields: {}
-        };
-
-        if (error) {
-          errors.fields[error.propertyName] = error.errorMessage;
-        }
-
-        throw new SubmissionError(errors);
-      });
+    if (this.props.match.params.id === "new") {
+      onCreate(data, TypeForm);
+    } else {
+      onUpdate(encodedID, data, TypeForm);
+    }
   };
 
   renderAppBar = ({ disableName, children }) => {
     const {
       match, dirty, invalid, syncErrors
     } = this.props;
-    const item = this.state.integrationItem;
-    const isNew = match.params.action === "new";
-
-    const { isPending } = this.state;
+    const item = this.getIntegrationItem();
+    const isNew = match.params.id === "new";
 
     return (
       <AppBarContainer
         values={item}
-        manualUrl={getManualLink("externalintegrations", item.type)}
+        manualUrl={getManualLink("external-integrations")}
         getAuditsUrl={getAuditsUrl}
-        disabled={!dirty || isPending}
+        disabled={!dirty}
         invalid={invalid}
         title={isNew && (!item.name || item.name.trim().length === 0) ? "New" : item.name.trim()}
         disableInteraction={disableName}
-        hideHelpMenu={!isNew && item}
+        hideHelpMenu={Boolean(!isNew && item)}
         opened={isNew || Object.keys(syncErrors).includes("name")}
         disabledScrolling
         fields={(
           <Grid item xs={12}>
             <FormField
+              type="text"
               name="name"
               label="Name"
               validate={this.validateNameField}
               disabled={disableName}
-              fullWidth
             />
           </Grid>
         )}
@@ -285,18 +183,22 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
   };
 
   render() {
-    const {
-     classes, match
-    } = this.props;
+    const { classes, dirty } = this.props;
 
-    const TypeForm = getByType(match.params.type, IntegrationForms);
-    const item = this.state.integrationItem;
+    const item = this.getIntegrationItem();
 
-    const descriptionItem = getByType(match.params.type, IntegrationTypes);
+    if (!item) {
+      return null;
+    }
+
+    const typeItem = IntegrationTypes[item.type];
+    const TypeForm = typeItem.form;
+    const image = typeItem.image;
 
     return (
       <Grid container className={classes.root}>
         <Grid item xs={12} sm={6} lg={5}>
+          <RouteChangeConfirm form={typeItem.formName} when={dirty} />
           {item && TypeForm && (
             <TypeForm
               onSubmit={this.submitForm}
@@ -311,14 +213,12 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
           <div>
             <img
               alt="integrationLogo"
-              src={getByType(match.params.type, IntegrationImages)}
+              src={image}
               width={200}
               className={clsx("mb-2", classes.image)}
             />
           </div>
-          {descriptionItem && (
-            <IntegrationDescription item={descriptionItem} />
-          )}
+          <IntegrationDescription item={typeItem} />
         </Grid>
       </Grid>
     );
@@ -334,7 +234,7 @@ export const parseIntegrationSchema = (schema: IntegrationSchema): Integration =
   }
 
   return {
-    id: schema.id,
+    id: String(schema.id),
     type: Number(schema.type),
     name: schema.name,
     verificationCode: schema.verificationCode,
@@ -342,31 +242,29 @@ export const parseIntegrationSchema = (schema: IntegrationSchema): Integration =
   };
 };
 
-const getFormName = form => form && Object.keys(form)[0];
-
-const mapStateToProps = (state: State) => {
-  const formName = getFormName(state.form);
+const mapStateToProps = (state: State, { match }) => {
+  const typeItem = IntegrationTypes[match.params.type];
+  const formName = typeItem.formName;
+  
   return {
     integrations: state.automation.integration.integrations,
     formName,
     dirty: isDirty(formName)(state),
     invalid: isInvalid(formName)(state),
     syncErrors: getFormSyncErrors(formName)(state),
-    fetch: state.fetch,
-    nextLocation: state.nextLocation
+    fetch: state.fetch
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  onUpdate: (id: string, item: Integration) => dispatch(updateIntegration(id, item)),
-  onCreate: (item: Integration) => dispatch(createIntegration(item)),
+  onUpdate: (id: string, item: Integration, form) => dispatch(updateIntegration(id, item, form)),
+  onCreate: (item: Integration, form) => dispatch(createIntegration(item, form)),
   onDelete: (id: string) => dispatch(deleteIntegrationItem(id)),
-  openConfirm: props => dispatch(showConfirm(props)),
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
+  openConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(
+export default withRouter(connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withRouter(FormContainer)));
+)(withStyles(FormContainer, styles)));

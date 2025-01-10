@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { CertificateRevokeRequest } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_CERTIFICATE_ITEM, REVOKE_CERTIFICATE_ITEM } from "../actions/index";
-import { FETCH_SUCCESS } from "../../../../common/actions/index";
+import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { getEntityRecord } from "../../common/actions";
+import { REVOKE_CERTIFICATE_ITEM } from "../actions";
 import CertificateService from "../services/CertificateService";
 
 const request: EpicUtils.Request<any, { ids: number[]; reason: string }> = {
@@ -31,10 +31,7 @@ const request: EpicUtils.Request<any, { ids: number[]; reason: string }> = {
         type: GET_RECORDS_REQUEST,
         payload: { entity: "Certificate", listUpdate: true, savedID: ids[0] }
       },
-      {
-        type: GET_CERTIFICATE_ITEM,
-        payload: ids[0]
-      }
+      getEntityRecord(ids[0], "Certificate")
     ],
   processError: response => FetchErrorHandler(response, "Failed to revoke certificate")
 };

@@ -1,10 +1,11 @@
+import { openInternalLink } from "ish-ui";
 import * as React from "react";
-import BankingEditView from "./BankingEditView";
-import BankingCreateView from "./BankingCreateView";
-import { openInternalLink } from "../../../../common/utils/links";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { PaymentInType } from "../consts";
+import BankingCreateView from "./BankingCreateView";
+import BankingEditView from "./BankingEditView";
 
-class BankingEditViewResolver extends React.PureComponent<any, any> {
+class BankingEditViewResolver extends React.PureComponent<EditViewProps, any> {
   openNestedView = item => {
     const url = `/${item.paymentTypeName === PaymentInType ? "paymentIn" : "paymentOut"}/` + item.paymentId;
     openInternalLink(url);

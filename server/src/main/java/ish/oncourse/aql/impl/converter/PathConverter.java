@@ -11,11 +11,10 @@
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.AqlParser;
 import ish.oncourse.aql.impl.CompilationContext;
-import ish.oncourse.aql.model.CustomFieldMarker;
-import ish.oncourse.aql.model.Entity;
-import ish.oncourse.aql.model.SyntheticAttributeDescriptor;
+import ish.oncourse.aql.model.*;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.apache.cayenne.exp.parser.ASTObjPath;
 import org.apache.cayenne.exp.parser.SimpleNode;
@@ -76,7 +75,9 @@ class PathConverter implements Converter<AqlParser.PathContext> {
         } else if(attributeType.isPresent()) {
             ctx.setCurrentPathJavaType(attributeType.get());
             // custom field, translate path
-            if(CustomFieldMarker.class == attributeType.get()) {
+            if(CustomFieldMarker.class == attributeType.get()
+                    || CustomFieldDateMarker.class == attributeType.get()
+                    || CustomFieldDateTimeMarker.class == attributeType.get()) {
                 return translateCustomField(pathSegments, last);
             }
         } else if(relationshipType.isPresent()) {
@@ -99,8 +100,6 @@ class PathConverter implements Converter<AqlParser.PathContext> {
         if(syntheticAttribute.isPresent()) {
             ctx.addNode(syntheticAttribute.get().spawnNode());
             ctx.addNode(objPath);
-            if(pathCtx.getText().equals("tags") || last.equals("tags"))
-                return new LazyTagsNode(objPath);
             return null;
         }
 
@@ -143,12 +142,15 @@ class PathConverter implements Converter<AqlParser.PathContext> {
         var entity = resolveResult.getEntity();
         for (var segment : allSegments) {
             var identifier = segment.Identifier().getText();
-            var next = entity.getRelationship(identifier);
-            if (next.isEmpty()) {
+            Optional<Entity> next = Optional.empty();
+            if (entity.getSyntheticAttribute(identifier).isPresent()) {
                 syntheticAttribute = entity.getSyntheticAttribute(identifier);
                 if(syntheticAttribute.isPresent()) {
                     next = syntheticAttribute.get().nextEntity();
                 }
+            }
+            if (next.isEmpty()) {
+                next = entity.getRelationship(identifier);
             }
             if (next.isEmpty()) {
                 return ResolveResult.error("Can't resolve path segment: " + identifier);

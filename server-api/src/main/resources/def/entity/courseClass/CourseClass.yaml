@@ -19,6 +19,12 @@ properties:
   startDateTime:
     type: string
     format: date-time
+  portalDocAccessStart:
+    type: string
+    format: date-time
+  portalDocAccessEnd:
+    type: string
+    format: date-time
   attendanceType:
     $ref: '../../enum/CourseClassAttendanceType.yaml'
   deliveryMode:
@@ -52,8 +58,8 @@ properties:
     type: boolean
   isCancelled:
     type: boolean
-  isDistantLearningCourse:
-    type: boolean
+  type:
+    $ref: './CourseClassType.yaml'
   isShownOnWeb:
     type: boolean
   maxStudentAge:
@@ -69,8 +75,6 @@ properties:
   minStudentAge:
     type: integer
   minimumPlaces:
-    type: integer
-  sessionsCount:
     type: integer
   # vet fields
   suppressAvetmissExport:
@@ -138,7 +142,11 @@ properties:
   tags:
     type: array
     items:
-      $ref: '../Tag.yaml'
+      type: integer
+      format: int64
+  specialTagId:
+    type: integer
+    format: int64
   documents:
     type: array
     items:
@@ -151,3 +159,5 @@ properties:
       type: string
   feeHelpClass:
     type: boolean
+  minimumSessionsToComplete:
+    type: integer

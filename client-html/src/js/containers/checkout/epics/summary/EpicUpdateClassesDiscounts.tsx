@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { decimalPlus } from "ish-ui";
 import { change } from "redux-form";
 import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
 import {
   CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS,
   checkoutUpdateSummaryItems,
@@ -35,7 +35,7 @@ const request: EpicUtils.Request<any, boolean> = {
           }
           totalAmountExDiscount = decimalPlus(totalAmountExDiscount, parseFloat(originalItem.price));
 
-          if (i.type === "course") {
+          if (i.type === "course" && i.class) {
             totalEnrolmentsCount++;
 
             const courseItems = l.items.filter(item => item.checked && item.type === "course");

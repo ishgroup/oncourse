@@ -3,41 +3,39 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import { FormControlLabel } from "@mui/material";
-import { initialize, reduxForm } from "redux-form";
+import * as React from "react";
 import { connect } from "react-redux";
+import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
-class SurveyGizmoBaseForm extends React.Component<any, any> {
+class AlchemerBaseForm extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
     // Initializing form with values
-    props.dispatch(initialize("SurveyGizmoForm", props.item));
+    props.dispatch(initialize("AlchemerForm", props.item));
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.item.id !== this.props.item.id) {
       // Reinitializing form with values
-      this.props.dispatch(initialize("SurveyGizmoForm", this.props.item));
+      this.props.dispatch(initialize("AlchemerForm", this.props.item));
     }
   }
 
   render() {
     const {
-     AppBarContent, handleSubmit, onSubmit, dirty, form
+     AppBarContent, handleSubmit, onSubmit
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
 
         <AppBarContent>
-          <FormField name="fields.user" label="User" type="text" className="mb-2" />
-          <FormField name="fields.password" label="Password" type="password" className="mb-2" />
+          <FormField name="fields.apiToken" label="Api token" type="text" className="mb-2" />
+          <FormField name="fields.apiTokenSecret" label="Api token secret" type="text" className="mb-2" />
           <FormField name="fields.surveyId" label="Survey ID" type="text" className="mb-2" />
           <FormField
             name="fields.courseTag"
@@ -63,6 +61,6 @@ class SurveyGizmoBaseForm extends React.Component<any, any> {
 }
 
 export const AlchemerForm = reduxForm({
-  form: "SurveyGizmoForm",
+  form: "AlchemerForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(SurveyGizmoBaseForm));
+})(connect<any, any, any>(null, null)(AlchemerBaseForm));

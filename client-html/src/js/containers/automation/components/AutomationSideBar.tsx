@@ -3,140 +3,100 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import LockOutlined from "@mui/icons-material/LockOutlined";
-import CropLandscapeIcon from "@mui/icons-material/CropLandscape";
-import CropPortraitIcon from "@mui/icons-material/CropPortrait";
-import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
-import { IntegrationSchema } from "../../../model/automation/integrations/IntegrationSchema";
-import { State } from "../../../reducers/state";
-import { CommonListFilterCondition, CommonListItem, SidebarSharedProps } from "../../../model/common/sidebar";
+import { History } from 'history';
+import { makeAppStyles } from 'ish-ui';
+import React from 'react';
+import SideBarHeader from '../../../common/components/layout/side-bar-list/SideBarHeader';
 
 interface Props {
-  className?: any;
-  classes?: any;
-  hasLicense?: any;
-  integrations: IntegrationSchema[];
-  scripts: CommonListItem[];
-  emailTemplates: CommonListItem[];
-  exportTemplates: CommonListItem[];
-  importTemplates: CommonListItem[];
-  pdfReports: CommonListItem[];
-  pdfBackgrounds: CommonListItem[];
-  search: string;
-  history: any;
-  activeFiltersConditions: CommonListFilterCondition[];
+  history: History;
 }
 
-const PdfBackgroundItemIcon: React.FC<any> = ({ item, className }) => (
-  item.isPortrait ? <CropPortraitIcon className={className} /> : <CropLandscapeIcon className={className} />
-);
-
-const AutomationSideBar = React.memo<Props>(
-  ({
-    className,
-    integrations,
-    search,
-    history,
-    scripts,
-    emailTemplates,
-    exportTemplates,
-    importTemplates,
-    activeFiltersConditions,
-    pdfReports,
-    pdfBackgrounds
-  }) => {
-    const integrationLinkCondition = useCallback(int => `/automation/integrations/edit/${int.type}/${int.name}`, []);
-
-    const sharedProps = useMemo<SidebarSharedProps>(() => ({
-        history, search, activeFiltersConditions, category: "Automation"
-      }), [history, search, activeFiltersConditions]);
-
-    return (
-      <div className={className}>
-        <CollapseMenuList
-          name="Import Templates"
-          basePath="/automation/import-templates/"
-          plusIconPath="new"
-          data={importTemplates}
-          sharedProps={sharedProps}
-          ItemIcon={LockOutlined}
-          defaultCollapsed
-        />
-
-        <CollapseMenuList
-          name="Export Templates"
-          basePath="/automation/export-templates/"
-          plusIconPath="new"
-          data={exportTemplates}
-          sharedProps={sharedProps}
-          ItemIcon={LockOutlined}
-          defaultCollapsed
-        />
-
-        <CollapseMenuList
-          name="Message Templates"
-          basePath="/automation/email-templates/"
-          plusIconPath="new"
-          data={emailTemplates}
-          sharedProps={sharedProps}
-          ItemIcon={LockOutlined}
-          defaultCollapsed
-        />
-
-        <CollapseMenuList
-          name="PDF Backgrounds"
-          basePath="/automation/pdf-backgrounds/"
-          plusIconPath="new"
-          data={pdfBackgrounds}
-          sharedProps={sharedProps}
-          ItemIcon={PdfBackgroundItemIcon}
-          defaultCollapsed
-        />
-
-        <CollapseMenuList
-          name="PDF Reports"
-          basePath="/automation/pdf-reports/"
-          plusIconPath="new"
-          data={pdfReports}
-          sharedProps={sharedProps}
-          ItemIcon={LockOutlined}
-          defaultCollapsed
-        />
-
-        <CollapseMenuList
-          name="Integrations"
-          basePath="/automation/integrations"
-          plusIconFullPath="/automation/integrations/list"
-          linkCondition={integrationLinkCondition}
-          data={integrations}
-          sharedProps={sharedProps}
-          defaultCollapsed
-        />
-
-        <CollapseMenuList
-          name="Scripts"
-          plusIconPath="new"
-          basePath="/automation/script/"
-          data={scripts}
-          sharedProps={sharedProps}
-          defaultCollapsed
-          ItemIcon={LockOutlined}
-        />
-      </div>
-    );
+const useStyles = makeAppStyles()(theme => ({
+  root: {
+    color: theme.palette.secondary.main,
+    padding: theme.spacing(3),
+    marginTop: theme.spacing(3)
   }
-);
+}));
 
-const mapStateToProps = (state: State) => ({
-  integrations: state.automation.integration.integrations,
-  scripts: state.automation.script.scripts,
-  emailTemplates: state.automation.emailTemplate.emailTemplates,
-  exportTemplates: state.automation.exportTemplate.exportTemplates,
-  importTemplates: state.automation.importTemplate.importTemplates,
-  pdfReports: state.automation.pdfReport.pdfReports,
-  pdfBackgrounds: state.automation.pdfBackground.pdfBackgrounds
-});
+const getSelected = (history: History) => {
+  switch (true) {
+    case history.location.pathname.startsWith("/automation/script"):
+      return 1;
+    case history.location.pathname.startsWith("/automation/import-template"):
+      return 2;
+    case history.location.pathname.startsWith("/automation/export-template"):
+      return 3;
+    case history.location.pathname.startsWith("/automation/email-template"):
+      return 4;
+    case history.location.pathname.startsWith("/automation/pdf-background"):
+      return 5;
+    case history.location.pathname.startsWith("/automation/pdf-report"):
+      return 6;
+    case history.location.pathname.startsWith("/automation/integration"):
+      return 7;
+    default:
+      return 0;
+  }
+};
 
-export default connect<any, any, any>(mapStateToProps, null)(AutomationSideBar);
+const AutomationSideBar = ({
+    history
+  }: Props) => {
+  const selectHandler = route => () => {
+    history.push(route);
+  };
+
+  const selected = getSelected(history);
+
+  const { classes } = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <SideBarHeader
+        selected={selected === 1}
+        label="Automations"
+        onClick={selectHandler("/automation/scripts")}
+      />
+
+      <SideBarHeader
+        selected={selected === 2}
+        label="Import Templates"
+        onClick={selectHandler("/automation/import-templates/")}
+      />
+
+      <SideBarHeader
+        selected={selected === 3}
+        label="Export Templates"
+        onClick={selectHandler("/automation/export-templates/")}
+      />
+
+      <SideBarHeader
+        selected={selected === 4}
+        label="Message Templates"
+        onClick={selectHandler("/automation/email-templates/")}
+      />
+
+      <SideBarHeader
+        selected={selected === 5}
+        label="PDF Backgrounds"
+        onClick={selectHandler("/automation/pdf-backgrounds/")}
+      />
+
+      <SideBarHeader
+        selected={selected === 6}
+        label="PDF Reports"
+        onClick={selectHandler("/automation/pdf-reports/")}
+      />
+
+      <SideBarHeader
+        selected={selected === 7}
+        label="Integrations"
+        onClick={selectHandler("/automation/integrations")}
+      />
+    </div>
+  );
+};
+
+export default AutomationSideBar;

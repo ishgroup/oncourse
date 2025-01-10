@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { change } from "redux-form";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { Site } from "@api/model";
 import { Grid } from "@mui/material";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
 
 class WaitingListSites extends React.PureComponent<any, any> {
   sitesToNestedListItems = (sites: Site[]) =>
@@ -63,7 +63,8 @@ class WaitingListSites extends React.PureComponent<any, any> {
       submitSucceeded,
       twoColumn,
       values,
-      clearSites
+      clearSites,
+      errorQuickSearchSites
     } = this.props;
 
     return (
@@ -85,6 +86,7 @@ class WaitingListSites extends React.PureComponent<any, any> {
               (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 0)}
             resetSearch={submitSucceeded}
             aqlEntities={["Site"]}
+            aqlQueryError={errorQuickSearchSites}
             usePaper
           />
         </Grid>
@@ -95,15 +97,16 @@ class WaitingListSites extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   foundQuickSearchSites: state.plainSearchRecords["Site"].items,
-  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading
+  pendingQuickSearchSites: state.plainSearchRecords["Site"].loading,
+  errorQuickSearchSites: state.plainSearchRecords["Site"].error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getQuickSearchSites: (search: string) => {
-      dispatch(setCommonPlainSearch( "Site", search));
-      dispatch(getCommonPlainRecords("Site", 0, "name,suburb,postcode", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
-    },
-    clearSites: () => dispatch(clearCommonPlainRecords("Site"))
-  });
+  getQuickSearchSites: (search: string) => {
+    dispatch(setCommonPlainSearch("Site", search));
+    dispatch(getCommonPlainRecords("Site", 0, "name,suburb,postcode", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+  },
+  clearSites: () => dispatch(clearCommonPlainRecords("Site"))
+});
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingListSites);

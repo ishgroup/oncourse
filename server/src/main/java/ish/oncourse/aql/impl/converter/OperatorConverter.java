@@ -39,6 +39,8 @@ class OperatorConverter implements Converter<AqlParser.OperatorPredicateContext>
         converters.put(TypeClassifier.ENUM, new SimpleOpConverter());
         converters.put(TypeClassifier.BOOLEAN, new SimpleOpConverter());
         converters.put(TypeClassifier.CUSTOM_FIELD, new StringOpConverter());
+        converters.put(TypeClassifier.CUSTOM_FIELD_DATE, new ComparableOpConverter());
+        converters.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new ComparableOpConverter());
         converters.put(TypeClassifier.CONTACT, new ContactOpConverter());
         converters.put(TypeClassifier.SITE, new SiteOpConverter());
         converters.put(TypeClassifier.ROOM, new RoomOpConverter());
@@ -155,6 +157,10 @@ class OperatorConverter implements Converter<AqlParser.OperatorPredicateContext>
                 case NOT_STARTS_WITH:
                 case NOT_ENDS_WITH:
                     return new ASTNotLikeIgnoreCase();
+                case GT:
+                    return new ASTGreater();
+                case LT:
+                    return new ASTLess();
 
             }
             return null;

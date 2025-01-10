@@ -42,13 +42,13 @@ import javax.ws.rs.core.Response
 import java.time.LocalDate
 
 import static ish.common.types.USIVerificationStatus.VALID
+import static ish.oncourse.server.api.v1.function.CartFunctions.toRestCart
 import static ish.oncourse.server.api.v1.function.ContactFunctions.*
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.*
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
 import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.toRestConcession
 import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.updateStudentConcessions
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static org.apache.commons.lang.StringUtils.*
 
@@ -151,11 +151,12 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                     }.findAll{ doc ->
                         !doc.isRemoved
                     }.collect{ d ->
-                        toRestDocumentMinimized(d, d.currentVersion.id, documentService)
+                        toRestDocumentMinimized(d, documentService)
                     }
-            dto.tags = cayenneModel.tags.collect{ toRestTagMinimized(it) }
+            dto.abandonedCarts = cayenneModel.abandonedCarts.collect{toRestCart(it)}
+            dto.tags = cayenneModel.allTags.collect{ it.id }
             dto.memberships = cayenneModel.memberships.collect {  productItemApiService.toRestModel(it) }
-            dto.profilePicture = getProfilePicture(cayenneModel)
+            dto.profilePicture = getProfilePicture(cayenneModel, documentService)
 
             dto.relations += cayenneModel.toContacts.collect{ toRestToContactRelation(it as ContactRelation) }
             dto.relations += cayenneModel.fromContacts.collect{ toRestFromContactRelation(it as ContactRelation)}
@@ -185,9 +186,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.isCompany = dto.isCompany
         cayenneModel.gender = dto.gender?.dbType
         cayenneModel.message = dto.message
-        cayenneModel.homePhone = dto.homePhone
-        cayenneModel.mobilePhone = dto.mobilePhone
-        cayenneModel.workPhone = dto.workPhone
+        cayenneModel.homePhone = removeUnsupportedSymbolsFromPhone(dto.homePhone)
+        cayenneModel.mobilePhone = removeUnsupportedSymbolsFromPhone(dto.mobilePhone)
+        cayenneModel.workPhone = removeUnsupportedSymbolsFromPhone(dto.workPhone)
         cayenneModel.postcode = dto.postcode
         cayenneModel.state = dto.state
         cayenneModel.street = dto.street
@@ -209,15 +210,27 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.taxOverride = dto.taxId != null ? taxDao.getById(context, dto.taxId) : null as Tax
         updateCustomFields(context, cayenneModel, dto.customFields, ContactCustomField)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dto.documents, ContactAttachmentRelation, context)
-        updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags*.id, ContactTagRelation, context)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags, ContactTagRelation, context)
         updateProfilePicture(cayenneModel, dto.profilePicture)
         updateContactRelations(context, cayenneModel, dto.relations)
+        updateAbandonedCarts(context, cayenneModel, dto.abandonedCarts)
         updateAvailabilityRules(cayenneModel, cayenneModel.unavailableRuleRelations*.rule, dto.rules, ContactUnavailableRuleRelation)
 
         if (dto.removeCChistory) {
             paymentInDao.removeCChistory(cayenneModel)
         }
         cayenneModel
+    }
+
+    private static String removeUnsupportedSymbolsFromPhone(String phone){
+        if(phone == null)
+            return null
+        StringBuilder updatedPhone = new StringBuilder()
+        for(char symbol in phone.chars){
+            if(symbol == ('+' as char) || (symbol >= ('0' as char) && symbol <= ('9' as char)))
+                updatedPhone.append(symbol)
+        }
+        updatedPhone.toString()
     }
 
     Student toStudentCayenneModel(ObjectContext context, Contact contact, StudentDTO dto, Student cayenneModel) {
@@ -268,6 +281,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.visaType = dto.visaType
         cayenneModel.yearSchoolCompleted = dto.yearSchoolCompleted
         updateStudentConcessions(cayenneModel.contact, dto.concessions)
+        updateCustomFields(context, cayenneModel, dto.customFields, cayenneModel.getCustomFieldClass())
         cayenneModel
     }
 
@@ -293,6 +307,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.wwChildrenRef = dto.wwChildrenRef
         cayenneModel.wwChildrenStatus = dto.wwChildrenStatus?.getDbType()
         cayenneModel.payType = dto.defaultPayType?.dbType
+        updateCustomFields(context, cayenneModel, dto.customFields, cayenneModel.getCustomFieldClass())
 
         cayenneModel
     }
@@ -423,6 +438,8 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         if (missedCustomFieldTypeKey != null) {
             validator.throwClientErrorException(Contact.CUSTOM_FIELDS.name, "Custom field type '${missedCustomFieldTypeKey}' is mandatory for contact.")
         }
+
+
     }
 
     private boolean isAnyUsiFieldEdited(Contact cayenneModel, ContactDTO dto) {
@@ -570,6 +587,10 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             student.yearSchoolCompleted = dbStudent.yearSchoolCompleted
             student.waitingLists = dbStudent.waitingLists.collect{ l -> l.course.name }
             student.concessions = dbStudent?.concessions?.collect{ toRestConcession(it) }
+            student.customFields = dbStudent?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!student.customFields)
+                student.customFields = Collections.emptyMap()
+
             student
         }
     }
@@ -602,6 +623,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             tutor.unscheduledClasseCount = count.unscheduledClassesCount
             tutor.passedClasseCount = count.passedClassesCount
             tutor.cancelledClassesCount = count.cancelledClassesCount
+            tutor.customFields = dbTutor?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!tutor.customFields)
+                tutor.customFields = Collections.emptyMap()
 
             tutor
         }
@@ -625,14 +649,6 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             dto.relationId = rel.relationType.id
             dto
         }
-    }
-
-    private DocumentDTO getProfilePicture(Contact contact) {
-        Document profilePictureDocument = getProfilePictureDocument(contact)
-        if (profilePictureDocument) {
-            return toRestDocument(profilePictureDocument, profilePictureDocument.currentVersion.id, documentService)
-        }
-        null
     }
 
     UsiVerificationResultDTO verifyUsi(String firstName, String lastName, LocalDate dateOfBirth, String usiCode) {
@@ -690,7 +706,17 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
     Closure getAction (String key, String value) {
         Closure action = super.getAction(key, value)
         if (!action) {
-            validator.throwClientErrorException(key, "Unsupported attribute")
+            if(key.startsWith("customFields")) {
+                def keyStructure = key.split("\\.")
+                if(keyStructure.size() != 2) {
+                    validator.throwClientErrorException(key, "Custom field key required")
+                }
+                action = { Contact contact ->
+                    def customFieldKey = keyStructure[1]
+                    contact.setProperty(customFieldKey, value)
+                }
+            } else
+                validator.throwClientErrorException(key, "Unsupported attribute")
         }
         action
     }

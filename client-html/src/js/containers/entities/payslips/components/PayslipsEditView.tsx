@@ -1,34 +1,32 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import Grid, { GridSize } from "@mui/material/Grid";
-import clsx from "clsx";
-import {
- arrayInsert, arrayRemove, change, FieldArray 
-} from "redux-form";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
+import Grid, { GridSize } from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { IconButton } from "@mui/material";
-import Launch from "@mui/icons-material/Launch";
+import clsx from "clsx";
+import { AddButton, formatCurrency, mapSelectItems } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
+import {
+  ContactLinkAdornment,
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { getListNestedEditRecord } from "../../../../common/components/list-view/actions";
-import { getEntityTags } from "../../../tags/actions";
-import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
-import { contactLabelCondition, defaultContactName, openContactLink } from "../../contacts/utils";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { PayLineWithDefer } from "../../../../model/entities/Payslip";
-import { mapSelectItems } from "../../../../common/utils/common";
-import AddButton from "../../../../common/components/icons/AddButton";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { PayLineWithDefer } from "../../../../model/entities/Payslip";
+import { State } from "../../../../reducers/state";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
+import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
 
 const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
     ? [
@@ -65,16 +63,6 @@ const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSi
 const payslipPayTypes = Object.keys(PayslipPayType).map(mapSelectItems);
 
 class PayslipsEditView extends React.PureComponent<any, any> {
-  componentDidMount() {
-    const { getNestedEditViewTags, isNested, tags } = this.props;
-
-    if (isNested) {
-      if (!tags || !tags.length) {
-        getNestedEditViewTags();
-      }
-    }
-  }
-
   calculateTotal = (accumulator: number, current: PayLineWithDefer): number => accumulator + (current.deferred ? current.quantity * current.value : 0);
 
   calculateTotalBudget = (accumulator: number, current: PayLineWithDefer): number => accumulator + (current.deferred ? current.budgetedQuantity * current.budgetedValue : 0);
@@ -111,7 +99,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
   onTutorIdChange = (value: Contact) => {
     const { dispatch, form } = this.props;
 
-    dispatch(change(form, "tutorFullName", contactLabelCondition(value)));
+    dispatch(change(form, "tutorFullName", getContactFullName(value)));
   };
 
   render() {
@@ -121,7 +109,8 @@ class PayslipsEditView extends React.PureComponent<any, any> {
       tags,
       twoColumn,
       currency,
-      syncErrors
+      syncErrors,
+      form
     } = this.props;
 
     const total = values && values.paylines.reduce(this.calculateTotal, 0);
@@ -140,26 +129,21 @@ class PayslipsEditView extends React.PureComponent<any, any> {
             disableInteraction={!isNew}
             twoColumn={twoColumn}
             title={(
-              <div className="d-inline-flex-center">
-                {values && defaultContactName(values.tutorFullName)}
-                <IconButton disabled={!values?.tutorId} size="small" color="primary" onClick={() => openContactLink(values?.tutorId)}>
-                  <Launch fontSize="inherit" />
-                </IconButton>
-              </div>
+              <HeaderContactTitle name={values?.tutorFullName} id={values?.tutorId} />
             )}
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   aqlFilter="isTutor is true"
                   name="tutorId"
                   label="Tutor"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.tutorFullName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultValue={values?.tutorFullName}
                   labelAdornment={
-                    <LinkAdornment linkHandler={openContactLink} link={values.tutorId} disabled={!values.tutorId} />
+                    <ContactLinkAdornment id={values?.tutorId} />
                   }
                   disabled={!isNew}
                   onInnerValueChange={this.onTutorIdChange}
@@ -182,11 +166,20 @@ class PayslipsEditView extends React.PureComponent<any, any> {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={tags}
+          />
+        </Grid>
+
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="Payslip"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
           />
         </Grid>
 
@@ -258,11 +251,11 @@ class PayslipsEditView extends React.PureComponent<any, any> {
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="publicNotes" label="Public notes" fullWidth />
+          <FormField type="multilineText" name="publicNotes" label="Public notes"  />
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
         </Grid>
       </Grid>
     ) : null;
@@ -274,11 +267,4 @@ const mapStateToProps = (state: State) => ({
   currency: state.currency
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  openNestedEditView: (entity: string, id: number) => dispatch(getListNestedEditRecord(entity, id)),
-  getNestedEditViewTags: () => {
-    dispatch(getEntityTags("Payslip"));
-  },
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PayslipsEditView);
+export default connect<any, any, any>(mapStateToProps)(PayslipsEditView);

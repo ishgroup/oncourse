@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { isSameDay } from "date-fns";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { CheckoutPreviousInvoice } from "../../../../model/checkout";
 import InvoiceService from "../../../entities/invoices/services/InvoiceService";
 import { CHECKOUT_GET_PREVIOUS_OWING, CHECKOUT_SET_PREVIOUS_OWING } from "../../actions/checkoutSummary";
 import { mergeInvoicePaymentPlans } from "../../utils";
-import { CheckoutPreviousInvoice } from "../../../../model/checkout";
 
 const request: EpicUtils.Request = {
   type: CHECKOUT_GET_PREVIOUS_OWING,

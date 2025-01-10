@@ -32,8 +32,6 @@ public class PrintRequest implements Serializable {
 	/** map of enityname-print transformations, matching the ids */
 	private Map<String, PrintTransformation> printTransformations = new HashMap<>();
 
-	private String entity;
-
 	private String background;
 
 	private boolean createPreview = false;
@@ -101,20 +99,6 @@ public class PrintRequest implements Serializable {
 
 			idList.add(Cayenne.longPKForObject(record));
 		}
-	}
-
-	/**
-	 * @return the entity
-	 */
-	public String getEntity() {
-		return this.entity;
-	}
-
-	/**
-	 * @param entity the entity to set
-	 */
-	public void setEntity(String entity) {
-		this.entity = entity;
 	}
 
 	/**
@@ -192,12 +176,20 @@ public class PrintRequest implements Serializable {
 		printTransformations.put(inputEntity, transformation);
 	}
 
+	/**
+	 *
+	 * @param inputEntity
+	 * @return boolean if printTransformations has transformation for this entity name
+	 */
+	public boolean containsTransformationFor(String inputEntity){
+		return printTransformations.containsKey(inputEntity);
+	}
+
 	@Override
 	public String toString() {
 		return "PrintRequest{" +
 				"reportCode='" + reportCode + '\'' +
 				", ids=" + ids +
-				", entity='" + entity + '\'' +
 				", additionalParameters=" + additionalParameters +
 				", printTransformations=" + printTransformations +
 				", uid=" + uid +

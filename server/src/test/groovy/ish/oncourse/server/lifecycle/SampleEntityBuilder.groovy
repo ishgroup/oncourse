@@ -15,9 +15,15 @@ import java.time.LocalDate
 class SampleEntityBuilder {
 
     private ObjectContext ctx
+    private Account accountPayable
+    private Account accountIncome
+    private Account accountReceivable
 
     private SampleEntityBuilder(ObjectContext ctx) {
         this.ctx = ctx
+        accountPayable = SelectById.query(Account, 800L).selectOne(ctx)
+        accountIncome = SelectById.query(Account, 500L).selectOne(ctx)
+        accountReceivable = SelectById.query(Account, 700L).selectOne(ctx)
     }
 
     static SampleEntityBuilder newBuilder(ObjectContext ctx) {
@@ -27,7 +33,7 @@ class SampleEntityBuilder {
     
     Enrolment createEnrolment(InvoiceLine invoiceLine, Student student, CourseClass courseClass) {
         Enrolment enrl = this.ctx.newObject(Enrolment.class)
-        enrl.addToAbstractInvoiceLines(invoiceLine)
+        enrl.addToInvoiceLines(invoiceLine)
         enrl.setSource(PaymentSource.SOURCE_WEB)
         enrl.setStatus(EnrolmentStatus.SUCCESS)
         enrl.setStudent(student)
@@ -48,16 +54,13 @@ class SampleEntityBuilder {
         c.setMinimumPlaces(10)
         c.setAttendanceType(CourseClassAttendanceType.NO_INFORMATION)
 
-        Account accountIncome = SelectById.query(Account.class, 500).selectOne(ctx)
         c.setIncomeAccount(accountIncome)
 
         Tax tax = this.ctx.newObject(Tax.class)
         tax.setCreatedOn(new Date())
         tax.setIsGSTTaxType(false)
 
-        Account accountPayable = SelectById.query(Account.class, 800).selectOne(ctx)
         tax.setPayableToAccount(accountPayable)
-        Account accountReceivable = SelectById.query(Account.class, 700).selectOne(ctx)
         tax.setReceivableFromAccount(accountReceivable)
         tax.setTaxCode("AVVB")
         c.setTax(tax)
@@ -75,6 +78,7 @@ class SampleEntityBuilder {
         Qualification qualification = SelectById.query(Qualification.class, 1).selectOne(ctx)
         c.setQualification(qualification)
         c.setFieldConfigurationSchema(DataGenerator.valueOf(ctx).getFieldConfigurationScheme())
+        c.setFeeHelpClass(false)
         return c
     }
 
@@ -88,15 +92,13 @@ class SampleEntityBuilder {
         tax.setCreatedOn(new Date())
         tax.setIsGSTTaxType(false)
 
-        Account accountPayable = SelectById.query(Account.class, 800).selectOne(ctx)
         tax.setPayableToAccount(accountPayable)
-        Account accountReceivable = SelectById.query(Account.class, 700).selectOne(ctx)
         tax.setReceivableFromAccount(accountReceivable)
         tax.setTaxCode("AVVB")
         tax.setRate(new BigDecimal("0.1"))
         invLine.setTax(tax)
 
-        Account invoiceLineAccount = SelectById.query(Account.class, 500).selectOne(ctx)
+        Account invoiceLineAccount = accountIncome
         invLine.setAccount(invoiceLineAccount)
         invoice.setDebtorsAccount(invoiceLineAccount)
 

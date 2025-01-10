@@ -52,45 +52,45 @@
           isShownOnWeb="1" isSufficientForQualification="1" isVET="1" enrolmentType="1" fieldConfigurationSchemaId="1"
           feeHelpClass="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseClass id="1" code="123" fundingSource="3" taxId="1" sessionCount="3" taxAdjustment="0.0" minimumPlaces="1"
-               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+  <CourseClass id="1" code="123" fundingSource="3" taxId="1" taxAdjustment="0.0" minimumPlaces="1"
+               maximumPlaces="100" isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1"
                isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
                feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <CourseClass id="2" code="123" fundingSource="3" taxId="1" sessionCount="3" taxAdjustment="0.0" minimumPlaces="1"
-               maximumPlaces="100" isShownOnWeb="1" isDistantLearningCourse="1" isClassFeeApplicationOnly="1"
+  <CourseClass id="2" code="123" fundingSource="3" taxId="1" taxAdjustment="0.0" minimumPlaces="1"
+               maximumPlaces="100" isShownOnWeb="1" type="1" isClassFeeApplicationOnly="1"
                isCancelled="0" isActive="1" incomeAccountId="100" deliveryMode="1" courseId="1"
                feeExGst="200.00" suppressAvetmissExport="0" roomId="1"
                budgetedPlaces="10" attendanceType="0" createdOn="2021-12-21 12:00:10.0"
                modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Node id="1" isVocabulary="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1"
+  <Node id="1" isWebVisible="1" nodeType="1" name="Subjects" specialType="1"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="1" entityIdentifier="1" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="2" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art1" parentId="1" weight="1" contents="content1"
+  <Node id="2" IsWebVisible="1" nodeType="1" name="Art1" parentId="1" weight="1" contents="content1"
         shortName="Arts1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="3" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art2" parentId="1" weight="2" contents="content2"
+  <Node id="3" IsWebVisible="1" nodeType="1" name="Art2" parentId="1" weight="2" contents="content2"
         shortName="Arts2" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="4" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art3" parentId="1" weight="3" contents="content3"
+  <Node id="4" IsWebVisible="1" nodeType="1" name="Art3" parentId="1" weight="3" contents="content3"
         shortName="Arts3" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="1" entityIdentifier="1" entityRecordId="1" nodeId="2" createdOn="2021-12-21 12:00:10.0"
                 modifiedOn="2021-12-21 12:00:10.0"/>
 
 
-  <Node id="11" isVocabulary="0" isWebVisible="1" nodeType="1" name="Subjects" specialType="0"
+  <Node id="11" IsWebVisible="1" nodeType="1" name="Subjects" specialType="0"
         createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRequirement id="11" entityIdentifier="2" isRequired="0" manyTermsAllowed="1" nodeId="1"
                    createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="12" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art11" parentId="11" weight="1"
+  <Node id="12" IsWebVisible="1" nodeType="1" name="Art11" parentId="11" weight="1"
         contents="content11"
         shortName="Arts11" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="13" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art12" parentId="11" weight="2"
+  <Node id="13" IsWebVisible="1" nodeType="1" name="Art12" parentId="11" weight="2"
         contents="content12"
         shortName="Arts12" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
-  <Node id="14" isVocabulary="0" isWebVisible="1" nodeType="1" name="Art13" parentId="11" weight="3"
+  <Node id="14" IsWebVisible="1" nodeType="1" name="Art13" parentId="11" weight="3"
         contents="content13"
         shortName="Arts13" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <NodeRelation id="11" entityIdentifier="2" entityRecordId="1" nodeId="12" createdOn="2021-12-21 12:00:10.0"

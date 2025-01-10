@@ -18,7 +18,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD1",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[{"id":"1001"}],
         "cosAccount":10,
         "description":"some description",
@@ -78,7 +78,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":10,
         "predictedStudentsPercentage":0.10,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "code":"ABCD1",
         "validFrom":null,
         "validFromOffset":-30,
@@ -103,12 +103,15 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":true,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
 #       <--->  Scenario have been finished. Now remove relations and then remove created object from DB:
-        * def discountToUpdate = {"id":"#(id)","name":"testDiscount1","discountType":"Percent","rounding":"No Rounding","discountValue":0,"discountPercent":0.12,"discountMin":null,"discountMax":null,"cosAccount":10,"predictedStudentsPercentage":0.1,"availableOnWeb":true,"code":"ABCD1","validFrom":null,"validFromOffset":-30,"validTo":null,"validToOffset":5,"hideOnWeb":true,"description":"some description","studentEnrolledWithinDays":20,"studentAgeUnder":true,"studentAge":15,"studentPostcode":"123456","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":2,"minValue":50,"corporatePassDiscounts":[]}
+        * def discountToUpdate = {"id":"#(id)","name":"testDiscount1","discountType":"Percent","rounding":"No Rounding","discountValue":0,"discountPercent":0.12,"discountMin":null,"discountMax":null,"cosAccount":10,"predictedStudentsPercentage":0.1,"availableFor":'Online and office',"code":"ABCD1","validFrom":null,"validFromOffset":-30,"validTo":null,"validToOffset":5,"hideOnWeb":true,"description":"some description","studentEnrolledWithinDays":20,"studentAgeUnder":true,"studentAge":15,"studentPostcode":"123456","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":2,"minValue":50,"corporatePassDiscounts":[]}
 
         Given path ishPath + '/' + id
         And request discountToUpdate
@@ -128,7 +131,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD2",
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "corporatePassDiscounts":[{"id":"1001"}],
         "cosAccount":10,
         "description":"some description",
@@ -154,7 +157,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":null,
         "validTo":null,
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -188,7 +194,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":10,
         "predictedStudentsPercentage":0.10,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":"ABCD2",
         "validFrom":null,
         "validFromOffset":null,
@@ -213,12 +219,15 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
 #       <--->  Scenario have been finished. Now remove relations and then remove created object from DB:
-        * def discountToUpdate = {"id":"#(id)","name":"testDiscount2","discountType":"Dollar","rounding":"Nearest 10 cents","discountValue":33,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":10,"predictedStudentsPercentage":0.1,"availableOnWeb":false,"code":"ABCD2","validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":false,"description":"some description","studentEnrolledWithinDays":20,"studentAgeUnder":true,"studentAge":22,"studentPostcode":"1234567890","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":0,"minValue":0,"corporatePassDiscounts":[]}
+        * def discountToUpdate = {"id":"#(id)","name":"testDiscount2","discountType":"Dollar","rounding":"Nearest 10 cents","discountValue":33,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":10,"predictedStudentsPercentage":0.1,"availableFor":'Office only',"code":"ABCD2","validFrom":null,"validFromOffset":null,"validTo":null,"validToOffset":null,"hideOnWeb":false,"description":"some description","studentEnrolledWithinDays":20,"studentAgeUnder":true,"studentAge":22,"studentPostcode":"1234567890","discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":0,"minValue":0,"corporatePassDiscounts":[]}
 
         Given path ishPath + '/' + id
         And request discountToUpdate
@@ -238,7 +247,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD3",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[{"id":"1001"}],
         "cosAccount":10,
         "description":"some description",
@@ -263,7 +272,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":"2019-07-01",
         "validFromOffset":null,
         "validTo":"2037-07-31",
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -297,7 +309,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":10,
         "predictedStudentsPercentage":0.10,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "code":"ABCD3",
         "validFrom":"2019-07-01",
         "validFromOffset":null,
@@ -322,12 +334,15 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
 #       <--->  Scenario have been finished. Now remove relations and then remove created object from DB:
-        * def discountToUpdate = {"id":"#(id)","name":"testDiscount3","discountType":"Fee override","rounding":"Nearest dollar","discountValue":42,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":10,"predictedStudentsPercentage":0.1,"availableOnWeb":true,"code":"ABCD3","validFrom":"2019-06-30","validFromOffset":null,"validTo":"2037-07-31","validToOffset":null,"hideOnWeb":true,"description":"some description","studentEnrolledWithinDays":200,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":10,"minValue":100,"corporatePassDiscounts":[]}
+        * def discountToUpdate = {"id":"#(id)","name":"testDiscount3","discountType":"Fee override","rounding":"Nearest dollar","discountValue":42,"discountPercent":null,"discountMin":0,"discountMax":0,"cosAccount":10,"predictedStudentsPercentage":0.1,"availableFor":'Online and office',"code":"ABCD3","validFrom":"2019-06-30","validFromOffset":null,"validTo":"2037-07-31","validToOffset":null,"hideOnWeb":true,"description":"some description","studentEnrolledWithinDays":200,"studentAgeUnder":null,"studentAge":null,"studentPostcode":null,"discountConcessionTypes":[],"discountMemberships":[],"discountCourseClasses":[],"addByDefault":true,"minEnrolments":10,"minValue":100,"corporatePassDiscounts":[]}
 
         Given path ishPath + '/' + id
         And request discountToUpdate
@@ -353,7 +368,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":false,
         "code":null,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":null,
@@ -378,7 +393,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":null,
         "validTo":null,
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -412,7 +430,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "discountMax":55.00,
         "cosAccount":10,
         "predictedStudentsPercentage":0.10,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -434,7 +452,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -462,7 +483,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":false,
         "code":null,
-        "availableOnWeb":false,
+        "availableFor":'Office only',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":null,
@@ -487,7 +508,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":null,
         "validTo":null,
-        "validToOffset":null
+        "validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -506,7 +530,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD6",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -531,7 +555,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -550,7 +577,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD7",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -575,7 +602,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -595,7 +625,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD8",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -620,7 +650,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -636,7 +669,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD8",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -661,7 +694,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -677,7 +713,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD8",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -702,7 +738,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -721,7 +760,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD10",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -746,7 +785,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -766,7 +808,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD11",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -791,7 +833,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -815,7 +860,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD11",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -840,7 +885,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -864,7 +912,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":"ABCD10",
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -889,7 +937,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -909,7 +960,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":null,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -934,7 +985,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -950,7 +1004,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":null,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -975,7 +1029,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -991,7 +1048,7 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         {
         "addByDefault":true,
         "code":null,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "corporatePassDiscounts":[],
         "cosAccount":10,
         "description":"some public description",
@@ -1016,7 +1073,10 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validFrom":null,
         "validFromOffset":"4",
         "validTo":null,
-        "validToOffset":"5"
+        "validToOffset":"5",
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -1033,9 +1093,12 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         * def newDiscount =
         """
         {
-        "addByDefault":false,"code":null,"availableOnWeb":false,"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount16","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,
+        "addByDefault":false,"code":null,"availableFor":'Office only',"corporatePassDiscounts":[],"cosAccount":null,"description":null,"discountConcessionTypes":[],"discountCourseClasses":[],"discountMax":null,"discountMemberships":[],"discountMin":null,"discountPercent":0,"discountType":"Percent","discountValue":0,"hideOnWeb":false,"minEnrolments":0,"minValue":0,"name":"testDiscount16","predictedStudentsPercentage":0.1,"rounding":"No Rounding","studentAge":null,"studentAgeUnder":null,"studentEnrolledWithinDays":null,"studentPostcode":null,
         "validFrom":"2019-07-11","validFromOffset":null,
-        "validTo":"2019-07-01","validToOffset":null
+        "validTo":"2019-07-01","validToOffset":null,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 

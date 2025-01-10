@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { EEE_D_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { EEE_D_MMM_YYYY } from "ish-ui";
 import SalesEditView from "../../../js/containers/entities/sales/components/SalesEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
 

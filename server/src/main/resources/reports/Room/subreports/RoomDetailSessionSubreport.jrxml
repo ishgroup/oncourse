@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SessionSubReport" language="groovy" pageWidth="840" pageHeight="514" orientation="Landscape" columnWidth="840" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="12f1ea80-25ce-4ac8-b0a3-4b001fd1557d">
-	<property name="name" value="Session Subreport"/>
-	<property name="entity" value="Session"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.roomDetailSessionSubReport"/>
 	<property name="ish.oncourse.title" value="Sessions"/>
 	<property name="ish.oncourse.filePrefix" value="Sessions"/>
 	<property name="ish.oncourse.pdfFileName" value="Sessions.pdf"/>

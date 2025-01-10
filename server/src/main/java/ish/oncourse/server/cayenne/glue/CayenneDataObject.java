@@ -554,9 +554,9 @@ public abstract class CayenneDataObject extends org.apache.cayenne.CayenneDataOb
 	}
 
 	public String getSummaryDescription() {
-		if(this.getPersistenceState() != PersistenceState.TRANSIENT && hasAttribute("name")) {
+		if (values.containsKey("name"))
 			return readProperty("name").toString();
-		}
-		return ID + ' ' + getPrimaryKeyValue();
+		else
+			return ID + ' ' + getPrimaryKeyValue();
 	}
 }

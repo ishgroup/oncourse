@@ -1,6 +1,7 @@
 export enum Categories {
   college,
   licences,
+  plugins,
   messaging,
   classDefaults,
   ldap,
@@ -17,5 +18,7 @@ export enum Categories {
   dataCollectionForms,
   security,
   product,
-  contact
+  contact,
+  courseTypes,
+  classTypes
 }

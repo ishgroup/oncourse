@@ -5,6 +5,7 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         * configure headers = { Authorization: 'admin' }
         * url 'https://127.0.0.1:8182/a/v1'
         * def ishPath = 'list/entity/report'
+        * def ishPathConfigs = ishPath + '/config'
         * def ishPathLogin = 'login'
         * def ishPathList = 'list/plain'
         
@@ -34,18 +35,20 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"Certificate",
         "entity":"Certificate",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"ish.onCourse.certificate",
         "description":"onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments.This report prints in Portrait format.",
         "body":"#present",
-        "subreport":true,
         "backgroundId":null,
         "sortOn":"",
         "preview":null,
         "variables":[],
         "options":[],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -80,18 +83,20 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         "id":"#(~~id)",
         "name":"Classes",
         "entity":"CourseClass",
-        "enabled":true,
+        "status":"Enabled",
         "keyCode":"ish.onCourse.classListReport",
         "description":"To obtain an overview of all classes status within a given time period, such as a term.This report prints in Landscape format.",
         "body":"#present",
-        "subreport":true,
         "backgroundId":null,
         "sortOn":"",
         "preview":null,
         "variables":[],
         "options":[],
         "createdOn":"#ignore",
-        "modifiedOn":"#ignore"
+        "modifiedOn":"#ignore",
+        "shortDescription":null,
+        "automationTags":null,
+        "category":null
         }
         """
 
@@ -103,3 +108,28 @@ Feature: Main feature for all GET requests with path 'list/entity/report'
         When method GET
         Then status 400
         And match $.errorMessage == "Record with id = '99999' doesn't exist."
+
+
+
+
+    Scenario: (+) Get configs of report by admin
+
+        Given path ishPathList
+        And param entity = 'Report'
+        And param pageSize = 65000
+        And param offset = 0
+        And param columns = 'name'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ['Classes'])].id
+        * print "id = " + id
+
+
+#       <--->
+
+        Given path ishPathConfigs + '/' + id
+        When method GET
+        Then status 200
+
+        And match $ == 'shortDescription: "To obtain an overview of all classes status within a given time\\\n  \\ period, such as a term.This report prints in Landscape format."\ndescription: "To obtain an overview of all classes status within a given time period,\\\n  \\ such as a term.This report prints in Landscape format."\nname: Classes\nentityClass: CourseClass\nisVisible: true'

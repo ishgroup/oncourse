@@ -1,8 +1,7 @@
 import { Sale } from "@api/model";
-import { change } from "redux-form";
+import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
 import React, { useMemo } from "react";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import { stubFunction } from "../../../../common/utils/common";
+import { change } from "redux-form";
 
 export default (
   {
@@ -52,9 +51,9 @@ export default (
   const hasError = !filteredTypes.length;
 
   return (
-    <div className="ml-2">
+    <div className="ml-2 mt-0-5">
       {Boolean(relationTypes.length) && (
-        <EditInPlaceField
+        <EditInPlaceSearchSelect
           meta={{
             error: hasError && "No available relation types",
             invalid: hasError
@@ -66,10 +65,9 @@ export default (
             onBlur: stubFunction,
             value: getSelectedRelation()
           }}
-          formatting="inline"
           returnType="object"
           placeholder="Select relation"
-          select
+          inline
         />
       )}
     </div>

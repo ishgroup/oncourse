@@ -9,10 +9,9 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import createStyles from "@mui/styles/createStyles";
-import { AppTheme } from "../../../model/common/Theme";
+import { AppTheme } from 'ish-ui';
 
-export const summaryListStyles = (theme: AppTheme) => createStyles({
+export const summaryListStyles = (theme: AppTheme, p, classes) => ({
   itemTotal: {
     paddingRight: "50px",
     display: "flex",
@@ -92,7 +91,7 @@ export const summaryListStyles = (theme: AppTheme) => createStyles({
     fontWeight: "bolder"
   },
   summaryExpansionPanel: {
-    "&:hover $setPayerChip": {
+    [`&:hover .${classes.setPayerChip}`]: {
       display: "flex"
     }
   },

@@ -3,26 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
-import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
-import ListLinksGroup from "./searchResults/ListLinksGroup";
-import { LSGetItem } from "../../../../utils/storage";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { DASHBOARD_ACTIVITY_STORAGE_NAME } from '../../../../../constants/Config';
+import { getEntityDisplayName } from '../../../../utils/getEntityDisplayName';
+import { LSGetItem } from '../../../../utils/storage';
+import ListLinksGroup from './searchResults/ListLinksGroup';
 
-const styles = () => createStyles({
+const styles = (theme: AppTheme) => ({
   activityStatistic: {
-    display: "grid",
-    gridTemplateColumns: "min-content 1fr",
-    marginTop: "4px"
+    marginTop: 4
+  },
+  divider: {
+    margin: theme.spacing(2, 0, 1.25),
   }
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const { showConfirm, classes, checkSelectedResult } = props;
+  const {classes, checkSelectedResult} = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
@@ -48,18 +49,18 @@ const SidebarLatestActivity: React.FC<any> = props => {
       <Grid item xs={12} className={classes.activityStatistic}>
         {activities
           && activities.data.map((v, i) => (
-            <ListLinksGroup
-              key={i}
-              entityDisplayName={getEntityDisplayName(v.entity)}
-              entity={v.entity}
-              items={v.items}
-              showConfirm={showConfirm}
-              checkSelectedResult={checkSelectedResult}
-            />
+            <div key={i}>
+              <ListLinksGroup
+                entityDisplayName={getEntityDisplayName(v.entity)}
+                entity={v.entity}
+                items={v.items}
+                checkSelectedResult={checkSelectedResult}
+              />
+            </div>
           ))}
       </Grid>
     </Grid>
   );
 };
 
-export default withStyles(styles)(SidebarLatestActivity);
+export default withStyles(SidebarLatestActivity, styles);

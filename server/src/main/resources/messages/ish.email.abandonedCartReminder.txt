@@ -1,0 +1,21 @@
+Hi ${checkout?.payer?.firstName},
+
+You recently visited the ${Preferences.get("college.name")} website and added at least one item to the cart.
+
+<% def classes = checkout?.shoppingCartClasses %>
+<% if(classes && !classes.empty) { %> Classes:
+  <% classes.each { cc -> %>
+  Class code: ${cc.uniqueCode} Course: ${cc.course.name} Course code: ${cc.course.code}
+  <% } %>
+<% } %>
+
+<% def products = checkout?.shoppingCartProducts %>
+<% if(products && !products.empty) { %> Products:
+  <% products.each { product -> %>
+  <% def productId = product.willowId %>
+  Name: ${product.name} SKU: ${product.sku} Quantity: ${checkout.getShoppingCartProductQuantity(productId)}
+  <% } %>
+<% } %>
+Click here to return to your cart and complete the checkout process.
+
+${checkout?.checkoutUrl + "?payerId=" + checkout.payer.willowId}

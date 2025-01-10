@@ -3,33 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  Form, reduxForm, initialize, getFormValues
-} from "redux-form";
-import { connect } from "react-redux";
-import isEmpty from "lodash.isempty";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
-import ExitToApp from "@mui/icons-material/ExitToApp";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
+import { openInternalLink } from "ish-ui";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Form, getFormValues, initialize, reduxForm } from "redux-form";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { openInternalLink } from "../../../../../common/utils/links";
-import * as Model from "../../../../../model/preferences/Messaging";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import { validateSingleMandatoryField, validateEmail } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import DynamicText from "./DynamicText";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateEmail, validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import * as Model from "../../../../../model/preferences/Messaging";
+import { State } from "../../../../../reducers/state";
+import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import DynamicText from "./DynamicText";
 
-const manualUrl = getManualLink("generalPrefs_messaging");
+const manualUrl = getManualLink("setting-your-general-preferences#messaging");
 
 class MessagingBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
@@ -101,7 +99,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailFromAddress.uniqueKey}
                 label="Email"
                 validate={[this.validateEmailFromAddress, validateEmail]}
-                fullWidth
               />
             </Grid>
 
@@ -114,7 +111,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.EmailFromName.uniqueKey}
                 label="Email from name (e.g. College ABC)"
-                fullWidth
               />
             </Grid>
 
@@ -128,7 +124,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailAdminAddress.uniqueKey}
                 label="System administrator email address"
                 validate={validateEmail}
-                fullWidth
               />
             </Grid>
 
@@ -139,7 +134,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                   size="small"
                   variant="text"
                   className={classes.subheadingButton}
-                  onClick={() => openInternalLink("/message?filter=@Email&search=messagePersons.status is QUEUED")}
+                  onClick={() => openInternalLink("/message?filter=@Email&search=status is QUEUED")}
                   endIcon={<ExitToApp color="secondary" className={classes.buttonIcon} />}
                 />
               </Typography>
@@ -161,7 +156,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                     type="checkbox"
                     name={this.formModel.EmailBounceEnabled.uniqueKey}
                     color="primary"
-                    value="true"
                     stringValue
                   />
                 )}
@@ -175,7 +169,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailPop3Host.uniqueKey}
                 label="Incoming mail server address (POP3)"
                 validate={emailBounceEnabled ? validateSingleMandatoryField : null}
-                fullWidth
               />
             </Grid>
 
@@ -189,7 +182,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailBounceAddress.uniqueKey}
                 label="Email address to which bounces are sent"
                 validate={emailBounceEnabled ? [validateSingleMandatoryField, validateEmail] : validateEmail}
-                fullWidth
               />
             </Grid>
           </Grid>
@@ -201,7 +193,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 name={this.formModel.EmailPop3Account.uniqueKey}
                 label="Account"
                 validate={emailBounceEnabled ? validateSingleMandatoryField : null}
-                fullWidth
               />
             </Grid>
 
@@ -214,7 +205,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 type="password"
                 name={this.formModel.EmailPop3Password.uniqueKey}
                 label="Password"
-                fullWidth
               />
             </Grid>
           </Grid>
@@ -237,7 +227,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                   size="small"
                   variant="text"
                   className={classes.subheadingButton}
-                  onClick={() => openInternalLink("/message?filter=@SMS&search=messagePersons.status is QUEUED")}
+                  onClick={() => openInternalLink("/message?filter=@SMS&search=status is QUEUED")}
                   endIcon={<ExitToApp color="secondary" className={classes.buttonIcon} />}
                 />
               </Typography>
@@ -252,7 +242,6 @@ class MessagingBaseForm extends React.Component<any, any> {
                 type="text"
                 name={this.formModel.SMSFromAddress.uniqueKey}
                 label="SMS from"
-                fullWidth
               />
             </Grid>
           </Grid>

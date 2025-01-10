@@ -1,0 +1,5 @@
+type: string
+description: tag types
+enum:
+  - Tag
+  - Checklist

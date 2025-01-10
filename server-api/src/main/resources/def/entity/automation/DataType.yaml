@@ -15,3 +15,5 @@ enum:
   - URL
   - Email
   - Object
+  - Number
+  - Portal subdomain

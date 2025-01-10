@@ -1,5 +1,7 @@
+import { WaitingList } from "@api/model";
 import * as React from "react";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
+import { EditViewProps } from "../../../../model/common/ListView";
 import WaitingListGeneral from "./WaitingListGeneral";
 import WaitingListNotes from "./WaitingListNotes";
 import WaitingListSites from "./WaitingListSites";
@@ -19,13 +21,15 @@ const items: TabsListItem[] = [
   }
 ];
 
-const WaitingListEditView: React.FC<any> = props => {
+const WaitingListEditView: React.FC<EditViewProps<WaitingList>> = props => {
   const {
     values,
+    onScroll
   } = props;
 
   return values ? (
     <TabsList
+      onParentScroll={onScroll}
       items={items}
       itemProps={{ ...props }}
     />

@@ -1,20 +1,23 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import { Account, MembershipProduct, Tax } from "@api/model";
+import React from "react";
 import { connect } from "react-redux";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { plainCorporatePassPath } from "../../../../constants/Api";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
-import MembershipProductGeneral from "./MembershipProductGeneral";
 import MembershipProductDiscounts from "./MembershipProductDiscounts";
-import { EditViewProps } from "../../../../model/common/ListView";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import MembershipProductGeneral from "./MembershipProductGeneral";
 
 const items: TabsListItem[] = [
   {
@@ -27,7 +30,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="mb-2" />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3 mb-2" />
   },
   {
     label: "Corporate Passes",
@@ -55,17 +58,16 @@ const MembershipProductEditView: React.FC<MembershipProductEditViewProps> = prop
     dispatch,
     dirty,
     form,
-    nestedIndex,
     rootEntity,
     twoColumn,
     showConfirm,
-    openNestedEditView,
     manualLink,
     accounts,
     taxes,
     access,
     submitSucceeded,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -74,6 +76,7 @@ const MembershipProductEditView: React.FC<MembershipProductEditViewProps> = prop
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? checkedItems : []}
       itemProps={{
         values,
@@ -82,11 +85,9 @@ const MembershipProductEditView: React.FC<MembershipProductEditViewProps> = prop
         dispatch,
         dirty,
         form,
-        nestedIndex,
         rootEntity,
         twoColumn,
         showConfirm,
-        openNestedEditView,
         manualLink,
         accounts,
         taxes,

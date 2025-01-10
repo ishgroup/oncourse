@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne
 import groovy.transform.CompileDynamic
 import ish.common.types.ClassCostFlowType
 import ish.common.types.ClassCostRepetitionType
+import ish.common.types.DiscountAvailabilityType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.function.CalculateClassroomHours
@@ -28,16 +29,23 @@ import org.apache.cayenne.query.ObjectSelect
 trait CourseClassTrait {
 
     abstract Course getCourse()
+
     abstract List<Session> getSessions()
-    abstract Integer getSessionsCount()
-    abstract Integer getMinutesPerSession()
+
     abstract List<Enrolment> getSuccessAndQueuedEnrolments()
+
     abstract TimeZone getTimeZone()
+
     abstract Date getStartDateTime()
+
     abstract Date getEndDateTime()
+
     abstract Long getId()
+
     abstract ObjectContext getObjectContext()
+
     abstract List<Discount> getDiscounts()
+
     abstract List<DiscountCourseClass> getDiscountCourseClasses()
 
 
@@ -46,22 +54,22 @@ trait CourseClassTrait {
      */
     @API
     void addDiscount(Discount discount) {
-       if (discount && !(discount.id in  discounts*.id)) {
-           DiscountCourseClass discountCourseClass = objectContext.newObject(DiscountCourseClass)
-           discountCourseClass.courseClass = this as CourseClass
-           discountCourseClass.discount = objectContext.localObject(discount)
+        if (discount && !(discount.id in discounts*.id)) {
+            DiscountCourseClass discountCourseClass = objectContext.newObject(DiscountCourseClass)
+            discountCourseClass.courseClass = this as CourseClass
+            discountCourseClass.discount = objectContext.localObject(discount)
 
-           ClassCost classCost = objectContext.newObject(ClassCost)
-           classCost.courseClass = this as CourseClass
-           classCost.discountCourseClass = discountCourseClass
-           classCost.description = discount.name
-           classCost.flowType = ClassCostFlowType.DISCOUNT
-           classCost.repetitionType = ClassCostRepetitionType.DISCOUNT
-           classCost.taxAdjustment = Money.ZERO
-           classCost.invoiceToStudent = false
-           classCost.payableOnEnrolment = true
-           classCost.isSunk = false
-       }
+            ClassCost classCost = objectContext.newObject(ClassCost)
+            classCost.courseClass = this as CourseClass
+            classCost.discountCourseClass = discountCourseClass
+            classCost.description = discount.name
+            classCost.flowType = ClassCostFlowType.DISCOUNT
+            classCost.repetitionType = ClassCostRepetitionType.DISCOUNT
+            classCost.taxAdjustment = Money.ZERO
+            classCost.invoiceToStudent = false
+            classCost.payableOnEnrolment = true
+            classCost.isSunk = false
+        }
     }
 
     /**
@@ -71,7 +79,7 @@ trait CourseClassTrait {
     void removeDiscount(Discount discount) {
         if (discount) {
             discount = objectContext.localObject(discount)
-            List<DiscountCourseClass> discountCourseClasses =  discountCourseClasses.findAll {it.discount.id == discount.id }
+            List<DiscountCourseClass> discountCourseClasses = discountCourseClasses.findAll { it.discount.id == discount.id }
             objectContext.deleteObjects(discountCourseClasses*.classCost)
             objectContext.deleteObjects(discountCourseClasses)
         }
@@ -110,13 +118,13 @@ trait CourseClassTrait {
 
         Date now = new Date()
 
-        Expression validToExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).isNull())
+        Expression validToExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).isNull().orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO_OFFSET).eq(0)))
         validToExp = validToExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_TO).gt(CommonExpressionFactory.previousMidnight(now))))
 
-        Expression validFromExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).isNull())
+        Expression validFromExp = DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).isNull().orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM_OFFSET).eq(0)))
         validFromExp = validFromExp.orExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).isNotNull().andExp(DiscountCourseClass.DISCOUNT.dot(Discount.VALID_FROM).lt(CommonExpressionFactory.nextMidnight(now))))
 
-        // apply discounts with offsets (valid from offset, valid to offset) only when courseClass has start date time.
+//         apply discounts with offsets (valid from offset, valid to offset) only when courseClass has start date time.
         Date classStart = getStartDateTime()
         if (classStart != null) {
             int startClassOffsetInDays = DateTimeUtil.getDaysLeapYearDaylightSafe(classStart, now)
@@ -131,23 +139,32 @@ trait CourseClassTrait {
 
     List<DiscountCourseClass> getAvalibleDiscounts(Contact contact, Contact payerContact, List<Long> courseIds,
                                                    List<Long> productIds, List<Long> promoIds, List<CourseClass> classes,
-                                                   List<MembershipProduct> newMemberships, Money purchaseTotal ) {
+                                                   List<MembershipProduct> newMemberships, Money purchaseTotal) {
         List<EntityRelation> relations = EntityRelationDao.getRelatedFrom(objectContext, Course.simpleName, course.id)
                 .findAll {
                     (Course.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in courseIds) ||
-                        (Product.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in productIds)
+                            (Product.simpleName == it.fromEntityIdentifier && it.fromEntityAngelId in productIds)
                 }
         List<Discount> discountsViaRelations = relations*.relationType*.discount.findAll { it != null }
 
-        (ObjectSelect.query(DiscountCourseClass).
-                where(DiscountCourseClass.COURSE_CLASS.dot(CourseClass.ID).eq(id)) & getDiscountDateFilter()).
-                select(objectContext).
-                findAll { dcc ->
+        def a = ObjectSelect.query(DiscountCourseClass)
+                .where(DiscountCourseClass.COURSE_CLASS.dot(CourseClass.ID).eq(id)
+                        .andExp(DiscountCourseClass.DISCOUNT.dot(Discount.AVAILABLE_FOR).ne(DiscountAvailabilityType.ONLINE_ONLY))
+                        .andExp(getDiscountDateFilter()))
+                .select(objectContext)
+                .collect{ it.discount.name}
+
+        ObjectSelect.query(DiscountCourseClass)
+                .where(DiscountCourseClass.COURSE_CLASS.dot(CourseClass.ID).eq(id)
+                        .andExp(DiscountCourseClass.DISCOUNT.dot(Discount.AVAILABLE_FOR).ne(DiscountAvailabilityType.ONLINE_ONLY))
+                        .andExp(getDiscountDateFilter()))
+                .select(objectContext)
+                .findAll { dcc ->
                     dcc.discount.entityRelationTypes.empty || dcc.discount in discountsViaRelations
-                }.
-                findAll { it.discount.code == null || it.discount.id in promoIds }.
-                findAll { it.discount.isStudentEligibile(contact, newMemberships, this, classes, purchaseTotal) }.
-                findAll {
+                }
+                .findAll { it.discount.code == null || it.discount.id in promoIds }
+                .findAll { it.discount.isStudentEligibile(contact, newMemberships, this, classes, purchaseTotal) }
+                .findAll {
                     it.discount.corporatePassDiscount.isEmpty() ? true :
                             !it.discount.corporatePassDiscount.findAll {
                                 payerContact != null && it.corporatePass.contact == payerContact

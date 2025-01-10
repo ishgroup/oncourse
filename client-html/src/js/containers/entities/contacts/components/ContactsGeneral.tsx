@@ -1,37 +1,35 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect } from "react";
-import {
- ConcessionType, Contact, ContactRelationType, Student, Tag, Tutor 
-} from "@api/model";
-import { change, Field, getFormInitialValues } from "redux-form";
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Contact, Student, Tag, Tutor } from "@api/model";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { connect } from "react-redux";
-import { Grid } from "@mui/material";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Divider, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import Typography from "@mui/material/Typography";
-import Divider from '@mui/material/Divider';
+import clsx from "clsx";
+import { openInternalLink, TimetableButton } from "ish-ui";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { connect } from "react-redux";
+import { change, getFormInitialValues } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import AvatarRenderer from "./AvatarRenderer";
-import { getContactFullName } from "../utils";
-import { openInternalLink } from "../../../../common/utils/links";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
 import { EditViewProps } from "../../../../model/common/ListView";
-import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { State } from "../../../../reducers/state";
+import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { getContactFullName } from "../utils";
+import ProfileHeading from "./ProfileHeading";
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
 };
 
 interface ContactsGeneralProps extends EditViewProps<Contact> {
-  classes?: any;
   initialValues?: Contact;
   isStudent?: boolean;
   isTutor?: boolean;
@@ -40,11 +38,8 @@ interface ContactsGeneralProps extends EditViewProps<Contact> {
   setIsTutor?: any;
   setIsCompany?: any;
   tags?: any;
-  countries?: any;
-  relationTypes?: ContactRelationType[];
-  concessionTypes?: ConcessionType[];
   usiLocked?: boolean;
-  fullScreenEditView?: boolean;
+  leftOffset?: number;
 }
 
 export const studentInitial: Student = {
@@ -89,68 +84,6 @@ const filterCompanyTags = (tag: Tag) => {
   return true;
 };
 
-export const ProfileHeading: React.FC<any> = props => {
-  const {
-    form,
-    dispatch,
-    showConfirm,
-    values,
-    twoColumn,
-    isCompany,
-    usiLocked,
-    syncErrors,
-    isNew
-  } = props;
-
-  return (
-    <FullScreenStickyHeader
-      opened={isNew || Object.keys(syncErrors).some(k => ['title', 'firstName', 'middleName', 'lastName'].includes(k))}
-      twoColumn={twoColumn}
-      Avatar={aProps => (
-        <Field
-          name="profilePicture"
-          label="Profile picture"
-          component={AvatarRenderer}
-          props={{
-            form,
-            dispatch,
-            showConfirm,
-            email: values.email,
-            twoColumn,
-            ...aProps
-          }}
-        />
-      )}
-      title={(
-        <>
-          {values && !isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}
-          {values ? (!isCompany ? getContactFullName(values) : values.lastName) : ""}
-        </>
-      )}
-      fields={(
-        <Grid container item xs={12} rowSpacing={2} columnSpacing={3}>
-          {!isCompany && (
-            <>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="title" label="Title" />
-              </Grid>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
-              </Grid>
-              <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="middleName" label="Middle name" />
-              </Grid>
-            </>
-          )}
-          <Grid item xs={isCompany ? 12 : twoColumn ? 2 : 6}>
-            <FormField type="text" name="lastName" label={isCompany ? "Company name" : "Last name"} disabled={usiLocked} required />
-          </Grid>
-        </Grid>
-      )}
-    />
-  );
-};
-
 const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
   const {
     twoColumn,
@@ -166,6 +99,10 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsCompany,
     tags,
     isNew,
+    syncErrors,
+    showConfirm,
+    usiLocked,
+    leftOffset
   } = props;
 
   const isInitiallyStudent = initialValues && !!initialValues.student;
@@ -208,15 +145,19 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     setIsTutor(isInitiallyTutor);
   }, [isInitiallyCompany, isInitiallyStudent, isInitiallyTutor]);
 
-  const onCalendarClick = () => {
-    openInternalLink(
-      `/timetable/search?query=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
-        values
-      )}`
-    );
-  };
+  const onStudentCalendarClick = () => openInternalLink(
+    `/timetable?search=attendance.student.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
 
-  const getFilteredTags = useCallback(() => {
+  const onTutorCalendarClick = () => openInternalLink(
+    `/timetable?search=tutor.contact.id=${values.id}&title=Timetable for ${getContactFullName(
+      values
+    )}`
+  );
+
+  const filteredTags = useMemo(() => {
     if (Array.isArray(tags)) {
       if (isStudent && isTutor) {
         return Array.from(new Set([...tags.filter(filterStudentTags), ...tags.filter(filterTutorTags)]));
@@ -235,12 +176,25 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
     return [];
   }, [tags, isStudent, isTutor, isCompany]);
 
-  const filteredTags = getFilteredTags();
-
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
-    <div className="pt-3 pl-3 pr-3">
-      <ProfileHeading {...props} isNew={isNew} />
-      <Grid container columnSpacing={3}>
+    <div className={clsx("pl-3 pr-3", !twoColumn && "pt-3")}>
+      <ProfileHeading
+        isFixed
+        isNew={isNew}
+        form={form}
+        dispatch={dispatch}
+        showConfirm={showConfirm}
+        values={values}
+        twoColumn={twoColumn}
+        isCompany={isCompany}
+        usiLocked={usiLocked}
+        syncErrors={syncErrors}
+        leftOffset={leftOffset}
+      />
+      <Grid container columnSpacing={3} className="mt-3">
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
             Type
@@ -272,21 +226,39 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           </ButtonGroup>
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} className="flex-nowrap align-items-center mb-1">
-        <Grid item xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
+        <Grid item xs={twoColumn ? 8 : 12}>
           <FormField
             type="tags"
             name="tags"
             tags={filteredTags}
           />
         </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          <EntityChecklists
+            entity="Contact"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
+          />
+        </Grid>
       </Grid>
       {isStudent && (
         <>
-          <Divider className="mt-3 mb-2" />
+          <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
-              <TimetableButton onClick={onCalendarClick} />
+              <TimetableButton onClick={onStudentCalendarClick} title="Student timetable"/>
+            </Grid>
+          </Grid>
+        </>
+      )}
+      {isTutor && (
+        <>
+          <Divider className="mt-3 mb-2"/>
+          <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
+            <Grid item xs={12}>
+              <TimetableButton onClick={onTutorCalendarClick} title="Tutor timetable"/>
             </Grid>
           </Grid>
         </>

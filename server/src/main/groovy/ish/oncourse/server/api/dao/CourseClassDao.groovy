@@ -42,8 +42,6 @@ class CourseClassDao implements CayenneLayer<CourseClass> {
     CourseClass newObject(ObjectContext context) {
         CourseClass courseClass = context.newObject(CourseClass)
         courseClass.isCancelled = false
-        courseClass.sessionsCount = 0
-        courseClass.sessionRepeatInterval = 1
         courseClass.isClassFeeApplicationOnly = false
         addStudentFeeCost(context, courseClass)
         assignDefaultDiscounts(context, courseClass)

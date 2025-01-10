@@ -51,7 +51,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["someSite10","Adelaide","5000","true"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","someSite10","Adelaide","5000","true"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"someSite10","Adelaide","5000","true"])].id
 #       <----->
 
         Given path ishPath + '/' + id
@@ -107,7 +107,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["someSite11","Adelaide","5000","true"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","someSite11","Adelaide","5000","true"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"someSite11","Adelaide","5000","true"])].id
 
 #       <--->  Login as notadmin:
         * configure headers = { Authorization:  'UserWithRightsDelete'}
@@ -168,7 +168,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["someSite12","Adelaide","5000","true"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","someSite12","Adelaide","5000","true"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"someSite12","Adelaide","5000","true"])].id
 
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}
@@ -206,4 +206,4 @@ Feature: Main feature for all DELETE requests with path 'list/entity/site'
         Given path ishPath + '/99999'
         When method DELETE
         Then status 400
-        And match response.errorMessage == "Site with id:99999 doesn't exist"
+        And match response.errorMessage == "Record with id = '99999' doesn't exist."

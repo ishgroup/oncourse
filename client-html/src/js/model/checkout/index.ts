@@ -95,6 +95,7 @@ export type CheckoutItem = CheckoutCourse & VoucherProduct & MembershipProduct &
   cartAction?: EntityRelationCartAction;
   relationDiscount?: Discount;
   fromItemRelation?: Sale;
+  quantity?: number;
 };
 
 export type CheckoutProductPurchase = {
@@ -179,7 +180,7 @@ export interface CheckoutPayment {
   xPaymentSessionId?: string;
   merchantReference?: string;
   process?: CheckoutPaymentProcess;
-  invoice?: any;
+  invoice?: Invoice;
   paymentId?: number;
   savedCreditCard?: {
     creditCardName: string;
@@ -213,4 +214,10 @@ export interface CheckoutSaleExtended extends Sale {
 export interface CheckoutSaleRelationExtended extends CheckoutSaleRelation {
   contactId?: number;
   toItem?: CheckoutSaleExtended;
+}
+
+export type CheckoutAddItemsRequiest = {
+  enrolments?: CheckoutEnrolmentCustom[],
+  purchases?: CheckoutProductPurchase[],
+  keepChecked?: boolean
 }

@@ -32,14 +32,24 @@ class NoteFunctions {
         new NoteDTO().with { note ->
             note.id = dbNote.id
             note.message = dbNote.note
-            note.createdBy = dbNote.systemUser? "$dbNote.systemUser.firstName $dbNote.systemUser.lastName" : 'system'
+
+            if(dbNote.systemUser)
+                note.createdBy = "$dbNote.systemUser.firstName $dbNote.systemUser.lastName"
+            else if(dbNote.createdByTutor)
+                note.createdBy = dbNote.createdByTutor.contact.fullName
+            else
+                note.createdBy = 'system'
+
             note.created = LocalDateUtils.dateToTimeValue(dbNote.createdOn)
             note.modified = LocalDateUtils.dateToTimeValue(dbNote.modifiedOn)
             note.entityId = dbNote.noteRelations?.notableEntity?.id
             note.entityName = dbNote.noteRelations?.notableEntity?.class?.simpleName
+            note.interactionDate = LocalDateUtils.dateToTimeValue(dbNote.interactionDate)
             if (dbNote.changedBy) {
                 note.modifiedBy = "$dbNote.changedBy.firstName $dbNote.changedBy.lastName"
             }
+
+            note.readonly = dbNote.createdByTutor ?: false
             note
         }
     }
@@ -62,6 +72,8 @@ class NoteFunctions {
             cayenneModel.note = message
             cayenneModel.changedBy = context.localObject(currentUser)
         }
+
+        cayenneModel.interactionDate = note.interactionDate?.toDate() ?: note.created?.toDate()  ?: new Date()
 
         if (!cayenneModel.noteRelations) {
             cayenneModel.context.newObject(relationClass).with { relation ->

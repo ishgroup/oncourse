@@ -39,7 +39,6 @@ public class AmazonS3Service {
     private static final String METADATA_CacheControlValueTemplate = "max-age=%d";
     private static final String CONTENT_DISPOSITION_TEMPLATE = "inline;filename=\"%s\"";
 
-
     private AmazonS3 s3Client;
     private AWSCredentials credentials;
     private Regions region;
@@ -127,7 +126,6 @@ public class AmazonS3Service {
         s3Client.setObjectAcl(bucketName, uniqueKey, versionId, objectAcl);
     }
 
-
     /**
      * Generates URL to access file with specified key.
      *
@@ -172,7 +170,10 @@ public class AmazonS3Service {
                 try {
                     S3Object s3Object = s3Client.getObject(request);
                     url = s3Object.getObjectContent().getHttpRequest().getURI().toString();
-                } catch (AmazonS3Exception ignored) {}
+                    // connection is closed without waring onlu if it is aboirted or all content is read
+                    s3Object.getObjectContent().abort();
+                    s3Object.close();
+                } catch (AmazonS3Exception|IOException ignored) {}
             }
             if (url == null) {
                 url = s3Client.getUrl(bucketName, uniqueKey).toString();
@@ -189,6 +190,16 @@ public class AmazonS3Service {
     public void removeFile(String uniqueKey) {
         DeleteObjectRequest request = new DeleteObjectRequest(bucketName, uniqueKey);
         s3Client.deleteObject(request);
+    }
+
+    /***
+     *
+     * @param uniqueKey - key under which file is stored in S3
+     * @param versionId - key under which file version is stored in S3
+     */
+    public void removeFileVersion(String uniqueKey, String versionId) {
+        DeleteVersionRequest request = new DeleteVersionRequest(bucketName, uniqueKey, versionId);
+        s3Client.deleteVersion(request);
     }
 
 

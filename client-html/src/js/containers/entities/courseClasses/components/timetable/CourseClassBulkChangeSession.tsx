@@ -3,45 +3,37 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import clsx from "clsx";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
-  arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit
-} from "redux-form";
-import Dialog from "@mui/material/Dialog";
-import Grid from "@mui/material/Grid";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Collapse from "@mui/material/Collapse";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import { TutorAttendance } from "@api/model";
-import {
-  addDays, differenceInMinutes, format as formatDate, subDays
-} from "date-fns";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../reducers/state";
-import { CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { stubFunction } from "../../../../../common/utils/common";
-import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
-import { courseClassCloseBulkUpdateModal } from "./actions";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
-import { DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
-import CourseClassTutorRooster from "./CourseClassTutorRooster";
-import { IS_JEST } from "../../../../../constants/EnvironmentConstants";
+import { TutorAttendance } from '@api/model';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { addDays, differenceInMinutes, format as formatDate, subDays } from 'date-fns';
+import { AppTheme, DD_MMM_YYYY, EditInPlaceDurationField, NoWrapOption, stubFunction } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayPush, arrayRemove, change, Field, getFormValues, initialize, reduxForm, submit } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { getCommonPlainRecords, setCommonPlainSearch } from '../../../../../common/actions/CommonPlainRecordsActions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { greaterThanNullValidation } from '../../../../../common/utils/validation';
+import { IS_JEST } from '../../../../../constants/EnvironmentConstants';
+import { CourseClassTutorExtended } from '../../../../../model/entities/CourseClass';
+import { State } from '../../../../../reducers/state';
+import { courseClassCloseBulkUpdateModal } from './actions';
+import CourseClassTutorRooster from './CourseClassTutorRooster';
 
 export const COURSE_CLASS_BULK_UPDATE_FORM: string = "CourseClassBulkUpdateForm";
 
-const styles = theme => createStyles({
+const styles = (theme: AppTheme) => ({
+  root: {},
   paperDialog: {
     background: theme.palette.background.default
   },
@@ -49,9 +41,6 @@ const styles = theme => createStyles({
     "&:first-child": {
       paddingTop: theme.spacing(1)
     },
-  },
-  bulkChangeDaysInput: {
-    maxWidth: theme.spacing(10)
   },
   bullkWrapperItem: {
     paddingLeft: theme.spacing(3.625)
@@ -118,8 +107,8 @@ const BulkItemWrapper: React.FC<any> = props => {
                 type="checkbox"
                 name={`${name}Checked`}
                 color="secondary"
-                checked={opened}
                 onChange={onChange}
+                debounced={false}
               />
             )}
             label={noCollapse ? opened ? children : renderedTitle : renderedTitle}
@@ -148,7 +137,8 @@ const CourseClassBulkChangeSessionForm = props => {
     getRooms,
     rooms,
     bulkValues,
-    sessions
+    sessions,
+    budget
   } = props;
 
   const [laterDate, setLaterDate] = useState<string>(null);
@@ -295,7 +285,6 @@ const CourseClassBulkChangeSessionForm = props => {
       disableEnforceFocus
       disableRestoreFocus
       maxWidth="md"
-      fullWidth
       classes={{
         paper: classes.paperDialog
       }}
@@ -321,7 +310,7 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 {tutors.length > 0 && (
                   <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
-                    <div className={classes.sessionTutors}>
+                    <div>
                       <Field
                         name="tutorAttendances"
                         component={CourseClassTutorRooster}
@@ -329,6 +318,9 @@ const CourseClassBulkChangeSessionForm = props => {
                         tutors={tutors}
                         onDeleteTutor={onDeleteTutor}
                         onAddTutor={onAddTutor}
+                        sessionDuration={durationValue}
+                        budget={budget}
+                        disableExpand
                       />
                     </div>
                   </BulkItemWrapper>
@@ -336,22 +328,18 @@ const CourseClassBulkChangeSessionForm = props => {
               </Grid>
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Location" name="location">
-                  <Grid container columnSpacing={3}>
-                    <Grid item xs={6}>
-                      <FormField
-                        type="remoteDataSearchSelect"
-                        entity="Room"
-                        name="roomId"
-                        label="Site and room"
-                        aqlColumns="name,site.name,site.localTimezone,site.id"
-                        selectValueMark="id"
-                        selectLabelCondition={roomLabel}
-                        onInnerValueChange={onRoomIdChange}
-                        rowHeight={36}
-                        allowEmpty
-                      />
-                    </Grid>
-                  </Grid>
+                  <FormField
+                    type="remoteDataSelect"
+                    entity="Room"
+                    name="roomId"
+                    label="Site and room"
+                    aqlColumns="name,site.name,site.localTimezone,site.id"
+                    selectValueMark="id"
+                    selectLabelCondition={roomLabel}
+                    onInnerValueChange={onRoomIdChange}
+                    itemRenderer={NoWrapOption}
+                    allowEmpty
+                  />
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
@@ -359,8 +347,6 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Actual payable duration"
-                        id="actualPayableDuration"
                         meta={{}}
                         input={{
                           value: payableDurationValue,
@@ -369,7 +355,6 @@ const CourseClassBulkChangeSessionForm = props => {
                           onFocus: stubFunction,
                           name: "actualPayableDuration"
                         }}
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -395,7 +380,6 @@ const CourseClassBulkChangeSessionForm = props => {
                         }
                         timezone={initial.siteTimezone || classTimezone}
                         persistValue
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -406,8 +390,6 @@ const CourseClassBulkChangeSessionForm = props => {
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
-                        label="Duration"
-                        id="duration"
                         meta={{
                           error: durationError,
                           invalid: Boolean(durationError)
@@ -419,7 +401,6 @@ const CourseClassBulkChangeSessionForm = props => {
                           onFocus: stubFunction,
                           name: "duration"
                         }}
-                        hideLabel
                       />
                     </Grid>
                   </Grid>
@@ -428,19 +409,19 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Move later" name="moveForward">
                   <Grid container>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <FormField
                         type="number"
                         name="moveForward"
-                        formatting="inline"
+                        inline
                         step="1"
-                        className={classes.bulkChangeDaysInput}
                         onChange={onMoveLater}
+                        debounced={false}
                       />
                       {" "}
                       days
                     </Grid>
-                    <Grid item xs={6} id="moveForwardInfo">
+                    <Grid item xs={8} id="moveForwardInfo">
                       {laterDate && `Earliest selected session will starts ${laterDate}`}
                     </Grid>
                   </Grid>
@@ -449,19 +430,19 @@ const CourseClassBulkChangeSessionForm = props => {
               <Grid item xs={12}>
                 <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
                   <Grid container>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                       <FormField
                         name="moveBackward"
                         type="number"
-                        formatting="inline"
+                        inline
                         step="1"
-                        className={classes.bulkChangeDaysInput}
                         onChange={onMoveEarlier}
+                        debounced={false}
                       />
                       {" "}
                       days
                     </Grid>
-                    <Grid item xs={6} id="moveBackwardInfo">
+                    <Grid item xs={8} id="moveBackwardInfo">
                       {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
                     </Grid>
                   </Grid>
@@ -510,6 +491,6 @@ const CourseClassBulkChangeSession = reduxForm({
   initialValues
 })(CourseClassBulkChangeSessionForm);
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(CourseClassBulkChangeSession)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(CourseClassBulkChangeSession, styles)
 );

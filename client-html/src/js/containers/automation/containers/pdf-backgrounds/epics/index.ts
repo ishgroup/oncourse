@@ -1,7 +1,8 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetPdfBackgroundsList } from "./EpicGetPdfBackgroundsList";
 import { EpicCreatePdfBackground } from "./EpicCreatePdfBackground";
 import { EpicGetPdfBackground } from "./EpicGetPdfBackground";
+import { EpicGetPdfBackgroundCopy } from "./EpicGetPdfBackgroundCopy";
+import { EpicGetPdfBackgroundsList } from "./EpicGetPdfBackgroundsList";
 import { EpicRemovePdfBackground } from "./EpicRemovePdfBackground";
 import { EpicUpdatePdfBackground } from "./EpicUpdatePdfBackground";
 
@@ -10,5 +11,6 @@ export const EpicPdfBackgrounds = combineEpics(
   EpicGetPdfBackgroundsList,
   EpicCreatePdfBackground,
   EpicGetPdfBackground,
-  EpicRemovePdfBackground
+  EpicRemovePdfBackground,
+  EpicGetPdfBackgroundCopy
 );

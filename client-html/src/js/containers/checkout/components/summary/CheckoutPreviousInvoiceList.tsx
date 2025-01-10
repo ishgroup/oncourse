@@ -3,30 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import { format } from "date-fns";
-import clsx from "clsx";
+import { Chip, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import {
-  Chip, Paper, Typography, Grid, FormControlLabel
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { openInternalLink } from "../../../../common/utils/links";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { State } from "../../../../reducers/state";
+  BooleanArgFunction,
+  D_MMM_YYYY,
+  formatCurrency,
+  LinkAdornment,
+  openInternalLink,
+  StyledCheckbox
+} from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { CheckoutPreviousInvoice, PreviousInvoiceState } from '../../../../model/checkout';
+import { State } from '../../../../reducers/state';
 import {
   checkoutSetPreviousOwingPayDue,
   checkoutTogglePreviousInvoice,
   checkoutUncheckAllPreviousInvoice
-} from "../../actions/checkoutSummary";
-import { summaryListStyles } from "../../styles/summaryListStyles";
-import CheckoutAppBar from "../CheckoutAppBar";
-import { CheckoutPreviousInvoice, PreviousInvoiceState } from "../../../../model/checkout";
-import { BooleanArgFunction } from "../../../../model/common/CommonFunctions";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+} from '../../actions/checkoutSummary';
+import { summaryListStyles } from '../../styles/summaryListStyles';
+import CheckoutAppBar from '../CheckoutAppBar';
 
 export const CheckoutPreviousInvoiceListFormRole: string = "CheckoutPreviousInvoiceListform";
 
@@ -189,4 +189,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(summaryListStyles)(CheckoutPreviousInvoiceList));
+)(withStyles(CheckoutPreviousInvoiceList, summaryListStyles));

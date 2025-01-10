@@ -12,36 +12,29 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
-import ish.oncourse.types.AuditAction
 import ish.common.types.EntityEvent
 import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.api.dao.ScriptDao
-import static ish.oncourse.server.api.v1.function.ScriptFunctions.validateQueries
 import ish.oncourse.server.api.v1.function.export.ExportFunctions
-import ish.oncourse.server.api.v1.model.ExecuteScriptRequestDTO
-import ish.oncourse.server.api.v1.model.OutputTypeDTO
-import ish.oncourse.server.api.v1.model.ScheduleDTO
-import ish.oncourse.server.api.v1.model.ScheduleTypeDTO
-import ish.oncourse.server.api.v1.model.ScriptDTO
-import ish.oncourse.server.api.v1.model.ScriptTriggerDTO
-import static ish.oncourse.server.api.v1.model.TriggerTypeDTO.*
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.concurrent.ExecutorManager
+import ish.oncourse.server.configs.AutomationModel
+import ish.oncourse.server.configs.ScriptModel
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.ScriptParameters
 import ish.oncourse.server.scripting.validation.ScriptValidator
 import ish.oncourse.server.users.SystemUserService
+import ish.oncourse.types.AuditAction
 import ish.scripting.CronExpressionType
 import ish.scripting.ScriptResult
-import static ish.scripting.ScriptResult.ResultType.FAILURE
 import ish.util.DateFormatter
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import static org.apache.commons.lang.StringUtils.isBlank
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -50,6 +43,13 @@ import javax.ws.rs.ServerErrorException
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
 import java.util.concurrent.Callable
+import java.util.function.BiConsumer
+
+import static ish.oncourse.server.api.v1.function.ScriptFunctions.validateQueries
+import static ish.oncourse.server.api.v1.model.TriggerTypeDTO.*
+import static ish.oncourse.server.upgrades.DataPopulationUtils.fillScriptWithCommonFields
+import static ish.scripting.ScriptResult.ResultType.FAILURE
+import static org.apache.commons.lang.StringUtils.isBlank
 
 class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao> {
 
@@ -80,6 +80,21 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
     @Override
     protected ScriptDTO createDto() {
         new ScriptDTO()
+    }
+
+    @Override
+    protected BiConsumer<Script, Map<String, Object>> getFillPropertiesFunction() {
+        return new BiConsumer<Script, Map<String, Object>>() {
+            @Override
+            void accept(Script script, Map<String, Object> stringObjectMap) {
+                fillScriptWithCommonFields(script, stringObjectMap)
+            }
+        }
+    }
+
+    @Override
+    protected AutomationModel getConfigsModelOf(Script entity) {
+        return new ScriptModel(entity)
     }
 
     @Override
@@ -157,6 +172,30 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                         case SystemEventType.PAYSLIP_PAID:
                             st.type = PAYSLIP_PAID
                             break
+                        case SystemEventType.CHECKLIST_TASK_CHECKED:
+                            st.type = CHECKLIST_TASK_CHECKED
+                            st.entityName = dbScript.entityClass
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
+                        case SystemEventType.CHECKLIST_COMPLETED:
+                            st.type = CHECKLIST_COMPLETED
+                            st.entityName = dbScript.entityClass
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
+                        case SystemEventType.TAG_ADDED:
+                            st.type = TAG_ADDED
+                            st.entityName = dbScript.entityClass
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
+                        case SystemEventType.TAG_REMOVED:
+                            st.type = TAG_REMOVED
+                            st.entityName = dbScript.entityClass
+                            if(dbScript.entityAttribute)
+                                st.parameterId = Long.parseLong(dbScript.entityAttribute)
+                            break
                         default:
                             throw new ServerErrorException("Unexpected error: unknown system event trigger type '$dbScript.systemEventType' in script '$dbScript.name'", Response.Status.INTERNAL_SERVER_ERROR)
                     }
@@ -167,17 +206,25 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
             st
         }
 
-        List<String> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED)
+        List<LastRunDTO> lastRunList = ObjectSelect.columnQuery(Audit, Audit.CREATED, Audit.ACTION)
                 .where(Audit.ENTITY_IDENTIFIER.eq(dbScript.class.simpleName))
                 .and(Audit.ENTITY_ID.eq(dbScript.id))
                 .and(Audit.ACTION.in(AuditAction.SCRIPT_EXECUTED, AuditAction.SCRIPT_FAILED))
                 .orderBy(Audit.CREATED.desc())
                 .limit(LAST_RUN_FETCH_LIMIT)
                 .select(cayenneService.newContext)
-                .collect { DateFormatter.formatDateISO8601(it) }
-
+                .collect { convertArray(it) }
+        
         scriptDTO.lastRun = lastRunList
         scriptDTO
+    }
+
+    private static LastRunDTO convertArray(Object[]arr){
+        new LastRunDTO().with{ it ->
+            it.date = DateFormatter.formatDateISO8601(arr[0] as Date)
+            it.status = (arr[1] as AuditAction).displayName
+            it
+        }
     }
 
     @Override
@@ -264,6 +311,42 @@ class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao
                 break
             case ON_DEMAND:
                 dbScript.triggerType = TriggerType.ON_DEMAND
+                break
+            case CHECKLIST_TASK_CHECKED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.CHECKLIST_TASK_CHECKED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
+                break
+            case CHECKLIST_COMPLETED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.CHECKLIST_COMPLETED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
+                break
+            case TAG_ADDED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.TAG_ADDED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
+                break
+            case TAG_REMOVED:
+                dbScript.triggerType = TriggerType.ONCOURSE_EVENT
+                dbScript.systemEventType = SystemEventType.TAG_REMOVED
+                dbScript.entityClass = scriptDTO.trigger.entityName
+                if(scriptDTO.trigger.parameterId)
+                    dbScript.entityAttribute = String.valueOf(scriptDTO.trigger.parameterId)
+                else
+                    dbScript.entityAttribute = null
                 break
         }
 

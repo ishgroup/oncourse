@@ -1,11 +1,14 @@
-import React, { useCallback, useRef, useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import Close from "@mui/icons-material/Close";
-import Search from "@mui/icons-material/Search";
-import Input from "@mui/material/Input";
-import debounce from "lodash.debounce";
+import Close from '@mui/icons-material/Close';
+import Search from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import clsx from 'clsx';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useRef, useState } from 'react';
 
-const SidebarSearch = React.memo<any>(({ placeholder = "Filter items", setParentSearch }) => {
+const SidebarSearch = React.memo<{
+ placeholder?, setParentSearch?, smallIcons?
+}>(({placeholder = "Filter items", setParentSearch, smallIcons}) => {
   const [search, setSearch] = useState("");
 
   const searchRef = useRef("");
@@ -34,11 +37,11 @@ const SidebarSearch = React.memo<any>(({ placeholder = "Filter items", setParent
         value={search}
         onChange={onChange}
         placeholder={placeholder}
-        startAdornment={<Search className="inputAdornmentIcon textSecondaryColor mr-1" />}
+        startAdornment={<Search className={clsx("textSecondaryColor mr-1", smallIcons && "inputAdornmentIcon")}/>}
         endAdornment={
           search && (
             <IconButton className="closeAndClearButton" onClick={clear}>
-              <Close className="inputAdornmentIcon" />
+              <Close className={clsx(smallIcons && "inputAdornmentIcon")}/>
             </IconButton>
           )
         }

@@ -4,20 +4,10 @@
  */
 
 import { Contact } from "@api/model";
-import { openInternalLink } from "../../../../common/utils/links";
-import { Classes, CourseClassStatus } from "../../../../model/entities/CourseClass";
-import { EntityType } from "../../../../model/common/NestedEntity";
+import { EntityType, openInternalLink } from "ish-ui";
+import { CourseClassStatus } from "../../../../model/entities/CourseClass";
 
-export const THEME_SPACING = 8;
-export const WRAPPER_SPACING = THEME_SPACING * 9;
-export const DEFAULT_TABLE_HEAD_HEIGHT = 52;
-export const DEFAULT_TABLE_CELL_HEIGHT = 30;
-export const DEFAULT_TITLE_HEIGHT = 33;
-export const DEFAULT_TABLE_HEIGHT = 400;
-
-export const contactLabelCondition = (data: Contact) => data && (data.firstName ? `${data.firstName} ${data.lastName}` : data.lastName);
-
-export const getContactName = item => {
+const getContactName = item => {
   const firstName = item.firstName || "";
   const lastName = item.lastName || "";
   return `${firstName.toLowerCase() === lastName.toLowerCase() ? "" : `${firstName} `}${lastName}`;
@@ -34,20 +24,7 @@ export const getContactFullName = (data: Contact) => {
     return `${firstName} ${middleName} ${lastName}`;
   }
 
-  return `${firstName} ${lastName}`;
-};
-
-export const defaultContactName = (contactName: string) => {
-  if (contactName) {
-    const hasFirstName = contactName.split(", ");
-    let name = contactName;
-
-    if (hasFirstName.length > 0) {
-      name = hasFirstName.reverse().join(" ");
-    }
-    return name;
-  }
-  return contactName;
+  return getContactName(data);
 };
 
 export const openContactLink = (contactId: number) => {
@@ -63,40 +40,40 @@ export const getNestedTutorClassItem = (status: CourseClassStatus, count: number
       return {
         name: "Current",
         count,
-        link: `/${Classes.path}?search=tutorRoles.tutor.id is ${id}&filter=@Current_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
+        link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Current_classes`,
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
       };
     case "Future":
       return {
         name: "Future",
         count,
-        link: `/${Classes.path}?search=tutorRoles.tutor.id is ${id}&filter=@Future_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
+        link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Future_classes`,
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
       };
     case "Self Paced":
       return {
         name: "Self Paced",
         count,
-        link: `/${Classes.path}?search=tutorRoles.tutor.id is ${id}&filter=@Self_paced_classes`
+        link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Self_paced_classes`
       };
     case "Unscheduled":
       return {
         name: "Unscheduled",
         count,
-        link: `/${Classes.path}?search=tutorRoles.tutor.id is ${id}&filter=@Unscheduled_classes`
+        link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Unscheduled_classes`
       };
     case "Finished":
       return {
         name: "Finished",
         count,
-        link: `/${Classes.path}?search=tutorRoles.tutor.id is ${id}&filter=@Finished_classes`,
-        timetableLink: `/timetable/search?query=courseClass.tutorRoles.tutor.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
+        link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Finished_classes`,
+        timetableLink: `/timetable?search=courseClass.tutorRoles.tutor.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
       };
     case "Cancelled":
       return {
         name: "Cancelled",
         count,
-        link: `/${Classes.path}?search=tutorRoles.tutor.id is ${id}&filter=@Cancelled_classes`,
+        link: `/class?search=tutorRoles.tutor.id is ${id}&filter=@Cancelled_classes`,
         grayOut: true
       };
     default: {

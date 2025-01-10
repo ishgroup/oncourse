@@ -1,30 +1,32 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Currency, PaymentMethod } from "@api/model";
+import { Grid } from "@mui/material";
+import { compareAsc, format as formatDate } from "date-fns";
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, LinkAdornment, openInternalLink } from "ish-ui";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { change, FieldArray, initialize } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { compareAsc, format as formatDate } from "date-fns";
-import { Currency, PaymentMethod } from "@api/model";
+import { change, FieldArray } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "../../../../common/utils/links";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { D_MMM_YYYY, III_DD_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from "../../../../common/utils/dates/format";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { getActivePaymentOutMethods } from "../actions";
-import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
 import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
-import { PaymentOutModel } from "../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { PaymentOutModel } from "../reducers/state";
+import { getAmountToAllocate, getInitialTotalOutstanding, getInitialTotalOwing, getTotalOutstanding } from "../utils";
+import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
 
 const addPaymentOutColumnsBase: NestedTableColumn[] = [
   {
@@ -63,7 +65,6 @@ const openRow = value => {
 interface AddPaymentOutEditViewProps extends EditViewProps {
   classes?: any;
   values: PaymentOutModel;
-  formInitialValues: PaymentOutModel;
   currency?: Currency;
   postPaymentOut?: () => void;
   onInit?: any;
@@ -72,91 +73,35 @@ interface AddPaymentOutEditViewProps extends EditViewProps {
   accountItems?: any;
   adminSites?: SiteState["adminSites"];
   lockedDate?: any;
-  selection?: string[];
 }
-
-const getTotalOwing = invoices => invoices.reduce((acc, invoice) => Math.round(acc * 100 + invoice.amountOwing * 100) / 100, 0);
-
-const getTotalOutstanding = invoices => invoices.reduce((acc, invoice) => Math.round(acc * 100 + invoice.outstanding * 100) / 100, 0);
-
-const getInitialTotalOwing = invoices => {
-  if (Array.isArray(invoices)) {
-    return invoices
-      .filter(invoice => invoice.amountOwing < 0)
-      .reduce((acc, invoice) => Math.round(acc * 100 + invoice.amountOwing * 100) / 100, 0);
-  }
-  return null;
-};
-
-const getInitialTotalOutstanding = (invoices, amount) => {
-  const totalOwing = getInitialTotalOwing(invoices);
-
-  return Math.round((totalOwing || 1) * 100 + amount * 100) / 100;
-};
-
-const getAmountToAllocate = (invoices, amount) => {
-  const checkedInvoices = invoices.filter(invoice => invoice.payable);
-  const checkedSum = getTotalOwing(checkedInvoices);
-
-  return Math.round(amount * 100 + checkedSum * 100) / 100;
-};
-
-const AddPaymentOutWrapper = props => {
-  const {
-    values,
-    formInitialValues,
-    dispatch,
-    form
-  } = props;
-
-  const initForm = model => {
-    dispatch(initialize(form, model));
-  };
-
-  useEffect(() => {
-    dispatch(getActivePaymentOutMethods());
-
-    initForm({
-      ...formInitialValues,
-      amount: 0,
-      datePayed: formatDate(Date.now(), III_DD_MMM_YYYY),
-      dateBanked: ""
-    });
-  }, [formInitialValues]);
-
-  return values ? <AddPaymentOutEditView {...props} /> : null;
-};
 
 const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps> = props => {
   const {
     values,
     currency,
-    formInitialValues,
     refundablePayments,
     dispatch,
     form,
     paymentOutMethods,
     accountItems,
     adminSites,
-    lockedDate,
-    selection
+    lockedDate
   } = props;
 
   useEffect(() => {
     dispatch(change(form, "selectedPaymentMethod", paymentOutMethods?.find(p => p.id === values.paymentMethodId)?.type));
   }, [paymentOutMethods, values.paymentMethodId]);
 
-
   const addPaymentOutTitle = useMemo(
     () => `pay item${values && values.invoices && values.invoices.length !== 1 ? "s" : ""}`,
     [values ? values.invoices : null]
   );
 
-  const initialTotalOwing = useMemo(() => getInitialTotalOwing(formInitialValues.invoices), [formInitialValues.invoices]);
+  const initialTotalOwing = useMemo(() => getInitialTotalOwing(values.invoices), [values.invoices]);
 
   const initialTotalOutstanding = useMemo(
-    () => getInitialTotalOutstanding(formInitialValues.invoices, values.amount),
-    [formInitialValues.invoices, values.amount]
+    () => getInitialTotalOutstanding(values.invoices, values.amount),
+    [values.invoices, values.amount]
   );
 
   const paymentTypes = useMemo(
@@ -169,7 +114,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
   const validateLockedDate = useCallback(
     settlementDate => {
       if (!lockedDate || !settlementDate) return undefined;
-      const lockedDateValue = new Date(lockedDate.year, lockedDate.monthValue - 1, lockedDate.dayOfMonth);
+      const lockedDateValue = new Date(lockedDate);
       return compareAsc(lockedDateValue, new Date(settlementDate)) === 1
         ? `You must choose date after "Transaction locked" date (${formatDate(lockedDateValue, D_MMM_YYYY)})`
         : undefined;
@@ -223,17 +168,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
       }
     };
 
-  useEffect(() => {
-    const invoiceIndex = values.invoices?.findIndex(i => i.id === Number(selection[0]));
-    if (invoiceIndex !== -1) {
-      const amount = Math.abs(values.invoices[invoiceIndex].amountOwing);
-      const amountToAllocate = getAmountToAllocate(values.invoices, amount);
-      dispatch(change(form, "amount", amount));
-      dispatch(change(form, `invoices[${invoiceIndex}].payable`, true));
-      dispatch(change(form, `invoices[${invoiceIndex}].outstanding`, values.invoices[invoiceIndex].outstanding + amountToAllocate));
-    }
-  }, [selection]);
-
   const refundablePaymentRecords = useMemo(() => {
     if (!refundablePayments || !refundablePayments.length) {
       return null;
@@ -246,8 +180,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           createdOn,
           gatewayReference,
           creditCardClientReference,
-          amount,
-          privateNotes
+          amount
         } = payment;
 
         const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : defaultCurrencySymbol;
@@ -256,16 +189,14 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         return {
           value: refundableId,
-          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount} ${
-            privateNotes || ""
-          }`
+          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount}`
         };
       });
   }, [refundablePayments, values.amount, currency]);
 
   const invoiceDisabledCondition = () => {
-    const totalOutstanding = getInitialTotalOutstanding(formInitialValues.invoices, values.amount);
-    return totalOutstanding > 0 || totalOutstanding === null || totalOutstanding < getInitialTotalOwing(formInitialValues.invoices);
+    const totalOutstanding = getInitialTotalOutstanding(values.invoices, values.amount);
+    return totalOutstanding > 0 || totalOutstanding === null || totalOutstanding < getInitialTotalOwing(values.invoices);
   };
 
   const addPaymentOutColumns = useMemo(() => {
@@ -303,7 +234,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   const validateInvoices = useCallback(
     (value, allValues) => {
-      const amountToAllocate = Math.round((allValues.amount + initialTotalOwing - getTotalOutstanding(allValues.invoices)) * 100) / 100;
+      const amountToAllocate = allValues.invoices ? (Math.round((allValues.amount + initialTotalOwing - getTotalOutstanding(allValues.invoices)) * 100) / 100) : 0;
       return amountToAllocate > 0 ? "Payment amount does not match to allocated invoices amount." : undefined;
     },
     [initialTotalOwing]
@@ -322,7 +253,8 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
       const owing = invoice.amountOwing;
 
       if (leftAmount <= 0) {
-        return { ...formInitialValues.invoices.find(i => i.id === invoice.id) };
+        return { ...values
+            .invoices.find(i => i.id === invoice.id) };
       }
 
       if (owing + leftAmount >= 0) {
@@ -359,9 +291,11 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
   return values ? (
     <div className="p-3 h-100 flex-column">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={12}>
-          <Uneditable value={values.payeeName} label="Payment to" url={`/contact/${values.payeeId}`} />
+          <Uneditable value={values.payeeName} label="Payment to" labelAdornment={
+            <ContactLinkAdornment id={values.payeeId} />
+          } />
         </Grid>
 
         <Grid item xs={4}>
@@ -372,15 +306,16 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             items={paymentTypes}
             validate={[validateSingleMandatoryField, validatePaymentMethodField]}
             onChange={handlePaymentMethodChange}
+            debounced={false}
           />
         </Grid>
 
         <Grid item xs={4}>
           <FormField
-            type="searchSelect"
+            type="select"
             name="administrationCenterId"
             label="Site"
-            defaultDisplayValue={values.administrationCenterName}
+            defaultValue={values.administrationCenterName}
             selectLabelCondition={getAdminCenterLabel}
             validate={
               typeof values.paymentMethodId === "number" && values.selectedPaymentMethod !== "Credit card"
@@ -411,7 +346,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4}>
           <FormField
             type="money"
-            value={values.amount}
             name="amount"
             label="Amount paid"
             validate={[validateSingleMandatoryField, greaterThanNullValidation, validateAmountField]}
@@ -448,7 +382,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4} />
 
         <Grid item xs={12}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
         </Grid>
       </Grid>
 
@@ -463,6 +397,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         hideHeader
         validate={validateInvoices}
         sortBy={(a, b) => b.invoiceNumber - a.invoiceNumber}
+        className="mt-2"
         calculateHeight
       />
     </div>
@@ -471,7 +406,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 };
 
 const mapStateToProps = (state: State) => ({
-  formInitialValues: state.paymentsOut.addPaymentOutValues,
   paymentOutMethods: state.paymentsOut.paymentOutMethods,
   refundablePayments: state.paymentsOut.refundablePayments,
   currency: state.currency,
@@ -481,4 +415,4 @@ const mapStateToProps = (state: State) => ({
   selection: state.list.selection
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(AddPaymentOutWrapper);
+export default connect<any, any, any>(mapStateToProps)((props: AddPaymentOutEditViewProps) => props.values ? <AddPaymentOutEditView {...props} /> : null);

@@ -13,6 +13,7 @@ package ish.oncourse.server.cayenne
 
 import com.google.inject.Inject
 import ish.common.types.AttachmentInfoVisibility
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Document
@@ -61,10 +62,14 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	@API
 	DocumentVersion getCurrentVersion() {
 		List<DocumentVersion> versions = getVersions()
+		DocumentVersion result = versions.find { it.current}
 
-		Ordering.orderList(versions, Collections.singletonList(DocumentVersion.TIMESTAMP.desc()))
+		if (result == null) {
+			Ordering.orderList(versions, Collections.singletonList(DocumentVersion.TIMESTAMP.desc()))
+			result = versions.get(0)
+		}
 
-		return versions.get(0)
+		return result
 	}
 
 	/**
@@ -165,7 +170,8 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (DocumentTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}

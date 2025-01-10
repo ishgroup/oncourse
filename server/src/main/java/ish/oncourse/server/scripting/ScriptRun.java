@@ -33,6 +33,7 @@ public class ScriptRun {
                     "import java.text.*\n" +
                     "import ish.util.*\n" +
                     "import ish.math.Money\n" +
+                    "ish.oncourse.server.imports.CsvParser\n" +
                     "import org.apache.logging.log4j.*\n";
 
     private static final String PREPARE_API =
