@@ -20,7 +20,7 @@ import {
   checkoutSetPaymentMethod,
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
-import { FORM } from '../../../CheckoutSelection';
+import { CHECKOUT_SELECTION_FORM_NAME } from '../../../CheckoutSelection';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 
 
@@ -57,7 +57,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     if (result === "Cancel") return;
 
     if (result === "Error") {
-      dispatch(change(FORM, "payment_method", null));
+      dispatch(change(CHECKOUT_SELECTION_FORM_NAME, "payment_method", null));
       dispatch(checkoutSetPaymentMethod(null));
       checkoutPaymentSetCustomStatus("fail");
     }

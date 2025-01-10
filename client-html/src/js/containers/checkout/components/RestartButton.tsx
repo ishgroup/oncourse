@@ -14,7 +14,7 @@ import { reset } from "redux-form";
 import { IAction } from '../../../common/actions/IshAction';
 import { checkoutClearState } from "../actions";
 import { checkoutGetActivePaymentMethods } from "../actions/checkoutPayment";
-import { FORM as SELECTION_FORM } from "./CheckoutSelection";
+import { CHECKOUT_SELECTION_FORM_NAME as SELECTION_FORM } from "./CheckoutSelection";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./fundingInvoice/CheckoutFundingInvoiceSummaryList";
 import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
 

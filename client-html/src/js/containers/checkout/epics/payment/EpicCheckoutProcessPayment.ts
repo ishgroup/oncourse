@@ -11,6 +11,7 @@ import { Epic } from "redux-observable";
 import { SHOW_MESSAGE } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { LSSetItem } from '../../../../common/utils/storage';
 import {
   CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_PAYMENT,
@@ -19,13 +20,13 @@ import {
   checkoutProcessPaymentFulfilled,
   checkoutSetPaymentProcessing
 } from "../../actions/checkoutPayment";
-import { FORM } from "../../components/CheckoutSelection";
+import { CHECKOUT_SELECTION_FORM_NAME } from "../../components/CheckoutSelection";
 import {
   CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
 } from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
 import { CHECKOUT_SUMMARY_FORM } from "../../components/summary/CheckoutSummaryList";
 import CheckoutService from "../../services/CheckoutService";
-import { getCheckoutModel } from "../../utils";
+import { getCheckoutModel, getStoredPaymentStateKey } from '../../utils';
 
 const errorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
 
@@ -48,7 +49,7 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
   getData: ({
   xValidateOnly, xPaymentSessionId, xOrigin
   }, s) => {
-    const paymentPlans = (getFormValues(FORM)(s) as any)?.paymentPlans || [];
+    const paymentPlans = (getFormValues(CHECKOUT_SELECTION_FORM_NAME)(s) as any)?.paymentPlans || [];
 
     const checkoutModel = getCheckoutModel(
       s.checkout,
@@ -61,6 +62,10 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
   processData: (checkoutResponse: CheckoutResponse, s, { xValidateOnly }) => {
     const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
     const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
+
+    if (xValidateOnly && checkoutResponse.sessionId && (s.userPreferences['payment.gateway.type'] === 'STRIPE' || s.userPreferences['payment.gateway.type'] === 'STRIPE_TEST')) {
+      LSSetItem(getStoredPaymentStateKey(checkoutResponse.sessionId), JSON.stringify(s.checkout));
+    }
 
     return [
       paymentType !== "Credit card" && !xValidateOnly

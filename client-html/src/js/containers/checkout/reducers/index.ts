@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { decimalPlus } from "ish-ui";
-import { IAction } from "../../../common/actions/IshAction";
-import { LSGetItem, LSRemoveItem } from '../../../common/utils/storage';
-import { CheckoutAddItemsRequiest, CheckoutDiscount, CheckoutItem, CheckoutState } from "../../../model/checkout";
-import { getContactFullName } from "../../entities/contacts/utils";
+import { decimalPlus } from 'ish-ui';
+import { IAction } from '../../../common/actions/IshAction';
+import { CheckoutAddItemsRequiest, CheckoutDiscount, CheckoutItem, CheckoutState } from '../../../model/checkout';
+import { getContactFullName } from '../../entities/contacts/utils';
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
@@ -23,13 +22,13 @@ import {
   CHECKOUT_UPDATE_CLASS_ITEM,
   CHECKOUT_UPDATE_CONTACT,
   CHECKOUT_UPDATE_RELATED_ITEMS
-} from "../actions";
+} from '../actions';
 import {
   CHECKOUT_CLEAR_CONTACT_EDIT_RECORD,
   CHECKOUT_GET_CONTACT_FULFILLED,
   CHECKOUT_GET_RELATED_CONTACT_FULFILLED,
   CHECKOUT_UPDATE_CONTACT_RELATIONS
-} from "../actions/checkoutContact";
+} from '../actions/checkoutContact';
 import {
   CHECKOUT_CLEAR_CC_IFRAME_URL,
   CHECKOUT_CLEAR_PAYMENT_STATUS,
@@ -46,12 +45,13 @@ import {
   CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
   CHECKOUT_SET_PAYMENT_SUCCESS,
   CHECKOUT_SET_PAYMENT_TYPE
-} from "../actions/checkoutPayment";
+} from '../actions/checkoutPayment';
 import {
   CHECKOUT_CHANGE_SUMMARY_ITEM_FIELD,
   CHECKOUT_CHANGE_SUMMARY_ITEM_QUANTITY,
   CHECKOUT_REMOVE_PROMOTIONAL_CODE,
-  CHECKOUT_REMOVE_VOUCHER_PROMO, CHECKOUT_RESTORE_STATE,
+  CHECKOUT_REMOVE_VOUCHER_PROMO,
+  CHECKOUT_RESTORE_STATE,
   CHECKOUT_SET_DEFAULT_PAYER,
   CHECKOUT_SET_DISABLE_DISCOUNTS,
   CHECKOUT_SET_PREVIOUS_CREDIT,
@@ -75,8 +75,7 @@ import {
   CHECKOUT_GET_ITEM_PRODUCT_FULFILLED,
   CHECKOUT_GET_ITEM_VOUCHER_FULFILLED,
   CLEAR_CHECKOUT_ITEM_RECORD
-} from "../actions/chekoutItem";
-import { CHECKOUT_STORED_STATE_KEY } from '../constants';
+} from '../actions/chekoutItem';
 import {
   getDefaultPayer,
   getUpdatedSummaryItem,
@@ -85,7 +84,7 @@ import {
   listPreviousInvoices,
   modifySummaryLisItem,
   setSummaryListWithDefaultPayer
-} from "../utils";
+} from '../utils';
 
 const initial: CheckoutState = {
   step: 0,
@@ -145,12 +144,11 @@ const initial: CheckoutState = {
 export const checkoutReducer = (state: CheckoutState = initial, action: IAction): CheckoutState => {
   switch (action.type) {
     case CHECKOUT_RESTORE_STATE: {
-      const storedState = LSGetItem(CHECKOUT_STORED_STATE_KEY);
-      LSRemoveItem(CHECKOUT_STORED_STATE_KEY);
+      const storedState = action.payload;
 
       return {
         ...state,
-        ...storedState ? JSON.parse(storedState) : {}
+        ...storedState
       };
     }
     
