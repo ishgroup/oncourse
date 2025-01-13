@@ -11,7 +11,7 @@ import { Epic } from "redux-observable";
 import { SHOW_MESSAGE } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { LSSetItem } from '../../../../common/utils/storage';
+import { LSGetItem, LSSetItem } from '../../../../common/utils/storage';
 import {
   CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_PAYMENT,
@@ -26,7 +26,7 @@ import {
 } from "../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList";
 import { CHECKOUT_SUMMARY_FORM } from "../../components/summary/CheckoutSummaryList";
 import CheckoutService from "../../services/CheckoutService";
-import { getCheckoutModel, getStoredPaymentStateKey } from '../../utils';
+import { clearStoredPaymentsState, getCheckoutModel, getStoredPaymentStateKey } from '../../utils';
 
 const errorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
 
@@ -44,19 +44,27 @@ const getErrorMessage = response => {
       : null;
 };
 
+let storedModel;
+
 const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
   type: CHECKOUT_PROCESS_PAYMENT,
   getData: ({
   xValidateOnly, xPaymentSessionId, xOrigin
   }, s) => {
+
+    const storedLSModel = !xValidateOnly && LSGetItem(getStoredPaymentStateKey(xPaymentSessionId));
+
     const paymentPlans = (getFormValues(CHECKOUT_SELECTION_FORM_NAME)(s) as any)?.paymentPlans || [];
 
-    const checkoutModel = getCheckoutModel(
+    const checkoutModel = storedLSModel ? JSON.parse(storedLSModel)?.storedModel : getCheckoutModel(
       s.checkout,
       paymentPlans.filter(p => p.amount && p.date).map(p => ({ amount: p.amount, date: format(new Date(p.date), YYYY_MM_DD_MINUSED) })),
       (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(s) as any).fundingInvoices,
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
+
+    storedModel = checkoutModel;
+
     return CheckoutService.checkoutSubmitPayment(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
   },
   processData: (checkoutResponse: CheckoutResponse, s, { xValidateOnly }) => {
@@ -64,7 +72,17 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
     const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
 
     if (xValidateOnly && checkoutResponse.sessionId && (s.userPreferences['payment.gateway.type'] === 'STRIPE' || s.userPreferences['payment.gateway.type'] === 'STRIPE_TEST')) {
-      LSSetItem(getStoredPaymentStateKey(checkoutResponse.sessionId), JSON.stringify(s.checkout));
+      if (storedModel) {
+        storedModel.merchantReference = checkoutResponse.merchantReference;
+      }
+      LSSetItem(getStoredPaymentStateKey(checkoutResponse.sessionId), JSON.stringify({
+        checkout: s.checkout,
+        storedModel
+      }));
+    }
+
+    if (paymentType !== "Credit card" && !xValidateOnly) {
+      clearStoredPaymentsState();
     }
 
     return [
