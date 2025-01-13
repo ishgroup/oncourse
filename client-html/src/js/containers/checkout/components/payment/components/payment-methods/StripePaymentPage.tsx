@@ -24,7 +24,6 @@ import {
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
 import CheckoutService from '../../../../services/CheckoutService';
-import { clearStoredPaymentsState } from '../../../../utils';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 
 const useStyles = makeAppStyles()({
@@ -79,12 +78,11 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
     clearCcIframeUrl();
-    clearStoredPaymentsState();
     checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
   };
 
   useEffect(() => {
-    if (summary.payNowTotal > 0) {
+    if (!sessionId && summary.payNowTotal > 0) {
       proceedPayment();
     }
   }, [
@@ -93,12 +91,6 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     summary.paymentDate,
     summary.invoiceDueDate
   ]);
-
-  useEffect(() => {
-    if (process.status === 'success' && !isPaymentProcessing) {
-      clearStoredPaymentsState();
-    }
-  }, [process.status, isPaymentProcessing]);
 
   return (
     <div

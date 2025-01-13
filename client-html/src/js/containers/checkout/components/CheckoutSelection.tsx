@@ -26,7 +26,7 @@ import AppBarContainer from '../../../common/components/layout/AppBarContainer';
 import Drawer from '../../../common/components/layout/Drawer';
 import { setListEditRecord } from '../../../common/components/list-view/actions';
 import LoadingIndicator from '../../../common/components/progress/LoadingIndicator';
-import { latestActivityStorageHandler, LSGetItem, LSRemoveItem } from '../../../common/utils/storage';
+import { latestActivityStorageHandler, LSGetItem } from '../../../common/utils/storage';
 import uniqid from '../../../common/utils/uniqid';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../constants/Config';
 import history from '../../../constants/History';
@@ -74,7 +74,7 @@ import {
 import {
   CHECKOUT_CONTACT_COLUMNS,
   CHECKOUT_MEMBERSHIP_COLUMNS,
-  CHECKOUT_PRODUCT_COLUMNS, CHECKOUT_STORED_STATE_KEY,
+  CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
   CheckoutCurrentStepType,
@@ -85,8 +85,10 @@ import {
 import {
   checkoutCourseMap,
   checkoutProductMap,
-  checkoutVoucherMap, clearStoredPaymentsState,
-  getCheckoutCurrentStep, getStoredPaymentStateKey,
+  checkoutVoucherMap,
+  clearStoredPaymentsState,
+  getCheckoutCurrentStep,
+  getStoredPaymentStateKey,
   processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
@@ -562,7 +564,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     if (sessionId) {
       const storedState = LSGetItem(getStoredPaymentStateKey(sessionId));
       if (storedState) {
-        dispatch(checkoutRestoreState(JSON.parse(storedState)));
+        dispatch(checkoutRestoreState(JSON.parse(storedState)?.checkout));
       } else {
         clearStoredPaymentsState();
         history.replace("/checkout");
