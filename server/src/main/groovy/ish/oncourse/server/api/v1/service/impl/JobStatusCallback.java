@@ -17,7 +17,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import com.google.inject.Inject;
-import ish.oncourse.server.api.model.ProcessStatusDTO;
+import ish.oncourse.server.api.v1.model.ProcessStatusDTO;
 import ish.oncourse.server.cluster.ClusteredExecutorManager;
 
 @ServerEndpoint("/v1/job-status/{job-id}")

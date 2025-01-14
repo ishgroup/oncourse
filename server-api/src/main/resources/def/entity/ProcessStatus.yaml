@@ -1,0 +1,7 @@
+type: string
+description: List of export process statuses.
+enum:
+  - Not found
+  - In progress
+  - Finished
+  - Failed
