@@ -62,7 +62,6 @@ import ish.oncourse.server.checkout.CheckoutApiService
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentAPI
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
-import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.dashboard.ClassSearchService
 import ish.oncourse.server.dashboard.ContactSearchService
 import ish.oncourse.server.dashboard.CourseSearchService

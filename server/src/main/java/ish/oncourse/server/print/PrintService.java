@@ -22,7 +22,6 @@ import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.api.ReportSpec;
 import ish.print.PrintRequest;
 import ish.print.PrintResult;
-import ish.print.PrintResult.ResultType;
 import ish.print.PrintTransformationsFactory;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.query.ObjectSelect;

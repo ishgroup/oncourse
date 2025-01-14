@@ -32,7 +32,6 @@ import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.PdfApi
 import ish.oncourse.server.cayenne.Certificate
 import ish.oncourse.server.cayenne.Report
-import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.messaging.DocumentParam
 import ish.oncourse.server.messaging.MailDeliveryService
@@ -143,7 +142,7 @@ class PdfApiImpl implements PdfApi {
                 worker.run()
 
                 if (printRequest.emailToSent && !worker.result.error) {
-                    def documentParam = DocumentParam.valueOf(RESULT_EMAIL_DOCUMENT_NAME, worker.result.result)
+                    def documentParam = DocumentParam.valueOf(RESULT_EMAIL_DOCUMENT_NAME, worker.result.data)
                     def report = SelectById.query(Report, printRequest.report).selectFirst(cayenneService.newReadonlyContext)
 
                     def smtpParams = new SmtpParameters(

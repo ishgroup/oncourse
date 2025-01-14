@@ -27,7 +27,6 @@ import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.Audit
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
-import ish.oncourse.server.concurrent.ExecutorManager
 import ish.oncourse.server.configs.AutomationModel
 import ish.oncourse.server.configs.ScriptModel
 import ish.oncourse.server.scripting.GroovyScriptService
@@ -53,7 +52,6 @@ import java.util.function.BiConsumer
 import static ish.oncourse.server.api.v1.function.ScriptFunctions.validateQueries
 import static ish.oncourse.server.api.v1.model.TriggerTypeDTO.*
 import static ish.oncourse.server.upgrades.DataPopulationUtils.fillScriptWithCommonFields
-import static ish.scripting.ScriptResult.ResultType.FAILURE
 import static org.apache.commons.lang.StringUtils.isBlank
 
 class ScriptApiService extends AutomationApiService<ScriptDTO, Script, ScriptDao> {
