@@ -103,7 +103,7 @@ interface RemoveQueuedActionMeta {
 
 export const removeActionsFromQueue = (meta: RemoveQueuedActionMeta[]) => ({
   type: REMOVE_ACTIONS_FROM_QUEUE,
-  payload: {meta}
+  payload: { meta }
 });
 
 export const executeActionsQueue = () => ({
@@ -146,7 +146,7 @@ export const closeDrawer = () => ({
 
 export const getScripts = (entity: string) => ({
   type: GET_SCRIPTS_REQUEST,
-  payload: {entity}
+  payload: { entity }
 });
 
 export const getOnDemandScripts = () => ({
@@ -155,7 +155,7 @@ export const getOnDemandScripts = () => ({
 
 export const getEmailTemplatesWithKeyCode = (entities: string[]) => ({
   type: GET_EMAIL_TEMPLATES_WITH_KEYCODE,
-  payload: {entities}
+  payload: { entities }
 });
 
 export const getLdapConnection = (host: string, port: string, isSsl: string, baseDn: string, user: string) => ({
@@ -167,21 +167,21 @@ export const getLdapConnection = (host: string, port: string, isSsl: string, bas
 
 export const getMessageQueued = (type: string) => ({
   type: GET_MESSAGE_QUEUED_REQUEST,
-  payload: {type}
+  payload: { type }
 });
 
 export const clearFetch = () => ({
   type: FETCH_CLEAR
 });
 
-export const getProcessStatus = (processId: string, actions: any[]) => ({
+export const startProcessTrack = (processId: string, actions: IAction[], actionsOnFail?: IAction[]) => ({
   type: START_PROCESS,
-  payload: {processId, actions}
+  payload: { processId, actions, actionsOnFail }
 });
 
 export const interruptProcess = (processId: string) => ({
   type: INTERRUPT_PROCESS,
-  payload: {processId}
+  payload: { processId }
 });
 
 export const clearProcess = () => ({
@@ -190,7 +190,7 @@ export const clearProcess = () => ({
 
 export const checkPermissions = (permissionRequest: PermissionRequest, onComplete?: IAction[]) => ({
   type: CHECK_PERMISSIONS_REQUEST,
-  payload: {permissionRequest, onComplete}
+  payload: { permissionRequest, onComplete }
 });
 
 export const getUserPreferences = (keys: PreferenceEnum[]) => ({

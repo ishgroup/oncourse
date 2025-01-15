@@ -1,16 +1,9 @@
-import {
-  AvetmissExportApi,
-  AvetmissExportOutcome,
-  AvetmissExportRequest,
-  AvetmissExportSettings,
-  ControlApi
-} from "@api/model";
-import { DefaultHttpService } from "../../../common/services/HttpService";
+import { AvetmissExportApi, AvetmissExportOutcome, AvetmissExportRequest, AvetmissExportSettings } from '@api/model';
+import { DefaultHttpService } from '../../../common/services/HttpService';
 
 class AvetmissExportService {
   readonly service = new DefaultHttpService();
   readonly avetmissExportApi = new AvetmissExportApi(this.service);
-  readonly avetmissControlApi = new ControlApi(this.service);
 
   public getExportOutcomesProcessID(settings: AvetmissExportSettings): Promise<string> {
     return this.avetmissExportApi.findExportOutcomes(settings);
@@ -26,10 +19,6 @@ class AvetmissExportService {
 
   public getExport(processId: string): Promise<any> {
     return this.avetmissExportApi.getExport(processId);
-  }
-
-  public getExportStatus(exportID: string): Promise<any> {
-    return this.avetmissControlApi.getStatus(exportID);
   }
 }
 

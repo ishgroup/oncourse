@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ProcessResult } from "@api/model";
-import { Epic } from "redux-observable";
-import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from "../actions";
-import { IAction } from "../actions/IshAction";
-import ProcessService from "../services/ProcessService";
+import { ProcessResult } from '@api/model';
+import { Epic } from 'redux-observable';
+import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from '../actions';
+import { IAction } from '../actions/IshAction';
+import ProcessService from '../services/ProcessService';
 
-import * as EpicUtils from "./EpicUtils";
+import * as EpicUtils from './EpicUtils';
 
 const switchByStatus = (
   process: ProcessResult = {},
@@ -36,10 +36,6 @@ const switchByStatus = (
           type: UPDATE_PROCESS,
           payload: { process, processId }
         },
-        {
-          type: START_PROCESS,
-          payload: { processId, actions, actionsOnFail }
-        }
       ];
     }
     case "Not found": {
@@ -69,15 +65,14 @@ const switchByStatus = (
   }
 };
 
-const request: EpicUtils.DelayedRequest = {
+const request: EpicUtils.Request = {
   type: START_PROCESS,
-  delay: 1000,
   hideLoadIndicator: true,
-  getData: payload => ProcessService.getProcessStatus(payload.processId),
+  getData: payload => ProcessService.startProcessTrack(payload.processId),
   processData: (process: ProcessResult, state, payload) =>
     switchByStatus(process, payload.processId, payload.actions, payload.actionsOnFail),
-  processError: (res, payload) =>
+  processError: res =>
     switchByStatus(res.data, res.data.processId, res.data.actions, res.data.actionsOnFail)
 };
 
-export const EpicManageProcess: Epic<any, any> = EpicUtils.CreateWithTimeout(request);
+export const EpicManageProcess: Epic<any, any> = EpicUtils.Create(request);

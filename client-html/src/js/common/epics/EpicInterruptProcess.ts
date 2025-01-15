@@ -16,7 +16,7 @@ const request: EpicUtils.Request = {
     return [
       {
         type: INTERRUPT_PROCESS_FULFILLED,
-        payload: {process: null}
+        payload: { process: null }
       }
     ];
   }

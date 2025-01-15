@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ProcessResult } from "@api/model";
-import { Epic } from "redux-observable";
-import { CLEAR_PROCESS, FETCH_FAIL, UPDATE_PROCESS } from "../../../common/actions";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { ProcessResult } from '@api/model';
+import { Epic } from 'redux-observable';
+import { CLEAR_PROCESS, FETCH_FAIL, UPDATE_PROCESS } from '../../../common/actions';
+import FetchErrorHandler from '../../../common/api/fetch-errors-handlers/FetchErrorHandler';
 
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { State } from "../../../reducers/state";
-import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_OUTCOMES_STATUS, GET_AVETMISS_EXPORT_OUTCOMES } from "../actions";
-import AvetmissExportService from "../services/AvetmissExportService";
+import * as EpicUtils from '../../../common/epics/EpicUtils';
+import ProcessService from '../../../common/services/ProcessService';
+import { State } from '../../../reducers/state';
+import { CLEAR_AVETMISS8_EXPORT_ID, GET_AVETMISS8_OUTCOMES_STATUS, GET_AVETMISS_EXPORT_OUTCOMES } from '../actions';
 
 const switchByStatus = (process, storedID) => {
   switch (process.status) {
@@ -63,11 +63,10 @@ const switchByStatus = (process, storedID) => {
   }
 };
 
-const request: EpicUtils.DelayedRequest = {
+const request: EpicUtils.Request = {
   type: GET_AVETMISS8_OUTCOMES_STATUS,
-  delay: 1000,
   getData: (exportID: string) => {
-    return AvetmissExportService.getExportStatus(exportID);
+    return ProcessService.startProcessTrack(exportID);
   },
   processData: (process: ProcessResult, state: State) => {
     return [
@@ -91,4 +90,4 @@ const request: EpicUtils.DelayedRequest = {
   }
 };
 
-export const EpicProcessAvetmiss8Outcomes: Epic<any, any> = EpicUtils.CreateWithTimeout(request);
+export const EpicProcessAvetmiss8Outcomes: Epic<any, any> = EpicUtils.Create(request);
