@@ -11,6 +11,10 @@ properties:
     required: true
     description: Message template type
     example: Sms
+  isSubtemplate:
+    type: boolean
+    description: Is template supposed to be used as subtemplate
+    required: false
   keyCode:
     type: string
     required: false

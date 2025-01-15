@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from "ish-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import { change, FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
 import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
 import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
@@ -147,6 +147,15 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     }
   }, [nextLocation, dirty]);
 
+  const onIsSubtemplateChange = val => {
+    if (val) {
+      dispatch(change(form, "entity", null));
+      dispatch(change(form, "variables", []));
+    }
+  };
+  
+  const isSubtemplate = values.isSubtemplate;
+
   const importExportActions = useMemo(() => getConfigActions("EmailTemplate", values.name, values.id), [values.id]);
 
   const validateTemplateCopyName = useCallback(name => {
@@ -162,7 +171,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     }
     return validateNameForQuotes(name);
   }, [emailTemplates, values.id]);
-
 
   return (
     <>
@@ -257,16 +265,18 @@ const EmailTemplatesForm: React.FC<Props> = props => {
             </Grid>
             <Grid item xs={9} className="pr-3">
               <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
-                <Grid item xs={6}>
-                  <div className="heading">Type</div>
-                  <FormField
-                    type="select"
-                    name="entity"
-                    items={MessageTemplateEntityItems}
-                    disabled={isInternal}
-                    allowEmpty
-                  />
-                </Grid>
+                {!isSubtemplate && (
+                  <Grid item xs={6}>
+                    <div className="heading">Type</div>
+                    <FormField
+                      type="select"
+                      name="entity"
+                      items={MessageTemplateEntityItems}
+                      disabled={isInternal}
+                      allowEmpty
+                    />
+                  </Grid>
+                )}
                 <Grid item xs={6}>
                   <FormField
                     type="select"
@@ -286,7 +296,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 />
               </Grid>
 
-              {values.type === 'Email' && (
+              {values.type === 'Email' && !isSubtemplate &&  (
                 <Grid container>
                   <Grid item xs={6}>
                     <div className="heading">Subject</div>
@@ -356,17 +366,30 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   debounced={false}
                 />
               </div>
-              <div className="mt-3 pt-1">
-                <Bindings
-                  defaultVariables={defaultVariables}
-                  dispatch={dispatch}
-                  form={form}
-                  name="variables"
-                  label="Variables"
-                  itemsType="label"
-                  disabled={isInternal}
+              <div className="mb-1">
+                <FormField
+                  type="switch"
+                  name="isSubtemplate"
+                  label="Subtemplate only"
+                  color="primary"
+                  onChange={onIsSubtemplateChange}
                 />
               </div>
+              {
+                !isSubtemplate && (
+                  <div className="mt-3">
+                    <Bindings
+                      defaultVariables={defaultVariables}
+                      dispatch={dispatch}
+                      form={form}
+                      name="variables"
+                      label="Variables"
+                      itemsType="label"
+                      disabled={isInternal}
+                    />
+                  </div>
+                )
+              }
               <div className="mt-3">
                 <Bindings
                   dispatch={dispatch}
@@ -377,7 +400,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   disabled={isInternal}
                 />
               </div>
-
               <div className="mt-3">
                 <AvailableFrom items={mapMessageAvailableFrom(values.entity as MessageTemplateEntityName)} />
               </div>

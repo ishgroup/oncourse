@@ -62,6 +62,7 @@ class EmailTemplateApiService extends AutomationApiService<EmailTemplateDTO, Ema
         dto.setSubject(emailTemplate.subject)
         dto.setPlainBody(emailTemplate.bodyPlain)
         dto.setType(MessageTypeDTO.values()[0].fromDbType(emailTemplate.type))
+        dto.isSubtemplate = emailTemplate.isSubtemplate
         return dto
     }
 
@@ -71,6 +72,7 @@ class EmailTemplateApiService extends AutomationApiService<EmailTemplateDTO, Ema
         emailTemplate.subject = emailTemplateDTO.subject
         emailTemplate.bodyPlain = emailTemplateDTO.plainBody
         emailTemplate.type = emailTemplateDTO.type.dbType
+        emailTemplate.isSubtemplate = emailTemplateDTO.isSubtemplate == null ? false : emailTemplateDTO.isSubtemplate
 
         return emailTemplate
     }

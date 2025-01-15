@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 121-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - not:
+                - columnExists:
+                    tableName: EmailTemplate
+                    columnName: isSubtemplate
+      changes:
+        - addColumn:
+            tableName: EmailTemplate
+            columns:
+              - column:
+                  name: isSubtemplate
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+                    defaultValueNumeric: 0
+
+  - changeSet:
+      id: 121-2
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - columnExists:
+                tableName: EmailTemplate
+                columnName: isSubtemplate
+      changes:
+        changes:
+          - sql: 'UPDATE EmailTemplate e
+                      SET e.isSubtemplate = 1
+                      WHERE e.name LIKE "%Header%" OR e.name LIKE "%Footer%"'
