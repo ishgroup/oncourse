@@ -206,6 +206,12 @@
 		<db-attribute name="payerId" type="BIGINT"/>
 		<db-attribute name="totalValue" type="DECIMAL" length="10" scale="2"/>
 	</db-entity>
+	<db-entity name="CheckoutSession">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="sessionId" type="VARCHAR" length="256" isMandatory="true"/>
+		<db-attribute name="value" type="LONGVARCHAR" length="32000" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="CheckoutContactRelation">
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -1942,6 +1948,12 @@
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="checkoutUrl" type="java.lang.String" db-attribute-path="checkoutUrl"/>
 		<obj-attribute name="totalValue" type="ish.math.Money" db-attribute-path="totalValue"/>
+	</obj-entity>
+	<obj-entity name="CheckoutSession" className="ish.oncourse.server.cayenne.CheckoutSession" dbEntityName="CheckoutSession" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="sessionId" type="java.lang.String" db-attribute-path="sessionId"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
 	<obj-entity name="CheckoutContactRelation" abstract="true" className="ish.oncourse.server.cayenne.CheckoutContactRelation" dbEntityName="CheckoutContactRelation" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject">
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>

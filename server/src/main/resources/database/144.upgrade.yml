@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 144-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - tableExists:
+                tableName: CheckoutSession
+      changes:
+        - createTable:
+            tableName: CheckoutSession
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: sessionId
+                  type: VARCHAR(256)
+              - column:
+                  name: value
+                  type: TEXT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: 'NULL'
+                  name: createdOn
+                  type: datetime
+        - createIndex:
+            columns:
+              - column:
+                  name:  sessionId
+            indexName:  idx_cs_sessionId
+            tableName:  CheckoutSession
+            unique:  true
