@@ -3,27 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import Dialog from "@mui/material/Dialog";
 import { AvetmissExportSettings } from "@api/model";
-import AvetmissExportForm from "../../containers/AvetmissExportForm";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { openInternalLink } from "../../../../common/utils/links";
+import Dialog from "@mui/material/Dialog";
+import React, { useCallback } from "react";
 import { AvetmissExportSettingsReqired } from "../../../../model/preferences";
+import AvetmissExportForm from "../../containers/AvetmissExportForm";
 
 interface Props {
   opened: boolean;
   setDialogOpened: (values: string) => void;
   closeMenu?: any;
   enrolmentsCount: number;
-  selection: any;
+  ids: string[];
   entity: "CourseClass" | "Enrolment";
 }
 
 const AvetmissExportModalForm: React.FC<Props> = props => {
   const {
-    opened, setDialogOpened, selection, closeMenu, enrolmentsCount, entity
+    opened, setDialogOpened, ids, closeMenu, enrolmentsCount, entity
   } = props;
 
   const onclose = useCallback(() => {
@@ -35,9 +32,9 @@ const AvetmissExportModalForm: React.FC<Props> = props => {
     ({ flavour, noAssessment }: AvetmissExportSettings): AvetmissExportSettingsReqired => ({
       flavour,
       noAssessment,
-      [entity === "CourseClass" ? "classIds" : "enrolmentIds"]: selection
+      [entity === "CourseClass" ? "classIds" : "enrolmentIds"]: ids
     }),
-    [selection]
+    [ids]
   );
 
   return (

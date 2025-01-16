@@ -1,25 +1,1829 @@
-- name: Application List
-  entityClass: Application
-  keyCode: ish.onCourse.applicationListReport
-  report: ApplicationListReport.jrxml
-  isSubreport: false
-  isVisible: true
-  title: Application List
-  filePrefix: ApplicationList
-  pdfFileName: ApplicationList.pdf
-  short: A list of applications
-  description: A list of applications
-  category:
+- name: "PaymentIn"
+  entityClass: "PaymentIn"
+  keyCode: "ish.onCourse.paymentInListReport"
+  report: "Payment/PaymentInListReport.jrxml"
+  short: 
+  description: "A detailed report displaying transactions made to and from each general\
+    \ ledger account over a specified period of time.This report prints in Portrait\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Transaction Detail"
+  entityClass: "AccountTransaction"
+  keyCode: "ish.onCourse.accountTransactionDetailReport"
+  report: "Other/TransactionDetailReport.jrxml"
+  short: 
+  description: "To provide a detailed report displaying transactions made to and from\
+    \ each general ledger account over a specified period of time.This report prints\
+    \ in Portrait format."
+  category: 
+  sortOn: "account.accountCode;transactionDate"
+  visible: true
 
-- name: Audit List
-  entityClass: Audit
-  keyCode: ish.onCourse.auditListReport
-  report: AuditListReport.jrxml
-  isSubreport: false
-  isVisible: true
-  title: Audit List
-  filePrefix: AuditList
-  pdfFileName: AuditList.pdf
-  short: A list of audit entries
-  description: A list of audit entries
+- name: "Site List"
+  entityClass: "Site"
+  keyCode: "ish.onCourse.siteListReport"
+  report: "Site/SiteListReport.jrxml"
+  short: 
+  description: "List of all sites and their addresses.This report prints in Portrait\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Training Packages List"
+  entityClass: "TrainingPackage"
+  keyCode: "ish.onCourse.trainingPackageReport"
+  report: "Other/TrainingPackageReport.jrxml"
+  short: 
+  description: "A list of all Training Packages available within onCourse.This report\
+    \ prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Traineeship Training Plan (No Tutor Details)"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.traineeTrainingPlanReportNoTutorDetails"
+  report: "Enrolment/TraineeshipTrainingPlanNoContactDetails.jrxml"
+  short: 
+  description: "Provides an outline of the required units of competency within an\
+    \ overall Traineeship Training Plan for a given student.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Training Plan Report"
+  entityClass: "SessionModule"
+  keyCode: "ish.onCourse.trainingPlanSubreport"
+  report: "CourseClass/subreports/TrainingPlanSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Transaction report"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.statementReport"
+  report: "Contact/TransactionReport.jrxml"
+  short: 
+  description: "To print transactions (both debits and credits) for a particular contact\
+    \ by period. This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Tutor List"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.classTutorListReport"
+  report: "CourseClass/ClassTutorList.jrxml"
+  short: 
+  description: "To obtain an overview of classes scheduled for each tutor. This report\
+    \ also provides the total hours the tutor is scheduled to teach for each class,\
+    \ which can be used for payroll purposes.This report prints in Landscape format."
+  category: 
+  sortOn: "tutor.contact.lastName"
+  visible: true
+  
+- name: "Banking Payment Detail"
+  entityClass: "Payment"
+  keyCode: "ish.onCourse.banking.payments"
+  report: "Payment/subreports/BankingPaymentDetail.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Invoice Subreport"
+  entityClass: "InvoiceLine"
+  keyCode: "ish.onCourse.invoiceSubReport"
+  report: "CourseClass/subreports/InvoiceSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Enrolment Conf Tutors"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.enrolmentConfirmationTutors"
+  report: "Enrolment/subreports/EnrolmentTutorSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Academic Transcript"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.academicTranscriptReport"
+  report: "Enrolment/EnrolmentTranscriptReport.jrxml"
+  short: 
+  description: "To provide students with the information retained in onCourse regarding\
+    \ their enrolment and current status of their outcomes.This report prints in Portrait\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Income journal projection"
+  entityClass: "CourseClass"
+  keyCode: "ish.oncourse.courseClass.IncomeJournalProjection"
+  report: "CourseClass/IncomeJournalProjectionReport.jrxml"
+  short: 
+  description: "This report shows the projected income expected from each class over\
+    \ the next six months, based on the current enrolment, grouped and sumarised by\
+    \ income account. This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Roll - Simple"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.SimpleClassRoll"
+  report: "CourseClass/SimpleClassRoll.jrxml"
+  short: 
+  description: "Session by Session grid created for marking student attendance.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+
+- name: "Class Timetable Report - Planning"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.ClassSessionReportPlanning"
+  report: "CourseClass/ClassTimetablePlanning.jrxml"
+  short: 
+  description: "This report is for venue planning purposes, to show all the sessions\
+    \ of the selected classes printed in date order. This can be useful for one class,\
+    \ or a group of classes sharing a venue or tutor. This report prints in Landscape\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+
+- name: "Class Timetable Report - Planning w/ page breaks"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.ClassSessionReportPlanningWithPageBreaks"
+  report: "CourseClass/ClassTimetablePlanningWithPageBreaks.jrxml"
+  short:
+  description: "This report is for venue planning purposes, to show all the sessions\
+    \ of the selected classes printed in date order. This can be useful for one class,\
+    \ or a group of classes sharing a venue or tutor. This report prints in Landscape\
+    \ format. Has page breaks before new dates "
   category:
+  sortOn: ""
+  visible: true
+  
+- name: "Individual Assessment Plan Subreport"
+  entityClass: "AssessmentClass"
+  keyCode: "ish.onCourse.trainingPlanAssessmentSubreport"
+  report: "Enrolment/subreports/IndividualAssessmentPlanSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: "releaseDate"
+  visible: false
+  
+- name: "Invoice"
+  entityClass: "InvoiceLine"
+  keyCode: "ish.onCourse.invoiceReport"
+  report: "Invoice/InvoiceReport.jrxml"
+  short: 
+  description: "To supply hard copy Tax Invoices to students and other debtors.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Course Details"
+  entityClass: "Course"
+  keyCode: "ish.onCourse.courseDetailsReport"
+  report: "Course/CourseDetailsReport.jrxml"
+  short: 
+  description: "To create a print out of the full course information including scheduled\
+    \ classes.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "CorporatePass List"
+  entityClass: "CorporatePass"
+  keyCode: "ish.onCourse.corporatePassListReport"
+  report: "CorporatePass/CorporatePassListReport.jrxml"
+  short: 
+  description: " List of all current CorporatePass records.This report prints in Portrait\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Trial Balance"
+  entityClass: "Account"
+  keyCode: "ish.onCourse.trialBalance"
+  report: "Other/TrialBalanceReport.jrxml"
+  short: 
+  description: "To provide a more general overview of transactions made over a specified\
+    \ period of time.This report prints in Landscape format."
+  category: 
+  sortOn: "accountCode"
+  visible: false
+  
+- name: "Enrolment Summary by Account"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.enrolmentSummaryAccount"
+  report: "CourseClass/EnrolmentSummaryByAccount.jrxml"
+  short: 
+  description: "To obtain a summary of the enrolments and income for income account\
+    \ This report prints in Portrait format."
+  category: 
+  sortOn: "incomeAccount.accountCode"
+  visible: true
+  
+- name: "Discount Take Up Summary"
+  entityClass: "Discount"
+  keyCode: "ish.oncourse.discount.takeUpSummary"
+  report: "discount/DiscountTakeUpSummary.jrxml"
+  short: 
+  description: "This report can be working incorrectly with invoice lines which apply\
+    \ more than 1 discounts and one (or more) of these discounts has been changed.\
+    \ It prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Course Completion Survey Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.CourseClass.courseCompletionSurvey.subreport"
+  report: "CourseClass/subreports/CourseCompletionSurveySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "MCC-isVET Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.roll.isVET.sub"
+  report: "CourseClass/subreports/ClassRollDetailnewInvoice.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class InvoiceLine Liability Subreport"
+  entityClass: "InvoiceLine"
+  keyCode: "ish.onCourse.CourseClass.prepaidFeesLiability.invoiceLines"
+  report: "CourseClass/subreports/ClassInvoiceLiabilitySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Subreport"
+  entityClass: "Module"
+  keyCode: "ish.onCourse.courseClassSubReport"
+  report: "Course/subreports/CourseClassSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Invoice Record"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classInvoiceReport"
+  report: "CourseClass/ClassInvoiceReport.jrxml"
+  short: 
+  description: " Invaluable as a method of cross referencing incoming payments for\
+    \ a given Class. the report lists the names of all enrolling students, Invoice\
+    \ No, fee charged, fee paid and any outstanding balances.This report prints in\
+    \ Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Tutors List"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.tutorListReport"
+  report: "Contact/TutorListReport.jrxml"
+  short: 
+  description: "A list of Tutor names and addresses.This report prints in Portrait\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Tutor Details"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.tutorDetailsReport"
+  report: "Contact/TutorDetailReport.jrxml"
+  short: 
+  description: "The contact details and scheduled sessions for a Tutor.This report\
+    \ prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Promotional Enrolments"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.classPromotionalEnrolments"
+  report: "CourseClass/subreports/ClassPromotionalEnrolments.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Information"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classInformation"
+  report: "CourseClass/ClassInformationReport.jrxml"
+  short: 
+  description: "Class information that can be provided for the enrolling student including\
+    \ course details, information about the Tutor, directions on where to go and the\
+    \ individual session details. This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Roll - Contact No"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classRollContactNo"
+  report: "CourseClass/ClassRollContactNo.jrxml"
+  short: 
+  description: "To create a Class Roll that includes the contact telephone numbers\
+    \ of students in the Class. This roll is not designed to be distributed around\
+    \ the Class Room. This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Cash Movements Detail Report"
+  entityClass: "PaymentInterface"
+  keyCode: "ish.onCourse.reconciliationDetail"
+  report: "Payment/ReconciliationDetailReport.jrxml"
+  short: 
+  description: "To reconcile payments in and out with banking deposits.This report\
+    \ prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Contact Sheet"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classContactSheetReport"
+  report: "CourseClass/ClassContactSheetReport.jrxml"
+  short: 
+  description: "To create a list of students enrolled and the phone numbers and email\
+    \ addresses for those students.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Certificate-Attendance"
+  entityClass: "Enrolment"
+  keyCode: "ish.oncourse.nonVetCertificate"
+  report: "Certificate/CertificateAttendanceReport.jrxml"
+  short: 
+  description: "Report is generated at the conclusion of any non VET short courses\
+    \ to verify that the student attended all of the required number of classes.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Student Special Needs"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.classDisabilityReport"
+  report: "Enrolment/ClassDisabilityReport.jrxml"
+  short: 
+  description: "Used as a reference for any special needs such as wheelchair access,\
+    \ dietary requirements and provides an indicator as to whether the student and\
+    \ or tutor has been contacted to confirm or follow up this information. This report\
+    \ prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Enrolment summary by State subreport"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.enrolmentSummarySubreport"
+  report: "CourseClass/subreports/EnrolmentSummarySubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: "room.site.state"
+  visible: false
+  
+- name: "Class Roll Detail"
+  entityClass: "PrintableAttendance"
+  keyCode: "ish.onCourse.roll.usi"
+  report: "CourseClass/subreports/ClassRollUsiDetail.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "All Class Details"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classAllDetails"
+  report: "CourseClass/ClassAllDetails.jrxml"
+  short: 
+  description: "Detailed report of all information for a given class, including delivery\
+    \ mode, minimum and maximum places, enrolment numbers, fees and discounts, session\
+    \ details, course description, tutor information and directions for getting to\
+    \ the campus. This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Course Completion Survey"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.CourseClass.courseCompletionSurvey"
+  report: "CourseClass/CourseCompletionSurvey.jrxml"
+  short: 
+  description: "This report displays course completion survey results  and results\
+    \ summary for all."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Individual Training and Assessment Plan Unit Of Competency Subreport"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.trainingPlanDetailsPlanModulesSubReport"
+  report: "Enrolment/subreports/IndividualTrainingandAssessmentPlanUOCSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: "outcome.startDate"
+  visible: false
+  
+- name: "Voucher Products List"
+  entityClass: "VoucherProduct"
+  keyCode: "ish.onCourse.VoucherProductListReport"
+  report: "VoucherProduct/VoucherProductListReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Payslip Report"
+  entityClass: "PayLine"
+  keyCode: "ish.onCourse.payslipReport"
+  report: "Payslip/PayslipReport.jrxml"
+  short: 
+  description: "To create a print out of the list of payslips.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "No Tutor Details SubReport"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.traineeshipTrainingPlanNoTutorDetailsSubReport"
+  report: "Enrolment/subreports/TraineeshipTrainingPlanNoTutorDetailsSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Qualifications List"
+  entityClass: "Qualification"
+  keyCode: "ish.onCourse.qualificationListReport"
+  report: "Other/QualificationListReport.jrxml"
+  short: 
+  description: "A list of all the data downloaded from NTIS which you can use to start\
+    \ building courses.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Rooms Subreport"
+  entityClass: "Room"
+  keyCode: "ish.onCourse.siteDetailRoomsSubReport"
+  report: "Site/subreports/SiteDetailRoomsSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Tutors"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.tutorsSubreport"
+  report: "Contact/subreports/TutorSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Individual Training and Assessment Plan Tutor subreport"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.trainingPlanDetailsTutorsSubReport"
+  report: "Enrolment/subreports/IndividualTrainingandAssessmentPlanTutorSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Roll - Single Session"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.ClassRollSingleSession"
+  report: "CourseClass/ClassRollSingleSession.jrxml"
+  short: 
+  description: "To be used for classes where the tutors need to return a student-signed\
+    \ copy of the class roll back to the college administration office after each\
+    \ week or session.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "UnavailableRules Subreport"
+  entityClass: "UnavailableRuleRelation"
+  keyCode: "ish.onCourse.unavailableRulesSubreport"
+  report: "Other/subreports/UnavailableRulesSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: "rule.startDateTime"
+  visible: false
+  
+- name: "Session Subreport"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.sessionSubReport"
+  report: "CourseClass/subreports/SessionSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Enrolment summary by State"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.enrolmentSummaryReport"
+  report: "CourseClass/EnrolmentSummaryReport.jrxml"
+  short: 
+  description: "An overview and detail list of each state's running and cancelled\
+    \ classes, and enrolment numbers by gender. This report prints in Landscape format."
+  category: 
+  sortOn: "isCancelled;room.site.state"
+  visible: true
+  
+- name: "Waiting List"
+  entityClass: "WaitingList"
+  keyCode: "ish.onCourse.waitingListListReport"
+  report: "Other/WaitingListListReport.jrxml"
+  short: 
+  description: " List of all current wait list entries, including name of course,\
+    \ name of student, client, and site where course is held.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: "course.name"
+  visible: true
+  
+- name: "Course Completion Survey Tutor Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.CourseClass.courseCompletionSurveyTutor.subreport"
+  report: "CourseClass/subreports/CourseCompletionSurveyTutorSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Student Enrolments Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.studentEnrolmentsSubReport"
+  report: "Contact/subreports/StudentEnrolmentsSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Budget Summary by Subject"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.budgetSummaryReport"
+  report: "CourseClass/BudgetSummaryBySubject.jrxml"
+  short: 
+  description: "This report shows in a subject grouping summary format the same data\
+    \ as the Budget Details by Subject report, without the class level data. This\
+    \ report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Debtors and Creditors Report"
+  entityClass: "Invoice"
+  keyCode: "ish.onCourse.debtorsReport "
+  report: "Invoice/DebtorsReport.jrxml"
+  short: 
+  description: "To obtain an aged debtors and creditors report for all unbalanced\
+    \ invoices.This report prints in Landscape format."
+  category: 
+  sortOn: "contact.lastName"
+  visible: true
+  
+- name: "Enrolment Conf Sessions"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.enrolmentConfirmationSessions"
+  report: "Enrolment/subreports/EnrolmentConfirmationSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Enrolment Session Description"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.enrolmentSessionsDescription"
+  report: "CourseClass/subreports/SessionDescriptionSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class by Site"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classBySiteReport"
+  report: "CourseClass/ClassBySite.jrxml"
+  short: 
+  description: "This report provides a list of all current and future classes assigned\
+    \ to a given site. Information includes, course and class name and code, start\
+    \ and end date, fee charged, enrolments (against target) and statistics on Male\
+    \ Female breakdown. This report prints in Landscape format."
+  category: 
+  sortOn: "room.site.name"
+  visible: true
+  
+- name: "Session Subreport (Tutor)"
+  entityClass: "TutorAttendance"
+  keyCode: "ish.onCourse.tutorSessionSubReport"
+  report: "Contact/subreports/TutorSessionSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Tutor TutorPay Subreport"
+  entityClass: "Tutor"
+  keyCode: "ish.onCourse.tutorTutorpaySubreport"
+  report: "CourseClass/subreports/TutorTutorpaySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Enrolment Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.enrolmentSubReport"
+  report: "Enrolment/subreports/EnrolmentSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Roll Single Session Studentdetail Sub"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.classRollSingleSessionStudentSub"
+  report: "CourseClass/subreports/ClassRollSingleSessionStudentdetailSub.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Assessment Outcome Report"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.assessmentOutcomeReport"
+  report: "CourseClass/AssessmentOutcomeReport.jrxml"
+  short: 
+  description: "For use by the College Tutor to mark the assessment outcomes for each\
+    \ student studying a VET class. As well as enabling the Tutor to sign and date\
+    \ the entries prior to sending back to College Administrators for entering onto\
+    \ onCourse. This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Funding"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.classFunding"
+  report: "Other/ClassFunding.jrxml"
+  short: 
+  description: "To keep track of delivery of funded program Student Contact Hours\
+    \ over a particular time period. This report shows a summary of each qualification\
+    \ and the hours delivered against each of the national funding types. This report\
+    \ prints in Portrait format."
+  category: 
+  sortOn: "enrolment.courseClass.course.qualification.nationalCode;fundingSource"
+  visible: true
+  
+- name: "Individual Assessment Plan"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.trainingPlanAssessmentReport"
+  report: "Enrolment/IndividualAssessmentPlan.jrxml"
+  short: 
+  description: "Provides an outline of the required units of competency within an\
+    \ overall Traineeship Training Plan for a given student.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Individual Training and Assessment Plan"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.accreditedTrainingPlanConditionsReport"
+  report: "Enrolment/IndividualTrainingandAssessmentPlan.jrxml"
+  short: 
+  description: "Provides an outline of the required units of competency within an\
+    \ overall Traineeship Training Plan for a given student.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "InvoiceLines Subreport"
+  entityClass: "InvoiceLine"
+  keyCode: "ish.oncourse.discount.takeUp.discountedInvoiceLines"
+  report: "discount/subreport/InvoiceLinesSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Module List"
+  entityClass: "Module"
+  keyCode: "ish.onCourse.moduleListReport"
+  report: "Module/ModuleListReport.jrxml"
+  short: 
+  description: "List of all modules."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Budgets Details by Account"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.budgetlistaccountReport"
+  report: "CourseClass/BudgetDetailsByAccount.jrxml"
+  short: 
+  description: "To obtain a summary of the budgeted vs actual expenses for each class,\
+    \ grouped by income account. This report prints in Landscape format."
+  category: 
+  sortOn: "incomeAccount.accountCode"
+  visible: true
+  
+- name: "Discount Take Up Summary Subreport"
+  entityClass: "DiscountCourseClass"
+  keyCode: "ish.oncourse.discount.takeUpSummary.discountCourseClasses"
+  report: "discount/subreport/DiscountTakeUpSummarySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Discount Take Up Subreport"
+  entityClass: "DiscountCourseClass"
+  keyCode: "ish.oncourse.discount.takeUp.discountCourseClasses"
+  report: "discount/subreport/DiscountTakeUpSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "CorpratePass Invoice Subreport"
+  entityClass: "InvoiceLine"
+  keyCode: "ish.onCourse.corporatePassInvoiceSubreport"
+  report: "CorporatePass/subreports/CorporatePassInvoiceSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Ceriticate-Transcript Subreport"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.certificate.transcript.subreport"
+  report: "Certificate/subreports/CertificateTranscriptSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "PaymentOut"
+  entityClass: "PaymentOut"
+  keyCode: "ish.onCourse.paymentOutListReport"
+  report: "Payment/PaymentOutListReport.jrxml"
+  short: 
+  description: "A detailed report displaying transactions made to and from each general\
+    \ ledger account over a specified period of time.This report prints in Landscape\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Statement report"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.statementReport.all"
+  report: "Contact/StatementReport.jrxml"
+  short: 
+  description: "To print all transactions (both debits and credits) for a particular\
+    \ contact.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Session Subreport"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.roomDetailSessionSubReport"
+  report: "Room/subreports/RoomDetailSessionSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: "startDatetime"
+  visible: false
+  
+- name: "Budgets Details by Subject"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.budgetListReport"
+  report: "CourseClass/BudgetDetailsBySubject.jrxml"
+  short: 
+  description: "To obtain a summary of the budgeted vs actual expenses for each class,\
+    \ grouped by subject tag. This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Student Contact List"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.studentListReport"
+  report: "Enrolment/StudentListReport.jrxml"
+  short: 
+  description: "Contact details for all students across a range of class groups.This\
+    \ report prints in Landscape format."
+  category: 
+  sortOn: "student.contact.lastName"
+  visible: true
+  
+- name: "TutorAttendance Tutor Pay Subreport"
+  entityClass: "TutorAttendance"
+  keyCode: "ish.onCourse.tutorAttendanceTutorPaySubreport"
+  report: "CourseClass/subreports/TutorAttendanceTutorPaySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "LeadItem Course Subreport"
+  entityClass: "Course"
+  keyCode: "ish.onCourse.leadListReport.course.subreport"
+  report: "Other/subreports/LeadItemCourseSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "LeadItem Product Subreport"
+  entityClass: "Product"
+  keyCode: "ish.onCourse.leadListReport.product.subreport"
+  report: "Other/subreports/LeadItemProductSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Roll Detail"
+  entityClass: "PrintableAttendance"
+  keyCode: "ish.onCourse.roll"
+  report: "CourseClass/subreports/ClassRollDetail.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Statement Line Detail"
+  entityClass: "StatementLinePrintableObject"
+  keyCode: "ish.onCourse.statementLineListReport"
+  report: "Contact/subreports/StatementLineListReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Student Transcript"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.studentTranscriptReport"
+  report: "Contact/StudentTranscriptReport.jrxml"
+  short: 
+  description: "To provide students with the information retained in onCourse regarding\
+    \ each of their enrolments and current status of their outcomes.This report prints\
+    \ in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Details"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classDetailsReport"
+  report: "CourseClass/ClassDetailsReport.jrxml"
+  short: 
+  description: "To obtain full list of one or more classes scheduled sessions. This\
+    \ is a list view of the timetabled sessions.This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Student Outcomes Subreport"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.studentOutcomesSubReport"
+  report: "Contact/subreports/StudentOutcomesSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Discount Take Up Report"
+  entityClass: "Discount"
+  keyCode: "ish.oncourse.discount.takeUp"
+  report: "discount/DiscountTakeUp.jrxml"
+  short: 
+  description: "This report can be working incorrectly with invoice lines which apply\
+    \ more than 1 discounts and one (or more) of these discounts has been changed.\
+    \ It prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Tutor Pay Schedule"
+  entityClass: "CourseClass"
+  keyCode: "ish.oncourse.classTutorPayReport"
+  report: "CourseClass/ClassTutorPayReport.jrxml"
+  short: 
+  description: "To obtain a detailed print out of tutor's pay by class. The report\
+    \ layout is modelled on the budget tab in the class window. This report prints\
+    \ in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Promotional"
+  entityClass: "DiscountCourseClass"
+  keyCode: "ish.onCourse.classPromotionalReport"
+  report: "CourseClass/subreports/ClassPromotional.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Individual Training and Assessment Plan Details"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.trainingPlanDetailsReport"
+  report: "Enrolment/IndividualTrainingandAssessmentPlanDetails.jrxml"
+  short: 
+  description: "Provides an outline of the required units of competency within an\
+    \ overall Traineeship Training Plan for a given student.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Simple Class Roll Detail"
+  entityClass: "PrintableAttendance"
+  keyCode: "ish.onCourse.simpleroll"
+  report: "CourseClass/subreports/SimpleClassRollDetail.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "CorporatePass"
+  entityClass: "CorporatePass"
+  keyCode: "ish.onCourse.corporatePassDetailsReport"
+  report: "CorporatePass/CorporatePassDetails.jrxml"
+  short: 
+  description: "CorporatePass details.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Assessment Outcomes Subreport"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.assessmentOutcomesSubReport"
+  report: "Contact/subreports/outcomesSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Roll"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classRoll"
+  report: "CourseClass/ClassRoll.jrxml"
+  short: 
+  description: "To create a list of students enrolled and columns for each of the\
+    \ scheduled sessions, used to mark attendance.This report prints in Landscape\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Sales by Course Location"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.salesByCourse"
+  report: "Enrolment/SalesByCourse.jrxml"
+  short: 
+  description: "Summary list of the number of enrolments and monetary value of sales\
+    \ for each site, with further detail regarding enrolments by Course.This report\
+    \ prints in Landscape format."
+  category: 
+  sortOn: "courseClass.room.site.name;invoiceLine.invoice.createdByUser.lastName;courseClass.course.name"
+  visible: true
+  
+- name: "Discounts By Class Subreport"
+  entityClass: "InvoiceLine"
+  keyCode: "ish.onCourse.discountsByClassSubreport"
+  report: "CourseClass/subreports/DiscountsByClassSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Transaction Summary"
+  entityClass: "AccountTransaction"
+  keyCode: "ish.onCourse.transactionsummary"
+  report: "Other/TransactionSummary.jrxml"
+  short: 
+  description: "To provide a more general overview of transactions made over a specified\
+    \ period of time.This report prints in Portrait format."
+  category: 
+  sortOn: "account.accountCode;transactionDate"
+  visible: true
+  
+- name: "ClassCost Tutor Pay Subreport"
+  entityClass: "ClassCost"
+  keyCode: "ish.onCourse.classCostTutorPaySubreport"
+  report: "CourseClass/subreports/ClassCostTutorPaySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Banking Payment Detail for Cheque"
+  entityClass: "Payment"
+  keyCode: "ish.onCourse.banking.paymentsforcheque"
+  report: "Payment/subreports/BankingPaymentDetailForCheque.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Demographic Data Report"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.defaultDemographicData"
+  report: "Other/DemographicDataReport.jrxml"
+  short: 
+  description: "For a selection of classes or enrolments, aggregate the responses\
+    \ to the standard student demographic questions such as age, gender, residential\
+    \ suburb, country of birth and language spoken. This report prints in portrait\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Hours"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classHours"
+  report: "CourseClass/ClassHours.jrxml"
+  short: 
+  description: "A summary of the classroom, nominal and reportable hours for each\
+    \ class, for use in the administration of VET / AVETMISS courses.This report prints\
+    \ in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Transcript"
+  entityClass: "Certificate"
+  keyCode: "ish.onCourse.transcript"
+  report: "Certificate/TranscriptReport.jrxml"
+  short: 
+  description: " To provide students with the information retained in onCourse regarding\
+    \ each of their enrolments and current status of their outcomes."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Audit List"
+  entityClass: "Audit"
+  keyCode: "ish.onCourse.auditListReport"
+  report: "AuditListReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Assessment Outcomes Per Student"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.assessmentOutcomesStudent"
+  report: "Enrolment/AssessmentOutcomesPerStudent.jrxml"
+  short: 
+  description: "To provide students with the information retained in onCourse regarding\
+    \ their enrolment and current status of their outcomes.This report prints in Portrait\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Roll - USI"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classRollUsi"
+  report: "CourseClass/ClassRollUsi.jrxml"
+  short: 
+  description: "To create a list of students enrolled and columns for each of the\
+    \ scheduled sessions, used to mark attendance. This roll includes a column showing\
+    \ the student's USI status. This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Session Tutor Pay Subreport"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.sessionTutorPaySubreport"
+  report: "CourseClass/subreports/SessionTutorPaySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Banking Report"
+  entityClass: "PaymentInterface"
+  keyCode: "ish.onCourse.banking2"
+  report: "Payment/NewBankingReport.jrxml"
+  short: 
+  description: "This report shows payments in and is designed to take along to the\
+    \ bank when you deposit cash and cheques.This report prints in Portrait format."
+  category: 
+  sortOn: "administrationCentre.name;dateBanked;paymentMethod.name;createdOn"
+  visible: true
+  
+- name: "Lead"
+  entityClass: "Lead"
+  keyCode: "ish.onCourse.leadListReport"
+  report: "Other/LeadListReport.jrxml"
+  short: 
+  description: "A lead entry including list of courses and products, name of customer,\
+    \ number of students and sites where course is held (if it's applicable). This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class by Subject"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classBySubjectReport"
+  report: "CourseClass/ClassBySubject.jrxml"
+  short: 
+  description: "To obtain an overview of all classes status within a given time period,\
+    \ such as a term. Classes are grouped by their Category/Sub Category tag. This\
+    \ report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Cash Movements Summary Report"
+  entityClass: "PaymentInterface"
+  keyCode: "ish.onCourse.reconciliationSummary"
+  report: "Payment/ReconciliationSummaryReport.jrxml"
+  short: 
+  description: "To reconcile payments in and out with banking deposits.This report\
+    \ prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Student Details"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.studentDetailsReport"
+  report: "Contact/StudentDetailReport.jrxml"
+  short: 
+  description: "A useful educational report showing an overview of all units a student\
+    \ has undertaken at the training organisation and their outcomes.This report prints\
+    \ in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Timetable Report"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.ClassSessionReportMain"
+  report: "CourseClass/ClassTimetableReport.jrxml"
+  short: 
+  description: "The purpose of this report is to allow the user to select multiple\
+    \ classes (which may contain the same students e.g. those doing a Diploma may\
+    \ undertake 4 classes simultaneously) and print a date range specified timetable\
+    \ of sessions to show the students when and where to turn up to class. This report\
+    \ prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Cost Subreport"
+  entityClass: "ClassCost"
+  keyCode: "ish.onCourse.costSubReport"
+  report: "CourseClass/subreports/CostSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Schedule"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.shedule"
+  report: "Other/Calendar.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Tutors-ish"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.class.tutorsSubreport"
+  report: "CourseClass/subreports/ClassTutorSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Budget Details by Class"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.budgetDetailsReport"
+  report: "CourseClass/BudgetDetailsByClassReport.jrxml"
+  short: 
+  description: "To obtain a detailed print out of the budgeted and actual income and\
+    \ expense lines, one page per class. This layout includes a summary of the actual\
+    \ and budgeted income and expenses, followed by line by line details of each expense\
+    \ item. This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Budget Summary ClassCost Subreport"
+  entityClass: "ClassCost"
+  keyCode: "ish.oncourse.budgetSummary.classCostSubreport"
+  report: "CourseClass/subreports/BudgetSummaryClassCostSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Site Details"
+  entityClass: "Site"
+  keyCode: "ish.onCourse.siteDetailsReport"
+  report: "Site/SiteDetailReport.jrxml"
+  short: 
+  description: "Details of each site, venue information, rooms and each room capacity\
+    \ for the site.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Course List"
+  entityClass: "Course"
+  keyCode: "ish.onCourse.courseListReport"
+  report: "Course/CourseListReport.jrxml"
+  short: 
+  description: "To create a print out of the list of courses.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Total Discounts"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.totalDiscounts"
+  report: "Enrolment/TotalDiscount.jrxml"
+  short: 
+  description: "To confirm uptake and cost of discounts across a selection of classes.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Certificate-Transcript"
+  entityClass: "Certificate"
+  keyCode: "ish.onCourse.certificate.transcript"
+  report: "Certificate/CertificateTranscriptReport.jrxml"
+  short: 
+  description: " To provide students with the information retained in onCourse regarding\
+    \ each of their enrolments and current status of their outcomes."
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Assessment Task Matrix Subreport"
+  entityClass: "PrintableAssessmentClassModule"
+  keyCode: "ish.onCourse.AssessmentTaskMatrix.subreport"
+  report: "CourseClass/subreports/AssessmentTaskMatrixSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Certificate-SkillSet"
+  entityClass: "Certificate"
+  keyCode: "ish.onCourse.certificate.skillset"
+  report: "Certificate/CertificateSkillSetReport.jrxml"
+  short: 
+  description: "onCourse includes AQF recommended templates for full Qualification\
+    \ Certificates, Statements of Attainment and transcripts. Certificates can only\
+    \ be generated from units that are recorded as part of onCourse enrolments."
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Rooms List"
+  entityClass: "Room"
+  keyCode: "ish.onCourse.roomListReport"
+  report: "Room/RoomListReport.jrxml"
+  short: 
+  description: "List of all rooms and their related sites and seating capacity.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Sales Report"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.enrolmentSales"
+  report: "Enrolment/EnrolmentSalesReport.jrxml"
+  short: 
+  description: "This report provides a comparative analysis of sales figures (shown\
+    \ as number of enrolments and monetary value) from one College site to the next.This\
+    \ report prints in Landscape format."
+  category: 
+  sortOn: "invoiceLine.invoice.createdByUser.defaultAdministrationCentre.name;invoiceLine.invoice.createdByUser.lastName;invoiceLine.invoice.createdByUser.firstName"
+  visible: true
+  
+- name: "Student Attendance Averages"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.studentAttendanceAverageReport"
+  report: "Contact/StudentAttandanceAverageReport.jrxml"
+  short: 
+  description: "A summary of their overall attendance."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Room Timetable"
+  entityClass: "Room"
+  keyCode: "ish.onCourse.roomDetailsReport"
+  report: "Room/RoomDetailReport.jrxml"
+  short: 
+  description: "A report that allows users to print the details of all sessions that\
+    \ are scheduled for a particular room, for a particular date range.This report\
+    \ prints in Landscape format."
+  category: 
+  sortOn: "name"
+  visible: true
+  
+- name: "Budget Summary InvoiceLine Subreport"
+  entityClass: "InvoiceLine"
+  keyCode: "ish.oncourse.budgetSummary.invoiceLineSubreport"
+  report: "CourseClass/subreports/BudgetSummaryInvoiceLineSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Prepaid Fees Liability"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.CourseClass.prepaidFeesLiability"
+  report: "CourseClass/ClassLiabilityReport.jrxml"
+  short: 
+  description: "This Report identifies how much of the fees held against the Pre Paid\
+    \ Fees Liability Account are yet to be transferred to the defined Income Account.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: "startDateTime;course.code;code"
+  visible: true
+  
+- name: "Voucher Report"
+  entityClass: "Voucher"
+  keyCode: "ish.oncourse.VoucherReport"
+  report: "Voucher/VoucherReport.jrxml"
+  short: 
+  description: " "
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Training Plan No Detail"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.traineeTrainingPlanReport"
+  report: "Enrolment/TraineeshipTrainingPlan.jrxml"
+  short: 
+  description: "Provides an outline of the required units of competency within an\
+    \ overall Traineeship Training Plan for a given student.This report prints in\
+    \ Portrait format."
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Payline Subreport"
+  entityClass: "Payline"
+  keyCode: "ish.onCourse.paylineSubreport"
+  report: "Payslip/subreports/PaylineSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Certificate-Attainment"
+  entityClass: "Certificate"
+  keyCode: "ish.onCourse.certificate.attainment"
+  report: "Certificate/CertificateAttainmentReport.jrxml"
+  short: 
+  description: "onCourse includes AQF recommended templates for full Qualification\
+    \ Certificates, Statements of Attainment and transcripts. Certificates can only\
+    \ be generated from units that are recorded as part of onCourse enrolments."
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Enrolment Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.enrolmentInvoiceSubReport"
+  report: "Enrolment/subreports/EnrolmentInvoiceSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Quote"
+  entityClass: "QuoteLine"
+  keyCode: "ish.onCourse.quoteReport"
+  report: "Invoice/QuoteReport.jrxml"
+  short: 
+  description: "To supply hard copy Quote to students and other debtors.This report\
+    \ prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Classes"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classListReport"
+  report: "CourseClass/ClassListReport.jrxml"
+  short: 
+  description: "To obtain an overview of all classes status within a given time period,\
+    \ such as a term.This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Modules Subreport"
+  entityClass: "Module"
+  keyCode: "ish.onCourse.courseModules"
+  report: "Course/subreports/CourseModulesSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Roll Tutors"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.classRollTutors"
+  report: "CourseClass/subreports/ClassRollTutorSubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Employer SubReport"
+  entityClass: "ContactRelation"
+  keyCode: "ish.onCourse.traineeshipTrainingPlanEmployerSubReport"
+  report: "Enrolment/subreports/TraineeshipTrainingPlanEmployerSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Unit Of Competency SubReport"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.traineeshipTrainingPlanModulesSubReport"
+  report: "Enrolment/subreports/TraineeshipTrainingPlanModulesSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Message List"
+  entityClass: "Message"
+  keyCode: "ish.onCourse.MessageListReport"
+  report: "Message/MessageListReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Enrolment Confirmation"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.enrolmentConfirmation"
+  report: "Enrolment/EnrolmentConfirmation.jrxml"
+  short: 
+  description: "To provide students with details of their class once they have enrolled.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Discounts by Class"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.discountsByClass"
+  report: "CourseClass/DiscountsByClass.jrxml"
+  short: 
+  description: "List of all discounts for a given Class and their take up value.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: "course.code;code"
+  visible: true
+  
+- name: "Course Completion Survey Tutor"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.CourseClass.courseCompletionSurveyTutor"
+  report: "CourseClass/CourseCompletionSurveyTutor.jrxml"
+  short: 
+  description: "This report displays anonymous course completion survey results  and\
+    \ results summary for all."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Assessment Task Matrix"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.AssessmentTaskMatrix"
+  report: "CourseClass/AssessmentTaskMatrixReport.jrxml"
+  short: 
+  description: "onCourse includes AQF recommended templates for full Qualification\
+    \ Certificates, Statements of Attainment and transcripts. Certificates can only\
+    \ be generated from units that are recorded as part of onCourse enrolments.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Vouchers"
+  entityClass: "Voucher"
+  keyCode: "ish.onCourse.VoucherListReport"
+  report: "Voucher/VoucherListReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Application List"
+  entityClass: "Application"
+  keyCode: "ish.onCourse.applicationListReport"
+  report: "ApplicationListReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Certificate-Attainment Subreport"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.certificate.attainment.subreport"
+  report: "Certificate/subreports/CertificateAttainmentSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Tutor SubReport"
+  entityClass: "CourseClassTutor"
+  keyCode: "ish.onCourse.traineeshipTrainingPlanTutorsSubReport"
+  report: "Enrolment/subreports/TraineeshipTrainingPlanTutorsSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Class Enrolment Liability Subreport"
+  entityClass: "Enrolment"
+  keyCode: "ish.onCourse.CourseClass.prepaidFeesLiability.enrolments"
+  report: "CourseClass/subreports/ClassEnrolLiabilitySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Assessment Outcome"
+  entityClass: "Outcome"
+  keyCode: "ish.onCourse.assessmentOutcomeSubReport"
+  report: "CourseClass/subreports/AssessmentOutcomeSubReport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: "code"
+  visible: false
+  
+- name: "Enrolments and Income by Account"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.enrolmentIncomeAccount"
+  report: "CourseClass/EnrolmentIncomeByAccount.jrxml"
+  short: 
+  description: "To obtain a summary of the enrolments and income for each class, grouped\
+    \ by income account This report prints in Portrait format."
+  category: 
+  sortOn: "incomeAccount.accountCode"
+  visible: true
+  
+- name: "Class Timetable Report"
+  entityClass: "Session"
+  keyCode: "ish.onCourse.ClassSessionReportMain"
+  report: "CourseClass/ClassSessionSubReport.jrxml"
+  short: 
+  description: "The purpose of this report is to allow the user to select multiple\
+    \ classes (which may contain the same students e.g. those doing a Diploma may\
+    \ undertake 4 classes simultaneously) and print a date range specified timetable\
+    \ of sessions to show the students when and where to turn up to class. This report\
+    \ prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Sign for Door "
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.classSignReport"
+  report: "CourseClass/ClassSignReport.jrxml"
+  short: 
+  description: "Report that can be printed off and used as a sign or label on door\
+    \ of Training Room.This report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Budget Summary by Class"
+  entityClass: "CourseClass"
+  keyCode: "aftrs.budgetReport"
+  report: "CourseClass/BudgetSummaryByClass.jrxml"
+  short: 
+  description: "To obtain a detailed print out of the budgeted and actual income and\
+    \ expense lines, one page per class. The report layout is modelled on the budget\
+    \ tab in the class window. This report prints in Landscape format."
+  category: 
+  sortOn: "course.code;code"
+  visible: true
+  
+- name: "Income summary projection"
+  entityClass: "CourseClass"
+  keyCode: "ish.oncourse.courseClass.IncomeSummaryProjection"
+  report: "CourseClass/IncomeSummaryProjectionReport.jrxml"
+  short: 
+  description: "This report prints in Landscape format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Certificate"
+  entityClass: "Certificate"
+  keyCode: "ish.onCourse.certificate"
+  report: "Certificate/CertificateQualificationReport.jrxml"
+  short: 
+  description: "onCourse includes AQF recommended templates for full Qualification\
+    \ Certificates, Statements of Attainment and transcripts. Certificates can only\
+    \ be generated from units that are recorded as part of onCourse enrolments.This\
+    \ report prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Class Delivery Plan"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.TrainingPlanReport"
+  report: "CourseClass/ClassDeliveryPlan.jrxml"
+  short: 
+  description: "RTO Training and Delivery Plan, showing the scheduled start and end\
+    \ date for each unit of competency assigned to the class, and a session by session\
+    \ mapping of the unit delivery and tutor responsible.This report prints in Landscape\
+    \ format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Student feedback List"
+  entityClass: "Survey"
+  keyCode: "ish.onCourse.surveyListReport"
+  report: "Survey/SurveyListReport.jrxml"
+  short: 
+  description: "List of all student feedback."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Commonwealth Assistance Notice"
+  entityClass: "Enrolment"
+  keyCode: "ish.oncourse.enrolment.can"
+  report: "Enrolment/CommonwealthAssistanceNoticeReport.jrxml"
+  short: 
+  description: "This report prints in Landscape format. It prints only enrolments\
+    \ from classes with ticked checkbox 'This is a VET Student Loan eligible class'.\
+    \ Other enrolments will be skipped."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Training Plan Delivery"
+  entityClass: "SessionModule"
+  keyCode: "ish.onCourse.trainingPlanDeliverySubreport"
+  report: "CourseClass/subreports/TrainingPlanDeliverySubreport.jrxml"
+  short: 
+  description: ""
+  category: 
+  sortOn: ""
+  visible: false
+  
+- name: "Mailing List"
+  entityClass: "Contact"
+  keyCode: "ish.onCourse.mailingListReport"
+  report: "Contact/MailingListReport.jrxml"
+  short: 
+  description: "Contact details (first name, last name, date of birth, address and\
+    \ email) of all people on a given mailing list or list of contacts. This report\
+    \ prints in Portrait format."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Script List"
+  entityClass: "Script"
+  keyCode: "ish.onCourse.scriptListReport"
+  report: "Script/ScriptListReport.jrxml"
+  short: 
+  description: "List of all scripts."
+  category: 
+  sortOn: ""
+  visible: true
+  
+- name: "Course Completion Survey Summary"
+  entityClass: "CourseClass"
+  keyCode: "ish.onCourse.CourseClass.courseCompletionSurveySummary"
+  report: "CourseClass/CourseCompletionSurveySummary.jrxml"
+  short: 
+  description: "This report displays course completion survey summary results."
+  category: 
+  sortOn: ""
+  visible: true

@@ -14,15 +14,17 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+const { ReactLoadablePlugin }  = require('@react-loadable/revised/webpack');
+const { writeFile } = require('fs/promises')
+const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 
 const _info = (NODE_ENV, BUILD_NUMBER) => {
   console.log(`
-Build started with following configuration:
-===========================================
-→ NODE_ENV: ${NODE_ENV}
-→ BUILD_NUMBER: ${BUILD_NUMBER}
-`);
+    Build started with following configuration:
+    ===========================================
+    → NODE_ENV: ${NODE_ENV}
+    → BUILD_NUMBER: ${BUILD_NUMBER}
+  `);
 };
 
 const KEYS = {
@@ -63,6 +65,7 @@ const _common = (dirname, options) => {
       ],
       extensions: [".ts", ".tsx", ".js"],
       plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(dirname, './tsconfig.dev.json') })],
+      fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
       rules: [
@@ -70,11 +73,7 @@ const _common = (dirname, options) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
           include: [
@@ -89,7 +88,14 @@ const _common = (dirname, options) => {
         },
       ],
     },
+    ignoreWarnings: [/Failed to parse source map/],
     plugins: [
+      new ReactLoadablePlugin({
+        async callback(manifest) {
+          await writeFile(path.resolve(dirname, 'build/manifest.json'), JSON.stringify(manifest, null, 2))
+        },
+        absPath: true,
+      }),
       _DefinePlugin("development", options.BUILD_NUMBER),
       new webpack.ProvidePlugin({
         process: 'process/browser',

@@ -3,26 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Collapse, FormControlLabel, Typography } from "@mui/material";
-import Divider from "@mui/material/Divider";
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
-import { connect } from "react-redux";
+import { Collapse, Divider, FormControlLabel, Grid, Typography } from "@mui/material";
 import Decimal from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import { mapSelectItems, Switch } from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
+import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
 import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
-import { validateNonNegative, validateRangeInclusive, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { State } from "../../../../reducers/state";
-import { Switch } from "../../../../common/components/form/formFields/Switch";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import { mapSelectItems } from "../../../../common/utils/common";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import {
+  validateNonNegative,
+  validateRangeInclusive,
+  validateSingleMandatoryField
+} from "../../../../common/utils/validation";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import { DiscountAvailabilityTypes } from "../constatnts";
 
 interface DiscountGeneralProps extends EditViewProps<Discount> {
   cosAccounts?: { id: number; description: string }[];
@@ -35,7 +35,7 @@ interface DiscountGeneralState {
   validToIndex?: number;
 }
 
-const discountTypes = [
+export const discountTypes = [
   {
     value: DiscountType.Percent,
     label: "Discount percent"
@@ -116,60 +116,66 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   };
 
   validFromOptions: CustomSelectorOption[] = [
-    { caption: "any date", body: "Any date", type: null },
+    { caption: "any date", body: "Any date" },
     {
       caption: "days before",
       body: "days before class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validFromOffset",
-      format: value => -value,
-      normalize: value => -value,
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validFromOffset",
+        format: value => -value,
+        normalize: value => -value,
+        min: "0"
+      }
     },
     {
       caption: "days after",
       body: "days after class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validFromOffset",
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validFromOffset",
+        min: "0"
+      }
     },
     {
       caption: "date",
       body: "Date",
-      type: "date",
-      component: EditInPlaceDateTimeField,
-      fieldName: "validFrom"
+      formFileldProps: {
+        type: "date",
+        name: "validFrom"
+      }
     }
   ];
 
   validToOptions: CustomSelectorOption[] = [
-    { caption: "any date", body: "Any date", type: null },
+    { caption: "any date", body: "Any date" },
     {
       caption: "days before",
       body: "days before class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validToOffset",
-      format: value => -value,
-      normalize: value => -value,
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validToOffset",
+        format: value => -value,
+        normalize: value => -value,
+        min: "0"
+      }
     },
     {
       caption: "days after",
       body: "days after class starts",
-      type: "number",
-      component: EditInPlaceField,
-      fieldName: "validToOffset",
-      min: 0
+      formFileldProps: {
+        type: "number",
+        name: "validToOffset",
+        min: "0"
+      }
     },
     {
       caption: "date",
       body: "Date",
-      type: "date",
-      component: EditInPlaceDateTimeField,
-      fieldName: "validTo"
+      formFileldProps: {
+        type: "date",
+        name: "validTo"
+      }
     }
   ];
 
@@ -269,28 +275,15 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
   };
 
   formatDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(String(value * 100)).toDecimalPlaces(1).toNumber();
     }
     return value;
   };
 
   parseDiscountPercent = value => {
-    if (value && value !== "-") {
+    if (value !== "-") {
       return new Decimal(value / 100).toDecimalPlaces(3).toNumber();
-    }
-    return value;
-  };
-
-  normalizeDiscountPercent = (value, prevValue) => {
-    if (value === "-") {
-      return value;
-    }
-    if (isNaN(value) && prevValue) {
-      return prevValue;
-    }
-    if (value === "" || isNaN(value)) {
-      return "";
     }
     return value;
   };
@@ -302,9 +295,8 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
     const gridXS = twoColumn ? 6 : 12;
 
     return (
-      <div className="d-grid p-3">
-        <Grid container columnSpacing={3} rowSpacing={2}>
-          <Grid item container xs={12}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
+          <Grid item xs={12}>
             <FullScreenStickyHeader
               opened={isNew || Object.keys(syncErrors).includes("name")}
               twoColumn={twoColumn}
@@ -312,10 +304,10 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               fields={(
                 <Grid item xs={twoColumn ? 6 : 12}>
                   <FormField
+                    type="text"
                     name="name"
                     label="Name"
                     required
-                    fullWidth
                   />
                 </Grid>
               )}
@@ -339,8 +331,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                 validate={[validateSingleMandatoryField, validateRangeDiscountPercent]}
                 format={this.formatDiscountPercent}
                 parse={this.parseDiscountPercent}
-                normalize={this.normalizeDiscountPercent}
-                preformatDisplayValue={value => value + "%"}
+                debounced={false}
               />
             ) : (
               <FormField
@@ -378,7 +369,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             </Collapse>
           </Grid>
 
-          <Grid item xs={12} className="mt-2 mb-2">
+          <Grid item xs={12} className="mt-2">
             <Subtitle label="ACCOUNTING" />
           </Grid>
           <Grid item xs={gridXS}>
@@ -400,8 +391,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               validate={[validateSingleMandatoryField, validateRangePredictedStudentsPercentage]}
               format={this.formatPercent}
               parse={this.parsePercent}
-              normalize={this.normalizePercent}
-              preformatDisplayValue={value => value + "%"}
+              debounced={false}
             />
           </Grid>
 
@@ -417,15 +407,15 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
                   type="text"
                   name="code"
                   placeholder="Code"
-                  formatting="inline"
                   normalize={trimValue}
+                  debounced={false}
                   required
                 />
               </Collapse>
             </div>
           </Grid>
 
-          <Grid item xs={gridXS} className="mb-2">
+          <Grid item xs={gridXS} >
             <CustomSelector
               caption="Valid from"
               options={this.validFromOptions}
@@ -434,7 +424,7 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
             />
           </Grid>
 
-          <Grid item xs={gridXS} className="mb-2">
+          <Grid item xs={gridXS} >
             <CustomSelector
               caption="Valid to"
               options={this.validToOptions}
@@ -442,26 +432,31 @@ class DiscountGeneral extends React.Component<DiscountGeneralProps, DiscountGene
               initialIndex={validToIndex}
             />
           </Grid>
+          <Grid item xs={12}>
+            <Divider  />
+          </Grid>
+          <Grid item xs={12}>
+            <Subtitle label="WEB" />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              className="checkbox pr-3"
+              control={<FormField type="checkbox" name="hideOnWeb" color="secondary"  />}
+              label="Hide discounted price on web"
+            />
+          </Grid>
+          <Grid item xs={gridXS} >
+            <FormField
+              type="select"
+              name="availableFor"
+              label="Available for online enrolment"
+              items={DiscountAvailabilityTypes || []}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormField type="multilineText" name="description" label="Public description"  />
+          </Grid>
         </Grid>
-
-        <Divider className="mt-2 mb-2" />
-
-        <div className="mb-2">
-          <Subtitle label="WEB" />
-        </div>
-
-        <FormControlLabel
-          className="checkbox pr-3"
-          control={<FormField type="checkbox" name="availableOnWeb" color="secondary" fullWidth />}
-          label="Available for online enrolment"
-        />
-        <FormControlLabel
-          className="checkbox pr-3 mb-2"
-          control={<FormField type="checkbox" name="hideOnWeb" color="secondary" fullWidth />}
-          label="Hide discounted price on web"
-        />
-        <FormField type="multilineText" name="description" label="Public description" fullWidth />
-      </div>
     );
   }
 }

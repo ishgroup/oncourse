@@ -1,56 +1,28 @@
-import * as React from "react";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
-import {
-  Form, FieldArray, reduxForm, SubmissionError, arrayRemove, change, initialize
-} from "redux-form";
-import { CustomFieldType } from "@api/model";
-import isEqual from "lodash.isequal";
-import { withStyles, createStyles } from "@mui/styles";
-import Grid from "@mui/material/Grid";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { formCommonStyles } from "../../../styles/formCommonStyles";
-import CustomFieldsDeleteDialog from "./CustomFieldsDeleteDialog";
-import CustomFieldsRenderer from "./CustomFieldsRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { getCustomFields } from "../../../actions";
-import { Fetch } from "../../../../../model/common/Fetch";
-import uniqid from "../../../../../common/utils/uniqid";
-import { State } from "../../../../../reducers/state";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { CustomFieldType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { idsToString } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayRemove, change, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import uniqid from '../../../../../common/utils/uniqid';
+import { Fetch } from '../../../../../model/common/Fetch';
+import { State } from '../../../../../reducers/state';
+import { getCustomFields } from '../../../actions';
+import { styles } from '../../../styles/dragablePreferenceItemStyles';
+import { formCommonStyles } from '../../../styles/formCommonStyles';
+import CustomFieldsDeleteDialog from './CustomFieldsDeleteDialog';
+import CustomFieldsRenderer from './CustomFieldsRenderer';
 
-const manualUrl = getManualLink("generalPrefs_customFields");
+const manualUrl = getManualLink("setting-your-general-preferences#custom-field-types");
 
 export const CUSTOM_FIELDS_FORM: string = "CustomFieldsForm";
-
-const styles = theme => createStyles({
-  dragIcon: {
-    fill: "#e0e0e0"
-  },
-  container: {
-    width: "100%"
-  },
-  expansionPanelRoot: {
-    margin: "0px !important",
-    width: "100%",
-  },
-  expansionPanelDetails: {
-    padding: 0,
-    marginTop: `-${theme.spacing(9.75)}`,
-  },
-  expandIcon: {
-    marginTop: -5,
-    "& > button": {
-      padding: 5,
-    }
-  },
-  deleteButtonCustom: {
-    padding: theme.spacing(1),
-    marginTop: -5,
-  }
-});
 
 const setOrder = items =>
   items.forEach((i, index) => {
@@ -218,19 +190,21 @@ class CustomFieldsBaseForm extends React.PureComponent<Props, any> {
             disableInteraction
             createdOn={() => created}
             modifiedOn={() => modified}
-            onAddMenu={() => this.onAddNew()}
+            onAddMenu={this.onAddNew}
           >
             <Grid container className="mt-2">
-              <Grid item lg={10}>
+              <Grid item lg={10} xs={12}>
                 {data && data.types && (
-                <FieldArray
-                  name="types"
-                  component={CustomFieldsRenderer}
-                  dispatch={dispatch}
-                  onDelete={this.onClickDelete}
-                  classes={classes}
-                />
-              )}
+                  <FieldArray
+                    name="types"
+                    component={CustomFieldsRenderer}
+                    props={{
+                      dispatch,
+                      onDelete: this.onClickDelete,
+                      classes
+                    }}
+                  />
+                )}
               </Grid>
             </Grid>
           </AppBarContainer>
@@ -248,7 +222,10 @@ const CustomFieldsForm = reduxForm({
   onSubmitFail,
   form: CUSTOM_FIELDS_FORM
 })(connect<any, any, any>(mapStateToProps, null)(
-  withStyles(theme => ({ ...formCommonStyles(theme), ...styles(theme) }))(withRouter(CustomFieldsBaseForm) as any)
+  withStyles(
+    withRouter(CustomFieldsBaseForm) as any,
+    theme => ({ ...formCommonStyles(theme as any) as any, ...styles(theme as any) as any })
+  )
 ));
 
 export default CustomFieldsForm;

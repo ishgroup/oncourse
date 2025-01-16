@@ -6,40 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import { Dispatch } from "redux";
-import { change, Field } from "redux-form";
-import {
-  Grid, FormControlLabel, IconButton, Typography
-} from "@mui/material";
-import { differenceInDays } from "date-fns";
-import {
-  AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType
-} from "@api/model";
-import { withStyles } from "@mui/styles";
-import { DateRange, ExpandMore, Edit } from "@mui/icons-material";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { stubComponent } from "../../../../../common/utils/common";
-import { defaultContactName } from "../../../contacts/utils";
-import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
-import SubmissionModal from "./SubmissionModal";
-import styles from "./styles";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
-import CourseClassAssessmentStudent from "./CourseClassAssessmentStudent";
-import GradeModal from "./GradeModal";
+import { AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType } from '@api/model';
+import { DateRange, Edit, ExpandMore } from '@mui/icons-material';
+import { FormControlLabel, Grid, IconButton, Typography } from '@mui/material';
+import { differenceInDays } from 'date-fns';
+import { normalizeNumber, stubComponent, StyledCheckbox } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change, Field } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { AssessmentsSubmissionType } from './AssessmentSubmissionIconButton';
+import CourseClassAssessmentStudent from './CourseClassAssessmentStudent';
+import GradeModal from './GradeModal';
+import styles from './styles';
+import SubmissionModal from './SubmissionModal';
 
 interface Props {
   form: string;
   item: string;
   dispatch: Dispatch;
   tutors: CourseClassTutor[];
-  classes,
   courseClassEnrolments?: any[],
   twoColumn?: boolean;
+  classes?,
   row?: AssessmentClass;
   rows?: AssessmentClass[];
   gradingTypes?: GradingType[];
@@ -113,7 +104,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
       } as StudentForRender];
     }, []);
 
-    result.sort((a, b) => (a.studentName > b.studentName ? 1 : -1));
+    result.sort((a, b) => (a.studentName.split(" ")[1] ? a.studentName.split(" ")[1] > b.studentName.split(" ")[1] ? 1 : -1 : 1));
 
     setStudentsForRender(result);
   }, [courseClassEnrolments, row.submissions]);
@@ -270,7 +261,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
     } else {
        updatedSubmissions = row.submissions.map((s, index) => {
         if (elem.submissionIndex === index) {
-          return { ...s, grade, ...["", null].includes(grade) ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
+          return { ...s, grade, ...(["", null].includes(grade) ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today }) };
         }
         return s;
       });
@@ -298,7 +289,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         if (elem.submissionIndex === index) {
           const gradeIndex = prevGrade ? gradeItems?.findIndex(g => g.lowerBound === prevGrade.lowerBound) : -1;
           const grade = gradeItems[gradeIndex + 1]?.lowerBound;
-          return { ...s, grade, ...typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null } };
+          return { ...s, grade, ...(typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null }) };
         }
         return s;
       });
@@ -368,7 +359,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
                 color="secondary"
               />
             )}
-            label={defaultContactName(t.tutorName)}
+            label={t.tutorName}
           />
         </div>
       );
@@ -404,6 +395,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               gradeType={gradeType}
             />
             <SubmissionModal
+              dispatch={dispatch}
               modalProps={modalProps}
               tutors={submissionTutors}
               title={title}
@@ -419,7 +411,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <Field name={`${item}.submissions`} component={submissionFieldStub} />
             <Field name={`${item}.contactIds`} component={tutorsFieldStub} />
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
@@ -429,13 +421,12 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="code"
               onInnerValueChange={onCodeChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
-              type="remoteDataSearchSelect"
+              type="remoteDataSelect"
               entity="Assessment"
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
@@ -445,8 +436,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               selectLabelMark="name"
               onInnerValueChange={onNameChange}
               rowHeight={36}
-              fullWidth
-              required
+                            required
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
@@ -535,6 +525,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
           <Grid container xs={12} className={classes.items}>
             {studentsForRender.map((elem, index) => (
               <CourseClassAssessmentStudent
+                dispatch={dispatch}
                 elem={elem}
                 index={index}
                 onChangeStatus={onChangeStatus}
@@ -562,4 +553,4 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(styles)(CourseClassAssessmentItems);
+export default withStyles(CourseClassAssessmentItems, styles);

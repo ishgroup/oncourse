@@ -6,50 +6,45 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import clsx from "clsx";
-import { createStyles, withStyles } from "@mui/styles";
-import { darken } from "@mui/material/styles";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Divider from "@mui/material/Divider";
-import { Backdrop } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
-import { PreferenceEnum, SearchQuery } from "@api/model";
-import { AppTheme } from "../../../../model/common/Theme";
-import { State } from "../../../../reducers/state";
-import { getDashboardSearch } from "../../../../containers/dashboard/actions";
-import { openInternalLink } from "../../../utils/links";
-import { getEntityDisplayName } from "../../../utils/getEntityDisplayName";
-import { checkPermissions, getOnDemandScripts, getUserPreferences, showConfirm } from "../../../actions";
-import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from "./actions";
-import UserSearch from "./components/UserSearch";
-import SearchResults from "./components/searchResults/SearchResults";
-import SidebarLatestActivity from "./components/SidebarLatestActivity";
-import Favorites from "../../navigation/favorites/Favorites";
-import { getResultId, VARIANTS } from "./utils";
-import HamburgerMenu from "./components/HamburgerMenu";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import Navigation from "../../navigation/Navigation";
-import NavigationCategory from "../../navigation/NavigationCategory";
-import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../../constants/Config";
-import { useAppSelector } from "../../../utils/hooks";
-import ExecuteScriptModal from "../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { DashboardItem } from "../../../../model/dashboard";
-import navigation from "../../navigation/navigation.json";
-import ContactInsight from "../../../../containers/entities/contacts/components/contact-insight/ContactInsight";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import SendMessageEditView from "../../../../containers/entities/messages/components/SendMessageEditView";
+import { PreferenceEnum, SearchQuery } from '@api/model';
+import { Backdrop, Collapse, Divider } from '@mui/material';
+import { darken } from '@mui/material/styles';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AnyArgFunction, AppTheme, openInternalLink } from 'ish-ui';
+import * as React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY, SPECIAL_TYPES_DISPLAY_KEY } from '../../../../constants/Config';
+import ExecuteScriptModal from '../../../../containers/automation/containers/scripts/components/ExecuteScriptModal';
+import { getDashboardSearch } from '../../../../containers/dashboard/actions';
+import ContactInsight from '../../../../containers/entities/contacts/components/contact-insight/ContactInsight';
+import SendMessageEditView from '../../../../containers/entities/messages/components/SendMessageEditView';
+import { DashboardItem } from '../../../../model/dashboard';
+import { State } from '../../../../reducers/state';
+import { checkPermissions, getOnDemandScripts, getUserPreferences, setUserPreference } from '../../../actions';
+import { getEntityDisplayName } from '../../../utils/getEntityDisplayName';
+import { useAppSelector } from '../../../utils/hooks';
+import navigation from '../../navigation/data/navigation.json';
+import Favorites from '../../navigation/favorites/Favorites';
+import Navigation from '../../navigation/Navigation';
+import NavigationCategory from '../../navigation/NavigationCategory';
+import { setSwipeableDrawerSelection, toggleSwipeableDrawer } from './actions';
+import HamburgerMenu from './components/HamburgerMenu';
+import SearchResults from './components/searchResults/SearchResults';
+import SidebarLatestActivity from './components/SidebarLatestActivity';
+import UserSearch from './components/UserSearch';
+import { getResultId, VARIANTS } from './utils';
 
 export const SWIPEABLE_SIDEBAR_WIDTH: number = 350;
 
 export const CATEGORY_SIDEBAR_WIDTH: number = 850;
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     drawerRoot: {
       zIndex: theme.zIndex.modal + 2,
     },
@@ -121,7 +116,6 @@ const styles = (theme: AppTheme) =>
 interface Props {
   form: string;
   resetEditView: any;
-  showConfirm: ShowConfirmCaller;
   classes: any;
   opened: boolean;
   toggleSwipeableDrawer: any;
@@ -135,6 +129,7 @@ interface Props {
   getScriptsPermissions: any;
   scripts: any;
   hasScriptsPermissions: any;
+  dispatch?: Dispatch;
   selected?: number | string;
   setSelected?: AnyArgFunction;
   listEntity?: string;
@@ -155,8 +150,7 @@ const sortItems = (a, b) => {
 const SwipeableSidebar: React.FC<Props> = props => {
   const {
     form,
-    resetEditView,
-    showConfirm,
+    dispatch,
     classes,
     opened,
     toggleSwipeableDrawer,
@@ -182,13 +176,23 @@ const SwipeableSidebar: React.FC<Props> = props => {
   const [resultIndex, setResultIndex] = useState(-1);
   const [scriptIdSelected, setScriptIdSelected] = useState(null);
   const [execMenuOpened, setExecMenuOpened] = useState(false);
-  const [focusOnSearchInput, setFocusOnSearchInput] = React.useState<boolean>(false);
+  const [focusOnSearchInput, setFocusOnSearchInput] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState({});
 
   const favoritesString = useAppSelector(state => state.userPreferences[PreferenceEnum[DASHBOARD_FAVORITES_KEY]]);
   const favoriteScriptsString = useAppSelector(state => state.userPreferences[PreferenceEnum[FAVORITE_SCRIPTS_KEY]]);
 
   const favorites = useMemo<string[]>(() => (favoritesString ? favoritesString.split(",") : []), [favoritesString]);
   const favoriteScripts = useMemo<string[]>(() => (favoriteScriptsString ? favoriteScriptsString.split(",") : []), [favoriteScriptsString]);
+
+  const accessTypes = useAppSelector(state => state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true');
+
+  useEffect(() => {
+    setDisabled({
+      faculties: !accessTypes,
+      subjects: !accessTypes
+    });
+  }, [accessTypes]);
 
   useEffect(() => {
     getFavorites();
@@ -201,7 +205,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
       getFavoriteScripts();
     }
   }, [hasScriptsPermissions]);
-  
+
   useEffect(() => {
     if (!opened) {
       setSelected(null);
@@ -375,15 +379,34 @@ const SwipeableSidebar: React.FC<Props> = props => {
   );
 
   const groupedSortedItems = useMemo<DashboardItem[]>(() => [
-    ...navigation.features.map(f => ({
-     category: f.key, url: f.link, name: f.title, id: null
-    })),
-    ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])]
-    .sort(sortItems),
+      ...navigation.features.map(f => ({
+        category: f.key, url: f.link, name: f.title, id: null
+      })),
+      ...((hasScriptsPermissions && scripts as DashboardItem[]) || [])]
+      .sort(sortItems),
     [navigation.features, scripts]);
-  
+
   const isContactIdSelected = selected && typeof selected === "number";
-  
+
+  const updateFavorites = (key, type: "category" | "automation") => {
+    if (type === "category") {
+      dispatch(setUserPreference({
+        key: DASHBOARD_FAVORITES_KEY,
+        value: favorites.includes(key)
+          ? favorites.filter(v => v !== key).toString()
+          : [...favorites, key].toString()
+      }));
+    }
+    if (type === "automation") {
+      dispatch(setUserPreference({
+        key: FAVORITE_SCRIPTS_KEY,
+        value: favoriteScripts.includes(key)
+          ? favoriteScripts.filter(v => v !== key).toString()
+          : [...favoriteScripts, key].toString()
+      }));
+    }
+  };
+
   return (
     <>
       <SwipeableDrawer
@@ -403,7 +426,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
       >
         <div className={classes.drawerWidth}>
           <div className={clsx("pl-2", classes.toolbar)}>
-            <HamburgerMenu variant={variant} form={form} />
+            <HamburgerMenu variant={variant} form={form}/>
           </div>
           <UserSearch
             getSearchResults={getSearchResults}
@@ -433,6 +456,9 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   setScriptIdSelected={setScriptIdSelected}
                   groupedSortedItems={groupedSortedItems}
                   setSelected={setSelected}
+                  favorites={favorites}
+                  favoriteScripts={favoriteScripts}
+                  updateFavorites={updateFavorites}
                 />
               </div>
               <div className={showUserSearch ? "d-none" : ""}>
@@ -453,6 +479,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   scriptIdSelected={scriptIdSelected}
                   favoriteScripts={favoriteScripts}
                   favorites={favorites}
+                  updateFavorites={updateFavorites}
                 />
                 <Navigation
                   selected={selected}
@@ -462,8 +489,8 @@ const SwipeableSidebar: React.FC<Props> = props => {
                   execMenuOpened={execMenuOpened}
                   setExecMenuOpened={setExecMenuOpened}
                 />
-                <Divider variant="middle" className="mb-2" />
-                <SidebarLatestActivity checkSelectedResult={checkSelectedResult} />
+                <Divider variant="middle" className="mb-2"/>
+                <SidebarLatestActivity checkSelectedResult={checkSelectedResult}/>
               </div>
             </Collapse>
           </div>
@@ -473,21 +500,23 @@ const SwipeableSidebar: React.FC<Props> = props => {
           clsx(
             classes.categoryRoot,
             opened && selected !== null && classes.categoryVisible
-        )
+          )
         }
         >
           {isContactIdSelected ? (
-            <ContactInsight id={selected as number} onClose={() => setSelected(null)} />
-        ) : (
-          <NavigationCategory
-            selected={selected as string}
-            favorites={favorites}
-            favoriteScripts={favoriteScripts}
-            onClose={() => setSelected(null)}
-            setScriptIdSelected={setScriptIdSelected}
-            setExecMenuOpened={setExecMenuOpened}
-          />
-        )}
+            <ContactInsight id={selected as number} onClose={() => setSelected(null)}/>
+          ) : (
+            <NavigationCategory
+              selected={selected as string}
+              favorites={favorites}
+              disabled={disabled}
+              favoriteScripts={favoriteScripts}
+              onClose={() => setSelected(null)}
+              setScriptIdSelected={setScriptIdSelected}
+              setExecMenuOpened={setExecMenuOpened}
+              updateFavorites={updateFavorites}
+            />
+          )}
         </div>
       </SwipeableDrawer>
 
@@ -506,7 +535,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
         selectionOnly={isContactIdSelected}
       />
     </>
-);
+  );
 };
 
 const mapsStateToProps = (state: State) => ({
@@ -525,6 +554,7 @@ const mapsStateToProps = (state: State) => ({
 });
 
 const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
+  dispatch,
   setSelected: selection => dispatch(setSwipeableDrawerSelection(selection)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer()),
   getSearchResults: (search: string) => dispatch(getDashboardSearch(search)),
@@ -532,7 +562,6 @@ const mapStateToDispatch = (dispatch: Dispatch<any>) => ({
   getFavoriteScripts: () => dispatch(getUserPreferences([FAVORITE_SCRIPTS_KEY])),
   getFavorites: () => dispatch(getUserPreferences([DASHBOARD_FAVORITES_KEY])),
   getScriptsPermissions: () => dispatch(checkPermissions({ keyCode: "ADMIN" })),
-  showConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(styles, { withTheme: true })(SwipeableSidebar));
+export default connect<any, any, any>(mapsStateToProps, mapStateToDispatch)(withStyles(SwipeableSidebar, styles));

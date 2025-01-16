@@ -42,6 +42,17 @@ public class CommonExpressionFactory {
 		return result;
 	}
 
+	public static Date nextMidnightPlusDay(Date date) {
+		Date result = null;
+		if (date != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(nextMidnight(date));
+			cal.add(Calendar.DATE, 1);
+			result = cal.getTime();
+		}
+		return result;
+	}
+
 	public static Date previousMidnight(Date date) {
 		Date result = null;
 		if (date != null) {
@@ -51,6 +62,17 @@ public class CommonExpressionFactory {
 			cal.set(Calendar.MINUTE, 0);
 			cal.set(Calendar.SECOND, 0);
 			cal.set(Calendar.MILLISECOND, 0);
+			result = cal.getTime();
+		}
+		return result;
+	}
+
+	public static Date previousMidnightMinusDay(Date date) {
+		Date result = null;
+		if (date != null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(previousMidnight(date));
+			cal.add(Calendar.DATE, -1);
 			result = cal.getTime();
 		}
 		return result;

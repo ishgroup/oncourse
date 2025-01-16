@@ -3,29 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { createStyles, withStyles } from "@mui/styles";
-import { CourseClassTutor } from "@api/model";
-import { format } from "date-fns";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import clsx from "clsx";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { AppTheme } from "../../../../../model/common/Theme";
-import { DD_MM_YYYY_SLASHED, EEE_D_MMM_YYYY } from "../../../../../common/utils/dates/format";
-import { contactLabelCondition, defaultContactName } from "../../../contacts/utils";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import ContactSelectItemRenderer from "../../../contacts/components/ContactSelectItemRenderer";
-import { CourseClassTutorsTabProps } from "./CourseClassTutorsTab";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
-import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
+import { CourseClassTutor } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, FormControlLabel, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import {
+  AppTheme,
+  DD_MM_YYYY_SLASHED,
+  EEE_D_MMM_YYYY,
+  LinkAdornment,
+  normalizeNumber,
+  openInternalLink,
+  WarningMessage
+} from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { ContactLinkAdornment } from '../../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import ExpandableItem from '../../../../../common/components/layout/expandable/ExpandableItem';
+import ContactSelectItemRenderer from '../../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../../contacts/utils';
+import { CourseClassTutorsTabProps } from './CourseClassTutorsTab';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   tutorRoot: {
     gridTemplateRows: "auto auto"
   },
@@ -101,7 +103,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <div className={clsx("d-grid gridAutoFlow-column align-items-baseline", classes.tutorColumn)}>
             {tutor.tutorName ? (
               <Typography noWrap className={clsx(nameWarning && "warningColor")}>
-                {defaultContactName(tutor.tutorName)}
+                {tutor.tutorName}
               </Typography>
             ) : (
               <Typography color="error" noWrap>
@@ -145,38 +147,31 @@ const CourseClassTutorItem: React.FC<Props> = ({
       detailsContent={(
         <div>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             name={`tutors[${index}].contactId`}
-            props={{
-                label: "Contact",
-                entity: "Contact",
-                aqlFilter: `isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`,
-                selectValueMark: "id",
-                selectLabelCondition: contactLabelCondition,
-                defaultDisplayValue: defaultContactName(tutor.tutorName),
-                labelAdornment: (
-                  <ContactLinkAdornment id={tutor?.contactId} />
-                ),
-                itemRenderer: ContactSelectItemRenderer,
-                onInnerValueChange: onTutorIdChange,
-                disabled: Boolean(tutor.id),
-                rowHeight: 48
-              }}
+            label="Contact"
+            entity="Contact"
+            aqlFilter={`isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`}
+            selectValueMark="id"
+            selectLabelCondition={getContactFullName}
+            defaultValue={tutor.tutorName}
+            labelAdornment={<ContactLinkAdornment id={tutor?.contactId} />}
+            itemRenderer={ContactSelectItemRenderer}
             onInnerValueChange={onTutorIdChange}
+            disabled={Boolean(tutor.id)}
+            rowHeight={48}
             className="mb-2"
             required
           />
 
-          {nameWarning && <WarningMessage warning={nameWarning} />}
-
           <FormField
-            type="searchSelect"
+            type="select"
             name={`tutors[${index}].roleId`}
             label="Role"
             selectValueMark="id"
             selectLabelMark="name"
             normalize={normalizeNumber}
-            defaultDisplayValue={tutor.roleName}
+            defaultValue={tutor.roleName}
             items={tutorRoles}
             onInnerValueChange={onRoleIdChange}
             disabled={Boolean(tutor.id || hasWage)}
@@ -188,12 +183,14 @@ const CourseClassTutorItem: React.FC<Props> = ({
               />
               )}
             alwaysDisplayDefault
-            className="mb-2"
+            className={!(!tutor.id && hasWage) && "mb-2"}
+            warning={nameWarning}
             required
           />
           {!tutor.id && hasWage
               && (
               <WarningMessage
+                className="mb-2"
                 warning="Tutor wage should be removed before changing role"
               />
             )}
@@ -215,4 +212,4 @@ const CourseClassTutorItem: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(CourseClassTutorItem);
+export default withStyles(CourseClassTutorItem, styles);

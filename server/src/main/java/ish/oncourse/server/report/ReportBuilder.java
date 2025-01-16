@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.report;
 
+import ish.common.types.AutomationStatus;
 import ish.oncourse.server.cayenne.Report;
 import org.apache.cayenne.exp.Property;
 
@@ -48,7 +49,6 @@ public class ReportBuilder {
         var doc = parseDocument();
         var inputName = getReportName(doc);
         var inputEntity = getReportEntity(doc);
-        var inputIsVisible = getReportIsVisible(doc); // optional, default=true
         var inputKeyCode = getReportKeyCode(doc); // mandatory identifier
         var inputSortOn = getReportSortOn(doc); // non-mandatory
         var inputDescription = getReportDescription(doc); // non-mandatory
@@ -56,14 +56,16 @@ public class ReportBuilder {
         var report = new Report();
         report.setReport(reportXml);
         report.setEntity(inputEntity);
-        report.setIsVisible(inputIsVisible);
         report.setKeyCode(inputKeyCode);
         report.setName(inputName);
         report.setDescription(inputDescription);
-        if (inputSortOn != null) {
-            report.setSortOn(inputSortOn);
+        report.setSortOn(inputSortOn);
+
+        Boolean isVisible = getReportIsVisible(doc);
+        if (isVisible != null) {
+            report.setAutomationStatus(isVisible ? AutomationStatus.ENABLED : AutomationStatus.INSTALLED_DISABLED);
         } else {
-            report.setSortOn(null);
+            report.setAutomationStatus(AutomationStatus.NOT_INSTALLED);
         }
 
         return report;
@@ -115,7 +117,7 @@ public class ReportBuilder {
         var result = xpath.evaluate("/jasperReport/property[@name='"+propertyName+"']/@value", doc);
 
         if (result.isEmpty() && !allowEmptyValue) {
-            throw new RuntimeException("No '"+propertyName+"' property defined for report");
+            throw new RuntimeException("No '" + propertyName + "' property defined for report");
         }
         return result;
     }
@@ -194,13 +196,17 @@ public class ReportBuilder {
      *
      * @param report
      * @return report isVisible property
-     * @throws XPathExpressionException
+     * @throws RuntimeException
      */
-    private boolean getReportIsVisible(Document report) {
+    private Boolean getReportIsVisible(Document report) {
         String isVisibleString;
         try {
             isVisibleString = getPropertyValue(report, Report.IS_VISIBLE_PROPERTY, false);
         } catch (XPathException e) {
+            return null;
+
+        } catch (RuntimeException e) {
+            logger.error(e.getLocalizedMessage());
             throw new RuntimeException("'isVisible' property cannot be parsed");
         }
 

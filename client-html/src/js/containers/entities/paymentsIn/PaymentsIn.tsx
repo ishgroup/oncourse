@@ -2,26 +2,23 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React, { useEffect, useState } from "react";
+import { PaymentIn } from "@api/model";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { PaymentIn } from "@api/model";
+import { checkPermissions } from "../../../common/actions";
+import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
 import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import { FilterGroup } from "../../../model/common/ListView";
-import PaymentInsEditView from "./components/PaymentInEditView";
-import {
-  clearListState,
-  getFilters,
- } from "../../../common/components/list-view/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import { getAccountTransactionLockedDate } from "../../preferences/actions";
-import PaymentInCogwheel from "./components/PaymentInCogwheel";
-import { getAdministrationSites } from "../sites/actions";
+import { FilterGroup } from "../../../model/common/ListView";
 import { State } from "../../../reducers/state";
-import { checkPermissions } from "../../../common/actions";
+import { getAccountTransactionLockedDate } from "../../preferences/actions";
+import { getAdministrationSites } from "../sites/actions";
+import PaymentInCogwheel from "./components/PaymentInCogwheel";
+import PaymentInsEditView from "./components/PaymentInEditView";
 
 const isNotFailed = "(status !== FAILED and status !== FAILED_CARD_DECLINED and status !== FAILED_NO_PLACES and status !== CORRUPTED)";
 const isSuccess = "status == SUCCESS";
@@ -70,7 +67,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const manualLink = getManualLink("processingEnrolments_PaymentIn");
+const manualLink = getManualLink("processing-a-payment-in");
 
 const nameCondition = (paymentIn: PaymentIn) => paymentIn.paymentInType;
 

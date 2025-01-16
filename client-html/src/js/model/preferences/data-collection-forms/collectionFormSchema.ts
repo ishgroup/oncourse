@@ -1,33 +1,33 @@
-export interface collectionFormSchema {
-  name: string;
-  type: collectionFormTypes;
-  headings?: collectionFormHeading[];
-  fields?: collectionFormField[];
+/*
+ * Copyright ish group pty ltd 2023.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
+import { DataCollectionForm, Field } from "@api/model";
+
+export interface CollectionFormSchema {
+  form: DataCollectionForm;
+  items: CollectionFormItem[]
 }
 
-export interface collectionFormHeading {
-  name: string;
+export type CollectionFormItem = CollectionFormHeading | CollectionFormField;
+
+export interface CollectionFormHeading {
+  baseType: "heading";
   description: string;
-  fields?: collectionFormField[];
+  name: string;
+  parent?: string;
 }
 
-export interface collectionFormField {
-  type: collectionFormFieldTypes;
-  mandatory: boolean;
-  label?: string;
-  helpText?: string;
+export interface CollectionFormField extends Field {
+  baseType: "field";
+  parent?: string;
 }
 
-export enum collectionFormTypesEnum {
-  "Application",
-  "Enrolment",
-  "Waiting List",
-  "Survey"
-}
-
-export type collectionFormTypes = keyof typeof collectionFormTypesEnum;
-
-export enum collectionFormFieldTypesEnum {
+export enum CollectionFormFieldTypesEnum {
   "ABN",
   "Business phone number",
   "Citizenship",
@@ -59,11 +59,3 @@ export enum collectionFormFieldTypesEnum {
   "Year school completed"
 }
 
-export type collectionFormFieldTypes = keyof typeof collectionFormFieldTypesEnum;
-
-export enum collectionFormFieldRequirementEnum {
-  "Optional",
-  "Mandatory"
-}
-
-// export type collectionFormFieldRequirementTypes = keyof typeof collectionFormFieldRequirementEnum;

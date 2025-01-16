@@ -3,43 +3,38 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { Document, Tag } from "@api/model";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Launch from "@mui/icons-material/Launch";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { WrappedFieldArrayProps } from "redux-form";
-import { AppTheme } from "../../../../model/common/Theme";
-import { openInternalLink } from "../../../utils/links";
-import DocumentItem from "./components/items/DocumentItem";
-import DocumentAddDialog from "./components/dialogs/DocumentAddDialog";
-import { State } from "../../../../reducers/state";
+import { Document, Tag } from '@api/model';
+import Launch from '@mui/icons-material/Launch';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { AddButton, AppTheme, openInternalLink, ShowConfirmCaller } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { WrappedFieldArrayProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { getEntityTags } from '../../../../containers/tags/actions';
+import { EntityName } from '../../../../model/entities/common';
+import { State } from '../../../../reducers/state';
+import DocumentItem from '../../documents/DocumentItem';
 import {
   clearEditingDocument,
   createDocument,
   searchDocumentByHash,
   setDocumentFile,
-  setEditingDocument,
-  setSearchDocuments
-} from "./actions";
-import DocumentEditDialog, { DocumentDialogType } from "./components/dialogs/DocumentEditDialog";
-import { getEntityTags } from "../../../../containers/tags/actions";
-import { EntityName } from "../../../../model/entities/common";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import AddButton from "../../icons/AddButton";
+  setEditingDocument
+} from './actions';
+import DocumentAddDialog from './components/dialogs/DocumentAddDialog';
+import DocumentEditDialog, { DocumentDialogType } from './components/dialogs/DocumentEditDialog';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
   dropInfo: {
     borderBottom: `1px dashed ${theme.palette.text.primary}`,
     visibility: "hidden"
   },
   addButton: {
-    "&:hover + $dropInfo": {
+    [`&:hover + .${classes.dropInfo}`]: {
       visibility: "visible"
     }
   },
@@ -76,7 +71,6 @@ interface DocumentsRendererProps {
   clearEditingDocument: any;
   searchExistingDocument: any;
   showConfirm: ShowConfirmCaller;
-  clearSearchDocuments: any;
   createDocument: any;
   tags: any;
 }
@@ -105,9 +99,8 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
   };
 
   closeEdit = () => {
-    const { clearEditingDocument, clearSearchDocuments } = this.props;
+    const { clearEditingDocument } = this.props;
 
-    clearSearchDocuments();
     clearEditingDocument();
 
     this.setState({
@@ -189,7 +182,7 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
 
   componentDidUpdate(prevProps) {
     const {
-     editingDocument, editingFormName, form, fields, tags, viewDocument
+      editingDocument, editingFormName, form, fields, tags, viewDocument
     } = this.props;
 
     if (!prevProps.editingDocument && editingDocument && editingFormName === form) {
@@ -277,7 +270,6 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
       form,
       entity,
       setDocumentFile,
-      clearSearchDocuments,
       meta: { dirty }
     } = this.props;
 
@@ -293,78 +285,72 @@ class DocumentsRenderer extends React.PureComponent<DocumentsRendererProps & Wra
 
     const editItem = fields.get(editingDocumentIndex);
 
-    return (
-      <>
-        <DocumentAddDialog
-          opened={openAddDialog}
-          onClose={this.toggleAdd}
-          searchDocument={this.searchDocumentItem}
-          setDocumentFile={setDocumentFile}
-          form={form}
-          clearSearchDocuments={clearSearchDocuments}
-          closeAddDialog={this.closeAddDialog}
-          isParentDragging={isDragging}
-        />
-
-        <DocumentEditDialog
-          opened={Boolean(editItem)}
-          item={editItem}
-          dispatch={dispatch}
-          form={form}
-          tags={menuTags}
-          type={editingDocumentType}
-          index={editingDocumentIndex}
-          itemPath={editingDocumentPath}
-          isNew={isNewEditingDocument}
-          onClose={this.removeNewDocument}
-          onCancelEdit={this.onCancelEdit}
-          onSave={this.closeEdit}
-          onAdd={this.onAddDocument}
-          onUnlink={this.unlinkDocument}
-          dirty={dirty}
-          entity={entity}
-        />
-
-        <Grid item xs={12}>
-          <div className="centeredFlex">
-            <div className="heading">
-              {fields.length > 0 ? fields.length : ""}
-              {' '}
-              {fields.length === 1 ? label.replace(/s$/, "") : label}
-            </div>
-            <IconButton
-              size="small"
-              color="primary"
-              onClick={() => openInternalLink("/document")}
-            >
-              <Launch fontSize="inherit" />
-            </IconButton>
-            <AddButton size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton} />
-            <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
-              Drag and drop file or click to browse.
-            </Typography>
+    return (<>
+      <DocumentAddDialog
+        opened={openAddDialog}
+        onClose={this.toggleAdd}
+        searchDocument={this.searchDocumentItem}
+        setDocumentFile={setDocumentFile}
+        form={form}
+        closeAddDialog={this.closeAddDialog}
+      />
+      <DocumentEditDialog
+        opened={Boolean(editItem)}
+        item={editItem}
+        dispatch={dispatch}
+        form={form}
+        tags={menuTags}
+        type={editingDocumentType}
+        index={editingDocumentIndex}
+        itemPath={editingDocumentPath}
+        isNew={isNewEditingDocument}
+        onClose={this.removeNewDocument}
+        onCancelEdit={this.onCancelEdit}
+        onSave={this.closeEdit}
+        onAdd={this.onAddDocument}
+        onUnlink={this.unlinkDocument}
+        dirty={dirty}
+        entity={entity}
+      />
+      <Grid item xs={12}>
+        <div className="centeredFlex">
+          <div className="heading">
+            {fields.length > 0 ? fields.length : ""}
+            {' '}
+            {fields.length === 1 ? label.replace(/s$/, "") : label}
           </div>
-        </Grid>
-        <Grid item container xs={12} columnSpacing={3} spacing={3} wrap="wrap">
-          {fields.map((f, index) => {
-            const item = fields.get(index);
+          <IconButton
+            size="small"
+            color="primary"
+            onClick={() => openInternalLink("/document")}
+          >
+            <Launch fontSize="inherit"/>
+          </IconButton>
+          <AddButton size="small" onClick={e => this.toggleAdd(e, true)} className={classes.addButton}/>
+          <Typography variant="caption" className={`relative ${classes.dropInfo}`}>
+            Drag and drop file or click to browse.
+          </Typography>
+        </div>
+      </Grid>
+      <Grid item container xs={12} columnSpacing={3} spacing={3} wrap="wrap">
+        {fields.map((f, index) => {
+          const item = fields.get(index);
 
-            return (
-              <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
-                <DocumentItem
-                  entity={entity}
-                  index={index}
-                  item={item}
-                  editItem={this.setEditingItem}
-                  viewItem={this.setViewItem}
-                  unlink={this.unlinkDocument}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </>
-    );
+          return (
+            <Grid item xs={xsGrid} md={mdGrid} lg={lgGrid} key={item.id} className={classes.documentGridItem}>
+              <DocumentItem
+                entity={entity}
+                index={index}
+                item={item}
+                editItem={this.setEditingItem}
+                viewItem={this.setViewItem}
+                unlink={this.unlinkDocument}
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
+    </>);
   }
 }
 
@@ -376,16 +362,15 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    clearEditingDocument: () => dispatch(clearEditingDocument()),
-    clearSearchDocuments: () => dispatch(setSearchDocuments(null)),
-    setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
-      dispatch(setEditingDocument(document, editingFormName, viewDocument)),
-    setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),
-    getDocumentTags: () => dispatch(getEntityTags("Document")),
-    searchExistingDocument: (inputDocument: File, editingFormName: string) =>
-      dispatch(searchDocumentByHash(inputDocument, editingFormName)),
-    createDocument: (document: Document, form: string, documentPath: string, index: number) =>
-      dispatch(createDocument(document, form, documentPath, index))
-  });
+  clearEditingDocument: () => dispatch(clearEditingDocument()),
+  setEditingDocument: (document: Document, editingFormName: string, viewDocument: boolean = false) =>
+    dispatch(setEditingDocument(document, editingFormName, viewDocument)),
+  setDocumentFile: (file: File) => dispatch(setDocumentFile(file)),
+  getDocumentTags: () => dispatch(getEntityTags("Document")),
+  searchExistingDocument: (inputDocument: File, editingFormName: string) =>
+    dispatch(searchDocumentByHash(inputDocument, editingFormName)),
+  createDocument: (document: Document, form: string, documentPath: string, index: number) =>
+    dispatch(createDocument(document, form, documentPath, index))
+});
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DocumentsRenderer));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(DocumentsRenderer, styles));

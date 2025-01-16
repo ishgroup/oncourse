@@ -6,18 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo, useRef } from "react";
 import { Message } from "@api/model";
-import { Dispatch } from "redux";
-import { Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { CardContent, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { defaultContactName } from "../../contacts/utils";
-import { ContactLinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { III_DD_MMM_YYYY } from "ish-ui";
+import React, { useEffect, useMemo, useRef } from "react";
+import { Dispatch } from "redux";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 
 interface MessageEditViewProps {
   values?: Message;
@@ -27,7 +25,6 @@ interface MessageEditViewProps {
   dispatch?: Dispatch<any>;
   dirty?: boolean;
   form?: string;
-  nestedIndex?: number;
   rootEntity?: string;
   twoColumn?: boolean;
   showConfirm?: any;
@@ -55,11 +52,11 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
 
   return (
     <div className="p-3 saveButtonTableOffset">
-      <Grid container columnSpacing={3} rowSpacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
         {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label="Subject" /></Grid>)}
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
-            value={defaultContactName(values.sentToContactFullname)}
+            value={values.sentToContactFullname}
             label="Sent to"
             labelAdornment={(
               <ContactLinkAdornment id={values?.contactId} />
@@ -70,7 +67,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
           <Uneditable value={createdOn} label="Created on" />
         </Grid>
       </Grid>
-      <Grid container columnSpacing={3} spacing={2}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         {values.message && (
           <Grid item xs={twoColumn ? 6 : 12}>
             <Typography variant="caption" color="textSecondary">

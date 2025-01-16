@@ -1,4 +1,3 @@
-
 export const getEntityDisplayName = (entity: string): string => {
   switch (entity) {
     case "Audit": {
@@ -114,6 +113,9 @@ export const getEntityDisplayName = (entity: string): string => {
 
 export const getSingleEntityDisplayName = (entity: string): string => {
   switch (entity) {
+    case "VetReport": {
+      return "VET report";
+    }
     case "CorporatePass": {
       return "Corporate Pass";
     }

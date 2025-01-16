@@ -3,16 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { change } from "redux-form";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import BankingService from "../services/BankingService";
-import { GET_DEPOSIT_PAYMENTS, GET_DEPOSIT_PAYMENTS_FULFILLED } from "../actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { Epic } from "redux-observable";
 import { FETCH_FAIL } from "../../../../common/actions";
 import { IAction } from "../../../../common/actions/IshAction";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { GET_DEPOSIT_PAYMENTS, GET_DEPOSIT_PAYMENTS_FULFILLED } from "../actions";
+import BankingService from "../services/BankingService";
 
 const request: EpicUtils.Request = {
   type: GET_DEPOSIT_PAYMENTS,

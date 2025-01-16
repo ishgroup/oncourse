@@ -14,6 +14,7 @@ package ish.oncourse.server.cayenne
 
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._WaitingList
 
 import javax.annotation.Nonnull
@@ -27,7 +28,17 @@ import javax.annotation.Nonnull
 @API
 @QueueableEntity
 class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, ContactActivityTrait {
+	@Override
+	protected void postPersist() {
+		super.postPersist()
 
+		List<CheckoutContactRelation> checkoutRelations = CartFunctions.checkoutsByContactId(context, student.contact.id)
+
+		context.deleteObjects(checkoutRelations
+				.findAll { it instanceof CheckoutWaitingCourseRelation && it.relatedObjectId == course.id }
+				.collect {it.checkout}.unique())
+		context.commitChanges()
+	}
 
 
 	/**

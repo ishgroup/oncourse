@@ -6,14 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import IconButton from "@mui/material/IconButton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import withStyles from "@mui/styles/withStyles";
-import { StringValueType } from "../../../../../model/common/CommomObjects";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import IconButton from '@mui/material/IconButton';
+import { makeAppStyles, StringValueType } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const useStyles = makeAppStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   iconRemove: {
     color: "red"
   },
@@ -41,7 +40,7 @@ interface AssessmentSubmissionIconProps {
 }
 
 const AssessmentSubmissionIcon: React.FC<AssessmentSubmissionIconProps> = ({ type }) => {
-  const classes  = useStyles();
+  const { classes }  = useStyles();
 
   switch (type) {
     case "Submitted":
@@ -77,4 +76,4 @@ const AssessmentSubmissionIconButton: React.FC<AssessmentSubmissionIconButtonPro
    </IconButton>
 );
 
-export default withStyles(styles)(AssessmentSubmissionIconButton);
+export default withStyles(AssessmentSubmissionIconButton, styles);

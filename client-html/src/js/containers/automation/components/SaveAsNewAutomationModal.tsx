@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { InjectedFormProps, reduxForm } from "redux-form";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import React from "react";
+import { InjectedFormProps, reduxForm } from "redux-form";
 import FormField from "../../../common/components/form/formFields/FormField";
 import { validateKeycode } from "../utils";
 
@@ -18,13 +18,12 @@ interface Props {
   opened: any;
   onClose: any;
   onSave: any;
-  hasNameField?: boolean;
-  validateNameField?: any;
+  validateNameField: any;
 }
 
 const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
   ({
-     opened, handleSubmit, invalid, onClose, onSave, hasNameField, validateNameField
+     opened, handleSubmit, invalid, onClose, onSave, validateNameField
     }) => (
       <Dialog open={opened} onClose={onClose} maxWidth="md" scroll="body">
         <form autoComplete="off" onSubmit={handleSubmit(onSave)}>
@@ -44,20 +43,16 @@ const SaveAsNewAutomationModal = React.memo<Props & InjectedFormProps>(
               name="keyCode"
               validate={validateKeycode}
               required
-              fullWidth
-            />
+                          />
 
-            {hasNameField
-              && (
-              <FormField
-                type="text"
-                label="Name"
-                name="name"
-                validate={validateNameField || undefined}
-                required
-                fullWidth
-              />
-          )}
+            <FormField
+              type="text"
+              label="Name"
+              name="name"
+              validate={validateNameField || undefined}
+              className="mt-2"
+              required
+                          />
 
           </DialogContent>
 

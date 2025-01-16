@@ -40,6 +40,9 @@ public class DiscountUtils {
 		MoneyRounding rounding = classDiscount.getDiscount().getRounding();
 
 		Money tax = InvoiceUtil.calculateTaxEachForInvoiceLine(invoiceLine.getPriceEachExTax(), discountValue, taxRate, taxAdjustments);
+		if (tax.isNegative()) {
+			tax = Money.ZERO;
+		}
 		if (rounding.getDatabaseValue() > 0) {
 			Money total = invoiceLine.getPriceEachExTax().subtract(discountValue).add(tax);
 			total = total.round(rounding);

@@ -52,7 +52,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":null,
         "maximumDays":null,
@@ -89,10 +89,14 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":#number,
         "canceledEnrolmentsCount":0,
         "failedEnrolmentsCount":0,
+        "minimumSessionsToComplete":null,
         "tags":[230],
         "documents":"#ignore",
         "isTraineeship":false,
-        "customFields":{}
+        "customFields":{},
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 
@@ -161,7 +165,7 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":true,
         "maxStudentAge":null,
         "maximumDays":null,
@@ -198,9 +202,13 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount":0,
         "canceledEnrolmentsCount":0,
         "failedEnrolmentsCount":0,
+        "minimumSessionsToComplete":null,
         "tags":[],
         "documents":[],
         "isTraineeship":false,
-        "customFields":{}
+        "customFields":{},
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """

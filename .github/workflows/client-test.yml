@@ -25,7 +25,7 @@ jobs:
           paths_ignore: '["server/**", "server-api/**", "api-doc/**", "api-test/**", "types/**"]'
 
       - name: Set up JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
@@ -38,14 +38,15 @@ jobs:
         with:
           path: |
             **/node_modules
+            ~/.build
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/package-lock.json') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: ${{ matrix.java }}-
 
       - name: Run tests
         if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
-        run: ./gradlew client-html:test
+        run: ./gradlew client-html:jest
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v1

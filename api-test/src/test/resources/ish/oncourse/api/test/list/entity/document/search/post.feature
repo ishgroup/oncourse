@@ -27,7 +27,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document/sear
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
 
-        
+
 #       <--->
 
         * def someStream = read('../testDoc7.jpg')
@@ -69,7 +69,7 @@ Feature: Main feature for all POST requests with path 'list/entity/document/sear
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsView'}
 
-        
+
 
 #       <---> Check existent private document:
         * def someStream = read('../defaultPrivateDocument.txt')
@@ -90,4 +90,3 @@ Feature: Main feature for all POST requests with path 'list/entity/document/sear
         When method POST
         Then status 200
         And match $.name == "defaultPublicDocument"
-        

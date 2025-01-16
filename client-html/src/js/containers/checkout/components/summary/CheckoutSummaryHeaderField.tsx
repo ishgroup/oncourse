@@ -5,11 +5,11 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { State } from "../../../../reducers/state";
 import { CheckoutSummaryListItem } from "../../../../model/checkout";
-import { getContactName } from "../../../entities/contacts/utils";
-import { HeaderFieldTypo } from "../HeaderField";
+import { State } from "../../../../reducers/state";
+import { getContactFullName } from "../../../entities/contacts/utils";
 import { CheckoutPage } from "../../constants";
+import { HeaderFieldTypo } from "../HeaderField";
 
 interface Props {
   classes?: any;
@@ -47,7 +47,7 @@ const CheckoutSummaryHeaderField = React.memo<Props>(props => {
         onClick={onClickSummaryInvoice}
         amount={summaryFinalTotal}
         currencySymbol={currencySymbol}
-        caption={selectedContacts.length > 0 ? getContactName(summaryList.find(l => l.payer).contact) : ""}
+        caption={selectedContacts.length > 0 ? getContactFullName(summaryList.find(l => l.payer).contact as any) : ""}
         className="pl-2 pr-2 pt-1 pb-2"
       />
     </>

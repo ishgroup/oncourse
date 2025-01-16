@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
 import { PaymentType, PayType } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import { mapSelectItems, sortDefaultSelectItems } from "ish-ui";
+import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 
 const PayTypes = Object.keys(PayType)
   .filter(val => Number.isNaN(Number(val)))
@@ -39,7 +38,6 @@ const renderPaymentTypes = props => {
                       type="text"
                       name={`${item}.name`}
                       label="Name"
-                      fullWidth
                       disabled={field.systemType}
                       validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
                     />
@@ -68,10 +66,8 @@ const renderPaymentTypes = props => {
                           type="checkbox"
                           name={`${item}.active`}
                           color="primary"
-                          value="true"
                           disabled={field.systemType}
-                          fullWidth
-                        />
+                                                  />
                       )}
                       label="Active"
                     />
@@ -84,10 +80,8 @@ const renderPaymentTypes = props => {
                           type="checkbox"
                           name={`${item}.bankedAuto`}
                           color="primary"
-                          value="true"
                           disabled={field.systemType}
-                          fullWidth
-                        />
+                                                  />
                       )}
                       label="Banked automatically"
                     />
@@ -100,10 +94,8 @@ const renderPaymentTypes = props => {
                           type="checkbox"
                           name={`${item}.reconcilable`}
                           color="primary"
-                          value="true"
                           disabled={field.systemType}
-                          fullWidth
-                        />
+                                                  />
                       )}
                       label="Reconcilable"
                     />
@@ -119,7 +111,6 @@ const renderPaymentTypes = props => {
                           items={PayTypes}
                           className={classes.field}
                           required
-                          fullWidth
                         />
                       </Grid>
 
@@ -131,7 +122,6 @@ const renderPaymentTypes = props => {
                           items={assetAccounts}
                           className={classes.field}
                           required
-                          fullWidth
                         />
                       </Grid>
 
@@ -143,7 +133,6 @@ const renderPaymentTypes = props => {
                           items={assetAccounts}
                           className={classes.field}
                           required
-                          fullWidth
                         />
                       </Grid>
                     </>

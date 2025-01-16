@@ -61,21 +61,21 @@
   <CourseClass id="1" code="123" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="2" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="3" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
                taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="3" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
@@ -95,11 +95,11 @@
            yearSchoolCompleted="2009" usiStatus="1" createdOn="2013-01-01 00:00:00"
            modifiedOn="2013-01-01 00:00:00" citizenship="9" feeHelpEligible="0"/>
 
-  <Certificate id="1" studentId="1" studentFirstName="Test" studentLastName="Student" qualificationId="1"
+  <Certificate id="1" studentId="1" qualificationId="1"
                isQualification="1" certificateNumber="1" printedOn="2013-01-01 00:00:00" privateNotes="Private notes..."
                publicNotes="Public notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
                awardedOn="2012-05-10 00:00:00"/>
-  <Certificate id="2" studentId="1" isQualification="0" studentFirstName="Test1" studentLastName="Student2"
+  <Certificate id="2" studentId="1" isQualification="0"
                certificateNumber="2" printedOn="2013-01-01 00:00:00" privateNotes="Private notes..."
                publicNotes="Public notes..." createdOn="2012-05-10 00:00:00" modifiedOn="2012-05-10 00:00:00"
                awardedOn="2012-05-10 00:00:00"/>
@@ -142,25 +142,25 @@
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="1" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="CHC02"
                    TITLE="Community Services Training Package (Superseded by CHC08)" TYPE="TrainingPackage"
                    WILLOWID="1"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="1" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="1" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="CHCCHILD3A" TRAININGPACKAGEID="1" WILLOWID="1"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="2" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="XHX02"
                    TITLE="Community Services Training Package (Superseded by XHX08)" TYPE="TrainingPackage"
                    WILLOWID="2"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989490" ID="2" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989490" ID="2" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="XHXXHILD3A" TRAININGPACKAGEID="2" WILLOWID="2"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="3" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="XHDDF"
                    TITLE="Community Services Training Package (Superseded by XHDDF)" TYPE="TrainingPackage"
                    WILLOWID="3"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="3" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="3" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="ABCDEFG" TRAININGPACKAGEID="3" WILLOWID="3"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="4" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="YYY333222"
                    TITLE="Community Services Training Package (Superseded by YYY333222)" TYPE="TrainingPackage"
                    WILLOWID="4"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="4" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="4" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="A2VGDIOD" TRAININGPACKAGEID="4" WILLOWID="4"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <Outcome CREATEDON="2013-03-25 13:12:28.478" ENROLMENTID="1" ID="1" MODIFIEDON="2013-03-25 13:12:28.478" MODULEID="1"

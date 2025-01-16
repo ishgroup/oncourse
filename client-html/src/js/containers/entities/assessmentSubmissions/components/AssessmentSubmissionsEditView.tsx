@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import TabsList from "../../../../common/components/navigation/TabsList";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import AssessmentSubmissionGeneralTab from "./AssessmentSubmissionGeneralTab";
-import AssessmentSubmissionDocuments from "./AssessmentSubmissionDocument";
+import React from 'react';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList from '../../../../common/components/navigation/TabsList';
+import AssessmentSubmissionDocuments from './AssessmentSubmissionDocument';
+import AssessmentSubmissionGeneralTab from './AssessmentSubmissionGeneralTab';
 
 const items = [
   {
@@ -19,7 +19,7 @@ const items = [
   },
   {
     label: "NOTES",
-    component: ({ ...props }) => <OwnApiNotes {...props as any} />
+    component: ({ ...props }) => <OwnApiNotes {...props as any} className="pl-3 pr-3" />
   },
   {
     label: "DOCUMENTS",
@@ -30,8 +30,9 @@ const items = [
 const AssessmentSubmissionEditView = props =>
    (
      <TabsList
+       onParentScroll={props.onScroll}
        items={props.values ? items : []}
-       itemProps={...props}
+       itemProps={{ ...props }}
      />
   );
 export default AssessmentSubmissionEditView;

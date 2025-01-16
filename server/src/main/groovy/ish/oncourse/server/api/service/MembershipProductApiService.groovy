@@ -13,28 +13,26 @@ package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
 import ish.common.types.AccountType
+import ish.common.types.ExpiryType
 import ish.math.Money
 import ish.oncourse.server.api.dao.*
-import ish.oncourse.server.api.v1.function.MembershipProductFunctions
-import ish.oncourse.server.api.v1.model.ExpiryTypeDTO
-import ish.oncourse.server.api.v1.model.MembershipCorporatePassDTO
-import ish.oncourse.server.api.v1.model.MembershipDiscountDTO
-import ish.oncourse.server.api.v1.model.MembershipProductDTO
+import ish.oncourse.server.api.v1.function.MembershipFunctions
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
+import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
-import java.time.ZoneId
-
+import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
+import static ish.oncourse.server.api.v1.function.MembershipProductFunctions.*
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePasses
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.*
 import static ish.util.MoneyUtil.calculateTaxAdjustment
@@ -48,7 +46,7 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
 
     @Inject
     private DocumentService documentService
-    
+
     @Inject
     private ContactRelationTypeDao contactRelationTypeDao
 
@@ -96,15 +94,15 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
             membershipProductDTO.incomeAccountId = membershipProduct.incomeAccount?.id
             membershipProductDTO.status = membershipProduct.isOnSale ? membershipProduct.isWebVisible ? CAN_BE_PURCHASED_IN_OFFICE_ONLINE : CAN_BE_PURCHASED_IN_OFFICE : DISABLED
             membershipProductDTO.corporatePasses = membershipProduct.corporatePassProducts.collect { toRestMembershipCorporatePass(it.corporatePass) }
-            membershipProductDTO.membershipDiscounts = membershipProduct.discountMemberships.collect { MembershipProductFunctions.toRestMembershipDiscount(it) }
+            membershipProductDTO.membershipDiscounts = membershipProduct.discountMemberships.collect { toRestMembershipDiscount(it) }
             membershipProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestFromEntityRelation(it) } +
                     EntityRelationDao.getRelatedTo(membershipProduct.context, Product.simpleName, membershipProduct.id).collect { toRestToEntityRelation(it) })
-            membershipProductDTO.createdOn = membershipProduct.createdOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
-            membershipProductDTO.modifiedOn = membershipProduct.modifiedOn?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+            membershipProductDTO.createdOn = LocalDateUtils.dateToTimeValue(membershipProduct.createdOn)
+            membershipProductDTO.modifiedOn = LocalDateUtils.dateToTimeValue(membershipProduct.modifiedOn)
             membershipProductDTO.dataCollectionRuleId = membershipProduct.fieldConfigurationScheme?.id
-            membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            membershipProductDTO.tags = membershipProduct.allTags.collect{ it.id }
-            membershipProductDTO.customFields = membershipProduct.customFields.collectEntries {[(it.customFieldType.key) : it.value] }
+            membershipProductDTO.documents = membershipProduct.activeAttachments.collect { toRestDocument(it.document, documentService) }
+            membershipProductDTO.tags = membershipProduct.allTags.collect { it.id }
+            membershipProductDTO.customFields = membershipProduct.customFields.collectEntries { [(it.customFieldType.key): it.value] }
             membershipProductDTO
         }
     }
@@ -279,11 +277,49 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
     }
 
     @Override
-    Closure getAction (String key, String value) {
+    Closure getAction(String key, String value) {
         Closure action = super.getAction(key, value)
         if (!action) {
             validator.throwClientErrorException(key, "Unsupported attribute")
         }
         action
+    }
+
+    CheckoutMembershipProductDTO getCheckoutModel(Long id, Long contactId) {
+        ObjectContext context = cayenneService.newContext
+        MembershipProduct membership = getRecordById(context, MembershipProduct.class, id)
+
+        return new CheckoutMembershipProductDTO().with { dto ->
+            dto.id = membership.id
+            dto.name = membership.name
+            dto.code = membership.sku
+            dto.description = membership.description
+            dto.feeExTax = membership.priceExTax?.toBigDecimal()
+            dto.totalFee = getPriceIncTax(membership.priceExTax, membership.tax?.rate, membership.taxAdjustment)?.toBigDecimal()
+
+            Date expiryDate = null
+            switch (membership.expiryType) {
+                case ExpiryType.DAYS:
+                    expiryDate = new Date().plus(membership.expiryDays != null ? membership.expiryDays : 0)
+                    break
+                case ExpiryType.FIRST_JANUARY:
+                    expiryDate = calculateNextDate(1, Calendar.JANUARY)
+                    break
+                case ExpiryType.FIRST_JULY:
+                    expiryDate = calculateNextDate(1, Calendar.JULY)
+                    break
+            }
+            def membershipItem = new Membership().with {
+                it.expiryDate = expiryDate
+                it.product = membership
+                it
+            }
+            if (contactId != null) {
+                Contact contact = getRecordById(context, Contact.class, contactId, Contact.PRODUCT_ITEMS.joint())
+                Date renewalDate = MembershipFunctions.getRenwevalExpiryDate(contact, membershipItem)
+                dto.expiresOn = LocalDateUtils.dateToValue(renewalDate ?: expiryDate)
+            }
+            dto
+        }
     }
 }

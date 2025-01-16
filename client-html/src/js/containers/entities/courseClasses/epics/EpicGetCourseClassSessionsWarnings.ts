@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { Session, SessionWarning } from "@api/model";
+import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { GET_COURSE_CLASS_SESSIONS_WARNINGS, setCourseClassSessionsWarnings } from "../actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
 
 const request: EpicUtils.Request<SessionWarning[], {classId: number, sessions: Session[]}> = {

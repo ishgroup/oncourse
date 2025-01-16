@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 128-1
+      comment: increase EmailTemplate.bodyHtml max length
+      author: kristina
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: EmailTemplate
+      changes:
+        - modifyDataType:
+            columnName: bodyHtml
+            newDataType: LONGTEXT
+            tableName: EmailTemplate

@@ -6,55 +6,56 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { formatToDateOnly } from "ish-ui";
 import { initialize } from "redux-form";
-import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
-import ModuleService from "../modules/services/ModuleService";
-import QualificationService from "../qualifications/services/QualificationService";
-import RoomService from "../rooms/services/RoomService";
-import SiteService from "../sites/services/SiteService";
-import AccountService from "../accounts/services/AccountService";
-import PaymentInService from "../paymentsIn/services/PaymentInService";
-import PaymentOutService from "../paymentsOut/services/PaymentOutService";
-import PayslipService from "../payslips/services/PayslipService";
-import TransactionService from "../transactions/services/TransactionService";
-import CorporatePassService from "../corporatePasses/services/CorporatePassService";
-import BankingService from "../bankings/services/BankingService";
-import AuditsService from "../../audits/services/AuditsService";
-import DiscountService from "../discounts/services/DiscountService";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import InvoiceService from "../invoices/services/InvoiceService";
-import WaitingListService from "../waitingLists/services/WaitingListService";
-import ApplicationService from "../applications/service/ApplicationService";
-import MembershipProductService from "../membershipProducts/services/MembershipProductService";
-import membershipProductService from "../membershipProducts/services/MembershipProductService";
-import VoucherProductService from "../voucherProducts/services/VoucherProductService";
-import CertificateService from "../certificates/services/CertificateService";
-import SaleService from "../sales/services/SaleService";
-import SurveyService from "../survey/services/SurveyService";
-import ArticleProductService from "../articleProducts/service/ArticleProductService";
-import MessageService from "../messages/services/MessageService";
-import { formatToDateOnly } from "../../../common/utils/dates/datesNormalizing";
-import { getInvoiceClosestPaymentDueDate, preformatInvoice, sortInvoicePaymentPlans } from "../invoices/utils";
-import ContactsService from "../contacts/services/ContactsService";
-import { PayLineWithDefer } from "../../../model/entities/Payslip";
-import CourseClassService from "../courseClasses/services/CourseClassService";
-import OutcomeService from "../outcomes/services/OutcomeService";
-import CourseService from "../courses/services/CourseService";
-import { EntityName } from "../../../model/entities/common";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import { processCustomFields } from "../customFieldTypes/utils";
-import { formatRelationsBeforeSave } from "../contacts/Contacts";
 import DocumentsService from "../../../common/components/form/documents/services/DocumentsService";
-import LeadService from "../leads/services/LeadService";
-import PriorLearningService from "../priorLearnings/services/PriorLearningService";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import EntityService from "../../../common/services/EntityService";
+import { EntityName } from "../../../model/entities/common";
+import { EnrolmentExtended } from "../../../model/entities/Enrolment";
+import { PayLineWithDefer } from "../../../model/entities/Payslip";
+import AuditsService from "../../audits/services/AuditsService";
+import ImportTemplatesService from "../../automation/containers/import-templates/services/ImportTemplatesService";
+import AccountService from "../accounts/services/AccountService";
+import ApplicationService from "../applications/service/ApplicationService";
+import ArticleProductService from "../articleProducts/service/ArticleProductService";
 import AssessmentService from "../assessments/services/AssessmentService";
 import AssessmentSubmissionService from "../assessmentSubmissions/service/AssessmentSubmissionService";
-import { mapEntityDisplayName } from "./utils";
+import BankingService from "../bankings/services/BankingService";
+import CertificateService from "../certificates/services/CertificateService";
+import { formatRelationsBeforeSave } from "../contacts/Contacts";
+import ContactsService from "../contacts/services/ContactsService";
+import { getContactFullName } from "../contacts/utils";
+import CorporatePassService from "../corporatePasses/services/CorporatePassService";
+import CourseClassService from "../courseClasses/services/CourseClassService";
+import CourseService from "../courses/services/CourseService";
+import { processCustomFields } from "../customFieldTypes/utils";
+import DiscountService from "../discounts/services/DiscountService";
 import EnrolmentService from "../enrolments/services/EnrolmentService";
-import { EnrolmentExtended } from "../../../model/entities/Enrolment";
-import EntityService from "../../../common/services/EntityService";
-import { getContactName } from "../contacts/utils";
+import FacultyService from "../faculties/services/FacultyService";
+import InvoiceService from "../invoices/services/InvoiceService";
+import { preformatInvoice, processInvoicePaymentPlans, setInvoiceLinesTotal } from "../invoices/utils";
+import LeadService from "../leads/services/LeadService";
+import MembershipProductService from "../membershipProducts/services/MembershipProductService";
+import membershipProductService from "../membershipProducts/services/MembershipProductService";
+import MessageService from "../messages/services/MessageService";
+import ModuleService from "../modules/services/ModuleService";
+import OutcomeService from "../outcomes/services/OutcomeService";
+import PaymentInService from "../paymentsIn/services/PaymentInService";
+import PaymentOutService from "../paymentsOut/services/PaymentOutService";
 import { getPaymentOutFromModel } from "../paymentsOut/utils";
+import PayslipService from "../payslips/services/PayslipService";
+import PriorLearningService from "../priorLearnings/services/PriorLearningService";
+import QualificationService from "../qualifications/services/QualificationService";
+import RoomService from "../rooms/services/RoomService";
+import SaleService from "../sales/services/SaleService";
+import SiteService from "../sites/services/SiteService";
+import SurveyService from "../survey/services/SurveyService";
+import TransactionService from "../transactions/services/TransactionService";
+import VoucherProductService from "../voucherProducts/services/VoucherProductService";
+import WaitingListService from "../waitingLists/services/WaitingListService";
+import { mapEntityDisplayName } from "./utils";
 
 const defaultUnknown = () => {
   console.error("Unknown entity name");
@@ -137,10 +138,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
     case "AbstractInvoice":
     case "Invoice": {
       return InvoiceService.getInvoice(id).then(invoice => {
-        invoice.paymentPlans.sort(sortInvoicePaymentPlans);
-        getInvoiceClosestPaymentDueDate(invoice);
-
-        return invoice;
+        return setInvoiceLinesTotal({ ...invoice, paymentPlans: processInvoicePaymentPlans(invoice.paymentPlans) });
       });
     }
     
@@ -155,7 +153,7 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
             .then(res => {
               a.tutors = res.rows.map(r => ({
                 contactId: Number(r.id),
-                tutorName: getContactName({ firstName: r.values[0], lastName: r.values[1] })
+                tutorName: getContactFullName({ firstName: r.values[0], lastName: r.values[1] })
               }));
             });
         }
@@ -167,6 +165,9 @@ export const getEntityItemById = (entity: EntityName, id: number): Promise<any> 
         return en;
       });
     }
+
+    case "Faculty":
+      return FacultyService.get(id);
 
     case "Discount": {
       return DiscountService.getDiscount(id).then(discount => {
@@ -207,15 +208,21 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return CertificateService.updateCertificate(id, item);
 
     case "Contact": {
-      const { student, relations } = item;
+      const itemToSave = { ...item };
 
-      if (student) delete item.student.education;
+      if (itemToSave.student) {
+        itemToSave.student = {
+          ...item.student,
+          education: null
+        };
+        delete itemToSave.student.education;
+      }
 
-      item.relations = formatRelationsBeforeSave(relations);
+      itemToSave.relations = [...formatRelationsBeforeSave(itemToSave.relations)];
 
-      if (item.isCompany) delete item.firstName;
+      if (itemToSave.isCompany) delete item.firstName;
 
-      return ContactsService.updateContact(id, item);
+      return ContactsService.updateContact(id, itemToSave);
     }
 
     case "CorporatePass":
@@ -226,8 +233,19 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return DiscountService.updateDiscount(id, item);
     case "Document":
       return DocumentsService.updateDocumentItem(id, item);
-    case "Enrolment":
-      return EnrolmentService.updateEnrolment(id, item);
+      
+    case "Enrolment": {
+      const withAssessmenProcessed = {
+        ...item,
+        assessments: item.assessments.map(({ tutors, ...rest }) => rest)
+      };
+      
+      return EnrolmentService.updateEnrolment(id, withAssessmenProcessed);
+    }
+
+    case "Faculty":
+      return FacultyService.update(id, item);
+      
     case "AbstractInvoice":
     case "Invoice":
       return InvoiceService.updateInvoice(id, preformatInvoice(item));
@@ -255,7 +273,7 @@ export const updateEntityItemById = (entity: EntityName, id: number, item: any):
       return PaymentOutService.updatePaymentOut(id, item);
 
     case "Payslip": {
-      const paylines = JSON.parse(JSON.stringify(item.paylines.filter(p => p.deferred)));
+      const paylines = [...item?.paylines?.filter(p => p.deferred) || []];
 
       paylines.forEach(i => {
         delete i.deferred;
@@ -371,8 +389,8 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
         shared,
         access,
         content,
-        tags,
-        (Array.isArray(versions) && versions[0].fileName) || content.name
+        tags?.toString(),
+        (versions && versions[0] && versions[0].fileName) || content.name
       );
     }
 
@@ -451,6 +469,9 @@ export const createEntityItem = (entity: EntityName, item: any): Promise<any> =>
       }
       return BankingService.createBanking(newBanking);
     }
+
+    case "Faculty":
+      return FacultyService.create(item);
     
     default:
       return defaultUnknown();
@@ -498,6 +519,8 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
       return PayslipService.removePayslip(id);
     case "PriorLearning":
       return PriorLearningService.removePriorLearning(id);
+    case "Faculty":
+      return FacultyService.remove(id);
     case "Qualification":
       return QualificationService.removeQualification(id);
     case "Room":
@@ -505,7 +528,7 @@ export const deleteEntityItemById = (entity: EntityName, id: number): Promise<an
     case "Site":
       return SiteService.removeSite(id);
     case "WaitingList":
-      return WaitingListService.removeWaitingList(id);
+      return EntityService.bulkDelete("WaitingList", { ids: [id] });
     default:
       return defaultUnknown();
   }

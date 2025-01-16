@@ -6,44 +6,71 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
-import clsx from "clsx";
-import { Dispatch } from "redux";
+import { CheckoutSaleRelation, ColumnWidth } from '@api/model';
+import Button from '@mui/material/Button';
+import clsx from 'clsx';
+import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues, initialize, isDirty, isInvalid, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { FETCH_FINISH, openDrawer, showConfirm } from '../../../common/actions';
 import {
- change, getFormValues, initialize, isDirty, isInvalid, reduxForm 
-} from "redux-form";
-import { connect } from "react-redux";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { CheckoutSaleRelation, ColumnWidth } from "@api/model";
-import debounce from "lodash.debounce";
-import Button from "@mui/material/Button";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
-import history from "../../../constants/History";
+  clearCommonPlainRecords,
+  getCommonPlainRecords,
+  setCommonPlainSearch
+} from '../../../common/actions/CommonPlainRecordsActions';
+import AppBarContainer from '../../../common/components/layout/AppBarContainer';
+import Drawer from '../../../common/components/layout/Drawer';
+import { setListEditRecord } from '../../../common/components/list-view/actions';
+import LoadingIndicator from '../../../common/components/progress/LoadingIndicator';
+import { latestActivityStorageHandler } from '../../../common/utils/storage';
+import uniqid from '../../../common/utils/uniqid';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../constants/Config';
+import history from '../../../constants/History';
 import {
   CheckoutContact,
-  CheckoutCourse, CheckoutCourseClass, CheckoutItem, CheckoutSummary
-} from "../../../model/checkout";
-import { State } from "../../../reducers/state";
-import ResizableWrapper from "../../../common/components/layout/resizable/ResizableWrapper";
-import Drawer from "../../../common/components/layout/Drawer";
-import { AppTheme } from "../../../model/common/Theme";
-import { studentInitial } from "../../entities/contacts/components/ContactsGeneral";
-import { getCountries, getLanguages, updateColumnsWidth } from "../../preferences/actions";
+  CheckoutCourse,
+  CheckoutCourseClass,
+  CheckoutItem,
+  CheckoutSummary
+} from '../../../model/checkout';
+import { CheckoutFundingInvoice } from '../../../model/checkout/fundingInvoice';
+import { EditViewProps } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
 import {
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
   getContactTags
-} from "../../entities/contacts/actions";
-import { setListEditRecord } from "../../../common/components/list-view/actions";
-import LoadingIndicator from "../../../common/components/progress/LoadingIndicator";
-import { EditViewProps } from "../../../model/common/ListView";
-import { NoArgFunction } from "../../../model/common/CommonFunctions";
-import { FETCH_FINISH, openDrawer, showConfirm } from "../../../common/actions";
-import { latestActivityStorageHandler } from "../../../common/utils/storage";
+} from '../../entities/contacts/actions';
+import { studentInitial } from '../../entities/contacts/components/ContactsGeneral';
+import { ContactInitial } from '../../entities/contacts/Contacts';
+import { getContactFullName } from '../../entities/contacts/utils';
+import { getCountries, getLanguages, updateColumnsWidth } from '../../preferences/actions';
+import {
+  addContact,
+  addItem,
+  checkoutUpdateRelatedItems,
+  removeContact,
+  removeItem,
+  updateClassItem,
+  updateContact
+} from '../actions';
+import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from '../actions/checkoutContact';
+import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from '../actions/checkoutPayment';
+import { checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
+import {
+  checkoutClearCourseClassList,
+  checkoutGetClassPaymentPlans,
+  checkoutGetCourseClassList,
+  checkoutGetMembership,
+  checkoutGetProduct,
+  checkoutGetVoucher,
+  clearCheckoutItemRecord
+} from '../actions/chekoutItem';
 import {
   CHECKOUT_CONTACT_COLUMNS,
   CHECKOUT_MEMBERSHIP_COLUMNS,
@@ -54,12 +81,13 @@ import {
   CheckoutPage,
   CheckoutPageType,
   titles
-} from "../constants";
+} from '../constants';
 import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
-  getCheckoutCurrentStep, processCeckoutCartIds,
+  getCheckoutCurrentStep,
+  processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
@@ -67,64 +95,32 @@ import {
   processCheckoutLeadId,
   processCheckoutSale,
   processCheckoutWaitingListIds
-} from "../utils";
-import CheckoutFundingInvoiceForm from "./fundingInvoice/CheckoutFundingInvoiceForm";
-import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./fundingInvoice/CheckoutFundingInvoiceSummaryList";
-import CheckoutFundingThisInvoice from "./fundingInvoice/CheckoutFundingThisInvoice";
-import HeaderField from "./HeaderField";
-import EnrolContactListView from "./contact/EnrolContactListView";
-import CheckoutContactEditView, { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "./contact/CheckoutContactEditView";
-import EnrolItemListView from "./items/EnrolItemListView";
-import SelectedItemRenderer from "./items/components/SelectedItemRenderer";
-import EnrolCourseClassView from "./items/components/EnrolCourseClassView";
-import {
-  addContact,
-  addItem,
-  checkoutUpdateRelatedItems,
-  removeContact,
-  removeItem,
-  updateClassItem,
-  updateContact
-} from "../actions";
-import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from "../actions/checkoutContact";
-import { ContactInitial } from "../../entities/contacts/Contacts";
-import CheckoutPaymentPage from "./payment/CheckoutPaymentPage";
-import CheckoutItemView from "./items/components/CheckoutItemView";
-import {
-  checkoutClearCourseClassList,
-  checkoutGetClassPaymentPlans,
-  checkoutGetCourseClassList,
-  checkoutGetMembership,
-  checkoutGetProduct,
-  checkoutGetVoucher,
-  clearCheckoutItemRecord
-} from "../actions/chekoutItem";
-import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from "./items/components/CkecoutItemViewForm";
-import CheckoutSectionExpandableRenderer from "./CheckoutSectionExpandableRenderer";
-import CheckoutPromoCodesHeaderField from "./summary/promocode/CheckoutPromoCodesHeaderField";
-import CheckoutContactSearch from "./contact/CheckoutContactSearch";
-import CheckoutSummaryComp from "./summary/CheckoutSummary";
-import CheckoutPaymentHeaderField from "./payment/components/CheckoutPaymentHeaderField";
-import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from "../actions/checkoutPayment";
-import { checkoutUpdateSummaryClassesDiscounts } from "../actions/checkoutSummary";
-import CheckoutSummaryHeaderField from "./summary/CheckoutSummaryHeaderField";
-import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
-import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
-import {
-  clearCommonPlainRecords,
-  getCommonPlainRecords,
-  setCommonPlainSearch
-} from "../../../common/actions/CommonPlainRecordsActions";
-import uniqid from "../../../common/utils/uniqid";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import CheckoutAppBar from "./CheckoutAppBar";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
-import { getContactName } from "../../entities/contacts/utils";
+} from '../utils';
+import CheckoutAppBar from './CheckoutAppBar';
+import CheckoutSectionExpandableRenderer from './CheckoutSectionExpandableRenderer';
+import CheckoutContactEditView, { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from './contact/CheckoutContactEditView';
+import CheckoutContactSearch from './contact/CheckoutContactSearch';
+import EnrolContactListView from './contact/EnrolContactListView';
+import CheckoutFundingInvoiceForm from './fundingInvoice/CheckoutFundingInvoiceForm';
+import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from './fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import CheckoutFundingThisInvoice from './fundingInvoice/CheckoutFundingThisInvoice';
+import HeaderField from './HeaderField';
+import CheckoutItemView from './items/components/CheckoutItemView';
+import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from './items/components/CkecoutItemViewForm';
+import EnrolCourseClassView from './items/components/EnrolCourseClassView';
+import SelectedItemRenderer from './items/components/SelectedItemRenderer';
+import EnrolItemListView from './items/EnrolItemListView';
+import CheckoutPaymentPage from './payment/CheckoutPaymentPage';
+import CheckoutPaymentHeaderField from './payment/components/CheckoutPaymentHeaderField';
+import CheckoutSummaryComp from './summary/CheckoutSummary';
+import CheckoutSummaryHeaderField from './summary/CheckoutSummaryHeaderField';
+import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from './summary/CheckoutSummaryList';
+import CheckoutPromoCodesHeaderField from './summary/promocode/CheckoutPromoCodesHeaderField';
 
 export const FORM: string = "CHECKOUT_SELECTION_FORM";
 const SIDEBAR_DEFAULT_WIDTH: number = 320;
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   sideBar: {
     [theme.breakpoints.up("md")]: {
       paddingRight: 0,
@@ -456,7 +452,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         showConfirm({
           onConfirm: () => openContactRow(item, false),
           confirmMessage: createNewContact ? createConfirmMessage : "",
-          ...createNewContact ? { title: null } : {}
+          ...(createNewContact ? { title: null } : {})
           });
         return;
       }
@@ -707,7 +703,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
             onCancel: () => {
               setCheckDirtyContactViewOnFocusCancel(true);
             },
-            ...createNewContact ? { title: null } : {}
+            ...(createNewContact ? { title: null } : {})
           }
         );
         return;
@@ -871,7 +867,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         showConfirm({
           onConfirm: onRemove,
           confirmMessage: "The item you are removing is required by another item in the shopping cart.",
-          cancelButtonText: "Override"
         });
       } else {
         onRemove();
@@ -994,7 +989,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         color="primary"
         size="large"
         href={selectedContacts[0]
-          ? `/lead/new?courseIds=${selectedItems.map(s => s.courseId)}&contactId=${selectedContacts[0]?.id}&contactName=${getContactName(selectedContacts[0])}`
+          ? `/lead/new?courseIds=${selectedItems.map(s => s.courseId)}&contactId=${selectedContacts[0]?.id}&contactName=${getContactFullName(selectedContacts[0] as any)}`
           : ""}
         target="_blank"
       >
@@ -1135,7 +1130,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         </Drawer>
       </ResizableWrapper>
 
-      <div className="w-100">
+      <div style={{ width: `calc(100% - ${sidebarWidth}px)` }}>
         <div className={clsx({ "d-none": checkoutStep !== getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart) })}>
           <div className="appFrame flex-fill root">
             <LoadingIndicator
@@ -1175,7 +1170,6 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                             disabledHandler={onSelectDisabledHandler}
                             searchString={value && value.contacts}
                             selectedContacts={selectedContacts}
-                            setCreateNewContact={setCreateNewContact}
                             contactsLoading={contactsLoading}
                           />
                         </div>
@@ -1207,6 +1201,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 showConfirm={showConfirm}
                 onSave={onContactSave}
                 onClose={onClose}
+                leftOffset={sidebarWidth}
               />
             )}
 
@@ -1324,7 +1319,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   removeItem: (itemId: number, itemType: string) => dispatch(removeItem(itemId, itemType)),
   checkoutGetCourseClassList: (search: string) => dispatch(checkoutGetCourseClassList(search)),
   checkoutClearCourseClassList: () => dispatch(checkoutClearCourseClassList()),
-  getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item)),
+  getMemberShipRecord: (item: any) => dispatch(checkoutGetMembership(item.id)),
   getProductRecord: (id: number) => dispatch(checkoutGetProduct(id)),
   getVoucherRecord: (item: any) => dispatch(checkoutGetVoucher(item)),
   clearItemRecord: () => {
@@ -1341,4 +1336,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm<any, Props>({
   form: FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CheckoutSelectionForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutSelectionForm, styles)));

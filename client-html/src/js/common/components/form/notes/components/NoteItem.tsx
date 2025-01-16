@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Note } from "@api/model";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL, formatRelativeDate } from "ish-ui";
+import React from "react";
 import FormField from "../../formFields/FormField";
-import { formatRelativeDate } from "../../../../utils/dates/formatRelative";
-import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../utils/dates/format";
 
 interface Props {
   item: Note;
@@ -38,8 +37,8 @@ const NoteItem = (props: Props) => {
             <FormField
               type="text"
               name={messageName}
+              disabled={item.readonly}
               required
-              fullWidth
               multiline
             />
           </Grid>
@@ -80,8 +79,9 @@ const NoteItem = (props: Props) => {
                   className="lightGrayIconButton"
                   color="secondary"
                   onClick={() => onDelete(index)}
+                  disabled={item.readonly}
                 >
-                  <DeleteIcon fontSize="inherit" color="inherit" />
+                  <DeleteIcon fontSize="inherit" color="inherit"/>
                 </IconButton>
               </Tooltip>
             </Grid>

@@ -3,64 +3,53 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
+import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } from '@api/model';
+import Settings from '@mui/icons-material/Settings';
+import { FormControlLabel, Grid, MenuItem } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from 'date-fns';
 import {
- arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation 
-} from "redux-form";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import {
-  addDays,
-  addHours,
-  addMinutes,
-  differenceInMinutes,
-  subDays
-} from "date-fns";
-import { CourseClassTutor, SessionWarning, TutorAttendance } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
-import debounce from "lodash.debounce";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Settings from "@mui/icons-material/Settings";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
-import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
-import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import history from "../../../../../constants/History";
-import { setCourseClassSessionsWarnings } from "../../actions";
-import CourseClassBulkChangeSession from "./CourseClassBulkChangeSession";
-import CourseClassExpandableSession from "./CourseClassExpandableSession";
-import CopySessionDialog from "./CopySessionDialog";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
-import CourseClassTimetableService from "./services/CourseClassTimetableService";
-import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
+  appendTimezone,
+  normalizeNumber,
+  normalizeNumberToPositive,
+  SelectItemDefault,
+  validateMinMaxDate
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { arrayRemove, change, initialize, startAsyncValidation, stopAsyncValidation } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { addActionToQueue, removeActionsFromQueue } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import uniqid from '../../../../../common/utils/uniqid';
+import { instantAsyncValidateFieldArrayItemCallback } from '../../../../../common/utils/validation';
+import history from '../../../../../constants/History';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { ClassCostExtended, CourseClassExtended, SessionRepeatTypes } from '../../../../../model/entities/CourseClass';
+import { TimetableMonth, TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import CalendarDayBase from '../../../../timetable/components/calendar/components/day/CalendarDayBase';
+import CalendarMonthBase from '../../../../timetable/components/calendar/components/month/CalendarMonthBase';
+import { getAllMonthsWithSessions } from '../../../../timetable/utils';
+import { setCourseClassSessionsWarnings } from '../../actions';
+import { getSessionsWithRepeated, setShiftedTutorAttendances } from '../../utils';
 import {
   courseClassCloseBulkUpdateModal,
   courseClassOpenBulkUpdateModal,
   courseClassSelectAllSession,
   courseClassSelectSingleSession,
   postCourseClassSessions
-} from "./actions";
-import { instantAsyncValidateFieldArrayItemCallback } from "../../../../../common/utils/validation";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { State } from "../../../../../reducers/state";
-import { SelectItemDefault } from "../../../../../model/entities/common";
-import { appendTimezone } from "../../../../../common/utils/dates/formatTimezone";
-import uniqid from "../../../../../common/utils/uniqid";
-import { getSessionsWithRepeated, setShiftedTutorAttendances } from "../../utils";
+} from './actions';
+import CopySessionDialog from './CopySessionDialog';
+import CourseClassBulkChangeSession from './CourseClassBulkChangeSession';
+import CourseClassExpandableSession from './CourseClassExpandableSession';
+import CourseClassTimetableService from './services/CourseClassTimetableService';
 
-const styles = () => createStyles({
+const styles = (theme, p, classes) => ({
     root: {
       width: "100%"
     },
@@ -69,13 +58,13 @@ const styles = () => createStyles({
     },
     sessionExpansionPanelSummayRoot: {
       "&:hover": {
-        "& $sessionActionButton, & $sessionActionCheckBox": {
+        [`& .${classes.sessionActionButton}, & .${classes.sessionActionCheckBox}`]: {
           visibility: "visible"
         }
       }
     },
     visibleActionButtons: {
-      "& $sessionActionButton, & $sessionActionCheckBox": {
+      [`& .${classes.sessionActionButton}, & .${classes.sessionActionCheckBox}`]: {
         visibility: "visible"
       }
     },
@@ -103,6 +92,10 @@ interface Props extends Partial<EditViewProps<CourseClassExtended>> {
 }
 
 let pendingSessionActionArgs = null;
+
+const validateStartDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, '', allValues?.sessions[0]?.start, '', 'Start date cannot be after the first session');
+
+const validateEndDate = (value, allValues: CourseClassExtended) => validateMinMaxDate(value, allValues?.sessions[allValues?.sessions?.length - 1]?.start, '', 'End date cannot be before the last session');
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
   const updatedForValidate = sessions.map(({ index, ...rest }) => ({ ...rest }));
@@ -169,7 +162,8 @@ const CourseClassTimetableTab = ({
   sessionWarnings,
   sessionSelection,
   bulkSessionModalOpened,
-  addTutorWage
+  addTutorWage,
+  syncErrors
 }: Props) => {
   const [expandedSession, setExpandedSession] = useState(null);
   const [copyDialogAnchor, setCopyDialogAnchor] = useState(null);
@@ -177,19 +171,27 @@ const CourseClassTimetableTab = ({
   const [months, setMonths] = useState<TimetableMonth[]>([]);
   const [sessionMenu, setSessionMenu] = useState(null);
 
-  const onSelfPacedChange = useCallback(
-    (e, value) => {
-      if (!values.isDistantLearningCourse && !isNew) {
-        e.preventDefault();
-        showConfirm({
+  const onSelfPacedChange = (e, value) => {
+    e.preventDefault();
+
+    const type: CourseClassType = 'Distant Learning';
+
+    const onSetSelfPaced = () => {
+      dispatch(change(form, "type", type));
+      dispatch(change(form, "sessions", []));
+      dispatch(change(form, "trainingPlan", []));
+      dispatch(change(form, "studentAttendance", []));
+      dispatch(change(form, "startDateTime", null));
+      dispatch(change(form, "endDateTime", null));
+    };
+
+    if (value) {
+      isNew
+        ? onSetSelfPaced()
+        : showConfirm({
           onConfirm: () => CourseClassTimetableService.validateUpdate(values.id, [])
             .then(sessionWarnings => {
-              dispatch(change(form, "isDistantLearningCourse", value));
-              dispatch(change(form, "sessions", []));
-              dispatch(change(form, "trainingPlan", []));
-              dispatch(change(form, "studentAttendance", []));
-              dispatch(change(form, "startDateTime", null));
-              dispatch(change(form, "endDateTime", null));
+              onSetSelfPaced();
               dispatch(addActionToQueue(postCourseClassSessions(values.id, []), "POST", "Session", values.id));
               dispatch(setCourseClassSessionsWarnings(sessionWarnings));
             })
@@ -197,10 +199,16 @@ const CourseClassTimetableTab = ({
           confirmMessage: "You are about to delete all sessions from this class. This will also remove any attendance records and any training plan details",
           confirmButtonText: "Delete"
         });
-      }
-    },
-    [values.isDistantLearningCourse, values.sessions, isNew]
-  );
+      return;
+    }
+    dispatch(change(form, "type", 'With Sessions'));
+  };
+
+  const onHybridChange = (e, value) => {
+    e.preventDefault();
+    dispatch(change(form, "type", value ? 'Hybrid' : 'With Sessions'));
+    dispatch(change(form, "minimumSessionsToComplete", value ? values.sessions.length : null));
+  };
 
   useEffect(() => {
     if (!values.sessions || !values.sessions.length) {
@@ -238,11 +246,20 @@ const CourseClassTimetableTab = ({
       setExpanded(prev => [...prev, tabIndex]);
     }
     const temporaryId = uniqid();
-    let start: any = new Date();
-    start.setMinutes(0, 0, 0);
-    let end: any = addHours(start, 1);
-    start = start.toISOString();
-    end = end.toISOString();
+    
+    let start: any;
+    let end: any;
+    
+    if (values.sessions.length) {
+      start = values.sessions[0].start;
+      end = values.sessions[0].end;
+    } else {
+      start = new Date();
+      start.setMinutes(0, 0, 0);
+      end = addHours(start, 1);
+      start = start.toISOString();
+      end = end.toISOString();
+    }
 
     const duration = differenceInMinutes(new Date(end), new Date(start));
 
@@ -389,7 +406,7 @@ const CourseClassTimetableTab = ({
   const onExpand = useCallback(
     (e, expanded) => {
       if (!twoColumn && expanded.includes(6)) {
-        e.preventDefault();
+        e?.preventDefault();
 
         const search = new URLSearchParams(window.location.search);
         search.append("expandTab", tabIndex.toString());
@@ -404,11 +421,11 @@ const CourseClassTimetableTab = ({
     [twoColumn, expanded, tabIndex]
   );
 
-  const triggerDebounseUpdate = debounce(session => {
+  const triggerDebounseUpdate = session => {
     const updated = [...values.sessions];
     updated.splice(session.index, 1, session);
     validateSessionUpdate(values.id, updated, dispatch, form);
-  }, 1000);
+  };
 
   const handleSessionMenu = useCallback(e => {
     setSessionMenu(e.currentTarget);
@@ -573,14 +590,8 @@ const CourseClassTimetableTab = ({
             return result;
           }
 
-          const taStart = new Date(ta.start);
-          const taEnd = new Date(ta.end);
-
           let start = new Date(session.start);
           let end = new Date(session.end);
-
-          start.setHours(taStart.getHours(), taStart.getMinutes(), 0, 0);
-          end.setHours(taEnd.getHours(), taEnd.getMinutes(), 0, 0);
 
           // workaround for DST time offset
           if (session.siteTimezone) {
@@ -650,7 +661,7 @@ const CourseClassTimetableTab = ({
 
   const renderedMonths = useMemo(
     () => months.map((m, i) => (
-      <CalendarMonthBase key={i} fullWidth {...m}>
+      <CalendarMonthBase key={i} fullWidth showYear {...m}>
         {m.days.map(d => {
             if (!d.sessions.length) {
               return null;
@@ -692,23 +703,45 @@ const CourseClassTimetableTab = ({
     [months, values.tutors, values.budget, sessionSelection, sessionWarnings, openCopyDialog]
   );
 
-  const selfPacedField = (
-    <FormControlLabel
-      className="switchWrapper"
-      control={(
-        <FormField
-          type="switch"
-          name="isDistantLearningCourse"
-          color="primary"
-          onChangeHandler={onSelfPacedChange}
-        />
-      )}
-      label="Self-paced"
-      labelPlacement="start"
-    />
+  const typeFields = (
+    <div>
+      <FormControlLabel
+        className="switchWrapper mr-1"
+        control={(
+          <FormField
+            type="switch"
+            name="type"
+            color="primary"
+            format={(type: CourseClassType) => type === "Distant Learning"}
+            onChangeHandler={onSelfPacedChange}
+            debounced={false}
+          />
+        )}
+        label="Self-paced"
+        labelPlacement="start"
+      />
+      <FormControlLabel
+        className="switchWrapper"
+        control={(
+          <FormField
+            type="switch"
+            name="type"
+            color="primary"
+            format={(type: CourseClassType) => type === "Hybrid"}
+            onChangeHandler={onHybridChange}
+            debounced={false}
+          />
+        )}
+        label="Hybrid"
+        labelPlacement="start"
+      />
+    </div>
   );
 
   const disabledMenuItem = sessionSelection.length === 0;
+
+  const isDistantLearning = values.type === "Distant Learning";
+  const isHybrid = values.type === "Hybrid";
 
   return (
     <div className="pl-3 pr-3">
@@ -721,131 +754,155 @@ const CourseClassTimetableTab = ({
           budget={values.budget}
         />
       )}
-      {values.isDistantLearningCourse ? (
-        <Grid container columnSpacing={3}>
-          <Grid item xs={12} className="pb-2 centeredFlex">
-            <div>
-              <div className="heading pb-1">Timetable</div>
-              {isNew && (
-                <Typography variant="caption" color="textSecondary">
-                  Please save your new class before editing timetable
-                </Typography>
-              )}
-            </div>
-            <div className="flex-fill" />
-            {selfPacedField}
-          </Grid>
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="number"
-              label="Maximum days to complete"
-              name="maximumDays"
-              min="1"
-              max="99"
-              step="1"
-              normalize={normalizeNumber}
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="number"
-              label="Expected study hours"
-              name="expectedHours"
-              min="1"
-              max="99"
-              step="1"
-              normalize={normalizeNumber}
-              required
-              fullWidth
-            />
-          </Grid>
-
-          <Grid item xs={twoColumn ? 4 : 12}>
-            <FormField
-              type="select"
-              label="Virtual site"
-              name="virtualSiteId"
-              items={virualSites}
-              allowEmpty
-            />
-          </Grid>
-        </Grid>
-      ) : (
-        <>
-          <div>
-            <ExpandableContainer
-              header="Timetable"
-              index={tabIndex}
-              expanded={expanded}
-              setExpanded={setExpanded}
-              onAdd={twoColumn ? addSession : null}
-              onChange={onExpand}
-              headerAdornment={(
-                <>
-                  <div>
-                    {values.sessions && values.sessions.length > 0 && (
-                      <>
-                        <Checkbox
-                          name="selectAllSession"
-                          size="small"
-                          onClick={onSelectAllSession}
-                          checked={sessionSelection.length === values.sessions.length}
-                        />
-                        <IconButton
-                          color="inherit"
-                          aria-owns={sessionMenu ? "sessionSettings" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleSessionMenu}
-                          size="small"
-                        >
-                          <Settings />
-                        </IconButton>
-                      </>
-                    )}
-                  </div>
-                  <div className="flex-fill" />
-                  {selfPacedField}
-                </>
-              )}
-            >
-              <CopySessionDialog
-                popupAnchorEl={copyDialogAnchor}
-                onCancel={closeCopyDialog}
-                onSave={onSaveRepeatHandler}
-              />
-              {renderedMonths}
-            </ExpandableContainer>
-          </div>
-          <Menu
-            id="sessionSettings"
-            anchorEl={sessionMenu}
-            open={Boolean(sessionMenu)}
-            onClose={handleSessionMenuClose}
-            disableAutoFocusItem
+      <div>
+        <ExpandableContainer
+          name="sessions"
+          header="Timetable"
+          index={tabIndex}
+          expanded={isDistantLearning ? [tabIndex] : expanded}
+          setExpanded={setExpanded}
+          onAdd={twoColumn && !isDistantLearning ? addSession : null}
+          onChange={onExpand}
+          formErrors={syncErrors}
+          headerAdornment={(
+            <>
+              <div>
+                {!isDistantLearning && values.sessions && values.sessions.length > 0 && (
+                  <>
+                    <Checkbox
+                      name="selectAllSession"
+                      size="small"
+                      onClick={onSelectAllSession}
+                      checked={sessionSelection.length === values.sessions.length}
+                    />
+                    <IconButton
+                      color="inherit"
+                      aria-owns={sessionMenu ? "sessionSettings" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleSessionMenu}
+                      size="small"
+                    >
+                      <Settings />
+                    </IconButton>
+                  </>
+                )}
+              </div>
+              <div className="flex-fill" />
+              <div>
+                {typeFields}
+              </div>
+            </>
+          )}
           >
-            <MenuItem
-              classes={{
-                root: "listItemPadding"
-              }}
-              onClick={onDeleteTimetableEvents}
-              disabled={disabledMenuItem}
-            >
-              {`Delete ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
-            </MenuItem>
-            <MenuItem
-              classes={{
-                root: "listItemPadding"
-              }}
-              onClick={onChangeTimetableEvents}
-              disabled={disabledMenuItem}
-            >
-              {`Bulk change ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
-            </MenuItem>
-          </Menu>
-        </>
-      )}
+          {["Distant Learning", "Hybrid"].includes(values.type) && (
+            <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
+              {isHybrid && <>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class start date"
+                    name="startDateTime"
+                    validate={validateStartDate}
+                    timezone={values.sessions[0]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="dateTime"
+                    label="Hybrid class end date"
+                    name="endDateTime"
+                    validate={validateEndDate}
+                    timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
+                    required
+                  />
+                </Grid>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Minimum sessions to complete"
+                    name="minimumSessionsToComplete"
+                    step="1"
+                    normalize={normalizeNumberToPositive}
+                    debounced={false}
+                    required
+                  />
+                </Grid>
+              </>}
+              {!isHybrid && <>
+                <Grid item xs={twoColumn ? 3 : 12}>
+                  <FormField
+                    type="number"
+                    label="Maximum days to complete"
+                    name="maximumDays"
+                    min="1"
+                    max="99"
+                    step="1"
+                    normalize={normalizeNumber}
+                    debounced={false}
+                  />
+                </Grid>
+              </>}
+              <Grid item xs={twoColumn ? 3 : 12}>
+                <FormField
+                  type="number"
+                  label="Expected study hours"
+                  name="expectedHours"
+                  min="1"
+                  max="99"
+                  step="1"
+                  normalize={normalizeNumberToPositive}
+                  debounced={false}
+                  required
+                />
+              </Grid>
+              <Grid item xs={twoColumn ? 6 : 12}>
+                <FormField
+                  type="select"
+                  label="Virtual site"
+                  name="virtualSiteId"
+                  items={virualSites}
+                  allowEmpty
+                />
+              </Grid>
+            </Grid>
+          )}
+          {["With Sessions", "Hybrid"].includes(values.type) && <>
+            <CopySessionDialog
+              popupAnchorEl={copyDialogAnchor}
+              onCancel={closeCopyDialog}
+              onSave={onSaveRepeatHandler}
+            />
+            {renderedMonths}
+          </>}
+        </ExpandableContainer>
+      </div>
+      <Menu
+        id="sessionSettings"
+        anchorEl={sessionMenu}
+        open={Boolean(sessionMenu)}
+        onClose={handleSessionMenuClose}
+        disableAutoFocusItem
+      >
+        <MenuItem
+          classes={{
+            root: "listItemPadding"
+          }}
+          onClick={onDeleteTimetableEvents}
+          disabled={disabledMenuItem}
+        >
+          {`Delete ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
+        </MenuItem>
+        <MenuItem
+          classes={{
+            root: "listItemPadding"
+          }}
+          onClick={onChangeTimetableEvents}
+          disabled={disabledMenuItem}
+        >
+          {`Bulk change ${sessionSelection.length} timetable event${sessionSelection.length > 1 ? "s" : ""}`}
+        </MenuItem>
+      </Menu>
     </div>
   );
 };
@@ -857,4 +914,4 @@ const mapStateToProps = (state: State) => ({
   bulkSessionModalOpened: state.courseClassesBulkSession.modalOpened
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(CourseClassTimetableTab));
+export default connect<any, any, any>(mapStateToProps)(withStyles(CourseClassTimetableTab, styles));

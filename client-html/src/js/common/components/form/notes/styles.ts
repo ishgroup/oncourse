@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@mui/styles/createStyles";
 import { alpha } from '@mui/material/styles';
 
+
 const styles = theme =>
-  createStyles({
+  ({
     notesContainer: {
-      padding: theme.spacing(0.5, 3, 2.5, 3)
+      padding: theme.spacing(1, 0)
     },
     showMore: {
       borderTop: `1px solid ${theme.palette.divider}`

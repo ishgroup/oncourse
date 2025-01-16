@@ -14,7 +14,7 @@ export function mockGradingTypes() {
       "name": "Vocational",
       "minValue": 0.00,
       "maxValue": 100.00,
-      "entryType": "choice list",
+      "entryType": "Choice list",
       "gradingItems": [
         {
           "id": 1,
@@ -39,7 +39,7 @@ export function mockGradingTypes() {
       "name": "University grades",
       "minValue": 0.00,
       "maxValue": 100.00,
-      "entryType": "number",
+      "entryType": "Number",
       "gradingItems": [
         {
           "id": 3,
@@ -85,7 +85,7 @@ export function mockGradingTypes() {
       "name": "Percent",
       "minValue": 0.00,
       "maxValue": 100.00,
-      "entryType": "number",
+      "entryType": "Number",
       "gradingItems": [
 
       ]
@@ -97,7 +97,7 @@ export function mockGradingTypes() {
       "name": "Ten",
       "minValue": 0.00,
       "maxValue": 10.00,
-      "entryType": "number",
+      "entryType": "Number",
       "gradingItems": [
 
       ]
@@ -109,7 +109,7 @@ export function mockGradingTypes() {
       "name": "A-F",
       "minValue": 0.00,
       "maxValue": 100.00,
-      "entryType": "choice list",
+      "entryType": "Choice list",
       "gradingItems": [
         {
           "id": 8,

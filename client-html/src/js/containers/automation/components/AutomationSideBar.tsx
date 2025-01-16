@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { History } from "history";
-import SideBarHeader from "../../../common/components/layout/side-bar-list/SideBarHeader";
-import { makeAppStyles } from "../../../common/styles/makeStyles";
+import { History } from 'history';
+import { makeAppStyles } from 'ish-ui';
+import React from 'react';
+import SideBarHeader from '../../../common/components/layout/side-bar-list/SideBarHeader';
 
 interface Props {
   history: History;
 }
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     color: theme.palette.secondary.main,
     padding: theme.spacing(3),
@@ -50,7 +50,7 @@ const AutomationSideBar = ({
 
   const selected = getSelected(history);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <div className={classes.root}>

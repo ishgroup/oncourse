@@ -3,19 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import Badge from "@mui/material/Badge";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import DateRange from "@mui/icons-material/DateRange";
 import Launch from "@mui/icons-material/Launch";
+import Badge from "@mui/material/Badge";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid from "@mui/material/Grid";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { EntityType } from "../../../../model/common/NestedEntity";
-import { openInternalLink } from "../../../utils/links";
-import AddButton from "../../icons/AddButton";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { AddButton, EntityType, openInternalLink, ShowConfirmCaller } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
 
 interface Props {
   entityName?: string;
@@ -27,19 +25,21 @@ interface Props {
   addLink?: string;
   isNew?: boolean;
   preventAddMessage?: string;
+  secondaryHeading?: boolean;
 }
 
 const NestedEntity: React.FC<Props> = ({
-  entityName,
-  entityTypes,
-  addLink,
-  dirty,
-  showConfirm,
-  twoColumn,
-  isNew,
-  preventAddMessage,
-  goToLink
-}) => {
+                                         entityName,
+                                         entityTypes,
+                                         addLink,
+                                         dirty,
+                                         showConfirm,
+                                         twoColumn,
+                                         isNew,
+                                         preventAddMessage,
+                                         goToLink,
+                                         secondaryHeading
+                                       }) => {
   const openEntityLink = useCallback(
     link => {
       openInternalLink(link);
@@ -48,13 +48,13 @@ const NestedEntity: React.FC<Props> = ({
   );
 
   const saveAlert = () =>
-  showConfirm(
-    {
-      title: null,
-      confirmMessage: preventAddMessage,
-      cancelButtonText: "OK"
-    },
-  );
+    showConfirm(
+      {
+        title: null,
+        confirmMessage: preventAddMessage,
+        cancelButtonText: "OK"
+      },
+    );
 
   const openAddLink = useCallback(() => {
     openInternalLink(addLink);
@@ -70,7 +70,7 @@ const NestedEntity: React.FC<Props> = ({
   const addAction = useMemo(
     () =>
       (addLink ? (
-        <AddButton onClick={isNew ? saveAlert : openAddLink} />
+        <AddButton onClick={isNew ? saveAlert : openAddLink}/>
       ) : null),
     [isNew, addLink]
   );
@@ -79,10 +79,11 @@ const NestedEntity: React.FC<Props> = ({
     <div>
       {entityName && (
         <div className="centeredFlex">
-          <Typography className="heading pt-2 pb-2">{entityName}</Typography>
+          <Typography
+            className={clsx("pt-2 pb-2", secondaryHeading ? "secondaryHeading" : "heading")}>{entityName}</Typography>
           {goToLink && (
             <IconButton size="small" color="primary" onClick={() => openInternalLink(goToLink)}>
-              <Launch fontSize="inherit" />
+              <Launch fontSize="inherit"/>
             </IconButton>
           )}
           {addAction}
@@ -103,7 +104,7 @@ const NestedEntity: React.FC<Props> = ({
               <ButtonGroup variant="contained" color="inherit" className="mr-2" disabled={t.disabled}>
                 {t.timetableLink && (
                   <Button size="small" onClick={() => openTimetableLink(t.timetableLink)}>
-                    <DateRange />
+                    <DateRange/>
                   </Button>
                 )}
                 <Button size="small" onClick={t.linkHandler ? t.linkHandler : () => openEntityLink(t.link)}>

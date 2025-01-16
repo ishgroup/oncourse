@@ -8,8 +8,8 @@ import FormField from "../../../../form/formFields/FormField";
 
 const NestedTableCheckboxCell = props => {
   const {
- classes, fieldName, column: { onChangeHandler, disabledHandler }, row
-} = props;
+    classes, fieldName, column: {onChangeHandler, disabledHandler}, row
+  } = props;
 
   return (
     <div>
@@ -19,7 +19,7 @@ const NestedTableCheckboxCell = props => {
         className={classes.checkbox}
         onChangeHandler={onChangeHandler ? (e, checked) => onChangeHandler(row, checked) : undefined}
         disabled={
-          typeof disabledHandler === "function" ? () => disabledHandler(row) : disabledHandler || false
+          typeof disabledHandler === "function" ? disabledHandler(row) : disabledHandler || false
         }
       />
     </div>

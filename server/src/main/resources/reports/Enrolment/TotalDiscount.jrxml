@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DiscountsByClass" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="b9731527-4f0c-4aba-b68d-be16681d5bf7">
-	<property name="name" value="Total Discounts"/>
-	<property name="entity" value="Enrolment"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.totalDiscounts"/>
-	<property name="ish.oncourse.description" value="To confirm uptake and cost of discounts across a selection of classes.This report prints in Portrait format."/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>

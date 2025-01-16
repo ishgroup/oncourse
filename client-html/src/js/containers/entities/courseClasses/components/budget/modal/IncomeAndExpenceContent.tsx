@@ -3,24 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Grid from "@mui/material/Grid";
-import Collapse from "@mui/material/Collapse";
-import { change } from "redux-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { ClassCostRepetitionType } from "@api/model";
-import { Divider } from "@mui/material";
+import { Divider, FormControlLabel, Grid } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import { decimalDivide, decimalMul, decimalPlus, normalizeNumberToZero } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { change } from "redux-form";
+import { ContactLinkAdornment } from "../../../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
+import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
 import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { contactLabelCondition } from "../../../../contacts/utils";
-import { ContactLinkAdornment } from "../../../../../../common/components/form/FieldAdornments";
 import ContactSelectItemRenderer from "../../../../contacts/components/ContactSelectItemRenderer";
-import { decimalDivide, decimalMul, decimalPlus } from "../../../../../../common/utils/numbers/decimalCalculation";
+import { getContactFullName } from "../../../../contacts/utils";
 import { getCurrentTax } from "../../../../taxes/utils";
 import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
 import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
-import { greaterThanNullValidation } from "../../../../../../common/utils/validation";
-import { normalizeNumberToZero } from "../../../../../../common/utils/numbers/numbersNormalizing";
 
 const getFeeIncTax = (exTax, taxes, taxId) => decimalMul(exTax, decimalPlus(1, getCurrentTax(taxes, taxId)?.rate));
 
@@ -96,13 +93,13 @@ const IncomeAndExpenceContent: React.FC<BudgetCostModalContentProps> = ({
       </Grid>
       <Grid item xs={6}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Contact"
           name="contactId"
           label="Contact"
           selectValueMark="id"
-          selectLabelCondition={contactLabelCondition}
-          defaultDisplayValue={values.contactName}
+          selectLabelCondition={getContactFullName}
+          defaultValue={values.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values?.contactId} />
           }

@@ -16,8 +16,13 @@ import ish.oncourse.server.api.v1.model.EmailTemplateDTO
 import ish.oncourse.server.api.v1.model.MessageTypeDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.EmailTemplate
+import ish.oncourse.server.configs.AutomationModel
+import ish.oncourse.server.configs.MessageModel
 import org.apache.cayenne.ObjectContext
 
+import java.util.function.BiConsumer
+
+import static ish.oncourse.server.upgrades.DataPopulationUtils.fillEmailTemplateWithCommonFields
 import static org.apache.commons.lang3.StringUtils.trimToNull
 import static org.apache.http.util.TextUtils.isBlank
 
@@ -34,6 +39,21 @@ class EmailTemplateApiService extends AutomationApiService<EmailTemplateDTO, Ema
     @Override
     protected EmailTemplateDTO createDto() {
         return new EmailTemplateDTO()
+    }
+
+    @Override
+    protected BiConsumer<EmailTemplate, Map<String, Object>> getFillPropertiesFunction() {
+        return new BiConsumer<EmailTemplate, Map<String, Object>>() {
+            @Override
+            void accept(EmailTemplate emailTemplate, Map<String, Object> stringObjectMap) {
+                fillEmailTemplateWithCommonFields(emailTemplate, stringObjectMap)
+            }
+        }
+    }
+
+    @Override
+    protected AutomationModel getConfigsModelOf(EmailTemplate entity) {
+        return new MessageModel(entity)
     }
 
     @Override

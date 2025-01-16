@@ -10,6 +10,7 @@ import { Dispatch } from "redux";
 import CreateCertificateMenu
   from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
 import EntityService from "../../../../common/services/EntityService";
+import { useAppSelector } from "../../../../common/utils/hooks";
 import { State } from "../../../../reducers/state";
 import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
 import { getPlainAccounts } from "../../accounts/actions";
@@ -34,6 +35,9 @@ const EnrolmentCogWheel = React.memo<any>(props => {
   } = props;
 
   const [enrolmentActionsEnabled, setEnrolmentActionsEnabled] = useState(false);
+  const [enrolmentIds, setEnrolmentIds] = useState(selection);
+
+  const searchQuery = useAppSelector(state => state.list.searchQuery);
 
   useEffect(() => {
     if (selection.length > 0 && (dialogOpened === "Cancel" || dialogOpened === "Transfer")) {
@@ -65,10 +69,19 @@ const EnrolmentCogWheel = React.memo<any>(props => {
 
   const selectedAndNotNew = useMemo(() => selection.length >= 1 && selection[0] !== "NEW", [selection]);
 
-  const onClick = useCallback(e => {
+  const onClick = useCallback(async e => {
     const status = e && e.target.getAttribute("role");
     setDialogOpened(status);
-  }, []);
+    if (status === "Avetmiss-Export") {
+      if (selection.length) {
+        setEnrolmentIds(selection);
+      } else {
+        const plainEnrolments = await EntityService.getRecordsByListSearch("Enrolment", searchQuery);
+        const ids = plainEnrolments.rows.map(r => r.id);
+        setEnrolmentIds(ids);
+      }
+    }
+  }, [selection]);
 
   return (
     <>
@@ -88,11 +101,11 @@ const EnrolmentCogWheel = React.memo<any>(props => {
 
       <AvetmissExportModal
         entity="Enrolment"
-        selection={selection}
+        ids={enrolmentIds}
         opened={dialogOpened === "Avetmiss-Export"}
         setDialogOpened={setDialogOpened}
         closeMenu={closeMenu}
-        enrolmentsCount={selection.length}
+        enrolmentsCount={enrolmentIds.length}
       />
 
       <CreateCertificateMenu
@@ -114,8 +127,8 @@ const EnrolmentCogWheel = React.memo<any>(props => {
       >
         Transfer an enrolment
       </MenuItem>
-      <MenuItem disabled={!selectedAndNotNew} className={menuItemClass} role="Avetmiss-Export" onClick={onClick}>
-        AVETMISS 8 export
+      <MenuItem disabled={selection[0] === "NEW"} className={menuItemClass} role="Avetmiss-Export" onClick={onClick}>
+        AVETMISS 8 export {selection.length ? "selected" : "all"}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />
     </>

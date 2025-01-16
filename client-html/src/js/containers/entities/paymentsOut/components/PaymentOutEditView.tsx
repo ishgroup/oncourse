@@ -6,24 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import { FieldArray, getFormInitialValues } from "redux-form";
-import { connect } from "react-redux";
-import { addDays, compareAsc, format } from "date-fns";
-import { Grid } from "@mui/material";
 import { PaymentMethod, PaymentOut } from "@api/model";
+import { Grid } from "@mui/material";
+import { addDays, compareAsc, format } from "date-fns";
+import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from "ish-ui";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { FieldArray, getFormInitialValues } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { openInternalLink } from "../../../../common/utils/links";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { defaultContactName } from "../../contacts/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -164,7 +162,7 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item {...gridItemProps}>
         <Uneditable
-          value={defaultContactName(values.payeeName)}
+          value={values.payeeName}
           label="Payment to"
           labelAdornment={
             <ContactLinkAdornment id={values?.payeeId} />
@@ -173,10 +171,10 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="searchSelect"
+          type="select"
           name="administrationCenterId"
           label="Site"
-          defaultDisplayValue={values && values.administrationCenterName}
+          defaultValue={values && values.administrationCenterName}
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
@@ -217,11 +215,6 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               name="datePayed"
               label="Date paid"
               validate={[validateSettlementDatePayed, validateLockedDate]}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate), 1)
-                  : undefined
-              }
             />
           )}
       </Grid>
@@ -234,16 +227,11 @@ const PaymentOutEditView: React.FC<PaymentOutEditViewProps> = props => {
               name="dateBanked"
               label="Date banked"
               validate={[validateSettlementDateBanked, validateLockedDate]}
-              minDate={
-              lockedDate
-                ? addDays(new Date(lockedDate), 1)
-                : undefined
-            }
             />
         )}
       </Grid>
       <Grid item {...gridItemProps}>
-        <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+        <FormField type="multilineText" name="privateNotes" label="Private notes"  />
       </Grid>
       <Grid item {...gridItemProps}>
         <Uneditable value={values.createdBy} label="Created by" />

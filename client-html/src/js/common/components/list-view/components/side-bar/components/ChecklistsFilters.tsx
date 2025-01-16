@@ -6,18 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useState } from "react";
-import { alpha } from "@mui/material/styles";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ButtonBase, Collapse } from "@mui/material";
-import clsx from "clsx";
-import ListTagGroup from "./ListTagGroup";
-import { makeAppStyles } from "../../../../../styles/makeStyles";
-import { ColoredCheckBox } from "../../../../form/ColoredCheckBox";
-import { stubFunction } from "../../../../../utils/common";
-import { useAppSelector } from "../../../../../utils/hooks";
+import { ButtonBase, Collapse } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import clsx from 'clsx';
+import { ColoredCheckBox, makeAppStyles, stubFunction } from 'ish-ui';
+import React, { useState } from 'react';
+import { useAppSelector } from '../../../../../utils/hooks';
+import ListTagGroup from './ListTagGroup';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   expandable: {
     display: "flex",
     alignItems: "center",
@@ -52,7 +50,7 @@ const ChecklistsFilters = (
 }: Props
 ) => {
   const [expanded, setExpanded] = useState(null);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
   const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);
@@ -79,7 +77,7 @@ const ChecklistsFilters = (
         <ColoredCheckBox
           className="flex-fill"
           label="Completed"
-          color="43a047"
+          color="#43a047"
           input={{ onChange: stubFunction, value: true } as any}
           meta={{} as any}
         />
@@ -109,7 +107,7 @@ const ChecklistsFilters = (
         <ColoredCheckBox
           className="flex-fill"
           label="Incomplete"
-          color="43a047"
+          color="#43a047"
           input={{ onChange: stubFunction, value: false } as any}
           meta={{} as any}
         />

@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Qualification } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { Qualification } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
-import QualificationsEditView from "./components/QualificationsEditView";
+import { initialize } from "redux-form";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import QualificationsEditView from "./components/QualificationsEditView";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -80,7 +80,7 @@ const Initial: Qualification = {
   specialization: null
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Qualification and entityId" },
   { title: "Certificates", list: "certificate", expression: "qualification.id" },
   { title: "Class", list: "class", expression: "course.qualification.id" },
@@ -89,7 +89,7 @@ const findRelatedGroup: any[] = [
   { title: "Students", list: "contact", expression: "student.enrolments.courseClass.course.qualification.id" }
 ];
 
-const manualLink = getManualLink("rto_createQual");
+const manualLink = getManualLink("viewing-qualifications-and-units-of-competency");
 
 const nameCondition = (item: Qualification) => item.title;
 

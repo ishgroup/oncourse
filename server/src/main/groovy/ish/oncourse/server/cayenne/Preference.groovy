@@ -11,23 +11,31 @@
 
 package ish.oncourse.server.cayenne
 
+import com.google.inject.Inject
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.entity.services.TagService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.glue._Preference
+import ish.persistence.Preferences
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import java.util.Date
 
 import static ish.persistence.Preferences.SERVICES_COMMUNICATION_KEY
-
 /**
  * Preferences are key-value entities containing settings defining onCourse behavior in various situations.
  */
 @API
 @QueueableEntity
 class Preference extends _Preference implements Queueable {
+
+	@Inject
+	private PreferenceController preferenceController
+
+	@Inject
+	private TagService tagService
 
 
 	private static final Logger logger = LogManager.getLogger()
@@ -49,9 +57,21 @@ class Preference extends _Preference implements Queueable {
 		} else {
 			setUniqueKey(getName())
 		}
+
+		preUpdate()
 	}
 
-	/**
+	@Override
+	protected void preUpdate() {
+		if(name == Preferences.EXTENDED_SEARCH_TYPES) {
+			boolean extendedTypesAlreadyWereAllowed = preferenceController.getExtendedSearchTypesAllowed()
+			boolean valueToSet = Boolean.valueOf(getValueString())
+			if(!extendedTypesAlreadyWereAllowed && valueToSet){
+				tagService.updateSubjectsAsEntities(getObjectContext())
+			}
+		}
+	}
+/**
 	 * @return the date and time this record was created
 	 */
 	@API

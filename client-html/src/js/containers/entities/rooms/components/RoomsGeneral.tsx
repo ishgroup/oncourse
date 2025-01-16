@@ -3,24 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Grid, { GridSize } from "@mui/material/Grid";
-import { change, FieldArray } from "redux-form";
 import ScreenShare from "@mui/icons-material/ScreenShare";
+import Grid, { GridSize } from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import { LinkAdornment, openInternalLink, TimetableButton } from "ish-ui";
+import * as React from "react";
 import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import { State } from "../../../../reducers/state";
+import { change, FieldArray } from "redux-form";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { openInternalLink } from "../../../../common/utils/links";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
-import { openSiteLink } from "../../sites/utils";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { openSiteLink } from "../../sites/utils";
 
 const normalizeSeatedCapacity = value => ((value && value >= 0) || value === 0 ? Number(value) : null);
 
@@ -112,43 +111,50 @@ class RoomsGeneral extends React.PureComponent<any, any> {
           <TimetableButton onClick={this.onCalendarClick} />
         </Grid>
 
-        <Grid item xs={layoutArray[1].xs}>
-          <Grid container columnSpacing={3} rowSpacing={2}>
-            <Grid item xs={layoutArray[3].xs}>
-              <FormField
-                type="text"
-                name="seatedCapacity"
-                label="Seated Capacity"
-                required
-                normalize={normalizeSeatedCapacity}
-              />
-            </Grid>
-
-            <Grid item xs={layoutArray[4].xs}>
-              {sites && (
-                <FormField
-                  type="searchSelect"
-                  name="siteId"
-                  label="Site"
-                  selectLabelMark="name"
-                  selectValueMark="id"
-                  labelAdornment={
-                  isNew ? undefined : (
-                    <LinkAdornment
-                      link={values && values.siteId}
-                      disabled={!values.siteId}
-                      clickHandler={() => openSiteLink(values.siteId)}
-                    />
-                  )
-                }
-                  items={sites}
-                  onInnerValueChange={this.onSiteChange}
-                  required
-                />
-                )}
-            </Grid>
-          </Grid>
+        <Grid item xs={layoutArray[3].xs}>
+          <FormField
+            type="text"
+            name="seatedCapacity"
+            label="Seated Capacity"
+            required
+            normalize={normalizeSeatedCapacity}
+            debounced={false}
+          />
         </Grid>
+
+        <Grid item xs={layoutArray[4].xs}>
+          {sites && (
+            <FormField
+              type="select"
+              name="siteId"
+              label="Site"
+              selectLabelMark="name"
+              selectValueMark="id"
+              labelAdornment={
+              isNew ? undefined : (
+                <LinkAdornment
+                  link={values && values.siteId}
+                  disabled={!values.siteId}
+                  clickHandler={() => openSiteLink(values.siteId)}
+                />
+              )
+            }
+              items={sites}
+              onInnerValueChange={this.onSiteChange}
+              required
+            />
+            )}
+        </Grid>
+
+        <CustomFields
+          entityName="Room"
+          fieldName="customFields"
+          entityValues={values}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 4 : 12,
+          }}
+        />
 
         <Grid item xs={layoutArray[5].xs}>
           <FormEditorField name="facilities" label="Facilities" />

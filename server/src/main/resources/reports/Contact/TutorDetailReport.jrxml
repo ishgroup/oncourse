@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TutorDetailReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="d96282fc-a4e1-41da-bc4a-b68af23d98b4">
-	<property name="name" value="Tutor Details"/>
-	<property name="entity" value="Contact"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.tutorDetailsReport"/>
 	<property name="ish.oncourse.title" value="Tutor Details"/>
 	<property name="ish.oncourse.filePrefix" value="tutorDetails"/>
-	<property name="ish.oncourse.description" value="The contact details and scheduled sessions for a Tutor.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="tutor_prop.pdf"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
+
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>

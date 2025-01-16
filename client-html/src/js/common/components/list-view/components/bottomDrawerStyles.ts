@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles } from "@mui/material";
-import { AppTheme } from "../../../../model/common/Theme";
+import { AppTheme } from 'ish-ui';
 
-export default (theme: AppTheme) => createStyles({
+export default (theme: AppTheme, p, classes) => ({
   fileInput: {
     display: "none"
   },
   exportContainer: {
-    height: "50vh",
+    height: "70vh",
     backgroundColor: theme.share.exportContainer.backgroundColor,
     backgroundImage: 'unset',
     padding: theme.spacing(2, 3, 3, 3),
@@ -64,7 +63,7 @@ export default (theme: AppTheme) => createStyles({
     margin: theme.spacing(0, 0, 2, 0),
     padding: 0,
     cursor: "pointer",
-    "&$listItemsSelected": {
+    [`&.${classes.listItemsSelected}`]: {
       backgroundColor: "inherit"
     },
     "&:hover": {

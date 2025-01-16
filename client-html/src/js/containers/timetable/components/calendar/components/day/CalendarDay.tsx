@@ -6,27 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
-import { getTimetableSessionsByIds, getTimetableSessionsTags } from "../../../../actions";
-import styles from "../styles";
-import { gapHoursDayPeriodsBase, getGapHours, getGroupings } from "../../../../utils";
+import { Grid, Typography } from '@mui/material';
+import clsx from 'clsx';
+import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
 import {
   CalendarGrouping,
   CalendarGroupingState,
   CalendarMode,
   CalendarTagsState,
   TimetableDay
-} from "../../../../../../model/timetable";
-import CalendarSessionHour from "../session/CalendarSessionHour";
-import CalendarSession from "../session/CalendarSession";
-import CalendarDayBase from "./CalendarDayBase";
-import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from "../../../../TimetableConstants";
+} from '../../../../../../model/timetable';
+import { getTimetableSessionsByIds, getTimetableSessionsTags } from '../../../../actions';
+import { NO_ROOM_LABEL, NO_TUTORS_LABEL } from '../../../../constants';
+import { gapHoursDayPeriodsBase, getGapHours, getGroupings } from '../../../../utils';
+import CalendarSession from '../session/CalendarSession';
+import CalendarSessionHour from '../session/CalendarSessionHour';
+import styles from '../styles';
+import CalendarDayBase from './CalendarDayBase';
 
 interface CompactModeDayProps extends TimetableDay {
   monthIndex: number;
@@ -265,7 +264,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
   }, [updated, tagsUpdated, isScrolling, inView, tagsState]);
 
   useEffect(() => {
-    if (!gapHours.length && calendarMode === "Gap(Hours)" && sessions.length && updated) {
+    if (calendarMode === "Gap(Hours)" && sessions.length && (updated || tagsUpdated)) {
       setGapHours(getGapHours(sessions));
     }
   }, [calendarMode, sessions, updated, tagsUpdated]);
@@ -347,4 +346,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export const CalendarDay = connect<any, any, any>(
   null,
   mapDispatchToProps
-)(withStyles(styles)(CalendarDayWrapper));
+)(withStyles(CalendarDayWrapper, styles));

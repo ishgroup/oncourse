@@ -1,0 +1,18 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'groovy'
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.dbunit:dbunit:2.6.0'
+    implementation "org.mariadb.jdbc:mariadb-java-client:2.7.4"
+    implementation 'commons-io:commons-io:2.11.0'
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11

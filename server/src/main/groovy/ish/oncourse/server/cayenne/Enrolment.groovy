@@ -17,6 +17,7 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateOutcomeReportableHours
+import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._Enrolment
 import ish.validation.EnrolmentStatusValidator
 import org.apache.cayenne.PersistenceState
@@ -29,7 +30,6 @@ import javax.annotation.Nullable
 
 import static ish.common.types.EnrolmentStatus.NEW
 import static java.lang.String.format
-
 /**
  * An enrolment joins a student to a class. There can be only one enrolment per student per class.
  *
@@ -116,6 +116,33 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		updateOverriddenFields()
 	}
 
+	@Override
+	protected void postPersist() {
+		removeAbandonedCartsWithThisClass()
+	}
+
+	private void removeAbandonedCartsWithThisClass(){
+		Contact contact = student.getContact()
+		if(contact == null)
+			return
+
+		List<CheckoutContactRelation> checkouts = CartFunctions.checkoutsByContactId(context, contact.id)
+
+		def waitingCoursesRelations = checkouts
+				.findAll {it instanceof CheckoutWaitingCourseRelation && it.relatedObjectId == courseClass.course.id}
+
+		def courseClassRelations =  checkouts
+				.findAll {it instanceof CheckoutCourseClassRelation && it.relatedObjectId == courseClass.id}
+
+		def applicationRelations =  checkouts
+				.findAll {it instanceof CheckoutApplicationRelation && it.relatedObjectId == courseClass.id}
+
+		context.deleteObjects(waitingCoursesRelations.collect {it.checkout}.unique())
+		context.deleteObjects(courseClassRelations.collect {it.checkout}.unique())
+		context.deleteObjects(applicationRelations.collect {it.checkout}.unique())
+		context.commitChanges()
+	}
+
 	/**
 	 * @return class cacellation warning message
 	 */
@@ -145,12 +172,19 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		if (getFundingSource() == null && getCourseClass() != null) {
 			setFundingSource(getCourseClass().getFundingSource());
 		}
+
 		if (getVetPurchasingContractID() == null && getCourseClass() != null) {
 			setVetPurchasingContractID(getCourseClass().getVetPurchasingContractID());
 		}
+
 		if (getVetFundingSourceStateID() == null && getCourseClass() != null) {
 			setVetFundingSourceStateID(getCourseClass().getVetFundingSourceStateID());
 		}
+
+		if (getVetPurchasingContractScheduleID() == null && getCourseClass() != null) {
+			setVetPurchasingContractScheduleID(getCourseClass().getVetPurchasingContractScheduleID())
+		}
+
 		if (getOutcomes() != null && getOutcomes().size() > 0) {
 			outcomes.findAll {o -> !o.startDateOverridden }
 					.each {o -> o.setStartDate(o.getActualStartDate()) }
@@ -160,10 +194,13 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 			outcomes.findAll{ o -> !o.fundingSource}.each { o -> o.setFundingSource(getFundingSource())}
 			outcomes.findAll{ o -> !o.vetPurchasingContractID}.each { o -> o.setVetPurchasingContractID(getVetPurchasingContractID())}
 			outcomes.findAll{ o -> !o.vetFundingSourceStateID}.each { o -> o.setVetFundingSourceStateID(getVetFundingSourceStateID())}
+
+			if (vetPurchasingContractScheduleID || courseClass?.vetPurchasingContractScheduleID) {
+				def outcomeContractSheduleId = vetPurchasingContractScheduleID ?: courseClass.vetPurchasingContractScheduleID
+				outcomes.findAll { o -> !o.vetPurchasingContractScheduleID }.each { o -> o.setVetPurchasingContractScheduleID(outcomeContractSheduleId) }
+			}
+
 			if (getCourseClass() != null) {
-				if (getCourseClass().getVetPurchasingContractScheduleID() != null) {
-					outcomes.findAll { o -> !o.vetPurchasingContractScheduleID }.each { o -> o.setVetPurchasingContractScheduleID(getCourseClass().getVetPurchasingContractScheduleID()) }
-				}
 				if (getCourseClass().getDeliveryMode() != null) {
 					outcomes.findAll{ o -> !o.deliveryMode}.each { o -> o.setDeliveryMode(getCourseClass().getDeliveryMode())}
 				}
@@ -654,7 +691,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@API
 	@Override
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+		return super.getInvoiceLines()
 	}
 
 	/**
@@ -663,7 +700,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Nonnull
 	@API
 	List<QuoteLine> getQuoteLines() {
-		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
+		return super.getQuoteLines()
 	}
 
 	/**
@@ -781,5 +818,14 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
 		return EnrolmentTagRelation.class
+	}
+
+	/**
+	 * @return default value of vet purchasing contact schedule ids of related outcomes
+	 */
+	@API
+	@Override
+	String getVetPurchasingContractScheduleID() {
+		return super.getVetPurchasingContractScheduleID()
 	}
 }

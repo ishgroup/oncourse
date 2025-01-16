@@ -11,6 +11,9 @@
 
 package ish.common.types;
 
+import ish.oncourse.common.field.ReplicatedConfigurationFields;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ public final class EntityMapping {
 	private static final Map<String, String> ANGEL_TO_WILLOW = new HashMap<>();
 
 	private static final Map<String, String> WILLOW_TO_ANGEL = new HashMap<>();
+
+	private static final String ANGEL_CONFIGURATION_TO_WILLOW = "Settings";
 
 	public static final Map<String, String> BINARY_RELATION_MAPPING = new HashMap<>();
 
@@ -53,6 +58,7 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("ArticleProductAttachmentRelation", "BinaryInfoRelation");
 		ANGEL_TO_WILLOW.put("VoucherProductAttachmentRelation", "BinaryInfoRelation");
 		ANGEL_TO_WILLOW.put("MembershipProductAttachmentRelation", "BinaryInfoRelation");
+		ANGEL_TO_WILLOW.put("FacultyAttachmentRelation", "BinaryInfoRelation");
 
 		ANGEL_TO_WILLOW.put("TagRequirement", "TagGroupRequirement");
 		ANGEL_TO_WILLOW.put("CourseClassTutor", "TutorRole");
@@ -78,6 +84,7 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("ArticleProductTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("VoucherProductTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("MembershipProductTagRelation", "Taggable");
+		ANGEL_TO_WILLOW.put("FacultyTagRelation", "Taggable");
 
 		ANGEL_TO_WILLOW.put("CustomField", "ContactCustomField");
 
@@ -92,6 +99,7 @@ public final class EntityMapping {
 		WILLOW_TO_ANGEL.put("TagGroupRequirement", "TagRequirement");
 		WILLOW_TO_ANGEL.put("Taggable", "TagRelation");
 		WILLOW_TO_ANGEL.put("TaggableTag", "TagRelation");
+		WILLOW_TO_ANGEL.put("CourseClassNote", "Note");
 
 		BINARY_RELATION_MAPPING.put("Certificate", "CertificateAttachmentRelation");
 		BINARY_RELATION_MAPPING.put("Contact", "ContactAttachmentRelation");
@@ -115,6 +123,7 @@ public final class EntityMapping {
 		BINARY_RELATION_MAPPING.put("ArticleProduct", "ArticleProductAttachmentRelation");
 		BINARY_RELATION_MAPPING.put("VoucherProduct", "VoucherProductAttachmentRelation");
 		BINARY_RELATION_MAPPING.put("MembershipProduct", "MembershipProductAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Faculty", "FacultyAttachmentRelation");
 	}
 
 	/**
@@ -129,6 +138,9 @@ public final class EntityMapping {
 	 * @return willow entity name
 	 */
 	public static String getWillowEntityIdentifer(String entityIdentifier) {
+		if (Arrays.asList(ReplicatedConfigurationFields.getValues()).contains(entityIdentifier)) {
+			return ANGEL_CONFIGURATION_TO_WILLOW;
+		}
 		return EntityMapping.ANGEL_TO_WILLOW.getOrDefault(entityIdentifier, entityIdentifier);
 	}
 
@@ -139,6 +151,9 @@ public final class EntityMapping {
 	 * @return angel entity name
 	 */
 	public static String getAngelEntityIdentifer(String entityIdentifier) {
+		if (Arrays.asList(ReplicatedConfigurationFields.getValues()).contains(entityIdentifier)) {
+			return ANGEL_CONFIGURATION_TO_WILLOW;
+		}
 		return EntityMapping.WILLOW_TO_ANGEL.getOrDefault(entityIdentifier, entityIdentifier);
 	}
 

@@ -3,16 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { CertificateRevokeRequest } from "@api/model";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { REVOKE_CERTIFICATE_ITEM } from "../actions";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import { GET_RECORDS_REQUEST } from "../../../../common/components/list-view/actions";
-import CertificateService from "../services/CertificateService";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { getEntityRecord } from "../../common/actions";
+import { REVOKE_CERTIFICATE_ITEM } from "../actions";
+import CertificateService from "../services/CertificateService";
 
 const request: EpicUtils.Request<any, { ids: number[]; reason: string }> = {
   type: REVOKE_CERTIFICATE_ITEM,

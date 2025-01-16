@@ -6,46 +6,40 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import {
- Lead, LeadStatus, Sale, Tag, User 
-} from "@api/model";
-import Chip from "@mui/material/Chip";
-import clsx from "clsx";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { Lead, LeadStatus, Sale, Tag, User } from '@api/model';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import clsx from 'clsx';
+import { decimalMul, decimalPlus, makeAppStyles, mapSelectItems, normalizeNumberToZero } from 'ish-ui';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/FieldAdornments";
-import {
- contactLabelCondition, defaultContactName, getContactName
-} from "../../contacts/utils";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { getCustomColumnsMap, mapSelectItems } from "../../../../common/utils/common";
-import EntityService from "../../../../common/services/EntityService";
-import { decimalMul, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import { getProductAqlType } from "../../sales/utils";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
+} from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import history from "../../../../constants/History";
-import { RELATION_COURSE_COLUMNS } from "../../common/entityConstants";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { formatRelatedSalables, mapRelatedSalables } from "../../common/utils";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import EntityService from '../../../../common/services/EntityService';
+import { getCustomColumnsMap } from '../../../../common/utils/common';
+import history from '../../../../constants/History';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import RelationsCommon from '../../common/components/RelationsCommon';
+import { RELATION_COURSE_COLUMNS_DEFAULT } from '../../common/entityConstants';
+import { formatRelatedSalables, mapRelatedSalables } from '../../common/utils';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { getProductAqlType } from '../../sales/utils';
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
-const useStyles = makeAppStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   chipButton: {
     fontSize: "12px",
     height: "20px",
@@ -112,10 +106,10 @@ const LeadGeneral = (props: Props) => {
     syncErrors
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onContactChange = value => {
-    dispatch(change(form, "contactName", getContactName(value)));
+    dispatch(change(form, "contactName", getContactFullName(value)));
   };
 
   useEffect(() => {
@@ -146,10 +140,10 @@ const LeadGeneral = (props: Props) => {
       if (courseIds) {
         EntityService.getPlainRecords(
           'Course',
-          RELATION_COURSE_COLUMNS,
+          RELATION_COURSE_COLUMNS_DEFAULT,
           `id in (${courseIds})`,
         ).then(({ rows }) => {
-          const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS));
+          const items = rows.map(getCustomColumnsMap(RELATION_COURSE_COLUMNS_DEFAULT));
           const relatedSellables = formatRelatedSalables(items, 'Course').map(mapRelatedSalables);
           dispatch(change(form, "relatedSellables", relatedSellables));
         })
@@ -177,13 +171,13 @@ const LeadGeneral = (props: Props) => {
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 label="Contact"
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={defaultContactName(values.contactName)}
+                selectLabelCondition={getContactFullName}
+                defaultValue={values.contactName}
                 onInnerValueChange={onContactChange}
                 itemRenderer={ContactSelectItemRenderer}
                 disabled={!isNew}
@@ -209,12 +203,12 @@ const LeadGeneral = (props: Props) => {
         && (
           <Grid item xs={12}>
             <FormField
-              type="searchSelect"
+              type="select"
               name="assignToId"
               label="Assigned to"
               selectValueMark="id"
-              selectLabelCondition={contactLabelCondition}
-              defaultDisplayValue={defaultContactName(values.assignTo)}
+              selectLabelCondition={getContactFullName}
+              defaultValue={values.assignTo}
               disabled={!users}
               items={users}
               required
@@ -243,6 +237,7 @@ const LeadGeneral = (props: Props) => {
             name="estimatedValue"
             label="Estimated value"
             normalize={normalizeNumberToZero}
+            debounced={false}
           />
           <Chip
             size="small"

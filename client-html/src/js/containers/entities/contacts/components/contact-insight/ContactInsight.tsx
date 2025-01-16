@@ -6,53 +6,46 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import { ContactInsight, ContactInteraction, EmailTemplate } from "@api/model";
-import NumberFormat from "react-number-format";
-import Launch from "@mui/icons-material/Launch";
-import IconButton from "@mui/material/IconButton";
-import Chip from "@mui/material/Chip";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Button from "@mui/material/Button";
+import { ContactInsight, ContactInteraction, EmailTemplate } from '@api/model';
+import Close from '@mui/icons-material/Close';
+import Launch from '@mui/icons-material/Launch';
+import Mail from '@mui/icons-material/Mail';
+import PhoneIcon from '@mui/icons-material/Phone';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Collapse from "@mui/material/Collapse";
-import { CircularProgress } from "@mui/material";
-import Close from "@mui/icons-material/Close";
-import Mail from "@mui/icons-material/Mail";
-import clsx from "clsx";
-import PhoneIcon from "@mui/icons-material/Phone";
-import { formatDistanceStrict } from "date-fns";
-import AvatarRenderer from "../AvatarRenderer";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { DD_MM_YYYY_SLASHED } from "../../../../../common/utils/dates/format";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
-import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getPhoneMask } from "../../../../../constants/PhoneMasks";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
-import { getPluralSuffix } from "../../../../../common/utils/strings";
-import { countLines } from "../../../../../common/utils/DOM";
-import HoverLink from "../../../../../common/components/layout/HoverLink";
-import ContactsService from "../../services/ContactsService";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import NotesService from "../../../../../common/components/form/notes/services/NotesService";
-import SendMessageEditView from "../../../messages/components/SendMessageEditView";
-import { getUserPreferences, openSendMessage } from "../../../../../common/actions";
-import { EMAIL_FROM_KEY } from "../../../../../constants/Config";
-import EmailTemplateService from "../../../../automation/containers/email-templates/services/EmailTemplateService";
+import { Box, Button, CircularProgress, Collapse, Divider, Grid, ListItemText, Typography } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Stack from '@mui/material/Stack';
+import clsx from 'clsx';
+import { formatDistanceStrict } from 'date-fns';
+import {
+  countLines,
+  DD_MM_YYYY_SLASHED,
+  EditInPlaceDateTimeField,
+  EditInPlaceField,
+  getPhoneMask,
+  makeAppStyles,
+  openInternalLink,
+  stubFunction
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import NumberFormat from 'react-number-format';
+import { getUserPreferences, openSendMessage } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import NotesService from '../../../../../common/components/form/notes/services/NotesService';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import HoverLink from '../../../../../common/components/layout/HoverLink';
+import { useAppDispatch, useAppSelector } from '../../../../../common/utils/hooks';
+import { getPluralSuffix } from '../../../../../common/utils/strings';
+import { EMAIL_FROM_KEY } from '../../../../../constants/Config';
+import EmailTemplateService from '../../../../automation/containers/email-templates/services/EmailTemplateService';
+import SendMessageEditView from '../../../messages/components/SendMessageEditView';
+import ContactsService from '../../services/ContactsService';
+import AvatarRenderer from '../AvatarRenderer';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   closeIcon: {
     position: "absolute",
     right: theme.spacing(2),
@@ -257,6 +250,19 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
   }
 };
 
+const getInteractionLink = (interaction: ContactInteraction) => {
+  switch (interaction.entity) {
+    case "Voucher":
+    case "Membership":
+    case "Article":
+      return `/sale/${interaction.id}`;
+    case "Note":
+      return null;
+    default: 
+      return `/${interaction.entity[0].toLowerCase()}${interaction.entity.slice(1)}/${interaction.id}`;
+  }
+};
+
 const Interaction = (interaction: ContactInteraction & { currencySymbol?: string }) => {
   const [clamped, setClamped] = useState(true);
   const [descriptionLines, setSescriptionLines] = useState(null);
@@ -272,7 +278,7 @@ const Interaction = (interaction: ContactInteraction & { currencySymbol?: string
       <ListItemText
         primary={(
           <Stack spacing={2} direction="row" className="mb-2">
-            <HoverLink link={interaction.entity !== "Note" && `/${interaction.entity[0].toLowerCase()}${interaction.entity.slice(1)}/${interaction.id}`}>
+            <HoverLink link={getInteractionLink(interaction)}>
               <div className="text-truncate text-nowrap">
                 {getEntityLabel(interaction.entity, interaction.name, interaction.currencySymbol)}
               </div>
@@ -399,7 +405,7 @@ const ContactInsight = (
     dispatch(openSendMessage());
   };
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const Avatar = useCallback(aProps => (
     <AvatarRenderer
@@ -434,6 +440,8 @@ const ContactInsight = (
 
   const hasLastInteractions = Boolean(lastInteractions?.length);
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className="relative w-100">
       <SendMessageEditView
@@ -607,7 +615,9 @@ const ContactInsight = (
                         <Box component="div" sx={{ pt: 4 }}>
                           <Stack spacing={2} direction="row" className="mb-1">
                             <EditInPlaceDateTimeField
-                              meta={{}}
+                              meta={{
+                                dispatch
+                              }}
                               input={{
                                 onChange: v => setDateValue(v),
                                 onFocus: stubFunction,
@@ -619,7 +629,9 @@ const ContactInsight = (
                               formatDateTime={DD_MM_YYYY_SLASHED}
                             />
                             <EditInPlaceDateTimeField
-                              meta={{}}
+                              meta={{
+                                dispatch
+                              }}
                               input={{
                                 onChange: v => setDateValue(v),
                                 onFocus: stubFunction,

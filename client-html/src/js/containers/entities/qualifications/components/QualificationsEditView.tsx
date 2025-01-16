@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { FormControlLabel } from "@mui/material";
 import { Qualification, QualificationType } from "@api/model";
-import Grid from "@mui/material/Grid";
+import { FormControlLabel, Grid } from "@mui/material";
+import { normalizeNumber, sortDefaultSelectItems } from "ish-ui";
+import * as React from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
 
 const qualificationTypes = Object.keys(QualificationType)
@@ -100,13 +99,14 @@ const QualificationsEditView = (props: EditViewProps<Qualification>) => {
             type="text"
             name="specialization"
             label="Specialization"
-            maxLength="128"
+            maxLength={128}
           />
         </Grid>
         <Grid item xs={12}>
           <FormField
             type="number"
-            normalize={value => (value || value === 0 ? Number(value) : null)}
+            normalize={normalizeNumber}
+            debounced={false}
             name="nominalHours"
             label="Nominal hours"
           />

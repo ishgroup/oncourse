@@ -22,6 +22,7 @@ import ish.oncourse.cayenne.PaymentLineInterface
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.dao.*
 import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.duplicate.DuplicateInvoiceService
 import ish.oncourse.server.services.IAutoIncrementService
@@ -38,6 +39,7 @@ import java.time.LocalDate
 import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
 import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoiceLineModel
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
 import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
@@ -126,6 +128,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             invoiceDTO.modifiedOn = dateToTimeValue(abstractInvoice.modifiedOn)
             invoiceDTO.paymentPlans.addAll([toRestPaymentPlan(abstractInvoice)])
             invoiceDTO.tags = abstractInvoice.allTags.collect { it.id }
+            invoiceDTO.customFields = abstractInvoice.customFields.collectEntries { [(it.customFieldType.key) : it.value] }
             invoiceDTO
         }
         if (abstractInvoice instanceof Invoice) {
@@ -201,6 +204,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             updateInvoiceDueDates(abstractInvoice as Invoice, invoiceDTO.paymentPlans)
         }
         updateTags(abstractInvoice, abstractInvoice.taggingRelations, invoiceDTO.tags, AbstractInvoiceTagRelation.class, abstractInvoice.context)
+        updateCustomFields(abstractInvoice.context, abstractInvoice, invoiceDTO.customFields, abstractInvoice.getCustomFieldClass())
         abstractInvoice
     }
 
@@ -253,7 +257,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             if (invoiceDTO.invoiceLines.empty) {
                 validator.throwClientErrorException(id, 'invoiceLines', 'At least 1 invoice line required.')
             } else {
-                invoiceDTO.invoiceLines.eachWithIndex { InvoiceInvoiceLineDTO iil, int idx ->
+                invoiceDTO.invoiceLines.eachWithIndex { AbstractInvoiceLineDTO iil, int idx ->
                     if (isBlank(iil.title)) {
                         validator.throwClientErrorException(id, "invoiceLines[$idx].title", 'Invoice line title is required.')
                     } else if (trimToNull(iil.title).length() > 200) {
@@ -366,7 +370,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
         abstractInvoice
     }
 
-    private void updateInvoiceLines(AbstractInvoice cayenneModel, List<InvoiceInvoiceLineDTO> invoiceLines) {
+    private void updateInvoiceLines(AbstractInvoice cayenneModel, List<AbstractInvoiceLineDTO> invoiceLines) {
         if (cayenneModel instanceof Quote && !cayenneModel.newRecord) {
             //handle quote line removal
             List<Long> ids = invoiceLines*.id.flatten().grep() as List<Long>
@@ -422,7 +426,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             Money taxAdjustment = MoneyUtil.calculateTaxAdjustment(totalEachIncTax, totalEachExTax,  iLine.tax.rate)
 
             iLine.taxEach = calculateTaxEachForInvoiceLine(iLine.priceEachExTax, iLine.discountEachExTax, iLine.tax.rate, taxAdjustment)
-            iLine.invoice = cayenneModel
+            iLine.abstractInvoice = cayenneModel
         }
     }
 
@@ -469,7 +473,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             validator.throwClientErrorException(id, 'id', "There are no invoices selected.")
         } else {
             listOfInvoices.find { !it.amountOwing.isGreaterThan(Money.ZERO) }
-                    ?.with { validator.throwClientErrorException(it.id, 'id', "Invoice with id=$id has no amount owing.") }
+                    ?.with { EntityValidator.throwClientErrorException(it.id, 'id', "Invoice with id=$id has no amount owing.") }
         }
 
         PaymentMethod method = PaymentMethodUtil.getCONTRAPaymentMethods(context, PaymentMethod)

@@ -3,29 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import { change } from "redux-form";
 import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
-import { connect } from "react-redux";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import { State } from "../../../../reducers/state";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
+import { normalizeNumber } from "ish-ui";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { change } from "redux-form";
 import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { normalizeString } from "../../../../common/utils/strings";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { normalizeString } from "../../../../common/utils/strings";
+import { validateSingleMandatoryField } from "../../../../common/utils/validation";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
-interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
+interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct> {
   accounts?: Account[];
   taxes?: Tax[];
   tags?: Tag[];
@@ -37,29 +36,32 @@ const validateNonNegative = value => (value < 0 ? "Must be non negative" : undef
 const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 
 const expiryOptions: CustomSelectorOption[] = [
-  { caption: "Never (Lifetime)", body: "", type: null },
+  { caption: "Never (Lifetime)", body: "" },
   {
     caption: "1st July",
     body: "",
-    type: null,
-    fieldName: "expiryType",
-    component: EditInPlaceField
+    formFileldProps: {
+      type: "text",
+      name: "expiryType",
+    }
   },
   {
     caption: "1st January",
     body: "",
-    type: null,
-    fieldName: "expiryType",
-    component: EditInPlaceField
+    formFileldProps: {
+      type: "text",
+      name: "expiryType",
+    }
   },
   {
     caption: "Days",
     body: "",
-    type: "number",
-    component: EditInPlaceField,
-    fieldName: "expiryDays",
-    validate: [validateNonNegative, validateSingleMandatoryField],
-    normalize: normalizeNumber
+    formFileldProps: {
+      type: "number",
+      name: "expiryDays",
+      validate: [validateNonNegative, validateSingleMandatoryField],
+      normalize: normalizeNumber
+    }
   }
 ];
 
@@ -129,7 +131,9 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
 
-  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
+
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
@@ -160,18 +164,18 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
+                  type="text"
                   label="SKU"
                   name="code"
                   required
-                  fullWidth
                 />
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
+                  type="text"
                   label="Name"
                   name="name"
                   required
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -183,8 +187,11 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
         />
+
+        {subjectsField}
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
@@ -231,9 +238,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           validate={[validateSingleMandatoryField, validateNonNegative]}
           onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
           debounced={false}
-          props={{
-            label: "Fee ex tax"
-          }}
+          label="Fee ex tax"
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
@@ -243,9 +248,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           validate={validateNonNegative}
           onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
           debounced={false}
-          props={{
-            label: "Total fee"
-          }}
+          label="Total fee"
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
@@ -254,13 +257,11 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="taxId"
           onChange={handleChangeTax(values, taxes, dispatch, form)}
           debounced={false}
+          label="Tax"
+          items={taxes}
+          selectValueMark="id"
+          selectLabelCondition={tax => tax.code}
           required
-          props={{
-            label: "Tax",
-            items: taxes,
-            selectValueMark: "id",
-            selectLabelCondition: tax => tax.code
-          }}
         />
       </Grid>
 

@@ -4,8 +4,9 @@
  */
 
 import { Document } from "@api/model";
-import { _toRequestType } from "../../../../actions/ActionUtils";
 import { DocumentExtended } from "../../../../../model/common/Documents";
+import { DocumentSearchItemType } from "../../../../../model/entities/Document";
+import { _toRequestType } from "../../../../actions/ActionUtils";
 
 export const CREATE_DOCUMENT = _toRequestType("post/list/entity/document");
 
@@ -69,7 +70,7 @@ export const setDocumentFile = (documentFile: File) => ({
   payload: { documentFile }
 });
 
-export const setSearchDocuments = (searchDocuments: any) => ({
+export const setSearchDocuments = (searchDocuments: DocumentSearchItemType[]) => ({
   type: SET_SEARCH_DOCUMENTS,
   payload: { searchDocuments }
 });

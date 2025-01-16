@@ -7,16 +7,18 @@
  */
 
 import { Diff, Filter, LayoutType, MessageType, SearchQuery, TableModel } from "@api/model";
-import { MessageData } from "../../../../model/common/Message";
-import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
-import { MenuTag } from "../../../../model/tags";
+import { AnyArgFunction } from "ish-ui";
 import { GetRecordsArgs, SavingFilterState } from "../../../../model/common/ListView";
+import { MessageData } from "../../../../model/common/Message";
+import { CustomTableModelName, EntityName } from "../../../../model/entities/common";
+import { FormMenuTag } from "../../../../model/tags";
+import { _toRequestType, FULFILLED } from "../../../actions/ActionUtils";
 import { IAction } from "../../../actions/IshAction";
-import { EntityName } from "../../../../model/entities/common";
 
 // Common list actions
 export const GET_RECORDS_REQUEST = _toRequestType("get/records");
 export const GET_RECORDS_FULFILLED = FULFILLED(GET_RECORDS_REQUEST);
+export const GET_RECORDS_FULFILLED_RESOLVE = FULFILLED(GET_RECORDS_REQUEST) + "_resolve";
 
 export const GET_PLAIN_RECORDS_REQUEST = _toRequestType("get/records/plain");
 export const GET_PLAIN_RECORDS_REQUEST_FULFILLED = FULFILLED(GET_PLAIN_RECORDS_REQUEST);
@@ -38,6 +40,8 @@ export const UPDATE_TABLE_MODEL_REQUEST = _toRequestType("update/table/model");
 
 export const BULK_CHANGE_RECORDS = _toRequestType("post/listView/bulkChange");
 
+export const FIND_RELATED_BY_FILTER = "find/related/byFilter";
+
 export const CLEAR_LIST_STATE = "clear/listView";
 
 export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
@@ -45,6 +49,8 @@ export const SET_LIST_CORE_FILTERS = "set/listView/coreFilters";
 export const SET_LIST_SEARCH = "set/listView/search";
 
 export const SET_LIST_ENTITY = "set/listView/entity";
+
+export const SET_LIST_CUSTOM_TABLE_MODEL = "set/listView/customTableModel";
 
 export const SET_LIST_SEARCH_ERROR = "set/listView/search/error";
 
@@ -68,20 +74,24 @@ export const SET_LIST_FULL_SCREEN_EDIT_VIEW = "set/listView/fullScreenEditView";
 
 export const SET_LIST_EDIT_RECORD_FETCHING = "set/listView/editRecordFetching";
 
+export const findRelatedByFilter = (filter: string | AnyArgFunction<string, string>, list: string) => ({
+  type: FIND_RELATED_BY_FILTER,
+  payload: {filter, list}
+});
 
 export const deleteCustomFilter = (id: number, entity: string, checked: boolean) => ({
   type: DELETE_FILTER_REQUEST,
-  payload: { id, entity, checked }
+  payload: {id, entity, checked}
 });
 
 export const createCustomFilter = (filter: Filter, entity: string) => ({
   type: POST_FILTER_REQUEST,
-  payload: { filter, entity }
+  payload: {filter, entity}
 });
 
 export const setListUserAQLSearch = (userAQLSearch: string) => ({
   type: SET_LIST_USER_AQL_SEARCH,
-  payload: { userAQLSearch }
+  payload: {userAQLSearch}
 });
 
 export const setListLayout = (layout: LayoutType) => ({
@@ -89,43 +99,32 @@ export const setListLayout = (layout: LayoutType) => ({
   payload: layout
 });
 
-export const setListMenuTags = (menuTags: MenuTag[], checkedChecklists: MenuTag[], uncheckedChecklists: MenuTag[]) => ({
+export const setListMenuTags = (menuTags: FormMenuTag[], checkedChecklists: FormMenuTag[], uncheckedChecklists: FormMenuTag[]) => ({
   type: SET_LIST_MENU_TAGS,
-  payload: { menuTags, checkedChecklists, uncheckedChecklists }
+  payload: {menuTags, checkedChecklists, uncheckedChecklists}
 });
 
 export const getRecords = (
-  {
-    entity,
-    viewAll,
-    listUpdate,
-    savedID,
-    ignoreSelection,
-    startIndex,
-    stopIndex,
-    resolve,
-  }: GetRecordsArgs
+  payload: GetRecordsArgs
 ): IAction<GetRecordsArgs> => ({
   type: GET_RECORDS_REQUEST,
-  payload: {
-    entity, listUpdate, savedID, ignoreSelection, viewAll, startIndex, stopIndex, resolve
-  }
+  payload
 });
 
 export const getPlainRecords = (entity: string, columns: string) => ({
   type: GET_PLAIN_RECORDS_REQUEST,
-  payload: { entity, columns }
+  payload: {entity, columns}
 });
 
 export const getFilters = (entity: string) => ({
   type: GET_FILTERS_REQUEST,
-  payload: { entity }
+  payload: {entity}
 });
 
 export const getRecipientsMessageData = (entityName: string, messageType: MessageType, searchQuery: SearchQuery, selection: string[], templateId: number) => ({
   type: GET_RECIPIENTS_MESSAGE_DATA,
   payload: {
-   entityName, messageType, searchQuery, selection, templateId
+    entityName, messageType, searchQuery, selection, templateId
   }
 });
 
@@ -148,7 +147,7 @@ export const setListEditRecordFetching = () => ({
 
 export const updateTableModel = (entity: string, model: TableModel, listUpdate?: boolean) => ({
   type: UPDATE_TABLE_MODEL_REQUEST,
-  payload: { entity, model, listUpdate }
+  payload: {entity, model, listUpdate}
 });
 
 export const setListSavingFilter = (savingFilter?: SavingFilterState) => ({
@@ -158,27 +157,27 @@ export const setListSavingFilter = (savingFilter?: SavingFilterState) => ({
 
 export const setListSelection = (selection: string[]) => ({
   type: SET_LIST_SELECTION,
-  payload: { selection }
+  payload: {selection}
 });
 
 export const setFilterGroups = filterGroups => ({
   type: SET_LIST_CORE_FILTERS,
-  payload: { filterGroups }
+  payload: {filterGroups}
 });
 
 export const setSearch = (search: string, entity: string) => ({
   type: SET_LIST_SEARCH,
-  payload: { search, entity }
+  payload: {search, entity}
 });
 
 export const setListSearchError = (searchError: boolean) => ({
   type: SET_LIST_SEARCH_ERROR,
-  payload: { searchError }
+  payload: {searchError}
 });
 
 export const setListEditRecord = (editRecord: any) => ({
   type: SET_LIST_EDIT_RECORD,
-  payload: { editRecord }
+  payload: {editRecord}
 });
 
 export const setListCreatingNew = (creatingNew: boolean) => ({
@@ -188,12 +187,17 @@ export const setListCreatingNew = (creatingNew: boolean) => ({
 
 export const bulkChangeRecords = (entity: EntityName, diff: Diff) => ({
   type: BULK_CHANGE_RECORDS,
-  payload: { entity, diff }
+  payload: {entity, diff}
 });
 
 export const setListEntity = (entity: EntityName) => ({
   type: SET_LIST_ENTITY,
   payload: entity
+});
+
+export const setListCustomTableModel = (customTableModel: CustomTableModelName) => ({
+  type: SET_LIST_CUSTOM_TABLE_MODEL,
+  payload: customTableModel
 });
 
 export const setListFullScreenEditView = (fullScreenEditView: boolean) => ({

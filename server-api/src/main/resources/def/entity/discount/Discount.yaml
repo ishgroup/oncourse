@@ -23,8 +23,8 @@ properties:
     format: int64
   predictedStudentsPercentage:
     type: number
-  availableOnWeb:
-    type: boolean
+  availableFor:
+    $ref: '../../enum/DiscountAvailabilityType.yaml'
   code:
     type: string
   validFrom:
@@ -83,3 +83,10 @@ properties:
     required: true
   relationDiscount:
     type: boolean
+  courseIdMustEnrol:
+    type: integer
+    format: int64
+  courseNameMustEnrol:
+    type: string
+  minEnrolmentsForAnyCourses:
+    type: integer

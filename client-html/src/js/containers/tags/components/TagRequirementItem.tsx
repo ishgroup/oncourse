@@ -1,32 +1,30 @@
-import React, { useCallback, useMemo } from "react";
-import clsx from "clsx";
-import { change, Field } from "redux-form";
-import { createStyles, withStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import { Dispatch } from "redux";
-import { TagRequirement } from "@api/model";
-import { ToogleCheckbox } from "../../../common/components/form/ToogleCheckbox";
-import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
-import { ShowConfirmCaller } from "../../../model/common/Confirm";
-import { AppTheme } from "../../../model/common/Theme";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
+import { TagRequirement } from '@api/model';
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme, ShowConfirmCaller, useHoverShowStyles } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { change, Field } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { ToogleCheckbox } from '../../../common/components/form/ToogleCheckbox';
+import GetTagRequirementDisplayName from '../utils/GetTagRequirementDisplayName';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   deleteIcon: {
     fontSize: "20px"
   },
   root: {
     display: "grid",
-    gridTemplateColumns: `0.5fr 1fr 1fr ${theme.spacing(4.5)}`,
+    gridTemplateColumns: "minmax(100px, 300px) 210px 230px 46px",
     alignItems: "center",
     marginBottom: theme.spacing(2)
   }
 });
 
 interface Props {
-  classes: any;
+  classes?: any;
   disabled: boolean;
   item: TagRequirement;
   parent: any;
@@ -64,16 +62,17 @@ const TagRequirementItem: React.FC<Props> = props => {
   
   const header = useMemo(() => GetTagRequirementDisplayName(item.type), [item.type]);
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   return (
     <div className={clsx(classes.root, hoverClasses.container)}>
-      <Typography variant="h5" className="flex-fill" fontSize="1.3rem">
+      <Typography variant="h5"  fontSize="1.3rem">
         {header}
       </Typography>
 
       <Field
         name={`${parent}.mandatory`}
+        className="ml-1"
         margin="none"
         type="checkbox"
         chackedLabel="Mandatory"
@@ -86,6 +85,7 @@ const TagRequirementItem: React.FC<Props> = props => {
 
       <Field
         name={`${parent}.limitToOneTag`}
+        className="ml-1"
         margin="none"
         type="checkbox"
         chackedLabel="One tag only"
@@ -97,7 +97,7 @@ const TagRequirementItem: React.FC<Props> = props => {
       />
 
       <IconButton
-        className={clsx("dndActionIconButton", hoverClasses.target, {
+        className={clsx("dndActionIconButton ml-1", hoverClasses.target,  {
           "invisible": disabled
         })}
         onClick={() => onDelete(index)}
@@ -108,4 +108,4 @@ const TagRequirementItem: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(styles)(TagRequirementItem);
+export default withStyles(TagRequirementItem, styles);

@@ -3,15 +3,11 @@
 <!-- 2018-02-23T11:43:03 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificateTranscriptReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="517" leftMargin="39" rightMargin="39" topMargin="43" bottomMargin="50" whenResourceMissingType="Error" uuid="8ecab58b-5ac0-4c5a-b22a-cee0bcae0b65">
 	<property name="name" value="Certificate-Transcript"/>
-	<property name="entity" value="Certificate"/>
 	<property name="isSubreport" value="true"/>
-	<property name="isVisible" value="false"/>
-
-	<property name="keyCode" value="ish.onCourse.certificate.transcript"/>
 	<property name="ish.oncourse.title" value="Academic Transcript"/>
 	<property name="ish.oncourse.filePrefix" value="certificate"/>
-	<property name="ish.oncourse.description" value=" To provide students with the information retained in onCourse regarding each of their enrolments and current status of their outcomes."/>
 	<property name="ish.oncourse.pdfFileName" value="Certificate.pdf"/>
+
 	<import value="ish.common.types.QualificationType"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>

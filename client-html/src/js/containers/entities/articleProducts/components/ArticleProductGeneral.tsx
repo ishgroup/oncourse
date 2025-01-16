@@ -3,26 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import { change, FieldArray } from "redux-form";
-import {
- Account, ArticleProduct, ProductStatus, Tag, Tax 
-} from "@api/model";
-import { connect } from "react-redux";
+import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
 import { Grid } from "@mui/material";
 import { Decimal } from "decimal.js-light";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { change, FieldArray } from "redux-form";
+import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { FormEditorField } from "../../../../common/components/markdown-editor/FormEditor";
-import { State } from "../../../../reducers/state";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { normalizeString } from "../../../../common/utils/strings";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { normalizeString } from "../../../../common/utils/strings";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
+import RelationsCommon from "../../common/components/RelationsCommon";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -68,6 +67,8 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
     twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
 
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+
   const gridItemProps = {
     xs: twoColumn ? 6 : 12,
     lg: twoColumn ? 4 : 12
@@ -105,18 +106,18 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
+                  type="text"
                   label="SKU"
                   name="code"
                   required
-                  fullWidth
                 />
               </Grid>
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
+                  type="text"
                   label="Name"
                   name="name"
                   required
-                  fullWidth
                 />
               </Grid>
             </Grid>
@@ -128,8 +129,11 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
         />
+
+        {subjectsField}
       </Grid>
 
       <Grid item {...gridItemProps}>
@@ -208,8 +212,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           selectLabelMark="name"
           items={dataCollectionRules || []}
           format={normalizeString}
-          fullWidth
-          required
+                    required
           sort
         />
       </Grid>

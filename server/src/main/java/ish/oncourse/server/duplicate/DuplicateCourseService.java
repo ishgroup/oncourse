@@ -48,6 +48,7 @@ public class DuplicateCourseService {
             var newCourse = context.newObject(Course.class);
 
             newCourse.setWebDescription(oldCourse.getWebDescription());
+            newCourse.setShortWebDescription(oldCourse.getShortWebDescription());
             newCourse.setName(oldCourse.getName());
             newCourse.setIsShownOnWeb(false);
             newCourse.setIsTraineeship(oldCourse.getIsTraineeship());
@@ -68,7 +69,6 @@ public class DuplicateCourseService {
                 var relation = context.newObject(CourseAttachmentRelation.class);
                 relation.setAttachedCourse(newCourse);
                 relation.setDocument(courseAttachmentRelation.getDocument());
-                relation.setDocumentVersion(courseAttachmentRelation.getDocumentVersion());
                 relation.setSpecialType(courseAttachmentRelation.getSpecialType());
             }
 

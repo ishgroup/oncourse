@@ -6,23 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { ExportTemplate } from "@api/model";
+import { usePrevious } from "ish-ui";
 import React, { useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
-import { Dispatch } from "redux";
 import { withRouter } from "react-router";
-import { ExportTemplate } from "@api/model";
+import { Dispatch } from "redux";
+import { getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
-import ExportTemplatesForm from "./containers/ExportTemplatesForm";
 import {
   createExportTemplate,
   getExportTemplate,
+  removeExportTemplate,
   updateExportTemplate,
-  updateInternalExportTemplate,
-  removeExportTemplate
+  updateInternalExportTemplate
 } from "./actions";
-import { usePrevious } from "../../../../common/utils/hooks";
+import ExportTemplatesForm from "./containers/ExportTemplatesForm";
 
 export const EXPORT_TEMPLATES_FORM_NAME = "ExportTemplatesForm";
 
@@ -67,6 +67,7 @@ const ExportTemplates = React.memo<any>(props => {
 const mapStateToProps = (state: State) => ({
   values: getFormValues(EXPORT_TEMPLATES_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(EXPORT_TEMPLATES_FORM_NAME)(state),
+  exportTemplates: state.automation.exportTemplate.exportTemplates,
   emailTemplates: state.automation.emailTemplate.emailTemplates,
   nextLocation: state.nextLocation
 });

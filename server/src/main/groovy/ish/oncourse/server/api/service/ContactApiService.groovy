@@ -49,7 +49,6 @@ import static ish.oncourse.server.api.v1.function.DocumentFunctions.*
 import static ish.oncourse.server.api.v1.function.HolidayFunctions.*
 import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.toRestConcession
 import static ish.oncourse.server.api.v1.function.StudentConcessionFunctions.updateStudentConcessions
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static org.apache.commons.lang.StringUtils.*
 
@@ -152,7 +151,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
                     }.findAll{ doc ->
                         !doc.isRemoved
                     }.collect{ d ->
-                        toRestDocumentMinimized(d, d.currentVersion.id, documentService)
+                        toRestDocumentMinimized(d, documentService)
                     }
             dto.abandonedCarts = cayenneModel.abandonedCarts.collect{toRestCart(it)}
             dto.tags = cayenneModel.allTags.collect{ it.id }
@@ -214,6 +213,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         updateTags(cayenneModel, cayenneModel.taggingRelations, dto.tags, ContactTagRelation, context)
         updateProfilePicture(cayenneModel, dto.profilePicture)
         updateContactRelations(context, cayenneModel, dto.relations)
+        updateAbandonedCarts(context, cayenneModel, dto.abandonedCarts)
         updateAvailabilityRules(cayenneModel, cayenneModel.unavailableRuleRelations*.rule, dto.rules, ContactUnavailableRuleRelation)
 
         if (dto.removeCChistory) {
@@ -281,6 +281,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.visaType = dto.visaType
         cayenneModel.yearSchoolCompleted = dto.yearSchoolCompleted
         updateStudentConcessions(cayenneModel.contact, dto.concessions)
+        updateCustomFields(context, cayenneModel, dto.customFields, cayenneModel.getCustomFieldClass())
         cayenneModel
     }
 
@@ -306,6 +307,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         cayenneModel.wwChildrenRef = dto.wwChildrenRef
         cayenneModel.wwChildrenStatus = dto.wwChildrenStatus?.getDbType()
         cayenneModel.payType = dto.defaultPayType?.dbType
+        updateCustomFields(context, cayenneModel, dto.customFields, cayenneModel.getCustomFieldClass())
 
         cayenneModel
     }
@@ -436,6 +438,8 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         if (missedCustomFieldTypeKey != null) {
             validator.throwClientErrorException(Contact.CUSTOM_FIELDS.name, "Custom field type '${missedCustomFieldTypeKey}' is mandatory for contact.")
         }
+
+
     }
 
     private boolean isAnyUsiFieldEdited(Contact cayenneModel, ContactDTO dto) {
@@ -583,6 +587,10 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             student.yearSchoolCompleted = dbStudent.yearSchoolCompleted
             student.waitingLists = dbStudent.waitingLists.collect{ l -> l.course.name }
             student.concessions = dbStudent?.concessions?.collect{ toRestConcession(it) }
+            student.customFields = dbStudent?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!student.customFields)
+                student.customFields = Collections.emptyMap()
+
             student
         }
     }
@@ -615,6 +623,9 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             tutor.unscheduledClasseCount = count.unscheduledClassesCount
             tutor.passedClasseCount = count.passedClassesCount
             tutor.cancelledClassesCount = count.cancelledClassesCount
+            tutor.customFields = dbTutor?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
+            if(!tutor.customFields)
+                tutor.customFields = Collections.emptyMap()
 
             tutor
         }
@@ -695,7 +706,17 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
     Closure getAction (String key, String value) {
         Closure action = super.getAction(key, value)
         if (!action) {
-            validator.throwClientErrorException(key, "Unsupported attribute")
+            if(key.startsWith("customFields")) {
+                def keyStructure = key.split("\\.")
+                if(keyStructure.size() != 2) {
+                    validator.throwClientErrorException(key, "Custom field key required")
+                }
+                action = { Contact contact ->
+                    def customFieldKey = keyStructure[1]
+                    contact.setProperty(customFieldKey, value)
+                }
+            } else
+                validator.throwClientErrorException(key, "Unsupported attribute")
         }
         action
     }

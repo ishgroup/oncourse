@@ -3,18 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import { State } from "../../../../../reducers/state";
-import { toggleSwipeableDrawer } from "../actions";
+import MenuIcon from "@mui/icons-material/Menu";
 import Divider from "@mui/material/Divider";
-import { getTheme } from "../../../../themes/ishTheme";
-import onCourseLogoDark from "../../../../../../images/onCourseLogoDark.png";
-import onCourseLogoLight from "../../../../../../images/onCourseLogoLight.png";
+import IconButton from "@mui/material/IconButton";
+import React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { State } from "../../../../../reducers/state";
+import Logo from "../../Logo";
+import { toggleSwipeableDrawer } from "../actions";
 
 interface Props {
   opened?: boolean;
@@ -24,8 +22,6 @@ interface Props {
 
 const HamburgerMenu = React.memo<Props>(props => {
   const { opened, toggleSwipeableDrawer } = props;
-
-  const theme = getTheme();
 
   return (
     <div className="centeredFlex mr-3">
@@ -37,14 +33,16 @@ const HamburgerMenu = React.memo<Props>(props => {
         size="large"
         className="relative zIndex2"
       >
-        {opened ? <CloseIcon /> : <MenuIcon />}
+        {opened ? <CloseIcon/> : <MenuIcon/>}
       </IconButton>
-      <Divider orientation="vertical" variant="middle" flexItem />
-      <img
-        src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}
-        alt="Logo"
-        height={36}
-      />
+      <Divider orientation="vertical" variant="middle" flexItem/>
+      {/* <img*/}
+      {/*  src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}*/}
+      {/*  alt="Logo"*/}
+      {/*  height={36}*/}
+      {/* />*/}
+
+      <Logo className="ml-2" whiteBackgound={opened}  />
     </div>
   );
 });

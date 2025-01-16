@@ -4,22 +4,13 @@
  */
 
 import { Tag } from "@api/model";
-import { NumberArgFunction } from "../common/CommonFunctions";
+import { MenuTag, NumberArgFunction } from "ish-ui";
 
-export interface MenuTag {
-  active: boolean;
-  tagBody: Tag;
-  children: MenuTag[];
-  parent?: MenuTag;
-  entity?: string;
-  path?: string;
-  prefix?: string;
-  queryPrefix?: string;
-  indeterminate?: boolean;
-}
+export type FormMenuTag = MenuTag<Tag>;
 
 export interface FormTag extends Tag {
   parent?: string;
+  rootTag?: FormTag;
   refreshFlag?: boolean;
   childTags?: FormTag[];
 }
@@ -33,4 +24,9 @@ export interface FormTagProps {
   changeVisibility?: any;
   snapshot?: any;
   provided?: any;
+  hideColor?: boolean;
+}
+
+export interface SpecialTypeTagsFormValues {
+  types: Tag[];
 }

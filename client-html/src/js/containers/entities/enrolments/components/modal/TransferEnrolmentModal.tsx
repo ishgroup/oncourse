@@ -3,30 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import { Account, CancelEnrolment, Tax } from "@api/model";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { getUserPreferences } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
-import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
-import { State } from "../../../../../reducers/state";
-import { cancelEnrolment } from "../../actions";
-import WarningMessage from "../../../../../common/components/form/fieldMessage/WarningMessage";
-import { useOutcomeWarnings } from "./hooks";
-import { enrolmentModalStyles } from "./styles";
-import TransferEnrolmentInvoiceLines from "./TransferEnrolmentInvoiceLines";
+import { Account, CancelEnrolment, Tax } from '@api/model';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import { BooleanArgFunction, WarningMessage } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { getUserPreferences } from '../../../../../common/actions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from '../../../../../constants/Config';
+import { State } from '../../../../../reducers/state';
+import { cancelEnrolment } from '../../actions';
+import { useOutcomeWarnings } from './hooks';
+import { enrolmentModalStyles } from './styles';
+import TransferEnrolmentInvoiceLines from './TransferEnrolmentInvoiceLines';
 
 export const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 
@@ -116,7 +113,7 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 
   React.useEffect(() => {
     getDefaultIncomeAccount();
-  });
+  }, []);
 
   React.useEffect(() => {
     if (!invoiceLines) return;
@@ -229,17 +226,15 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
             </Grid>
           </Grid>
 
-          <div className="pt-2">
-            <FieldArray
-              component={TransferEnrolmentInvoiceLines}
-              name="invoices"
-              dispatch={dispatch}
-              incomeAccounts={incomeAccounts}
-              taxes={taxes}
-              classes={classes}
-              rerenderOnEveryChange
-            />
-          </div>
+          <FieldArray
+            component={TransferEnrolmentInvoiceLines}
+            name="invoices"
+            dispatch={dispatch}
+            incomeAccounts={incomeAccounts}
+            taxes={taxes}
+            classes={classes}
+            rerenderOnEveryChange
+          />
         </DialogContent>
 
         <DialogActions className="p-1">
@@ -278,4 +273,4 @@ const TransferEnrolmentModal = reduxForm({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(enrolmentModalStyles)(TransferEnrolmentModal));
+)(withStyles(TransferEnrolmentModal, enrolmentModalStyles as any));

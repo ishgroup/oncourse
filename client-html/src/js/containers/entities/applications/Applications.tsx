@@ -6,23 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { connect } from "react-redux";
-import React, { Dispatch } from "react";
-import { initialize } from "redux-form";
-import { format as formatDate } from "date-fns";
 import { Application } from "@api/model";
+import { format as formatDate } from "date-fns";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { Dispatch } from "react";
+import { connect } from "react-redux";
+import { initialize } from "redux-form";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import ListView from "../../../common/components/list-view/ListView";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { getListTags } from "../../tags/actions";
-import { defaultContactName } from "../contacts/utils";
-import ApplicationEditView from "./components/ApplicationEditView";
-import { FilterGroup } from "../../../model/common/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { State } from "../../../reducers/state";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getListTags } from "../../tags/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import ApplicationEditView from "./components/ApplicationEditView";
 
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
@@ -91,11 +90,11 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const manualLink = getManualLink("applications");
+const manualLink = getManualLink("navigating-the-application-window");
 
-const nameCondition = values => (values ? defaultContactName(values.studentName) : "");
+const nameCondition = values => (values ? values.studentName : "");
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",

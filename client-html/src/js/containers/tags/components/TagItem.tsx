@@ -6,23 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback } from "react";
-import clsx from "clsx";
-import { Field } from "redux-form";
-import Delete from "@mui/icons-material/Delete";
-import Edit from "@mui/icons-material/Edit";
+import Delete from '@mui/icons-material/Delete';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import Edit from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { Collapse } from "@mui/material";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
-import { FormEditorField } from "../../../common/components/markdown-editor/FormEditor";
-import { stopEventPropagation } from "../../../common/utils/events";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { FormTagProps } from "../../../model/tags";
-import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { ColorPicker, stopEventPropagation, useHoverShowStyles } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { Field } from 'redux-form';
+import { FormEditorField } from '../../../common/components/form/formFields/FormEditor';
+import FormField from '../../../common/components/form/formFields/FormField';
+import { COMMON_PLACEHOLDER } from '../../../constants/Forms';
+import { FormTagProps } from '../../../model/tags';
 
 const getFieldName = (parent, name) => (parent ? parent + `.${name}` : name);
 
@@ -34,9 +33,13 @@ const TagItem = React.memo<FormTagProps>(({
   snapshot,
   provided,
   isEditing,
-  setIsEditing
+  setIsEditing,
+  hideColor
 }) => {
-  const onEditClick = () => setIsEditing(item.id);
+  const onEditClick = e => {
+    e.stopPropagation();
+    setIsEditing(item.id);
+  };
 
   const onDeleteClick = useCallback(e => {
     stopEventPropagation(e);
@@ -48,13 +51,13 @@ const TagItem = React.memo<FormTagProps>(({
     changeVisibility(item);
   }, [item]);
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   const urlPlaceholder = item.urlPath
     ? "/" + item.urlPath.trim().toLowerCase().replaceAll(" ", "+")
     : item.name
       ? "/" + item.name.trim().toLowerCase().replaceAll(" ", "+")
-      : "No value";
+      : COMMON_PLACEHOLDER;
 
   return (
     <div
@@ -66,15 +69,15 @@ const TagItem = React.memo<FormTagProps>(({
       <div className={classes.cardGrid}>
         <div {...provided.dragHandleProps}>
           <DragIndicator
-            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none")}
+            className={clsx("d-flex", classes.dragIcon, !item.parent && "pointer-events-none disabled")}
           />
         </div>
 
-        <div className="pr-3">
+        {hideColor ? <span/> : (<div className="pr-3">
           {isEditing
             ? (<Field name={getFieldName(item.parent, "color")} component={ColorPicker} />)
             : (<div className={classes.tagColorDot} style={{ background: "#" + item.color }} />)}
-        </div>
+        </div>)}
 
         <div>
           {isEditing
@@ -112,7 +115,7 @@ const TagItem = React.memo<FormTagProps>(({
               }}
               className={classes.fieldEditable}
               onClick={stopEventPropagation}
-              hidePlaceholderInEditMode
+              debounced={false}
             />
           ) : (
             <Typography variant="body2" className={item.urlPath ? undefined : "placeholderContent"} noWrap>
@@ -144,7 +147,17 @@ const TagItem = React.memo<FormTagProps>(({
 
       <Collapse in={isEditing} mountOnEnter unmountOnExit>
         <div className="pl-3 pr-3" onClick={stopEventPropagation}>
-          <FormEditorField name={getFieldName(item.parent, "content")} placeholder="Enter description" />
+          <FormEditorField  name={getFieldName(item.parent, "shortWebDescription")} placeholder="Short description" />
+          <Typography variant="caption" fontSize="13px" >
+            <FormEditorField
+              name={getFieldName(item.parent, "content")}
+              fieldClasses={{
+                text: "fw300 fsInherit"
+              }}
+              placeholder="Description"
+              className="mb-1"
+            />
+          </Typography>
         </div>
       </Collapse>
     </div>

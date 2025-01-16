@@ -3,14 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CertificateValidationRequest } from "@api/model";
 import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { SET_PRINT_VALIDATING_STATUS } from "../../../../common/components/list-view/components/share/actions";
 
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { SET_CERTIFICATES_VALIDATION_STATUS, VALIDATE_CERTIFICATES } from "../actions/index";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import CertificateService from "../services/CertificateService";
-import { SET_PRINT_VALIDATING_STATUS } from "../../../../common/components/list-view/components/share/actions";
-import { CertificateValidationRequest } from "@api/model";
 
 const request: EpicUtils.Request = {
   type: VALIDATE_CERTIFICATES,

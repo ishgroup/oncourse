@@ -1,8 +1,7 @@
-import React from "react";
 import { Contact } from "@api/model";
+import { Divider, Grid } from "@mui/material";
+import React from "react";
 import { FieldArray } from "redux-form";
-import { Grid } from "@mui/material";
-import Divider from "@mui/material/Divider";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 
 interface ContactsDocumentsProps {

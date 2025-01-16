@@ -3,26 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import {
- getFormValues, InjectedFormProps, reduxForm, submit 
-} from "redux-form";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import { connect } from "react-redux";
 import { Account, ClassCostRepetitionType, Tax } from "@api/model";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { State } from "../../../../../../reducers/state";
-import StudentFeeContent from "./StudentFeeContent";
-import IncomeAndExpenceContent from "./IncomeAndExpenceContent";
-import DiscountContent from "./DiscountContent";
-import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/entities/CourseClass";
-import TutorPayContent from "./TutorPayContent";
-import { mapSelectItems } from "../../../../../../common/utils/common";
+import { Dialog, DialogActions, DialogTitle } from "@mui/material";
+import Button from "@mui/material/Button";
+import DialogContent from "@mui/material/DialogContent";
+import { mapSelectItems } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { connect } from "react-redux";
+import { getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
 import { valiadateSelectItemAvailable } from "../../../../../../common/utils/validation";
+import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/entities/CourseClass";
+import { State } from "../../../../../../reducers/state";
+import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
+import DiscountContent from "./DiscountContent";
+import IncomeAndExpenceContent from "./IncomeAndExpenceContent";
+import StudentFeeContent from "./StudentFeeContent";
+import TutorPayContent from "./TutorPayContent";
 
 export const PayRateTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
 
@@ -62,7 +58,9 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
     currentTax,
     classFee
   }) => {
+
     const incomeAccounts = useMemo(() => accounts.filter(a => a.type === "income"), [accounts]);
+
     const activeTutorRoles = useMemo(() => (tutorRoles ? tutorRoles.filter(t => t.active) : []), [
       tutorRoles
     ]);
@@ -160,8 +158,7 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
       <Dialog
         open={opened}
         onClose={onClose}
-        fullWidth
-        maxWidth="md"
+                maxWidth="md"
         classes={{
           paper: "overflow-auto"
         }}

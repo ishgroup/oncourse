@@ -3,24 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import Popper from "@mui/material/Popper";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import DialogContent from "@mui/material/DialogContent";
-import { getFormValues, reduxForm } from "redux-form";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import { createStyles, withStyles } from "@mui/styles";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Typography from "@mui/material/Typography";
-import { connect } from "react-redux";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
-import { mapSelectItems } from "../../../../../common/utils/common";
+import Button from '@mui/material/Button';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import Typography from '@mui/material/Typography';
+import { mapSelectItems, normalizeNumberToPositive } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { SessionRepeatTypes } from '../../../../../model/entities/CourseClass';
 
-const styles = createStyles(theme => ({
+const styles = (theme => ({
   popper: {
     zIndex: theme.zIndex.modal
   },
@@ -54,8 +53,8 @@ const repeatTypeItems = Object.keys(SessionRepeatTypes).map(mapSelectItems);
 
 const CopySessionDialogBase = React.memo<any>(props => {
   const {
- popupAnchorEl, onCancel, reset, onSave, values, classes
-} = props;
+   popupAnchorEl, onCancel, reset, onSave, values, classes, invalid
+  } = props;
   const [closeDialog, setCloseDialog] = React.useState(true);
 
   const onSaveBase = useCallback(
@@ -95,31 +94,31 @@ const CopySessionDialogBase = React.memo<any>(props => {
                   <div className="heading pb-2">Repeat</div>
                   <Typography variant="body2" color="inherit" component="div" className="pb-1">
                     Repeat this session
+                    {" "}
                     <FormField
                       type="number"
                       name="repeatTimes"
                       min="1"
                       max="99"
                       step="1"
-                      normalize={normalizeNumber}
-                      props={{
-                        formatting: "inline"
-                      }}
+                      normalize={normalizeNumberToPositive}
+                      placeholder="0"
+                      required
+                      inline
                     />
+                    {" "}
                     times
                   </Typography>
 
                   <Typography variant="body2" color="inherit" component="div" className="pb-2">
                     Repeat every
+                    {" "}
                     <FormField
                       type="select"
                       name="repeatType"
-                      props={{
-                        formatting: "inline",
-                        disabledTab: true,
-                        onInnerValueChange: onRepeatTypeChange
-                      }}
                       items={repeatTypeItems}
+                      onInnerValueChange={onRepeatTypeChange}
+                      inline
                     />
                   </Typography>
                 </DialogContent>
@@ -128,7 +127,7 @@ const CopySessionDialogBase = React.memo<any>(props => {
                   <Button color="primary" onClick={onCancel}>
                     Cancel
                   </Button>
-                  <Button color="primary" onClick={onSaveBase} variant="contained">
+                  <Button color="primary" onClick={onSaveBase} disabled={invalid} variant="contained">
                     Create Sessions
                   </Button>
                 </DialogActions>
@@ -143,12 +142,15 @@ const CopySessionDialogBase = React.memo<any>(props => {
 });
 
 export default reduxForm<any, any>({
-  form: "CopySessionForm"
+  form: "CopySessionForm",
+  initialValues: {
+    repeatTimes: 1
+  }
 })(
   connect(
     state => ({
       values: getFormValues("CopySessionForm")(state)
     }),
     null
-  )(withStyles(styles)(CopySessionDialogBase))
+  )(withStyles(CopySessionDialogBase, styles))
 );

@@ -1,4 +1,4 @@
-import { ImportApi, ImportModel } from "@api/model";
+import { AutomationConfigs, ImportApi, ImportModel } from "@api/model";
 import { DefaultHttpService } from "../../../../../common/services/HttpService";
 
 class ImportTemplatesService {
@@ -37,7 +37,15 @@ class ImportTemplatesService {
       body.append(filesKey, f, f.name);
     });
 
-    return this.service.POST(`/v1/list/entity/import/execution`, body, { headers });
+    return this.service.POST(`/v1/list/entity/import/execution`, body, {headers});
+  }
+
+  public getConfigs(id: number): Promise<string> {
+    return this.importTemplatesApi.getConfigs(id);
+  }
+
+  public updateConfigs(id: number, config: AutomationConfigs): Promise<any> {
+    return this.importTemplatesApi.updateConfigs(id, config);
   }
 }
 

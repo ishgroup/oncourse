@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Currency } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
 import { GET_CURRENCY, GET_CURRENCY_FULFILLED } from "../actions";
-import { Currency } from "@api/model";
 import PreferencesService from "../services/PreferencesService";
 
 const request: EpicUtils.Request = {

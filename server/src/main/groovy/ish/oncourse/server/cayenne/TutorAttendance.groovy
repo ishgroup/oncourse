@@ -28,7 +28,7 @@ import java.time.Duration
  */
 @API
 @QueueableEntity
-class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, Queueable {
+class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, Queueable, ExpandableTrait {
 
 
 	@Override
@@ -39,6 +39,10 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 		if (!endDatetime) {
 			endDatetime = session.endDatetime
 		}
+
+		if(endDatetime.before(startDatetime))
+			throw new IllegalArgumentException("Tutor attendance end date is before start date, start: " + startDatetime + " end: " + endDatetime)
+
 		if (actualPayableDurationMinutes == null) {
 			actualPayableDurationMinutes = DurationFormatter.durationInMinutesBetween(startDatetime, endDatetime)
 		}
@@ -165,5 +169,18 @@ class TutorAttendance extends _TutorAttendance implements TutorAttendanceTrait, 
 	 */
 	BigDecimal getBudgetedPayableDurationHours() {
 		return DurationFormatter.durationInHoursBetween(startDatetime, endDatetime)
+	}
+
+	/**
+	 * @return time zone of session that was got from site of room
+	 */
+	@API
+	TimeZone getTimeZone() {
+		this.session.getTimeZone()
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return TutorAttendanceCustomField
 	}
 }

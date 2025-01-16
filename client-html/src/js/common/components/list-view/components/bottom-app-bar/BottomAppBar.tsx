@@ -3,31 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import IconButton from "@mui/material/IconButton";
-import PlusIcon from "@mui/icons-material/Add";
-import Share from "@mui/icons-material/Share";
-import Settings from "@mui/icons-material/Settings";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
+import PlusIcon from '@mui/icons-material/Add';
+import FindInPage from '@mui/icons-material/FindInPage';
+import Settings from '@mui/icons-material/Settings';
+import Share from '@mui/icons-material/Share';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { alpha, darken } from '@mui/material/styles';
-import FindInPage from "@mui/icons-material/FindInPage";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { openInternalLink } from "../../../../utils/links";
-import SearchInput from "./components/SearchInput";
-import ScriptsMenu from "./components/ScriptsMenu";
-import SendMessageMenu from "./components/SendMessageMenu";
-import ViewSwitcher from "./components/ViewSwitcher";
-import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
-import FindRelatedMenu from "./components/FindRelatedMenu";
-import { FindRelatedItem } from "../../../../../model/common/ListView";
-import { getScripts } from "../../../../actions";
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { makeAppStyles, openInternalLink } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../constants/Config';
+import ExecuteScriptModal from '../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal';
+import { FindRelatedItem } from '../../../../../model/common/ListView';
+import instantFetchErrorHandler from '../../../../api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../services/EntityService';
+import FindRelatedMenu from './components/FindRelatedMenu';
+import ScriptsMenu from './components/ScriptsMenu';
+import SearchInput from './components/SearchInput';
+import SendMessageMenu from './components/SendMessageMenu';
+import ViewSwitcher from './components/ViewSwitcher';
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -44,148 +41,200 @@ const SendMessageEntities = [
   "Lead"
 ];
 
-const styles = theme => createStyles({
-    root: {
-      backgroundColor:
-        theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
-      height: `${APP_BAR_HEIGHT}px`,
-      bottom: 0,
-      width: "100%",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: theme.spacing(2),
-      position: "relative"
+const useStyles = makeAppStyles<void, 'buttonDisabledOpacity' | 'buttonDisabledFade'>()((theme, p, classes) => ({
+  root: {
+    backgroundColor:
+      theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
+    height: `${APP_BAR_HEIGHT}px`,
+    bottom: 0,
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: theme.spacing(2),
+    position: "relative"
+  },
+  mainLabel: {
+    color: theme.palette.primary.contrastText
+  },
+  actionArea: {
+    color: theme.palette.primary.contrastText,
+    display: "flex"
+  },
+  actionsBarButton: {
+    color: "inherit",
+    [`&.${classes.buttonDisabledOpacity}`]: {
+      opacity: 0.5
     },
-    mainLabel: {
-      color: theme.palette.primary.contrastText
-    },
-    actionArea: {
-      color: theme.palette.primary.contrastText,
-      display: "flex"
-    },
-    actionsBarButton: {
-      color: "inherit",
-      "&$buttonDisabledOpacity": {
-        opacity: 0.5
-      },
-      "&$buttonDisabledFade": {
-        color: alpha(theme.palette.primary.contrastText, 0.5)
-      }
-    },
-    buttonDisabledOpacity: {},
-    buttonDisabledFade: {},
-    shareOnBackdrop: {
-      color: "inherit",
-      zIndex: theme.zIndex.modal + 1
-    },
-    relatedMenuOffset: {
-      marginLeft: "45px"
-    },
-    cogWheelMenuOffset: {
-      marginLeft: "-45px"
-    },
-    cogWheelMenuDelete: {
-      color: theme.palette.error.main
-    },
-    customIconButton: {
-      padding: `${theme.spacing(1)} 2.5px`,
-      height: theme.spacing(6),
-      width: theme.spacing(6)
-    },
-    findInPage: {
-      color: theme.palette.primary.contrastText
-    },
-    switcherActive: {
-      color: theme.palette.primary.contrastText
-    },
-    switcherDisabled: {
-      color: alpha(theme.palette.primary.contrastText, 0.3)
-    },
-    findRelated: {
-      display: "flex",
-      flex: 1,
-      justifyContent: "flex-end"
+    [`&.${classes.buttonDisabledFade}`]: {
+      color: alpha(theme.palette.primary.contrastText, 0.5)
     }
-  });
-
-class BottomAppBar extends React.PureComponent<any, any> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showSettingsMenu: null,
-      showFindRelatedMenu: null,
-      execScriptsMenuOpen: null,
-      scriptIdSelected: null
-    };
+  },
+  buttonDisabledOpacity: {},
+  buttonDisabledFade: {},
+  shareOnBackdrop: {
+    color: "inherit",
+    zIndex: theme.zIndex.modal + 1
+  },
+  relatedMenuOffset: {
+    marginLeft: "45px"
+  },
+  cogWheelMenuOffset: {
+    marginLeft: "-45px"
+  },
+  customIconButton: {
+    padding: `${theme.spacing(1)} 2.5px`,
+    height: theme.spacing(6),
+    width: theme.spacing(6)
+  },
+  findInPage: {
+    color: theme.palette.primary.contrastText
+  },
+  switcherActive: {
+    color: theme.palette.primary.contrastText
+  },
+  switcherDisabled: {
+    color: alpha(theme.palette.primary.contrastText, 0.3)
+  },
+  findRelated: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "flex-end"
   }
+}));
 
-  componentDidUpdate(prevProps) {
-    const {
-     rootEntity, scripts, getScripts
-    } = this.props;
-
-    if (rootEntity && rootEntity !== prevProps.rootEntity) {
-      if (!scripts) {
-        getScripts(rootEntity);
-      }
+const BottomAppBar = (
+  {
+    rootEntity,
+    scripts,
+    getScripts,
+    selection,
+    onDelete,
+    fetch,
+    toggleExportDrawer,
+    showExportDrawer,
+    toggleBulkEditDrawer,
+    showBulkEditDrawer,
+    querySearch,
+    changeQueryView,
+    onQuerySearch,
+    switchLayout,
+    threeColumn,
+    deleteEnabled,
+    hasShareTypes,
+    onCreate,
+    findRelated,
+    CogwheelAdornment,
+    showConfirm,
+    CustomFindRelatedMenu,
+    records,
+    searchComponentNode,
+    searchMenuItemsRenderer,
+    createButtonDisabled,
+    searchQuery,
+    filteredCount,
+    emailTemplatesWithKeyCode,
+    findRelatedByFilter,
+    scriptsFilterColumn,
+    dispatch
+  }) => {
+  const [filterScriptsBy, setFilterScriptsBy] = useState(null);
+  const [scriptsMenuOpen, setScriptsMenuOpen] = useState(null);
+  const [showSettingsMenu, setShowSettingsMenu] = useState(null);
+  const [scriptIdSelected, setScriptIdSelected] = useState(null);
+  const [showFindRelatedMenu, setShowFindRelatedMenu] = useState(null);
+  const [execScriptsMenuOpen, setExecScriptsMenuOpen] = useState(null);
+  
+  const { classes } = useStyles();
+  
+  useEffect(() => {
+    if (rootEntity && !scripts) {
+      getScripts(rootEntity);
     }
-  }
+  }, [rootEntity, scripts]);
 
-  setExecScriptsMenuOpen = (value: boolean) => {
-    this.setState({
-      execScriptsMenuOpen: value
-    });
+  useEffect(() => {
+    setFilterScriptsBy(null);
+  }, [rootEntity]);
+
+  // Workaround to trigger menu resize
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('resize'));
+  }, [filterScriptsBy]);
+
+  const getFilteredBy = async () => {
+    try {
+      let filterGroups = null;
+      
+      if (selection.length && selection[0] !== "new") {
+        filterGroups = {};
+        
+        const records = await EntityService.getPlainRecords(rootEntity, scriptsFilterColumn, `id in (${selection})`);
+
+        records.rows.forEach(r => {
+          if (filterGroups[r.values[0]]) {
+            filterGroups[r.values[0]].ids.push(r.id);
+          } else {
+            filterGroups[r.values[0]] = {
+              ids: [r.id],
+              scripts: []
+            };
+          }
+        });
+        
+        scripts?.forEach(s => {
+          filterGroups[s.entity]?.scripts.push(s);
+        });
+      }
+
+      setFilterScriptsBy(filterGroups);
+    } catch (e) {
+      instantFetchErrorHandler(dispatch, e);
+    }
   };
 
-  setScriptIdSelected = (id: number) => {
-    this.setState({
-      scriptIdSelected: id
-    });
+  useEffect(() => {
+    if (scriptsFilterColumn) {
+      getFilteredBy();
+    }
+  }, [scriptsFilterColumn, selection]);
+  
+  const openScriptModal = scriptId => {
+    setScriptIdSelected(scriptId);
+    setExecScriptsMenuOpen(true);
   };
 
-  openScriptModal = scriptId => {
-    this.setScriptIdSelected(scriptId);
-    this.setExecScriptsMenuOpen(true);
+  const onExecuteScriptDialogClose = () => {
+    setScriptIdSelected(null);
+    setExecScriptsMenuOpen(false);
   };
 
-  onExecuteScriptDialogClose = () => {
-    this.setScriptIdSelected(null);
-    this.setExecScriptsMenuOpen(false);
+  const handleClickSettings = e => setShowSettingsMenu(e.currentTarget);
+
+  const handleClickRelatedMenu = e => setShowFindRelatedMenu(e.currentTarget);
+
+  const handleClose = () => {
+    setShowSettingsMenu(null);
+    setShowFindRelatedMenu(null);
   };
 
-  handleClickSettings = event => {
-    this.setState({
-      showSettingsMenu: event.currentTarget
-    });
-  };
-
-  handleClickRelatedMenu = event => {
-    this.setState({
-      showFindRelatedMenu: event.currentTarget
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      showSettingsMenu: null,
-      showFindRelatedMenu: null
-    });
-  };
-
-  handleRelatedLinkClick = (item: FindRelatedItem) => {
-    const { rootEntity, selection } = this.props;
-
+  const handleRelatedLinkClick = (item: FindRelatedItem) => {
     if (item.list) {
       let searchParam = "";
 
       if (item.expression) {
-        searchParam = `${item.expression} in (${selection.join(", ")})`;
+        searchParam = item.expression;
       }
 
       if (item.customExpression) {
-        searchParam = item.customExpression;
+        searchParam = item.customExpression(selection.join(", "));
+      }
+
+      if (selection.length) {
+        searchParam += ` in (${selection.join(", ")})`;
+      } else {
+        findRelatedByFilter(item.customExpression || searchParam, item.list);
+        return;
       }
 
       openInternalLink(searchParam ? `/${item.list}?search=${searchParam}` : `/${item.list}`);
@@ -195,108 +244,85 @@ class BottomAppBar extends React.PureComponent<any, any> {
       )}`;
     }
 
-    this.handleClose();
+    handleClose();
   };
 
-  handleDeleteClick = () => {
-    const { onDelete, selection } = this.props;
+  const handleDeleteClick = () => {
     onDelete(selection[0]);
-    this.handleClose();
+    handleClose();
   };
+  
+  const existingRecordSelected = Boolean(selection.length) && selection[0] !== "NEW";
 
-  render() {
-    const {
-      classes,
-      fetch,
-      toggleExportDrawer,
-      showExportDrawer,
-      toggleBulkEditDrawer,
-      showBulkEditDrawer,
-      selection,
-      rootEntity,
-      querySearch,
-      changeQueryView,
-      onQuerySearch,
-      switchLayout,
-      threeColumn,
-      deleteEnabled,
-      hasShareTypes,
-      onCreate,
-      findRelated,
-      CogwheelAdornment,
-      showConfirm,
-      CustomFindRelatedMenu,
-      records,
-      searchComponentNode,
-      searchMenuItemsRenderer,
-      createButtonDisabled,
-      searchQuery,
-      filteredCount,
-      emailTemplatesWithKeyCode,
-      scripts
-    } = this.props;
+  const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(emailTemplatesWithKeyCode) && emailTemplatesWithKeyCode.length;
 
-    const {
-      showFindRelatedMenu,
-      showSettingsMenu,
-      execScriptsMenuOpen,
-      scriptIdSelected
-    } = this.state;
+  const settingsItems = [
+    (selection.length === 0 || existingRecordSelected) && scripts?.length && (
+      <ScriptsMenu
+        key="ScriptsMenu"
+        classes={classes}
+        scripts={scriptsMenuOpen?.entity ? filterScriptsBy[scriptsMenuOpen?.entity]?.scripts : scripts}
+        entity={rootEntity}
+        filterScriptsBy={filterScriptsBy}
+        closeAll={handleClose}
+        openScriptModal={openScriptModal}
+        scriptsMenuOpen={scriptsMenuOpen?.anchor}
+        setScriptsMenuOpen={setScriptsMenuOpen}
+      />
+    ),
+    isSendMessageAvailable
+    && <SendMessageMenu key="SendMessageMenu" selection={selection} entity={rootEntity} closeAll={handleClose} />,
+    CogwheelAdornment && (
+      <CogwheelAdornment
+        key="CogwheelAdornment"
+        closeMenu={handleClose}
+        menuItemClass="listItemPadding"
+        searchQuery={searchQuery}
+        selection={selection}
+        showConfirm={showConfirm}
+        onCreate={onCreate}
+        entity={rootEntity}
+        showBulkEditDrawer={showBulkEditDrawer}
+        toggleBulkEditDrawer={toggleBulkEditDrawer}
+        records={records}
+      />
+    ),
+    deleteEnabled
+    && (
+      <MenuItem
+        key="DeleteRecord"
+        disabled={selection.length !== 1 || !existingRecordSelected}
+        onClick={handleDeleteClick}
+        classes={{
+          root: "listItemPadding errorColor"
+        }}
+      >
+        Delete record
+      </MenuItem>
+    )].filter(i => i);
 
-    const existingRecordSelected = Boolean(selection.length) && selection[0] !== "NEW";
-
-    const isSendMessageAvailable = SendMessageEntities.includes(rootEntity) && Array.isArray(emailTemplatesWithKeyCode) && emailTemplatesWithKeyCode.length;
-
-    const settingsItems = [
-      (selection.length === 0 || existingRecordSelected) && scripts?.length && (
-        <ScriptsMenu
-          key="ScriptsMenu"
-          scripts={scripts}
-          classes={classes}
-          entity={rootEntity}
-          closeAll={this.handleClose}
-          openScriptModal={this.openScriptModal}
-        />
-      ),
-      isSendMessageAvailable
-      && <SendMessageMenu key="SendMessageMenu" selection={selection} entity={rootEntity} closeAll={this.handleClose} />,
-      CogwheelAdornment && (
-        <CogwheelAdornment
-          key="CogwheelAdornment"
-          closeMenu={this.handleClose}
-          menuItemClass="listItemPadding"
-          searchQuery={searchQuery}
-          selection={selection}
-          showConfirm={showConfirm}
-          onCreate={onCreate}
-          entity={rootEntity}
-          showBulkEditDrawer={showBulkEditDrawer}
-          toggleBulkEditDrawer={toggleBulkEditDrawer}
-          records={records}
-        />
-      ),
-      deleteEnabled
-      && (
-        <MenuItem
-          key="DeleteRecord"
-          disabled={selection.length !== 1 || !existingRecordSelected}
-          onClick={this.handleDeleteClick}
-          classes={{
-            root: clsx("listItemPadding", classes.cogWheelMenuDelete)
-          }}
-        >
-          Delete record
-        </MenuItem>
-      )].filter(i => i);
+    const findRelatedTitle = useMemo(() => {
+      switch (true) {
+        case (selection.length && selection.length < PLAIN_LIST_MAX_PAGE_SIZE):
+        default:
+          return "Find Related";
+        case (!findRelated):
+          return "No find related filters found";
+        case (fetch.pending):
+          return "Loading...";
+        case (records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE):
+          return `Not available for greater than ${PLAIN_LIST_MAX_PAGE_SIZE} records`;
+      }
+    }, [findRelated, selection, fetch.pending, records.filteredCount]);
 
     return (
       <>
         <ExecuteScriptModal
           opened={Boolean(execScriptsMenuOpen)}
-          onClose={this.onExecuteScriptDialogClose}
+          onClose={onExecuteScriptDialogClose}
           scriptId={scriptIdSelected}
-          selection={selection}
           filteredCount={filteredCount}
+          filteredSelection={filterScriptsBy && filterScriptsBy[scriptsMenuOpen?.entity]?.ids}
         />
 
         <div className={classes.root}>
@@ -312,18 +338,18 @@ class BottomAppBar extends React.PureComponent<any, any> {
 
           <div className={clsx("centeredFlex", !querySearch && "flex-fill")}>
             {!querySearch && (
-              <Tooltip title="Find Related" disableFocusListener>
+              <Tooltip title={findRelatedTitle} disableFocusListener>
                 <div className={clsx(querySearch && classes.findRelated)}>
                   <IconButton
                     classes={{
                       root: clsx(classes.actionsBarButton, classes.customIconButton),
                       disabled: classes.buttonDisabledOpacity
                     }}
-                    disabled={!selection.length || !findRelated || fetch.pending}
+                    disabled={(selection.length > 0 && selection.length < PLAIN_LIST_MAX_PAGE_SIZE) ? false : (!findRelated || fetch.pending || records.filteredCount > PLAIN_LIST_MAX_PAGE_SIZE)}
                     className="ml-1"
                     aria-owns={showFindRelatedMenu ? "related" : undefined}
                     aria-haspopup="true"
-                    onClick={this.handleClickRelatedMenu}
+                    onClick={handleClickRelatedMenu}
                   >
                     <FindInPage className={classes.findInPage} />
                   </IconButton>
@@ -335,7 +361,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
               id="related"
               anchorEl={showFindRelatedMenu}
               open={Boolean(showFindRelatedMenu)}
-              onClose={this.handleClose}
+              onClose={handleClose}
               classes={{
                 paper: classes.relatedMenuOffset
               }}
@@ -363,7 +389,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                   records={records}
                 />
               ) : (
-                <FindRelatedMenu findRelated={findRelated} handleRelatedLinkClick={this.handleRelatedLinkClick} />
+                <FindRelatedMenu findRelated={findRelated} handleRelatedLinkClick={handleRelatedLinkClick} />
               )}
             </Menu>
 
@@ -419,7 +445,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
                     color="inherit"
                     aria-owns={showSettingsMenu ? "settings" : undefined}
                     aria-haspopup="true"
-                    onClick={this.handleClickSettings}
+                    onClick={handleClickSettings}
                     size="large"
                   >
                     <Settings />
@@ -430,11 +456,12 @@ class BottomAppBar extends React.PureComponent<any, any> {
                 id="settings"
                 anchorEl={showSettingsMenu}
                 open={Boolean(showSettingsMenu)}
-                onClose={this.handleClose}
+                onClose={handleClose}
                 classes={{
                   paper: classes.cogWheelMenuOffset
                 }}
                 disableAutoFocusItem
+
               >
                 {settingsItems}
               </Menu>
@@ -442,12 +469,7 @@ class BottomAppBar extends React.PureComponent<any, any> {
           </div>
         </div>
       </>
-    );
-  }
-}
+  );
+};
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getScripts: (entity: string) => dispatch(getScripts(entity))
-});
-
-export default connect(null, mapDispatchToProps)(withStyles(styles as any)(BottomAppBar));
+export default BottomAppBar;

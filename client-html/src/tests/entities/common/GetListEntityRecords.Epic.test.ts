@@ -13,7 +13,6 @@ const payload = {
   savedID: null,
   ignoreSelection: null,
   viewAll: null,
-  startIndex: null,
   stopIndex: null,
   resolve: null
 };
@@ -40,6 +39,7 @@ describe("Get account entities epic tests", () => {
             records,
             payload,
             searchQuery: {
+              customTableModel: null,
               filter: "",
               offset: 0,
               pageSize: 50,

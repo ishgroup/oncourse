@@ -4,10 +4,10 @@
  */
 
 import { Epic } from "redux-observable";
+import { GET_MESSAGE_QUEUED_FULFILLED, GET_MESSAGE_QUEUED_REQUEST } from "../../../../../common/actions";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../services/PreferencesService";
-import { GET_MESSAGE_QUEUED_FULFILLED, GET_MESSAGE_QUEUED_REQUEST } from "../../../../../common/actions";
 
 const request: EpicUtils.Request = {
   type: GET_MESSAGE_QUEUED_REQUEST,

@@ -13,13 +13,23 @@ package ish.oncourse.server.api.service;
 
 import groovy.transform.CompileStatic;
 import groovy.transform.TypeCheckingMode;
+import ish.common.util.ThumbnailGenerator;
 import ish.oncourse.server.api.dao.ExportTemplateDao;
 import ish.oncourse.server.api.function.BindingFunctions;
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO;
 import ish.oncourse.server.api.v1.model.OutputTypeDTO;
 import ish.oncourse.server.api.validation.EntityValidator;
 import ish.oncourse.server.cayenne.ExportTemplate;
+import ish.oncourse.server.configs.AutomationModel;
+import ish.oncourse.server.configs.ExportModel;
+import ish.oncourse.server.upgrades.DataPopulationUtils;
 import org.apache.cayenne.ObjectContext;
+import ish.oncourse.server.cayenne.Report;
+import org.apache.cayenne.query.ObjectSelect;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ExportTemplateApiService extends AutomationApiService<ExportTemplateDTO, ExportTemplate, ExportTemplateDao> {
 
@@ -31,10 +41,20 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
     @Override
     @CompileStatic(TypeCheckingMode.SKIP)
     public ExportTemplateDTO toRestModel(ExportTemplate exportTemplate) {
+        var dto = toRestWithoutBodyAndPreviewModel(exportTemplate);
+        dto.setBody(exportTemplate.getBody());
+        dto.setPreview(exportTemplate.getPreview());
+        return dto;
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    public ExportTemplateDTO toRestWithoutBodyAndPreviewModel(ExportTemplate exportTemplate) {
         var dto = super.toRestModel(exportTemplate);
+        dto.setBody(null);
         dto.setOutputType(OutputTypeDTO.values()[0].fromDbType(exportTemplate.getOutputType()));
         return dto;
     }
+
 
     @Override
     public ExportTemplate toCayenneModel(ExportTemplateDTO dto, ExportTemplate cayenneModel) {
@@ -63,7 +83,29 @@ public class ExportTemplateApiService extends AutomationApiService<ExportTemplat
         return getEntityAndValidateExistence(cayenneService.getNewContext(), id).getScript().getBytes();
     }
 
+    public byte[] getPreview(Long id, Boolean compressed) throws IOException {
+        var data = ObjectSelect.columnQuery(ExportTemplate.class, ExportTemplate.PREVIEW).where(Report.ID.eq(id)).selectOne(cayenneService.getNewContext());
+        return compressed == Boolean.TRUE && data != null ? ThumbnailGenerator.generateForImg(data, "image/png") : data;
+    }
+
+    public void deletePreview(Long id) {
+        var context = cayenneService.getNewContext();
+        var exportTemplate = getEntityAndValidateExistence(context, id);
+        exportTemplate.setPreview(null);
+        context.commitChanges();
+    }
+
     protected ExportTemplateDTO createDto() {
         return new ExportTemplateDTO();
+    }
+
+    @Override
+    protected BiConsumer<ExportTemplate, Map<String, Object>> getFillPropertiesFunction() {
+        return DataPopulationUtils::fillExportWithCommonFields;
+    }
+
+    @Override
+    protected AutomationModel getConfigsModelOf(ExportTemplate entity) {
+        return new ExportModel(entity);
     }
 }

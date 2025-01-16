@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import List from "@mui/material/List";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import { Script } from "@api/model";
-import { State } from "../../../../reducers/state";
-import { DashboardItem } from "../../../../model/dashboard";
-import FavoriteItem from "./FavoriteItem";
-import FavoriteScriptItem from "./FavoriteScriptItem";
+import { Script } from '@api/model';
+import Close from '@mui/icons-material/Close';
+import { Grid, IconButton, List, Typography } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import clsx from 'clsx';
+import { useHoverShowStyles } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import { DashboardItem } from '../../../../model/dashboard';
+import { State } from '../../../../reducers/state';
+import FavoriteItem from './FavoriteItem';
+import FavoriteScriptItem from './FavoriteScriptItem';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   root: {
     padding: theme.spacing(2),
     columnCount: 1
@@ -74,6 +74,7 @@ interface Props {
   classes?: any;
   setScriptIdSelected?: any;
   setExecMenuOpened?: any;
+  updateFavorites: (key: string, type: "category" | "automation") => void;
 }
 
 const isCategoryType = item => !!item.category;
@@ -87,7 +88,10 @@ const Favorites: React.FC<Props> = props => {
     groupedSortedItems,
     setScriptIdSelected,
     setExecMenuOpened,
+    updateFavorites
   } = props;
+
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   const renderFavorites = useMemo(() => groupedSortedItems
     .filter(c => (favorites.includes(c.category)
@@ -95,20 +99,40 @@ const Favorites: React.FC<Props> = props => {
         || favoriteScripts.includes(String(c.id)))
     .map(v => (
       isCategoryType(v) ? (
-        <FavoriteItem
-          key={v.category}
-          item={v}
-        />
+        <div className={clsx("centeredFlex", hoverClasses.container)} key={v.category}>
+          <FavoriteItem
+            item={v}
+          />
+          {v.category !== "quickEnrol" &&
+            <IconButton
+              onMouseDown={e => e.stopPropagation()}
+              onClick={() => updateFavorites(v.category, "category")}
+              className={clsx("p-0-5", hoverClasses.target)}
+              size="small"
+            >
+              <Close fontSize="inherit" color="primary" />
+            </IconButton>
+          }
+        </div>
       )
       : (
-        <FavoriteScriptItem
-          key={v.id}
-          item={v}
-          setScriptIdSelected={setScriptIdSelected}
-          setExecMenuOpened={setExecMenuOpened}
-        />
+          <div className={clsx("centeredFlex", hoverClasses.container)} key={v.id}>
+            <FavoriteScriptItem
+              item={v}
+              setScriptIdSelected={setScriptIdSelected}
+              setExecMenuOpened={setExecMenuOpened}
+            />
+            <IconButton
+              onMouseDown={e => e.stopPropagation()}
+              onClick={() => updateFavorites(String(v.id), "automation")}
+              className={clsx("p-0-5", hoverClasses.target)}
+              size="small"
+            >
+              <Close fontSize="inherit" color="primary" />
+            </IconButton>
+          </div>
       )
-  )), [groupedSortedItems, scripts, favoriteScripts, favorites]);
+  )), [groupedSortedItems, scripts, favoriteScripts, favorites, hoverClasses]);
 
   return (
     <Grid container alignItems="center">
@@ -132,4 +156,4 @@ const mapStateToProps = (state: State) => ({
   hasScriptsPermissions: state.access["ADMIN"]
 });
 
-export default connect<any, any, any>(mapStateToProps)(withStyles(styles)(Favorites));
+export default connect<any, any, any>(mapStateToProps)(withStyles(Favorites, styles));

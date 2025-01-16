@@ -12,9 +12,9 @@ import TabsList from "../../../../common/components/navigation/TabsList";
 import { plainCorporatePassPath } from "../../../../constants/Api";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
+import DiscountClasses from "./DiscountClasses";
 import DiscountGeneral from "./DiscountGeneral";
 import DiscountStudents from "./DiscountStudents";
-import DiscountClasses from "./DiscountClasses";
 
 const items = [
   {
@@ -50,13 +50,13 @@ const DiscountEditView = React.memo<any>(props => {
     dispatch,
     dirty,
     form,
-    nestedIndex,
     rootEntity,
     twoColumn,
     showConfirm,
     manualLink,
     access,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -66,6 +66,7 @@ const DiscountEditView = React.memo<any>(props => {
   return values ? (
     <>
       <TabsList
+        onParentScroll={onScroll}
         items={checkedItems}
         itemProps={{
           isNew,
@@ -74,7 +75,6 @@ const DiscountEditView = React.memo<any>(props => {
           dispatch,
           dirty,
           form,
-          nestedIndex,
           rootEntity,
           twoColumn,
           showConfirm,

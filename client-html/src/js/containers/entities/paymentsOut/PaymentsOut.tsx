@@ -6,34 +6,34 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { Popover } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import Link from "@mui/material/Link";
-import zIndex from "@mui/material/styles/zIndex";
-import { ExitToApp } from "@mui/icons-material";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
-import { getActivePaymentOutMethods, getAddPaymentOutContact } from "./actions";
-import { getPlainAccounts } from "../accounts/actions";
+import { PaymentOut } from '@api/model';
+import { ExitToApp } from '@mui/icons-material';
+import Link from '@mui/material/Link';
+import Popover from '@mui/material/Popover';
+import zIndex from '@mui/material/styles/zIndex';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
 import {
   clearListState,
   getFilters,
   setListCreatingNew,
   setListSelection,
-} from "../../../common/components/list-view/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { getAccountTransactionLockedDate } from "../../preferences/actions";
-import PaymentsOutEditView from "./components/PaymentOutEditView";
-import { PaymentOutModel } from "./reducers/state";
-import { getAdministrationSites } from "../sites/actions";
-import { PaymentOut } from "@api/model";
-import { getAmountOwing, setContraInvoices } from "../invoices/actions";
-import AddPaymentOutEditView from "./components/AddPaymentOutEditView";
+} from '../../../common/components/list-view/actions';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup } from '../../../model/common/ListView';
+import { getAccountTransactionLockedDate } from '../../preferences/actions';
+import { getPlainAccounts } from '../accounts/actions';
+import { getAmountOwing, setContraInvoices } from '../invoices/actions';
+import { getAdministrationSites } from '../sites/actions';
+import { getActivePaymentOutMethods, getAddPaymentOutContact } from './actions';
+import AddPaymentOutEditView from './components/AddPaymentOutEditView';
+import PaymentsOutEditView from './components/PaymentOutEditView';
+import { PaymentOutModel } from './reducers/state';
 
-const manualLink = getManualLink("processingEnrolments_PaymentOut");
+const manualLink = getManualLink("refunding-a-credit-note-via-payment-out");
 
 const nameCondition = (paymentOut: PaymentOutModel) => paymentOut.type;
 
@@ -41,7 +41,7 @@ const getWindowWidth = () => window.innerWidth || document.documentElement.clien
 
 const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 1080;
 
-const styles = theme => createStyles({
+const styles = theme => ({
   dialog: {
     zIndex: zIndex.tooltip,
     padding: theme.spacing(1)
@@ -114,7 +114,7 @@ class PaymentsOut extends React.Component<any, any> {
 
     if (params.id === "new" && window.location.search?.includes("invoiceId")) {
       this.onCreateNew();
-    } else {
+    } else if (!this.state.createNewDialogOpen) {
       this.setState({
         createNewDialogOpen: true
       });
@@ -209,4 +209,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearContraInvoices: () => dispatch(setContraInvoices(null)),
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(PaymentsOut));
+export default connect<any, any, any>(null, mapDispatchToProps)(withStyles(PaymentsOut, styles));

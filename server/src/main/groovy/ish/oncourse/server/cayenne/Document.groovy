@@ -62,10 +62,14 @@ class Document extends _Document implements DocumentTrait, Queueable {
 	@API
 	DocumentVersion getCurrentVersion() {
 		List<DocumentVersion> versions = getVersions()
+		DocumentVersion result = versions.find { it.current}
 
-		Ordering.orderList(versions, Collections.singletonList(DocumentVersion.TIMESTAMP.desc()))
+		if (result == null) {
+			Ordering.orderList(versions, Collections.singletonList(DocumentVersion.TIMESTAMP.desc()))
+			result = versions.get(0)
+		}
 
-		return versions.get(0)
+		return result
 	}
 
 	/**

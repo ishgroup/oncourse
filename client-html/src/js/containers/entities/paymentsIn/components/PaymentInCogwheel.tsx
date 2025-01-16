@@ -1,11 +1,11 @@
-import React, { memo, useEffect } from "react";
 import MenuItem from "@mui/material/MenuItem";
+import { formatCurrency } from "ish-ui";
+import React, { memo, useEffect } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
+import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { getCustomValues, reverse } from "../actions";
-import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
 
 interface PaymentInCustomValues {
   id: number;
@@ -20,13 +20,13 @@ interface PaymentInCustomValues {
 }
 
 const isDisabledForReverse = (customValues: PaymentInCustomValues) => (
-    !customValues
-    || customValues.status !== "Success"
-    || ["Zero", "Reverse", "Voucher"].includes(customValues.paymentMethodType)
-    || customValues.reversalOf !== null
-    || customValues.reversedBy !== null
-    || (customValues.paymentMethodType.toLowerCase() !== "credit card" && customValues.bankingId !== null)
-  );
+  !customValues
+  || customValues.status !== "Success"
+  || ["Zero", "Reverse", "Voucher"].includes(customValues.paymentMethodType)
+  || customValues.reversalOf !== null
+  || customValues.reversedBy !== null
+  || customValues.bankingId !== null
+);
 
 interface Props extends CogwhelAdornmentProps {
   reverse: any;

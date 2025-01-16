@@ -6,22 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
-import { alpha } from "@mui/material/styles";
-import { Grid } from "@mui/material";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { useAppDispatch } from "../../../../../common/utils/hooks";
-import { setUserPreference } from "../../../../../common/actions";
-import { SYSTEM_USER_TUTORIAL_SKIP } from "../../../../../constants/Config";
+import { Button, Divider, Grid, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import { alpha } from '@mui/material/styles';
+import clsx from 'clsx';
+import { makeAppStyles, openInternalLink } from 'ish-ui';
+import React from 'react';
+import { setUserPreference } from '../../../../../common/actions';
+import { useAppDispatch } from '../../../../../common/utils/hooks';
+import { SYSTEM_USER_TUTORIAL_SKIP } from '../../../../../constants/Config';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     margin: theme.spacing(3),
     padding: theme.spacing(4),
@@ -66,7 +62,7 @@ interface Props {
 const TutorialPanel = ({ tutorial, customLink }: Props) => {
   const dispatch = useAppDispatch();
   
-  const classes = useStyles();
+  const { classes } = useStyles();
   
   const onSkip = () => dispatch(setUserPreference({
     key: SYSTEM_USER_TUTORIAL_SKIP,

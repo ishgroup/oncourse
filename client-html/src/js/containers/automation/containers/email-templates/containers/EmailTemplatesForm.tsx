@@ -6,35 +6,33 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { EmailTemplate, MessageType } from "@api/model";
-import { Grow } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import { FileCopy } from "@mui/icons-material";
 import DeleteForever from "@mui/icons-material/DeleteForever";
+import { Grid, Grow } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Dispatch } from "redux";
 import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems } from "../../../../../common/utils/common";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { usePrevious } from "../../../../../common/utils/hooks";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
+import { CatalogItemType } from "../../../../../model/common/Catalog";
 import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
 import Bindings, { BindingsRenderer } from "../../../components/Bindings";
+import getConfigActions from "../../../components/ImportExportConfig";
 import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
 import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
-import { validateKeycode } from "../../../utils";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
 import ScriptCard from "../../scripts/components/cards/CardBase";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
 
-const manualUrl = getManualLink("emailTemplates");
+const manualUrl = getManualLink("message-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
 
 const messageTypes = Object.keys(MessageType).map(mapSelectItems).filter(t => t.value !== "Post");
@@ -47,8 +45,6 @@ interface Props extends InjectedFormProps {
   onUpdateInternal: (template: EmailTemplate) => void;
   onUpdate: (template: EmailTemplate) => void;
   onDelete: NumberArgFunction;
-  validateTemplateCopyName: StringArgFunction;
-  validateNewTemplateName: StringArgFunction;
   history: any;
   syncErrors: any;
   nextLocation: string;
@@ -75,8 +71,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     onUpdate,
     onUpdateInternal,
     onDelete,
-    validateTemplateCopyName,
-    validateNewTemplateName,
     history,
     nextLocation,
     syncErrors,
@@ -153,6 +147,23 @@ const EmailTemplatesForm: React.FC<Props> = props => {
     }
   }, [nextLocation, dirty]);
 
+  const importExportActions = useMemo(() => getConfigActions("EmailTemplate", values.name, values.id), [values.id]);
+
+  const validateTemplateCopyName = useCallback(name => {
+    if (emailTemplates.find(e => e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
+
+  const validateNewTemplateName = useCallback(name => {
+    if (emailTemplates.find(e => e.id !== values.id && e.title.trim() === name.trim())) {
+      return "Template name should be unique";
+    }
+    return validateNameForQuotes(name);
+  }, [emailTemplates, values.id]);
+
+
   return (
     <>
       <SaveAsNewAutomationModal
@@ -160,7 +171,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
         onClose={onDialogClose}
         onSave={onDialogSave}
         validateNameField={validateTemplateCopyName}
-        hasNameField
       />
 
       <Form onSubmit={handleSubmit(handleSave)}>
@@ -185,6 +195,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 validate={validateNewTemplateName}
@@ -198,10 +209,10 @@ const EmailTemplatesForm: React.FC<Props> = props => {
               {!isNew && !isInternal && (
                 <AppBarActions
                   actions={[
+                    ...importExportActions,
                     {
                       action: handleDelete,
-                      icon: <DeleteForever />,
-                      confirm: true,
+                      icon: <DeleteForever/>,
                       tooltip: "Delete message template",
                       confirmText: "Message template will be deleted permanently",
                       confirmButtonText: "DELETE"
@@ -223,6 +234,27 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           )}
         >
           <Grid container>
+            <Grid item xs={12} sm={9}>
+              <FormField
+                type="multilineText"
+                name="shortDescription"
+                disabled={isInternal}
+                className="overflow-hidden mb-1"
+                placeholder="Short description"
+              />
+              <Typography variant="caption" fontSize="13px">
+                <FormField
+                  type="multilineText"
+                  name="description"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Description"
+                  fieldClasses={{
+                    text: "fw300 fsInherit"
+                  }}
+                />
+              </Typography>
+            </Grid>
             <Grid item xs={9} className="pr-3">
               <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
                 <Grid item xs={6}>
@@ -232,6 +264,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     name="entity"
                     items={MessageTemplateEntityItems}
                     disabled={isInternal}
+                    allowEmpty
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -242,7 +275,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                     items={messageTypes}
                     disabled={isInternal}
                     required
-                    select
                   />
                 </Grid>
                 <FieldArray
@@ -311,15 +343,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 className="mt-2 mb-2"
                 required
               />
-
-              <FormField
-                type="text"
-                label="Description"
-                name="description"
-                disabled={isInternal}
-                fullWidth
-                multiline
-              />
             </Grid>
             <Grid item xs={3}>
               <div>
@@ -330,6 +353,7 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                   color="primary"
                   format={v => v === "Enabled"}
                   parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                  debounced={false}
                 />
               </div>
               <div className="mt-3 pt-1">

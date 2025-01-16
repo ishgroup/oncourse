@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Grid } from "@mui/material";
 import * as React from "react";
 import { FieldArray } from "redux-form";
-import { Grid } from "@mui/material";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
@@ -15,7 +15,7 @@ const EnrolmentAttachmentsTab: React.FC<any> = props => {
 } = props;
 
   return (
-    <Grid container rowSpacing={2} className="p-3">
+    <Grid container rowSpacing={2} className="pl-3 pr-3 pb-3">
       <FieldArray
         name="documents"
         label="Documents"
@@ -32,7 +32,7 @@ const EnrolmentAttachmentsTab: React.FC<any> = props => {
       />
 
       <Grid item xs={12}>
-        <OwnApiNotes {...props} leftOffset />
+        <OwnApiNotes {...props} />
       </Grid>
     </Grid>
   );

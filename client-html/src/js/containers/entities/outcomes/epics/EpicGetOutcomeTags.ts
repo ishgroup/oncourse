@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { getMenuTags } from "ish-ui";
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { getMenuTags } from "../../../../common/components/list-view/utils/listFiltersUtils";
-import TagsService from "../../../tags/services/TagsService";
-import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../tags/actions";
-import { setListMenuTags } from "../../../../common/components/list-view/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { setListMenuTags } from "../../../../common/components/list-view/actions";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../../../tags/actions";
+import TagsService from "../../../tags/services/TagsService";
 import { GET_OUTCOME_TAGS } from "../actions";
 
 const request: EpicUtils.Request<any, never> = {

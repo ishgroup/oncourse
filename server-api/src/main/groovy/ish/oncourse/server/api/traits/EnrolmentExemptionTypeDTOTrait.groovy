@@ -58,6 +58,8 @@ trait EnrolmentExemptionTypeDTOTrait {
                 return VETFeeExemptionType.V
             case EnrolmentExemptionTypeDTO.VIC_NONE_WA_NO_CONCESSION_Z_:
                 return VETFeeExemptionType.Z
+            case EnrolmentExemptionTypeDTO.OUTREACH_SUPPORT_OS_:
+                return VETFeeExemptionType.OS
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -108,6 +110,8 @@ trait EnrolmentExemptionTypeDTOTrait {
                 return EnrolmentExemptionTypeDTO.VIC_VETERAN_GOLD_CARD_CONCESSION_WA_FEES_WAIVED_DUE_TO_SEVERE_FINANCIAL_HARDSHIP_V_
             case VETFeeExemptionType.Z:
                 return EnrolmentExemptionTypeDTO.VIC_NONE_WA_NO_CONCESSION_Z_
+            case VETFeeExemptionType.OS:
+                return EnrolmentExemptionTypeDTO.OUTREACH_SUPPORT_OS_
             default:
                 throw new IllegalArgumentException("$dataType.displayName")
         }

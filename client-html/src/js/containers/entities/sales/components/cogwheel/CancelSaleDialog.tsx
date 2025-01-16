@@ -3,24 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import {
- change, clearFields, DecoratedComponentClass, getFormValues, reduxForm 
-} from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Dispatch } from "redux";
 import { Account, ProductItemCancel, Tax } from "@api/model";
 import { FormControlLabel } from "@mui/material";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Grid from "@mui/material/Grid";
+import { BooleanArgFunction } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change, clearFields, DecoratedComponentClass, getFormValues, reduxForm } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { BooleanArgFunction } from "../../../../../model/common/CommonFunctions";
-import { State } from "../../../../../reducers/state";
 import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import { State } from "../../../../../reducers/state";
 import { accountLabelCondition } from "../../../accounts/utils";
 import { cancelSale } from "../../actions";
 
@@ -91,12 +89,11 @@ const CancelSaleDialog = React.memo<Props>(props => {
   ]);
 
   return (
-    <Dialog open={opened} onClose={onClose} scroll="body">
+    <Dialog open={opened} onClose={onClose} scroll="body" maxWidth="md">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>You are about to cancel this sale</DialogTitle>
-
         <DialogContent className="overflow-hidden">
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12}>
               <FormControlLabel
                 classes={{
@@ -112,9 +109,6 @@ const CancelSaleDialog = React.memo<Props>(props => {
                 )}
                 label="Create credit note to reverse the sale fee"
               />
-            </Grid>
-
-            <Grid item xs={12} className="pr-3 pb-1">
               <FormControlLabel
                 classes={{
                   root: "checkbox"
@@ -132,44 +126,38 @@ const CancelSaleDialog = React.memo<Props>(props => {
               />
             </Grid>
 
+            <Grid item xs={6}>
+              <FormField
+                type="money"
+                name="feeAmount"
+                label="Fee amount"
+                validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
+                disabled={feeValuesDisabled}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormField
+                type="select"
+                name="feeTaxId"
+                label="Tax type"
+                selectValueMark="id"
+                selectLabelMark="code"
+                items={taxes || []}
+                validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
+                disabled={feeValuesDisabled}
+              />
+            </Grid>
             <Grid item xs={12}>
-              <Grid container columnSpacing={3}>
-                <Grid item xs={4}>
-                  <FormField
-                    type="money"
-                    name="feeAmount"
-                    label="Fee amount"
-                    validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
-                    disabled={feeValuesDisabled}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormField
-                    type="select"
-                    name="feeTaxId"
-                    label="Tax type"
-                    selectValueMark="id"
-                    selectLabelMark="code"
-                    items={taxes || []}
-                    validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
-                    disabled={feeValuesDisabled}
-                    autoWidth={false}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <FormField
-                    type="select"
-                    name="retainAccountId"
-                    label="Account"
-                    items={incomeAccounts || []}
-                    selectValueMark="id"
-                    selectLabelCondition={accountLabelCondition}
-                    validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
-                    disabled={feeValuesDisabled}
-                    autoWidth={false}
-                  />
-                </Grid>
-              </Grid>
+              <FormField
+                type="select"
+                name="retainAccountId"
+                label="Account"
+                items={incomeAccounts || []}
+                selectValueMark="id"
+                selectLabelCondition={accountLabelCondition}
+                validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
+                disabled={feeValuesDisabled}
+              />
             </Grid>
           </Grid>
         </DialogContent>

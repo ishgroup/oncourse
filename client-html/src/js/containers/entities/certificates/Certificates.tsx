@@ -3,23 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Certificate } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import { Certificate } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import {
-  setListEditRecord,
-  getFilters,
-  clearListState
-} from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
-import { defaultContactName } from "../contacts/utils";
-import CertificateEditView from "./components/CertificateEditView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import USIAlert from "./components/USIAlert";
-import RevokeCertificateCogwheel from "./components/RevokeCertificateCogwheel";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import CertificateEditView from "./components/CertificateEditView";
+import RevokeCertificateCogwheel from "./components/RevokeCertificateCogwheel";
+import USIAlert from "./components/USIAlert";
 
 interface CertificatesProps {
   onInit?: () => void;
@@ -72,7 +67,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Certificate and entityId" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.certificateOutcomes.certificate.id" },
   { title: "Students", list: "contact", expression: "student.certificates.id" },
@@ -82,7 +77,7 @@ const findRelatedGroup: any = [
 
 const manualLink = getManualLink("certification");
 
-const nameCondition = (value: Certificate) => defaultContactName(value.studentName);
+const nameCondition = (value: Certificate) => value.studentName;
 
 const secondaryColumnCondition = rows => rows["qualification.title"] || "No Qualification";
 

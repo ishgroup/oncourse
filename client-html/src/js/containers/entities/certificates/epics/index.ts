@@ -1,8 +1,8 @@
 import { combineEpics } from "redux-observable";
+import { EpicCheckRevokeStatus } from "./EpicCheckRevokeStatus";
 import { EpicGetCertificateOutcomes } from "./EpicGetCertificateOutcomes";
 import { EpicRevokeCertificate } from "./EpicRevokeCertificate";
 import { EpicValidateUSI } from "./EpicValidateUSI";
-import { EpicCheckRevokeStatus } from "./EpicCheckRevokeStatus";
 
 export const EpicCertificate = combineEpics(
   EpicGetCertificateOutcomes,

@@ -1,17 +1,17 @@
 import {
-  DataCollectionForm,
-  DataCollectionRule,
-  FieldType,
-  PaymentMethod,
-  Tax,
+  ColumnWidth,
   ConcessionType,
   ContactRelationType,
   CustomFieldType,
-  ColumnWidth,
-  FundingSource,
+  DataCollectionForm,
+  DataCollectionRule,
   DefinedTutorRole,
   EntityRelationType,
-  GradingType
+  FieldType,
+  FundingSource,
+  GradingType,
+  PaymentMethod, Tag,
+  Tax
 } from "@api/model";
 
 export interface PreferencesState {
@@ -33,6 +33,8 @@ export interface PreferencesState {
   licences?: any;
   messaging?: any;
   classDefaults?: any;
+  classTypes?: Tag[];
+  courseTypes?: Tag[];
   ldap?: any;
   maintenance?: any;
   avetmiss?: any;

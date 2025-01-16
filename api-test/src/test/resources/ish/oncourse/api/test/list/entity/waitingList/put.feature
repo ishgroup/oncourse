@@ -8,6 +8,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         * def ishPath = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
         * def ishPathCustomFieldsType = 'preference/field/type'
+        * def ishPathDelete = '/list/plain/bulkDelete?entity=WaitingList'
         
 
 
@@ -87,8 +88,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             """
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -165,7 +171,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
             "courseId":2,
             "courseName":"Course2 course2",
             "tags":[222],
-            "sites":[{"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+            "sites":[{"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"customFields":{},"rules":[],"createdOn":null,"modifiedOn":null}],
             "customFields":{},
             "createdOn":"#ignore",
             "modifiedOn":"#ignore"
@@ -175,10 +181,15 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
 #       <--->  Scenario have been finished. Now remove created object from DB:
         * configure headers = { Authorization: 'admin'}
 
-        
 
-        Given path ishPath + '/' + id
-        When method DELETE
+
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -244,10 +255,15 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
 #       <--->  Scenario have been finished. Now remove created object from DB:
         * configure headers = { Authorization: 'admin'}
 
-        
 
-        Given path ishPath + '/' + id
-        When method DELETE
+
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -306,8 +322,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         And match $.errorMessage == "Student is required."
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -366,8 +387,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         And match $.errorMessage == "Contact with id:99999 doesn't exist"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -426,8 +452,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         And match $.errorMessage == "Contact is not a student."
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -486,8 +517,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         And match $.errorMessage == "Course is required."
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -546,8 +582,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         And match $.errorMessage == "Course with id:99999 doesn't exist"
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
@@ -630,8 +671,13 @@ Feature: Main feature for all PUT requests with path 'list/entity/waitingList'
         And match $.errorMessage == "Passport number is required."
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Remove all Custom fields for WaitingList from Preferences:

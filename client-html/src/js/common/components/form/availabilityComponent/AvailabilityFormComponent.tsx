@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
+import { addHours } from "date-fns";
+import { AddButton, ShowConfirmCaller } from "ish-ui";
 import React from "react";
 import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
-import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import { Dispatch } from "redux";
-import { addHours } from "date-fns";
-import AvailabilityRenderer from "./AvailabilityRenderer";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { getLabelWithCount } from "../../../utils/strings";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import AddButton from "../../icons/AddButton";
+import AvailabilityRenderer from "./AvailabilityRenderer";
 
 const addRule = (dispatch: any, form: string) => {
   const item = {} as Holiday;
@@ -27,7 +26,7 @@ const addRule = (dispatch: any, form: string) => {
   dispatch(arrayInsert(form, "rules", 0, item));
   const domNode = document.getElementById("rules[0].description");
   if (domNode) {
-    domNode.scrollIntoView({ behavior: "smooth" });
+    domNode.scrollIntoView({behavior: "smooth"});
   }
 };
 
@@ -39,12 +38,7 @@ const deleteRule = (dispatch: any, showConfirm: ShowConfirmCaller, form: string,
   });
 };
 
-interface Props {
-  values: any;
-  dispatch: Dispatch;
-  showConfirm: ShowConfirmCaller;
-  twoColumn: boolean;
-  form: string;
+interface Props extends EditViewProps {
   timezone?: string;
   name?: string;
   className?: string;
@@ -60,25 +54,25 @@ const AvailabilityFormComponent = React.memo<Props>(
      className,
      name = "rules",
      timezone,
-}) => (
-  <div className={`${className} pl-3 pr-3`}>
-    <div className="centeredFlex">
-      <div className="heading mt-2 mb-2">
-        {getLabelWithCount("Availability Rule", values[name] ? values[name].length : 0)}
+   }) => (
+    <div className={`${className} pl-3 pr-3 pb-1`}>
+      <div className="centeredFlex">
+        <div className="heading mt-2 mb-2">
+          {getLabelWithCount("Availability Rule", values[name] ? values[name].length : 0)}
+        </div>
+        <AddButton onClick={addRule.bind(null, dispatch, form, name)}/>
       </div>
-      <AddButton onClick={addRule.bind(null, dispatch, form, name)} />
-    </div>
 
-    <FieldArray
-      name={name}
-      component={AvailabilityRenderer}
-      onDelete={deleteRule.bind(null, dispatch, showConfirm, form)}
-      threeColumn={!twoColumn}
-      dispatch={dispatch}
-      timezone={timezone}
-    />
-  </div>
-    )
+      <FieldArray
+        name={name}
+        component={AvailabilityRenderer}
+        onDelete={deleteRule.bind(null, dispatch, showConfirm, form)}
+        threeColumn={!twoColumn}
+        dispatch={dispatch}
+        timezone={timezone}
+      />
+    </div>
+  )
 );
 
 export default AvailabilityFormComponent;

@@ -92,6 +92,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	public static final String HAS_ZERO_WAGES = "hasZeroWages"
 	public static final String IS_TRAINEESHIP = "isTraineeship"
 	public static final String SESSIONS_COUNT = "sessionsCount"
+	public static final String IS_DISTANT_LEARNING_COURSE = "isDistantLearningCourse"
 
 	/**
 	 * @return
@@ -215,8 +216,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
@@ -273,7 +274,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	 * not displayed in gui at the moment and it caused problems me and Ari agreed on this, marcin 31 Jan 2011)
 	 */
 	void updateClassRoom() {
-		if (!isDistantLearningCourse) {
+		if (!isDistantLearningCourse && !isHybrid) {
 			setRoom(getSessions().sort {it.startDatetime}.find {it.room != null}?.room)
 		}
 	}
@@ -296,11 +297,12 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 					totalTimeInMilis = totalTimeInMilis + s.getEndDatetime().getTime() - s.getStartDatetime().getTime()
 				}
 			}
-			if (start == null || getStartDateTime() == null || start != getStartDateTime()) {
+			//don't update course class StartDateTime/EndDateTime from session for Hybrid class, because class StartDateTime/EndDateTime was set in CourseClass Service (only for Hybrid classes)
+			if (!getIsHybrid() && (start == null || getStartDateTime() == null || start != getStartDateTime())) {
 				setStartDateTime(start)
 			}
 
-			if (end == null || getEndDateTime() == null || end != getEndDateTime()) {
+			if (!getIsHybrid() && (end == null || getEndDateTime() == null || end != getEndDateTime())) {
 				setEndDateTime(end)
 			}
 		}
@@ -528,8 +530,8 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		if (getIsCancelled() == null) {
 			setIsCancelled(Boolean.FALSE)
 		}
-		if (getIsDistantLearningCourse() == null) {
-			setIsDistantLearningCourse(Boolean.FALSE)
+		if (getType() == null) {
+			setType(CourseClassType.WITH_SESSIONS)
 		}
 		if (getIsShownOnWeb() == null) {
 			setIsShownOnWeb(Boolean.FALSE)
@@ -803,13 +805,32 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	}
 
 	/**
-	 * @return
+	 * @return true if class is hybrid, this means that class type is Hybrid
+	 */
+	@Nonnull
+	@API
+	Boolean getIsHybrid() {
+		return getType() == CourseClassType.HYBRID
+	}
+
+	/**
+	 * @return true if class is distant learning, this means that class type is Distant Learning
 	 */
 	@Nonnull
 	@API
 	@Override
 	Boolean getIsDistantLearningCourse() {
-		return super.getIsDistantLearningCourse()
+		return getType() == CourseClassType.DISTANT_LEARNING
+	}
+
+	/**
+	 * @return class type like With Sessions, Distant Learning, Hybrid
+	 */
+	@Nonnull
+	@API
+	@Override
+	CourseClassType getType() {
+		return super.getType()
 	}
 
 	/**
@@ -1037,6 +1058,13 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 		return super.getEnrolments()
 	}
 
+	List<AbstractInvoiceLine> getAbstractInvoiceLines(){
+		def abstractInvoiceLines = new ArrayList<AbstractInvoiceLine>()
+		abstractInvoiceLines.addAll(abstractInvoiceLines)
+		abstractInvoiceLines.addAll(quoteLines)
+		abstractInvoiceLines
+	}
+
 	/**
 	 * @return
 	 */
@@ -1053,7 +1081,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	List<InvoiceLine> getInvoiceLines() {
-		return super.getAbstractInvoiceLines().findAll {it.abstractInvoice?.type == InvoiceType.INVOICE } as List<InvoiceLine>
+		return super.getInvoiceLines()
 	}
 
 	/**
@@ -1062,7 +1090,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@Nonnull
 	@API
 	List<QuoteLine> getQuoteLines() {
-		return super.getAbstractInvoiceLines().findAll { it.abstractInvoice?.type == InvoiceType.QUOTE } as List<QuoteLine>
+		return super.getQuoteLines()
 	}
 
 	/**
@@ -1186,6 +1214,24 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	@API
 	boolean getIsTraineeship() {
 		return course.isTraineeship
+	}
+
+	/**
+	 * @return attendance records for all SUCCESS enrolments
+	 */
+	@Nonnull
+	@API
+	List<Attendance> getActiveAttendances() {
+		ArrayList<Attendance> result = new ArrayList<>()
+			def students = enrolments.findAll { it.status == EnrolmentStatus.SUCCESS }.student
+		students.attendances.each {
+			it.each {
+				if (it.session.courseClass.id == this.id && it.attendanceType == AttendanceType.UNMARKED) {
+					result.add(it)
+				}
+			}
+		}
+		return result
 	}
 
 	/**

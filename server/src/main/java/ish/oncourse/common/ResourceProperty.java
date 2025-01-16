@@ -25,6 +25,7 @@ public enum  ResourceProperty {
     ENTITY_ATTRIBUTE("entityAttribute"),
     DESCRIPTION("description"),
     BODY("body"),
+    REPORT_PROPERTY("report"),
     KEY_CODE("keyCode"),
     OUTPUT_TYPE("outputType"),
     SHORT_DESCRIPTION("short"),
@@ -63,7 +64,12 @@ public enum  ResourceProperty {
     @Deprecated
     BODY_PLAIN("bodyPlain"),
     @Deprecated
-    BODY_HTML("bodyHtml");
+    BODY_HTML("bodyHtml"),
+
+    //reports
+    IS_VISIBLE("isVisible"),
+    SORT_ON("sortOn");
+
 
 
 

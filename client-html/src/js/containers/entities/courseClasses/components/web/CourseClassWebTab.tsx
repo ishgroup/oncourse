@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import Grid from "@mui/material/Grid";
-import { FormEditorField } from "../../../../../common/components/markdown-editor/FormEditor";
+import * as React from "react";
+import { FormEditorField } from "../../../../../common/components/form/formFields/FormEditor";
 
 class CourseClassWebTab extends React.Component<any, any> {
   render() {

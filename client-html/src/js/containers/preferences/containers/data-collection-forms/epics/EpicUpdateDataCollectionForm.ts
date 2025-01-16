@@ -4,22 +4,23 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
 import {
   GET_DATA_COLLECTION_RULES_REQUEST,
   UPDATE_DATA_COLLECTION_FORM_FULFILLED,
   UPDATE_DATA_COLLECTION_FORM_REQUEST
 } from "../../../actions";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: UPDATE_DATA_COLLECTION_FORM_REQUEST,
   getData: payload => PreferencesService.updateDataCollectionForm(payload.id, payload.form),
   retrieveData: () => PreferencesService.getDataCollectionForms(),
   processData: (dataCollectionForms: any) => {
+    dataCollectionForms.sort((a, b) => a.name > b.name ? 1 : -1);
     return [
       {
         type: UPDATE_DATA_COLLECTION_FORM_FULFILLED,

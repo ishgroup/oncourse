@@ -3,16 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Message } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
-import { Message } from "@api/model";
-import {
-  getFilters,
-  clearListState,
-} from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
-import MessageEditView from "./components/MessageEditView";
+import { clearListState, getFilters, } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import MessageEditView from "./components/MessageEditView";
+import QuedMessagesBulkDelete from "./components/QuedMessagesBulkDelete";
 
 interface MessagesProps {
   onInit?: () => void;
@@ -39,7 +37,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Message and entityId" },
   { title: "Contacts", list: "contact", expression: "messages.id" }
 ];
@@ -48,7 +46,6 @@ const primaryColumnCondition = row => row["recipientsString"] || "No recipients"
 
 const Messages: React.FC<MessagesProps> = props => {
   const {
-    onInit,
     getFilters,
     clearListState
   } = props;
@@ -71,6 +68,7 @@ const Messages: React.FC<MessagesProps> = props => {
         nameCondition: values => (values ? values.subject : "")
       }}
       EditViewContent={MessageEditView}
+      CogwheelAdornment={QuedMessagesBulkDelete}
       rootEntity="Message"
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}

@@ -3,15 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Document } from "@api/model";
 import { arrayPush, arrayRemove } from "redux-form";
-import * as EpicUtils from "../../../../epics/EpicUtils";
-import DocumentsService from "../services/DocumentsService";
-import { CREATE_DOCUMENT, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT } from "../actions";
-import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import { Epic } from "redux-observable";
 import { State } from "../../../../../reducers/state";
+import FetchErrorHandler from "../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../epics/EpicUtils";
+import { CREATE_DOCUMENT, SET_DOCUMENT_FILE, SET_EDITING_DOCUMENT } from "../actions";
+import DocumentsService from "../services/DocumentsService";
 
 const request: EpicUtils.Request<
   any,
@@ -19,7 +18,7 @@ const request: EpicUtils.Request<
 > = {
   type: CREATE_DOCUMENT,
   hideLoadIndicator: true,
-  getData: ({ document }, state: State) =>
+  getData: ({document}, state: State) =>
     DocumentsService.createDocument(
       document.name,
       document.description,
@@ -29,26 +28,26 @@ const request: EpicUtils.Request<
       document.tags.toString(),
       state.documents.documentFile ? state.documents.documentFile.name : ""
     ),
-  processData: (newDocument: Document, state: any, { form, documentPath, index }) => [
-      {
-        type: SET_EDITING_DOCUMENT,
-        payload: { editingDocument: null, editingFormName: null }
-      },
-      {
-        type: SET_DOCUMENT_FILE,
-        payload: { documentFile: null }
-      },
-      arrayRemove(form, documentPath, index),
-      arrayPush(form, documentPath, newDocument)
-    ],
-  processError: (error, { form, documentPath, index }) => [
+  processData: (newDocument: Document, state: any, {form, documentPath, index}) => [
     {
       type: SET_EDITING_DOCUMENT,
-      payload: { editingDocument: null, editingFormName: null }
+      payload: {editingDocument: null, editingFormName: null}
     },
     {
       type: SET_DOCUMENT_FILE,
-      payload: { documentFile: null }
+      payload: {documentFile: null}
+    },
+    arrayRemove(form, documentPath, index),
+    arrayPush(form, documentPath, newDocument)
+  ],
+  processError: (error, {form, documentPath, index}) => [
+    {
+      type: SET_EDITING_DOCUMENT,
+      payload: {editingDocument: null, editingFormName: null}
+    },
+    {
+      type: SET_DOCUMENT_FILE,
+      payload: {documentFile: null}
     },
     arrayRemove(form, documentPath, index),
     ...FetchErrorHandler(error)

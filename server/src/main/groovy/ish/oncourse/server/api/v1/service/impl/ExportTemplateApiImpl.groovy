@@ -12,10 +12,13 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import groovy.transform.CompileDynamic
 import ish.oncourse.server.api.service.ExportTemplateApiService
+import ish.oncourse.server.api.v1.model.AutomationConfigsDTO
 import ish.oncourse.server.api.v1.model.ExportTemplateDTO
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
 
+@CompileDynamic
 class ExportTemplateApiImpl implements ExportTemplateApi {
 
     @Inject
@@ -32,18 +35,34 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     }
 
     @Override
+    String getConfigs(Long id) {
+        return service.getConfigs(id)
+    }
+
+    @Override
+    byte[] getPreview(Long id, Boolean compressed = false) {
+        def content = service.getPreview(id, compressed)
+        return content
+    }
+
+    @Override
     void remove(Long id) {
         service.remove(id)
     }
 
     @Override
     List<ExportTemplateDTO> templates(String entityName) {
-        service.getAutomationFor(entityName)
+        service.getAutomationFor(entityName, service.&toRestWithoutBodyAndPreviewModel)
     }
 
     @Override
     void update(Long id, ExportTemplateDTO exportTemplate) {
         service.update(id, exportTemplate)
+    }
+
+    @Override
+    void updateConfigs(Long id, AutomationConfigsDTO exportConfigs) {
+        service.updateConfigs(id, exportConfigs.config)
     }
 
     @Override
@@ -54,5 +73,10 @@ class ExportTemplateApiImpl implements ExportTemplateApi {
     @Override
     byte[] exportOnDisk(Long id) {
         service.exportOnDisk(id)
+    }
+
+    @Override
+    void deletePreview(Long id) {
+        service.deletePreview(id)
     }
 }

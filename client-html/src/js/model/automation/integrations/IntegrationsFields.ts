@@ -1,5 +1,5 @@
+import { StringValueType } from "ish-ui";
 import { stringLiterals } from "../../../common/utils/stringLiteral";
-import { StringValueType } from "../../common/CommomObjects";
 
 export interface MoodleFields {
   baseUrl: string;
@@ -43,9 +43,7 @@ export interface MYOBFields {
 }
 
 export interface CloudAssessFields {
-  username: string;
   apiKey: string;
-  orgId: string;
 }
 
 export interface CanvasFields {
@@ -85,7 +83,7 @@ export const ServiceNSWVoucher = stringLiterals(
   "AK", "CK"
 );
 
-export const ServiceNSWVoucherTypes = ServiceNSWVoucher.map(e => ({ label: e, value: e }));
+export const ServiceNSWVoucherTypes = ServiceNSWVoucher.map(e => ({label: e, value: e}));
 
 export interface ServiceNSWFields {
   voucher: StringValueType<typeof ServiceNSWVoucher>;
@@ -93,4 +91,19 @@ export interface ServiceNSWFields {
   terminalId: string;
   programme: string;
   apiKey: string;
+}
+
+export interface KronosFields {
+  username: string;
+  password: string;
+  apiKey: string;
+  companyShortName: string;
+  CID: string;
+}
+
+export interface OktaFields {
+  clientId: string;
+  clientSecret: string;
+  appUrl: string;
+  webRedirect: string;
 }

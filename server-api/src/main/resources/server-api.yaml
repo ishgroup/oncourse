@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: onCourse REST Api
-  description: An API for interacting with the backend of the onCourse server
+  description: An API for interacting with the backend of the onCourse server. "Basic" prefix for token authentication is not required. It uses the HTTP 2.0 protocol, so only those testing tools that support it can be used for testing
   contact:
     name: ish group pty ltd
     url: https://www.ish.com.au
@@ -53,6 +53,8 @@ paths:
     $ref: './path/dashboard/search/api.yaml'
   /datacollection/field/type:
     $ref: './path/datacollection/field/type/api.yaml'
+  /datacollection/field/validationType:
+    $ref: './path/datacollection/field/validationType/api.yaml'
   /datacollection/form:
     $ref: './path/datacollection/form/api.yaml'
   /datacollection/rule:
@@ -69,6 +71,8 @@ paths:
     $ref: './path/holiday/api.yaml'
   /integration:
     $ref: './path/integration/api.yaml'
+  /integration/ssoTypes:
+    $ref: './path/integration/ssoTypes/api.yaml'
   /invite:
     $ref: './path/invite/api.yaml'
   /list:
@@ -111,6 +115,8 @@ paths:
     $ref: './path/list/entity/course/api.yaml'
   /list/entity/course/duplicate:
     $ref: './path/list/entity/course/duplicate/api.yaml'
+  /list/entity/course/sellables:
+    $ref: './path/list/entity/course/sellables/api.yaml'
 #  /list/entity/course/bulk:
 #    $ref: './path/list/entity/course/bulk/api.yaml'
   /list/entity/courseClass:
@@ -139,12 +145,12 @@ paths:
     $ref: './path/list/entity/document/api.yaml'
   /list/entity/document/search:
     $ref: './path/list/entity/document/search/api.yaml'
-  /list/entity/document/version:
-    $ref: './path/list/entity/document/version/api.yaml'
   /list/entity/emailTemplate:
     $ref: './path/list/entity/emailTemplate/api.yaml'
   /list/entity/emailTemplate/template:
     $ref: './path/list/entity/emailTemplate/template/api.yaml'
+  /list/entity/emailTemplate/config:
+    $ref: './path/list/entity/emailTemplate/config/api.yaml'
   /list/entity/enrolment:
     $ref: './path/list/entity/enrolment/api.yaml'
   /list/entity/enrolment/cancel:
@@ -153,12 +159,20 @@ paths:
     $ref: './path/list/entity/priorLearning/api.yaml'
   /list/entity/exportTemplate:
     $ref: './path/list/entity/exportTemplate/api.yaml'
+  /list/entity/exportTemplate/config:
+    $ref: './path/list/entity/exportTemplate/config/api.yaml'
   /list/entity/exportTemplate/export:
     $ref: './path/list/entity/exportTemplate/export/api.yaml'
+  /list/entity/exportTemplate/preview:
+    $ref: './path/list/entity/exportTemplate/preview/api.yaml'
+  /list/entity/faculty:
+    $ref: './path/list/entity/faculty/api.yaml'
   /list/entity/import:
     $ref: './path/list/entity/import/api.yaml'
   /list/entity/import/execution:
     $ref: './path/list/entity/import/execution/api.yaml'
+  /list/entity/import/config:
+    $ref: './path/list/entity/import/config/api.yaml'
   /list/entity/invoice:
     $ref: './path/list/entity/invoice/api.yaml'
   /list/entity/invoice/contra:
@@ -171,6 +185,8 @@ paths:
     $ref: './path/list/entity/message/api.yaml'
   /list/entity/membershipProduct:
     $ref: './path/list/entity/membershipProduct/api.yaml'
+  /list/entity/membershipProduct/checkout:
+    $ref: './path/list/entity/membershipProduct/checkout/api.yaml'
   /list/entity/note:
     $ref: './path/list/entity/note/api.yaml'
   /list/entity/module:
@@ -195,6 +211,8 @@ paths:
     $ref: './path/list/entity/report/api.yaml'
   /list/entity/report/preview:
     $ref: './path/list/entity/report/preview/api.yaml'
+  /list/entity/report/config:
+    $ref: './path/list/entity/report/config/api.yaml'
   /list/entity/reportOverlay:
     $ref: './path/list/entity/reportOverlay/api.yaml'
   /list/entity/reportOverlay/original:
@@ -205,6 +223,8 @@ paths:
     $ref: './path/list/entity/room/validation/api.yaml'
   /list/entity/script:
     $ref: './path/list/entity/script/api.yaml'
+  /list/entity/script/config:
+    $ref: './path/list/entity/script/config/api.yaml'
   /list/entity/script/execute:
     $ref: './path/list/entity/script/execute/api.yaml'
   /list/entity/script/execute/pdf:
@@ -241,8 +261,16 @@ paths:
     $ref: './path/list/option/payroll/api.yaml'
   /list/plain:
     $ref: './path/list/plain/api.yaml'
+  /list/plain/bulkDelete:
+    $ref: './path/list/plain/bulkDelete/api.yaml'
+  /list/plain/bulkChange:
+    $ref: './path/list/plain/bulkChange/api.yaml'
   /login:
     $ref: './path/login/api.yaml'
+  /login/sso:
+    $ref: './path/login/sso/api.yaml'
+  /login/sso/link:
+    $ref: './path/login/sso/link/api.yaml'
   /logout:
     $ref: './path/logout/api.yaml'
   /preference:
@@ -289,6 +317,9 @@ paths:
     $ref: './path/tag/list/api.yaml'
   /tag/checklist:
     $ref: './path/tag/checklist/api.yaml'
+
+  /tag/special:
+    $ref: './path/tag/special/api.yaml'
   /timetable/calendar:
     $ref: './path/timetable/calendar/api.yaml'
   /timetable/session:
@@ -317,6 +348,8 @@ paths:
     $ref: './path/user/updatePassword/api.yaml'
   /summaryextracts/finaliseperiod:
     $ref: './path/summaryextracts/finaliseperiod/api.yaml'
+  /logs:
+    $ref: './path/logs/api.yaml'
 
 definitions:
 
@@ -337,3 +370,6 @@ definitions:
 
   ExecuteImportRequest:
     $ref: './def/entity/import/ExecuteImportRequest.yaml'
+
+  FieldValidationType:
+    $ref: './def/enum/FieldValidationType.yaml'

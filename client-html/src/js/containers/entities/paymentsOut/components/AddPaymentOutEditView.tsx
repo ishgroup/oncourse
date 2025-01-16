@@ -6,28 +6,27 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Currency, PaymentMethod } from "@api/model";
+import { Grid } from "@mui/material";
+import { compareAsc, format as formatDate } from "date-fns";
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, LinkAdornment, openInternalLink } from "ish-ui";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { change, FieldArray } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { compareAsc, format as formatDate } from "date-fns";
-import { Currency, PaymentMethod } from "@api/model";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { openInternalLink } from "../../../../common/utils/links";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM } from "../../../../common/utils/dates/format";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
 import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
-import { PaymentOutModel } from "../reducers/state";
 import { SiteState } from "../../sites/reducers/state";
 import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
+import { PaymentOutModel } from "../reducers/state";
 import { getAmountToAllocate, getInitialTotalOutstanding, getInitialTotalOwing, getTotalOutstanding } from "../utils";
+import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
 
 const addPaymentOutColumnsBase: NestedTableColumn[] = [
   {
@@ -181,8 +180,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           createdOn,
           gatewayReference,
           creditCardClientReference,
-          amount,
-          privateNotes
+          amount
         } = payment;
 
         const shortCurrencySymbol = currency != null ? currency.shortCurrencySymbol : defaultCurrencySymbol;
@@ -191,9 +189,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         return {
           value: refundableId,
-          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount} ${
-            privateNotes || ""
-          }`
+          label: `${formattedDate} [${gatewayReference}/${creditCardClientReference}] ${formattedAmount}`
         };
       });
   }, [refundablePayments, values.amount, currency]);
@@ -316,10 +312,10 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 
         <Grid item xs={4}>
           <FormField
-            type="searchSelect"
+            type="select"
             name="administrationCenterId"
             label="Site"
-            defaultDisplayValue={values.administrationCenterName}
+            defaultValue={values.administrationCenterName}
             selectLabelCondition={getAdminCenterLabel}
             validate={
               typeof values.paymentMethodId === "number" && values.selectedPaymentMethod !== "Credit card"
@@ -350,7 +346,6 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4}>
           <FormField
             type="money"
-            value={values.amount}
             name="amount"
             label="Amount paid"
             validate={[validateSingleMandatoryField, greaterThanNullValidation, validateAmountField]}
@@ -387,7 +382,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
         <Grid item xs={4} />
 
         <Grid item xs={12}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
         </Grid>
       </Grid>
 

@@ -48,6 +48,7 @@ import ish.oncourse.server.api.v1.service.EntityApi
 import ish.oncourse.server.api.v1.service.EntityRelationTypeApi
 import ish.oncourse.server.api.v1.service.ExportApi
 import ish.oncourse.server.api.v1.service.ExportTemplateApi
+import ish.oncourse.server.api.v1.service.FacultyApi
 import ish.oncourse.server.api.v1.service.FilterApi
 import ish.oncourse.server.api.v1.service.FinalisePeriodApi
 import ish.oncourse.server.api.v1.service.FundingContractApi
@@ -58,6 +59,7 @@ import ish.oncourse.server.api.v1.service.ImportApi
 import ish.oncourse.server.api.v1.service.IntegrationApi
 import ish.oncourse.server.api.v1.service.InvoiceApi
 import ish.oncourse.server.api.v1.service.LeadApi
+import ish.oncourse.server.api.v1.service.LogsApi
 import ish.oncourse.server.api.v1.service.MembershipProductApi
 import ish.oncourse.server.api.v1.service.MessageApi
 import ish.oncourse.server.api.v1.service.ModuleApi
@@ -128,6 +130,7 @@ import ish.oncourse.server.api.v1.service.impl.EntityApiImpl
 import ish.oncourse.server.api.v1.service.impl.EntityRelationTypeApiImpl
 import ish.oncourse.server.api.v1.service.impl.ExportApiImpl
 import ish.oncourse.server.api.v1.service.impl.ExportTemplateApiImpl
+import ish.oncourse.server.api.v1.service.impl.FacultyApiImpl
 import ish.oncourse.server.api.v1.service.impl.FilterApiImpl
 import ish.oncourse.server.api.v1.service.impl.FinalisePeriodApiImpl
 import ish.oncourse.server.api.v1.service.impl.FundingContractApiImpl
@@ -138,6 +141,7 @@ import ish.oncourse.server.api.v1.service.impl.ImportApiImpl
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.api.v1.service.impl.InvoiceApiImpl
 import ish.oncourse.server.api.v1.service.impl.LeadApiImpl
+import ish.oncourse.server.api.v1.service.impl.LogsApiImpl
 import ish.oncourse.server.api.v1.service.impl.MembershipProductApiImpl
 import ish.oncourse.server.api.v1.service.impl.MessageApiImpl
 import ish.oncourse.server.api.v1.service.impl.ModuleApiImpl
@@ -200,6 +204,7 @@ class ApiImplementationModule implements Module {
         binder.bind(CourseClassApi).to(CourseClassApiImpl)
         binder.bind(ExportApi).to(ExportApiImpl)
         binder.bind(CustomFieldApi).to(CustomFieldApiImpl)
+        binder.bind(FacultyApi).to(FacultyApiImpl)
 
         binder.bind(DashboardApi).to(DashboardApiImpl)
         binder.bind(DataCollectionApi).to(DataCollectionApiImpl)
@@ -275,5 +280,7 @@ class ApiImplementationModule implements Module {
         binder.bind(EntityRelationTypeApi).to(EntityRelationTypeApiImpl)
         binder.bind(TokenApi).to(ApiTokenApiImpl)
         binder.bind(GradingApi).to(GradingApiImpl)
+
+        binder.bind(LogsApi).to(LogsApiImpl)
     }
 }

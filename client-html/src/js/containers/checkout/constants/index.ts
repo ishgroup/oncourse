@@ -5,7 +5,7 @@
 
 import { createStringEnum } from "@api/model";
 
-export const CHECKOUT_CONTACT_COLUMNS = "firstName,lastName,email,birthDate,isCompany,invoiceTerms,message";
+export const CHECKOUT_CONTACT_COLUMNS = "firstName,lastName,middleName,email,birthDate,isCompany,invoiceTerms,message";
 
 export const CHECKOUT_MEMBERSHIP_COLUMNS = "sku,name,priceExTax,price_with_tax,expiryType,expiryDays";
 
@@ -27,7 +27,7 @@ export const CHECKOUT_COURSE_CLASS_COLUMNS = "course.name,"
   + "sessions.start,sessions.end,"
   + "paymentPlanLines.id,"
   + "course.isVET,"
-  + "isDistantLearningCourse,"
+  + "type,"
   + "message,"
   + "relatedFundingSource.id,"
   + "sessions.id,"

@@ -6,18 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
 import { Tag } from "@api/model";
 import { initialize } from "redux-form";
+import { Epic } from "redux-observable";
 import { Create, Request } from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
 import { GET_TAG_REQUEST } from "../actions";
-import { TAGS_FORM_NAME } from "../constants";
+import TagsService from "../services/TagsService";
 
-const request: Request = {
+const request: Request<any, { form: string, id: number }> = {
   type: GET_TAG_REQUEST,
-  getData: id => TagsService.getTag(id),
-  processData: (tag: Tag) => [initialize(TAGS_FORM_NAME, tag)]
+  getData: ({ id }) => TagsService.getTag(id),
+  processData: (tag: Tag, s, { form }) => [initialize(form, tag)]
 };
 
 export const EpicGetTag: Epic<any, any> = Create(request);

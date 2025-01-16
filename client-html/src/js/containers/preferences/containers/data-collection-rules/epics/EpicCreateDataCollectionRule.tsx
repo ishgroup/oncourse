@@ -3,20 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { DataCollectionRule } from "@api/model";
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
 import { CREATE_DATA_COLLECTION_RULE_FULFILLED, CREATE_DATA_COLLECTION_RULE_REQUEST } from "../../../actions";
-import { DataCollectionRule } from "@api/model";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: CREATE_DATA_COLLECTION_RULE_REQUEST,
   getData: payload => PreferencesService.createDataCollectionRule(payload.rule),
   retrieveData: () => PreferencesService.getDataCollectionRules(),
   processData: (dataCollectionRules: DataCollectionRule[]) => {
+    dataCollectionRules.sort((a, b) => a.name > b.name ? 1 : -1);
     return [
       {
         type: CREATE_DATA_COLLECTION_RULE_FULFILLED,

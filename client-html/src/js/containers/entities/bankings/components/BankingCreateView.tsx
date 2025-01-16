@@ -3,32 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import {
- change, FieldArray, getFormInitialValues, initialize
-} from "redux-form";
+import { Report } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { addDays, format as formatDate } from "date-fns";
-import { Report } from "@api/model";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import { format as formatDate } from "date-fns";
+import {
+  DD_MMM_YYYY_MINUSED,
+  EditInPlaceSearchSelect,
+  LinkAdornment,
+  stubFunction,
+  StyledCheckbox, validateMinMaxDate,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, FieldArray, getFormInitialValues, initialize } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
+import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
+import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
 import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
 import { getFormattedTotal } from "../../common/bankingPaymentUtils";
-import { validateMinMaxDate } from "../../../../common/utils/validation";
+import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { getDepositPayments, updateBankingAccountId } from "../actions";
 import { BankingReport } from "../consts";
-import { DD_MMM_YYYY_MINUSED, YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
-import { LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { stubFunction } from "../../../../common/utils/common";
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -78,8 +79,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
 
   componentDidUpdate() {
     const {
- accounts, adminSites, dispatch, adminCenterName, form, values
-} = this.props;
+     accounts, adminSites, dispatch, adminCenterName, form, values
+    } = this.props;
 
     if (!values) {
       return;
@@ -95,7 +96,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
         initialize(form, {
           ...values,
           adminSite: adminCenterName,
-          administrationCenterId: adminSites.find(s => s.label === adminCenterName).value
+          administrationCenterId: adminSites.find(s => s.label === adminCenterName)?.value
         })
       );
     }
@@ -106,7 +107,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
     if (!values || !values.payments) {
       return (
         <Typography variant="body1" className="placeholderContent">
-          No value
+          {COMMON_PLACEHOLDER}
         </Typography>
       );
     }
@@ -188,7 +189,6 @@ class BankingCreateView extends React.PureComponent<any, any> {
   render() {
     const {
       accounts,
-      lockedDate,
       openNestedView,
       selectedAccountId,
       values,
@@ -203,7 +203,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
           <Grid item xs={12}>
             <Grid item xs={6}>
               <FormField
-                type="searchSelect"
+                type="select"
                 name="administrationCenterId"
                 label="Administration center"
                 selectLabelCondition={getAdminCenterLabel}
@@ -226,14 +226,13 @@ class BankingCreateView extends React.PureComponent<any, any> {
             </Grid>
           </Grid>
           <Grid item xs={4}>
-            <EditInPlaceField
+            <EditInPlaceSearchSelect
               items={accounts || []}
               label="Account"
-              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount, onFocus: stubFunction }}
+              input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount as any, onFocus: stubFunction, onBlur: stubFunction }}
               meta={{ error: null, invalid: false, touched: false }}
               selectValueMark="id"
               selectLabelMark="description"
-              select
               disabled={hasNoAccounts}
             />
           </Grid>
@@ -244,12 +243,8 @@ class BankingCreateView extends React.PureComponent<any, any> {
               type="date"
               normalize={v => (v ? formatDate(new Date(v), YYYY_MM_DD_MINUSED) : v)}
               validate={this.validateSettlementDate}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate), 1)
-                  : undefined
-              }
               disabled={hasNoAccounts}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={4} />

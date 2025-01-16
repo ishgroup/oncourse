@@ -3,24 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Typography from "@mui/material/Typography";
-import Delete from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import AccordionActions from "@mui/material/AccordionActions";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Button from "@mui/material/Button";
-import { getDeepValue } from "../../../utils/common";
-import { AppTheme } from "../../../../model/common/Theme";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import Delete from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { IS_JEST } from '../../../../constants/EnvironmentConstants';
+import { getDeepValue } from '../../../utils/common';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     root: {
       width: "100%"
     },
@@ -75,9 +74,9 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
   const onChangeBase = useCallback(
     index => {
       if (accordion) {
-        setExpanded(prev => (prev[index] ? {} : { [index]: true }));
+        setExpanded(prev => (prev[index] ? {} : {[index]: true}));
       } else {
-        setExpanded(prev => ({ ...prev, [index]: !prev[index] }));
+        setExpanded(prev => ({...prev, [index]: !prev[index]}));
       }
     },
     [accordion]
@@ -90,9 +89,9 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
         setExpanded(prev => ({
           ...prev,
           ...noIdFields.reduce((p, c) => {
-          p[c] = true;
-          return p;
-        }, {})
+            p[c] = true;
+            return p;
+          }, {})
         }));
       }
     }
@@ -115,18 +114,18 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
             expanded={Boolean(fieldsWithError[index]) || Boolean(expanded[index])}
             onChange={() => onChangeBase(index)}
             defaultExpanded={!field.id}
-            TransitionProps={{ unmountOnExit: true }}
+            TransitionProps={{unmountOnExit: true}}
           >
             <AccordionSummary
               classes={{
                 expandIconWrapper: classes.expandIcon,
                 content: classes.summaryContent
               }}
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon/>}
               {...summaryProps}
             >
               {HeaderContent ? (
-                <HeaderContent item={item} row={field} />
+                <HeaderContent item={item} row={field}/>
               ) : (
                 <Typography variant="subtitle2" className="money">
                   {field[namePath]}
@@ -134,12 +133,12 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
               )}
               {onDelete && (
                 <IconButton onClick={e => onDeleteHandler(e, index, field.id)} className={classes.deleteIcon}>
-                  <Delete fontSize="inherit" />
+                  <Delete fontSize="inherit"/>
                 </IconButton>
               )}
             </AccordionSummary>
             <AccordionDetails className="pb-0">
-              <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn} />
+              <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn}/>
             </AccordionDetails>
             {onViewMore && (
               <AccordionActions>
@@ -163,4 +162,4 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(MinifiedEntitiesRenderer) as React.FC<any>;
+export default withStyles(MinifiedEntitiesRenderer, styles) as React.FC<any>;

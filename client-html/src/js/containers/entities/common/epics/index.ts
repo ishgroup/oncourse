@@ -1,4 +1,5 @@
 import { combineEpics } from "redux-observable";
+import { EpicBulkDeleteEntityRecords } from "./EpicBulkDeleteEntityRecords";
 import { EpicCreateEntityRecord } from "./EpicCreateEntityRecord";
 import { EpicDeleteEntityRecord } from "./EpicDeleteEntityRecord";
 import { EpicGetEntityRecord } from "./EpicGetEntityRecord";
@@ -8,5 +9,6 @@ export const EpicListEntityRecord = combineEpics(
   EpicCreateEntityRecord,
   EpicDeleteEntityRecord,
   EpicUpdateEntityRecord,
-  EpicGetEntityRecord
+  EpicGetEntityRecord,
+  EpicBulkDeleteEntityRecords
 );

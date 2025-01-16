@@ -4,8 +4,8 @@
  */
 
 import * as React from "react";
-import { initialize, reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
@@ -39,7 +39,6 @@ class MoodleBaseForm extends React.Component<any, any> {
           <FormField
             name="fields.courseTag"
             label="Only activate for enrolments in courses tagged with"
-            listSpacing
             type="text"
             className="mb-2"
           />

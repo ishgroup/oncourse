@@ -33,10 +33,12 @@ class IdentifierConverter implements Converter<AqlParser.IdContext> {
 
     IdentifierConverter() {
         // create all available specific converters
-        classifierMap.put(TypeClassifier.DATE, new DateIdentifierConverter());
+        classifierMap.put(TypeClassifier.DATE, new DateTimeIdentifierConverter());
         classifierMap.put(TypeClassifier.ENUM, new EnumIdentifierConverter());
         classifierMap.put(TypeClassifier.STRING, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.CUSTOM_FIELD, new StringIdentifierConverter());
+        classifierMap.put(TypeClassifier.CUSTOM_FIELD_DATE, new DateIdentifierConverter());
+        classifierMap.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new CustomFieldDateTimeConverter());
         classifierMap.put(TypeClassifier.CONTACT, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.SITE, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.ROOM, new StringIdentifierConverter());
@@ -47,7 +49,7 @@ class IdentifierConverter implements Converter<AqlParser.IdContext> {
         classifierMap.put(TypeClassifier.ACCOUNT, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.ACCOUNT_TRANSACTION, new StringIdentifierConverter());
         classifierMap.put(TypeClassifier.PAYSLIP, new StringIdentifierConverter());
-        classifierMap.put(TypeClassifier.BANKING, new DateIdentifierConverter());
+        classifierMap.put(TypeClassifier.BANKING, new DateTimeIdentifierConverter());
         classifierMap.put(TypeClassifier.SYSTEM_USER, new SystemUserIdentifierConverter());
     }
 

@@ -125,7 +125,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                     vcp
                 }
             }
-            voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            voucherProductDTO.documents = voucherProduct.activeAttachments.collect { toRestDocument(it.document, documentService) }
             voucherProductDTO.tags = voucherProduct.allTags.collect{ it.id }
             voucherProductDTO.soldVouchersCount = voucherProduct.getProductItems().size()
             voucherProductDTO.relatedSellables = (EntityRelationDao.getRelatedFrom(voucherProduct.context, Product.simpleName, voucherProduct.id).collect { toRestFromEntityRelation(it) } +
@@ -195,9 +195,6 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
             if (voucherProduct.getProductItems().size() > 0) {
                 if (!isRedemptionTypeEqual(voucherProductDTO, voucherProduct)) {
                     validator.throwClientErrorException(id, 'maxCoursesRedemption | feeExTax', 'Wrong value')
-                }
-                if (!isCoursesEqual(voucherProductDTO, voucherProduct)) {
-                    validator.throwClientErrorException(id, 'courses', 'Wrong value')
                 }
             }
         }

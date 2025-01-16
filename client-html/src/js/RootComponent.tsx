@@ -6,22 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { Router } from "react-router-dom";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import StylesProviderCustom from "./common/styles/StylesProviderCustom";
-import history from "./constants/History";
-import "./constants/Prototype";
+import * as React from 'react';
+import { Router } from 'react-router-dom';
+import history from './constants/History';
+import './constants/Prototype';
 
 const RootComponent = ({ children }) => (
-  <StylesProviderCustom>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Router history={history}>
         {children}
       </Router>
     </LocalizationProvider>
-  </StylesProviderCustom>
 );
 
 export default RootComponent;

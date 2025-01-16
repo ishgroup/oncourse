@@ -3,30 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useState } from "react";
-import clsx from "clsx";
+import { PayrollRequest, WagesToProcess } from "@api/model";
+import OpenInNew from "@mui/icons-material/OpenInNew";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import {
-  reduxForm, change, getFormValues
-} from "redux-form";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import Collapse from "@mui/material/Collapse";
-import { format as formatDate } from "date-fns";
+import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
-import { Dispatch } from "redux";
-import { PayrollRequest, WagesToProcess } from "@api/model";
+import clsx from "clsx";
+import { format as formatDate } from "date-fns";
+import { openInternalLink, YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { Dispatch } from "redux";
+import { change, getFormValues, reduxForm } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { openInternalLink } from "../../../../common/utils/links";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
+import { State } from "../../../../reducers/state";
 
 export const PAYSLIP_GENERATE_FORM = "PayslipGenerateForm";
 
@@ -101,8 +98,7 @@ const PayslipGenerateDialog: React.FC<Props> = ({
             } unprocessed wages until and including`}
             onChange={onDateChange}
             required
-            fullWidth
-          />
+                      />
 
           <Collapse in={!values.confirm}>
             <DialogContentText

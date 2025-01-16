@@ -1,10 +1,9 @@
-import React, { useCallback, useMemo } from "react";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import { Theme } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import Rating from "@mui/lab/Rating";
-import { WrappedFieldProps } from "redux-form";
+import Rating from '@mui/lab/Rating';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { WrappedFieldProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 
 interface Props extends WrappedFieldProps {
   label: string;
@@ -13,7 +12,7 @@ interface Props extends WrappedFieldProps {
   classes?: any;
 }
 
-const styles = createStyles(({ spacing, typography, palette }: Theme) => ({
+const styles = (({ spacing, typography, palette }: AppTheme) => ({
   scoreNumber: {
     fontSize: "3rem",
     lineHeight: "0.9em",
@@ -46,4 +45,4 @@ const Score = React.memo((props: Props) => {
   );
 });
 
-export default withStyles(styles)(Score);
+export default withStyles(Score, styles);

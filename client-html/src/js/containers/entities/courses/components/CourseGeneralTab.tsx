@@ -3,32 +3,34 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import { LinkAdornment, mapSelectItems, openInternalLink, TimetableButton } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { openInternalLink } from "../../../../common/utils/links";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { PreferencesState } from "../../../preferences/reducers/state";
 import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
-import { CourseExtended } from "../../../../model/entities/Course";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { mapSelectItems } from "../../../../common/utils/common";
-import CourseAvailableClassChart from "./CourseAvailableClassChart";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { CourseExtended } from "../../../../model/entities/Course";
+import { State } from "../../../../reducers/state";
+import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+import { openFacultyLink } from "../../faculties/utils";
+import { courseFilterCondition } from "../utils";
+import CourseAvailableClassChart from "./CourseAvailableClassChart";
+import CourseItemRenderer from "./CourseItemRenderer";
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
 
 interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
   tags: Tag[];
+  specialTags: Tag[];
   dataCollectionRules: PreferencesState["dataCollectionRules"];
   dispatch: any;
   form: string;
@@ -37,7 +39,8 @@ interface CourseGeneralTabProps extends EditViewProps<CourseExtended> {
 const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
   ({
     showConfirm,
-    tags,
+    tags = [],
+     specialTags = [],
     dataCollectionRules,
     twoColumn,
     values,
@@ -47,6 +50,8 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
     dispatch,
     form
   }) => {
+    const { tagsGrouped, subjectsField, specialTypesDisabled } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
+
     const onCalendarClick = useCallback(() => {
       openInternalLink(`/timetable?search=courseClass.course.id=${values.id}`);
     }, [values.id]);
@@ -71,7 +76,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
       ],
       [values.studentWaitingListCount, values.id]
     );
-    
+
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
         <Grid item xs={12}>
@@ -101,20 +106,20 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               <Grid container columnSpacing={3} rowSpacing={2}>
                 <Grid item xs={twoColumn ? 2 : 12}>
                   <FormField
+                    type="text"
                     label="Code"
                     name="code"
                     placeholder={twoColumn ? "Code" : undefined}
                     required
-                    fullWidth
                   />
                 </Grid>
                 <Grid item xs={twoColumn ? 4 : 12}>
                   <FormField
+                    type="text"
                     label="Name"
                     name="name"
                     placeholder={twoColumn ? "Name" : undefined}
                     required
-                    fullWidth
                   />
                 </Grid>
               </Grid>
@@ -126,8 +131,47 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           <FormField
             type="tags"
             name="tags"
-            tags={tags}
+            tags={tagsGrouped.tags}
+            className="mb-2"
           />
+
+          <FormField
+            type="select"
+            items={specialTags}
+            disabled={specialTypesDisabled}
+            name="specialTagId"
+            label="Type"
+            selectValueMark="id"
+            selectLabelMark="name"
+            allowEmpty
+          />
+
+          <FormField
+            selectFilterCondition={courseFilterCondition}
+            selectLabelCondition={courseFilterCondition}
+            labelAdornment={(
+              <LinkAdornment
+                linkHandler={openFacultyLink}
+                link={values?.facultyId}
+                disabled={!values?.facultyId}
+              />
+            )}
+            itemRenderer={CourseItemRenderer}
+            rowHeight={55}
+            name='facultyId'
+            type='remoteDataSelect'
+            preloadEmpty={true}
+            label='Faculty'
+            entity='Faculty'
+            aqlColumns='name,code'
+            selectValueMark='id'
+            selectLabelMark='name'
+            className="mt-2"
+            disabled={values.isTraineeship || specialTypesDisabled}
+            allowEmpty
+          />
+
+          {subjectsField}
         </Grid>
 
         <Grid item xs={twoColumn ? 4 : 12}>
@@ -241,6 +285,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags.Course,
+  specialTags: state.tags.entitySpecialTags.Course,
   dataCollectionRules: state.preferences.dataCollectionRules
 });
 

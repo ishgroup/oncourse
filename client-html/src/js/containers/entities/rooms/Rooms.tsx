@@ -6,24 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Room } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Room } from "@api/model";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
-import RoomEditView from "./components/RoomEditView";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { getListTags } from "../../tags/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
 import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
-import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../constants/Config";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { getListTags } from "../../tags/actions";
+import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import RoomEditView from "./components/RoomEditView";
 
-const manualLink = getManualLink("sitesRooms_rooms");
+const manualLink = getManualLink("working-with-sites-and-rooms#rooms");
 
 const filterGroups: FilterGroup[] = [
   {
@@ -56,7 +56,7 @@ const Initial: Room = {
   rules: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Room and entityId" },
   {
     title: "Current classes",
@@ -89,7 +89,7 @@ class Rooms extends React.Component<any, any> {
 
   render() {
     const {
-      updateTableModel, onInit
+      onInit
     } = this.props;
 
     return (
@@ -104,7 +104,6 @@ class Rooms extends React.Component<any, any> {
           asyncChangeFields: ["notes[].message"],
           hideTitle: true
         }}
-        updateTableModel={updateTableModel}
         CogwheelAdornment={BulkEditCogwheelOption}
         EditViewContent={RoomEditView}
         rootEntity="Room"
@@ -129,4 +128,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearListState: () => dispatch(clearListState())
 });
 
-export default connect<any, any, any>(null, mapDispatchToProps)(Rooms);
+export default connect(null, mapDispatchToProps)(Rooms);

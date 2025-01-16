@@ -6,19 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { Card, IconButton, Grid } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Tooltip from "@mui/material/Tooltip";
 import { ClassCostRepetitionType } from "@api/model";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Card, Grid, IconButton } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import {
   formatFieldPercent,
+  mapSelectItems,
   parseFieldPercent,
-  preventNegativeOrLogEnter
-} from "../../../../../common/utils/numbers/numbersNormalizing";
-import { mapSelectItems } from "../../../../../common/utils/common";
+  preventNegativeOrLogEnter,
+  YYYY_MM_DD_MINUSED
+} from "ish-ui";
+import React from "react";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
 
 const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => !["Discount", "Per student contact hour"].includes(t)).map(mapSelectItems);
@@ -40,7 +40,6 @@ const PayRateItem = props => {
               name={`${item}.validFrom`}
               label="Valid from"
               formatValue={YYYY_MM_DD_MINUSED}
-              fullWidth
               required
             />
           </Grid>
@@ -63,7 +62,7 @@ const PayRateItem = props => {
           </Grid>
           <Grid item xs={2} className="d-flex">
             <FormField
-              type="persent"
+              type="number"
               name={`${item}.oncostRate`}
               label="Oncosts"
               step="0.01"
@@ -71,6 +70,7 @@ const PayRateItem = props => {
               parse={parseFieldPercent}
               onKeyPress={preventNegativeOrLogEnter}
               validate={validatePercentage}
+              debounced={false}
             />
             <Tooltip title="Remove pay rate">
               <IconButton
@@ -84,7 +84,7 @@ const PayRateItem = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name={`${item}.notes`} label="Description" fullWidth />
+          <FormField type="multilineText" name={`${item}.notes`} label="Description" />
         </Grid>
       </Grid>
     </Card>

@@ -615,7 +615,7 @@
   subject: Waiting list reminder
   entityClass: WaitingList
   short: Send information about upcoming classes to students who are on a waiting list for a course.
-  description: Send information about upcoming classes to students who are on a waiting list for a course. Can be sent with an automation, or manually from the Waiting Lists window.
+  description: Send information about upcoming classes to students who are on a waiting list for a course. Can be sent via an automation that passes a class into the message, only.
   category: marketing
   variables:
     - name: courseClasses
@@ -659,4 +659,20 @@
       dataType: TEXT
       value: ish.email.footer
 
-
+- name: Student invitation to SkillsOnCourse
+  type: email
+  keyCode: ish.email.studentPortalInvitation
+  txtTemplate: ish.email.studentPortalInvitation.txt
+  htmlTemplate: ish.email.studentPortalInvitation.html
+  subject: "Set password for your ${Preferences.get('college.name')} Student Portal account"
+  entityClass: Student
+  short: An invitation to students to create a password in order to log in to the SkillsOnCourse portal.
+  description: An invitation to students to create a password in order to log in to the SkillsOnCourse portal.
+  category: education
+  options:
+    - name: headerKeycode
+      dataType: TEXT
+      value: ish.email.header
+    - name: footerKeycode
+      dataType: TEXT
+      value: ish.email.footer

@@ -3,52 +3,84 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Tag } from "@api/model";
 import { FormErrors } from "redux-form";
-import { getDeepValue } from "../common";
 
 export * from "./emailsValidation";
 export * from "./urlValidation";
 export * from "./phonesValidation";
 export * from "./mandatoryValidation";
 export * from "./uniqueNamesValidation";
-export * from "./tagNamesValidation";
-export * from "./datesValidation";
+export * from "./symbols";
 export * from "./numbersValidation";
 export * from "./fieldArrayAsyncValidation";
 export * from "./vetFieldsValidation";
 
-export const getFirstErrorNodePath = (errors: FormErrors, deepObj?: any, path?: string): string => {
-  if (!errors) {
-    return path;
+const isParent = (tag: Tag, ID: number) => (tag.id === ID ? true : tag.childTags.find(c => isParent(c, ID)));
+
+export const validateTagsList = (tags: Tag[], value, allValues, props, rootEntity?) => {
+  let error;
+
+  if (!tags) {
+    return error;
   }
 
-  const targetObj = deepObj || errors;
-  let firstKeyIndex = 0;
-  let key;
-  let numberKey = false;
+  const rootTagsWithRequirements = {};
 
-  if (Array.isArray(targetObj)) {
-    firstKeyIndex = targetObj.findIndex(t => t);
-    key = firstKeyIndex;
-  } else {
-    key = Object.keys(targetObj)[firstKeyIndex];
+  tags.forEach(t => {
+    const match = t.requirements.filter(r => (r.type === (rootEntity || props.rootEntity)) && (r.mandatory || r.limitToOneTag));
+
+    if (match.length) {
+      rootTagsWithRequirements[t.id] = { name: t.name, requirements: match[0] };
+    }
+  });
+
+  const usedRootTags = {};
+
+  if (value) {
+    value.forEach(i => {
+      const match = tags.find(t => isParent(t, i));
+
+      if (match) {
+        if (usedRootTags[match.id]) {
+          usedRootTags[match.id].push(match);
+        } else {
+          usedRootTags[match.id] = [match];
+        }
+      }
+    });
   }
 
-  if (!isNaN(Number(key))) {
-    key = `[${key}]`;
-    numberKey = true;
-  }
+  Object.keys(rootTagsWithRequirements).forEach(u => {
+    if (!usedRootTags[u] && rootTagsWithRequirements[u].requirements.mandatory) {
+      error = `The ${
+        rootTagsWithRequirements[u].name
+      } tag is mandatory. Modify your tag settings before removing this tag`;
+    }
 
-  path = (path ? numberKey ? path : `${path}.` : "") + key;
+    if (usedRootTags[u] && rootTagsWithRequirements[u].requirements.limitToOneTag && usedRootTags[u].length > 1) {
+      error = `The ${rootTagsWithRequirements[u].name} tag group can be used only once`;
+    }
+  });
 
-  const value = getDeepValue(errors, path);
-
-  if (typeof value === "object") {
-    return getFirstErrorNodePath(errors, value, path);
-  }
-
-  return path?.replace("._error", "");
+  return error;
 };
+
+const toDeepPath = (key: string) => isNaN(parseInt(key)) ? `.${key}` : `[${key}]`;
+
+export function getFirstErrorNodePath(errors: FormErrors, path = '') {
+  for (const key in errors) {
+    if (key === '_error') return path;
+    path = path ? path + toDeepPath(key) : key;
+    switch (typeof errors[key]) {
+      case "string":
+        return path;
+      case "object":
+        return getFirstErrorNodePath(errors[key], path);
+    }
+  }
+  return path;
+}
 
 export const validateRegex = pattern => {
   if (!pattern) return undefined;

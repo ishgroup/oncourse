@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Account, Transaction } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import ListView from "../../../common/components/list-view/ListView";
-import { Account, Transaction } from "@api/model";
-import { FilterGroup } from "../../../model/common/ListView";
-import TransactionsEditView from "./components/TransactionsEditView";
 import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { State } from "../../../reducers/state";
 import { getPlainAccounts } from "../accounts/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import TransactionsEditView from "./components/TransactionsEditView";
 
 const primaryColumnCondition = rows => `${rows["transactionDate"]}  ${rows["amount"]}`;
 
@@ -50,7 +50,7 @@ const Initial: Transaction = {
   transactionDate: null
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == AccountTransaction and entityId" },
   { title: "Contacts", list: "contact", expression: "accountTransactions.id" },
   { title: "Invoices", list: "invoice", expression: "accountTransactions.id" },
@@ -93,30 +93,25 @@ class Transactions extends React.Component<any, any> {
   };
 
   render() {
-    const { updateTableModel } = this.props;
-
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "account.accountCode",
-            secondaryColumn: "account.type",
-            primaryColumnCondition,
-            secondaryColumnCondition
-          }}
-          updateTableModel={updateTableModel}
-          EditViewContent={TransactionsEditView}
-          rootEntity="AccountTransaction"
-          editViewProps={{
-            nameCondition: this.getTransactionAccountName
-          }}
-          onInit={this.onInit}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          defaultDeleteDisabled
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "account.accountCode",
+          secondaryColumn: "account.type",
+          primaryColumnCondition,
+          secondaryColumnCondition
+        }}
+        EditViewContent={TransactionsEditView}
+        rootEntity="AccountTransaction"
+        editViewProps={{
+          nameCondition: this.getTransactionAccountName
+        }}
+        onInit={this.onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        defaultDeleteDisabled
+        noListTags
+      />
     );
   }
 }

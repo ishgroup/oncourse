@@ -3,24 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import { addDays, compareAsc, format as formatDate } from "date-fns";
 import { PaymentIn } from "@api/model";
-import Typography from "@mui/material/Typography";
-import { FieldArray, getFormInitialValues } from "redux-form";
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { addDays, compareAsc, format as formatDate } from "date-fns";
+import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from "ish-ui";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import { FieldArray, getFormInitialValues } from "redux-form";
+import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { openInternalLink } from "../../../../common/utils/links";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
 import { State } from "../../../../reducers/state";
-import { ContactLinkAdornment, LinkAdornment } from "../../../../common/components/form/FieldAdornments";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 import { SiteState } from "../../sites/reducers/state";
-import { defaultContactName } from "../../contacts/utils";
+import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -119,7 +117,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
       <Grid item {...gridItemProps}>
         <Uneditable
-          value={defaultContactName(values.payerName)}
+          value={values.payerName}
           label="Payment from"
           labelAdornment={
             <ContactLinkAdornment id={values?.payerId} />
@@ -128,10 +126,10 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="searchSelect"
+          type="select"
           name="administrationCenterId"
           label="Site"
-          defaultDisplayValue={values && values.administrationCenterName}
+          defaultValue={values && values.administrationCenterName}
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
           labelAdornment={<LinkAdornment link={values && values.administrationCenterId} linkHandler={openSiteLink} />}
@@ -205,11 +203,6 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
               name="dateBanked"
               label="Date banked"
               validate={[validateSettlementDate, validateSettlementDateBanked]}
-              minDate={
-                lockedDate
-                  ? addDays(new Date(lockedDate), 1)
-                  : undefined
-              }
             />
           )}
       </Grid>

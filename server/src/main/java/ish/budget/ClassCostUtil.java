@@ -164,7 +164,7 @@ public class ClassCostUtil {
 					break;
 			}
 		} else if (ClassCostRepetitionType.PER_TIMETABLED_HOUR.equals(repetitionType)) {
-			unitCount = classCost.getSessionPayableHours(until);
+			unitCount = classCost.getSessionPayableHours(null);
 		} else if (ClassCostRepetitionType.PER_STUDENT_CONTACT_HOUR.equals(repetitionType)) {
 			switch (type) {
 				case ClassBudgetUtil.ACTUAL:

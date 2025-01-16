@@ -1,47 +1,49 @@
 import {
-  PreferenceApi,
-  HolidayApi,
-  SystemPreference,
-  DataCollectionApi,
-  PaymentApi,
-  TaxApi,
-  ConcessionApi,
-  ContactApi,
-  EntityRelationTypeApi,
-  CustomFieldApi,
-  Country,
-  ColumnWidth,
-  PaymentMethod,
-  TutorRoleApi,
+  Account,
   AccountApi,
-  UserPreferenceApi, GradingApi,
-  ContactRelationType,
-  EntityRelationType,
+  ColumnWidth,
+  ConcessionApi,
   ConcessionType,
+  ContactApi,
+  ContactRelationType,
+  Country,
+  Currency,
+  CustomFieldApi,
+  CustomFieldType,
+  DataCollectionApi,
   DataCollectionForm,
   DataCollectionRule,
-  FieldType,
-  Tax,
-  CustomFieldType,
-  EnumItem,
-  Currency,
-  Holiday,
   DefinedTutorRole,
-  Account, GradingType
+  EntityRelationType,
+  EntityRelationTypeApi,
+  EnumItem,
+  FieldType,
+  GradingApi,
+  GradingType,
+  Holiday,
+  HolidayApi,
+  PaymentApi,
+  PaymentMethod,
+  PreferenceApi, PreferenceEnum,
+  SystemPreference,
+  Tax,
+  TaxApi,
+  TutorRoleApi,
+  UserPreferenceApi
 } from "@api/model";
 import { DefaultHttpService } from "../../../common/services/HttpService";
-import { AccountStudentEnrolments, Categories } from "../../../model/preferences";
 import { SearchService } from "../../../common/services/SearchService";
+import { AccountStudentEnrolments, Categories } from "../../../model/preferences";
+import * as ModelAvetmiss from "../../../model/preferences/Avetmiss";
+import * as ModelClass from "../../../model/preferences/ClassDefaults";
 import * as ModelCollege from "../../../model/preferences/College";
+import * as ModelFinancial from "../../../model/preferences/Financial";
 import * as ModelLdap from "../../../model/preferences/Ldap";
 import * as ModelLicences from "../../../model/preferences/Licences";
-import * as ModelMessaging from "../../../model/preferences/Messaging";
-import * as ModelClass from "../../../model/preferences/ClassDefaults";
 import * as ModelMaintenance from "../../../model/preferences/Maintenance";
-import * as ModelAvetmiss from "../../../model/preferences/Avetmiss";
-import * as ModelFinancial from "../../../model/preferences/Financial";
-import * as ModelSecurity from "../../../model/preferences/security";
+import * as ModelMessaging from "../../../model/preferences/Messaging";
 import * as ModelPlugins from "../../../model/preferences/Plugins";
+import * as ModelSecurity from "../../../model/preferences/security";
 
 class PreferencesService {
   readonly defaultApi = new DefaultHttpService();
@@ -268,7 +270,7 @@ class PreferencesService {
     return this.preferenceApi.getLockedDate();
   }
 
-  private getCategoryKeys(category: Categories) {
+  private getCategoryKeys(category: Categories): PreferenceEnum[] {
     switch (category) {
       case Categories.college: {
         return Object.keys(ModelCollege).map(item => ModelCollege[item].uniqueKey);

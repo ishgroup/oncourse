@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import InputAdornment from "@mui/material/InputAdornment";
-import CircularProgress from "@mui/material/CircularProgress";
-import { withStyles, createStyles } from "@mui/styles";
-import { green } from "@mui/material/colors";
-import ClassNames from "clsx";
-import debounce from "lodash.debounce";
-import { TextField } from "../../../common/components/form/formFields/TextField";
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import ClassNames from 'clsx';
+import debounce from 'lodash.debounce';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = theme => createStyles({
+const styles = (theme, p, classes) => ({
   disabled: {},
   focused: {},
   error: {},
@@ -30,7 +30,7 @@ const styles = theme => createStyles({
     }
   },
   weakPasswordHover: {
-    "&:hover:not($disabled):not($focused):not($error):before": {
+    [`&:hover:not(.${classes.disabled}):not(.${classes.focused}):not(.${classes.error}):before`]: {
       borderBottom: "none"
     }
   },
@@ -48,7 +48,7 @@ const styles = theme => createStyles({
     }
   },
   mediumPasswordHover: {
-    "&:hover:not($disabled):not($focused):not($error):before": {
+    [`&:hover:not(.${classes.disabled}):not(.${classes.focused}):not(.${classes.error}):before`]: {
       height: "5px",
       backgroundColor: theme.palette.primary.main,
       borderBottom: "none"
@@ -69,7 +69,7 @@ const styles = theme => createStyles({
     }
   },
   strongPasswordHover: {
-    "&:hover:not($disabled):not($focused):not($error):before": {
+    [`&:hover:not(.${classes.disabled}):not(.${classes.focused}):not(.${classes.error}):before`]: {
       height: "5px",
       backgroundColor: green[600],
       borderBottom: "none"
@@ -123,6 +123,7 @@ class NewPasswordFieldBase extends React.Component<any, any> {
 
     return (
       <TextField
+        fullWidth
         value={this.state.value}
         error={(touched && invalid) || Boolean(helperText)}
         InputProps={{
@@ -166,4 +167,4 @@ class NewPasswordFieldBase extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles)(NewPasswordFieldBase);
+export default withStyles(NewPasswordFieldBase, styles);

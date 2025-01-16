@@ -6,14 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { ReactNode } from "react";
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
-import Launch from "@mui/icons-material/Launch";
-import { openInternalLink } from "../../utils/links";
-import { makeAppStyles } from "../../styles/makeStyles";
+import Launch from '@mui/icons-material/Launch';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { makeAppStyles, openInternalLink } from 'ish-ui';
+import React, { ReactNode } from 'react';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'link'>()((theme, p, classes) => ({
   root: {
     display: "inline-flex",
     alignItems: "center",
@@ -23,7 +22,7 @@ const useStyles = makeAppStyles(theme => ({
     "&:hover": {
       paddingRight: theme.spacing(3),
       cursor: "pointer",
-      "& $link": {
+      [`& .${classes.link}`]: {
         transition: "transform 0.2s ease-in-out, opacity 0.2s ease-in-out",
         transform: "translateX(0)",
         opacity: 1
@@ -48,13 +47,13 @@ interface Props {
 }
 
 const HoverLink = ({ children, link, className }: Props) => {
-  const classes = useStyles();
-  
+  const { classes } = useStyles();
+
   return link ? (
     <div className={clsx(className, classes.root)} onClick={() => openInternalLink(link)}>
       {children}
       <IconButton className={classes.link} color="primary">
-        <Launch fontSize="inherit" />
+        <Launch fontSize="inherit"/>
       </IconButton>
     </div>
   ) : <>{children}</>;

@@ -6,21 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { DefinedTutorRole } from "@api/model";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import Grid from "@mui/material/Grid";
+import { ShowConfirmCaller } from "ish-ui";
 import React from "react";
 import { Dispatch } from "redux";
 import { getFormSyncErrors, InjectedFormProps, reduxForm } from "redux-form";
-import Grid from "@mui/material/Grid";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import { DefinedTutorRole } from "@api/model";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import PayRates from "./PayRates";
 import { useAppSelector } from "../../../../../common/utils/hooks";
+import PayRates from "./PayRates";
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
@@ -38,7 +38,7 @@ interface Props extends InjectedFormProps {
   fetch?: any;
 }
 
-const manualUrl = getManualLink("advancedSetup_Tutor");
+const manualUrl = getManualLink("tutor-pay-rates");
 
 export const TUTOR_ROLES_FORM: string = "TutorRolesForm";
 
@@ -74,6 +74,7 @@ const TutorRolesForm = React.memo<Props>(
           fields={(
             <Grid item xs={12}>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
                 required
@@ -86,7 +87,6 @@ const TutorRolesForm = React.memo<Props>(
                 {
                   action: handleDelete,
                   icon: <DeleteForever/>,
-                  confirm: true,
                   tooltip: "Delete tutor role",
                   confirmText: "Role will be deleted permanently",
                   confirmButtonText: "DELETE"
@@ -107,7 +107,7 @@ const TutorRolesForm = React.memo<Props>(
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormField type="switch" name="active" label="Enabled" color="primary" fullWidth />
+                  <FormField type="switch" name="active" label="Enabled" color="primary" />
                 </Grid>
               </Grid>
             </Grid>

@@ -38,6 +38,7 @@ import ish.oncourse.server.cayenne.Discount
 import ish.oncourse.server.cayenne.Document
 import ish.oncourse.server.cayenne.DocumentVersion
 import ish.oncourse.server.cayenne.Enrolment
+import ish.oncourse.server.cayenne.Faculty
 import ish.oncourse.server.cayenne.FieldConfiguration
 import ish.oncourse.server.cayenne.GradingType
 import ish.oncourse.server.cayenne.Invoice
@@ -76,6 +77,8 @@ class DefaultUserPreference {
     private static final Integer W200 = 200
     private static final Integer W300 = 300
     private static final Integer W400 = 400
+
+    public static final String VET_MODEL_NAME = "VetReport"
 
     private static final TableModelDTO AUDIT_MODEL = new TableModelDTO().with {
         it.columns = [
@@ -513,6 +516,12 @@ class DefaultUserPreference {
                         sortable: false,
                         width: W200,
                         visible: false),
+                new ColumnDTO(title: 'Faculty',
+                        attribute: Course.FACULTY.dot(Faculty.NAME).name,
+                        sortable: true,
+                        width: W200,
+                        sortFields: [Course.FACULTY.outer().dot(Faculty.NAME).name,],
+                        visible: true),
         ]
         it.sortings = [
             new SortingDTO(attribute: Course.NAME.name, ascending: true)
@@ -885,7 +894,7 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Cancelled', attribute: CourseClass.IS_CANCELLED.name, sortable: true, width: W200, visible: true, system: true,  type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Web visible', attribute: CourseClass.IS_SHOWN_ON_WEB.name, sortable: true, width: W200, visible: true, system: true,  type: ColumnTypeDTO.BOOLEAN),
                 new ColumnDTO(title: 'Enabled', attribute: CourseClass.IS_ACTIVE.name, sortable: true, width: W200, visible: true, system: true, type: ColumnTypeDTO.BOOLEAN),
-                new ColumnDTO(title: 'Self paced', attribute: CourseClass.IS_DISTANT_LEARNING_COURSE.name, sortable: true, width: W100, visible: false, system: true, type: ColumnTypeDTO.BOOLEAN),
+                new ColumnDTO(title: 'Type', attribute: CourseClass.TYPE.name, sortable: true, width: W100, visible: false, system: true),
                 new ColumnDTO(title: 'Time zone', attribute: CourseClass.TIME_ZONE_ID, sortable: false, width: W200, visible: false, system: true)
         ]
         it.sortings = [
@@ -901,11 +910,11 @@ class DefaultUserPreference {
                 new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
                 new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
                 new ColumnDTO(title: 'Name', attribute: Contact.FULL_NAME_KEY, sortable: true,
-                        width: W300, visible: true, sortFields: [Contact.LAST_NAME.name,
-                                                                 Contact.FIRST_NAME.name,
-                                                                 Contact.MIDDLE_NAME.name]),
+                        width: W300, visible: true, system: true, sortFields: [Contact.LAST_NAME.name,
+                                                                               Contact.FIRST_NAME.name,
+                                                                               Contact.MIDDLE_NAME.name]),
                 new ColumnDTO(title: 'Birthdate', attribute: Contact.BIRTH_DATE.name, sortable: true, type: ColumnTypeDTO.DATE,
-                        width: W300, visible: true),
+                        width: W300, visible: true, system: true),
                 new ColumnDTO(title: 'Street', attribute: Contact.STREET.name, sortable: true,
                         width: W200, visible: true),
                 new ColumnDTO(title: 'Suburb', attribute: Contact.SUBURB.name, sortable: true,
@@ -949,6 +958,40 @@ class DefaultUserPreference {
         it
     }
 
+    private static final VET_MODEL = new TableModelDTO().with {
+        it.columns = [
+                new ColumnDTO(title: 'Name', attribute: Contact.FULL_NAME_KEY, sortable: true,
+                        width: W300, visible: true, system: true, sortFields: [Contact.LAST_NAME.name,
+                                                                               Contact.FIRST_NAME.name,
+                                                                               Contact.MIDDLE_NAME.name]),
+                new ColumnDTO(title: 'Email', attribute: Contact.EMAIL_KEY, sortable: true,
+                        width: W200, visible: true, system: true),
+                new ColumnDTO(title: 'Birthdate', attribute: Contact.BIRTH_DATE.name, sortable: true, type: ColumnTypeDTO.DATE,
+                        width: W300, visible: false),
+                new ColumnDTO(title: 'Enrolments', attribute: Contact.ENROLMENTS_COUNT_KEY, sortable: false,
+                        width: W200, visible: false),
+        ]
+        it.layout = LayoutTypeDTO.THREE_COLUMN
+        it.filterColumnWidth = W200
+        it
+    }
+
+    private static final TableModelDTO FACULTY_MODEL = new TableModelDTO().with() {
+        it.columns = [
+                new ColumnDTO(title: 'Tags', attribute: Taggable.TAG_COLORS, sortable: false, width: W100, visible: true, type: ColumnTypeDTO.TAGS),
+                new ColumnDTO(title: 'Checklists', attribute: Taggable.CHECKLIST_COLORS, sortable: false, width: W100, visible: true),
+                new ColumnDTO(title: 'Name', attribute: Faculty.NAME.name, sortable: true, width: W400, visible: true),
+                new ColumnDTO(title: 'Code', attribute: Faculty.CODE.name, sortable: true, width: W200, visible: true),
+                new ColumnDTO(title: 'Shown on web', attribute: Faculty.IS_SHOWN_ON_WEB.name, sortable: true, width: W100, type: ColumnTypeDTO.BOOLEAN, visible: false, system: true),
+        ]
+        it.sortings = [
+                new SortingDTO(attribute: Faculty.NAME.name, ascending: true)
+        ]
+        it.layout = LayoutTypeDTO.THREE_COLUMN
+        it.filterColumnWidth = W200
+        it
+    }
+
     // must be below model initializations
     public static final Map<String, TableModelDTO> DEFAULT_MODEL_MAP = [
             (Account.ENTITY_NAME)              : ACCOUNT_MODEL,
@@ -976,16 +1019,18 @@ class DefaultUserPreference {
             (Certificate.ENTITY_NAME)          : CERTIFICATE_MODEL,
             (Survey.ENTITY_NAME)               : STUDENT_FEEDBACK_MODEL,
             (ProductItem.ENTITY_NAME)          : SALE_MODEL,
-            (Outcome.ENTITY_NAME)              : OUTCOME_MODEL,
-            (Assessment.ENTITY_NAME)           : ASSESSMENT_MODEL,
-            (AssessmentSubmission.ENTITY_NAME) : ASSESSMENT_SUBMISSION_MODEL,
-            (Enrolment.ENTITY_NAME)            : ENROLMENT_MODEL,
-            (Message.ENTITY_NAME)              : MESSAGE_MODEL,
-            (PaymentOut.ENTITY_NAME)           : PAYMENT_OUT_MODEL,
-            (DefinedTutorRole.ENTITY_NAME)     : DEFINED_TUTOR_ROLE_MODEL,
-            (CourseClass.ENTITY_NAME)          : COURSECLASS_MODEL,
-            (Contact.ENTITY_NAME)              : CONTACT_MODEL,
-            (PriorLearning.ENTITY_NAME)        : PRIOR_LEARNING_MODEL
+            (Outcome.ENTITY_NAME)             : OUTCOME_MODEL,
+            (Assessment.ENTITY_NAME)          : ASSESSMENT_MODEL,
+            (AssessmentSubmission.ENTITY_NAME): ASSESSMENT_SUBMISSION_MODEL,
+            (Enrolment.ENTITY_NAME)           : ENROLMENT_MODEL,
+            (Message.ENTITY_NAME)             : MESSAGE_MODEL,
+            (PaymentOut.ENTITY_NAME)          : PAYMENT_OUT_MODEL,
+            (DefinedTutorRole.ENTITY_NAME)    : DEFINED_TUTOR_ROLE_MODEL,
+            (CourseClass.ENTITY_NAME)         : COURSECLASS_MODEL,
+            (Contact.ENTITY_NAME)             : CONTACT_MODEL,
+            (PriorLearning.ENTITY_NAME)       : PRIOR_LEARNING_MODEL,
+            (VET_MODEL_NAME)                  : VET_MODEL,
+            (Faculty.ENTITY_NAME)             : FACULTY_MODEL,
 
 
     ] as Map<String, TableModelDTO>

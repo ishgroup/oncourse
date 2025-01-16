@@ -3,29 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import { change } from "redux-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Chip from "@mui/material/Chip";
-import Tooltip from "@mui/material/Tooltip";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Grid from "@mui/material/Grid";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import { StyledCheckbox } from "../../../../common/components/form/formFields/CheckboxField";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { greaterThanNullValidation } from "../../../../common/utils/validation";
-import { CheckoutItem } from "../../../../model/checkout";
-import { changeSummaryItemQuantity, checkoutUpdateSummaryItem } from "../../actions/checkoutSummary";
-import SummaryExpandableClassRow from "./components/SummaryExpandableClassRow";
-import { CHECKOUT_SUMMARY_FORM as summmaryForm } from "./CheckoutSummaryList";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Chip from '@mui/material/Chip';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { formatCurrency, StyledCheckbox } from 'ish-ui';
+import React from 'react';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import { greaterThanNullValidation } from '../../../../common/utils/validation';
+import { CheckoutItem } from '../../../../model/checkout';
+import { changeSummaryItemQuantity, checkoutUpdateSummaryItem } from '../../actions/checkoutSummary';
+import { CHECKOUT_SUMMARY_FORM as summmaryForm } from './CheckoutSummaryList';
+import SummaryExpandableClassRow from './components/SummaryExpandableClassRow';
 
-export const SummaryItemRow = React.memo<any>(props => {
+export const SummaryItemRow = React.memo<
+  {
+    classes, item, header, index, listIndex, itemOriginalPrice, toggleSummaryItem, currencySymbol, dispatch, updatePrices
+  }
+>(props => {
   const {
    classes, item, header, index, listIndex, itemOriginalPrice, toggleSummaryItem, currencySymbol, dispatch, updatePrices
   } = props;
@@ -92,8 +95,7 @@ export const SummaryItemRow = React.memo<any>(props => {
               type="number"
               min="1"
               name={`${item.id}_${listIndex}_itemQuantity`}
-              formatting="inline"
-              hidePlaceholderInEditMode
+              inline
               onChange={handleQuantityChange}
               validate={greaterThanNullValidation}
               defaultValue={item.quantity}
@@ -125,7 +127,7 @@ export const SummaryItemRow = React.memo<any>(props => {
                 name={`${item.id}_${listIndex}_price`}
                 validate={greaterThanNullValidation}
                 onChange={handlePriceChange}
-                listSpacing={false}
+                
                 rightAligned
               />
             </div>
@@ -291,9 +293,9 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
 
                   <Tooltip
                     title="No email address"
-                    disableFocusListener={contact.email}
-                    disableHoverListener={contact.email}
-                    disableTouchListener={contact.email}
+                    disableFocusListener={Boolean(contact.email)}
+                    disableHoverListener={Boolean(contact.email)}
+                    disableTouchListener={Boolean(contact.email)}
                   >
                     <FormControlLabel
                       control={(
@@ -336,9 +338,9 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                   )}
               <Tooltip
                 title="No email address"
-                disableFocusListener={contact.email}
-                disableHoverListener={contact.email}
-                disableTouchListener={contact.email}
+                disableFocusListener={Boolean(contact.email)}
+                disableHoverListener={Boolean(contact.email)}
+                disableTouchListener={Boolean(contact.email)}
               >
                 <FormControlLabel
                   control={(

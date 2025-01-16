@@ -43,8 +43,4 @@ class MessageApiImpl implements MessageApi {
         return service.getRecipients(entity, messageType, search, templateId)
     }
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 }

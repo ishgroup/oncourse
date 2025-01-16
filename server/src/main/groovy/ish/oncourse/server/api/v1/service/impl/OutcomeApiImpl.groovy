@@ -22,10 +22,6 @@ class OutcomeApiImpl implements OutcomeApi {
     @Inject
     private OutcomeApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void create(OutcomeDTO outcome) {

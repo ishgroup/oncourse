@@ -6,25 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Grid } from "@mui/material";
+import { LinkAdornment } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
-import { Grid } from "@mui/material";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
 import {
   ContactLinkAdornment,
-  HeaderContactTitle,
-  LinkAdornment
-} from "../../../../common/components/form/FieldAdornments";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
+import FormField from "../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
+import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
+import { courseFilterCondition, openCourseLink } from "../../courses/utils";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
   handlerCourseChange = courseId => {
@@ -61,14 +61,14 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             fields={(
               <Grid item {...gridItemProps}>
                 <FormField
-                  type="remoteDataSearchSelect"
+                  type="remoteDataSelect"
                   entity="Contact"
                   aqlFilter="isStudent is true"
                   name="contactId"
                   label="Student"
                   selectValueMark="id"
-                  selectLabelCondition={contactLabelCondition}
-                  defaultDisplayValue={values && defaultContactName(values.studentName)}
+                  selectLabelCondition={getContactFullName}
+                  defaultValue={values && values.studentName}
                   labelAdornment={
                     <ContactLinkAdornment id={values?.contactId} />
                   }
@@ -100,7 +100,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
         </Grid>
         <Grid item xs={12}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Course"
             aqlFilter="allowWaitingLists is true"
             name="courseId"
@@ -108,7 +108,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             selectValueMark="id"
             selectLabelCondition={v => v.name}
             selectFilterCondition={courseFilterCondition}
-            defaultDisplayValue={values && values.courseName}
+            defaultValue={values && values.courseName}
             labelAdornment={<LinkAdornment link={values.courseId} linkHandler={openCourseLink} />}
             itemRenderer={CourseItemRenderer}
             onChange={this.handlerCourseChange}

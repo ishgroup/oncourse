@@ -3,34 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Room, Site } from "@api/model";
-import * as React from "react";
-import Grid, { GridSize } from "@mui/material/Grid";
-import { arrayInsert, arrayRemove } from "redux-form";
-import ScreenShare from "@mui/icons-material/ScreenShare";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { FormControlLabel } from "@mui/material";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import Collapse from "@mui/material/Collapse";
-import Tooltip from "@mui/material/Tooltip";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import { State } from "../../../../reducers/state";
-import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoogleMap";
-import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
-import { validateDeleteRoom } from "../../rooms/actions";
-import { openInternalLink } from "../../../../common/utils/links";
-import TimetableButton from "../../../../common/components/buttons/TimetableButton";
-import { openRoomLink } from "../../rooms/utils";
-import { EditViewProps } from "../../../../model/common/ListView";
+import { Room, Site } from '@api/model';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ScreenShare from '@mui/icons-material/ScreenShare';
+import { Collapse, FormControlLabel, Grid } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { normalizeNumber, openInternalLink, TimetableButton } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayInsert, arrayRemove } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import MinifiedEntitiesList from '../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList';
+import CoordinatesValueUpdater from '../../../../common/components/google-maps/CoordinatesValueUpdater';
+import StaticGoogleMap from '../../../../common/components/google-maps/StaticGoogleMap';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { validateDeleteRoom } from '../../rooms/actions';
+import { openRoomLink } from '../../rooms/utils';
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -44,34 +41,39 @@ const validateRooms = (value: Room[]) => {
 
 const openRoom = (entity, id) => openRoomLink(id);
 
-const SitesRoomFields = props => {
-  const { item } = props;
+export const validateRoomUniqueName = (value, allValues) => {
+  const matches = allValues.rooms.filter(item => item.name && item.name.trim() === value.trim());
 
-  return (
-    <Grid container columnSpacing={3} rowSpacing={2}>
-      <Grid item xs={12}>
-        <FormField
-          type="text"
-          name={`${item}.name`}
-          label="Name"
-          className="mr-2"
-          required
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FormField
-          type="number"
-          name={`${item}.seatedCapacity`}
-          label="Seated Capacity"
-          normalize={normalizeNumber}
-          required
-        />
-      </Grid>
-    </Grid>
-  );
+  return matches.length > 1 ? "Room name must be unique" : undefined;
 };
 
-const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
+const SitesRoomFields = ({ item }) => (
+  <Grid container columnSpacing={3} rowSpacing={2}>
+    <Grid item xs={12}>
+      <FormField
+        type="text"
+        name={`${item}.name`}
+        label="Name"
+        className="mr-2"
+        debounced={false}
+        validate={validateRoomUniqueName}
+        required
+      />
+    </Grid>
+    <Grid item xs={12}>
+      <FormField
+        type="number"
+        name={`${item}.seatedCapacity`}
+        label="Seated Capacity"
+        normalize={normalizeNumber}
+        debounced={false}
+        required
+      />
+    </Grid>
+  </Grid>
+);
+
+const getLayoutArray = (twoColumn: boolean): { [key: string]: any }[] =>
   (twoColumn
     ? [{ xs: 12 }, { xs: 12 }, { xs: 4 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 8 }, { xs: 12 }]
     : [{ xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }]);
@@ -232,12 +234,12 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
         {timezones && (
           <Grid item xs={layoutArray[2].xs} className="mb-2">
             <FormField
-              type="searchSelect"
+              type="select"
               name="timezone"
               label="Default timezone"
               items={timezones}
               labelAdornment={(
-                <Tooltip title="Timetables will be adjusted to users' timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                <Tooltip title="Timetables will be adjusted to user's timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
                   <IconButton classes={{ root: "inputAdornmentButton" }}>
                     <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
                   </IconButton>
@@ -272,7 +274,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
               <Grid item xs={12}>
                 {Boolean(countries?.length) && (
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="country"
@@ -295,6 +297,16 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             </Grid>
           </Grid>
         </Collapse>
+
+        <CustomFields
+          entityName="Site"
+          fieldName="customFields"
+          entityValues={values}
+          form={form}
+          gridItemProps={{
+            xs: twoColumn ? 6 : 12,
+          }}
+        />
 
         <Grid item xs={layoutArray[8].xs}>
           <MinifiedEntitiesList

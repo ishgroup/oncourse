@@ -13,7 +13,7 @@ import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/c
 import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
 import { fundingUploadsPath } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import { getOutcomeTags } from "./actions";
 import OutcomeEditView from "./components/OutcomeEditView";
@@ -90,13 +90,13 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Outcome and entityId" },
   { title: "Classes", list: "class", expression: "enrolments.outcomes.id" },
   { title: "Enrolments", list: "enrolment", expression: "outcomes.id" },
   { title: "Students", list: "contact", expression: "student.enrolments.outcomes.id" },
-  { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.id" }
-
+  { title: "Certificates", list: "certificate", expression: "certificateOutcomes.outcome.id" },
+  { title: "VET reporting", list: "vetReporting", expression: "student.enrolments.outcomes.id" }
 ];
 
 const nameCondition = (val: Outcome) => val.studentName;
@@ -115,7 +115,7 @@ const secondaryColumnCondition = rows => {
   return "Non VET";
 };
 
-const manualLink = getManualLink("delivery_outcomes");
+const manualLink = getManualLink("setting-and-modifying-outcomes");
 
 const Outcomes: React.FC<OutcomesProps> = props => {
   const {

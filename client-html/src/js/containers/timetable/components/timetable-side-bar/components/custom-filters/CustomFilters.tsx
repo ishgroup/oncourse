@@ -6,12 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useContext } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import clsx from "clsx";
 import { Filter } from "@api/model";
+import clsx from "clsx";
+import React, { useCallback, useContext } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import FilterGroup from "../../../../../../common/components/list-view/components/side-bar/components/FilterGroup";
+import {
+  StubFilterItemBase
+} from "../../../../../../common/components/list-view/components/side-bar/components/StubFilterItem";
+import { Fetch } from "../../../../../../model/common/Fetch";
 import { CoreFilter, SavingFilterState } from "../../../../../../model/common/ListView";
 import { State } from "../../../../../../reducers/state";
 import {
@@ -20,9 +24,7 @@ import {
   setTimetableFilters,
   setTimetableSavingFilter,
 } from "../../../../actions";
-import { StubFilterItemBase } from "../../../../../../common/components/list-view/components/side-bar/components/StubFilterItem";
 import { TimetableContext } from "../../../../Timetable";
-import { Fetch } from "../../../../../../model/common/Fetch";
 
 interface Props {
   filters?: CoreFilter[];

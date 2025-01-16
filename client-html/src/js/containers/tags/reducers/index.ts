@@ -1,6 +1,7 @@
 import { IAction } from "../../../common/actions/IshAction";
 import {
   GET_ALL_TAGS_FULFILLED,
+  GET_ENTITY_SPECIAL_TAGS_REQUEST_FULFILLED,
   GET_ENTITY_TAGS_REQUEST_FULFILLED,
 } from "../actions";
 import { TagsState } from "./state";
@@ -11,6 +12,8 @@ class TagsInitialState implements TagsState {
   allChecklists = [];
 
   entityTags = {};
+
+  entitySpecialTags = {};
 }
 
 export const tagsReducer = (state: TagsState = new TagsInitialState(), action: IAction<any>): any => {
@@ -19,6 +22,18 @@ export const tagsReducer = (state: TagsState = new TagsInitialState(), action: I
       return {
         ...state,
         ...action.payload
+      };
+    }
+
+    case GET_ENTITY_SPECIAL_TAGS_REQUEST_FULFILLED: {
+      const { tags, entityName } = action.payload;
+
+      return {
+        ...state,
+        entitySpecialTags: {
+          ...state.entityTags,
+          [entityName]: tags
+        }
       };
     }
 

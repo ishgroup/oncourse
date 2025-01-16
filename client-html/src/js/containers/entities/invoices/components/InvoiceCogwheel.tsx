@@ -6,32 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- memo, NamedExoticComponent, useCallback, useEffect, useMemo, useState 
-} from "react";
 import MenuItem from "@mui/material/MenuItem";
-import { Dispatch } from "redux";
+import { openInternalLink } from "ish-ui";
+import React, { memo, NamedExoticComponent, useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Dispatch } from "redux";
 import { change, isDirty, reset } from "redux-form";
-import { State } from "../../../../reducers/state";
-import {
-  duplicateAndReverseInvoice,
-  duplicateQuote,
-  getAmountOwing,
-  setContraInvoices
-} from "../actions";
-import ContraInvoiceModal from "./ContraInvoiceModal";
+import { setListCreatingNew, setListSelection, } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import {
-  setListCreatingNew,
-  setListSelection,
-} from "../../../../common/components/list-view/actions";
 import history from "../../../../constants/History";
 import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
-import { isInvoiceType } from "../utils";
+import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import { openInternalLink } from "../../../../common/utils/links";
+import { duplicateAndReverseInvoice, duplicateQuote, getAmountOwing, setContraInvoices } from "../actions";
+import { isInvoiceType } from "../utils";
+import ContraInvoiceModal from "./ContraInvoiceModal";
 
 interface Props extends CogwhelAdornmentProps {
   dispatch: any;

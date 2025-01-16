@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import { Account, VoucherProduct } from "@api/model";
+import React from "react";
 import { connect } from "react-redux";
+import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
 import { AccessState } from "../../../../common/reducers/accessReducer";
 import { plainCorporatePassPath } from "../../../../constants/Api";
+import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import CorporatePassCommon from "../../common/components/CorporatePassCommon";
 import VoucherProductGeneral from "./VoucherProductGeneral";
-import { EditViewProps } from "../../../../model/common/ListView";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 
 interface VoucherProductEditViewProps extends EditViewProps<VoucherProduct>{
   accounts?: Account[];
@@ -29,7 +29,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="mb-2" />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3 mb-2" />
   },
   {
     label: "Corporate passes",
@@ -50,7 +50,6 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
     dispatch,
     dirty,
     form,
-    nestedIndex,
     rootEntity,
     twoColumn,
     showConfirm,
@@ -58,7 +57,8 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
     accounts,
     access,
     submitSucceeded,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   const corporatePassAccess = access[plainCorporatePassPath] && access[plainCorporatePassPath]["GET"];
@@ -67,6 +67,7 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? checkedItems : []}
       itemProps={{
         values,
@@ -75,7 +76,6 @@ const VoucherProductEditView: React.FC<VoucherProductEditViewProps> = props => {
         dispatch,
         dirty,
         form,
-        nestedIndex,
         rootEntity,
         twoColumn,
         showConfirm,

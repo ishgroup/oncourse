@@ -1,12 +1,11 @@
-import React from "react";
-import DayPeriodFilter from "./components/day-period-filter/DayPeriodFilter";
-import MiniCalendar from "./components/mini-calendar/MiniCalendar";
-import withStyles from "@mui/styles/withStyles";
-import { createStyles } from "@mui/material";
-import CustomFilters from "./components/custom-filters/CustomFilters";
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import CustomFilters from './components/custom-filters/CustomFilters';
+import DayPeriodFilter from './components/day-period-filter/DayPeriodFilter';
+import MiniCalendar from './components/mini-calendar/MiniCalendar';
 
 const styles = theme =>
-  createStyles({
+  ({
     sideBar: {
       display: "flex",
       flexDirection: "column",
@@ -16,7 +15,7 @@ const styles = theme =>
     }
   });
 
-const TimetableSideBar = ({ classes }) => (
+const TimetableSideBar = ({ classes }: { classes?: any }) => (
   <div className={classes.sideBar}>
     <MiniCalendar />
     <DayPeriodFilter />
@@ -24,4 +23,4 @@ const TimetableSideBar = ({ classes }) => (
   </div>
 );
 
-export default withStyles(styles)(TimetableSideBar);
+export default withStyles(TimetableSideBar, styles);

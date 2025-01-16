@@ -10,7 +10,10 @@
  */
 package ish.persistence;
 
-import ish.common.types.*;
+import ish.common.types.ClassFundingSource;
+import ish.common.types.DeliveryMode;
+import ish.common.types.TwoFactorAuthorizationStatus;
+import ish.common.types.TypesUtil;
 import ish.math.Country;
 import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
@@ -19,7 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -44,6 +48,8 @@ public abstract class CommonPreferenceController {
 	static {
 		DEPRECATED_PREFERENCES.add("print.header");
 	}
+
+	private static final String DEFAULT_PORTAL_URL = "https://www.skillsoncourse.com.au";
 
 	protected static CommonPreferenceController sharedController;
 
@@ -162,6 +168,21 @@ public abstract class CommonPreferenceController {
 			throw new IllegalArgumentException();
 		}
 		return apiKey;
+	}
+
+	public  String getPaymentGatewayPassEWay() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_EWAY, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException();
+		}
+		return apiKey;
+	}
+
+	/**
+	 * @return payment gateway type (EWAY, EWAY_TEST, WINDCAVE, TEST, DISABLED)
+	 */
+	public  String getPaymentGatewayType() {
+		return getValue(PAYMENT_GATEWAY_TYPE, false);
 	}
 
 	/**
@@ -1029,6 +1050,8 @@ public abstract class CommonPreferenceController {
 			return getNumberOfLoginAttempts();
 		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
 			return getTutorialSkipSystemUser();
+		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
+			return getExtendedSearchTypesAllowed();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1194,6 +1217,12 @@ public abstract class CommonPreferenceController {
 			setNumberOfLoginAttempts((Integer) value);
 		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
 			setTutorialSkipSystemUser((String) value);
+		} else if(BACKGROUND_QUALITY_SCALE.equals(key)){
+			setBackgroundQualityScale((String) value);
+		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
+			setDefaultInvoiceLineAccount((Long) value);
+		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
+			setExtendedTypesAllowed((Boolean) value);
 		}
 	}
 
@@ -1322,6 +1351,11 @@ public abstract class CommonPreferenceController {
 		setValue(PORTAL_HIDE_CLASS_ROLL_CONTACT_EMAIL, false, value);
 	}
 
+	public String getPortalUrl() {
+		String value = getValue(PORTAL_WEBSITE_URL, false);
+		return value == null ? DEFAULT_PORTAL_URL : value;
+	}
+
 	private static final boolean DEF_INACTIVE_ACCOUNT = true;
 	private static final boolean DEF_PASSWORD_COMPLEXITY = false;
 	private static final Integer DEF_NUMBER_LOGIN_ATTEMPTS = 5;
@@ -1386,7 +1420,47 @@ public abstract class CommonPreferenceController {
 		return getValue(TUTORIAL_SKIP_SYSTEMUSER, false);
 	}
 
+	public String getBackgroundQualityScale(){
+		return getValue(BACKGROUND_QUALITY_SCALE, false);
+	}
+
+	public String getDefaultInvoiceLineAccount(){
+		return getValue(DEFAULT_INVOICE_LINE_ACCOUNT, false);
+	}
+
 	public void setTutorialSkipSystemUser(String value){
 		setValue(TUTORIAL_SKIP_SYSTEMUSER, false, value);
+	}
+
+	public void setBackgroundQualityScale(String value){
+		setValue(BACKGROUND_QUALITY_SCALE, false, value);
+	}
+
+	public void setDefaultInvoiceLineAccount(Long value){
+		setValue(DEFAULT_INVOICE_LINE_ACCOUNT, false, String.valueOf(value));
+	}
+
+	public Boolean getExtendedSearchTypesAllowed(){
+		String value = getValue(EXTENDED_SEARCH_TYPES, false);
+		return Boolean.parseBoolean(value);
+	}
+
+	public void setExtendedTypesAllowed(Boolean value){
+		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
+	}
+
+
+
+	public String getChargebeeSubscriptionId() {
+		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
+	}
+
+	public String getChargebeeAllowedAddons() {
+		return getValue(CHARGEBEE_ALLOWED_ADDONS, false);
+	}
+
+	public Boolean ifCollegeActive() {
+		String value = getValue(COLLEGE_ACTIVE, false);
+		return value == null || Boolean.parseBoolean(value);
 	}
 }

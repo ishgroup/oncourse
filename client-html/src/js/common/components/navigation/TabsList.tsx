@@ -6,21 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useEffect, useRef, useState
-} from "react";
-import Grid, { GridSize } from "@mui/material/Grid";
-import clsx from "clsx";
-import { RouteComponentProps, withRouter } from "react-router";
-import NewsRender from "../news/NewsRender";
-import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from "../../../constants/Config";
-import { LSGetItem, LSSetItem } from "../../utils/storage";
-import { EditViewProps } from "../../../model/common/ListView";
-import { useStickyScrollSpy } from "../../utils/hooks";
-import { makeAppStyles } from "../../styles/makeStyles";
-import SideBarHeader from "../layout/side-bar-list/SideBarHeader";
+import Grid, { GridSize } from '@mui/material/Grid';
+import clsx from 'clsx';
+import { AnyArgFunction, makeAppStyles } from 'ish-ui';
+import React, { useEffect, useRef, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { APP_BAR_HEIGHT, TAB_LIST_SCROLL_TARGET_ID } from '../../../constants/Config';
+import { EditViewProps } from '../../../model/common/ListView';
+import { LSGetItem, LSSetItem } from '../../utils/storage';
+import SideBarHeader from '../layout/side-bar-list/SideBarHeader';
+import NewsRender from '../news/NewsRender';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   listContainer: {
     flex: 1,
     overflowY: 'auto',
@@ -37,18 +34,19 @@ const useStyles = makeAppStyles(theme => ({
   }
 }));
 
-export interface TabsListItem {
+export interface TabsListItem<E = any> {
   readonly type?: string;
-  component: (props: any) => React.ReactNode;
+  component: (props: EditViewProps<E> & any) => React.ReactNode;
   labelAdornment?: React.ReactNode;
   expandable?: boolean;
   label: string;
 }
 
 interface Props {
+  items: TabsListItem[];
+  onParentScroll: AnyArgFunction;
   classes?: any;
   itemProps?: EditViewProps & any;
-  items: TabsListItem[];
   newsOffset?: string;
 }
 
@@ -62,12 +60,11 @@ const TabsList = React.memo<Props & RouteComponentProps>((
     itemProps = {},
     history, 
     location,
-    newsOffset
+    newsOffset,
+    onParentScroll
   }
 ) => {
-  const { scrollSpy } = useStickyScrollSpy();
-  const classes = useStyles();
-
+  const { classes } = useStyles();
   const scrolledPX = useRef<number>(0);
   const scrollNodes = useRef<HTMLElement[]>([]);
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -120,18 +117,21 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       const search = new URLSearchParams(location.search);
       const expandTab = Number(search.get("expandTab"));
 
-      if (search.has("expandTab") && !isNaN(expandTab)) {
-        setTimeout(() => {
-          scrollToSelected(items[expandTab], expandTab);
-          search.delete("expandTab");
+      if (search.has("expandTab")) {
+        if (items[expandTab]) {
+          setTimeout(() => {
+            scrollToSelected(items[expandTab], expandTab);
+          }, 300);
+        }
 
-          const updatedSearch = decodeURIComponent(search.toString());
+        search.delete("expandTab");
 
-          history.replace({
-            pathname: location.pathname,
-            search: updatedSearch ? `?${updatedSearch}` : ""
-          });
-        }, 300);
+        const updatedSearch = decodeURIComponent(search.toString());
+
+        history.replace({
+          pathname: location.pathname,
+          search: updatedSearch ? `?${updatedSearch}` : ""
+        });
       }
     }
   }, [location.search]);
@@ -145,11 +145,11 @@ const TabsList = React.memo<Props & RouteComponentProps>((
       return;
     }
 
-    scrollSpy(e);
-
     if (e.target.id !== TAB_LIST_SCROLL_TARGET_ID) {
       return;
     }
+
+    onParentScroll(e);
 
     const isScrollingDown = scrolledPX.current < e.target.scrollTop;
 

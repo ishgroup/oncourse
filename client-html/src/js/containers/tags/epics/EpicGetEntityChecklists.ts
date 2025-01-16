@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Epic } from "redux-observable";
-import { Create, Request } from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { GET_ENTITY_TAGS_REQUEST, GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../actions";
 import { Tag } from "@api/model";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import { Create, Request } from "../../../common/epics/EpicUtils";
+import { GET_ENTITY_TAGS_REQUEST, GET_ENTITY_TAGS_REQUEST_FULFILLED } from "../actions";
+import TagsService from "../services/TagsService";
 
 const request: Request<any, { entityName: string }> = {
   type: GET_ENTITY_TAGS_REQUEST,

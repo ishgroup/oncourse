@@ -3,24 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import Dialog from "@mui/material/Dialog";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import DialogActions from "@mui/material/DialogActions";
-import { Document, Tag } from "@api/model";
-import Tooltip from "@mui/material/Tooltip";
-import ButtonBase from "@mui/material/ButtonBase";
-import Grid from "@mui/material/Grid";
-import LinearProgress from "@mui/material/LinearProgress";
-import FormField from "../../../formFields/FormField";
-import DocumentIconsChooser from "../items/DocumentIconsChooser";
-import { dialogStyles } from "./dialogStyles";
-
-import { getLatestDocumentItem } from "../utils";
-import DocumentShare from "../items/DocumentShare";
-import Button from "@mui/material/Button";
+import { Document, Tag } from '@api/model';
+import { Button, Grid, Typography } from '@mui/material';
+import ButtonBase from '@mui/material/ButtonBase';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import LinearProgress from '@mui/material/LinearProgress';
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { DocumentIconsChooser } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { getLatestDocumentItem } from '../../../../../utils/documents';
+import FormField from '../../../formFields/FormField';
+import DocumentShare from '../../DocumentShare';
+import { dialogStyles } from './dialogStyles';
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -55,11 +52,6 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
     }
   }
 
-  unlink = () => {
-    const { index, onUnlink } = this.props;
-    onUnlink(index);
-  };
-
   renderType(lastVersion, validUrl, type) {
     const {
       classes, item, itemPath, tags, onClose, dispatch, form, onSave
@@ -69,28 +61,39 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
 
     return (
       <div>
-        <div className="mt-1 mb-2 centeredFlex">
-          <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
-            <div>
-              <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
-                <DocumentIconsChooser
-                  hovered={Boolean(validUrl)}
-                  type={lastVersion.mimeType}
-                  thumbnail={item.thumbnail}
-                />
-              </ButtonBase>
+        <Grid container rowSpacing={2} className="mt-0 mb-2 centeredFlex">
+          <Grid item xs={12} className="d-flex">
+            <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
+              <div>
+                <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
+                  <DocumentIconsChooser
+                    hovered={Boolean(validUrl)}
+                    type={lastVersion.mimeType}
+                    thumbnail={item.thumbnail}
+                  />
+                </ButtonBase>
+              </div>
+            </Tooltip>
+            <div className="flex-fill">
+              <FormField
+                type="text"
+                name={`${itemPath}.name`}
+                label="Name"
+                required
+                disabled={readOnly}
+              />
             </div>
-          </Tooltip>
-          <div className="flex-fill ml-3">
+          </Grid>
+          <Grid item xs={12}>
             <FormField
-              type="text"
-              name={`${itemPath}.name`}
-              label="Name"
-              required
+              type="tags"
+              name={`${itemPath}.tags`}
+              tags={tags}
               disabled={readOnly}
+              validateEntity="Document"
             />
-          </div>
-        </div>
+          </Grid>
+        </Grid>
 
         <DocumentShare
           validUrl={validUrl}
@@ -102,27 +105,13 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
           noPaper
         />
 
-        <Grid container columnSpacing={3} rowSpacing={2} className="mt-1 centeredFlex">
-          <Grid item xs={12}>
-            <FormField
-              type="tags"
-              name={`${itemPath}.tags`}
-              tags={tags}
-              rerenderOnEveryChange
-              disabled={readOnly}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormField
-              type="text"
-              name={`${itemPath}.description`}
-              label="Description"
-              multiline
-              fullWidth
-              disabled={readOnly}
-            />
-          </Grid>
-        </Grid>
+        <FormField
+          type="text"
+          name={`${itemPath}.description`}
+          label="Description"
+          multiline
+          disabled={readOnly}
+        />
 
         <DialogActions classes={{ root: classes.actions }}>
           <Button color="primary" onClick={onClose}>
@@ -200,7 +189,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
                   </Typography>
                 </div>
 
-                {loading && <LinearProgress className={classes.documentLoading} />}
+                {loading && <LinearProgress className={classes.documentLoading}/>}
               </div>
 
               {!loading && (
@@ -216,4 +205,4 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
   }
 }
 
-export default withStyles(dialogStyles)(DocumentEditDialog) as React.ComponentClass<Props>;
+export default withStyles(DocumentEditDialog, dialogStyles) as React.ComponentClass<Props>;

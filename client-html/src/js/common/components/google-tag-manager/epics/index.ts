@@ -7,9 +7,9 @@
  */
 
 import { combineEpics } from "redux-observable";
+import { EpicGetGoogleAnalyticsParameters } from "./EpicGetGoogleAnalyticsParameters";
 import { EpicInitGoogleAnalytics } from "./EpicInitGoogleAnalytics";
 import { EpicSendGoogleAnalytics } from "./EpicSendGoogleAnalytics";
-import { EpicGetGoogleAnalyticsParameters } from "./EpicGetGoogleAnalyticsParameters";
 
 export const EpicGoogleAnalytics = combineEpics(
   EpicGetGoogleAnalyticsParameters,

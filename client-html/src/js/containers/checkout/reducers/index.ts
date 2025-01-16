@@ -3,15 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { decimalPlus } from "ish-ui";
 import { IAction } from "../../../common/actions/IshAction";
-import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
-import {
-  CheckoutAddItemsRequiest,
-  CheckoutDiscount,
-  CheckoutItem,
-  CheckoutState
-} from "../../../model/checkout";
-import { getContactName } from "../../entities/contacts/utils";
+import { CheckoutAddItemsRequiest, CheckoutDiscount, CheckoutItem, CheckoutState } from "../../../model/checkout";
+import { getContactFullName } from "../../entities/contacts/utils";
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
@@ -29,28 +24,11 @@ import {
   CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../actions";
 import {
-  getDefaultPayer,
-  getUpdatedSummaryItem,
-  getUpdatedSummaryVouchers,
-  getUpdatedVoucherDiscounts,
-  listPreviousInvoices,
-  modifySummaryLisItem,
-  setSummaryListWithDefaultPayer
-} from "../utils";
-import {
   CHECKOUT_CLEAR_CONTACT_EDIT_RECORD,
   CHECKOUT_GET_CONTACT_FULFILLED,
   CHECKOUT_GET_RELATED_CONTACT_FULFILLED,
   CHECKOUT_UPDATE_CONTACT_RELATIONS
 } from "../actions/checkoutContact";
-import {
-  CHECKOUT_CLEAR_COURSE_CLASS_LIST,
-  CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLED,
-  CHECKOUT_GET_ITEM_MEMBERSHIP_FULFILLED,
-  CHECKOUT_GET_ITEM_PRODUCT_FULFILLED,
-  CHECKOUT_GET_ITEM_VOUCHER_FULFILLED,
-  CLEAR_CHECKOUT_ITEM_RECORD
-} from "../actions/chekoutItem";
 import {
   CHECKOUT_CLEAR_CC_IFRAME_URL,
   CHECKOUT_CLEAR_PAYMENT_STATUS,
@@ -89,6 +67,23 @@ import {
   CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED
 } from "../actions/checkoutSummary";
+import {
+  CHECKOUT_CLEAR_COURSE_CLASS_LIST,
+  CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLED,
+  CHECKOUT_GET_ITEM_MEMBERSHIP_FULFILLED,
+  CHECKOUT_GET_ITEM_PRODUCT_FULFILLED,
+  CHECKOUT_GET_ITEM_VOUCHER_FULFILLED,
+  CLEAR_CHECKOUT_ITEM_RECORD
+} from "../actions/chekoutItem";
+import {
+  getDefaultPayer,
+  getUpdatedSummaryItem,
+  getUpdatedSummaryVouchers,
+  getUpdatedVoucherDiscounts,
+  listPreviousInvoices,
+  modifySummaryLisItem,
+  setSummaryListWithDefaultPayer
+} from "../utils";
 
 const initial: CheckoutState = {
   step: 0,
@@ -1014,7 +1009,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
               const filteredRelations = relationTypes.filter(r => r.isReverseRelation === !isReverseRelation);
               const relation = filteredRelations.find(r => r.value === String(parseInt(conRel.relationId, 10)));
               const relationName = relation && relation.label;
-              const relatedContactName = getContactName(c);
+              const relatedContactName = getContactFullName(c as any);
               rc.relationString = relationName && relatedContactName ? `${relationName} of ${relatedContactName}` : "";
             }
           });

@@ -3,32 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
-import Hidden from "@mui/material/Hidden";
-import { FormControlLabel } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import Checkbox from "@mui/material/Checkbox";
-import {
-  Form, reduxForm, getFormValues, initialize
-} from "redux-form";
-import { connect } from "react-redux";
-import isEmpty from "lodash.isempty";
+import { Divider, FormControlLabel, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
-import ConfirmBase from "../../../../../common/components/dialog/confirm/ConfirmBase";
+import Checkbox from "@mui/material/Checkbox";
+import Hidden from "@mui/material/Hidden";
+import Typography from "@mui/material/Typography";
+import { ConfirmBase } from "ish-ui";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Form, getFormValues, initialize, reduxForm } from "redux-form";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import * as Model from "../../../../../model/preferences/Ldap";
-import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import * as Model from "../../../../../model/preferences/Ldap";
+import { State } from "../../../../../reducers/state";
+import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
-const manualUrl = getManualLink("generalPrefs_ldap");
+const manualUrl = getManualLink("setting-your-general-preferences#ldap");
 
 class LDAPBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
@@ -137,8 +133,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapHost.uniqueKey}
                 label="Host"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -151,8 +146,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapBindUserDN.uniqueKey}
                 label="Bind user DN"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -165,8 +159,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapServerPort.uniqueKey}
                 label="Port, e.g. 389"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -203,8 +196,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapBindUserPass.uniqueKey}
                 label="Bind user password"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -217,8 +209,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapBaseDN.uniqueKey}
                 label="Base DN"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -253,8 +244,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapUsernameAttribute.uniqueKey}
                 label="Username attribute"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden xsDown>
@@ -267,7 +257,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapUserSearchFilter.uniqueKey}
                 label="User search filter"
                 disabled={!licence || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 
@@ -312,7 +301,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                     name={this.formModel.LdapSaslAuthentication.uniqueKey}
                     color="primary"
                     disabled={!licence || !simpleAuthEnabled}
-                    fullWidth
                     stringValue
                   />
                 )}
@@ -332,7 +320,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapGroupMemberAttribute.uniqueKey}
                 label="Group member attribute"
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 
@@ -346,7 +333,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapGroupAttribute.uniqueKey}
                 label="Group name attribute"
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 
@@ -360,7 +346,6 @@ class LDAPBaseForm extends React.Component<any, any> {
                 name={this.formModel.LdapGroupSearchFilter.uniqueKey}
                 label="Group search filter"
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
-                fullWidth
               />
             </Grid>
 

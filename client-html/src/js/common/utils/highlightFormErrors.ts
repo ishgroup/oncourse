@@ -20,7 +20,7 @@ export const animateFormErrors = (target: Element | Document = document) => {
 };
 
 export const onSubmitFail = (errors, dispatch, submitError, props, options?) => {
-  const firstErrorNode = document.getElementById(getFirstErrorNodePath(errors));
+  const firstErrorNode = document.querySelector(`[name="${getFirstErrorNodePath(errors)}"]`);
 
   if (firstErrorNode) {
     firstErrorNode.scrollIntoView(options || { behavior: 'smooth', block: 'center' });

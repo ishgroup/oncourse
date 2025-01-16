@@ -8,11 +8,11 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-import DuplicateTraineeshipModal, { DUPLICATE_TRAINEESHIP_FORM } from
-    "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
-import { stubFunction } from "../../../js/common/utils/common";
+import DuplicateTraineeshipModal, {
+  DUPLICATE_TRAINEESHIP_FORM
+} from "../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateTraineeshipModal";
 import { defaultComponents } from "../../common/Default.Components";
-import { III_DD_MMM_YYYY } from "../../../js/common/utils/dates/format";
+import { III_DD_MMM_YYYY, stubFunction } from "ish-ui";
 
 describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => {
   defaultComponents({
@@ -82,7 +82,7 @@ describe("Virtual rendered DuplicateTraineeshipModal of Class list view", () => 
           copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags,
           copyNotes: initialValues.copyNotes,
         });
-      }, 1000);
+      }, 500);
     }
   });
 });

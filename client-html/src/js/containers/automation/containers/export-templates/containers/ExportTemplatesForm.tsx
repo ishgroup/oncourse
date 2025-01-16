@@ -6,36 +6,33 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useState
-} from "react";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import { ExportTemplate, OutputType } from "@api/model";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import FileCopy from "@mui/icons-material/FileCopy";
 import Grid from "@mui/material/Grid";
-import { ExportTemplate, OutputType } from "@api/model";
-import { Dispatch } from "redux";
 import Grow from "@mui/material/Grow";
-import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Dispatch } from "redux";
+import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "../../../../../common/utils/hooks";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { EntityItems, EntityName } from "../../../../../model/entities/common";
 import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
+import { EntityItems, EntityName } from "../../../../../model/entities/common";
+import AvailableFrom, { mapAvailableFrom } from "../../../components/AvailableFrom";
+import Bindings, { BindingsRenderer } from "../../../components/Bindings";
+import getConfigActions from "../../../components/ImportExportConfig";
+import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
+import { validateKeycode, validateNameForQuotes } from "../../../utils";
+import ScriptCard from "../../scripts/components/cards/CardBase";
 
-const manualUrl = getManualLink("advancedSetup_Export");
+const manualUrl = getManualLink("export-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"ExportTemplate" and entityId == ${id}`;
 
 const outputTypes = Object.keys(OutputType).map(mapSelectItems);
@@ -51,12 +48,13 @@ interface Props extends InjectedFormProps {
   history: any,
   syncErrors: any,
   nextLocation: string,
-  emailTemplates?: CatalogItemType[]
+  emailTemplates?: CatalogItemType[],
+  exportTemplates?: CatalogItemType[]
 }
 
 const ExportTemplatesForm = React.memo<Props>(
   ({
-    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates,
+    dirty, form, handleSubmit, isNew, invalid, values, syncErrors, emailTemplates, exportTemplates,
      dispatch, onCreate, onUpdate, onUpdateInternal, onDelete, history, nextLocation
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
@@ -71,9 +69,9 @@ const ExportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
+      ({ keyCode, name }) => {
         setDisableRouteConfirm(true);
-        onCreate({ ...values, id: null, keyCode });
+        onCreate({ ...values, id: null, keyCode, name });
         onDialogClose();
       },
       [values]
@@ -129,12 +127,34 @@ const ExportTemplatesForm = React.memo<Props>(
       }
     }, [nextLocation, dirty]);
 
+    const importExportActions = useMemo(() => getConfigActions("ExportTemplate", values.name, values.id), [values.id]);
+
+    const validateTemplateCopyName = useCallback(name => {
+      if (exportTemplates.find(e => e.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [exportTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (exportTemplates.find(e => e.id !== values.id && e.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [exportTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialogClose} onSave={onDialogSave} />
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialogClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
+
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew}/>}
 
           <AppBarContainer
             values={values}
@@ -155,9 +175,10 @@ const ExportTemplatesForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
-                  margin="none"
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />
@@ -168,10 +189,10 @@ const ExportTemplatesForm = React.memo<Props>(
                 {!isNew && !isInternal && (
                   <AppBarActions
                     actions={[
+                      ...importExportActions,
                       {
                         action: handleDelete,
-                        icon: <DeleteForever />,
-                        confirm: true,
+                        icon: <DeleteForever/>,
                         tooltip: "Delete export template",
                         confirmText: "Export template will be deleted permanently",
                         confirmButtonText: "DELETE"
@@ -193,6 +214,27 @@ const ExportTemplatesForm = React.memo<Props>(
             )}
           >
             <Grid container columnSpacing={3}>
+              <Grid item xs={12} sm={9}>
+                <FormField
+                  type="multilineText"
+                  name="shortDescription"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Short description"
+                />
+                <Typography variant="caption" fontSize="13px">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    placeholder="Description"
+                    fieldClasses={{
+                      text: "fw300 fsInherit"
+                    }}
+                  />
+                </Typography>
+              </Grid>
               <Grid item xs={9} className="pr-3">
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={6}>
@@ -249,15 +291,6 @@ const ExportTemplatesForm = React.memo<Props>(
                   className="mb-2"
                   required
                 />
-
-                <FormField
-                  type="text"
-                  label="Description"
-                  name="description"
-                  disabled={isInternal}
-                  fullWidth
-                  multiline
-                />
               </Grid>
               <Grid item xs={3}>
                 <div>
@@ -268,6 +301,7 @@ const ExportTemplatesForm = React.memo<Props>(
                     color="primary"
                     format={v => v === "Enabled"}
                     parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1">

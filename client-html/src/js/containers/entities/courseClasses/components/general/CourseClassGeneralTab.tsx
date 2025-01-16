@@ -6,70 +6,62 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState 
-} from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import Grid from "@mui/material/Grid";
-import { Dispatch } from "redux";
 import { Tag } from "@api/model";
-import Typography from "@mui/material/Typography";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Collapse from "@mui/material/Collapse";
-import { IconButton } from "@mui/material";
 import Launch from "@mui/icons-material/Launch";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../reducers/state";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
-import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
-import { stubFunction } from "../../../../../common/utils/common";
+import { FormControlLabel, Grid, IconButton } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { decimalDivide, decimalMinus, decimalPlus, LinkAdornment } from "ish-ui";
+import React, { useCallback, useMemo } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { change } from "redux-form";
 import { showMessage } from "../../../../../common/actions";
-import { AppMessage } from "../../../../../model/common/Message";
-import history from "../../../../../constants/History";
-import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
-import { getClassCostTypes } from "../../utils";
-import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
+import FormField from "../../../../../common/components/form/formFields/FormField";
 import FullScreenStickyHeader
   from "../../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import history from "../../../../../constants/History";
+import { EditViewProps } from "../../../../../model/common/ListView";
+import { AppMessage } from "../../../../../model/common/Message";
+import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
+import { State } from "../../../../../reducers/state";
 import { EntityChecklists } from "../../../../tags/components/EntityChecklists";
+import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
+import { courseFilterCondition, openCourseLink } from "../../../courses/utils";
+import CustomFields from "../../../customFieldTypes/components/CustomFieldsTypes";
+import { getClassCostTypes } from "../../utils";
+import CourseClassEnrolmentsChart from "./CourseClassEnrolmentsChart";
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   tags?: Tag[];
+  specialTags?: Tag[];
   showMessage?: (message: AppMessage) => void;
   classes?: any;
   clearActionsQueue?: any;
   enrolments?: any;
   tutorRoles?: any;
+  netValues?: any;
+  classCostTypes?: any;
 }
+
+const normalizeClassCode = (value: any, previousValue?: any, allValues?: any) => value.replace(new RegExp(`${allValues.courseCode}-?`), "");
 
 const CourseClassGeneralTab = React.memo<Props>(
   ({
     tags,
+     specialTags,
     twoColumn,
     values,
     isNew,
     syncErrors,
     dispatch,
     form,
-    showMessage,
     toogleFullScreenEditView,
-    tutorRoles
+    tutorRoles,
+    netValues,
+     classCostTypes
   }) => {
-    const [classCodeError, setClassCodeError] = useState(null);
-    const [showAllWeeks, setShowAllWeeks] = useState(true);
-
-    useEffect(() => {
-      if (isNew && !values.code) {
-        setClassCodeError("Class code is mandatory");
-      }
-    }, [isNew]);
 
     const openBudget = useCallback(() => {
       if (!twoColumn) {
@@ -85,26 +77,6 @@ const CourseClassGeneralTab = React.memo<Props>(
       });
     }, [twoColumn]);
 
-    const onClassCodeChange = useCallback(
-      e => {
-        const val = e.target.value;
-        const codePrefix = `${values.courseCode}-`;
-
-        if (val.includes(codePrefix)) {
-          const codeValue = val.replace(codePrefix, "");
-          dispatch(change(form, "code", codeValue));
-          if (!codeValue) {
-            setClassCodeError("Class code is mandatory");
-          } else if (classCodeError) {
-            setClassCodeError(null);
-          }
-        } else {
-          showMessage({ message: "Course code part can not be changed" });
-        }
-      },
-      [values.code, values.courseCode, form, classCodeError]
-    );
-
     const onCourseIdChange = useCallback(
       course => {
         dispatch(change(form, "courseCode", course ? course.code : null));
@@ -118,12 +90,12 @@ const CourseClassGeneralTab = React.memo<Props>(
 
         if (!values.code && course.nextAvailableCode) {
           dispatch(change(form, "code", course.nextAvailableCode));
-          setClassCodeError(null);
         }
       },
       [form, values.code, values.sessions]
     );
 
+    // Enrolments to profit projected
     const enrolmentsToProfitAllCount = useMemo(() => {
       if (values.feeExcludeGST <= 0) {
         return 0;
@@ -188,6 +160,31 @@ const CourseClassGeneralTab = React.memo<Props>(
       values.feeExcludeGST
     ]);
 
+    const actualEnrolmentsToProfit = useMemo(() => {
+      if (values.successAndQueuedEnrolmentsCount < 1) {
+        return 0;
+      }
+
+      const actualEnrolment = decimalDivide(netValues.income.actual, values.successAndQueuedEnrolmentsCount);
+
+      if (actualEnrolment <= 0) {
+        return 0;
+      }
+
+      let covered = 0;
+
+      while (covered < classCostTypes.cost.actual) {
+        covered += actualEnrolment;
+      }
+
+      return decimalDivide(covered, actualEnrolment);
+    }, [
+      netValues,
+      values.successAndQueuedEnrolmentsCount
+    ]);
+
+    const formatClassCode = value => `${values.courseCode ? values.courseCode + "-" : ""}${value || ""}`;
+
     return (
       <>
         <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pt-3 pr-3 relative">
@@ -224,7 +221,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                 <Grid container columnSpacing={3} rowSpacing={2}>
                   <Grid item xs={twoColumn ? 6 : 12}>
                     <FormField
-                      type="remoteDataSearchSelect"
+                      type="remoteDataSelect"
                       label="Course"
                       entity="Course"
                       name="courseId"
@@ -232,7 +229,7 @@ const CourseClassGeneralTab = React.memo<Props>(
                       selectLabelMark="name"
                       aqlColumns="code,name,currentlyOffered,isShownOnWeb,reportableHours,nextAvailableCode"
                       selectFilterCondition={courseFilterCondition}
-                      defaultDisplayValue={values && values.courseName}
+                      defaultValue={values && values.courseName}
                       itemRenderer={CourseItemRenderer}
                       disabled={!isNew}
                       onInnerValueChange={onCourseIdChange}
@@ -242,19 +239,16 @@ const CourseClassGeneralTab = React.memo<Props>(
                     />
                   </Grid>
                   <Grid item xs={twoColumn ? 4 : 12}>
-                    <EditInPlaceField
+                    <FormField
+                      type="text"
                       label="Class code"
-                      input={{
-                      onChange: onClassCodeChange,
-                      onFocus: stubFunction,
-                      onBlur: stubFunction,
-                      value: values.courseCode ? `${values.courseCode}-${values.code || ""}` : null
-                      }}
-                      meta={{
-                      error: classCodeError,
-                      invalid: Boolean(classCodeError)
-                      }}
+                      name="code"
+                      placeholder="Select course first"
+                      normalize={normalizeClassCode}
+                      format={formatClassCode}
                       disabled={!values.courseCode}
+                      debounced={false}
+                      required
                     />
                   </Grid>
                 </Grid>
@@ -273,37 +267,46 @@ const CourseClassGeneralTab = React.memo<Props>(
           rowSpacing={2}
         >
           <Grid item xs={twoColumn ? 8 : 12}>
-            <FormField type="stub" name="code" required />
-            <FormField type="tags" name="tags" tags={tags} />
+            <FormField type="tags" name="tags" className="mb-2" tags={tags} />
+
+            <FormField
+              type="select"
+              items={specialTags}
+              name="specialTagId"
+              label="Type"
+              selectValueMark="id"
+              selectLabelMark="name"
+              allowEmpty
+            />
             
             <div className="heading pb-2 pt-3">Restrictions</div>
             <Typography variant="body2" color="inherit" component="div" className="pb-1">
               Students must be at least
+              {" "}
               <FormField
                 type="number"
                 name="minStudentAge"
                 min="1"
                 max="99"
                 step="1"
-                props={{
-                  formatting: "inline"
-                }}
+                inline
               />
+              {" "}
               years old to enrol
             </Typography>
 
             <Typography variant="body2" color="inherit" component="div" className="pb-2">
               Students must be no older than
+              {" "}
               <FormField
                 type="number"
                 name="maxStudentAge"
                 min="1"
                 max="99"
                 step="1"
-                props={{
-                  formatting: "inline"
-                }}
+                inline
               />
+              {" "}
               years old to enrol
             </Typography>
 
@@ -350,10 +353,8 @@ const CourseClassGeneralTab = React.memo<Props>(
               minEnrolments={values.minimumPlaces}
               maxEnrolments={values.maximumPlaces}
               targetEnrolments={enrolmentsToProfitAllCount}
+              actualEnrolmentsToProfit={actualEnrolmentsToProfit}
               openBudget={openBudget}
-              showAllWeeks={showAllWeeks}
-              setShowAllWeeks={setShowAllWeeks}
-              twoColumn={twoColumn}
               hasBudged={values.budget?.some(b => b.invoiceToStudent && b.perUnitAmountIncTax > 0)}
             />
           </Grid>
@@ -379,6 +380,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["CourseClass"],
+  specialTags: state.tags.entitySpecialTags["CourseClass"],
   tutorRoles: state.preferences.tutorRoles
 });
 

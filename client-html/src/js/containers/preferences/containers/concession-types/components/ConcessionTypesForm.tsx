@@ -1,24 +1,21 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import {
-  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { withRouter } from "react-router";
-import isEqual from "lodash.isequal";
-import { ConcessionType } from "@api/model";
-import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import ConcessionTypesRenderer from "./ConcessionTypesRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { State } from "../../../../../reducers/state";
-import { cardsFormStyles } from "../../../styles/formCommonStyles";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { ConcessionType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { cardsFormStyles } from '../../../styles/formCommonStyles';
+import ConcessionTypesRenderer from './ConcessionTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_concessionTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#concession-types");
 
 export const CONCESSION_TYPES_FORM: string = "ConcessionTypesForm";
 
@@ -202,6 +199,6 @@ const mapStateToProps = (state: State) => ({
 const ConcessionTypesForm = reduxForm({
   onSubmitFail,
   form: CONCESSION_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, null)(withStyles(cardsFormStyles)(withRouter(ConcessionTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, null)(withStyles(withRouter(ConcessionTypesBaseForm), cardsFormStyles) as any));
 
 export default ConcessionTypesForm;

@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { CustomFieldType, DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
 import { GET_CUSTOM_FIELD_TYPES, GET_CUSTOM_FIELD_TYPES_FULFILLED } from "../actions";
@@ -15,7 +15,7 @@ const request: EpicUtils.Request<any, string> = {
   getData: entity => EntityService.getPlainRecords(
       "CustomFieldType",
       "key,name,defaultValue,isMandatory,dataType,sortOrder,pattern",
-      `entityIdentifier=${entity}`
+      `entityIdentifier=${entity} and dataType !== "File"`
     ),
   processData: (response: DataResponse, state, entity: string) => {
     const types = response.rows.map(mapCustomFieldsResponse);

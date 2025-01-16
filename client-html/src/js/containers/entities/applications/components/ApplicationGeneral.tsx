@@ -3,31 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
 import { Application, ApplicationStatus } from "@api/model";
 import { Grid } from "@mui/material";
+import { LinkAdornment } from "ish-ui";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import Uneditable from "../../../../common/components/form/Uneditable";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
+import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
 import {
   ContactLinkAdornment,
-  HeaderContactTitle,
-  LinkAdornment
-} from "../../../../common/components/form/FieldAdornments";
-import { EditViewProps } from "../../../../model/common/ListView";
+  HeaderContactTitle
+} from "../../../../common/components/form/formFields/FieldAdornments";
+import FormField from "../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
 import EntityService from "../../../../common/services/EntityService";
 import history from "../../../../constants/History";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
+import { getContactFullName } from "../../contacts/utils";
+import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
+import { courseFilterCondition, openCourseLink } from "../../courses/utils";
+import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -121,15 +121,15 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           fields={(
             <Grid item {...gridItemProps}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="contactId"
                 label="Student"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
+                selectLabelCondition={getContactFullName}
                 disabled={!isNew}
-                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                defaultValue={values?.studentName}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.contactId} />
                 )}
@@ -158,7 +158,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Course"
           aqlFilter="enrolmentType is ENROLMENT_BY_APPLICATION"
           name="courseId"
@@ -167,7 +167,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           selectLabelMark="name"
           selectFilterCondition={courseFilterCondition}
           selectLabelCondition={courseFilterCondition}
-          defaultDisplayValue={values && values.courseName}
+          defaultValue={values && values.courseName}
           labelAdornment={(
             <LinkAdornment
               linkHandler={openCourseLink}

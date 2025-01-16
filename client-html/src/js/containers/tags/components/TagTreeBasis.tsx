@@ -6,21 +6,33 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import * as ReactBeautifulDnD from "react-beautiful-dnd-next";
-import Tree from "@atlaskit/tree";
-import isEmpty from "lodash.isempty";
+import Tree from '@atlaskit/tree';
+import { AppTheme } from 'ish-ui';
+import isEmpty from 'lodash.isempty';
+import React from 'react';
+import * as ReactBeautifulDnD from 'react-beautiful-dnd-next';
+import { withStyles } from 'tss-react/mui';
 
 const TAG_ITEMS_SPACING = 8;
 
 const getDraggedDom = draggableId => document.querySelector(`[data-draggable-id='${draggableId}']`) as any;
+
+const styles = (theme: AppTheme) => ({
+  placeholder: {
+    border: `2px dashed ${theme.palette.action.focus}`,
+    borderRadius: `${theme.shape.borderRadius}px`,
+    position: "absolute",
+    boxSizing: "border-box",
+    zIndex: 0
+  }
+});
 
 class PatchTree extends Tree {
   setPlaceholderProps = placeholderProps => {
     this.setState({
       placeholderProps
     } as any);
-  }
+  };
 
   onDragStartCustom = event => {
     const draggedDOM = getDraggedDom(event.draggableId);
@@ -151,4 +163,4 @@ class PatchTree extends Tree {
   }
 }
 
-export default PatchTree;
+export default withStyles(PatchTree, styles as any);

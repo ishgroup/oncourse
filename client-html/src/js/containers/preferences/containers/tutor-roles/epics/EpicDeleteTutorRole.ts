@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
+import { DefinedTutorRole } from "@api/model";
 
 import * as _ from "lodash";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import history from "../../../../../constants/History";
 import { DELETE_TUTOR_ROLE_FULFILLED, DELETE_TUTOR_ROLE_REQUEST, GET_TUTOR_ROLES_REQUEST } from "../../../actions";
 import PreferencesService from "../../../services/PreferencesService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
-import history from "../../../../../constants/History";
-import { DefinedTutorRole } from "@api/model";
 
 const request: EpicUtils.Request<any,  { id: number; tutorRoles: DefinedTutorRole[] }> = {
   type: DELETE_TUTOR_ROLE_REQUEST,

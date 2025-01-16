@@ -4,20 +4,19 @@
  */
 
 import {
+  ConcessionApi,
+  ConcessionType,
   Contact,
   ContactApi,
+  ContactInsight,
+  ContactInsightApi,
   ContactMergeApi,
   ContactRelationType,
   MergeData,
   MergeRequest,
-  ConcessionApi,
-  ConcessionType,
-  TaxApi,
   Tax,
-  UsiVerificationResult,
-  Diff,
-  ContactInsightApi,
-  ContactInsight
+  TaxApi,
+  UsiVerificationResult
 } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
@@ -62,10 +61,6 @@ class ContactsService {
 
   public getContactsRelationTypes(): Promise<ContactRelationType[]> {
     return this.contactApi.get();
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.contactApi.bulkChange(diff);
   }
 
   public verifyUSI(

@@ -3,30 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useRef, useMemo
-} from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import { withStyles, createStyles } from "@mui/styles";
-import { darken } from "@mui/material/styles";
-import { Theme } from "@mui/material";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { Filter } from "@api/model";
-import { SearchInputBase } from "../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput";
-import { Fetch } from "../../../../model/common/Fetch";
-import { State } from "../../../../reducers/state";
-import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from "../../../../constants/Config";
+import { Filter } from '@api/model';
+import { Theme } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import { darken } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import { AnyArgFunction, StringArgFunction } from 'ish-ui';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
 import {
-  clearTimetableMonths,
-  setTimetableFilters,
-  setTimetableSavingFilter,
-  setTimetableSearch
-} from "../../actions";
-import { AnyArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { FilterGroup, SavingFilterState } from "../../../../model/common/ListView";
-import { stubFunction } from "../../../../common/utils/common";
+  SearchInputBase
+} from '../../../../common/components/list-view/components/bottom-app-bar/components/SearchInput';
+import { APP_BAR_HEIGHT, SIMPLE_SEARCH_REGEX } from '../../../../constants/Config';
+import { Fetch } from '../../../../model/common/Fetch';
+import { FilterGroup, SavingFilterState } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { clearTimetableMonths, setTimetableSavingFilter, setTimetableSearch } from '../../actions';
 
 interface Props {
   classes?: any;
@@ -35,7 +29,6 @@ interface Props {
   setTimetableSearch?: StringArgFunction;
   clearTimetableMonths?: AnyArgFunction;
   setSavingFilter?: (savingFilter?: SavingFilterState) => void;
-  setTimetableFilters?: (filterGroups?: FilterGroup[]) => void;
   searchUrlParameter?: boolean;
   savingFilter?: SavingFilterState;
   search?: string;
@@ -45,7 +38,7 @@ interface Props {
 const styles = ({
  palette, spacing, shadows, shape 
 }: Theme) =>
-  createStyles({
+  ({
     root: {
       boxShadow: shadows[0],
       backgroundColor: palette.background.default
@@ -69,7 +62,8 @@ const styles = ({
       justifyContent: "space-between",
       alignItems: "center",
       padding: spacing(2),
-      position: "relative"
+      position: "relative",
+      zIndex: 1
     }
   });
 
@@ -77,7 +71,6 @@ const SearchBar = React.memo<Props>(
   ({
     classes,
     search,
-    setTimetableFilters,
     setSavingFilter,
     setTimetableSearch,
     clearTimetableMonths,
@@ -118,8 +111,6 @@ const SearchBar = React.memo<Props>(
             filterGroups={filterGroups}
             setListUserAQLSearch={setTimetableSearch}
             onQuerySearch={onQuerySearch}
-            setListMenuTags={stubFunction}
-            setFilterGroups={setTimetableFilters}
             setListSavingFilter={setSavingFilter}
             searchServerError={searchServerError}
             placeholder="Find..."
@@ -141,12 +132,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setTimetableSearch: (search: string) => dispatch(setTimetableSearch(search)),
   setSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setTimetableSavingFilter(savingFilter)),
-  setTimetableFilters: (filterGroups?: FilterGroup[]) => {
-    if (filterGroups.length) {
-      dispatch(setTimetableFilters(filterGroups[0].filters));
-    }
-  },
   clearTimetableMonths: () => dispatch(clearTimetableMonths())
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SearchBar));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(SearchBar, styles));

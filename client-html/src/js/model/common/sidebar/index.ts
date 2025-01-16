@@ -1,4 +1,4 @@
-import { StringKeyObject } from "../CommomObjects";
+import { StringKeyObject } from "ish-ui";
 
 export interface CommonListItem extends StringKeyObject<boolean | string | number> {
   id: number;
@@ -6,6 +6,7 @@ export interface CommonListItem extends StringKeyObject<boolean | string | numbe
   custom?: boolean;
   hasIcon?: boolean;
   grayOut?: boolean;
+  disabled?: boolean;
 }
 
 export type CommonListFilterCondition = (item: CommonListItem | any) => boolean;

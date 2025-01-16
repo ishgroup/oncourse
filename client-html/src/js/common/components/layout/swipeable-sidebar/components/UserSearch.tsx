@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import debounce from "lodash.debounce";
-import clsx from "clsx";
-import Input from "@mui/material/Input";
-import Search from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import Close from "@mui/icons-material/Close";
-import { BooleanArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { makeAppStyles } from "../../../../styles/makeStyles";
+import Close from '@mui/icons-material/Close';
+import Search from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import clsx from 'clsx';
+import { BooleanArgFunction, makeAppStyles, StringArgFunction } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React from 'react';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   inputRoot: {
     "&::before": {
       borderBottom: "2px solid #bfbfbf",
@@ -35,15 +34,15 @@ interface Props {
 }
 
 const UserSearch = ({
-  getSearchResults,
-  placeholder = "Find anything...",
-  setFocusOnSearchInput 
-}: Props) => {
+                      getSearchResults,
+                      placeholder = "Find anything...",
+                      setFocusOnSearchInput
+                    }: Props) => {
   const [userSearch, setUserSearch] = React.useState("");
   const [focused, setFocused] = React.useState(false);
   const searchRef = React.useRef("");
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const debounseSearch = React.useCallback(
     debounce(() => {
@@ -90,12 +89,12 @@ const UserSearch = ({
         endAdornment={
           (
             <IconButton className={clsx("closeAndClearButton", !userSearch && "invisible")} onClick={clear}>
-              <Close className="inputAdornmentIcon" />
+              <Close className="inputAdornmentIcon"/>
             </IconButton>
           )
         }
         className="w-100"
-        classes={{ root: classes.inputRoot, input: classes.input }}
+        classes={{root: classes.inputRoot, input: classes.input}}
         onFocus={onFocus}
         onBlur={onBlur}
       />

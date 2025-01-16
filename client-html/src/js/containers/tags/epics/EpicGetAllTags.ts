@@ -7,18 +7,28 @@
  */
 
 import { Epic } from "redux-observable";
-import { Tag } from "@api/model";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
-import { CatalogItemType } from "../../../model/common/Catalog";
 import EntityService from "../../../common/services/EntityService";
 import history from "../../../constants/History";
+import { CatalogItemType } from "../../../model/common/Catalog";
+import { checkSpecialTypesAsync } from "../../preferences/utils";
+import { GET_ALL_TAGS_FULFILLED, GET_ALL_TAGS_REQUEST } from "../actions";
 import { plainTagToCatalogItem } from "../utils";
 
 const request: EpicUtils.Request = {
   type: GET_ALL_TAGS_REQUEST,
   getData: async ({ nameToSelect }) => {
-    const tagsResponse = await EntityService.getPlainRecords("Tag", "name", "nodeType = TAG and parentTag = null", null, null, "name", true);
+    const extendedSearchTypes = await checkSpecialTypesAsync();
+
+    const tagsResponse = await EntityService.getPlainRecords(
+      "Tag",
+      "name",
+      `nodeType = TAG and parentTag = null${extendedSearchTypes ? " and (specialType = null OR (specialType != CLASS_EXTENDED_TYPES and specialType != COURSE_EXTENDED_TYPES and specialType != SUBJECTS))" : ""}`,
+      null,
+      null,
+      "name",
+      true
+    );
     const checklistsResponse = await EntityService.getPlainRecords("Tag", "name", "nodeType = CHECKLIST and parentTag = null", null, null, "name", true);
 
     const allTags: CatalogItemType[] = tagsResponse.rows.map(plainTagToCatalogItem);

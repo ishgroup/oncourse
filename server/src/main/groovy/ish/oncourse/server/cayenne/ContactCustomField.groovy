@@ -11,11 +11,19 @@
 
 package ish.oncourse.server.cayenne
 
-import ish.oncourse.API
-import ish.oncourse.cayenne.IExpandable
+
 import ish.oncourse.server.cayenne.glue._ContactCustomField
 
 class ContactCustomField extends _ContactCustomField {
+
+	/**
+	 * we need to check if it is null to prevent null point on postRemove callback method
+	 * @return
+	 */
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return customFieldType == null || customFieldType.isAsyncReplicationAllowed()
+	}
 
 	@Override
 	void setRelatedObject(ExpandableTrait relatedObject) {

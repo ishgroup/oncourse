@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import { change, initialize } from "redux-form";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { withStyles, createStyles } from "@mui/styles";
-import IconButton from "@mui/material/IconButton";
-import Message from "@mui/icons-material/Message";
-import { AttendanceType } from "@api/model";
-import { differenceInMinutes, format } from "date-fns";
-import Decimal from "decimal.js-light";
+import { AttendanceType } from '@api/model';
+import Message from '@mui/icons-material/Message';
+import { Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { differenceInMinutes, format } from 'date-fns';
+import Decimal from 'decimal.js-light';
+import { D_MMM } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { change, initialize } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 import {
   AssessmentClassExtended,
   AttandanceChangeType,
@@ -21,18 +21,14 @@ import {
   AttendanceGridType,
   ContactAttendanceItem,
   StudentAttendanceExtended
-} from "../../../../../model/entities/CourseClass";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
-import { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
-import {
-  StudentAttendanceIconButton,
-  TrainingPlanIconButton
-} from "./AttendanceIconButtons";
-import { TimetableSession } from "../../../../../model/timetable";
-import { D_MMM } from "../../../../../common/utils/dates/format";
+} from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
+import { ATTENDANCE_COURSE_CLASS_FORM } from './AttendanceActionModal';
+import AttendanceActionsMenu from './AttendanceActionsMenu';
+import { StudentAttendanceIconButton, TrainingPlanIconButton } from './AttendanceIconButtons';
 
 const styles = () =>
-  createStyles({
+  ({
     sessionItem: {
       maxWidth: "12.3%",
       "& > span:hover .invisible": {
@@ -378,4 +374,4 @@ const AttendanceGridItem: React.FC<AttendanceGridItemProps> = ({
   );
 };
 
-export default withStyles(styles)(AttendanceGridItem);
+export default withStyles(AttendanceGridItem, styles);

@@ -6,17 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { DataResponse, EmailTemplate, Filter, Script, SearchQuery } from "@api/model";
+import { AnyArgFunction, NoArgFunction, ShowConfirmCaller } from "ish-ui";
 import React, { ReactElement } from "react";
-import { FormErrors, InjectedFormProps } from "redux-form";
 import { Dispatch } from "redux";
-import {
-  DataResponse, EmailTemplate, Filter, Script, SearchQuery
-} from "@api/model";
-import { MenuTag } from "../tags";
-import { AnyArgFunction, NoArgFunction } from "./CommonFunctions";
-import { ShowConfirmCaller } from "./Confirm";
+import { FormErrors, InjectedFormProps } from "redux-form";
+import { CustomTableModelName, EntityName } from "../entities/common";
+import { FormMenuTag } from "../tags";
 import { MessageData } from "./Message";
-import { EntityName } from "../entities/common";
 
 export interface CoreFilter extends Filter {
   active?: boolean;
@@ -32,7 +29,7 @@ export interface FindRelatedItem {
   title: string;
   list?: string;
   expression?: string;
-  customExpression?: string;
+  customExpression?: AnyArgFunction<string, string>;
   destination?: string;
   items?: FindRelatedItem[];
 }
@@ -56,9 +53,9 @@ export interface CogwhelAdornmentProps {
 }
 
 export interface ListState {
-  menuTags: MenuTag[];
-  checkedChecklists?: MenuTag[];
-  uncheckedChecklists?: MenuTag[];
+  menuTags: FormMenuTag[];
+  checkedChecklists?: FormMenuTag[];
+  uncheckedChecklists?: FormMenuTag[];
   menuTagsLoaded?: boolean;
   filterGroups: FilterGroup[];
   filterGroupsLoaded?: boolean;
@@ -74,13 +71,13 @@ export interface ListState {
   searchQuery?: SearchQuery;
   searchError?: boolean;
   userAQLSearch?: string;
+  customTableModel?: CustomTableModelName;
   savingFilter?: SavingFilterState;
   scripts?: Script[];
   emailTemplates?: EmailTemplate[];
   emailTemplatesWithKeyCode?: EmailTemplate[];
   creatingNew?: boolean;
   fullScreenEditView?: boolean;
-  recordsLeft?: number;
   recepients?: MessageData;
 }
 
@@ -89,6 +86,7 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   EditViewContent: React.FunctionComponent<EditViewProps>;
   hasSelected: boolean;
   creatingNew: boolean;
+  customTableModel: CustomTableModelName;
   pending?: boolean;
   values?: E;
   updateDeleteCondition?: any;
@@ -100,7 +98,6 @@ export interface EditViewContainerProps<E = any> extends Partial<InjectedFormPro
   manualLink?: any;
   isNested?: boolean;
   match?: any;
-  nestedIndex?: number;
   nameCondition?: AnyArgFunction;
   updateCaption?: (arg: string) => React.Component;
   threeColumn?: boolean;
@@ -118,11 +115,11 @@ export interface EditViewProps<V = any> extends Partial<InjectedFormProps<V>> {
   dispatch: any;
   updateDeleteCondition: AnyArgFunction;
   showConfirm: ShowConfirmCaller;
+  onScroll?: AnyArgFunction;
   twoColumn?: boolean;
   isNested?: boolean;
-  nestedIndex?: number;
   onCloseClick?: AnyArgFunction;
-  syncErrors?: FormErrors;
+  syncErrors?: FormErrors<V>;
   tabIndex?: number;
   expanded?: number[];
   setExpanded?: (arg: number[] | ((arg: number[]) => void)) => void;
@@ -137,11 +134,16 @@ export interface GetRecordsArgs {
   listUpdate?: boolean;
   savedID?: any;
   ignoreSelection?: boolean;
-  startIndex?: number;
   stopIndex?: number;
   resolve?: AnyArgFunction;
+  tableModel?: string;
 }
 
 export interface CustomColumnFormats {
   [column: string]: (value: any, row?: any, columns?: any) => string | ReactElement;
 }
+
+export type FilterScriptsBy = Record<string, {
+  ids: string[];
+  scripts: Script[];
+}>

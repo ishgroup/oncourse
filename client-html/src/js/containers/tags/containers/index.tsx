@@ -6,35 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect } from "react";
-import {
-  arrayInsert, arrayPush,
-  Field, Form, initialize
-} from "redux-form";
-import { Grid, Typography } from "@mui/material";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Divider from "@mui/material/Divider";
 import { TagRequirement } from "@api/model";
-import { useAppDispatch } from "../../../common/utils/hooks";
-import { EmptyTag, TAGS_FORM_NAME } from "../constants";
-import {
- getTagRequest
-} from "../actions";
-import { TagsFormBase, TagsFormWrapper } from "./TagsFormBase";
-import RouteChangeConfirm from "../../../common/components/dialog/confirm/RouteChangeConfirm";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import { Divider, Grid, Typography } from "@mui/material";
+import { AddButton, ColorPicker } from "ish-ui";
+import React, { useEffect } from "react";
+import { arrayInsert, arrayPush, Field, Form, initialize } from "redux-form";
+import AppBarActions from "../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../common/components/form/AppBarActions";
-import TagRequirementsMenu from "../components/TagRequirementsMenu";
-import TagRequirementItem from "../components/TagRequirementItem";
-import AddButton from "../../../common/components/icons/AddButton";
-import { ChecklistTree, TagTree } from "../components/Trees";
+import AppBarContainer from "../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import ColorPicker from "../../../common/components/form/color-picker/ColorPicker";
-import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
+import { useAppDispatch } from "../../../common/utils/hooks";
 import { FormTag } from "../../../model/tags";
+import { getTagRequest } from "../actions";
+import ChecklistRequirementItem from "../components/ChecklistRequirementItem";
+import TagRequirementItem from "../components/TagRequirementItem";
+import TagRequirementsMenu from "../components/TagRequirementsMenu";
+import { ChecklistTree, TagTree } from "../components/Trees";
+import { EmptyTag, TAGS_FORM_NAME } from "../constants";
+import { TagsFormBase, TagsFormWrapper } from "./TagsFormBase";
 
-const manualUrl = getManualLink("tagging");
+const manualUrl = getManualLink("tags-in-oncourse");
 
 class TagsFormRenderer extends TagsFormBase {
   render() {
@@ -75,9 +68,9 @@ class TagsFormRenderer extends TagsFormBase {
           containerClass="p-3"
           fields={(
             <FormField
+              type="text"
               name="name"
               label="Name"
-              margin="none"
               disabled={values.system}
               className="flex-fill"
             />
@@ -98,39 +91,33 @@ class TagsFormRenderer extends TagsFormBase {
         >
           <Grid container>
             <Grid item sm={12} lg={11} xl={8}>
-              <Grid container columnSpacing={3}>
-                <Grid item xs={12} md={8}>
-                  <div className="centeredFlex">
-                    {values && (
-                      <Field
-                        name="requirements"
-                        label="Available for"
-                        component={TagRequirementsMenu}
-                        items={values.requirements}
-                        rootID={values.id}
-                        validate={this.validateRequirements}
-                        system={values.system}
-                      />
-                    )}
-                  </div>
+              <div className="centeredFlex">
+                {values && (
+                  <Field
+                    name="requirements"
+                    label="Available for"
+                    component={TagRequirementsMenu}
+                    items={values.requirements}
+                    rootID={values.id}
+                    validate={this.validateRequirements}
+                    system={values.system}
+                  />
+                )}
+              </div>
 
-                  {values
-                  && values.requirements?.map((i, index) => (
-                    <TagRequirementItem
-                      parent={`requirements[${index}]`}
-                      key={i.type}
-                      item={i}
-                      index={index}
-                      onDelete={this.removeRequirement}
-                      disabled={values.system}
-                      openConfirm={openConfirm}
-                      dispatch={dispatch}
-                    />
-                  ))}
-                </Grid>
-
-                <Grid item xs={false} md={4} />
-              </Grid>
+              {values
+              && values.requirements?.map((i, index) => (
+                <TagRequirementItem
+                  parent={`requirements[${index}]`}
+                  key={i.type}
+                  item={i}
+                  index={index}
+                  onDelete={this.removeRequirement}
+                  disabled={values.system}
+                  openConfirm={openConfirm}
+                  dispatch={dispatch}
+                />
+              ))}
 
               <Divider className="mt-2 mb-2" />
 
@@ -152,6 +139,7 @@ class TagsFormRenderer extends TagsFormBase {
                   onDelete={this.removeChildTag}
                   changeVisibility={this.changeVisibility}
                   setEditingId={this.setEditingId}
+                  setEditingIds={this.setEditingIds}
                   onDrop={this.onDrop}
                   editingIds={editingIds}
                   syncErrors={syncErrors}
@@ -229,9 +217,9 @@ class ChecklistsFormRenderer extends TagsFormBase {
                 <Field name="color" component={ColorPicker} placement="bottom" />
               </span>
               <FormField
+                type="text"
                 name="name"
                 label="Name"
-                margin="none"
                 className="flex-fill"
                 disabled={values.system}
               />
@@ -300,6 +288,7 @@ class ChecklistsFormRenderer extends TagsFormBase {
                   classes={classes}
                   onDelete={this.removeChildTag}
                   setEditingId={this.setEditingId}
+                  setEditingIds={this.setEditingIds}
                   onDrop={this.onDrop}
                   editingIds={editingIds}
                   syncErrors={syncErrors}
@@ -344,7 +333,7 @@ export const ChecklistsForm = ({ match: { params: { id } }, history }) => {
         });
       }
     } else {
-      dispatch(getTagRequest(id));
+      dispatch(getTagRequest(TAGS_FORM_NAME, id));
     }
   }, [id]);
 
@@ -358,7 +347,7 @@ export const TagsForm = ({ match: { params: { id } }, history }) => {
     if (id === "new") {
       dispatch(initialize(TAGS_FORM_NAME, EmptyTag));
     } else {
-      dispatch(getTagRequest(id));
+      dispatch(getTagRequest(TAGS_FORM_NAME, id));
     }
   }, [id]);
 

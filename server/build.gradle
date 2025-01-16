@@ -26,8 +26,6 @@ configurations {
 	all*.exclude group: "org.slf4j", module: "slf4j-simple"
 	all*.exclude module: "hessian"
 }
-
-
 sourceSets {
 	main {
 		groovy {
@@ -77,15 +75,22 @@ dependencies {
 	implementation "com.nulab-inc:zxcvbn:1.4.1"
 
 	implementation ("org.apache.maven:maven-artifact:3.3.9")
-	api ("org.liquibase:liquibase-core:4.1.0") {
+	api ("org.liquibase:liquibase-core:4.19.0") {
 		exclude group: "ch.qos.logback"
 	}
 	implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbVersion"
 
 	implementation 'commons-lang:commons-lang:2.6' // this exists only to support some old reports. To be removed when all reports upgraded.
 	implementation ('net.sf.jasperreports:jasperreports:6.20.0') {
+    exclude group:'org.apache.poi', module: 'poi-ooxml'
+		exclude group:'org.codehaus.castor'
+		exclude group:'com.fasterxml.jackson.core'
+		exclude group:'org.apache.lucene'
+		exclude group:'org.olap4j'
+		exclude group:'bouncycastle'
 		exclude group: 'com.lowagie', module: 'itext'
 	}
+
 	api 'com.lowagie:itext:2.1.7'
 
 	implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
@@ -107,7 +112,6 @@ dependencies {
 	implementation 'org.apache.pdfbox:pdfbox:2.0.17'
 	implementation 'org.scribe:scribe:1.3.7'
 	implementation 'commons-io:commons-io:2.6'
-	implementation 'org.apache.commons:commons-lang3:3.7'
 	implementation 'org.apache.commons:commons-collections4:4.1'
 	implementation 'org.reflections:reflections:0.9.12'
 	api "com.google.inject:guice:$googleGuiceVersion"
@@ -133,6 +137,8 @@ dependencies {
 	api 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.2'
 
+	implementation 'com.chargebee:chargebee-java:3.19.0'
+
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
 	testImplementation 'commons-dbcp:commons-dbcp:1.4'
@@ -147,6 +153,8 @@ project.ext {
 	appName = "onCourseServer"
 }
 
+def DEV_MODE_PROPERTY = "ish.devMode"
+
 application {
 	mainClass.set('ish.oncourse.server.AngelServer')
 	applicationDefaultJvmArgs = ['-Xmx1024m', '-XX:+HeapDumpOnOutOfMemoryError']
@@ -160,6 +168,7 @@ jar {
 		attributes 'Main-Class': 'ish.oncourse.server.AngelServer'
 		attributes 'Class-Path': configurations.runtimeClasspath.collect { "./" + it.name }.join(' ')
 	}
+
 	archiveFileName = 'onCourseServer.jar'
 }
 
@@ -239,10 +248,18 @@ tasks.withType(CreateStartScripts).each { task ->
 	}
 }
 
-task copyWebApp(type: Copy, dependsOn: ':client-html:build') {
-	from('../client-html/build/assets') {
-		include '**/*.*'
+task copyWebApp(type: Copy) {
+	if(!project.hasProperty(DEV_MODE_PROPERTY) || project.property(DEV_MODE_PROPERTY) != "true"){
+		dependsOn ':client-html:build'
+		from('../client-html/build/assets') {
+			include '**/*.*'
+		}
+	} else {
+		from('../client-html') {
+			include 'package.json'
+		}
 	}
+
 	into 'build/resources/main/static'
 }
 
@@ -352,9 +369,15 @@ cgen {
 
 compileJava {
 	dependsOn queryGrammar, cgen
+	if(project.hasProperty(DEV_MODE_PROPERTY) && project.property(DEV_MODE_PROPERTY) == "true"){
+		dependsOn copyWebApp
+	}
 }
 
 task runServer(dependsOn: [classes], type: JavaExec) {
+	if(project.hasProperty(DEV_MODE_PROPERTY)) {
+		systemProperty DEV_MODE_PROPERTY, project.property(DEV_MODE_PROPERTY)
+	}
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'ish.oncourse.server.AngelServer'
 	args = ['DEBUG=true', 'REPLICATION_DISABLED=true', 'disableReplication=true']

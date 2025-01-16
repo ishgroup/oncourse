@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { withStyles } from "@mui/styles";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress } from '@mui/material';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles: any = () => ({
   root: {
@@ -43,23 +43,23 @@ class Loading extends React.Component<Props, any> {
   timer = null;
 
   progress = () => {
-    const { completed } = this.state;
+    const {completed} = this.state;
     if (completed === 100) {
       clearInterval(this.timer);
     } else {
       const diff = Math.random() * 10;
-      this.setState({ completed: Math.min(completed + diff, 100) });
+      this.setState({completed: Math.min(completed + diff, 100)});
     }
   };
 
   render() {
-    const { classes } = this.props;
+    const {classes} = this.props;
     return (
       <div className={classes.root}>
-        <LinearProgress variant="determinate" value={this.state.completed} />
+        <LinearProgress variant="determinate" value={this.state.completed}/>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(Loading) as any;
+export default withStyles(Loading, styles) as any;

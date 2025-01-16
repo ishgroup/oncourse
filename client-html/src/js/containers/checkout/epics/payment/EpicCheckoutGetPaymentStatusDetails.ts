@@ -8,23 +8,45 @@ import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/Fetc
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import {
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
-  CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
-  checkoutSetPaymentDetailsFetching
+  checkoutPaymentSetCustomStatus,
+  checkoutProcessPayment,
+  checkoutSetPaymentDetailsFetching,
+  checkoutSetPaymentStatusDetails,
+  checkoutSetPaymentSuccess
 } from "../../actions/checkoutPayment";
 import CheckoutService from "../../services/CheckoutService";
 
 const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
   type: CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
   getData: ({ sessionId }) => CheckoutService.getSessionStatus(sessionId),
-  processData: data => [
-    {
-      type: CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
-      payload: { data }
-    },
-    checkoutSetPaymentDetailsFetching(false)
-  ],
-  processError: err => [checkoutSetPaymentDetailsFetching(false),
-    ...FetchErrorHandler(err, "Failed to get payment details")]
+  processData: (data, { checkout: { payment: { merchantReference } } }, { sessionId }) => {
+
+    const actions: any = [
+      checkoutSetPaymentStatusDetails(data),
+      checkoutSetPaymentDetailsFetching(false)
+    ];
+
+    if (data.complete) {
+      actions.push(
+        checkoutSetPaymentSuccess(true),
+        checkoutPaymentSetCustomStatus("success")
+      );
+      if (merchantReference !== "") {
+        actions.push(checkoutProcessPayment(false, sessionId, window.location.origin));
+      }
+    } else {
+      actions.push(
+        checkoutSetPaymentSuccess(false),
+        checkoutPaymentSetCustomStatus("fail")
+      );
+    }
+
+    return actions;
+  },
+  processError: err => [
+    checkoutSetPaymentDetailsFetching(false),
+    ...FetchErrorHandler(err, "Failed to get payment details")
+  ]
 };
 
 export const EpicCheckoutGetPaymentStatusDetails: Epic<any, any> = EpicUtils.Create(request);

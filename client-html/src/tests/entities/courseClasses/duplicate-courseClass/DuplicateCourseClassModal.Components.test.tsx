@@ -1,9 +1,10 @@
 import * as React from "react";
 import { format } from "date-fns";
 import { defaultComponents } from "../../../common/Default.Components";
-import { stubFunction } from "../../../../js/common/utils/common";
-import DuplicateCourseClassModal, { DUPLICATE_COURSE_CLASS_FORM } from "../../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassModal";
-import { III_DD_MMM_YYYY } from "../../../../js/common/utils/dates/format";
+import DuplicateCourseClassModal, {
+  DUPLICATE_COURSE_CLASS_FORM
+} from "../../../../js/containers/entities/courseClasses/components/duplicate-courseClass/DuplicateCourseClassModal";
+import { III_DD_MMM_YYYY, stubFunction } from "ish-ui";
 
 describe("Virtual rendered DuplicateCourseClassModal of Class list view", () => {
   defaultComponents({
@@ -63,7 +64,7 @@ describe("Virtual rendered DuplicateCourseClassModal of Class list view", () => 
           copyAssessments: initialValues.copyAssessments,
           copyOnlyMandatoryTags: initialValues.copyOnlyMandatoryTags
         });
-      }, 1000);
+      }, 500);
     }
   });
 });

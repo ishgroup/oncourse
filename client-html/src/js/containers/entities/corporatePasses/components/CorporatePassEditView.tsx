@@ -1,9 +1,9 @@
 import * as React from "react";
 import TabsList from "../../../../common/components/navigation/TabsList";
-
-import CorporatePassSettings from "./CorporatePassSettings";
 import CorporatePassDiscounts from "./CorporatePassDiscounts";
 import CorporatePassLimit from "./CorporatePassLimit";
+
+import CorporatePassSettings from "./CorporatePassSettings";
 
 const items = [
   {
@@ -24,7 +24,6 @@ const CorporatePassEditView = props => {
   const {
     isNew,
     isNested,
-    nestedIndex,
     values,
     classes,
     dispatch,
@@ -33,17 +32,18 @@ const CorporatePassEditView = props => {
     twoColumn,
     submitSucceeded,
     manualLink,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? items : []}
       itemProps={{
         isNew,
         isNested,
         syncErrors,
-        nestedIndex,
         values,
         classes,
         dispatch,

@@ -6,33 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useMemo, useRef
-} from "react";
+import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance, } from "@api/model";
 import Grid from "@mui/material/Grid";
-import {
-  arrayPush, arrayRemove, change, Field, formValueSelector
-} from "redux-form";
-import {
-  addMinutes, differenceInMinutes
-} from "date-fns";
-import { Dispatch } from "redux";
+import { addMinutes, differenceInMinutes } from "date-fns";
+import { EditInPlaceDurationField, ErrorMessage, LinkAdornment, NoWrapOption, stubFunction } from "ish-ui";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { connect } from "react-redux";
-import {
-  ClashType, CourseClassTutor, SessionWarning, Site, TutorAttendance,
-} from "@api/model";
-import ErrorMessage from "../../../../../common/components/form/fieldMessage/ErrorMessage";
+import { Dispatch } from "redux";
+import { arrayPush, arrayRemove, change, Field, formValueSelector } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import EditInPlaceDurationField from "../../../../../common/components/form/formFields/EditInPlaceDurationField";
-import { stubFunction } from "../../../../../common/utils/common";
-import { State } from "../../../../../reducers/state";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import { openRoomLink } from "../../../rooms/utils";
-import { TimetableSession } from "../../../../../model/timetable";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { TimetableSession } from "../../../../../model/timetable";
+import { State } from "../../../../../reducers/state";
+import { openRoomLink } from "../../../rooms/utils";
 import { setShiftedTutorAttendances } from "../../utils";
+import CourseClassTutorRooster from "./CourseClassTutorRooster";
 
 interface Props {
   form: string;
@@ -52,9 +41,15 @@ const roomLabel = room => {
   return room?.name;
 };
 
+const getSiteAndRoomLabel = session => `${session?.site || ""}${session?.room ? ` - ${session?.room}` : ""}`;
+
 const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
+
+export const siteAndRoomSort = (a, b) => {
+  return (roomLabel(a).toLowerCase() > roomLabel(b).toLowerCase() ? 1 : -1);
+};
 
 const CourseClassSessionFields: React.FC<Props> = ({
   form,
@@ -239,20 +234,21 @@ const CourseClassSessionFields: React.FC<Props> = ({
         </Grid>
       ) }
 
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <FormField
-          type="remoteDataSearchSelect"
+          type="remoteDataSelect"
           entity="Room"
           name={`sessions[${session.index}].roomId`}
           label="Site and room"
           aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
           selectLabelCondition={roomLabel}
-          defaultDisplayValue={`${session.site} - ${session.room}`}
+          defaultValue={getSiteAndRoomLabel(session)}
           labelAdornment={<LinkAdornment linkHandler={openRoomLink} link={session.roomId} disabled={!session.roomId} />}
           onInnerValueChange={onRoomIdChange}
-          rowHeight={36}
+          itemRenderer={NoWrapOption}
           hasError={Boolean(warningTypes.Room.length)}
+          sort={siteAndRoomSort}
           allowEmpty
         />
       </Grid>
@@ -285,16 +281,14 @@ const CourseClassSessionFields: React.FC<Props> = ({
           type="multilineText"
           name={`sessions[${session.index}].publicNotes`}
           label="Public notes"
-          fullWidth
-        />
+                  />
       </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].privateNotes`}
           label="Private notes"
-          fullWidth
-        />
+                  />
       </Grid>
     </Grid>
   );

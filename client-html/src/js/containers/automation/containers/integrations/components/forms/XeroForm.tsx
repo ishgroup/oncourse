@@ -3,14 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
 import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
@@ -141,7 +139,6 @@ class XeroBaseForm extends React.Component<any, any> {
                     type="stub"
                     name="verificationCode"
                     validate={validateSingleMandatoryField}
-                    className="mb-2"
                   />
                 )
               }

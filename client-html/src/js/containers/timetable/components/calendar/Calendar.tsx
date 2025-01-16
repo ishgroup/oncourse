@@ -6,87 +6,78 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useContext, useEffect, useMemo, useRef, useState
-} from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
-  addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth
-} from "date-fns";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import debounce from "lodash.debounce";
-import { State } from "../../../../reducers/state";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
+import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { Dispatch } from 'redux';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { getFiltersNameString, } from '../../../../common/components/list-view/utils/listFiltersUtils';
+import EntityService from '../../../../common/services/EntityService';
+import { updateHistory } from '../../../../common/utils/common';
+import { CoreFilter } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
 import {
   clearTimetableMonths,
   findTimetableSessions,
   getTimetableSessionsDays,
-  setTimetableFilters,
   setTimetableMonths,
   setTimetableSearch
-} from "../../actions";
-import { TimetableContext } from "../../Timetable";
-import { DD_MMM_YYYY_MINUSED } from "../../../../common/utils/dates/format";
-import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
-import CalendarMonth from "./components/month/CalendarMonth";
-import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
-import DynamicSizeList from "../../../../common/components/form/DynamicSizeList";
-import { usePrevious } from "../../../../common/utils/hooks";
-import {
-  getFiltersNameString,
-  setActiveFiltersBySearch
-} from "../../../../common/components/list-view/utils/listFiltersUtils";
-import { CoreFilter } from "../../../../model/common/ListView";
-import CalendarTagsSwitcher from "./components/switchers/CalendarTagsSwitcher";
-import CalendarGroupingsSwitcher from "./components/switchers/CalendarGroupingsSwitcher";
-import EntityService from "../../../../common/services/EntityService";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+} from '../../actions';
+import { TimetableContext } from '../../Timetable';
+import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from '../../utils';
+import CalendarMonth from './components/month/CalendarMonth';
+import CalendarGroupingsSwitcher from './components/switchers/CalendarGroupingsSwitcher';
+import CalendarModesSwitcher from './components/switchers/CalendarModesSwitcher';
+import CalendarTagsSwitcher from './components/switchers/CalendarTagsSwitcher';
 
-const styles = theme => createStyles({
-    root: {
-      display: "flex"
-    },
-    list: {
-      "& > div": {
-        overflow: "visible !important"
-      }
-    },
-    disableOutline: {
-      outline: "none"
-    },
-    modesSwitcher: {
-      display: "flex",
-      flexDirection: "column",
-      position: "absolute",
-      right: theme.spacing(5),
-      top: theme.spacing(3),
-      zIndex: 2
-    },
-    centered: {
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      display: "flex",
-      zIndex: 1,
-      background: theme.palette.background.default,
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    hidden: {
-      visibility: "hidden",
-      zIndex: -1
+const useStyles = makeAppStyles()(theme => ({
+  root: {
+    display: "flex",
+    position: "relative"
+  },
+  list: {
+    "& > div": {
+      overflow: "visible !important"
     }
-  });
+  },
+  disableOutline: {
+    outline: "none"
+  },
+  modesSwitcher: {
+    display: "flex",
+    flexDirection: "column",
+    position: "absolute",
+    right: theme.spacing(5),
+    top: theme.spacing(3),
+    zIndex: 2
+  },
+  centered: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    zIndex: 1,
+    background: theme.palette.background.default,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  hidden: {
+    visibility: "hidden",
+    zIndex: -1
+  }
+}));
 
 interface Props extends RouteComponentProps {
   classes?: any;
   months?: any;
   search?: string;
+  searchError?: boolean;
   filters?: CoreFilter[];
   sessionsLoading?: boolean;
   selectedMonthSessionDays?: number[];
@@ -110,10 +101,9 @@ const onRendered = ({
   visibleStartIndex,
   visibleStopIndex,
   months,
-  loadNextMonths,
-  sessionsLoading
+  loadNextMonths
 }) => {
-  if (visibleStartIndex === visibleStopIndex && visibleStopIndex + 1 === months.length && !sessionsLoading) {
+  if (visibleStopIndex >= visibleStartIndex && months.length < 12 && months[months.length - 1]) {
     const currentMonth = months[months.length - 1].month;
 
     const nextMonthsStart = addMonths(currentMonth, 1);
@@ -185,41 +175,28 @@ const Calendar = React.memo<Props>(props => {
 
   const {
     search,
-    classes,
     months,
     selectedMonthSessionDays,
     sessionsLoading,
     location,
-    history,
     filters,
+    searchError,
     match: { url },
     dispatch,
   } = props;
+
+  const { classes } = useStyles();
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
   const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(targetDay);
 
   const listEl = useRef(null);
+  const renderedArgs = useRef<any>(null);
 
   const prevSearch = usePrevious(search, "");
 
   const params = new URLSearchParams(location.search);
   const prevParams = usePrevious(params, params);
-
-  const updateHistory = () => {
-    const paramsString = decodeURIComponent(params.toString());
-
-    const updatedSearch = paramsString ? "?" + paramsString : "";
-
-    const newUrl = window.location.origin + url + updatedSearch;
-
-    if (newUrl !== window.location.href) {
-      history.push({
-        pathname: url,
-        search: updatedSearch
-      });
-    }
-  };
 
   const targetDayHandler = (day: Date) => {
     if (listEl.current && listEl.current.state.isScrolling) {
@@ -233,7 +210,7 @@ const Calendar = React.memo<Props>(props => {
   };
 
   // fetch next two months
-  const loadNextMonths = baseDate => {
+  const loadNextMonths = (baseDate, reset = false) => {
     const startMonth = startOfMonth(baseDate);
     const endMonth = startOfMonth(addMonths(startMonth, 1));
 
@@ -250,12 +227,18 @@ const Calendar = React.memo<Props>(props => {
       }
     ], true));
     
-    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }));
+    dispatch(findTimetableSessions({ from: startMonth.toISOString(), to: endOfMonth(endMonth).toISOString() }, reset));
   };
 
-  const onRowsRendered = args => onRendered({
-   ...args, months, loadNextMonths, sessionsLoading
-  });
+  const onRowsRendered = args => {
+    renderedArgs.current = args;
+  };
+  
+  useEffect(() => {
+    if (!sessionsLoading && renderedArgs.current) {
+      onRendered({ ...renderedArgs.current, months, loadNextMonths });
+    }
+  }, [sessionsLoading]);
 
   // Search effects
   useEffect(() => {
@@ -277,7 +260,7 @@ const Calendar = React.memo<Props>(props => {
       }
     }
 
-    loadNextMonths(targetDay);
+    loadNextMonths(targetDay, true);
   }, []);
 
   useEffect(() => {
@@ -285,7 +268,7 @@ const Calendar = React.memo<Props>(props => {
 
     if (calendarModeUrl !== calendarMode) {
       params.set("calendarMode", calendarMode);
-      updateHistory();
+      updateHistory(params,url);
     }
   }, [calendarMode]);
 
@@ -295,22 +278,9 @@ const Calendar = React.memo<Props>(props => {
 
     if (targetDayUrlString !== targetDayString) {
       params.set("selectedDate", targetDayString);
-      updateHistory();
+      updateHistory(params,url);
     }
   }, [targetDay]);
-
-  useEffect(() => {
-    if (filters.length) {
-      const filtersString = getFiltersNameString([{ filters }]) || null;
-      const filtersUrlString = params.get("filter");
-
-      if (filtersString !== filtersUrlString) {
-        const updated = [...filters];
-        setActiveFiltersBySearch(filtersUrlString, [{ filters: updated }]);
-        dispatch(setTimetableFilters(updated));
-      }
-    }
-  }, [filters.length]);
 
   useEffect(() => {
     if (filters.length) {
@@ -323,10 +293,10 @@ const Calendar = React.memo<Props>(props => {
         } else {
           params.delete("filter");
         }
-        updateHistory();
+        updateHistory(params,url);
       }
     }
-  }, [filters]);
+  }, [filters, params]);
 
   useEffect(() => {
     if (prevSearch !== search) {
@@ -335,7 +305,7 @@ const Calendar = React.memo<Props>(props => {
       } else {
         params.delete("search");
       }
-      updateHistory();
+      updateHistory(params,url);
     }
   }, [search, prevSearch]);
 
@@ -347,7 +317,7 @@ const Calendar = React.memo<Props>(props => {
     const prevFilters = prevParams.get("filter");
 
     if (currentSearch !== prevSearch || currentFilters !== prevFilters) {
-      loadNextMonths(selectedMonth);
+      loadNextMonths(selectedMonth, true);
       setScrollToTargetDayOnRender(targetDay);
     }
   }, [params, prevParams]);
@@ -408,7 +378,7 @@ const Calendar = React.memo<Props>(props => {
 
   return (
     <div className={classes.root}>
-      {!sessionsLoading && !hasSessions && (
+      {((!sessionsLoading && !hasSessions) || searchError) && (
         <div className={classes.centered}>
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
@@ -418,9 +388,6 @@ const Calendar = React.memo<Props>(props => {
         </div>
       )}
 
-      <div className={`${classes.centered} ${months.length === 0 && sessionsLoading ? "" : classes.hidden}`}>
-        <CircularProgress size={40} thickness={5} />
-      </div>
       <AutoSizer>
         {({ width, height }) => (
           <DynamicSizeList
@@ -436,7 +403,7 @@ const Calendar = React.memo<Props>(props => {
             onItemsRendered={onRowsRendered}
             useIsScrolling
           >
-            {MonthRenderer}
+            {MonthRenderer as any}
           </DynamicSizeList>
         )}
       </AutoSizer>
@@ -453,6 +420,7 @@ const mapStateToProps = (state: State) => ({
   search: state.timetable.search,
   months: state.timetable.months,
   filters: state.timetable.filters,
+  searchError: state.timetable.searchError,
   sessionsLoading: state.timetable.sessionsLoading,
   selectedMonthSessionDays: state.timetable.selectedMonthSessionDays
 });
@@ -464,4 +432,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withRouter(Calendar)));
+)((withRouter(Calendar)));

@@ -14,6 +14,7 @@ package ish.oncourse.aql.impl.converter;
 import ish.oncourse.aql.impl.AqlParser;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.DateTimeInterval;
+import ish.oncourse.aql.model.CustomFieldDateMarker;
 import org.apache.cayenne.exp.parser.ASTScalar;
 import org.apache.cayenne.exp.parser.SimpleNode;
 
@@ -48,7 +49,10 @@ class DateTimeConverter implements Converter<AqlParser.DateTimeContext> {
         }
 
         if(date != null) {
-            return new LazyDateScalar(DateTimeInterval.of(date));
+            if(ctx.getCurrentPathJavaType().equals(CustomFieldDateMarker.class))
+                return new LazyDateScalar(DateTimeInterval.of(date));
+            else
+                return new LazyDateTimeScalar(DateTimeInterval.of(date));
         }
 
         if(time != null) {

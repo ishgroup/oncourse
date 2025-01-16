@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import React from "react";
-import { InjectedFormProps, reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import { InjectedFormProps, reduxForm } from "redux-form";
 import { State } from "../../../../../reducers/state";
 
 export const CHECKOUT_ITEM_EDIT_VIEW_FORM = "CheckoutItemEditViewForm";

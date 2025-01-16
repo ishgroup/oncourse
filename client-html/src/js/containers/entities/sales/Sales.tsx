@@ -6,21 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { ProductItem, ProductItemStatus } from "@api/model";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { ProductItem, ProductItemStatus, TableModel } from "@api/model";
+import { Dispatch } from "redux";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters } from "../../../common/components/list-view/actions";
-import { getSalesManuTags } from "./actions";
 import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
-import SalesEditView from "./components/SalesEditView";
 import { getManualLink } from "../../../common/utils/getManualLink";
-import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { getEntityTags } from "../../tags/actions";
 import { getPlainAccounts } from "../accounts/actions";
 import { getPlainTaxes } from "../taxes/actions";
-import { Dispatch } from "redux";
-import { getEntityTags } from "../../tags/actions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { getSalesManuTags } from "./actions";
+import SalesCogwheel from "./components/cogwheel/SalesCogwheel";
+import SalesEditView from "./components/SalesEditView";
 
 interface SalesProps {
   getSaleRecord?: () => void;
@@ -30,7 +30,6 @@ interface SalesProps {
   getTags?: () => void;
   getAccounts?: () => void;
   clearListState?: () => void;
-  updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
 }
 
 const filterGroups: FilterGroup[] = [
@@ -87,7 +86,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",
@@ -101,7 +100,7 @@ const findRelatedGroup: any[] = [
   { title: "Invoice", list: "invoice", expression: "invoiceLines.productItems.id" }
 ];
 
-const manualLink = getManualLink("sales");
+const manualLink = getManualLink("navigating-the-sales-list-window");
 
 const setRowClasses = ({ displayStatus }: { displayStatus: ProductItemStatus }) => {
   if (['Credited', 'Redeemed', 'Delivered'].includes(displayStatus)) return "text-op065";
@@ -111,8 +110,6 @@ const setRowClasses = ({ displayStatus }: { displayStatus: ProductItemStatus }) 
 
 const Sales: React.FC<SalesProps> = props => {
   const {
-    updateTableModel,
-    onInit,
     getFilters,
     getAccounts,
     getTaxes,
@@ -138,11 +135,11 @@ const Sales: React.FC<SalesProps> = props => {
       }}
       editViewProps={{
         manualLink,
+        hideTitle: true,
         asyncValidate: notesAsyncValidate,
         asyncChangeFields: ["notes[].message"],
         nameCondition: values => (values ? values.productName : "")
       }}
-      updateTableModel={updateTableModel}
       EditViewContent={SalesEditView}
       CogwheelAdornment={SalesCogwheel}
       rootEntity="ProductItem"

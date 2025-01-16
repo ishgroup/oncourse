@@ -7,17 +7,22 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_PDF_BACKGROUND_COPY, getPdfBackgroundCopyListFulfilled } from "../actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { createAndDownloadBase64Image } from "../../../../../common/utils/common";
+import { GET_PDF_BACKGROUND_COPY, getPdfBackgroundCopyListFulfilled } from "../actions";
 import ReportOverlayService from "../services/ReportOverlayService";
-import { createAndDownloadFile } from "../../../../../common/utils/common";
 
 const request: EpicUtils.Request<any, { id: number, name: string }> = {
   type: GET_PDF_BACKGROUND_COPY,
+  hideLoadIndicator: true,
   getData: ({ id }) => ReportOverlayService.getReportOverlayCopy(id),
   processData: (r, s, { name }) => {
-    createAndDownloadFile(r, "png", name);
+
+    r.forEach(f => {
+      createAndDownloadBase64Image(f, name);
+    });
+    
     return [
       getPdfBackgroundCopyListFulfilled(true)
     ];

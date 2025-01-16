@@ -6,9 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClassFundingSource, CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
-import { EntityName, SelectItemDefault } from "../../../../../../model/entities/common";
-import { mapSelectItems } from "../../../../../utils/common";
+import { CourseEnrolmentType, CourseStatus, DeliveryMode, OutcomeStatus } from "@api/model";
+import { mapSelectItems, SelectItemDefault } from "ish-ui";
+import { fundingSourceValues } from "../../../../../../containers/entities/courseClasses/constants";
+import { EntityName } from "../../../../../../model/entities/common";
 import {
   validateFundingSourse,
   validatePurchasingContractScheduleIdentifier,
@@ -19,7 +20,7 @@ export interface BulkEditField {
   keyCode: string;
   label: string;
   name: string;
-  type: "Select" | "Text" | "Date" | "Number" | "Switch" | "Checkbox" | "Tag" | "Money";
+  type: "Select" | "Text" | "Date" | "Number" | "Switch" | "Checkbox" | "Tag" | "Money" | "Portal subdomain";
   items?: SelectItemDefault[];
   propsItemKey?: string;
   selectValueMark?: string;
@@ -46,7 +47,7 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Funding source",
           name: "Funding source",
           type: "Select",
-          items: Object.keys(ClassFundingSource).map(mapSelectItems),
+          items: fundingSourceValues,
         },
         {
           keyCode: "vetPurchasingContractID",
@@ -100,6 +101,16 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
     case "CourseClass": {
       return [
         {
+          keyCode: "specialTagId",
+          label: "Type",
+          name: "Type",
+          type: "Select",
+          selectValueMark: "id",
+          selectLabelMark: "name",
+          propsItemKey: "classSpecialTags",
+          defaultValue: []
+        },
+        {
           keyCode: "isActive",
           label: "Enrolments allowed",
           name: "Enrolments allowed",
@@ -149,6 +160,16 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
     }
     case "Course": {
       return [
+        {
+          keyCode: "specialTagId",
+          label: "Type",
+          name: "Type",
+          type: "Select",
+          selectValueMark: "id",
+          selectLabelMark: "name",
+          propsItemKey: "courseSpecialTags",
+          defaultValue: []
+        },
         {
           keyCode: "allowWaitingLists",
           label: "Allow waiting lists",
@@ -202,7 +223,7 @@ export const getBulkEditFields = (entity: EntityName): BulkEditField[] => {
           label: "Default funding source national",
           name: "Default funding source national",
           type: "Select",
-          items: Object.keys(ClassFundingSource).map(mapSelectItems),
+          items: fundingSourceValues,
         },
         {
           keyCode: "relatedFundingSourceId",

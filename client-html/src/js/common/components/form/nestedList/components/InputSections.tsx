@@ -3,17 +3,44 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import IconButton from "@mui/material/IconButton";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
-import Close from "@mui/icons-material/Close";
-import AddButton from "../../../icons/AddButton";
-import { Switch } from "../../formFields/Switch";
-import SearchInput from "./SearchInput";
+import Close from '@mui/icons-material/Close';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AddButton, Switch } from 'ish-ui';
+import React from 'react';
+import SearchInput from './SearchInput';
 
-export const InputSection = React.memo<any>(props => {
+export const InputSection = React.memo<{
+  classes,
+  title,
+  searchExpression,
+  searchPlaceholder,
+  aqlPlaceholderPrefix,
+  searchValuesToShow,
+  onSearchChange,
+  onAqlSearchChange,
+  onSearchEscape,
+  onFocus,
+  onAddEvent,
+  toggleSearch,
+  inputRef,
+  aqlComponentRef,
+  titleCaption,
+  formError,
+  disabled,
+  setSelectedEntity,
+  aqlEntity,
+  aqlQueryError,
+  searchTags,
+  secondaryHeading,
+  disableAddAll,
+  searchEnabled,
+  hideAddButton,
+  aqlEntities,
+  onAqlSearchClear
+}>(props => {
   const {
     classes,
     title,
@@ -49,9 +76,9 @@ export const InputSection = React.memo<any>(props => {
       <div className={clsx(!secondaryHeading && classes.root__search)}>
         <div className="centeredFlex">
           <Typography className={clsx(secondaryHeading
-            ? "secondaryHeading"
-            : "heading pt-1 pb-1",
-            { "errorColor": formError })}
+              ? "secondaryHeading"
+              : "heading pt-1 pb-1",
+            {"errorColor": formError})}
           >
             {title}
           </Typography>
@@ -59,13 +86,13 @@ export const InputSection = React.memo<any>(props => {
             ? (
               <IconButton
                 className={clsx(
-                secondaryHeading && "p-0 ml-1",
+                  secondaryHeading && "p-0 ml-1",
                   hideAddButton && "invisible"
-              )}
+                )}
                 onClick={toggleSearch}
                 disabled={disabled}
               >
-                <Close className="inherit" />
+                <Close className="inherit"/>
               </IconButton>
             )
             : (
@@ -125,7 +152,35 @@ export const InputSection = React.memo<any>(props => {
   );
 });
 
-export const InputSectionWithToggle = React.memo<any>(props => {
+export const InputSectionWithToggle = React.memo<{
+  classes?,
+  title,
+  searchExpression,
+  searchPlaceholder,
+  aqlPlaceholderPrefix,
+  searchValuesToShow,
+  onSearchChange,
+  onAqlSearchChange,
+  onSearchEscape,
+  onFocus,
+  onAddEvent,
+  toggleSearch,
+  onSwitchToggle,
+  inputRef,
+  aqlComponentRef,
+  titleCaption,
+  toggleEnabled,
+  formError,
+  disabled,
+  setSelectedEntity,
+  aqlEntity,
+  aqlQueryError,
+  searchTags,
+  secondaryHeading,
+  disableAddAll,
+  aqlEntities,
+  onAqlSearchClear
+}>(props => {
   const {
     classes,
     title,
@@ -160,13 +215,13 @@ export const InputSectionWithToggle = React.memo<any>(props => {
     <div className={disabled ? "disabled" : undefined}>
       <div className="centeredFlex">
         <Typography className={clsx(secondaryHeading
-          ? "secondaryHeading"
-          : "heading pt-1 pb-1",
-          { "errorColor": formError })}
+            ? "secondaryHeading"
+            : "heading pt-1 pb-1",
+          {"errorColor": formError})}
         >
           {title}
         </Typography>
-        <Switch onChange={onSwitchToggle} checked={toggleEnabled} disabled={disabled} />
+        <Switch onChange={onSwitchToggle} checked={toggleEnabled} disabled={disabled}/>
       </div>
 
       {formError && (

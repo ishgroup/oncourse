@@ -42,8 +42,8 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
             "tags":[221, 222],
             "sites":
                 [
-                {"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
-                {"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
+                {"id":200,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"customFields":{},"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
+                {"id":201,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"site1","street":null,"suburb":"Adelaide","state":null,"postcode":"5000","country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"customFields":{},"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
                 ],
             "customFields":{},
             "createdOn":"#ignore",
@@ -58,7 +58,7 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
         Given path ishPath + "/9999"
         When method GET
         Then status 400
-        And match $.errorMessage == "WaitingList with id:9999 doesn't exist"
+        And match $.errorMessage == "Record with id = '9999' doesn't exist."
 
 
     Scenario: (+) Get list of all waitingLists by notadmin with access rights
@@ -117,7 +117,7 @@ Feature: Main feature for all GET requests with path 'list/entity/waitingList'
             "courseId":2,
             "courseName":"Course2 course2",
             "tags":[],
-            "sites":[{"id":202,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site 2","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+            "sites":[{"id":202,"isAdministrationCentre":null,"isVirtual":null,"isShownOnWeb":null,"kioskUrl":null,"name":"Default site 2","street":null,"suburb":null,"state":null,"postcode":null,"country":null,"timezone":null,"longitude":null,"latitude":null,"drivingDirections":null,"publicTransportDirections":null,"specialInstructions":null,"tags":[],"rooms":[],"documents":[],"customFields":{},"rules":[],"createdOn":null,"modifiedOn":null}],
             "customFields":{},
             "createdOn":"#ignore",
             "modifiedOn":"#ignore"

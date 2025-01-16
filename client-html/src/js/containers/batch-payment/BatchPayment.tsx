@@ -2,51 +2,51 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import CircularProgress from "@mui/material/CircularProgress";
-import Tooltip from "@mui/material/Tooltip";
-import clsx from "clsx";
-import React, { memo, useCallback, useEffect, useRef, useState, } from "react";
-import { FormControlLabel } from "@mui/material";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { areEqual } from "react-window";
-import { format } from "date-fns";
-import Chip from "@mui/material/Chip";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import CreditCard from "@mui/icons-material/CreditCard";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Done from '@mui/icons-material/Done';
 import Close from '@mui/icons-material/Close';
+import CreditCard from '@mui/icons-material/CreditCard';
+import Done from '@mui/icons-material/Done';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from "redux-form";
-import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../common/components/form/formFields/FormField";
-import { Switch } from "../../common/components/form/formFields/Switch";
-import DynamicSizeList from "../../common/components/form/DynamicSizeList";
-import { LinkAdornment } from "../../common/components/form/FieldAdornments";
-import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
-import EntityService from "../../common/services/EntityService";
-import { D_MMM_YYYY } from "../../common/utils/dates/format";
-import { formatRelativeDate } from "../../common/utils/dates/formatRelative";
-import { openInternalLink } from "../../common/utils/links";
-import { decimalPlus } from "../../common/utils/numbers/decimalCalculation";
-import { formatCurrency } from "../../common/utils/numbers/numbersNormalizing";
-import { BatchPaymentContact } from "../../model/batch-payment";
-import { State } from "../../reducers/state";
-import CheckoutService from "../checkout/services/CheckoutService";
-import { getContactName } from "../entities/contacts/utils";
-import { getBachCheckoutModel } from "./utils";
-import { makeAppStyles } from "../../common/styles/makeStyles";
-import AppBarContainer from "../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../common/utils/getManualLink";
-import { getPluralSuffix } from "../../common/utils/strings";
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import {
+  D_MMM_YYYY,
+  decimalPlus,
+  DynamicSizeList,
+  formatCurrency,
+  formatRelativeDate,
+  LinkAdornment,
+  makeAppStyles,
+  openInternalLink,
+  Switch
+} from 'ish-ui';
+import React, { memo, useCallback, useEffect, useRef, useState, } from 'react';
+import { connect } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { areEqual } from 'react-window';
+import { Dispatch } from 'redux';
+import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from 'redux-form';
+import instantFetchErrorHandler from '../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../common/components/layout/AppBarContainer';
+import LoadingIndicator from '../../common/components/progress/LoadingIndicator';
+import EntityService from '../../common/services/EntityService';
+import { getManualLink } from '../../common/utils/getManualLink';
+import { getPluralSuffix } from '../../common/utils/strings';
+import { BatchPaymentContact } from '../../model/batch-payment';
+import { State } from '../../reducers/state';
+import CheckoutService from '../checkout/services/CheckoutService';
+import { getContactFullName } from '../entities/contacts/utils';
+import { getBachCheckoutModel } from './utils';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'openCheckoutButton' | 'panelExpanded'>()((theme, p, classes) => ({
   checkbox: {
     width: "auto",
     height: "auto",
@@ -68,16 +68,16 @@ const useStyles = makeAppStyles(theme => ({
     },
   },
   panelSummary: {
-    "&:hover $openCheckoutButton": {
+    [`&:hover .${classes.openCheckoutButton}`]: {
       visibility: "visible",
     },
     padding: theme.spacing(0, 2, 0, 0),
   },
   panelRoot: {
-    "&$panelExpanded:last-child": {
+    [`&.${classes.panelExpanded}:last-child`]: {
       margin: theme.spacing(2, 0),
     },
-    "&$panelExpanded:first-child": {
+    [`&.${classes.panelExpanded}:first-child`]: {
       margin: theme.spacing(2, 0),
     },
   },
@@ -281,6 +281,8 @@ const ContactRenderer = ({
 }) => {
   const items = filterByStoreCard ? fields.getAll().filter(i => i.hasStoredCard) : fields.getAll();
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <AutoSizer>
       {({ width, height }) => (
@@ -295,7 +297,7 @@ const ContactRenderer = ({
             ...rest,
           }}
         >
-          {RowRenderer}
+          {RowRenderer as any}
         </DynamicSizeList>
     )}
     </AutoSizer>
@@ -310,7 +312,7 @@ interface Props {
   };
 }
 
-const manualUrl = getManualLink("batchpayments_batchpayments");
+const manualUrl = getManualLink("batch-payments-in");
 
 const getContacts = (dispatch, setContactsLoading, onComplete?) => {
   EntityService.getPlainRecords(
@@ -335,7 +337,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
 
       const contacts:BatchPaymentContact[] = [{
         id: Number(res.rows[0].values[0]),
-        name: getContactName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
+        name: getContactFullName({ firstName: res.rows[0].values[1], lastName: res.rows[0].values[2] }),
         hasStoredCard,
         checked: hasStoredCard,
         total: 0,
@@ -359,7 +361,7 @@ const getContacts = (dispatch, setContactsLoading, onComplete?) => {
             id,
             hasStoredCard,
             index: counter + 1,
-            name: getContactName({ firstName: r.values[1], lastName: r.values[2] }),
+            name: getContactFullName({ firstName: r.values[1], lastName: r.values[2] }),
             checked: hasStoredCard,
             total: amountOwing,
             processed: false,
@@ -410,7 +412,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   const [processing, setProcessing] = useState(false);
   const cancel = useRef(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   useEffect(() => {
     setContactsLoading(true);

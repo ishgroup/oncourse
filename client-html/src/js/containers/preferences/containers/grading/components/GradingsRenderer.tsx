@@ -6,18 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { GradingEntryType, GradingType } from "@api/model";
-import { change, FieldArray, WrappedFieldArrayProps } from "redux-form";
-import {
- Collapse, Card, Grid, Button
-} from "@mui/material";
-import { Dispatch } from "redux";
-import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../../common/utils/numbers/numbersNormalizing";
-import GradingItemsRenderer from "./GradingItemsRenderer";
-import { makeAppStyles } from "../../../../../common/styles/makeStyles";
+import { GradingEntryType, GradingType } from '@api/model';
+import { Button, Card, Collapse, Grid } from '@mui/material';
+import { makeAppStyles, normalizeNumber } from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { change, FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateUniqueNamesInArray } from '../../../../../common/utils/validation';
+import GradingItemsRenderer from './GradingItemsRenderer';
 
 interface Props {
   classes?: any;
@@ -29,7 +26,7 @@ const GradingEntryTypes = Object.keys(GradingEntryType)
   // @ts-ignore
   .map(value => ({ value, label: value === "name" ? "Choice list" : value.capitalize() }));
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   delete: {
     position: "absolute",
     color: theme.palette.error.main,
@@ -47,7 +44,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
     fields, meta: { form }, onDelete, dispatch
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onTypeChange = (type, item) => {
     dispatch(change(form, `${item}.gradingItems`, []));
@@ -74,8 +71,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                       name={`${item}.name`}
                       label="Name"
                       validate={validateUniqueNamesInArray}
-                      fullWidth
-                      required
+                                            required
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -86,8 +82,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                       items={GradingEntryTypes}
                       onChange={val => onTypeChange(val, item)}
                       debounced={false}
-                      fullWidth
-                    />
+                                          />
                   </Grid>
 
                   <Grid item xs={12}>
@@ -98,20 +93,20 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             type="number"
                             name={`${item}.minValue`}
                             normalize={normalizeNumber}
+                            debounced={false}
                             label="Min value"
                             required={field.entryType === "number"}
-                            fullWidth
-                          />
+                                                      />
                         </Grid>
                         <Grid item xs={6}>
                           <FormField
                             type="number"
                             name={`${item}.maxValue`}
                             normalize={normalizeNumber}
+                            debounced={false}
                             label="Max value"
                             required={field.entryType === "number"}
-                            fullWidth
-                          />
+                                                      />
                         </Grid>
                       </Grid>
                     </Collapse>

@@ -28,6 +28,7 @@ import java.util.Date;
 public class AuditPurgeJob implements Job {
 
     private static final Logger logger = LogManager.getLogger();
+    private static final int DEFAULT_AUDIT_EXPIRE_DAYS = 365;
 
     private ICayenneService cayenneService;
     private LicenseService licenseService;
@@ -40,17 +41,17 @@ public class AuditPurgeJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        if (licenseService.getPurge_audit_after_days() != null) {
-            ObjectContext objectContext = cayenneService.getNewContext();
-            Date sysDate = DateUtils.addDays(new Date(), (-1) * licenseService.getPurge_audit_after_days());
-            String sysDateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sysDate);
-            String sql = String.format("DELETE FROM Audit WHERE created < '%s'", sysDateString);
+        Integer auditsExpireDays = licenseService.getPurge_audit_after_days();
+        if(auditsExpireDays == null)
+            auditsExpireDays = DEFAULT_AUDIT_EXPIRE_DAYS;
 
-            logger.debug("SQL which should delete audit logs: " + sql);
+        ObjectContext objectContext = cayenneService.getNewContext();
+        Date sysDate = DateUtils.addDays(new Date(), (-1) * auditsExpireDays);
+        String sysDateString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sysDate);
+        String sql = String.format("DELETE FROM Audit WHERE created < '%s'", sysDateString);
 
-            SQLExec.query(sql).execute(objectContext);
-        } else {
-            logger.debug("There wasn't specified number of days for storing audit logs");
-        }
+        logger.debug("SQL which should delete audit logs: " + sql);
+
+        SQLExec.query(sql).execute(objectContext);
     }
 }

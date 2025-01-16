@@ -7,8 +7,8 @@
  */
 
 import { DataRow, Tag } from "@api/model";
-import { MenuTag } from "../../../model/tags";
 import { CatalogItemType } from "../../../model/common/Catalog";
+import { FormTag } from "../../../model/tags";
 
 export const getAllTags = (tags: Tag[], res?: Tag[]): Tag[] => {
   const result = res || [];
@@ -24,18 +24,19 @@ export const getAllTags = (tags: Tag[], res?: Tag[]): Tag[] => {
   return result;
 };
 
-export const getAllMenuTags = (tags: MenuTag[], res?: MenuTag[], path = ""): MenuTag[] => {
+export const getAllFormTags = (tags: Tag[], res?: FormTag[], rootTag?: FormTag): FormTag[] => {
   const result = res || [];
-
   for (let i = 0; i < tags.length; i++) {
-    const tag = tags[i];
-    tag.path = path;
-    result.push(tag);
+    result.push({
+      ...tags[i],
+      rootTag
+    });
 
-    if (tag.children.length) {
-      getAllMenuTags(tags[i].children, result, `${path ? `${path} / ` : ""}${(tag.tagBody && tag.tagBody.name) || ""}`);
+    if (tags[i].childTags.length) {
+      getAllFormTags(tags[i].childTags, result, rootTag || tags[i]);
     }
   }
+
   return result;
 };
 
@@ -67,3 +68,33 @@ export const plainTagToCatalogItem = (r: DataRow): CatalogItemType => ({
   hideDot: true,
   hideShortDescription: true
 });
+
+export const setChildTagsWeight = (items: FormTag[]): Tag[] =>
+  items.map((i, index) => {
+    let item = { ...i, weight: index + 1 };
+
+    delete item.parent;
+    delete item.refreshFlag;
+
+    if (item.id.toString().includes("new")) {
+      item.id = null;
+    }
+
+    if (item.childTags.length) {
+      item = { ...item, childTags: setChildTagsWeight([...item.childTags]) };
+    }
+
+    return item;
+  });
+
+export const rootTagToServerModel = (formTag: FormTag): Tag => {
+  const tag = { ...formTag, childTags: setChildTagsWeight([...formTag.childTags]) };
+
+  delete tag.parent;
+  delete tag.rootTag;
+  delete tag.refreshFlag;
+
+  if (!tag.weight) tag.weight = 1;
+  
+  return  tag;
+};

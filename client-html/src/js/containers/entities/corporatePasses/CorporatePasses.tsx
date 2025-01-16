@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CorporatePass } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { CorporatePass } from "@api/model";
 import {
-  setFilterGroups,
-  setListEditRecord,
   clearListState,
   getFilters,
- } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { defaultContactName } from "../contacts/utils";
-import CorporatePassEditView from "./components/CorporatePassEditView";
-import { FilterGroup } from "../../../model/common/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
+  setFilterGroups,
+  setListEditRecord,
+} from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getEntityTags } from "../../tags/actions";
+import CorporatePassEditView from "./components/CorporatePassEditView";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -51,7 +51,7 @@ const Initial: CorporatePass = {
   linkedSalables: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == CorporatePass and entityId" },
   { title: "Classes", list: "class", expression: "corporatePassCourseClass.corporatePass.id" },
   { title: "Contacts", list: "contact", expression: "corporatePasses.id" },
@@ -64,9 +64,9 @@ const findRelatedGroup: any[] = [
   { title: "Invoices", list: "invoice", expression: "corporatePassUsed.id" }
 ];
 
-const manualLink = getManualLink("corporatePass");
+const manualLink = getManualLink("corporate-pass");
 
-const secondaryColumnCondition = dataRow => dataRow["expiryDate"] || "No Value";
+const secondaryColumnCondition = dataRow => dataRow["expiryDate"] || COMMON_PLACEHOLDER;
 
 class CorporatePasses extends React.Component<any, any> {
   componentDidMount() {
@@ -100,7 +100,7 @@ class CorporatePasses extends React.Component<any, any> {
         findRelated={findRelatedGroup}
         filterGroupsInitial={filterGroups}
         editViewProps={{
-          nameCondition: pass => defaultContactName(pass.contactFullName),
+          nameCondition: pass => pass.contactFullName,
           manualLink,
           hideTitle: true
         }}

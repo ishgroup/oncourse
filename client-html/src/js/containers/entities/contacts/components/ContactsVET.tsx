@@ -3,7 +3,6 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
 import {
   AvetmissStudentDisabilityType,
   AvetmissStudentEnglishProficiency,
@@ -18,31 +17,27 @@ import {
   Language,
   UsiStatus,
   UsiVerificationResult
-} from "@api/model";
-import { change } from "redux-form";
-import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Link from "@mui/material/Link";
-import ExitToApp from "@mui/icons-material/ExitToApp";
-import Chip from "@mui/material/Chip";
-import { Dispatch } from "redux";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { validateNonNegative } from "../../../../common/utils/validation";
-import { SettingsAdornment } from "../../../../common/components/form/FieldAdornments";
-import { clearUSIVerificationResult, verifyUSI } from "../actions";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { usePrevious } from "../../../../common/utils/hooks";
-import { mapSelectItems } from "../../../../common/utils/common";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { convertSelectBooleanToString, convertSelectStringToBoolean } from "../utils";
-import { formatTFN, parseTFN, validateTFN } from "../../../../common/utils/validation/tfnValidation";
-import { TFNInputMask } from "./ContactsTutor";
+} from '@api/model';
+import ExitToApp from '@mui/icons-material/ExitToApp';
+import { FormControlLabel, Grid } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { mapSelectItems, SettingsAdornment, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
+import { validateNonNegative } from '../../../../common/utils/validation';
+import { formatTFN, parseTFN, validateTFN } from '../../../../common/utils/validation/tfnValidation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { clearUSIVerificationResult, verifyUSI } from '../actions';
+import { TFNInputMask } from './ContactsTutor';
 
 const indigenousStatuses = Object.keys(AvetmissStudentIndigenousStatus).map(mapSelectItems);
 const englishProficiencies = Object.keys(AvetmissStudentEnglishProficiency).map(mapSelectItems);
@@ -57,7 +52,7 @@ const openUpgradeLink = () => {
   window.open("https://www.ish.com.au/oncourse/signup?securityKey=%s", "_blank");
 };
 
-const styles = () => createStyles({
+const styles = () => ({
   exitToCreateUSI: {
     fontSize: "1.2rem"
   },
@@ -79,6 +74,7 @@ interface ContactsVETProps extends EditViewProps {
   clearUSIVerificationResult?: () => void;
   setUsiUpdateLocked?: (v: boolean) => void;
   usiLocked?: boolean;
+  namePrefix?: string;
 }
 
 const parseIntValue = v => (v ? parseInt(v, 10) : v);
@@ -108,25 +104,16 @@ const isSpecialUSI = (values: Contact): boolean => {
   return status === "Exemption" || status === "International";
 };
 
-const validateUSI = (value, allValues) => {
-  if (!value || isSpecialUSI(allValues)) {
-    return undefined;
-  }
-
-  if (value.trim().length !== 10) {
-    return "The USI code is not valid";
-  }
-
-  if (!allValues.birthDate) {
-    return "Please provide birth date to continue verify USI";
-  }
-
-  return undefined;
-};
+const stillAtSchoolItems = [
+  { value: true, label: "Yes" },
+  { value: false, label: "No" },
+  { value: "", label: "Not stated" }
+];
 
 const ContactsVET: React.FC<ContactsVETProps> = props => {
   const {
     classes,
+    namePrefix,
     twoColumn,
     values,
     countries,
@@ -145,15 +132,33 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     syncErrors
   } = props;
 
+  const getName = (name: string) => namePrefix ? `${namePrefix}.${name}` : name;
+
   const prevId = usePrevious(values.id);
   const [showMenuUSI, setMenuUSI] = useState(null);
   const setUSIStatus = (status: UsiStatus) => {
-    dispatch(change(form, "student.usiStatus", status));
+    dispatch(change(form, getName("student.usiStatus"), status));
   };
 
   const closeUSIMenu = useCallback(() => {
     setMenuUSI(null);
   }, [setMenuUSI]);
+
+  const validateUSI = useCallback((value) => {
+    if (!value || isSpecialUSI(values)) {
+      return undefined;
+    }
+
+    if (value.trim().length !== 10) {
+      return "The USI code is not valid";
+    }
+
+    if (!values.birthDate) {
+      return "Please provide birth date to continue verify USI";
+    }
+
+    return undefined;
+  },[values?.birthDate, values?.student?.usiStatus]);
 
   const getUSIStatusMsg = () => {
     if (!values) return "";
@@ -244,13 +249,13 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
   }, [prevId, usiVerificationResult]);
 
   return values ? (
-    <div className="pt-1 pl-3 pr-3">
+    <div className="pl-3 pr-3">
       <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           {countries && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.countryOfBirth"
@@ -270,7 +275,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
           {languages && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
               <FormField
-                type="searchSelect"
+                type="select"
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.language"
@@ -304,6 +309,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               label="Achieved in year"
               validate={[validateNonNegative, validateYearSchoolCompleted]}
               parse={parseIntValue}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -327,13 +333,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               type="select"
               name="student.isStillAtSchool"
               label="Still at school"
-              format={convertSelectBooleanToString}
-              parse={convertSelectStringToBoolean}
-              items={[
-                { value: "true", label: "Yes" },
-                { value: "false", label: "No" },
-                { value: "", label: "Not stated" }
-              ]}
+              items={stillAtSchoolItems}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -349,7 +349,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormControlLabel
                 className="checkbox pr-3"
                 control={
-                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" fullWidth />
+                  <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" />
                 }
                 label="Disability support requested"
               />
@@ -491,7 +491,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               {countries && (
                 <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
                   <FormField
-                    type="searchSelect"
+                    type="select"
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="student.countryOfResidency"
@@ -541,13 +541,14 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 type="text"
                 name="tfn"
                 label="Tax file number"
-                max={9}
+                max="9"
                 InputProps={{
                   inputComponent: TFNInputMask
                 }}
                 validate={validateTFN}
                 parse={parseTFN}
                 format={formatTFN}
+                debounced={false}
               />
             </Grid>
           )}
@@ -570,4 +571,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(verifyUSI(firstName, lastName, birthDate, usiCode))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ContactsVET));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(ContactsVET, styles));

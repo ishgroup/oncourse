@@ -727,7 +727,43 @@ enum KeyCode implements DisplayableExtendedEnumeration<Integer> {
 	 * Always enabled: view
 	 */
 	@API
-	CHECKOUT(111, "Checkout", VIEW)
+	CHECKOUT(111, "Checkout", VIEW),
+
+	/**
+	 * Database value: 112
+	 *
+	 * Permission to work with any TutorAttendance.
+	 * Always enabled: view
+	 */
+	@API
+	TUTOR_ATTENDANCE(112, "TutorAttendance", VIEW),
+
+	/**
+	 * Database value: 113
+	 *
+	 * Permission to work with any Portal website instances
+	 * Always enabled: view
+	 */
+	@API
+	PORTAL_WEBSITE(113, "PortalWebsite", VIEW),
+
+	/**
+	 * Database value: 114
+	 *
+	 * Permission to work with hidden tags - course/class types
+	 * Always enabled: view
+	 */
+	@API
+	SPECIAL_EDIT_EXTENDED_TAGS(114, "Edit special class/course types", VIEW),
+
+	/**
+	 * Database value: 115
+	 *
+	 * Permission to work with any faculty.
+	 * Always enabled: view
+	 */
+	@API
+	FACULTY(115, "Faculty", VIEW),
 
 
 	private int value

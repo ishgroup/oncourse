@@ -20,7 +20,7 @@ const __common = require("./webpack/__common");
 
 module.exports = function (options = {}) {
   const NODE_ENV = options.NODE_ENV || "development";
-  const BUILD_NUMBER = options.BUILD_NUMBER || "latest";
+  const BUILD_NUMBER = options.BUILD_NUMBER || "99-SNAPSHOT";
   __common.info(NODE_ENV, BUILD_NUMBER);
 
   const main = _main(NODE_ENV, BUILD_NUMBER);
@@ -74,6 +74,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
       plugins: [
         new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, './tsconfig.json') }),
       ],
+      fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
       rules: [
@@ -81,11 +82,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
         },
@@ -95,12 +92,6 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
     cache: false,
     plugins: plugins(NODE_ENV, BUILD_NUMBER),
     devServer: {
-      writeToDisk: true,
-      port: 1707,
-      stats: {
-        chunkModules: false,
-        colors: true,
-      },
       historyApiFallback: true,
       static: "./build/dist",
     },
@@ -138,6 +129,23 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           template: "src/index-template.html",
           favicon: "src/images/favicon.ico",
           chunksSortMode: 'none',
+          meta: {
+            [""]: {
+              ["http-equiv"]: "Content-Security-Policy",
+              ["content"]: "" +
+              " default-src 'self'" +
+              " localhost:* ws://localhost:* https://127.0.0.1:8182/a/" +
+              " https://*.google-analytics.com" +
+              " https://*.googletagmanager.com" +
+              " https://*.googleapis.com" +
+              " https://*.google.com" +
+              " https://*.s3.ap-southeast-2.amazonaws.com" +
+              " https://*.ish.com.au" +
+              " 'unsafe-inline';" +
+              " img-src * 'self' data: https:;" +
+              " frame-src 'self' data: https:;"
+            }
+          }
         }),
         new ForkTsCheckerWebpackPlugin({
           async: false,
@@ -147,7 +155,6 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
         }),
         new webpack.SourceMapDevToolPlugin({
           filename: `[file].map`,
-
           exclude: [/vendor/]
         }),
         new CompressionPlugin({
@@ -177,7 +184,6 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
           }),
         );
       }
-
       break;
     }
     case "development":

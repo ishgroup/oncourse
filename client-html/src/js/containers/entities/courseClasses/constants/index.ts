@@ -3,5 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ClassFundingSource } from "@api/model";
+import { mapSelectItems } from "ish-ui";
+
 export const COURSE_CLASS_COST_DIALOG_FORM = "CourseClassCostDialogForm";
-export const COURSE_CLASS_SESSION_FORM = "CourseClassSessionForm";
+
+export const fundingSourceValues = Object.keys(ClassFundingSource).map(mapSelectItems);

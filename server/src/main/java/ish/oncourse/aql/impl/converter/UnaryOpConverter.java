@@ -32,6 +32,8 @@ class UnaryOpConverter implements Converter<AqlParser.UnaryOperatorPredicateCont
     UnaryOpConverter() {
         converters.put(TypeClassifier.DATE, new DateUnaryOpConverter());
         converters.put(TypeClassifier.PERSISTENT, new PersistentUnaryOpConverter());
+        converters.put(TypeClassifier.CUSTOM_FIELD_DATE, new CustomFieldDateUnaryOpConverter());
+        converters.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new CustomFieldDateTimeUnaryOpConverter());
     }
 
     @Override

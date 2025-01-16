@@ -33,7 +33,7 @@ public class CalculateOutcomeReportableHours {
         if (outcome.getModule() != null) {
             result = outcome.getModule().getNominalHours() != null ? outcome.getModule().getNominalHours() : BigDecimal.ZERO;
         } else if (outcome.getEnrolment() != null) {
-            if (outcome.getEnrolment().getCourseClass().getIsDistantLearningCourse()) {
+            if (outcome.getEnrolment().getCourseClass().getIsDistantLearningCourse() || outcome.getEnrolment().getCourseClass().getIsHybrid()) {
                 result = outcome.getEnrolment().getCourseClass().getExpectedHours();
             } else {
                 result = CalculateCourseClassReportableHours.valueOf(outcome.getEnrolment().getCourseClass()).calculate();

@@ -18,5 +18,7 @@ export enum Categories {
   dataCollectionForms,
   security,
   product,
-  contact
+  contact,
+  courseTypes,
+  classTypes
 }

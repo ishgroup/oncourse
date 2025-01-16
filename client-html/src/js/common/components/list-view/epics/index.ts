@@ -7,17 +7,21 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetRecepientsMessageData } from "./EpicGetRecepientsMessageData";
-import { EpicUpdateTableModel } from "./EpicUpdateTableModel";
-import { EpicPostCustomFilter } from "./EpicPostCustomFilter";
-import { EpicGetSearchResults } from "./EpicGetSearchResults";
-import { EpicGetFilters } from "./EpicGetFilters";
-import { EpicGetEntities } from "./EpicGetEntities";
-import { EpicDeleteCustomFilter } from "./EpicDeleteCustomFilter";
-import { EpicGetPlainEntities } from "./EpicGetPlainEntities";
 import { EpicBulkChangeRecords } from "./EpicBulkChangeRecords";
+import { EpicDeleteCustomFilter } from "./EpicDeleteCustomFilter";
+import { EpicFindRelatedByFilter } from "./EpicFindRelatedByFilter";
+import { EpicGetEntities } from "./EpicGetEntities";
+import { EpicGetEntitiesResolve } from "./EpicGetEntitiesResolve";
+import { EpicGetFilters } from "./EpicGetFilters";
+import { EpicGetPlainEntities } from "./EpicGetPlainEntities";
+import { EpicGetRecepientsMessageData } from "./EpicGetRecepientsMessageData";
+import { EpicGetSearchResults } from "./EpicGetSearchResults";
+import { EpicPostCustomFilter } from "./EpicPostCustomFilter";
+import { EpicUpdateTableModel } from "./EpicUpdateTableModel";
 
 export const EpicList = combineEpics(
+  EpicFindRelatedByFilter,
+  EpicGetEntitiesResolve,
   EpicDeleteCustomFilter,
   EpicGetEntities,
   EpicGetFilters,

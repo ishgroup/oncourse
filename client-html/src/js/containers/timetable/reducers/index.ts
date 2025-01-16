@@ -6,11 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { isSameDay } from "date-fns";
-import { TimetableState } from "../../../model/timetable";
 import { IAction } from "../../../common/actions/IshAction";
+import { TimetableState } from "../../../model/timetable";
 import {
-  CLEAR_TIMETABLE_MONTHS,
+  CLEAR_TIMETABLE_MONTHS, DELETE_TIMETABLE_FILTER,
   FIND_TIMETABLE_SESSIONS,
   FIND_TIMETABLE_SESSIONS_FULFILLED,
   GET_TIMETABLE_SESSIONS_BY_IDS_FULFILLED,
@@ -57,13 +56,10 @@ export const timetableReducer = (
     
     case FIND_TIMETABLE_SESSIONS_FULFILLED: {
       const { months } = action.payload;
-      const startIndex = months.length ? state.months.findIndex(m => isSameDay(m.month, months[0].month)) : -1;
-      const updated = [...state.months];
-      updated.splice(startIndex, months.length, ...months);
 
       return {
         ...state,
-        months: updated,
+        months,
         sessionsLoading: false
       };
     }
@@ -130,6 +126,16 @@ export const timetableReducer = (
       return {
         ...state,
         ...action.payload
+      };
+    }
+
+    case DELETE_TIMETABLE_FILTER: {
+      return {
+        ...state,
+        filters: state.filters.map(f => ({
+          ...f,
+          active: action.payload.id === f.id ? false : f.active
+        }))
       };
     }
 

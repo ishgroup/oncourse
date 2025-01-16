@@ -14,17 +14,12 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.oncourse.server.ICayenneService
-import ish.util.ImageHelper
-
-import static ish.oncourse.server.api.v1.function.export.PdfFunctions.toDbOverlay
-import static ish.oncourse.server.api.v1.function.export.PdfFunctions.toRestOverlay
-import static ish.oncourse.server.api.v1.function.export.PdfFunctions.validateAddOverlay
 import ish.oncourse.server.api.v1.model.ReportOverlayDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.ReportOverlayApi
-import static ish.oncourse.server.api.validation.EntityValidator.throwClientErrorException
 import ish.oncourse.server.cayenne.Report
 import ish.oncourse.server.cayenne.ReportOverlay
+import ish.util.ExtendedImageHelper
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
@@ -33,6 +28,9 @@ import javax.ws.rs.BadRequestException
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 import java.util.stream.Collectors
+
+import static ish.oncourse.server.api.v1.function.export.PdfFunctions.*
+import static ish.oncourse.server.api.validation.EntityValidator.throwClientErrorException
 
 @CompileStatic
 class  ReportOverlayApiImpl implements ReportOverlayApi {
@@ -111,9 +109,9 @@ class  ReportOverlayApiImpl implements ReportOverlayApi {
     }
 
     @Override
-    byte[] getOriginal(Long id) {
+    List<byte[]> getOriginal(Long id) {
         ReportOverlay report = SelectById.query(ReportOverlay, id)
                 .selectOne(cayenneService.newContext)
-        return ImageHelper.generateQualityPreview(report?.overlay, 4, false, false)
+        return ExtendedImageHelper.generateOriginalHighQuality(report?.overlay).each { it -> Base64.getEncoder().encode(it)};
     }
 }

@@ -1,15 +1,14 @@
-import Link from "@mui/material/Link";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Tooltip from "@mui/material/Tooltip";
-import { format } from "date-fns";
-import React, { useMemo } from "react";
-import { Typography } from "@mui/material";
-import { Check, Clear } from "@mui/icons-material";
-import clsx from "clsx";
-import { III_DD_MMM_YYYY_HH_MM } from "../../../../../utils/dates/format";
+import { Check, Clear } from '@mui/icons-material';
+import Link from '@mui/material/Link';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   icon: {
     position: "relative",
     top: "0.3rem",
@@ -21,7 +20,9 @@ const styles = theme => createStyles({
   }
 });
 
-const ScriptRunAudit = React.memo<any>(props => {
+const ScriptRunAudit = React.memo<{
+  lastRun, selectedScriptAudits, scriptIdSelected, classes?
+}>(props => {
   const {
     lastRun, selectedScriptAudits, scriptIdSelected, classes
   } = props;
@@ -33,16 +34,18 @@ const ScriptRunAudit = React.memo<any>(props => {
         const runTime = format(new Date(a.runDate), III_DD_MMM_YYYY_HH_MM);
         switch (a.action) {
           case "SCRIPT_EXECUTED": {
-            return <Tooltip title={`Succeeded at ${runTime}`}><span><Check className={clsx(classes.icon, "successColor")} key={ind} /></span></Tooltip>;
+            return <Tooltip title={`Succeeded at ${runTime}`}><span><Check
+              className={clsx(classes.icon, "successColor")} key={ind}/></span></Tooltip>;
           }
           case "SCRIPT_FAILED": {
-            return <Tooltip title={`Failed at ${runTime}`}><span><Clear className={clsx(classes.icon, "errorColor")} key={ind} /></span></Tooltip>;
+            return <Tooltip title={`Failed at ${runTime}`}><span><Clear className={clsx(classes.icon, "errorColor")}
+                                                                        key={ind}/></span></Tooltip>;
           }
           default: {
             return null;
           }
         }
-    }), [selectedScriptAudits]
+      }), [selectedScriptAudits]
   );
 
   return (
@@ -66,4 +69,4 @@ const ScriptRunAudit = React.memo<any>(props => {
   );
 });
 
-export default withStyles(styles)(ScriptRunAudit);
+export default withStyles(ScriptRunAudit, styles);

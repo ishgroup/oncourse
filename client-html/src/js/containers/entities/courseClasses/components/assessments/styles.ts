@@ -6,11 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { createStyles } from "@mui/styles";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from 'ish-ui';
 
-export default (theme: AppTheme) =>
-  createStyles({
+export default (theme: AppTheme, p, classes) =>
+  ({
     rowWrapper: {
       minHeight: "36px",
     },
@@ -32,7 +31,7 @@ export default (theme: AppTheme) =>
       textAlign: "center",
       display: "flex",
       justifyContent: "center",
-      "&:hover $hiddenIcon, &:hover $hiddenTitleIcon": {
+      [`&:hover .${classes.hiddenIcon}, &:hover .${classes.hiddenTitleIcon}`]: {
         visibility: "visible",
       }
     },

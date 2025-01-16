@@ -1,18 +1,16 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import {
-  FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
-import { Dispatch } from "redux";
 import { GradingType } from "@api/model";
 import Grid from "@mui/material/Grid";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { FieldArray, Form, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
 import { showConfirm } from "../../../../../common/actions";
-import { deleteGradingType, updateGradingTypes } from "../../../actions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../../reducers/state";
+import { deleteGradingType, updateGradingTypes } from "../../../actions";
 import GradingsRenderer from "./GradingsRenderer";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 
 export interface GradingFormData {
   types: GradingType[];

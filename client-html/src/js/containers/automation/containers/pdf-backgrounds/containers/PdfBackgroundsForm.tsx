@@ -6,27 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useRef, useState
-} from "react";
-import { change, Form, InjectedFormProps } from "redux-form";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
 import { ReportOverlay } from "@api/model";
-import { Dispatch } from "redux";
-import Button from "@mui/material/Button";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import LoadingButton from "@mui/lab/LoadingButton";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { usePrevious } from "../../../../../common/utils/hooks";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import FilePreview from "../../../../../common/components/form/FilePreview";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import { FilePreview, usePrevious } from "ish-ui";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch } from "redux";
+import { change, Form, initialize, InjectedFormProps } from "redux-form";
 import { showMessage } from "../../../../../common/actions";
+import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
+import FormField from "../../../../../common/components/form/formFields/FormField";
+import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
 
-const manualUrl = getManualLink("reports_background");
+const manualUrl = getManualLink("print-backgrounds");
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
@@ -60,7 +58,6 @@ const PdfBackgroundsForm = React.memo<Props>(
      loading,
      dispatch
     }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [fileIsChosen, setFileIsChosen] = useState(false);
     const [chosenFileName, setChosenFileName] = useState(null);
 
@@ -75,21 +72,18 @@ const PdfBackgroundsForm = React.memo<Props>(
     };
 
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
+      dispatch(initialize(PDF_BACKGROUND_FORM_NAME, values));
       onDelete(values.id);
       discardFileInput();
     }, [values.id]);
 
     const handleSave = useCallback(
       (val: ReportOverlay) => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val.name, fileRef.current.files[0]);
-          discardFileInput();
           return;
         }
         onUpdate(val.name, val.id, fileIsChosen ? fileRef.current.files[0] : null);
-        discardFileInput();
       },
       [isNew, fileIsChosen]
     );
@@ -97,12 +91,6 @@ const PdfBackgroundsForm = React.memo<Props>(
     const handleUploadClick = useCallback(() => fileRef.current.click(), []);
 
     const handleDownloadClick = () => getPdfBackgroundCopy(values.id, values.name);
-
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
 
     useEffect(() => {
       if (values.id !== prevId) {
@@ -161,9 +149,7 @@ const PdfBackgroundsForm = React.memo<Props>(
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
-          {(!disableRouteConfirm || fileIsChosen) && (
-            <RouteChangeConfirm form={form} when={dirty || isNew} />
-          )}
+          <RouteChangeConfirm form={form} when={dirty} />
 
           <AppBarContainer
             values={values}
@@ -178,6 +164,7 @@ const PdfBackgroundsForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
                   required
@@ -192,7 +179,6 @@ const PdfBackgroundsForm = React.memo<Props>(
                       {
                         action: handleDelete,
                         icon: <DeleteForever />,
-                        confirm: true,
                         tooltip: "Delete PDF background",
                         confirmText: "PDF background will be deleted permanently",
                         confirmButtonText: "DELETE"

@@ -1,0 +1,5 @@
+- name: "Invalid Field Report"
+  entityClass: "Site"
+  keyCode: "test.ish.onCourse.field.invalid"
+  report: "resources/schema/referenceData/reports/NonCompilableReport.jrxml"
+  visible: true

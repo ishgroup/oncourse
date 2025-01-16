@@ -6,12 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import React from "react";
 import { TimetableMonth } from "../../../../../model/timetable";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
+import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
 import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
 
 interface Props {

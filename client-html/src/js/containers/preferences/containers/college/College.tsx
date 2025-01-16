@@ -6,14 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import CollegeForm from "./components/CollegeForm";
-import { State } from "../../../../reducers/state";
-import { Categories, CollegeSucureKey } from "../../../../model/preferences";
-import FormContainer from "../FormContainer";
-import { getTimezones } from "../../actions";
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Categories, CollegeSucureKey } from '../../../../model/preferences';
+import { State } from '../../../../reducers/state';
+import { getTimezones } from '../../actions';
+import FormContainer from '../FormContainer';
+import CollegeForm from './components/CollegeForm';
 
 interface Props {
   college: any;
@@ -36,7 +36,6 @@ export class CollegeBase extends React.Component<Props, any> {
     return (
       <FormContainer
         data={data}
-        secKey={sekKey}
         timezones={timezones}
         category={Categories.college}
         form={formRoleName => <CollegeForm secKey={sekKey} formRoleName={formRoleName} />}

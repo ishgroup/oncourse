@@ -9,40 +9,45 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { withStyles } from "@mui/styles";
-import { connect } from "react-redux";
-import { Dispatch, Action } from "redux";
-import QRCode from "qrcode.react";
-import {
- Field, FieldArray, reduxForm, initialize, change, touch
-} from "redux-form";
-import Slide from "@mui/material/Slide";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { LoginRequest } from "@api/model";
-import { darken } from "@mui/material";
+import { LoginRequest } from '@api/model';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import { Button, darken, Grid, Typography } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import IconButton from "@mui/material/IconButton";
-import AuthCodeFieldRenderer from "./components/AuthCodeFieldRenderer";
-import NewPasswordField from "./components/NewPasswordField";
-import { FormTextField } from "../../common/components/form/formFields/TextField";
-import { validateSingleMandatoryField } from "../../common/utils/validation";
+import { FormTextField } from 'ish-ui';
+import QRCode from 'qrcode.react';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
+import { change, Field, FieldArray, Form, initialize, reduxForm, touch } from 'redux-form';
+import { DecoratedFormProps } from 'redux-form/lib/reduxForm';
+import { withStyles } from 'tss-react/mui';
+import { setLoginState } from '../../common/actions';
+import Logo from '../../common/components/layout/Logo';
+import { validateSingleMandatoryField } from '../../common/utils/validation';
+import { State } from '../../reducers/state';
+import { SSOProviders } from '../automation/containers/integrations/components/SSOProviders';
+import { isComplexPassRequired } from '../preferences/actions';
 import {
-  postLoginRequest, setLoginState, updatePasswordRequest, checkPassword, getEmailByToken, createPasswordRequest
-} from "../../common/actions";
-import { isComplexPassRequired } from "../preferences/actions";
-import { State } from "../../reducers/state";
-import { LoginState } from "./reducers/state";
-import onCourseLogoDark from "../../../images/onCourseLogoDark.png";
-import ishLogoSmall from "../../../images/logo_small.png";
-import EulaDialog from "./components/EulaDialog";
+  checkPassword,
+  createPasswordRequest,
+  getEmailByToken,
+  getSsoIntegrations,
+  postLoginRequest,
+  updatePasswordRequest
+} from './actions';
+import AuthCodeFieldRenderer from './components/AuthCodeFieldRenderer';
+import Credits from './components/Credits';
+import EulaDialog from './components/EulaDialog';
+import NewPasswordField from './components/NewPasswordField';
+import { LoginState } from './reducers/state';
 
-const styles: any = theme => ({
+const FORM_NAME = "LoginForm";
+
+const styles = (theme => ({
   loginFormWrapper: {
     maxWidth: "520px",
     display: "flex",
@@ -114,6 +119,9 @@ const styles: any = theme => ({
     backgroundColor: alpha(theme.palette.primary.main, 0.5)
   },
   sideImageWrapper: {
+    background: 'url("https://ish-oncourse-sttrianians.s3.ap-southeast-2.amazonaws.com/88d2fb9a-0141-4014-be17-9ed898197727") no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     position: "absolute",
     width: "100%",
     height: "100%",
@@ -123,23 +131,7 @@ const styles: any = theme => ({
     display: "none",
     [theme.breakpoints.up("md")]: {
       display: "block"
-    },
-    "& > iframe": {
-      position: "relative",
-      maxWidth: "100%",
-      minWidth: "100%",
-      minHeight: "100%",
-      top: "50%",
-      left: "50%",
-      transform: "translateX(-50%) translateY(-50%)",
-      objectFit: "cover"
     }
-  },
-  splashIframe: {
-    width: "100%",
-    height: "100%",
-    border: "0",
-    overflow: "hidden",
   },
   loginFormRight: {
     position: "relative"
@@ -161,20 +153,17 @@ const styles: any = theme => ({
     }
   },
   authCodefield: {
-    "& > div": {
-      textAlign: "center",
-      "& > div > div > input": {
-        padding: "9px 13px",
-        [theme.breakpoints.up("sm")]: {
-          padding: "18px 22px"
-        },
-        [theme.breakpoints.up("md")]: {
-          padding: "15px 19px"
-        }
+    "& input": {
+      padding: "9px 13px",
+      [theme.breakpoints.up("sm")]: {
+        padding: "18px 22px"
+      },
+      [theme.breakpoints.up("md")]: {
+        padding: "15px 19px"
       }
     }
   }
-});
+}));
 
 const validatePasswordConfirm = (value, allValues) => {
   if (!value) {
@@ -214,19 +203,23 @@ interface Props extends LoginState {
   setLoginState: (value: LoginState) => void;
   isComplexPassRequired: () => void;
   submit: () => void;
+  getSSO: () => void;
   dispatch: (action: Action) => void;
   getEmailByToken: (value: string) => void;
   createPasswordRequest: (token: string, password: string) => void;
   email?: string;
   eulaUrl?: string;
+  ssoTypes?: number[];
 }
 
-export class LoginPageBase extends React.PureComponent<Props, any> {
+export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProps, any> {
   private savedTFAState;
 
   private isInviteForm: boolean = false;
 
   private token: string = '';
+
+  private submitRef = React.createRef<any>();
 
   state = {
     passwordScore: 0,
@@ -258,31 +251,35 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
     }
 
     props.dispatch(
-      initialize("LoginForm", {
+      initialize(FORM_NAME, {
         authCodeDigits: Array.of("", "", "", "", "", ""),
         ...prefilled
       })
     );
 
     if (prefilled.user != null && prefilled.password != null) {
-      props.dispatch(touch("LoginForm", "user"));
+      props.dispatch(touch(FORM_NAME, "user"));
     }
 
     this.isInviteForm = window.location.pathname.includes('invite');
   }
 
   componentDidMount() {
+    const { getSSO } = this.props;
+
+    getSSO();
+
     if (this.isInviteForm) {
       this.token = window.location.pathname.match(/(\w+)$/g)[0];
       this.token && this.props.getEmailByToken(this.token);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.passwordComplexity && nextProps.asyncValidating) {
+  componentDidUpdate() {
+    if (this.props.passwordComplexity && this.props.asyncValidating) {
       const {
         passwordComplexity: { score, feedback }
-      } = nextProps;
+      } = this.props;
       const { passwordScore, passwordFeedback } = this.state;
 
       if (passwordScore !== score) {
@@ -374,8 +371,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
   autocompleteHost = (value, prev) => {
     if (value.match(/^(?!cloud\b)\b\D\w+\.$/) && (!prev || prev.length < value.length)) {
       setTimeout(() => {
-        this.props.dispatch(change("LoginForm", "host", value + "cloud.oncourse.cc"));
-        this.props.dispatch(change("LoginForm", "port", 443));
+        this.props.dispatch(change(FORM_NAME, "host", value + "cloud.oncourse.cc"));
+        this.props.dispatch(change(FORM_NAME, "port", 443));
       });
     }
   };
@@ -383,22 +380,6 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
   toggleCredits = () => {
     const { openCredits } = this.state;
     this.setState({ openCredits: !openCredits });
-  };
-
-  getCreditsItem = (heading, creditPersons) => {
-    const { classes } = this.props;
-    return (
-      <div className="mb-3">
-        <Typography variant="body1" className={classes.creditHeader}>
-          {heading}
-        </Typography>
-        {creditPersons.map((person, i) => (
-          <Typography key={i} variant="body2">
-            {person}
-          </Typography>
-        ))}
-      </div>
-    );
   };
 
   render() {
@@ -424,38 +405,32 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
       complexPass,
       dispatch,
       email,
-      eulaUrl
+      eulaUrl,
+      ssoTypes
     } = this.props;
 
     const { passwordScore, passwordFeedback, openCredits } = this.state;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit)}>
+      <Form onSubmit={handleSubmit(this.onSubmit)}>
         <Grid container columnSpacing={3} alignItems="center">
           <Grid item xs={1} md={6} />
           <Grid item xs={12} md={6} className={classes.loginFormRight}>
             <Slide direction="right" in timeout={300}>
-              <span className={classes.sideImageWrapper}>
-                <iframe
-                  src="https://www.ish.com.au/oncourse-news/splash.html"
-                  title="splash image"
-                  className={classes.splashIframe}
-                />
-              </span>
+              <span className={classes.sideImageWrapper} />
             </Slide>
             <Slide direction="left" in timeout={300}>
               <div className={classes.loginFormWrapper}>
                 <Grid
                   container
-                  className="mb-2"
                   alignItems="center"
                   alignContent="space-between"
                 >
-                  <Grid item xs={12} className="mb-2">
+                  <Grid item xs={12}>
                     <Grid container columnSpacing={3} alignItems="center">
                       <Grid item xs={12} sm={9}>
                         <div className={classes.logoWrapper}>
-                          <img src={onCourseLogoDark} height={55} draggable={false} alt="Logo" />
+                          <Logo />
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={3} className={classes.versionText}>
@@ -463,7 +438,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           variant="body1"
                           component="span"
                           className="cursor-pointer linkDecoration"
-                          onClick={() => window.open("https://www.ish.com.au/s/onCourse/doc/release-notes/", "_blank")}
+                          onClick={() => window.open(`https://ishoncourse.readme.io/changelog/release-${String(process.env.RELEASE_VERSION).match(/([0-9]+)\.?/)[0]}`, "_blank")}
                         >
                           Version
                           {' '}
@@ -485,7 +460,12 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                             </div>
 
                             <div className={classes.authCodefield}>
-                              <FieldArray name="authCodeDigits" component={AuthCodeFieldRenderer as any} dispatch={dispatch} />
+                              <FieldArray
+                                name="authCodeDigits"
+                                component={AuthCodeFieldRenderer}
+                                dispatch={dispatch}
+                                submitRef={this.submitRef.current}
+                              />
                             </div>
                           </>
                         )}
@@ -499,8 +479,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 autoComplete="user-name"
                                 component={FormTextField}
                                 validate={validateSingleMandatoryField}
-                                fullWidth
-                              />
+                                                              />
                             </div>
 
                             <div className={classes.textFieldWrapper}>
@@ -511,8 +490,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 placeholder="Password"
                                 component={FormTextField}
                                 validate={validateSingleMandatoryField}
-                                fullWidth
-                              />
+                                                              />
                             </div>
 
                             {withNetworkFields && (
@@ -561,8 +539,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   component={NewPasswordField}
                                   passwordScore={passwordScore}
                                   helperText={passwordFeedback}
-                                  fullWidth
-                                />
+                                                                  />
                               ) : (
                                 <Field
                                   name="newPassword"
@@ -571,8 +548,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   placeholder="New password"
                                   component={FormTextField}
                                   validate={this.validatePasswordStrengthLight}
-                                  fullWidth
-                                />
+                                                                  />
                               )}
                             </div>
 
@@ -584,8 +560,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 placeholder="Confirm new password"
                                 component={FormTextField}
                                 validate={validatePasswordConfirm}
-                                fullWidth
-                              />
+                                                              />
                             </div>
                           </>
                         )}
@@ -608,8 +583,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   component={NewPasswordField}
                                   passwordScore={passwordScore}
                                   helperText={passwordFeedback}
-                                  fullWidth
-                                />
+                                                                  />
                               ) : (
                                 <Field
                                   name="newPassword"
@@ -618,8 +592,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   placeholder="Password"
                                   component={FormTextField}
                                   validate={this.validatePasswordStrengthLight}
-                                  fullWidth
-                                />
+                                                                  />
                               )}
                             </div>
 
@@ -631,8 +604,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                 placeholder="Confirm password"
                                 component={FormTextField}
                                 validate={validatePasswordConfirm}
-                                fullWidth
-                              />
+                                                              />
                             </div>
                           </>
                         )}
@@ -691,7 +663,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                         <div className={classes.buttonsContainer}>
                           {!this.isInviteForm && (
                             <>
-                              <a href="Quit" className={classes.link} draggable={false} tabIndex={-1}>
+                              <a href="login" className={classes.link} draggable={false} tabIndex={-1}>
                                 <Button
                                   type={isOptionalTOTP ? "submit" : "button"}
                                   classes={{
@@ -701,7 +673,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                     isTOTP && isNewTOTP
                                       ? e => {
                                         e.preventDefault();
-                                        dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                        dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
                                         setLoginState(this.savedTFAState);
                                       }
                                       : undefined
@@ -721,6 +693,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                           )}
 
                           <Button
+                            ref={this.submitRef}
                             type="submit"
                             disabled={!anyTouched || invalid || asyncValidating || (this.isInviteForm && !email)}
                             classes={{
@@ -732,7 +705,7 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                                   e.preventDefault();
                                   this.savedTFAState = { isEnableTOTP, isOptionalTOTP };
                                   setLoginState({ isTOTP: true, isNewTOTP: true });
-                                  dispatch(change("LoginForm", "authCodeDigits", Array.of("", "", "", "", "", "")));
+                                  dispatch(change(FORM_NAME, "authCodeDigits", Array.of("", "", "", "", "", "")));
                                 }
                                 : undefined
                             }
@@ -763,71 +736,12 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                       </div>
                     </Collapse>
                     <Collapse in={openCredits} timeout="auto" unmountOnExit>
-                      <Grid container columnSpacing={3} className={classes.creditsWrapper}>
-                        <Grid item xs={12} sm={6}>
-                          <div className="">
-                            {this.getCreditsItem("Product design", ["Aristedes Maniatis", "Natalie Morton"])}
-                            {this.getCreditsItem("System architecture", ["Aristedes Maniatis"])}
-                            {this.getCreditsItem("Engineering leads", [
-                              "Yury Yasuchenya",
-                              "Artyom Kravchenko",
-                              "Andrey Koyro",
-                              "Anton Sakalouski",
-                              "Lachlan Deck",
-                              "Marek Wawrzyczny"
-                            ])}
-                            {this.getCreditsItem("Software engineering", [
-                              "Dmitry Tarasenko",
-                              "Kristina Trukhan",
-                              "Chintan Kotadia",
-                              "Victor Yarmolovich",
-                              "Vadim Haponov",
-                              "Rostislav Zenov",
-                              "Andrey Davidovich",
-                              "Pavel Nikanovich",
-                              "Artyom Kochetkov",
-                              "Alexandr Petkov",
-                              "Maxim Petrusevich",
-                              "Rostislav Zenov",
-                              "Arseni Bulatski",
-                              "Nikita Timofeev",
-                              "Marcin Skladaniec",
-                              "Olga Tkachova",
-                              "Xenia Khailenka",
-                              "Viacheslav Davidovich",
-                              "Andrey Narut",
-                              "Dzmitry Kazimirchyk",
-                            ])}
-                          </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          {this.getCreditsItem("Quality assurance", [
-                            "George Filipovich",
-                            "Yury Harachka",
-                            "Aliaksei Haiduchonak",
-                            "Rex Chan"
-                          ])}
-                          {this.getCreditsItem("Icon design", ["Bruce Martin"])}
-                          {this.getCreditsItem("Additional programming", [
-                            "Matthias Moeser",
-                            "Abdul Abdul-Latif",
-                            "Mosleh Uddin",
-                            "Savva Kolbachev",
-                            "Jackson Mills",
-                            "Ruslan Ibragimov",
-                            "Sasha Shestak"
-                          ])}
-                          {this.getCreditsItem("Documentation", [
-                            "James Swinbanks",
-                            "Charlotte Tanner",
-                            "Stephen McIlwaine",
-                          ])}
-                        </Grid>
-                      </Grid>
+                      <Credits wrapperClass={classes.creditsWrapper} itemClass={classes.creditHeader} />
                     </Collapse>
                   </Grid>
+                  <SSOProviders providers={ssoTypes}/>
                   <div className="flex-fill" />
-                  <Grid container columnSpacing={3} alignItems="center" className="mt-3">
+                  <Grid container columnSpacing={3} alignItems="center">
                     <div className="flex-fill">
                       <div>
                         <IconButton
@@ -847,8 +761,8 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
                         ish group. All rights reserved.
                       </div>
                     </div>
-                    <div>
-                      <img src={ishLogoSmall} className={classes.footerIshLogo} alt="" />
+                    <div className={classes.footerIshLogo}>
+                      <Logo small />
                     </div>
                   </Grid>
                 </Grid>
@@ -856,25 +770,27 @@ export class LoginPageBase extends React.PureComponent<Props, any> {
             </Slide>
           </Grid>
         </Grid>
-      </form>
+      </Form>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
   ...state.login,
-  complexPass: state.preferences && state.preferences.complexPass
+  complexPass: state.preferences && state.preferences.complexPass,
+  ssoTypes: state.automation.integration.ssoTypes
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
-      dispatch(postLoginRequest(body, host, port)),
-    updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
-    setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
-    isComplexPassRequired: () => dispatch(isComplexPassRequired()),
-    getEmailByToken: (token: string) => dispatch(getEmailByToken(token)),
-    createPasswordRequest: (token: string, password: string) => dispatch(createPasswordRequest(token, password)),
-  });
+  postLoginRequest: (body: LoginRequest, host?: string, port?: number) =>
+    dispatch(postLoginRequest(body, host, port)),
+  getSSO: () => dispatch(getSsoIntegrations()),
+  updatePasswordRequest: (value: string) => dispatch(updatePasswordRequest(value)),
+  setLoginState: (value: LoginState) => dispatch(setLoginState(value)),
+  isComplexPassRequired: () => dispatch(isComplexPassRequired()),
+  getEmailByToken: (token: string) => dispatch(getEmailByToken(token)),
+  createPasswordRequest: (token: string, password: string) => dispatch(createPasswordRequest(token, password)),
+});
 
 const shouldAsyncValidate = params => {
   const { syncValidationPasses, trigger } = params;
@@ -885,9 +801,9 @@ const shouldAsyncValidate = params => {
 const LoginPage = reduxForm({
   asyncValidate,
   shouldAsyncValidate,
-  form: "LoginForm",
+  form: FORM_NAME,
   touchOnChange: true,
   asyncChangeFields: ["newPasswordAsync"]
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPageBase)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(LoginPageBase, styles)));
 
 export default LoginPage;

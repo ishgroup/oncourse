@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import Grid from "@mui/material/Grid";
 import { Assessment, GradingType, Tag } from "@api/model";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import React from "react";
+import { connect } from "react-redux";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { EditViewProps } from "../../../../model/common/ListView";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
 
 interface Props extends Partial<EditViewProps<Assessment>> {
@@ -61,20 +61,20 @@ const AssessmentGeneralTab = React.memo<Props>(
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={twoColumn ? 2 : 12}>
               <FormField
+                type="text"
                 label="Code"
                 name="code"
                 placeholder={twoColumn ? "Code" : undefined}
                 required
-                fullWidth
-              />
+             />
             </Grid>
             <Grid item xs={twoColumn ? 4 : 12}>
               <FormField
+                type="text"
                 label="Name"
                 name="name"
                 placeholder={twoColumn ? "Name" : undefined}
                 required
-                fullWidth
               />
             </Grid>
           </Grid>
@@ -113,7 +113,7 @@ const AssessmentGeneralTab = React.memo<Props>(
     <Grid item xs={12}>
       <FormControlLabel
         className="checkbox mb-2"
-        control={<FormField type="checkbox" name="active" color="secondary" fullWidth />}
+        control={<FormField type="checkbox" name="active" color="secondary"  />}
         label="Active"
       />
     </Grid>
@@ -123,8 +123,7 @@ const AssessmentGeneralTab = React.memo<Props>(
         name="description"
         label="Description"
         required
-        fullWidth
-      />
+              />
     </Grid>
   </Grid>
     )

@@ -1,24 +1,21 @@
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import isEqual from "lodash.isequal";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import {
- Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { PaymentMethod } from "@api/model";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { formCommonStyles } from "../../../styles/formCommonStyles";
-import PaymentTypesRenderer from "./PaymentTypesRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { State } from "../../../../../reducers/state";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { PaymentMethod } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { formCommonStyles } from '../../../styles/formCommonStyles';
+import PaymentTypesRenderer from './PaymentTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_paymentTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#payment-types");
 
 export const PAYMENT_TYPES_FORM: string = "PaymentTypesForm";
 
@@ -212,6 +209,6 @@ const mapStateToProps = (state: State) => ({
 const PaymentTypesForm = reduxForm({
   onSubmitFail,
   form: PAYMENT_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, null)(withStyles(formCommonStyles)(withRouter(PaymentTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, null)(withStyles(withRouter(PaymentTypesBaseForm), formCommonStyles) as any));
 
 export default PaymentTypesForm;

@@ -37,7 +37,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait {
+class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait, ExpandableTrait {
 
 	String CONTACT_KEY = "contact";
 	private static Logger logger = LogManager.getLogger()
@@ -371,5 +371,10 @@ class Tutor extends _Tutor implements Queueable, Taggable, AttachableTrait {
 	@Override
 	String getChecklistsColor() {
 		return contact.getChecklistsColor()
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return TutorCustomField
 	}
 }

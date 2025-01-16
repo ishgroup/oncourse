@@ -7,10 +7,11 @@
  */
 
 import * as React from "react";
+import AvailabilityFormComponent
+  from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
 import TabsList from "../../../../common/components/navigation/TabsList";
 import RoomsGeneral from "./RoomsGeneral";
-import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
 
 const items = [
   {
@@ -19,7 +20,7 @@ const items = [
   },
   {
     label: "Notes",
-    component: props => <OwnApiNotes {...props} />
+    component: props => <OwnApiNotes {...props} className="pl-3 pr-3" />
   },
   {
     label: "Availability Rules",
@@ -31,7 +32,6 @@ const RoomEditView = props => {
   const {
     isNew,
     isNested,
-    nestedIndex,
     values,
     classes,
     dispatch,
@@ -42,16 +42,17 @@ const RoomEditView = props => {
     manualLink,
     rootEntity,
     onEditViewScroll,
-    syncErrors
+    syncErrors,
+    onScroll
   } = props;
 
   return (
     <TabsList
+      onParentScroll={onScroll}
       items={values ? items : []}
       itemProps={{
         isNew,
         isNested,
-        nestedIndex,
         values,
         classes,
         dispatch,

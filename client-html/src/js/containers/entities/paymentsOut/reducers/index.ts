@@ -7,10 +7,7 @@
  */
 
 import { IAction } from "../../../../common/actions/IshAction";
-import {
-  GET_ACTIVE_PAYMENT_OUT_METHODS_FULFILLED,
-  GET_REFUNDABLE_PAYMENTS_FULFILLED
-} from "../actions";
+import { GET_ACTIVE_PAYMENT_OUT_METHODS_FULFILLED, GET_REFUNDABLE_PAYMENTS_FULFILLED } from "../actions";
 import { PaymentOutState } from "./state";
 
 export const paymentOutReducer = (state: PaymentOutState = {}, action: IAction): any => {

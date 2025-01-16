@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
-import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
-import ListLinksGroup from "./searchResults/ListLinksGroup";
-import { LSGetItem } from "../../../../utils/storage";
-import { AppTheme } from "../../../../../model/common/Theme";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { DASHBOARD_ACTIVITY_STORAGE_NAME } from '../../../../../constants/Config';
+import { getEntityDisplayName } from '../../../../utils/getEntityDisplayName';
+import { LSGetItem } from '../../../../utils/storage';
+import ListLinksGroup from './searchResults/ListLinksGroup';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   activityStatistic: {
     marginTop: 4
   },
@@ -24,7 +23,7 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const { classes, checkSelectedResult } = props;
+  const {classes, checkSelectedResult} = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
@@ -64,4 +63,4 @@ const SidebarLatestActivity: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(SidebarLatestActivity);
+export default withStyles(SidebarLatestActivity, styles);
