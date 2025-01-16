@@ -32,7 +32,7 @@ class TotalLmsEnrolmentsProperty extends ChargebeePropertyProcessor {
             it.courseClass.room?.virtualRoomUrl?.contains("doublealabs.com")
         }
 
-        return (recordsToFetch.sum() { it.createdOn.after(it.courseClass.startDateTime) ? 2 : 1 } as Integer).toBigDecimal()
+        return (recordsToFetch.sum() { it.createdOn.after(it.courseClass.startDateTime) ? 2 : 1 } as Integer)?.toBigDecimal() ?: BigDecimal.ZERO
     }
 
     @Override
