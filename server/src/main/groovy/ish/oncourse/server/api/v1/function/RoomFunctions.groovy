@@ -30,6 +30,7 @@ class RoomFunctions {
             room.siteId = dbRoom.site.id
             room.name = dbRoom.name
             room.seatedCapacity = dbRoom.seatedCapacity
+            room.virtualRoomUrl = dbRoom.virtualRoomUrl
             room
         }
     }
