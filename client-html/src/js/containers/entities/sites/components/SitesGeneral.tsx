@@ -78,7 +78,7 @@ const SitesRoomFields = ({ item, isParenSiteVirtual }) => (
     {isParenSiteVirtual && <Grid item xs={12}><FormField
       type="text"
       label="Virtual room URL"
-      name="virtualRoomUrl"
+      name={`${item}.virtualRoomUrl`}
       validate={validateURL}
     /></Grid>}
   </Grid>
