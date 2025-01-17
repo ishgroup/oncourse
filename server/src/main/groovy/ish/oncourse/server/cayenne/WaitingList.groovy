@@ -11,13 +11,10 @@
 
 package ish.oncourse.server.cayenne
 
-
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.v1.function.CartFunctions
-import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.glue._WaitingList
-import org.apache.cayenne.query.ObjectSelect
 
 import javax.annotation.Nonnull
 /**
@@ -40,27 +37,6 @@ class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, Co
 				.findAll { it instanceof CheckoutWaitingCourseRelation && it.relatedObjectId == course.id }
 				.collect {it.checkout}.unique())
 		context.commitChanges()
-	}
-
-	@Override
-	protected void prePersist() {
-		super.prePersist()
-		validateDuplicate()
-	}
-
-	@Override
-	protected void preUpdate() {
-		super.preUpdate()
-		validateDuplicate()
-	}
-
-	private void validateDuplicate(){
-		def sameWaitingList = ObjectSelect.query(WaitingList)
-				.where(WaitingList.ID.ne(id).andExp(WaitingList.STUDENT.eq(student)).andExp(WaitingList.COURSE.eq(course)))
-				.selectFirst(context)
-		if(sameWaitingList != null){
-			EntityValidator.throwClientErrorException("student","Waiting list for this student and course already exists!")
-		}
 	}
 
 	/**
