@@ -20,7 +20,7 @@ import {
   checkoutProcessPayment,
   checkoutSetPaymentSuccess
 } from '../../../../actions/checkoutPayment';
-import { FORM as CheckoutSelectionForm } from '../../../CheckoutSelection';
+import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 import styles from './styles';
 

@@ -8,6 +8,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Dispatch } from 'redux';
 import { change, Field } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../common/actions/IshAction';
 import { ToogleCheckbox } from '../../../common/components/form/ToogleCheckbox';
 import GetTagRequirementDisplayName from '../utils/GetTagRequirementDisplayName';
 
@@ -31,7 +32,7 @@ interface Props {
   onDelete: any;
   index: number;
   openConfirm: ShowConfirmCaller;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 const TagRequirementItem: React.FC<Props> = props => {

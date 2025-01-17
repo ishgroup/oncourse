@@ -15,6 +15,7 @@ import { Dispatch } from 'redux';
 import { initialize, SubmissionError } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { setUserPreference, showConfirm } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
 import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../constants/Config';
 import { Fetch } from '../../../model/common/Fetch';
 import { Categories } from '../../../model/preferences';
@@ -227,7 +228,7 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch,
   onInit: category => dispatch(getPreferences(category)),
   onSubmit: (category, {defaultInvoiceLineAccount, ...fields}) => {

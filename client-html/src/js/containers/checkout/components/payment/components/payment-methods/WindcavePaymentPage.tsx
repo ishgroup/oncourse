@@ -7,13 +7,13 @@
  */
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { formatCurrency, StringArgFunction } from 'ish-ui';
+import { formatCurrency } from 'ish-ui';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { isInvalid } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
-import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from '../../../../../../model/checkout';
+import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
@@ -21,30 +21,9 @@ import {
   checkoutProcessPayment,
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
-import { FORM as CheckoutSelectionForm } from '../../../CheckoutSelection';
+import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 import styles from './styles';
-
-interface CreditCardPaymentPageProps {
-  classes?: any;
-  summary?: CheckoutSummary;
-  payment?: CheckoutPayment;
-  isPaymentProcessing?: boolean;
-  disablePayment?: boolean;
-  hasSummarryErrors?: boolean;
-  currencySymbol?: any;
-  iframeUrl?: string;
-  xPaymentSessionId?: string;
-  merchantReference?: string;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
-  clearCcIframeUrl: () => void;
-  checkoutGetPaymentStatusDetails: StringArgFunction;
-  onCheckoutClearPaymentStatus: () => void;
-  process?: CheckoutPaymentProcess;
-  paymentInvoice?: any;
-  paymentId?: number;
-  payerName: string;
-}
 
 const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {

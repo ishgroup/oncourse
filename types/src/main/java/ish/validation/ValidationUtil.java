@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ValidationUtil {
 
@@ -42,5 +44,14 @@ public class ValidationUtil {
 		String[] tokens = anEmailAddress.split("@");
 
 		return !(tokens.length != 2 || tokens[0].length() == 0 || tokens[1].length() == 0);
+	}
+
+	public static boolean isValidUrl(String url) {
+		try {
+			new URL(url);
+			return true;
+		} catch (MalformedURLException e) {
+			return false;
+		}
 	}
 }

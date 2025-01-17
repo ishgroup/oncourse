@@ -14,6 +14,14 @@ import ish.common.chargebee.ChargebeePropertyType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Preference
+import ish.oncourse.server.services.chargebee.property.ChargebeePropertyProcessor
+import ish.oncourse.server.services.chargebee.property.SmsChargebeeProperty
+import ish.oncourse.server.services.chargebee.property.TotalCorporatePassProperty
+import ish.oncourse.server.services.chargebee.property.TotalCreditCountProperty
+import ish.oncourse.server.services.chargebee.property.TotalCreditPaymentInProperty
+import ish.oncourse.server.services.chargebee.property.TotalCreditWebPaymentInProperty
+import ish.oncourse.server.services.chargebee.property.TotalLmsEnrolmentsProperty
+import ish.oncourse.server.services.chargebee.property.TotalOfficePaymentInProperty
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -75,5 +83,26 @@ class ChargebeeService {
         this.cayenneService = cayenneService
         this.preferenceController = preferenceController
         this
+    }
+
+    ChargebeePropertyProcessor valueOf(ChargebeePropertyType type, Date startDate, Date endDate) {
+        switch (type) {
+            case ChargebeePropertyType.SMS:
+                return new SmsChargebeeProperty(startDate, endDate, cayenneService.dataSource)
+            case ChargebeePropertyType.TOTAL_CORPORATE_PASS:
+                return new TotalCorporatePassProperty(startDate, endDate, cayenneService.dataSource)
+            case ChargebeePropertyType.TOTAL_CREDIT_PAYMENT:
+                return new TotalCreditCountProperty(startDate, endDate, cayenneService.dataSource)
+            case ChargebeePropertyType.TOTAL_CREDIT_WEB_PAYMENT_IN:
+                return new TotalCreditWebPaymentInProperty(startDate, endDate, cayenneService.dataSource)
+            case ChargebeePropertyType.TOTAL_CREDIT_PAYMENT_IN:
+                return new TotalCreditPaymentInProperty(startDate, endDate, cayenneService.dataSource)
+            case ChargebeePropertyType.TOTAL_OFFICE_PAYMENT_IN_NUMBER:
+                return new TotalOfficePaymentInProperty(startDate, endDate, cayenneService.dataSource)
+            case ChargebeePropertyType.TOTAL_LMS_ENROLMENTS:
+                return new TotalLmsEnrolmentsProperty(startDate, endDate, cayenneService.newReadonlyContext)
+            default:
+                throw new IllegalArgumentException("Try to upload chargebee usage for unsupported item type: " + type)
+        }
     }
 }

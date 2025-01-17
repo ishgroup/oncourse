@@ -33,10 +33,13 @@ import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.SessionStatusDTO
 import ish.oncourse.server.cayenne.PaymentIn
+import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
+import ish.oncourse.server.checkout.gateway.stripe.StripePaymentService
+import ish.oncourse.server.checkout.gateway.stripe.StripePaymentTestService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import ish.common.checkout.gateway.SessionAttributes
@@ -141,6 +144,7 @@ class CheckoutApiService {
                 if (attributes.sessionId) {
                     dtoResponse.sessionId = attributes.sessionId
                     dtoResponse.ccFormUrl = attributes.ccFormUrl
+                    dtoResponse.clientSecret = attributes.clientSecret
                     dtoResponse.merchantReference = merchantReference
                 } else if (attributes.errorMessage) {
                     paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
@@ -222,6 +226,10 @@ class CheckoutApiService {
                 return injector.getInstance(EWayPaymentService.class)
             case PaymentGatewayType.EWAY_TEST.value:
                 return injector.getInstance(EWayTestPaymentService.class)
+            case PaymentGatewayType.STRIPE.value:
+                return injector.getInstance(StripePaymentService.class)
+            case PaymentGatewayType.STRIPE_TEST.value:
+                return injector.getInstance(StripePaymentTestService.class)
             case PaymentGatewayType.OFFLINE.value:
                 return injector.getInstance(OfflinePaymentService.class)
             default:
@@ -236,5 +244,18 @@ class CheckoutApiService {
                 .build()
 
         throw new ClientErrorException(response)
+    }
+
+    String getClientKey(){
+        try {
+            def service = getPaymentServiceByGatewayType()
+            if (!(service instanceof EmbeddedFormPaymentServiceInterface))
+                throw new IllegalAccessException("Client key not supported for selected system")
+
+            return (service as EmbeddedFormPaymentServiceInterface).getClientKey()
+        } catch(Exception e) {
+            handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
+            return null
+        }
     }
 }

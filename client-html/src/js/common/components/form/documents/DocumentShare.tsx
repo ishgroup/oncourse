@@ -30,6 +30,7 @@ import { change } from 'redux-form';
 import { mapEntityDisplayName } from '../../../../containers/entities/common/utils';
 import { DocumentShareOption } from '../../../../model/entities/Document';
 import { showMessage } from '../../../actions';
+import { IAction } from '../../../actions/IshAction';
 import {
   getAvailableOptions,
   getDocumentShareSummary,
@@ -65,7 +66,7 @@ const useStyles = makeAppStyles()(theme => ({
 interface Props {
   validUrl?: string;
   form?: string;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   documentSource?: Document;
   readOnly?: boolean;
   itemPath?: string;
@@ -176,7 +177,7 @@ const DocumentShare: React.FC<Props> = ({
     };
   }, []);
 
-  const linkInput = useRef<any>();
+  const linkInput = useRef<any>(undefined);
 
   const { classes } = useStyles();
 

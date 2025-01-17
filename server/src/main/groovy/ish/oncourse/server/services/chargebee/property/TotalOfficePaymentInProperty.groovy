@@ -30,12 +30,15 @@ class TotalOfficePaymentInProperty extends ChargebeePropertyProcessor{
             "          AND p.createdOn < '%s'" +
             "          AND p.source = '$PaymentSource.SOURCE_ONCOURSE.databaseValue'"
 
-    TotalOfficePaymentInProperty(Date startDate, Date endDate) {
+    private DataSource dataSource
+
+    TotalOfficePaymentInProperty(Date startDate, Date endDate, DataSource dataSource) {
         super(startDate, endDate)
+        this.dataSource = dataSource
     }
 
     @Override
-    BigDecimal getValue(DataSource dataSource) {
+    BigDecimal getValue() {
         String paymentsInQuery = String.format(QUERY_FORMAT, formattedStartDate, formattedEndDate)
         return getBigDecimalForDbQuery(paymentsInQuery, dataSource)
     }
