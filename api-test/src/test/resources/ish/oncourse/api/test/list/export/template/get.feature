@@ -27,7 +27,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Banking'             | "Banking CSV"                                                                  |
             | 'WaitingList'         | "WaitingList CSV"                                                              |
             | 'Application'         | "Smart & Skilled Bulk Upload"                                                         |
-            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV"                                 |
+            | 'Certificate'         | "Certificate CQR CSV export","Certificate XML"                                 |
             | 'Survey'              | "StudentFeedback CSV"                                                          |
             | 'Audit'               | "Audit Logs CSV"                                                            |
             | 'Discount'            | "Discount CSV"                                                                 |

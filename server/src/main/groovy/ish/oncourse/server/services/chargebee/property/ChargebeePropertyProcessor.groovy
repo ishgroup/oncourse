@@ -24,6 +24,15 @@ abstract class ChargebeePropertyProcessor {
         this.endDate = endDate
     }
 
+
+    protected Date getStartDate(){
+        return startDate
+    }
+
+    protected Date getEndDate(){
+        return endDate
+    }
+
     protected String getFormattedStartDate(){
         return SQL_DATE_FORMAT.format(startDate)
     }
@@ -32,6 +41,6 @@ abstract class ChargebeePropertyProcessor {
         return SQL_DATE_FORMAT.format(endDate)
     }
 
-    abstract BigDecimal getValue(DataSource dataSource)
+    abstract BigDecimal getValue()
     abstract ChargebeePropertyType getType()
 }
