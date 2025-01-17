@@ -13,6 +13,8 @@ export const CHECKOUT_VOUCHER_COLUMNS = "sku,name,priceExTax,expiryDays";
 
 export const CHECKOUT_PRODUCT_COLUMNS = "sku,name,price_with_tax";
 
+export const CHECKOUT_STORED_STATE_KEY = "stored_checkout_state";
+
 export const CHECKOUT_COURSE_CLASS_COLUMNS = "course.name,"
   + "course.code,"
   + "code,"

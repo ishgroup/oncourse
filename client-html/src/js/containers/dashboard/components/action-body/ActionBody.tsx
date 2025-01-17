@@ -9,6 +9,7 @@ import { AppTheme, ResizableWrapper } from 'ish-ui';
 import React from 'react';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { SWIPEABLE_SIDEBAR_WIDTH } from '../../../../common/components/layout/swipeable-sidebar/SwipeableSidebar';
 import NewsRender from '../../../../common/components/news/NewsRender';
@@ -40,7 +41,7 @@ interface Props {
   preferencesNewsLatestReadDate?: string;
   drawerOpened?: boolean;
   skipSystemUser?: boolean;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   access?: AccessState;
 }
 

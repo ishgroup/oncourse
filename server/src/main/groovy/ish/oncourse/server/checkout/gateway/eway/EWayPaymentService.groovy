@@ -56,5 +56,4 @@ class EWayPaymentService implements PaymentServiceInterface {
         attributes.paymentDate = transactionAttributes.paymentDate
         return attributes
     }
-
 }

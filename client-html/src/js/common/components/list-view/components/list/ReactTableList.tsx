@@ -81,7 +81,7 @@ const Table = ({
   const [columnOrder, onColumnOrderChange] = useState<ColumnOrderState>([]);
   const [rowSelection, onRowSelectionChange] = useState<RowSelectionState>(reduceSelection(selection));
 
-  const tableRef = useRef<any>();
+  const tableRef = useRef<any>(undefined);
 
   const { classes, cx } = useStyles();
 
