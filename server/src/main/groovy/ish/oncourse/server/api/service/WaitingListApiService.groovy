@@ -20,6 +20,7 @@ import ish.oncourse.server.api.v1.model.WaitingListDTO
 import ish.oncourse.server.cayenne.*
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
@@ -84,7 +85,10 @@ class WaitingListApiService extends TaggableApiService<WaitingListDTO, WaitingLi
     void validateModelBeforeSave(WaitingListDTO waitingListDTO, ObjectContext context, Long id) {
         if (!waitingListDTO.contactId) {
             validator.throwClientErrorException(id, 'studentContact', 'Student is required.')
-        } else if (!getRecordById(context, Contact, waitingListDTO.contactId)?.student) {
+        }
+
+        def contact = getRecordById(context, Contact, waitingListDTO.contactId)
+        if (!contact?.student) {
             validator.throwClientErrorException(id, 'studentContact', 'Contact is not a student.')
         }
 
@@ -96,9 +100,22 @@ class WaitingListApiService extends TaggableApiService<WaitingListDTO, WaitingLi
 
         if (!waitingListDTO.courseId) {
             validator.throwClientErrorException(id, 'course', 'Course is required.')
-        } else {
-            getRecordById(context, Course, waitingListDTO.courseId)
         }
+
+        Course course = getRecordById(context, Course, waitingListDTO.courseId)
+
+        def waitingListsFilter = WaitingList.STUDENT.eq(contact.student)
+                .andExp(WaitingList.COURSE.eq(course))
+
+        if(waitingListDTO.id)
+            waitingListsFilter = waitingListsFilter.andExp(WaitingList.ID.ne(waitingListDTO.id))
+
+        def sameWaitingList = ObjectSelect.query(WaitingList)
+                .where(waitingListsFilter)
+                .selectFirst(context)
+
+        if(sameWaitingList)
+            validator.throwClientErrorException(id, "student", "Waiting list for this student and course already exists!")
 
         if (trimToEmpty(waitingListDTO.studentNotes).length() > 32000) {
             validator.throwClientErrorException(id, 'studentNotes', 'Student notes can not be more than 32000 chars.')
