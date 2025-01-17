@@ -3,20 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import withStyles from "@mui/styles/withStyles";
-import { createStyles } from "@mui/material";
-import { CheckBoxOutlineBlank, CheckBox, IndeterminateCheckBox } from "@mui/icons-material";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import KeyboardArrowUp from "@mui/icons-material/KeyboardArrowUp";
-import TreeItem, { TreeItemProps } from "@mui/lab/TreeItem";
-import clsx from "clsx";
-import { BooleanArgFunction } from "../../../../../../model/common/CommonFunctions";
-import { MenuTag } from "../../../../../../model/tags";
+import { CheckBox, CheckBoxOutlineBlank, IndeterminateCheckBox } from '@mui/icons-material';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { TreeItem, TreeItemProps } from '@mui/x-tree-view/TreeItem';
+import clsx from 'clsx';
+import { BooleanArgFunction, stopEventPropagation } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { FormMenuTag } from '../../../../../../model/tags';
 
-const styles = theme => createStyles({
+const styles = (theme, p, classes) => ({
     checkbox: {
       height: "1em",
       width: "1em",
@@ -28,7 +26,7 @@ const styles = theme => createStyles({
     },
     checkboxLabelRoot: {
       marginRight: theme.spacing(0.5),
-      "& $checkboxLabel": {
+      [`& .${classes.checkboxLabel}`]: {
         fontSize: "12px",
       }
     },
@@ -46,13 +44,14 @@ const styles = theme => createStyles({
       marginLeft: "12px"
     },
     root: {
-      "& $content:hover, & $content$selected, & $content$focused": {
+      marginLeft: theme.spacing(1),
+      [`& .${classes.content}:hover, & .${classes.content$selected}, & .${classes.content}.${classes.focused}`]: {
         backgroundColor: "inherit"
       }
     },
     label: {},
     rootExpanded: {
-      "& > $label $collapseButton": {
+      [`& > .${classes.label} .${classes.collapseButton}`]: {
         transform: "rotate(180deg)"
       }
     },
@@ -62,15 +61,17 @@ const styles = theme => createStyles({
     parentWithChildrenOffset: {
       marginLeft: theme.spacing(-1.5)
     },
-    iconContainer: {
-      width: 0,
-    },
+    iconContainer: {},
     selected: {},
     focused: {},
     content: {
       padding: `0 ${theme.spacing(1)} 0 0`,
-      "& $iconContainer": {
+      [`& .${classes.iconContainer}`]: {
         width: 0,
+        display: 'none'
+      },
+      "&:hover,&.Mui-focused,&.Mui-focused.Mui-selected,&.Mui-selected,&.Mui-selected:hover": {
+        backgroundColor: 'inherit'
       }
     },
     tagColorDotExtraSmall: {
@@ -84,9 +85,9 @@ const styles = theme => createStyles({
   });
 
 interface Props extends TreeItemProps {
-  item: MenuTag;
+  item: FormMenuTag;
   handleExpand: any;
-  classes: any;
+  classes?: any;
   toggleActive: any;
   showColoredDots: boolean;
   toggleParentActive?: BooleanArgFunction;
@@ -94,10 +95,11 @@ interface Props extends TreeItemProps {
 }
 
 const ListTagItem: React.FC<Props> = ({
- classes, item, nodeId, handleExpand, hasOffset, toggleActive, showColoredDots
+ classes, item, itemId, handleExpand, hasOffset, toggleActive, showColoredDots
 }) => (
   <TreeItem
-    nodeId={nodeId}
+    itemId={itemId}
+    onClick={stopEventPropagation}
     classes={{
       root: classes.root,
       expanded: classes.rootExpanded,
@@ -105,13 +107,12 @@ const ListTagItem: React.FC<Props> = ({
       content: classes.content,
       label: classes.label,
       focused: classes.focused,
-      iconContainer: classes.iconContainer,
-      group: "ml-2"
+      iconContainer: classes.iconContainer
     }}
     label={(
       <div className={clsx("centeredFlex", hasOffset ? classes.parentOffset : classes.parentWithChildrenOffset)}>
         <IconButton
-          role={nodeId}
+          role={itemId}
           onClick={handleExpand}
           className={clsx(classes.collapseButton, {
               "invisible": !item.children.length
@@ -127,7 +128,7 @@ const ListTagItem: React.FC<Props> = ({
           }}
           control={(
             <Checkbox
-              value={nodeId}
+              value={itemId}
               checked={item.active}
               className={classes.checkbox}
               color="secondary"
@@ -150,7 +151,7 @@ const ListTagItem: React.FC<Props> = ({
         const key = c.prefix + c.tagBody.id.toString();
         return (
           <ListTagItem
-            nodeId={key}
+            itemId={key}
             item={c}
             classes={classes}
             key={key}
@@ -163,4 +164,4 @@ const ListTagItem: React.FC<Props> = ({
   </TreeItem>
   );
 
-export default withStyles(styles)(ListTagItem);
+export default withStyles(ListTagItem, styles);

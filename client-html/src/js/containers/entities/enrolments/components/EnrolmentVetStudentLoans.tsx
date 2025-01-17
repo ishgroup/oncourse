@@ -3,25 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import Grid from "@mui/material/Grid";
 import {
   CourseClassAttendanceType,
+  Enrolment,
+  EnrolmentCreditLevel,
+  EnrolmentCreditProviderType,
   EnrolmentCreditTotal,
   EnrolmentCreditType,
-  EnrolmentCreditProviderType,
-  EnrolmentCreditLevel,
   EnrolmentFeeStatus,
-  Enrolment,
   EnrolmentReportingStatus,
 } from "@api/model";
-import { Collapse } from "@mui/material";
+import { Collapse, Grid } from "@mui/material";
+import { decimalMul, mapSelectItems } from "ish-ui";
+import React, { useMemo } from "react";
 import { change } from "redux-form";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/Uneditable";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
 import { EditViewProps } from "../../../../model/common/ListView";
-import { mapSelectItems } from "../../../../common/utils/common";
-import { decimalMul } from "../../../../common/utils/numbers/decimalCalculation";
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);
 
@@ -49,14 +48,20 @@ const enrolmentCreditTotalItems = Object.keys(EnrolmentCreditTotal).map(mapSelec
 
 const enrolmentReportingStatusItems = Object.keys(EnrolmentReportingStatus).map(mapSelectItems);
 
-const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
+const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix?: string }> = (
   {
     twoColumn,
     values,
     form,
-    dispatch
+    dispatch,
+    expanded,
+    setExpanded,
+    syncErrors,
+    namePrefix
   }
 ) => {
+  const getName = (name: string) => namePrefix ? `${namePrefix}.${name}` : name;
+
   const loanData = useMemo(() => {
     let loanFee = 0;
     let loanTotal = values.feeHelpAmount;
@@ -79,12 +84,12 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
     switch (e) {
       case 'Eligible':
       case 'Not eligible':
-        dispatch(change(form, "feeStatus", null));
-        dispatch(change(form, "feeHelpAmount", 0));
+        dispatch(change(form, getName("feeStatus"), null));
+        dispatch(change(form, getName("feeHelpAmount"), 0));
         break;
       case 'Ongoing':
       case 'Finalized':
-        dispatch(change(form, "feeStatus", enrolmentFeeStatusItems[0].value));
+        dispatch(change(form, getName("feeStatus"), enrolmentFeeStatusItems[0].value));
         break;
       default:
         break;
@@ -92,25 +97,28 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
   };
 
   return (
-    <Grid container columnSpacing={3} rowSpacing={2} className="pl-3 pr-3">
+    <>
       {values.feeHelpClass && (
-        <>
-          <Grid item xs={12} className="mt-2">
-            <div className="heading mt-2 mb-2">
-              VET Student Loans
-            </div>
-            <FormField
-              type="select"
-              name="studentLoanStatus"
-              label="Reporting status"
-              items={enrolmentReportingStatusItems}
-              onChange={onChangeSelectValue}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
+        <ExpandableContainer
+          expanded={expanded}
+          setExpanded={setExpanded}
+          formErrors={syncErrors}
+          header="VET Student Loans"
+          index="VET Student Loans"
+        >
+          <Grid container>
+            <Grid item xs={twoColumn ? 6 : 12} className="mb-1 mt-1">
+              <FormField
+                type="select"
+                name="studentLoanStatus"
+                label="Reporting status"
+                items={enrolmentReportingStatusItems}
+                onChange={onChangeSelectValue}
+                debounced={false}
+              />
+            </Grid>
             <Collapse in={showVSL}>
-              <Grid container columnSpacing={3} rowSpacing={2} item={true} xs={12}>
+              <Grid container columnSpacing={3} rowSpacing={2} className="mb-1">
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="money"
@@ -125,7 +133,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <Uneditable label="Total loan" value={loanData.loanTotal} money />
                 </Grid>
-                <Grid item xs={twoColumn ? 6 : 12} className="d-none">
+                <Grid item xs={twoColumn ? 6 : 12}>
                   <FormField
                     type="select"
                     name="feeStatus"
@@ -147,84 +155,86 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment>> = (
               </Grid>
             </Collapse>
           </Grid>
-        </>
+        </ExpandableContainer>
       )}
 
-      <Grid item xs={12} className="centeredFlex">
-        <div className="heading">Credit and rpl</div>
-      </Grid>
+      <ExpandableContainer
+        expanded={expanded}
+        setExpanded={setExpanded}
+        formErrors={syncErrors}
+        header="Credit and rpl"
+        index="Credit and rpl"
+      >
+        <Grid container columnSpacing={3} rowSpacing={2}>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="text"
+              name="creditOfferedValue"
+              label="Credit offered value"
+              validate={validateCreditOfferedValue}
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="text"
+              name="creditUsedValue"
+              label="Credit used value"
+              validate={validateCreditUsedValue}
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="select"
+              name="creditTotal"
+              label="RPL indicator"
+              items={enrolmentCreditTotalItems}
+            />
+          </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="text"
-          name="creditOfferedValue"
-          label="Credit offered value"
-          validate={validateCreditOfferedValue}
-        />
-      </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="text"
-          name="creditUsedValue"
-          label="Credit used value"
-          validate={validateCreditUsedValue}
-        />
-      </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="select"
-          name="creditTotal"
-          label="RPL indicator"
-          items={enrolmentCreditTotalItems}
-          fullWidth
-        />
-      </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="text"
+              name="creditFOEId"
+              label="Credit field of education ID"
+              validate={validateCreditFoeId}
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="text"
+              name="creditProvider"
+              label="Credit offered provider code"
+              validate={validateCreditOfferedProviderCode}
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="select"
+              name="creditProviderType"
+              label="Credit provider type"
+              items={enrolmentCreditProviderTypeItems}
+            />
+          </Grid>
 
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="text"
-          name="creditFOEId"
-          label="Credit field of education ID"
-          validate={validateCreditFoeId}
-        />
-      </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="text"
-          name="creditProvider"
-          label="Credit offered provider code"
-          validate={validateCreditOfferedProviderCode}
-        />
-      </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="select"
-          name="creditProviderType"
-          label="Credit provider type"
-          items={enrolmentCreditProviderTypeItems}
-          fullWidth
-        />
-      </Grid>
-
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="select"
-          name="creditType"
-          label="Credit type"
-          items={enrolmentCreditTypeItems}
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField
-          type="select"
-          name="creditLevel"
-          label="Credit level"
-          items={enrolmentCreditLevelItems}
-          fullWidth
-        />
-      </Grid>
-    </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="select"
+              name="creditType"
+              label="Credit type"
+              items={enrolmentCreditTypeItems}
+            />
+          </Grid>
+          <Grid item xs={twoColumn ? 4 : 12}>
+            <FormField
+              type="select"
+              name="creditLevel"
+              label="Credit level"
+              items={enrolmentCreditLevelItems}
+            />
+          </Grid>
+        </Grid>
+      </ExpandableContainer>
+    </>
   );
 };
 

@@ -2,8 +2,8 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import { Epic } from "redux-observable";
+import * as EpicUtils from "../../../../common/epics/EpicUtils";
 import PreferencesService from "../../../preferences/services/PreferencesService";
 import {
   CHECKOUT_GET_ACTIVE_PAYMENT_TYPES,

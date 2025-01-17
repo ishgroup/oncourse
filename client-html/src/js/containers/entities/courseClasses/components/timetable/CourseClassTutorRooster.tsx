@@ -6,20 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useRef, useState } from "react";
-import {
-  FormHelperText,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import clsx from "clsx";
-import { WrappedFieldProps } from "redux-form";
 import { ClashType, CourseClassTutor, SessionWarning } from "@api/model";
-import { defaultContactName } from "../../../contacts/utils";
-import { TimetableSession } from "../../../../../model/timetable";
+import { FormHelperText, Menu, MenuItem, } from "@mui/material";
+import clsx from "clsx";
+import { AddButton, NumberArgFunction, preventEventDefault } from "ish-ui";
+import React, { useMemo, useRef, useState } from "react";
+import { WrappedFieldProps } from "redux-form";
 import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import AddButton from "../../../../../common/components/icons/AddButton";
+import { TimetableSession } from "../../../../../model/timetable";
 import CourseClassTutorRoosterItem from "./CourseClassTutorRoosterItem";
 
 interface TutorRoosterProps extends WrappedFieldProps {
@@ -31,6 +25,7 @@ interface TutorRoosterProps extends WrappedFieldProps {
   sessionDuration: number;
   budget: ClassCostExtended[];
   addTutorWage: (tutor: CourseClassTutor, wage?: ClassCostExtended) => void;
+  disableExpand?: boolean;
 }
 
 const CourseClassTutorRooster = (
@@ -46,7 +41,8 @@ const CourseClassTutorRooster = (
     onAddTutor,
     sessionDuration,
     addTutorWage,
-    budget
+    budget,
+    disableExpand
   }: TutorRoosterProps
 ) => {
   const [tutorsMenuOpened, setTutorsMenuOpened] = useState(false);
@@ -85,14 +81,14 @@ const CourseClassTutorRooster = (
                 setTutorsMenuOpened(false);
               }}
               >
-                {`${defaultContactName(t.tutorName)} (${t.roleName})`}
+                {`${t.tutorName} (${t.roleName})`}
               </MenuItem>
               ))}
           </Menu>
         </div>
       </div>
 
-      <div>
+      <div onClick={preventEventDefault}>
         {session?.tutorAttendances?.map((t, index) => (
           <CourseClassTutorRoosterItem
             key={t.courseClassTutorId || t.temporaryTutorId}
@@ -110,6 +106,7 @@ const CourseClassTutorRooster = (
             addTutorWage={addTutorWage}
             onDeleteTutor={onDeleteTutor}
             setExpanded={setExpanded}
+            disableExpand={disableExpand}
           />
         ))}
       </div>

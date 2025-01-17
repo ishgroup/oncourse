@@ -1,17 +1,17 @@
+import { CorporatePass, Discount } from "@api/model";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { CorporatePass, Discount } from "@api/model";
 import { change } from "redux-form";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
-import { discountSort, mapPlainDiscounts, transformDiscountForNestedList } from "../../discounts/utils";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
+import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
 import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
+import { discountSort, mapPlainDiscounts, transformDiscountForNestedList } from "../../discounts/utils";
 
 interface Props {
   values?: CorporatePass;
@@ -84,7 +84,7 @@ class CorporatePassDiscounts extends Component<Props, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  discounts: state.plainSearchRecords["Discount"].items.map(mapPlainDiscounts),
+  discounts: state.plainSearchRecords["Discount"].items,
   pending: state.plainSearchRecords["Discount"].loading,
   discountsError: state.plainSearchRecords["Discount"].error,
 });
@@ -92,7 +92,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getSearchResult: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", search));
-    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Discount", 0, "name,discountType,discountDollar,discountPercent", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscounts)));
   },
   clearSearchResult: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending)),
 });

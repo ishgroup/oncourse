@@ -1,38 +1,28 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { memo, NamedExoticComponent, useCallback, useEffect, useMemo, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
-import { Dispatch } from "redux";
+import { openInternalLink } from "ish-ui";
+import React, { memo, NamedExoticComponent, useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Dispatch } from "redux";
 import { change, isDirty, reset } from "redux-form";
-import { PaymentOut } from "@api/model";
-import { format } from "date-fns";
-import { State } from "../../../../reducers/state";
-import {
-  duplicateAndReverseInvoice,
-  duplicateQuote,
-  getAmountOwing,
-  setContraInvoices
-} from "../actions";
-import ContraInvoiceModal from "./ContraInvoiceModal";
-import { getAddPaymentOutContact, postPaymentOut } from "../../paymentsOut/actions";
+import { IAction } from '../../../../common/actions/IshAction';
+import { setListCreatingNew, setListSelection, } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import {
-  getRecords,
-  setListCreatingNew,
-  setListNestedEditRecord,
-  setListSelection,
-} from "../../../../common/components/list-view/actions";
-import { PaymentOutModel } from "../../paymentsOut/reducers/state";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
 import history from "../../../../constants/History";
 import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
-import { isInvoiceType } from "../utils";
+import { State } from "../../../../reducers/state";
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
+import { duplicateAndReverseInvoice, duplicateQuote, getAmountOwing, setContraInvoices } from "../actions";
+import { isInvoiceType } from "../utils";
+import ContraInvoiceModal from "./ContraInvoiceModal";
 
 interface Props extends CogwhelAdornmentProps {
   dispatch: any;
@@ -41,10 +31,8 @@ interface Props extends CogwhelAdornmentProps {
   contraInvoices: any;
   selectedInvoiceAmountOwing: any;
   getAmountOwing: any;
-  getAddPaymentOutContact: any;
   isFormDirty: boolean;
   resetEditView: any;
-  openAddPaymentOutEditView: any;
   hasQePermissions: any;
   listRecords: any;
   duplicateQuote: any;
@@ -65,13 +53,10 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
     contraInvoices,
     selectedInvoiceAmountOwing,
     getAmountOwing,
-    getAddPaymentOutContact,
-    onCreate,
     closeMenu,
     showConfirm,
     isFormDirty,
     resetEditView,
-    openAddPaymentOutEditView,
     hasQePermissions,
     listRecords,
     duplicateQuote,
@@ -125,59 +110,10 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
   useEffect(() => {
     if (oneSelectedAndNotNew) {
       getAmountOwing(selection[0]);
-      getAddPaymentOutContact(selection[0]);
     }
 
     return () => clearContraInvoices();
   }, [oneSelectedAndNotNew]);
-
-  const getPaymentOutFromModel = (model: PaymentOutModel) => {
-    const {
-      amount,
-      chequeSummary,
-      datePayed: unformattedDatePayed,
-      invoices,
-      payeeId,
-      refundableId,
-      paymentMethodId,
-      privateNotes,
-      administrationCenterId,
-      selectedPaymentMethod
-    } = model;
-    const datePayed = format(new Date(unformattedDatePayed), YYYY_MM_DD_MINUSED);
-    const paymentOut: PaymentOut = {
-      amount,
-      datePayed,
-      payeeId,
-      paymentMethodId,
-      privateNotes,
-      administrationCenterId
-    };
-
-    if (selectedPaymentMethod === "Cheque") {
-      paymentOut.chequeSummary = chequeSummary;
-    }
-
-    if (selectedPaymentMethod === "Credit card") {
-      paymentOut.refundableId = refundableId;
-    }
-
-    paymentOut.invoices = invoices
-      .map(i => ({
-        id: i.id,
-        amount: Math.round(i.outstanding * 100 - i.amountOwing * 100) / 100
-      }))
-      .filter(i => i.amount > 0);
-
-    return paymentOut;
-  };
-
-  const handleAddPaymentOut = (record, dispatch: Dispatch<any>, formProps) => {
-    const paymentOut = getPaymentOutFromModel(record);
-    dispatch(postPaymentOut(paymentOut));
-    formProps.toogleFullScreenEditView();
-    dispatch(getRecords("AbstractInvoice"));
-  };
 
   const onClick = useCallback(e => {
     const status = e.target.getAttribute("role");
@@ -201,12 +137,12 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
         break;
       }
       case "PaymentIn": {
-        history.push(`/checkout?invoiceId=${selection[0]}`);
+        openInternalLink(`/checkout?invoiceId=${selection[0]}`);
         closeMenu();
         break;
       }
       case "PaymentOut": {
-        openAddPaymentOutEditView("PaymentOut", {}, handleAddPaymentOut);
+        openInternalLink(`/paymentOut/new?invoiceId=${selection[0]}`);
         closeMenu();
         break;
       }
@@ -283,7 +219,6 @@ const InvoiceCogwheel: NamedExoticComponent = memo<Props>(props => {
       </MenuItem>
 
       <BulkEditCogwheelOption {...props} />
-
     </>
   );
 });
@@ -296,18 +231,15 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch,
   resetEditView: () => dispatch(reset(LIST_EDIT_VIEW_FORM_NAME)),
   getAmountOwing: (id: number) => dispatch(getAmountOwing(id)),
-  getAddPaymentOutContact: (id: number) => dispatch(getAddPaymentOutContact(id)),
   clearContraInvoices: () => dispatch(setContraInvoices(null)),
   duplicateAndReverseInvoice: (id: number) => dispatch(duplicateAndReverseInvoice(id)),
   duplicateQuote: (id: number) => dispatch(duplicateQuote(id)),
   setListCreatingNew: (creatingNew: boolean) => dispatch(setListCreatingNew(creatingNew)),
   updateSelection: (selection: string[]) => dispatch(setListSelection(selection)),
-  openAddPaymentOutEditView: (entity: string, record: any, customOnSave?: any) =>
-    dispatch(setListNestedEditRecord(entity, record, customOnSave))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(InvoiceCogwheel));

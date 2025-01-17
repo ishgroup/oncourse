@@ -3,24 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Qualification } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import ListView from "../../../common/components/list-view/ListView";
-import {
-  createQualification, getQualification, removeQualification, updateQualification
-} from "./actions";
-import { Qualification } from "@api/model";
-import { FilterGroup } from "../../../model/common/ListView";
-import QualificationsEditView from "./components/QualificationsEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord
-} from "../../../common/components/list-view/actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
+import { initialize } from "redux-form";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import QualificationsEditView from "./components/QualificationsEditView";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -87,7 +80,7 @@ const Initial: Qualification = {
   specialization: null
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Qualification and entityId" },
   { title: "Certificates", list: "certificate", expression: "qualification.id" },
   { title: "Class", list: "class", expression: "course.qualification.id" },
@@ -96,7 +89,7 @@ const findRelatedGroup: any[] = [
   { title: "Students", list: "contact", expression: "student.enrolments.courseClass.course.qualification.id" }
 ];
 
-const manualLink = getManualLink("rto_createQual");
+const manualLink = getManualLink("viewing-qualifications-and-units-of-competency");
 
 const nameCondition = (item: Qualification) => item.title;
 
@@ -113,50 +106,26 @@ class Qualifications extends React.Component<any, any> {
     return false;
   }
 
-  onSave = (id: string, item: Qualification) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    this.props.onSave(id, item);
-  };
-
-  onCreate = (item: Qualification) => {
-    if (item.isOffered === undefined) {
-      item.isOffered = false;
-    }
-
-    this.props.onCreate(item);
-  };
-
   render() {
-    const {
-      onDelete, getQualificationRecord, onInit
-    } = this.props;
+    const { onInit } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "title",
-            secondaryColumn: "nationalCode"
-          }}
-          editViewProps={{
-            manualLink,
-            nameCondition
-          }}
-          EditViewContent={QualificationsEditView}
-          getEditRecord={getQualificationRecord}
-          rootEntity="Qualification"
-          onDelete={onDelete}
-          onInit={onInit}
-          onCreate={this.onCreate}
-          onSave={this.onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "title",
+          secondaryColumn: "nationalCode"
+        }}
+        editViewProps={{
+          manualLink,
+          nameCondition
+        }}
+        EditViewContent={QualificationsEditView}
+        rootEntity="Qualification"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        noListTags
+      />
     );
   }
 }
@@ -170,10 +139,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Qualification"));
   },
   clearListState: () => dispatch(clearListState()),
-  getQualificationRecord: (id: string) => dispatch(getQualification(id)),
-  onSave: (id: string, qualification: Qualification) => dispatch(updateQualification(id, qualification)),
-  onCreate: (qualification: Qualification) => dispatch(createQualification(qualification)),
-  onDelete: (id: string) => dispatch(removeQualification(id))
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(Qualifications);

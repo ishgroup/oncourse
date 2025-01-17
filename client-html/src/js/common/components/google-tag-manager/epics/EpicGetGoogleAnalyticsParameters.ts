@@ -4,17 +4,17 @@
  */
 
 import { Epic } from "redux-observable";
-
-import * as EpicUtils from "../../../epics/EpicUtils";
-import { GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED, GET_TAG_MANAGER_PARAMETERS } from "../actions";
-import UserPreferenceService from "../../../services/UserPreferenceService";
-import { GET_USER_PREFERENCES_FULFILLED } from "../../../actions";
 import {
   GOOGLE_ANALYTICS_CLIENT_ID_KEY,
   GOOGLE_ANALYTICS_COMPAIN_ID_KEY,
   GOOGLE_ANALYTICS_COMPAIN_NAME_KEY,
   GOOGLE_ANALYTICS_USER_ID_KEY
 } from "../../../../constants/Config";
+import { GET_USER_PREFERENCES_FULFILLED } from "../../../actions";
+
+import * as EpicUtils from "../../../epics/EpicUtils";
+import UserPreferenceService from "../../../services/UserPreferenceService";
+import { GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED, GET_TAG_MANAGER_PARAMETERS } from "../actions";
 
 const request: EpicUtils.Request<{ [key: string]: string }, any> = {
   type: GET_TAG_MANAGER_PARAMETERS,

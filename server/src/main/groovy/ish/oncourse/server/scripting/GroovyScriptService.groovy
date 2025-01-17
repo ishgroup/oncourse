@@ -20,14 +20,9 @@ import ish.common.types.SystemEventType
 import ish.common.types.TriggerType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.ISHDataContext
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.Membership
+import ish.oncourse.server.accounting.AccountTransactionService
 import ish.oncourse.server.api.v1.model.PreferenceEnumDTO
-import ish.oncourse.server.cayenne.Preference
-import ish.oncourse.server.cayenne.ProductItem
-import ish.oncourse.server.cayenne.Script
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.cayenne.Voucher
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.export.ExportService
 import ish.oncourse.server.imports.ImportService
@@ -47,7 +42,6 @@ import ish.oncourse.server.users.SystemUserService
 import ish.oncourse.types.AuditAction
 import ish.persistence.Preferences
 import ish.scripting.ScriptResult
-import ish.util.AbstractEntitiesUtil
 import ish.util.TimeZoneUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
@@ -80,6 +74,9 @@ class GroovyScriptService {
     public static final String RECORD_PARAM_NAME = "record"
     public static final String RECORDS_PARAM_NAME = "records"
     public static final String SCRIPT_CONTEXT_PROPERTY = "script_context"
+    public static final String COLLEGE_KEY = "collegeKey"
+    public static final String SERVICES_HOST = "servicesHost"
+    public static final String SERVICES_KEY = "servicesKey"
 
     private static final String GROOVY_SCRIPT_ENGINE = "groovy"
 
@@ -88,6 +85,7 @@ class GroovyScriptService {
     private static final String EMAIL_SERVICE = "Email"
     private static final String QUERY_SERVICE = "Query"
     private static final String EVENT_SERVICE = "eventService"
+    private static final String ACCOUNT_TRANSACTION_SERVICE = "accountTransactionService"
 
     private static final String RUN_QUERY = "query"
     private static final String SEND_EMAIL = "email"
@@ -198,6 +196,7 @@ class GroovyScriptService {
         PrintService printService = injector.getInstance(PrintService.class)
         MessageService messageService = injector.getInstance(MessageService.class)
         DocumentService documentService = injector.getInstance(DocumentService.class)
+        AccountTransactionService accountTransactionService = injector.getInstance(AccountTransactionService.class)
 
         Bindings bindings = new SimpleBindings()
 
@@ -206,8 +205,12 @@ class GroovyScriptService {
         bindings.put(EMAIL_SERVICE, emailService)
         bindings.put(QUERY_SERVICE, queryService)
         bindings.put(EVENT_SERVICE, eventService)
+        bindings.put(ACCOUNT_TRANSACTION_SERVICE, accountTransactionService)
         bindings.put(RECORDS_PARAM_NAME, [])
         bindings.put(FILE_PARAM_NAME, null)
+        bindings.put(COLLEGE_KEY, licenseService.getCollege_key())
+        bindings.put(SERVICES_HOST, licenseService.getServices_host())
+        bindings.put(SERVICES_KEY, licenseService.getServices_key())
 
         bindings.put(RUN_QUERY, new MethodClosure(queryService, RUN_QUERY))
         bindings.put(SEND_EMAIL, new MethodClosure(emailService, SEND_EMAIL))
@@ -463,6 +466,8 @@ class GroovyScriptService {
 
     ScriptResult runScript(Script script, ScriptParameters parameters, ObjectContext context) {
         logger.warn("Running script {}. Parameters: {}", script.getName(), parameters.asMap())
+        logger.warn("Number of threads {}", Thread.activeCount())
+        logger.warn("Heap size taken in bytes {}, free memory: {}", Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory())
         if (script == null) {
             throw new IllegalArgumentException("Script cannot be null.")
         }
@@ -493,6 +498,7 @@ class GroovyScriptService {
                     String.format(PREPARE_LOGGER, script.getName()) +
                     script.getScript(), bindings)
 
+            logger.warn("Script executed {}", script.getName())
             return ScriptResult.success(result)
         } catch (ScriptException e) {
             logger.error("Execution failed for '{}'.", script.getName(), e)

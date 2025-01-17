@@ -1,4 +1,4 @@
-import { Course, CourseApi, Diff } from "@api/model";
+import { Course, CourseApi, Sale } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class CourseService {
@@ -24,8 +24,8 @@ class CourseService {
     return this.courseApi.duplicateCourse(ids);
   }
 
-  public bulkEdit(diff: Diff): Promise<Course> {
-    return this.courseApi.bulkChange(diff);
+  public getSellables(courseIds: number[]): Promise<Sale[]> {
+    return this.courseApi.getSellables(courseIds);
   }
 }
 

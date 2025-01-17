@@ -6,25 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { IconButton, Typography } from "@mui/material";
-import Close from "@mui/icons-material/Close";
-import React, { useMemo } from "react";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Close from '@mui/icons-material/Close';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { makeAppStyles } from "../../styles/makeStyles";
-import navigation from "./navigation.json";
-import CatalogItem from "../layout/catalog/CatalogItem";
-import { useAppDispatch, useAppSelector } from "../../utils/hooks";
-import { DASHBOARD_FAVORITES_KEY, FAVORITE_SCRIPTS_KEY } from "../../../constants/Config";
-import { setUserPreference } from "../../actions";
-import { AnyArgFunction, BooleanArgFunction, NumberArgFunction } from "../../../model/common/CommonFunctions";
-import { openInternalLink } from "../../utils/links";
-import { getPrivisioningLink } from "../../../routes/routesMapping";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Grid, IconButton, Typography } from '@mui/material';
+import { BooleanArgFunction, makeAppStyles, NumberArgFunction, openInternalLink } from 'ish-ui';
+import React, { useMemo } from 'react';
+import StructureGraph from '../../../containers/dashboard/StructureGraph';
+import { getPrivisioningLink } from '../../../routes/routesMapping';
+import { useAppSelector } from '../../utils/hooks';
+import CatalogItem from '../layout/catalog/CatalogItem';
+import navigation from './data/navigation.json';
+import structure from './data/structure.json';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   description: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
     "& ul": {
       paddingLeft: theme.spacing(2)
     }
@@ -32,21 +28,31 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 interface Props {
-  showConfirm: AnyArgFunction,
   selected: string;
   onClose: any;
   favorites: string[];
   favoriteScripts: string[];
+  disabled: Record<any, any>;
   setExecMenuOpened: BooleanArgFunction,
   setScriptIdSelected: NumberArgFunction,
+  updateFavorites: (key: string, type: "category" | "automation") => void;
+}
+
+interface NavigationItemProps {
+  favorites: string[];
+  item,
+  onOpen,
+  onFavoriteClick,
+  disabled?: boolean;
 }
 
 const NavigationItem = ({
- favorites, item, onOpen, onFavoriteClick 
-}) => {
+ favorites, item, onOpen, onFavoriteClick, disabled
+}: NavigationItemProps) => {
   const isFavorite = favorites.includes(item.key);
   return (
     <CatalogItem
+      disabled={disabled}
       onOpen={onOpen}
       item={{
         title: item.title,
@@ -74,45 +80,26 @@ const NavigationCategory = (
     onClose,
     favorites,
     favoriteScripts,
-    showConfirm,
     setScriptIdSelected,
-    setExecMenuOpened
+    setExecMenuOpened,
+    updateFavorites,
+    disabled
   }:Props
 ) => {
-  const classes = useStyles();
-
-  const dispatch = useAppDispatch();
+  const { classes } = useStyles();
 
   const scripts = useAppSelector(state => state.dashboard.scripts);
   
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
   
   const features = useMemo(() => (category 
-    ? navigation.features.filter(f => category.features.includes(f.key))
-    : []), [category]);
-  
-  const updateFavorites = (key, type: "category" | "automation") => {
-    if (type === "category") {
-      dispatch(setUserPreference({
-        key: DASHBOARD_FAVORITES_KEY,
-        value: favorites.includes(key)
-          ? favorites.filter(v => v !== key).toString()
-          : [...favorites, key].toString()
-      }));
-    }
-    if (type === "automation") {
-      dispatch(setUserPreference({
-        key: FAVORITE_SCRIPTS_KEY,
-        value: favoriteScripts.includes(key)
-          ? favoriteScripts.filter(v => v !== key).toString()
-          : [...favoriteScripts, key].toString()
-      }));
-    }
-  };
+    ? navigation.features.filter(f => category.features.includes(f.key) && !disabled[f.key])
+    : []
+  ), [category, disabled]);
 
-  const onOpen = (link: string) => {
-    showConfirm(() => openInternalLink(getPrivisioningLink(link)));
-  };
+  const onOpen = (link: string) => openInternalLink(getPrivisioningLink(link));
+
+  const hasStructure = Boolean(structure[selected]);
 
   return (
     <div className="flex-fill p-3 overflow-y-auto">
@@ -122,7 +109,17 @@ const NavigationCategory = (
           <Close />
         </IconButton>
       </div>
-      <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+      <Grid container className="mt-3 mb-3" columnSpacing={2} rowSpacing={2}>
+        <Grid item xs={12} xl={hasStructure ? 6 : 12}>
+          <Typography className={classes.description} variant="body2" dangerouslySetInnerHTML={{ __html: category?.description }} />
+        </Grid>
+        {hasStructure &&
+          <Grid item xs={12} xl={6}>
+            <StructureGraph root={structure[selected]} />
+          </Grid>
+        }
+      </Grid>
+
       <div className="heading mb-2">
         Features
       </div>

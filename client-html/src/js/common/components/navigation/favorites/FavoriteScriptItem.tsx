@@ -1,12 +1,12 @@
-import React from "react";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import ListItem from "@mui/material/ListItem";
-import { Script } from "@api/model";
+import { Script } from '@api/model';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import itemStyles from "./itemStyles";
+import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AnyArgFunction } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import itemStyles from './itemStyles';
 
 interface Props {
   item: Script;
@@ -47,4 +47,4 @@ const FavoriteScriptItem = (props: Props) => {
   );
 };
 
-export default withStyles(itemStyles)(FavoriteScriptItem);
+export default withStyles(FavoriteScriptItem, itemStyles);

@@ -3,26 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import { CorporatePass, Sale, SaleType } from "@api/model";
-import { change } from "redux-form";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { State } from "../../../../reducers/state";
-import { clearSales, getSales } from "../../sales/actions";
-import { entityForLink } from "../../common/utils";
-import { mapPlainDiscountClasses } from "../../discounts/utils";
+import { CorporatePass, Sale, SaleType } from '@api/model';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { State } from '../../../../reducers/state';
+import { entityForLink } from '../../common/utils';
+import { mapPlainDiscountClasses } from '../../discounts/utils';
+import { clearSales, getSales } from '../../sales/actions';
 
-const styles = createStyles({
+const styles = ({
   dataRowClass: {
     gridTemplateColumns: "3fr 2fr"
   }
@@ -169,7 +168,7 @@ class CorporatePassLimit extends Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   sales: state.sales.items,
   salesError: state.sales.error,
-  courseClassItems: state.plainSearchRecords["CourseClass"].items.map(mapPlainDiscountClasses),
+  courseClassItems: state.plainSearchRecords["CourseClass"].items,
   pending: state.plainSearchRecords["CourseClass"].loading,
   discountClassesError: state.plainSearchRecords["CourseClass"].error
 });
@@ -181,9 +180,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearSearchResult: (pending: boolean) => dispatch(clearSales(pending)),
   searchCourseClassSales: (search: string) => {
     dispatch(setCommonPlainSearch("CourseClass", `${search ? `(${search}) AND ` : ""}(isDistantLearningCourse is true OR endDateTime > now) AND isCancelled is false`));
-    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("CourseClass", 0, "course.name,uniqueCode,isActive", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(mapPlainDiscountClasses)));
   },
   clearCourseClassSales: (pending: boolean) => dispatch(clearCommonPlainRecords("CourseClass", pending))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CorporatePassLimit));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CorporatePassLimit, styles));

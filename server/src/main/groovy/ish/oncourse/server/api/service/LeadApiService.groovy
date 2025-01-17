@@ -82,8 +82,8 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
             dtoModel.invoices = cayenneModel.invoices.collect {invoiceApiService.toRestLeadInvoice(it) } +
                     cayenneModel.quotes.collect {invoiceApiService.toRestLeadInvoice(it) }
             dtoModel.customFields = cayenneModel.customFields.collectEntries {[(it.customFieldType.key): it.value] }
-            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            dtoModel.tags = cayenneModel.tags.collect { toRestTagMinimized(it) }
+            dtoModel.documents = cayenneModel.activeAttachments.collect { toRestDocument(it.document, documentService) }
+            dtoModel.tags = cayenneModel.allTags.collect { it.id }
             dtoModel.relatedSellables = cayenneModel.items.collect {item -> item.course ? toRestSale(item.course) : toRestSale(item.product) }
             dtoModel.sites =  cayenneModel.sites.collect {toRestSiteMinimized(it) }
             dtoModel
@@ -107,7 +107,7 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
 
         updateLeadItems(cayenneModel, dtoModel.relatedSellables)
         updateSites(dtoModel.sites, cayenneModel)
-        updateTags(cayenneModel, cayenneModel.taggingRelations, dtoModel.tags*.id, LeadTagRelation.class, context)
+        updateTags(cayenneModel, cayenneModel.taggingRelations, dtoModel.tags, LeadTagRelation.class, context)
         updateDocuments(cayenneModel, cayenneModel.attachmentRelations, dtoModel.documents, LeadAttachmentRelation.class, context)
         updateCustomFields(context, cayenneModel, dtoModel.customFields, LeadCustomField.class)
         return cayenneModel
@@ -148,7 +148,8 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
     private static void updateSites(List<SiteDTO> sites, Lead lead) {
         ObjectContext context = lead.context
         List<Long> sitesToSave = sites*.id ?: [] as List<Long>
-        context.deleteObjects(lead.sites.findAll { !sitesToSave.contains(it.id) })
+        def sitesToRemove = lead.sites.findAll { !sitesToSave.contains(it.id) }
+        sitesToRemove.each {lead.removeFromSites(it)}
         sites.findAll { !lead.sites*.id.contains(it.id) }
                 .collect { getRecordById(context, Site, it.id)}
                 .each {site ->

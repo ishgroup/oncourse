@@ -3,27 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Banking } from "@api/model";
+import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import * as React from "react";
-import { Banking } from "@api/model";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
-import {
-  getFilters,
-  clearListState,
-  setListEditRecord,
-} from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
-import {
-  getBanking, updateBanking, createBanking, removeBanking, initDeposit
-} from "./actions";
-import BankingEditViewResolver from "./components/BankingEditViewResolver";
-import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
-import { getAccountTransactionLockedDate, getCurrency } from "../../preferences/actions";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup } from "../../../model/common/ListView";
+import { getAccountTransactionLockedDate, getCurrency } from "../../preferences/actions";
 import { getAdministrationSites } from "../sites/actions";
+import { initDeposit } from "./actions";
+import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
+import BankingEditViewResolver from "./components/BankingEditViewResolver";
 
-const manualLink = getManualLink("accounting_Deposit");
+const manualLink = getManualLink("banking-and-reconciliation");
 
 const filterGroups: FilterGroup[] = [
   {
@@ -55,59 +49,33 @@ class BankingListView extends React.Component<any, null> {
     this.props.clearListState();
   }
 
-  onCreateNewBanking = (banking: Banking) => {
-    const { onCreate } = this.props;
-
-    if (banking && banking.payments) {
-      const newBanking = { ...banking };
-      newBanking.payments = banking.payments
-        // @ts-ignore
-        .filter(v => v.selected)
-        .map(v => {
-          const newPayment = { ...v };
-          // @ts-ignore
-          delete newPayment.selected;
-          return newPayment;
-        });
-      return onCreate(newBanking);
-    }
-  };
-
   render() {
-    const {
-      getBankingRecord, onDelete, onSave, onInit
-    } = this.props;
+    const { onInit } = this.props;
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "settlementDate",
-            secondaryColumn: "type"
-          }}
-          EditViewContent={BankingEditViewResolver}
-          getEditRecord={getBankingRecord}
-          rootEntity="Banking"
-          onInit={onInit}
-          onCreate={this.onCreateNewBanking}
-          editViewProps={{
-            manualLink,
-            hideTitle: true
-          }}
-          onDelete={onDelete}
-          onSave={onSave}
-          filterGroupsInitial={filterGroups}
-          findRelated={[
-            { title: "Transactions", list: "transaction", expression: "banking.id" },
-            { title: "Payments in", list: "paymentIn", expression: "banking.id" },
-            { title: "Payments out", list: "paymentOut", expression: "banking.id" },
-            { title: "Invoices", list: "invoice", expression: "banking.id" },
-            { title: "Audits", list: "audit", expression: "entityIdentifier == Banking and entityId" }
-          ]}
-          CogwheelAdornment={BankingCogwheelOptions}
-          alwaysFullScreenCreateView
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "settlementDate",
+          secondaryColumn: "type"
+        }}
+        EditViewContent={BankingEditViewResolver}
+        rootEntity="Banking"
+        onInit={onInit}
+        editViewProps={{
+          manualLink,
+          hideTitle: true
+        }}
+        filterGroupsInitial={filterGroups}
+        findRelated={[
+          { title: "Transactions", list: "transaction", expression: "banking.id" },
+          { title: "Payments in", list: "paymentIn", expression: "banking.id" },
+          { title: "Payments out", list: "paymentOut", expression: "banking.id" },
+          { title: "Invoices", list: "invoice", expression: "banking.id" },
+          { title: "Audits", list: "audit", expression: "entityIdentifier == Banking and entityId" }
+        ]}
+        CogwheelAdornment={BankingCogwheelOptions}
+        alwaysFullScreenCreateView
+        noListTags
+      />
     );
   }
 }
@@ -123,13 +91,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getFilters("Banking"));
   },
   getLockedDate: () => dispatch(getAccountTransactionLockedDate()),
-  clearListState: () => dispatch(clearListState()),
-  getBankingRecord: (id: string) => {
-    dispatch(getBanking(id));
-  },
-  onSave: (id: string, banking: Banking) => dispatch(updateBanking(id, banking)),
-  onCreate: (banking: Banking) => dispatch(createBanking(banking)),
-  onDelete: (id: string) => dispatch(removeBanking(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(

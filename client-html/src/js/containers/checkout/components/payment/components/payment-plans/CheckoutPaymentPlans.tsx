@@ -3,22 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PaymentMethod } from "@api/model";
-import React from "react";
-import { FieldArray, WrappedFieldArrayProps } from "redux-form";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import StepButton from "@mui/material/StepButton";
-import Stepper from "@mui/material/Stepper";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { normalizeNumberToPositive } from "../../../../../../common/utils/numbers/numbersNormalizing";
-import { AppTheme } from "../../../../../../model/common/Theme";
-import { paymentPlanStyles } from "../../../../../entities/invoices/styles/paymentPlanStyles";
+import { PaymentMethod } from '@api/model';
+import Step from '@mui/material/Step';
+import StepButton from '@mui/material/StepButton';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
+import Typography from '@mui/material/Typography';
+import { AppTheme, normalizeNumberToPositive } from 'ish-ui';
+import React from 'react';
+import { FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { paymentPlanStyles } from '../../../../../entities/invoices/styles/paymentPlanStyles';
 
-const styles = () => createStyles({
+const styles = () => ({
   button: {
     padding: "0 9px",
     textTransform: "capitalize",
@@ -44,7 +42,6 @@ interface Props {
   dispatch?: any;
   selected?: boolean;
   validatePayNow?: any;
-  onPayNowChange?: any;
   onPayDateChange?: any;
   onPayNowFocus?: any;
   onPayNowBlur?: any;
@@ -63,16 +60,12 @@ const validateDueDate = (date, allValues) => {
   return error;
 };
 
-const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
-  ...paymentPlanStyles(theme),
-  ...styles()
-}))((props: WrappedFieldArrayProps & Props) => {
+const CheckoutPaymentPlansBase = withStyles((props: WrappedFieldArrayProps & Props) => {
   const {
     classes,
     fields,
     selected,
     validatePayNow,
-    onPayNowChange,
     onPayDateChange,
     onPayNowFocus,
     disabledStep,
@@ -117,12 +110,12 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
               <FormField
                 type="money"
                 name={`${f}.amount`}
+                format={normalizeNumberToPositive}
                 normalize={normalizeNumberToPositive}
-                listSpacing={false}
                 onBlur={onPayNowBlur}
-                onChange={onPayNowChange}
                 disabled={!first || disabledStep}
                 validate={first ? validatePayNow : undefined}
+                debounced={false}
               />
 
               {first && (
@@ -131,13 +124,10 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                     <FormField
                       type="date"
                       name={`${f}.payDate`}
-                      formatting="inline"
-                      placeHolder="Pay now"
+                      inline
+                      placeholder="Pay now"
                       onChange={onPayDateChange}
                       validate={validateLockedDate}
-                      fieldClasses={{
-                        placeholder: "textSecondaryColor"
-                      }}
                     />
                   ) : "Pay now"}
                 </Typography>
@@ -147,7 +137,7 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
                 <FormField
                   type="date"
                   name={`${f}.date`}
-                  formatting="inline"
+                  inline
                   disabled={!field.dateEditable || disabledStep}
                   validate={(!field.dateEditable || disabledStep) ? undefined : validateDueDate}
                   onChange={(!field.dateEditable || disabledStep) ? undefined : onDueDateChange}
@@ -181,7 +171,10 @@ const CheckoutPaymentPlansBase = withStyles((theme: AppTheme) => ({
       </Stepper>
     </div>
   );
-});
+}, (theme: AppTheme, p, classes) => ({
+  ...paymentPlanStyles(theme, p, classes),
+  ...styles()
+}));
 
 export default props => (
   <FieldArray

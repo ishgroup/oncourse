@@ -1,31 +1,33 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import ListItem from "@mui/material/ListItem";
-import { openInternalLink } from "../../../utils/links";
-import itemStyles from "./itemStyles";
-import { DashboardItem } from "../../../../model/dashboard";
-import { getPrivisioningLink } from "../../../../routes/routesMapping";
+import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { openInternalLink } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { DashboardItem } from '../../../../model/dashboard';
+import { getPrivisioningLink } from '../../../../routes/routesMapping';
+import itemStyles from './itemStyles';
 
 interface Props {
   item: DashboardItem;
   isEditing?: boolean;
   classes?: any;
-  showConfirm?: (onConfirm: any) => void;
 }
 
 const FavoriteItem = (props: Props) => {
   const {
-    showConfirm, classes, item, isEditing
+    classes, item, isEditing
   } = props;
 
-  const openLink = () => showConfirm(() => openInternalLink(getPrivisioningLink(item.url)));
+  const openLink = () => openInternalLink(getPrivisioningLink(item.url));
 
   const isQuickEnroll = item.category === "quickEnrol";
 
@@ -49,4 +51,4 @@ const FavoriteItem = (props: Props) => {
   );
 };
 
-export default withStyles(itemStyles)(FavoriteItem);
+export default withStyles(FavoriteItem, itemStyles);

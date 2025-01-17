@@ -61,8 +61,8 @@ class UserPreferenceService {
 
     private ObjectMapper mapper = new ObjectMapper()
 
-    void setTableModel(String entity, TableModelDTO model) {
-        String name = "$USER_PREF_PREFIX.$entity".toString()
+    void setTableModel(String tableModelIdentifier, TableModelDTO model) {
+        String name = "$USER_PREF_PREFIX.$tableModelIdentifier".toString()
         Preference preference = getUserPref(name)?:createUserPref(name)
         preference.valueString = mapper.writeValueAsString(model)
         preference.context.commitChanges()
@@ -168,8 +168,16 @@ class UserPreferenceService {
                 return preferenceController.getOncourseServerDefaultTimezone()
             case PreferenceEnumDTO.TUTORIAL_SKIP_SYSTEMUSER:
                 return preferenceController.getTutorialSkipSystemUser()
+            case PreferenceEnumDTO.BACKGROUND_QUALITY_SCALE:
+                return preferenceController.getBackgroundQualityScale()
+            case PreferenceEnumDTO.ACCOUNT_DEFAULT_INVOICELINE_ID:
+                return preferenceController.getDefaultInvoiceLineAccount()
+            case PreferenceEnumDTO.PAYMENT_GATEWAY_TYPE:
+                return preferenceController.getPaymentGatewayType()
             case PreferenceEnumDTO.NEWS_READ:
                 return getReadNews()
+            case PreferenceEnumDTO.ISH_DISPLAY_EXTENDEDSEARCHTYPES:
+                return preferenceController.getExtendedSearchTypesAllowed()
             default:
                 String name = key.toString()
                 Preference preference = getUserPref(name)
@@ -189,6 +197,8 @@ class UserPreferenceService {
                 preference.context.commitChanges()
             }
             preference.uniqueKey = userService.currentUser.id + key.toString() + value
+        } else if (key == PreferenceEnumDTO.ACCOUNT_DEFAULT_INVOICELINE_ID) {
+            preference = preferenceController.getPreference(name, false)
         } else {
             preference = getUserPref(name) ?: createUserPref(name)
         }

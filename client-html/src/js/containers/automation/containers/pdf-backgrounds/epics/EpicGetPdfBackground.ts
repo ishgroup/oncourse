@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
+import { ReportOverlay } from "@api/model";
 
 import { initialize } from "redux-form";
-import { ReportOverlay } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_AUTOMATION_PDF_BACKGROUND } from "../actions";
 import { PDF_BACKGROUND_FORM_NAME } from "../PdfBackgrounds";
 import ReportOverlayService from "../services/ReportOverlayService";

@@ -3,14 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 
@@ -41,13 +40,13 @@ class MYOBBaseForm extends React.Component<any, any> {
       const params = new URLSearchParams(search);
       const values = JSON.parse(params.get("values"));
 
-      if (!values) return;
+      if (!values || typeof values !== "object") return;
 
       const url = values.url;
       const file = values.file;
       const owner = values.owner;
       const password = values.password;
-      const name = values.name;
+      const fName = values.name;
       const code = params.get("code");
 
       this.updateValue('url', "myobBaseUrl", url);
@@ -55,7 +54,7 @@ class MYOBBaseForm extends React.Component<any, any> {
       this.updateValue('file', "myobFileName", file);
 
       this.props.dispatch(change("MYOBForm", "fields.myobPassword", password));
-      this.props.dispatch(change("MYOBForm", "name", name));
+      this.props.dispatch(change("MYOBForm", "name", fName));
       params.delete('values');
 
       if (code) {
@@ -77,7 +76,6 @@ class MYOBBaseForm extends React.Component<any, any> {
     const {
       item, dispatch, dirty
     } = this.props;
-
 
     if (prevProps.item.id !== item.id) {
       // Reinitializing form with values
@@ -151,14 +149,12 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, AppBarContent, values = {}, dirty, form
+      handleSubmit, onSubmit, AppBarContent, values = {}
     } = this.props;
     const { hideConfig, loading } = this.state;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent>
           <FormField name="fields.myobBaseUrl" label="Base URL" type="text" className="mb-2" required />
           <FormField name="fields.myobFileName" label="File name" type="text" className="mb-2" required />
@@ -168,7 +164,7 @@ class MYOBBaseForm extends React.Component<any, any> {
           {values?.fields?.active === "true" ? (
             <>
               <Typography variant="caption" component="div">
-                { `You are connected to Myob` }
+                You are connected to Myob
               </Typography>
               <LoadingButton
                 variant="contained"

@@ -1,5 +1,5 @@
-import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { Report } from "@api/model";
+import { _toRequestType, FULFILLED } from "../../../../../common/actions/ActionUtils";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
 
 export const GET_AUTOMATION_PDF_REPORTS_LIST = _toRequestType("get/pdf-reports/list");
@@ -14,6 +14,20 @@ export const UPDATE_INTERNAL_AUTOMATION_PDF_REPORT = _toRequestType("patch/pdf-r
 export const REMOVE_AUTOMATION_PDF_REPORT = _toRequestType("delete/pdf-reports/list");
 
 export const GET_AUTOMATION_PDF_REPORT = _toRequestType("get/pdf-reports/item");
+
+export const SHOW_REPORT_FULL_SCREEN_PREVIEW = _toRequestType("get/pdf-reports/fullPreview");
+
+export const GET_REPORT_COMPRESED_PREVIEW = _toRequestType("get/pdf-reports/compressedPreview");
+
+export const reportFullScreenPreview = (reportId: number) => ({
+  type: SHOW_REPORT_FULL_SCREEN_PREVIEW,
+  payload: reportId
+});
+
+export const getReportCompresedPreview = (reportId: number) => ({
+  type: GET_REPORT_COMPRESED_PREVIEW,
+  payload: reportId
+});
 
 export const updateAutomationPdfReport = (report: Report) => ({
   type: UPDATE_AUTOMATION_PDF_REPORT,

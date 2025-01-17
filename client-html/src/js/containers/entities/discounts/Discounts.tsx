@@ -3,35 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Discount, DiscountType } from "@api/model";
+import { format } from "date-fns";
+import { III_DD_MMM_YYYY } from "ish-ui";
 import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { format } from "date-fns";
-import { Discount, DiscountType } from "@api/model";
 import { checkPermissions } from "../../../common/actions";
-import { plainCorporatePassPath } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
-import ListView from "../../../common/components/list-view/ListView";
 import {
-  setListEditRecord,
-  getFilters,
   clearListState,
-  setFilterGroups
+  getFilters,
+  setFilterGroups,
+  setListEditRecord
 } from "../../../common/components/list-view/actions";
-import {
-  getDiscount,
-  updateDiscount,
-  createDiscount,
-  removeDiscount,
-  getDiscountContactRelationTypes,
-  getDiscountCosAccounts
-} from "./actions";
-import DiscountEditView from "./components/DiscountEditView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { III_DD_MMM_YYYY } from "../../../common/utils/dates/format";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { plainCorporatePassPath } from "../../../constants/Api";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getEntityTags } from "../../tags/actions";
+import { getDiscountContactRelationTypes, getDiscountCosAccounts } from "./actions";
+import DiscountEditView from "./components/DiscountEditView";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -54,7 +47,7 @@ const filterGroups: FilterGroup[] = [
 const Initial: Discount = {
   addByDefault: false,
   code: null,
-  availableOnWeb: true,
+  availableFor: 'Online and office',
   corporatePassDiscounts: [],
   cosAccount: null,
   description: null,
@@ -82,7 +75,7 @@ const Initial: Discount = {
   validToOffset: null
 };
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Discount and entityId" },
   { title: "Classes", list: "class", expression: "discountCourseClasses.discount.id" },
   { title: "Enrolments", list: "enrolment", expression: "invoiceLines.invoiceLineDiscounts.discount.id" },
@@ -96,7 +89,7 @@ const customColumnFormats = {
   validTo: formatDiscountDate
 };
 
-const manualLink = getManualLink("discounts");
+const manualLink = getManualLink("introduction-to-discounts");
 
 class Discounts extends React.PureComponent<any, any> {
   componentDidMount() {
@@ -125,11 +118,7 @@ class Discounts extends React.PureComponent<any, any> {
 
   render() {
     const {
-      getDiscountRecord,
-      onDelete,
-      onInit,
-      onCreate,
-      onSave
+      onInit
     } = this.props;
 
     return (
@@ -146,12 +135,8 @@ class Discounts extends React.PureComponent<any, any> {
             hideTitle: true
           }}
           EditViewContent={DiscountEditView}
-          getEditRecord={getDiscountRecord}
           rootEntity="Discount"
           onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
           findRelated={findRelatedGroup}
           filterGroupsInitial={filterGroups}
           noListTags
@@ -178,10 +163,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Course"));
   },
   clearListState: () => dispatch(clearListState()),
-  getDiscountRecord: (id: string) => dispatch(getDiscount(id)),
-  onSave: (id: string, discount: Discount) => dispatch(updateDiscount(id, discount)),
-  onCreate: (discount: Discount) => dispatch(createDiscount(discount)),
-  onDelete: (id: string) => dispatch(removeDiscount(id)),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
   checkPermissions: () => dispatch(checkPermissions({ path: plainCorporatePassPath, method: "GET" }))
 });

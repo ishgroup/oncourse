@@ -3,10 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@mui/styles/createStyles";
-import { AppTheme } from "../../../../../model/common/Theme";
+import { AppTheme } from 'ish-ui';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   root: {
     maxWidth: "unset",
     minWidth: "1200px"
@@ -20,12 +19,6 @@ const styles = (theme: AppTheme) => createStyles({
     background: theme.palette.background.default,
     borderRadius: theme.shape.borderRadius
   },
-  daysInput: {
-    maxWidth: theme.spacing(6)
-  },
-  dateTime: {
-    minWidth: theme.spacing(32.5)
-  }
 });
 
 export default styles;

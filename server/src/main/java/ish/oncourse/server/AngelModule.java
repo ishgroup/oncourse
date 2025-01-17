@@ -21,20 +21,14 @@ import io.bootique.config.ConfigurationFactory;
 import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.common.ResourcesUtil;
-import ish.oncourse.server.api.servlet.ApiFilter;
-import ish.oncourse.server.api.servlet.ISessionManager;
-import ish.oncourse.server.api.servlet.ResourceServlet;
-import ish.oncourse.server.api.servlet.SessionManager;
+import ish.oncourse.server.api.servlet.*;
 import ish.oncourse.server.db.AngelCayenneModule;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.jmx.RegisterMBean;
-import ish.oncourse.server.lifecycle.ClassPublishListener;
-import ish.oncourse.server.lifecycle.PayslipApprovedListener;
-import ish.oncourse.server.lifecycle.PayslipPaidListener;
-import ish.oncourse.server.lifecycle.ScriptTriggeringCommitListener;
+import ish.oncourse.server.integration.PluginsPrefsService;
+import ish.oncourse.server.jetty.AngelJettyModule;
+import ish.oncourse.server.lifecycle.*;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.GroovyScriptService;
@@ -42,6 +36,7 @@ import ish.oncourse.server.scripting.api.EmailService;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
 import ish.oncourse.server.security.api.IPermissionService;
 import ish.oncourse.server.services.AuditService;
+import ish.oncourse.server.services.ISystemUserService;
 import ish.oncourse.server.servlet.HealthCheckServlet;
 import ish.util.Maps;
 import org.apache.cayenne.commitlog.CommitLogListener;
@@ -57,15 +52,9 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
 
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarFile;
 
 public class AngelModule extends ConfigModule {
@@ -84,6 +73,11 @@ public class AngelModule extends ConfigModule {
             new TypeLiteral<>() {
             };
 
+    // active college filter
+    private static final TypeLiteral<MappedFilter<ActiveCollegeFilter>> ACTIVE_COLLEGE_FILTER =
+            new TypeLiteral<>() {
+            };
+
     // the simple insecure servlet
     private static final TypeLiteral<MappedServlet<HealthCheckServlet>> HEALTHCHECK_SERVLET =
             new TypeLiteral<>() {
@@ -96,6 +90,12 @@ public class AngelModule extends ConfigModule {
     @Provides
     ScriptTriggeringCommitListener provideScriptTriggeringCommitListener(Provider<GroovyScriptService> scriptServiceProvider) {
         return new ScriptTriggeringCommitListener(scriptServiceProvider.get());
+    }
+
+    @Singleton
+    @Provides
+    AuditCommitListener provideAuditCommitListener(AuditService auditService, ISystemUserService systemUserService) {
+        return new AuditCommitListener(auditService, systemUserService);
     }
 
     @Singleton
@@ -127,8 +127,9 @@ public class AngelModule extends ConfigModule {
     CommitLogModuleExt provideCommitLogModuleExt(ClassPublishListener classPublishListener,
                                                  PayslipApprovedListener payslipApprovedListener,
                                                  PayslipPaidListener paidListener,
-                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener) {
-        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener);
+                                                 ScriptTriggeringCommitListener scriptTriggeringCommitListener,
+                                                 AuditCommitListener auditCommitListener) {
+        return new CommitLogModuleExt(classPublishListener, payslipApprovedListener, paidListener, scriptTriggeringCommitListener, auditCommitListener);
     }
 
     @Override
@@ -151,6 +152,7 @@ public class AngelModule extends ConfigModule {
 
 
         AngelJettyModule.extend(binder)
+                .addMappedFilter(ACTIVE_COLLEGE_FILTER)
                 .addMappedFilter(API_FILTER)
                 .addMappedServlet(HEALTHCHECK_SERVLET)
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
@@ -159,6 +161,7 @@ public class AngelModule extends ConfigModule {
         binder.bind(CertificateUpdateWatcher.class).in(Scopes.SINGLETON);
         binder.bind(ICayenneService.class).to(CayenneService.class).in(Scopes.SINGLETON);
         binder.bind(PreferenceController.class);
+        binder.bind(PluginsPrefsService.class);
         binder.bind(UserPreferenceService.class);
         binder.bind(String.class).annotatedWith(Names.named(ANGEL_VERSION)).toInstance(getVersion());
         binder.bind(EmailService.class).in(Scopes.SINGLETON);
@@ -186,6 +189,19 @@ public class AngelModule extends ConfigModule {
 
     @Singleton
     @Provides
+    MappedFilter<ActiveCollegeFilter> createActiveCollegeFilter(Injector injector) {
+        final Set<String> paths = new HashSet<>();
+        paths.add("/*");
+
+        return new MappedFilter<>(
+                new ActiveCollegeFilter(injector.getInstance(PreferenceController.class)),
+                paths,
+                ActiveCollegeFilter.class.getSimpleName(),
+                -1);
+    }
+
+    @Singleton
+    @Provides
     MappedServlet<HealthCheckServlet> createHealthCheckServlet() {
         return new MappedServlet<>(new HealthCheckServlet(), Collections.singleton(HealthCheckServlet.PATH), HealthCheckServlet.class.getSimpleName());
     }
@@ -194,22 +210,6 @@ public class AngelModule extends ConfigModule {
     @Provides
     AngelServerFactory createAngelServerFactory(ConfigurationFactory configFactory) {
         return configFactory.config(AngelServerFactory.class, configPrefix);
-    }
-
-    @Singleton
-    @Provides
-    RegisterMBean createRegisterMBean(Injector injector) {
-        try {
-            return new RegisterMBean(
-                    injector.getInstance(ICayenneService.class),
-                    injector.getInstance(ISessionManager.class),
-                    injector.getInstance(Key.get(String.class, Names.named(ANGEL_VERSION))),
-                    injector.getInstance(PreferenceController.class));
-        } catch (MalformedObjectNameException | NotCompliantMBeanException e) {
-            logger.catching(e);
-        }
-
-        return null;
     }
 
     @Singleton

@@ -1,34 +1,26 @@
-import {
-  Binding,
-  ExecuteImportRequest,
-  ImportModel
-} from "@api/model";
-import Grid from "@mui/material/Grid";
-import React, {
-  useCallback, useEffect, useMemo
-} from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Typography from "@mui/material/Typography";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import {
-  destroy, Field, FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
-import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { interruptProcess } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import DataTypeRenderer from "../../../../../common/components/form/DataTypeRenderer";
-import { ProcessState } from "../../../../../common/reducers/processReducer";
-import { YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
-import { usePrevious } from "../../../../../common/utils/hooks";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
-import { getEntityItemById } from "../../../../entities/common/entityItemsService";
-import { runImport } from "../actions";
+import { Binding, ExecuteImportRequest, ImportModel } from '@api/model';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { usePrevious, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { destroy, Field, FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { interruptProcess } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import DataTypeRenderer from '../../../../../common/components/form/DataTypeRenderer';
+import { ProcessState } from '../../../../../common/reducers/processReducer';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { State } from '../../../../../reducers/state';
+import { getEntityItemById } from '../../../../entities/common/entityItemsService';
+import { runImport } from '../actions';
 
 const FORM = "ExecuteImportForm";
 
@@ -41,7 +33,7 @@ interface Props {
   importId?: number;
   resetForm?: () => void;
   initializeForm?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   values?: any;
   classes?: any;
   submitting?: boolean;
@@ -74,8 +66,7 @@ const templatesRenderer: React.FC<any> = React.memo<any>(({ fields }) => fields.
         type={item.type}
         component={DataTypeRenderer}
         validate={validateSingleMandatoryField}
-        fullWidth
-        {...fieldProps}
+                {...fieldProps}
       />
     </Grid>
   );
@@ -165,7 +156,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container columnSpacing={3}>
+          <Grid container columnSpacing={3} rowSpacing={2}>
             {values.description && (
               <Grid item xs={12} className="mb-2">
                 <Typography variant="body2" color="textSecondary" className="pb-2">

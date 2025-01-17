@@ -33,7 +33,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         {
         "id":21,
         "student":
-            {"id":15,"countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Unemployed seeking full time","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[{"id":1001,"number":"2","type":{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2024-10-01","created":"#ignore","modified":"#ignore"},{"id":1002,"number":"5","type":{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2019-09-12","created":"#ignore","modified":"#ignore"}]},
+            {"id":15, "customFields":{},"countryOfBirth":{"id":2,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"United States of America","saccCode":null},"disabilityType":"Mental illness","labourForceStatus":"Unemployed seeking full time","englishProficiency":"Not Well","highestSchoolLevel":"Year 10","indigenousStatus":"Neither","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Certificate I","specialNeeds":"BBB","yearSchoolCompleted":null,"studentNumber":16,"countryOfResidency":{"id":3,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Poland","saccCode":null},"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":"bbb","usi":"2222222222","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":"b","specialNeedsAssistance":false,"clientIndustryEmployment":"Retail Trade (G)","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[{"id":1001,"number":"2","type":{"id":2,"name":"Student","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2024-10-01","created":"#ignore","modified":"#ignore"},{"id":1002,"number":"5","type":{"id":3,"name":"Pensioner","requireExpary":false,"requireNumber":false,"allowOnWeb":true,"created":"#ignore","modified":"#ignore"},"expiresOn":"2019-09-12","created":"#ignore","modified":"#ignore"}]},
         "tutor":
             {
             "defaultPayType":"Employee",
@@ -53,7 +53,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "selfPacedclassesCount":0,
             "unscheduledClasseCount":0,
             "passedClasseCount":0,
-            "cancelledClassesCount":0
+            "cancelledClassesCount":0,
+            "customFields":{}
             },
         "abn":"222",
         "birthDate":"1999-05-05",
@@ -88,10 +89,10 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "customFields":{"cf1":"bb","cf2":"b"},
         "documents":
         [
-            {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":null}],"name":"defaultPublicDocument","id":201,"urlWithoutVersionId":null},
-            {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"versionId":null,"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
+            {"shared":true,"thumbnail":null,"access":"Public","added":"#ignore","description":"Public description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"21 b","added":"#ignore","createdBy":null,"id":201,"mimeType":null,"url":null,content:null,current:true}],"name":"defaultPublicDocument","id":201,"urlWithoutVersionId":null},
+            {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":null,"tags":[],"attachmentRelations":[],"modifiedOn":null,"removed":false,"attachedRecordsCount":null,"versions":[{"fileName":null,"thumbnail":null,"size":"22 b","added":"#ignore","createdBy":null,"id":200,"mimeType":null,"url":null,content:null,current:true}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
         ],
-        "tags":[{"id":234,"name":"contacts2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[234],
         "memberships":"#ignore",
         "profilePicture":null,
         "relations":[{"id":"#number","contactFromId":null,"contactFromName":null,"contactToId":26,"contactToName":"tutorC mergeC","relationId":-1}],
@@ -133,8 +134,8 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         """
         {
         "id":23,
-        "student":{"id":17,"countryOfBirth":null,"disabilityType":"Not stated","labourForceStatus":"Not stated","englishProficiency":"Not stated","highestSchoolLevel":"Not stated","indigenousStatus":"Not stated","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Not stated","specialNeeds":null,"yearSchoolCompleted":null,"studentNumber":17,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":null,"usi":"3333333333","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":null,"specialNeedsAssistance":false,"clientIndustryEmployment":"Not Stated","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
-        "tutor":{"defaultPayType":"Employee","id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "student":{"id":17, "customFields":{},"countryOfBirth":null,"disabilityType":"Not stated","labourForceStatus":"Not stated","englishProficiency":"Not stated","highestSchoolLevel":"Not stated","indigenousStatus":"Not stated","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Not stated","specialNeeds":null,"yearSchoolCompleted":null,"studentNumber":17,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":null,"usi":"3333333333","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":null,"specialNeedsAssistance":false,"clientIndustryEmployment":"Not Stated","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
+        "tutor":{"defaultPayType":"Employee", "customFields":{},"id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
         "abn":null,
         "birthDate":"1995-05-06",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -259,7 +260,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "taxId":2,
         "customFields":{"cf1":"Co1","cf2":"Co1"},
         "documents":"#ignore",
-        "tags":[{"id":233,"name":"contacts1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[233],
         "memberships":[],
         "profilePicture":null,
         "relations":
@@ -342,12 +343,13 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "wwChildrenExpiry":null,
             "wwChildrenRef":null,
             "wwChildrenStatus":"Not checked",
-            "currentClassesCount":1,
+            "currentClassesCount":0,
             "futureClasseCount":1,
             "selfPacedclassesCount":0,
             "unscheduledClasseCount":0,
-            "passedClasseCount":0,
-            "cancelledClassesCount":0
+            "passedClasseCount":1,
+            "cancelledClassesCount":0,
+            "customFields":{},
             },
         "abn":null,
         "birthDate":"1972-05-06",
@@ -381,7 +383,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         "taxId":1,
         "customFields":{"cf2":"tB","cf1":"tB"},
         "documents":"#ignore",
-        "tags":[{"id":234,"name":"contacts2","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[234],
         "memberships":[],
         "profilePicture":null,
         "relations":[{"id":"#number","contactFromId":null,"contactFromName":null,"contactToId":23,"contactToName":"studentC mergeC","relationId":1}],

@@ -91,3 +91,19 @@ Feature: Main feature for all GET requests with path 'list/entity/script' withou
         When method GET
         Then status 200
         And match response.name == 'send weekly finance summary report'
+
+
+    Scenario: (+) Get existing script configs by admin
+
+        Given path ishPathList
+        And param entity = 'Script'
+        And param pageSize = 1000
+        When method GET
+        Then status 200
+        * def row = get[0] response.rows[?(@.values[0] == 'VET Course completion survey')]
+        * def id = row.id
+
+        Given path ishPath + '/config/' + id
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: Send the completion survey defined in vetCourseSurveyTemplate to\n  all VET students who have recently passed the timing threshold for the release of\n  the survey. You can alter the timing of this release within your survey data collection\n  forms.\ndescription: Send the completion survey defined in vetCourseSurveyTemplate to all\n  VET students who have recently passed the timing threshold for the release of the\n  survey. You can alter the timing of this release within your survey data collection\n  forms.\ncategory: Marketing\nname: VET Course completion survey\noptions:\n- name: vetCourseSurveyTemplate\n  value: ish.email.VETCourseCompletionSurvey\n  dataType: MESSAGE_TEMPLATE\ntriggerType: CRON'

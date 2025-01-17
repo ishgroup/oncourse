@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DiscountsTakeUpReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" whenResourceMissingType="Empty" uuid="5d0d23c3-21fb-4365-b6e8-81b0f5cd9d2a">
-	<property name="name" value="Discount Take Up Report"/>
-	<property name="entity" value="Discount"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.oncourse.discount.takeUp"/>
 	<property name="ish.oncourse.description" value="This report can be working incorrectly with invoice lines which apply more than 1 discounts and one (or more) of these discounts has been changed. It prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="DiscountTakeUp_report.pdf"/>
 	<property name="ireport.scriptlethandling" value="0"/>

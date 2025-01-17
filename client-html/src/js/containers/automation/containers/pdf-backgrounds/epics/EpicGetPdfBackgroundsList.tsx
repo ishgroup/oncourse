@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import CropPortraitIcon from '@mui/icons-material/CropPortrait';
-import CropLandscapeIcon from '@mui/icons-material/CropLandscape';
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import { GET_AUTOMATION_PDF_BACKGROUNDS_LIST, GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED } from "../actions";
+import CropLandscapeIcon from '@mui/icons-material/CropLandscape';
+import CropPortraitIcon from '@mui/icons-material/CropPortrait';
+import React from "react";
+import { Epic } from "redux-observable";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import EntityService from "../../../../../common/services/EntityService";
 import history from "../../../../../constants/History";
 import { CatalogItemType } from "../../../../../model/common/Catalog";
+import { GET_AUTOMATION_PDF_BACKGROUNDS_LIST, GET_AUTOMATION_PDF_BACKGROUNDS_LIST_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request<any, { selectFirst: boolean; filenameToSelect: string }> = {
   type: GET_AUTOMATION_PDF_BACKGROUNDS_LIST,
@@ -25,6 +25,7 @@ const request: EpicUtils.Request<any, { selectFirst: boolean; filenameToSelect: 
       installed: true,
       enabled: true,
       hideShortDescription: true,
+      hideDot: true,
       titleAdornment: r.values[1] === "true" ? <CropPortraitIcon className="lightGrayIconButton" /> : <CropLandscapeIcon className="lightGrayIconButton" />
     }));
 

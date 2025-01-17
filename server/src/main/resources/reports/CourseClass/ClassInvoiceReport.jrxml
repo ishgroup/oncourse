@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ClassInvoiceReport" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="f95de7ec-712f-4e39-8716-e556b3bcc780">
-	<property name="name" value="Class Invoice Record"/>
-	<property name="entity" value="CourseClass"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.classInvoiceReport"/>
-	<property name="ish.oncourse.description" value=" Invaluable as a method of cross referencing incoming payments for a given Class. the report lists the names of all enrolling students, Invoice No, fee charged, fee paid and any outstanding balances.This report prints in Landscape format."/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -76,7 +70,6 @@
 	<field name="subreport.ish.onCourse.enrolmentInvoiceSubReport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="image.poweredby" class="java.io.InputStream"/>
 	<field name="tutorNames" class="java.lang.String"/>
-	<field name="sessionsCount" class="java.lang.Integer"/>
 	<group name="details">
 		<groupExpression><![CDATA[null]]></groupExpression>
 		<groupHeader>

@@ -20,6 +20,7 @@ ${render(headerKeycode)}
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                     Dear ${enrolment.student.contact.fullName}, <br />
                     Thank you for enrolling at <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get("web.url")}" target="_blank">${Preferences.get("college.name")}</a>
+                    Location: ${enrolment.courseClass.room?.virtualRoomUrl ?: enrolment.courseClass.displayableLocation ?: "-"}
                 </p>
                 <% if (enrolment.courseClass.course.modules.size() > 0) { %>
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
@@ -33,6 +34,11 @@ ${render(headerKeycode)}
                 </p>
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
                     If you do not have a USI you can apply for one via the link above.
+                </p>
+                <% } %>
+                <% if(enrolment.courseClass.isDistantLearningCourse && enrolment.courseClass.room?.virtualRoomUrl != null) { %>
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    You can start your class any time by clicking here - ${enrolment.courseClass.room.virtualRoomUrl}
                 </p>
                 <% } %>
                 <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 0;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
@@ -64,6 +70,26 @@ ${render(headerKeycode)}
     </tbody>
 </table>
 <% } %>
+<% if (enrolment.courseClass.isHybrid) { %>
+<table align="left" border="0" cellpadding="0" cellspacing="0" class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%">
+    <tbody>
+    <tr>
+        <td align="left" class="ish_content_container left" style="border: 0;border-collapse: collapse;background-color: #ffffff;border: 0;padding-top: 0;padding-right: 17px;padding-bottom: 10px;padding-left: 17px; vertical-align: top;" valign="top">
+            <div class="ish_text_container">
+
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    Class start: ${enrolment.courseClass.startDateTime?.format("EEEE d MMMM yyyy h:mm a", enrolment.courseClass.getTimeZone())} <br />
+                    Class end: ${enrolment.courseClass.endDateTime?.format("EEEE d MMMM yyyy h:mm a", enrolment.courseClass.getTimeZone())}
+                </p>
+                <p class="align-left" style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size: 13px;color: #464646;color: #464646 !important;background-color: #ffffff;border: 0;letter-spacing: normal;mso-line-height-rule: exactly;-mso-line-height-rule: exactly;line-height: 150%;margin-top: .2em;margin-right: 0;margin-bottom: 1em;margin-left: 0;padding-top: 0;padding-right: 0;padding-bottom: 0;padding-left: 0;vertical-align: top;word-wrap: break-word;border: 0;text-align: left;">
+                    You are required to attend at least ${enrolment.courseClass.minimumSessionsToComplete} sessions to complete this class.
+                </p>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<% } %>
 <table class="ish_block" style="border: 0;border-collapse: collapse;mso-table-lspace: 0pt; mso-table-rspace: 0pt;clear: both;border: 0;min-width: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
     <tbody>
     <tr>
@@ -76,11 +102,17 @@ ${render(headerKeycode)}
                         <tr style="background-color: rgba(0,0,0,.05);" bgcolor="rgba(0,0,0,.05)">
                             <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 63% !important; line-height: 16px; font-size:13px;" width="63%" valign="top" align="left">${session.startDatetime.format("EEEE d MMMM yyyy", session.getTimeZone())}<br />${session.startDatetime.format("h.mm a", session.getTimeZone())} - ${session.endDatetime.format("h.mm a", session.getTimeZone())}</td>
                             <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 37% !important; line-height: 16px; font-size:13px;" width="37%" valign="top" align="left">${session.room ? session.room.site.name + ",<br />" + session.room.name:""}</td>
+                            <% if (enrolment.courseClass.isHybrid && enrolment.courseClass.room?.virtualRoomUrl != null) { %>
+                            <td align="left" class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 37% !important; line-height: 16px; font-size:13px;" valign="top" width="37%">${enrolment.courseClass.room?.virtualRoomUrl}</td>
+                            <% } %>
                         </tr>
                     <% } else { %>
                         <tr>
                             <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important; font-size:13px !important; vertical-align: top; width: 63% !important; line-height: 16px; font-size:13px;" width="63%" valign="top" align="left">${session.startDatetime.format("EEEE d MMMM yyyy", session.getTimeZone())}<br />${session.startDatetime.format("h.mm a", session.getTimeZone())} - ${session.endDatetime.format("h.mm a", session.getTimeZone())}</td>
                             <td class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 37% !important; line-height: 16px; font-size:13px;" width="37%" valign="top" align="left">${session.room ? session.room.site.name + ",<br />" + session.room.name:""}</td>
+                            <% if (enrolment.courseClass.isHybrid && enrolment.courseClass.room?.virtualRoomUrl != null) { %>
+                            <td align="left" class="ish_enrol_conf_row left" style="border:0; border-collapse: collapse; border: 0;padding-top: 17px;padding-right: 20px;padding-bottom: 17px; padding-left: 20px; color: #000000  !important; font-weight: normal !important;  font-size:13px !important; vertical-align: top; width: 37% !important; line-height: 16px; font-size:13px;" valign="top" width="37%">${enrolment.courseClass.room?.virtualRoomUrl}</td>
+                            <% } %>
                         </tr>
                     <% } %>
                     <% if (session.publicNotes) { %>

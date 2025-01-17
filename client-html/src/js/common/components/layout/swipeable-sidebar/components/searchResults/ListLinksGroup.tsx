@@ -1,22 +1,23 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import List from "@mui/material/List";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
-import { openInternalLink } from "../../../../../utils/links";
-import ListLinkItem from "./ListLinkItem";
-import { getResultId } from "../../utils";
-import navigation from "../../../../navigation/navigation.json";
+import { Collapse, Typography } from '@mui/material';
+import List from '@mui/material/List';
+import clsx from 'clsx';
+import { openInternalLink } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import navigation from '../../../../navigation/data/navigation.json';
+import { getResultId } from '../../utils';
+import ListLinkItem from './ListLinkItem';
 
 const styles = theme =>
-  createStyles({
+  ({
     showMoreText: {
       color: theme.palette.primary.main,
       width: "min-content",
@@ -45,7 +46,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
 
   openEntity = () => {
     const {
-      showConfirm, entityDisplayName, userSearch
+      entityDisplayName, userSearch
     } = this.props;
 
     const category = navigation.features.find(c => c.title === entityDisplayName);
@@ -53,16 +54,18 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     if (category) {
       const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
-      showConfirm(() => openInternalLink(
+      openInternalLink(
         url + (userSearch ? `?search=~"${userSearch}"` : "")
-      ));
+      );
     }
   };
 
   openLink = id => {
-    const { showConfirm, entityDisplayName, entity, setSelected } = this.props;
+    const {
+      entityDisplayName, entity, setSelected
+    } = this.props;
 
-    if (entity === "Contact") {
+    if (entity === "Contact" && typeof setSelected === "function") {
       setSelected(id);
       return;
     }
@@ -72,9 +75,9 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     if (category) {
       const url = category.link.indexOf("?") !== -1 ? category.link.slice(0, category.link.indexOf("?")) : category.link;
 
-      showConfirm(() => openInternalLink(
+      openInternalLink(
         !id || !Number.isNaN(Number(id)) ? url + (id ? `/${id}` : "") : id
-      ));
+      );
     }
   };
 
@@ -82,7 +85,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
     const {
       classes, entityDisplayName, items, showFirst, checkSelectedResult, entity
     } = this.props;
-    const { collapsed } = this.state;
+    const {collapsed} = this.state;
 
     let firstItems;
     let lastItems;
@@ -103,7 +106,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
           </Typography>
           {showFirst && Boolean(lastItems.length) && (
             <>
-              <div className="flex-fill" />
+              <div className="flex-fill"/>
               <Typography
                 onClick={this.toggleCollapsed}
                 className={clsx("cursor-pointer", classes.showMoreText)}
@@ -127,7 +130,7 @@ class ListLinksGroup extends React.PureComponent<any, any> {
                   id={getResultId(i, `${entity}-${v.id}`)}
                 />
               ))}
-              <Collapse in={collapsed}>
+              <Collapse in={collapsed} mountOnEnter unmountOnExit>
                 {lastItems.map((v, i) => (
                   <ListLinkItem
                     key={i}
@@ -158,4 +161,4 @@ class ListLinksGroup extends React.PureComponent<any, any> {
   }
 }
 
-export default withStyles(styles)(ListLinksGroup);
+export default withStyles(ListLinksGroup, styles);

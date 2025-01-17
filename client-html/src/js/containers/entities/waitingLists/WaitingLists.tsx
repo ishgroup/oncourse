@@ -6,27 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { WaitingList } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
-import { initialize } from "redux-form";
 import { Dispatch } from "redux";
-import { WaitingList } from "@api/model";
-import ListView from "../../../common/components/list-view/ListView";
-import WaitingListEditView from "./components/WaitingListEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
- } from "../../../common/components/list-view/actions";
-import { getEntityTags, getListTags } from "../../tags/actions";
-import {
-  createWaitingList, getWaitingList, removeWaitingList, updateWaitingList
-} from "./actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { State } from "../../../reducers/state";
-import WaitingListCogWheel from "./components/WaitingListCogWheel";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import { initialize } from "redux-form";
 import { checkPermissions } from "../../../common/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
+import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getEntityTags, getListTags } from "../../tags/actions";
+import WaitingListCogWheel from "./components/WaitingListCogWheel";
+import WaitingListEditView from "./components/WaitingListEditView";
 
 const Initial: WaitingList = {
   id: null,
@@ -38,12 +32,12 @@ const Initial: WaitingList = {
   customFields: {}
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == WaitingList and entityId" },
   { title: "Contacts", list: "contact", expression: "student.waitingLists.id" }
 ];
 
-const manualLink = getManualLink("waitingLists");
+const manualLink = getManualLink("why-use-waiting-lists");
 
 const nameCondition = (value: WaitingList) => value.courseName;
 
@@ -61,33 +55,26 @@ class WaitingLists extends React.Component<any, any> {
 
   render() {
     const {
-      getWaitingListRecord, onCreate, onDelete, onSave, updateTableModel, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "student.contact.fullName",
-            secondaryColumn: "course.name"
-          }}
-          editViewProps={{
-            manualLink,
-            nameCondition,
-            hideTitle: true
-          }}
-          updateTableModel={updateTableModel}
-          EditViewContent={WaitingListEditView}
-          getEditRecord={getWaitingListRecord}
-          rootEntity="WaitingList"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
-          findRelated={findRelatedGroup}
-          CogwheelAdornment={WaitingListCogWheel}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "student.contact.fullName",
+          secondaryColumn: "course.name"
+        }}
+        editViewProps={{
+          manualLink,
+          nameCondition,
+          hideTitle: true
+        }}
+        EditViewContent={WaitingListEditView}
+        rootEntity="WaitingList"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        CogwheelAdornment={WaitingListCogWheel}
+      />
     );
   }
 }
@@ -110,11 +97,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("WaitingList")),
   getTags: () => dispatch(getListTags("WaitingList")),
-  clearListState: () => dispatch(clearListState()),
-  getWaitingListRecord: (id: string) => dispatch(getWaitingList(id)),
-  onSave: (id: string, waitingList: WaitingList) => dispatch(updateWaitingList(id, waitingList)),
-  onCreate: (waitingList: WaitingList) => dispatch(createWaitingList(waitingList)),
-  onDelete: (id: string) => dispatch(removeWaitingList(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(WaitingLists);

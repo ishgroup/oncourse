@@ -3,31 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  Form, getFormValues, initialize, reduxForm
-} from "redux-form";
-import { connect } from "react-redux";
-import isEmpty from "lodash.isempty";
 import { AccountType } from "@api/model";
+import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
+import isEmpty from "lodash.isempty";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Form, getFormInitialValues, initialize, reduxForm } from "redux-form";
+import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import * as Model from "../../../../../model/preferences/Financial";
-import { currency, postPrepaidFees } from "../ListItems";
-import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { State } from "../../../../../reducers/state";
+import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
 import { getManualLink } from "../../../../../common/utils/getManualLink";
+import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
+import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../../constants/Config";
+import * as Model from "../../../../../model/preferences/Financial";
+import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
+import { State } from "../../../../../reducers/state";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 import { getAccountsList } from "../../../utils";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { currency, postPrepaidFees } from "../ListItems";
 
-const manualUrl = getManualLink("generalPrefs_financial");
+const manualUrl = getManualLink("setting-your-general-preferences#financial");
 
 class FinancialBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
@@ -43,21 +42,28 @@ class FinancialBaseForm extends React.Component<any, any> {
     this.formModel = props.formatModel(Model);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const {formData, dispatch, initialized, initialValues, defaultInvoiceLineAccount} = this.props;
+
     // Initializing form with values
-    if (!isEmpty(this.props.formData) && !this.props.initialized) {
-      this.props.dispatch(initialize("FinancialForm", this.props.formData));
+    if (!isEmpty(formData) && !initialized) {
+      dispatch(initialize("FinancialForm", formData));
+    }
+
+    if (initialValues && (initialValues.defaultInvoiceLineAccount !== defaultInvoiceLineAccount)) {
+      dispatch(initialize("FinancialForm", {...formData, defaultInvoiceLineAccount}));
     }
   }
 
   public render() {
     const {
-     handleSubmit, onSave, accounts = [], dirty, data, invalid, form, formRoleName
+      handleSubmit, onSave, accounts = [], dirty, data, invalid, form, formRoleName
     } = this.props;
+
 
     return (
       <Form className="container" onSubmit={handleSubmit(onSave)} role={formRoleName}>
-        <RouteChangeConfirm form={form} when={dirty} />
+        <RouteChangeConfirm form={form} when={dirty}/>
 
         <AppBarContainer
           values={data}
@@ -76,8 +82,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 type="multilineText"
                 name={this.formModel.PaymentInfo.uniqueKey}
                 label="Invoice remittance instructions"
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12}>
@@ -92,8 +97,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountDebtors.uniqueKey}
                 label="Debtors (Asset)"
                 items={getAccountsList(accounts, AccountType.asset)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -102,8 +106,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountBank.uniqueKey}
                 label="Bank (Asset)"
                 items={getAccountsList(accounts, AccountType.asset)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -116,8 +119,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountTax.uniqueKey}
                 label="Tax (Liability)"
                 items={getAccountsList(accounts, AccountType.liability)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -126,8 +128,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountStudentEnrolments.uniqueKey}
                 label="Student enrolments (Income)"
                 items={getAccountsList(accounts, AccountType.income)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -140,8 +141,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountPrepaidFees.uniqueKey}
                 label="Prepaid fees account (Liability)"
                 items={getAccountsList(accounts, AccountType.liability)}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -150,8 +150,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountPrepaidFeesPostAt.uniqueKey}
                 label="Post prepaid fees (When)"
                 items={postPrepaidFees}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -164,9 +163,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountVoucherLiability.uniqueKey}
                 label="Voucher liability account (Liability)"
                 items={getAccountsList(accounts, AccountType.liability)}
-                helperText=""
-                fullWidth
-              />
+                />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -175,8 +172,21 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountVoucherUnderpayment.uniqueKey}
                 label="Default voucher underpayment account"
                 items={getAccountsList(accounts, AccountType.expense)}
-                fullWidth
-              />
+                              />
+            </Grid>
+
+            <Hidden smDown>
+              <Grid item sm={6} md={4} />
+            </Hidden>
+
+            <Grid item xs={12} sm={6} md={4}>
+              <FormField
+                type="select"
+                name="defaultInvoiceLineAccount"
+                label="Default invoice line income account"
+                items={getAccountsList(accounts, AccountType.income)}
+                debounced={false}
+                              />
             </Grid>
 
             <Hidden smDown>
@@ -199,8 +209,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 name={this.formModel.AccountDefaultCurrency.uniqueKey}
                 label="Default currency"
                 items={currency}
-                fullWidth
-              />
+                              />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
@@ -208,8 +217,7 @@ class FinancialBaseForm extends React.Component<any, any> {
                 type="number"
                 name={this.formModel.AccountInvoiceTerms.uniqueKey}
                 label="Default invoice terms (days)"
-                fullWidth
-              />
+                              />
             </Grid>
           </Grid>
         </AppBarContainer>
@@ -219,7 +227,8 @@ class FinancialBaseForm extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  values: getFormValues("FinancialForm")(state)
+  initialValues: getFormInitialValues("FinancialForm")(state),
+  defaultInvoiceLineAccount: state.userPreferences[ACCOUNT_DEFAULT_INVOICELINE_ID]
 });
 
 const FinancialForm = reduxForm({

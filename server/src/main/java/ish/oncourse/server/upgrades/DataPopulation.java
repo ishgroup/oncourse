@@ -18,16 +18,12 @@ import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.AngelModule;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.report.IReportService;
-import ish.report.ImportReportResult;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.*;
 
 import static ish.oncourse.server.upgrades.DataPopulationUtils.removeFromDbDeletedResources;
@@ -41,13 +37,11 @@ public class DataPopulation implements Runnable {
 
 	private final String angelVersion;
 	private final ICayenneService cayenneService;
-	private final IReportService reportService;
 
 	@Inject
-	public DataPopulation(@Named(AngelModule.ANGEL_VERSION) String angelVersion, ICayenneService cayenneService, IReportService reportService) {
+	public DataPopulation(@Named(AngelModule.ANGEL_VERSION) String angelVersion, ICayenneService cayenneService) {
 		this.angelVersion = angelVersion;
 		this.cayenneService = cayenneService;
-		this.reportService = reportService;
 	}
 
 	public static String getPropertyFromXml(final StringBuffer xmlData, final String property) {
@@ -70,7 +64,11 @@ public class DataPopulation implements Runnable {
 		for (var path : filePaths) {
 			try (InputStream resourceAsStream = ResourcesUtil.getResourceAsInputStream(path)) {
 					Yaml yaml = new Yaml();
-					resourcesList.addAll(yaml.load(resourceAsStream));
+					var loaded = yaml.load(resourceAsStream);
+					if(loaded instanceof LinkedHashMap<?,?>)
+						resourcesList.add((Map<String, Object>) loaded);
+					else
+						resourcesList.addAll((Collection<? extends Map<String, Object>>) loaded);
 			} catch (IOException ex) {
 				logger.warn("Failed to import file {}: {}", type.getDisplayName(), path);
 			}
@@ -82,22 +80,15 @@ public class DataPopulation implements Runnable {
 		var context = cayenneService.getNewContext();
 
 		logger.info("Resource loading: reports");
-		var resourcesList = PluginService.getPluggableResources(ResourceType.REPORT.getResourcePath(), ResourceType.REPORT.getFilePattern());
-		Set<Long> importedReportsIds = new HashSet<>();
-		for (var path : resourcesList) {
-			try (InputStream inputStream = ResourcesUtil.getResourceAsInputStream(path)) {
-				logger.debug("importing report {}", path);
-				if (inputStream != null) {
-					ImportReportResult reportResult = this.reportService.
-							importReport(IOUtils.toString(inputStream, Charset.defaultCharset()));
-					importedReportsIds.add(reportResult.getReportId());
-					logger.debug("...imported");
-				}
-			} catch (Exception e ) {
-				logger.error("Failed to import report: {}", path, e);
+		var reports = getResourcesList(ResourceType.REPORT);
+		reports.forEach( props -> {
+			try {
+				DataPopulationUtils.updateReport(context, props);
+			} catch (Exception e) {
+				logger.error("{} {} was not imported", ResourceType.REPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
-		}
-        DataPopulationUtils.removeDeletedReports(context, importedReportsIds);
+		});
+		removeFromDbDeletedResources(context, reports, ResourceType.REPORT);
 
 
         logger.info("Resource loading: scripts");
@@ -128,7 +119,7 @@ public class DataPopulation implements Runnable {
 			try {
 				DataPopulationUtils.updateMessage(context, props);
 			} catch (Exception e) {
-				logger.error("{} {} was not importes", ResourceType.MESSAGING.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
+				logger.error("{} {} was not imported", ResourceType.MESSAGING.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
 		});
 		removeFromDbDeletedResources(context, emailYamls, ResourceType.MESSAGING);
@@ -139,7 +130,7 @@ public class DataPopulation implements Runnable {
 			try {
 				DataPopulationUtils.updateExport(context, props);
 			} catch (Exception e) {
-				logger.error("{} {} was not importes", ResourceType.EXPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
+				logger.error("{} {} was not imported", ResourceType.EXPORT.getDisplayName(), props.get(ResourceProperty.NAME.getDisplayName()), e);
 			}
 		});
 		removeFromDbDeletedResources(context, exports, ResourceType.EXPORT);

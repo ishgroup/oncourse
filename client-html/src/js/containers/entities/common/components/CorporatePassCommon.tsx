@@ -2,24 +2,24 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import * as React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import { DiscountCorporatePass } from "@api/model";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import clsx from "clsx";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { AppTheme } from "../../../../model/common/Theme";
-import { State } from "../../../../reducers/state";
+import { DiscountCorporatePass } from '@api/model';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { State } from '../../../../reducers/state';
 
-const styles = createStyles(({ spacing }: AppTheme) => ({
+const styles = (({ spacing }: AppTheme) => ({
   marginBottomTriple: {
     marginBottom: spacing(3)
   },
@@ -114,16 +114,16 @@ class CorporatePassCommon extends React.PureComponent<any, any> {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchCorporatePasses: (search: string) => {
     dispatch(setCommonPlainSearch("CorporatePass", `${search ? `${search} and ` : ""}(expiryDate is null or expiryDate >= today)`));
-    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("CorporatePass", 0, "contact.fullName", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(i => ({
+      id: i.id,
+      contactFullName: i["contact.fullName"]
+    }))));
   },
   clearCorporatePasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CorporatePass", pending))
 });
 
 const mapStateToProps = (state: State) => ({
-  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items.map(i => ({
-    id: i.id,
-    contactFullName: i["contact.fullName"]
-  })),
+  foundCorporatePassItems: state.plainSearchRecords["CorporatePass"].items,
   pending: state.plainSearchRecords["CorporatePass"].loading,
   passErrors: state.plainSearchRecords["CorporatePass"].error,
 });
@@ -131,4 +131,4 @@ const mapStateToProps = (state: State) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(CorporatePassCommon));
+)(withStyles(CorporatePassCommon, styles));

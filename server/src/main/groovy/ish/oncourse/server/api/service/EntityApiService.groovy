@@ -16,15 +16,14 @@ import groovy.transform.CompileStatic
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.CayenneLayer
-import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 import ish.oncourse.server.api.traits._DTOTrait
 import ish.oncourse.server.api.v1.model.DiffDTO
 import ish.oncourse.server.api.validation.EntityValidator
-import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.Persistent
-import org.apache.cayenne.exp.Property
 import org.apache.cayenne.query.ObjectSelect
+
+import static ish.oncourse.server.api.function.EntityFunctions.parseSearchQuery
 
 @CompileStatic
 abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M extends CayenneLayer<K>> {
@@ -32,7 +31,8 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
     @Inject
     protected ICayenneService cayenneService
 
-    @Inject AqlService aqlService
+    @Inject
+    AqlService aqlService
 
     @Inject
     protected EntityValidator validator
@@ -82,43 +82,7 @@ abstract class EntityApiService<T extends _DTOTrait, K extends Persistent, M ext
         context.commitChanges()
     }
 
-    final void bulkChange(DiffDTO dto) {
-
-        Map.Entry<String, String> nullEntry = dto.diff.entrySet().find { it.value == null }
-        if (nullEntry) {
-            validator.throwClientErrorException('diff', "Attribute ${nullEntry.key} has null value")
-        }
-        ObjectContext context = cayenneService.newContext
-
-        if (dto.search ||  dto.filter || !dto.tagGroups.empty) {
-
-            Class<K> clzz = getPersistentClass()
-            ObjectSelect query = ObjectSelect.query(clzz)
-            query = parseSearchQuery(query as ObjectSelect, context, aqlService, clzz.simpleName, dto.search, dto.filter, dto.tagGroups)
-            List<K> entities = query.select(context) as List<K>
-
-            entities.each { entity ->
-                dto.diff.entrySet().each { entry ->
-                    Closure action = getAction(entry.key, entry.value)
-                    action.call(entity)
-                }
-            }
-
-        } else {
-
-            dto.ids.each { id ->
-                dto.diff.entrySet().each { entry ->
-                    Closure action = getAction(entry.key, entry.value)
-                    action.call(getEntityAndValidateExistence(context, id))
-                }
-            }
-
-        }
-
-        save(context)
-    }
-
-    void remove (K persistent, ObjectContext context) {
+    void remove(K persistent, ObjectContext context) {
         context.deleteObject(persistent)
     }
 

@@ -3,39 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useEffect } from "react";
+import { EditInPlaceSearchSelect } from "ish-ui";
 import debounce from "lodash.debounce";
-import { Dispatch } from "redux";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
-import EditInPlaceSearchSelect from "./EditInPlaceSearchSelect";
-import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
+import { Dispatch } from "redux";
+import { getDefaultRemoteColumns } from "../../../../containers/entities/common/entityConstants";
+import { EditInPlaceRemoteDataSelectFieldProps, } from "../../../../model/common/Fields";
 import { State } from "../../../../reducers/state";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../actions/CommonPlainRecordsActions";
-import { EntityName } from "../../../../model/entities/common";
 
-interface Props {
-  onSearchChange: StringArgFunction;
-  onLoadMoreRows: NumberArgFunction;
-  onClearRows: AnyArgFunction;
-  rowHeight?: number;
-  items: any[];
-  loading?: boolean;
-  entity: EntityName;
-  aqlFilter?: string;
-  aqlColumns?: string;
-}
-
-const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = (
+const EditInPlaceRemoteDataSearchSelect: React.FC<EditInPlaceRemoteDataSelectFieldProps> = (
   {
     onLoadMoreRows,
     onSearchChange,
     entity,
     aqlFilter,
     aqlColumns,
+    getCustomSearch,
+    preloadEmpty,
     ...rest
   }
 ) => {
@@ -44,12 +34,19 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = (
     return () => onSearchChange("");
   }, []);
 
-  const onInputChange = useCallback(debounce((input: string) => {
-    onSearchChange(input);
-    if (input) {
+  useEffect(() => {
+    if (preloadEmpty) {
+      onSearchChange("");
       onLoadMoreRows(0);
     }
-  }, 800), [aqlFilter, aqlColumns, entity]);
+  }, [preloadEmpty, getCustomSearch]);
+
+  const onInputChange = useCallback(debounce((input: string) => {
+    onSearchChange(input);
+    if (input || preloadEmpty) {
+      onLoadMoreRows(0);
+    }
+  }, 800), [preloadEmpty, aqlFilter, aqlColumns, getCustomSearch, entity]);
 
   const onLoadMoreRowsOwn = startIndex => {
     if (!rest.loading) {
@@ -58,7 +55,12 @@ const EditInPlaceRemoteDataSearchSelect: React.FC<Props> = (
   };
 
   return (
-    <EditInPlaceSearchSelect {...rest as any} onInputChange={onInputChange} loadMoreRows={onLoadMoreRowsOwn} remoteData />
+    <EditInPlaceSearchSelect
+      {...rest as any}
+      onInputChange={onInputChange}
+      loadMoreRows={onLoadMoreRowsOwn}
+      remoteData
+    />
   );
 };
 
@@ -68,38 +70,20 @@ const mapStateToProps = (state: State, ownProps) => ({
   remoteRowCount: state.plainSearchRecords[ownProps.entity]?.rowsCount,
 });
 
-const getDefaultColumns = entity => {
-  switch (entity) {
-    case "CourseClass":
-      return "course.name,course.code,code,feeIncGst";
-    case "Contact":
-      return "firstName,lastName,email,birthDate,street,suburb,state,postcode,invoiceTerms,taxOverride.id";
-    case "Site":
-      return "name,localTimezone";
-    case "Room":
-      return "name,site.name,site.localTimezone,site.id";
-    case "Qualification":
-      return "nationalCode,title,level,fieldOfEducation,isOffered";
-    case "Course":
-      return "code,name,currentlyOffered,isShownOnWeb";
-    case "Assessment":
-      return "code,name";
-    case "Module":
-      return "nationalCode,title";
-    case "Lead":
-      return "id,customer.fullName,customer.id,items.course.code,estimatedValue";
-  }
-  return "";
-};
-
 const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
-  const getSearch = search => (search ? `~"${search}"${ownProps.aqlFilter ? ` and ${ownProps.aqlFilter}` : ""}` : "");
+  const getSearch = search => ownProps.getCustomSearch
+    ? ownProps.getCustomSearch(search)
+    : (search
+         ? `~"${search}"${ownProps.aqlFilter ? ` and ${ownProps.aqlFilter}` : ''}`
+         : `${ownProps.preloadEmpty ? ownProps.aqlFilter || '' : ''}`
+    );
+
   return {
     onLoadMoreRows: (offset?: number) => dispatch(
       getCommonPlainRecords(
         ownProps.entity,
         offset,
-        ownProps.aqlColumns || getDefaultColumns(ownProps.entity),
+        ownProps.aqlColumns || getDefaultRemoteColumns(ownProps.entity),
         true
       )
     ),
@@ -108,4 +92,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, ownProps) => {
   };
 };
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EditInPlaceRemoteDataSearchSelect);
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(EditInPlaceRemoteDataSearchSelect) as React.FC<EditInPlaceRemoteDataSelectFieldProps>;

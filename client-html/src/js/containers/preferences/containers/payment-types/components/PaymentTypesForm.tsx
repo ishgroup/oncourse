@@ -1,26 +1,21 @@
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import isEqual from "lodash.isequal";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import {
- Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { PaymentMethod } from "@api/model";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import { formCommonStyles } from "../../../styles/formCommonStyles";
-import PaymentTypesRenderer from "./PaymentTypesRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { PaymentMethod } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { formCommonStyles } from '../../../styles/formCommonStyles';
+import PaymentTypesRenderer from './PaymentTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_paymentTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#payment-types");
 
 export const PAYMENT_TYPES_FORM: string = "PaymentTypesForm";
 
@@ -41,9 +36,8 @@ interface Props {
   form: string;
   reset: () => void;
   openConfirm?: ShowConfirmCaller;
-  history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  history?: any;
+  nextLocation?: string;
 }
 
 class PaymentTypesBaseForm extends React.Component<Props, any> {
@@ -97,12 +91,11 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
 
         this.props.dispatch(initialize(PAYMENT_TYPES_FORM, { types: this.props.paymentTypes }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -212,13 +205,10 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
 
 const PaymentTypesForm = reduxForm({
   onSubmitFail,
   form: PAYMENT_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(formCommonStyles)(withRouter(PaymentTypesBaseForm)) as any));
+})(connect<any, any, any>(mapStateToProps, null)(withStyles(withRouter(PaymentTypesBaseForm), formCommonStyles) as any));
 
 export default PaymentTypesForm;

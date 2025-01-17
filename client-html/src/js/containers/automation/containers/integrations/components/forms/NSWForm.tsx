@@ -9,8 +9,7 @@
 import React from "react";
 import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { ServiceNSWVoucherTypes } from "../../../../../../model/automation/integrations/IntegrationsFields";
 
 class NSWBaseForm extends React.Component<any, any> {
@@ -29,13 +28,11 @@ class NSWBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      handleSubmit, onSubmit, AppBarContent, dirty, form
+      handleSubmit, onSubmit, AppBarContent
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent>
           <FormField name="fields.voucher" label="Voucher type" type="select" items={ServiceNSWVoucherTypes} required className="mb-2" />
           <FormField name="fields.chanelCode" label="Store channel code" type="text" required className="mb-2" />

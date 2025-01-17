@@ -1,21 +1,21 @@
-import React, { useMemo } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { User } from "@api/model";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
-import Typography from "@mui/material/Typography";
-import { NavLink } from "react-router-dom";
-import { MenuItem } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ScreenLockPortrait from "@mui/icons-material/ScreenLockPortrait";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import { User } from "@api/model";
+import { NavLink } from "react-router-dom";
 import CollapseMenuList from "../../../common/components/layout/side-bar-list/CollapseSideBarList";
-import { State } from "../../../reducers/state";
 import { LICENSE_ACCESS_CONTROL_KEY } from "../../../constants/Config";
 import { SidebarSharedProps } from "../../../model/common/sidebar";
+import { State } from "../../../reducers/state";
 
 library.add(faEnvelopeOpenText);
 
-const UserIconRenderer: React.FC<{ item: User }> = ({ item, ...rest }) => {
+const UserIconRenderer = ({ item, ...rest }: { item: User }) => {
   const icons = [];
   if (item.tfaEnabled) {
     icons.push(<ScreenLockPortrait {...rest} key={item.id + "tfa"} />);

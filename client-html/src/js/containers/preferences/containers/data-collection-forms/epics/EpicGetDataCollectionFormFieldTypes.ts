@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { FieldType } from "@api/model";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
 import {
   GET_DATA_COLLECTION_FORM_FIELD_TYPES_FULFILLED,
   GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST
 } from "../../../actions";
-import { FieldType } from "@api/model";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST,

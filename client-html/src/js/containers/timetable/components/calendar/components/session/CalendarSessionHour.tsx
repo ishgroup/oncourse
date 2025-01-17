@@ -1,15 +1,19 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, useState } from "react";
-import Collapse from "@mui/material/Collapse";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import ExpandIcon from "@mui/icons-material/ExpandMore";
-import clsx from "clsx";
 import { Session } from "@api/model";
+import ExpandIcon from "@mui/icons-material/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import React, { useMemo, useState } from "react";
+import { CalendarTagsState } from "../../../../../../model/timetable";
 import CalendarSession from "./CalendarSession";
 
 const numberOfClasses = (length: number) => (length > 1 ? `${length} classes` : `${length} class`);
@@ -17,14 +21,13 @@ const numberOfClasses = (length: number) => (length > 1 ? `${length} classes` : 
 interface Props {
   classes: any;
   sessions: Session[];
-  tagsExpanded: any;
-  setTagsExpanded: any;
+  tagsState?: CalendarTagsState;
 }
 
 const onCodeClick = classId => window.open(`/class?search=id is ${classId}`, "_self");
 
 const CalendarSessionHour = React.memo<Props>(({
- classes, sessions, tagsExpanded, setTagsExpanded
+ classes, sessions, tagsState
 }) => {
   const [open, toggleHour] = useState(false);
 
@@ -40,9 +43,9 @@ const CalendarSessionHour = React.memo<Props>(({
 
   const renderedSessions = useMemo(
     () => sessions.map(s => (
-      <CalendarSession key={s.id} tagsExpanded={tagsExpanded} setTagsExpanded={setTagsExpanded} inView {...s} />
+      <CalendarSession key={s.id} tagsState={tagsState} {...s} />
       )),
-    [sessions, tagsExpanded]
+    [sessions, tagsState]
   );
 
   return useMemo(

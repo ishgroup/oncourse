@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
 import { FormControlLabel } from "@mui/material";
-import { initialize, reduxForm } from "redux-form";
+import * as React from "react";
 import { connect } from "react-redux";
+import { initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 
 class SurveyMonkeyBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -28,13 +27,11 @@ class SurveyMonkeyBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      AppBarContent, handleSubmit, onSubmit, dirty, form
+      AppBarContent, handleSubmit, onSubmit
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent>
           <FormField name="fields.apiKey" label="API key" type="text" className="mb-2" />
           <FormField name="fields.authToken" label="OAuth token" type="text" className="mb-2" />

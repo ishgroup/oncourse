@@ -6,17 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { useDispatch } from "react-redux";
-import React from "react";
 import Button from "@mui/material/Button";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from 'redux';
 import { reset } from "redux-form";
+import { IAction } from '../../../common/actions/IshAction';
 import { checkoutClearState } from "../actions";
 import { checkoutGetActivePaymentMethods } from "../actions/checkoutPayment";
-import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
+import { CHECKOUT_SELECTION_FORM_NAME as SELECTION_FORM } from "./CheckoutSelection";
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./fundingInvoice/CheckoutFundingInvoiceSummaryList";
+import { CHECKOUT_SUMMARY_FORM as SUMMARRY_FORM } from "./summary/CheckoutSummaryList";
 
 const RestartButton: React.FC<any> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<IAction>>();
 
   return (
     <Button
@@ -30,6 +33,7 @@ const RestartButton: React.FC<any> = () => {
       dispatch(checkoutClearState());
       dispatch(checkoutGetActivePaymentMethods());
       dispatch(reset(SUMMARRY_FORM));
+      dispatch(reset(SELECTION_FORM));
       dispatch(reset(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM));
     }}
     >

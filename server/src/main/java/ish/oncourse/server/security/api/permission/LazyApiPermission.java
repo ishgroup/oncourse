@@ -15,18 +15,17 @@ import io.bootique.jetty.servlet.DefaultServletEnvironment;
 import ish.common.types.KeyCode;
 import ish.oncourse.server.cayenne.Module;
 import ish.oncourse.server.cayenne.*;
+import ish.oncourse.server.preference.DefaultUserPreference;
 import ish.oncourse.server.security.api.IPermissionService;
-import ish.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static ish.oncourse.server.security.api.PermissionServiceFactory.ROOT_API;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Lazy implementation of ApiPermission which calculates his KeyCode based on query parameters.
@@ -44,7 +43,8 @@ public class LazyApiPermission extends ApiPermission {
     private String lazyKeyCodeParam;
     private String reserveQueryString;
 
-    private static final Map<String,KeyCode> KEY_CODE_MAP = new HashMap<>();
+    private static final Map<String, KeyCode> KEY_CODE_MAP = new HashMap<>();
+
     static {
         KEY_CODE_MAP.put(Account.class.getSimpleName().toLowerCase(), KeyCode.ACCOUNT);
         KEY_CODE_MAP.put(ProductItem.class.getSimpleName().toLowerCase(), KeyCode.SALE);
@@ -95,6 +95,7 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(Message.class.getSimpleName().toLowerCase(), KeyCode.EMAIL_TEMPLATE);
         KEY_CODE_MAP.put(Session.class.getSimpleName().toLowerCase(), KeyCode.SESSION);
         KEY_CODE_MAP.put(TRAINEESHIP, KeyCode.CLASS);
+        KEY_CODE_MAP.put(DefaultUserPreference.VET_MODEL_NAME.toLowerCase(), KeyCode.CONTACT);
         KEY_CODE_MAP.put(PriorLearning.class.getSimpleName().toLowerCase(), KeyCode.OUTCOMES);
         KEY_CODE_MAP.put(FundingSource.class.getSimpleName().toLowerCase(), KeyCode.COURSE);
         KEY_CODE_MAP.put(CustomFieldType.class.getSimpleName().toLowerCase(), KeyCode.CONTACT);
@@ -102,6 +103,11 @@ public class LazyApiPermission extends ApiPermission {
         KEY_CODE_MAP.put(AssessmentClass.class.getSimpleName().toLowerCase(), KeyCode.ASSESSMENT);
         KEY_CODE_MAP.put(AssessmentSubmission.class.getSimpleName().toLowerCase(), KeyCode.ASSESSMENT);
         KEY_CODE_MAP.put(SystemUser.class.getSimpleName().toLowerCase(), KeyCode.SYSTEMUSER);
+        KEY_CODE_MAP.put(Tag.class.getSimpleName().toLowerCase(), KeyCode.TAG);
+        KEY_CODE_MAP.put(Checkout.class.getSimpleName().toLowerCase(), KeyCode.CHECKOUT);
+        KEY_CODE_MAP.put(TutorAttendance.class.getSimpleName().toLowerCase(), KeyCode.TUTOR_ATTENDANCE);
+        KEY_CODE_MAP.put(PortalWebsite.class.getSimpleName().toLowerCase(), KeyCode.PORTAL_WEBSITE);
+        KEY_CODE_MAP.put(Faculty.class.getSimpleName().toLowerCase(), KeyCode.FACULTY);
     }
 
 
@@ -110,11 +116,40 @@ public class LazyApiPermission extends ApiPermission {
         this.lazyKeyCodeParam = keyCode.split(LAZY_KEY_CODE_DELIMITER)[1];
     }
 
+    /**
+     * Splits query from request and returns map of query params.
+     *
+     * @param query that will be split.
+     * @return map of query params
+     * @throws UnsupportedEncodingException
+     */
+    private static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
+        Map<String, String> queryPairs = new LinkedHashMap<>();
+        var pairs = query.split(QUERY_SPLITTER);
+        for (var pair : pairs) {
+            var idx = pair.indexOf(PAIR_CONCATENATOR);
+            queryPairs.put(URLDecoder.decode(pair.substring(0, idx), UTF_8), URLDecoder.decode(pair.substring(idx + 1), UTF_8));
+        }
+        return queryPairs;
+    }
+
     @Override
     public KeyCode getKeyCode(String query) {
         String keyCodeValue;
         try {
-            keyCodeValue = splitQuery(query).get(lazyKeyCodeParam);
+            var queryParams = splitQuery(query);
+            keyCodeValue = queryParams.get(lazyKeyCodeParam);
+            if ("CustomField".equals(keyCodeValue)) {
+                var search = queryParams.get("search");
+                if (search != null) {
+                    String patternStr = "entityIdentifier is ([\\S]+)";
+                    Pattern pattern = Pattern.compile(patternStr);
+                    Matcher m = pattern.matcher(search);
+                    if (m.find()) {
+                        keyCodeValue = m.group(1);
+                    }
+                }
+            }
         } catch (UnsupportedEncodingException e) {
             keyCodeValue = null;
         }
@@ -122,27 +157,6 @@ public class LazyApiPermission extends ApiPermission {
             return null;
         }
         return KEY_CODE_MAP.get(keyCodeValue.toLowerCase());
-    }
-
-    @Override
-    public PermissionCheckingResult check() {
-        var permissionService = injector.getInstance(IPermissionService.class);
-        if (permissionService == null) {
-            return new PermissionCheckingResult(false, "Permission service isn't initialized!");
-        }
-        var queryString = getQueryString();
-        if (queryString == null) {
-            return new PermissionCheckingResult(false, "Query parameters can't be empty for lazy permission checking.");
-        }
-        var keyCode = getKeyCode(queryString);
-        if (keyCode == null) {
-            try {
-                return permissionService.hasAccess(getLazyEntityPath(), getMethod());
-            } catch (Exception e) {
-                return new PermissionCheckingResult(false, "Can't find lazy keycode for entity.");
-            }
-        }
-            return new PermissionCheckingResult(permissionService.currentUserCan(keyCode, getMask()), errorMessage);
     }
 
     private String getLazyEntityPath() throws UnsupportedEncodingException {
@@ -165,20 +179,25 @@ public class LazyApiPermission extends ApiPermission {
         return request.getQueryString();
     }
 
-    /**
-     * Splits query from request and returns map of query params.
-     * @param query that will be split.
-     * @return map of query params
-     * @throws UnsupportedEncodingException
-     */
-    private static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
-        Map<String, String> queryPairs = new LinkedHashMap<>();
-        var pairs = query.split(QUERY_SPLITTER);
-        for (var pair : pairs) {
-            var idx = pair.indexOf(PAIR_CONCATENATOR);
-            queryPairs.put(URLDecoder.decode(pair.substring(0, idx), UTF_8), URLDecoder.decode(pair.substring(idx + 1), UTF_8));
+    @Override
+    public PermissionCheckingResult check() {
+        var permissionService = injector.getInstance(IPermissionService.class);
+        if (permissionService == null) {
+            return new PermissionCheckingResult(false, "Permission service isn't initialized!");
         }
-        return queryPairs;
+        var queryString = getQueryString();
+        if (queryString == null) {
+            return new PermissionCheckingResult(false, "Query parameters can't be empty for lazy permission checking.");
+        }
+        var keyCode = getKeyCode(queryString);
+        if (keyCode == null) {
+            try {
+                return permissionService.hasAccess(getLazyEntityPath(), getMethod());
+            } catch (Exception e) {
+                return new PermissionCheckingResult(false, "Can't find lazy keycode for entity.");
+            }
+        }
+        return new PermissionCheckingResult(permissionService.currentUserCan(keyCode, getMask()), errorMessage);
     }
 
     public void setReserveQueryString(String reserveQueryString) {

@@ -8,16 +8,16 @@
 
 import React, { useMemo } from "react";
 import { RouteComponentProps } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../../common/utils/hooks";
-import CatalogWithSearch from "../../../common/components/layout/catalog/CatalogWithSearch";
-import { CatalogItemType } from "../../../model/common/Catalog";
-import IntegrationTypes from "./integrations/IntegrationTypes";
-import { AutomationEntity } from "../../../model/automation/integrations";
-import { installAutomation, uninstallAutomation } from "../actions";
 import { showConfirm } from "../../../common/actions";
+import CatalogWithSearch from "../../../common/components/layout/catalog/CatalogWithSearch";
+import { useAppDispatch, useAppSelector } from "../../../common/utils/hooks";
+import { AutomationEntity } from "../../../model/automation/common";
+import { CatalogItemType } from "../../../model/common/Catalog";
+import { installAutomation, uninstallAutomation } from "../actions";
 import { getEmailTemplatesListFulfilled } from "./email-templates/actions";
 import { getExportTemplatesListFulfilled } from "./export-templates/actions";
 import { getImportTemplatesListFulfilled } from "./import-templates/actions";
+import IntegrationTypes from "./integrations/IntegrationTypes";
 import { getAutomationPdfReportsListFulfilled } from "./pdf-reports/actions";
 import { getScriptsListFulfilled } from "./scripts/actions";
 
@@ -257,7 +257,8 @@ export const IntegrationsCatalog = ({ history }: RouteComponentProps) => {
     installed: true,
     enabled: true,
     tag: null,
-    shortDescription: IntegrationTypes[i.type].description
+    shortDescription: IntegrationTypes[i.type].description,
+    hideDot: true
   })) || [], [integrations]);
 
   const onOpen = id => {
@@ -301,7 +302,6 @@ export const ScriptsCatalog = ({ history }: RouteComponentProps) => {
         category: "Advanced",
         shortDescription: "Create a new automation from scratch"
       }}
-
       toggleInstall={toggleInstall}
       items={scripts}
       title="Automations"

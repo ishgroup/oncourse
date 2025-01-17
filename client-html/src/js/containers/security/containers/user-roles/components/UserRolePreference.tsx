@@ -3,19 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Collapse, Grid, Typography } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import { Field, change } from "redux-form";
-import createStyles from "@mui/styles/createStyles";
-import clsx from "clsx";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { Switch } from "../../../../../common/components/form/formFields/Switch";
-import SliderStepperField from "./SliderStepperField";
+import { Collapse, Grid, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { Switch } from 'ish-ui';
+import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { change, Field } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import SliderStepperField from './SliderStepperField';
 
-const styles = theme =>
-  createStyles({
+const styles = (theme, p, classes) =>
+  ({
     stepperLabel: {
       height: "32px",
       paddingBottom: "2px",
@@ -32,7 +31,7 @@ const styles = theme =>
     },
     stepperHeadersWrapper: {
       padding: theme.spacing(2, 0),
-      "& .flex-fill:first-child $stepperHeader": {
+      [`& .flex-fill:first-child .${classes.stepperHeader}`]: {
         paddingLeft: "10px"
       }
     },
@@ -45,6 +44,17 @@ const styles = theme =>
       color: `${theme.palette.primary.main}`
     }
   });
+
+const getLabel = (category: string) => {
+  switch (category) {
+    case "EmailTemplate":
+      return "Message templates";
+    case "ExportTemplate":
+      return "Export templates";
+    default:
+      return category;
+  }
+};
 
 const ContentBase = props => {
   const {
@@ -72,7 +82,7 @@ const ContentBase = props => {
           <Grid item key={index} xs={12} container>
             <Grid item xs={3}>
               <Typography variant="body2" className={clsx("centeredFlex", classes.stepperLabel)}>
-                {item.name}
+                {getLabel(item.name)}
               </Typography>
             </Grid>
             <Grid item xs={9}>
@@ -81,8 +91,7 @@ const ContentBase = props => {
                   type="checkbox"
                   name={item.name}
                   key={index}
-                  classes={{ root: classes.checkboxColor }}
-                  className={classes.checkbox}
+                  className={clsx(classes.checkbox, classes.checkboxColor)}
                   color="primary"
                   stringValue
                 />
@@ -104,7 +113,7 @@ const ContentBase = props => {
   );
 };
 
-const Content = withStyles(styles)(ContentBase);
+const Content = withStyles(ContentBase, styles);
 
 interface Props {
   item?;

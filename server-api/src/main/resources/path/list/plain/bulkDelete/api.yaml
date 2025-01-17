@@ -1,0 +1,27 @@
+post:
+  operationId: bulkDelete
+  tags:
+    - Entity
+  parameters:
+    - name: entity
+      in: query
+      required: true
+      type: string
+      example: Audit
+    - name: diff
+      in: body
+      schema:
+        $ref: './def/entity/Diff.yaml'
+      required: true
+      description: entities for delete
+  responses:
+    '200':
+      description: Success response
+    '400':
+      description: Bad request error
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: LAZY/entity
+    errorMessage: Sorry, you have no permissions to delete this entity. Please contact your administrator

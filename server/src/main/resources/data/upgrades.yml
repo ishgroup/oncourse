@@ -762,3 +762,142 @@ databaseChangeLog:
         - customChange: {
           "class": "ish.oncourse.server.upgrades.liquibase.change.UpdateFilterColumnWidth"
         }
+
+  - changeSet:
+      id: 115-3
+      author: dmitry
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Node
+            columnName: nodeType
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.DeleteTagWebpages
+
+  - changeSet:
+      id: 116-1
+      author: kristina
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Node
+      comment: create missing special tag groups
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateSpecialTags
+
+  - changeSet:
+      id: 117-1
+      author: dmitars
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Preference
+      comment: create preference for max image quality
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateBackgroundQualityPreference
+
+  - changeSet:
+      id: 118-1
+      author: dmitriy
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: Account
+        - tableExists:
+            tableName: Preference
+      comment: create default invoice account property
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.CreateInvoiceDefaultAccountPreference
+
+  - changeSet:
+      id: 119-1
+      author: dmitryl
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: IntegrationProperty
+        - tableExists:
+            tableName: IntegrationConfiguration
+        - columnExists:
+            tableName: IntegrationProperty
+            columnName: keyCode
+        - columnExists:
+            tableName: IntegrationConfiguration
+            columnName: type
+      comment: delete unnecessary integration properties orgId and username for Cloud Assess integration
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.DeleteUnnecessaryCloudAssessProperties
+
+  - changeSet:
+      id: 120-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - and:
+            - tableExists:
+                tableName: MessageTemplate
+      changes:
+        - dropTable:
+            tableName: MessageTemplate
+
+  - changeSet:
+      id: 121-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: Checkout
+            columnName: createdOn
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.UpdatePayerIdForCheckouts
+  - changeSet:
+      id: 123-2
+      author: kristina
+      comment: the current version of the document must be determined by `current` property
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: DocumentVersion
+            columnName: current
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.ChangeCurrentVersionDocumentsDefenitionJob
+  - changeSet:
+      id: 124-6
+      author: dmitry
+      comment: remove all checkout with replication to prevent desynchronization
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Checkout
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.DeleteCheckouts
+  - changeSet:
+      id: 127-2
+      author: dmitry
+      comment: replicate all hashes of document versions to willow side
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: DocumentVersion
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.ReplicateHashes
+  - changeSet:
+      id: 138-0
+      author: dmitry
+      comment: update already migrated subjects tags to allow multiple relations
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: NodeRelation
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.UpdateSubjectEntitiesToMultiple

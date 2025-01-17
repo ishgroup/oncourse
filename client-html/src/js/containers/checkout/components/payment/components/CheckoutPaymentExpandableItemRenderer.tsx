@@ -3,21 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@mui/material/IconButton";
-import Share from "@mui/icons-material/Share";
-import React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { CheckoutItem } from "../../../../../model/checkout";
-import { getInvoiceLineKey } from "../../../utils";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Share from '@mui/icons-material/Share';
+import { Grid, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import IconButton from '@mui/material/IconButton';
+import { LinkAdornment, openInternalLink } from 'ish-ui';
+import React from 'react';
+import { CheckoutItem } from '../../../../../model/checkout';
+import { getInvoiceLineKey } from '../../../utils';
 
-const ItemRow = React.memo<any>(props => {
+const ItemRow = React.memo<{classes?, item, invoiceLine}>(props => {
   const {
     classes, item, invoiceLine
   } = props;

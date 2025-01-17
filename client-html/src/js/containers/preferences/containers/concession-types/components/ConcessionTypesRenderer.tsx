@@ -3,12 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
 import { ConcessionType } from "@api/model";
+import { FormControlLabel, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 
@@ -30,8 +29,7 @@ const renderConcessionTypes = props => {
                       type="text"
                       name={`${item}.name`}
                       label="Concession Type Name"
-                      fullWidth
-                      className={classes.field}
+                                            className={classes.field}
                       validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
                     />
                   </Grid>
@@ -45,8 +43,6 @@ const renderConcessionTypes = props => {
                             type="checkbox"
                             name={`${item}.allowOnWeb`}
                             color="primary"
-                            value="true"
-                            fullWidth
                           />
                         )}
                         label="Allow students to self-select on website"
@@ -73,8 +69,6 @@ const renderConcessionTypes = props => {
                           type="checkbox"
                           name={`${item}.requireExpary`}
                           color="primary"
-                          value="true"
-                          fullWidth
                         />
                       )}
                       label="Require expiry date"
@@ -89,8 +83,6 @@ const renderConcessionTypes = props => {
                           type="checkbox"
                           name={`${item}.requireNumber`}
                           color="primary"
-                          value="true"
-                          fullWidth
                         />
                       )}
                       label="Require concession type number"

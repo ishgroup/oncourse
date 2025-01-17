@@ -3,36 +3,60 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
 import { Script } from "@api/model";
 import { Menu } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import React from "react";
+import { FilterScriptsBy } from "../../../../../../model/common/ListView";
 
 interface ScriptsMenuProps {
   scripts?: Script[];
   classes: any;
   closeAll: () => void;
   entity: string;
+  filterScriptsBy?: FilterScriptsBy;
   openScriptModal: (scriptId: number) => void;
+  scriptsMenuOpen: any;
+  setScriptsMenuOpen: any;
 }
 
 const ScriptsMenu = React.memo<ScriptsMenuProps>(props => {
   const {
-     scripts, classes, closeAll, openScriptModal
+     scripts, classes, filterScriptsBy, closeAll, openScriptModal, scriptsMenuOpen, setScriptsMenuOpen
   } = props;
-
-  const [scriptsMenuOpen, setScriptsMenuOpen] = useState(null);
 
   return (
     <>
-      <MenuItem
-        classes={{
-          root: "listItemPadding"
-        }}
-        onClick={event => setScriptsMenuOpen(event.currentTarget)}
-      >
-        Execute script
-      </MenuItem>
+      {filterScriptsBy
+        ? (
+          Object.keys(filterScriptsBy).map(k => {
+            
+            if (!filterScriptsBy[k].scripts.length) return null;
+            
+            return (
+              <MenuItem
+                key={k}
+                classes={{
+                  root: "listItemPadding"
+                }}
+                onClick={event => setScriptsMenuOpen({ anchor: event.currentTarget, entity: k })}
+              >
+                Execute script for {filterScriptsBy[k].ids.length} {k.toLowerCase()}{filterScriptsBy[k].ids.length > 1 ? k[k.length - 1] === "s" ? "es" : "s" : ""}
+              </MenuItem>
+            );
+          })
+        )
+        : (
+          <MenuItem
+            classes={{
+              root: "listItemPadding"
+            }}
+            onClick={event => setScriptsMenuOpen({ anchor: event.currentTarget })}
+          >
+            Execute script
+          </MenuItem>
+        )
+      }
 
       <Menu
         id="scripts"

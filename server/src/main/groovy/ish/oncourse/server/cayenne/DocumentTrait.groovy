@@ -27,6 +27,23 @@ trait DocumentTrait {
         return attachmentRelations.size()
     }
 
+
+    /**
+     * required into document csv export
+     * @return
+     */
+    String getAttachedForFirstEnrolmentStudentInfo() {
+        def enrolmentRelation = attachmentRelations
+                .find {it -> it instanceof EnrolmentAttachmentRelation}
+        if (enrolmentRelation == null)
+            return null
+        Student student = (enrolmentRelation as EnrolmentAttachmentRelation).attachedEnrolment.student
+        if(student == null)
+            return null
+        return "No.: ${student.studentNumber} | Name: ${student.contact.name}"
+    }
+
+
     /**
      * Returns S3Service as a singleton
      * Uses double checked locking & volatile singleton model

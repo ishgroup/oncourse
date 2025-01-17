@@ -1,6 +1,4 @@
-import {
- CancelEnrolment, Diff, Enrolment, EnrolmentApi 
-} from "@api/model";
+import { CancelEnrolment, Enrolment, EnrolmentApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class EnrolmentService {
@@ -16,10 +14,6 @@ class EnrolmentService {
 
   public cancelEnrolment(cancelEnrolment: CancelEnrolment): Promise<any> {
     return this.enrolmentApi.cancel(cancelEnrolment);
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.enrolmentApi.bulkChange(diff);
   }
 }
 

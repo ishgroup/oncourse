@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { change } from "redux-form";
+import { Epic } from "redux-observable";
+import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import EntityService from "../../../../common/services/EntityService";
 import { CheckoutDiscount } from "../../../../model/checkout";
 import {
   CHECKOUT_GET_DISCOUNT_PROMO,
   CHECKOUT_SET_PROMO,
-   checkoutUpdateSummaryClassesDiscounts
+  checkoutUpdateSummaryClassesDiscounts
 } from "../../actions/checkoutSummary";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import EntityService from "../../../../common/services/EntityService";
-import { FORM as checkoutDiscountForm } from "../../components/CheckoutSelection";
+import { CHECKOUT_SELECTION_FORM_NAME as checkoutDiscountForm } from "../../components/CheckoutSelection";
 import { isPromotionalCodeExist } from "../../utils";
 
 const checkoutPromocodeColumns = "id,"
@@ -43,11 +43,11 @@ const defaultDiscountColunmsMap = ({ values }): CheckoutDiscount => ({
 const request: EpicUtils.Request = {
   type: CHECKOUT_GET_DISCOUNT_PROMO,
   getData: ({ code }, { checkout }) => (isPromotionalCodeExist(code, checkout)
-      ? Promise.reject({ message: "This code was already added." })
+      ? Promise.reject({ data: { message: "This code was already added." } })
       : EntityService.getPlainRecords(
           "Discount",
           checkoutPromocodeColumns,
-          `code is "${code}" and (((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))) `,
+          `code is "${code}" and availableFor not is ONLINE_ONLY and (((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null))) `,
           100,
           0,
           "",
@@ -70,7 +70,7 @@ const request: EpicUtils.Request = {
     ];
   },
   processError: response => [change(checkoutDiscountForm, "promocodes", ""),
-    ...FetchErrorHandler(response, response && response.message ? response.message : "Failed to get discounts by code")]
+    ...FetchErrorHandler(response, response && response.data?.message ? response.data.message : "Failed to get discounts by code")]
 };
 
 export const EpicCheckoutGetPromoCode: Epic<any, any> = EpicUtils.Create(request);

@@ -3,21 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { change } from "redux-form";
-import debounce from "lodash.debounce";
-import clsx from "clsx";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { formatCurrency, normalizeNumberToZero } from "../../../../common/utils/numbers/numbersNormalizing";
-import { decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Grid, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import clsx from 'clsx';
+import { decimalPlus, formatCurrency, normalizeNumberToZero } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React from 'react';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
 
-const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(props => {
+const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<{
+  dispatch,
+  classes,
+  header,
+  listIndex?,
+  items,
+  itemTotal,
+  currencySymbol,
+  paymentPlans,
+  form,
+  selectedItemIndex
+}>(props => {
   const {
     dispatch,
     classes,
@@ -79,7 +88,9 @@ const CheckoutFundingInvoiceSummaryExpandableItemRenderer = React.memo<any>(prop
   );
 });
 
-const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
+const CheckoutFundingInvoiceSummaryRow = React.memo<{
+  classes, dispatch, listIndex, index, item, items, paymentPlans, form, selectedItemIndex
+}>(props => {
   const {
     classes, dispatch, listIndex, index, item, items, paymentPlans, form, selectedItemIndex
   } = props;
@@ -109,6 +120,7 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<any>(props => {
           label="Price"
           onChange={handlePriceChange}
           normalize={normalizeNumberToZero}
+          debounced={false}
           rightAligned
         />
       </Grid>

@@ -21,4 +21,6 @@ interface AutomationDao<K extends Persistent> extends CayenneLayer<K> {
     K getByKeyCode(ObjectContext context, String keyCode)
 
     List<K> getForEntity(String entityName, ObjectContext context)
+
+    List<K> getByName(ObjectContext context, String name)
 }

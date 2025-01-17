@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.CourseEnrolmentType
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.function.CalculateCourseClassNominalHours
@@ -279,6 +280,19 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
+	 * The course short description is displayed on the courses page as a description of course under the title.
+	 * If value not set, webDescription will be displayed.
+	 * It can contain rich text for embedding images, blocks, video, dynamic text, and more. It also supported unicode for multi-language support.
+	 *
+	 * @return a rich text field for display on the web
+	 */
+	@API
+	@Override
+	String getShortWebDescription() {
+		return super.getShortWebDescription()
+	}
+
+	/**
 	 * @return application records linked to this course
 	 */
 	@Nonnull
@@ -333,7 +347,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of all courses related to this one
+	 * @return a list of all courses related to this one. It is a union of relatedToCourses and relatedFromCourses
 	 */
 	@Nonnull @API
 	List<Course> getRelatedCourses() {
@@ -418,7 +432,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses related to this one
+	 * @return a list of courses that this course is related to (relationships to courses, created from this one)
 	 */
 	@Nonnull
 	@API
@@ -433,7 +447,8 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses related to this one by type with specified name
+	 * @return a list of courses that this course is related to (relationships to courses, created from this course)
+	 * by type with specified name
 	 */
 	@Nonnull
 	@API
@@ -448,7 +463,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses this one relate to
+	 * @return a list of courses related to this one (relashionships, created in other courses to this one)
 	 */
 	@Nonnull
 	@API
@@ -463,7 +478,7 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	}
 
 	/**
-	 * @return a list of courses this one relate to by type with specified name
+	 * @return a list of courses related to this one (relashionships, created in other courses to this one) by type with specified name
 	 */
 	@Nonnull
 	@API
@@ -534,7 +549,8 @@ class Course extends _Course implements Queueable, NotableTrait, ExpandableTrait
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (CourseTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}

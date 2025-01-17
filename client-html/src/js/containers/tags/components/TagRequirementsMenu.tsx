@@ -1,14 +1,11 @@
-import React, { ComponentClass } from "react";
-import { connect } from "react-redux";
-import {
-  Typography, Menu, MenuItem
-} from "@mui/material";
-import { withStyles } from "@mui/styles";
 import { TagRequirement, TagRequirementType } from "@api/model";
+import { Menu, MenuItem, Typography } from "@mui/material";
 import clsx from "clsx";
-import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
+import { AddButton } from "ish-ui";
+import React from "react";
+import { connect } from "react-redux";
 import { State } from "../../../reducers/state";
-import AddButton from "../../../common/components/icons/AddButton";
+import GetTagRequirementDisplayName from "../utils/GetTagRequirementDisplayName";
 
 const requirements = Object.keys(TagRequirementType).map(
   (i: TagRequirementType) =>
@@ -21,12 +18,6 @@ const requirements = Object.keys(TagRequirementType).map(
     } as TagRequirement)
 );
 
-const styles = theme => ({
-  menu: {
-    marginLeft: "52px"
-  }
-});
-
 class TagRequirementsMenu extends React.Component<any, any> {
   constructor(props) {
     super(props);
@@ -37,7 +28,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
   }
 
   handleAddFieldClick = e => {
-    this.setState({ anchorEl: e.currentTarget });
+    this.setState({ anchorEl: e.target });
   };
 
   handleAddFieldClose = () => {
@@ -62,7 +53,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
   }
 
   filterItems(items) {
-    return items.filter(i => {
+    const filtered = items.filter(i => {
       const isAdded = Boolean(this.props.items.find(r => i.type === r.type));
 
       let isBinded;
@@ -85,6 +76,10 @@ class TagRequirementsMenu extends React.Component<any, any> {
 
       return isAdded ? false : !isBinded;
     });
+
+    filtered.sort((a, b) => (GetTagRequirementDisplayName(a.type) > GetTagRequirementDisplayName(b.type) ? 1 : -1));
+
+    return filtered;
   }
 
   componentDidUpdate({ rootID, items }) {
@@ -127,14 +122,14 @@ class TagRequirementsMenu extends React.Component<any, any> {
       }
     }
 
-    onChange([item, ...items]);
+    onChange([...items, item]);
   };
 
   render() {
     const { anchorEl, filteredItems } = this.state;
     const {
-      classes,
       label,
+      input: { name },
       meta: { invalid, error },
       disabled,
       system
@@ -148,7 +143,6 @@ class TagRequirementsMenu extends React.Component<any, any> {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={this.handleAddFieldClose}
-            className={classes.menu}
           >
             {filteredItems.map((i, n) => (
               <MenuItem key={n} onClick={() => this.addRequirement(i)}>
@@ -158,7 +152,7 @@ class TagRequirementsMenu extends React.Component<any, any> {
           </Menu>
         )}
 
-        <div>
+        <div id={name}>
           <div className="centeredFlex">
             <Typography
               className={clsx("heading", {
@@ -180,8 +174,8 @@ class TagRequirementsMenu extends React.Component<any, any> {
             />
           </div>
 
-          {error && (
-            <Typography variant="caption" color="error">
+          {typeof error === "string" && (
+            <Typography className="shakingError" variant="caption" color="error" component="div">
               {error}
             </Typography>
           )}
@@ -195,4 +189,4 @@ const mapStateToProps = (state: State) => ({
   allTags: state.tags.allTags,
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(TagRequirementsMenu) as ComponentClass<any>);
+export default connect(mapStateToProps)(TagRequirementsMenu);

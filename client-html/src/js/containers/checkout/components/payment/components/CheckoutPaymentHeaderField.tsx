@@ -5,50 +5,56 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { CheckoutPaymentPlan, PaymentMethod } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import clsx from "clsx";
-import { addDays, compareAsc, isSameDay } from "date-fns";
-import { format } from "date-fns-tz";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { checkPermissions } from "../../../../../common/actions";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { D_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../../../common/utils/dates/format";
-import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { BooleanArgFunction, NumberArgFunction, StringArgFunction } from "../../../../../model/common/CommonFunctions";
-import { State } from "../../../../../reducers/state";
-import { CheckoutItem, CheckoutPayment, CheckoutSummary } from "../../../../../model/checkout";
-import { getAccountTransactionLockedDate } from "../../../../preferences/actions";
+import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { addDays, compareAsc, isSameDay } from 'date-fns';
+import { format } from 'date-fns-tz';
+import {
+  BooleanArgFunction,
+  D_MMM_YYYY,
+  decimalMinus,
+  decimalPlus,
+  formatCurrency,
+  NumberArgFunction,
+  StringArgFunction,
+  StyledCheckbox,
+  YYYY_MM_DD_MINUSED
+} from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { checkPermissions } from '../../../../../common/actions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { UserPreferencesState } from '../../../../../common/reducers/userPreferencesReducer';
+import { CheckoutItem, CheckoutPayment, CheckoutSummary } from '../../../../../model/checkout';
+import { State } from '../../../../../reducers/state';
+import { getAccountTransactionLockedDate } from '../../../../preferences/actions';
 import {
   checkoutGetSavedCard,
   checkoutSetPaymentMethod,
   checkoutSetPaymentPlans,
   clearCcIframeUrl
-} from "../../../actions/checkoutPayment";
+} from '../../../actions/checkoutPayment';
 import {
   checkoutGetVoucherPromo,
   checkoutRemoveVoucher,
   checkoutUncheckAllPreviousInvoice,
   checkoutUpdatePromo,
   checkoutUpdateSummaryField
-} from "../../../actions/checkoutSummary";
-import HeaderField, { HeaderFieldTypo } from "../../HeaderField";
-import SelectedPromoCodesRenderer from "../../summary/promocode/SelectedPromoCodesRenderer";
-import CheckoutPaymentPlans from "./payment-plans/CheckoutPaymentPlans";
-import { CheckoutPage } from "../../../constants";
+} from '../../../actions/checkoutSummary';
+import { CheckoutPage } from '../../../constants';
+import HeaderField, { HeaderFieldTypo } from '../../HeaderField';
+import SelectedPromoCodesRenderer from '../../summary/promocode/SelectedPromoCodesRenderer';
+import CheckoutPaymentPlans from './payment-plans/CheckoutPaymentPlans';
 
-const styles = () => createStyles({
+const styles = () => ({
   success: {
     color: "green",
     border: "2px solid",
@@ -75,6 +81,9 @@ interface PaymentHeaderFieldProps {
   currencySymbol?: any;
   clearCcIframeUrl?: () => void;
   form?: string;
+  values?: {
+    paymentPlans?: CheckoutPaymentPlan[]
+  };
   dispatch?: any;
   defaultTerms?: string;
   paymentProcessStatus?: any;
@@ -92,6 +101,7 @@ interface PaymentHeaderFieldProps {
   savedCreditCard?: CheckoutPayment["savedCreditCard"];
   uncheckAllPreviousInvoice?: (type: string, value?: boolean) => void;
   checkoutGetSavedCard?: (payerId: number, paymentMethodId: number) => void;
+  paymentGateway?: UserPreferencesState["payment.gateway.type"]
 }
 
 const noPaymentItems = [{ value: "No payment", label: "No payment" }];
@@ -128,9 +138,11 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     checkoutGetSavedCard,
     savedCreditCard,
     setDisablePayment,
-    setPaymentPlans
+    setPaymentPlans,
+    values,
+    paymentGateway
   } = props;
-
+  
   const payerContact = useMemo(() => checkoutSummary.list.find(l => l.payer).contact, [checkoutSummary.list]);
 
   useEffect(() => {
@@ -154,6 +166,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
   const [isZeroPayment, setIsZeroPayment] = useState(checkoutSummary.finalTotal === 0);
 
   const paymentTypes = useMemo(() => availablePaymentTypes
+    .filter(({ type }) => paymentGateway === "OFFLINE" ? type !== "Credit card" : true)
     .map(p => ({ value: p.name, label: p.name }))
     .concat(savedCreditCard ? [{ value: "Saved credit card", label: "Saved credit card" }] : []), [availablePaymentTypes, savedCreditCard]);
 
@@ -258,7 +271,13 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         dispatch(change(form, "payment_method", null));
       }
     }
-  }, 200), [isZeroPayment, paymentMethod]);
+  }, 500), [isZeroPayment, paymentMethod]);
+  
+  useEffect(() => {
+    if (values?.paymentPlans && values?.paymentPlans[0]) {
+      onPayNowChange(values.paymentPlans[0].amount);
+    }
+  }, [values?.paymentPlans && values?.paymentPlans[0]?.amount]);
 
   const onPayNowFocus = () => {
     setDisablePayment(true);
@@ -308,7 +327,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         return undefined;
       }
 
-      const date = new Date(lockedDate.lockedDate);
+      const date = new Date(lockedDate);
 
       return compareAsc(addDays(date, 1), new Date(dateChanged)) > 0
         ? `Date must be after ${format(date, D_MMM_YYYY)}`
@@ -596,10 +615,9 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           placeholder="Payment method"
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
-          disabledTab
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
-        {selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
+        {!['STRIPE', 'STRIPE_TEST'].includes(paymentGateway) && selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
           <Tooltip title="Retain a secure link to the bank which allows this card to be used for future billing or payment plans">
             <FormControlLabel
               classes={{
@@ -634,8 +652,10 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
   );
 };
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state),
   availablePaymentTypes: state.checkout.payment.availablePaymentTypes,
+  paymentGateway: state.userPreferences['payment.gateway.type'],
   selectedPaymentType: state.checkout.payment.selectedPaymentType,
   checkoutSummary: state.checkout.summary,
   checkoutItems: state.checkout.items,
@@ -670,4 +690,4 @@ const CheckoutPaymentHeaderField = connect<any, any, any>(
   mapDispatchToProps
 )(CheckoutPaymentHeaderFieldForm);
 
-export default withStyles(styles)(CheckoutPaymentHeaderField);
+export default withStyles(CheckoutPaymentHeaderField, styles);

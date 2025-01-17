@@ -1,0 +1,76 @@
+import test.PrepareTestDatabase
+
+buildscript {
+    dependencies {
+        classpath 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+dependencies {
+
+    api(project(':server-api')) {
+        exclude group: 'com.google.guava'
+    }
+
+    api 'org.apache.commons:commons-exec:1.3'
+    api 'org.yaml:snakeyaml:1.33'
+    api 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    api 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    api ('org.seleniumhq.selenium:selenium-java:4.27.0') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+    api ('io.github.bonigarcia:webdrivermanager:5.9.2') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    implementation('com.google.guava:guava:33.1.0-jre') {
+        attributes {
+            attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+        }
+    }
+
+}
+
+task copyConfig(type: Copy) {
+    from("$rootDir/selenium-test/src/test/resources/") {
+        include 'onCourse.yml'
+        include 'logSetup.xml'
+    }
+    into "$rootDir/server/build"
+    def dbUrl = project.hasProperty('dbUrl') ? project.getProperty('dbUrl') : 'jdbc:mariadb://localhost/angel_selenium_test?user=root&password=11111111'
+    expand(dbUrl: dbUrl)
+}
+
+task prepareTestDatabase(type: PrepareTestDatabase) {
+    databaseUrl = project.hasProperty('dbUrl') ? project.getProperty('dbUrl') : 'jdbc:mariadb://localhost/angel_selenium_test?user=root&password=11111111'
+    dataSetDirectory = "$rootDir/selenium-test/src/test/resources/ish.oncourse.selenium.test"
+}
+
+test {
+    description = "Run selenium tests requiring server and client"
+    testLogging {
+        events "failed", "standardOut"
+    }
+    jvmArgs = ['-Xmx3000m', '-Xms3000m']
+    useJUnitPlatform()
+
+    tasks.getByName('prepareTestDatabase')
+            .mustRunAfter(':server:startDaemon')
+            .mustRunAfter('copyConfig')
+
+    dependsOn "copyConfig"
+    dependsOn ":server:startDaemon"
+    dependsOn "prepareTestDatabase"
+}

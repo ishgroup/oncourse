@@ -7,10 +7,10 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { DELETE_API_TOKEN_REQUEST, getApiTokens } from "../../../actions";
 import ApiTokensService from "../services/ApiTokensService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
 
 const request: EpicUtils.Request<any, any> = {
   type: DELETE_API_TOKEN_REQUEST,

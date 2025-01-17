@@ -4,10 +4,10 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicGetCourseClassTutors } from "./EpicGetCourseClassTutors";
-import { EpicPutCourseClassTutor } from "./EpicPutCourseClassTutor";
-import { EpicPostCourseClassTutor } from "./EpicPostCourseClassTutor";
 import { EpicDeleteCourseClassTutor } from "./EpicDeleteCourseClassTutor";
+import { EpicGetCourseClassTutors } from "./EpicGetCourseClassTutors";
+import { EpicPostCourseClassTutor } from "./EpicPostCourseClassTutor";
+import { EpicPutCourseClassTutor } from "./EpicPutCourseClassTutor";
 
 export const EpicCourseClassTutors = combineEpics(
   EpicGetCourseClassTutors,

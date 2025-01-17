@@ -3,16 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import Button from "@mui/material/Button";
 import { Grid } from "@mui/material";
+import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
-import clsx from "clsx";
+import * as React from "react";
 import NoteItem from "./NoteItem";
 
 const NotesRenderer = props => {
   const {
-    fields, classes, showMore, handleShowMore, messageName, onDelete, twoColumn, leftOffset
+    fields, classes, showMore, handleShowMore, messageName, onDelete, twoColumn
   } = props;
 
   const renderedNotes = fields.map((item, index) => {
@@ -38,7 +37,7 @@ const NotesRenderer = props => {
           container
           wrap="wrap"
           spacing={3}
-          className={clsx(classes.notesContainer, { [classes.leftOffset]: leftOffset })}
+          className={classes.notesContainer}
         >
           {renderedNotes.slice(0, 6)}
         </Grid>
@@ -46,7 +45,8 @@ const NotesRenderer = props => {
           <Grid
             container
             wrap="wrap"
-            className={clsx(classes.notesContainer, { [classes.leftOffset]: leftOffset })}
+            spacing={3}
+            className={classes.notesContainer}
           >
             {renderedNotes.slice(6)}
           </Grid>

@@ -3,114 +3,140 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { FieldValidationType } from "@api/model";
+import { TreeItem } from "@atlaskit/tree";
+import { Grid } from "@mui/material";
+import { SelectItemDefault } from "ish-ui";
 import * as React from "react";
-import { withStyles, createStyles } from "@mui/styles";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import Delete from "@mui/icons-material/Delete";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import IconButton from "@mui/material/IconButton";
-import { Field } from "redux-form";
+import { useMemo } from "react";
+import { change, Field } from "redux-form";
 import FormField from "../../../../../common/components/form/formFields/FormField";
-import { PillCheckboxField } from "../../../../../common/components/form/PillCheckbox";
+import { ToogleCheckbox } from "../../../../../common/components/form/ToogleCheckbox";
+import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
+import {
+  CollectionFormField,
+  CollectionFormItem
+} from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
+import { CustomField } from "../../../../entities/customFieldTypes/components/CustomFieldsTypes";
+import { DATA_COLLECTION_FORM } from "./DataCollectionForm";
 
-const styles = () => createStyles({
-  card: {
-    margin: "6px 0",
-    padding: "6px 0",
-    borderRadius: "4px"
-  },
-  dragIcon: {
-    margin: "0 10px 0 20px",
-    fill: "#e0e0e0"
-  },
-  chip: {
-    margin: "0 30px",
-    minWidth: "8em",
-    height: "26px"
-  },
-  textFieldsContainer: {
-    flex: "2",
-    marginLeft: "10px",
-    marginRight: "50px"
-  },
-  deleteButton: {
-    marginRight: "10px"
-  },
-  deleteIcon: {
-    fontSize: "20px"
-  },
-  helpText: {
-    marginLeft: "1px"
-  }
-});
+interface Props {
+  item: TreeItem;
+  field: CollectionFormField;
+  fields: CollectionFormItem[];
+  formType: string;
+}
 
-const CollectionFormField = props => {
-  const {
-    classes, item, onDelete, field, className
-  } = props;
+const validationTypes = Object.keys(FieldValidationType).map<SelectItemDefault>(k => ({ value: k, label: k.toLowerCase().capitalize().replaceAll('_', ' ') }));
+
+const CollectionFormField = ({
+   item,
+   field,
+   fields,
+   formType
+}: Props) => {
+
+  const dispatch = useAppDispatch();
+
+  const customFieldTypes = useAppSelector(state => state.preferences.customFields);
+
+  const customFieldType = field.relatedFieldKey && customFieldTypes.find(c => c.fieldKey === field.relatedFieldKey.replace(/customField.\w+./, ""));
+
+  const onRelatedKeyChange = () => {
+    dispatch(change(DATA_COLLECTION_FORM, `items[${item.id}].relatedFieldValue`, null));
+  };
+
+  const availableRelations = useMemo(() => {
+    const result = [];
+
+    for (const fieldItem of fields) {
+      if (fieldItem.baseType === "field"
+        && fieldItem.type.uniqueKey !== field.type.uniqueKey) {
+        result.push({ value: fieldItem.type.uniqueKey, label: fieldItem.label });
+      }
+    }
+
+    return result;
+  }, [fields]);
+
+  const relatedValueField = useMemo(() => {
+    return customFieldType  ? <CustomField
+        type={{ ...customFieldType, fieldKey: "relatedFieldValue", name: "Display condition value" }}
+        value={field.relatedFieldValue}
+        fieldName={`items[${item.id}]`}
+        dispatch={dispatch}
+        form={DATA_COLLECTION_FORM}
+      />
+      : <FormField
+        type="text"
+        name={`items[${item.id}].relatedFieldValue`}
+        label="Display condition value"
+        disabled={!field.relatedFieldKey}
+      />;
+  }, [customFieldType, field.relatedFieldValue, field.relatedFieldKey, item.id]);
 
   return (
-    <div
-      className={clsx({
-        [clsx("centeredFlex", classes.card)]: true,
-        [className]: true
-      })}
-    >
-      <DragIndicator
-        className={clsx({
-          "dndActionIcon": true,
-          [clsx("d-flex", classes.dragIcon)]: true
-        })}
-      />
+    <Grid container columnSpacing={3}>
+      <Grid item container xs={4} rowSpacing={2}>
+        <Grid item xs={12}>
+          <FormField
+            type="text"
+            name={`items[${item.id}].label`}
+            label="Label"
+            required
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <FormField
+            type="multilineText"
+            name={`items[${item.id}].helpText`}
+            label="Help Text"
+            className="mt-1"
+            truncateLines={4}
+          />
+        </Grid>
+      </Grid>
 
-      <div className={clsx("mw-100 overflow-hidden", classes.textFieldsContainer)}>
-        <FormField
-          type="text"
-          name={`${field}.label`}
-          label="Label"
-          hideLabel
-          listSpacing={false}
-          required
-          fullWidth
-        />
+      <Grid item container xs={4} rowSpacing={2}>
+        <Grid item xs={12}>
+          <FormField
+            type="select"
+            items={availableRelations}
+            name={`items[${item.id}].relatedFieldKey`}
+            label="Display condition field"
+            onChange={onRelatedKeyChange}
+            allowEmpty
+          />
+        </Grid>
+        <Grid item xs={12}>
+          {relatedValueField}
+        </Grid>
+      </Grid>
 
-        <FormField
-          type="multilineText"
-          name={`${field}.helpText`}
-          label="Help Text"
-          hideLabel
-          listSpacing={false}
-          truncateLines={4}
-          fullWidth
-        />
-      </div>
-
-      <Typography id={`${field}.type`} variant="subtitle2" color="textSecondary" className="flex-fill">
-        {item.type.label}
-      </Typography>
-
-      <Field
-        name={`${field}.mandatory`}
-        label="Label"
-        margin="none"
-        type="checkbox"
-        chackedLabel="Mandatory"
-        uncheckedLabel="Optional"
-        component={PillCheckboxField}
-        className={classes.chip}
-      />
-
-      <IconButton className={clsx(classes.deleteButton, "dndActionIconButton")} onClick={onDelete}>
-        <Delete
-          className={clsx({
-            [classes.deleteIcon]: true,
-            "dndActionIcon": true
-          })}
-        />
-      </IconButton>
-    </div>
+      <Grid item container xs={4} rowSpacing={2}>
+        <Grid item xs={12}>
+          <Field
+            name={`items[${item.id}].mandatory`}
+            label="Label"
+            margin="none"
+            type="checkbox"
+            chackedLabel="Mandatory"
+            uncheckedLabel="Optional"
+            component={ToogleCheckbox}
+          />
+        </Grid>
+        {formType === 'Enrolment' && <Grid item xs={12}>
+          <FormField
+            type="select"
+            items={validationTypes}
+            name={`items[${item.id}].validationType`}
+            label="Validate against"
+            allowEmpty
+          />
+        </Grid>}
+      </Grid>
+    </Grid>
   );
 };
 
-export default withStyles(styles)(CollectionFormField);
+export default CollectionFormField;

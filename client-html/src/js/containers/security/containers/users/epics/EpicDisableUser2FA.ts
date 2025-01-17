@@ -3,15 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
+import { User } from "@api/model";
 
 import { setSubmitSucceeded } from "redux-form";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import UserService from "../services/UsersService";
-import { DISABLE_USER_2FA, DISABLE_USER_2FA_FULFILLED } from "../../../actions";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
 import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { User } from "@api/model";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { DISABLE_USER_2FA, DISABLE_USER_2FA_FULFILLED } from "../../../actions";
+import UserService from "../services/UsersService";
 
 const request: EpicUtils.Request = {
   type: DISABLE_USER_2FA,

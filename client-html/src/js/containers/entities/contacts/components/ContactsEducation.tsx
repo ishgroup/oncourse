@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Grid } from "@mui/material";
+import { openInternalLink } from "ish-ui";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
-import { Grid } from "@mui/material";
 import { FieldArray, initialize } from "redux-form";
-import { AccessState } from "../../../../common/reducers/accessReducer";
-import { openInternalLink } from "../../../../common/utils/links";
-import { State } from "../../../../reducers/state";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
 import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
+import { AccessState } from "../../../../common/reducers/accessReducer";
 import { EditViewProps } from "../../../../model/common/ListView";
+import { NestedTableColumn } from "../../../../model/common/NestedTable";
+import { State } from "../../../../reducers/state";
 
 interface ContactsEducationProps extends EditViewProps {
   educationValues?: any;
@@ -26,33 +26,32 @@ const certificatesColumns: NestedTableColumn[] = [
     title: "Full qualification or skill set",
     type: "checkbox",
     disabledHandler: true,
-    width: 220
+    width: 170
   },
   {
     name: "nationalCode",
     title: "National code",
-    width: 160
+    width: 120
   },
   {
     name: "qualificationName",
-    title: "Qualification name"
+    title: "Qualification name",
+    width: 300
   },
   {
     name: "certificateNumber",
     title: "Certificate number",
-    width: 160
+    width: 120
   },
   {
     name: "createdOn",
     title: "Created",
     type: "date",
-    width: 160
   },
   {
     name: "lastPrintedOn",
     title: "Last printed",
     type: "date",
-    width: 160
   }
 ];
 
@@ -60,34 +59,34 @@ const enrolmentColumns: NestedTableColumn[] = [
   {
     name: "invoiceNumber",
     title: "Invoice #",
-    width: 160
+    width: 60
   },
   {
     name: "createdOn",
     title: "Created",
     type: "date",
-    width: 160
   },
   {
     name: "uniqueCode",
     title: "Unique code",
-    width: 160
+    width: 100
   },
   {
     name: "courseName",
-    title: "Course name"
+    title: "Course name",
+    width: 300
   },
   {
     name: "status",
-    title: "Status",
-    width: 160
+    title: "Status"
   }
 ];
 
 const priorLearningsColumns: NestedTableColumn[] = [
   {
     name: "title",
-    title: "Title"
+    title: "Title",
+    width: 300
   },
   {
     name: "externalRef",
@@ -103,7 +102,8 @@ const priorLearningsColumns: NestedTableColumn[] = [
   },
   {
     name: "qualName",
-    title: "Qual Name"
+    title: "Qual Name",
+    width: 300
   }
 ];
 
@@ -111,33 +111,26 @@ const outcomesColumns: NestedTableColumn[] = [
   {
     name: "nationalCode",
     title: "National code",
-    width: 160
   },
   {
     name: "course",
-    title: "Module/Course"
+    title: "Module/Course",
+    width: 300
   },
   {
     name: "status",
     title: "Status",
-    width: 160
+    width: 200
   },
   {
     name: "startDate",
     title: "Start date",
     type: "date",
-    width: 160
   },
   {
     name: "endDate",
     title: "End date",
     type: "date",
-    width: 160
-  },
-  {
-    name: "deliveryMode",
-    title: "Delivery mode",
-    width: 160
   }
 ];
 
@@ -170,6 +163,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
     tabIndex,
     expanded,
     setExpanded,
+    syncErrors
   } = props;
 
   const hasQePermissions = access["ENROLMENT_CREATE"];
@@ -248,7 +242,7 @@ const ContactsEducation: React.FC<ContactsEducationProps> = props => {
 
   return (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Education">
+      <ExpandableContainer index={tabIndex} expanded={expanded} formErrors={syncErrors} setExpanded={setExpanded} header="Education">
         <Grid container columnSpacing={3}>
           {enrolmentsPermissions && (
           <Grid
@@ -347,4 +341,4 @@ const mapStateToProps = (state: State) => ({
   access: state.access
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(ContactsEducation);
+export default connect<any, any, any>(mapStateToProps)(ContactsEducation);

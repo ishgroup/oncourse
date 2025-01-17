@@ -1,33 +1,29 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Site } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
-import { Site } from "@api/model";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import ListView from "../../../common/components/list-view/ListView";
-import {
-  createSite, getSite, removeSite, updateSite
-} from "./actions";
-import { FilterGroup } from "../../../model/common/ListView";
-import { getListTags } from "../../tags/actions";
-import SiteEditView from "./components/SiteEditView";
-import {
-  setListEditRecord,
-  clearListState,
-  getFilters,
- } from "../../../common/components/list-view/actions";
-import { getCountries, getTimezones } from "../../preferences/actions";
-import { State } from "../../../reducers/state";
 import { getUserPreferences } from "../../../common/actions";
-import { DEFAULT_TIMEZONE_KEY } from "../../../constants/Config";
-import { getManualLink } from "../../../common/utils/getManualLink";
+import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { DEFAULT_TIMEZONE_KEY } from "../../../constants/Config";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getCountries, getTimezones } from "../../preferences/actions";
+import { getListTags } from "../../tags/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import SiteEditView from "./components/SiteEditView";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -76,7 +72,7 @@ const Initial: Site = {
   rules: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Site and entityId" },
   {
     title: "Current classes",
@@ -89,7 +85,8 @@ const findRelatedGroup: any[] = [
     expression: "attachmentRelations.entityIdentifier == Site and attachmentRelations.entityRecordId"
   },
   { title: "Rooms", list: "room", expression: "site.id" },
-  { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.site.id" }
+  { title: "Student feedback", list: "survey", expression: "enrolment.courseClass.room.site.id" },
+  { title: "Timetable", list: "timetable", expression: "room.site.id" }
 ];
 
 const secondaryColumnCondition = rows => {
@@ -99,7 +96,7 @@ const secondaryColumnCondition = rows => {
   return rows["suburb"] || rows["street"] || "No Address";
 };
 
-const manualLink = getManualLink("sitesRooms");
+const manualLink = getManualLink("working-with-sites-and-rooms");
 
 class Sites extends React.Component<any, any> {
   componentDidMount() {
@@ -121,38 +118,6 @@ class Sites extends React.Component<any, any> {
     this.props.clearListState();
   }
 
-  onSave = (id: string, item: Site) => {
-    if (item.isAdministrationCentre === undefined) {
-      item.isAdministrationCentre = false;
-    }
-
-    if (item.isShownOnWeb === undefined) {
-      item.isShownOnWeb = false;
-    }
-
-    if (item.isVirtual === undefined) {
-      item.isVirtual = false;
-    }
-
-    this.props.onSave(id, item);
-  };
-
-  onCreate = (item: Site) => {
-    if (item.isAdministrationCentre === undefined) {
-      item.isAdministrationCentre = false;
-    }
-
-    if (item.isShownOnWeb === undefined) {
-      item.isShownOnWeb = false;
-    }
-
-    if (item.isVirtual === undefined) {
-      item.isVirtual = false;
-    }
-
-    this.props.onCreate(item);
-  };
-
   onInit = () => {
     const { defaultTimezone, defaultCountry, dispatch } = this.props;
     Initial.timezone = defaultTimezone;
@@ -163,36 +128,26 @@ class Sites extends React.Component<any, any> {
   };
 
   render() {
-    const {
-      getSiteRecord, onDelete
-    } = this.props;
-
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "name",
-            secondaryColumn: "suburb",
-            secondaryColumnCondition
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            hideTitle: true
-          }}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          EditViewContent={SiteEditView}
-          getEditRecord={getSiteRecord}
-          rootEntity="Site"
-          onInit={this.onInit}
-          onDelete={onDelete}
-          onCreate={this.onCreate}
-          onSave={this.onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "name",
+          secondaryColumn: "suburb",
+          secondaryColumnCondition
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncChangeFields: ["notes[].message"],
+          hideTitle: true
+        }}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        EditViewContent={SiteEditView}
+        rootEntity="Site"
+        onInit={this.onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+      />
     );
   }
 }
@@ -219,11 +174,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getCountries: () => {
     dispatch(getCountries());
   },
-  clearListState: () => dispatch(clearListState()),
-  getSiteRecord: (id: string) => dispatch(getSite(id)),
-  onSave: (id: string, site: Site) => dispatch(updateSite(id, site)),
-  onCreate: (site: Site) => dispatch(createSite(site)),
-  onDelete: (id: string) => dispatch(removeSite(id))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Sites);

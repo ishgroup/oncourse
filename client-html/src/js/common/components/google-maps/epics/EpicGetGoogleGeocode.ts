@@ -4,12 +4,12 @@
  */
 
 import { Epic } from "redux-observable";
+import { FETCH_FAIL } from "../../../actions";
+import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../epics/EpicUtils";
 import { GET_GOOGLE_GEOCODE_DETAILS, GET_GOOGLE_GEOCODE_DETAILS_FULFILLED } from "../actions";
 import GoogleApiService from "../services/GoogleApiService";
-import FetchErrorHandler from "../../../api/fetch-errors-handlers/FetchErrorHandler";
-import { FETCH_FAIL } from "../../../actions";
 
 const request: EpicUtils.Request<any, { address: string }> = {
   type: GET_GOOGLE_GEOCODE_DETAILS,

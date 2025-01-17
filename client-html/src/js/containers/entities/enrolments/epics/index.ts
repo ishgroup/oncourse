@@ -1,12 +1,10 @@
 import { combineEpics } from "redux-observable";
-import { EpicGetEnrolment } from "./EpicGetEnrolment";
-import { EpicUpdateEnrolmentItem } from "./EpicUpdateEnrolmentItem";
-import { EpicGetEnrolmentInvoiceLine } from "./EpicGetEnrolmentInvoiceLine";
 import { EpicCancelEnrolment } from "./EpicCancelEnrolment";
+import { EpicGetEnrolmentInvoiceLine } from "./EpicGetEnrolmentInvoiceLine";
+import { EpicProcessOutcomeRelatedFields } from "./EpicProcessOutcomeRelatedFields";
 
 export const EpicEnrolment = combineEpics(
-  EpicGetEnrolment,
-  EpicUpdateEnrolmentItem,
+  EpicProcessOutcomeRelatedFields,
   EpicGetEnrolmentInvoiceLine,
   EpicCancelEnrolment
 );

@@ -3,14 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-
 import { Report } from "@api/model";
+import { Epic } from "redux-observable";
+import { FETCH_SUCCESS } from "../../../../../common/actions";
+import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import * as EpicUtils from "../../../../../common/epics/EpicUtils";
 import { GET_AUTOMATION_PDF_REPORT, getAutomationPdfReportsList, UPDATE_AUTOMATION_PDF_REPORT } from "../actions/index";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 import PdfService from "../services/PdfService";
-import { FETCH_SUCCESS } from "../../../../../common/actions";
 
 const request: EpicUtils.Request<any, { report: Report }> = {
   type: UPDATE_AUTOMATION_PDF_REPORT,

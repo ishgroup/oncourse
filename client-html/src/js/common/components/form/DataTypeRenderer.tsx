@@ -3,14 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { FormControlLabel, Tooltip } from "@mui/material";
+import {
+  CheckboxField,
+  EditInPlaceDateTimeField,
+  EditInPlaceField,
+  EditInPlaceFileField,
+  EditInPlaceMoneyField,
+  EditInPlaceSearchSelect,
+  FormSwitch
+} from "ish-ui";
 import React from "react";
-import { FormControlLabel } from "@mui/material";
-import { FormSwitch } from "./formFields/Switch";
-import EditInPlaceField from "./formFields/EditInPlaceField";
-import EditInPlaceDateTimeField from "./formFields/EditInPlaceDateTimeField";
-import { CheckboxField } from "./formFields/CheckboxField";
-import EditInPlaceFileField from "./formFields/EditInPlaceFileField";
-import EditInPlaceMoneyField from "./formFields/EditInPlaceMoneyField";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
+import { useAppSelector } from "../../utils/hooks";
+import EditInPlaceRemoteDataSearchSelect from "./formFields/EditInPlaceRemoteDataSearchSelect";
 
 interface Props {
   type: string;
@@ -19,6 +25,9 @@ interface Props {
 const DataTypeRenderer = React.memo<Props & any>(props => {
   const { type, ...rest } = props;
 
+  const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+  const processActionId = useAppSelector(state => state.fieldProcessing[rest.name]);
+
   switch (type) {
     default:
     case "Text": {
@@ -26,32 +35,37 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
     }
 
     case "Date": {
-      return <EditInPlaceDateTimeField type="date" {...rest} />;
+      return <EditInPlaceDateTimeField type="date" {...rest} processActionId={processActionId}/>;
     }
 
     case "Date time": {
-      return <EditInPlaceDateTimeField type="datetime" {...rest} />;
+      return <EditInPlaceDateTimeField type="datetime" {...rest} processActionId={processActionId}/>;
     }
 
+    case "Portal subdomain": {
+      return <EditInPlaceRemoteDataSearchSelect {...rest}/>;  
+    }
+    
     case "Message template":
     case "Select": {
-      return <EditInPlaceField {...rest} select />;
+      return <EditInPlaceSearchSelect {...rest} />;
     }
 
     case "Number": {
-      return <EditInPlaceField {...rest} type="number" />;
+      return <EditInPlaceField {...rest} type="number"/>;
     }
 
     case "Checkbox": {
       return (
-        <FormControlLabel
-          classes={{
-            root: "checkbox",
-            label: props.classes && props.classes.label
-          }}
-          control={<CheckboxField {...rest} />}
-          label={props.label}
-        />
+        <Tooltip title={props.label}>
+          <FormControlLabel
+            classes={{
+              root: "checkbox"
+            }}
+            control={<CheckboxField {...rest} />}
+            label={props.label}
+          />
+        </Tooltip>
       );
     }
 
@@ -59,7 +73,7 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
       return (
         <FormControlLabel
           className="switchWrapper"
-          control={<FormSwitch {...rest} label={null} />}
+          control={<FormSwitch {...rest} label={null}/>}
           label={props.label}
           labelPlacement="start"
         />
@@ -67,7 +81,7 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
     }
 
     case "Money": {
-      return <EditInPlaceMoneyField {...rest} />;
+      return <EditInPlaceMoneyField {...rest} currencySymbol={currencySymbol}/>;
     }
 
     case "File": {
@@ -76,4 +90,4 @@ const DataTypeRenderer = React.memo<Props & any>(props => {
   }
 });
 
-export default DataTypeRenderer;
+export default props => <DataTypeRenderer {...props} placeholder={COMMON_PLACEHOLDER}/>;

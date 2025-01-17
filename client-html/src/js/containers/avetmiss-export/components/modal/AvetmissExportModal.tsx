@@ -3,45 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback } from "react";
-import Dialog from "@mui/material/Dialog";
 import { AvetmissExportSettings } from "@api/model";
-import AvetmissExportForm from "../../containers/AvetmissExportForm";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
-import { openInternalLink } from "../../../../common/utils/links";
+import Dialog from "@mui/material/Dialog";
+import React, { useCallback } from "react";
 import { AvetmissExportSettingsReqired } from "../../../../model/preferences";
+import AvetmissExportForm from "../../containers/AvetmissExportForm";
 
 interface Props {
   opened: boolean;
   setDialogOpened: (values: string) => void;
   closeMenu?: any;
   enrolmentsCount: number;
-  selection: any;
+  ids: string[];
   entity: "CourseClass" | "Enrolment";
 }
 
-export const manualAvetmisConfirm = (onConfirm: AnyArgFunction, showConfirm: ShowConfirmCaller) => {
-  showConfirm(
-    {
-      title: null,
-      onConfirm,
-      confirmMessage: <span>
-        Exporting AVETMISS in this way is not recommended and may no longer be supported with the new AVETMISS reporting standards due in 2022.
-        <br />
-        <br />
-        If you have a specific use-case for this export, please ensure you log a ticket with ish.
-      </span>,
-      confirmButtonText: "Continue",
-      onCancel: () => openInternalLink("/avetmiss-export"),
-      cancelButtonText: "Use regular export"
-    }
-  );
-};
-
 const AvetmissExportModalForm: React.FC<Props> = props => {
   const {
-    opened, setDialogOpened, selection, closeMenu, enrolmentsCount, entity
+    opened, setDialogOpened, ids, closeMenu, enrolmentsCount, entity
   } = props;
 
   const onclose = useCallback(() => {
@@ -53,9 +32,9 @@ const AvetmissExportModalForm: React.FC<Props> = props => {
     ({ flavour, noAssessment }: AvetmissExportSettings): AvetmissExportSettingsReqired => ({
       flavour,
       noAssessment,
-      [entity === "CourseClass" ? "classIds" : "enrolmentIds"]: selection
+      [entity === "CourseClass" ? "classIds" : "enrolmentIds"]: ids
     }),
-    [selection]
+    [ids]
   );
 
   return (

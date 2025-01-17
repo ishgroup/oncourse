@@ -46,7 +46,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/script' withou
         "name":"script with Query panel_upd",
         "description":"some description_upd",
         "status":"Not Installed",
-        "trigger":{"type":"Class cancelled","entityName":null,"entityAttribute":null,"cron":null},
+        "trigger":{"type":"Class cancelled","entityName":null,"entityAttribute":null,"cron":null,"parameterId":null},
         "content":"#string",
         "lastRun":[],
         "keyCode":"test.script_query",
@@ -189,6 +189,47 @@ Feature: Main feature for all PUT requests with path 'list/entity/script' withou
         * configure headers = { Authorization: 'admin'}
 
         
+
+        Given path ishPath + "/" + id
+        When method DELETE
+        Then status 204
+
+
+
+    Scenario: (+) Update script (Query panel) configs by admin
+
+#       <----->  Add a new entity to update and define id:
+        * def scriptWithQueryPanel = {"keyCode":"test.script_query","name":"script with Query panel","status":"Enabled","content":"\n// Query closure start \n  def result = query {\n    entity \"Room\"\n    query \"createdOn is last year\"\n    context args.context\n  }      \n  // Query closure end\n","trigger":{"type":"On demand"},"description":"some description"}
+        Given path ishPath
+        And request scriptWithQueryPanel
+        When method POST
+        Then status 204
+
+        Given path ishPathPlain
+        And param entity = 'Script'
+        And param search = 'name == "script with Query panel"'
+        And param columns = 'name'
+        When method GET
+        Then status 200
+        * def id = response.rows[0].id
+#       <--->
+
+        * def scriptConfigsToUpdate =
+        """
+        {
+            "config":'  name: \"Updated script\"\n  short: Updated script short\n  description: \"Updated script description\"\n  outputType: XML'
+        }
+        """
+
+        Given path ishPath + '/config/' + id
+        And request scriptConfigsToUpdate
+        When method PUT
+        Then status 204
+
+        Given path ishPath + '/config/' + id
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: Updated script description\ndescription: Updated script description\nname: Updated script\ntriggerType: ON_DEMAND\noutputType: XML'
 
         Given path ishPath + "/" + id
         When method DELETE

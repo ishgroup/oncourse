@@ -3,41 +3,37 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CertificateOutcome, Contact } from "@api/model";
-import { FormControlLabel, Theme } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import { createStyles, withStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { format } from "date-fns";
-import QRCode from "qrcode.react";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayRemove, change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Certificate, CertificateOutcome, Contact } from '@api/model';
+import { FormControlLabel, Grid, Theme, Typography } from '@mui/material';
+import Link from '@mui/material/Link';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AnyArgFunction, III_DD_MMM_YYYY, LinkAdornment, NumberArgFunction, StringArgFunction } from 'ish-ui';
+import QRCode from 'qrcode.react';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayRemove, change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 import {
   ContactLinkAdornment,
-  HeaderContactTitle,
-  LinkAdornment
-} from "../../../../common/components/form/FieldAdornments";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import EntityService from "../../../../common/services/EntityService";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { AnyArgFunction, NumberArgFunction, StringArgFunction } from "../../../../model/common/CommonFunctions";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { contactLabelCondition, defaultContactName } from "../../contacts/utils";
-import { openQualificationLink } from "../../qualifications/utils";
-import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
+  HeaderContactTitle
+} from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import Uneditable from "../../../../common/components/form/Uneditable";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import EntityService from '../../../../common/services/EntityService';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import { openQualificationLink } from '../../qualifications/utils';
+import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from '../actions';
 
-interface Props extends EditViewProps {
+interface Props extends EditViewProps<Certificate> {
   status?: string;
   getCertificateOutcomes?: NumberArgFunction;
   clearCertificateOutcomes?: AnyArgFunction;
@@ -48,7 +44,7 @@ interface Props extends EditViewProps {
   classes?: any;
 }
 
-const styles = createStyles(({ spacing }: Theme) => ({
+const styles = (({ spacing }: Theme) => ({
   root: {
     overflowX: "hidden",
     "& > *": {
@@ -123,7 +119,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                   change(
                     form,
                     "studentName",
-                    contactLabelCondition({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
+                    getContactFullName({ firstName: res.rows[0].values[0], lastName: res.rows[0].values[1] })
                   )
                 );
               }
@@ -147,7 +143,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
   const onStudentIdChange = useCallback(
     (contact: Contact) => {
-      dispatch(change(form, "studentName", contactLabelCondition(contact)));
+      dispatch(change(form, "studentName", getContactFullName(contact)));
       dispatch(change(form, "outcomes", []));
       clearCertificateOutcomes(false);
     },
@@ -240,13 +236,13 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <Typography variant="body2">{values.code}</Typography>
           <Link
             target="_blank"
-            href={`http://www.skills.courses/${values.code}`}
+            href={values.portalLink}
             variant="body2"
             className={classes.link}
           >
-            www.skills.courses
+            {values.portalLink}
           </Link>
-          <QRCode size={106} value={`www.skills.courses/${values.code}`} />
+          <QRCode size={106} value={values.portalLink} />
         </div>
       ),
     [values.code, isNew]
@@ -270,14 +266,14 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           fields={(
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
-                type="remoteDataSearchSelect"
+                type="remoteDataSelect"
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="studentContactId"
                 label="Student name"
                 selectValueMark="id"
-                selectLabelCondition={contactLabelCondition}
-                defaultDisplayValue={values && defaultContactName(values.studentName)}
+                selectLabelCondition={getContactFullName}
+                defaultValue={values.studentName}
                 onInnerValueChange={onStudentIdChange}
                 labelAdornment={(
                   <ContactLinkAdornment id={values?.studentContactId} />
@@ -325,7 +321,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         </Grid>
 
         <Grid item xs={twoColumn ? 12 : 6} className={classes.select1}>
-          {values && defaultContactName(values.studentName)}
+          {values.studentName}
         </Grid>
 
         <Grid item xs={12}>
@@ -336,7 +332,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item xs={twoColumn ? 3 : 12} className={classes.select2}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Qualification"
             name="nationalCode"
             label="National code"
@@ -358,7 +354,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item xs={twoColumn ? 3 : 12} className={classes.select3}>
           <FormField
-            type="remoteDataSearchSelect"
+            type="remoteDataSelect"
             entity="Qualification"
             name="title"
             label="Qualification"
@@ -393,8 +389,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
               type="multilineText"
               name="publicNotes"
               label="Printed public notes / Specialization"
-              fullWidth
-            />
+                          />
           </Grid>
         </Grid>
 
@@ -444,7 +439,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField type="multilineText" name="privateNotes" label="Private notes" fullWidth />
+            <FormField type="multilineText" name="privateNotes" label="Private notes" />
           </Grid>
         </Grid>
 
@@ -496,6 +491,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setCertificateOutcomesSearch: (search: string) => dispatch(setCertificateOutcomesSearch(search))
 });
 
-const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CertificateEditView));
+const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CertificateEditView, styles));
 
 export default props => (props.values ? <Connected {...props} /> : null);

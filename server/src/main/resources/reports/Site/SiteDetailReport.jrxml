@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SiteDetailReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="7dbc1b55-488e-4d44-9373-6f38c93e1e4d">
-	<property name="name" value="Site Details"/>
-	<property name="entity" value="Site"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.siteDetailsReport"/>
 	<property name="ish.oncourse.title" value="Site Details"/>
 	<property name="ish.oncourse.filePrefix" value="siteDetails"/>
-	<property name="ish.oncourse.description" value="Details of each site, venue information, rooms and each room capacity for the site.This report prints in Portrait format."/>
 	<property name="ish.oncourse.pdfFileName" value="Site.pdf"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="true"/>
 	<import value="net.sf.jasperreports.engine.*"/>

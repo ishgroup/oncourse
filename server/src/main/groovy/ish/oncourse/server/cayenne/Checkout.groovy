@@ -8,7 +8,7 @@
 
 package ish.oncourse.server.cayenne
 
-import groovy.json.JsonSlurper
+import com.sun.istack.NotNull
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
@@ -16,13 +16,15 @@ import ish.oncourse.server.cayenne.glue._Checkout
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
-
 /**
  * A shopping cart record typically created by a user who abandoned their cart during checkout on the onCourse website
  */
 @API
 @QueueableEntity
 class Checkout extends _Checkout implements Queueable {
+    private static String CONTACTS_CART_KEY = "contacts"
+    private static String PRODUCTS_CART_KEY = "products"
+    private static String CLASSES_CART_KEY = "classes"
 
     /**
      * @return the date and time this record was created
@@ -40,12 +42,41 @@ class Checkout extends _Checkout implements Queueable {
         return super.getModifiedOn()
     }
 
-    @API @Nullable
-    Map getData() {
-        def cart = super.getShoppingCart()
-        if (!cart) return null
 
-        return new JsonSlurper().parseText(cart) as Map
+    /**
+     * Note: all products with ids from shopping cart should be replicated
+     * @return list of all products, whose ids shopping cart contains
+     */
+    @API
+    @NotNull
+    List<Product> getShoppingCartProducts() {
+        return contactRelations.findAll {it instanceof CheckoutProductRelation}
+                .collect{(it as CheckoutProductRelation).relatedObject}
+    }
+
+    /**
+     * Note: all products with ids from shopping cart should be replicated
+     * @return list of all course classes, whose ids shopping cart contains
+     */
+    @API
+    @NotNull
+    List<CourseClass> getShoppingCartClasses() {
+        return contactRelations.findAll {it instanceof CheckoutCourseClassRelation}
+                .collect {(it as CheckoutCourseClassRelation).relatedObject}
+    }
+
+
+    /**
+     * @param productId - angel id of product
+     * @return quantity of product with this id into shopping cart or null, if product not found
+     */
+    @API
+    @Nullable
+    Integer getShoppingCartProductQuantity(Long productId){
+        def productRelation =  contactRelations.find {
+            it instanceof CheckoutProductRelation && it.relatedObject.id == productId
+        }
+        return productRelation ? (productRelation as CheckoutProductRelation).quantity : null
     }
 
     /**

@@ -3,26 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useEffect, useMemo } from "react";
-import { isDirty, reset } from "redux-form";
-import { Dispatch } from "redux";
+import { NumberArgFunction } from "ish-ui";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
+import { Dispatch } from "redux";
+import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
 import { ADMIN_EMAIL_KEY } from "../../constants/Config";
 import { State } from "../../reducers/state";
-import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
-import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swipeable-sidebar/actions";
-import { getColumnsWidth, updateColumnsWidth, getPreferencesByKeys } from "../preferences/actions";
-import SideBar from "./components/AutomationSideBar";
-import AutomatiomAppFrame from "./components/AutomationAppFrame";
+import { getColumnsWidth, getPreferencesByKeys, updateColumnsWidth } from "../preferences/actions";
+import { getAllTags } from "../tags/actions";
 import { getIntegrations } from "./actions";
-import { getScriptsList, getTimeZone } from "./containers/scripts/actions";
-import { getExportTemplatesList } from "./containers/export-templates/actions";
-import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
-import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
+import SideBar from "./components/AutomationSideBar";
 import { getEmailTemplatesList } from "./containers/email-templates/actions";
+import { getExportTemplatesList } from "./containers/export-templates/actions";
 import { getImportTemplatesList } from "./containers/import-templates/actions";
-import { NumberArgFunction } from "../../model/common/CommonFunctions";
+import { getAutomationPdfBackgroundsList } from "./containers/pdf-backgrounds/actions";
+import { getAutomationPdfReportsList } from "./containers/pdf-reports/actions";
+import { getScriptsList, getTimeZone } from "./containers/scripts/actions";
+import automationRoutes from "./routes";
 
 interface Props extends RouteComponentProps {
   formName: string;
@@ -37,16 +36,8 @@ const Automation = React.memo<Props>(props => {
     history,
     location: {
       pathname
-    },
-    formName,
-    dirty,
-    onSetSwipeableDrawerDirtyForm
+    }
   } = props;
-
-  const isNew = useMemo(() => {
-    const pathArray = pathname.split("/");
-    return pathArray.length > 3 && pathArray[3] === "new";
-  }, [pathname]);
 
   useEffect(() => {
     if (pathname === "/automation") {
@@ -54,21 +45,13 @@ const Automation = React.memo<Props>(props => {
     }
   }, []);
 
-  useEffect(() => {
-    onSetSwipeableDrawerDirtyForm(dirty || isNew, formName);
-  }, [isNew, dirty, formName]);
-
   return (
-    <SidebarWithSearch {...props} SideBar={SideBar} AppFrame={AutomatiomAppFrame} noSearch appFrameClass="w-50" />
+    <SidebarWithSearch {...props} SideBar={SideBar} routes={automationRoutes} noSearch appFrameClass="w-50" />
   );
 });
 
-const getFormName = form => form && Object.keys(form)[0];
-
 const mapStateToProps = (state: State) => ({
-  leftColumnWidth: state.preferences.columnWidth?.automationLeftColumnWidth,
-  formName: getFormName(state.form),
-  dirty: isDirty(getFormName(state.form))(state)
+  leftColumnWidth: state.preferences.columnWidth?.automationLeftColumnWidth
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -83,13 +66,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getAutomationPdfReportsList());
     dispatch(getAutomationPdfBackgroundsList());
     dispatch(getTimeZone());
+    dispatch(getAllTags());
   },
   updateColumnsWidth: (automationLeftColumnWidth: number) => {
     dispatch(updateColumnsWidth({ automationLeftColumnWidth }));
-  },
-  onSetSwipeableDrawerDirtyForm: (isDirty: boolean, formName: string) => dispatch(
-    setSwipeableDrawerDirtyForm(isDirty, () => dispatch(reset(formName)))
-  )
+  }
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Automation);

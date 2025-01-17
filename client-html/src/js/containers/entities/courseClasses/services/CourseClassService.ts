@@ -3,12 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import {
-  CourseClassDuplicate,
-  CourseClassApi,
-  CourseClass,
-  CancelCourseClass, Diff
-} from "@api/model";
+import { CancelCourseClass, CourseClass, CourseClassApi, CourseClassDuplicate } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class CourseClassService {
@@ -26,7 +21,7 @@ class CourseClassService {
     return this.courseClassApi.update(id, courseClass);
   }
 
-  public createCourseClass(courseClass: CourseClass): Promise<any> {
+  public createCourseClass(courseClass: CourseClass): Promise<number> {
     return this.courseClassApi.create(courseClass);
   }
 
@@ -36,10 +31,6 @@ class CourseClassService {
 
   public cancelClass(cancelCourseClass: CancelCourseClass): Promise<any> {
     return this.courseClassApi.cancelClass(cancelCourseClass);
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.courseClassApi.bulkChange(diff);
   }
 }
 

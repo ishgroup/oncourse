@@ -3,29 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useRef } from "react";
-import { change } from "redux-form";
-import FormHelperText from "@mui/material/FormHelperText";
-import Avatar from "@mui/material/Avatar";
 import DeleteIcon from '@mui/icons-material/Delete';
 import UploadIcon from '@mui/icons-material/Upload';
-import Gravatar from "react-awesome-gravatar";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Grid from "@mui/material/Grid";
-import clsx from "clsx";
-import noAvatarImg from "../../../../../images/no_pic.png";
-import FilePreview from "../../../../common/components/form/FilePreview";
-import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import { getInitialDocument } from "../../../../common/components/form/documents/components/utils";
-import { createAvatarDocument } from "../../../../common/components/form/documents/actions";
-import { showMessage } from "../../../../common/actions";
-import { makeAppStyles } from "../../../../common/styles/makeStyles";
+import { FormHelperText, Grid } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { FilePreview, makeAppStyles } from 'ish-ui';
+import React, { useCallback, useRef } from 'react';
+import Gravatar from 'react-awesome-gravatar';
+import { change } from 'redux-form';
+import noAvatarImg from '../../../../../images/no_pic.png';
+import { showMessage } from '../../../../common/actions';
+import { createAvatarDocument } from '../../../../common/components/form/documents/actions';
+import DocumentsService from '../../../../common/components/form/documents/services/DocumentsService';
+import { getInitialDocument } from '../../../../common/utils/documents';
 
 const validateImageFormat = (imageFile: File) =>
   (["image/jpeg", "image/png"].includes(imageFile.type) ? undefined : "Avatar must be of image type");
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'avatarBackdrop'>()((theme, p, classes) => ({
     avatarWrapper: {
       "&, & img": {
         transition: theme.transitions.create("all", {
@@ -35,7 +33,7 @@ const useStyles = makeAppStyles(theme => ({
       },
     },
     profileThumbnail: {
-      "&:hover $avatarBackdrop": {
+      [`&:hover .${classes.avatarBackdrop}`]: {
         opacity: 1,
       },
     },
@@ -75,9 +73,9 @@ const AvatarRenderer: React.FC<any> = props => {
     twoColumn,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
-  const fileRef = useRef<any>();
+  const fileRef = useRef<any>(undefined);
 
   const handleGravatarError = useCallback(e => {
     const img = e.currentTarget;
@@ -90,11 +88,11 @@ const AvatarRenderer: React.FC<any> = props => {
   }, []);
 
   const upload = useCallback(() => {
-    fileRef.current.click();
+    fileRef?.current?.click();
   }, []);
 
   const handleFileSelect = () => {
-    const file = fileRef.current.files[0];
+    const file = fileRef?.current?.files[0];
 
     if (file) {
       const error = validateImageFormat(file);

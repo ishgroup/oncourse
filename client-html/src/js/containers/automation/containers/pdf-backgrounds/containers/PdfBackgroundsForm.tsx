@@ -1,40 +1,44 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  useCallback, useEffect, useRef, useState
-} from "react";
-import { Form, InjectedFormProps } from "redux-form";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
-import { ReportOverlay } from "@api/model";
-import { Dispatch } from "redux";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { usePrevious } from "../../../../../common/utils/hooks";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import FilePreview from "../../../../../common/components/form/FilePreview";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { ReportOverlay } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import { FilePreview, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change, Form, initialize, InjectedFormProps } from 'redux-form';
+import { showMessage } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { PDF_BACKGROUND_FORM_NAME } from '../PdfBackgrounds';
 
-const manualUrl = getManualLink("reports_background");
+const manualUrl = getManualLink("print-backgrounds");
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
+  loading: boolean;
   values: ReportOverlay;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (fileName: string, overlay: File) => void;
   onUpdate: (fileName: string, id: number, overlay: File) => void;
   onDelete: (id: number) => void;
+  getPdfBackgroundCopy: (id: number, name: string) => void;
   history: any;
   syncErrors: any;
   nextLocation: string;
-  setNextLocation: (nextLocation: string) => void;
 }
 
 const PdfBackgroundsForm = React.memo<Props>(
@@ -50,14 +54,15 @@ const PdfBackgroundsForm = React.memo<Props>(
      form,
      history,
      nextLocation,
-     setNextLocation,
-     syncErrors
+     syncErrors,
+     getPdfBackgroundCopy,
+     loading,
+     dispatch
     }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [fileIsChosen, setFileIsChosen] = useState(false);
     const [chosenFileName, setChosenFileName] = useState(null);
 
-    const fileRef = useRef<any>();
+    const fileRef = useRef<any>(undefined);
 
     const prevId = usePrevious(values.id);
 
@@ -68,32 +73,25 @@ const PdfBackgroundsForm = React.memo<Props>(
     };
 
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
+      dispatch(initialize(PDF_BACKGROUND_FORM_NAME, values));
       onDelete(values.id);
       discardFileInput();
     }, [values.id]);
 
     const handleSave = useCallback(
       (val: ReportOverlay) => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val.name, fileRef.current.files[0]);
-          discardFileInput();
           return;
         }
         onUpdate(val.name, val.id, fileIsChosen ? fileRef.current.files[0] : null);
-        discardFileInput();
       },
       [isNew, fileIsChosen]
     );
 
     const handleUploadClick = useCallback(() => fileRef.current.click(), []);
 
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
+    const handleDownloadClick = () => getPdfBackgroundCopy(values.id, values.name);
 
     useEffect(() => {
       if (values.id !== prevId) {
@@ -104,15 +102,47 @@ const PdfBackgroundsForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
 
     const handleFileSelect = () => {
       const file = fileRef.current.files[0];
       if (file) {
+
+        // Set file size limit to 5mb
+        if ((file.size / 1024 / 1024) > 5 ) {
+          dispatch(showMessage({ message: "File size exceeds 5 MiB" }));
+          return;
+        }
+
         setFileIsChosen(true);
         setChosenFileName(file.name);
+        
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const image = new Image();
+          image.src = reader.result as string;
+          image.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const isPortrait = image.height >= image.width;
+
+            canvas.width = isPortrait ? 165 : 240;
+            canvas.height = isPortrait ? 240 : 165;
+            ctx.drawImage(image,
+              0, 0, image.width, image.height,
+              0, 0, canvas.width, canvas.height
+            );
+
+            dispatch(change(form, "preview", (canvas.toDataURL() as string).replace("data:image/png;base64,", "")));
+          };
+        };
+        reader.onerror = e => {
+          console.error(e);
+          dispatch(showMessage({ message: e as any }));
+        };
       }
     };
 
@@ -120,9 +150,7 @@ const PdfBackgroundsForm = React.memo<Props>(
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
-          {(dirty || isNew || fileIsChosen) && (
-            <RouteChangeConfirm form={form} when={(dirty || isNew || fileIsChosen) && !disableRouteConfirm} />
-          )}
+          <RouteChangeConfirm form={form} when={dirty} />
 
           <AppBarContainer
             values={values}
@@ -137,6 +165,7 @@ const PdfBackgroundsForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
                   required
@@ -151,7 +180,6 @@ const PdfBackgroundsForm = React.memo<Props>(
                       {
                         action: handleDelete,
                         icon: <DeleteForever />,
-                        confirm: true,
                         tooltip: "Delete PDF background",
                         confirmText: "PDF background will be deleted permanently",
                         confirmButtonText: "DELETE"
@@ -162,22 +190,37 @@ const PdfBackgroundsForm = React.memo<Props>(
               </>
             )}
           >
-            <Grid container columnSpacing={3}>
+            <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
                 <FilePreview data={values.preview} label="Preview" />
-
-                <Button variant="outlined" color="secondary" className="mt-2" onClick={handleUploadClick}>
+              </Grid>
+              {(isNew || chosenFileName) && (
+                <Grid item xs={12}>
+                  <Uneditable value={chosenFileName} error={!chosenFileName && "File must be added"} label="Chosen file" className="mt-1" />
+                </Grid>
+              )}
+              
+              <Grid item xs={12}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleUploadClick}
+                >
                   Upload New Version
                 </Button>
-
-                {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" className="mt-1" />}
-
-                {!chosenFileName && !values.preview ? (
-                  <Typography color="error" variant="body2" className="mt-1" paragraph>
-                    File must be added
-                  </Typography>
-                ) : null}
               </Grid>
+              {Boolean(values.preview) && (
+                <Grid item xs={12}>
+                  <LoadingButton
+                    loading={loading}
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleDownloadClick}
+                  >
+                    Download copy
+                  </LoadingButton>
+                </Grid>
+              )}
             </Grid>
           </AppBarContainer>
         </Form>

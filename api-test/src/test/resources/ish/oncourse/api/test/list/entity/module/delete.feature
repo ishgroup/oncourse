@@ -14,7 +14,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
     Scenario: (+) Delete existing custom Module
 
 #       <----->  Add a new custom module for deleting:
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5", "creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -46,7 +46,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
 
 #       <--->  Create entity for deleting:
 
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -86,7 +86,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
     Scenario: (-) Delete existing custom Module by notadmin without rights
 
 #       <--->  Create entity for deleting:
-        * def newModule = {"creditPoints":"5","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
+        * def newModule = {"creditPoints":"5","creditPointsStatus":"Active","expiryDays":6,"fieldOfEducation":"3","isCustom":true,"type":"MODULE","isOffered":true,"nationalCode":"2","nominalHours":7,"specialization":"4","title":"1"}
 
         Given path ishPath
         And request newModule
@@ -136,4 +136,4 @@ Feature: Main feature for all DELETE requests with path 'list/entity/module'
         Given path ishPath + '/99999'
         When method DELETE
         Then status 400
-        And match response.errorMessage == "Entity with id = '99999' doesn't exist"
+        And match response.errorMessage == "Record with id = '99999' doesn't exist."

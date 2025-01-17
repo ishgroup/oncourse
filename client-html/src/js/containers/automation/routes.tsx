@@ -1,17 +1,20 @@
-import EmailTemplates from "./containers/email-templates/EmailTemplates";
-import integrationsForm from "./containers/integrations/components/integrationsFormContainer";
-import Scripts from "./containers/scripts/Scripts";
-import ExportTemplates from "./containers/export-templates/ExportTemplates";
-import PdfReports from "./containers/pdf-reports/PdfReports";
-import PdfBackgrounds from "./containers/pdf-backgrounds/PdfBackgrounds";
-import ImportTemplates from "./containers/import-templates/ImportTemplates";
 import {
   EmailTemplatesCatalog,
   ExportTemplatesCatalog,
-  ImportTemplatesCatalog, IntegrationsCatalog, PDFBackgroundsCatalog, PDFReportsCatalog,
+  ImportTemplatesCatalog,
+  IntegrationsCatalog,
+  PDFBackgroundsCatalog,
+  PDFReportsCatalog,
   ScriptsCatalog
 } from "./containers/Catalogs";
+import EmailTemplates from "./containers/email-templates/EmailTemplates";
+import ExportTemplates from "./containers/export-templates/ExportTemplates";
+import ImportTemplates from "./containers/import-templates/ImportTemplates";
+import integrationsForm from "./containers/integrations/components/integrationsFormContainer";
 import Integrations from "./containers/integrations/Integrations";
+import PdfBackgrounds from "./containers/pdf-backgrounds/PdfBackgrounds";
+import PdfReports from "./containers/pdf-reports/PdfReports";
+import Scripts from "./containers/scripts/Scripts";
 
 const automationRoutes = [
   {

@@ -7,6 +7,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         * def ishPathLogin = 'login'
         * def ishPath = 'list/entity/waitingList'
         * def ishPathPlain = 'list/plain'
+        * def ishPathDelete = '/list/plain/bulkDelete?entity=WaitingList'
         
 
 
@@ -22,7 +23,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         "studentCount":20,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -43,8 +44,13 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         * print "id = " + id
 #       <----->
 
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 #       <---> Verification of deleting:
@@ -54,58 +60,6 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         When method GET
         Then status 200
         And match $.rows[*].values[*] !contains ["20"]
-
-
-
-    Scenario: (+) Delete existing WaitingList by notadmin with rights
-
-#       <----->  Add a new entity for deleting and define id:
-        * def newWaitingList =
-        """
-        {
-        "privateNotes":"Some notes 21",
-        "studentNotes":null,
-        "studentCount":21,
-        "contactId":3,
-        "courseId":2,
-        "tags":[{"id":221}],
-        "sites":[{"id":200}],
-        "customFields":{}
-        }
-        """
-
-        Given path ishPath
-        And request newWaitingList
-        When method POST
-        Then status 204
-
-        Given path ishPathPlain
-        And param entity = 'WaitingList'
-        And param columns = 'studentCount'
-        When method GET
-        Then status 200
-
-        * def id = get[0] response.rows[?(@.values == ["21"])].id
-        * print "id = " + id
-
-#       <--->  Login as notadmin:
-        * configure headers = { Authorization:  'UserWithRightsDelete'}
-
-        
-#       <--->
-
-        Given path ishPath + '/' + id
-        When method DELETE
-        Then status 204
-
-#       <---> Verification deleting:
-        Given path ishPathPlain
-        And param entity = 'WaitingList'
-        And param columns = 'studentCount'
-        When method GET
-        Then status 200
-        And match $.rows[*].values[*] !contains ["21"]
-
 
 
     Scenario: (-) Delete existing WaitingList by notadmin without rights
@@ -119,7 +73,7 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         "studentCount":22,
         "contactId":3,
         "courseId":2,
-        "tags":[{"id":221}],
+        "tags":[221],
         "sites":[{"id":200}],
         "customFields":{}
         }
@@ -140,30 +94,44 @@ Feature: Main feature for all DELETE requests with path 'list/entity/waitingList
         * print "id = " + id
 
 #       <--->  Login as notadmin
-        * configure headers = { Authorization:  'UserWithRightsCreate'}
+        * configure headers = { Authorization:  'UserWithRightsView'}
 
         
 #       <--->
 
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 403
-        And match $.errorMessage == "Sorry, you have no permissions to delete waitingList. Please contact your administrator"
+        And match $.errorMessage == "Sorry, you have no permissions to delete this entity. Please contact your administrator"
 
 #       <---->  Scenario have been finished. Now change back permissions and delete created entity:
         * configure headers = { Authorization: 'admin'}
 
-        
 
-        Given path ishPath + '/' + id
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 204
 
 
 
     Scenario: (-) Delete NOT existing WaitingList
 
-        Given path ishPath + '/99999'
-        When method DELETE
+        * def deleteRequest =
+        """
+        {"ids": [99999],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
         Then status 400
-        And match response.errorMessage == "WaitingList with id:99999 doesn't exist"
+        And match response.errorMessage == "Record with id 99999 not found"

@@ -3,30 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
-import Delete from "@mui/icons-material/Delete";
+import { Binding } from '@api/model';
+import Delete from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import IconButton from "@mui/material/IconButton";
-import { Binding } from "@api/model";
-import {
- arrayPush, arrayRemove, Field, FieldArray
-} from "redux-form";
-import { Dispatch } from "redux";
-import clsx from "clsx";
-import { makeStyles } from "@mui/styles";
-import Grid from "@mui/material/Grid";
-import { SelectItemDefault } from "../../../model/entities/common";
-import { IMPORT_TEMPLATES_FORM_NAME } from "../containers/import-templates/ImportTemplates";
-import { SCRIPT_EDIT_VIEW_FORM_NAME } from "../containers/scripts/constants";
-import DataTypesMenu from "./DataTypesMenu";
-import DataTypeRenderer from "../../../common/components/form/DataTypeRenderer";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
-import { renderAutomationItems } from "../utils";
-import { AppTheme } from "../../../model/common/Theme";
-import AddButton from "../../../common/components/icons/AddButton";
-import { useHoverShowStyles } from "../../../common/styles/hooks";
-import { CatalogItemType } from "../../../model/common/Catalog";
+import { Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { AddButton, AppTheme, SelectItemDefault, useHoverShowStyles, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { arrayPush, arrayRemove, Field, FieldArray } from 'redux-form';
+import { makeStyles } from 'tss-react/mui';
+import { IAction } from '../../../common/actions/IshAction';
+import DataTypeRenderer from '../../../common/components/form/DataTypeRenderer';
+import { CatalogItemType } from '../../../model/common/Catalog';
+import { IMPORT_TEMPLATES_FORM_NAME } from '../containers/import-templates/ImportTemplates';
+import { SCRIPT_EDIT_VIEW_FORM_NAME } from '../containers/scripts/constants';
+import { renderAutomationItems } from '../utils';
+import DataTypesMenu from './DataTypesMenu';
 
 export type BindingsItemType = "component" | "label";
 
@@ -44,12 +37,12 @@ interface BindingsItemProps {
 }
 
 // @ts-ignore
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeStyles<void, 'highlightable'>()((theme: AppTheme, _params, classes) => ({
   labelTypeWrapper: {
     fontWeight: 400,
     paddingTop: theme.spacing(1),
     maxHeight: "24px",
-    "&$highlightable:hover": {
+    [`&.${classes.highlightable}:hover`]: {
       color: theme.palette.primary.main
     }
   },
@@ -106,8 +99,8 @@ const showOnForm = (item, field) => {
 const BindingsItem = React.memo<BindingsItemProps>(({
     item, index, onDelete, infoLink, type, field, emailTemplateItems, highlightable, noLabel, gridProps = {}
   }) => {
-  const classes = useStyles();
-  const hoverClasses = useHoverShowStyles();
+  const { classes, cx } = useStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   const fieldProps: any = useMemo(() => {
     const props = {};
@@ -122,21 +115,22 @@ const BindingsItem = React.memo<BindingsItemProps>(({
 
     if (item.type === "Message template") {
       props["items"] = emailTemplateItems;
-      props["selectLabelCondition"] = renderAutomationItems;
+      props["itemRenderer"] = renderAutomationItems;
+      props["valueRenderer"] = renderAutomationItems;
     }
 
     return props;
   }, [item, emailTemplateItems]);
 
   return type === "label" ? (
-    <Grid item xs={12} className={clsx("centeredFlex", hoverClasses.container)}>
+    <Grid item xs={12} className={cx("centeredFlex", hoverClasses.container)}>
       <div className="flex-fill w-100">
         {!noLabel && item.label && (
           <Typography
             variant="caption"
             color="textSecondary"
             component="div"
-            className={clsx("text-truncate text-nowrap", classes.itemLabel)}
+            className={cx("text-truncate text-nowrap", classes.itemLabel)}
           >
             {item.label}
           </Typography>
@@ -145,7 +139,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
           variant="body1"
           component="div"
           onMouseEnter={highlightable ? () => showOnForm(item, field) : null}
-          className={clsx("centeredFlex pb-0-5", classes.labelTypeWrapper, highlightable && classes.highlightable)}
+          className={cx("centeredFlex pb-0-5", classes.labelTypeWrapper, highlightable && classes.highlightable)}
         >
           <span className="w-100 centeredFlex">
             <span className="text-truncate text-nowrap">{item.name}</span>
@@ -164,7 +158,7 @@ const BindingsItem = React.memo<BindingsItemProps>(({
         </Typography>
       </div>
       {onDelete && (
-        <IconButton size="small" className={clsx("lightGrayIconButton", hoverClasses.target)} role={index} onClick={onDelete}>
+        <IconButton size="small" className={cx("lightGrayIconButton", hoverClasses.target)} role={index} onClick={onDelete}>
           <Delete fontSize="inherit" />
         </IconButton>
       )}
@@ -224,7 +218,7 @@ interface BindingsProps {
   form: string;
   disabled?: boolean;
   defaultVariables?: { type: string; name: string }[];
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   itemsType: BindingsItemType;
   emailTemplates?: CatalogItemType[];
 }
@@ -265,6 +259,7 @@ const Bindings = React.memo<BindingsProps>( props => {
     [form, name]
   );
 
+  // @ts-ignore
   return (
     <div>
       <DataTypesMenu

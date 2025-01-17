@@ -26,7 +26,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                       | method   | result             |
             | 'Audit'               | '/a/v1/list/entity/audit/1'                | 'GET'    | {"hasAccess":true} |
-            | 'Tag'                 | '/a/v1/tag'                                | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/list'                           | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/checklist'                      | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/1'                              | 'GET'    | {"hasAccess":true} |
             | 'Tag'                 | '/a/v1/tag'                                | 'POST'   | {"hasAccess":true} |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'PUT'    | {"hasAccess":true} |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'DELETE' | {"hasAccess":true} |
@@ -92,7 +94,8 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'GET'    | {"hasAccess":true} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'            | 'POST'   | {"hasAccess":true} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'PUT'    | {"hasAccess":true} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'DELETE' | {"hasAccess":true} |
+            | 'WaitingList'         | '/a/v1/list/plain/bulkDelete?entity=WaitingList'                | 'POST'   | {"hasAccess":true} |
+            | 'Message'             | '/a/v1/list/plain/bulkDelete?entity=Message'             | 'POST'   | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'GET'    | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application'            | 'POST'   | {"hasAccess":true} |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'PUT'    | {"hasAccess":true} |
@@ -191,7 +194,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                       | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                 | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                                | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                           | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                      | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                              | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                                | 'POST'   | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'PUT'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag/1'                              | 'DELETE' | {"hasAccess":false} |
@@ -249,7 +254,8 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'            | 'POST'   | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'PUT'    | {"hasAccess":true}  |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'          | 'DELETE' | {"hasAccess":false} |
+            | 'Message'             | '/a/v1/list/plain/bulkDelete?entity=Message'                | 'POST'   | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/plain/bulkDelete?entity=WaitingList'                | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'            | 'POST'   | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application/1'          | 'PUT'    | {"hasAccess":true}  |
@@ -340,7 +346,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true} |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |
@@ -398,7 +406,8 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":true}  |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'Message'             | '/a/v1/list/plain/bulkDelete?entity=Message'             | 'POST'   | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/plain/bulkDelete?entity=WaitingList'             | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":true}  |
@@ -489,7 +498,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |
@@ -547,7 +558,8 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":false} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/plain/bulkDelete?entity=WaitingList'     | 'POST'   | {"hasAccess":false} |
+            | 'Message'             | '/a/v1/list/plain/bulkDelete?entity=Message'     | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":false} |
@@ -621,6 +633,28 @@ Feature: Main feature for all POST requests with path 'access'
          * call read('getAccess.feature') accessRights
 
 
+    Scenario: Check access for admin
+
+        Given path ishPathLogout
+        And request {}
+        When method PUT
+
+#       <--->  Login as notadmin
+        * configure headers = { Authorization:  'admin'}
+
+
+#       <--->
+
+        * table accessRights
+
+            | entity                | path                                                  | method   | result             |
+            | 'WaitingList'         | '/a/v1/list/plain/bulkDelete?entity=WaitingList'      | 'POST'   | {"hasAccess":true} |
+            | 'Message'             | '/a/v1/list/plain/bulkDelete?entity=Message'          | 'POST'   | {"hasAccess":true} |
+
+
+        * call read('getAccess.feature') accessRights
+
+
 
     Scenario: Check access for role with access rights View
 
@@ -638,7 +672,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":true}  |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |
@@ -696,7 +732,8 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":true}  |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":false} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/plain/bulkDelete?entity=WaitingList'             | 'POST'   | {"hasAccess":false} |
+            | 'Message'             | '/a/v1/list/plain/bulkDelete?entity=Message'             | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":true}  |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":false} |
@@ -787,7 +824,9 @@ Feature: Main feature for all POST requests with path 'access'
 
             | entity                | path                                      | method   | result              |
             | 'Audit'               | '/a/v1/list/entity/audit/'                | 'GET'    | {"hasAccess":false} |
-            | 'Tag'                 | '/a/v1/tag'                               | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/list'                          | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/checklist'                     | 'GET'    | {"hasAccess":true}  |
+            | 'Tag'                 | '/a/v1/tag/1'                             | 'GET'    | {"hasAccess":true}  |
             | 'Tag'                 | '/a/v1/tag'                               | 'POST'   | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'PUT'    | {"hasAccess":false} |
             | 'Tag'                 | '/a/v1/tag/1'                             | 'DELETE' | {"hasAccess":false} |
@@ -857,7 +896,8 @@ Feature: Main feature for all POST requests with path 'access'
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'GET'    | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList'           | 'POST'   | {"hasAccess":false} |
             | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'PUT'    | {"hasAccess":false} |
-            | 'WaitingList'         | '/a/v1/list/entity/waitingList/1'         | 'DELETE' | {"hasAccess":false} |
+            | 'WaitingList'         | '/a/v1/list/plain/bulkDelete?entity=WaitingList' | 'POST'   | {"hasAccess":false} |
+            | 'Message'             | '/a/v1/list/plain/bulkDelete?entity=Message'     | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'GET'    | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application'           | 'POST'   | {"hasAccess":false} |
             | 'Application'         | '/a/v1/list/entity/application/1'         | 'PUT'    | {"hasAccess":false} |

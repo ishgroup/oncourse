@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
@@ -68,6 +69,7 @@ class TagRequirement extends _TagRequirement implements Queueable {
 		taggableClasses.put(Article.class, TaggableClasses.ARTICLE)
 		taggableClasses.put(Membership.class, TaggableClasses.MEMBERSHIP)
 		taggableClasses.put(ProductItem.class, TaggableClasses.PRODUCT_ITEM)
+		taggableClasses.put(Faculty.class, TaggableClasses.FACULTY)
 		TAGGABLE_CLASSES = Collections.unmodifiableMap(taggableClasses)
 	}
 
@@ -89,6 +91,11 @@ class TagRequirement extends _TagRequirement implements Queueable {
 			}
 		}
 		return null
+	}
+
+	@Override
+	boolean isAsyncReplicationAllowed() {
+		return tag?.nodeType != NodeType.CHECKLIST
 	}
 
 	@Override

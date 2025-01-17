@@ -3,26 +3,34 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
-import EntityService from "../services/EntityService";
-import { getCustomColumnsMap } from "../utils/common";
+import { Epic } from "redux-observable";
 import {
   GET_COMMON_PLAIN_RECORDS,
   GET_COMMON_PLAIN_RECORDS_FULFILLED,
   getCommonPlainRecordsRejected
 } from "../actions/CommonPlainRecordsActions";
+import EntityService from "../services/EntityService";
+import { getCustomColumnsMap } from "../utils/common";
 import * as EpicUtils from "./EpicUtils";
 
 const request: EpicUtils.Request<
   DataResponse,
-  { key?: string; offset?: number; columns?: string; ascending?: boolean; sort?: string, pageSize?: number }
+  {
+    key?: string;
+    offset?: number;
+    columns?: string;
+    ascending?: boolean;
+    sort?: string,
+    pageSize?: number,
+    customColumnMap?: any
+  }
 > = {
   type: GET_COMMON_PLAIN_RECORDS,
   hideLoadIndicator: true,
   getData: ({
-   key, offset, columns, ascending, sort, pageSize
-  }, { plainSearchRecords }) => EntityService.getPlainRecords(
+              key, offset, columns, ascending, sort, pageSize
+            }, {plainSearchRecords}) => EntityService.getPlainRecords(
     key,
     columns,
     plainSearchRecords[key].search,
@@ -31,9 +39,13 @@ const request: EpicUtils.Request<
     sort,
     ascending
   ),
-  processData: (records, s, { key, columns }) => {
-    const { rows, offset, pageSize } = records;
-    const items = rows.map(getCustomColumnsMap(columns));
+  processData: (records, s, {key, columns, customColumnMap}) => {
+    const {rows, offset, pageSize} = records;
+    let items = rows.map(getCustomColumnsMap(columns));
+
+    if (typeof customColumnMap === "function") {
+      items = customColumnMap(items);
+    }
 
     return [
       {
@@ -44,7 +56,7 @@ const request: EpicUtils.Request<
       }
     ];
   },
-  processError: (e, { key }) => [getCommonPlainRecordsRejected(key)]
+  processError: (e, {key}) => [getCommonPlainRecordsRejected(key)]
 };
 
 export const EpicGetCommonPlainRecords: Epic<any, any> = EpicUtils.Create(request);

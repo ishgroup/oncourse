@@ -6,30 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  memo, useMemo, useState
-} from "react";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
-import { Fade, IconButton, Typography } from "@mui/material";
-import clsx from "clsx";
-import { areEqual } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { Delete } from "@mui/icons-material";
-import SidebarSearch from "../sidebar-with-search/components/SidebarSearch";
-import { makeAppStyles } from "../../../styles/makeStyles";
-import AddButton from "../../icons/AddButton";
-import CatalogItem from "./CatalogItem";
-import { CatalogData, CatalogItemType } from "../../../../model/common/Catalog";
-import NewsRender from "../../news/NewsRender";
-import DynamicSizeList from "../../form/DynamicSizeList";
-import { AnyArgFunction } from "../../../../model/common/CommonFunctions";
-import ExpandableContainer from "../expandable/ExpandableContainer";
+import { Delete } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import { Fade, Typography } from '@mui/material';
+import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { AddButton, AnyArgFunction, DynamicSizeList, makeAppStyles } from 'ish-ui';
+import React, { memo, useMemo, useState } from 'react';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { areEqual } from 'react-window';
+import { CatalogData, CatalogItemType } from '../../../../model/common/Catalog';
+import NewsRender from '../../news/NewsRender';
+import ExpandableContainer from '../expandable/ExpandableContainer';
+import UserSearch from '../swipeable-sidebar/components/UserSearch';
+import CatalogItem from './CatalogItem';
 
 const Row = memo<any>(
   ({
-   style, item, onOpen, onRemove, forwardedRef
-  }) => (
+     style, item, onOpen, onRemove, forwardedRef
+   }) => (
     <div style={style} ref={forwardedRef}>
       <CatalogItem
         item={item}
@@ -44,17 +40,17 @@ const Row = memo<any>(
             className="lightGrayIconButton"
             size="small"
           >
-            <Delete fontSize="inherit" />
+            <Delete fontSize="inherit"/>
           </IconButton>
         ) : null}
         grayOut={!item.enabled}
-        showDot
+        showDot={!item.hideDot}
         hoverSecondary
       />
     </div>
   ),
   areEqual
-  );
+);
 
 const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
   const { items, ...rest } = data;
@@ -81,7 +77,7 @@ interface Props {
   description?: string;
 }
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'fabOpened' | 'fabTip' | 'fab'>()((theme, p, classes) => ({
   root: {
     padding: theme.spacing(4),
     marginTop: theme.spacing(1),
@@ -92,13 +88,13 @@ const useStyles = makeAppStyles(theme => ({
   fabContainer: {
     zIndex: 1,
     position: "relative",
-    "&$fabOpened": {
-      "& $fabTip": {
+    [`&.${classes.fabOpened}`]: {
+      [`& .${classes.fabTip}`]: {
         paddingLeft: theme.spacing(2),
         transform: "translateX(0)",
         visibility: "visible"
       },
-      "& $fab": {
+      [`& .${classes.fab}`]: {
         backgroundColor: theme.palette.primary.main,
         transform: "rotate(45deg)"
       }
@@ -137,37 +133,36 @@ const CatalogWithSearch = React.memo<Props>((
   const [search, setSearch] = useState("");
   const [opened, setOpened] = useState(false);
   const [expanded, setExpanded] = useState([0]);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const open = () => (customAddNew ? customAddNew() : setOpened(prev => !prev));
 
   const filteredItems = useMemo<CatalogData>(() => {
     const result = {
       installed: [],
-      categories: {
-      },
+      categories: {},
       other: []
     };
 
     items
-    .filter(i => i.title.toLowerCase().includes(search.toLowerCase()))
-    .forEach(i => {
-      if (i.installed) {
-        result.installed.push(i);
-      }
-      if (i.category) {
-        if (!result.categories[i.category]) {
-          result.categories[i.category] = [];
+      .filter(i => i.title.toLowerCase().includes(search.toLowerCase()))
+      .forEach(i => {
+        if (i.installed) {
+          result.installed.push(i);
         }
-        result.categories[i.category].push(i);
-      } else if (i.keyCode?.startsWith("ish.")) {
-        result.other.push(i);
-      }
-    });
+        if (i.category) {
+          if (!result.categories[i.category]) {
+            result.categories[i.category] = [];
+          }
+          result.categories[i.category].push(i);
+        } else if (i.keyCode?.startsWith("ish.")) {
+          result.other.push(i);
+        }
+      });
 
-   return result;
+    return result;
   }, [items, search]);
-  
+
   const categoryKeys = Object.keys(filteredItems.categories);
 
   return (
@@ -181,15 +176,15 @@ const CatalogWithSearch = React.memo<Props>((
             className={classes.fab}
             onClick={open}
           >
-            <AddIcon />
+            <AddIcon/>
           </Fab>
           <Typography className={classes.fabTip} variant="overline" color="primary" fontWeight="bold">Close</Typography>
         </div>
-        <div className="flex-fill" />
-        <SidebarSearch setParentSearch={setSearch} />
+        <div className="flex-fill"/>
+        <UserSearch getSearchResults={setSearch} placeholder="Filter items"/>
       </div>
       <Typography variant="h4" className="mt-5 mb-3">{title}</Typography>
-      <NewsRender page className="mb-3" />
+      <NewsRender page className="mb-3"/>
       <div className="relative flex-fill flex-column">
         <Fade in={opened} className="flex-fill flex-column absolute w-100 h-100 overflow-auto">
           <div>
@@ -203,7 +198,7 @@ const CatalogWithSearch = React.memo<Props>((
                 <div className="heading">
                   {addNewItem.category}
                 </div>
-                <CatalogItem item={{ ...addNewItem, installed: true, enabled: true }} onOpen={onClickNew} />
+                <CatalogItem item={{ ...addNewItem, installed: true, enabled: true }} onOpen={onClickNew}/>
               </div>
             )}
             <div>
@@ -255,12 +250,12 @@ const CatalogWithSearch = React.memo<Props>((
               <div className="heading">
                 {itemsListTitle}
               </div>
-              <div className="flex-fill" />
+              <div className="flex-fill"/>
               <div className="centeredFlex primaryColor">
                 <Typography variant="button">
                   Add new
                 </Typography>
-                <AddButton className="p-1" onClick={open} />
+                <AddButton className="p-1" onClick={open}/>
               </div>
             </div>
             <div className="flex-fill">
@@ -277,7 +272,7 @@ const CatalogWithSearch = React.memo<Props>((
                       onRemove: toggleInstall
                     }}
                   >
-                    {RowRenderer}
+                    {RowRenderer as any}
                   </DynamicSizeList>
                 )}
               </AutoSizer>
@@ -286,7 +281,7 @@ const CatalogWithSearch = React.memo<Props>((
         </Fade>
       </div>
     </div>
-);
+  );
 });
 
 export default CatalogWithSearch;

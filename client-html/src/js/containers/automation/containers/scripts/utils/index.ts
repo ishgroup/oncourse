@@ -3,7 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Binding, Script } from "@api/model";
+import { Binding, DataType, Script } from "@api/model";
+import { ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode } from "../../../../../model/scripts";
 import {
   closureSplitRegexp,
   getMessageComponent,
@@ -18,9 +19,6 @@ import {
   queryClosureRegexp,
   reportClosureRegexp,
 } from "../constants";
-import {
- ScriptComponent, ScriptComponentType, ScriptExtended, ScriptViewMode 
-} from "../../../../../model/scripts";
 
 const getClosureComponent = async (body: string, type: ScriptComponentType) => {
   switch (type) {
@@ -68,7 +66,7 @@ const reportFilter = body => {
 
 export const ParseScriptBody = async (scriptItem: Script) => {
   let content = scriptItem.content.replace(/["]{3}/g, '"');
-  let imports = content.match(importsRegexp);
+  let imports: string[] = content.match(importsRegexp);
 
   if (imports) {
     imports = imports.map(i => i.replace(/\n/, "").replace("import ", ""));
@@ -183,7 +181,7 @@ export const appendComponents = (value: ScriptExtended, viewMode: ScriptViewMode
   return result;
 };
 
-export const getType = type => {
+export const getType = (type: DataType) => {
   switch (type.toLowerCase()) {
     case "date time":
       return "dateTime";
@@ -191,8 +189,6 @@ export const getType = type => {
       return "searchSelect";
     case "remote data search select":
       return "remoteDataSearchSelect";
-    case "header text":
-      return "headerText";
     case "multiline text":
       return "multilineText";
     default:

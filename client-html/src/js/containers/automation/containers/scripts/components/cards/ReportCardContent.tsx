@@ -3,21 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
-import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import PdfService from "../../../pdf-reports/services/PdfService";
-import { ScriptComponent } from "../../../../../../model/scripts";
-import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { renderAutomationItems } from "../../../../utils";
-import { useAppSelector } from "../../../../../../common/utils/hooks";
+import Grid from '@mui/material/Grid';
+import React, { useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { useAppSelector } from '../../../../../../common/utils/hooks';
+import { ScriptComponent } from '../../../../../../model/scripts';
+import { renderAutomationItems } from '../../../../utils';
+import PdfService from '../../../pdf-reports/services/PdfService';
 
 interface Props {
   name: string;
   field: ScriptComponent;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   form: string;
   renderVariables: any;
   disabled: boolean;
@@ -81,7 +82,8 @@ const ReportCardContent: React.FC<Props> = props => {
           items={pdfReportsItems}
           className="d-flex mt-2"
           onInnerValueChange={changePdfReport}
-          selectLabelCondition={renderAutomationItems}
+          itemRenderer={renderAutomationItems}
+          valueRenderer={renderAutomationItems}
           disabled={disabled}
           required
         />

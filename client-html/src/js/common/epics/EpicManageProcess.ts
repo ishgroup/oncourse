@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { ProcessResult } from "@api/model";
 import { Epic } from "redux-observable";
+import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from "../actions";
+import { IAction } from "../actions/IshAction";
+import ProcessService from "../services/ProcessService";
 
 import * as EpicUtils from "./EpicUtils";
-import ProcessService from "../services/ProcessService";
-import { CLEAR_ACTION_ON_FAIL, CLEAR_PROCESS, FETCH_FAIL, START_PROCESS, UPDATE_PROCESS } from "../actions";
-import { ProcessResult } from "@api/model";
-import { IAction } from "../actions/IshAction";
 
 const switchByStatus = (
   process: ProcessResult = {},
@@ -76,8 +76,8 @@ const request: EpicUtils.DelayedRequest = {
   getData: payload => ProcessService.getProcessStatus(payload.processId),
   processData: (process: ProcessResult, state, payload) =>
     switchByStatus(process, payload.processId, payload.actions, payload.actionsOnFail),
-  processError: (process: ProcessResult, payload) =>
-    switchByStatus(process, payload.processId, payload.actions, payload.actionsOnFail)
+  processError: (res, payload) =>
+    switchByStatus(res.data, res.data.processId, res.data.actions, res.data.actionsOnFail)
 };
 
 export const EpicManageProcess: Epic<any, any> = EpicUtils.CreateWithTimeout(request);

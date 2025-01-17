@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { EnumItem } from "@api/model";
+import { sortDefaultSelectItems } from "ish-ui";
 import { Epic } from "redux-observable";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import PreferencesService from "../services/PreferencesService";
 import { GET_ENUM_FULFILLED, GET_ENUM_REQUEST } from "../actions";
-import { EnumItem } from "@api/model";
-import { sortDefaultSelectItems } from "../../../common/utils/common";
+import PreferencesService from "../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: GET_ENUM_REQUEST,

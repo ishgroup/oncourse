@@ -4,16 +4,13 @@
  */
 
 import { Typography } from "@mui/material";
+import Button from "@mui/material/Button";
 import * as React from "react";
 import { connect } from "react-redux";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
-import Button from "@mui/material/Button";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 
@@ -66,18 +63,17 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-     handleSubmit, onSubmit, AppBarContent, dirty, values, form
+     handleSubmit, onSubmit, AppBarContent, values,
     } = this.props;
 
     const hasIdAndSecret = values && values.fields.clientId && values.fields.clientSecret;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
           <FormField name="fields.clientId" label="Client id" type="text" required className="mb-2" />
           <FormField name="fields.clientSecret" label="Client secret" type="text" required className="mb-2" />
-          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} disabled className="mb-2" />
+          <FormField name="fields.activationCode" type="stub" validate={validateSingleMandatoryField} />
           <Uneditable value={values && values.fields.activationCode} label="Activation Code" className="mb-2" />
 
           <div>

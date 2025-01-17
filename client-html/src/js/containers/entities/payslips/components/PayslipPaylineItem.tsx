@@ -3,17 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import { format } from "date-fns";
-import Button from "@mui/material/Button";
 import { Currency } from "@api/model";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { format } from "date-fns";
+import { EEE_D_MMM_YYYY, normalizeNumber } from "ish-ui";
+import React, { useMemo } from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { normalizeNumber } from "../../../../common/utils/numbers/numbersNormalizing";
-import { EEE_D_MMM_YYYY } from "../../../../common/utils/dates/format";
+import Uneditable from "../../../../common/components/form/formFields/Uneditable";
 import { PayLineWithDefer } from "../../../../model/entities/Payslip";
 
 interface Props {
@@ -89,8 +89,10 @@ const PayslipPaylineItem = (props: Props) => {
               {field.className && (
                 <Grid item xs={paylineLayout[2].xs}>
                   <div className="flex-fill">
-                    <Typography variant="caption">Date for</Typography>
-                    <Typography variant="body2">{format(new Date(field.dateFor), EEE_D_MMM_YYYY)}</Typography>
+                    <Uneditable
+                      label="Date for"
+                      value={format(new Date(field.dateFor), EEE_D_MMM_YYYY)}
+                    />
                   </div>
                 </Grid>
               )}
@@ -101,7 +103,6 @@ const PayslipPaylineItem = (props: Props) => {
                 disabled={!field.deferred}
                 name={`${item}.description`}
                 label="Description"
-                listSpacing={threeColumn}
                 required
               />
             </Grid>
@@ -127,16 +128,20 @@ const PayslipPaylineItem = (props: Props) => {
                 </Grid>
 
                 <Grid item xs={4} className="text-nowrap d-flex justify-content-end">
-                  <FormField
-                    type="number"
-                    disabled={!field.deferred}
-                    name={`${item}.quantity`}
-                    normalize={normalizeNumber}
-                    listSpacing={false}
-                    formatting="inline"
-                    disableInputOffsets
-                    rightAligned
-                  />
+                  <Typography
+                    variant="subtitle1"
+                    className="fw300"
+                  >
+                    <FormField
+                      type="number"
+                      disabled={!field.deferred}
+                      name={`${item}.quantity`}
+                      normalize={normalizeNumber}
+                      debounced={false}
+                      inline
+                      rightAligned
+                    />
+                  </Typography>
                 </Grid>
 
                 <Grid item xs={5} className={classes.infoItem}>
@@ -156,16 +161,19 @@ const PayslipPaylineItem = (props: Props) => {
             </Grid>
 
             <Grid item xs={hasQuantityAndTotal ? 5 : 10} className="text-nowrap d-flex justify-content-end">
-              <FormField
-                type="money"
-                disabled={!field.deferred}
-                name={`${item}.value`}
-                listSpacing={false}
-                formatting="inline"
-                disableInputOffsets
-                rightAligned
-                required
-              />
+              <Typography
+                variant="subtitle1"
+                className="fw300"
+              >
+                <FormField
+                  type="money"
+                  disabled={!field.deferred}
+                  name={`${item}.value`}
+                  inline
+                  rightAligned
+                  required
+                />
+              </Typography>
             </Grid>
 
             {hasQuantityAndTotal && (
@@ -176,6 +184,7 @@ const PayslipPaylineItem = (props: Props) => {
                   className="money fw300"
                 >
                   {shortCurrencySymbol}
+                  {" "}
                   {field.budgetedValue.toFixed(2) || 0}
                 </Typography>
               </Grid>
@@ -191,6 +200,7 @@ const PayslipPaylineItem = (props: Props) => {
                   <div className="w-100 text-end">
                     <Typography variant="subtitle1" className="money fw300" noWrap>
                       {shortCurrencySymbol}
+                      {" "}
                       {valueTotal.toFixed(2)}
                     </Typography>
                   </div>
@@ -204,6 +214,7 @@ const PayslipPaylineItem = (props: Props) => {
                     noWrap
                   >
                     {shortCurrencySymbol}
+                    {" "}
                     {budgetTotal.toFixed(2)}
                   </Typography>
                 </Grid>

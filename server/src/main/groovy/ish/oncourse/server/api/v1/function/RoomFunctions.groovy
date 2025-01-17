@@ -12,53 +12,17 @@
 package ish.oncourse.server.api.v1.function
 
 import groovy.transform.CompileStatic
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.function.CayenneFunctions
-import ish.oncourse.server.document.DocumentService
-
-import static ish.oncourse.server.api.function.GetKioskUrl.getKioskUrl
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
-import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.toRestHoliday
-import static ish.oncourse.server.api.v1.function.HolidayFunctions.updateAvailabilityRules
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
-import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import ish.oncourse.server.api.v1.model.RoomDTO
-import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Room
-import ish.oncourse.server.cayenne.RoomAttachmentRelation
-import ish.oncourse.server.cayenne.RoomTagRelation
-import ish.oncourse.server.cayenne.RoomUnavailableRuleRelation
 import ish.oncourse.server.cayenne.Site
-import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.cayenne.UnavailableRule
+import ish.validation.ValidationUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
-import static org.apache.commons.lang3.StringUtils.trimToNull
 
-import java.time.ZoneOffset
 @CompileStatic
 class RoomFunctions {
-
-    static RoomDTO toRestRoom(Room dbRoom, PreferenceController preferenceController, DocumentService documentService) {
-        new RoomDTO().with { room ->
-            room.id = dbRoom.id
-            room.name = dbRoom.name
-            room.seatedCapacity = dbRoom.seatedCapacity
-            room.siteId = dbRoom.site.id
-            room.directions = dbRoom.directions
-            room.facilities = dbRoom.facilities
-            room.kioskUrl = getKioskUrl(preferenceController.collegeURL, 'room', dbRoom.id)
-            room.tags = dbRoom.tags.collect { toRestTagMinimized(it) }
-            room.documents = dbRoom.activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
-            room.rules = dbRoom.unavailableRuleRelations*.rule.collect{ toRestHoliday(it as UnavailableRule) }
-            room.siteTimeZone = dbRoom.site.localTimezone
-            room.createdOn = dbRoom.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
-            room.modifiedOn = dbRoom.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
-            room
-        }
-    }
 
     static RoomDTO toRestRoomMinimized(Room dbRoom) {
         new RoomDTO().with { room ->
@@ -66,71 +30,56 @@ class RoomFunctions {
             room.siteId = dbRoom.site.id
             room.name = dbRoom.name
             room.seatedCapacity = dbRoom.seatedCapacity
+            room.virtualRoomUrl = dbRoom.virtualRoomUrl
             room
         }
     }
 
-    static Room toDbRoom(RoomDTO room, Room dbRoom, ObjectContext context, SystemUser currentUser) {
-        dbRoom.name = trimToNull(room.name)
-        dbRoom.seatedCapacity = room.seatedCapacity
-        dbRoom.site = CayenneFunctions.getRecordById(context, Site, room.siteId)
-        dbRoom.directions = trimToNull(room.directions)
-        dbRoom.facilities = trimToNull(room.facilities)
-
-        updateTags(dbRoom, dbRoom.taggingRelations, room.tags*.id, RoomTagRelation, context)
-        updateAvailabilityRules(dbRoom, dbRoom.unavailableRuleRelations*.rule, room.rules, RoomUnavailableRuleRelation)
-        updateDocuments(dbRoom, dbRoom.attachmentRelations, room.documents, RoomAttachmentRelation, context)
-
-        dbRoom
-    }
-
-
-    static ValidationErrorDTO validateForDelete(Room entity) {
-        if (!entity.sessions.empty) {
-            return new ValidationErrorDTO(entity?.id?.toString(), 'id', "Cannot delete room assigned to sessions.")
-        }
-        null
-    }
-
-    static ValidationErrorDTO validateForSave(RoomDTO room, ObjectContext context, Long dbRoomId = null, boolean isSiteExists = true) {
-        if (StringUtils.isBlank(room.name)) {
-            return new ValidationErrorDTO(room?.id?.toString(), 'name', 'Name is required.')
-        } else if (room.name.size() > 150) {
-            return new ValidationErrorDTO(room?.id?.toString(), 'name', 'Name can\'t be more than 150 chars.')
+    static void validateForSave(RoomDTO roomDTO, ObjectContext context, Long dbRoomId = null, EntityValidator validator, boolean isSiteExists = true) {
+        if (StringUtils.isBlank(roomDTO.name)) {
+            validator.throwClientErrorException(roomDTO?.id, 'name', 'Name is required.')
+        } else if (roomDTO.name.size() > 150) {
+            validator.throwClientErrorException(roomDTO?.id, 'name', 'Name can\'t be more than 150 chars.')
         }
 
-        if (room.seatedCapacity == null) {
-            return new ValidationErrorDTO(room?.id?.toString(), 'seatedCapacity', 'Seated capacity is required.')
-        } else if (room.seatedCapacity < 0) {
-            return new ValidationErrorDTO(room?.id?.toString(), 'seatedCapacity', 'Seated capacity must be positive.')
-        } else if (room.seatedCapacity > Integer.MAX_VALUE) {
-            return new ValidationErrorDTO(room?.id?.toString(), 'seatedCapacity', 'Seated capacity value is too big.')
+        if (roomDTO.seatedCapacity == null) {
+            validator.throwClientErrorException(roomDTO?.id, 'seatedCapacity', 'Seated capacity is required.')
+        } else if (roomDTO.seatedCapacity < 0) {
+            validator.throwClientErrorException(roomDTO?.id, 'seatedCapacity', 'Seated capacity must be positive.')
+        } else if (roomDTO.seatedCapacity > Integer.MAX_VALUE) {
+            validator.throwClientErrorException(roomDTO?.id, 'seatedCapacity', 'Seated capacity value is too big.')
         }
 
-        if (isSiteExists && !room.siteId) {
-            return new ValidationErrorDTO(room?.id?.toString(), 'siteId', 'Site is required.')
+        if (isSiteExists && !roomDTO.siteId) {
+            validator.throwClientErrorException(roomDTO?.id, 'siteId', 'Site is required.')
         }
 
+        def site = ObjectSelect.query(Site)
+                .where(Site.ID.eq(roomDTO.siteId))
+                .selectOne(context)
+
+        String virtualRoomUrl = StringUtils.trimToNull(roomDTO.virtualRoomUrl)
         if (isSiteExists) {
-            Long siteId = ObjectSelect.query(Site)
-                    .where(Site.ID.eq(room.siteId))
-                    .selectOne(context)?.id
-            if (!siteId) {
-                return new ValidationErrorDTO(room?.siteId?.toString(), 'siteId', "Can't bind room to nonexistent site")
+            if (!site?.id) {
+                validator.throwClientErrorException(site?.id, 'siteId', "Can't bind room to nonexistent site")
             }
+
+            if (!site.isVirtual && virtualRoomUrl != null)
+                validator.throwClientErrorException(virtualRoomUrl, 'virtualRoomUrl', "Cannot set virtual room url for not virtual site")
+        }
+
+        if (virtualRoomUrl != null) {
+            if (!ValidationUtil.isValidUrl(virtualRoomUrl))
+                validator.throwClientErrorException(roomDTO?.virtualRoomUrl, 'virtualRoomUrl', 'The virtual room url is incorrect.')
         }
 
         Long roomId = ObjectSelect.query(Room)
-                .where(Room.SITE.dot(Site.ID).eq(room.siteId))
-                .and(Room.NAME.eq(room.name))
+                .where(Room.SITE.dot(Site.ID).eq(roomDTO.siteId))
+                .and(Room.NAME.eq(roomDTO.name))
                 .selectOne(context)?.id
 
         if (roomId && roomId != dbRoomId) {
-            return new ValidationErrorDTO(room?.id?.toString(), 'name', 'The name of the room must be unique within the site.')
+            validator.throwClientErrorException(roomDTO?.id, 'name', 'The name of the room must be unique within the site.')
         }
-
-        ValidationErrorDTO error = null
-
-        return error
     }
 }

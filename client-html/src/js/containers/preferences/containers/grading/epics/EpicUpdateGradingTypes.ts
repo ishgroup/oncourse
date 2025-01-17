@@ -7,10 +7,10 @@
  */
 
 import { Epic } from "redux-observable";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import PreferencesService from "../../../services/PreferencesService";
-import { GET_GRADING_TYPES_REQUEST, UPDATE_GRADING_TYPES_REQUEST } from "../../../actions";
 import { FETCH_SUCCESS } from "../../../../../common/actions";
+import * as EpicUtils from "../../../../../common/epics/EpicUtils";
+import { GET_GRADING_TYPES_REQUEST, UPDATE_GRADING_TYPES_REQUEST } from "../../../actions";
+import PreferencesService from "../../../services/PreferencesService";
 
 const request: EpicUtils.Request = {
   type: UPDATE_GRADING_TYPES_REQUEST,

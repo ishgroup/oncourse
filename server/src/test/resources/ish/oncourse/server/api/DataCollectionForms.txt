@@ -9,6 +9,9 @@
         label: Street
         helpText: Street
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -17,6 +20,9 @@
         label: Citizenship
         helpText: Citizenship
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -29,6 +35,9 @@
             label: Postcode
             helpText: Postcode
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -37,6 +46,9 @@
             label: State
             helpText: State
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -49,6 +61,9 @@
             label: Country
             helpText: Country
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -57,6 +72,9 @@
             label: Suburb
             helpText: suburb
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: null
@@ -71,6 +89,9 @@
         label: Street
         helpText: Street
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -79,6 +100,9 @@
         label: Citizenship
         helpText: Citizenship
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -91,6 +115,9 @@
             label: Postcode
             helpText: Postcode
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -99,6 +126,9 @@
             label: State
             helpText: State
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -111,6 +141,9 @@
             label: Country
             helpText: Country
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -119,6 +152,9 @@
             label: Suburb
             helpText: suburb
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: null
@@ -133,6 +169,9 @@
         label: Street
         helpText: Street
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -141,6 +180,9 @@
         label: Citizenship
         helpText: Citizenship
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -153,6 +195,9 @@
             label: Postcode
             helpText: Postcode
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -161,6 +206,9 @@
             label: State
             helpText: State
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -173,6 +221,9 @@
             label: Country
             helpText: Country
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -181,6 +232,9 @@
             label: Suburb
             helpText: suburb
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: null
@@ -195,6 +249,9 @@
         label: Street
         helpText: Street
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -203,6 +260,9 @@
         label: Citizenship
         helpText: Citizenship
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -215,6 +275,9 @@
             label: Postcode
             helpText: Postcode
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -223,6 +286,9 @@
             label: State
             helpText: State
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -235,6 +301,9 @@
             label: Country
             helpText: Country
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -243,6 +312,9 @@
             label: Suburb
             helpText: suburb
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: null
@@ -257,6 +329,9 @@
         label: Venue score
         helpText: Venue score
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -269,6 +344,9 @@
             label: Course score
             helpText: Course score
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: netPromoterScore
@@ -277,6 +355,9 @@
             label: Net promoter score
             helpText: Net promoter score
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: Midway
@@ -291,6 +372,9 @@
         label: Venue score
         helpText: Venue score
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -303,6 +387,9 @@
             label: Course score
             helpText: Course score
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: netPromoterScore
@@ -311,6 +398,9 @@
             label: Net promoter score
             helpText: Net promoter score
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: On enrol
@@ -325,6 +415,9 @@
         label: Street
         helpText: Street
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -333,6 +426,9 @@
         label: Citizenship
         helpText: Citizenship
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -345,6 +441,9 @@
             label: Postcode
             helpText: Postcode
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -353,6 +452,9 @@
             label: State
             helpText: State
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -365,6 +467,9 @@
             label: Country
             helpText: Country
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -373,6 +478,9 @@
             label: Suburb
             helpText: suburb
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: null
@@ -387,6 +495,9 @@
         label: Street
         helpText: Street
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }, class FieldDTO {
         type: class FieldTypeDTO {
             uniqueKey: citizenship
@@ -395,6 +506,9 @@
         label: Citizenship
         helpText: Citizenship
         mandatory: true
+        relatedFieldKey: null
+        relatedFieldValue: null
+        validationType: null
     }]
     headings: [class HeadingDTO {
         name: Enrol heading 1
@@ -407,6 +521,9 @@
             label: Postcode
             helpText: Postcode
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: state
@@ -415,6 +532,9 @@
             label: State
             helpText: State
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }, class HeadingDTO {
         name: Enrol heading 2
@@ -427,6 +547,9 @@
             label: Country
             helpText: Country
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }, class FieldDTO {
             type: class FieldTypeDTO {
                 uniqueKey: suburb
@@ -435,6 +558,9 @@
             label: Suburb
             helpText: suburb
             mandatory: true
+            relatedFieldKey: null
+            relatedFieldValue: null
+            validationType: null
         }]
     }]
     deliverySchedule: null

@@ -3,29 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { Tag } from "@api/model";
-import * as EpicUtils from "../../../common/epics/EpicUtils";
-import TagsService from "../services/TagsService";
-import { DELETE_TAG_REQUEST, DELETE_TAG_REQUEST_FULFILLED } from "../actions";
+import { Epic } from "redux-observable";
 import { FETCH_SUCCESS } from "../../../common/actions";
 import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../common/epics/EpicUtils";
+import history from "../../../constants/History";
+import { DELETE_TAG_REQUEST, getAllTags } from "../actions";
+import TagsService from "../services/TagsService";
 
-const request: EpicUtils.Request = {
+const request: EpicUtils.Request<any, Tag> = {
   type: DELETE_TAG_REQUEST,
   getData: payload => TagsService.remove(payload.id),
-  retrieveData: () => TagsService.getTags(),
-  processData: (allTags: Tag[]) => [
-    {
-      type: DELETE_TAG_REQUEST_FULFILLED,
-      payload: { allTags }
-    },
-    {
-      type: FETCH_SUCCESS,
-      payload: { message: "Tag was successfully deleted" }
-    }
-  ],
-  processError: response => FetchErrorHandler(response, "Error. Tag was not deleted")
+  processData: (v, s, p) => {
+    p.type === "Tag" ? history.push("/tags/tagGroups") : history.push("/tags/checklists");
+  
+    return [
+      {
+        type: FETCH_SUCCESS,
+        payload: { message: `${p.name} was successfully deleted` }
+      },
+      getAllTags()
+    ];
+  },
+  processError: (r, t) => FetchErrorHandler(r, `Error. ${t.name} was not deleted`)
 };
 
 export const EpicDeleteTag: Epic<any, any> = EpicUtils.Create(request);

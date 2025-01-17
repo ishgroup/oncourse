@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useRef } from "react";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
 import { CourseClassTutor } from "@api/model";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { AnyArgFunction } from "ish-ui";
+import React, { useRef } from "react";
 
 interface Props {
   anchorEl: Element;
@@ -26,7 +26,7 @@ const AddBudgetMenu: React.FC<Props> = ({
   openAddTutorModal,
   tutors
 }) => {
-  const tutorsRef = useRef();
+  const tutorsRef = useRef(undefined);
 
   return (
     <>

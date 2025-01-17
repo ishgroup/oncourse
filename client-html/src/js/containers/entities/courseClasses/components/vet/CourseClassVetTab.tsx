@@ -3,18 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
+import { CourseClassAttendanceType, DeliveryMode, FundingSource } from "@api/model";
+import { Divider, FormControlLabel, Grid } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
-import {
-  CourseClassAttendanceType,
-  ClassFundingSource,
-  DeliveryMode,
-  FundingSource
-} from "@api/model";
+import { mapSelectItems, normalizeNumber, normalizeNumberToZero } from "ish-ui";
+import * as React from "react";
 import { connect } from "react-redux";
-import Divider from "@mui/material/Divider";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
 import {
@@ -26,10 +20,9 @@ import {
 } from "../../../../../common/utils/validation";
 import { EditViewProps } from "../../../../../model/common/ListView";
 import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { normalizeNumber, normalizeNumberToZero } from "../../../../../common/utils/numbers/numbersNormalizing";
 import { State } from "../../../../../reducers/state";
 import { formatFundingSourceId } from "../../../common/utils";
+import { fundingSourceValues } from "../../constants";
 import CourseClassAttendanceTab from "../attendance/CourseClassAttendanceTab";
 
 interface Props extends Partial<EditViewProps> {
@@ -39,15 +32,14 @@ interface Props extends Partial<EditViewProps> {
 
 const deliveryModeValues = Object.keys(DeliveryMode).map(mapSelectItems);
 const attendanceTypeValues = Object.keys(CourseClassAttendanceType).map(mapSelectItems);
-const fundingSourceValues = Object.keys(ClassFundingSource).map(mapSelectItems);
 
 const CourseClassVetTab = React.memo<Props>(props => {
   const {
-    contracts, tabIndex, expanded, setExpanded, twoColumn, values
+    contracts, tabIndex, expanded, setExpanded, twoColumn, values, syncErrors
   } = props;
   return (
     <div className="pl-3 pr-3">
-      <ExpandableContainer index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
+      <ExpandableContainer formErrors={syncErrors} index={tabIndex} expanded={expanded} setExpanded={setExpanded} header="Vet">
         <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={4}>
             <FormControlLabel
@@ -95,7 +87,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetFundingSourceStateID"
               label="Default funding source state"
               validate={validateVetFundingSourceState}
-              fullWidth
             />
           </Grid>
 
@@ -105,7 +96,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="detBookingId"
               label="DET Booking Identifier (NSW)/Contracted Program of Study (WA)"
               validate={validateDETBookingIdentifier}
-              fullWidth
             />
           </Grid>
 
@@ -116,7 +106,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetCourseSiteID"
               label="Course site identifier (NSW)"
               validate={validateCourseSiteIdentifier}
-              fullWidth
+              debounced={false}
             />
           </Grid>
 
@@ -128,7 +118,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetPurchasingContractID"
               label="Default purchasing contract identifier"
               validate={validateDefaultPurchasingContractIdentifier}
-              fullWidth
             />
           </Grid>
 
@@ -138,7 +127,6 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="vetPurchasingContractScheduleID"
               label="Default purchasing contract schedule identifier"
               validate={validatePurchasingContractScheduleIdentifier}
-              fullWidth
             />
           </Grid>
 
@@ -152,6 +140,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               normalize={normalizeNumber}
               name="qualificationHours"
               label="Qualification hours"
+              debounced={false}
               disabled
             />
           </Grid>
@@ -163,6 +152,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               disabled
               name="nominalHours"
               label="Nominal hours"
+              debounced={false}
             />
           </Grid>
 
@@ -173,6 +163,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="classroomHours"
               disabled
               label="Classroom hours"
+              debounced={false}
             />
           </Grid>
 
@@ -183,6 +174,7 @@ const CourseClassVetTab = React.memo<Props>(props => {
               name="studentContactHours"
               disabled
               label="Student contact hours"
+              debounced={false}
             />
           </Grid>
 

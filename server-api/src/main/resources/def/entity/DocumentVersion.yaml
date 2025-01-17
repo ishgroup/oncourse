@@ -3,15 +3,22 @@ properties:
   id:
     type: integer
     format: int64
-    required: true
+    required: false
   added:
     type: string
     format: date-time
+  current:
+    type: boolean
+    required: true
+    default: false
   createdBy:
     type: string
   fileName:
     type: string
     example: class_schedule.png
+  content:
+    type: string
+    format: byte
   mimeType:
     type: string
     example: image/png

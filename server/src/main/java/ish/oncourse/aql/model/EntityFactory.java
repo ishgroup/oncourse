@@ -11,8 +11,13 @@
 
 package ish.oncourse.aql.model;
 
+import ish.common.types.DataType;
 import ish.oncourse.aql.model.attribute.*;
+import ish.oncourse.aql.model.attribute.tagging.*;
+import ish.oncourse.aql.model.attribute.tagging.relations.*;
+import ish.oncourse.server.api.v1.function.TagRequirementFunctions;
 import ish.oncourse.server.cayenne.CustomFieldType;
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.map.ObjEntity;
@@ -32,7 +37,7 @@ public class EntityFactory {
      * List of types that supports custom fields.
      */
     private static final List<String> ENTITIES_WITH_CUSTOM_FIELDS =
-            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Article", "Membership", "Voucher");
+            Arrays.asList("Application", "Contact", "Course","CourseClass", "Enrolment", "WaitingList", "Survey", "Article", "Membership", "Voucher", "ProductItem", "ArticleProduct", "VoucherProduct", "MembershipProduct");
 
     /**
      * List of synthetic attributes.
@@ -49,6 +54,9 @@ public class EntityFactory {
             CourseClassEnrolmentCount.class,
             CourseClassEnrolmentMax.class,
             CourseClassEnrolmentMin.class,
+            CourseClassSessionsCount.class,
+            CourseClassIsDistantLearningCourse.class,
+            EnrolmentIsClassCompleted.class,
             SessionTutor.class,
             PaymentInBanking.class,
             PaymentInReversalOfId.class,
@@ -82,7 +90,35 @@ public class EntityFactory {
             ProductItemProductType.class,
             FundingSourceName.class,
             StudentsTutorsCourses.class,
-            StudentsTutorsAssessments.class
+            StudentsTutorsAssessments.class,
+            TaggingRelationsAbstractInvoice.class,
+            TaggingRelationsApplication.class,
+            TaggingRelationsArticleProduct.class,
+            TaggingRelationsAssessment.class,
+            TaggingRelationsContact.class,
+            TaggingRelationsCourse.class,
+            TaggingRelationsCourseClass.class,
+            TaggingRelationsDocument.class,
+            TaggingRelationsEnrolment.class,
+            TaggingRelationsFaculty.class,
+            TaggingRelationsLead.class,
+            TaggingRelationsMembershipProduct.class,
+            TaggingRelationsPayslip.class,
+            TaggingRelationsProductItem.class,
+            TaggingRelationsReport.class,
+            TaggingRelationsRoom.class,
+            TaggingRelationsSite.class,
+            TaggingRelationsVoucherProduct.class,
+            EnrolmentAbstractInvoiceLines.class,
+            CourseClassAbstractInvoiceLines.class,
+            TaxAbstractInvoiceLines.class,
+            AccountAbstractInvoiceLines.class,
+            TaggingRelationsWaitingList.class,
+            TagsAttribute.class,
+            CheckedTasksAttribute.class,
+            UncheckedTasksAttribute.class,
+            CompletedChecklistsAttribute.class,
+            UncompletedChecklistsAttribute.class
     );
 
     private final ObjectContext context;
@@ -121,7 +157,11 @@ public class EntityFactory {
     Entity createEntity(ObjEntity entity) {
         var entityName = entity.getName();
         var syntheticAttributesForEntity
-                = syntheticAttributes.getOrDefault(entity.getJavaClassName(), Collections.emptyList());
+                = syntheticAttributes.getOrDefault(entity.getJavaClassName(), new ArrayList<>());
+        if(entityIsTaggable(entityName)){
+            var taggableAttributes = syntheticAttributes.getOrDefault(TaggableCayenneDataObject.class.getName(), new ArrayList<>());
+            syntheticAttributesForEntity.addAll(taggableAttributes);
+        }
         if(ENTITIES_WITH_CUSTOM_FIELDS.contains(entityName)) {
             return new Entity(this, entity, customFieldLookup(entityName), syntheticAttributesForEntity);
         }
@@ -129,14 +169,30 @@ public class EntityFactory {
     }
 
     private Map<String, Class<?>> customFieldLookup(String entityName) {
+        List<String> entityNames = entityName.equals("ProductItem")
+                ? List.of("Article","Voucher","Membership")
+                : List.of(entityName);
         var customFieldsNames = ObjectSelect
-                .columnQuery(CustomFieldType.class, CustomFieldType.KEY)
-                .where(CustomFieldType.ENTITY_IDENTIFIER.eq(entityName))
+                .columnQuery(CustomFieldType.class, CustomFieldType.KEY, CustomFieldType.DATA_TYPE)
+                .where(CustomFieldType.ENTITY_IDENTIFIER.in(entityNames))
                 .select(context);
 
         Map<String, Class<?>> customFields = new HashMap<>();
-        customFieldsNames.forEach(field -> customFields.put(field, CustomFieldMarker.class));
+        customFieldsNames.forEach(field -> {
+            Class<? extends CustomFieldMarker> marker;
+            if(field[1] == DataType.DATE)
+                marker = CustomFieldDateMarker.class;
+            else if(field[1] == DataType.DATE_TIME)
+                marker = CustomFieldDateTimeMarker.class;
+            else
+                marker = CustomFieldMarker.class;
+            customFields.put((String) field[0], marker);
+        });
         return customFields;
+    }
+
+    private boolean entityIsTaggable(String entityName){
+        return TagRequirementFunctions.taggableClassesBidiMap.containsKey(entityName);
     }
 
 }

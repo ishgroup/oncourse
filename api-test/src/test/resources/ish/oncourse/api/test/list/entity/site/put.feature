@@ -13,7 +13,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
         """
         {
         "isAdministrationCentre":false,
-        "isVirtual":false,
+        "isVirtual":true,
         "isShownOnWeb":false,
         "kioskUrl":null,
         "name":"someSite100",
@@ -50,14 +50,14 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
         When method GET
         Then status 200
 
-        * def id = get[0] response.rows[?(@.values == ["[]","someSite100","Adelaide","5000","false"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"someSite100","Adelaide","5000","false"])].id
     #       <--->
 
         * def siteToUpdate =
             """
             {"id":"#(id)",
             "isAdministrationCentre":true,
-            "isVirtual":false,
+            "isVirtual":true,
             "isShownOnWeb":true,
             "kioskUrl":null,
             "name":"someSite100_upd",
@@ -72,7 +72,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
             "drivingDirections":"someDrivingDirections_upd",
             "publicTransportDirections":"somePublicTransportDirections_upd",
             "specialInstructions":"someSpecialInstructions_upd",
-            "tags":[{"id":208,"name":"1","status":"Private","system":false,"urlPath":null,"content":null,"weight":null,"taggedRecordsCount":0,"childrenCount":0,"requirements":[],"childTags":[]}],
+            "tags":[208],
             "rooms":[{"siteId":"#(id)","name":"room1","seatedCapacity":"75"}],
             "documents":[],
             "rules":[{"id":null,"description":"fff","startDate":"2020-01-01","endDate":"2020-02-29","repeatEnd":"never","repeat":"hour","repeatEndAfter":0,"startDateTime":null,"endDateTime":null}]
@@ -92,7 +92,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
             {
             "id":"#number",
             "isAdministrationCentre":true,
-            "isVirtual":false,
+            "isVirtual":true,
             "isShownOnWeb":true,
             "kioskUrl":null,
             "name":"someSite100_upd",
@@ -107,8 +107,8 @@ Feature: Main feature for all PUT requests with path 'list/entity/site'
             "drivingDirections":"someDrivingDirections_upd",
             "publicTransportDirections":"somePublicTransportDirections_upd",
             "specialInstructions":"someSpecialInstructions_upd",
-            "tags":[{"id":208,"name":"1","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
-            "rooms":[{"id":"#number","name":"room1","seatedCapacity":75,"siteId":"#number","siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}],
+            "tags":[208],
+            "rooms":[{"id":"#number","name":"room1","seatedCapacity":75,"siteId":"#number","siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"customFields":{},"documents":[],"rules":[],"createdOn":null,"modifiedOn":null,"virtualRoomUrl":null}],
             "documents":[],
             "rules":[{"id":"#ignore","description":"fff","startDate":"2020-01-01","endDate":"2020-02-29","startDateTime":null,"endDateTime":null,"repeat":"hour","repeatEnd":"never","repeatEndAfter":null,"repeatOn":null,"created":"#ignore","modified":"#ignore"}],
             }

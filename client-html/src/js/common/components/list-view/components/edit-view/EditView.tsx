@@ -1,24 +1,27 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
-import Typography from "@mui/material/Typography";
-import { connect } from "react-redux";
-import clsx from "clsx";
-import { State } from "../../../../../reducers/state";
-import FormSubmitButton from "../../../form/FormSubmitButton";
-import { pushGTMEvent } from "../../../google-tag-manager/actions";
-import { EditViewContainerProps } from "../../../../../model/common/ListView";
-import { TAB_LIST_SCROLL_TARGET_ID } from "../../../../../constants/Config";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { TAB_LIST_SCROLL_TARGET_ID } from '../../../../../constants/Config';
+import { EditViewContainerProps } from '../../../../../model/common/ListView';
+import { State } from '../../../../../reducers/state';
+import FormSubmitButton from '../../../form/FormSubmitButton';
+import { pushGTMEvent } from '../../../google-tag-manager/actions';
 
 export const editViewFormRole: string = "editView-form";
 
 const styles = theme =>
-  createStyles({
+  ({
     root: {
       display: "flex",
       flexDirection: "column",
@@ -68,7 +71,6 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
       rootEntity,
       form,
       showConfirm,
-      openNestedEditView,
       manualLink,
       submitSucceeded,
       syncErrors,
@@ -112,7 +114,6 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
                 dirty={dirty}
                 dispatch={dispatch}
                 showConfirm={showConfirm}
-                openNestedEditView={openNestedEditView}
                 toogleFullScreenEditView={toogleFullScreenEditView}
               />
             </div>
@@ -137,5 +138,5 @@ const mapStateToProps = (state: State, props) => ({
 });
 
 export default reduxForm<any, EditViewContainerProps>({ destroyOnUnmount: false })(
-  connect(mapStateToProps, null)(withStyles(styles)(EditView))
+  connect(mapStateToProps, null)(withStyles(EditView, styles))
 );

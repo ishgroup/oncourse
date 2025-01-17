@@ -1,40 +1,43 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { FundingSource, SearchQuery, Sorting, Tag } from '@api/model';
+import { Help } from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Grid, ListItemButton, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import { ShowConfirmCaller } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, Field, reduxForm, reset } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { setOtcomeChangeFields } from '../../../../../containers/entities/enrolments/actions';
 import {
- Diff, FundingSource, SearchQuery, Sorting, Tag 
-} from "@api/model";
-import Drawer from "@mui/material/Drawer";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import withStyles from "@mui/styles/withStyles";
-import Typography from "@mui/material/Typography";
-import { Help } from "@mui/icons-material";
-import React, {
- useEffect, useMemo, useState
-} from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import {
- change, Field, reduxForm, reset 
-} from "redux-form";
-import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
-import { getEntityTags } from "../../../../../containers/tags/actions";
-import { State } from "../../../../../reducers/state";
-import DataTypeRenderer from "../../../form/DataTypeRenderer";
-import FormField from "../../../form/formFields/FormField";
-import { bulkChangeRecords } from "../../actions";
-import bottomDrawerStyles from "../bottomDrawerStyles";
-import SelectionSwitcher from "../share/SelectionSwitcher";
-import { BulkEditField, getBulkEditFields } from "./utils";
-import { EntityName } from "../../../../../model/entities/common";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
+  getOutcomeCommonFieldName,
+  outcomeCommonFields
+} from '../../../../../containers/entities/enrolments/constants';
+import { PreferencesState } from '../../../../../containers/preferences/reducers/state';
+import { getEntityTags } from '../../../../../containers/tags/actions';
+import { EntityName } from '../../../../../model/entities/common';
+import { State } from '../../../../../reducers/state';
+import { addActionToQueue } from '../../../../actions';
+import { IAction } from '../../../../actions/IshAction';
+import { getDeepValue } from '../../../../utils/common';
+import DataTypeRenderer from '../../../form/DataTypeRenderer';
+import FormField from '../../../form/formFields/FormField';
+import { bulkChangeRecords } from '../../actions';
+import bottomDrawerStyles from '../bottomDrawerStyles';
+import SelectionSwitcher from '../share/SelectionSwitcher';
+import { BulkEditField, getBulkEditFields } from './utils';
 
 interface BulkEditProps {
   rootEntity: EntityName;
@@ -46,7 +49,7 @@ interface BulkEditProps {
   searchQuery?: SearchQuery;
   sort?: Sorting[];
   classes?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   getBulkEditList?: (entityName: string) => void;
   handleSubmit?: any;
   onSave?: any;
@@ -56,7 +59,6 @@ interface BulkEditProps {
   validating?: boolean;
   rows?: any;
   columns?: any;
-  doBulkEdit?: (entityBulkEdit, diff: Diff) => void;
   manualLink?: string;
   hasAql?: boolean;
   contracts?: FundingSource[];
@@ -85,14 +87,13 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     invalid,
     handleSubmit,
     searchQuery,
-    doBulkEdit,
     manualLink,
     reset,
     dispatch
   } = props;
 
   const [selectAll, setSelectAll] = useState(false);
-  const [bulkEditFields, setBulkEditFields] = useState(null);
+  const [bulkEditFields, setBulkEditFields] = useState([]);
   const [selectedKeyCode, setSelectedKeyCode] = useState(null);
 
   const getBulkEditFieldData = ():BulkEditField => {
@@ -115,7 +116,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
   useEffect(() => {
     if (getCustomBulkEditFields) {
-      getCustomBulkEditFields().then(fields => setBulkEditFields(fields));
+      getCustomBulkEditFields().then(fields => setBulkEditFields(getBulkEditFields(rootEntity).concat(fields)));
     }
   }, [getCustomBulkEditFields]);
 
@@ -139,20 +140,39 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
     const ids = selectAll ? null : selection.map(s => Number(s));
     const searchObj = selectAll ? searchQuery : {};
     const diff = {
-      [selectedKeyCode]: values[selectedKeyCode]
+      [`${selectedKeyCode}`]: getDeepValue(values, selectedKeyCode)?.toString()
     };
 
-    if (selectedKeyCode === "bulkTag" || selectedKeyCode === "bulkUntag") {
-      diff[selectedKeyCode] = diff[selectedKeyCode].map(tag => tag.id).join(",");
-    }
-
-    doBulkEdit(rootEntity, {
+    const changeAction = bulkChangeRecords(rootEntity, {
       ids,
       diff,
       search: searchObj.search,
       filter: searchObj.filter,
       tagGroups: searchObj.tagGroups
     });
+    
+    if (rootEntity === "Enrolment") {
+      const outcomeValues = [];
+
+      outcomeCommonFields.forEach(f => {
+        if (diff[f]) {
+          outcomeValues.push({
+            name: f,
+            label: getOutcomeCommonFieldName(f),
+            value: diff[f],
+            update: false
+          });
+        }
+      });
+      
+      if (outcomeValues.length) {
+        dispatch(setOtcomeChangeFields(outcomeValues));
+        dispatch(addActionToQueue(changeAction, "POST", "BULK"));
+        return;
+      }
+    }
+
+    dispatch(changeAction);
   };
 
   const tags = useMemo(() => {
@@ -161,9 +181,9 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       const productItemTags = [];
 
       [
-        ...entityTags["Article"] || [],
-        ...entityTags["Voucher"] || [],
-        ...entityTags["Membership"] || [],
+        ...(entityTags["Article"] || []),
+        ...(entityTags["Voucher"] || []),
+        ...(entityTags["Membership"] || []),
       ].forEach(t => {
         if (!unique[t.id]) {
           unique[t.id] = true;
@@ -187,6 +207,22 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
     // eslint-disable-next-line default-case
     switch (field.type) {
+      case "Portal subdomain": {
+        fieldProps = {
+          preloadEmpty: true,
+          entity: 'PortalWebsite',
+          aqlColumns: 'subDomain',
+          selectValueMark: 'subDomain',
+          selectLabelMark: 'subDomain',
+          getCustomSearch: s => s ? `subDomain like “${s}”` : '',
+          fieldClasses: {
+            text: classes.text,
+            label: classes.customLabel,
+            placeholder: classes.text
+          }
+        };
+        break;
+      }
       case "Select": {
         fieldProps = {
           items: field.propsItemKey ? props[field.propsItemKey] || [] : field.items,
@@ -259,8 +295,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           name={field.keyCode}
           type={field.type}
           component={DataTypeRenderer}
-          fullWidth
-          validate={field.validate}
+           validate={field.validate}
           {...fieldProps}
         />
       );
@@ -309,8 +344,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                   const { label, keyCode } = field;
 
                   return (
-                    <ListItem
-                      button
+                    <ListItemButton
                       classes={{
                         root: classes.listItems,
                         selected: classes.listItemsSelected
@@ -325,7 +359,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                       </Typography>
 
                       {selectedKeyCode === keyCode && <div className={classes.menuCorner} />}
-                    </ListItem>
+                    </ListItemButton>
                   );
                 })}
             </List>
@@ -333,7 +367,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
           <Grid item xs className={classes.menuColumn}>
             <form autoComplete="off" onSubmit={handleSubmit(onSave)} className={classes.form}>
               <Grid container className={classes.formContent}>
-                <Grid item xs={12}>
+                <Grid item xs={12} xl={6}>
                   {BulkEditFieldRendered}
                 </Grid>
               </Grid>
@@ -365,16 +399,17 @@ const mapStateToProps = (state: State) => ({
   searchQuery: state.list.searchQuery,
   contracts: state.export.contracts,
   dataCollectionRules: state.preferences.dataCollectionRules,
-  entityTags: state.tags.entityTags
+  entityTags: state.tags.entityTags,
+  courseSpecialTags: state.tags.entitySpecialTags.Course,
+  classSpecialTags: state.tags.entitySpecialTags.CourseClass
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  doBulkEdit: (entity, diff: Diff) => dispatch(bulkChangeRecords(entity, diff)),
   getEntityTags: (entity: string) => dispatch(getEntityTags(entity)),
   reset: () => dispatch(reset("BulkEditForm"))
 });
 
 export default reduxForm({
   form: "BulkEditForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(bottomDrawerStyles)(BulkEditForm))) as any;
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(BulkEditForm, bottomDrawerStyles))) as any;

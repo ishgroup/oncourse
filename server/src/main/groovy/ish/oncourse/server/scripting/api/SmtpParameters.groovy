@@ -80,4 +80,13 @@ class SmtpParameters {
         this.subject = subject
         this.content = content
     }
+
+
+    SmtpParameters(String fromAddress, String fromName, String to, String subject, List<DocumentParam> attachments) {
+        this.fromAddress = fromAddress
+        this.fromName = fromName
+        this.toList = [to]
+        this.subject = subject
+        this.attachments = attachments
+    }
 }

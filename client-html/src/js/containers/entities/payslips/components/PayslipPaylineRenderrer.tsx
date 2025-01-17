@@ -1,13 +1,12 @@
-import * as React from "react";
-import { createStyles } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
-import PayslipPaylineItem from "./PayslipPaylineItem";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { PayLineWithDefer } from "../../../../model/entities/Payslip";
+import { Grid } from '@mui/material';
+import { formatCurrency } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { PayLineWithDefer } from '../../../../model/entities/Payslip';
+import PayslipPaylineItem from './PayslipPaylineItem';
 
 const styles = theme =>
-  createStyles({
+  ({
     deferSwitch: {
       display: "flex",
       alignSelf: "flex-end",
@@ -24,7 +23,7 @@ const styles = theme =>
     infoContainer: {
       background: theme.palette.background.default,
       borderRadius: "4px",
-      padding: theme.spacing(1, 0, 1, 2)
+      padding: theme.spacing(1,2)
     },
     threeColumnCard: {
       marginBottom: "20px",
@@ -33,7 +32,6 @@ const styles = theme =>
     infoItem: {
       display: "flex",
       alignItems: "center",
-      paddingRight: "14px",
       justifyContent: "flex-end"
     },
     fieldMargin: {
@@ -128,4 +126,4 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
   }
 }
 
-export default withStyles(styles)(PayslipPaylineRenderrer) as any;
+export default withStyles(PayslipPaylineRenderrer, styles) as any;

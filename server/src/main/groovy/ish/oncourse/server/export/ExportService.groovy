@@ -12,7 +12,6 @@
 package ish.oncourse.server.export
 
 import com.google.inject.Inject
-import groovy.json.JsonBuilder
 import groovy.json.JsonGenerator
 import groovy.json.StreamingJsonBuilder
 import groovy.transform.CompileDynamic
@@ -23,16 +22,18 @@ import ish.math.Money
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.ExportTemplate
-import ish.oncourse.server.messaging.DocumentParam
 import ish.oncourse.server.scripting.GroovyScriptService
 import ish.oncourse.server.scripting.api.CollegePreferenceService
 import ish.oncourse.server.scripting.api.ExportSpec
 import ish.util.EntityUtil
+import ish.common.util.ThumbnailGenerator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
+import org.apache.commons.io.FilenameUtils
 
 import javax.script.ScriptEngineManager
 import javax.script.SimpleBindings
+import java.nio.charset.StandardCharsets
 
 import static ish.oncourse.server.export.Formatter.formatOutput
 
@@ -89,7 +90,7 @@ class ExportService {
 	 * @param records list of records to be exported
 	 * @return {@link Writer} object containing export output
 	 */
-	def performExport(ExportTemplate template, Iterable<? extends PersistentObjectI> records, Map<String, Object> variables = [:], Boolean clipboardExport = false) {
+	def performExport(ExportTemplate template, Iterable<? extends PersistentObjectI> records, Map<String, Object> variables = [:], Boolean clipboardExport = false, boolean createPreview = false) {
 		def groovyScriptEngine = scriptEngineManager.getEngineByName("groovy")
 
 		def bindings = new SimpleBindings()
@@ -128,6 +129,11 @@ class ExportService {
 				String.format(GroovyScriptService.PREPARE_LOGGER, template.name) +
 				template.script, bindings)
 
+
+		if (createPreview && !writer.toString().isEmpty()) {
+			createExportPreview(template, StandardCharsets.UTF_8.encode(writer.toString()).array())
+		}
+
 		return formatOutput(writer.toString(), template.outputType)
 	}
 
@@ -158,5 +164,17 @@ class ExportService {
 		build.call()
 
 		return performExport(exportSpec.templateKeyCode, exportSpec.entityRecords).toString()
+	}
+
+	static void createExportPreview(ExportTemplate template, byte[] content) {
+		if (FilenameUtils.getExtension(template.keyCode).equalsIgnoreCase("csv")) {
+			template.preview = ThumbnailGenerator.generateForCsv(content)
+			template.objectContext.commitChanges()
+		} else {
+			if (FilenameUtils.getExtension(template.keyCode).equalsIgnoreCase("xml")) {
+				template.preview = ThumbnailGenerator.generateForText(content)
+				template.objectContext.commitChanges()
+			}
+		}
 	}
 }

@@ -1,60 +1,51 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2022.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@mui/material/CircularProgress";
-import React, { useCallback, useRef } from "react";
-import clsx from "clsx";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { Document, DocumentVersion } from '@api/model';
+import { Delete, ExpandMore, OpenWith } from '@mui/icons-material';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import clsx from 'clsx';
+import { addDays, format } from 'date-fns';
 import {
-  faCog,
-  faFile,
-  faFileAlt,
-  faFileArchive,
-  faFileExcel,
-  faFileImage,
-  faFilePdf,
-  faFilePowerpoint,
-  faFileWord
-} from "@fortawesome/free-solid-svg-icons";
-import { connect } from "react-redux";
-import { arrayInsert, change, } from "redux-form";
-import { createStyles, withStyles } from "@mui/styles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Collapse from "@mui/material/Collapse";
-import { ExpandMore, OpenWith } from "@mui/icons-material";
-import Button from "@mui/material/Button";
-import { addDays, format } from "date-fns";
-import { Document, DocumentVersion } from "@api/model";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import DocumentsService from "../../../../common/components/form/documents/services/DocumentsService";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from "../../../../common/utils/dates/format";
-import { getLatestDocumentItem, iconSwitcher } from "../../../../common/components/form/documents/components/utils";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { AppTheme } from "../../../../model/common/Theme";
-import { State } from "../../../../reducers/state";
-import DocumentShare from "../../../../common/components/form/documents/components/items/DocumentShare";
-import { showMessage } from "../../../../common/actions";
+  AppTheme,
+  D_MMM_YYYY,
+  FileTypeIcon,
+  getDocumentContent,
+  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL,
+  ShowConfirmCaller,
+  useAppTheme,
+  useHoverShowStyles
+} from 'ish-ui';
+import React, { useCallback, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, FieldArray, WrappedFieldArrayProps, } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../common/actions/IshAction';
+import DocumentShare from '../../../../common/components/form/documents/DocumentShare';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { getLatestDocumentItem } from '../../../../common/utils/documents';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
 
-library.add(faFileImage, faFilePdf, faFileExcel, faFileWord, faFilePowerpoint, faFileArchive, faFileAlt, faFile, faCog);
-
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
   previewPaper: {
     width: 200,
     height: 200,
     "&:hover": {
-      "& $viewDocument": {
+      [`& .${classes.viewDocument}`]: {
         display: "flex"
       }
     }
@@ -75,10 +66,6 @@ const styles = (theme: AppTheme) => createStyles({
     "&:hover": {
       boxShadow: `0 0 1px 1px ${theme.palette.primary.main}`
     }
-  },
-  wh100: {
-    height: "30px !important",
-    width: "auto !important"
   },
   documentTitle: {
     margin: "12px 0 0"
@@ -128,6 +115,93 @@ const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   window.open(url);
 };
 
+const DocumentVersionComp = ({
+  classes,
+  version,
+  index,
+  showConfirm,
+  hasOneVersion,
+  onCurrentChange,
+  remove
+ }) => {
+  
+  const onDelete = () => {
+    showConfirm({
+      onConfirm: () => remove(index),
+      confirmMessage: "Version will be deleted permanently after save",
+      confirmButtonText: "Delete"
+    });
+  };
+
+  const { classes: hoverShowClasses } = useHoverShowStyles();
+
+  const theme = useAppTheme();
+
+  return (
+    (<div className={hoverShowClasses.container}>
+      <div className={clsx("d-grid mb-2", classes.rootPanel)}>
+        <div className="text-truncate">
+          <Typography variant="body2" noWrap>
+            {version.fileName}
+          </Typography>
+          <Typography variant="caption" noWrap>
+            {version.createdBy}
+            {Boolean(version.createdBy) && <>&nbsp;&nbsp;</>}
+            {format(new Date(version.added), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")}
+          </Typography>
+        </div>
+        <div className="flex-fill">
+          <div>
+            <IconButton className={version.current ? null : hoverShowClasses.target} disabled={hasOneVersion}>
+              <FormField
+                type="coloredCheckbox"
+                name={`versions[${index}].current`}
+                color={theme.palette.secondary.main}
+                onChange={onCurrentChange}
+              />
+            </IconButton>
+            <IconButton className={hoverShowClasses.target} color="secondary" onClick={(e: any) => openDocumentURL(e, version.url)}>
+              <OpenWith />
+            </IconButton>
+            <IconButton className={hoverShowClasses.target} color="secondary" onClick={onDelete} disabled={hasOneVersion || version.current}>
+              <Delete />
+            </IconButton>
+          </div>
+        </div>
+      </div>
+    </div>)
+  );
+};
+
+interface DocumentVersionsProps {
+  classes: any;
+  dispatch: Dispatch<IAction>
+  showConfirm: ShowConfirmCaller;
+  onCurrentChange: any;
+  hasOneVersion: boolean;
+}
+
+const DocumentVersions = (
+  {
+    fields,
+    classes,
+    showConfirm,
+    onCurrentChange,
+    hasOneVersion
+  }: WrappedFieldArrayProps & DocumentVersionsProps ) => <div>{fields.map((f, index) => {
+  const version = fields.get(index);
+  return <DocumentVersionComp
+    key={f}
+    classes={classes}
+    version={version}
+    index={index}
+    remove={fields.remove}
+    showConfirm={showConfirm}
+    onCurrentChange={(e, v) => onCurrentChange(e, v, index)}
+    hasOneVersion={hasOneVersion}
+  />;
+})}</div>;
+
 const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
   const {
     twoColumn,
@@ -138,13 +212,13 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     form,
     dispatch,
     isNew,
-    syncErrors
+    syncErrors,
+    showConfirm
   } = props;
 
-  const fileRef = useRef<any>();
+  const fileRef = useRef<any>(undefined);
 
   const [moreDetailcollapsed, setMoreDetailcollapsed] = React.useState(false);
-  const [loadingDocVersion, setLoadingDocVersion] = React.useState(false);
 
   const showMoreDetails = () => {
     setMoreDetailcollapsed(!moreDetailcollapsed);
@@ -156,206 +230,198 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
 
   const documentVersion = getLatestDocumentItem(values.versions);
 
-  const currentIcon = iconSwitcher(documentVersion.mimeType);
+  const validUrl = documentVersion?.url;
 
-  const validUrl = values && values.urlWithoutVersionId;
+  const thumbnail = documentVersion?.thumbnail;
 
-  const thumbnail = values && Array.isArray(values.versions) && ( values.versions[0].thumbnail);
-
-  const handleFileSelect = useCallback(() => {
-    const file = fileRef.current.files[0];
-
-    if (file) {
-      setLoadingDocVersion(true);
-      DocumentsService.createDocumentVersion(values.id, file.name, file).then(docVersion => {
-        dispatch(arrayInsert(form, "versions", 0, docVersion));
-        setLoadingDocVersion(false);
-      }).catch(error => {
-        setLoadingDocVersion(false);
-        if (error && error.data) {
-          dispatch(showMessage({ message: error.data.errorMessage, success: false }));
-        }
+  const handleFileSelect = () => {
+    const content:File = fileRef.current.files[0];
+    if (content) {
+      getDocumentContent(content).then( _content => {
+        const newVersion: DocumentVersion = {
+          id: null,
+          added: new Date().toISOString(),
+          createdBy: null,
+          fileName: content.name,
+          mimeType: content.type,
+          size: null,
+          url: null,
+          thumbnail: null,
+          current: true,
+          content: _content
+        };
+        dispatch(change(form, "versions", [newVersion, ...values.versions.map(v => ({ ...v, current: false }))]));
       });
     }
-  }, [form]);
+  };
 
   const onUploadClick = useCallback(() => {
     fileRef.current.click();
   }, []);
 
+  const hasOneVersion = values.versions.length === 1;
+
+  const onCurrentChange = (e, value, index) => {
+    const currentIndex = values.versions.findIndex(v => v.current);
+
+    if (!value || hasOneVersion || currentIndex === index) {
+      e.preventDefault();
+      return;
+    }
+
+    dispatch(change(form, "versions", values.versions.map((v, i) => ({ ...v, current: index === i }))));
+  };
+
   return (
-    loadingDocVersion
-      ? (
-        <div className="centeredFlex w-100 h-100 justify-content-center">
-          <CircularProgress size={64} thickness={5} className={classes.buttonProgress} />
-        </div>
-      )
-      : (
-        <div className={twoColumn ? "" : "h-100"}>
-          <Grid container columnSpacing={3} rowSpacing={2} className="p-3 ">
-            <Grid item container xs={12}>
-              <FullScreenStickyHeader
-                opened={isNew || Object.keys(syncErrors).includes("name")}
-                twoColumn={twoColumn}
-                title={<span>{values && values.name}</span>}
-                fields={(
-                  <Grid item xs={twoColumn ? 6 : 12}>
-                    <FormField
-                      name="name"
-                      label="Name"
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                )}
-              />
-            </Grid>
-            <Grid item xs={twoColumn ? 4 : 12}>
-              {Boolean(values.removed) && (
-              <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
-              )}
-
-              <Paper className={clsx("relative cursor-pointer", classes.previewPaper)}>
-                {thumbnail ? (
-                  <div
-                    style={{ backgroundImage: `url(data:image;base64,${thumbnail})` }}
-                    className={clsx("w-100 h-100", classes.preview, { [classes.previewHoverImage]: hovered })}
-                  />
-                ) : (
-                  <div className={clsx("centeredFlex justify-content-center h-100", classes.preview, classes.previewIcon,
-                    { "coloredHover": hovered })}
-                  >
-                    <div className="text-center">
-                      {currentIcon({ classes })}
-                      <br />
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        className="text-center flex-fill text-truncate"
-                      >
-                        Click to view
-                      </Typography>
-                    </div>
-                  </div>
-                )}
-                <div className={clsx("absolute w-100 h-100 align-items-center text-center", classes.viewDocument)}>
-                  <div className="flex-fill">
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="inherit"
-                      disabled={!validUrl}
-                      onClick={(e: any) => openDocumentURL(e, validUrl)}
-                    >
-                      <OpenWith />
-                      {` `}
-                      View
-                    </Button>
-                  </div>
-                </div>
-              </Paper>
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                className={clsx(classes.documentTitle, "d-inline-block cursor-pointer text-center flex-fill text-truncate")}
-                onClick={showMoreDetails}
-              >
-                {documentVersion.fileName}
-                {" "}
-                <ExpandMore
-                  className={clsx("d-inline-block vert-align-mid",
-                    classes.documentTitleExpandMore, moreDetailcollapsed && classes.rotateExpandMore)}
-                />
-              </Typography>
-              <Collapse in={moreDetailcollapsed} mountOnEnter unmountOnExit className="mb-0">
-                <Typography variant="caption" color="textSecondary">
-                  {documentVersion.size}
-                  <br />
-                  author:
-                  {' '}
-                  {documentVersion.createdBy}
-                </Typography>
-              </Collapse>
-              <br />
-            </Grid>
-            <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 4 : 12} alignContent="flex-start">
-              <Grid item xs={12}>
+    <div className={twoColumn ? "" : "h-100"}>
+      <Grid container columnSpacing={3} rowSpacing={2} className="p-3 ">
+        <Grid item container xs={12}>
+          <FullScreenStickyHeader
+            opened={isNew || Object.keys(syncErrors).includes("name")}
+            twoColumn={twoColumn}
+            title={<span>{values && values.name}</span>}
+            fields={(
+              <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
-                  type="tags"
-                  name="tags"
-                  tags={tags}
+                  type="text"
+                  name="name"
+                  label="Name"
+                  required
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormField type="multilineText" name="description" label="Description" />
-              </Grid>
-              {Boolean(values.removed) && (
-              <Grid item xs={12} className="pb-2">
-                <Typography variant="body2" className={clsx("d-flex align-items-baseline mb-2", classes.textInfo)}>
-                  <span>
-                    This document will be permanently deleted after
-                    { ' ' }
-                    { format(addDays(new Date(values.modifiedOn), 30), D_MMM_YYYY) }
-                  </span>
-                </Typography>
-                <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
-                  RESTORE
-                </Button>
-              </Grid>
-              )}
-            </Grid>
+            )}
+          />
+        </Grid>
+        <Grid item xs={twoColumn ? 4 : 12}>
+          {Boolean(values.removed) && (
+          <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
+          )}
 
-            <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
-              <div className="heading mb-2">
-                History
-              </div>
-              <div>
-                {Boolean(values.versions)
-                && values.versions.map((version: DocumentVersion) => (
-                  <div key={"key_" + version.id || "new"}>
-                    <div className={clsx("d-grid mb-2", classes.rootPanel)}>
-                      <div>
-                        <Typography variant="body2">
-                          {format(new Date(version.added), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")}
-                        </Typography>
-                        <Typography variant="body2" className={clsx("d-flex align-items-baseline", classes.textInfo)}>
-                          <span>{version.createdBy}</span>
-                        </Typography>
-                      </div>
-                      <div className="flex-fill">
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          color="secondary"
-                          disabled={!version.url}
-                          onClick={(e: any) => openDocumentURL(e, version.url)}
-                        >
-                          <OpenWith />
-                          {` `}
-                          View
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
-              <Button variant="outlined" size="medium" color="secondary" onClick={onUploadClick}>
-                UPLOAD NEW VERSION
-              </Button>
-            </Grid>
-
-            <Grid item xs={twoColumn ? 8 : 12} className="pt-2 pb-2 saveButtonTableOffset">
-              <DocumentShare
-                validUrl={validUrl}
-                dispatch={dispatch}
-                documentSource={values}
-                form={form}
+          <Paper className={clsx("relative cursor-pointer", classes.previewPaper)}>
+            {thumbnail ? (
+              <div
+                style={{ backgroundImage: `url(data:image;base64,${thumbnail})` }}
+                className={clsx("w-100 h-100", classes.preview, { [classes.previewHoverImage]: hovered })}
               />
-            </Grid>
+            ) : (
+              <div className={clsx("centeredFlex justify-content-center h-100", classes.preview, classes.previewIcon,
+                { "coloredHover": hovered })}
+              >
+                <div className="text-center">
+                  <FileTypeIcon mimeType={documentVersion.mimeType} />
+                  <br />
+                  <Typography
+                    variant="caption"
+                    color="textSecondary"
+                    className="text-center flex-fill text-truncate"
+                  >
+                    Click to view
+                  </Typography>
+                </div>
+              </div>
+            )}
+            <div className={clsx("absolute w-100 h-100 align-items-center text-center", classes.viewDocument)}>
+              <div className="flex-fill">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  disabled={!validUrl}
+                  onClick={(e: any) => openDocumentURL(e, validUrl)}
+                  startIcon={<OpenWith />}
+                >
+                  View
+                </Button>
+              </div>
+            </div>
+          </Paper>
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            className={clsx(classes.documentTitle, "d-inline-block cursor-pointer text-center flex-fill text-truncate")}
+            onClick={showMoreDetails}
+          >
+            {documentVersion.fileName}
+            {" "}
+            <ExpandMore
+              className={clsx("d-inline-block vert-align-mid",
+                classes.documentTitleExpandMore, moreDetailcollapsed && classes.rotateExpandMore)}
+            />
+          </Typography>
+          <Collapse in={moreDetailcollapsed} mountOnEnter unmountOnExit className="mb-0">
+            <Typography variant="caption" color="textSecondary">
+              {documentVersion.size}
+              <br />
+              author:
+              {' '}
+              {documentVersion.createdBy}
+            </Typography>
+          </Collapse>
+          <br />
+        </Grid>
+        <Grid item container columnSpacing={3} rowSpacing={2} xs={twoColumn ? 4 : 12} alignContent="flex-start">
+          <Grid item xs={12}>
+            <FormField
+              type="tags"
+              name="tags"
+              tags={tags}
+            />
           </Grid>
-        </div>
-      )
+          <Grid item xs={12}>
+            <FormField type="multilineText" name="description" label="Description" />
+          </Grid>
+          {Boolean(values.removed) && (
+          <Grid item xs={12} className="pb-2">
+            <Typography variant="body2" className={clsx("d-flex align-items-baseline mb-2", classes.textInfo)}>
+              <span>
+                This document will be permanently deleted after
+                { ' ' }
+                { format(addDays(new Date(values.modifiedOn), 30), D_MMM_YYYY) }
+              </span>
+            </Typography>
+            <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
+              RESTORE
+            </Button>
+          </Grid>
+          )}
+        </Grid>
+
+        <Grid item xs={twoColumn ? 4 : 12} className="mb-3">
+          <EntityChecklists
+            className="mb-3"
+            entity="Document"
+            form={form}
+            entityId={values.id}
+            checked={values.tags}
+          />
+
+          <div className="heading mb-2">
+            History
+          </div>
+          <FieldArray
+            name="versions"
+            component={DocumentVersions}
+            classes={classes}
+            showConfirm={showConfirm}
+            onCurrentChange={onCurrentChange}
+            hasOneVersion={hasOneVersion}
+          />
+          <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
+          <Button variant="outlined" size="medium" color="secondary" onClick={onUploadClick}>
+            UPLOAD NEW VERSION
+          </Button>
+        </Grid>
+
+        <Grid item xs={twoColumn ? 8 : 12} className="pt-2 pb-2 saveButtonTableOffset">
+          <DocumentShare
+            validUrl={validUrl}
+            dispatch={dispatch}
+            documentSource={values}
+            form={form}
+          />
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 
@@ -363,4 +429,4 @@ const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Document"]
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(DocumentGeneralTab));
+export default connect<any, any, any>(mapStateToProps, null)(withStyles(DocumentGeneralTab, styles));

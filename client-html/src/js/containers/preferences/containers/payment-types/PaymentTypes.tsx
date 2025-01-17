@@ -3,20 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Account, PaymentMethod } from "@api/model";
+import { ShowConfirmCaller, sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getFormMeta, getFormValues } from "redux-form";
-import { Account, PaymentMethod } from "@api/model";
-import { deletePaymentType, getPaymentTypes, updatePaymentTypes } from "../../actions";
-import { State } from "../../../../reducers/state";
-import { Fetch } from "../../../../model/common/Fetch";
-import PaymentTypesForm from "./components/PaymentTypesForm";
-import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
-import { getPlainAccounts } from "../../../entities/accounts/actions";
 import { showConfirm } from "../../../../common/actions";
-import { ShowConfirmCaller } from "../../../../model/common/Confirm";
+import getTimestamps from "../../../../common/utils/timestamps/getTimestamps";
+import { Fetch } from "../../../../model/common/Fetch";
+import { State } from "../../../../reducers/state";
+import { getPlainAccounts } from "../../../entities/accounts/actions";
+import { deletePaymentType, getPaymentTypes, updatePaymentTypes } from "../../actions";
+import PaymentTypesForm from "./components/PaymentTypesForm";
 
 interface Props {
   getTypes: () => void;

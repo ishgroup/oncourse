@@ -68,7 +68,6 @@ class CourseClassUtilTest extends TestWithDatabase {
         tax.setReceivableFromAccount(account)
 
         CourseClass cc = context.newObject(CourseClass.class)
-        cc.setSessionsCount(0)
         cc.setMinimumPlaces(4)
         cc.setMaximumPlaces(5)
         cc.setCode("testCourse")

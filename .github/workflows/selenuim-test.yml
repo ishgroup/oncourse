@@ -1,0 +1,72 @@
+name: Selenium test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  selenium-tests:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        java: [11]
+    env:
+      SHELL: bash
+
+    steps:
+      - uses: ankane/setup-mariadb@v1
+        with:
+          mariadb-version: "10.11"
+          database: angel_selenuim_test
+
+      - uses: actions/checkout@v2
+
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v3.4.1
+        with:
+          cancel_others: 'true'
+          skip_after_successful_duplicate: 'true'
+          paths_ignore: '["client-html/**", "api-doc/**"]'
+
+      - name: Setup timezone
+        uses: zcong1993/setup-timezone@v1.1.1
+        with:
+          timezone: "Australia/Sydney"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ matrix.java }}-node-${{ hashFiles('**/yarn.lock') }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ matrix.java }}-
+
+      - name: Build server
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew -x test clean server:build
+
+      - name: Run tests
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        run: ./gradlew selenium-test:test -x client-html:test -PdbUrl=jdbc:mariadb://localhost:3306/angel_selenuim_test?user=root --stacktrace
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: ${{ steps.skip_check.outputs.should_skip != 'true' }}
+        with:
+          files: '**/test-results/**/*.xml'

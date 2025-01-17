@@ -1,11 +1,5 @@
+import { AuthenticationApi, LoginRequest, LoginResponse, PasswordComplexity, User, UserApi } from "@api/model";
 import axios from "axios";
-import {
-  AuthenticationApi,
-  UserApi,
-  LoginRequest,
-  LoginResponse,
-  PasswordComplexity, User
-} from "@api/model";
 import { CONTEXT } from "../../../common/api/Constants";
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
@@ -56,6 +50,14 @@ class LoginService {
 
   public getUser(): Promise<User> {
     return this.createCustomAPI("login").getUser();
+  }
+
+  public getSsoLink(type: string): Promise<string> {
+    return this.createCustomAPI("login").getSsoLink(type);
+  }
+
+  public loginSso(ssoType: string, code: string): Promise<LoginResponse> {
+    return this.createCustomAPI("login").loginSso(ssoType, code);
   }
 }
 

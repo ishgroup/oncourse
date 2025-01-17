@@ -3,38 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent/DialogContent";
-import {
-  DecoratedComponentClass, getFormValues, reduxForm
-} from "redux-form";
-import DialogActions from "@mui/material/DialogActions/DialogActions";
-import Launch from "@mui/icons-material/Launch";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { FinalisePeriodInfo } from "@api/model";
-import { format, addDays } from "date-fns";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import { FormControlLabel } from "@mui/material";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import Collapse from "@mui/material/Collapse";
-import HelpOutline from "@mui/icons-material/HelpOutline";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import FormField from "../../common/components/form/formFields/FormField";
-import { getFinaliseInfo, updateFinaliseDate } from "./actions";
-import { StringArgFunction } from "../../model/common/CommonFunctions";
-import LoadingIndicator from "../../common/components/layout/LoadingIndicator";
-import { StyledCheckbox } from "../../common/components/form/formFields/CheckboxField";
-import { EEE_D_MMM_YYYY } from "../../common/utils/dates/format";
-import { validateSingleMandatoryField, validateMinMaxDate } from "../../common/utils/validation";
-import { State } from "../../reducers/state";
-import { openInternalLink } from "../../common/utils/links";
+import { FinalisePeriodInfo } from '@api/model';
+import HelpOutline from '@mui/icons-material/HelpOutline';
+import Launch from '@mui/icons-material/Launch';
+import { FormControlLabel, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import DialogActions from '@mui/material/DialogActions/DialogActions';
+import DialogContent from '@mui/material/DialogContent/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import { addDays, format } from 'date-fns';
+import { EEE_D_MMM_YYYY, openInternalLink, StringArgFunction, StyledCheckbox, validateMinMaxDate } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { DecoratedComponentClass, getFormValues, reduxForm } from 'redux-form';
+import FormField from '../../common/components/form/formFields/FormField';
+import LoadingIndicator from '../../common/components/progress/LoadingIndicator';
+import { validateSingleMandatoryField } from '../../common/utils/validation';
+import { State } from '../../reducers/state';
+import { getFinaliseInfo, updateFinaliseDate } from './actions';
 
 interface Props {
   handleSubmit: any;
@@ -44,9 +34,7 @@ interface Props {
   updateFinaliseDate: StringArgFunction;
 }
 
-const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction="up" ref={ref} {...props as any} timeout={300} />);
-
-const LinkItem = React.memo<any>(({ label, error, onClick }) => (label ? (
+const LinkItem = React.memo<{ label, error?, onClick }>(({ label, error, onClick }) => (label ? (
   <Typography
     variant="body1"
     color={error ? "error" : undefined}
@@ -167,9 +155,7 @@ const Finalise = React.memo<Props>(({
                 type="date"
                 name="targetDate"
                 label={finalaseDateLabel}
-                minDate={values.lastDate}
                 validate={[validateSingleMandatoryField, validateMinDate]}
-                fullWidth
               />
             </Grid>
             <Grid item xs={6}>

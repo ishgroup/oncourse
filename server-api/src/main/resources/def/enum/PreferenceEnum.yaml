@@ -29,3 +29,9 @@ enum:
 - listview.main.content.width
 - oncourse.server.timezone.default
 - tutorial.skip.systemuser
+- background.quality.scale
+- account.default.invoiceline.id
+- payment.gateway.type
+- ish.display.extendedSearchTypes
+- payment.gateway.stripe.client.key
+- payment.gateway.stripe.test.client.key

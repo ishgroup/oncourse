@@ -3,38 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { PriorLearning, TableModel } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import { PriorLearning, TableModel } from "@api/model";
 import { checkPermissions } from "../../../common/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { fundingUploadsPath } from "../../../constants/Api";
-import { FilterGroup } from "../../../model/common/ListView";
-import PriorLearningEditView from "./components/PriorLearningEditView";
-import {
-  clearListState,
-  getFilters,
-  setListEditRecord,
- } from "../../../common/components/list-view/actions";
+import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import {
-  createPriorLearning, deletePriorLearning, getPriorLearning, updatePriorLearning
-} from "./actions";
+import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { fundingUploadsPath } from "../../../constants/Api";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import PriorLearningEditView from "./components/PriorLearningEditView";
 
 const nameCondition = (val: PriorLearning) => val.title;
 
 interface PriorLearningsProps {
-  getPriorLearningRecord?: () => void;
   onInit?: () => void;
-  onSave?: (id: string, priorLearning: PriorLearning) => void;
   onCreate?: (priorLearning: PriorLearning) => void;
   getFilters?: () => void;
   clearListState?: () => void;
   checkPermissions?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  onDelete?: (id: string) => void;
 }
 
 const Initial: PriorLearning = {};
@@ -57,22 +47,18 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Students", list: "contact", expression: "student.priorLearnings.id" },
   { title: "Outcomes", list: "outcome", expression: "priorLearning.id" }
 ];
 
-const manualLink = getManualLink("delivery_rpl");
+const manualLink = getManualLink("importing-and-adding-prior-learning");
 
 const PriorLearnings: React.FC<PriorLearningsProps> = props => {
   const {
-    getPriorLearningRecord,
     onInit,
-    onSave,
-    onCreate,
     getFilters,
     clearListState,
-    onDelete,
     checkPermissions
   } = props;
 
@@ -96,12 +82,8 @@ const PriorLearnings: React.FC<PriorLearningsProps> = props => {
         hideTitle: true
       }}
       EditViewContent={PriorLearningEditView}
-      getEditRecord={getPriorLearningRecord}
       rootEntity="PriorLearning"
       onInit={onInit}
-      onSave={onSave}
-      onCreate={onCreate}
-      onDelete={onDelete}
       filterGroupsInitial={filterGroups}
       findRelated={findRelatedGroup}
       alwaysFullScreenCreateView
@@ -117,10 +99,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getFilters: () => dispatch(getFilters("PriorLearning")),
   clearListState: () => dispatch(clearListState()),
-  getPriorLearningRecord: (id: string) => dispatch(getPriorLearning(id)),
-  onSave: (id: string, priorLearning: PriorLearning) => dispatch(updatePriorLearning(id, priorLearning)),
-  onDelete: (id: string) => dispatch(deletePriorLearning(id)),
-  onCreate: (priorLearning: PriorLearning) => dispatch(createPriorLearning(priorLearning)),
   checkPermissions: () => dispatch(checkPermissions({ path: fundingUploadsPath, method: "GET" }))
 });
 

@@ -3,48 +3,38 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useRef, useState
-} from "react";
-import clsx from "clsx";
-import debounce from "lodash.debounce";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
-  reduxForm, getFormValues, DecoratedComponentClass, InjectedFormProps, change
-} from "redux-form";
-import withStyles from "@mui/styles/withStyles";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { CourseClassDuplicate } from "@api/model";
-import {
- addDays, differenceInDays, getHours, getMinutes, getSeconds, getMilliseconds
-} from "date-fns";
-import { Typography } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../reducers/state";
-import Button from "@mui/material/Button";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
-import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import { courseFilterCondition } from "../../../courses/utils";
+import { CourseClassDuplicate } from '@api/model';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from 'date-fns';
+import { BooleanArgFunction, NoArgFunction, StyledCheckbox } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, DecoratedComponentClass, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { TimetableMonth, TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import { getAllMonthsWithSessions } from '../../../../timetable/utils';
+import CourseItemRenderer from '../../../courses/components/CourseItemRenderer';
+import { courseFilterCondition } from '../../../courses/utils';
 import {
   clearDuplicateCourseClassesSessions,
   duplicateCourseClass,
   getDuplicateCourseClassesSessions
-} from "../../actions";
-import {
- BooleanArgFunction, NoArgFunction
-} from "../../../../../model/common/CommonFunctions";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
-import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import modalStyles from "./modalStyles";
+} from '../../actions';
+import DuplicateCourseClassTimetable from './DuplicateCourseClassTimetable';
+import modalStyles from './modalStyles';
 
 export const DUPLICATE_COURSE_CLASS_FORM: string = "DuplicateCourseClassForm";
 
@@ -77,7 +67,7 @@ const initialValues: CourseClassDuplicate & { toDate: string } = {
   applyDiscounts: true,
   copyCosts: true,
   copySitesAndRooms: true,
-  copyPayableTimeForSessions: true,
+  tutorRosterOverrides: true,
   copyVetData: true,
   copyNotes: true,
   copyAssessments: true,
@@ -92,6 +82,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
     setDialogOpened,
     classes,
     reset,
+    form,
     selection,
     closeMenu,
     getSessions,
@@ -232,7 +223,13 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
     [sessions]
   );
 
-  const onTutorsChange = useCallback<any>(val => onValuesChange("tutors", val, values.toDate, []), [values.toDate]);
+  const onTutorsChange = useCallback<any>(val => {
+    onValuesChange("tutors", val, values.toDate, []);
+    if (!val) {
+      dispatch(change(form, "tutorRosterOverrides", false));
+    }
+  }, [values.toDate]);
+
   const onTagsChange = useCallback<any>(val => onValuesChange("tags", val, values.toDate, {}), [values.toDate]);
   const onSiteAndRoomsChange = useCallback<any>(
     debounce(val => {
@@ -272,7 +269,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
       disableEscapeKeyDown={disableClose}
       onKeyDown={e => e.stopPropagation()}
     >
-      <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)} role={DUPLICATE_COURSE_CLASS_FORM}>
         <DialogContent
           classes={{
             root: classes.dialogContent
@@ -292,32 +289,32 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               </div>
 
               {Boolean(sessions.length) && (
-              <div className="pb-2 pr-2">
-                Advance all classes by
-                <FormField
-                  type="number"
-                  name="daysTo"
-                  formatting="inline"
-                  step="1"
-                  onChange={handleDaysToChange}
-                  disabled={fetching}
-                  className={classes.daysInput}
-                  required
-                />
-                {" "}
-                days, so that the earliest class starts on
-                {" "}
-                <FormField
-                  type="date"
-                  name="toDate"
-                  className={classes.dateTime}
-                  formatting="inline"
-                  onChange={handleDateChange}
-                  disabled={fetching}
-                  fullWidth
-                  required
-                />
-              </div>
+                <div className="pb-2 pr-2">
+                  Advance all classes by
+                  {" "}
+                  <FormField
+                    type="number"
+                    name="daysTo"
+                    inline
+                    step="1"
+                    onChange={handleDaysToChange}
+                    debounced={false}
+                    disabled={fetching}
+                    required
+                  />
+                  {" "}
+                  days, so that the earliest class starts on
+                  {" "}
+                  <FormField
+                    type="date"
+                    name="toDate"
+                    onChange={handleDateChange}
+                    debounced={false}
+                    disabled={fetching}
+                    required
+                    inline
+                  />
+                </div>
               )}
 
               <div>Copy to each new class:</div>
@@ -332,10 +329,25 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       name="copyTutors"
                       color="secondary"
                       onChange={onTutorsChange}
+                      debounced={false}
                       disabled={fetching}
                     />
                   )}
-                  label="Tutors for each session"
+                  label="Tutors"
+                />
+                <FormControlLabel
+                  classes={{
+                    root: "checkbox"
+                  }}
+                  control={(
+                    <FormField
+                      type="checkbox"
+                      name="tutorRosterOverrides"
+                      color="secondary"
+                      disabled={fetching || !values.copyTutors}
+                    />
+                  )}
+                  label="Tutor roster overrides"
                 />
                 <FormControlLabel
                   classes={{
@@ -347,6 +359,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       name="copySitesAndRooms"
                       color="secondary"
                       onChange={onSiteAndRoomsChange}
+                      debounced={false}
                       disabled={fetching}
                     />
                   )}
@@ -366,7 +379,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                       </Tooltip>
                     ) : (
                       "Budget"
-                    )
+                  )
                   }
                 />
                 <FormControlLabel
@@ -391,15 +404,6 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   classes={{
                     root: "checkbox"
                   }}
-                  control={(
-                    <FormField type="checkbox" name="copyPayableTimeForSessions" color="secondary" disabled={fetching} />
-                  )}
-                  label="Payable time"
-                />
-                <FormControlLabel
-                  classes={{
-                    root: "checkbox"
-                  }}
                   control={<FormField type="checkbox" name="copyVetData" color="secondary" disabled={fetching} />}
                   label="VET fields"
                 />
@@ -415,7 +419,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                     root: "checkbox"
                   }}
                   control={(
-                    <FormField type="checkbox" name="copyOnlyMandatoryTags" color="secondary" onChange={onTagsChange} disabled={fetching} />
+                    <FormField type="checkbox" name="copyOnlyMandatoryTags" color="secondary" onChange={onTagsChange} debounced={false} disabled={fetching} />
                   )}
                   label="Tags"
                 />
@@ -441,20 +445,20 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
                   label={(
                     <Typography variant="body2" color="inherit" component="span" onClick={e => e.preventDefault()} noWrap>
                       Change course for all classes to
+                      {" "}
                       <FormField
-                        type="remoteDataSearchSelect"
+                        type="remoteDataSelect"
                         entity="Course"
                         aqlFilter="currentlyOffered is true"
                         name="courseId"
                         selectValueMark="id"
                         selectLabelMark="name"
-                        formatting="inline"
+                        inline
                         selectLabelCondition={v => v.name}
                         selectFilterCondition={courseFilterCondition}
                         validate={changeCourse ? validateSingleMandatoryField : undefined}
                         itemRenderer={CourseItemRenderer}
-                        fullWidth
-                        rowHeight={55}
+                                                rowHeight={55}
                       />
                     </Typography>
                   )}
@@ -462,7 +466,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
               </FormGroup>
             </Grid>
             <Grid item xs={8} className={clsx("relative overflow-y-auto mt-2", classes.timetableContainer)}>
-              <div className={clsx("absolute w-100 h-100", fetching && "centeredFlex justify-content-center")}>
+              <div className={clsx("absolute w-100 h-100 pl-3 pr-3", fetching && "centeredFlex justify-content-center")}>
                 <DuplicateCourseClassTimetable months={months} fetching={fetching} />
               </div>
             </Grid>
@@ -509,5 +513,5 @@ export default reduxForm({
   form: DUPLICATE_COURSE_CLASS_FORM,
   initialValues
 })(
-  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(modalStyles)(DuplicateCourseClassModal))
+  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(DuplicateCourseClassModal, modalStyles))
 ) as DecoratedComponentClass<CourseClassDuplicate & { toDate: string }, Props>;

@@ -80,7 +80,7 @@ class CanvasIntegration implements PluginTrait {
                 authHeader =  responseToJson(result)["access_token"]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to refresh access token  ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to refresh access token  ${resp.getStatusLine()}, ${result}")
             }
         }
 
@@ -114,7 +114,7 @@ class CanvasIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive user by email:${email} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive user by email:${email} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -135,7 +135,7 @@ class CanvasIntegration implements PluginTrait {
      * @return users
      */
     protected getUsersWithPagination(nextPageUrl) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/accounts/${accountId}/users?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/accounts/${accountId}/users?page=1&per_page=100")
         def client = new RESTClient(url)
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
@@ -144,7 +144,7 @@ class CanvasIntegration implements PluginTrait {
                 return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive users by account id:${accountId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive users by account id:${accountId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -187,7 +187,7 @@ class CanvasIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to created a new user name:${fullName} email:${email} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to created a new user name:${fullName} email:${email} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -227,7 +227,7 @@ class CanvasIntegration implements PluginTrait {
      * @return enrolments
      */
     protected getEnrolmentsWithPagination(nextPageUrl, userId) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/users/${userId}/enrollments?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/users/${userId}/enrollments?page=1&per_page=100")
         def client = new RESTClient(url)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.GET, ContentType.URLENC) {
@@ -235,7 +235,7 @@ class CanvasIntegration implements PluginTrait {
                 return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive enrolments by user id:${userId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive enrolments by user id:${userId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -268,7 +268,7 @@ class CanvasIntegration implements PluginTrait {
      * @param user id from Canvas
      */
     protected getUserLoginsWithPagination(nextPageUrl, userId) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/users/${userId}/logins?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/users/${userId}/logins?page=1&per_page=100")
         def client = new RESTClient(url)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.GET, ContentType.URLENC) {
@@ -277,7 +277,7 @@ class CanvasIntegration implements PluginTrait {
                 return [ "resp": resp, "result": result]
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive logins by user id:${userId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive logins by user id:${userId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -321,7 +321,7 @@ class CanvasIntegration implements PluginTrait {
                 return result
             }
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to edit user, user id:${userId} event:${event} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to edit user, user id:${userId} event:${event} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -346,7 +346,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}, ${result}")
             }
         }
 
@@ -373,7 +373,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to retreive all courses ${resp.getStatusLine()}, ${result}")
             }
         }
 
@@ -393,14 +393,14 @@ class CanvasIntegration implements PluginTrait {
         List coursesByBlueprintCode = getCourse(courseBlueprint) as List
         def blueprintCourses = coursesByBlueprintCode.findAll { it["blueprint"] == true}
         if (blueprintCourses.size() == 0) {
-            throw new IllegalArgumentException("Illegal state: There are no blueprint courses with specified code ${courseBlueprint}")
+            throw new IllegalArgumentException("Illegal state: There are no blueprint courses with specified code ${courseBlueprint}, when get courses using account_id ${accountId}")
         }
         if (blueprintCourses.size() > 1) {
             throw new IllegalArgumentException("Illegal state: There are find more that one blueprint course for specified course code: ${courseBlueprint}. " +
                     "Please, specify more unique course code.")
         }
         def course = createNewCourse(courseCode, courseName, courseId)
-        def resultOfUpdate = updateAssociatedCourses(blueprintCourses["id"][0], List.of(course["id"]))
+        def resultOfUpdate = updateAssociatedCourses(blueprintCourses["id"][0], blueprintCourses["account_id"][0], List.of(course["id"]), course["account_id"])
         if (resultOfUpdate["success"] == true) {
             migrateFromBlueprintCourse(blueprintCourses["id"][0])
             return getCourse(courseCode)
@@ -437,7 +437,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create course, course code: ${courseCode}, course name: ${courseName}, course id: ${courseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to create course, course code: ${courseCode}, course name: ${courseName}, course id: ${courseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -471,7 +471,7 @@ class CanvasIntegration implements PluginTrait {
      * @param courseIdsToAdd courses ids from Canvas to add as associated courses
      * @return success status
      */
-    def updateAssociatedCourses(int blueprintCourseId, List courseIdsToAdd) {
+    def updateAssociatedCourses(int blueprintCourseId, int blueprintCourseAccountId, List courseIdsToAdd, courseAccountIdsToAdd) {
         def client = new RESTClient(baseUrl)
         client.headers["Authorization"] = "Bearer ${authHeader}"
         client.request(Method.PUT, ContentType.JSON) {
@@ -484,7 +484,8 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to update associated courses, blueprint course id: ${blueprintCourseId}, course ids ${courseIdsToAdd} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to update associated courses, blueprint course id: ${blueprintCourseId}, course ids ${courseIdsToAdd} ${resp.getStatusLine()}, ${result}. " +
+                        "Blueprint course account_id = ${blueprintCourseAccountId}, account_ids of the added courses = ${courseAccountIdsToAdd}. Course account should be same or sub-account of blueprint course.")
             }
         }
     }
@@ -505,7 +506,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to migrate associated courses, blueprint course id: ${blueprintCourseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to migrate associated courses, blueprint course id: ${blueprintCourseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -517,7 +518,7 @@ class CanvasIntegration implements PluginTrait {
      * @return collection of sections
      */
     def getSectionsByCourseWithPagination(nextPageUrl, courseId) {
-        def url = nextPageUrl != null ? nextPageUrl : "https://nida-au.test.instructure.com/api/v1/courses/${courseId}/sections?page=1&per_page=100"
+        def url = nextPageUrl != null ? nextPageUrl : (baseUrl + "/api/v1/courses/${courseId}/sections?page=1&per_page=100")
         def client = new RESTClient(url)
 
         client.headers["Authorization"] = "Bearer ${authHeader}"
@@ -527,7 +528,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to get sections for course, course id:${courseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to get sections for course, course id:${courseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -580,7 +581,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to create section, course id: ${courseId}, section name: ${code}, course class id: ${courseClassId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to create section, course id: ${courseId}, section name: ${code}, course class id: ${courseClassId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -609,7 +610,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to enrol student: ${studentId} into section: ${sectionId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to enrol student: ${studentId} into section: ${sectionId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }
@@ -663,7 +664,7 @@ class CanvasIntegration implements PluginTrait {
             }
 
             response.failure = { resp, result ->
-                throw new IllegalStateException("Failed to enrol teacher: ${teachertId} into course: ${courseId} ${resp.getStatusLine()}")
+                throw new IllegalStateException("Failed to enrol teacher: ${teachertId} into course: ${courseId} ${resp.getStatusLine()}, ${result}")
             }
         }
     }

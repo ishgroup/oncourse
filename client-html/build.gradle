@@ -1,48 +1,52 @@
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 plugins {
-    id 'com.github.node-gradle.node'
     id 'queryLanguageModel'
 }
 
-node {
-    version = '12.19.0'
-    yarnVersion = '1.22.10'
-    download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
-    workDir = file("${project.buildDir}/nodejs")
-}
+apply from: "$rootDir/nodeSetup.gradle"
 
-yarn.outputs.cacheIf { true }
 
-task webpack(type: YarnTask, dependsOn: 'queryGrammar') {
-    inputs.files("webpack.config.js", "tsconfig.json", "yarn.lock", "package.json", "jest.config.js")
+task webpack(type: NpmTask, dependsOn: 'queryGrammar') {
+    inputs.files("webpack.config.js", "tsconfig.json", "package-lock.json", "package.json", "jest.config.js")
     inputs.dir("src")
     outputs.dir("$buildDir/assets")
     inputs.property('version', version)
-    args = ['build:prod', '--env', 'NODE_ENV=production', '--env', "BUILD_NUMBER=${version ?: '99-SNAPSHOT'}"]
+    npmCommand = ['run']
+    args = ['build:prod', "BUILD_NUMBER=${version ?: '99-SNAPSHOT'}"]
 }
 
-clean {
-    delete "${projectDir}/node_modules"
-}
-
-task yarn_start(type: YarnTask, dependsOn:['webpack']) {
-    inputs.files("webpack.config.js", "webpack.dev.config.js", "tsconfig.json", "yarn.lock", "package.json")
+task npm_start(type: NpmTask, dependsOn:['webpack']) {
+    npmCommand = ['run']
+    inputs.files("webpack.config.js", "webpack.dev.config.js", "tsconfig.json", "package-lock.json", "package.json")
     args = ['start']
 }
 
-task yarn_outdated(type: YarnTask) {
+task npm_outdated(type: NpmTask) {
+    npmCommand = ['run']
     args = ['outdated']
 }
 
-task queryGrammar(type: YarnTask, dependsOn: [':server-api:swagger', 'yarn', 'generateQueryLanguageModel']) {
+task queryGrammar(type: NpmTask, dependsOn: [':server-api:swagger', 'npmInstall', 'generateQueryLanguageModel']) {
     inputs.dir("$rootDir/buildSrc/aql/src/main/resources/")
     outputs.dir("$buildDir/generated-sources/aql-parser")
+    npmCommand = ['run']
     args = ['antlr4ts']
 }
 
-task jest(type: YarnTask, dependsOn: 'queryGrammar') {
-    args = ['test', '--runInBand']
+task jest(type: NpmTask, dependsOn: 'queryGrammar') {
+    npmCommand = ['run']
+    args = ['test']
 }
-test.dependsOn(jest)
+
+if("true" != System.getProperty('ish.devMode'))
+    test.dependsOn(jest)
 
 sourceSets {
     main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'

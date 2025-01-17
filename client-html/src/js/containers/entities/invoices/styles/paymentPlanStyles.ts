@@ -3,11 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { createStyles } from "@mui/styles";
-import { alpha } from "@mui/material/styles";
-import { AppTheme } from "../../../../model/common/Theme";
+import { alpha } from '@mui/material/styles';
+import { AppTheme } from 'ish-ui';
 
-export const paymentPlanStyles = (theme: AppTheme) => createStyles({
+export const paymentPlanStyles = (theme: AppTheme, p, classes) => ({
   root: {
     backgroundColor: "inherit",
     padding: 0
@@ -20,7 +19,7 @@ export const paymentPlanStyles = (theme: AppTheme) => createStyles({
     padding: 0
   },
   step: {
-    "&:first-child $stepButton": {
+    [`&:first-child .${classes.stepButton}`]: {
       marginTop: theme.spacing(-1),
       paddingTop: theme.spacing(1)
     }

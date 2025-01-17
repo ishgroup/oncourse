@@ -10,12 +10,7 @@
 	<property name="ish.oncourse.additionalProperty.property1" value="startDatetime"/>
 	<property name="ish.oncourse.additionalProperty.property2" value="startDatetime"/>
 	<property name="ish.oncourse.reports.isObjectOnSeparatePage" value="false"/>
-	<property name="name" value="Class Timetable Report"/>
-	<property name="entity" value="Session"/>
 	<property name="isSubreport" value="false"/>
-	<property name="isVisible" value="true"/>
-
-	<property name="keyCode" value="ish.onCourse.ClassSessionReportMain"/>
 	<property name="ish.oncourse.description" value="The purpose of this report is to allow the user to select multiple classes (which may contain the same students e.g. those doing a Diploma may undertake 4 classes simultaneously) and print a date range specified timetable of sessions to show the students when and where to turn up to class. This report prints in Landscape format."/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -90,7 +85,6 @@
 	<field name="courseClass.enrolmentsCount" class="java.lang.Integer"/>
 	<field name="startDatetime" class="java.util.Date"/>
 	<field name="endDatetime" class="java.util.Date"/>
-	<field name="courseClass.sessionRepeatInterval" class="java.lang.Integer"/>
 	<field name="courseClass.code" class="java.lang.String"/>
 	<field name="durationHoursPart" class="java.lang.Integer"/>
 	<field name="durationMinutesPart" class="java.lang.Integer"/>

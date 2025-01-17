@@ -1,5 +1,13 @@
-import { DefaultHttpService } from "../../../common/services/HttpService";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
+
 import { SearchRequest, Session, TimetableApi } from "@api/model";
+import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class TimetableService {
   readonly timetableApi = new TimetableApi(new DefaultHttpService());
@@ -20,14 +28,8 @@ class TimetableService {
     return this.timetableApi.getSessionsTags(id.toString());
   }
 
-  public getTimetableSessionsDays(month: number, year: number, search: string): Promise<number[]> {
-    // Temporary fix for Firefox due invalid (negative) date parsing
-    // TODO Fix dates parsing in Firefox
-    return this.timetableApi.getDates(
-      String(month).replace(/[^0-9]/g, "") as any,
-      String(year).replace(/[^0-9]/g, "") as any,
-      search
-    );
+  public getTimetableSessionsDays(month: number, year: number, search: SearchRequest): Promise<number[]> {
+    return this.timetableApi.getDates(month, year, search);
   }
 }
 

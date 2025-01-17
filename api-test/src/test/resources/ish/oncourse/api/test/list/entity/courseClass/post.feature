@@ -40,7 +40,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -50,7 +50,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -64,9 +63,11 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "minimumSessionsToComplete":null,
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -114,7 +115,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport": null,
         "isActive": true,
         "isCancelled": false,
-        "isDistantLearningCourse": false,
+        "type":"With Sessions",
         "isShownOnWeb": false,
         "maxStudentAge": 30,
         "maximumDays": null,
@@ -123,7 +124,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "midwayDetExport": null,
         "minStudentAge": 10,
         "minimumPlaces": 10,
-        "sessionsCount": 0,
         "suppressAvetmissExport": true,
         "vetCourseSiteID": 123,
         "vetFundingSourceStateID": "123",
@@ -152,12 +152,16 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount": 0,
         "canceledEnrolmentsCount": 0,
         "failedEnrolmentsCount": 0,
-        "tags": [{"id": 231,"name": "class1","status": null,"system": null,"urlPath": null,"content": null,"color": null,"weight": null,"taggedRecordsCount": null,"childrenCount": null,"created": "#ignore","modified": "#ignore","requirements": [],"childTags": []}],
+        "minimumSessionsToComplete":null,
+        "tags": [231],
         "documents": [
-        {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":"#ignore","tags":[],"attachmentRelations":"#ignore","versionId":null,"modifiedOn":"#ignore","removed":false,"attachedRecordsCount":"#ignore","versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
+        {"shared":true,"thumbnail":null,"access":"Private","added":"#ignore","description":"Private description","createdOn":"#ignore","tags":[],"attachmentRelations":"#ignore","modifiedOn":"#ignore","removed":false,"attachedRecordsCount":"#ignore","versions":[{"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null,"content":null, current:true}],"name":"defaultPrivateDocument","id":200,"urlWithoutVersionId":null}
         ],
         "isTraineeship": false,
-        "customFields": {}
+        "customFields": {},
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 
@@ -186,7 +190,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "reportableHours":20,
         "webDescription":"some web description",
         "customFields":{},
-        "tags":[{"id":227}],
+        "tags":[227],
         "documents":[{"id":200}],
         "modules":[{"id":3}],
         "dataCollectionRuleId":"101",
@@ -194,7 +198,8 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "qualificationId":3,
         "isTraineeship":true,
         "currentlyOffered":false,
-        "feeHelpClass":false
+        "feeHelpClass":false,
+        "specialTagId":null
         }
         """
 
@@ -238,7 +243,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -248,7 +253,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -262,9 +266,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -319,7 +324,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -329,7 +334,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -343,9 +347,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -383,7 +388,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -393,7 +398,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -407,9 +411,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -449,7 +454,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -459,7 +464,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -473,9 +477,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -514,7 +519,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -524,7 +529,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -538,9 +542,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -579,7 +584,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -589,7 +594,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -603,9 +607,10 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -622,7 +627,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
 #       <--->  Login as notadmin
         * configure headers = { Authorization:  'UserWithRightsCreate'}
 
-        
+
 #       <--->
 
         * def newClass =
@@ -650,7 +655,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport":null,
         "isActive":true,
         "isCancelled":false,
-        "isDistantLearningCourse":false,
+        "type":"With Sessions",
         "isShownOnWeb":false,
         "maxStudentAge":"30",
         "maximumDays":null,
@@ -660,7 +665,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "minStudentAge":"10",
         "minimumPlaces":10,
         "reportableHours":12,
-        "sessionsCount":null,
         "suppressAvetmissExport":true,
         "vetCourseSiteID":123,
         "vetFundingSourceStateID":"123",
@@ -674,9 +678,11 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "summaryDiscounts":null,
         "enrolmentsToProfitLeftCount":null,
         "successAndQueuedEnrolmentsCount":null,
-        "tags":[{"id":231}],
+        "minimumSessionsToComplete":null,
+        "tags":[231],
         "documents":[{"id":200}],
-        "isTraineeship":false
+        "isTraineeship":false,
+        "specialTagId":null
         }
         """
 
@@ -723,7 +729,7 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "initialDetExport": null,
         "isActive": true,
         "isCancelled": false,
-        "isDistantLearningCourse": false,
+        "type":"With Sessions",
         "isShownOnWeb": false,
         "maxStudentAge": 30,
         "maximumDays": null,
@@ -732,7 +738,6 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "midwayDetExport": null,
         "minStudentAge": 10,
         "minimumPlaces": 10,
-        "sessionsCount": 0,
         "suppressAvetmissExport": true,
         "vetCourseSiteID": 123,
         "vetFundingSourceStateID": "123",
@@ -761,11 +766,15 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "successAndQueuedEnrolmentsCount": 0,
         "canceledEnrolmentsCount": 0,
         "failedEnrolmentsCount": 0,
-        "tags": [{"id": 231,"name": "class1","status": null,"system": null,"urlPath": null,"content": null,"color": null,"weight": null,"taggedRecordsCount": null,"childrenCount": null,"created": "#ignore","modified": "#ignore","requirements": [],"childTags": []}],
+        "minimumSessionsToComplete":null,
+        "tags": [231],
         "documents":"#ignore",
         "isTraineeship": false,
         "customFields": {},
-        "feeHelpClass":false
+        "feeHelpClass":false,
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 

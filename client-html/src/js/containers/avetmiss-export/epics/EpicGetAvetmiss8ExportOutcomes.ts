@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { AvetmissExportOutcome } from "@api/model";
 import { Epic } from "redux-observable";
+import { CLEAR_PROCESS } from "../../../common/actions";
+import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
 
 import * as EpicUtils from "../../../common/epics/EpicUtils";
-import AvetmissExportService from "../services/AvetmissExportService";
 import {
   CLEAR_AVETMISS8_EXPORT_ID,
   GET_AVETMISS_EXPORT_OUTCOMES,
   GET_AVETMISS_EXPORT_OUTCOMES_FULFILLED
 } from "../actions";
-import { AvetmissExportOutcome } from "@api/model";
-import { CLEAR_PROCESS } from "../../../common/actions";
-import FetchErrorHandler from "../../../common/api/fetch-errors-handlers/FetchErrorHandler";
+import AvetmissExportService from "../services/AvetmissExportService";
 
 const request: EpicUtils.Request = {
   type: GET_AVETMISS_EXPORT_OUTCOMES,

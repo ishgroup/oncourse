@@ -10,7 +10,6 @@ describe("Virtual rendered RoomEditView", () => {
       expect(screen.getByRole(formRoleName)).toHaveFormValues({
         name: initialValues.name,
         seatedCapacity: initialValues.seatedCapacity.toString(),
-        siteId: initialValues.siteId.toString(),
         facilities: initialValues.facilities,
         directions: initialValues.directions,
       });

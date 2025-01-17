@@ -3,13 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import posed from "react-pose";
 import {
-  format as formatDate, getDaysInMonth, setDate, setMonth, setYear
-} from "date-fns";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+  AvetmissExportFee,
+  AvetmissExportFlavour,
+  AvetmissExportRequest,
+  AvetmissExportSettings,
+  FundingSource,
+  FundingStatus,
+  FundingUpload
+} from '@api/model';
+import { ExpandMore } from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Card,
   CardContent,
@@ -20,31 +24,24 @@ import {
   FormGroup,
   Grid,
   Hidden,
-  IconButton,
-  Tooltip,
   Typography,
-} from "@mui/material";
-import { withStyles, createStyles } from "@mui/styles";
-import { ExpandMore, HelpOutline } from "@mui/icons-material";
-import {
-  arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm
-} from "redux-form";
-import clsx from "clsx";
-import {
-  AvetmissExportFee,
-  AvetmissExportFlavour,
-  AvetmissExportRequest,
-  AvetmissExportSettings,
-  FundingSource,
-  FundingStatus,
-  FundingUpload
-} from "@api/model";
-import LoadingButton from "@mui/lab/LoadingButton";
-import ErrorMessage from "../../../common/components/form/fieldMessage/ErrorMessage";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { State } from "../../../reducers/state";
-import { StyledCheckbox } from "../../../common/components/form/formFields/CheckboxField";
-import AvetmissExportResults from "../components/AvetmissExportResults";
+} from '@mui/material';
+import clsx from 'clsx';
+import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from 'date-fns';
+import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, validateMinMaxDate, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React from 'react';
+import posed from 'react-pose';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { interruptProcess } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import FormField from '../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { AvetmissExportSettingsReqired } from '../../../model/preferences';
+import { State } from '../../../reducers/state';
 import {
   clearAvetmiss8ExportID,
   clearExportOutcomes,
@@ -55,20 +52,15 @@ import {
   getAvetmiss8OutcomesStatus,
   getFundingUploads,
   updateFundingUpload
-} from "../actions";
-import { interruptProcess } from "../../../common/actions";
-import { validateMinMaxDate } from "../../../common/utils/validation";
-import { III_DD_MMM_YYYY, YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
-import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
-import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
-import { AvetmissExportSettingsReqired } from "../../../model/preferences";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
+} from '../actions';
+import AvetmissExportResults from '../components/AvetmissExportResults';
+import AvetmissHistory from '../components/AvetmissHistory/AvetmissHistory';
+import PreviousExportPanel from '../components/PreviousExportPanel/PreviousExportPanel';
+import getAvetmissExportFormValues from '../utils/getAvetmissExportFormValues';
 
 export const FORM: string = "AvetmissExportForm";
 
-const styles = theme => createStyles({
+const styles = theme => ({
   divider: {
     margin: theme.spacing(3, -3)
   },
@@ -196,7 +188,7 @@ const todayMonth = today.getMonth();
 
 const formated = setMonth(new Date(), todayMonth);
 
-const manualUrl = getManualLink("AVETMISS");
+const manualUrl = getManualLink("avetmiss-reporting");
 
 // Australian quarters
 const getCurrentQuarter = () => {
@@ -320,7 +312,7 @@ interface Props {
   values?: any;
   enrolmentsCount?: number;
   data?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   classes?: any;
   outcomes?: any;
   exportID?: string;
@@ -660,7 +652,8 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
         items={flavourModel}
         onChange={this.onFlavourChange}
         className="mb-2"
-        reqired
+        debounced={false}
+        required
       />
     );
 
@@ -755,8 +748,9 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       : dateRangeModel
                                   }
                                   onChange={this.onDateRangeChange}
+                                  debounced={false}
                                   className="mb-2"
-                                  displayEmpty
+                                  allowEmpty
                                   required
                                 />
 
@@ -766,7 +760,6 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       type="date"
                                       name="outcomesStart"
                                       label="Start"
-                                      maxDate={values.outcomesEnd}
                                       validate={this.validateMaxDate}
                                       className="mb-2"
                                     />
@@ -775,7 +768,6 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                         type="date"
                                         name="outcomesEnd"
                                         label="End"
-                                        minDate={values.outcomesStart}
                                         validate={this.validateMinDate}
                                         className="mb-2"
                                       />
@@ -874,9 +866,9 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                           <LoadingButton
                             color="primary"
                             type="submit"
+                            variant="contained"
                             disabled={invalid || !checkboxesValid}
                             loading={pending}
-                            className="avetmissButton"
                           >
                             Find
                           </LoadingButton>
@@ -960,4 +952,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm<any, Props>({
   form: FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AvetmissExportForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(AvetmissExportForm, styles)));

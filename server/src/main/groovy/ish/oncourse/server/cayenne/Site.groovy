@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.types.NodeType
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Site
@@ -31,7 +32,7 @@ import javax.annotation.Nullable
  */
 @API
 @QueueableEntity
-class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, SiteTrait {
+class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, SiteTrait, ExpandableTrait {
 
 	public static final String DEFAULT_SITE_NAME = "Default site"
 	public static final String ACTIVE_CLASSES_COUNT_KEY = "activeClassesCount"
@@ -324,7 +325,8 @@ class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, Si
 	List<Tag> getTags() {
 		List<Tag> tagList = new ArrayList<>(getTaggingRelations().size())
 		for (SiteTagRelation relation : getTaggingRelations()) {
-			tagList.add(relation.getTag())
+			if(relation.tag?.nodeType?.equals(NodeType.TAG))
+				tagList.add(relation.getTag())
 		}
 		return tagList
 	}
@@ -332,5 +334,10 @@ class Site extends _Site implements Queueable, NotableTrait, AttachableTrait, Si
 	@Override
 	Class<? extends TagRelation> getTagRelationClass() {
 		return SiteTagRelation.class
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return SiteCustomField
 	}
 }

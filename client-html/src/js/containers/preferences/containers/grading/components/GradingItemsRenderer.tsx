@@ -6,18 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import clsx from "clsx";
-import React, { useMemo } from "react";
-import { Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { WrappedFieldArrayProps } from "redux-form";
-import { GradingItem, GradingType } from "@api/model";
-import { useHoverShowStyles } from "../../../../../common/styles/hooks";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { getFieldArrayFieldMeta } from "../../../../../common/utils/validation";
-import { GradingFormData } from "./GradingTypesForm";
-import AddButton from "../../../../../common/components/icons/AddButton";
+import { GradingItem, GradingType } from '@api/model';
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AddButton, useHoverShowStyles } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { WrappedFieldArrayProps } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { getFieldArrayFieldMeta } from '../../../../../common/utils/validation';
+import { GradingFormData } from './GradingTypesForm';
 
 interface Props {
   classes: any;
@@ -47,7 +46,7 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
     parent
   } = props;
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
 
   const onAdd = () => {
     const prevField = fields.get(fields.length - 1);
@@ -103,19 +102,20 @@ const GradingItemsRenderer: React.FC<WrappedFieldArrayProps<GradingItem> & Props
                     <FormField
                       type="text"
                       name={`${f}.name`}
-                      formatting="inline"
-                      className="mr-1"
+                      inline
                       required
                     />
                     {" ( "}
                     {offsetLabel}
+                    {" "}
                     <FormField
                       type="number"
                       name={`${f}.lowerBound`}
-                      formatting="inline"
+                      inline
                       validate={validateMinMax}
                       required
                     />
+                    {" "}
                     {parent.entryType === "choice list" && "%"}
                     {" ) "}
                     <IconButton

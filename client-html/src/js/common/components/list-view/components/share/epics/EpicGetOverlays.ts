@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
+import { DataResponse, ReportOverlay } from "@api/model";
 
 import { change } from "redux-form";
-import { DataResponse, ReportOverlay } from "@api/model";
-import * as EpicUtils from "../../../../../epics/EpicUtils";
-import { GET_OVERLAY_ITEMS, GET_OVERLAY_ITEMS_FULFILLED } from "../actions";
-import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
-import EntityService from "../../../../../services/EntityService";
+import { Epic } from "redux-observable";
 import { CommonListItem } from "../../../../../../model/common/sidebar";
+import FetchErrorHandler from "../../../../../api/fetch-errors-handlers/FetchErrorHandler";
+import * as EpicUtils from "../../../../../epics/EpicUtils";
+import EntityService from "../../../../../services/EntityService";
+import { GET_OVERLAY_ITEMS, GET_OVERLAY_ITEMS_FULFILLED } from "../actions";
+import { LIST_SHARE_FORM_NAME } from "../constants";
 
 const request: EpicUtils.Request<any, { overlayToSelect?: string }> = {
   type: GET_OVERLAY_ITEMS,
@@ -31,9 +32,9 @@ const request: EpicUtils.Request<any, { overlayToSelect?: string }> = {
     return [
       {
         type: GET_OVERLAY_ITEMS_FULFILLED,
-        payload: { overlays }
+        payload: {overlays}
       },
-      ...(selectItem ? [change("ListShareForm", "backgroundId", selectItem.id)] : [])
+      ...(selectItem ? [change(LIST_SHARE_FORM_NAME, "backgroundId", selectItem.id)] : [])
     ];
   },
   processError: response => {

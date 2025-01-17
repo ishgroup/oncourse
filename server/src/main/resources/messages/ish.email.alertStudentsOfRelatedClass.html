@@ -11,7 +11,7 @@ ${render(headerKeycode)}
                     <br>
                     For more information or to enrol, please visit <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get('web.url')}" target="_blank">${Preferences.get("web.url")}</a> or click on the link below.
                     <br>
-                    Starting ${courseClass.firstSession.startDatetime?.format("EEE d MMMM - h.mm")} - ${courseClass.firstSession.endDatetime?.format("h.mm a")} ${courseClass.sessionsCount == null ? '' : '(' + courseClass.sessionsCount + ' sessions)'}
+                    Starting ${courseClass.firstSession.startDatetime?.format("EEE d MMMM - h.mm")} - ${courseClass.firstSession.endDatetime?.format("h.mm a")} ${courseClass.sessions == null ? '' : '(' + courseClass.sessions.size() + ' sessions)'}
                     <br>
                     <a style="color: #0084b4;color: #0084b4 !important;background-color: #ffffff;text-decoration: none;border: 0;word-wrap: break-word;" href="${Preferences.get('web.url')}/course/${courseClass.course.code}/" target="_blank">${courseClass.course.name}</a>
                     <br>

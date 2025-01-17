@@ -83,6 +83,22 @@ Feature: Main feature for all GET requests with path 'list/entity/exportTemplate
         """
 
 
+    Scenario: (+) Get Configs of template by admin
+
+        Given path ishPathList
+        And param entity = 'ExportTemplate'
+        And param pageSize = 100
+        And param columns = 'name'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["Room CSV"])].id
+        * print "id = " + id
+
+        Given path ishPath + '/config/' + id
+        When method GET
+        Then status 200
+        And match $ contains 'shortDescription: "Export records to CSV format, suitable for spreadsheets or other\\\n  \\ applications that require a flat file. Choose a different format for long text\\\n  \\ or structured data."\ndescription: "Export records to CSV format, suitable for spreadsheets or other applications\\\n  \\ that require a flat file. Choose a different format for long text or structured\\\n  \\ data."\ncategory: scheduling\nname: Room CSV\nentityClass: Room\noutputType: CSV'
 
     Scenario: (-) Get not existing Template
 

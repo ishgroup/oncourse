@@ -3,17 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
 import { State } from "../../../../../../reducers/state";
 
@@ -63,12 +60,14 @@ class XeroBaseForm extends React.Component<any, any> {
     if (search && !hideConfig) {
       const params = new URLSearchParams(search);
       const code = params.get("code");
+      const name = params.get("name");
 
       if (code) {
         this.setState({
           hideConfig: true
         });
         dispatch(change("XeroForm", "verificationCode", code));
+        dispatch(change("XeroForm", "name", name));
         params.delete('code');
 
         history.replace({
@@ -91,9 +90,12 @@ class XeroBaseForm extends React.Component<any, any> {
       loading: true
     });
 
+    const paramsStr = "?name=" + values?.name;
+    const state = encodeURI(`${window.location.href}${paramsStr}`);
+
     window.open(
       // eslint-disable-next-line max-len
-      `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${window.location.href}${values.id ? "" : `/${values.name}`}`,
+      `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${state}`,
       "_self"
     );
   };
@@ -108,15 +110,13 @@ class XeroBaseForm extends React.Component<any, any> {
 
   render() {
     const {
-      AppBarContent, dirty, handleSubmit, values = {}, form
+      AppBarContent, handleSubmit, values = {}
     } = this.props;
 
     const { hideConfig, loading } = this.state;
 
     return (
       <form onSubmit={handleSubmit(this.beforeSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
-
         <AppBarContent disableName={Boolean(values?.id)}>
           {values?.fields?.active === "true" ? (
             <>
@@ -139,7 +139,6 @@ class XeroBaseForm extends React.Component<any, any> {
                     type="stub"
                     name="verificationCode"
                     validate={validateSingleMandatoryField}
-                    className="mb-2"
                   />
                 )
               }

@@ -3,54 +3,44 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useState
-} from "react";
-import { withStyles, createStyles } from "@mui/styles";
-import Grid from "@mui/material/Grid";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
- faAdjust, faCheck, faTimes, faCircle
-} from "@fortawesome/free-solid-svg-icons";
-import { change, initialize } from "redux-form";
-import { AttendanceType } from "@api/model";
-import IconButton from "@mui/material/IconButton";
-import ChevronRight from "@mui/icons-material/ChevronRight";
-import ChevronLeft from "@mui/icons-material/ChevronLeft";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import Divider from "@mui/material/Divider";
-import { AppTheme } from "../../../../../model/common/Theme";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
-import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import history from "../../../../../constants/History";
-import AttendanceGridItem from "./AttendanceGridItem";
-import AttendanceDayBase from "./AttendanceDayBase";
+import { AttendanceType } from '@api/model';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faAdjust, faCheck, faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import { Divider, Grid } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { change, initialize } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { addActionToQueue } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import uniqid from '../../../../../common/utils/uniqid';
+import history from '../../../../../constants/History';
+import { EditViewProps } from '../../../../../model/common/ListView';
 import {
   AttandanceChangeType,
-  CourseClassExtended,
-  ContactAttendanceItem,
-  // AttandanceMonth,
   AttandanceStepItem,
   AttendanceGridType,
-  // tutorStatusRoles,
+  ContactAttendanceItem,
+  CourseClassExtended,
   StudentAttendanceExtended
-} from "../../../../../model/entities/CourseClass";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import CourseClassAttendanceService from "./services/CourseClassAttendanceService";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import {
-  updateCourseClassStudentAttendance,
-  updateCourseClassTrainingPlans
-} from "./actions";
-import { addActionToQueue } from "../../../../../common/actions";
-import { TimetableSession } from "../../../../../model/timetable";
-import uniqid from "../../../../../common/utils/uniqid";
+} from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
+import { updateCourseClassStudentAttendance, updateCourseClassTrainingPlans } from './actions';
+import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from './AttendanceActionModal';
+import AttendanceActionsMenu from './AttendanceActionsMenu';
+import AttendanceDayBase from './AttendanceDayBase';
+import AttendanceGridItem from './AttendanceGridItem';
+import CourseClassAttendanceService from './services/CourseClassAttendanceService';
 
 library.add(faAdjust, faCheck, faTimes, faCircle);
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
     timeline: {
       marginLeft: theme.spacing(-1),
       background: theme.palette.background.default,
@@ -299,12 +289,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
       let namePath = "contactName";
       let addAction = setStudentsToAttend;
       let titlePath = null;
-
-      // if (type === "Tutor") {
-      //   valuesPath = "tutorAttendance";
-      //   idPath = "courseClassTutorId";
-      //   addAction = setTutorsToAttend;
-      // }
+      let sortFunc = (a, b) => (a.name.split(" ")[1] ? a.name.split(" ")[1] > b.name.split(" ")[1] ? 1 : -1 : 1);
 
       if (type === "Training plan") {
         valuesPath = "trainingPlan";
@@ -312,6 +297,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
         idPath = "moduleId";
         titlePath = "moduleTitle";
         addAction = setModulesToAttend;
+        sortFunc = (a, b) => (a.title.localeCompare(b.title));
       }
 
       const result: { [key: string]: ContactAttendanceItem } = {};
@@ -329,8 +315,8 @@ const CourseClassAttendanceTab = React.memo<Props>(
       });
       const resultArray = Object.keys(result).map(k => result[k]);
 
-      resultArray.sort((a, b) => (a.name > b.name ? 1 : -1));
-
+      resultArray.sort(sortFunc);
+      
       addAction(resultArray);
     }, [setStudentsToAttend, setModulesToAttend, form]);
 
@@ -640,18 +626,6 @@ const CourseClassAttendanceTab = React.memo<Props>(
       [form, values.studentAttendance, studentStatusRoles, validateAttendanceUpdate]
     );
 
-    // const onTutorIconClick = (e, attendance) => {
-    //   const roleIndex = tutorStatusRoles.indexOf(e.currentTarget.getAttribute("role"));
-    //
-    //   const attendanceType = [2, -1].includes(roleIndex) ? tutorStatusRoles[0] : tutorStatusRoles[roleIndex + 1];
-    //
-    //   dispatch(change(form, `tutorAttendance[${attendance.index}].attendanceType`, attendanceType));
-    //
-    //   const updated = { ...attendance, attendanceType };
-    //
-    //   validateAttendanceUpdate([updated], "Tutor");
-    // };
-
     const sessionsLeftScroller = useMemo(
       () => selectedItems.length
         && stepItems.length
@@ -930,4 +904,4 @@ const CourseClassAttendanceTab = React.memo<Props>(
   }
 );
 
-export default withStyles(styles)(CourseClassAttendanceTab);
+export default withStyles(CourseClassAttendanceTab, styles);

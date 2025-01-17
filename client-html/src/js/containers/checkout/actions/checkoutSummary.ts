@@ -4,9 +4,7 @@
  */
 
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
-import {
- CheckoutDiscount, CheckoutItem, CheckoutSummary, CheckoutSummaryListItem
-} from "../../../model/checkout";
+import { CheckoutDiscount, CheckoutItem, CheckoutSummary, CheckoutSummaryListItem } from "../../../model/checkout";
 
 export const CHECKOUT_GET_DISCOUNT_PROMO = "checkout/get/promocode";
 export const CHECKOUT_GET_VOUCHER_PROMO = "checkout/get/voucherPromo";
@@ -43,6 +41,13 @@ export const CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS = "checkout/update/summary/listI
 export const CHECKOUT_UPDATE_SUMMARY_FIELD = "checkout/update/summary/field";
 export const CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS = "checkout/update/summary/classes/discounts";
 export const CHECKOUT_SET_DISABLE_DISCOUNTS = "set/checkout/disable/summary/classes/discounts";
+
+export const CHECKOUT_RESTORE_STATE = "checkout/restore/state";
+
+export const checkoutRestoreState = (restoredState: Object) => ({
+  type: CHECKOUT_RESTORE_STATE,
+  payload: restoredState
+});
 
 export const checkoutGetVoucherRedeemer = (id: number, vouchersItem) => ({
   type: CHECKOUT_GET_VOUCHER_REDEEMER,

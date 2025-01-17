@@ -5,7 +5,7 @@
 
 import {
   ArticleProduct,
-  CheckoutPaymentPlan,
+  CheckoutPaymentPlan, CheckoutResponse,
   CheckoutSaleRelation,
   Course,
   CourseClass,
@@ -17,7 +17,10 @@ import {
   PaymentMethod,
   Sale,
   VoucherProduct
-} from "@api/model";
+} from '@api/model';
+import { StringArgFunction } from 'ish-ui';
+import { Dispatch } from 'redux';
+import { IAction } from '../../common/actions/IshAction';
 
 export type CheckoutEntity = "contact"
   | "course"
@@ -162,6 +165,16 @@ export interface CheckoutSummaryListItem {
   sendEmail?: boolean;
 }
 
+export type CheckoutPaymentGateway =
+  'EWAY' |
+  'EWAY_TEST' |
+  'STRIPE' |
+  'STRIPE_TEST' |
+  'WINDCAVE' |
+  'TEST' |
+  'OFFLINE' |
+  'DISABLED'
+
 export interface CheckoutPaymentProcess {
   status?: "" | "cancel" | "fail" | "success";
   statusCode?: number;
@@ -169,7 +182,7 @@ export interface CheckoutPaymentProcess {
   data?: any;
 }
 
-export interface CheckoutPayment {
+export interface CheckoutPayment extends CheckoutResponse {
   availablePaymentTypes?: PaymentMethod[];
   selectedPaymentType?: any;
   paymentPlans?: CheckoutPaymentPlan[];
@@ -180,7 +193,7 @@ export interface CheckoutPayment {
   xPaymentSessionId?: string;
   merchantReference?: string;
   process?: CheckoutPaymentProcess;
-  invoice?: any;
+  invoice?: Invoice;
   paymentId?: number;
   savedCreditCard?: {
     creditCardName: string;
@@ -220,4 +233,27 @@ export type CheckoutAddItemsRequiest = {
   enrolments?: CheckoutEnrolmentCustom[],
   purchases?: CheckoutProductPurchase[],
   keepChecked?: boolean
+}
+
+export interface CreditCardPaymentPageProps {
+  dispatch?: Dispatch<IAction>;
+  classes?: any;
+  summary?: CheckoutSummary;
+  payment?: CheckoutPayment;
+  isPaymentProcessing?: boolean;
+  disablePayment?: boolean;
+  hasSummarryErrors?: boolean;
+  currencySymbol?: any;
+  iframeUrl?: string;
+  xPaymentSessionId?: string;
+  merchantReference?: string;
+  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
+  clearCcIframeUrl: () => void;
+  checkoutGetPaymentStatusDetails: StringArgFunction;
+  checkoutPaymentSetCustomStatus?: StringArgFunction;
+  onCheckoutClearPaymentStatus: () => void;
+  process?: CheckoutPaymentProcess;
+  paymentInvoice?: any;
+  paymentId?: number;
+  payerName: string;
 }

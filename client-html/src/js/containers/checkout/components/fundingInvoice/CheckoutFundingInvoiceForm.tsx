@@ -3,26 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Collapse } from "@mui/material";
-import React from "react";
-import { connect } from "react-redux";
-import {
-  DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm
-} from "redux-form";
-import clsx from "clsx";
-import { createStyles, withStyles } from "@mui/styles";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { State } from "../../../../reducers/state";
-import { formatFundingSourceId } from "../../../entities/common/utils";
-import CheckoutFundingInvoiceSummaryList, { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
-import CheckoutAppBar from "../CheckoutAppBar";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { Collapse } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import clsx from 'clsx';
+import React from 'react';
+import { connect } from 'react-redux';
+import { DecoratedFormProps, getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { CheckoutFundingInvoice } from '../../../../model/checkout/fundingInvoice';
+import { State } from '../../../../reducers/state';
+import { formatFundingSourceId } from '../../../entities/common/utils';
+import CheckoutAppBar from '../CheckoutAppBar';
+import CheckoutFundingInvoiceSummaryList, {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from './CheckoutFundingInvoiceSummaryList';
 
-const styles = createStyles(() => ({
+const styles = (() => ({
   fundingInvoiceSourceId: {
-    marginTop: -10
+    marginTop: -12,
+    flex: 0.5
   }
 }));
 
@@ -101,6 +102,7 @@ const CheckoutFundingInvoiceFormBase = React.memo<Props>(props => {
                 name={`fundingInvoices[${selectedItemIndex}].relatedFundingSourceId`}
                 items={contracts}
                 format={formatFundingSourceId}
+                inline
               />
             </div>
               )}
@@ -132,4 +134,7 @@ export default reduxForm<{ fundingInvoices?: CheckoutFundingInvoice[] }, any>({
   initialValues: {
     fundingInvoices: []
   }
-})(withStyles(styles)(connect<any, any, any>(mapStateToProps, null)(CheckoutFundingInvoiceFormBase)));
+})(withStyles(
+  connect<any, any, any>(mapStateToProps, null)(CheckoutFundingInvoiceFormBase),
+  styles
+));

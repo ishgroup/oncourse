@@ -1,0 +1,378 @@
+{
+  "scheduling": [
+    {
+      "name": "Class",
+      "children": [
+        {
+          "name": "Room",
+          "children": [
+            {
+              "name": "Site",
+              "relation": "Holidays"
+            }
+          ]
+        },
+        {
+          "name": "Waiting list"
+        },
+        {
+          "name": "Timetable"
+        },
+        {
+          "name": "Tutor",
+          "children": [
+            {
+              "name": "Holidays"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "automation": [
+    {
+      "name": "Automation",
+      "children": [
+        {
+          "name": "Scripts",
+          "children": [
+            {
+              "name": "Export templates"
+            },
+            {
+              "name": "Import templates"
+            },
+            {
+              "name": "Message templates"
+            }
+          ]
+        },
+        {
+          "name": "PDF reports",
+          "children": [
+            {
+              "name": "PDF backgrounds"
+            }
+          ]
+        },
+        {
+          "name": "Integrations"
+        }
+      ]
+    }
+  ],
+  "accounting": [
+    {
+      "name": "Accounts"
+    },
+    {
+      "name": "Transactions",
+      "children": [
+        {
+          "name": "Quotes",
+          "chidren": [
+            {
+              "name": "Invoices"
+            }
+          ]
+        },
+        {
+          "name": "Payments in",
+          "children": [
+            {
+              "name": "Batch payment in"
+            }
+          ]
+        },
+        {
+          "name": "Payments out"
+        }
+      ]
+    },
+    {
+      "name": "Deposit banking",
+      "children": [
+        {
+          "name": "Banking deposits"
+        }
+      ]
+    },
+    {
+      "name": "Discounts"
+    },
+    {
+      "name": "Finalise period"
+    },
+    {
+      "name": "Payment types"
+    },
+    {
+      "name": "Tax types"
+    },
+    {
+      "name": "Tutor pay rates",
+      "children": [
+        {
+          "name": "Tutor pay"
+        }
+      ]
+    }
+  ],
+  "sales": [
+    {
+      "name": "Quick enrol",
+      "children": [
+        {
+          "name": "Sales",
+          "children": [
+            {
+              "name": "Products"
+            },
+            {
+              "name": "Voucher types"
+            }
+          ]
+        },
+        {
+          "name": "Invoices",
+          "children": [
+            {
+              "name": "Payments out"
+            }
+          ]
+        },
+        {
+          "name": "Payments in",
+          "children": [
+            {
+              "name": "Batch payment in"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Leads"
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Quotes"
+    },
+    {
+      "name": "Waiting lists"
+    }
+  ],
+  "configuration": [
+    {
+      "name": "Tags",
+      "children": [
+        {
+          "name": "Checklists"
+        }
+      ]
+    },
+    {
+      "name": "Sites",
+      "children": [
+        {
+          "name": "Rooms"
+        }
+      ]
+    },
+    {
+      "name": "Preferences",
+      "children": [
+        {
+          "name": "Concession types"
+        },
+        {
+          "name": "Contact relation types"
+        },
+        {
+          "name": "Data collection forms"
+        },
+        {
+          "name": "Payment types"
+        },
+        {
+          "name": "Custom fields"
+        },
+        {
+          "name": "Sellable items relation types"
+        },
+        {
+          "name": "Tutor pay rates"
+        },
+        {
+          "name": "Tax types"
+        }
+      ]
+    },
+    {
+      "name": "Discounts"
+    },
+    {
+      "name": "Audit logging"
+    },
+    {
+      "name": "Security"
+    },
+    {
+      "name": "Voucher types"
+    },
+    {
+      "name": "Website setup"
+    }
+  ],
+  "accreditation": [
+    {
+      "name": "Traineeship courses",
+      "children": [
+        {
+          "name": "Traineeships",
+          "children": [
+            {
+              "name": "Assessment submissions"
+            },
+            {
+              "name": "Assessment tasks"
+            }
+          ]
+        },
+        {
+          "name": "Units of competency"
+        },
+        {
+          "name": "Qualifications"
+        },
+        {
+          "name": "Outcomes",
+          "children": [
+            {
+              "name": "Certificates"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Prior Learnings"
+    },
+    {
+      "name": "Funding contract"
+    },
+    {
+      "name": "Export AVETMISS8"
+    }
+  ],
+  "education": [
+    {
+      "name": "Faculties",
+      "children": [
+        {
+          "name": "Courses",
+          "children": [
+            {
+              "name": "Subjects"
+            },
+            {
+              "name": "Classes",
+              "children": [
+                {
+                  "name": "Assessment tasks",
+                  "children": [
+                    {
+                      "name": "Assessment submissions"
+                    }
+                  ]
+                },
+                {
+                  "name": "Enrolments",
+                  "children": [
+                    {
+                      "name": "Outcomes"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Traineeship courses",
+      "children": [
+        {
+          "name": "Traineeships"
+        }
+      ]
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Prior learnings"
+    }
+  ],
+  "payroll": [
+    {
+      "name": "Tutors",
+      "children": [
+        {
+          "name": "Tutor pay rates"
+        },
+        {
+          "name": "Tutor pay"
+        }
+      ]
+    }
+  ],
+  "crm": [
+    {
+      "name": "Contacts",
+      "children": [
+        {
+          "name": "Leads"
+        },
+        {
+          "name": "Companies"
+        },
+        {
+          "name": "Quotes"
+        },
+        {
+          "name": "Corporate pass"
+        },
+        {
+          "name": "Students",
+          "children": [
+            {
+              "name": "Enrolments"
+            },
+            {
+              "name": "Applications"
+            },
+            {
+              "name": "Waiting lists"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Discounts"
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Sales"
+    },
+    {
+      "name": "Waiting lists"
+    }
+  ]
+}

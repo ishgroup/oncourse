@@ -3,37 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import withStyles from "@mui/styles/withStyles";
-import { green } from "@mui/material/colors";
-import IconButton from "@mui/material/IconButton";
-import Clear from "@mui/icons-material/Clear";
-import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
-import BookmarkTwoTone from "@mui/icons-material/BookmarkTwoTone";
-import createStyles from "@mui/styles/createStyles";
-import HelpOutline from "@mui/icons-material/HelpOutline";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { darken } from "@mui/material/styles";
-import debounce from "lodash.debounce";
-import { CustomFieldType, ProductType } from "@api/model";
-import { getAllMenuTags } from "../../../../../../containers/tags/utils";
-import EditInPlaceQuerySelect, { Suggestion } from "../../../../form/formFields/EditInPlaceQuerySelect";
-import QuerySaveMenu from "./QuerySaveMenu";
-import { State } from "../../../../../../reducers/state";
-import { StringArgFunction } from "../../../../../../model/common/CommonFunctions";
-import { setIndeterminate } from "../../../utils/listFiltersUtils";
-import {
- setFilterGroups, setListMenuTags, setListSavingFilter, setListUserAQLSearch 
-} from "../../../actions";
-import { MenuTag } from "../../../../../../model/tags";
-import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
-import { FILTER_TAGS_REGEX, TAGS_REGEX } from "../../../../../../constants/Config";
-import { AppTheme } from "../../../../../../model/common/Theme";
-import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
+import { CustomFieldType, ProductType } from '@api/model';
+import BookmarkBorder from '@mui/icons-material/BookmarkBorder';
+import BookmarkTwoTone from '@mui/icons-material/BookmarkTwoTone';
+import Clear from '@mui/icons-material/Clear';
+import HelpOutline from '@mui/icons-material/HelpOutline';
+import { green } from '@mui/material/colors';
+import IconButton from '@mui/material/IconButton';
+import { darken } from '@mui/material/styles';
+import clsx from 'clsx';
+import { AppTheme, getAllMenuTags, StringArgFunction } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { FILTER_TAGS_REGEX } from '../../../../../../constants/Config';
+import { getSaleEntityName } from '../../../../../../containers/entities/sales/utils';
+import { QueryFieldSuggestion } from '../../../../../../model/common/Fields';
+import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from '../../../../../../model/common/ListView';
+import { FormMenuTag } from '../../../../../../model/tags';
+import { State } from '../../../../../../reducers/state';
+import EditInPlaceQuerySelect from '../../../../form/formFields/EditInPlaceQuerySelect';
+import { setListSavingFilter, setListUserAQLSearch } from '../../../actions';
+import { setIndeterminate } from '../../../utils/listFiltersUtils';
+import QuerySaveMenu from './QuerySaveMenu';
 
-export const styles = (theme: AppTheme) => createStyles({
+export const styles = (theme: AppTheme) => ({
     container: {
       transition: `flex ${theme.transitions.duration.standard}ms ${theme.transitions.easing.sharp}`,
       willChange: "flex",
@@ -92,12 +88,10 @@ interface Props {
   rootEntity: string;
   userAQLSearch: string;
   savingFilter: SavingFilterState;
-  tags: MenuTag[];
+  tags: FormMenuTag[];
   filterGroups: FilterGroup[];
   setListUserAQLSearch: StringArgFunction;
   onQuerySearch: StringArgFunction;
-  setListMenuTags: (tags: MenuTag[]) => void;
-  setFilterGroups: (groups: FilterGroup[]) => void;
   setListSavingFilter: (saving: SavingFilterState) => void;
   classes?: any;
   changeQueryView?: any;
@@ -114,13 +108,13 @@ interface Props {
 interface SearchInputState {
   expanded: boolean;
   querySaveMenuAnchor: HTMLElement;
-  tagsSuggestions: Suggestion[];
-  filtersSuggestions: Suggestion[];
+  tagsSuggestions: QueryFieldSuggestion[];
+  filtersSuggestions: QueryFieldSuggestion[];
   customFieldsSuggestions: string[];
   tagsPrefixes?: string[];
 }
 
-const getFilterNamesSuggestions = (filterGroups: FilterGroup[]): Suggestion[] => filterGroups
+const getFilterNamesSuggestions = (filterGroups: FilterGroup[]): QueryFieldSuggestion[] => filterGroups
     .flatMap(i => i.filters)
     .map(i => {
       const name = i.name.replace(/\s/g, "_");
@@ -132,14 +126,14 @@ const getFilterNamesSuggestions = (filterGroups: FilterGroup[]): Suggestion[] =>
       };
     });
 
-const getTagNamesSuggestions = (tags: MenuTag[]): Suggestion[] => {
+const getTagNamesSuggestions = (tags: FormMenuTag[]): QueryFieldSuggestion[] => {
   const childTags = tags.flatMap(t => t.children);
 
   return getAllMenuTags(childTags).map(i => {
-    const name = i.tagBody.name.replace(/\s/g, "_");
-    const suggestion: Suggestion = {
+    const name = i.tagBody.name;
+    const suggestion: QueryFieldSuggestion = {
       token: "Identifier",
-      value: name,
+      value: ` "${name}"`,
       label: name
     };
 
@@ -157,7 +151,7 @@ const getTagNamesSuggestions = (tags: MenuTag[]): Suggestion[] => {
 
 const getCustomFieldsSuggestions = (customFields: CustomFieldType[]): string[] => customFields.map(f => f.fieldKey);
 
-const mapTags = (tags: MenuTag[], parent?: MenuTag) => tags.map(t => {
+const mapTags = (tags: FormMenuTag[], parent?: FormMenuTag) => tags.map(t => {
     const updated = { ...t, parent };
 
     if (updated.children.length) {
@@ -320,44 +314,6 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
         }
 
         return filter ? `(${filter.expression})` : "";
-      })
-      .replace(TAGS_REGEX, str => {
-        const replaced = str.replace(/#/g, "").replace(/_/g, " ");
-
-        let tag = listTags.find(f => f.tagBody.name === replaced);
-        let strPrefix;
-
-        if (tag && tag.queryPrefix) {
-          const usedPrefix = value.match(new RegExp("([^\\s]+)\\s+" + str));
-          if (usedPrefix && usedPrefix[1]) {
-            strPrefix = usedPrefix[1];
-            tag = listTags.find(f => f.tagBody.id === tag.tagBody.id && f.queryPrefix === strPrefix);
-            if (tag && !tag.parent) {
-              tag = tag.children.find(f => f.tagBody.name === tag.tagBody.name && f.queryPrefix === strPrefix);
-            }
-          }
-        }
-
-        if (tag && tag.active) {
-          activeTagsMatch.push(tag);
-        }
-
-        if (tag && !tag.active) {
-          tag.active = true;
-          activeTagsMatch.push(tag);
-          if (tag.parent) {
-            setIndeterminate(tag.parent);
-          } else {
-            const sameNameChildIndex = tag.children.findIndex(c => c.tagBody.name === tag.tagBody.name);
-            if (sameNameChildIndex !== -1) {
-              tag.children[sameNameChildIndex].active = true;
-              activeTagsMatch.push(tag.children[sameNameChildIndex]);
-              setIndeterminate(tag.children[sameNameChildIndex]);
-            }
-          }
-        }
-
-        return tag ? `# "${tag.tagBody.name}"` : "";
       });
 
     activeFilters.forEach(f => {
@@ -495,7 +451,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
               <EditInPlaceQuerySelect
                 inline
                 ref={this.getQueryComponentRef}
-                tags={tagsSuggestions || []}
+                tagSuggestions={tagsSuggestions || []}
                 filterTags={filtersSuggestions || []}
                 customFields={customFieldsSuggestions || []}
                 setInputNode={this.setInputNode}
@@ -506,8 +462,8 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
                   value: userAQLSearch
                 }}
                 performSearch={this.debounceSearch}
-                onFocus={alwaysExpanded ? undefined : this.onFocus}
                 onBlur={this.onBlur}
+                onClick={this.onFocus}
                 itemRenderer={searchMenuItemsRenderer}
                 disableUnderline
                 disableErrorText
@@ -565,7 +521,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
   }
 }
 
-export const SearchInputBase = withStyles(styles)(SearchInput);
+export const SearchInputBase = withStyles(SearchInput, styles);
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
   savingFilter: state.list.savingFilter,
@@ -574,14 +530,12 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
   searchServerError: state.list.searchError,
   tags: state.list.menuTags,
   customFieldTypes: ownProps.rootEntity === "ProductItem"
-    ? Object.keys(ProductType).reduce((p, c) => [...p, ...state.customFieldTypes.types[getSaleEntityName(c as any)] || []], [])
+    ? Object.keys(ProductType).reduce((p, c) => [...p, ...(state.customFieldTypes.types[getSaleEntityName(c as any)] || [])], [])
     : state.customFieldTypes.types[ownProps.rootEntity]
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setListSavingFilter: (savingFilter?: SavingFilterState) => dispatch(setListSavingFilter(savingFilter)),
-  setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups)),
-  setListMenuTags: (tags: MenuTag[]) => dispatch(setListMenuTags(tags)),
   setListUserAQLSearch: (userAQLSearch: string) => dispatch(setListUserAQLSearch(userAQLSearch))
 });
 

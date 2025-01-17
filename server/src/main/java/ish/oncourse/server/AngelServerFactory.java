@@ -21,25 +21,21 @@ import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
-import ish.oncourse.server.jmx.RegisterMBean;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
-import ish.oncourse.server.report.JRRuntimeConfig;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
-import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.*;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.mail.MessagingException;
@@ -71,19 +67,11 @@ public class AngelServerFactory {
         ResourcesUtil.initialiseLogging(true);
         RuntimeUtil.assertDefaultLocale();
 
-        // ensure that Jasper writes temp files to a directory with write permissions
-        System.setProperty("jasper.reports.compile.temp", System.getProperty("java.io.tmpdir"));
-
-        initJRGroovyCompiler();
-
         /**
          * We need to increase 'org.apache.cxf.stax.maxChildElements' property to 100000 because
          * willow side can replicate more than 50000 (default value for the property) records.
          */
         System.setProperty(StaxUtils.MAX_CHILD_ELEMENTS, "100000");
-
-        // set the location of default Ish jasperreports properties file
-        System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties");
 
         // this.applicationThread = Thread.currentThread();
         LOGGER.debug("AngelServer constructing... [{}:{}]", Thread.currentThread().getThreadGroup().getName(), Thread.currentThread().getName());
@@ -105,7 +93,7 @@ public class AngelServerFactory {
     public void start(PreferenceController prefController,
                       SchemaUpdateService schemaUpdateService,
                       ISchedulerService schedulerService,
-                      Scheduler scheduler, RegisterMBean registerMBean,
+                      Scheduler scheduler,
                       LicenseService licenseService,
                       CayenneService cayenneService,
                       PluginService pluginService,
@@ -202,6 +190,15 @@ public class AngelServerFactory {
                     false,
                     false);
 
+            //Chargebee job. Every day, 3am. May be resheduled due to cron expression changes
+            if(scheduler.checkExists(JobKey.jobKey(CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID))) {
+                Trigger trigger = scheduler.getTrigger(TriggerKey.triggerKey(CHARGEBEE_JOB_ID + TRIGGER_POSTFIX, BACKGROUND_JOBS_GROUP_ID));
+                if(!((CronTrigger)trigger).getCronExpression().equals(CHARGEBEE_JOB_INTERVAL.toUpperCase(Locale.ROOT)))
+                    schedulerService.removeJob(JobKey.jobKey(CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID));
+            }
+            schedulerService.scheduleCronJob(ChargebeeUploadJob.class, CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                    CHARGEBEE_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
+
             LOGGER.warn("Starting cron");
             scheduler.start();
             var preference = prefController.getPreference(ACCOUNT_CURRENCY, false);
@@ -218,16 +215,6 @@ public class AngelServerFactory {
         } catch (ParseException e2) {
             throw new RuntimeException("Scheduled service failed to initialise, aborting startup", e2);
         }
-
-        try {
-            LOGGER.warn("Initializing monitoring services");
-
-            registerMBean.register();
-        } catch (Exception e) {
-            LOGGER.error("Failed to initialize monitoring MBean.", e);
-        }
-
-        initJRGroovyCompiler();
 
         pluginService.onStart();
 
@@ -303,10 +290,6 @@ public class AngelServerFactory {
             return specifiedEmail;
         }
         return null;
-    }
-
-    private void initJRGroovyCompiler() {
-        new JRRuntimeConfig().config();
     }
 
 }

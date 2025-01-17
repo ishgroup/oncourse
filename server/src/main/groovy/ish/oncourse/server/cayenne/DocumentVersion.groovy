@@ -11,6 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
+import ish.common.util.DocumentVersionInterface
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.v1.function.DocumentFunctions
@@ -26,7 +27,7 @@ import java.util.List
  */
 @API
 @QueueableEntity
-class DocumentVersion extends _DocumentVersion implements Queueable {
+class DocumentVersion extends _DocumentVersion implements Queueable, DocumentVersionInterface {
 
 
 
@@ -148,15 +149,6 @@ class DocumentVersion extends _DocumentVersion implements Queueable {
 	}
 
 	/**
-	 * @return list of relations for this document version
-	 */
-	@Nonnull
-	@Override
-	List<AttachmentRelation> getAttachmentRelations() {
-		return super.getAttachmentRelations()
-	}
-
-	/**
 	 * @return onCourse user who created this document version
 	 */
 	@Nullable
@@ -164,6 +156,21 @@ class DocumentVersion extends _DocumentVersion implements Queueable {
 	@Override
 	SystemUser getCreatedByUser() {
 		return super.getCreatedByUser()
+	}
+
+	/**
+	 * @return onCourse user / portal tutor name, who created this document version
+	 */
+	@Nullable
+	@API
+	String getCreatedByName() {
+		def firstName = createdByTutor ? createdByTutor.contact.firstName : createdByUser?.firstName
+		def lastName = createdByTutor ? createdByTutor.contact.lastName : createdByUser?.lastName
+
+		firstName = firstName ?: ""
+		lastName = lastName ?: ""
+
+		return "${firstName} ${lastName}"
 	}
 
 	/**

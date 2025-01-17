@@ -1,26 +1,21 @@
-import * as React from "react";
-import { withRouter } from "react-router";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
-import {
-  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { ContactRelationType } from "@api/model";
-import isEqual from "lodash.isequal";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import ContactRelationTypesRenderer from "./ContactRelationTypesRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
-import { cardsFormStyles } from "../../../styles/formCommonStyles";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { ContactRelationType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { cardsFormStyles } from '../../../styles/formCommonStyles';
+import ContactRelationTypesRenderer from './ContactRelationTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_contactRelationTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#contact-relation-types");
 
 export const CONTACT_RELATION_TYPES_FORM: string = "ContactRelationTypesForm";
 
@@ -39,8 +34,7 @@ interface Props {
   onUpdate: (contactRelationTypes: ContactRelationType[]) => void;
   openConfirm?: ShowConfirmCaller;
   history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 class ContactRelationTypesBaseForm extends React.Component<Props, any> {
@@ -93,12 +87,11 @@ class ContactRelationTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
 
         this.props.dispatch(initialize(CONTACT_RELATION_TYPES_FORM, { types: this.props.contactRelationTypes }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -203,15 +196,12 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
 
 const ContactRelationTypesForm = reduxForm({
   onSubmitFail,
   form: CONTACT_RELATION_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(cardsFormStyles)(withRouter(ContactRelationTypesBaseForm)) as any
+})(connect<any, any, any>(mapStateToProps)(
+  withStyles(withRouter(ContactRelationTypesBaseForm), cardsFormStyles)
 ));
 
 export default ContactRelationTypesForm;

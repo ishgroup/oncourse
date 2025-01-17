@@ -1,28 +1,21 @@
-import * as React from "react";
-import Grid from "@mui/material/Grid";
-import withStyles from "@mui/styles/withStyles";
-import { withRouter } from "react-router";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import AddIcon from "@mui/icons-material/Add";
-import Fab from "@mui/material/Fab";
-import {
-  Form, FieldArray, reduxForm, initialize, SubmissionError, arrayInsert, arrayRemove
-} from "redux-form";
-import { EntityRelationType } from "@api/model";
-import isEqual from "lodash.isequal";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormClassErrors";
-import EntityRelationTypesRenderer from "./EntityRelationTypesRenderer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { idsToString } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
-import { cardsFormStyles } from "../../../styles/formCommonStyles";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { EntityRelationType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
+import { cardsFormStyles } from '../../../styles/formCommonStyles';
+import EntityRelationTypesRenderer from './EntityRelationTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_sellableItemsRelationTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#sellable-items-relationships");
 
 export const ENTITY_RELATION_TYPES_FORM: string = "EntityRelationTypesForm";
 
@@ -42,8 +35,7 @@ interface Props {
   onUpdate: (entityRelationTypes: EntityRelationType[]) => void;
   openConfirm?: ShowConfirmCaller;
   history?: any,
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
+  nextLocation?: string
 }
 
 class EntityRelationTypesBaseForm extends React.Component<Props, any> {
@@ -96,12 +88,11 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
       this.props.onUpdate(this.getTouchedAndNew(value.types));
     })
       .then(() => {
-        const { nextLocation, history, setNextLocation } = this.props;
+        const { nextLocation, history } = this.props;
 
         this.props.dispatch(initialize(ENTITY_RELATION_TYPES_FORM, { types: this.props.entityRelationTypes }));
 
         nextLocation && history.push(nextLocation);
-        setNextLocation('');
       })
       .catch(error => {
         this.isPending = false;
@@ -211,15 +202,11 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
 const EntityRelationTypesForm = reduxForm({
   onSubmitFail,
   form: ENTITY_RELATION_TYPES_FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(
-  withStyles(cardsFormStyles)(withRouter(EntityRelationTypesBaseForm) as any)
+})(connect<any, any, any>(mapStateToProps, null)(
+  withStyles(withRouter(EntityRelationTypesBaseForm) as any, cardsFormStyles)
 ));
 
 export default EntityRelationTypesForm;

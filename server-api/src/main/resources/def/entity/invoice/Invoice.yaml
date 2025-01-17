@@ -46,7 +46,7 @@ properties:
   invoiceLines:
     type: array
     items:
-      $ref: './InvoiceInvoiceLine.yaml'
+      $ref: './AbstractInvoiceLine.yaml'
   total:
     type: number
   amountOwing:
@@ -67,10 +67,15 @@ properties:
   tags:
     type: array
     items:
-      $ref: '../Tag.yaml'
+      type: integer
+      format: int64
   createdOn:
     type: string
     format: date-time
   modifiedOn:
     type: string
     format: date-time
+  customFields:
+    type: object
+    additionalProperties:
+      type: string

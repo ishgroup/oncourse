@@ -34,6 +34,8 @@ public class DateAmountConverter implements Converter<AqlParser.DateAmountTermCo
     DateAmountConverter() {
         // create all available specific converters
         unitConverters.put(TypeClassifier.DATE, new DateTimeUnitConverter());
+        unitConverters.put(TypeClassifier.CUSTOM_FIELD_DATE, new DateTimeUnitConverter());
+        unitConverters.put(TypeClassifier.CUSTOM_FIELD_DATE_TIME, new DateTimeUnitConverter());
 //        unitConverters.put(TypeClassifier.NUMERIC, new NumericUnitConverter());
     }
 

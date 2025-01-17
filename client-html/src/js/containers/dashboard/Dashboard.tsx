@@ -3,29 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import { Grid } from "@mui/material";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { PreferenceEnum } from "@api/model";
-import { State } from "../../reducers/state";
-import DashboardHeader from "./components/DashboardHeader";
-import ActionBody from "./components/action-body/ActionBody";
-import { getUserPreferences, showConfirm, setUserPreference } from "../../common/actions";
-import {
-  DASHBOARD_CATEGORY_WIDTH_KEY,
-  DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP,
-} from "../../constants/Config";
-import { AppTheme, ThemeValues } from "../../model/common/Theme";
-import { toggleSwipeableDrawer } from "../../common/components/layout/swipeable-sidebar/actions";
-import { VARIANTS } from "../../common/components/layout/swipeable-sidebar/utils";
-import { SWIPEABLE_SIDEBAR_WIDTH } from "../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
+import { PreferenceEnum } from '@api/model';
+import { Grid } from '@mui/material';
+import clsx from 'clsx';
+import { AppTheme, ThemeValues } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { checkPermissions, getUserPreferences, setUserPreference, showConfirm } from '../../common/actions';
+import { toggleSwipeableDrawer } from '../../common/components/layout/swipeable-sidebar/actions';
+import { SWIPEABLE_SIDEBAR_WIDTH } from '../../common/components/layout/swipeable-sidebar/SwipeableSidebar';
+import { VARIANTS } from '../../common/components/layout/swipeable-sidebar/utils';
+import { DASHBOARD_CATEGORY_WIDTH_KEY, DASHBOARD_THEME_KEY, SYSTEM_USER_TUTORIAL_SKIP, } from '../../constants/Config';
+import { State } from '../../reducers/state';
+import ActionBody from './components/action-body/ActionBody';
+import DashboardHeader from './components/DashboardHeader';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     container: {
       minWidth: "1024px",
       overflowX: "auto",
@@ -53,6 +49,7 @@ class Dashboard extends React.PureComponent<any, any> {
   componentDidMount() {
     this.props.getDashboardPreferences();
     this.props.toggleSwipeableDrawer();
+    this.props.checkPermissions();
   }
 
   render() {
@@ -65,6 +62,7 @@ class Dashboard extends React.PureComponent<any, any> {
       openConfirm,
       drawerOpened,
       dispatch,
+      access
     } = this.props;
 
     return (
@@ -89,6 +87,8 @@ class Dashboard extends React.PureComponent<any, any> {
 
         <Grid item xs={12} className={classes.containerHeight}>
           <ActionBody
+            access={access}
+            dispatch={dispatch}
             preferencesCategoryWidth={preferences[DASHBOARD_CATEGORY_WIDTH_KEY]}
             setDashboardColumnWidth={setDashboardColumnWidth}
             drawerOpened={drawerOpened}
@@ -103,7 +103,8 @@ class Dashboard extends React.PureComponent<any, any> {
 const mapStateToProps = (state: State) => ({
   drawerOpened: state.swipeableDrawer.opened,
   preferences: state.userPreferences,
-  upgradePlanLink: state.dashboard.upgradePlanLink
+  upgradePlanLink: state.dashboard.upgradePlanLink,
+  access: state.access
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -113,6 +114,13 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPreferencesTheme: (value: ThemeValues) => dispatch(setUserPreference({ key: DASHBOARD_THEME_KEY, value })),
   openConfirm: props => dispatch(showConfirm(props)),
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(VARIANTS.persistent)),
+  checkPermissions: () => {
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Course", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Site", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=Contact", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=CourseClass", method: "GET" }));
+    dispatch(checkPermissions({ path: "/a/v1/list/plain?entity=SystemUser", method: "GET" }));
+  }
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dashboard));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(Dashboard, styles));

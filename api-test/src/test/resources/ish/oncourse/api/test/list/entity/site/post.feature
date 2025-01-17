@@ -50,7 +50,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["someSite0"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","someSite0","Adelaide","5000","true"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"someSite0","Adelaide","5000","true"])].id
 
 #       <---> Assertion:
         Given path ishPath + '/' + id
@@ -78,9 +78,10 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "publicTransportDirections":"somePublicTransportDirections",
         "specialInstructions":"someSpecialInstructions",
         "tags":[],
+        "customFields":{},
         "rooms":
             [
-            {"id":"#number","name":"room001","seatedCapacity":100,"siteId":"#number","siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
+            {"id":"#number","name":"room001","customFields":{},"seatedCapacity":100,"siteId":"#number","siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null,"virtualRoomUrl":null},
             ],
         "documents":[],
         "rules":[{"id":"#ignore","description":"www","startDate":null,"endDate":null,"startDateTime":"2019-12-01T09:07:00.000Z","endDateTime":"2025-12-31T09:07:00.000Z","repeat":"year","repeatEnd":"onDate","repeatEndAfter":null,"repeatOn":"2024-02-12","created":"#ignore","modified":"#ignore"}],
@@ -118,7 +119,8 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "tags":[],
         "rooms":[],
         "documents":[],
-        "rules":[]
+        "rules":[],
+        "customFields":{}
         }
         """
 
@@ -133,7 +135,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["testSite_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150","A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51","1234567890","true"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","testSite_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150","A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51","1234567890","true"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"testSite_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150","A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51","1234567890","true"])].id
 
 #       <---> Assertion:
         Given path ishPath + '/' + id
@@ -160,9 +162,10 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "publicTransportDirections":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A204A208A212A216A220A224A228A232A236A240A244A248A252A256A",
         "specialInstructions":"A3A5A7A9A12A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A152A156A160A164A168A172A176A180A184A188A192A196A200A204A208A212A216A220A224A228A232A236A240A244A248A252A256A",
         "tags":[],
-        "rooms":[{"documents":[],"rules":[],"siteTimeZone":null,"createdOn":null,"tags":[],"modifiedOn":null,"directions":null,"seatedCapacity":0,"name":"testSite_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150","siteId":"#ignore","kioskUrl":null,"id":"#ignore","facilities":null}],
+        "rooms":[{"documents":[],"customFields":{},"rules":[],"siteTimeZone":null,"createdOn":null,"tags":[],"modifiedOn":null,"directions":null,"seatedCapacity":0,"name":"testSite_2A15A18A21A24A27A30A33A36A39A42A45A48A51A54A57A60A63A66A69A72A75A78A81A84A87A90A93A96A100A104A108A112A116A120A124A128A132A136A140A144A148A150","siteId":"#ignore","kioskUrl":null,"id":"#ignore","facilities":null,"virtualRoomUrl":null}],
         "documents":[],
         "rules":[],
+        "customFields":{}
         }
         """
 
@@ -201,6 +204,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "specialInstructions":"someSpecialInstructions",
         "tags":[],
         "rooms":[],
+        "customFields":{},
         "documents":[],
         "rules":[]
         }
@@ -237,6 +241,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "specialInstructions":"someSpecialInstructions",
         "tags":[],
         "rooms":[],
+        "customFields":{},
         "documents":[],
         "rules":[]
         }
@@ -274,6 +279,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "tags":[],
         "rooms":[],
         "documents":[],
+        "customFields":{},
         "rules":[]
         }
         """
@@ -310,6 +316,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "tags":[],
         "rooms":[],
         "documents":[],
+        "customFields":{},
         "rules":[]
         }
         """
@@ -346,6 +353,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "tags":[],
         "rooms":[],
         "documents":[],
+        "customFields":{},
         "rules":[]
         }
         """
@@ -382,6 +390,7 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "tags":[],
         "rooms":[],
         "documents":[],
+        "customFields":{},
         "rules":[]
         }
         """
@@ -416,8 +425,9 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         "publicTransportDirections":"somePublicTransportDirections",
         "specialInstructions":"someSpecialInstructions",
         "tags":[],
-        "rooms":[{"siteId":null,"name":"room001","seatedCapacity":"100"}],
+        "rooms":[{"siteId":null,"customFields":{},"name":"room001","seatedCapacity":"100"}],
         "documents":[],
+        "customFields":{},
         "rules":[]
         }
         """
@@ -427,6 +437,78 @@ Feature: Main feature for all POST requests with path 'list/entity/site'
         When method POST
         Then status 400
         And match $.errorMessage == "Timezone is required."
+
+
+    Scenario: (-) Create non-virtual Site with virtual room url
+
+        * def newSite =
+        """
+        {
+        "isAdministrationCentre":true,
+        "isVirtual":false,
+        "isShownOnWeb":true,
+        "kioskUrl":null,
+        "name":"someSite444",
+        "street":"Frome Rd",
+        "suburb":"Adelaide",
+        "state":"SA",
+        "timezone":"Australia/Sydney",
+        "postcode":"5000",
+        "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
+        "longitude":138.60569150,
+        "latitude":-34.91638480,
+        "drivingDirections":"someDrivingDirections",
+        "publicTransportDirections":"somePublicTransportDirections",
+        "specialInstructions":"someSpecialInstructions",
+        "tags":[],
+        "rooms":[{"siteId":null,"customFields":{},"name":"room001","seatedCapacity":"100", "virtualRoomUrl":"https://someUrl.com"}],
+        "documents":[],
+        "customFields":{},
+        "rules":[]
+        }
+        """
+
+        Given path ishPath
+        And request newSite
+        When method POST
+        Then status 400
+        And match $.errorMessage == "Room named room001 cannot have virtual room url if site is not virtual"
+
+
+    Scenario: (-) Create virtual Site with incorrect virtual room url
+
+        * def newSite =
+        """
+        {
+        "isAdministrationCentre":true,
+        "isVirtual":true,
+        "isShownOnWeb":true,
+        "kioskUrl":null,
+        "name":"someSite444",
+        "street":"Frome Rd",
+        "suburb":"Adelaide",
+        "state":"SA",
+        "timezone":"Australia/Sydney",
+        "postcode":"5000",
+        "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
+        "longitude":138.60569150,
+        "latitude":-34.91638480,
+        "drivingDirections":"someDrivingDirections",
+        "publicTransportDirections":"somePublicTransportDirections",
+        "specialInstructions":"someSpecialInstructions",
+        "tags":[],
+        "rooms":[{"siteId":null,"customFields":{},"name":"room001","seatedCapacity":"100", "virtualRoomUrl":"w3t34tf"}],
+        "documents":[],
+        "customFields":{},
+        "rules":[]
+        }
+        """
+
+        Given path ishPath
+        And request newSite
+        When method POST
+        Then status 400
+        And match $.errorMessage == "The virtual room url is incorrect."
 
 
 

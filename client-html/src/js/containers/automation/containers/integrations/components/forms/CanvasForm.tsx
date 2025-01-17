@@ -3,18 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
-  change, getFormValues, initialize, reduxForm
-} from "redux-form";
-import { connect } from "react-redux";
-import Typography from "@mui/material/Typography";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { connect } from "react-redux";
+import { change, getFormValues, initialize, reduxForm } from "redux-form";
 import FormField from "../../../../../../common/components/form/formFields/FormField";
-import RouteChangeConfirm from "../../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormClassErrors";
-import { State } from "../../../../../../reducers/state";
+import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
 import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
+import { State } from "../../../../../../reducers/state";
 
 class CanvasBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -61,14 +58,14 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     window.open(
       // eslint-disable-next-line max-len
-      `https://${values.fields.baseUrl}/login/oauth2/auth?client_id=${values.fields.clientToken}&response_type=code&state=${JSON.stringify(values)}&redirect_uri=${window.location.href}?type=8`,
+      `https://${values.fields.baseUrl}/login/oauth2/auth?client_id=${values.fields.clientToken}&response_type=code&state=${JSON.stringify(values)}&redirect_uri=${window.location.href}`,
       "_self"
     );
   };
 
   render() {
     const {
-     handleSubmit, onSubmit, AppBarContent, dirty, item, values, form
+     handleSubmit, onSubmit, AppBarContent, item, values
     } = this.props;
 
     const { loading } = this.state;
@@ -77,7 +74,6 @@ class CanvasBaseForm extends React.Component<any, any> {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        {dirty && <RouteChangeConfirm form={form} when={dirty} />}
         <AppBarContent>
           {
             !values?.id && (

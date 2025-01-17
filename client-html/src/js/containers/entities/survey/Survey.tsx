@@ -6,23 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
-import { CustomFieldType, SurveyItem, TableModel } from "@api/model";
-import { defaultContactName } from "../contacts/utils";
-import { updateSurveyItem, getSurveyItem } from "./actions";
-import {
-  getFilters,
-  clearListState
-} from "../../../common/components/list-view/actions";
-import { FilterGroup } from "../../../model/common/ListView";
+import { clearListState, getFilters } from "../../../common/components/list-view/actions";
 import ListView from "../../../common/components/list-view/ListView";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import BulkDeleteCogwheelOption from "../common/components/BulkDeleteCogwheelOption";
 import SurveyEditView from "./components/SurveyEditView";
 
 interface StudentFeedbackProps {
-  getStudentFeedbackRecord?: () => void;
   onInit?: (initial: SurveyItem) => void;
-  onSave?: (id: string, studentFeedback: SurveyItem) => void;
   getFilters?: () => void;
   clearListState?: () => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
@@ -58,7 +52,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Survey and entityId" },
   { title: "Classes", list: "class", expression: "enrolments.surveys.id" },
   { title: "Courses", list: "course", expression: "courseClasses.enrolments.surveys.id " },
@@ -70,8 +64,6 @@ const findRelatedGroup: any[] = [
 
 const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
   const {
-    getStudentFeedbackRecord,
-    onSave,
     getFilters,
   } = props;
 
@@ -83,34 +75,30 @@ const StudentFeedbackComp: React.FC<StudentFeedbackProps> = props => {
   }, []);
 
   return (
-    <div>
-      <ListView
-        listProps={{
-          primaryColumn: "enrolment.student.contact.fullName",
-          secondaryColumn: "enrolment.courseClass.course.name"
-        }}
-        editViewProps={{
-          nameCondition: values => values && defaultContactName(values.studentName),
-          hideTitle: true
-        }}
-        EditViewContent={SurveyEditView}
-        getEditRecord={getStudentFeedbackRecord}
-        rootEntity="Survey"
-        onSave={onSave}
-        findRelated={findRelatedGroup}
-        filterGroupsInitial={filterGroups}
-        defaultDeleteDisabled
-        noListTags
-      />
-    </div>
+    <ListView
+      listProps={{
+        primaryColumn: "enrolment.student.contact.fullName",
+        secondaryColumn: "enrolment.courseClass.course.name"
+      }}
+      editViewProps={{
+        nameCondition: values => values?.studentName,
+        hideTitle: true
+      }}
+      EditViewContent={SurveyEditView}
+      CogwheelAdornment={BulkDeleteCogwheelOption}
+      rootEntity="Survey"
+      findRelated={findRelatedGroup}
+      filterGroupsInitial={filterGroups}
+      createButtonDisabled
+      defaultDeleteDisabled
+      noListTags
+    />
   );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Survey")),
-  clearListState: () => dispatch(clearListState()),
-  getStudentFeedbackRecord: (id: string) => dispatch(getSurveyItem(id)),
-  onSave: (id: string, surveyItem: SurveyItem) => dispatch(updateSurveyItem(id, surveyItem)),
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(null, mapDispatchToProps)(StudentFeedbackComp);

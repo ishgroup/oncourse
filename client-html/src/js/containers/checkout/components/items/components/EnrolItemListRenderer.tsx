@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import clsx from "clsx";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import CircularProgress from "@mui/material/CircularProgress";
-import Chip from "@mui/material/Chip";
-import { AppTheme } from "../../../../../model/common/Theme";
-import CheckoutSearchList from "../../CheckoutSearchList";
+import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import CheckoutSearchList from '../../CheckoutSearchList';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     listRoot: {
       width: "85%"
     },
@@ -41,7 +40,21 @@ const styles = (theme: AppTheme) =>
     }
   });
 
-const EnrolItemListRenderer = React.memo<any>(props => {
+const EnrolItemListRenderer = React.memo<{
+  classes?,
+  title?,
+  items?,
+  type?,
+  primaryText?,
+  secondaryText?,
+  onChangeHandler?,
+  disabledHandler?,
+  showAllItems?,
+  selectedItems?,
+  showFirst?,
+  searchString?,
+  itemsLoading?
+}>(props => {
   const {
     classes,
     title,
@@ -133,4 +146,4 @@ const EnrolItemListRenderer = React.memo<any>(props => {
   );
 });
 
-export default withStyles(styles)(EnrolItemListRenderer);
+export default withStyles(EnrolItemListRenderer, styles);

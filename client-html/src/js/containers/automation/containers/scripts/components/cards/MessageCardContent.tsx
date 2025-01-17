@@ -6,29 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo, } from "react";
-import { connect } from "react-redux";
-import { change, getFormValues } from "redux-form";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { CustomFieldType } from "@api/model";
-import { Dispatch } from "redux";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../../reducers/state";
-import { ADMIN_EMAIL_KEY } from "../../../../../../constants/Config";
-import { Switch } from "../../../../../../common/components/form/formFields/Switch";
-import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
-import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
-import { renderAutomationItems } from "../../../../utils";
-import { validateEmail } from "../../../../../../common/utils/validation";
-import { CatalogItemType } from "../../../../../../model/common/Catalog";
+import { CustomFieldType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { Switch } from 'ish-ui';
+import React, { useMemo, } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { validateEmail } from '../../../../../../common/utils/validation';
+import { ADMIN_EMAIL_KEY } from '../../../../../../constants/Config';
+import { COMMON_PLACEHOLDER } from '../../../../../../constants/Forms';
+import { CatalogItemType } from '../../../../../../model/common/Catalog';
+import { ScriptComponent, ScriptExtended } from '../../../../../../model/scripts';
+import { State } from '../../../../../../reducers/state';
+import { renderAutomationItems } from '../../../../utils';
+import EmailTemplateService from '../../../email-templates/services/EmailTemplateService';
 
 interface Props {
   name: string;
   emailTemplates: CatalogItemType[];
   field: ScriptComponent;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   form: string;
   renderVariables: any;
   disabled: boolean;
@@ -91,11 +93,10 @@ const MessageCardContent = React.memo<Props>(props => {
         type="text"
         name={`${name}.from`}
         label="From"
-        placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || 'No value'}
+        placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || COMMON_PLACEHOLDER}
         disabled={disabled}
         validate={validateEmail}
-        fullWidth
-      />
+              />
     </Grid>
   );
 
@@ -114,7 +115,7 @@ const MessageCardContent = React.memo<Props>(props => {
 
       {templateMessage ? (
         <>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <FormField
               type="select"
               name={typeof templateOptionIndex === "number" && templateOptionIndex !== -1
@@ -122,7 +123,8 @@ const MessageCardContent = React.memo<Props>(props => {
                 : `${name}.template`}
               label="Template"
               items={messageTemplateItems}
-              selectLabelCondition={renderAutomationItems}
+              itemRenderer={renderAutomationItems}
+              valueRenderer={renderAutomationItems}
               onInnerValueChange={changeEmailTemplate}
               disabled={disabled}
               required
@@ -139,8 +141,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.to`}
               label="To"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -148,8 +149,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.cc`}
               disabled={disabled}
               label="cc"
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -157,8 +157,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.bcc`}
               disabled={disabled}
               label="bcc"
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -166,8 +165,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.subject`}
               label="Subject"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
           <Grid item xs={12}>
             <FormField
@@ -175,8 +173,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={`${name}.content`}
               label="Content"
               disabled={disabled}
-              fullWidth
-            />
+                          />
           </Grid>
         </>
       )}
@@ -188,8 +185,7 @@ const MessageCardContent = React.memo<Props>(props => {
             name={`${name}.key`}
             disabled={disabled}
             label="Key"
-            fullWidth
-          />
+                      />
         </Grid>
       )}
 
@@ -200,8 +196,7 @@ const MessageCardContent = React.memo<Props>(props => {
             name={`${name}.keyCollision`}
             disabled={disabled}
             label="Key collision"
-            fullWidth
-          />
+                      />
         </Grid>
       )}
 

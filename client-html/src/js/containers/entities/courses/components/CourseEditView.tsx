@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { useSelector } from "react-redux";
-import TabsList, { TabsListItem } from "../../../../common/components/layout/TabsList";
-import CourseClassesTab from "./CourseClassesTab";
-import CourseGeneralTab from "./CourseGeneralTab";
-import CourseMarketingTab from "./CourseMarketingTab";
-import CourseVetTab from "./CourseVetTab";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import AvailabilityFormComponent from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
-import { State } from "../../../../reducers/state";
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import AvailabilityFormComponent
+  from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import { State } from '../../../../reducers/state';
+import CourseClassesTab from './CourseClassesTab';
+import CourseGeneralTab from './CourseGeneralTab';
+import CourseMarketingTab from './CourseMarketingTab';
+import CourseVetTab from './CourseVetTab';
 
 const items: TabsListItem[] = [
   {
@@ -31,7 +31,7 @@ const items: TabsListItem[] = [
   },
   {
     label: "Notes",
-    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} />
+    component: ({ classes, ...rest }) => <OwnApiNotes {...rest} className="pl-3 pr-3" />
   },
   {
     label: "Vet",
@@ -43,8 +43,8 @@ const items: TabsListItem[] = [
   }
 ];
 
-const styles = theme =>
-  createStyles({
+const styles = () =>
+  ({
     icon: {
       alignItems: "right"
     },
@@ -60,7 +60,7 @@ const CourseEditView = props => {
     hasVetPermissions
   ]);
 
-  return <TabsList items={props.values ? usedItems : []} itemProps={props} />;
+  return <TabsList onParentScroll={props.onScroll} items={props.values ? usedItems : []} itemProps={props} />;
 };
 
-export default withStyles(styles)(CourseEditView);
+export default withStyles(CourseEditView, styles);

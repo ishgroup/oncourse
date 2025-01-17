@@ -1,51 +1,50 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
- useCallback, useEffect, useMemo, useRef, useState
-} from "react";
-import {
-  change, FieldArray, Form, initialize, InjectedFormProps
-} from "redux-form";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import Grid from "@mui/material/Grid";
-import { Report } from "@api/model";
-import { Dispatch } from "redux";
-import Typography from "@mui/material/Typography";
-import Grow from "@mui/material/Grow";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import { usePrevious } from "../../../../../common/utils/hooks";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
-import { CommonListItem } from "../../../../../model/common/sidebar";
-import { createAndDownloadFile } from "../../../../../common/utils/common";
-import FilePreview from "../../../../../common/components/form/FilePreview";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import { EntityItems } from "../../../../../model/entities/common";
-import { ShowConfirmCaller } from "../../../../../model/common/Confirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
+import { Report } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import FileCopy from '@mui/icons-material/FileCopy';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { FilePreview, InfoPill, NumberArgFunction, ShowConfirmCaller, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change, FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { createAndDownloadFile } from '../../../../../common/utils/common';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import { CommonListItem } from '../../../../../model/common/sidebar';
+import { EntityItems } from '../../../../../model/entities/common';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import { reportFullScreenPreview } from '../actions';
 
-const manualUrl = getManualLink("reports");
+const manualUrl = getManualLink("using-reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps<Report> {
   isNew: boolean;
   values: Report;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (report: Report) => void;
   onUpdateInternal: (report: Report) => void;
   onUpdate: (report: Report) => void;
@@ -56,7 +55,7 @@ interface Props extends InjectedFormProps<Report> {
   syncErrors: any;
   nextLocation: string;
   emailTemplates?: CatalogItemType[];
-  setNextLocation: (nextLocation: string) => void;
+  pdfReports?: CatalogItemType[];
 }
 
 const reader = new FileReader();
@@ -66,7 +65,7 @@ const fillAttributes = (
   names: string[],
   formFields: string[],
   document: Document,
-  dispatch: Dispatch,
+  dispatch: Dispatch<IAction>,
   form: string
 ) => {
   names.forEach((n, index) => {
@@ -96,15 +95,15 @@ const PdfReportsForm = React.memo<Props>(
     initialValues,
     history,
     nextLocation,
-    setNextLocation,
     emailTemplates,
+     pdfReports,
     syncErrors
   }) => {
     const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [chosenFileName, setChosenFileName] = useState(null);
 
-    const fileRef = useRef<any>();
+    const fileRef = useRef<any>(undefined);
 
     const isInternal = useMemo(() => values.keyCode && values.keyCode.startsWith("ish."), [values.keyCode]);
 
@@ -200,6 +199,10 @@ const PdfReportsForm = React.memo<Props>(
       [form, initialValues.backgroundId]
     );
 
+    const handleFullScreenPreview = () => {
+      dispatch(reportFullScreenPreview(values.id));
+    };
+
     useEffect(() => {
       if (values.id !== prevId) {
         discardFileInput();
@@ -212,19 +215,39 @@ const PdfReportsForm = React.memo<Props>(
     useEffect(() => {
       if (!dirty && nextLocation) {
         history.push(nextLocation);
-        setNextLocation('');
       }
     }, [nextLocation, dirty]);
+
+    const importExportActions = useMemo(() => getConfigActions("Report", values.name, values.id), [values.id]);
+
+    const validateReportCopyName = useCallback(name => {
+      if (pdfReports.find(r => r.title.trim() === name.trim())) {
+        return "Report name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [pdfReports, values.id]);
+
+    const validateReportName = useCallback(name => {
+      if (pdfReports.find(r => r.id !== values.id && r.title.trim() === name.trim())) {
+        return "Report name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [pdfReports, values.id]);
 
     return (
       <>
         <Form onSubmit={handleSubmit(handleSave)}>
-          <input type="file" ref={fileRef} className="d-none" onChange={handleUpload} />
-          <FormField type="stub" name="body" />
+          <input type="file" ref={fileRef} className="d-none" onChange={handleUpload}/>
+          <FormField type="stub" name="body"/>
 
-          <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialodSave} />
+          <SaveAsNewAutomationModal 
+            opened={modalOpened} 
+            onClose={onDialodClose} 
+            onSave={onDialodSave} 
+            validateNameField={validateReportCopyName}
+          />
 
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
+          {!disableRouteConfirm && <RouteChangeConfirm form={form} when={dirty || isNew}/>}
 
           <AppBarContainer
             values={values}
@@ -245,8 +268,10 @@ const PdfReportsForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
+                  validate={validateReportName}
                   disabled={isInternal}
                   required
                 />
@@ -257,10 +282,10 @@ const PdfReportsForm = React.memo<Props>(
                 {!isNew && !isInternal && (
                   <AppBarActions
                     actions={[
+                      ...importExportActions,
                       {
                         action: handleDelete,
-                        icon: <DeleteForever />,
-                        confirm: true,
+                        icon: <DeleteForever/>,
                         tooltip: "Delete PDF template",
                         confirmText: "PDF template will be deleted permanently",
                         confirmButtonText: "DELETE"
@@ -281,7 +306,28 @@ const PdfReportsForm = React.memo<Props>(
               </>
             )}
           >
-            <Grid container>
+            <Grid container rowSpacing={2}>
+              <Grid item xs={12} sm={9}>
+                <FormField
+                  type="multilineText"
+                  name="shortDescription"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Short description"
+                />
+                <Typography variant="caption" fontSize="13px">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    placeholder="Description"
+                    fieldClasses={{
+                      text: "fw300 fsInherit"
+                    }}
+                  />
+                </Typography>
+              </Grid>
               <Grid item container columnSpacing={3} rowSpacing={2} xs={7} className="pr-3">
                 <Grid item xs={12}>
                   <div className="heading">Type</div>
@@ -305,16 +351,6 @@ const PdfReportsForm = React.memo<Props>(
                 <Grid item xs={12}>
                   <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
                 </Grid>
-                
-                <Grid item xs={12}>
-                  <FormField
-                    type="text"
-                    label="Description"
-                    name="description"
-                    disabled={isInternal}
-                    multiline
-                  />
-                </Grid>
 
                 <Grid item xs={12}>
                   <FormField
@@ -325,6 +361,7 @@ const PdfReportsForm = React.memo<Props>(
                     selectLabelMark="title"
                     items={pdfBackgrounds}
                     onChange={onBackgroundIdChange}
+                    debounced={false}
                     allowEmpty
                   />
                 </Grid>
@@ -375,6 +412,7 @@ const PdfReportsForm = React.memo<Props>(
                     color="primary"
                     format={v => v === "Enabled"}
                     parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1 pb-2">
@@ -401,7 +439,18 @@ const PdfReportsForm = React.memo<Props>(
                   {!isNew && (
                     <FilePreview
                       label="Preview"
-                      actions={[{ actionLabel: "Clear preview", onAction: handleClearPreview, icon: <DeleteOutlineRoundedIcon /> }]}
+                      actions={[
+                        {
+                          actionLabel: "Clear preview",
+                          onAction: handleClearPreview,
+                          icon: <DeleteOutlineRoundedIcon />
+                        },
+                        {
+                          actionLabel: "Full size preview",
+                          onAction: handleFullScreenPreview,
+                          icon: <FullscreenIcon />
+                        }
+                      ]}
                       data={values.preview}
                     />
                   )}

@@ -3,31 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo, useState } from "react";
-import Grid from "@mui/material/Grid";
-import { change } from "redux-form";
-import { addDays, format } from "date-fns";
-import IconButton from "@mui/material/IconButton";
-import LockOpen from "@mui/icons-material/LockOpen";
-import Lock from "@mui/icons-material/Lock";
-import { Discount, Tax } from "@api/model";
-import Decimal from "decimal.js-light";
-import { Dispatch } from "redux";
-import debounce from "lodash.debounce";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import Uneditable from "../../../../../../common/components/form/Uneditable";
-import { D_MMM_YYYY } from "../../../../../../common/utils/dates/format";
-import { decimalMul } from "../../../../../../common/utils/numbers/decimalCalculation";
+import { Discount, Tax } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import { addDays, format } from 'date-fns';
+import Decimal from 'decimal.js-light';
 import {
+  D_MMM_YYYY,
+  decimalMul,
   formatCurrency,
-  normalizeNumberToZero,
   formatFieldPercent,
+  normalizeNumberToZero,
   parseFieldPercent,
   preventNegativeOrLogEnter
-} from "../../../../../../common/utils/numbers/numbersNormalizing";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { getDiscountAmountExTax, getRoundingByType } from "../../../../discounts/utils";
+} from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
+import { getDiscountAmountExTax, getRoundingByType } from '../../../../discounts/utils';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
 
 interface Props extends BudgetCostModalContentProps {
   classFee: number;
@@ -57,7 +58,7 @@ const getDiscountLabel = (discount: Discount, hasOverride: boolean, perUnit: num
 
 const onBeforeLockSet = (
   pr,
-  dispatch: Dispatch,
+  dispatch: Dispatch<IAction>,
   perUnit: number,
   currentTax: Tax,
   discount: Discount,
@@ -182,7 +183,7 @@ const DiscountContent: React.FC<Props> = ({
   }, [classFee, taxOnDiscount, values.courseClassDiscount.discount.rounding]);
 
   return (
-    <Grid container columnSpacing={3}>
+    <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={4} className="pr-1">
         <Uneditable
           value={
@@ -201,7 +202,7 @@ const DiscountContent: React.FC<Props> = ({
       </Grid>
       <Grid item xs={4}>
         <FormField
-          type="persent"
+          type="number"
           name={
             forecastLocked ? "courseClassDiscount.discount.predictedStudentsPercentage" : "courseClassDiscount.forecast"
           }
@@ -210,13 +211,12 @@ const DiscountContent: React.FC<Props> = ({
           format={formatFieldPercent}
           parse={parseFieldPercent}
           onKeyPress={preventNegativeOrLogEnter}
-          props={{
-            label: "Default forecast take-up",
-            labelAdornment: <IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
-              {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
-            </IconButton>
-          }}
+          label="Default forecast take-up"
+          labelAdornment={<IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
+            {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
+          </IconButton>}
           disabled={forecastLocked}
+          debounced={false}
         />
       </Grid>
       <Grid item xs={6}>
@@ -224,11 +224,11 @@ const DiscountContent: React.FC<Props> = ({
       </Grid>
 
       <Grid item xs={12}>
-        <div className="heading pb-3 pt-2">Value</div>
+        <div className="heading pb-1 pt-2">Value</div>
       </Grid>
 
       <Grid item xs={12} container>
-        <Grid item container xs={8}>
+        <Grid item container xs={8} columnSpacing={3} rowSpacing={2}>
           <Grid item xs={6}>
             <FormField
               type="money"
@@ -242,6 +242,7 @@ const DiscountContent: React.FC<Props> = ({
               )}
               disabled={valueLocked}
               onChange={onValueChange}
+              debounced={false}
             />
           </Grid>
           <Grid item xs={6}>

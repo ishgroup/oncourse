@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useMemo } from "react";
-import Grid from "@mui/material/Grid";
-import { arrayInsert, arrayRemove } from "redux-form";
-import Typography from "@mui/material/Typography";
 import { AssessmentClass, GradingType } from "@api/model";
+import { Divider, Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
-import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import CourseClassAssessmentItems from "./CourseClassAssessmentItems";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { AssessmentClassExtended, CourseClassExtended } from "../../../../../model/entities/CourseClass";
+import { arrayInsert, arrayRemove } from "redux-form";
 import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
 import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import CourseClassAssessmentService from "./services/CourseClassAssessmentService";
-import { deleteCourseClassAssessment } from "./actions";
+import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
 import uniqid from "../../../../../common/utils/uniqid";
+import { EditViewProps } from "../../../../../model/common/ListView";
+import { AssessmentClassExtended, CourseClassExtended } from "../../../../../model/entities/CourseClass";
 import { State } from "../../../../../reducers/state";
-import Divider from "@mui/material/Divider";
+import { deleteCourseClassAssessment } from "./actions";
+import CourseClassAssessmentItems from "./CourseClassAssessmentItems";
+import CourseClassAssessmentService from "./services/CourseClassAssessmentService";
 
 const assessmentInitial: AssessmentClass = {
   id: null,
@@ -72,9 +71,10 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
   }, [gradingTypes]);
 
   const AssessmentItemsComponent = useCallback(
-    ({ classes, ...rest }) => (
+    ({ classes, item, ...rest }) => (
       <CourseClassAssessmentItems
         {...rest}
+        item={item}
         dispatch={dispatch}
         form={form}
         courseClassEnrolments={courseClassEnrolments}

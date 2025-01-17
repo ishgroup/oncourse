@@ -14,13 +14,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, {
-  ReactNode
-} from "react";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Typography from "@mui/material/Typography";
-import ListItem from "@mui/material/ListItem";
-import { makeAppStyles } from "../../../styles/makeStyles";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { ListItemButton } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { makeAppStyles } from 'ish-ui';
+import React, { ReactNode } from 'react';
 
 interface Props {
   selected: boolean;
@@ -29,7 +27,7 @@ interface Props {
   labelAdornment?: ReactNode;
 }
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'selected' | 'arrowIcon' | 'label'>()((theme, p, classes) => ({
   root: {
     alignItems: "flex-start",
     marginBottom: theme.spacing(3),
@@ -41,19 +39,20 @@ const useStyles = makeAppStyles(theme => ({
     cursor: 'pointer',
     width: "100%",
     willChange: "transform, visibility, backgroundColor, opacity",
-    "&$selected": {
+    [`&&.${classes.selected}`]: {
       opacity: 1,
       backgroundColor: "inherit",
-      "& $arrowIcon": {
+      [`& .${classes.arrowIcon}`]: {
         transform: "translateX(0)",
         visibility: "visible"
       },
-      "& $label": {
+      [`& .${classes.label}`]: {
         paddingLeft: 30,
       },
     },
     "&:hover": {
       opacity: 0.8,
+      backgroundColor: "inherit"
     }
   },
   label: {
@@ -81,10 +80,11 @@ const SideBarHeader = (
     labelAdornment
   }: Props
 ) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
-    <ListItem
+    <ListItemButton
+      disableRipple
       selected={selected}
       classes={{
         root: classes.root,
@@ -93,8 +93,8 @@ const SideBarHeader = (
       onClick={onClick}
     >
       <div>
-        <div className="centeredFlex">
-          <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon} />
+        <div className="centeredFlex mb-1">
+          <ArrowForwardIcon color="inherit" fontSize="small" className={classes.arrowIcon}/>
           <div className={classes.label}>{label}</div>
         </div>
         {labelAdornment && (
@@ -103,8 +103,8 @@ const SideBarHeader = (
           </Typography>
         )}
       </div>
-    </ListItem>
-);
+    </ListItemButton>
+  );
 };
 
 export default SideBarHeader;

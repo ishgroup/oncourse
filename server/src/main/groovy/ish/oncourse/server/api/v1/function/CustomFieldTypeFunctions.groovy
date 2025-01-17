@@ -11,9 +11,10 @@
 
 package ish.oncourse.server.api.v1.function
 
+import ish.common.types.DataType
 import ish.oncourse.server.api.v1.model.DataTypeDTO
 
-import static ish.oncourse.common.field.PropertyGetSetFactory.CUSTOM_FIELD_PROPERTY_PATTERN
+import static ish.oncourse.common.field.PropertyGetSetFields.CUSTOM_FIELD_PROPERTY_PATTERN
 import ish.oncourse.server.api.v1.model.CustomFieldTypeDTO
 import ish.oncourse.server.api.v1.model.EntityTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -110,6 +111,21 @@ class CustomFieldTypeFunctions {
         if (!type.dataType) {
             return new ValidationErrorDTO(type.id, 'dataType', "Custom field data type should be specified")
         }
+
+        if(type.dataType == DataTypeDTO.PORTAL_SUBDOMAIN){
+            if(!type.id) {
+                if(type.entityType != EntityTypeDTO.CONTACT)
+                    return new ValidationErrorDTO(type.id, 'entityType', "Only contacts support now subdomain custom fields. Connect ish support if you want to expand functionality")
+
+                def existedType = ObjectSelect.query(CustomFieldType)
+                        .where(CustomFieldType.DATA_TYPE.eq(DataType.PORTAL_SUBDOMAIN))
+                        .select(context)
+
+                if(!existedType.empty)
+                    return new ValidationErrorDTO(type.id, 'dateType', "You already have custom field type for portal subdomains. Only one is allowed in onCourse")
+            }
+        }
+
         if (DataTypeDTO.PATTERN_TEXT == type.dataType && !type.pattern) {
             return new ValidationErrorDTO(type.id, 'pattern', "Custom field with 'pattern text' data type should have a regular expression")
         }

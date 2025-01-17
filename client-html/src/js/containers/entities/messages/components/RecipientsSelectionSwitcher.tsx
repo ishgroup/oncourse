@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect } from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import Typography from "@mui/material/Typography";
-import ButtonBase from "@mui/material/ButtonBase";
+import { ButtonBase, Typography } from '@mui/material';
+import clsx from 'clsx';
+import React, { useCallback, useEffect } from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = theme => createStyles({
+const styles = theme => ({
     select: {
       border: "1px solid",
       opacity: "0.3",
@@ -37,7 +36,7 @@ const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
     classes, selectedRecords, allRecords, selectAll, setSelectAll, disabled, selectionOnly
   } = props;
 
-  const allRecordsText = allRecords !== null ? `${allRecords} found record${allRecords > 1 ? "s" : ""}` : "All records";
+  const allRecordsText = allRecords ? `${allRecords} found record${allRecords > 1 ? "s" : ""}` : "All records";
 
   const setAll = useCallback(() => {
     setSelectAll(true);
@@ -84,4 +83,4 @@ const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
   );
 };
 
-export default withStyles(styles)(RecipientsSelectionSwitcher);
+export default withStyles(RecipientsSelectionSwitcher, styles);

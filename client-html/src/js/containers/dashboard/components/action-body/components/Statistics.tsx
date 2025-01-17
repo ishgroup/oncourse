@@ -3,32 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import {
- AreaChart, Area, CartesianGrid, Tooltip, XAxis
-} from "recharts";
-import AutoSizer from "react-virtualized-auto-sizer";
-import {
- Grid, List, ListItem, Typography
-} from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import { Person } from "@mui/icons-material";
-import clsx from "clsx";
+import { Currency, StatisticData } from '@api/model';
+import { Person } from '@mui/icons-material';
+import { Grid, List, ListItem, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { alpha } from '@mui/material/styles';
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { Currency, StatisticData } from "@api/model";
-import Paper from "@mui/material/Paper";
-import { State } from "../../../../../reducers/state";
-import { getDashboardStatistic } from "../../../actions";
-import { AnyArgFunction } from "../../../../../model/common/CommonFunctions";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import ScriptStatistic from "./ScriptStatistic";
-import { checkPermissions } from "../../../../../common/actions";
+import clsx from 'clsx';
+import { AnyArgFunction, formatCurrency, openInternalLink } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis } from 'recharts';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { checkPermissions } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import { State } from '../../../../../reducers/state';
+import { getDashboardStatistic } from '../../../actions';
+import ScriptStatistic from './ScriptStatistic';
 
-const styles = theme => createStyles({
+const styles = theme => ({
     root: {
       padding: theme.spacing(3),
       alignContent: "flex-start"
@@ -137,7 +131,7 @@ const TotalStatisticInfo = props => {
 const ChartTooltip = args => {
   const { payload, active } = args;
 
-  return active ? (
+  return active && payload ? (
     <Paper className="p-1">
       {payload.map((i, n) => (
         <Typography key={n} noWrap>
@@ -153,19 +147,19 @@ const ChartTooltip = args => {
 };
 
 const Chart = props => (
-  <AutoSizer disableHeight defaultHeight={200}>
+  <AutoSizer disableHeight>
     {({ width }) => (
       <AreaChart
         width={width}
         height={200}
         data={props.data}
         margin={{
- top: 8, right: 0, left: 0, bottom: 8
-}}
+         top: 8, right: 0, left: 0, bottom: 8
+        }}
       >
         <XAxis hide interval={0} />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip content={ChartTooltip} />
+        <Tooltip content={ChartTooltip} wrapperStyle={{ outline: "none" }} />
         <Area type="monotone" dataKey="Revenue" stackId="1" stroke="#ffd876" fill="#ffd876" />
         <Area type="monotone" dataKey="Enrolments" stackId="1" stroke="#73cba7" fill="#73cba7" />
       </AreaChart>
@@ -194,7 +188,7 @@ interface Props {
   isUpdating?: boolean;
   hideChart?: boolean;
   hasAuditPermissions?: boolean;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   getAuditPermissions?: () => void;
 }
 
@@ -401,4 +395,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Statistics));
+)(withStyles(Statistics, styles));

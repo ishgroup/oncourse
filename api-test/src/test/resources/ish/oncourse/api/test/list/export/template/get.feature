@@ -27,7 +27,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Banking'             | "Banking CSV"                                                                  |
             | 'WaitingList'         | "WaitingList CSV"                                                              |
             | 'Application'         | "Smart & Skilled Bulk Upload"                                                         |
-            | 'Certificate'         | "Certificate CQR CSV export","Certificate CSV"                                 |
+            | 'Certificate'         | "Certificate CQR CSV export","Certificate XML"                                 |
             | 'Survey'              | "StudentFeedback CSV"                                                          |
             | 'Audit'               | "Audit Logs CSV"                                                            |
             | 'Discount'            | "Discount CSV"                                                                 |
@@ -63,7 +63,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'PaymentIn'           | "PaymentIn XML"            |
             | 'Banking'             | "Banking XML"              |
             | 'WaitingList'         | "WaitingList XML"          |
-            | 'Application'         | "Application XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
             | 'Certificate'         | "Certificate XML"          |
             | 'Survey'              | "StudentFeedback XML"      |
             | 'Audit'               | "Audit Logs XML"                |
@@ -98,7 +98,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'Module'              | "Module CSV"          |
             | 'Site'                | "Site CSV"            |
             | 'Room'                | "Room CSV"            |
-            | 'AccountTransaction'  | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV","grouped MYOB"    |
+            | 'AccountTransaction'  | "Account Transaction CSV","Account Transaction MYOB","Account Transaction Segmentation CSV", "Account Transaction XML", "grouped MYOB"    |
             | 'Account'             | "Account CSV"                                                                      |
             | 'Payslip'             | "MYOB Activity Payslip CSV","Payslip CSV","Payslip MicroPay"         |
             | 'CorporatePass'       | "CorporatePass CSV"                                                                |
@@ -149,7 +149,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'PaymentIn'           | "PaymentIn XML"            |
             | 'Banking'             | "Banking XML"              |
             | 'WaitingList'         | "WaitingList XML"          |
-            | 'Application'         | "Application XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
             | 'Certificate'         | "Certificate XML"          |
             | 'Survey'              | "StudentFeedback XML"      |
             | 'Audit'               | "Audit Logs XML"                |
@@ -267,7 +267,7 @@ Feature: Main feature for all GET requests with path 'list/export/template'
             | 'PaymentIn'           | "PaymentIn XML"            |
             | 'Banking'             | "Banking XML"              |
             | 'WaitingList'         | "WaitingList XML"          |
-            | 'Application'         | "Application XML"          |
+            | 'Application'         | "Smart & Skilled Bulk Upload"          |
             | 'Certificate'         | "Certificate XML"          |
             | 'Survey'              | "StudentFeedback XML"      |
             | 'Audit'               | "Audit Logs XML"                |

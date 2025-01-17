@@ -3,27 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { CorporatePass } from "@api/model";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { initialize } from "redux-form";
 import {
-  setFilterGroups,
-  setListEditRecord,
   clearListState,
   getFilters,
- } from "../../../common/components/list-view/actions";
-import ListView from "../../../common/components/list-view/ListView";
-import { CorporatePass } from "@api/model";
-import { defaultContactName } from "../contacts/utils";
-import CorporatePassEditView from "./components/CorporatePassEditView";
-import { FilterGroup } from "../../../model/common/ListView";
-import {
-  createCorporatePass, getCorporatePass, removeCorporatePass, updateCorporatePass
-} from "./actions";
-import { getManualLink } from "../../../common/utils/getManualLink";
+  setFilterGroups,
+  setListEditRecord,
+} from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { getEntityTags } from "../../tags/actions";
+import CorporatePassEditView from "./components/CorporatePassEditView";
 
 const filterGroups: FilterGroup[] = [
   {
@@ -54,7 +51,7 @@ const Initial: CorporatePass = {
   linkedSalables: []
 };
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == CorporatePass and entityId" },
   { title: "Classes", list: "class", expression: "corporatePassCourseClass.corporatePass.id" },
   { title: "Contacts", list: "contact", expression: "corporatePasses.id" },
@@ -67,11 +64,9 @@ const findRelatedGroup: any[] = [
   { title: "Invoices", list: "invoice", expression: "corporatePassUsed.id" }
 ];
 
-const manualLink = getManualLink("corporatePass");
+const manualLink = getManualLink("corporate-pass");
 
-export const corporatePassNameCondition = (values: CorporatePass) => defaultContactName(values.contactFullName);
-
-const secondaryColumnCondition = dataRow => dataRow["expiryDate"] || "No Value";
+const secondaryColumnCondition = dataRow => dataRow["expiryDate"] || COMMON_PLACEHOLDER;
 
 class CorporatePasses extends React.Component<any, any> {
   componentDidMount() {
@@ -87,40 +82,30 @@ class CorporatePasses extends React.Component<any, any> {
     return false;
   }
 
-  onSave = (id: string, item: CorporatePass) => {
-    this.props.onSave(id, item);
-  };
-
   render() {
     const {
-      getCorporatePassRecord, onCreate, onDelete, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "contact.fullName",
-            secondaryColumn: "expiryDate",
-            secondaryColumnCondition
-          }}
-          EditViewContent={CorporatePassEditView}
-          getEditRecord={getCorporatePassRecord}
-          rootEntity="CorporatePass"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={this.onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-          editViewProps={{
-            nameCondition: corporatePassNameCondition,
-            manualLink,
-            hideTitle: true
-          }}
-          noListTags
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "contact.fullName",
+          secondaryColumn: "expiryDate",
+          secondaryColumnCondition
+        }}
+        EditViewContent={CorporatePassEditView}
+        rootEntity="CorporatePass"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+        editViewProps={{
+          nameCondition: pass => pass.contactFullName,
+          manualLink,
+          hideTitle: true
+        }}
+        noListTags
+      />
     );
   }
 }
@@ -135,10 +120,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getEntityTags("Course"));
   },
   getFilters: () => dispatch(getFilters("CorporatePass")),
-  getCorporatePassRecord: (id: string) => dispatch(getCorporatePass(id)),
-  onSave: (id: string, corporatePass: CorporatePass) => dispatch(updateCorporatePass(id, corporatePass)),
-  onCreate: (corporatePass: CorporatePass) => dispatch(createCorporatePass(corporatePass)),
-  onDelete: (id: string) => dispatch(removeCorporatePass(id)),
   clearListState: () => dispatch(clearListState()),
   setFilterGroups: (filterGroups: FilterGroup[]) => dispatch(setFilterGroups(filterGroups))
 });

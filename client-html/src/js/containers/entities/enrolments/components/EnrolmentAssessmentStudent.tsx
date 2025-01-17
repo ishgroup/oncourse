@@ -6,18 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useEffect, useMemo, useState } from "react";
-import Grid from "@mui/material/Grid";
-import clsx from "clsx";
-import { GradingItem, GradingType } from "@api/model";
-import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
-import { D_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
-import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
-import GradeContent from "../../courseClasses/components/assessments/GradeContent";
-import { stubFunction } from "../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../common/components/form/formFields/EditInPlaceField";
+import { GradingItem, GradingType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import clsx from 'clsx';
+import { D_MMM_YYYY, EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { IAction } from '../../../../common/actions/IshAction';
+import { EnrolmentAssessmentExtended, EnrolmentExtended } from '../../../../model/entities/Enrolment';
+import AssessmentSubmissionIconButton from '../../courseClasses/components/assessments/AssessmentSubmissionIconButton';
+import GradeContent from '../../courseClasses/components/assessments/GradeContent';
+import { useGradeErrors } from '../../courseClasses/components/assessments/utils/hooks';
+
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
@@ -26,6 +26,7 @@ interface Props {
   classes: any;
   hasGrades: boolean;
   index: number;
+  dispatch: Dispatch<IAction>
   onToggleGrade: (elem: EnrolmentAssessmentExtended, grade: GradingItem) => void;
   onChangeGrade: (value: number, elem: EnrolmentAssessmentExtended) => void;
   handleGradeMenuOpen: any;
@@ -47,7 +48,8 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
     handleGradeMenuOpen,
     gradeType,
     gradeItems,
-    triggerAsyncChange
+    triggerAsyncChange,
+    dispatch
   }
 ) => {
   const [gradeVal, setGradeVal] = useState<number>(null);
@@ -97,7 +99,9 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
           ? (
             <div className="pl-3">
               <EditInPlaceDateTimeField
-                meta={{}}
+                meta={{
+                  dispatch
+                }}
                 input={{
                 onChange: value => triggerAsyncChange(value, "submittedOn", submissionIndex),
                 onFocus: stubFunction,
@@ -105,9 +109,8 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                 value: submission.submittedOn
               }}
                 type="datetime"
-                formatting="inline"
+                inline
                 formatDate={D_MMM_YYYY}
-                inlineMargin
               />
             </div>
           )
@@ -118,10 +121,12 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
       <>
         <Grid item xs={3} className={classes.center}>
           {markedStatus === "Submitted" ? (
-            <div>
+            <div className="pt-0-5">
               <div className="pl-3">
                 <EditInPlaceDateTimeField
-                  meta={{}}
+                  meta={{
+                    dispatch
+                  }}
                   input={{
                     onChange: value => triggerAsyncChange(value, "markedOn", submissionIndex),
                     onFocus: stubFunction,
@@ -129,13 +134,12 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                     value: submission.markedOn
                   }}
                   type="datetime"
-                  formatting="inline"
+                  inline
                   formatDate={D_MMM_YYYY}
-                  inlineMargin
                 />
               </div>
-              <div>
-                <EditInPlaceField
+              <div className="pl-3">
+                <EditInPlaceSearchSelect
                   meta={{}}
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
@@ -146,10 +150,9 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                     value: submission.markedById
                   }}
                   placeholder="No assessor"
-                  formatting="inline"
                   items={elem.tutors || []}
                   allowEmpty
-                  select
+                  inline
                 />
               </div>
             </div>

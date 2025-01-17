@@ -7,12 +7,10 @@
  */
 
 import { Epic } from "redux-observable";
+import { setSystemUserData } from "../../../common/actions";
 import * as EpicUtils from "../../../common/epics/EpicUtils";
+import { GET_SYSTEM_USER_DATA } from "../actions";
 import LoginService from "../services/LoginService";
-import {
-  GET_SYSTEM_USER_DATA,
-  setSystemUserData
-} from "../../../common/actions";
 import LoginServiceErrorsHandler from "../services/LoginServiceErrorsHandler";
 
 const request: EpicUtils.Request = {

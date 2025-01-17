@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { FieldArray } from "redux-form";
 import Typography from "@mui/material/Typography";
 import clsx from "clsx";
-import AddButton from "../../icons/AddButton";
+import { AddButton } from "ish-ui";
+import React, { useMemo } from "react";
+import { FieldArray } from "redux-form";
 import MinifiedEntitiesRenderer from "./MinifiedEntitiesRenderer";
 
 const MinifiedEntitiesList = props => {
@@ -26,7 +26,8 @@ const MinifiedEntitiesList = props => {
     validate,
     syncErrors,
     namePath,
-    twoColumn
+    twoColumn,
+    fieldProps
   } = props;
 
   const error = useMemo(
@@ -34,7 +35,7 @@ const MinifiedEntitiesList = props => {
       syncErrors
       && syncErrors[name]
       && syncErrors[name]._error && (
-        <Typography color="error" variant="body2" className="text-pre-wrap" paragraph>
+        <Typography color="error" variant="body2" className="text-pre-wrap" component="p">
           {syncErrors[name]._error}
         </Typography>
       ),
@@ -44,13 +45,13 @@ const MinifiedEntitiesList = props => {
   return (
     <div id={name}>
       <div className="centeredFlex">
-        <Typography className={clsx("heading mb-2 mt-2", { "errorColor": error })}>
+        <Typography className={clsx("heading mb-2 mt-2", {"errorColor": error})}>
           {count > 0 ? count : ""}
           {' '}
           {count !== 1 ? header : oneItemHeader}
         </Typography>
         {onAdd && (
-          <AddButton onClick={onAdd} />
+          <AddButton onClick={onAdd}/>
         )}
       </div>
 
@@ -71,6 +72,7 @@ const MinifiedEntitiesList = props => {
         validate={validate}
         twoColumn={twoColumn}
         syncErrors={syncErrors}
+        fieldProps={fieldProps}
         rerenderOnEveryChange
       />
     </div>

@@ -3,15 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { IAction } from "../../../common/actions/IshAction";
-import { decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
-import {
-  CheckoutAddItemsRequiest,
-  CheckoutDiscount,
-  CheckoutItem,
-  CheckoutState
-} from "../../../model/checkout";
-import { getContactName } from "../../entities/contacts/utils";
+import { decimalPlus } from 'ish-ui';
+import { IAction } from '../../../common/actions/IshAction';
+import { CheckoutAddItemsRequiest, CheckoutDiscount, CheckoutItem, CheckoutState } from '../../../model/checkout';
+import { getContactFullName } from '../../entities/contacts/utils';
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
@@ -27,30 +22,13 @@ import {
   CHECKOUT_UPDATE_CLASS_ITEM,
   CHECKOUT_UPDATE_CONTACT,
   CHECKOUT_UPDATE_RELATED_ITEMS
-} from "../actions";
-import {
-  getDefaultPayer,
-  getUpdatedSummaryItem,
-  getUpdatedSummaryVouchers,
-  getUpdatedVoucherDiscounts,
-  listPreviousInvoices,
-  modifySummaryLisItem,
-  setSummaryListWithDefaultPayer
-} from "../utils";
+} from '../actions';
 import {
   CHECKOUT_CLEAR_CONTACT_EDIT_RECORD,
   CHECKOUT_GET_CONTACT_FULFILLED,
   CHECKOUT_GET_RELATED_CONTACT_FULFILLED,
   CHECKOUT_UPDATE_CONTACT_RELATIONS
-} from "../actions/checkoutContact";
-import {
-  CHECKOUT_CLEAR_COURSE_CLASS_LIST,
-  CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLED,
-  CHECKOUT_GET_ITEM_MEMBERSHIP_FULFILLED,
-  CHECKOUT_GET_ITEM_PRODUCT_FULFILLED,
-  CHECKOUT_GET_ITEM_VOUCHER_FULFILLED,
-  CLEAR_CHECKOUT_ITEM_RECORD
-} from "../actions/chekoutItem";
+} from '../actions/checkoutContact';
 import {
   CHECKOUT_CLEAR_CC_IFRAME_URL,
   CHECKOUT_CLEAR_PAYMENT_STATUS,
@@ -67,12 +45,13 @@ import {
   CHECKOUT_SET_PAYMENT_STATUS_DETAILS,
   CHECKOUT_SET_PAYMENT_SUCCESS,
   CHECKOUT_SET_PAYMENT_TYPE
-} from "../actions/checkoutPayment";
+} from '../actions/checkoutPayment';
 import {
   CHECKOUT_CHANGE_SUMMARY_ITEM_FIELD,
   CHECKOUT_CHANGE_SUMMARY_ITEM_QUANTITY,
   CHECKOUT_REMOVE_PROMOTIONAL_CODE,
   CHECKOUT_REMOVE_VOUCHER_PROMO,
+  CHECKOUT_RESTORE_STATE,
   CHECKOUT_SET_DEFAULT_PAYER,
   CHECKOUT_SET_DISABLE_DISCOUNTS,
   CHECKOUT_SET_PREVIOUS_CREDIT,
@@ -88,7 +67,24 @@ import {
   CHECKOUT_UPDATE_SUMMARY_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_LIST_ITEMS,
   CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED
-} from "../actions/checkoutSummary";
+} from '../actions/checkoutSummary';
+import {
+  CHECKOUT_CLEAR_COURSE_CLASS_LIST,
+  CHECKOUT_GET_COURSE_CLASS_LIST_FULFILLED,
+  CHECKOUT_GET_ITEM_MEMBERSHIP_FULFILLED,
+  CHECKOUT_GET_ITEM_PRODUCT_FULFILLED,
+  CHECKOUT_GET_ITEM_VOUCHER_FULFILLED,
+  CLEAR_CHECKOUT_ITEM_RECORD
+} from '../actions/chekoutItem';
+import {
+  getDefaultPayer,
+  getUpdatedSummaryItem,
+  getUpdatedSummaryVouchers,
+  getUpdatedVoucherDiscounts,
+  listPreviousInvoices,
+  modifySummaryLisItem,
+  setSummaryListWithDefaultPayer
+} from '../utils';
 
 const initial: CheckoutState = {
   step: 0,
@@ -147,6 +143,15 @@ const initial: CheckoutState = {
 
 export const checkoutReducer = (state: CheckoutState = initial, action: IAction): CheckoutState => {
   switch (action.type) {
+    case CHECKOUT_RESTORE_STATE: {
+      const storedState = action.payload;
+
+      return {
+        ...state,
+        ...storedState
+      };
+    }
+    
     case CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED: {
       const { invoice } = action.payload;
 
@@ -858,7 +863,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
 
     case CHECKOUT_PROCESS_PAYMENT_FULFILLED: {
       const {
-        sessionId, ccFormUrl, merchantReference, invoice, paymentId
+        sessionId, ccFormUrl, ...rest
       } = action.payload;
 
       return {
@@ -867,9 +872,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
           ...state.payment,
           xPaymentSessionId: sessionId,
           wcIframeUrl: ccFormUrl,
-          merchantReference,
-          invoice,
-          paymentId
+          ...rest
         }
       };
     }
@@ -879,6 +882,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         ...state,
         payment: {
           ...state.payment,
+          clientSecret: null,
           wcIframeUrl: ""
         }
       };
@@ -1014,7 +1018,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
               const filteredRelations = relationTypes.filter(r => r.isReverseRelation === !isReverseRelation);
               const relation = filteredRelations.find(r => r.value === String(parseInt(conRel.relationId, 10)));
               const relationName = relation && relation.label;
-              const relatedContactName = getContactName(c);
+              const relatedContactName = getContactFullName(c as any);
               rc.relationString = relationName && relatedContactName ? `${relationName} of ${relatedContactName}` : "";
             }
           });

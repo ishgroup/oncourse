@@ -3,30 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useCallback, useState } from "react";
-import clsx from "clsx";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import {
-  reduxForm, change, getFormValues
-} from "redux-form";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import Collapse from "@mui/material/Collapse";
-import { format as formatDate } from "date-fns";
-import IconButton from "@mui/material/IconButton";
-import { Dispatch } from "redux";
-import { PayrollRequest, WagesToProcess } from "@api/model";
-import { connect } from "react-redux";
-import LoadingButton from "@mui/lab/LoadingButton";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { openInternalLink } from "../../../../common/utils/links";
-import { YYYY_MM_DD_MINUSED } from "../../../../common/utils/dates/format";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import { PayrollRequest, WagesToProcess } from '@api/model';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { openInternalLink, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues, reduxForm } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
+import { State } from '../../../../reducers/state';
 
 export const PAYSLIP_GENERATE_FORM = "PayslipGenerateForm";
 
@@ -37,7 +35,7 @@ interface Props {
   confirmNowIsAllowed: boolean;
   preparePayroll: (request: PayrollRequest) => void;
   generatePayslip: (payrollRequest: PayrollRequest, confirm: boolean) => void;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   handleSubmit?: any;
   invalid?: boolean;
 }
@@ -101,8 +99,7 @@ const PayslipGenerateDialog: React.FC<Props> = ({
             } unprocessed wages until and including`}
             onChange={onDateChange}
             required
-            fullWidth
-          />
+                      />
 
           <Collapse in={!values.confirm}>
             <DialogContentText
@@ -158,6 +155,6 @@ const mapStateToProps = (state: State) => ({
   values: getFormValues(PAYSLIP_GENERATE_FORM)(state)
 });
 
-export default reduxForm<any, Props>({
+export default reduxForm<any, any, any>({
   form: PAYSLIP_GENERATE_FORM
 })(connect(mapStateToProps)((props: any) => (props.values ? <PayslipGenerateDialog {...props} /> : null)));

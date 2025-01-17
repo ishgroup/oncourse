@@ -25,8 +25,12 @@ public enum SystemEventType implements DisplayableExtendedEnumeration<Integer> {
 	VALIDATE_CHECKOUT(6, "Validate checkout"),
 	PAYSLIP_PAID(7, "Payslip paid"),
 	USER_LOGGED_IN(8, "System user logged in"),
-	USER_LOGGED_OUT(9, "System user logged out");
-	
+	USER_LOGGED_OUT(9, "System user logged out"),
+	CHECKLIST_TASK_CHECKED(10,"Checklist task checked"),
+	CHECKLIST_COMPLETED(11,"Checklist completed"),
+	TAG_ADDED(12,"Tag added"),
+	TAG_REMOVED(13,"Tag removed");
+
 	private int value;
 	private String displayName;
 

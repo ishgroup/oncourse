@@ -3,72 +3,53 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
-  useRef, useState
-} from "react";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import ListItem from "@mui/material/ListItem";
-import List from "@mui/material/List";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Popover from "@mui/material/Popover";
-import { COLUMN_WITH_COLORS } from "../utils";
+import Visibility from '@mui/icons-material/Visibility';
+import { Checkbox, FormControlLabel, List, ListItemButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Popover from '@mui/material/Popover';
+import React, { useRef, useState } from 'react';
+import { CHOOSER_COLUMN, COLUMN_WITH_COLORS, SELECTION_COLUMN } from '../constants';
 
 const ColumnChooserItem = ({
- classes, column, columnId, setShowColoredDots 
-}) => {
-  const customToggleHiddenProps = { ...column.getToggleHiddenProps() };
-
-  if (columnId === COLUMN_WITH_COLORS) {
-    const customOnChange = e => {
-      column.toggleHidden(!e.target.checked);
-      setShowColoredDots(e.target.checked);
-    };
-
-    customToggleHiddenProps.onChange = customOnChange;
-  }
-
-  return (
-    <ListItem
-      button
-      classes={{ root: classes.columnChooserListItem }}
-    >
-      <FormControlLabel
-        {...customToggleHiddenProps}
-        className="w-100"
-        classes={{
-          root: classes.columnChooserLabel
+                             classes, column, onHiddenChange
+                           }) => (<ListItemButton
+  classes={{root: classes.columnChooserListItem}}
+>
+  <FormControlLabel
+    className="w-100"
+    classes={{
+      root: classes.columnChooserLabel
+    }}
+    disabled={column.columnDef.disableVisibility}
+    label={column.columnDef.title}
+    control={(
+      <Checkbox
+        onChange={e => {
+          column.getToggleVisibilityHandler()(e);
+          onHiddenChange();
         }}
-        disabled={column.disableVisibility}
-        label={column.Header}
-        control={(
-          <Checkbox
-            classes={{
-              root: classes.columnChooserCheckbox
-            }}
-          />
-      )}
+        checked={column.getIsVisible()}
+        classes={{
+          root: classes.columnChooserCheckbox
+        }}
       />
-    </ListItem>
-  );
-};
+    )}
+  />
+</ListItemButton>);
 
-const ColumnChooserOverlay = props => {
-  const {
-    columns, target, visible, onHide, classes, setShowColoredDots
-  } = props;
-
+const ColumnChooserOverlay = ({
+                                columns, target, visible, onHide, classes, onHiddenChange
+                              }) => {
   let sortedColumns = [];
   const tagsColumn = columns.filter(column => column.id === COLUMN_WITH_COLORS);
   if (tagsColumn.length) {
     if (columns[0].id === "seletion") {
       sortedColumns.push(columns[0]);
       sortedColumns.push(tagsColumn[0]);
-      sortedColumns = sortedColumns.concat(columns.filter(column => column.id !== COLUMN_WITH_COLORS && column.id !== "seletion"));
+      sortedColumns = sortedColumns.concat(columns.filter(column => column.id !== COLUMN_WITH_COLORS && column.id !== SELECTION_COLUMN));
     } else {
       sortedColumns.push(tagsColumn[0]);
-      sortedColumns = sortedColumns.concat(columns.filter(column => column.id !== COLUMN_WITH_COLORS && column.id !== "seletion"));
+      sortedColumns = sortedColumns.concat(columns.filter(column => column.id !== COLUMN_WITH_COLORS && column.id !== SELECTION_COLUMN));
     }
   }
 
@@ -85,13 +66,12 @@ const ColumnChooserOverlay = props => {
       }}
     >
       <List>
-        {columnsForRender.map(column => (column.id !== "selection" && column.id !== "chooser" ? (
+        {columnsForRender.map(column => (column.id !== SELECTION_COLUMN && column.id !== CHOOSER_COLUMN ? (
           <ColumnChooserItem
             key={column.id}
             column={column}
             classes={classes}
-            setShowColoredDots={setShowColoredDots}
-            columnId={column.id}
+            onHiddenChange={onHiddenChange}
           />
         ) : null))}
       </List>
@@ -99,21 +79,17 @@ const ColumnChooserOverlay = props => {
   );
 };
 
-const ColumnChooserButton = React.forwardRef<any, any>((props, ref) => {
-  const { className, onToggle } = props;
+const ColumnChooserButton = React.forwardRef<any, any>(({className, onToggle}, ref) => (
+  <div className={className}>
+    <IconButton onClick={onToggle} ref={ref} size="large" color="inherit">
+      <Visibility color="inherit"/>
+    </IconButton>
+  </div>
+));
 
-  return (
-    <div className={className}>
-      <IconButton onClick={onToggle} ref={ref} size="large" color="inherit">
-        <Visibility color="inherit" />
-      </IconButton>
-    </div>
-  );
-});
-
-const ColumnChooser = ({ classes, columns, setShowColoredDots }) => {
+const ColumnChooser = ({classes, columns, onHiddenChange}) => {
   const [visible, setVisible] = useState(false);
-  const buttonRef = useRef<any>();
+  const buttonRef = useRef<any>(undefined);
 
   return (
     <>
@@ -122,10 +98,11 @@ const ColumnChooser = ({ classes, columns, setShowColoredDots }) => {
         target={buttonRef.current}
         columns={columns}
         classes={classes}
-        setShowColoredDots={setShowColoredDots}
         onHide={() => setVisible(false)}
+        onHiddenChange={onHiddenChange}
       />
-      <ColumnChooserButton ref={buttonRef} className={classes.columnChooserButton} onToggle={() => setVisible(!visible)} />
+      <ColumnChooserButton ref={buttonRef} className={classes.columnChooserButton}
+                           onToggle={() => setVisible(!visible)}/>
     </>
   );
 };

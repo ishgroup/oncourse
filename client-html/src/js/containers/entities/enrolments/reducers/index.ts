@@ -3,17 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { EnrolmentsState } from "./state";
 import { IAction } from "../../../../common/actions/IshAction";
-import { SET_ENROLMENT_INVOICE_LINES, SET_ENROLMENT_TRANSFERED } from "../actions";
+import {
+  CANCEL_ENROLMENT,
+  SET_ENROLMENT_INVOICE_LINES,
+  SET_ENROLMENTS_DIALOG,
+  SET_ENROLMENTS_PROCESSING, SET_OTCOME_CHANGE_FIELDS
+} from "../actions";
+import { EnrolmentsState } from "./state";
 
 const initial: EnrolmentsState = {
   invoiceLines: [],
-  isTransfered: false
+  dialogOpened: null,
+  processing: false,
+  changedOutcomeFields: []
 };
 
 export const enrolmentsReducer = (state: EnrolmentsState = initial, action: IAction<any>): any => {
   switch (action.type) {
+    case SET_ENROLMENTS_PROCESSING:
+    case SET_ENROLMENTS_DIALOG:
+    case SET_OTCOME_CHANGE_FIELDS:
     case SET_ENROLMENT_INVOICE_LINES: {
       return {
         ...state,
@@ -21,12 +31,11 @@ export const enrolmentsReducer = (state: EnrolmentsState = initial, action: IAct
       };
     }
 
-    case SET_ENROLMENT_TRANSFERED: {
+    case CANCEL_ENROLMENT:
       return {
         ...state,
-        ...action.payload
+        processing: true
       };
-    }
 
     default:
       return state;

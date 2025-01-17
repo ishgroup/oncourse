@@ -4,6 +4,13 @@
  */
 
 import { PreferenceEnum } from "@api/model";
+import { CHECKOUT_SELECTION_FORM_NAME } from '../containers/checkout/components/CheckoutSelection';
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from '../containers/checkout/components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from '../containers/checkout/components/items/components/CkecoutItemViewForm';
+import { EntityName } from "../model/entities/common";
+import { SEND_MESSAGE_FORM_NAME } from './Forms';
 
 export const SIMPLE_SEARCH_REGEX = /(^[^~\s."#]+$)/;
 
@@ -19,23 +26,21 @@ export const DEFAULT_CONFIG = {
   CONTAINER_ID: "client"
 };
 
-export const DRAWER_WIDTH = 240;
-
 export const APP_BAR_HEIGHT = 64;
 
 export const LIST_PAGE_SIZE = 50;
 
 export const PLAIN_LIST_MAX_PAGE_SIZE = 65000;
 
-export const LIST_THREE_COLUMN_ROW_HEIGHT = 64;
-
 export const LIST_TWO_COLUMN_ROW_HEIGHT = 27;
+
+export const LIST_SIDE_BAR_DEFAULT_WIDTH = 265;
+
+export const LIST_MAIN_CONTENT_DEFAULT_WIDTH = 774;
 
 export const HEADER_ROWS_COUNT = 2;
 
 export const HEADER_ROWS_INDICES = [0, 1];
-
-export const STICKY_HEADER_EVENT = 'sticky-change';
 
 export const APPLICATION_THEME_STORAGE_NAME = "theme";
 
@@ -65,6 +70,8 @@ export const DASHBOARD_FAVORITES_KEY: PreferenceEnum = "html.dashboard.favorite"
 export const READ_NEWS: PreferenceEnum = "news.read";
 
 export const ACCOUNT_INVOICE_TERMS: PreferenceEnum = "account.invoice.terms";
+
+export const ACCOUNT_DEFAULT_INVOICELINE_ID: PreferenceEnum = "account.default.invoiceline.id";
 
 export const DASHBOARD_THEME_KEY: PreferenceEnum = "html.global.theme";
 
@@ -107,15 +114,36 @@ export const LISTVIEW_MAIN_CONTENT_WIDTH: PreferenceEnum = "listview.main.conten
 
 export const SERVER_TIMEZONE: PreferenceEnum = "oncourse.server.timezone.default";
 
+export const SPECIAL_TYPES_DISPLAY_KEY: PreferenceEnum = "ish.display.extendedSearchTypes";
+
 export const ADMIN_EMAIL_KEY = 'email.admin';
-
-// extending String with capitalize method
-const stringProto = String.prototype as any;
-
-stringProto.capitalize = function () {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
 
 export const TAB_LIST_SCROLL_TARGET_ID = "TabsListScrollTarget";
 
 export const NESTED_TABLE_ROW_HEIGHT = 27;
+
+export const NOTE_ENTITIES: EntityName[] = [
+  "Application",
+  "ArticleProduct",
+  "AssessmentSubmission",
+  "Assessment",
+  "Contact",
+  "Course",
+  "CourseClass",
+  "Enrolment",
+  "AbstractInvoice",
+  "Lead",
+  "ProductItem",
+  "MembershipProduct",
+  "VoucherProduct",
+  "Room",
+  "Site",
+  "Faculty"
+];
+
+export const FORM_NAMES_ALLOWED_FOR_REFRESH = [
+  CHECKOUT_SELECTION_FORM_NAME,
+  CHECKOUT_ITEM_EDIT_VIEW_FORM,
+  SEND_MESSAGE_FORM_NAME,
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+];

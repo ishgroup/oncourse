@@ -1,19 +1,24 @@
 import {
-  DataCollectionForm,
-  DataCollectionRule,
-  PaymentMethod,
-  Tax,
+  ColumnWidth,
   ConcessionType,
   ContactRelationType,
-  EntityRelationType,
   CustomFieldType,
+  DataCollectionForm,
+  DataCollectionRule,
+  DefinedTutorRole,
+  EntityRelationType,
   EnumName,
-  ColumnWidth,
+  GradingType,
   Holiday,
-  DefinedTutorRole, GradingType
+  PaymentMethod,
+  Tax
 } from "@api/model";
+import { ArgumentTypes } from "ish-ui";
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
+import { IAction } from "../../../common/actions/IshAction";
+import { EntityName } from "../../../model/entities/common";
 import { Categories } from "../../../model/preferences";
+import TagsService from "../../tags/services/TagsService";
 
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST = _toRequestType("get/datacollection/formFieldTypes");
 export const GET_DATA_COLLECTION_FORM_FIELD_TYPES_FULFILLED = FULFILLED(GET_DATA_COLLECTION_FORM_FIELD_TYPES_REQUEST);
@@ -164,9 +169,23 @@ export const DELETE_TUTOR_ROLE_FULFILLED = FULFILLED(DELETE_TUTOR_ROLE_REQUEST);
 export const GET_GRADING_TYPES_REQUEST = _toRequestType("get/grading/type");
 export const GET_GRADING_TYPES_FULFILLED = FULFILLED(GET_GRADING_TYPES_REQUEST);
 
+export const GET_SPECIAL_TAG_TYPES = _toRequestType("get/tag/special");
+
+export const POST_SPECIAL_TAG_TYPES = _toRequestType("post/tag/special");
+
 export const DELETE_GRADING_TYPE_REQUEST = _toRequestType("delete/grading/type");
 
 export const UPDATE_GRADING_TYPES_REQUEST = _toRequestType("post/grading/type");
+
+export const getSpecialTagTypes = (entity: EntityName): IAction<EntityName> => ({
+  type: GET_SPECIAL_TAG_TYPES,
+  payload: entity
+});
+
+export const postSpecialTagTypes = (...args: ArgumentTypes<typeof TagsService.updateSpecial>) => ({
+  type: POST_SPECIAL_TAG_TYPES,
+  payload: args
+});
 
 export const getGradingTypes = () => ({
   type: GET_GRADING_TYPES_REQUEST

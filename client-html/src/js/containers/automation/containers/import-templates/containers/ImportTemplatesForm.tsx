@@ -1,41 +1,39 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import PlayArrow from "@mui/icons-material/PlayArrow";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import Grid from "@mui/material/Grid";
-import Grow from "@mui/material/Grow";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import { ImportModel } from "@api/model";
-import Typography from "@mui/material/Typography";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarActions from "../../../../../common/components/form/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/confirm/RouteChangeConfirm";
-import ScriptCard from "../../scripts/components/cards/CardBase";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { usePrevious } from "../../../../../common/utils/hooks";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateKeycode } from "../../../utils";
-import { formatRelativeDate } from "../../../../../common/utils/dates/formatRelative";
-import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL } from "../../../../../common/utils/dates/format";
-import ExecuteImportModal from "../components/ExecuteImportModal";
-import { State } from "../../../../../reducers/state";
-import { setNextLocation } from "../../../../../common/actions";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import InfoPill from "../../../../../common/components/layout/InfoPill";
+import { ImportModel } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import FileCopy from '@mui/icons-material/FileCopy';
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate, InfoPill, NumberArgFunction } from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import ScriptCard from '../../scripts/components/cards/CardBase';
+import ExecuteImportModal from '../components/ExecuteImportModal';
 
-const manualUrl = getManualLink("advancedSetup_Import");
+const manualUrl = getManualLink("importing");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps {
@@ -43,22 +41,20 @@ interface Props extends InjectedFormProps {
   values: any;
   history: any;
   syncErrors: any;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (template: ImportModel) => void;
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
   onDelete: NumberArgFunction;
-  nextLocation?: string,
-  setNextLocation?: (nextLocation: string) => void,
   emailTemplates?: CatalogItemType[]
+  importTemplates?: CatalogItemType[]
 }
 
 const ImportTemplatesForm = React.memo<Props>(
   ({
     dirty, form, handleSubmit, isNew, invalid, values, dispatch, syncErrors, emailTemplates,
-     onCreate, onUpdate, onUpdateInternal, onDelete, nextLocation, history, setNextLocation
+     onCreate, onUpdate, onUpdateInternal, onDelete, importTemplates
   }) => {
-    const [disableRouteConfirm, setDisableRouteConfirm] = useState<boolean>(false);
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [execMenuOpened, setExecMenuOpened] = useState(false);
     const [importIdSelected, setImportIdSelected] = useState(null);
@@ -71,9 +67,8 @@ const ImportTemplatesForm = React.memo<Props>(
     }, []);
 
     const onDialogSave = useCallback(
-      ({ keyCode }) => {
-        setDisableRouteConfirm(true);
-        onCreate({ ...values, id: null, keyCode });
+      ({ keyCode, name }) => {
+        onCreate({ ...values, id: null, keyCode, name });
         onDialodClose();
       },
       [values]
@@ -81,16 +76,12 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const isInternal = useMemo(() => values.keyCode && values.keyCode.startsWith("ish."), [values.keyCode]);
 
-    const prevId = usePrevious(values.id);
-
     const handleDelete = useCallback(() => {
-      setDisableRouteConfirm(true);
       onDelete(values.id);
     }, [values.id]);
 
     const handleSave = useCallback(
       val => {
-        setDisableRouteConfirm(true);
         if (isNew) {
           onCreate(val);
           return;
@@ -106,32 +97,41 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const defaultVariables = useMemo(
       () => [
-        { name: "context", type: "Context" }
+        {name: "context", type: "Context"}
       ],
       [values]
     );
-
-    useEffect(() => {
-      if (disableRouteConfirm && values.id !== prevId) {
-        setDisableRouteConfirm(false);
-      }
-    }, [values.id, prevId, disableRouteConfirm]);
-
-    useEffect(() => {
-      if (!dirty && nextLocation) {
-        history.push(nextLocation);
-        setNextLocation('');
-      }
-    }, [nextLocation, dirty]);
 
     const handleRun = () => {
       setImportIdSelected(values.id);
       setExecMenuOpened(true);
     };
 
+    const importExportActions = useMemo(() => getConfigActions("Import", values.name, values.id), [values.id]);
+
+    const validateTemplateCopyName = useCallback(name => {
+      if (importTemplates.find(i => i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
+    const validateTemplateName = useCallback(name => {
+      if (importTemplates.find(i => i.id !== values.id && i.title.trim() === name.trim())) {
+        return "Template name should be unique";
+      }
+      return validateNameForQuotes(name);
+    }, [importTemplates, values.id]);
+
     return (
       <>
-        <SaveAsNewAutomationModal opened={modalOpened} onClose={onDialodClose} onSave={onDialogSave} />
+        <SaveAsNewAutomationModal
+          opened={modalOpened}
+          onClose={onDialodClose}
+          onSave={onDialogSave}
+          validateNameField={validateTemplateCopyName}
+        />
+        
         <ExecuteImportModal
           opened={execMenuOpened}
           onClose={() => {
@@ -142,8 +142,7 @@ const ImportTemplatesForm = React.memo<Props>(
         />
 
         <Form onSubmit={handleSubmit(handleSave)}>
-          {(dirty || isNew) && <RouteChangeConfirm form={form} when={(dirty || isNew) && !disableRouteConfirm} />}
-
+          <RouteChangeConfirm form={form} when={dirty || isNew} />
           <AppBarContainer
             values={values}
             manualUrl={manualUrl}
@@ -163,8 +162,10 @@ const ImportTemplatesForm = React.memo<Props>(
             fields={(
               <Grid item xs={12}>
                 <FormField
+                  type="text"
                   name="name"
                   label="Name"
+                  validate={validateTemplateName}
                   disabled={isInternal}
                   required
                 />
@@ -175,10 +176,10 @@ const ImportTemplatesForm = React.memo<Props>(
                 {!isNew && !isInternal && (
                   <AppBarActions
                     actions={[
+                      ...importExportActions,
                       {
                         action: handleDelete,
-                        icon: <DeleteForever />,
-                        confirm: true,
+                        icon: <DeleteForever/>,
                         tooltip: "Delete import template",
                         confirmText: "Import template will be deleted permanently",
                         confirmButtonText: "DELETE"
@@ -220,6 +221,27 @@ const ImportTemplatesForm = React.memo<Props>(
             )}
           >
             <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={12} sm={9}>
+                <FormField
+                  type="multilineText"
+                  name="shortDescription"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Short description"
+                />
+                <Typography variant="caption" fontSize="13px">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    placeholder="Description"
+                    fieldClasses={{
+                      text: "fw300 fsInherit"
+                    }}
+                  />
+                </Typography>
+              </Grid>
               <FieldArray
                 name="options"
                 itemsType="component"
@@ -246,21 +268,12 @@ const ImportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key Code"
+                  label="Key code"
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
                   className="mb-2"
                   required
-                />
-
-                <FormField
-                  type="text"
-                  label="Description"
-                  name="description"
-                  disabled={isInternal}
-                  fullWidth
-                  multiline
                 />
               </Grid>
               <Grid item xs={3}>
@@ -271,7 +284,8 @@ const ImportTemplatesForm = React.memo<Props>(
                     name="status"
                     color="primary"
                     format={v => v === "Enabled"}
-                    parse={v => v ? "Enabled" : "Installed but Disabled"}
+                    parse={v => (v ? "Enabled" : "Installed but Disabled")}
+                    debounced={false}
                   />
                 </div>
                 <div className="mt-3 pt-1">
@@ -303,8 +317,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     label="Description"
                     className="overflow-hidden"
                     multiline
-                    fullWidth
-                  />
+                                      />
 
                   <Grid container columnSpacing={3}>
                     <Grid item xs className="d-flex">
@@ -337,13 +350,4 @@ const ImportTemplatesForm = React.memo<Props>(
   }
 );
 
-const mapStateToProps = (state: State) => ({
-  nextLocation: state.nextLocation
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setNextLocation: (nextLocation: string) => dispatch(setNextLocation(nextLocation)),
-});
-
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)((props:Props) => (props.values
-  ? <ImportTemplatesForm {...props} /> : null));
+export default (props:Props) => (props.values ? <ImportTemplatesForm {...props} /> : null);

@@ -3,20 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import clsx from "clsx";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Accordion from "@mui/material/Accordion";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import { AppTheme } from "../../../model/common/Theme";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = (theme: AppTheme) =>
-  createStyles({
+const styles = (theme: AppTheme, p, classes) =>
+  ({
     expansionPanelRoot: {
       overflow: "visible",
       border: `1px solid ${theme.palette.divider}`,
@@ -31,13 +30,13 @@ const styles = (theme: AppTheme) =>
     },
     expansionPanelSummaryContent: {
       position: "relative",
-      "&$expansionPanelSummaryExpanded": {
+      [`&.${classes.expansionPanelSummaryExpanded}`]: {
         margin: "12px 0"
       }
     },
     expansionPanelSummaryRoot: {
       padding: `0 ${theme.spacing(2)}`,
-      "&$expansionPanelSummaryExpanded": {
+      [`&.${classes.expansionPanelSummaryExpanded}`]: {
         minHeight: 48
       }
     },
@@ -104,4 +103,4 @@ const CheckoutSectionExpandableRenderer = React.memo<Props>(props => {
   );
 });
 
-export default withStyles(styles)(CheckoutSectionExpandableRenderer);
+export default withStyles(CheckoutSectionExpandableRenderer, styles);

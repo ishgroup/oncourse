@@ -1,5 +1,7 @@
-import MembershipProductEditView from "../../../js/containers/entities/membershipProducts/components/MembershipProductEditView";
+import MembershipProductEditView
+  from "../../../js/containers/entities/membershipProducts/components/MembershipProductEditView";
 import { mockedEditView } from "../../common/MockedEditView.Components";
+import { formatCurrency } from "ish-ui";
 
 describe("Virtual rendered MembershipProductEditView", () => {
   mockedEditView({
@@ -11,8 +13,8 @@ describe("Virtual rendered MembershipProductEditView", () => {
         name: initialValues.name,
         code: initialValues.code,
         description: initialValues.description,
-        feeExTax: initialValues.feeExTax.toString(),
-        totalFee: initialValues.totalFee.toString(),
+        feeExTax: formatCurrency(initialValues.feeExTax, ""),
+        totalFee: formatCurrency(initialValues.totalFee, ""),
         status: initialValues.status,
         dataCollectionRuleId: initialValues.dataCollectionRuleId.toString(),
       });

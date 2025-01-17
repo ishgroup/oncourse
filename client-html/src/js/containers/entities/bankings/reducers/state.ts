@@ -1,4 +1,4 @@
-import { Payment, Account } from "@api/model";
+import { Account, Payment } from "@api/model";
 
 export interface BankingState {
   payments?: Payment[];

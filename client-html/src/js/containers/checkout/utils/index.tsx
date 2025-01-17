@@ -12,13 +12,13 @@ import {
   CheckoutVoucher,
   ContactNode,
   Invoice,
-  InvoiceInvoiceLine,
+  AbstractInvoiceLine,
   InvoicePaymentPlan,
-  ProductType
+  ProductType, CourseClassType
 } from "@api/model";
 import { differenceInMinutes, format, isBefore } from "date-fns";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
-import { decimalMinus, decimalPlus } from "../../../common/utils/numbers/decimalCalculation";
+import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from "ish-ui";
+import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   CheckoutCourse,
   CheckoutCourseClass,
@@ -30,32 +30,20 @@ import {
   CheckoutSummaryListItem
 } from "../../../model/checkout";
 import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
+import MembershipProductService from "../../entities/membershipProducts/services/MembershipProductService";
 import {
   CHECKOUT_MEMBERSHIP_COLUMNS,
-  CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_PRODUCT_COLUMNS, CHECKOUT_STORED_STATE_KEY,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
   CheckoutCurrentStepType
-} from "../constants";
+} from '../constants';
 import { getFundingInvoices } from "./fundingInvoice";
 
 export const filterPastClasses = courseClasses => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return courseClasses.filter(c => c.startDateTime === null || isBefore(today, new Date(c.endDateTime)));
-};
-
-export const getExpireDate = month => {
-  const toDay = new Date();
-  const curMonth = toDay.getMonth();
-  if (curMonth > month) {
-    toDay.setFullYear(toDay.getFullYear() + 1, month, 1);
-  } else if (curMonth === month && toDay.getDate() > 1) {
-    toDay.setFullYear(toDay.getFullYear() + 1, month, 1);
-  } else {
-    toDay.setFullYear(toDay.getFullYear(), month, 1);
-  }
-  return toDay;
 };
 
 export const isPromotionalCodeExist = (code, checkout) => {
@@ -186,6 +174,14 @@ export const mergeInvoicePaymentPlans = (paymentPlans: InvoicePaymentPlan[]) => 
     amount,
     date: new Date(date)
   }));
+};
+
+export const getCheckoutModelMembershipsValidTo = async (model: CheckoutModel) => {
+  for (const node of model.contactNodes) {
+    for (const mem of node.memberships) {
+      mem.validTo = await MembershipProductService.getCheckoutModel(mem.productId, node.contactId).then(res => res.expiresOn);
+    }
+  }
 };
 
 export const getCheckoutModel = (
@@ -358,7 +354,8 @@ export const getInvoiceLineKey = (entity: CheckoutEntity) => {
   }
 };
 
-const getInvoiceLinePrices = (item: CheckoutItem, lines: InvoiceInvoiceLine[], itemOriginal: CheckoutItem) => {
+const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], itemOriginal: CheckoutItem) => {
+
   const id = item.type === "course" && item.class ? item.class.id : item.id;
   const lineKey = getInvoiceLineKey(item.type);
   const targetLine = lines.find(l => l[lineKey] && (l[lineKey].productId === id || l[lineKey].classId === id));
@@ -402,10 +399,15 @@ const getInvoiceLinePrices = (item: CheckoutItem, lines: InvoiceInvoiceLine[], i
     price: 0
   };
 
+  const validTo = item.type === "membership" ? {
+    validTo: lines[0]?.membership?.validTo
+  } : {};
+
   return {
     ...item,
     ...paymentPlansObj,
-    ...prices
+    ...prices,
+    ...validTo
   };
 };
 
@@ -481,6 +483,7 @@ export const getUpdatedVoucherDiscounts = (
 };
 
 export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
+  const type: CourseClassType = values[15];
   const cc = {
     id: Number(id),
     name: `${values[1]}-${values[2]} ${values[0]}`,
@@ -500,7 +503,7 @@ export const checkoutCourseClassMap = ({ id, values }): CheckoutCourseClass => {
     hours: 0,
     hasPaymentPlans: Boolean(JSON.parse(values[13]).length),
     isVet: JSON.parse(values[14]),
-    isSelfPaced: JSON.parse(values[15]),
+    isSelfPaced: type === 'Distant Learning',
     message: values[16],
     relatedFundingSourceId: JSON.parse(values[17]),
     sessionIds: JSON.parse(values[18]),
@@ -549,7 +552,7 @@ export const checkoutCourseMap = (courseBase, skipCheck?: boolean): CheckoutCour
   return course;
 };
 
-export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
+export const calculateVoucherExpiry = (item: CheckoutItem) => {
   switch (item.type) {
     case "voucher": {
       if (item.expiryDays) {
@@ -558,25 +561,6 @@ export const calculateVoucherOrMembershipExpiry = (item: CheckoutItem) => {
         item.validTo = format(today, YYYY_MM_DD_MINUSED);
       }
       break;
-    }
-    case "membership": {
-      if (item.expiryType === "Never (Lifetime)") {
-        item.expireNever = item.expiryType;
-      } else {
-        if (item.expiryType === "Days") {
-          const today = new Date();
-          today.setDate(today.getDate() + Number(item.expiryDays));
-          item.validTo = format(today, YYYY_MM_DD_MINUSED);
-        }
-        if (item.expiryType === "1st July") {
-          const date = getExpireDate(6);
-          item.validTo = format(date, YYYY_MM_DD_MINUSED);
-        }
-        if (item.expiryType === "1st January") {
-          const date = getExpireDate(0);
-          item.validTo = format(date, YYYY_MM_DD_MINUSED);
-        }
-      }
     }
   }
 };
@@ -592,7 +576,7 @@ export const processCheckoutSale = (row, type) => {
   if ( type === "voucher") {
     row.restrictToPayer = false;
   }
-  calculateVoucherOrMembershipExpiry(row);
+  calculateVoucherExpiry(row);
 };
 
 export const getCheckoutCurrentStep = (step: CheckoutCurrentStepType): number => {
@@ -623,5 +607,14 @@ export const getProductColumnsByType = (type: ProductType | string) => {
   }
 };
 
-export * from "./asyncActions";
+export const getStoredPaymentStateKey = (xPaymentSessionId: string) => `${CHECKOUT_STORED_STATE_KEY}-${xPaymentSessionId}`;
 
+export const clearStoredPaymentsState = () => {
+  for (const storageKey in localStorage) {
+    if (storageKey.includes(CHECKOUT_STORED_STATE_KEY)) {
+      LSRemoveItem(storageKey);
+    }
+  }
+};
+
+export * from "./asyncActions";

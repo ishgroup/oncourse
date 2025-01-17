@@ -3,22 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, {
- useCallback, useRef, useMemo
-} from "react";
-import { darken } from '@mui/material/styles';
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import IconButton from "@mui/material/IconButton";
-import Collapse from "@mui/material/Collapse";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import Divider from "@mui/material/Divider";
-import { AppTheme } from "../../../../model/common/Theme";
-import AddButton from "../../icons/AddButton";
-import { IS_JEST } from "../../../../constants/EnvironmentConstants";
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AddButton, AppTheme } from 'ish-ui';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { FormErrors } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { IS_JEST } from '../../../../constants/EnvironmentConstants';
+import { animateFormErrors } from '../../../utils/highlightFormErrors';
+import { getFirstErrorNodePath } from '../../../utils/validation';
+import FormField from '../../form/formFields/FormField';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     expandButton: {
       position: "absolute",
       right: 0,
@@ -31,28 +32,23 @@ const styles = (theme: AppTheme) =>
       position: "relative",
       paddingRight: theme.spacing(5)
     },
-    header: {
-      cursor: 'pointer',
-      willChange: "color",
-      "&:hover": {
-        color: darken(theme.heading.color as any, 0.4),
-      }
-    },
     expanded: {}
   });
 
 interface Props {
   children: React.ReactNode;
   header: React.ReactNode;
-  expanded: number[];
-  index: number;
+  expanded: any[];
+  index: any;
+  name?: string;
+  formErrors?: FormErrors;
   setExpanded: (arg: number[]) => void;
   headerAdornment?: React.ReactNode;
   onChange?: (e: Event, expanded: number[]) => void;
   onAdd?: any;
   classes?: any;
-  mountAll?: boolean;
   noDivider?: boolean;
+  className?: string;
 }
 
 const ExpandableContainer: React.FC<Props> = ({
@@ -65,69 +61,112 @@ const ExpandableContainer: React.FC<Props> = ({
   expanded,
   setExpanded,
   index,
-  mountAll,
-  noDivider
+  noDivider,
+  formErrors,
+  className,
+  name
 }) => {
-  const headerRef = useRef<any>();
+  const [hasErrors, setHasErrors] = useState(false);
+
+  const childrenRef = useRef<HTMLDivElement>(undefined);
+
+  const headerRef = useRef<any>(undefined);
 
   const isExpanded = useMemo(() => expanded.includes(index), [expanded, index]);
 
-  const toggleExpand = useCallback(
-    e => {
-      const updated = [...expanded];
+  const toggleExpand = e => {
+    const updated = [...expanded];
 
-      if (isExpanded) {
-        updated.splice(
-          updated.findIndex(i => i === index),
-          1
-        );
-      } else {
-        updated.push(index);
-      }
+    if (isExpanded) {
+      updated.splice(
+        updated.findIndex(i => i === index),
+        1
+      );
+    } else {
+      updated.push(index);
+    }
 
-      if (onChange) {
-        onChange(e, updated);
-      }
-      if (!e.isDefaultPrevented()) {
-        setExpanded(updated);
-      }
-    },
-    [isExpanded, expanded, index]
-  );
+    if (onChange) {
+      onChange(e, updated);
+    }
+    if (!e?.isDefaultPrevented()) {
+      setExpanded(updated);
+    }
+  };
 
+  const buttonId = `expand-button-${index}`;
   const iconButtonProps = IS_JEST ? {
-    'data-testid': `expand-button-${index}`,
+    'data-testid': buttonId,
   } : {};
 
+  useEffect(() => {
+    if (formErrors && childrenRef.current) {
+      const domNode = childrenRef.current;
+
+      let childrenError = false;
+
+      if (domNode?.querySelector(`[name="${getFirstErrorNodePath(formErrors)}"]`)) {
+        childrenError = true;
+      }
+      setHasErrors(childrenError);
+    }
+  }, [childrenRef.current, formErrors]);
+
+  useEffect(() => {
+    if (hasErrors && !isExpanded) {
+      toggleExpand(null);
+    }
+  }, [hasErrors, isExpanded]);
+
+  const clickHandler = hasErrors ? () => animateFormErrors(childrenRef.current) : toggleExpand;
+
+  const nameError = useMemo(
+    () =>
+      formErrors && formErrors[name] && (
+        <div className="shakingError mb-2">
+          <Typography color="error" variant="body2" className="text-pre-wrap">
+            {formErrors[name]}
+          </Typography>
+        </div>
+      ),
+    [formErrors, name]
+  );
+
   return (
-    <>
-      <Divider className={clsx(onAdd ? "mb-2" : "mb-3", noDivider && "invisible")} />
+    <div className={className}>
+      <Divider className={clsx("mb-2 mb-3", noDivider && "invisible")}/>
       <div ref={headerRef}>
-        <div className={clsx("centeredFlex", onAdd ? "mb-2" : "mb-3", classes.controls)}>
+        <div className={clsx("centeredFlex mb-2", classes.controls)}>
           <div className="centeredFlex">
-            <div className={clsx("heading", classes.header, isExpanded && classes.expanded)} onClick={toggleExpand}>{header}</div>
-            {onAdd && (
-              <AddButton onClick={onAdd} />
-            )}
+            <div
+              className={clsx("heading headingHover", isExpanded && classes.expanded, hasErrors && 'errorColor')}
+              onClick={clickHandler}>
+              {header}
+            </div>
+            <AddButton className={onAdd ? null : "invisible"} onClick={onAdd} />
           </div>
           {headerAdornment}
           <IconButton
-            onClick={toggleExpand}
+            onClick={clickHandler}
             className={clsx(classes.expandButton, isExpanded && classes.expandButtonExpanded)}
+            id={buttonId}
             {...iconButtonProps}
           >
-            <ExpandMore />
+            <ExpandMore/>
           </IconButton>
         </div>
       </div>
 
-      <div>
-        <Collapse in={isExpanded} unmountOnExit={!mountAll} mountOnEnter={!mountAll}>
+      {nameError}
+
+      <div ref={childrenRef} id={name}>
+        {name && <FormField type="stub" name={name} />}
+        <Collapse in={isExpanded}>
           {children}
         </Collapse>
       </div>
-    </>
+    </div>
   );
 };
 
-export default withStyles(styles)(ExpandableContainer);
+export default withStyles(ExpandableContainer, styles);

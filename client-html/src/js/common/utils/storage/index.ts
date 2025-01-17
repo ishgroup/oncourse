@@ -1,5 +1,5 @@
-import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../constants/Config";
+import { LatestActivityItem, LatestActivityState } from "../../../model/dashboard";
 
 export const LSGetItem = (key: string) => {
   try {
@@ -63,7 +63,7 @@ export const latestActivityStorageHandler = (item: LatestActivityItem, entity: s
 
     activitySate.data = [destination, ...activitySate.data.filter(i => i.entity !== destination.entity)];
   } else {
-    activitySate.data = [{ entity, items: [item] }, ...activitySate.data.slice(0, 19)];
+    activitySate.data = [{entity, items: [item]}, ...activitySate.data.slice(0, 19)];
   }
 
   LSSetItem(DASHBOARD_ACTIVITY_STORAGE_NAME, JSON.stringify(activitySate));

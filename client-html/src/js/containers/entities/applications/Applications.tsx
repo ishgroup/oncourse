@@ -6,37 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { connect } from "react-redux";
-import React, { Dispatch } from "react";
-import { initialize } from "redux-form";
-import { format as formatDate } from "date-fns";
 import { Application } from "@api/model";
+import { format as formatDate } from "date-fns";
+import { YYYY_MM_DD_MINUSED } from "ish-ui";
+import React, { Dispatch } from "react";
+import { connect } from "react-redux";
+import { initialize } from "redux-form";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import ListView from "../../../common/components/list-view/ListView";
-import {
-  setListEditRecord,
-  getFilters,
- clearListState
-} from "../../../common/components/list-view/actions";
-import { getListTags } from "../../tags/actions";
-import { defaultContactName } from "../contacts/utils";
-import {
-  getApplication, updateApplication, createApplication, removeApplication
-} from "./actions";
-import ApplicationEditView from "./components/ApplicationEditView";
-import { FilterGroup } from "../../../model/common/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { State } from "../../../reducers/state";
-import { YYYY_MM_DD_MINUSED } from "../../../common/utils/dates/format";
+import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
+import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { State } from "../../../reducers/state";
+import { getListTags } from "../../tags/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
+import ApplicationEditView from "./components/ApplicationEditView";
 
 interface ApplicationsProps {
   getApplicationRecord?: () => void;
   onInit?: () => void;
-  onCreate?: (application: Application) => void;
-  onDelete?: (id: string) => void;
-  onSave?: (id: string, application: Application) => void;
   getFilters?: () => void;
   getTags?: () => void;
   clearListState?: () => void;
@@ -101,11 +90,11 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const manualLink = getManualLink("applications");
+const manualLink = getManualLink("navigating-the-application-window");
 
-const nameCondition = values => (values ? defaultContactName(values.studentName) : "");
+const nameCondition = values => (values ? values.studentName : "");
 
-const findRelatedGroup: any[] = [
+const findRelatedGroup: FindRelatedItem[] = [
   {
     title: "Audits",
     list: "audit",
@@ -128,35 +117,29 @@ class Applications extends React.Component<ApplicationsProps, any> {
 
   render() {
     const {
-      getApplicationRecord, onCreate, onDelete, onSave, onInit
+      onInit
     } = this.props;
 
     return (
-      <div>
-        <ListView
-          listProps={{
-            primaryColumn: "course.name",
-            secondaryColumn: "student.contact.fullName"
-          }}
-          editViewProps={{
-            manualLink,
-            asyncValidate: notesAsyncValidate,
-            asyncBlurFields: ["notes[].message"],
-            nameCondition,
-            hideTitle: true
-          }}
-          EditViewContent={ApplicationEditView}
-          CogwheelAdornment={BulkEditCogwheelOption}
-          getEditRecord={getApplicationRecord}
-          rootEntity="Application"
-          onInit={onInit}
-          onCreate={onCreate}
-          onDelete={onDelete}
-          onSave={onSave}
-          findRelated={findRelatedGroup}
-          filterGroupsInitial={filterGroups}
-        />
-      </div>
+      <ListView
+        listProps={{
+          primaryColumn: "course.name",
+          secondaryColumn: "student.contact.fullName"
+        }}
+        editViewProps={{
+          manualLink,
+          asyncValidate: notesAsyncValidate,
+          asyncChangeFields: ["notes[].message"],
+          nameCondition,
+          hideTitle: true
+        }}
+        EditViewContent={ApplicationEditView}
+        CogwheelAdornment={BulkEditCogwheelOption}
+        rootEntity="Application"
+        onInit={onInit}
+        findRelated={findRelatedGroup}
+        filterGroupsInitial={filterGroups}
+      />
     );
   }
 }
@@ -174,10 +157,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getFilters: () => dispatch(getFilters("Application")),
   getTags: () => dispatch(getListTags("Application")),
   clearListState: () => dispatch(clearListState()),
-  getApplicationRecord: (id: string) => dispatch(getApplication(id)),
-  onSave: (id: string, application: Application) => dispatch(updateApplication(id, application)),
-  onCreate: (application: Application) => dispatch(createApplication(application)),
-  onDelete: (id: string) => dispatch(removeApplication(id)),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Applications);

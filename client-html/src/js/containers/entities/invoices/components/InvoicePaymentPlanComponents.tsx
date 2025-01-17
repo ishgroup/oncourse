@@ -3,24 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import clsx from "clsx";
-import React, { useCallback, useMemo } from "react";
-import Typography from "@mui/material/Typography";
-import { InvoicePaymentPlan, Currency } from "@api/model";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import { change } from "redux-form";
-import { format, isBefore } from "date-fns";
-import Tooltip from "@mui/material/Tooltip";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { useHoverShowStyles } from "../../../../common/styles/hooks";
-import { openInternalLink } from "../../../../common/utils/links";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import { III_DD_MMM_YYYY } from "../../../../common/utils/dates/format";
-import { decimalMinus, decimalPlus } from "../../../../common/utils/numbers/decimalCalculation";
-import { formatToDateOnly } from "../../../../common/utils/dates/datesNormalizing";
-import { reducePayments } from "../utils";
+import { Currency, InvoicePaymentPlan } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format, isPast } from 'date-fns';
+import {
+  decimalMinus,
+  decimalPlus,
+  formatCurrency,
+  III_DD_MMM_YYYY,
+  openInternalLink,
+  useHoverShowStyles
+} from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { reducePayments } from '../utils';
 
 const validateAmount = val => (val <= 0 ? "Payment due amount must be greater than zero" : undefined);
 
@@ -42,12 +43,7 @@ const getOverdue = (fieldDate: string, allFields: InvoicePaymentPlan[]) => {
   return decimalMinus(prevDuesAmount || 0, paidAmount || 0);
 };
 
-const checkExpired = (date: string) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return isBefore(new Date(date), today);
-};
+const checkExpired = (date: string) => isPast(new Date(date));
 
 interface PaymentPlanHeaderProps {
   field: InvoicePaymentPlan;
@@ -62,7 +58,7 @@ export const InvoicePaymentPlanHeader: React.FunctionComponent<PaymentPlanHeader
     classes, field, currency, index, onDelete
   } = props;
 
-  const hoverShowClasses = useHoverShowStyles();
+  const { classes: hoverShowClasses } = useHoverShowStyles();
 
   const handleDeleteClick = useCallback(e => onDelete(e, index), [index]);
 
@@ -154,9 +150,9 @@ interface PaymentPlanContentProps {
 
 export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanContentProps> = React.memo(props => {
   const {
- field, fields, item, currency, totalAmount, form, dispatch, allowZeroValue, hideOwing
-} = props;
-
+   field, fields, item, currency, totalAmount, allowZeroValue, hideOwing
+  } = props;
+  
   const isPaymentDue = useMemo(() => field.entityName === "InvoiceDueDate", [field.type]);
 
   const isExpired = useMemo(() => checkExpired(field.date), [field.date]);
@@ -223,10 +219,6 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
     </div>
     ), [isExpired, currency.shortCurrencySymbol, lineOwing]);
 
-  const onDateChange = React.useCallback(date => {
-    dispatch(change(form, "dateDue", formatToDateOnly(date)));
-  }, []);
-
   return (
     <>
       <div>
@@ -234,7 +226,6 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
           type="date"
           name={`${item}.date`}
           label="Date"
-          onChange={onDateChange}
           disabled={!isPaymentDue}
           className="mb-2 mt-2"
         />

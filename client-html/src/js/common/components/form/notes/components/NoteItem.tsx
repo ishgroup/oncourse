@@ -3,19 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import clsx from "clsx";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Note } from "@api/model";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import clsx from "clsx";
+import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL, formatRelativeDate } from "ish-ui";
+import React from "react";
 import FormField from "../../formFields/FormField";
-import { formatRelativeDate } from "../../../../utils/dates/formatRelative";
-import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL } from "../../../../utils/dates/format";
 
 interface Props {
   item: Note;
@@ -31,9 +29,6 @@ const NoteItem = (props: Props) => {
     item, classes, messageName, onDelete, index, twoColumn
   } = props;
 
-  const [checked, setChecked] = useState(false);
-  const [iconHovered, setIconHovered] = useState(false);
-
   return (
     <Grid item xs={twoColumn ? 1 : 12} md={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
       <Paper className="p-1 h-100">
@@ -42,9 +37,8 @@ const NoteItem = (props: Props) => {
             <FormField
               type="text"
               name={messageName}
-              onBlur={() => setChecked(!!item.message)}
+              disabled={item.readonly}
               required
-              fullWidth
               multiline
             />
           </Grid>
@@ -58,11 +52,11 @@ const NoteItem = (props: Props) => {
                 </Typography>
               )}
               {item.createdBy && (
-              <Typography className={classes.dateInfo}>
-                by
-                {" "}
-                {item.createdBy}
-              </Typography>
+                <Typography className={classes.dateInfo}>
+                  by
+                  {" "}
+                  {item.createdBy}
+                </Typography>
               )}
               {item.modified && (
                 <Typography className={clsx(classes.dateInfo, "mt-1")}>
@@ -72,35 +66,22 @@ const NoteItem = (props: Props) => {
                 </Typography>
               )}
               {item.modifiedBy && (
-              <Typography className={classes.dateInfo}>
-                by
-                {" "}
-                {item.modifiedBy}
-              </Typography>
+                <Typography className={classes.dateInfo}>
+                  by
+                  {" "}
+                  {item.modifiedBy}
+                </Typography>
               )}
             </Grid>
             <Grid item className="d-flex" alignItems="flex-end">
-              {item.message && !item.id && (
-                <Tooltip title={checked ? "Note added" : "Add note"}>
-                  <span>
-                    <IconButton
-                      className="lightGrayIconButton"
-                      color="secondary"
-                      onMouseEnter={() => setIconHovered(true)}
-                      onMouseLeave={() => setIconHovered(false)}
-                    >
-                      <FontAwesomeIcon fixedWidth icon="check" className={clsx("inherit", { "successColor": checked || iconHovered })} />
-                    </IconButton>
-                  </span>
-                </Tooltip>
-              )}
               <Tooltip title="Remove Note">
                 <IconButton
                   className="lightGrayIconButton"
                   color="secondary"
                   onClick={() => onDelete(index)}
+                  disabled={item.readonly}
                 >
-                  <DeleteIcon fontSize="inherit" color="inherit" />
+                  <DeleteIcon fontSize="inherit" color="inherit"/>
                 </IconButton>
               </Tooltip>
             </Grid>

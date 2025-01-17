@@ -1,16 +1,18 @@
-import { IAction } from "../actions/IshAction";
-import { GET_USER_PREFERENCES_FULFILLED } from "../actions";
-import { SET_READ_NEWS_LOCAL } from "../components/list-view/actions";
+import { PreferenceEnum } from "@api/model";
 import { READ_NEWS } from "../../constants/Config";
+import { CheckoutPaymentGateway } from '../../model/checkout';
+import { GET_USER_PREFERENCES_FULFILLED } from "../actions";
+import { IAction } from "../actions/IshAction";
+import { SET_READ_NEWS_LOCAL } from "../components/list-view/actions";
 
-export interface UserPreferencesState {
-  [key: string]: string;
+export type UserPreferencesState = {
+  [K in PreferenceEnum]?: K extends "payment.gateway.type" ? CheckoutPaymentGateway : string;
 }
 
 export const userPreferencesReducer = (state: UserPreferencesState = {}, action: IAction<any>): any => {
   switch (action.type) {
     case GET_USER_PREFERENCES_FULFILLED: {
-      const { preferences } = action.payload;
+      const {preferences} = action.payload;
 
       return {
         ...state,

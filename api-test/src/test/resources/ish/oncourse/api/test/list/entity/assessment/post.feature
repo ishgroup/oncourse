@@ -18,7 +18,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         {
         "code":"code001",
         "name":"create assessment 1",
-        "tags":[{"id":195}],
+        "tags":[195],
         "active":true,
         "gradingTypeId":1,
         "description":"some description 1",
@@ -50,7 +50,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         "code":"code001",
         "name":"create assessment 1",
         "gradingTypeId":1,
-        "tags":[{"id":195,"name":"Journal","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[195],
         "active":true,
         "description":"some description 1",
         "documents":
@@ -63,13 +63,12 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
             "createdOn":"#ignore",
             "tags":[],
             "attachmentRelations":"#ignore",
-            "versionId":null,
             "modifiedOn":"#ignore",
             "removed":false,
             "attachedRecordsCount":null,
             "versions":
                 [
-                    {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null}
+                    {"fileName":"defaultPrivateDocument.txt","thumbnail":null,"size":"22 b","added":"#ignore","createdBy":"onCourse Administrator","id":200,"mimeType":"text\/plain","url":null,"content":null,current:true}
                 ],
             "name":"defaultPrivateDocument",
             "id":200,
@@ -157,7 +156,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         {
         "code":"code007",
         "name":"create assessment 7",
-        "tags":[{"id":99999}],
+        "tags":[99999],
         "active":true,
         "description":"some description",
         "documents":[]
@@ -179,7 +178,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         {
         "code":"code007a",
         "name":"create assessment 7",
-        "tags":[{"id":227}],
+        "tags":[227],
         "active":true,
         "description":"some description",
         "documents":[]
@@ -267,7 +266,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         {
         "code":"dghrhf",
         "name":"assessment 1",
-        "tags":[{"id":195}],
+        "tags":[195],
         "active":true,
         "description":"some description 1",
         "documents":[{"id":200}]
@@ -289,7 +288,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         {
         "code":"code00183",
         "name":"create assessment 11",
-        "tags":[{"id":199}],
+        "tags":[199],
         "active":true,
         "description":"some description 1111",
         "documents":[{"id":200}]
@@ -317,7 +316,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         {
         "code":"code002",
         "name":"create assessment 2",
-        "tags":[{"id":195}],
+        "tags":[195],
         "active":true,
         "description":"some description 2",
         "documents":[{"id":200}]
@@ -348,7 +347,7 @@ Feature: Main feature for all POST requests with path 'list/entity/assessment'
         "code":"code002",
         "name":"create assessment 2",
         "gradingTypeId":null,
-        "tags":[{"id":195,"name":"Journal","status":null,"system":null,"urlPath":null,"content":null,"color":null,"weight":null,"taggedRecordsCount":null,"childrenCount":null,"created":null,"modified":null,"requirements":[],"childTags":[]}],
+        "tags":[195],
         "active":true,
         "description":"some description 2",
         }

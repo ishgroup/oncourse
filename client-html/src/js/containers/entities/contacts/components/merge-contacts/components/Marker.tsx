@@ -1,7 +1,7 @@
-import React from "react";
-import { createStyles, withStyles } from "@mui/styles";
-import Typography from "@mui/material/Typography";
-import { AppTheme } from "../../../../../../model/common/Theme";
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 interface Props {
   classes?: any;
@@ -9,7 +9,7 @@ interface Props {
   letter: string;
 }
 
-const styles = createStyles((theme: AppTheme) => ({
+const styles = ((theme: AppTheme) => ({
   marker: {
     borderRadius: theme.spacing(1),
     backgroundColor: theme.palette.text.primary,
@@ -31,4 +31,4 @@ const Marker = React.memo(({ classes, className, letter }: Props) => (
   </Typography>
 ));
 
-export default withStyles(styles)(Marker);
+export default withStyles(Marker, styles);

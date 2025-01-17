@@ -3,22 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { memo, useEffect, useState } from "react";
-import clsx from "clsx";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
+import Delete from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Delete from "@mui/icons-material/Delete";
-import { AppTheme } from "../../../../model/common/Theme";
-import { getContactName } from "../../../entities/contacts/utils";
-import CheckoutAlertTextMessage from "../CheckoutAlertTextMessage";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React, { memo, useEffect, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import CheckoutAlertTextMessage from '../CheckoutAlertTextMessage';
 
-const styles = (theme: AppTheme) =>
-  createStyles({
+const styles = (theme: AppTheme, p, classes) =>
+  ({
     root: {
-      "&:hover $deleteIcon": {
+      [`&:hover .${classes.deleteIcon}`]: {
         visibility: "visible"
       }
     },
@@ -57,7 +56,7 @@ const Item = ({
           noWrap
           onClick={() => openRow(item)}
         >
-          {getContactName(item)}
+          {getContactFullName(item)}
         </Typography>
         {
           disabledDeleteId !== item.id && (
@@ -84,4 +83,4 @@ const SelectedContactRenderer = memo<any>(({ items, ...rest }) => (
   </div>
 ));
 
-export default withStyles(styles)(SelectedContactRenderer);
+export default withStyles(SelectedContactRenderer, styles) as any;

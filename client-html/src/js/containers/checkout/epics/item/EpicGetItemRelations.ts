@@ -1,34 +1,35 @@
-import { ActionsObservable, Epic } from "redux-observable";
-import {
-  flatMap, catchError, mergeMap
-} from "rxjs/operators";
 import { CheckoutSaleRelation } from "@api/model";
-
 import { closestIndexTo } from "date-fns";
-import { concat, from } from "rxjs";
+import { Epic, ofType } from "redux-observable";
+import { concat, from, Observable } from "rxjs";
+import { catchError, flatMap, mergeMap } from "rxjs/operators";
+import { FETCH_FINISH, FETCH_START, SHOW_MESSAGE } from "../../../../common/actions";
+import { processError } from "../../../../common/epics/EpicUtils";
+import EntityService from "../../../../common/services/EntityService";
+import { getCustomColumnsMap } from "../../../../common/utils/common";
+import uniqid from "../../../../common/utils/uniqid";
+import { State } from "../../../../reducers/state";
 import {
   CHECKOUT_ADD_CONTACT,
   CHECKOUT_ADD_ITEM,
   CHECKOUT_REMOVE_CONTACT,
   CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../../actions";
-import CheckoutService from "../../services/CheckoutService";
-import { State } from "../../../../reducers/state";
-import { processError } from "../../../../common/epics/EpicUtils";
-import EntityService from "../../../../common/services/EntityService";
-import {
-  checkoutCourseClassMap, checkoutCourseMap, checkoutProductMap, checkoutVoucherMap, processCheckoutSale
-} from "../../utils";
-import { getCustomColumnsMap } from "../../../../common/utils/common";
+import { checkoutUpdateSummaryClassesDiscounts } from "../../actions/checkoutSummary";
 import {
   CHECKOUT_COURSE_CLASS_COLUMNS,
   CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
   CHECKOUT_VOUCHER_COLUMNS
 } from "../../constants";
-import { checkoutUpdateSummaryClassesDiscounts } from "../../actions/checkoutSummary";
-import uniqid from "../../../../common/utils/uniqid";
-import { FETCH_FINISH, FETCH_START, SHOW_MESSAGE } from "../../../../common/actions";
+import CheckoutService from "../../services/CheckoutService";
+import {
+  checkoutCourseClassMap,
+  checkoutCourseMap,
+  checkoutProductMap,
+  checkoutVoucherMap,
+  processCheckoutSale
+} from "../../utils";
 
 const assignTypeProps = r => {
   r.toItem.cartItem.cartAction = r.cartAction;
@@ -39,12 +40,13 @@ const assignTypeProps = r => {
   r.toItem.type = r.toItem.cartItem.fromItemRelation.type;
 };
 
-export const EpicGetItemRelations: Epic<any, any, State> = (action$: ActionsObservable<any>, state$): any => action$
-.ofType(
-  CHECKOUT_ADD_ITEM,
-  CHECKOUT_ADD_CONTACT,
-  CHECKOUT_REMOVE_CONTACT
-).pipe(
+export const EpicGetItemRelations: Epic<any, any, State> = (action$: Observable<any>, state$): any => action$
+  .pipe(
+    ofType(
+      CHECKOUT_ADD_ITEM,
+      CHECKOUT_ADD_CONTACT,
+      CHECKOUT_REMOVE_CONTACT
+    ),
     mergeMap(sourceAction =>
       concat(
         [

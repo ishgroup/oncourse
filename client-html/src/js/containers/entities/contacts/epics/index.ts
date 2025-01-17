@@ -4,30 +4,24 @@
  */
 
 import { combineEpics } from "redux-observable";
-import { EpicCreateContact } from "./EpicCreateContact";
 import { EpicGetContact } from "./EpicGetContact";
+import { EpicGetContactCertificates } from "./EpicGetContactCertificates";
+import { EpicGetContactEnrolments } from "./EpicGetContactEnrolments";
+import { EpicGetContactOutcomes } from "./EpicGetContactOutcomes";
+import { EpicGetContactPriorLearnings } from "./EpicGetContactPriorLearnings";
+import { EpicGetContactsConcessionTypes } from "./EpicGetContactsConcessionTypes";
+import { EpicGetContactsRelationTypes } from "./EpicGetContactsRelationTypes";
+import { EpicGetContactsStoredCC } from "./EpicGetContactsStoredCC";
+import { EpicGetContactsTaxTypes } from "./EpicGetContactsTaxTypes";
+import { EpicGetContactTags } from "./EpicGetContactTags";
 import { EpicGetMergeContacts } from "./EpicGetMergeContacts";
 import { EpicPostMergeContacts } from "./EpicPostMergeContacts";
-import { EpicGetContactsRelationTypes } from "./EpicGetContactsRelationTypes";
-import { EpicGetContactsConcessionTypes } from "./EpicGetContactsConcessionTypes";
-import { EpicGetContactsTaxTypes } from "./EpicGetContactsTaxTypes";
 import { EpicVerifyUSI } from "./EpicVerifyUSI";
-import { EpicGetContactTags } from "./EpicGetContactTags";
-import { EpicGetContactEnrolments } from "./EpicGetContactEnrolments";
-import { EpicGetContactPriorLearnings } from "./EpicGetContactPriorLearnings";
-import { EpicGetContactOutcomes } from "./EpicGetContactOutcomes";
-import { EpicGetContactCertificates } from "./EpicGetContactCertificates";
-import { EpicUpdateContact } from "./EpicUpdateContact";
-import { EpicDeleteContact } from "./EpicDeleteContact";
-import { EpicGetContactsStoredCC } from "./EpicGetContactsStoredCC";
 
 export const EpicContacts = combineEpics(
-  EpicDeleteContact,
-  EpicCreateContact,
   EpicGetMergeContacts,
   EpicPostMergeContacts,
   EpicGetContact,
-  EpicUpdateContact,
   EpicGetContactEnrolments,
   EpicGetContactPriorLearnings,
   EpicGetContactOutcomes,

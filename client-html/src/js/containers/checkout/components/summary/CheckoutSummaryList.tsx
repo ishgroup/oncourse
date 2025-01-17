@@ -3,29 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import {
-  InjectedFormProps,
-  reduxForm
-} from "redux-form";
-import clsx from "clsx";
-import withStyles from "@mui/styles/withStyles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { CheckoutSummary } from "../../../../model/checkout";
-import { getContactName } from "../../../entities/contacts/utils";
-import { checkoutSetDefaultPayer } from "../../actions/checkoutSummary";
-import { summaryListStyles } from "../../styles/summaryListStyles";
-import { CheckoutSummaryCogwheel } from "./CheckoutSummaryCogwheel";
-import CheckoutSummaryExpandableItemRenderer from "./CheckoutSummaryExpandableItemRenderer";
-import { toggleSendContext, toggleSummaryItem, toggleVoucherItem } from "../../actions";
-import { formatCurrency } from "../../../../common/utils/numbers/numbersNormalizing";
-import CheckoutAppBar from "../CheckoutAppBar";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { formatCurrency } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { CheckoutSummary } from '../../../../model/checkout';
+import { State } from '../../../../reducers/state';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import { toggleSendContext, toggleSummaryItem, toggleVoucherItem } from '../../actions';
+import { checkoutSetDefaultPayer } from '../../actions/checkoutSummary';
+import { summaryListStyles } from '../../styles/summaryListStyles';
+import CheckoutAppBar from '../CheckoutAppBar';
+import { CheckoutSummaryCogwheel } from './CheckoutSummaryCogwheel';
+import CheckoutSummaryExpandableItemRenderer from './CheckoutSummaryExpandableItemRenderer';
 
 export const CHECKOUT_SUMMARY_FORM = "CHECKOUT_SUMMARY_FORM";
 
@@ -100,7 +97,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
             {summary.list.map((list, i) => (
               <CheckoutSummaryExpandableItemRenderer
                 key={i}
-                header={getContactName(list.contact)}
+                header={getContactFullName(list.contact as any)}
                 items={list.items}
                 originalItems={selectedItems}
                 listIndex={i}
@@ -142,7 +139,7 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
           </Grid>
 
           <Grid item xs={6}>
-            <FormField type="multilineText" name="invoicePublicNotes" label="Public notes" multiline fullWidth />
+            <FormField type="multilineText" name="invoicePublicNotes" label="Public notes" multiline  />
           </Grid>
         </Grid>
       </AppBarContainer>
@@ -170,4 +167,4 @@ export default reduxForm<any, Props>({
   form: CHECKOUT_SUMMARY_FORM,
   initialValues: {},
   destroyOnUnmount: false
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(summaryListStyles)(CheckoutSummaryListForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutSummaryListForm, summaryListStyles)));

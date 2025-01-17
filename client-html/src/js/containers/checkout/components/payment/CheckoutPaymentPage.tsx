@@ -5,20 +5,26 @@
 
 import React, { useMemo } from "react";
 import { connect } from "react-redux";
-import LoadingIndicator from "../../../../common/components/layout/LoadingIndicator";
+import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
 import {
- CheckoutDiscount, CheckoutItem, CheckoutPayment, CheckoutSummary
-} from "../../../../model/checkout";
+  CheckoutDiscount,
+  CheckoutItem,
+  CheckoutPayment,
+  CheckoutPaymentGateway,
+  CheckoutSummary
+} from '../../../../model/checkout';
 import { State } from "../../../../reducers/state";
-import { getContactName } from "../../../entities/contacts/utils";
-import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
-import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
-import CreditCardPaymentPage from "./components/payment-methods/CreditCardPaymentPage";
-import PaymentPage from "./components/payment-methods/PaymentPage";
+import { getContactFullName } from "../../../entities/contacts/utils";
+import { CheckoutPage } from "../../constants";
 import CheckoutAppBar from "../CheckoutAppBar";
 import RestartButton from "../RestartButton";
-import { CheckoutPage } from "../../constants";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
+import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
+import EwayPaymentPage from "./components/payment-methods/EwayPaymentPage";
+import PaymentPage from "./components/payment-methods/PaymentPage";
+import StripePaymentPage from './components/payment-methods/StripePaymentPage';
+import WindcavePaymentPage from "./components/payment-methods/WindcavePaymentPage";
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;
@@ -29,11 +35,12 @@ interface PaymentPageProps {
   disablePayment?: boolean;
   activeField: any;
   titles: any;
+  gateway?: CheckoutPaymentGateway;
 }
 
 const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
   const {
- payment, activeField, titles, summary, selectedDiscount, summaryVouchers, isPaymentProcessing, disablePayment
+ payment, activeField, titles, summary, selectedDiscount, summaryVouchers, isPaymentProcessing, disablePayment, gateway
 } = props;
 
   const selectedPaymentType = payment.availablePaymentTypes.find(t => t.name === payment.selectedPaymentType);
@@ -42,7 +49,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
 
   const payerName = useMemo(() => {
     const payer = summary.list.find(l => l.payer);
-    return payer ? getContactName(payer.contact) : "";
+    return payer ? getContactFullName(payer.contact as any) : "";
   }, [summary.list]);
 
   const title = payment.process.status === "success" ? "Transaction successful"
@@ -52,6 +59,45 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         : selectedPaymentType
           ? selectedPaymentType.name
           : payment.selectedPaymentType || "Select payment method";
+  
+  const renderGatewayForm = useMemo(() => {
+    switch (gateway) {
+      case 'EWAY':
+      case 'EWAY_TEST':
+        return <EwayPaymentPage
+          isPaymentProcessing={isPaymentProcessing}
+          payerName={payerName}
+          summary={summary}
+          disablePayment={disablePayment}
+        />;
+      case 'WINDCAVE':
+      case 'TEST':
+        return <WindcavePaymentPage
+          isPaymentProcessing={isPaymentProcessing}
+          payerName={payerName}
+          summary={summary}
+          disablePayment={disablePayment}
+        />;
+      case 'STRIPE':
+      case 'STRIPE_TEST':
+        return <StripePaymentPage
+          isPaymentProcessing={isPaymentProcessing}
+          payerName={payerName}
+          summary={summary}
+          disablePayment={disablePayment}
+        />;
+      case 'OFFLINE':
+      case 'DISABLED':
+      default:
+        return null;
+    }
+  }, [
+    gateway,
+    isPaymentProcessing,
+    payerName,
+    summary,
+    disablePayment
+  ]);
 
   return (
     <>
@@ -61,9 +107,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         ? <CheckoutDiscountEditView type="voucher" selectedDiscount={voucherItem} />
         : (
           <div className="root">
-            <LoadingIndicator customLoading={isPaymentProcessing} />
-
-
+            <LoadingIndicator />
             <AppBarContainer
               hideHelpMenu
               hideSubmitButton
@@ -76,15 +120,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
               }
             >
               {selectedPaymentType && selectedPaymentType.type === "Credit card"
-              && (
-                <CreditCardPaymentPage
-                  isPaymentProcessing={isPaymentProcessing}
-                  payerName={payerName}
-                  summary={summary}
-                  disablePayment={disablePayment}
-                />
-              )}
-
+                && renderGatewayForm}
               {((selectedPaymentType && selectedPaymentType.type !== "Credit card")
                 || (!selectedPaymentType && ["No payment", "Saved credit card"].includes(payment.selectedPaymentType)))
               && <PaymentPage paymentType={payment.selectedPaymentType} payerName={payerName} summary={summary} />}
@@ -99,7 +135,8 @@ const mapStateToProps = (state: State) => ({
   payment: state.checkout.payment,
   summary: state.checkout.summary,
   summaryVouchers: state.checkout.summary.vouchers,
-  isPaymentProcessing: state.checkout.payment.isProcessing
+  isPaymentProcessing: state.checkout.payment.isProcessing,
+  gateway: state.userPreferences['payment.gateway.type']
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(CheckoutPaymentPage);

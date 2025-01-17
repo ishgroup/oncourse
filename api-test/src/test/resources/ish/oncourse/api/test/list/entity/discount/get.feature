@@ -57,7 +57,7 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":10,
         "predictedStudentsPercentage":0.10,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "code":null,
         "validFrom":null,
         "validFromOffset":-30,
@@ -79,7 +79,10 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -109,7 +112,7 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "discountMax":null,
         "cosAccount":10,
         "predictedStudentsPercentage":0.10,
-        "availableOnWeb":true,
+        "availableFor":'Online and office',
         "code":null,
         "validFrom":null,
         "validFromOffset":null,
@@ -134,7 +137,10 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         "createdOn":"#ignore",
         "modifiedOn":"#ignore",
         "limitPreviousEnrolment":false,
-        "relationDiscount":false
+        "relationDiscount":false,
+        "courseIdMustEnrol":null,
+        "courseNameMustEnrol":null,
+        "minEnrolmentsForAnyCourses":null
         }
         """
 
@@ -176,4 +182,4 @@ Feature: Main feature for all GET requests with path 'list/entity/discount'
         Given path ishPath + "/9999"
         When method GET
         Then status 400
-        And match $.errorMessage == "Discount with id:9999 doesn't exist"
+        And match $.errorMessage == "Record with id = '9999' doesn't exist."

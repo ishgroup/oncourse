@@ -1,0 +1,56 @@
+get:
+  operationId: getConfigs
+  description: get String of existed script configs
+  tags:
+    - Script
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of script record to fetch
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to view scripts. Please contact your administrator
+
+
+put:
+  operationId: updateConfigs
+  description: Update an existing script
+  tags:
+    - Script
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of script record to fetch
+    - name: scriptConfigs
+      in: body
+      schema:
+        $ref: './def/entity/automation/AutomationConfigs.yaml'
+      required: true
+      description: lines of yaml file to upgrade script configs
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: SCRIPT_TEMPLATE
+    errorMessage: Sorry, you have no permissions to update script. Please contact your administrator

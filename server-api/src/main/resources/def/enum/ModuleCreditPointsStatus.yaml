@@ -1,0 +1,5 @@
+type: string
+enum:
+  - Active
+  - Active but not visible online
+  - Disabled

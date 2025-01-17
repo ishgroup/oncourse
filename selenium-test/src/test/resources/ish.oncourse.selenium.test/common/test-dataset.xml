@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
+  ~ No copying or use of this code is allowed without permission in writing from ish.
+  -->
+
+<dataset>
+
+  <Country id="1" name="Country1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+
+  <Site id="1" isAdministrationCentre="1" isShownOnWeb="1" name="Test Site1" localTimezone="Australia/Sydney"
+        isVirtual="0" countryId="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+
+  <!-- password = `abcd1723` -->
+  <SystemUser createdOn="2012-06-20 10:22:44.0" firstName="onCourse" surName="Administrator" id="1" login="admin"
+              modifiedOn="2020-12-15 02:01:57.0"  isActive="1" isAdmin="1" email="admin@example.edu" loginAttemptNumber="0"
+              password="$argon2id$v=19$m=32768,t=9,p=8$inKDT1ruI9w+1hRcuetL/g$UQJ1hkF1Slc/tiMN+ka4320SDRuOVI2SAVWjVnkEM+U"
+              defaultAdministrationCentreId="1" canEdiTtara="0" canEditCMS="0" willowId="84"
+              lastLoginOn="#previous_year-12-05 04:56:53.851000000" passwordUpdateRequired="0"/>
+</dataset>

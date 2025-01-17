@@ -2,31 +2,25 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { FormControlLabel } from "@mui/material";
-import { format } from "date-fns-tz";
-import React from "react";
-import clsx from "clsx";
-import { connect } from "react-redux";
-import withStyles from "@mui/styles/withStyles";
-import createStyles from "@mui/styles/createStyles";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { DiscountType } from "@api/model";
-import { Dispatch } from "redux";
-import { StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import { III_DD_MMM_YYYY } from "../../../../../common/utils/dates/format";
-import { decimalMinus, decimalPlus } from "../../../../../common/utils/numbers/decimalCalculation";
-import { CheckoutDiscount, CheckoutSummary } from "../../../../../model/checkout";
-import { State } from "../../../../../reducers/state";
-import { formatCurrency } from "../../../../../common/utils/numbers/numbersNormalizing";
-import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
-import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
-import CheckoutAppBar from "../../CheckoutAppBar";
-import { CheckoutSummaryCogwheel } from "../CheckoutSummaryCogwheel";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
+import { DiscountType } from '@api/model';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { format } from 'date-fns-tz';
+import { decimalMinus, decimalPlus, formatCurrency, III_DD_MMM_YYYY, StyledCheckbox } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { CheckoutDiscount, CheckoutSummary } from '../../../../../model/checkout';
+import { State } from '../../../../../reducers/state';
+import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from '../../../actions/checkoutSummary';
+import CheckoutAppBar from '../../CheckoutAppBar';
+import { StyledCourseItemRenderer } from '../../items/components/SelectedItemRenderer';
 
-const styles = () => createStyles({
+const styles = () => ({
     history: {
       paddingBottom: "5px",
       width: "100%"
@@ -50,7 +44,7 @@ const getDiscountLabel = (selectedDiscount, currencySymbol) => {
       return `${formatCurrency(parseFloat(selectedDiscount.discountValue), currencySymbol)} fee override discount`;
     }
     case "Percent": {
-      return `${parseFloat(selectedDiscount.discount.discountPercent) * 100}% discount`;
+      return `${parseFloat(selectedDiscount.discountPercent) * 100}% discount`;
     }
     default:
       return "";
@@ -62,7 +56,7 @@ interface Props {
   selectedDiscount?: CheckoutDiscount;
   currencySymbol?: string;
   summary?: CheckoutSummary;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const VoucherView: React.FC<Props> = props => {
@@ -292,8 +286,8 @@ const mapStateToProps = (state: State) => ({
   summary: state.checkout.summary
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CheckoutDiscountEditView));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutDiscountEditView, styles));

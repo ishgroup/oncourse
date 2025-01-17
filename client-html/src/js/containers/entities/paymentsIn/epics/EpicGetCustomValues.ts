@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
 import { DataResponse } from "@api/model";
+import { Epic } from "redux-observable";
 import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { GET_PAYMENT_IN_CUSTOM_VALUES, GET_PAYMENT_IN_CUSTOM_VALUES_FULFILLED } from "../actions";
 import EntityService from "../../../../common/services/EntityService";
+import { GET_PAYMENT_IN_CUSTOM_VALUES, GET_PAYMENT_IN_CUSTOM_VALUES_FULFILLED } from "../actions";
 
 const request: EpicUtils.Request<any,  number> = {
   type: GET_PAYMENT_IN_CUSTOM_VALUES,
   getData: id =>
     EntityService.getPlainRecords(
       "PaymentIn",
-      "status,paymentMethod.name,gatewayReference,payer.totalOwing,reconciled,reversalOf,reversedBy,banking.id,amount,payer.fullName",
+      "status,paymentMethod.type,gatewayReference,payer.totalOwing,reconciled,reversalOf,reversedBy,banking.id,amount,payer.fullName",
       `id == ${id}`,
       1,
       0

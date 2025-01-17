@@ -81,6 +81,9 @@ class TutorAttendanceApiService extends EntityApiService<TutorAttendanceDTO, Tut
         if (dto.end == null) {
             validator.throwClientErrorException(id, 'end', "Roster end is required")
         }
+        if(dto.start != null && dto.end != null && dto.start.isAfter(dto.end)){
+            validator.throwClientErrorException(id, 'end', "Roster end date is before roster start date")
+        }
         if (dto.actualPayableDurationMinutes == null) {
             validator.throwClientErrorException(id, 'actualPayableDurationMinutes', "Roster end is required")
         }

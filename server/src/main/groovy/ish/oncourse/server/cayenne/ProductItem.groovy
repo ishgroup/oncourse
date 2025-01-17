@@ -17,6 +17,7 @@ import ish.common.types.ProductType
 import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
+import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._ProductItem
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -48,7 +49,23 @@ class ProductItem extends _ProductItem implements Queueable, NotableTrait, Conta
 		}
 	}
 
-	/**
+	@Override
+	protected void postPersist() {
+		removeAbandonedCartsWithThisProduct()
+		super.postPersist()
+	}
+
+	private void removeAbandonedCartsWithThisProduct(){
+		if(contact != null) {
+			List<CheckoutContactRelation> checkoutRelations = CartFunctions.checkoutsByContactId(context, contact.willowId)
+
+			def productRelations = checkoutRelations.findAll { it instanceof CheckoutProductRelation && it.relatedObjectId == product.id }
+			context.deleteObjects(productRelations.collect {it.checkout}.unique())
+			context.commitChanges()
+		}
+	}
+
+/**
 	 * @return confirmation email sending status: not sent, sent or suppressed from sending
 	 */
 	@Nonnull

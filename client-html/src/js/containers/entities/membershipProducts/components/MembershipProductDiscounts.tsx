@@ -3,21 +3,21 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { change, FieldArray } from "redux-form";
-import { State } from "../../../../reducers/state";
-import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
-import NestedList, {
-  NestedListItem,
-  NestedListPanelItem
-} from "../../../../common/components/form/nestedList/NestedList";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { EditViewProps } from "../../../../model/common/ListView";
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
 } from "../../../../common/actions/CommonPlainRecordsActions";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
 import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
+import NestedList, {
+  NestedListItem,
+  NestedListPanelItem
+} from "../../../../common/components/form/nestedList/NestedList";
+import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
+import { EditViewProps } from "../../../../model/common/ListView";
+import { State } from "../../../../reducers/state";
+import RelationsCommon from "../../common/components/RelationsCommon";
 
 interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
   foundDiscounts?: MembershipDiscount[];
@@ -153,29 +153,25 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
 };
 
 const mapStateToProps = (state: State) => ({
-  foundDiscounts: state.plainSearchRecords["Discount"].items
-    .map(d => ({ discountId: d.id, discountName: d.name }))
-    .sort((a, b) => {
-      if (a.discountId < b.discountId) {
-        return -1;
-      }
-      if (a.discountId > b.discountId) {
-        return 1;
-      }
-      return 0;
-    }),
+  foundDiscounts: state.plainSearchRecords["Discount"].items,
   discountsPending: state.plainSearchRecords["Discount"].loading,
   discountsError: state.plainSearchRecords["Discount"].error,
-  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items.map(r => ({
-    id: r.id,
-    description: r.toContactName
-  }))
+  contactRelationTypes: state.plainSearchRecords["ContactRelationType"].items
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   searchDiscounts: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", `${search} and (validTo == null or validTo >= today)`));
-    dispatch(getCommonPlainRecords("Discount", 0, "name", null, null, PLAIN_LIST_MAX_PAGE_SIZE));
+    dispatch(getCommonPlainRecords("Discount", 0, "name", null, null, PLAIN_LIST_MAX_PAGE_SIZE, items => items.map(d => ({ discountId: d.id, discountName: d.name }))
+      .sort((a, b) => {
+        if (a.discountId < b.discountId) {
+          return -1;
+        }
+        if (a.discountId > b.discountId) {
+          return 1;
+        }
+        return 0;
+      })));
   },
   clearDiscountsSearch: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending))
 });

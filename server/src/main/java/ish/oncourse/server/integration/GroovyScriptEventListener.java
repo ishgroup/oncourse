@@ -17,6 +17,8 @@ import ish.common.types.TriggerType;
 import ish.oncourse.common.SystemEvent;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Script;
+import ish.oncourse.server.cayenne.Tag;
+import ish.oncourse.server.cayenne.TagRelation;
 import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.scripting.ScriptParameters;
 import org.apache.cayenne.ObjectContext;
@@ -25,6 +27,8 @@ import org.apache.cayenne.query.ObjectSelect;
 import org.apache.cayenne.query.SelectById;
 
 import java.util.List;
+
+import static ish.common.types.SystemEventType.*;
 
 /**
  * {@link SystemEvent} listener triggering script execution.
@@ -47,10 +51,50 @@ public class GroovyScriptEventListener implements OnCourseEventListener {
 	public void dispatchEvent(SystemEvent event) {
 		var scriptsToExecute = getScriptsForEventType(event.getEventType());
 
-		for (var script : scriptsToExecute) {
+		for (var script : scriptsToExecute){
 			var value = transformEventValue(event.getValue());
+			var eventType = event.getEventType();
+			if(eventType.equals(CHECKLIST_TASK_CHECKED) || eventType.equals(CHECKLIST_COMPLETED)){
+				if(!correctTagPinned((TagRelation) value, script, true)){
+					continue;
+				}
+			}
+
+			if(eventType.equals(TAG_ADDED) || eventType.equals(TAG_REMOVED)) {
+				if(!correctTagPinned((TagRelation) value, script, false)){
+					continue;
+				}
+			}
 			groovyScriptService.runScript(script, ScriptParameters.from(VALUE_BINDING_NAME, value).fillDefaultParameters(value));
 		}
+	}
+
+	private boolean correctTagPinned(TagRelation value, Script script, boolean parentTag){
+		if(!checkRelationClass(value, script))
+			return false;
+
+		if(script.getEntityAttribute() != null){
+			Tag tag;
+			if(parentTag && value.getTag().getParentTag() != null)
+				tag = value.getTag().getParentTag();
+			else
+				tag = value.getTag();
+
+			if(tag != null)
+				return checkTagId(tag, script);
+		}
+		return true;
+	}
+
+	private boolean checkRelationClass(TagRelation value, Script script){
+		if(script.getEntityClass() != null && !script.getEntityClass().isEmpty() && value.getTaggedRelation() != null){
+			return value.getTaggedRelation().getClass().getSimpleName().equals(script.getEntityClass());
+		}
+		return true;
+	}
+
+	private boolean checkTagId(Tag tag, Script script){
+		return tag.getId().equals(Long.parseLong(script.getEntityAttribute()));
 	}
 
 	private List<Script> getScriptsForEventType(SystemEventType eventType) {

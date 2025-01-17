@@ -99,8 +99,8 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             productItemDTO.redeemableById = type == ProductTypeDTO.VOUCHER ? (productItem as Voucher).redeemableBy?.id : null
             productItemDTO.redeemableByName = (type == ProductTypeDTO.VOUCHER && (productItem as Voucher).redeemableBy != null) ? (productItem as Voucher).redeemableBy.getFullName() : null
             productItemDTO.payments = getPayments(type, productItem)
-            productItemDTO.tags = productItem.tags.collect{ toRestTagMinimized(it) }
-            productItemDTO.documents = ((AttachableTrait)productItem).activeAttachments.collect { toRestDocument(it.document, it.documentVersion?.id, documentService) }
+            productItemDTO.tags = productItem.allTags.collect{ it.id }
+            productItemDTO.documents = ((AttachableTrait)productItem).activeAttachments.collect { toRestDocument(it.document, documentService) }
 
             switch (type) {
                 case ProductTypeDTO.PRODUCT:
@@ -241,7 +241,7 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             case ProductTypeDTO.VOUCHER:
                 updateCustomFields(productItem.context, productItem as ExpandableTrait, productItemDTO.customFields, (productItem as ExpandableTrait).customFieldClass)
                 updateDocuments(productItem as AttachableTrait, (productItem as AttachableTrait).attachmentRelations, productItemDTO.documents, (productItem as AttachableTrait).relationClass, productItem.context)
-                updateTags(productItem as Taggable, productItem.taggingRelations, productItemDTO.tags*.id, productItem.tagRelationClass, productItem.context)
+                updateTags(productItem as Taggable, productItem.taggingRelations, productItemDTO.tags, productItem.tagRelationClass, productItem.context)
                 break
         }
         if (productItem.status == ProductStatus.ACTIVE) {

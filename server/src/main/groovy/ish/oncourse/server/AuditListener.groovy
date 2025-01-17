@@ -12,12 +12,11 @@
 package ish.oncourse.server
 
 import com.google.inject.Inject
-import ish.oncourse.types.AuditAction
 import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.services.AuditService
+import ish.oncourse.types.AuditAction
 import org.apache.cayenne.annotation.PostPersist
 import org.apache.cayenne.annotation.PostRemove
-import org.apache.cayenne.annotation.PostUpdate
 
 class AuditListener {
 
@@ -31,11 +30,6 @@ class AuditListener {
     @PostPersist(value = CayenneDataObject)
     void postPersist(CayenneDataObject object) {
         auditService.submit(object, AuditAction.CREATE)
-    }
-
-    @PostUpdate(value = CayenneDataObject)
-    void postUpdate(CayenneDataObject object) {
-        auditService.submit(object, AuditAction.UPDATE)
     }
 
     @PostRemove(value = CayenneDataObject)

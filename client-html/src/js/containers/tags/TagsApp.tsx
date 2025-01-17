@@ -1,14 +1,12 @@
-import React, { useEffect, useMemo } from "react";
-import { Dispatch } from "redux";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { isDirty, reset } from "redux-form";
-import { State } from "../../reducers/state";
-import { setSwipeableDrawerDirtyForm } from "../../common/components/layout/swipeable-sidebar/actions";
+import { Dispatch } from "redux";
 import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
+import { State } from "../../reducers/state";
 import { getColumnsWidth, updateColumnsWidth } from "../preferences/actions";
 import { getAllTags } from "./actions";
 import TagSidebar from "./components/TagSidebar";
-import Tags from "./Tags";
+import tagRoutes from "./routes";
 
 const TagsApp = React.memo<any>(
   ({
@@ -19,19 +17,14 @@ const TagsApp = React.memo<any>(
      tagLeftColumnWidth,
      location: {
        pathname
-     },
-     formName,
-     dirty,
-     onSetSwipeableDrawerDirtyForm
+     }
   }) => {
-    const isNew = useMemo(() => {
-      const pathArray = pathname.split("/");
-      return pathArray.length > 2 && pathArray[2] === "new";
-    }, [pathname]);
 
     useEffect(() => {
-      onSetSwipeableDrawerDirtyForm(dirty || isNew, formName);
-    }, [isNew, dirty, formName]);
+      if (pathname === "/tags") {
+        history.replace("/tags/tagGroups");
+      }
+    }, []);
 
     return (
       <SidebarWithSearch
@@ -39,20 +32,17 @@ const TagsApp = React.memo<any>(
         updateColumnsWidth={updateColumnsWidth}
         onInit={onInit}
         SideBar={TagSidebar}
-        AppFrame={Tags}
+        routes={tagRoutes}
         history={history}
         match={match}
+        noSearch
       />
     );
   }
 );
 
-const getFormName = form => form && Object.keys(form)[0];
-
 const mapStateToProps = (state: State) => ({
-  tagLeftColumnWidth: state.preferences.columnWidth && state.preferences.columnWidth.tagLeftColumnWidth,
-  formName: getFormName(state.form),
-  dirty: isDirty(getFormName(state.form))(state)
+  tagLeftColumnWidth: state.preferences.columnWidth && state.preferences.columnWidth.tagLeftColumnWidth
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -60,10 +50,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     dispatch(getAllTags());
     dispatch(getColumnsWidth());
   },
-  updateColumnsWidth: (tagLeftColumnWidth: number) => dispatch(updateColumnsWidth({ tagLeftColumnWidth })),
-  onSetSwipeableDrawerDirtyForm: (isDirty: boolean, formName: string) => dispatch(
-    setSwipeableDrawerDirtyForm(isDirty, () => dispatch(reset(formName)))
-  )
+  updateColumnsWidth: (tagLeftColumnWidth: number) => dispatch(updateColumnsWidth({ tagLeftColumnWidth }))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(TagsApp);

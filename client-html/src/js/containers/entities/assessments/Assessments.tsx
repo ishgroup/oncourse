@@ -3,36 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import { Assessment } from "@api/model";
 import React, { Dispatch, useEffect } from "react";
 import { connect } from "react-redux";
 import { initialize } from "redux-form";
-import { Assessment } from "@api/model";
 import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
 import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import {
-  createAssessment, getAssessment, removeAssessment, updateAssessment
-} from "./actions";
-import AssessmentEditView from "./components/AssessmentEditView";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup } from "../../../model/common/ListView";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
+import ListView from "../../../common/components/list-view/ListView";
 import { getManualLink } from "../../../common/utils/getManualLink";
+import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
+import { getGradingTypes } from "../../preferences/actions";
 import { getListTags } from "../../tags/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
-import { getGradingTypes } from "../../preferences/actions";
+import AssessmentEditView from "./components/AssessmentEditView";
 
-const manualLink = getManualLink("assessment");
+const manualLink = getManualLink("assessment-tasks-list-view");
 
 interface AssessmentsProps {
-  getAssessmentRecord?: () => void;
   onInit?: () => void;
-  onSave?: (id: string, assessment: Assessment) => void;
   getFilters?: () => void;
   clearListState?: () => void;
-  onDelete?: (id: string) => void;
   getTags?: () => void;
   getGradingTypes?: () => void;
-  onCreate: (assessment: Assessment) => void;
 }
 
 const Initial: Assessment = {
@@ -65,7 +58,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const findRelatedGroup: any = [
+const findRelatedGroup: FindRelatedItem[] = [
   { title: "Audits", list: "audit", expression: "entityIdentifier == Assessment and entityId" },
   { title: "Classes", list: "class", expression: "assessmentClasses.assessment.id" },
   {
@@ -80,15 +73,11 @@ const setRowClasses = ({ active }) => (active === "Yes" ? undefined : "text-op05
 
 const Assessments: React.FC<AssessmentsProps> = props => {
   const {
-    getAssessmentRecord,
     onInit,
-    onDelete,
-    onSave,
     getFilters,
     getGradingTypes,
     clearListState,
-    getTags,
-    onCreate
+    getTags
   } = props;
 
   useEffect(() => {
@@ -110,17 +99,13 @@ const Assessments: React.FC<AssessmentsProps> = props => {
       editViewProps={{
         manualLink,
         asyncValidate: notesAsyncValidate,
-        asyncBlurFields: ["notes[].message"],
+        asyncChangeFields: ["notes[].message"],
         hideTitle: true
       }}
       EditViewContent={AssessmentEditView}
       CogwheelAdornment={BulkEditCogwheelOption}
-      getEditRecord={getAssessmentRecord}
       rootEntity="Assessment"
       onInit={onInit}
-      onCreate={onCreate}
-      onDelete={onDelete}
-      onSave={onSave}
       findRelated={findRelatedGroup}
       filterGroupsInitial={filterGroups}
     />
@@ -135,11 +120,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   getGradingTypes: () => dispatch(getGradingTypes()),
   getTags: () => dispatch(getListTags("Assessment")),
   getFilters: () => dispatch(getFilters("Assessment")),
-  clearListState: () => dispatch(clearListState()),
-  getAssessmentRecord: (id: string) => dispatch(getAssessment(id)),
-  onSave: (id: string, assessment: Assessment) => dispatch(updateAssessment(id, assessment)),
-  onDelete: (id: string) => dispatch(removeAssessment(id)),
-  onCreate: (assessment: Assessment) => dispatch(createAssessment(assessment))
+  clearListState: () => dispatch(clearListState())
 });
 
 export default connect<any, any, any>(

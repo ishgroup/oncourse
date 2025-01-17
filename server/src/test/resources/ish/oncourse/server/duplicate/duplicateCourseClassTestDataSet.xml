@@ -32,9 +32,9 @@
   <DefinedTutorRole description="Helper" name="Helper" id="6" active="1"/>
   <DefinedTutorRole description="Technician" name="Technician" id="7" active="1"/>
 
-  <Module id="1" nationalCode="TESTCODE1" title="Test module 1" type="1" isOffered="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" nationalCode="TESTCODE1" title="Test module 1" type="1" isOffered="1"
           createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
-  <Module id="2" nationalCode="TESTCODE2" title="Test module 2" type="1" isOffered="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="2" nationalCode="TESTCODE2" title="Test module 2" type="1" isOffered="1"
           createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"/>
 
   <FieldConfiguration id="1" type="1" name="fkname1" createdOn="2017-06-20 12:00:00.0"
@@ -88,29 +88,29 @@
 
   <CourseClass id="1" code="1234" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="1" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="2" code="124" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="3" code="125" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
   <CourseClass id="4" code="126" startDateTime="2013-01-01 00:00:00" endDateTime="2013-01-02 00:00:00"
                createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01" reportableHours="3.0" taxAdjustment="0.0"
-               taxId="1" sessionCount="3" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
-               isDistantLearningCourse="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
+               taxId="1" minimumPlaces="1" maximumPlaces="100" isShownOnWeb="1"
+               type="1" isClassFeeApplicationOnly="1" isCancelled="1" isActive="1"
                incomeAccountId="1" deliveryMode="1" courseId="2" feeExGst="100.00"
                suppressAvetmissExport="0" roomId="1" budgetedPlaces="10" fundingSource="3"
                attendanceType="0"/>
@@ -194,11 +194,11 @@
 
   <Discount id="1" code="ABC50" discountType="1" discountDollar="50" name="discountPercent1" rounding="0"
             validFrom="2004-10-17 22:44:15" validTo="2100-01-01 00:00:00" predictedStudentsPercentage="0.15"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
   <Discount id="2" code="ABC20" discountType="1" discountDollar="20" name="discountPercent2" rounding="0"
             validFrom="2004-10-17 22:44:15" validTo="2100-01-01 00:00:00" predictedStudentsPercentage="0.15"
-            HIDEONWEB="0" ISAVAILABLEONWEB="1" addByDefault="0" minEnrolments="1" minValue="0"
+            HIDEONWEB="0" AVAILABILITYTYPE="1" addByDefault="0" minEnrolments="1" minValue="0"
             limitPreviousEnrolment="0" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Discount_CourseClass id="1" courseClassId="1" discountId="1" predictedStudentsPercentage="0.1"

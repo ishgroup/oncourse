@@ -6,18 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
+import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from "ish-ui";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Grid,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  DialogTitle
-} from "@mui/material";
-import { stubFunction } from "../../../../../common/utils/common";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
 
 const SubmissionModal = (
   {
@@ -27,7 +18,8 @@ const SubmissionModal = (
     onSave,
     title,
     selectDefault,
-    dateDefault
+    dateDefault,
+    dispatch
   }
 ) => {
   const type = modalProps[0];
@@ -51,37 +43,38 @@ const SubmissionModal = (
       classes={{
       paper: "overflow-visible"
     }}
-      fullWidth
-      disableAutoFocus
+            disableAutoFocus
       disableEnforceFocus
       disableRestoreFocus
     >
       <DialogContent>
         <DialogTitle className="p-0 mb-2">{title}</DialogTitle>
         {opened && (
-        <Grid container columnSpacing={3}>
-          <Grid item xs={6}>
+        <Grid container rowSpacing={2} columnSpacing={3}>
+          <Grid item xs={12}>
             <EditInPlaceDateTimeField
               type="datetime"
               label={`${type} date`}
               input={{
-                onChange: setDateVal,
+                onChange: setDateVal as any,
                 onFocus: stubFunction,
                 onBlur: stubFunction,
                 value: dateVal
               }}
-              meta={{}}
+              meta={{
+                dispatch
+              }}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             {type === "Marked" && (
               (
-                <EditInPlaceField
+                <EditInPlaceSearchSelect
                   label="Assessor"
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
                   input={{
-                    onChange: setSelectVal,
+                    onChange: setSelectVal as any,
                     onFocus: stubFunction,
                     onBlur: stubFunction,
                     value: selectVal
@@ -89,7 +82,6 @@ const SubmissionModal = (
                   meta={{}}
                   items={tutors}
                   allowEmpty
-                  select
                 />
               )
             )}

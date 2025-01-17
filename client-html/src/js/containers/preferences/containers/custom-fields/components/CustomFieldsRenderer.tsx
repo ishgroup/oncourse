@@ -3,35 +3,40 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo, useState } from "react";
-import clsx from "clsx";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { change, Field } from "redux-form";
-import Card from "@mui/material/Card";
-import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import { CustomFieldType, DataType, EntityType } from "@api/model";
-import { CheckboxField, StyledCheckbox } from "../../../../../common/components/form/formFields/CheckboxField";
-import EditInPlaceDateTimeField from "../../../../../common/components/form/formFields/EditInPlaceDateTimeField";
-import EditInPlaceField from "../../../../../common/components/form/formFields/EditInPlaceField";
-import EditInPlaceMoneyField from "../../../../../common/components/form/formFields/EditInPlaceMoneyField";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import { CustomFieldType, DataType, EntityType } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import { FormControlLabel, Grid } from '@mui/material';
+import Card from '@mui/material/Card';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import {
+  CheckboxField,
+  EditInPlaceDateTimeField,
+  EditInPlaceField,
+  EditInPlaceMoneyField,
+  mapSelectItems,
+  SelectItemDefault,
+  sortDefaultSelectItems,
+  StyledCheckbox
+} from 'ish-ui';
+import React, { useMemo, useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd-next';
+import { change, Field } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import ExpandableItem from '../../../../../common/components/layout/expandable/ExpandableItem';
+import { reorder } from '../../../../../common/utils/DnD';
+import { useAppSelector } from '../../../../../common/utils/hooks';
 import {
   validateEmail,
   validateRegex,
   validateSingleMandatoryField,
   validateUniqueNamesInArray,
   validateURL
-} from "../../../../../common/utils/validation";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
-import ListMapRenderer from "./ListMapRenderer";
-import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import Uneditable from "../../../../../common/components/form/Uneditable";
-import { SelectItemDefault } from "../../../../../model/entities/common";
+} from '../../../../../common/utils/validation';
+import ListMapRenderer from './ListMapRenderer';
 
 const mapEntityType = (entityType: EntityType) => {
   switch (entityType) {
@@ -61,18 +66,10 @@ const EntityTypes = Object.keys(EntityType)
 EntityTypes.sort(sortDefaultSelectItems);
 
 const DataTypes = Object.keys(DataType)
-  .filter(val => !['Record', 'File', 'Message template'].includes(val))
+  .filter(val => !['Record', 'Message template'].includes(val))
   .map(mapSelectItems);
 
 DataTypes.sort(sortDefaultSelectItems);
-
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
 
 const preventStarEnter = e => {
   if (e.key.match(/\*/)) {
@@ -131,6 +128,9 @@ const validateListMap = (value, dataType) => {
 
 const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: string }, classes: any }>(
   ({ classes, field, ...props }) => {
+
+    const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+
     switch (field.dataType) {
       case "Checkbox":
         return (
@@ -161,7 +161,7 @@ const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: str
       case "Map":
         return <ListMapRenderer {...props as any} dataType={field.dataType} key={field.id || field.uniqid} label="Options" />;
       case "Money":
-        return <EditInPlaceMoneyField {...props} />;
+        return <EditInPlaceMoneyField {...props} currencySymbol={currencySymbol} />;
       case "URL":
       case "Text":
       default:
@@ -191,7 +191,20 @@ const validateResolver = (value, allValues, props, name) => {
   return undefined;
 };
 
-const ExpandableCustomFields = React.memo<any>(props => {
+const ExpandableCustomFields = React.memo<{
+  item,
+  classes,
+  field,
+  onDataTypeChange,
+  onDelete,
+  index,
+  onAddOther,
+  isListOrMap,
+  expanded,
+  onChange,
+  form,
+  dispatch
+}>(props => {
   const {
     item,
     classes,
@@ -203,9 +216,36 @@ const ExpandableCustomFields = React.memo<any>(props => {
     isListOrMap,
     expanded,
     onChange,
+    form,
+    dispatch
   } = props;
 
   const isExpanded = useMemo(() => ((expanded !== null && [index].includes(expanded)) || !field.id || !field.name), [expanded, field]);
+
+  const onEntityChange = () => {
+    dispatch(change(form, `${item}.dataType`, null));
+  };
+
+  const onTypeChange = type => {
+    if (type === 'Portal subdomain' && field.entityType !== 'Contact') {
+      dispatch(change(form, `${item}.entityType`, 'Contact'));
+    }
+    onDataTypeChange(type);
+  };
+
+  const availableDataTypes = useMemo(() => {
+    if (field.entityType === "WaitingList") {
+      return DataTypes.filter(t => t.label !== 'File');
+    }
+    return DataTypes;
+  }, [field.entityType]);
+  
+  const availableEntities = useMemo(() => {
+    if (field.dataType === 'Portal subdomain') {
+      return EntityTypes.filter(t => t.value === 'Contact');
+    }
+    return EntityTypes;
+  }, [field.dataType]);
 
   return (
     <ExpandableItem
@@ -257,8 +297,7 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="text"
               name={`${item}.name`}
               label="Name"
-              fullWidth
-              className={classes.field}
+                            className={classes.field}
               validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
             />
           </Grid>
@@ -268,7 +307,6 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="text"
               name={`${item}.fieldKey`}
               label="Custom field key"
-              fullWidth
               disabled={!!field.id}
               className={classes.field}
               required
@@ -280,11 +318,11 @@ const ExpandableCustomFields = React.memo<any>(props => {
               type="select"
               name={`${item}.dataType`}
               label="Data Type"
-              items={DataTypes}
+              items={availableDataTypes}
               disabled={!!field.id}
-              onChange={onDataTypeChange}
+              debounced={false}
               className={classes.field}
-              fullWidth
+              onChange={onTypeChange}
               required
             />
           </Grid>
@@ -295,11 +333,11 @@ const ExpandableCustomFields = React.memo<any>(props => {
               name={`${item}.entityType`}
               selectLabelCondition={entityTypeCondition}
               label="Record Type"
-              items={EntityTypes}
+              items={availableEntities}
               disabled={!!field.id}
               className={classes.field}
+              onChange={onEntityChange}
               sort
-              fullWidth
               required
             />
           </Grid>
@@ -312,8 +350,6 @@ const ExpandableCustomFields = React.memo<any>(props => {
                   type="checkbox"
                   name={`${item}.mandatory`}
                   color="primary"
-                  value="true"
-                  fullWidth
                 />
               )}
               label="Mandatory"
@@ -383,7 +419,6 @@ const renderCustomFields = React.memo<any>(props => {
         value.splice(otherIndex, 1);
       }
     }
-
     dispatch(change(form, `${fields.name}[${index}].defaultValue`, value.length ? JSON.stringify(value) : null));
   };
 
@@ -409,10 +444,9 @@ const renderCustomFields = React.memo<any>(props => {
                       key={index}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                     >
                       <Card className="card d-flex">
-                        <div className="centeredFlex mr-2">
+                        <div className="centeredFlex mr-2" {...provided.dragHandleProps}>
                           <DragIndicator className={clsx("dndActionIcon", classes.dragIcon)} />
                         </div>
                         <ExpandableCustomFields
@@ -426,6 +460,8 @@ const renderCustomFields = React.memo<any>(props => {
                           isListOrMap={isListOrMap}
                           expanded={expanded}
                           onChange={() => setExpanded(expanded === index ? null : index)}
+                          dispatch={dispatch}
+                          form={form}
                         />
                       </Card>
                     </div>

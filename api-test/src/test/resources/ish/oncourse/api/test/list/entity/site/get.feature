@@ -45,7 +45,7 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["site1"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","site1","Adelaide","5000","false"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"site1","Adelaide","5000","false"])].id
 
         Given path ishPath + "/" + id
         When method GET
@@ -74,11 +74,12 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
             "tags":[],
             "rooms":
                 [
-                {"id":1,"name":"room1","seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
-                {"id":2,"name":"room2","seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
+                {"id":1,"name":"room1","customFields":{},"seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null,"virtualRoomUrl":null },
+                {"id":2,"name":"room2","customFields":{},"seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null,"virtualRoomUrl":null}
                 ],
             "documents":[],
             "rules":[],
+            "customFields":{}
             }
             """
 
@@ -97,7 +98,7 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
         Then status 200
         And match $.rows[*].values[*] contains ["site1"]
 
-        * def id = get[0] response.rows[?(@.values == ["[]","site1","Adelaide","5000","false"])].id
+        * def id = get[0] response.rows[?(@.values == ["[]",null,"site1","Adelaide","5000","false"])].id
 
         Given path ishPath + "/" + id
         When method GET
@@ -126,11 +127,12 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
             "tags":[],
             "rooms":
                 [
-                {"id":1,"name":"room1","seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null},
-                {"id":2,"name":"room2","seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null}
+                {"id":1,"name":"room1","customFields":{},"seatedCapacity":25,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null,"virtualRoomUrl":null},
+                {"id":2,"name":"room2","customFields":{},"seatedCapacity":50,"siteId":201,"siteTimeZone":null,"kioskUrl":null,"directions":null,"facilities":null,"tags":[],"documents":[],"rules":[],"createdOn":null,"modifiedOn":null,"virtualRoomUrl":null}
                 ],
             "documents":[],
             "rules":[],
+            "customFields":{}
             }
             """
 
@@ -141,4 +143,4 @@ Feature: Main feature for all GET requests with path 'list/entity/site'
         Given path ishPath + "/99999"
         When method GET
         Then status 400
-        And match $.errorMessage == "Site with id:99999 doesn't exist"
+        And match $.errorMessage == "Record with id = '99999' doesn't exist."

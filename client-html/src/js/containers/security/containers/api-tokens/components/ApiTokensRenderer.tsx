@@ -6,25 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useRef } from "react";
-import Grid from "@mui/material/Grid";
-import { Card, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import { ApiToken, User } from "@api/model";
-import { WrappedFieldArrayProps } from "redux-form";
-import { Dispatch } from "redux";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { NumberArgFunction } from "../../../../../model/common/CommonFunctions";
-import { LinkAdornment } from "../../../../../common/components/form/FieldAdornments";
-import { openInternalLink } from "../../../../../common/utils/links";
-import { contactLabelCondition } from "../../../../entities/contacts/utils";
-import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
-import { showMessage } from "../../../../../common/actions";
+import { ApiToken, User } from '@api/model';
+import { Button, Card, Grid, Typography } from '@mui/material';
+import { LinkAdornment, NumberArgFunction, openInternalLink } from 'ish-ui';
+import React, { useRef } from 'react';
+import { Dispatch } from 'redux';
+import { WrappedFieldArrayProps } from 'redux-form';
+import { showMessage } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { getContactFullName } from '../../../../entities/contacts/utils';
+import UserSelectItemRenderer from '../../users/components/UserSelectItemRenderer';
 
 interface RendererProps {
   users: User[];
   onDelete: NumberArgFunction;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 interface ItemsProps extends RendererProps {
@@ -47,7 +44,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 ) => {
   const isNew = typeof field.id !== "number";
 
-  const linkInput = useRef<HTMLInputElement>();
+  const linkInput = useRef<HTMLInputElement>(undefined);
 
   const onCopy = () => {
     linkInput.current.select();
@@ -61,13 +58,13 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 
   return (
     <Card className="mb-2 p-3">
-      <Grid container columnSpacing={3}>
+      <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={6}>
           <FormField
             label="Act as user"
-            type="searchSelect"
+            type="select"
             selectValueMark="id"
-            selectLabelCondition={contactLabelCondition}
+            selectLabelCondition={getContactFullName}
             name={`${item}.userId`}
             items={users || []}
             itemRenderer={UserSelectItemRenderer}
@@ -81,7 +78,6 @@ const ApiTokenItem: React.FC<ItemsProps> = (
             rowHeight={55}
             disabled={!isNew}
             className="pr-1"
-            fullWidth
             required
           />
 
@@ -93,7 +89,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
           )}
         </Grid>
         <Grid item xs={6} display="flex" justifyContent="space-between" alignItems="flex-start">
-          <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required fullWidth />
+          <FormField type="text" name={`${item}.name`} label="Token name" disabled={!isNew} required />
           <Button
             size="small"
             classes={{

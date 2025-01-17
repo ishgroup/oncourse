@@ -19,16 +19,16 @@ import ish.oncourse.cayenne.ContactInterface
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.cayenne.glue._Quote
 import ish.oncourse.server.services.IAutoIncrementService
-import ish.util.InvoiceUtil
 
 import javax.annotation.Nonnull
-
+import javax.annotation.Nullable
+import java.time.LocalDate
 /**
  * Pre-invoice state
  */
 @API
 @QueueableEntity
-class Quote extends _Quote {
+class Quote extends _Quote implements ExpandableTrait{
 
 	@Inject
 	private transient IAutoIncrementService autoIncrementService
@@ -56,12 +56,161 @@ class Quote extends _Quote {
 		return this.getQuoteLines()
 	}
 
+	@Override
+	List<AbstractInvoiceLine> getAbstractInvoiceLines() {
+		new ArrayList<AbstractInvoiceLine>(){{
+			addAll(quoteLines)
+		}}
+	}
+
 	void setContact(ContactInterface contact) {
 		if (contact instanceof Contact) {
 			super.setContact((Contact) contact)
 		} else {
 			throw new IllegalArgumentException("expected Contact.class, was " + contact.getClass())
 		}
+	}
+
+	/**
+	 * This is the contact to whom the quote was issued. They are liable for the debt this quote represents.
+	 * Note that the quote contact might not be the same contact as the person enrolled in classes linked to
+	 * quote lines.
+	 *
+	 * @return to whom the quote was issued
+	 */
+	@Nonnull
+	@API
+	@Override
+	Contact getContact() {
+		return super.getContact()
+	}
+
+	/**
+	 * @return list of quote line records linked to this quote
+	 */
+	@API
+	@Nonnull
+	@Override
+	List<QuoteLine> getQuoteLines() {
+		return super.getQuoteLines()
+	}
+
+	/**
+	 * @return Title of this Quote or null if it is not set
+	 */
+	@Nullable
+	@API
+	@Override
+	String getTitle() {
+		return super.getTitle()
+	}
+
+	/**
+	 * @return shipping address for this invoice
+	 */
+	@API
+	@Nullable
+	@Override
+	String getShippingAddress() {
+		return super.getShippingAddress()
+	}
+
+	/**
+	 * The quote description might be shown on printed reports or in emails.
+	 *
+	 * @return quote description text
+	 */
+	@Nullable
+	@API
+	@Override
+	String getDescription() {
+		return super.getDescription()
+	}
+
+	/**
+	 * The user who created this quote, or null if it was created through a web purchase.
+	 *
+	 * @return internal user who created this quote
+	 */
+	@Nullable
+	@API
+	@Override
+	SystemUser getCreatedByUser() {
+		return super.getCreatedByUser()
+	}
+
+	/**
+	 * @return billing address for this quote
+	 */
+	@Nullable
+	@API
+	@Override
+	String getBillToAddress() {
+		return super.getBillToAddress()
+	}
+
+	/**
+	 *
+	 * @return the total without tax
+	 */
+	@Nonnull
+	@API
+	@Override
+	Money getTotal() {
+		return super.getTotal()
+	}
+
+	/**
+	 * @return the date on which this quote amount falls due
+	 */
+	@Nonnull
+	@API
+	@Override
+	LocalDate getDateDue() {
+		return super.getDateDue()
+	}
+
+	/**
+	 * @return the total of this quote including tax.
+	 */
+	@Nonnull
+	@API
+	@Override
+	Money getTotalIncTax() {
+		return super.getTotalIncTax()
+	}
+
+	/**
+	 * @return date when this quote was created
+	 */
+	@Nonnull
+	@API
+	@Override
+	LocalDate getInvoiceDate() {
+		return super.getInvoiceDate()
+	}
+
+	/**
+	 *
+	 * @return the total amount of tax included in this quote
+	 */
+	@Nonnull
+	@API
+	@Override
+	Money getTotalTax() {
+		return super.getTotalTax()
+	}
+
+	/**
+	 * Some arbitrary piece of text such as a PO number or customer reference which is displayed on the printed quote.
+	 *
+	 * @return
+	 */
+	@Nullable
+	@API
+	@Override
+	String getCustomerReference() {
+		return super.getCustomerReference()
 	}
 
 	/**
@@ -90,5 +239,10 @@ class Quote extends _Quote {
 
 	void updateOverdue() {
 		setOverdue(Money.ZERO)
+	}
+
+	@Override
+	Class<? extends CustomField> getCustomFieldClass() {
+		return QuoteCustomField
 	}
 }

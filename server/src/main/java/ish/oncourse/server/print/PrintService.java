@@ -17,6 +17,7 @@ import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.document.DocumentService;
 import ish.oncourse.server.messaging.DocumentParam;
+import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.api.ReportSpec;
 import ish.print.PrintRequest;
 import ish.print.PrintResult;
@@ -47,6 +48,7 @@ public class PrintService {
 
 	private ICayenneService cayenneService;
 	private DocumentService documentService;
+	private UserPreferenceService userPreferenceService;
 
 	private final Map<UID, PrintWorker> workerMap;
 
@@ -54,9 +56,10 @@ public class PrintService {
 	private ScheduledExecutorService cleanupThreadExecutor;
 
 	@Inject
-	public PrintService(ICayenneService cayenneService, DocumentService documentService) {
+	public PrintService(ICayenneService cayenneService, DocumentService documentService, UserPreferenceService userPreferenceService) {
 		this.cayenneService = cayenneService;
 		this.documentService = documentService;
+		this.userPreferenceService = userPreferenceService;
 
 		workerThreadExecutor = Executors.newFixedThreadPool(MAX_THREADS);
 		cleanupThreadExecutor = Executors.newScheduledThreadPool(1);
@@ -75,7 +78,7 @@ public class PrintService {
 	 */
 	public synchronized Future<PrintResult> print(PrintRequest printRequest) {
 		if (!workerMap.containsKey(printRequest.getUID())) {
-			var worker = new PrintWorker(printRequest, cayenneService, documentService);
+			var worker = new PrintWorker(printRequest, cayenneService, documentService, userPreferenceService);
 			workerMap.put(printRequest.getUID(), worker);
 
 			return workerThreadExecutor.submit(() -> {
@@ -140,6 +143,9 @@ public class PrintService {
 		} catch (CayenneRuntimeException e) {
 			throw new IllegalArgumentException("No report with such key code exist: " + request.getReportCode());
 		}
+
+		if(report == null)
+			throw new IllegalArgumentException("No report with such key code exist: " + request.getReportCode());
 
 		fillWithTransformations(request, reportSpec.getEntityRecords(), report.getEntity(), request.getReportCode());
 

@@ -14,3 +14,10 @@ enum:
   - ArticleProduct
   - VoucherProduct
   - MembershipProduct
+  - Lead
+  - Invoice
+  - Quote
+  - Tutor
+  - Student
+  - Site
+  - Room

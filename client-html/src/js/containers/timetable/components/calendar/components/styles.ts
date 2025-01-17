@@ -1,10 +1,22 @@
-import { Theme } from "@mui/material";
-import createStyles from "@mui/styles/createStyles";
+/*
+ * Copyright ish group pty ltd 2022.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+ */
 
-const styles = (theme: Theme) =>
-  createStyles({
+import { Theme } from '@mui/material';
+
+const styles = (theme: Theme, p, classes) =>
+  ({
+    groupedDayWrapper: {
+      "& .dayOffset:last-child": {
+        marginBottom: theme.spacing(1)
+      }
+    },
     gapDayWrapper: {
-      "& > $gapPeriodOffsetTop:first-child": {
+      [`& > .${classes.gapPeriodOffsetTop}:first-child`]: {
         marginTop: 0
       }
     },

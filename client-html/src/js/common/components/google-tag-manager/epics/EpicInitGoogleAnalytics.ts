@@ -3,19 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ActionsObservable, Epic, ofType } from "redux-observable";
+import { Epic, ofType } from "redux-observable";
+import { Observable } from "rxjs";
 import { flatMap } from "rxjs/operators";
-import { State } from "../../../../reducers/state";
-import { GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED } from "../actions";
 import {
   GOOGLE_ANALYTICS_CLIENT_ID_KEY,
   GOOGLE_ANALYTICS_COMPAIN_ID_KEY,
   GOOGLE_ANALYTICS_COMPAIN_NAME_KEY,
-  GOOGLE_ANALYTICS_USER_ID_KEY, GOOGLE_TAG_MANAGER, GOOGLE_TAG_MANAGER_DEFAULT_APP_NAME,
+  GOOGLE_ANALYTICS_USER_ID_KEY,
+  GOOGLE_TAG_MANAGER,
+  GOOGLE_TAG_MANAGER_DEFAULT_APP_NAME
 } from "../../../../constants/Config";
+import { State } from "../../../../reducers/state";
+import { GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED } from "../actions";
 
 // Google Analytics Init
-export const EpicInitGoogleAnalytics: Epic<any, State> = (action$: ActionsObservable<any>): any => action$.pipe(
+export const EpicInitGoogleAnalytics: Epic<any, State> = (action$: Observable<any>): any => action$.pipe(
     ofType(GET_GOOGLE_TAG_MANAGER_PARAMETERS_FULFILLED),
     flatMap(action => {
       const script = document.createElement("script");
