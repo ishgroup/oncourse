@@ -18,6 +18,7 @@ import ish.oncourse.server.api.v1.function.TagFunctions
 import ish.oncourse.server.api.v1.model.SiteDTO
 import ish.oncourse.server.api.v1.model.WaitingListDTO
 import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.util.WaitingListUtils
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
@@ -104,17 +105,7 @@ class WaitingListApiService extends TaggableApiService<WaitingListDTO, WaitingLi
 
         Course course = getRecordById(context, Course, waitingListDTO.courseId)
 
-        def waitingListsFilter = WaitingList.STUDENT.eq(contact.student)
-                .andExp(WaitingList.COURSE.eq(course))
-
-        if(waitingListDTO.id)
-            waitingListsFilter = waitingListsFilter.andExp(WaitingList.ID.ne(waitingListDTO.id))
-
-        def sameWaitingList = ObjectSelect.query(WaitingList)
-                .where(waitingListsFilter)
-                .selectFirst(context)
-
-        if(sameWaitingList)
+        if(WaitingListUtils.waitingListExists(course, contact.student, context, waitingListDTO.id))
             validator.throwClientErrorException(id, "student", "Waiting list for this student and course already exists!")
 
         if (trimToEmpty(waitingListDTO.studentNotes).length() > 32000) {
