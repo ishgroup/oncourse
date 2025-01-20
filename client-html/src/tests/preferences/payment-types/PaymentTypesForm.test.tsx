@@ -1,11 +1,12 @@
-import * as React from "react";
 import { AccountType } from "@api/model";
-import { defaultComponents } from "../../common/Default.Components";
-import PaymentTypesForm, { PAYMENT_TYPES_FORM } from
-    "../../../js/containers/preferences/containers/payment-types/components/PaymentTypesForm";
-import { sortDefaultSelectItems } from "../../../js/common/utils/common";
+import { sortDefaultSelectItems } from "ish-ui";
+import * as React from "react";
 import getTimestamps from "../../../js/common/utils/timestamps/getTimestamps";
+import PaymentTypesForm, {
+  PAYMENT_TYPES_FORM
+} from "../../../js/containers/preferences/containers/payment-types/components/PaymentTypesForm";
 import { AccountExtended } from "../../../js/model/entities/Account";
+import { defaultComponents } from "../../common/Default.Components";
 
 describe("Virtual rendered PaymentTypesForm", () => {
   defaultComponents({

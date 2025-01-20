@@ -11,8 +11,10 @@ import { EpicHolidays } from "../containers/holidays/epics";
 import { EpicLdap } from "../containers/ldap/epics";
 import { EpicMessaging } from "../containers/messaging/epics";
 import { EpicPaymentTypes } from "../containers/payment-types/epics";
+import { EpicSubjects } from "../containers/subjects/epics";
 import { EpicTaxTypes } from "../containers/tax-types/epics";
 import { EpicTutorRoles } from "../containers/tutor-roles/epics";
+import { EpicCreateSpecialTagType } from "./EpicCreateSpecialTagType";
 import { EpicGetColumnsWidth } from "./EpicGetColumnsWidth";
 import { EpicGetComplexPath } from "./EpicGetComplexPath";
 import { EpicGetCountries } from "./EpicGetCountries";
@@ -23,6 +25,7 @@ import { EpicGetLanguages } from "./EpicGetLanguages";
 import { EpicGetLockedDate } from "./EpicGetLockedDate";
 import { EpicGetPreferences } from "./EpicGetPreferences";
 import { EpicGetPreferencesByKeys } from "./EpicGetPreferencesByKeys";
+import { EpicGetSpecialTagTypes } from "./EpicGetSpecialTagTypes";
 import { EpicGetTimezones } from "./EpicGetTimezones";
 import { EpicGetUSISortwareId } from "./EpicGetUSISortwareId";
 import { EpicSavePreferences } from "./EpicSavePreferences";
@@ -41,6 +44,7 @@ export const EpicPreferences = combineEpics(
   EpicGetIsLogged,
   EpicLdap,
   EpicTaxTypes,
+  EpicSubjects,
   EpicPaymentTypes,
   EpicMessaging,
   EpicConcessionTypes,
@@ -54,7 +58,9 @@ export const EpicPreferences = combineEpics(
   EpicGetCurrency,
   EpicGetUSISortwareId,
   EpicGetPreferencesByKeys,
+  EpicGetSpecialTagTypes,
   EpicFundingContracts,
   EpicGetLockedDate,
-  EpicTutorRoles
+  EpicTutorRoles,
+  EpicCreateSpecialTagType
 );

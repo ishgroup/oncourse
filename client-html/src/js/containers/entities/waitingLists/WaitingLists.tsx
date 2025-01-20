@@ -37,7 +37,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Contacts", list: "contact", expression: "student.waitingLists.id" }
 ];
 
-const manualLink = getManualLink("waitingLists");
+const manualLink = getManualLink("why-use-waiting-lists");
 
 const nameCondition = (value: WaitingList) => value.courseName;
 

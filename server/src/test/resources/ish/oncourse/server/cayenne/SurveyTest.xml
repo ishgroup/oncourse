@@ -24,7 +24,7 @@
           fieldConfigurationSchemaId="1" feeHelpClass="0" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
 
-  <Module id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1" createdOn="2021-12-21 12:00:10.0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" type="1" isOffered="1" nationalCode="TEST1" title="Test module 1" createdOn="2021-12-21 12:00:10.0"
           modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Module_Course id="1" courseId="1" moduleId="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>

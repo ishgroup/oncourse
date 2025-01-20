@@ -6,13 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from "@api/model";
-import Edit from "@mui/icons-material/Edit";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { format } from "date-fns";
-import Decimal from "decimal.js-light";
+import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
+import Edit from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import Decimal from 'decimal.js-light';
 import {
   appendTimezone,
   D_MMM,
@@ -22,40 +22,41 @@ import {
   formatCurrency,
   makeAppStyles,
   StringArgFunction
-} from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import EntityService from "../../../../common/services/EntityService";
-import { getCustomColumnsMap } from "../../../../common/utils/common";
-import { getLabelWithCount } from "../../../../common/utils/strings";
-import history from "../../../../constants/History";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from "../../../../model/entities/CourseClass";
-import { State } from "../../../../reducers/state";
-import { getRoundingByType } from "../../discounts/utils";
-import { getCurrentTax } from "../../taxes/utils";
-import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from "../actions";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../constants";
-import { getClassCostTypes } from "../utils";
-import CourseClassAssessmentsTab from "./assessments/CourseClassAssessmentsTab";
-import CourseClassAttendanceTab from "./attendance/CourseClassAttendanceTab";
-import CourseClassBudgetTab from "./budget/CourseClassBudgetTab";
-import { discountsSort, excludeOnEnrolPaymentPlan } from "./budget/utils";
-import CourseClassDetTab from "./det/CourseClassDetTab";
-import CourseClassDocumentsTab from "./documents/CourseClassDocumentsTab";
-import CourseClassEnrolmentsTab from "./enrolments/CourseClassEnrolmentsTab";
-import CourseClassGeneralTab from "./general/CourseClassGeneralTab";
-import CourseClassOutcomesTab from "./outcomes/CourseClassOutcomesTab";
-import CourseClassTimetableTab from "./timetable/CourseClassTimetableTab";
-import CourseClassTutorsTab from "./tutors/CourseClassTutorsTab";
-import { getTutorPayInitial } from "./tutors/utils";
-import CourseClassVetTab from "./vet/CourseClassVetTab";
-import CourseClassWebTab from "./web/CourseClassWebTab";
+} from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import EntityService from '../../../../common/services/EntityService';
+import { getCustomColumnsMap } from '../../../../common/utils/common';
+import { getLabelWithCount } from '../../../../common/utils/strings';
+import history from '../../../../constants/History';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
+import { State } from '../../../../reducers/state';
+import { getRoundingByType } from '../../discounts/utils';
+import { getCurrentTax } from '../../taxes/utils';
+import { setCourseClassBudgetModalOpened, setCourseClassLatestSession } from '../actions';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../constants';
+import { getClassCostTypes } from '../utils';
+import CourseClassAssessmentsTab from './assessments/CourseClassAssessmentsTab';
+import CourseClassAttendanceTab from './attendance/CourseClassAttendanceTab';
+import CourseClassBudgetTab from './budget/CourseClassBudgetTab';
+import { discountsSort, excludeOnEnrolPaymentPlan } from './budget/utils';
+import CourseClassDetTab from './det/CourseClassDetTab';
+import CourseClassDocumentsTab from './documents/CourseClassDocumentsTab';
+import CourseClassEnrolmentsTab from './enrolments/CourseClassEnrolmentsTab';
+import CourseClassGeneralTab from './general/CourseClassGeneralTab';
+import CourseClassOutcomesTab from './outcomes/CourseClassOutcomesTab';
+import CourseClassTimetableTab from './timetable/CourseClassTimetableTab';
+import CourseClassTutorsTab from './tutors/CourseClassTutorsTab';
+import { getTutorPayInitial } from './tutors/utils';
+import CourseClassVetTab from './vet/CourseClassVetTab';
+import CourseClassWebTab from './web/CourseClassWebTab';
 
 const itemsBase: TabsListItem[] = [
   {
@@ -184,7 +185,7 @@ const FeeEditButton = ({ onClick, className }) => (
   </IconButton>
 );
 
-const useBudgetAdornmentStyles = makeAppStyles(theme => ({
+const useBudgetAdornmentStyles = makeAppStyles()(theme => ({
   root: {
     display: "grid",
     gridTemplateColumns: "1fr auto",
@@ -216,7 +217,7 @@ interface BudgetAdornmentProps {
   studentFee: ClassCostExtended;
   currencySymbol: string;
   isNew: boolean;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   expandedBudget: string[];
   expandBudgetItem: StringArgFunction;
   currentTax: Tax;
@@ -232,7 +233,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandBudgetItem,
  currentTax,
 }) => {
-  const classes = useBudgetAdornmentStyles();
+  const { classes } = useBudgetAdornmentStyles();
 
   const discounts = useMemo(() => {
     const discountItems = budget.filter(b => b.flowType === "Discount"
@@ -328,7 +329,6 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
 const CourseClassEditView: React.FC<Props> = ({
   isNew,
   isNested,
-  nestedIndex,
   values,
   dispatch,
   dirty,
@@ -554,7 +554,6 @@ const CourseClassEditView: React.FC<Props> = ({
       itemProps={{
         isNew,
         isNested,
-        nestedIndex,
         values,
         dispatch,
         dirty,

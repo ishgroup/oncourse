@@ -3,28 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import PlusIcon from "@mui/icons-material/Add";
-import FindInPage from "@mui/icons-material/FindInPage";
-import Settings from "@mui/icons-material/Settings";
-import Share from "@mui/icons-material/Share";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import PlusIcon from '@mui/icons-material/Add';
+import FindInPage from '@mui/icons-material/FindInPage';
+import Settings from '@mui/icons-material/Settings';
+import Share from '@mui/icons-material/Share';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { alpha, darken } from '@mui/material/styles';
-import Tooltip from "@mui/material/Tooltip";
-import clsx from "clsx";
-import { makeAppStyles, openInternalLink } from "ish-ui";
-import React, { useEffect, useState, useMemo } from "react";
-import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
-import ExecuteScriptModal from "../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal";
-import { FindRelatedItem } from "../../../../../model/common/ListView";
-import instantFetchErrorHandler from "../../../../api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EntityService from "../../../../services/EntityService";
-import FindRelatedMenu from "./components/FindRelatedMenu";
-import ScriptsMenu from "./components/ScriptsMenu";
-import SearchInput from "./components/SearchInput";
-import SendMessageMenu from "./components/SendMessageMenu";
-import ViewSwitcher from "./components/ViewSwitcher";
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { makeAppStyles, openInternalLink } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { APP_BAR_HEIGHT, PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../constants/Config';
+import ExecuteScriptModal from '../../../../../containers/automation/containers/scripts/components/ExecuteScriptModal';
+import { FindRelatedItem } from '../../../../../model/common/ListView';
+import instantFetchErrorHandler from '../../../../api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../services/EntityService';
+import FindRelatedMenu from './components/FindRelatedMenu';
+import ScriptsMenu from './components/ScriptsMenu';
+import SearchInput from './components/SearchInput';
+import SendMessageMenu from './components/SendMessageMenu';
+import ViewSwitcher from './components/ViewSwitcher';
 
 const SendMessageEntities = [
   "AbstractInvoice",
@@ -41,7 +41,7 @@ const SendMessageEntities = [
   "Lead"
 ];
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'buttonDisabledOpacity' | 'buttonDisabledFade'>()((theme, p, classes) => ({
   root: {
     backgroundColor:
       theme.palette.mode === "light" ? theme.palette.primary.main : darken(theme.palette.background.default, 0.4),
@@ -63,10 +63,10 @@ const useStyles = makeAppStyles(theme => ({
   },
   actionsBarButton: {
     color: "inherit",
-    "&$buttonDisabledOpacity": {
+    [`&.${classes.buttonDisabledOpacity}`]: {
       opacity: 0.5
     },
-    "&$buttonDisabledFade": {
+    [`&.${classes.buttonDisabledFade}`]: {
       color: alpha(theme.palette.primary.contrastText, 0.5)
     }
   },
@@ -145,7 +145,7 @@ const BottomAppBar = (
   const [showFindRelatedMenu, setShowFindRelatedMenu] = useState(null);
   const [execScriptsMenuOpen, setExecScriptsMenuOpen] = useState(null);
   
-  const classes = useStyles();
+  const { classes } = useStyles();
   
   useEffect(() => {
     if (rootEntity && !scripts) {
@@ -182,7 +182,7 @@ const BottomAppBar = (
           }
         });
         
-        scripts.forEach(s => {
+        scripts?.forEach(s => {
           filterGroups[s.entity]?.scripts.push(s);
         });
       }

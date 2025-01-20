@@ -9,15 +9,14 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import React from "react";
-import NotFoundBgImage from "../../../images/bg-404.png";
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import NotFoundBgImage from '../../../images/bg-404.png';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   container: {
     height: `calc(100vh - ${theme.spacing(14)})`
   },
@@ -73,4 +72,4 @@ const NotFound: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(NotFound);
+export default withStyles(NotFound, styles);

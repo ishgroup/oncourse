@@ -6,33 +6,34 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { EmailTemplate, MessageType } from "@api/model";
-import { FileCopy } from "@mui/icons-material";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import { Grid, Grow } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import { InfoPill, NumberArgFunction, usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import AvailableFrom, { mapMessageAvailableFrom } from "../../../components/AvailableFrom";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import getConfigActions from "../../../components/ImportExportConfig";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { MessageTemplateEntityItems, MessageTemplateEntityName } from "../../../constants";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import ScriptCard from "../../scripts/components/cards/CardBase";
+import { EmailTemplate, MessageType } from '@api/model';
+import { FileCopy } from '@mui/icons-material';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import { Grid, Grow } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { InfoPill, mapSelectItems, NumberArgFunction, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import AvailableFrom, { mapMessageAvailableFrom } from '../../../components/AvailableFrom';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { MessageTemplateEntityItems, MessageTemplateEntityName } from '../../../constants';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import ScriptCard from '../../scripts/components/cards/CardBase';
 
-const manualUrl = getManualLink("emailTemplates");
+const manualUrl = getManualLink("message-templates");
 const getAuditsUrl = (id: number) => `audit?search=~"EmailTemplate" and entityId == ${id}`;
 
 const messageTypes = Object.keys(MessageType).map(mapSelectItems).filter(t => t.value !== "Post");
@@ -40,7 +41,7 @@ const messageTypes = Object.keys(MessageType).map(mapSelectItems).filter(t => t.
 interface Props extends InjectedFormProps {
   isNew: boolean;
   values: EmailTemplate;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (template: EmailTemplate) => void;
   onUpdateInternal: (template: EmailTemplate) => void;
   onUpdate: (template: EmailTemplate) => void;
@@ -234,6 +235,27 @@ const EmailTemplatesForm: React.FC<Props> = props => {
           )}
         >
           <Grid container>
+            <Grid item xs={12} sm={9}>
+              <FormField
+                type="multilineText"
+                name="shortDescription"
+                disabled={isInternal}
+                className="overflow-hidden mb-1"
+                placeholder="Short description"
+              />
+              <Typography variant="caption" fontSize="13px">
+                <FormField
+                  type="multilineText"
+                  name="description"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Description"
+                  fieldClasses={{
+                    text: "fw300 fsInherit"
+                  }}
+                />
+              </Typography>
+            </Grid>
             <Grid item xs={9} className="pr-3">
               <Grid container columnSpacing={3} rowSpacing={2} className="mb-3">
                 <Grid item xs={6}>
@@ -321,14 +343,6 @@ const EmailTemplatesForm: React.FC<Props> = props => {
                 disabled={!isNew}
                 className="mt-2 mb-2"
                 required
-              />
-
-              <FormField
-                type="text"
-                label="Description"
-                name="description"
-                disabled={isInternal}
-                                multiline
               />
             </Grid>
             <Grid item xs={3}>

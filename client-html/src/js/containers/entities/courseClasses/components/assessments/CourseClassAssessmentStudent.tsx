@@ -6,16 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { CourseClassTutor, GradingItem, GradingType } from "@api/model";
-import { Grid, } from "@mui/material";
-import clsx from "clsx";
-import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from "ish-ui";
-import React, { useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import AssessmentSubmissionIconButton from "./AssessmentSubmissionIconButton";
-import { StudentForRender } from "./CourseClassAssessmentItems";
-import GradeContent from "./GradeContent";
-import { useGradeErrors } from "./utils/hooks";
+import { CourseClassTutor, GradingItem, GradingType } from '@api/model';
+import { Grid, } from '@mui/material';
+import clsx from 'clsx';
+import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AssessmentSubmissionIconButton from './AssessmentSubmissionIconButton';
+import { StudentForRender } from './CourseClassAssessmentItems';
+import GradeContent from './GradeContent';
+import { useGradeErrors } from './utils/hooks';
 
 interface Props {
   elem: StudentForRender;
@@ -29,7 +30,7 @@ interface Props {
   index: number;
   tutors: CourseClassTutor[];
   triggerAsyncChange: (newValue: any, field: string, index: number) => void;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 const CourseClassAssessmentStudent: React.FC<Props> = (

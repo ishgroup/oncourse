@@ -66,6 +66,9 @@
         "products",
         "quotes",
         "sales",
+        "productSales",
+        "voucherSales",
+        "membershipSales",
         "voucherTypes",
         "waitingLists"
       ]
@@ -146,16 +149,18 @@
     {
       "title": "Education",
       "key": "education",
-      "description": "Whether you offer a small number of courses or thousands, onCourse is scalable to organisations of every size, so we grow with you. With powerful search capability, tagging, auditable notes, document management and full access controls, recording information and categorising your courses is as simple as a click of your mouse. onCourse supports timetabled and self-paced courses of every kind with an intuitive user interface that’s powerful and flexible.<ul><li>Courses</li><li>Classes</li><li>Assessments</li><li>Enrolments</li><li>Traineeships</li><li>Outcomes</li><li>Document management</li><li>Assessment Submissions</li><ul>",
+      "description": "Whether you offer a small number of courses or thousands, onCourse is scalable to organisations of every size, so we grow with you. With powerful search capability, tagging, auditable notes, document management and full access controls, recording information and categorising your courses is as simple as a click of your mouse. onCourse supports timetabled and self-paced courses of every kind with an intuitive user interface that’s powerful and flexible.<ul><li>Faculties</li><li>Courses</li><li>Classes</li><li>Subjects</li><li>Assessments</li><li>Enrolments</li><li>Traineeships</li><li>Outcomes</li><li>Document management</li><li>Assessment Submissions</li><ul>",
       "features": [
         "assessmentSubmissions",
         "assessmentTasks",
         "classes",
         "courses",
+        "faculties",
         "enrolments",
         "messages",
         "outcomes",
         "priorLearnings",
+        "subjects",
         "traineeshipCourses",
         "traineeships"
       ]
@@ -360,7 +365,7 @@
     {
       "title": "Documentation",
       "key": "documentation",
-      "link": "https://www.ish.com.au/au/support",
+      "link": "https://www.ish.com.au/support",
       "description": "Need to find out how something in onCourse works? Our onCourse documentation manual almost certainly has you covered."
     },
     {
@@ -386,6 +391,12 @@
       "key": "exportTemplates",
       "link": "/automation/export-templates",
       "description": "Create and manage export templates allowing you to export your onCourse data into a format readable in other applications. Available formats include CSV, XML, JSON, PDF and more."
+    },
+    {
+      "title": "Faculties",
+      "key": "faculties",
+      "link": "/faculty",
+      "description": "Faculty records can be used to group Courses by 'Faculty' on your onCourse website"
     },
     {
       "title": "Finalise period",
@@ -526,10 +537,28 @@
       "description": "A list of the rooms within every site created in your system."
     },
     {
-      "title": "Sold Items",
+      "title": "Sales",
       "key": "sales",
       "link": "/sale",
       "description": "A list of all the product, voucher and membership sales in your system."
+    },
+    {
+      "title": "Sold Products",
+      "key": "productSales",
+      "link": "/sale?filter=@Product,@Active",
+      "description": "A list of all product sales in your system."
+    },
+    {
+      "title": "Sold Vouchers",
+      "key": "voucherSales",
+      "link": "/sale?filter=@Voucher,@Active",
+      "description": "A list of all voucher sales in your system."
+    },
+    {
+      "title": "Sold Memberships",
+      "key": "membershipSales",
+      "link": "/sale?filter=@Membership,@Active",
+      "description": "A list of all membership sales in your system."
     },
     {
       "title": "Scripts",
@@ -572,6 +601,12 @@
       "key": "students",
       "link": "/contact?filter=@Students",
       "description": "A list of your student contacts. Specifically, students are contacts who have at least one enrolment in your system."
+    },
+    {
+      "title": "Subjects",
+      "key": "subjects",
+      "link": "/preferences/subjects",
+      "description": "Create subjects and apply them to courses to group them together on your website."
     },
     {
       "title": "Tags",

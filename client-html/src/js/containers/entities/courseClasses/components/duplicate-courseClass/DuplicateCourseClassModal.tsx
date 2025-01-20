@@ -3,38 +3,38 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassDuplicate } from "@api/model";
-import { Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Tooltip from "@mui/material/Tooltip";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
-import { BooleanArgFunction, NoArgFunction, StyledCheckbox } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, DecoratedComponentClass, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
-import { State } from "../../../../../reducers/state";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import CourseItemRenderer from "../../../courses/components/CourseItemRenderer";
-import { courseFilterCondition } from "../../../courses/utils";
+import { CourseClassDuplicate } from '@api/model';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from 'date-fns';
+import { BooleanArgFunction, NoArgFunction, StyledCheckbox } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, DecoratedComponentClass, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { TimetableMonth, TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import { getAllMonthsWithSessions } from '../../../../timetable/utils';
+import CourseItemRenderer from '../../../courses/components/CourseItemRenderer';
+import { courseFilterCondition } from '../../../courses/utils';
 import {
   clearDuplicateCourseClassesSessions,
   duplicateCourseClass,
   getDuplicateCourseClassesSessions
-} from "../../actions";
-import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
-import modalStyles from "./modalStyles";
+} from '../../actions';
+import DuplicateCourseClassTimetable from './DuplicateCourseClassTimetable';
+import modalStyles from './modalStyles';
 
 export const DUPLICATE_COURSE_CLASS_FORM: string = "DuplicateCourseClassForm";
 
@@ -513,5 +513,5 @@ export default reduxForm({
   form: DUPLICATE_COURSE_CLASS_FORM,
   initialValues
 })(
-  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(modalStyles)(DuplicateCourseClassModal))
+  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(DuplicateCourseClassModal, modalStyles))
 ) as DecoratedComponentClass<CourseClassDuplicate & { toDate: string }, Props>;

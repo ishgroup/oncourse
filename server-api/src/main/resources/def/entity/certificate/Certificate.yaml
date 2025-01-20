@@ -58,3 +58,5 @@ properties:
   modifiedOn:
     type: string
     format: date-time
+  portalLink:
+    type: string

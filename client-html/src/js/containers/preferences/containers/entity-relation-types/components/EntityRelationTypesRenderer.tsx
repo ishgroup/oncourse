@@ -7,10 +7,10 @@ import { EntityRelationCartAction, EntityRelationType } from "@api/model";
 import { FormControlLabel, Grid } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import { mapSelectItems, sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import FormField from "../../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../../common/components/layout/Subtitle";
-import { mapSelectItems, sortDefaultSelectItems } from "../../../../../common/utils/common";
 import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
 
 const CartActions = Object.keys(EntityRelationCartAction)

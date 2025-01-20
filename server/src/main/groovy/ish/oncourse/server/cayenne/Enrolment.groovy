@@ -134,8 +134,12 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		def courseClassRelations =  checkouts
 				.findAll {it instanceof CheckoutCourseClassRelation && it.relatedObjectId == courseClass.id}
 
+		def applicationRelations =  checkouts
+				.findAll {it instanceof CheckoutApplicationRelation && it.relatedObjectId == courseClass.id}
+
 		context.deleteObjects(waitingCoursesRelations.collect {it.checkout}.unique())
 		context.deleteObjects(courseClassRelations.collect {it.checkout}.unique())
+		context.deleteObjects(applicationRelations.collect {it.checkout}.unique())
 		context.commitChanges()
 	}
 

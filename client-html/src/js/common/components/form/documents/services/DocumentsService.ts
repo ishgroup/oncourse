@@ -1,14 +1,10 @@
-import { Diff, Document, DocumentApi } from "@api/model";
+import { Document, DocumentApi } from "@api/model";
 import { DefaultHttpService } from "../../../../services/HttpService";
 
 class DocumentsService {
   readonly service = new DefaultHttpService();
 
   readonly documentApi = new DocumentApi(this.service);
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.documentApi.bulkChange(diff);
-  }
 
   public createDocument(
     name: string,

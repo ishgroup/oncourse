@@ -74,7 +74,7 @@
                 modifiedOn="2021-12-21 12:00:10.0"/>
 
 
-  <Module id="101" type="1" isOffered="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="101" type="1" isOffered="1" createdOn="2021-12-21 12:00:10.0" modifiedOn="2021-12-21 12:00:10.0"/>
 
   <Module_Course id="101" courseId="1" moduleId="101" createdOn="2021-12-21 12:00:10.0"
                  modifiedOn="2021-12-21 12:00:10.0"/>

@@ -3,18 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import { AppTheme, normalizeNumberToZero, preventDecimalEnter } from "ish-ui";
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { validateNonNegative } from "../../../../../common/utils/validation";
-import { CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { AppTheme, normalizeNumberToZero, preventDecimalEnter } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import { validateNonNegative } from '../../../../../common/utils/validation';
+import { CourseClassExtended, CourseClassRoom } from '../../../../../model/entities/CourseClass';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   root: {
     background: theme.table.contrastRow.light,
     borderRadius: theme.shape.borderRadius,
@@ -26,10 +27,10 @@ const styles = (theme: AppTheme) => createStyles({
 interface Props {
   values: CourseClassExtended;
   classRooms: CourseClassRoom[];
-  classes: any;
+  classes?: any;
   enrolmentsCount: number;
   form: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 const BudgetEnrolmentsFields = React.memo<Props>(({
@@ -109,4 +110,4 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
   );
 });
 
-export default withStyles(styles)(BudgetEnrolmentsFields);
+export default withStyles(BudgetEnrolmentsFields, styles);

@@ -23,7 +23,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put1",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -59,7 +58,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put1",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -86,7 +84,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put1",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -116,7 +113,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put2",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -160,7 +156,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put2",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -190,7 +185,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put2",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -228,7 +222,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put3",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -272,7 +265,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put3",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -313,7 +305,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put4",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -352,7 +343,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put4",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -389,7 +379,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put5",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -428,7 +417,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -465,7 +453,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put6",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -504,7 +491,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"other",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -541,7 +527,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put7",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -580,7 +565,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put7",
         "description":"some description",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -617,7 +601,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put8",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -656,7 +639,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put8",
         "description":"some description",
         "body":"",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -693,7 +675,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put11",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -732,7 +713,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put11",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -769,7 +749,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put3",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -808,7 +787,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put3",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -856,7 +834,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"ish.onCourse.certificate",
         "description":"UPD onCourse includes AQF recommended templates for full Qualification Certificates, Statements of Attainment and transcripts. Certificates can only be generated from units that are recorded as part of onCourse enrolments.This report prints in Portrait format.",
         "body":"UPD",
-        "subreport":true,
         "backgroundId":null,
         "sortOn":"",
         "preview":null,
@@ -888,7 +865,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put3",
         "description":"some description UPD",
         "body":"someBody UPD",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"name",
         "preview":null,
@@ -919,7 +895,6 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         "keyCode":"put1",
         "description":"some description",
         "body":"someBody",
-        "subreport":false,
         "backgroundId":null,
         "sortOn":"amount",
         "preview":null,
@@ -948,7 +923,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         * def reportToUpdate =
         """
         {
-            "config":'  name: \"Updated Training Plan Report\"\n  short:\n  description: \"Updated description\"\n  category:\n  sortOn: \"\"\n  visible: false'
+            "config":'  name: \"Updated Training Plan Report\"\n  short:\n  description: \"Updated description\"\n  category:\n  sortOn: \"\"\n  isVisible: false'
         }
         """
 
@@ -960,7 +935,12 @@ Feature: Main feature for all PUT requests with path 'list/entity/report'
         Given path ishPath + '/config/' + id
         When method GET
         Then status 200
-        And match $ contains 'shortDescription: Updated description\ndescription: Updated description\nname: Updated Training Plan Report\nentityClass: AccountTransaction\nisVisible: false\nsortOn: amount'
+        And match $ contains 'shortDescription: Updated description'
+        And match $ contains 'description: Updated description'
+        And match $ contains 'name: Updated Training Plan Report'
+        And match $ contains 'entityClass: AccountTransaction'
+        And match $ contains 'sortOn: amount'
+        And match $ contains 'isVisible: false'
 
 #       <--->  Scenario have been finished. Now remove created object from DB:
         Given path ishPath + '/' + id

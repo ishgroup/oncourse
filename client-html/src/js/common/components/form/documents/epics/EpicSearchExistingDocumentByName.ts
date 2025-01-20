@@ -5,11 +5,12 @@
 
 import { DataResponse } from "@api/model";
 import { Epic } from "redux-observable";
+import { DocumentSearchItemType } from "../../../../../model/entities/Document";
 import * as EpicUtils from "../../../../epics/EpicUtils";
 import EntityService from "../../../../services/EntityService";
-import { SEARCH_DOCUMENT_BY_NAME, SET_SEARCH_DOCUMENTS } from "../actions";
+import { SEARCH_DOCUMENT_BY_NAME, setSearchDocuments } from "../actions";
 
-const defaultDocumentMap = ({id, values}): DocumentSearchItem => ({
+const defaultDocumentMap = ({ id, values }): DocumentSearchItemType => ({
   id: Number(id),
   link: values[0],
   name: values[1],
@@ -20,33 +21,19 @@ const defaultDocumentMap = ({id, values}): DocumentSearchItem => ({
   attachedRecordsCount: JSON.parse(values[6])
 });
 
-export interface DocumentSearchItem {
-  id: number;
-  link: string;
-  name: string;
-  added: string;
-  byteSize: string;
-  fileName: string;
-  isShared: boolean;
-  attachedRecordsCount: number;
-}
-
 const request: EpicUtils.Request<any, { documentName: string; editingFormName: string }> = {
   type: SEARCH_DOCUMENT_BY_NAME,
   hideLoadIndicator: true,
-  getData: ({documentName}) => EntityService.getPlainRecords(
+  getData: ({ documentName }) => EntityService.getPlainRecords(
     "Document",
     "link,name,added,currentVersion.byteSize,currentVersion.fileName,isShared,attachedRecordsCount",
     `~ "${documentName}" and isRemoved = false`
   ),
-  processData: (plainRecords: DataResponse, state: any, {editingFormName}) => {
-    const searchDocuments: DocumentSearchItem[] = plainRecords.rows.map(defaultDocumentMap)
+  processData: (plainRecords: DataResponse) => {
+    const searchDocuments: DocumentSearchItemType[] = plainRecords.rows.map(defaultDocumentMap)
       .filter(r => r.isShared || r.attachedRecordsCount === 0);
     return [
-      {
-        type: SET_SEARCH_DOCUMENTS,
-        payload: {searchDocuments, editingFormName}
-      }
+      setSearchDocuments(searchDocuments)
     ];
   }
 };

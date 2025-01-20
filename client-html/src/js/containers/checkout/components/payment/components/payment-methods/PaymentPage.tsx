@@ -5,24 +5,24 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { BooleanArgFunction, formatCurrency, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { Dispatch } from "react";
-import { connect } from "react-redux";
-import { InjectedFormProps, isInvalid, reduxForm } from "redux-form";
-import { CheckoutPayment, CheckoutSummary } from "../../../../../../model/checkout";
-import { State } from "../../../../../../reducers/state";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { BooleanArgFunction, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { Dispatch } from 'react';
+import { connect } from 'react-redux';
+import { InjectedFormProps, isInvalid, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { CheckoutPayment, CheckoutSummary } from '../../../../../../model/checkout';
+import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutProcessPayment,
   checkoutSetPaymentSuccess
-} from "../../../../actions/checkoutPayment";
-import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
-import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import styles from "./styles";
+} from '../../../../actions/checkoutPayment';
+import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
+import PaymentMessageRenderer from '../PaymentMessageRenderer';
+import styles from './styles';
 
 const CHECKOUT_CASH_PAYMENT_FORM = "checkoutCashPaymentForm";
 
@@ -197,4 +197,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default reduxForm<any, CashPaymentPageProps>({
   form: CHECKOUT_CASH_PAYMENT_FORM,
   initialValues
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PaymentForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(PaymentForm, styles)));

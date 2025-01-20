@@ -15,7 +15,7 @@ import com.google.inject.Inject
 import ish.oncourse.server.CayenneService
 import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.v1.function.EntityRelationFunctions
-import ish.oncourse.server.api.v1.model.DiffDTO
+import ish.oncourse.server.api.v1.model.CheckoutMembershipProductDTO
 import ish.oncourse.server.api.v1.model.MembershipProductDTO
 import ish.oncourse.server.api.v1.service.MembershipProductApi
 import ish.oncourse.server.cayenne.MembershipProduct
@@ -29,10 +29,6 @@ class MembershipProductApiImpl implements MembershipProductApi {
     @Inject
     private MembershipProductApiService service
 
-    @Override
-    void bulkChange(DiffDTO diff) {
-        service.bulkChange(diff)
-    }
 
     @Override
     void create(MembershipProductDTO membershipProductDTO) {
@@ -43,6 +39,11 @@ class MembershipProductApiImpl implements MembershipProductApi {
     @Override
     MembershipProductDTO get(Long id) {
         service.get(id)
+    }
+
+    @Override
+    CheckoutMembershipProductDTO getCheckoutModel(Long id, Long contactId) {
+        service.getCheckoutModel(id, contactId)
     }
 
     @Override

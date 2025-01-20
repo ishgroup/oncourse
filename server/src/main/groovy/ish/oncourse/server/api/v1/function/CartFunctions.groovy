@@ -53,7 +53,7 @@ class CartFunctions {
             dto.contactId = contact.id
             dto.waitingCoursesIds = contactRelations.findAll {it instanceof CheckoutWaitingCourseRelation}
                                                     .collect {toRestCartObjectData(it)}
-            dto.classIds = contactRelations.findAll {it instanceof CheckoutCourseClassRelation}
+            dto.classIds = contactRelations.findAll {it instanceof CheckoutCourseClassRelation || it instanceof CheckoutApplicationRelation}
                     .collect {toRestCartObjectData(it)}
             dto.productIds = contactRelations.findAll {it instanceof CheckoutProductRelation}
                     .collect {toRestCartObjectData(it)}
