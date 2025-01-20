@@ -16,7 +16,6 @@ import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.entity.services.TagService;
 import ish.oncourse.server.cayenne.Preference;
-import ish.oncourse.server.display.DisplayService;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.services.ISchedulerService;
@@ -60,25 +59,13 @@ public class PreferenceController extends CommonPreferenceController {
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
-								DisplayService displayService, TagService tagService) {
+								TagService tagService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		this.pluginsPrefsService = pluginsPrefsService;
 		this.tagService = tagService;
 		sharedController = this;
-
-		initDisplayPreferencesFromConfigFile(displayService);
-	}
-
-	private void initDisplayPreferencesFromConfigFile(DisplayService displayService) {
-		if(displayService.getExtendedSearchTypes() != null) {
-			boolean extendedTypesAlreadyWereAllowed = getExtendedSearchTypesAllowed();
-			setExtendedTypesAllowed(displayService.getExtendedSearchTypes());
-			if(!extendedTypesAlreadyWereAllowed && displayService.getExtendedSearchTypes()){
-				tagService.updateSubjectsAsEntities(cayenneService.getNewContext());
-			}
-		}
 	}
 
 

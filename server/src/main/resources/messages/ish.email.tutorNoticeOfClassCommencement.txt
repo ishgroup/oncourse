@@ -1,4 +1,5 @@
 Dear ${to.firstName},
-Just a reminder that your class for ${courseClassTutor.courseClass.course.name} starts on ${courseClassTutor.courseClass.startDateTime.format( 'h:mm a EEEE d MMMM yyyy zzzz', courseClassTutor.courseClass.timeZone)} at ${courseClassTutor.courseClass.displayableLocation}
+Just a reminder that your class for ${courseClassTutor.courseClass.course.name} starts on ${courseClassTutor.courseClass.startDateTime?.format( 'h:mm a EEEE d MMMM yyyy zzzz', courseClassTutor.courseClass.timeZone) ?: "?"} at ${courseClassTutor.courseClass.room?.virtualRoomUrl ?: courseClassTutor.courseClass.displayableLocation}
 You are currently expecting ${courseClassTutor.courseClass.successAndQueuedEnrolments.size()} students. This number may change if there are further enrolments.
-The class roll and other class information can be accessed at https://skillsoncourse.com.au/portal/login
+The class roll and other class information can be accessed at ${to.getPortalLink(courseClassTutor.courseClass)}
+You can download documents for this class from ${to.getPortalLink("/resources")}

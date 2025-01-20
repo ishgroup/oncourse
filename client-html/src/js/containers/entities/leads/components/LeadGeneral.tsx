@@ -6,40 +6,41 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Lead, LeadStatus, Sale, Tag, User } from "@api/model";
-import Chip from "@mui/material/Chip";
-import Grid from "@mui/material/Grid";
-import clsx from "clsx";
-import { decimalMul, decimalPlus, makeAppStyles, mapSelectItems, normalizeNumberToZero } from "ish-ui";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { Lead, LeadStatus, Sale, Tag, User } from '@api/model';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import clsx from 'clsx';
+import { decimalMul, decimalPlus, makeAppStyles, mapSelectItems, normalizeNumberToZero } from 'ish-ui';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
+} from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import EntityService from "../../../../common/services/EntityService";
-import { getCustomColumnsMap } from "../../../../common/utils/common";
-import history from "../../../../constants/History";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import { RELATION_COURSE_COLUMNS_DEFAULT } from "../../common/entityConstants";
-import { formatRelatedSalables, mapRelatedSalables } from "../../common/utils";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../contacts/utils";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { getProductAqlType } from "../../sales/utils";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import EntityService from '../../../../common/services/EntityService';
+import { getCustomColumnsMap } from '../../../../common/utils/common';
+import history from '../../../../constants/History';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import RelationsCommon from '../../common/components/RelationsCommon';
+import { RELATION_COURSE_COLUMNS_DEFAULT } from '../../common/entityConstants';
+import { formatRelatedSalables, mapRelatedSalables } from '../../common/utils';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { getProductAqlType } from '../../sales/utils';
 
 const statusItems = Object.keys(LeadStatus).map(mapSelectItems);
 
-const useStyles = makeAppStyles(() => ({
+const useStyles = makeAppStyles()(() => ({
   chipButton: {
     fontSize: "12px",
     height: "20px",
@@ -51,7 +52,7 @@ interface Props extends EditViewProps<Lead> {
   users?: User[];
 }
 
-const asyncUpdateEstimatedValue = async (dispatch: Dispatch, form: string, relatedSellables: Sale[], places: number) => {
+const asyncUpdateEstimatedValue = async (dispatch: Dispatch<IAction>, form: string, relatedSellables: Sale[], places: number) => {
   let sum = 0;
   await relatedSellables.map(sel => () => {
       if (sel.type === 'Course') {
@@ -106,7 +107,7 @@ const LeadGeneral = (props: Props) => {
     syncErrors
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onContactChange = value => {
     dispatch(change(form, "contactName", getContactFullName(value)));

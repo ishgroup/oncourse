@@ -6,25 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CloseIcon from "@mui/icons-material/Close";
-import { Box, ListItem } from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
+import CloseIcon from '@mui/icons-material/Close';
+import { Box, ListItem, Typography } from '@mui/material';
+import ListItemText from '@mui/material/ListItemText';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from '@mui/styles';
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
-import { AppTheme, D_MMM_YYYY } from "ish-ui";
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { READ_NEWS } from "../../../constants/Config";
-import { State } from "../../../reducers/state";
-import { setUserPreference } from "../../actions";
-import { setReadNewsLocal } from "../list-view/actions";
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
+import { AppTheme, D_MMM_YYYY } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { READ_NEWS } from '../../../constants/Config';
+import { State } from '../../../reducers/state';
+import { setUserPreference } from '../../actions';
+import { setReadNewsLocal } from '../list-view/actions';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   postWrapper: {
     background: theme.palette.background.paper,
     position: "relative",
@@ -221,4 +220,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setReadNewsLocal: (newsId: string) => dispatch(setReadNewsLocal(newsId))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewsRender));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(NewsRender, styles));

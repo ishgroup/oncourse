@@ -3,36 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Document } from "@api/model";
-import { OpenWith } from "@mui/icons-material";
-import Delete from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { BooleanArgFunction, NoArgFunction } from "ish-ui";
-import React, { useCallback, useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { clearEditingDocument, searchDocumentByHash } from "../../../common/components/form/documents/actions";
-import DocumentAddDialog from "../../../common/components/form/documents/components/dialogs/DocumentAddDialog";
+import { Document } from '@api/model';
+import { OpenWith } from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import { BooleanArgFunction, NoArgFunction } from 'ish-ui';
+import React, { useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { clearEditingDocument, searchDocumentByHash } from '../../../common/components/form/documents/actions';
+import DocumentAddDialog from '../../../common/components/form/documents/components/dialogs/DocumentAddDialog';
 import {
   getFilters,
   setFilterGroups,
   setListCreatingNew,
   setListEditRecord,
   setListSelection
-} from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getEntityTags, getListTags } from "../../tags/actions";
-import BinCogwheel from "./components/BinCogwheel";
-import DocumentEditView from "./components/DocumentEditView";
+} from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getEntityTags, getListTags } from '../../tags/actions';
+import BinCogwheel from './components/BinCogwheel';
+import DocumentEditView from './components/DocumentEditView';
 
-const styles = () => createStyles({
+const styles = () => ({
   linkBtnWrapper: {
     height: "19px"
   },
@@ -136,7 +135,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   }
 ];
 
-const manualLink = getManualLink("documentManagement");
+const manualLink = getManualLink("document-management-documents-in-oncourse");
 
 const openDocumentURL = (e: React.MouseEvent<any>, url: string) => {
   e.stopPropagation();
@@ -301,4 +300,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearEditingDocument: () => dispatch(clearEditingDocument())
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Documents));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(Documents, styles));

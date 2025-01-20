@@ -77,26 +77,3 @@ put:
     mask: edit
     keyCode: WAITING_LIST
     errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator
-
-patch:
-  operationId: bulkChange
-  tags:
-    - WaitingList
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: waitingLists for update
-  responses:
-    '200':
-      description: Success response
-    '400':
-      description: Bad request error
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: edit
-    keyCode: WAITING_LIST
-    errorMessage: Sorry, you have no permissions to edit waitingList. Please contact your administrator.

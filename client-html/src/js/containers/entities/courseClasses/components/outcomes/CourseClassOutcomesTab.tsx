@@ -70,7 +70,7 @@ const CourseClassOutcomesTab: React.FC<EditViewProps<CourseClassExtended>> = pro
   ]);
 
   return (
-    <div className="pl-3 pr-3 saveButtonTableOffset">
+    <div className="pl-3 pr-3 mt-1 saveButtonTableOffset">
       <NestedEntity
         entityName="Outcomes"
         goToLink="/outcome"

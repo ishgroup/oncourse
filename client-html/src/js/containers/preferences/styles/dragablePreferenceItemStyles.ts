@@ -6,10 +6,9 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { createStyles } from "@mui/styles";
-import { AppTheme } from "ish-ui";
+import { AppTheme } from 'ish-ui';
 
-export const styles = (theme: AppTheme) => createStyles({
+export const styles = (theme: AppTheme) => ({
   dragIcon: {
     fill: "#e0e0e0"
   },

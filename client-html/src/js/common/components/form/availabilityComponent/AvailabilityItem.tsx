@@ -3,19 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { normalizeNumberToPositive, StyledCheckbox, validateMinMaxDate, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { repeatEndListItems, repeatListItems } from "../../../../containers/preferences/containers/holidays/ListItems";
-import FormField from "../formFields/FormField";
-import AvailabilityNextHint from "./AvailabilityNextHint";
+import { Holiday, RepeatEndEnum, RepeatEnum } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { normalizeNumberToPositive, StyledCheckbox, validateMinMaxDate, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { repeatEndListItems, repeatListItems } from '../../../../containers/preferences/containers/holidays/ListItems';
+import { IAction } from '../../../actions/IshAction';
+import FormField from '../formFields/FormField';
+import AvailabilityNextHint from './AvailabilityNextHint';
 
 interface Props {
   fieldName: string;
@@ -27,7 +28,7 @@ interface Props {
   item: string;
   field: Holiday;
   onDelete: any;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   timezone?: string;
 }
 

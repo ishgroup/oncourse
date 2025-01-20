@@ -38,6 +38,6 @@ class TagConverter implements Converter<AqlParser.TagPredicateContext> {
             tagValue = tagValue.substring(1, tagValue.length()-1);
         }
 
-        return new LazyTagNode(tagValue, tagContext);
+        return new LazyPositiveTagNode(tagValue);
     }
 }

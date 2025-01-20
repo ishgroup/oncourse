@@ -3,34 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CustomFieldType, ProductType } from "@api/model";
-import BookmarkBorder from "@mui/icons-material/BookmarkBorder";
-import BookmarkTwoTone from "@mui/icons-material/BookmarkTwoTone";
-import Clear from "@mui/icons-material/Clear";
-import HelpOutline from "@mui/icons-material/HelpOutline";
-import { green } from "@mui/material/colors";
-import IconButton from "@mui/material/IconButton";
-import { darken } from "@mui/material/styles";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { AppTheme, getAllMenuTags, StringArgFunction } from "ish-ui";
-import debounce from "lodash.debounce";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FILTER_TAGS_REGEX } from "../../../../../../constants/Config";
-import { getSaleEntityName } from "../../../../../../containers/entities/sales/utils";
-import { QueryFieldSuggestion } from "../../../../../../model/common/Fields";
-import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from "../../../../../../model/common/ListView";
-import { FormMenuTag } from "../../../../../../model/tags";
-import { State } from "../../../../../../reducers/state";
-import EditInPlaceQuerySelect from "../../../../form/formFields/EditInPlaceQuerySelect";
-import { setListSavingFilter, setListUserAQLSearch } from "../../../actions";
-import { setIndeterminate } from "../../../utils/listFiltersUtils";
-import QuerySaveMenu from "./QuerySaveMenu";
+import { CustomFieldType, ProductType } from '@api/model';
+import BookmarkBorder from '@mui/icons-material/BookmarkBorder';
+import BookmarkTwoTone from '@mui/icons-material/BookmarkTwoTone';
+import Clear from '@mui/icons-material/Clear';
+import HelpOutline from '@mui/icons-material/HelpOutline';
+import { green } from '@mui/material/colors';
+import IconButton from '@mui/material/IconButton';
+import { darken } from '@mui/material/styles';
+import clsx from 'clsx';
+import { AppTheme, getAllMenuTags, StringArgFunction } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { FILTER_TAGS_REGEX } from '../../../../../../constants/Config';
+import { getSaleEntityName } from '../../../../../../containers/entities/sales/utils';
+import { QueryFieldSuggestion } from '../../../../../../model/common/Fields';
+import { FilterGroup, ListAqlMenuItemsRenderer, SavingFilterState } from '../../../../../../model/common/ListView';
+import { FormMenuTag } from '../../../../../../model/tags';
+import { State } from '../../../../../../reducers/state';
+import EditInPlaceQuerySelect from '../../../../form/formFields/EditInPlaceQuerySelect';
+import { setListSavingFilter, setListUserAQLSearch } from '../../../actions';
+import { setIndeterminate } from '../../../utils/listFiltersUtils';
+import QuerySaveMenu from './QuerySaveMenu';
 
-export const styles = (theme: AppTheme) => createStyles({
+export const styles = (theme: AppTheme) => ({
     container: {
       transition: `flex ${theme.transitions.duration.standard}ms ${theme.transitions.easing.sharp}`,
       willChange: "flex",
@@ -522,7 +521,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
   }
 }
 
-export const SearchInputBase = withStyles(styles)(SearchInput);
+export const SearchInputBase = withStyles(SearchInput, styles);
 
 const mapStateToProps = (state: State, ownProps: Props) => ({
   savingFilter: state.list.savingFilter,
@@ -531,7 +530,7 @@ const mapStateToProps = (state: State, ownProps: Props) => ({
   searchServerError: state.list.searchError,
   tags: state.list.menuTags,
   customFieldTypes: ownProps.rootEntity === "ProductItem"
-    ? Object.keys(ProductType).reduce((p, c) => [...p, ...state.customFieldTypes.types[getSaleEntityName(c as any)] || []], [])
+    ? Object.keys(ProductType).reduce((p, c) => [...p, ...(state.customFieldTypes.types[getSaleEntityName(c as any)] || [])], [])
     : state.customFieldTypes.types[ownProps.rootEntity]
 });
 

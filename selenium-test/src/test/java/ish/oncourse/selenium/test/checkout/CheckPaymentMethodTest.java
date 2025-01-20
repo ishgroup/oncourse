@@ -51,8 +51,10 @@ public class CheckPaymentMethodTest extends AbstractSeleniumTest {
 
     @AfterAll
     public void tearDown() {
-        emailAuthenticationService.logout();
-        super.tearDown();
+        if (emailAuthenticationService != null) {
+            emailAuthenticationService.logout();
+            super.tearDown();
+        }
     }
 
     @Test
