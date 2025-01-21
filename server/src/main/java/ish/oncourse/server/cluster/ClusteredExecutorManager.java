@@ -32,7 +32,8 @@ public class ClusteredExecutorManager {
 
     private static final int MAX_THREADS = 10;
 
-    private static final ExecutorListener EMPTY_LISTENER = () -> {};
+    private static final ExecutorListener EMPTY_LISTENER = (taskResultType) -> {
+    };
 
     @Inject
     CayenneService cayenneService;
@@ -59,7 +60,7 @@ public class ClusteredExecutorManager {
 
     public TaskResult getResult(String key) {
         // save DB lookup for the local task
-        if(isLocal(key)) {
+        if (isLocal(key)) {
             return localTasks.get(key).getTaskResult();
         }
 
@@ -74,33 +75,20 @@ public class ClusteredExecutorManager {
         TaskResultType taskStatus;
         ExecutorManagerTask localTask = localTasks.get(key);
 
-        if(localTask == null){
+        if (localTask == null) {
             taskStatus = ObjectSelect.columnQuery(ExecutorManagerTask.class, ExecutorManagerTask.STATUS)
                     .where(ExecutorManagerTask.KEY.eq(key))
                     .selectFirst(cayenneService.getNewContext());
-        }else{
+        } else {
             taskStatus = localTask.getStatus();
         }
 
-        if(taskStatus == null) {
-            return ProcessStatusDTO.NOT_FOUND;
-        }
-
-        switch (taskStatus) {
-            case SUCCESS:
-                return ProcessStatusDTO.FINISHED;
-            case FAILURE:
-                return ProcessStatusDTO.FAILED;
-            case IN_PROGRESS:
-                return ProcessStatusDTO.IN_PROGRESS;
-        }
-
-        return ProcessStatusDTO.NOT_FOUND;
+        return ClusteredExecutorUtils.statusFrom(taskStatus);
     }
 
     public void addListener(String key, ExecutorListener listener) {
         listenerMap.compute(key, (k, presentListener) -> {
-            if(presentListener != null) {
+            if (presentListener != null) {
                 return presentListener.andThen(listener);
             }
             return listener;
@@ -111,7 +99,7 @@ public class ClusteredExecutorManager {
         // TODO need to make this method to support cluster environment
         localTasks.computeIfPresent(key, (k, task) -> {
             var localTask = task.getLocalTask();
-            if(localTask != null)
+            if (localTask != null)
                 localTask.cancel(true);
             return null;
         });
@@ -129,21 +117,21 @@ public class ClusteredExecutorManager {
 
     private void onTaskComplete(TaskResult result, String key) {
         var task = localTasks.get(key);
-        if(task == null) {
+        if (task == null) {
             return;
         }
 
-        listenerMap.remove(key).onDone();
+        listenerMap.remove(key).onDone(result);
 
-        if(result == null) {
+        if (result == null) {
             task.setStatus(TaskResultType.FAILURE);
-        } else if(result.getError() != null) {
+        } else if (result.getError() != null) {
             task.setStatus(TaskResultType.FAILURE);
             task.setErrorMessage(result.getError());
         } else {
             task.setStatus(TaskResultType.SUCCESS);
             task.setResult(result.getData());
-            if(result.getStatusMessage() != null) {
+            if (result.getStatusMessage() != null) {
                 task.setStatusMessage(result.getStatusMessage());
             }
             task.setTaskName(result.getName());

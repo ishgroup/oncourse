@@ -13,12 +13,12 @@ package ish.oncourse.server.cluster;
 
 @FunctionalInterface
 public interface ExecutorListener {
-    void onDone();
+    void onDone(TaskResult taskResult);
 
     default ExecutorListener andThen(ExecutorListener other) {
-        return () -> {
-            onDone();
-            other.onDone();
+        return (taskResult) -> {
+            onDone(taskResult);
+            other.onDone(taskResult);
         };
     }
 }

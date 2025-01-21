@@ -84,7 +84,6 @@ class AuditService {
                     connection = cayenneService.dataSource.connection
                     PreparedStatement stmt = connection.prepareStatement(INSERT_AUDIT_PATTERN)
                     stmt.setTimestamp(1, created)
-
                     setLong(stmt, 2, userId)
                     setLong(stmt, 3, entityId)
                     setString(stmt, 4, entityName)
