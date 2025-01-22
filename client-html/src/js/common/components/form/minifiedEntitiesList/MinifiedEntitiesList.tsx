@@ -26,7 +26,8 @@ const MinifiedEntitiesList = props => {
     validate,
     syncErrors,
     namePath,
-    twoColumn
+    twoColumn,
+    fieldProps
   } = props;
 
   const error = useMemo(
@@ -34,7 +35,7 @@ const MinifiedEntitiesList = props => {
       syncErrors
       && syncErrors[name]
       && syncErrors[name]._error && (
-        <Typography color="error" variant="body2" className="text-pre-wrap" paragraph>
+        <Typography color="error" variant="body2" className="text-pre-wrap" component="p">
           {syncErrors[name]._error}
         </Typography>
       ),
@@ -71,6 +72,7 @@ const MinifiedEntitiesList = props => {
         validate={validate}
         twoColumn={twoColumn}
         syncErrors={syncErrors}
+        fieldProps={fieldProps}
         rerenderOnEveryChange
       />
     </div>

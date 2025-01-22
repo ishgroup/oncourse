@@ -617,7 +617,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           onChange={hendelMethodChange}
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
-        {selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
+        {!['STRIPE', 'STRIPE_TEST'].includes(paymentGateway) && selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
           <Tooltip title="Retain a secure link to the bank which allows this card to be used for future billing or payment plans">
             <FormControlLabel
               classes={{

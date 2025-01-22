@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { change, isDirty, reset } from "redux-form";
+import { IAction } from '../../../../common/actions/IshAction';
 import { setListCreatingNew, setListSelection, } from "../../../../common/components/list-view/actions";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
 import history from "../../../../constants/History";
@@ -230,7 +231,7 @@ const mapStateToProps = (state: State) => ({
   hasQePermissions: state.access["ENROLMENT_CREATE"]
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch,
   resetEditView: () => dispatch(reset(LIST_EDIT_VIEW_FORM_NAME)),
   getAmountOwing: (id: number) => dispatch(getAmountOwing(id)),

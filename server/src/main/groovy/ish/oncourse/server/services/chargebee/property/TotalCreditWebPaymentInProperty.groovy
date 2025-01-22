@@ -11,6 +11,8 @@ package ish.oncourse.server.services.chargebee.property
 import ish.common.types.PaymentSource
 import ish.common.chargebee.ChargebeePropertyType
 
+import javax.sql.DataSource
+
 class TotalCreditWebPaymentInProperty extends ChargebeeSimplePropertyProcessor{
     private static final String WEB_CREDIT_AMOUNT_QUERY_FORMAT = "SELECT SUM(pi.amount) AS value" +
             "          FROM PaymentIn pi JOIN PaymentMethod pm on pi.paymentMethodId = pm.id" +
@@ -20,8 +22,8 @@ class TotalCreditWebPaymentInProperty extends ChargebeeSimplePropertyProcessor{
             "          AND pi.status IN (3, 6)" +
             "          AND pi.source = '$PaymentSource.SOURCE_WEB.databaseValue'"
 
-    TotalCreditWebPaymentInProperty(Date startDate, Date endDate) {
-        super(startDate, endDate)
+    TotalCreditWebPaymentInProperty(Date startDate, Date endDate, DataSource dataSource) {
+        super(startDate, endDate, dataSource)
     }
 
     @Override

@@ -202,7 +202,7 @@ const TabsList = React.memo<Props & RouteComponentProps>((
           <div
             id={i.label}
             key={tabIndex}
-            ref={el => scrollNodes.current[tabIndex] = el}
+            ref={el => scrollNodes.current[tabIndex] = el as any}
             className={tabIndex === items.length - 1 ? "saveButtonTableOffset" : undefined}
           >
             {i.component({

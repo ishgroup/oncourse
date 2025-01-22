@@ -1,5 +1,5 @@
 Dear ${enrolment.student.contact.firstName},
 
-Just a reminder that your class for ${enrolment.courseClass.course.name} starts on ${enrolment.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone())} at ${enrolment.courseClass.displayableLocation}.
+Just a reminder that your class for ${enrolment.courseClass.course.name} starts on ${enrolment.courseClass.startDateTime?.format("h:mm a EEEE d MMMM yyyy zzzz", enrolment.courseClass.getTimeZone()) ?: "?"} at ${enrolment.courseClass.room?.virtualRoomUrl ?: enrolment.courseClass.displayableLocation ?: " - "}.
 
 Please let us know if you are unable to attend.

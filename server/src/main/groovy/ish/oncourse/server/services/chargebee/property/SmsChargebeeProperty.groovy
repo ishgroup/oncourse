@@ -10,6 +10,8 @@ package ish.oncourse.server.services.chargebee.property
 
 import ish.common.chargebee.ChargebeePropertyType
 
+import javax.sql.DataSource
+
 class SmsChargebeeProperty extends ChargebeeSimplePropertyProcessor {
     private static final int SMS_LENGTH = 160
     private static final String SMS_LENGTH_QUERY_FORMAT = "SELECT COALESCE(SUM((length(m.smsText) DIV $SMS_LENGTH) + 1), 0) AS credits" +
@@ -18,8 +20,8 @@ class SmsChargebeeProperty extends ChargebeeSimplePropertyProcessor {
             "          AND m.createdOn >= '%s'" +
             "          AND m.createdOn < '%s'"
 
-    SmsChargebeeProperty(Date startDate, Date endDate) {
-        super(startDate, endDate)
+    SmsChargebeeProperty(Date startDate, Date endDate, DataSource dataSource) {
+        super(startDate, endDate, dataSource)
     }
 
     @Override

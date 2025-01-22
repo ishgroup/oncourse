@@ -16,6 +16,7 @@ import TestStore from "../js/constants/Store";
 import RootComponent from "../js/RootComponent";
 import { initMockDB } from "../dev/mock/MockAdapter";
 import { darkTheme, GlobalStylesProvider } from "ish-ui";
+import '@testing-library/jest-dom'
 
 // Configuring virtual rendering library and mockedAPI class
 export const mockedAPI: any = initMockDB();

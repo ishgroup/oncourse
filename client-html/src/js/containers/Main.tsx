@@ -41,7 +41,7 @@ import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/Swip
 import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY,
+  DASHBOARD_THEME_KEY, FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
   READ_NEWS,
   SPECIAL_TYPES_DISPLAY_KEY,
@@ -279,7 +279,7 @@ export class MainBase extends React.PureComponent<Props, MainState> {
 const mapStateToProps = (state: State) => ({
   isLogged: state.preferences.isLogged,
   preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY],
-  isAnyFormDirty: getFormNames()(state).reduce((p, name) => isDirty(name)(state) || p, false)
+  isAnyFormDirty: getFormNames()(state).filter(name => !FORM_NAMES_ALLOWED_FOR_REFRESH.includes(name)).reduce((p, name) => isDirty(name)(state) || p, false)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

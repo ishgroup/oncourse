@@ -17,12 +17,9 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.messaging.MessageService
-import ish.oncourse.server.scripting.api.EmailService
-import ish.oncourse.server.scripting.api.EmailSpec
 import ish.oncourse.server.scripting.api.MessageSpec
 import ish.oncourse.server.services.AuditService
 import ish.oncourse.server.services.chargebee.property.ChargebeePropertyProcessor
-import ish.oncourse.server.services.chargebee.property.ChargeebeeProcessorFactory
 import ish.oncourse.types.AuditAction
 import ish.util.LocalDateUtils
 import org.apache.cayenne.query.ObjectSelect
@@ -97,7 +94,7 @@ class ChargebeeUploadJob implements Job {
                 Environment.configure(site, apiKey)
 
             propertiesToUpload.each { type ->
-                def property = ChargeebeeProcessorFactory.valueOf(type, startOfPreviousDay, startOfCurrentDay)
+                def property = chargebeeService.valueOf(type, startOfPreviousDay, startOfCurrentDay)
                 uploadUsageToSite(property)
             }
         } catch (Exception e) {
@@ -118,7 +115,7 @@ class ChargebeeUploadJob implements Job {
         if(itemPriceId == null)
             throw new IllegalArgumentException("Try to upload usage $propertyProcessor.type without configured item id")
 
-        def quantity = propertyProcessor.getValue(cayenneService.dataSource)
+        def quantity = propertyProcessor.getValue()
         logger.warn("Try to upload to chargebee $propertyProcessor.type with id $itemPriceId value $quantity")
 
         if(Boolean.TRUE == chargebeeService.localMode)

@@ -16,6 +16,7 @@ import ish.oncourse.server.api.v1.model.RoomDTO
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
+import ish.validation.ValidationUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.commons.lang3.StringUtils
@@ -29,6 +30,7 @@ class RoomFunctions {
             room.siteId = dbRoom.site.id
             room.name = dbRoom.name
             room.seatedCapacity = dbRoom.seatedCapacity
+            room.virtualRoomUrl = dbRoom.virtualRoomUrl
             room
         }
     }
@@ -52,13 +54,23 @@ class RoomFunctions {
             validator.throwClientErrorException(roomDTO?.id, 'siteId', 'Site is required.')
         }
 
+        def site = ObjectSelect.query(Site)
+                .where(Site.ID.eq(roomDTO.siteId))
+                .selectOne(context)
+
+        String virtualRoomUrl = StringUtils.trimToNull(roomDTO.virtualRoomUrl)
         if (isSiteExists) {
-            Long siteId = ObjectSelect.query(Site)
-                    .where(Site.ID.eq(roomDTO.siteId))
-                    .selectOne(context)?.id
-            if (!siteId) {
-                validator.throwClientErrorException(siteId, 'siteId', "Can't bind room to nonexistent site")
+            if (!site?.id) {
+                validator.throwClientErrorException(site?.id, 'siteId', "Can't bind room to nonexistent site")
             }
+
+            if (!site.isVirtual && virtualRoomUrl != null)
+                validator.throwClientErrorException(virtualRoomUrl, 'virtualRoomUrl', "Cannot set virtual room url for not virtual site")
+        }
+
+        if (virtualRoomUrl != null) {
+            if (!ValidationUtil.isValidUrl(virtualRoomUrl))
+                validator.throwClientErrorException(roomDTO?.virtualRoomUrl, 'virtualRoomUrl', 'The virtual room url is incorrect.')
         }
 
         Long roomId = ObjectSelect.query(Room)

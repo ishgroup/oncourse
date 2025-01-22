@@ -27,5 +27,4 @@ interface PaymentServiceInterface extends PaymentServiceTrait {
     SessionAttributes makeRefund(Money amount, String merchantReference, String transactionId)
 
     SessionAttributes makeTransaction(Money amount, String merchantReference, String cardId)
-
 }

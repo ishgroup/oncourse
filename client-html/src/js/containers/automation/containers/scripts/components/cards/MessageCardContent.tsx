@@ -6,30 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { CustomFieldType } from "@api/model";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { Switch } from "ish-ui";
-import React, { useMemo, } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, getFormValues } from "redux-form";
-import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { validateEmail } from "../../../../../../common/utils/validation";
-import { ADMIN_EMAIL_KEY } from "../../../../../../constants/Config";
-import { COMMON_PLACEHOLDER } from "../../../../../../constants/Forms";
-import { CatalogItemType } from "../../../../../../model/common/Catalog";
-import { ScriptComponent, ScriptExtended } from "../../../../../../model/scripts";
-import { State } from "../../../../../../reducers/state";
-import { renderAutomationItems } from "../../../../utils";
-import EmailTemplateService from "../../../email-templates/services/EmailTemplateService";
+import { CustomFieldType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { Switch } from 'ish-ui';
+import React, { useMemo, } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { validateEmail } from '../../../../../../common/utils/validation';
+import { ADMIN_EMAIL_KEY } from '../../../../../../constants/Config';
+import { COMMON_PLACEHOLDER } from '../../../../../../constants/Forms';
+import { CatalogItemType } from '../../../../../../model/common/Catalog';
+import { ScriptComponent, ScriptExtended } from '../../../../../../model/scripts';
+import { State } from '../../../../../../reducers/state';
+import { renderAutomationItems } from '../../../../utils';
+import EmailTemplateService from '../../../email-templates/services/EmailTemplateService';
 
 interface Props {
   name: string;
   emailTemplates: CatalogItemType[];
   field: ScriptComponent;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   form: string;
   renderVariables: any;
   disabled: boolean;
