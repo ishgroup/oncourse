@@ -70,7 +70,7 @@ class SyntheticCourseClassPlacesLeftNode extends LazyExpressionNode {
         var havingQualifier = convertParentExpression(parent, args);
         classIds.addAll(ObjectSelect.columnQuery(CourseClass.class, CourseClass.ID, CourseClass.MAXIMUM_PLACES)
                 .where(CourseClass.MAXIMUM_PLACES.isNotNull()
-                        .andExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).in(EnrolmentStatus.STATUSES_LEGIT)))
+                        .andExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.ID).isNull().orExp(CourseClass.ENROLMENTS.outer().dot(Enrolment.STATUS).in(EnrolmentStatus.STATUSES_LEGIT))))
                 .having(havingQualifier)
                 .select(ctx.getContext()).stream().mapToLong(obj -> ((Long)obj[0]))
                 .boxed()
