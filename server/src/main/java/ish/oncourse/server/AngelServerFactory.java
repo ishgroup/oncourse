@@ -27,6 +27,7 @@ import ish.oncourse.server.messaging.MailDeliveryService;
 import ish.oncourse.server.services.ISchedulerService;
 import ish.oncourse.server.services.*;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
 import org.apache.cayenne.access.DataContext;
@@ -34,9 +35,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.*;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.mail.MessagingException;
@@ -190,6 +189,15 @@ public class AngelServerFactory {
                     prefController.getOncourseServerDefaultTimezone(),
                     false,
                     false);
+
+            //Chargebee job. Every day, 3am. May be resheduled due to cron expression changes
+            if(scheduler.checkExists(JobKey.jobKey(CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID))) {
+                Trigger trigger = scheduler.getTrigger(TriggerKey.triggerKey(CHARGEBEE_JOB_ID + TRIGGER_POSTFIX, BACKGROUND_JOBS_GROUP_ID));
+                if(!((CronTrigger)trigger).getCronExpression().equals(CHARGEBEE_JOB_INTERVAL.toUpperCase(Locale.ROOT)))
+                    schedulerService.removeJob(JobKey.jobKey(CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID));
+            }
+            schedulerService.scheduleCronJob(ChargebeeUploadJob.class, CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                    CHARGEBEE_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
 
             LOGGER.warn("Starting cron");
             scheduler.start();

@@ -8,9 +8,8 @@
 
 import { executeActionsQueue } from "../../../../common/actions";
 import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import { Request, Create } from "../../../../common/epics/EpicUtils";
+import { Create, Request } from "../../../../common/epics/EpicUtils";
 import EntityService from "../../../../common/services/EntityService";
-import OutcomeService from "../../outcomes/services/OutcomeService";
 import { PROCESS_OTCOME_CHANGE_FIELDS } from "../actions";
 
 const request: Request<null, number[]> = {
@@ -25,7 +24,7 @@ const request: Request<null, number[]> = {
       .getPlainRecords("Outcome", "id", `enrolment.id in (${enrolmentIds.toString()})`)
       .then(res => {
         const ids = res.rows.map(r => Number(r.id));
-        return OutcomeService.bulkChange({
+        return EntityService.bulkChange('Outcome', {
           ids,
           diff: filtered.reduce((p, o) => {
             p[o.name] = o.value;

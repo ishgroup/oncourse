@@ -15,7 +15,7 @@ import {
   checkoutGetVoucherRedeemer,
   checkoutSetDefaultPayer
 } from "../../actions/checkoutSummary";
-import { FORM } from "../../components/CheckoutSelection";
+import { CHECKOUT_SELECTION_FORM_NAME } from "../../components/CheckoutSelection";
 import { isPromotionalCodeExist } from "../../utils";
 
 const chekcoutVoucherCodeColumns = "product.name,"
@@ -106,7 +106,7 @@ const request: EpicUtils.Request = {
     const actions = [];
 
     if (vouchersItem) {
-      actions.push(change(FORM, "vouchers", ""));
+      actions.push(change(CHECKOUT_SELECTION_FORM_NAME, "vouchers", ""));
       if (vouchersItem.redeemableById) {
         const payerIndex = checkout.summary.list.findIndex(li => li.contact.id === vouchersItem.redeemableById);
 

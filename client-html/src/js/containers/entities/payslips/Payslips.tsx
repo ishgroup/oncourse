@@ -64,7 +64,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 ];
 const nameCondition = (values: Payslip) => values.tutorFullName;
 
-const manualLink = getManualLink("payroll");
+const manualLink = getManualLink("tutor-pay");
 
 class Payslips extends React.Component<any, any> {
   componentDidMount() {

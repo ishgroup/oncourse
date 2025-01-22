@@ -1,23 +1,23 @@
-import Delete from "@mui/icons-material/Delete";
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import Edit from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import { alpha } from "@mui/material/styles";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from "ish-ui";
-import React, { useEffect, useMemo, useState } from "react";
-import { getFormSyncErrors, getFormValues } from "redux-form";
-import { useAppSelector } from "../../../../../common/utils/hooks";
-import { CollectionFormSchema } from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
-import CollectionFormField from "./CollectionFormField";
-import CollectionFormHeading from "./CollectionFormHeading";
-import { DATA_COLLECTION_FORM } from "./DataCollectionForm";
+import Delete from '@mui/icons-material/Delete';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import Edit from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import { alpha } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { makeAppStyles, stopEventPropagation, useHoverShowStyles } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getFormSyncErrors, getFormValues } from 'redux-form';
+import { useAppSelector } from '../../../../../common/utils/hooks';
+import { CollectionFormSchema } from '../../../../../model/preferences/data-collection-forms/collectionFormSchema';
+import CollectionFormField from './CollectionFormField';
+import CollectionFormHeading from './CollectionFormHeading';
+import { DATA_COLLECTION_FORM } from './DataCollectionForm';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'actionIcon' | 'actionIconInactive'>()((theme, p, classes) => ({
   dragIcon: {
     margin: theme.spacing(0, 2),
     color: theme.palette.action.focus,
@@ -45,10 +45,10 @@ const useStyles = makeAppStyles(theme => ({
     borderRadius: `${theme.shape.borderRadius}px`,
     cursor: "pointer",
     backgroundColor: alpha(theme.palette.text.primary, 0.025),
-    "&:hover $actionIcon": {
+    [`&:hover .${classes.actionIcon}`]: {
       color: theme.palette.action.active
     },
-    "&:hover $actionIconInactive": {
+    [`&:hover .${classes.actionIconInactive}`]: {
       color: theme.palette.action.focus
     }
   },
@@ -67,7 +67,8 @@ const CollectionFormFieldsRenderer = (
     item,
     provided,
     snapshot,
-    onDeleteClick
+    onDeleteClick,
+    formType
   }
 ) => {
   const values  = useAppSelector(state => getFormValues(DATA_COLLECTION_FORM)(state)) as CollectionFormSchema;
@@ -82,7 +83,7 @@ const CollectionFormFieldsRenderer = (
 
   const isField = field.baseType === "field";
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onEditClick = () => setIsEditing(!isEditing);
   
@@ -96,7 +97,7 @@ const CollectionFormFieldsRenderer = (
     }
   }, [field]);
 
-  const hoverClasses = useHoverShowStyles();
+  const { classes: hoverClasses } = useHoverShowStyles();
   
   const relationTip = useMemo(() => {
     const releatedFieldIndex = isField && values.items.findIndex(i => i.baseType === "field" && i.type.uniqueKey === field.relatedFieldKey);
@@ -178,6 +179,7 @@ const CollectionFormFieldsRenderer = (
                 item={item}
                 field={field}
                 fields={values.items}
+                formType={formType}
               />}
           </div>
         </Collapse>

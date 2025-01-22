@@ -1,11 +1,11 @@
-import Check from "@mui/icons-material/Check";
-import { Theme } from "@mui/material";
-import { green } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import React from "react";
-import Marker from "./Marker";
+import Check from '@mui/icons-material/Check';
+import { Typography } from '@mui/material';
+import { green } from '@mui/material/colors';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import Marker from './Marker';
 
 interface Props {
   classes?: any;
@@ -16,7 +16,7 @@ interface Props {
   className?: string;
 }
 
-const styles = createStyles(({ palette, spacing }: Theme) => ({
+const styles = (({ palette, spacing }: AppTheme) => ({
   pill: {
     borderRadius: 16,
     color: palette.text.secondary,
@@ -47,4 +47,4 @@ const RadioPill = React.memo(({
   </Typography>
 ));
 
-export default withStyles(styles)(RadioPill);
+export default withStyles(RadioPill, styles);

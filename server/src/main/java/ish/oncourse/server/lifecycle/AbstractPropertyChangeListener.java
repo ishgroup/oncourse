@@ -25,7 +25,7 @@ public abstract class AbstractPropertyChangeListener<C, V> implements CommitLogL
     @Override
     public void onPostCommit(ObjectContext originatingContext, ChangeMap changes) {
         changes.getChanges().forEach((k, v) -> {
-            if (k.getEntityName().equals(entityClass.getSimpleName())){
+            if (k.getEntityName().equals(entityClass.getSimpleName()) && k.getReplacementIdMap().isEmpty()){
                 v.getAttributeChanges().forEach((n, ch) -> {
                     if (n.equals(property.getName()) && changed(ch)){
                         this.run(k);

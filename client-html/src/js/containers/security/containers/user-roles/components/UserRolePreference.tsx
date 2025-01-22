@@ -3,19 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Collapse, Grid, Typography } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import createStyles from "@mui/styles/createStyles";
-import clsx from "clsx";
-import { Switch } from "ish-ui";
-import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { change, Field } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import SliderStepperField from "./SliderStepperField";
+import { Collapse, Grid, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { Switch } from 'ish-ui';
+import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { change, Field } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import SliderStepperField from './SliderStepperField';
 
-const styles = theme =>
-  createStyles({
+const styles = (theme, p, classes) =>
+  ({
     stepperLabel: {
       height: "32px",
       paddingBottom: "2px",
@@ -32,7 +31,7 @@ const styles = theme =>
     },
     stepperHeadersWrapper: {
       padding: theme.spacing(2, 0),
-      "& .flex-fill:first-child $stepperHeader": {
+      [`& .flex-fill:first-child .${classes.stepperHeader}`]: {
         paddingLeft: "10px"
       }
     },
@@ -55,7 +54,7 @@ const getLabel = (category: string) => {
     default:
       return category;
   }
-}
+};
 
 const ContentBase = props => {
   const {
@@ -114,7 +113,7 @@ const ContentBase = props => {
   );
 };
 
-const Content = withStyles(styles)(ContentBase);
+const Content = withStyles(ContentBase, styles);
 
 interface Props {
   item?;

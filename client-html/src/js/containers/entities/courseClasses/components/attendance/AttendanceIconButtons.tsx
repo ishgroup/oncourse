@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import IconButton from "@mui/material/IconButton";
-import withStyles from "@mui/styles/withStyles";
-import React, { useMemo } from "react";
-import { StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
-import AttendanceIcon from "./AttendanceIcon";
+import IconButton from '@mui/material/IconButton';
+import React, { useMemo } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { StudentAttendanceExtended } from '../../../../../model/entities/CourseClass';
+import AttendanceIcon from './AttendanceIcon';
 
 const styles = {
   iconButton: {
@@ -32,7 +32,7 @@ const StudentAttendanceIconButtonBase: React.FC<StudentAttendanceIconButtonProps
   </IconButton>
   );
 
-export const StudentAttendanceIconButton = withStyles(styles)(StudentAttendanceIconButtonBase);
+export const StudentAttendanceIconButton = withStyles(StudentAttendanceIconButtonBase, styles);
 
 interface TrainingPlanIconButtonProps {
   attended: boolean;
@@ -50,4 +50,4 @@ const TrainingPlanIconButtonBase: React.FC<TrainingPlanIconButtonProps> = ({ att
   );
 };
 
-export const TrainingPlanIconButton = withStyles(styles)(TrainingPlanIconButtonBase);
+export const TrainingPlanIconButton = withStyles(TrainingPlanIconButtonBase, styles);

@@ -6,51 +6,51 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import Typography from "@mui/material/Typography";
-import { isBefore } from "date-fns";
-import React, { Dispatch, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import company from "../../../../images/company.png";
-import person from "../../../../images/person.png";
-import tutorStudent from "../../../../images/student-tutor.png";
-import student from "../../../../images/student.png";
-import tutor from "../../../../images/tutor.png";
-import { checkPermissions } from "../../../common/actions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
+import { Contact } from '@api/model';
+import Typography from '@mui/material/Typography';
+import { isBefore } from 'date-fns';
+import React, { Dispatch, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
+import company from '../../../../images/company.png';
+import person from '../../../../images/person.png';
+import tutorStudent from '../../../../images/student-tutor.png';
+import student from '../../../../images/student.png';
+import tutor from '../../../../images/tutor.png';
+import { checkPermissions } from '../../../common/actions';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
 import {
   clearListState,
   getFilters,
   setListCustomTableModel,
   setListEditRecord
-} from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { fundingUploadsPath } from "../../../constants/Api";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { VetReport } from "../../../model/entities/VetReporting";
-import { State } from "../../../reducers/state";
-import { getActiveFundingContracts } from "../../avetmiss-export/actions";
+} from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { fundingUploadsPath } from '../../../constants/Api';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { VetReport } from '../../../model/entities/VetReporting';
+import { State } from '../../../reducers/state';
+import { getActiveFundingContracts } from '../../avetmiss-export/actions';
 import {
   getContactRelationTypes,
   getCountries,
   getGradingTypes,
   getLanguages,
   getPaymentTypes
-} from "../../preferences/actions";
-import { PreferencesState } from "../../preferences/reducers/state";
+} from '../../preferences/actions';
+import { PreferencesState } from '../../preferences/reducers/state';
 import {
   getContactsConcessionTypes,
   getContactsRelationTypes,
   getContactsTaxTypes,
   getContactTags
-} from "../contacts/actions";
-import { ContactType } from "../contacts/Contacts";
-import { getContactFullName } from "../contacts/utils";
-import { getDefaultInvoiceTerms } from "../invoices/actions";
-import VetReportingEditView from "./components/VetReportingEditView";
+} from '../contacts/actions';
+import { ContactType } from '../contacts/Contacts';
+import { getContactFullName } from '../contacts/utils';
+import { getDefaultInvoiceTerms } from '../invoices/actions';
+import VetReportingEditView from './components/VetReportingEditView';
 
 export const ContactInitial: Contact = {
   id: 0,
@@ -140,7 +140,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 const secondaryColumnCondition = row => row.email && row.birthDate ? `${row.birthDate}  |  ${row.email}` : row.birthDate || row.email;
 
-const manualLink = getManualLink("contacts");
+const manualLink = getManualLink("vet-reporting");
 
 const getContactTypeImage = (type: ContactType) => {
   switch (type) {
@@ -170,7 +170,7 @@ export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
 );
 
-const SearchMenuItem = React.memo<any>(({ content, data }) => (
+const SearchMenuItem = React.memo<{ content, data }>(({ content, data }) => (
   <div className="d-flex align-items-baseline">
     {content}
     <Typography className="ml-0-5" variant="caption" color="textSecondary">
@@ -181,8 +181,8 @@ const SearchMenuItem = React.memo<any>(({ content, data }) => (
   </div>
 ));
 
-const searchMenuItemsRenderer = (content, data, search) => (
-  data.prefix ? <SearchMenuItem content={content} data={data} search={search} /> : content
+const searchMenuItemsRenderer = (content, data) => (
+  data.prefix ? <SearchMenuItem content={content} data={data}  /> : content
 );
 
 const today = new Date();

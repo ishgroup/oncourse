@@ -14,7 +14,6 @@ import ish.oncourse.entity.services.TagService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.cayenne.Preference
-import ish.oncourse.server.display.DisplayService
 import ish.oncourse.server.integration.PluginsPrefsService
 import ish.oncourse.server.license.LicenseService
 import ish.oncourse.server.services.ISystemUserService
@@ -129,9 +128,8 @@ class UrlUtilTest {
         ISystemUserService systemUserService = Mockito.mock(ISystemUserService.class)
         LicenseService licenseService = Mockito.mock(LicenseService.class)
         PluginsPrefsService pluginsService = Mockito.mock(PluginsPrefsService.class)
-        DisplayService displayService = Mockito.mock(DisplayService.class)
         TagService tagService = Mockito.mock(TagService.class)
 
-        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService, displayService, tagService)
+        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService, tagService)
     }
 }

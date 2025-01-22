@@ -1,10 +1,9 @@
-import ButtonBase from "@mui/material/ButtonBase";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import React, { useCallback, useEffect } from "react";
+import { ButtonBase, Typography } from '@mui/material';
+import clsx from 'clsx';
+import React, { useCallback, useEffect } from 'react';
+import { withStyles } from 'tss-react/mui';
 
-const styles = theme => createStyles({
+const styles = theme => ({
     select: {
       border: "1px solid",
       opacity: "0.3",
@@ -84,4 +83,4 @@ const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
   );
 };
 
-export default withStyles(styles)(RecipientsSelectionSwitcher);
+export default withStyles(RecipientsSelectionSwitcher, styles);

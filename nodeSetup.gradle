@@ -1,15 +1,17 @@
 apply plugin: 'com.github.node-gradle.node'
 
 node {
-    version = '16.14.2'
+    version = '20.16.0'
     download = System.properties['os.name'] != "FreeBSD" // FreeBSD has no binaries this plugin can install
     workDir = file("${project.buildDir}/nodejs")
     npmInstallCommand = System.getenv("CI") ? 'ci' : 'install'
 }
 
 clean {
-    delete "${projectDir}/node_modules"
-    delete "${projectDir}/.gradle"
-    delete "${projectDir}/build"
+    if("true" != System.getProperty('ish.devNode')) {
+        delete "${projectDir}/node_modules"
+        delete "${projectDir}/.gradle"
+        delete "${projectDir}/build"
+    }
 }
 

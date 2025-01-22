@@ -15,7 +15,6 @@ import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
 import io.bootique.jdbc.hikaricp.JdbcHikariCPModule;
-import ish.oncourse.server.display.DisplayModule;
 import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;
@@ -27,6 +26,7 @@ import ish.oncourse.server.license.LicenseModule;
 import ish.oncourse.server.messaging.SMTPModule;
 import ish.oncourse.server.modules.*;
 import ish.oncourse.server.security.api.PermissionModule;
+import ish.oncourse.server.services.chargebee.ChargebeeModule;
 
 public class AngelServer {
     public static final String UTF_8 = "UTF-8";
@@ -58,7 +58,7 @@ public class AngelServer {
                 .module(HttpModule.class)
                 .module(DbModule.class)
                 .module(LicenseModule.class)
-                .module(DisplayModule.class)
+                .module(ChargebeeModule.class)
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
                 .module(JasperReportsModule.class)

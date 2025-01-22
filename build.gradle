@@ -108,17 +108,16 @@ subprojects {
 	group = 'ish.oncourse.angel'
 
 	publishing {
-        repositories {
-            maven {
-                name = "ish"
-                def repo = version.endsWith('SNAPSHOT') ? 'ish-snapshots' : 'ish-releases'
-                url = "https://repo.ish.com.au/content/repositories/${repo}"
-                credentials {
-                    username nexusUsername
-                    password nexusPassword
-                }
-            }
-        }
+		repositories {
+			maven {
+				name = "GitHubPackages"
+				url = "https://maven.pkg.github.com/ishgroup/oncourse"
+				credentials {
+					username = System.getenv("GITHUB_ACTOR") ?: gitUsername
+					password = System.getenv("GITHUB_TOKEN") ?: gitPassword
+				}
+			}
+		}
     }
 
 	ext.sharedManifest = manifest {

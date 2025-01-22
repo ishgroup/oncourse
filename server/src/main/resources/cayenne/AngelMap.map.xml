@@ -438,6 +438,8 @@
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
 		<db-attribute name="minimumSessionsToComplete" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="portalDocAccessStart" type="TIMESTAMP"/>
+		<db-attribute name="portalDocAccessEnd" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="CourseClassPaymentPlanLine">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -720,6 +722,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="relatedFieldId" type="BIGINT"/>
 		<db-attribute name="relatedFieldValue" type="CLOB" length="32000"/>
+		<db-attribute name="validationType" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="FieldConfiguration">
 		<db-attribute name="createdById" type="BIGINT"/>
@@ -1348,6 +1351,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="150"/>
 		<db-attribute name="seatedCapacity" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="siteId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="virtualRoomUrl" type="VARCHAR" length="128"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="SavedFind">
@@ -1359,6 +1363,14 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="500"/>
 		<db-attribute name="systemUserId" type="BIGINT"/>
 		<db-attribute name="tableName" type="VARCHAR" isMandatory="true" length="100"/>
+	</db-entity>
+	<db-entity name="Settings">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="willowId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" length="128" isMandatory="true"/>
+		<db-attribute name="value" type="LONGVARCHAR" length="32000" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Script">
 		<db-attribute name="category" type="VARCHAR" length="255"/>
@@ -2161,6 +2173,8 @@
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
 		<obj-attribute name="minimumSessionsToComplete" type="java.lang.Integer" db-attribute-path="minimumSessionsToComplete"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="portalDocAccessStart" type="java.util.Date" db-attribute-path="portalDocAccessStart"/>
+		<obj-attribute name="portalDocAccessEnd" type="java.util.Date" db-attribute-path="portalDocAccessEnd"/>
 	</obj-entity>
 	<obj-entity name="CourseClassAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.CourseClassAttachmentRelation" clientClassName="ish.oncourse.cayenne.CourseClassAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "CourseClass"]]></qualifier>
@@ -2457,6 +2471,7 @@
 		<obj-attribute name="property" type="java.lang.String" db-attribute-path="property"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="relatedFieldValue" type="java.lang.String" db-attribute-path="relatedFieldValue"/>
+		<obj-attribute name="validationType" type="ish.common.types.FieldValidationType" db-attribute-path="validationType"/>
 	</obj-entity>
 	<obj-entity name="FieldConfiguration" abstract="true" className="ish.oncourse.server.cayenne.FieldConfiguration" clientClassName="ish.oncourse.cayenne.FieldConfiguration" dbEntityName="FieldConfiguration" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2965,6 +2980,7 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="virtualRoomUrl" type="java.lang.String" db-attribute-path="virtualRoomUrl"/>
 		<obj-attribute name="seatedCapacity" type="java.lang.Integer" db-attribute-path="seatedCapacity"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
@@ -3003,6 +3019,14 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="tableName" type="java.lang.String" db-attribute-path="tableName"/>
+	</obj-entity>
+	<obj-entity name="Settings" className="ish.oncourse.server.cayenne.Settings" dbEntityName="Settings" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
 	<obj-entity name="Script" className="ish.oncourse.server.cayenne.Script" clientClassName="ish.oncourse.cayenne.Script" dbEntityName="Script" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3733,6 +3757,9 @@
 	</db-relationship>
 	<db-relationship name="abandonedCarts" source="Contact" target="Checkout" toMany="true">
 		<db-attribute-pair source="id" target="payerId"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelations" source="Contact" target="CheckoutContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Product" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -5309,6 +5336,7 @@
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
 	<obj-relationship name="attachmentRelations" source="Contact" target="ContactAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="abandonedCarts" source="Contact" target="Checkout" deleteRule="Cascade" db-relationship-path="abandonedCarts"/>
+	<obj-relationship name="checkoutRelations" source="Contact" target="CheckoutContactRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
 	<obj-relationship name="attachmentRelations" source="VoucherProduct" target="VoucherProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="ArticleProduct" target="ArticleProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="MembershipProduct" target="MembershipProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
