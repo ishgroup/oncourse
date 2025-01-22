@@ -18,6 +18,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -48,6 +49,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -72,6 +74,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -99,6 +102,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -130,6 +134,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":1234567890,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -154,6 +159,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":1234567890,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -180,6 +186,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -210,6 +217,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":null,
+        "creditPointsStatus":"Active",
         "expiryDays":null,
         "fieldOfEducation":null,
         "isCustom":true,
@@ -234,6 +242,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":null,
+        "creditPointsStatus":"Active",
         "expiryDays":null,
         "fieldOfEducation":null,
         "isCustom":true,
@@ -260,6 +269,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -295,6 +305,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -319,6 +330,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -350,6 +362,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -374,6 +387,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"120501",
         "isCustom":false,
@@ -395,6 +409,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -427,6 +442,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -463,6 +479,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -493,6 +510,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -525,6 +543,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -555,6 +574,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":1,
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -587,6 +607,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -617,6 +638,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -640,6 +662,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"1234567",
         "isCustom":true,
@@ -673,6 +696,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -700,6 +724,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -730,6 +755,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":0,
+        "creditPointsStatus":"Active",
         "expiryDays":5,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -762,6 +788,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":"1",
+        "creditPointsStatus":"Active",
         "expiryDays":2,
         "fieldOfEducation":"someEd",
         "isCustom":true,
@@ -792,6 +819,7 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         """
         {
         "creditPoints":12345678.12,
+        "creditPointsStatus":"Active",
         "expiryDays":0,
         "fieldOfEducation":"123456",
         "isCustom":true,
@@ -809,6 +837,103 @@ Feature: Main feature for all PUT requests with path 'list/entity/module'
         When method PUT
         Then status 400
         And match $.errorMessage == "Expiry days should be greater than 0."
+
+#       <--->  Scenario have been finished. Now find and remove created object from DB:
+        Given path ishPath + '/' + id
+        When method DELETE
+        Then status 204
+
+
+
+    Scenario: (-) Update Module credit points status
+
+#       <----->  Add a new entity to update and define id:
+        * def newModule =
+        """
+        {
+        "creditPoints":"16",
+        "creditPointsStatus":"Active",
+        "expiryDays":20,
+        "fieldOfEducation":"525705",
+        "isCustom":true,
+        "type":"MODULE",
+        "isOffered":false,
+        "nationalCode":"XHX",
+        "nominalHours":30,
+        "specialization":"someSpecialization",
+        "title":"Updatable Custom Module"
+        }
+        """
+
+        Given path ishPath
+        And request newModule
+        When method POST
+        Then status 204
+
+        Given path ishPathList
+        And param entity = 'Module'
+        When method GET
+        Then status 200
+        And match $.rows[*].values[*] contains ["XHX"]
+
+        * def id = get[0] response.rows[?(@.values == ["XHX","Updatable Custom Module","false"])].id
+
+#       <--->
+        * def moduleToUpdate =
+        """
+        {
+        "creditPoints":"16",
+        "creditPointsStatus":"Active but not visible online",
+        "expiryDays":20,
+        "fieldOfEducation":"525705",
+        "isCustom":true,
+        "type":"MODULE",
+        "isOffered":false,
+        "nationalCode":"XHX",
+        "nominalHours":30,
+        "specialization":"someSpecialization",
+        "title":"Updatable Custom Module"
+        }
+        """
+
+        Given path ishPath + '/' + id
+        And request moduleToUpdate
+        When method PUT
+        Then status 204
+
+        Given path ishPath + '/' + id
+        When method GET
+        Then status 200
+        Then match response contains { "creditPointsStatus": "Active but not visible online" }
+
+#       <--->
+        * def moduleToUpdate2 =
+        """
+        {
+        "creditPoints":"16",
+        "creditPointsStatus":"Disabled",
+        "expiryDays":20,
+        "fieldOfEducation":"525705",
+        "isCustom":true,
+        "type":"MODULE",
+        "isOffered":false,
+        "nationalCode":"XHX",
+        "nominalHours":30,
+        "specialization":"someSpecialization",
+        "title":"Updatable Custom Module"
+        }
+        """
+
+        Given path ishPath + '/' + id
+        And request moduleToUpdate2
+        When method PUT
+        Then status 204
+
+        Given path ishPath + "/" + id
+        When method GET
+        Then status 200
+        Then match response contains { "creditPointsStatus": "Disabled" }
+
 
 #       <--->  Scenario have been finished. Now find and remove created object from DB:
         Given path ishPath + '/' + id

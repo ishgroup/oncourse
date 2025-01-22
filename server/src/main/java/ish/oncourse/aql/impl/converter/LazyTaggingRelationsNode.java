@@ -8,6 +8,7 @@
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.impl.ExpressionUtil;
 import ish.oncourse.aql.model.Entity;
@@ -19,6 +20,8 @@ import org.apache.cayenne.exp.parser.*;
 import org.apache.cayenne.query.ObjectSelect;
 
 import java.util.List;
+
+import static ish.oncourse.aql.NodeUtils.inverseNodeByIds;
 
 /**
  * Node, that redefines parent node of taggingRelations predicates (e.g. taggingRelations is not null, taggingRelations is empty,
@@ -86,11 +89,7 @@ public class LazyTaggingRelationsNode extends LazyExprNodeWithBasePathResolver {
         ExpressionUtil.addChild(notEmptyExpr, identifierEqNode, 1);
 
         if (parent instanceof ASTEqual) {
-            List<Long> notEmptyIds = ObjectSelect.columnQuery(taggedEntity.getJavaClass(), Property.create("id", Long.class))
-                    .where(notEmptyExpr)
-                    .select(ctx.getContext());
-
-            return new ASTNotIn(new ASTObjPath("id"), new ASTList(notEmptyIds));
+            return inverseNodeByIds(notEmptyExpr, taggedEntity, ctx);
         }
 
         return notEmptyExpr;
@@ -100,7 +99,7 @@ public class LazyTaggingRelationsNode extends LazyExprNodeWithBasePathResolver {
         var other = args.subList(1, args.size());
         var idx = 0;
         for (var child : other) {
-            //rewrite this
+            //if request contains join we need to replace it with left join to avoid interception with other requests into query
             if (child instanceof ASTObjPath && ((ASTObjPath) child).getPath().contains("taggingRelations.tag.")) {
                 String path = ((ASTObjPath) child).getPath();
                 child = new ASTObjPath(path.replace(".tag.", "+.tag+."));
@@ -114,6 +113,11 @@ public class LazyTaggingRelationsNode extends LazyExprNodeWithBasePathResolver {
         String identPath = entityPath + TAGGING_RELATIONS + "+." + "entityIdentifier";
         ASTEqual identifierEqNode = new ASTEqual(new ASTObjPath(identPath), taggableClasses.getDatabaseValue());
         ExpressionUtil.addChild(and, identifierEqNode, 1);
+
+        // add check if it is tag or checklist
+        String nodeTypePath = entityPath + TAGGING_RELATIONS + "+." + "tag" + ".nodeType";
+        ASTEqual nodeTypeEqNode = new ASTEqual(new ASTObjPath(nodeTypePath), NodeType.TAG);
+        ExpressionUtil.addChild(and, nodeTypeEqNode, idx);
 
         return and;
     }

@@ -58,6 +58,7 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("ArticleProductAttachmentRelation", "BinaryInfoRelation");
 		ANGEL_TO_WILLOW.put("VoucherProductAttachmentRelation", "BinaryInfoRelation");
 		ANGEL_TO_WILLOW.put("MembershipProductAttachmentRelation", "BinaryInfoRelation");
+		ANGEL_TO_WILLOW.put("FacultyAttachmentRelation", "BinaryInfoRelation");
 
 		ANGEL_TO_WILLOW.put("TagRequirement", "TagGroupRequirement");
 		ANGEL_TO_WILLOW.put("CourseClassTutor", "TutorRole");
@@ -83,6 +84,7 @@ public final class EntityMapping {
 		ANGEL_TO_WILLOW.put("ArticleProductTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("VoucherProductTagRelation", "Taggable");
 		ANGEL_TO_WILLOW.put("MembershipProductTagRelation", "Taggable");
+		ANGEL_TO_WILLOW.put("FacultyTagRelation", "Taggable");
 
 		ANGEL_TO_WILLOW.put("CustomField", "ContactCustomField");
 
@@ -121,6 +123,7 @@ public final class EntityMapping {
 		BINARY_RELATION_MAPPING.put("ArticleProduct", "ArticleProductAttachmentRelation");
 		BINARY_RELATION_MAPPING.put("VoucherProduct", "VoucherProductAttachmentRelation");
 		BINARY_RELATION_MAPPING.put("MembershipProduct", "MembershipProductAttachmentRelation");
+		BINARY_RELATION_MAPPING.put("Faculty", "FacultyAttachmentRelation");
 	}
 
 	/**

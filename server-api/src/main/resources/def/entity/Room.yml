@@ -53,3 +53,5 @@ properties:
     type: object
     additionalProperties:
       type: string
+  virtualRoomUrl:
+    type: string

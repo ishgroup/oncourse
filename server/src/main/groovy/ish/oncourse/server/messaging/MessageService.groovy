@@ -171,7 +171,7 @@ class MessageService {
 	}
 
 	void sendMessage(MessageSpec messageSpec) throws MessagingException {
-		Function<Contact, Boolean> collision = messageSpec.creatorKey ? { c -> true } :
+		Function<Contact, Boolean> collision = !messageSpec.creatorKey ? { c -> true } :
 				{ contact -> NeedToSendEmail.valueOf(auditService, messageSpec.keyCollision, messageSpec.creatorKey, cayenneService.getNewContext(), contact).get() }
 
 		if (messageSpec.entityRecords.isEmpty()) {

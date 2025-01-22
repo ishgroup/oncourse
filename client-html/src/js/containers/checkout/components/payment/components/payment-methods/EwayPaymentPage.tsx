@@ -5,14 +5,13 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { LoadingButton } from "@mui/lab";
-import { StringArgFunction } from "ish-ui";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from "../../../../../../model/checkout";
-import { State } from "../../../../../../reducers/state";
+import LoadingButton from '@mui/lab/LoadingButton';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
+import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutGetPaymentStatusDetails,
@@ -20,28 +19,10 @@ import {
   checkoutProcessPayment,
   checkoutSetPaymentMethod,
   clearCcIframeUrl
-} from "../../../../actions/checkoutPayment";
-import { FORM } from "../../../CheckoutSelection";
-import PaymentMessageRenderer from "../PaymentMessageRenderer";
+} from '../../../../actions/checkoutPayment';
+import { CHECKOUT_SELECTION_FORM_NAME } from '../../../CheckoutSelection';
+import PaymentMessageRenderer from '../PaymentMessageRenderer';
 
-interface CreditCardPaymentPageProps {
-  classes?: any;
-  summary?: CheckoutSummary;
-  payment?: CheckoutPayment;
-  isPaymentProcessing?: boolean;
-  disablePayment?: boolean;
-  iframeUrl?: string;
-  xPaymentSessionId?: string;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
-  clearCcIframeUrl: () => void;
-  checkoutGetPaymentStatusDetails: StringArgFunction;
-  checkoutPaymentSetCustomStatus: StringArgFunction;
-  onCheckoutClearPaymentStatus: () => void;
-  process?: CheckoutPaymentProcess;
-  paymentInvoice?: any;
-  paymentId?: number;
-  dispatch?: Dispatch;
-}
 
 const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
@@ -76,7 +57,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     if (result === "Cancel") return;
 
     if (result === "Error") {
-      dispatch(change(FORM, "payment_method", null));
+      dispatch(change(CHECKOUT_SELECTION_FORM_NAME, "payment_method", null));
       dispatch(checkoutSetPaymentMethod(null));
       checkoutPaymentSetCustomStatus("fail");
     }

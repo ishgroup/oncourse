@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance } from "@api/model";
-import ChatIcon from "@mui/icons-material/Chat";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import { Collapse, Grid, IconButton, MenuItem, Select, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
-import { addMinutes, differenceInMinutes, format } from "date-fns";
+import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance } from '@api/model';
+import ChatIcon from '@mui/icons-material/Chat';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import { Collapse, Grid, IconButton, MenuItem, Select, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import clsx from 'clsx';
+import { differenceInMinutes, format } from 'date-fns';
 import {
   appendTimezone,
   AppTheme,
@@ -25,15 +24,17 @@ import {
   H_MMAAA,
   NumberArgFunction,
   openInternalLink
-} from "ish-ui";
-import React from "react";
-import { Dispatch } from "redux";
-import { change, Field, WrappedFieldProps } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { TimetableSession } from "../../../../../model/timetable";
+} from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { change, Field, WrappedFieldProps } from 'redux-form';
+import { makeStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { ClassCostExtended, CourseClassTutorExtended } from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeStyles<void, 'tutorItemActions' | 'addWage' | 'noPay'>()((theme: AppTheme, _params, classes) => ({
   root: {
     width: "100%",
   },
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
     marginLeft: theme.spacing(-1),
     padding: theme.spacing(0, 1),
     position: 'relative',
-    "&:hover $tutorItemActions": {
+    [`&:hover .${classes.tutorItemActions}`]: {
       visibility: 'visible'
     },
     marginBottom: theme.spacing(1),
@@ -73,13 +74,13 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   },
   wageButtons: {
     marginLeft: theme.spacing(-1),
-    "&:hover $addWage": {
+    [`&:hover .${classes.addWage}`]: {
       display: "flex"
     },
-    "&:hover $noPay": {
+    [`&:hover .${classes.noPay}`]: {
       display: "none"
     },
-    "& $addWage": {
+    [`& .${classes.addWage}`]: {
       display: "none"
     }
   },
@@ -139,7 +140,7 @@ interface Props {
   index: number;
   session: TimetableSession;
   sessionDuration: number;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   expanded: number;
   tutors: CourseClassTutorExtended[];
   budget: ClassCostExtended[];
@@ -168,7 +169,7 @@ const CourseClassTutorRoosterItem = (
     disableExpand
   }: Props
 ) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   
   const tutor = tutors.find(tu => (tutorAttendance.courseClassTutorId && tu.id === tutorAttendance.courseClassTutorId)
     || (tutorAttendance.temporaryTutorId && tu.temporaryId === tutorAttendance.temporaryTutorId));
@@ -186,21 +187,12 @@ const CourseClassTutorRoosterItem = (
     : ""}`;
 
   const onStartChange = newValue => {
-    const startDate = new Date(newValue);
-    const endDate = addMinutes(startDate, sessionDuration);
+    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, differenceInMinutes(new Date(tutorAttendance.end), new Date(newValue))));
 
-    dispatch(
-      change(
-        form,
-        `${fieldsName}.end`,
-        endDate.toISOString()
-      )
-    );
   };
 
   const onEndChange = newValue => {
-    const minutesOffset = differenceInMinutes(new Date(newValue), new Date(tutorAttendance.start)) - differenceInMinutes(new Date(tutorAttendance.end), new Date(tutorAttendance.start));
-    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, tutorAttendance.actualPayableDurationMinutes + minutesOffset));
+    dispatch(change(form, `${fieldsName}.actualPayableDurationMinutes`, differenceInMinutes(new Date(newValue), new Date(tutorAttendance.start))));
   };
 
   const isExpanded = expanded === index;
@@ -214,7 +206,7 @@ const CourseClassTutorRoosterItem = (
   const hasWage = Boolean(budget[wageIndex]);
 
   return (
-    <Card elevation={isExpanded ? 3 : 0} className={classes.tutorItem}>
+    (<Card elevation={isExpanded ? 3 : 0} className={classes.tutorItem}>
       <Grid container columnSpacing={3}>
         <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className={classes.tutorItemLabel} noWrap>
@@ -240,7 +232,7 @@ const CourseClassTutorRoosterItem = (
                   name={`${fieldsName}.attendanceType`}
                   component={RoosterStatuses}
                   payableTime={formatDurationMinutes(tutorAttendance.actualPayableDurationMinutes || sessionDuration)}
-                  className={clsx('hoverIconContainer', classes.statusSelect)}
+                  className={cx('hoverIconContainer', classes.statusSelect)}
                 />
               )
             }
@@ -332,11 +324,11 @@ const CourseClassTutorRoosterItem = (
         </IconButton>
         {!disableExpand && (
           <IconButton size="small" disabled={tutorAttendance.hasPayslip} onClick={() => setExpanded(isExpanded ? null : index)}>
-            <ExpandMore fontSize="inherit" className={clsx(classes.expandIcon, isExpanded && classes.expanded)} />
+            <ExpandMore fontSize="inherit" className={cx(classes.expandIcon, isExpanded && classes.expanded)} />
           </IconButton>
         )}
       </div>
-    </Card>
+    </Card>)
   );
 };
 

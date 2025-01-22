@@ -23,7 +23,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 10",
         "studentNotes":"should be null after creation",
         "studentCount":10,
-        "contactId":3,
+        "contactId":11,
         "courseId":2,
         "tags":[221],
         "sites":[{"id":200}],
@@ -57,8 +57,8 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 10",
         "studentNotes":null,
         "studentCount":10,
-        "contactId":3,
-        "studentName":"stud2",
+        "contactId":11,
+        "studentName":"stud5 ContraInvoice5",
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[221],
@@ -114,7 +114,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 10",
         "studentNotes":null,
         "studentCount":80,
-        "contactId":3,
+        "contactId":11,
         "courseId":2,
         "tags":[221],
         "sites":[{"id":200}],
@@ -148,8 +148,8 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 10",
         "studentNotes":null,
         "studentCount":80,
-        "contactId":3,
-        "studentName":"stud2",
+        "contactId":11,
+        "studentName":"stud5 ContraInvoice5",
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[221],
@@ -214,7 +214,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 10",
         "studentNotes":"should be null after creation",
         "studentCount":81,
-        "contactId":3,
+        "contactId":11,
         "courseId":2,
         "tags":[221],
         "sites":[{"id":200}],
@@ -248,8 +248,8 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 10",
         "studentNotes":null,
         "studentCount":81,
-        "contactId":3,
-        "studentName":"stud2",
+        "contactId":11,
+        "studentName":"stud5 ContraInvoice5",
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[221],
@@ -315,7 +315,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 10",
         "studentNotes":"should be null after creation",
         "studentCount":82,
-        "contactId":3,
+        "contactId":11,
         "courseId":2,
         "tags":[221],
         "sites":[{"id":200}],
@@ -388,7 +388,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
 
     Scenario: (-) Create WaitingList for not existing course
 
-        * def newWaitingList = {"studentCount":4,"courseId":99999,"contactId":3}
+        * def newWaitingList = {"studentCount":4,"courseId":99999,"contactId":11}
 
         Given path ishPath
         And request newWaitingList
@@ -400,7 +400,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
 
     Scenario: (-) Create WaitingList without course
 
-        * def newWaitingList = {"studentCount":4,"courseId":null,"contactId":3}
+        * def newWaitingList = {"studentCount":4,"courseId":null,"contactId":11}
 
         Given path ishPath
         And request newWaitingList
@@ -424,7 +424,7 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 11",
         "studentNotes":null,
         "studentCount":11,
-        "contactId":3,
+        "contactId":11,
         "courseId":2,
         "tags":[221],
         "sites":[{"id":200}],
@@ -458,8 +458,8 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         "privateNotes":"Some notes 11",
         "studentNotes":null,
         "studentCount":11,
-        "contactId":3,
-        "studentName":"stud2",
+        "contactId":11,
+        "studentName":"stud5 ContraInvoice5",
         "courseId":2,
         "courseName":"Course2 course2",
         "tags":[221],
@@ -501,6 +501,81 @@ Feature: Main feature for all POST requests with path 'list/entity/waitingList'
         When method POST
         Then status 403
         And match $.errorMessage == "Sorry, you have no permissions to create waitingList. Please contact your administrator"
+
+
+
+    Scenario: (-) Create WaitingList for existed student-course combination
+
+#       <--->  Login as notadmin
+        * configure headers = { Authorization:  'UserWithRightsCreate'}
+
+
+
+#      <---> Create new entity ang define id:
+        * def newWaitingList =
+        """
+        {
+        "privateNotes":"Some notes 11",
+        "studentNotes":null,
+        "studentCount":11,
+        "contactId":11,
+        "courseId":2,
+        "tags":[221],
+        "sites":[{"id":200}],
+        "customFields":{}
+        }
+        """
+
+        Given path ishPath
+        And request newWaitingList
+        When method POST
+        Then status 204
+
+
+
+#      <---> Create new entity ang define id:
+        * def newWaitingList =
+        """
+        {
+        "privateNotes":"Some notes 11",
+        "studentNotes":null,
+        "studentCount":11,
+        "contactId":11,
+        "courseId":2,
+        "tags":[221],
+        "sites":[{"id":200}],
+        "customFields":{}
+        }
+        """
+
+        Given path ishPath
+        And request newWaitingList
+        When method POST
+        Then status 400
+        And match $.errorMessage == "Waiting list for this student and course already exists!"
+
+#       <--->  Scenario have been finished. Now find and remove created object from DB:
+        * configure headers = { Authorization: 'admin'}
+
+        Given path ishPathPlain
+        And param entity = 'WaitingList'
+        And param columns = 'studentCount'
+        When method GET
+        Then status 200
+
+        * def id = get[0] response.rows[?(@.values == ["11"])].id
+        * print "id = " + id
+
+
+
+        * def deleteRequest =
+        """
+        {"ids": [#(id)],"search": "","filter": "","tagGroups": []}
+        """
+        Given path ishPathDelete
+        And request deleteRequest
+        When method POST
+        Then status 204
 
 
 

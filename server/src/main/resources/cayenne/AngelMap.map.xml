@@ -368,6 +368,7 @@
 	</db-entity>
 	<db-entity name="Course">
 		<db-attribute name="allowWaitingLists" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="attainmentText" type="VARCHAR" length="128"/>
 		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="currentlyOffered" type="SMALLINT" isMandatory="true"/>
@@ -389,6 +390,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="feeHelpClass" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="fullTimeLoad" type="VARCHAR" length="10"/>
+		<db-attribute name="facultyId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="CourseClass">
 		<db-attribute name="attendanceType" type="INTEGER" isMandatory="true"/>
@@ -436,6 +438,8 @@
 		<db-attribute name="webDescription" type="CLOB" length="32000"/>
 		<db-attribute name="minimumSessionsToComplete" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="portalDocAccessStart" type="TIMESTAMP"/>
+		<db-attribute name="portalDocAccessEnd" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="CourseClassPaymentPlanLine">
 		<db-attribute name="amount" type="DECIMAL" isMandatory="true" length="10" scale="2"/>
@@ -718,6 +722,7 @@
 		<db-attribute name="willowId" type="BIGINT"/>
 		<db-attribute name="relatedFieldId" type="BIGINT"/>
 		<db-attribute name="relatedFieldValue" type="CLOB" length="32000"/>
+		<db-attribute name="validationType" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="FieldConfiguration">
 		<db-attribute name="createdById" type="BIGINT"/>
@@ -960,6 +965,8 @@
 	<db-entity name="Module">
 		<db-attribute name="createdOn" type="TIMESTAMP"/>
 		<db-attribute name="creditPoints" type="DECIMAL" length="10" scale="2"/>
+		<db-attribute name="isCreditPointsShownOnWeb" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="isCreditPointsOffered" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="defaultQualificationId" type="BIGINT"/>
 		<db-attribute name="expiryDays" type="BIGINT"/>
 		<db-attribute name="fieldOfEducation" type="VARCHAR" length="8"/>
@@ -994,6 +1001,7 @@
 		<db-attribute name="nodeType" type="SMALLINT" isMandatory="true"/>
 		<db-attribute name="parentId" type="BIGINT"/>
 		<db-attribute name="shortName" type="VARCHAR" length="128"/>
+		<db-attribute name="shortWebDescription" type="CLOB" length="32000"/>
 		<db-attribute name="specialType" type="SMALLINT"/>
 		<db-attribute name="weight" type="INTEGER"/>
 		<db-attribute name="willowId" type="BIGINT"/>
@@ -1343,6 +1351,7 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="150"/>
 		<db-attribute name="seatedCapacity" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="siteId" type="BIGINT" isMandatory="true"/>
+		<db-attribute name="virtualRoomUrl" type="VARCHAR" length="128"/>
 		<db-attribute name="willowId" type="BIGINT"/>
 	</db-entity>
 	<db-entity name="SavedFind">
@@ -1354,6 +1363,14 @@
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="500"/>
 		<db-attribute name="systemUserId" type="BIGINT"/>
 		<db-attribute name="tableName" type="VARCHAR" isMandatory="true" length="100"/>
+	</db-entity>
+	<db-entity name="Settings">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="19"/>
+		<db-attribute name="willowId" type="BIGINT" isMandatory="true" length="19"/>
+		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" length="128" isMandatory="true"/>
+		<db-attribute name="value" type="LONGVARCHAR" length="32000" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="Script">
 		<db-attribute name="category" type="VARCHAR" length="255"/>
@@ -1625,6 +1642,17 @@
 		<db-attribute name="siteId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="waitingListId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="willowId" type="BIGINT"/>
+	</db-entity>
+	<db-entity name="Faculty">
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="willowId" type="BIGINT"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="webDescription" type="CLOB" length="32000"/>
+		<db-attribute name="shortWebDescription" type="CLOB" length="32000"/>
+		<db-attribute name="isShownOnWeb" type="SMALLINT" isMandatory="true"/>
+		<db-attribute name="createdOn" type="TIMESTAMP"/>
+		<db-attribute name="modifiedOn" type="TIMESTAMP"/>
 	</db-entity>
 	<obj-entity name="ACLAccessKey" className="ish.oncourse.server.cayenne.ACLAccessKey" clientClassName="ish.oncourse.cayenne.ACLAccessKey" dbEntityName="ACLAccessKey" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2080,6 +2108,7 @@
 	</obj-entity>
 	<obj-entity name="Course" className="ish.oncourse.server.cayenne.Course" clientClassName="ish.oncourse.cayenne.Course" dbEntityName="Course" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
 		<obj-attribute name="allowWaitingLists" type="java.lang.Boolean" db-attribute-path="allowWaitingLists"/>
+		<obj-attribute name="attainmentText" type="java.lang.String" db-attribute-path="attainmentText"/>
 		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="currentlyOffered" type="java.lang.Boolean" db-attribute-path="currentlyOffered"/>
@@ -2144,6 +2173,8 @@
 		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
 		<obj-attribute name="minimumSessionsToComplete" type="java.lang.Integer" db-attribute-path="minimumSessionsToComplete"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="portalDocAccessStart" type="java.util.Date" db-attribute-path="portalDocAccessStart"/>
+		<obj-attribute name="portalDocAccessEnd" type="java.util.Date" db-attribute-path="portalDocAccessEnd"/>
 	</obj-entity>
 	<obj-entity name="CourseClassAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.CourseClassAttachmentRelation" clientClassName="ish.oncourse.cayenne.CourseClassAttachmentRelation">
 		<qualifier><![CDATA[entityIdentifier = "CourseClass"]]></qualifier>
@@ -2440,6 +2471,7 @@
 		<obj-attribute name="property" type="java.lang.String" db-attribute-path="property"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 		<obj-attribute name="relatedFieldValue" type="java.lang.String" db-attribute-path="relatedFieldValue"/>
+		<obj-attribute name="validationType" type="ish.common.types.FieldValidationType" db-attribute-path="validationType"/>
 	</obj-entity>
 	<obj-entity name="FieldConfiguration" abstract="true" className="ish.oncourse.server.cayenne.FieldConfiguration" clientClassName="ish.oncourse.cayenne.FieldConfiguration" dbEntityName="FieldConfiguration" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -2653,6 +2685,8 @@
 	<obj-entity name="Module" className="ish.oncourse.server.cayenne.Module" clientClassName="ish.oncourse.cayenne.Module" dbEntityName="Module" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
 		<obj-attribute name="creditPoints" type="java.math.BigDecimal" db-attribute-path="creditPoints"/>
+		<obj-attribute name="isCreditPointsShownOnWeb" type="java.lang.Boolean" db-attribute-path="isCreditPointsShownOnWeb"/>
+		<obj-attribute name="isCreditPointsOffered" type="java.lang.Boolean" db-attribute-path="isCreditPointsOffered"/>
 		<obj-attribute name="expiryDays" type="java.lang.Integer" db-attribute-path="expiryDays"/>
 		<obj-attribute name="fieldOfEducation" type="java.lang.String" db-attribute-path="fieldOfEducation"/>
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
@@ -2946,6 +2980,7 @@
 		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="virtualRoomUrl" type="java.lang.String" db-attribute-path="virtualRoomUrl"/>
 		<obj-attribute name="seatedCapacity" type="java.lang.Integer" db-attribute-path="seatedCapacity"/>
 		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
 	</obj-entity>
@@ -2984,6 +3019,14 @@
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="tableName" type="java.lang.String" db-attribute-path="tableName"/>
+	</obj-entity>
+	<obj-entity name="Settings" className="ish.oncourse.server.cayenne.Settings" dbEntityName="Settings" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="value"/>
 	</obj-entity>
 	<obj-entity name="Script" className="ish.oncourse.server.cayenne.Script" clientClassName="ish.oncourse.cayenne.Script" dbEntityName="Script" superClassName="ish.oncourse.server.cayenne.glue.CayenneDataObject" clientSuperClassName="ish.oncourse.cayenne.glue.PersistentObject">
 		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
@@ -3175,6 +3218,7 @@
 		<obj-attribute name="isWebVisible" type="java.lang.Boolean" db-attribute-path="isWebVisible"/>
 		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="shortWebDescription" type="java.lang.String" db-attribute-path="shortWebDescription"/>
 		<obj-attribute name="nodeType" type="ish.common.types.NodeType" db-attribute-path="nodeType"/>
 		<obj-attribute name="shortName" type="java.lang.String" db-attribute-path="shortName"/>
 		<obj-attribute name="specialType" type="ish.common.types.NodeSpecialType" db-attribute-path="specialType"/>
@@ -3342,6 +3386,26 @@
 	</obj-entity>
 	<obj-entity name="WaitingListTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.WaitingListTagRelation" clientClassName="ish.oncourse.cayenne.WaitingListTagRelation">
 		<qualifier><![CDATA[entityIdentifier = 16]]></qualifier>
+	</obj-entity>
+	<obj-entity name="Faculty" className="ish.oncourse.server.cayenne.Faculty" clientClassName="ish.oncourse.cayenne.Faculty" dbEntityName="Faculty" superClassName="ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject">
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="willowId" type="java.lang.Long" db-attribute-path="willowId"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
+		<obj-attribute name="webDescription" type="java.lang.String" db-attribute-path="webDescription"/>
+		<obj-attribute name="shortWebDescription" type="java.lang.String" db-attribute-path="shortWebDescription"/>
+		<obj-attribute name="isShownOnWeb" type="java.lang.Boolean" db-attribute-path="isShownOnWeb"/>
+		<obj-attribute name="createdOn" type="java.util.Date" db-attribute-path="createdOn"/>
+		<obj-attribute name="modifiedOn" type="java.util.Date" db-attribute-path="modifiedOn"/>
+	</obj-entity>
+	<obj-entity name="FacultyAttachmentRelation" superEntityName="AttachmentRelation" className="ish.oncourse.server.cayenne.FacultyAttachmentRelation" clientClassName="ish.oncourse.cayenne.FacultyAttachmentRelation">
+		<qualifier><![CDATA[entityIdentifier = "Faculty"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="FacultyNoteRelation" superEntityName="NoteRelation" className="ish.oncourse.server.cayenne.FacultyNoteRelation" clientClassName="ish.oncourse.cayenne.FacultyNoteRelation">
+		<qualifier><![CDATA[entityIdentifier = "Faculty"]]></qualifier>
+	</obj-entity>
+	<obj-entity name="FacultyTagRelation" superEntityName="TagRelation" className="ish.oncourse.server.cayenne.FacultyTagRelation" clientClassName="ish.oncourse.cayenne.FacultyTagRelation">
+		<qualifier><![CDATA[entityIdentifier = 27]]></qualifier>
 	</obj-entity>
 	<db-relationship name="role" source="ACLAccessKey" target="ACLRole">
 		<db-attribute-pair source="role_id" target="id"/>
@@ -3693,6 +3757,9 @@
 	</db-relationship>
 	<db-relationship name="abandonedCarts" source="Contact" target="Checkout" toMany="true">
 		<db-attribute-pair source="id" target="payerId"/>
+	</db-relationship>
+	<db-relationship name="checkoutRelations" source="Contact" target="CheckoutContactRelation" toMany="true">
+		<db-attribute-pair source="id" target="contactId"/>
 	</db-relationship>
 	<db-relationship name="attachmentRelations" source="Product" target="BinaryRelation" toMany="true">
 		<db-attribute-pair source="id" target="entityRecordId"/>
@@ -5134,6 +5201,30 @@
 	<db-relationship name="waitingList" source="WaitingList_Site" target="WaitingList">
 		<db-attribute-pair source="waitingListId" target="id"/>
 	</db-relationship>
+	<db-relationship name="faculty" source="Course" target="Faculty">
+		<db-attribute-pair source="facultyId" target="id"/>
+	</db-relationship>
+	<db-relationship name="courses" source="Faculty" target="Course" toMany="true">
+		<db-attribute-pair source="id" target="facultyId"/>
+	</db-relationship>
+	<db-relationship name="attachedFaculty" source="BinaryRelation" target="Faculty">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="attachmentRelations" source="Faculty" target="BinaryRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="notedFaculty" source="NoteRelation" target="Faculty">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="noteRelations" source="Faculty" target="NoteRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
+	<db-relationship name="taggedFaculty" source="NodeRelation" target="Faculty">
+		<db-attribute-pair source="entityRecordId" target="id"/>
+	</db-relationship>
+	<db-relationship name="taggingRelations" source="Faculty" target="NodeRelation" toMany="true">
+		<db-attribute-pair source="id" target="entityRecordId"/>
+	</db-relationship>
 	<obj-relationship name="role" source="ACLAccessKey" target="ACLRole" deleteRule="Nullify" db-relationship-path="role"/>
 	<obj-relationship name="accessKeys" source="ACLRole" target="ACLAccessKey" deleteRule="Cascade" db-relationship-path="accessKeys"/>
 	<obj-relationship name="systemUsers" source="ACLRole" target="SystemUser" deleteRule="Deny" db-relationship-path="role_user_om.user_fk"/>
@@ -5245,6 +5336,7 @@
 	<obj-relationship name="studentConcessions" source="ConcessionType" target="StudentConcession" deleteRule="Deny" db-relationship-path="concessionType_studentConcessions"/>
 	<obj-relationship name="attachmentRelations" source="Contact" target="ContactAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="abandonedCarts" source="Contact" target="Checkout" deleteRule="Cascade" db-relationship-path="abandonedCarts"/>
+	<obj-relationship name="checkoutRelations" source="Contact" target="CheckoutContactRelation" deleteRule="Cascade" db-relationship-path="checkoutRelations"/>
 	<obj-relationship name="attachmentRelations" source="VoucherProduct" target="VoucherProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="ArticleProduct" target="ArticleProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
 	<obj-relationship name="attachmentRelations" source="MembershipProduct" target="MembershipProductAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
@@ -5795,6 +5887,14 @@
 	<obj-relationship name="site" source="WaitingListSite" target="Site" deleteRule="Nullify" db-relationship-path="site"/>
 	<obj-relationship name="waitingList" source="WaitingListSite" target="WaitingList" deleteRule="Nullify" db-relationship-path="waitingList"/>
 	<obj-relationship name="taggedWaitingList" source="WaitingListTagRelation" target="WaitingList" deleteRule="Nullify" db-relationship-path="taggedWaitingList"/>
+	<obj-relationship name="faculty" source="Course" target="Faculty" deleteRule="Nullify" db-relationship-path="faculty"/>
+	<obj-relationship name="courses" source="Faculty" target="Course" deleteRule="Nullify" db-relationship-path="courses"/>
+	<obj-relationship name="attachedFaculty" source="FacultyAttachmentRelation" target="Faculty" deleteRule="Nullify" db-relationship-path="attachedFaculty"/>
+	<obj-relationship name="attachmentRelations" source="Faculty" target="FacultyAttachmentRelation" deleteRule="Cascade" db-relationship-path="attachmentRelations"/>
+	<obj-relationship name="notedFaculty" source="FacultyNoteRelation" target="Faculty" deleteRule="Nullify" db-relationship-path="notedFaculty"/>
+	<obj-relationship name="noteRelations" source="Faculty" target="FacultyNoteRelation" deleteRule="Cascade" db-relationship-path="noteRelations"/>
+	<obj-relationship name="taggedFaculty" source="FacultyTagRelation" target="Faculty" deleteRule="Nullify" db-relationship-path="taggedFaculty"/>
+	<obj-relationship name="taggingRelations" source="Faculty" target="FacultyTagRelation" deleteRule="Cascade" db-relationship-path="taggingRelations"/>
 	<query name="CurrentCourses" type="SQLTemplate" root="obj-entity" root-name="Course">
 		<property name="cayenne.GenericSelectQuery.fetchingDataRows" value="false"/>
 		<sql><![CDATA[SELECT $select FROM Course join CourseClass on (Course.id = CourseClass.courseId) where ((courseclass.enddatetime > current_timestamp or courseclass.enddatetime is null) AND ($param)) $orderBy]]></sql>

@@ -1,0 +1,103 @@
+get:
+  description: Returns faculty record
+  operationId: get
+  tags:
+    - Faculty
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of faculty record to fetch
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/faculty/Faculty.yaml'
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: FACULTY
+    errorMessage: Sorry, you have no permissions to get faculty. Please contact your administrator
+
+post:
+  operationId: create
+  tags:
+    - Faculty
+  parameters:
+    - name: faculty
+      in: body
+      description: faculty for create
+      required: true
+      schema:
+        $ref: './def/entity/faculty/Faculty.yaml'
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: integer
+        format: int64
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: FACULTY
+    errorMessage: Sorry, you have no permissions to create faculty. Please contact your administrator
+
+put:
+  operationId: update
+  tags:
+    - Faculty
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of faculty record to fetch
+    - name: course
+      in: body
+      schema:
+        $ref: './def/entity/faculty/Faculty.yaml'
+      required: true
+      description: course for update
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: edit
+    keyCode: FACULTY
+    errorMessage: Sorry, you have no permissions to edit faculty. Please contact your administrator
+
+delete:
+  operationId: remove
+  tags:
+    - Faculty
+  parameters:
+    - name: id
+      in: path
+      type: integer
+      format: int64
+      required: true
+      description: Unique identifier of course record to fetch
+  responses:
+    '204':
+      description: Success response.
+    '400':
+      description: Bad request error.
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: delete
+    keyCode: FACULTY
+    errorMessage: Sorry, you have no permissions to delete faculty. Please contact your administrator

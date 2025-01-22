@@ -19,6 +19,7 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
 import RelationsCommon from "../../common/components/RelationsCommon";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
@@ -65,6 +66,8 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
     twoColumn, accounts, isNew, taxes, showConfirm, tags, values, dispatch, form, syncErrors, submitSucceeded, rootEntity, dataCollectionRules
   } = props;
+
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   const gridItemProps = {
     xs: twoColumn ? 6 : 12,
@@ -126,8 +129,11 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
         />
+
+        {subjectsField}
       </Grid>
 
       <Grid item {...gridItemProps}>

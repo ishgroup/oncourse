@@ -3,25 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Sale } from "@api/model";
-import { FormControlLabel, Typography } from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import { normalizeNumber } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
+import { Sale } from '@api/model';
+import { FormControlLabel, Typography } from '@mui/material';
+import { normalizeNumber } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { validateNonNegative, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { State } from "../../../../reducers/state";
-import { mapPlainDiscountClasses } from "../utils";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
+import { validateNonNegative, validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { State } from '../../../../reducers/state';
+import { mapPlainDiscountClasses } from '../utils';
 
 /**
  * @param sale
@@ -35,7 +35,7 @@ const courseClassToNestedListItem = (sale: Sale): NestedListItem => ({
   active: sale.active
 });
 
-const styles = createStyles(() => ({
+const styles = (() => ({
   dataRowClass: {
     gridTemplateColumns: "1fr 0.5fr"
   }
@@ -112,6 +112,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
         />
         <Typography color="inherit" component="div" noWrap>
           Require at least
+          {" "}
           <FormField
             type="number"
             name="minEnrolments"
@@ -120,16 +121,19 @@ class DiscountClasses extends React.PureComponent<any, any> {
             parse={normalizeNumber}
             debounced={false}
           />
+          {" "}
           enrolments on one invoice from the classes above
         </Typography>
         <Typography color="inherit" component="div" noWrap>
           Require at least
+          {" "}
           <FormField
             type="money"
             name="minValue"
             inline
             validate={[validateSingleMandatoryField, validateNonNegative]}
           />
+          {" "}
           on one invoice
         </Typography>
       </div>
@@ -151,4 +155,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearDiscountClasses: (pending: boolean) => dispatch(clearCommonPlainRecords("CourseClass", pending))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DiscountClasses));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(DiscountClasses, styles));

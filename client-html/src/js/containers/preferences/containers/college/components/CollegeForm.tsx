@@ -19,7 +19,7 @@ import * as Model from "../../../../../model/preferences/College";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
-const manualUrl = getManualLink("generalPrefs_college");
+const manualUrl = getManualLink("setting-your-general-preferences#college");
 
 class CollegeBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;

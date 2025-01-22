@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Button, FormControlLabel, Grid } from "@mui/material";
-import { makeAppStyles, NumberArgFunction } from "ish-ui";
-import React from "react";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { cardsFormStyles } from "../styles/formCommonStyles";
+import { Button, FormControlLabel, Grid } from '@mui/material';
+import { makeAppStyles, NumberArgFunction } from 'ish-ui';
+import React from 'react';
+import FormField from '../../../common/components/form/formFields/FormField';
+import { validateUniqueNamesInArray } from '../../../common/utils/validation';
+import { cardsFormStyles } from '../styles/formCommonStyles';
 
 interface SpecialTagTypeProps {
   index: number;
@@ -18,10 +19,10 @@ interface SpecialTagTypeProps {
   disabled?: boolean;
 }
 
-const useStyles = makeAppStyles(cardsFormStyles);
+const useStyles = makeAppStyles()(cardsFormStyles as any);
 
 function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
-  const classes = useStyles();
+  const { classes }: any = useStyles();
   return (
     <Grid container columnSpacing={3} id={`special-tag-type-${index}`} className="relative">
       <Grid item xs={6}>
@@ -31,6 +32,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
           label="Name"
           className={classes.field}
           disabled={disabled}
+          validate={validateUniqueNamesInArray}
           required
         />
       </Grid>
@@ -47,7 +49,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
               parse={v => (v ? "Show on website" : "Private")}
               debounced={false}
             />}
-            label="Is wisible on web"
+            label="Visible on web"
             labelPlacement="start"
           />
           <div>

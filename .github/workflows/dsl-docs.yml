@@ -1,0 +1,40 @@
+name: Sync DSL docs with readme.com
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 11
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: 11-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: 11-
+
+      - name: Build docs
+        run: ./gradlew clean server:dslDocs
+
+      - name: Run `docs` command 🚀
+        uses: readmeio/rdme@v8
+        with:
+          rdme: docs server/build/distributions/dsldoc/section --key=${{ secrets.README_API_KEY }} --version=1.0

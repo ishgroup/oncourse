@@ -6,21 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { CourseClassTutor, SessionWarning } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Edit from "@mui/icons-material/Edit";
-import FileCopyOutlined from "@mui/icons-material/FileCopyOutlined";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import IconButton from "@mui/material/IconButton";
-import clsx from "clsx";
-import React, { useMemo } from "react";
-import { Dispatch } from "redux";
-import ExpandableItem from "../../../../../common/components/layout/expandable/ExpandableItem";
-import { ClassCostExtended } from "../../../../../model/entities/CourseClass";
-import { TimetableSession } from "../../../../../model/timetable";
-import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
-import CourseClassSessionFields from "./CourseClassSessionFields";
+import { CourseClassTutor, SessionWarning } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Edit from '@mui/icons-material/Edit';
+import FileCopyOutlined from '@mui/icons-material/FileCopyOutlined';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import React, { useMemo } from 'react';
+import { Dispatch } from 'redux';
+import { IAction } from '../../../../../common/actions/IshAction';
+import ExpandableItem from '../../../../../common/components/layout/expandable/ExpandableItem';
+import { ClassCostExtended } from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
+import CalendarSession from '../../../../timetable/components/calendar/components/session/CalendarSession';
+import CourseClassSessionFields from './CourseClassSessionFields';
 
 interface Props {
   expanded: number;
@@ -30,7 +31,7 @@ interface Props {
   onCopyHandler: any;
   classes: any;
   tutors: CourseClassTutor[];
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   form: string;
   triggerDebounseUpdate: any;
   selectSessionItem: (s: any) => void;

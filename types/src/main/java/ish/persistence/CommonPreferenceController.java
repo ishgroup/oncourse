@@ -178,6 +178,38 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
+	public  String getPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test client key is not configured");
+		}
+		return apiKey;
+	}
+
 	/**
 	 * @return payment gateway type (EWAY, EWAY_TEST, WINDCAVE, TEST, DISABLED)
 	 */
@@ -1221,6 +1253,8 @@ public abstract class CommonPreferenceController {
 			setBackgroundQualityScale((String) value);
 		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
 			setDefaultInvoiceLineAccount((Long) value);
+		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
+			setExtendedTypesAllowed((Boolean) value);
 		}
 	}
 
@@ -1445,5 +1479,20 @@ public abstract class CommonPreferenceController {
 
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
+	}
+
+
+
+	public String getChargebeeSubscriptionId() {
+		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
+	}
+
+	public String getChargebeeAllowedAddons() {
+		return getValue(CHARGEBEE_ALLOWED_ADDONS, false);
+	}
+
+	public Boolean ifCollegeActive() {
+		String value = getValue(COLLEGE_ACTIVE, false);
+		return value == null || Boolean.parseBoolean(value);
 	}
 }

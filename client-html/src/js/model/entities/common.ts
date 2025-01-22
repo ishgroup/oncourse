@@ -1,10 +1,6 @@
 import { StringValueType } from "ish-ui";
 import { stringLiterals } from "../../common/utils/stringLiteral";
 
-export interface SelectItemDefault {
-  value?: any;
-  label?: string;
-}
 
 export interface FindEntityAql {
   AQL: string;
@@ -70,6 +66,7 @@ export const ENTITIES = stringLiterals(
   "Tag",
   "Tutor",
   "TutorAttendance",
+  "Faculty",
   "Voucher",
   "VoucherProduct",
   "WaitingList"

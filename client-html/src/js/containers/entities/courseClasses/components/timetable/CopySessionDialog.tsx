@@ -3,24 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@mui/material/Button";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import { normalizeNumberToPositive } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { getFormValues, reduxForm } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems } from "../../../../../common/utils/common";
-import { SessionRepeatTypes } from "../../../../../model/entities/CourseClass";
+import Button from '@mui/material/Button';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import Typography from '@mui/material/Typography';
+import { mapSelectItems, normalizeNumberToPositive } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { SessionRepeatTypes } from '../../../../../model/entities/CourseClass';
 
-const styles = createStyles(theme => ({
+const styles = (theme => ({
   popper: {
     zIndex: theme.zIndex.modal
   },
@@ -153,5 +152,5 @@ export default reduxForm<any, any>({
       values: getFormValues("CopySessionForm")(state)
     }),
     null
-  )(withStyles(styles)(CopySessionDialogBase))
+  )(withStyles(CopySessionDialogBase, styles))
 );

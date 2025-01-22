@@ -12,7 +12,7 @@
 package ish.oncourse.server.scripting
 
 import com.google.inject.Injector
-import groovy.transform.CompileStatic
+import groovy.transform.CompileDynamic
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.Plugin
@@ -23,11 +23,12 @@ import org.apache.logging.log4j.Logger
 /**
  *
  */
-@CompileStatic
+@CompileDynamic
 class ScriptClosureFactory {
 
     public ICayenneService cayenneService
     public Injector injector
+
 
     void setSpecClass(Class<? extends ScriptClosureTrait> specClass) {
         this.specClass = specClass
@@ -48,10 +49,12 @@ class ScriptClosureFactory {
         build.resolveStrategy = Closure.DELEGATE_FIRST
         build()
 
+        def loggedInUser = cl.owner."loggedInUser"
+
         List<Object> result = new ArrayList<>()
         getIntegrationConfiguration(spec, this.type).each {integrationConfig ->
             def i = integrationClass.newInstance(injector:injector,
-                    configuration: integrationConfig)
+                    configuration: integrationConfig, loggedInUser: loggedInUser)
             try {
                 Object closureResult = spec.execute(i)
                 if (closureResult) {

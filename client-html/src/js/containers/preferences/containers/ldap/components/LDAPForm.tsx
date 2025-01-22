@@ -24,7 +24,7 @@ import * as Model from "../../../../../model/preferences/Ldap";
 import { State } from "../../../../../reducers/state";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
-const manualUrl = getManualLink("generalPrefs_ldap");
+const manualUrl = getManualLink("setting-your-general-preferences#ldap");
 
 class LDAPBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;

@@ -5,7 +5,6 @@
 
 import { Tag } from "@api/model";
 import { FormErrors } from "redux-form";
-import { getDeepValue } from "../common";
 
 export * from "./emailsValidation";
 export * from "./urlValidation";
@@ -32,7 +31,7 @@ export const validateTagsList = (tags: Tag[], value, allValues, props, rootEntit
     const match = t.requirements.filter(r => (r.type === (rootEntity || props.rootEntity)) && (r.mandatory || r.limitToOneTag));
 
     if (match.length) {
-      rootTagsWithRequirements[t.id] = {name: t.name, requirements: match[0]};
+      rootTagsWithRequirements[t.id] = { name: t.name, requirements: match[0] };
     }
   });
 
@@ -67,38 +66,21 @@ export const validateTagsList = (tags: Tag[], value, allValues, props, rootEntit
   return error;
 };
 
-export const getFirstErrorNodePath = (errors: FormErrors, deepObj?: any, path?: string): string => {
-  if (!errors) {
-    return path;
+const toDeepPath = (key: string) => isNaN(parseInt(key)) ? `.${key}` : `[${key}]`;
+
+export function getFirstErrorNodePath(errors: FormErrors, path = '') {
+  for (const key in errors) {
+    if (key === '_error') return path;
+    path = path ? path + toDeepPath(key) : key;
+    switch (typeof errors[key]) {
+      case "string":
+        return path;
+      case "object":
+        return getFirstErrorNodePath(errors[key], path);
+    }
   }
-
-  const targetObj = deepObj || errors;
-  let firstKeyIndex = 0;
-  let key;
-  let numberKey = false;
-
-  if (Array.isArray(targetObj)) {
-    firstKeyIndex = targetObj.findIndex(t => t);
-    key = firstKeyIndex;
-  } else {
-    key = Object.keys(targetObj)[firstKeyIndex];
-  }
-
-  if (!isNaN(Number(key))) {
-    key = `[${key}]`;
-    numberKey = true;
-  }
-
-  path = (path ? numberKey ? path : `${path}.` : "") + key;
-
-  const value = getDeepValue(errors, path);
-
-  if (typeof value === "object") {
-    return getFirstErrorNodePath(errors, value, path);
-  }
-
-  return path?.replace("._error", "");
-};
+  return path;
+}
 
 export const validateRegex = pattern => {
   if (!pattern) return undefined;

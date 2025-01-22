@@ -6,27 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { GradingEntryType, GradingType } from "@api/model";
-import { Button, Card, Collapse, Grid } from "@mui/material";
-import { makeAppStyles, normalizeNumber } from "ish-ui";
-import React from "react";
-import { Dispatch } from "redux";
-import { change, FieldArray, WrappedFieldArrayProps } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
-import GradingItemsRenderer from "./GradingItemsRenderer";
+import { GradingEntryType, GradingType } from '@api/model';
+import { Button, Card, Collapse, Grid } from '@mui/material';
+import { makeAppStyles, normalizeNumber } from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { change, FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateUniqueNamesInArray } from '../../../../../common/utils/validation';
+import GradingItemsRenderer from './GradingItemsRenderer';
 
 interface Props {
   classes?: any;
   onDelete?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const GradingEntryTypes = Object.keys(GradingEntryType)
   // @ts-ignore
   .map(value => ({ value, label: value === "name" ? "Choice list" : value.capitalize() }));
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   delete: {
     position: "absolute",
     color: theme.palette.error.main,
@@ -44,7 +45,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
     fields, meta: { form }, onDelete, dispatch
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onTypeChange = (type, item) => {
     dispatch(change(form, `${item}.gradingItems`, []));

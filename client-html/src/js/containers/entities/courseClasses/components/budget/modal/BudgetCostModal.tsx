@@ -4,15 +4,13 @@
  */
 
 import { Account, ClassCostRepetitionType, Tax } from "@api/model";
+import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+import { mapSelectItems } from "ish-ui";
 import React, { useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import { getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
-import { mapSelectItems } from "../../../../../../common/utils/common";
 import { valiadateSelectItemAvailable } from "../../../../../../common/utils/validation";
 import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/entities/CourseClass";
 import { State } from "../../../../../../reducers/state";

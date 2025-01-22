@@ -26,7 +26,7 @@ import * as Model from "../../../../../model/preferences/Avetmiss";
 import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
-const manualUrl = getManualLink("generalPrefs_avetmiss");
+const manualUrl = getManualLink("setting-your-general-preferences#avetmiss");
 
 class AvetmissBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;
