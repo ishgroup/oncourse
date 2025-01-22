@@ -11,6 +11,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
 import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
 import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
 import { CheckoutDiscount, CheckoutSummary } from '../../../../../model/checkout';
@@ -55,7 +56,7 @@ interface Props {
   selectedDiscount?: CheckoutDiscount;
   currencySymbol?: string;
   summary?: CheckoutSummary;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const VoucherView: React.FC<Props> = props => {
@@ -285,7 +286,7 @@ const mapStateToProps = (state: State) => ({
   summary: state.checkout.summary
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch
 });
 

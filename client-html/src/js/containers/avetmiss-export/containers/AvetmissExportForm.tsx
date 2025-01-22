@@ -36,6 +36,7 @@ import { Dispatch } from 'redux';
 import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
 import { interruptProcess } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
 import FormField from '../../../common/components/form/formFields/FormField';
 import AppBarContainer from '../../../common/components/layout/AppBarContainer';
 import { getManualLink } from '../../../common/utils/getManualLink';
@@ -311,7 +312,7 @@ interface Props {
   values?: any;
   enrolmentsCount?: number;
   data?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   classes?: any;
   outcomes?: any;
   exportID?: string;

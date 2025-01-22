@@ -18,12 +18,15 @@ import static ish.oncourse.server.services.chargebee.ChargebeeQueryUtils.TOTAL_C
 import static ish.oncourse.server.util.DbConnectionUtils.getBigDecimalForDbQuery
 
 class TotalCreditCountProperty extends ChargebeePropertyProcessor{
-    TotalCreditCountProperty(Date startDate, Date endDate) {
+    private DataSource dataSource
+
+    TotalCreditCountProperty(Date startDate, Date endDate, DataSource dataSource) {
         super(startDate, endDate)
+        this.dataSource = dataSource
     }
 
     @Override
-    BigDecimal getValue(DataSource dataSource) {
+    BigDecimal getValue() {
         String paymentsInQuery = String.format(TOTAL_CREDIT_PAYMENT_COUNT_QUERY_FORMAT, PaymentIn.simpleName, formattedStartDate, formattedEndDate)
         def paymentsInTotal = getBigDecimalForDbQuery(paymentsInQuery, dataSource)
 

@@ -1,9 +1,6 @@
-import * as React from "react";
-import {
-  render as testRender, screen as testScreen, fireEvent as testFireEvent, act
-} from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { mockedAPI, TestEntry } from "../TestEntry";
+import { act, fireEvent as testFireEvent, render as testRender, screen as testScreen } from '@testing-library/react';
+import * as React from 'react';
+import { mockedAPI, TestEntry } from '../TestEntry';
 
 interface Props {
   entity: string;

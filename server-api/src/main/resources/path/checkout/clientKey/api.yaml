@@ -1,0 +1,16 @@
+get:
+  operationId: getClientKey
+  description: Get client key for embedded form payment systems
+  tags:
+    - Checkout
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: string
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to view checkout. Please contact your administrator
