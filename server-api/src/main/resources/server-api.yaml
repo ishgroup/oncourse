@@ -35,8 +35,10 @@ tags:
 paths:
   /access:
     $ref: './path/access/api.yml'
-  /checkout:
-    $ref: './path/checkout/api.yaml'
+  /checkout/createSession:
+    $ref: './path/checkout/createSession/api.yaml'
+  /checkout/submit:
+    $ref: './path/checkout/submit/api.yaml'
   /checkout/status:
     $ref: './path/checkout/status/api.yaml'
   /checkout/discount:

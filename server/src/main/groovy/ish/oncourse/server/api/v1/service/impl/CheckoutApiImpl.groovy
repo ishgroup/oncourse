@@ -68,6 +68,11 @@ class CheckoutApiImpl implements CheckoutApi {
     DiscountApiService discountApiService
 
     @Override
+    CheckoutResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin) {
+        return checkoutApiService.createSession(checkoutModel, xorigin)
+    }
+
+    @Override
     CartIdsDTO getCartDataIds(Long checkoutId) {
         def checkout = SelectById.query(Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
         return CartFunctions.toRestCartIds(checkout)
@@ -206,8 +211,8 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    CheckoutResponseDTO submit(CheckoutModelDTO checkoutModel, Boolean xValidateOnly, String xPaymentSessionId, String xOrigin ) {
-        return checkoutApiService.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin)
+    void submit(String xPaymentSessionId) {
+        checkoutApiService.submitPayment(xPaymentSessionId)
     }
 
 }

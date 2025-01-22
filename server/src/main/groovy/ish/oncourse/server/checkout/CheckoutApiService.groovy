@@ -8,7 +8,6 @@
 
 package ish.oncourse.server.checkout
 
-
 import com.google.inject.Inject
 import com.google.inject.Injector
 import ish.common.checkout.gateway.PaymentGatewayError
@@ -25,6 +24,7 @@ import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.service.*
+import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.api.v1.model.CheckoutModelDTO
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
@@ -148,9 +148,7 @@ class CheckoutApiService {
         return dtoResponse
     }
 
-    CheckoutResponseDTO submitPayment(String xPaymentSessionId) {
-        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
-
+    void submitPayment(String xPaymentSessionId) {
         paymentService = getPaymentServiceByGatewayType()
         def checkoutModel = checkoutSessionService.getCheckoutSession(xPaymentSessionId, paymentService)
         Checkout checkout = checkoutController.createCheckout(checkoutModel)
@@ -208,106 +206,12 @@ class CheckoutApiService {
         paymentIn.sessionId = merchantReference
         paymentIn.privateNotes = sessionAttributes.responceJson
 
+        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
+
         paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
 
         postEnrolmentSuccessfulEvents(checkout)
         checkoutSessionService.removeCheckoutSession(xPaymentSessionId)
-        return dtoResponse
-    }
-
-    CheckoutResponseDTO submit(CheckoutModelDTO checkoutModel, Boolean xValidateOnly, String xPaymentSessionId, String xOrigin ) {
-        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
-        Checkout checkout = checkoutController.createCheckout(checkoutModel)
-        String cardId = null
-
-        paymentService = getPaymentServiceByGatewayType()
-
-        if (!checkout.errors.empty) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
-        }  else if (xValidateOnly) {
-            eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
-        }
-
-        if (checkoutModel.payWithSavedCard) {
-            cardId =  paymentInDao.getCreditCardId(checkout.paymentIn.payer)
-            if (cardId == null) {
-                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
-            }
-        }
-
-        if (checkout.isCreditCard()) {
-
-            if (xValidateOnly) {
-                paymentService.saveCheckout(checkout)
-
-                if (checkoutModel.payWithSavedCard) {
-                    return dtoResponse
-                }
-
-                String merchantReference = UUID.randomUUID().toString()
-                SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
-                if (attributes.sessionId) {
-                    dtoResponse.sessionId = attributes.sessionId
-                    dtoResponse.ccFormUrl = attributes.ccFormUrl
-                    dtoResponse.clientSecret = attributes.clientSecret
-                    dtoResponse.merchantReference = merchantReference
-                } else if (attributes.errorMessage) {
-                    paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
-                } else {
-                    paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
-                }
-
-            } else {
-                Money amount  = checkout.paymentIn.amount
-                SessionAttributes sessionAttributes
-                String merchantReference = null
-
-                if (checkoutModel.payWithSavedCard) {
-                    merchantReference = UUID.randomUUID().toString()
-                    sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
-                } else {
-                    if (!checkoutModel.merchantReference) {
-                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
-                    } else {
-                        merchantReference = checkoutModel.merchantReference
-                    }
-
-                    sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
-
-                    if (!sessionAttributes.complete) {
-                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
-                    }
-                }
-
-                if (!sessionAttributes.authorised) {
-                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " +  sessionAttributes.errorMessage) : ""}")])
-                }
-
-                if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(cayenneService.newContext) != null) {
-                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card payment already complete")])
-                }
-
-                PaymentIn paymentIn = checkout.paymentIn
-                paymentIn.creditCardExpiry = sessionAttributes.creditCardExpiry
-                paymentIn.creditCardName = sessionAttributes.creditCardName
-                paymentIn.creditCardNumber = sessionAttributes.creditCardNumber
-                paymentIn.creditCardType = sessionAttributes.creditCardType
-                paymentIn.gatewayResponse = sessionAttributes.statusText
-                paymentIn.gatewayReference = sessionAttributes.transactionId
-                paymentIn.paymentDate = sessionAttributes.paymentDate
-                paymentIn.billingId = sessionAttributes.billingId
-                paymentIn.sessionId = merchantReference
-                paymentIn.privateNotes = sessionAttributes.responceJson
-
-                paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
-            }
-        } else {
-            paymentService.saveCheckout(checkout)
-            paymentService.fillResponse(dtoResponse, checkout)
-        }
-
-        postEnrolmentSuccessfulEvents(checkout, xValidateOnly)
-        return dtoResponse
     }
 
     private void postEnrolmentSuccessfulEvents(Checkout checkout) {

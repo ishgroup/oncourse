@@ -16,12 +16,16 @@ import ish.oncourse.server.api.v1.model.CheckoutModelDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.CheckoutSession
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
+import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.query.ObjectSelect
 
 class CheckoutSessionService {
 
     @Inject
     CayenneService cayenneService
+
+    @Inject
+    SystemUserService systemUserService
 
 
     void saveCheckoutSession(CheckoutModelDTO modelDTO, String sessionId) {
@@ -32,6 +36,7 @@ class CheckoutSessionService {
         checkoutSession.sessionId = sessionId
         checkoutSession.value = value
         checkoutSession.createdOn = new Date()
+        checkoutSession.createdByUser = systemUserService.currentUser
         context.commitChanges()
     }
 

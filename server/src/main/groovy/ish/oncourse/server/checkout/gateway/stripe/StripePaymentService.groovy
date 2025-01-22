@@ -10,7 +10,6 @@ package ish.oncourse.server.checkout.gateway.stripe
 
 import com.google.inject.Inject
 import com.stripe.Stripe
-import com.stripe.model.BalanceTransaction
 import com.stripe.model.Charge
 import com.stripe.model.PaymentIntent
 import com.stripe.model.Refund
@@ -26,11 +25,12 @@ import ish.common.checkout.gateway.stripe.session.StripeSessionStatus
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
+import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
+import ish.oncourse.server.checkout.CheckoutUtils
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
-import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -45,6 +45,9 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
 
     @Inject
     private PreferenceController preferenceController
+
+    @Inject
+    private ISessionManager sessionManager
 
 
     protected String getApiKey() {
@@ -83,7 +86,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .addLineItem(lineItem)
                         .setCustomerEmail(contact.email)
                         .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
-                        .setReturnUrl(origin + "/checkout?sessionId={CHECKOUT_SESSION_ID}")
+                        .setReturnUrl(sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?xPaymentSessionId={CHECKOUT_SESSION_ID}")
                         .setMode(SessionCreateParams.Mode.PAYMENT)
 
         def futureUsage = storeCard ? OFF_SESSION : ON_SESSION

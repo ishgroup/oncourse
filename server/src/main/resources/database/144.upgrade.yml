@@ -29,9 +29,14 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  defaultValueComputed: 'NULL'
                   name: createdOn
                   type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: createdByUserId
+                  type: BIGINT
         - createIndex:
             columns:
               - column:
@@ -39,3 +44,9 @@ databaseChangeLog:
             indexName:  idx_cs_sessionId
             tableName:  CheckoutSession
             unique:  true
+        - addForeignKeyConstraint:
+            baseColumnNames: createdByUserId
+            baseTableName: CheckoutSession
+            constraintName: fk_CheckoutSession_SystemUser_Id
+            referencedColumnNames: id
+            referencedTableName: SystemUser

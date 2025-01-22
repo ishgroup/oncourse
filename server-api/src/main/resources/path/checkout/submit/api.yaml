@@ -1,0 +1,36 @@
+get:
+  operationId: submit
+  description: Process checkout
+  tags:
+    - Checkout
+  parameters:
+    - name: xPaymentSessionId
+      in: query
+      type: string
+      required: false
+      description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
+  responses:
+    '204':
+      description: Success response
+    '400':
+      description: Validation error
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutValidationError.yaml'
+    '411':
+      description: Windcave error, contact ish support
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutValidationError.yaml'
+    '412':
+      description: Can not complite payment transaction
+      schema:
+        $ref: './def/entity/checkout/SessionStatus.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to make checkout. Please contact your administrator

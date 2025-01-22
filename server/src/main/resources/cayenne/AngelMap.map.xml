@@ -210,6 +210,7 @@
 		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="createdOn" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="sessionId" type="VARCHAR" length="256" isMandatory="true"/>
+		<db-attribute name="createdByUserId" type="BIGINT" isMandatory="true"/>
 		<db-attribute name="value" type="LONGVARCHAR" length="32000" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="CheckoutContactRelation">
@@ -3729,6 +3730,9 @@
 	<db-relationship name="checkoutRelations" source="Course" target="CheckoutContactRelation" toMany="true">
 		<db-attribute-pair source="id" target="foreignId"/>
 	</db-relationship>
+	<db-relationship name="createdByUser" source="CheckoutSession" target="SystemUser">
+		<db-attribute-pair source="createdByUserId" target="id"/>
+	</db-relationship>
 	<db-relationship name="contact" source="ClassCost" target="Contact">
 		<db-attribute-pair source="contactId" target="id"/>
 	</db-relationship>
@@ -5317,6 +5321,7 @@
 	<obj-relationship name="certificate" source="CertificateOutcome" target="Certificate" deleteRule="Nullify" db-relationship-path="certificate"/>
 	<obj-relationship name="outcome" source="CertificateOutcome" target="Outcome" deleteRule="Nullify" db-relationship-path="outcome"/>
 	<obj-relationship name="payer" source="Checkout" target="Contact" deleteRule="Nullify" db-relationship-path="payer"/>
+	<obj-relationship name="createdByUser" source="CheckoutSession" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdByUser"/>
 	<obj-relationship name="contact" source="ClassCost" target="Contact" deleteRule="Nullify" db-relationship-path="contact"/>
 	<obj-relationship name="courseClass" source="ClassCost" target="CourseClass" deleteRule="Nullify" db-relationship-path="courseClass"/>
 	<obj-relationship name="createdBy" source="ClassCost" target="SystemUser" deleteRule="Nullify" db-relationship-path="createdBy"/>
