@@ -159,7 +159,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         ],
         "isTraineeship": false,
         "customFields": {},
-        "specialTagId":null
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 
@@ -770,7 +772,9 @@ Feature: Main feature for all POST requests with path 'list/entity/courseClass'
         "isTraineeship": false,
         "customFields": {},
         "feeHelpClass":false,
-        "specialTagId":null
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 

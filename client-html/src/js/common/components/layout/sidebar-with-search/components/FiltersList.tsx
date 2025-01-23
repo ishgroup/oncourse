@@ -1,8 +1,8 @@
-import Chip from "@mui/material/Chip";
-import { Theme } from "@mui/material/styles";
-import { createStyles, withStyles } from "@mui/styles";
-import React, { useCallback } from "react";
-import { CommonListFilter } from "../../../../../model/common/sidebar";
+import Chip from '@mui/material/Chip';
+import { Theme } from '@mui/material/styles';
+import React, { useCallback } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { CommonListFilter } from '../../../../../model/common/sidebar';
 
 interface Props {
   filters: CommonListFilter[];
@@ -11,7 +11,7 @@ interface Props {
   classes?: any;
 }
 
-const styles = createStyles((theme: Theme) => ({
+const styles = ((theme: Theme, p, classes) => ({
   list: {
     padding: theme.spacing(0.5, 3)
   },
@@ -20,7 +20,7 @@ const styles = createStyles((theme: Theme) => ({
     fontSize: "11px",
     margin: theme.spacing(0.5, 0.5, 0, 0),
     padding: theme.spacing(0.3125, 1),
-    "&$chipOutlined $chipIcon": {
+    [`&.${classes.chipOutlined} .${classes.chipIcon}`]: {
       marginLeft: theme.spacing(-0.5),
       marginRight: 0
     }
@@ -34,7 +34,7 @@ const styles = createStyles((theme: Theme) => ({
   },
   chipOutlined: {},
   clickable: {
-    "&$chipOutlined:focus": {
+    [`&.${classes.chipOutlined}:focus`]: {
       backgroundColor: "transparent"
     }
   }
@@ -79,4 +79,4 @@ const FiltersList = React.memo<Props>(({
   );
 });
 
-export default withStyles(styles)(FiltersList);
+export default withStyles(FiltersList, styles);

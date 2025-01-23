@@ -74,7 +74,7 @@ class TagRequirementFunctions {
 
 
 
-    private static final BidiMap<String, TaggableClasses> taggableClassesBidiMap = new BidiMap<String, TaggableClasses>() {
+    public static final BidiMap<String, TaggableClasses> taggableClassesBidiMap = new BidiMap<String, TaggableClasses>() {
         {
             put(Application.simpleName, TaggableClasses.APPLICATION)
             put(Assessment.simpleName, TaggableClasses.ASSESSMENT)

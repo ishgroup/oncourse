@@ -6,38 +6,38 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { FundingSource, SearchQuery, Sorting, Tag } from "@api/model";
-import { Help } from "@mui/icons-material";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Grid, ListItemButton } from "@mui/material";
-import Button from "@mui/material/Button";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import { ShowConfirmCaller } from "ish-ui";
-import React, { useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, Field, reduxForm, reset } from "redux-form";
-import { setOtcomeChangeFields } from "../../../../../containers/entities/enrolments/actions";
+import { FundingSource, SearchQuery, Sorting, Tag } from '@api/model';
+import { Help } from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Grid, ListItemButton, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import { ShowConfirmCaller } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, Field, reduxForm, reset } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { setOtcomeChangeFields } from '../../../../../containers/entities/enrolments/actions';
 import {
   getOutcomeCommonFieldName,
   outcomeCommonFields
-} from "../../../../../containers/entities/enrolments/constants";
-import { PreferencesState } from "../../../../../containers/preferences/reducers/state";
-import { getEntityTags } from "../../../../../containers/tags/actions";
-import { EntityName } from "../../../../../model/entities/common";
-import { State } from "../../../../../reducers/state";
-import { addActionToQueue } from "../../../../actions";
-import { getDeepValue } from "../../../../utils/common";
-import DataTypeRenderer from "../../../form/DataTypeRenderer";
-import FormField from "../../../form/formFields/FormField";
-import { bulkChangeRecords } from "../../actions";
-import bottomDrawerStyles from "../bottomDrawerStyles";
-import SelectionSwitcher from "../share/SelectionSwitcher";
-import { BulkEditField, getBulkEditFields } from "./utils";
+} from '../../../../../containers/entities/enrolments/constants';
+import { PreferencesState } from '../../../../../containers/preferences/reducers/state';
+import { getEntityTags } from '../../../../../containers/tags/actions';
+import { EntityName } from '../../../../../model/entities/common';
+import { State } from '../../../../../reducers/state';
+import { addActionToQueue } from '../../../../actions';
+import { IAction } from '../../../../actions/IshAction';
+import { getDeepValue } from '../../../../utils/common';
+import DataTypeRenderer from '../../../form/DataTypeRenderer';
+import FormField from '../../../form/formFields/FormField';
+import { bulkChangeRecords } from '../../actions';
+import bottomDrawerStyles from '../bottomDrawerStyles';
+import SelectionSwitcher from '../share/SelectionSwitcher';
+import { BulkEditField, getBulkEditFields } from './utils';
 
 interface BulkEditProps {
   rootEntity: EntityName;
@@ -49,7 +49,7 @@ interface BulkEditProps {
   searchQuery?: SearchQuery;
   sort?: Sorting[];
   classes?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   getBulkEditList?: (entityName: string) => void;
   handleSubmit?: any;
   onSave?: any;
@@ -181,9 +181,9 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
       const productItemTags = [];
 
       [
-        ...entityTags["Article"] || [],
-        ...entityTags["Voucher"] || [],
-        ...entityTags["Membership"] || [],
+        ...(entityTags["Article"] || []),
+        ...(entityTags["Voucher"] || []),
+        ...(entityTags["Membership"] || []),
       ].forEach(t => {
         if (!unique[t.id]) {
           unique[t.id] = true;
@@ -412,4 +412,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm({
   form: "BulkEditForm"
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(bottomDrawerStyles)(BulkEditForm))) as any;
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(BulkEditForm, bottomDrawerStyles))) as any;

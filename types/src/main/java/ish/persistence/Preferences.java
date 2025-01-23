@@ -56,6 +56,9 @@ public interface Preferences {
 	@API
 	String COLLEGE_URL = "web.url";
 
+
+	String COLLEGE_ACTIVE = "college.active";
+
 	/**
 	 * Invoice remittance instructions. This additional text will be added to every invoice.
 	 *
@@ -73,6 +76,26 @@ public interface Preferences {
 	 * Unique API key issued by the eWay payment system for a particular college
 	 */
 	String PAYMENT_GATEWAY_PASS_EWAY = "payment.gateway.eway.api.key";
+
+	/**
+	 * Unique API key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_PASS_STRIPE = "payment.gateway.stripe.api.key";
+
+	/**
+	 * Unique client key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_CLIENT_PASS_STRIPE = "payment.gateway.stripe.client.key";
+
+	/**
+	 * Unique test API key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_TEST_PASS_STRIPE = "payment.gateway.stripe.test.api.key";
+
+	/**
+	 * Unique test client key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_CLIENT_TEST_PASS_STRIPE = "payment.gateway.stripe.test.client.key";
 
 	/**
 	 * Type of payment system used in the checkout

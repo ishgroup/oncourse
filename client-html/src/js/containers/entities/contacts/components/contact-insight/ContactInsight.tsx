@@ -6,23 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ContactInsight, ContactInteraction, EmailTemplate } from "@api/model";
-import Close from "@mui/icons-material/Close";
-import Launch from "@mui/icons-material/Launch";
-import Mail from "@mui/icons-material/Mail";
-import PhoneIcon from "@mui/icons-material/Phone";
+import { ContactInsight, ContactInteraction, EmailTemplate } from '@api/model';
+import Close from '@mui/icons-material/Close';
+import Launch from '@mui/icons-material/Launch';
+import Mail from '@mui/icons-material/Mail';
+import PhoneIcon from '@mui/icons-material/Phone';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, CircularProgress, Divider, Grid, ListItemText } from "@mui/material";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { formatDistanceStrict } from "date-fns";
+import { Box, Button, CircularProgress, Collapse, Divider, Grid, ListItemText, Typography } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Stack from '@mui/material/Stack';
+import clsx from 'clsx';
+import { formatDistanceStrict } from 'date-fns';
 import {
   countLines,
   DD_MM_YYYY_SLASHED,
@@ -32,23 +29,23 @@ import {
   makeAppStyles,
   openInternalLink,
   stubFunction
-} from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import NumberFormat from "react-number-format";
-import { getUserPreferences, openSendMessage } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import NotesService from "../../../../../common/components/form/notes/services/NotesService";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import HoverLink from "../../../../../common/components/layout/HoverLink";
-import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
-import { getPluralSuffix } from "../../../../../common/utils/strings";
-import { EMAIL_FROM_KEY } from "../../../../../constants/Config";
-import EmailTemplateService from "../../../../automation/containers/email-templates/services/EmailTemplateService";
-import SendMessageEditView from "../../../messages/components/SendMessageEditView";
-import ContactsService from "../../services/ContactsService";
-import AvatarRenderer from "../AvatarRenderer";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import NumberFormat from 'react-number-format';
+import { getUserPreferences, openSendMessage } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import NotesService from '../../../../../common/components/form/notes/services/NotesService';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import HoverLink from '../../../../../common/components/layout/HoverLink';
+import { useAppDispatch, useAppSelector } from '../../../../../common/utils/hooks';
+import { getPluralSuffix } from '../../../../../common/utils/strings';
+import { EMAIL_FROM_KEY } from '../../../../../constants/Config';
+import EmailTemplateService from '../../../../automation/containers/email-templates/services/EmailTemplateService';
+import SendMessageEditView from '../../../messages/components/SendMessageEditView';
+import ContactsService from '../../services/ContactsService';
+import AvatarRenderer from '../AvatarRenderer';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   closeIcon: {
     position: "absolute",
     right: theme.spacing(2),
@@ -270,7 +267,7 @@ const Interaction = (interaction: ContactInteraction & { currencySymbol?: string
   const [clamped, setClamped] = useState(true);
   const [descriptionLines, setSescriptionLines] = useState(null);
   
-  const hiddenDescriptionRef = useRef<any>();
+  const hiddenDescriptionRef = useRef<any>(undefined);
 
   useEffect(() => {
     setSescriptionLines(countLines(hiddenDescriptionRef.current));
@@ -408,7 +405,7 @@ const ContactInsight = (
     dispatch(openSendMessage());
   };
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const Avatar = useCallback(aProps => (
     <AvatarRenderer

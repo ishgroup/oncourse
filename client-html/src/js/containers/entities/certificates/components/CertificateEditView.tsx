@@ -3,36 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Certificate, CertificateOutcome, Contact } from "@api/model";
-import { FormControlLabel, Grid, Theme } from "@mui/material";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { AnyArgFunction, III_DD_MMM_YYYY, LinkAdornment, NumberArgFunction, StringArgFunction } from "ish-ui";
-import QRCode from "qrcode.react";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayRemove, change } from "redux-form";
+import { Certificate, CertificateOutcome, Contact } from '@api/model';
+import { FormControlLabel, Grid, Theme, Typography } from '@mui/material';
+import Link from '@mui/material/Link';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { AnyArgFunction, III_DD_MMM_YYYY, LinkAdornment, NumberArgFunction, StringArgFunction } from 'ish-ui';
+import QRCode from 'qrcode.react';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayRemove, change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+} from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import EntityService from "../../../../common/services/EntityService";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../contacts/utils";
-import { openQualificationLink } from "../../qualifications/utils";
-import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from "../actions";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import EntityService from '../../../../common/services/EntityService';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import { openQualificationLink } from '../../qualifications/utils';
+import { clearCertificateOutcomes, getCertificateOutcomes, setCertificateOutcomesSearch } from '../actions';
 
 interface Props extends EditViewProps<Certificate> {
   status?: string;
@@ -45,7 +44,7 @@ interface Props extends EditViewProps<Certificate> {
   classes?: any;
 }
 
-const styles = createStyles(({ spacing }: Theme) => ({
+const styles = (({ spacing }: Theme) => ({
   root: {
     overflowX: "hidden",
     "& > *": {
@@ -492,6 +491,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setCertificateOutcomesSearch: (search: string) => dispatch(setCertificateOutcomesSearch(search))
 });
 
-const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CertificateEditView));
+const Connected = connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CertificateEditView, styles));
 
 export default props => (props.values ? <Connected {...props} /> : null);

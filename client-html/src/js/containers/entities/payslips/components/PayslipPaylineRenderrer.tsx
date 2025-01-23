@@ -1,12 +1,12 @@
-import { createStyles, Grid } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
-import { formatCurrency } from "ish-ui";
-import * as React from "react";
-import { PayLineWithDefer } from "../../../../model/entities/Payslip";
-import PayslipPaylineItem from "./PayslipPaylineItem";
+import { Grid } from '@mui/material';
+import { formatCurrency } from 'ish-ui';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { PayLineWithDefer } from '../../../../model/entities/Payslip';
+import PayslipPaylineItem from './PayslipPaylineItem';
 
 const styles = theme =>
-  createStyles({
+  ({
     deferSwitch: {
       display: "flex",
       alignSelf: "flex-end",
@@ -126,4 +126,4 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
   }
 }
 
-export default withStyles(styles)(PayslipPaylineRenderrer) as any;
+export default withStyles(PayslipPaylineRenderrer, styles) as any;

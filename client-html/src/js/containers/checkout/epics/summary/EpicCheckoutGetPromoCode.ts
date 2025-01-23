@@ -14,7 +14,7 @@ import {
   CHECKOUT_SET_PROMO,
   checkoutUpdateSummaryClassesDiscounts
 } from "../../actions/checkoutSummary";
-import { FORM as checkoutDiscountForm } from "../../components/CheckoutSelection";
+import { CHECKOUT_SELECTION_FORM_NAME as checkoutDiscountForm } from "../../components/CheckoutSelection";
 import { isPromotionalCodeExist } from "../../utils";
 
 const checkoutPromocodeColumns = "id,"

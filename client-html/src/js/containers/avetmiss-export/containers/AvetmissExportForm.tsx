@@ -11,9 +11,9 @@ import {
   FundingSource,
   FundingStatus,
   FundingUpload
-} from "@api/model";
-import { ExpandMore } from "@mui/icons-material";
-import LoadingButton from "@mui/lab/LoadingButton";
+} from '@api/model';
+import { ExpandMore } from '@mui/icons-material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Card,
   CardContent,
@@ -25,22 +25,23 @@ import {
   Grid,
   Hidden,
   Typography,
-} from "@mui/material";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from "date-fns";
-import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, YYYY_MM_DD_MINUSED, validateMinMaxDate } from "ish-ui";
-import React from "react";
-import posed from "react-pose";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { interruptProcess } from "../../../common/actions";
-import FormField from "../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { AvetmissExportSettingsReqired } from "../../../model/preferences";
-import { State } from "../../../reducers/state";
+} from '@mui/material';
+import clsx from 'clsx';
+import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from 'date-fns';
+import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, validateMinMaxDate, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React from 'react';
+import posed from 'react-pose';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayPush, arrayRemove, change, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { interruptProcess } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import FormField from '../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { AvetmissExportSettingsReqired } from '../../../model/preferences';
+import { State } from '../../../reducers/state';
 import {
   clearAvetmiss8ExportID,
   clearExportOutcomes,
@@ -51,15 +52,15 @@ import {
   getAvetmiss8OutcomesStatus,
   getFundingUploads,
   updateFundingUpload
-} from "../actions";
-import AvetmissExportResults from "../components/AvetmissExportResults";
-import AvetmissHistory from "../components/AvetmissHistory/AvetmissHistory";
-import PreviousExportPanel from "../components/PreviousExportPanel/PreviousExportPanel";
-import getAvetmissExportFormValues from "../utils/getAvetmissExportFormValues";
+} from '../actions';
+import AvetmissExportResults from '../components/AvetmissExportResults';
+import AvetmissHistory from '../components/AvetmissHistory/AvetmissHistory';
+import PreviousExportPanel from '../components/PreviousExportPanel/PreviousExportPanel';
+import getAvetmissExportFormValues from '../utils/getAvetmissExportFormValues';
 
 export const FORM: string = "AvetmissExportForm";
 
-const styles = theme => createStyles({
+const styles = theme => ({
   divider: {
     margin: theme.spacing(3, -3)
   },
@@ -311,7 +312,7 @@ interface Props {
   values?: any;
   enrolmentsCount?: number;
   data?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   classes?: any;
   outcomes?: any;
   exportID?: string;
@@ -951,4 +952,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export default reduxForm<any, Props>({
   form: FORM
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AvetmissExportForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(AvetmissExportForm, styles)));

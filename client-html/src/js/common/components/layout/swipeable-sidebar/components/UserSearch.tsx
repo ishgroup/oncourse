@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Close from "@mui/icons-material/Close";
-import Search from "@mui/icons-material/Search";
-import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
-import clsx from "clsx";
-import { BooleanArgFunction, makeAppStyles, StringArgFunction } from "ish-ui";
-import debounce from "lodash.debounce";
-import React from "react";
+import Close from '@mui/icons-material/Close';
+import Search from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import clsx from 'clsx';
+import { BooleanArgFunction, makeAppStyles, StringArgFunction } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React from 'react';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   inputRoot: {
     "&::before": {
       borderBottom: "2px solid #bfbfbf",
@@ -42,7 +42,7 @@ const UserSearch = ({
   const [focused, setFocused] = React.useState(false);
   const searchRef = React.useRef("");
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const debounseSearch = React.useCallback(
     debounce(() => {

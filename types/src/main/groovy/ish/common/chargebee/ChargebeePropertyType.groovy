@@ -15,8 +15,10 @@ enum ChargebeePropertyType {
     TOTAL_CREDIT_PAYMENT("chargebee.total.payment", "Total payment item"),
     TOTAL_CORPORATE_PASS("chargebee.total.corporatePass", "Total corporate pass item"),
     TOTAL_OFFICE_PAYMENT_IN_NUMBER("chargebee.office.paymentIn.number", "Total office payments in item"),
+    TOTAL_LMS_ENROLMENTS("chargebee.lms.enrolments", "Total LMS Enrolments"),
     SITE("chargebee.site", "Site prefix"),
     API_KEY("chargebee.apiKey", "Api key"),
+    EMAIL_ADDRESS_FOR_ERRORS("chargebee.error.email", "Email address to send errors")
 
     public static final String ADDONS_SEPARATOR = ";"
 

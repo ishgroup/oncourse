@@ -178,6 +178,38 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
+	public  String getPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test client key is not configured");
+		}
+		return apiKey;
+	}
+
 	/**
 	 * @return payment gateway type (EWAY, EWAY_TEST, WINDCAVE, TEST, DISABLED)
 	 */
@@ -1457,5 +1489,10 @@ public abstract class CommonPreferenceController {
 
 	public String getChargebeeAllowedAddons() {
 		return getValue(CHARGEBEE_ALLOWED_ADDONS, false);
+	}
+
+	public Boolean ifCollegeActive() {
+		String value = getValue(COLLEGE_ACTIVE, false);
+		return value == null || Boolean.parseBoolean(value);
 	}
 }

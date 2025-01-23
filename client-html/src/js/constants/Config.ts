@@ -4,7 +4,13 @@
  */
 
 import { PreferenceEnum } from "@api/model";
+import { CHECKOUT_SELECTION_FORM_NAME } from '../containers/checkout/components/CheckoutSelection';
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from '../containers/checkout/components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from '../containers/checkout/components/items/components/CkecoutItemViewForm';
 import { EntityName } from "../model/entities/common";
+import { SEND_MESSAGE_FORM_NAME } from './Forms';
 
 export const SIMPLE_SEARCH_REGEX = /(^[^~\s."#]+$)/;
 
@@ -133,4 +139,11 @@ export const NOTE_ENTITIES: EntityName[] = [
   "Room",
   "Site",
   "Faculty"
+];
+
+export const FORM_NAMES_ALLOWED_FOR_REFRESH = [
+  CHECKOUT_SELECTION_FORM_NAME,
+  CHECKOUT_ITEM_EDIT_VIEW_FORM,
+  SEND_MESSAGE_FORM_NAME,
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
 ];

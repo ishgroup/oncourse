@@ -3,26 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { formatCurrency } from "ish-ui";
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import { CheckoutSummary } from "../../../../model/checkout";
-import { State } from "../../../../reducers/state";
-import { getContactFullName } from "../../../entities/contacts/utils";
-import { toggleSendContext, toggleSummaryItem, toggleVoucherItem } from "../../actions";
-import { checkoutSetDefaultPayer } from "../../actions/checkoutSummary";
-import { summaryListStyles } from "../../styles/summaryListStyles";
-import CheckoutAppBar from "../CheckoutAppBar";
-import { CheckoutSummaryCogwheel } from "./CheckoutSummaryCogwheel";
-import CheckoutSummaryExpandableItemRenderer from "./CheckoutSummaryExpandableItemRenderer";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { formatCurrency } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import { CheckoutSummary } from '../../../../model/checkout';
+import { State } from '../../../../reducers/state';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import { toggleSendContext, toggleSummaryItem, toggleVoucherItem } from '../../actions';
+import { checkoutSetDefaultPayer } from '../../actions/checkoutSummary';
+import { summaryListStyles } from '../../styles/summaryListStyles';
+import CheckoutAppBar from '../CheckoutAppBar';
+import { CheckoutSummaryCogwheel } from './CheckoutSummaryCogwheel';
+import CheckoutSummaryExpandableItemRenderer from './CheckoutSummaryExpandableItemRenderer';
 
 export const CHECKOUT_SUMMARY_FORM = "CHECKOUT_SUMMARY_FORM";
 
@@ -167,4 +167,4 @@ export default reduxForm<any, Props>({
   form: CHECKOUT_SUMMARY_FORM,
   initialValues: {},
   destroyOnUnmount: false
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(summaryListStyles)(CheckoutSummaryListForm)));
+})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutSummaryListForm, summaryListStyles)));
