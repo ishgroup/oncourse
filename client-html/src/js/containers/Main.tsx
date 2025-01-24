@@ -27,7 +27,7 @@ import {
   GlobalStylesProvider,
   ThemeValues
 } from 'ish-ui';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
@@ -37,11 +37,15 @@ import { getUserPreferences, showMessage } from '../common/actions';
 import ConfirmProvider from '../common/components/dialog/ConfirmProvider';
 import MessageProvider from '../common/components/dialog/MessageProvider';
 import { getGoogleTagManagerParameters } from '../common/components/google-tag-manager/actions';
+import { ErrorBoundary } from '../common/components/layout/ErrorBoundary';
 import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/SwipeableSidebar';
+import { UserPreferencesState } from '../common/reducers/userPreferencesReducer';
 import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY, FORM_NAMES_ALLOWED_FOR_REFRESH,
+  AUS_REPORTING_DISPLAY_KEY,
+  DASHBOARD_THEME_KEY,
+  FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
   READ_NEWS,
   SPECIAL_TYPES_DISPLAY_KEY,
@@ -94,6 +98,7 @@ interface Props {
   isLogged: boolean;
   isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
+  displayAUSReporting: UserPreferencesState[typeof AUS_REPORTING_DISPLAY_KEY]
   match: any;
 }
 
@@ -102,39 +107,39 @@ interface MainState {
   theme: AppTheme;
 }
 
-export class MainBase extends React.PureComponent<Props, MainState> {
-  constructor(props) {
-    super(props);
-
+export function MainBase(
+  {
+    showMessage,
+    getPreferencesTheme,
+    history,
+    preferencesTheme,
+    onInit,
+    isLogged,
+    isAnyFormDirty,
+    isLoggedIn,
+    displayAUSReporting,
+    match
+  }: Props) {
     const theme = getTheme();
-
-    this.state = {
-      themeName: DefaultThemeKey,
-      theme: {
-        ...theme,
-        palette: {
-          ...theme.palette,
-          secondary: {
-            ...theme.palette.secondary,
-            main: '#434EA1',
-          }
+    
+    const [themeName, setThemeName] = useState(DefaultThemeKey);
+    const [currentTtheme, setTheme] = useState({
+      ...theme,
+      palette: {
+        ...theme.palette,
+        secondary: {
+          ...theme.palette.secondary,
+          main: '#434EA1',
         }
-      },
-    };
-  }
-
-  updateStateFromStorage = () => {
-    this.setState({
-      themeName: LSGetItem(APPLICATION_THEME_STORAGE_NAME)
-        ? LSGetItem(APPLICATION_THEME_STORAGE_NAME)
-        : DefaultThemeKey,
-      theme: getTheme()
+      }
     });
+
+  const updateStateFromStorage = () => {
+    setThemeName(LSGetItem(APPLICATION_THEME_STORAGE_NAME) as ThemeValues || DefaultThemeKey);
+    setTheme(getTheme());
   };
 
-  onWindowClose = e => {
-    const { isAnyFormDirty } = this.props;
-
+  const onWindowClose = e => {
     if (process.env.NODE_ENV !== EnvironmentConstants.production || navigator.webdriver === true) {
       return;
     }
@@ -144,12 +149,8 @@ export class MainBase extends React.PureComponent<Props, MainState> {
       e.returnValue = "All unsaved data will be lost. Are you sure want to close window ?";
     }
   };
-
-  UNSAFE_componentWillMount() {
-    const {
-      isLogged, isLoggedIn, history
-    } = this.props;
-
+  
+  useEffect(() => {
     if (routes) {
       const notFound = routes.find(route => route.url === history.location.pathname);
       if (!notFound) {
@@ -173,83 +174,60 @@ export class MainBase extends React.PureComponent<Props, MainState> {
     if (!isLogged && !isLoginFrame) {
       isLoggedIn();
     }
+  }, [
+    history.location.pathname,
+    isLogged
+  ]);
+  
+  useEffect(() => {
+    window.addEventListener("storage", updateStateFromStorage);
+    window.addEventListener("beforeunload", onWindowClose, true);
 
-    if (isLogged && !isLoginFrame) {
-      this.onInit();
+    return () => {
+      LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
+      window.removeEventListener("storage", updateStateFromStorage);
+      window.removeEventListener("beforeunload", onWindowClose);
+    };
+  }, [isAnyFormDirty]);
+
+  useEffect(() => {
+    if (isLogged) {
+      onInit();
+      if (!preferencesTheme) {
+        getPreferencesTheme();
+      }
     }
-  }
+  }, [isLogged]);
 
-  componentDidMount() {
-    const { history } = this.props;
-
-    if (history.location.pathname.match(/Quit/)) {
-      window.close();
-      return;
-    }
-
-    window.addEventListener("storage", this.updateStateFromStorage);
-    window.addEventListener("beforeunload", this.onWindowClose, true);
-  }
-
-  componentWillUnmount() {
-    LSRemoveItem(APPLICATION_THEME_STORAGE_NAME);
-    window.removeEventListener("storage", this.updateStateFromStorage);
-    window.removeEventListener("beforeunload", this.onWindowClose);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { preferencesTheme, isLogged } = this.props;
-
-    if (!prevProps.isLogged && isLogged) {
-      this.onInit();
-    }
-
-    if (!prevProps.preferencesTheme && preferencesTheme) {
-      this.themeHandler(preferencesTheme);
-    }
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.error(error, errorInfo);
-
-    this.props.showMessage({
-      success: false,
-      message: "Something unusual happened in onCourse. Our quality assurance team have been notified."
-    });
-  }
-
-  onInit = () => {
-    const { preferencesTheme, getPreferencesTheme, onInit } = this.props;
-
-    onInit();
-
-    if (!preferencesTheme) {
-      getPreferencesTheme();
-    }
-  };
-
-  themeHandler = (name: ThemeValues) => {
-    this.setState({
-      themeName: name,
-      theme: currentTheme(name)
-    });
-
+  const themeHandler = (name: ThemeValues) => {
+    setThemeName(name);
+    setTheme(currentTheme(name));
     LSSetItem(APPLICATION_THEME_STORAGE_NAME, name);
   };
 
-  render() {
-    const {
-     themeName, theme
-    } = this.state;
+  useEffect(() => {
+    if (preferencesTheme) {
+      themeHandler(preferencesTheme);
+    }
+  }, [preferencesTheme]);
+  
+  const filteredRoutes = useMemo(() => {
+    const isAUSReportingDisabled = displayAUSReporting === 'false';
 
-    const { isLogged } = this.props;
+    return routes.filter(r => !isAUSReportingDisabled || ![
+      "/avetmiss-export",
+      "/vetReporting",
+    ].includes(r.url));
 
-    return (
+  }, [displayAUSReporting]);
+  
+  return (
+    <ErrorBoundary showMessage={showMessage}>
       <CacheProvider value={muiCache}>
         <TssCacheProvider value={tssCache}>
           <ThemeContext.Provider
             value={{
-              themeHandler: this.themeHandler,
+              themeHandler,
               themeName
             }}
           >
@@ -259,7 +237,7 @@ export class MainBase extends React.PureComponent<Props, MainState> {
                 <BrowserWarning />
                 <Switch>
                   {isLogged ? (
-                    routes.map((route, i) => <RouteRenderer key={i} {...route} />)
+                    filteredRoutes.map((route, i) => <RouteRenderer key={i} {...route} />)
                   ) : (
                     loginRoute.map((route, i) => <RouteRenderer key={i} {...route} />)
                   )}
@@ -272,13 +250,14 @@ export class MainBase extends React.PureComponent<Props, MainState> {
           </ThemeContext.Provider>
         </TssCacheProvider>
       </CacheProvider>
-    );
-  }
+    </ErrorBoundary>
+  );
 }
 
 const mapStateToProps = (state: State) => ({
   isLogged: state.preferences.isLogged,
   preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY],
+  displayAUSReporting: state.userPreferences[AUS_REPORTING_DISPLAY_KEY],
   isAnyFormDirty: getFormNames()(state).filter(name => !FORM_NAMES_ALLOWED_FOR_REFRESH.includes(name)).reduce((p, name) => isDirty(name)(state) || p, false)
 });
 
@@ -289,9 +268,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
+    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY, AUS_REPORTING_DISPLAY_KEY]));
     dispatch(getDashboardBlogPosts());
   }
 });
 
-export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(MainBase));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainBase));
