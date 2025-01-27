@@ -1084,6 +1084,8 @@ public abstract class CommonPreferenceController {
 			return getTutorialSkipSystemUser();
 		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
 			return getExtendedSearchTypesAllowed();
+		} else if (AUS_REPORTING.equals(key)) {
+			return getAusReporting();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1479,6 +1481,11 @@ public abstract class CommonPreferenceController {
 
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
+	}
+
+	public Boolean getAusReporting(){
+		String value = getValue(AUS_REPORTING, false);
+		return Boolean.parseBoolean(value);
 	}
 
 
