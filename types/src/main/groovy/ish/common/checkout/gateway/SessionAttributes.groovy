@@ -17,6 +17,7 @@ class SessionAttributes {
     String sessionId
     String ccFormUrl
     Boolean authorised
+    Boolean sessionEnded
     Boolean complete
     String type
     String responceJson

@@ -17,6 +17,7 @@ import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.CheckoutSession
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.users.SystemUserService
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
 class CheckoutSessionService {
@@ -36,23 +37,21 @@ class CheckoutSessionService {
         checkoutSession.sessionId = sessionId
         checkoutSession.value = value
         checkoutSession.createdOn = new Date()
-        checkoutSession.createdByUser = systemUserService.currentUser
+        checkoutSession.createdByUser = context.localObject(systemUserService.currentUser)
         context.commitChanges()
     }
 
-    void removeCheckoutSession(String sessionId) {
-        def context = cayenneService.newReadonlyContext
+    void removeNotCommitCheckoutSession(String sessionId, ObjectContext context) {
         def session = ObjectSelect.query(CheckoutSession)
                 .where(CheckoutSession.SESSION_ID.eq(sessionId))
                 .selectOne(context)
 
         if(session) {
             context.deleteObject(session)
-            context.commitChanges()
         }
     }
 
-    CheckoutModelDTO getCheckoutSession(String sessionId, PaymentServiceInterface paymentService) {
+    CheckoutModelDTO getCheckoutModel(String sessionId, PaymentServiceInterface paymentService) {
         def context = cayenneService.newReadonlyContext
         def session = ObjectSelect.query(CheckoutSession)
                 .where(CheckoutSession.SESSION_ID.eq(sessionId))

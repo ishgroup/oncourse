@@ -1,17 +1,35 @@
-get:
+post:
   operationId: submit
   description: Process checkout
   tags:
     - Checkout
   parameters:
-    - name: xPaymentSessionId
-      in: query
+    - name: checkoutModel
+      in: body
+      description: checkout objects
+      required: true
+      schema:
+        $ref: './def/entity/checkout/CheckoutModel.yaml'
+    - name: XValidateOnly
+      in: header
+      type: boolean
+      required: false
+      description: Set this to true to generate a new Windcave session and return an iframe
+    - name: XPaymentSessionId
+      in: header
       type: string
       required: false
-      description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
+      description: Set this to the session id from the successful Windcave authorisation request to store the checkout data in onCourse.
+    - name: XOrigin
+      in: header
+      type: string
+      required: false
+      description: hostname of the onCourse client
   responses:
-    '204':
+    '200':
       description: Success response
+      schema:
+        $ref: './def/entity/checkout/CheckoutResponse.yaml'
     '400':
       description: Validation error
       schema:

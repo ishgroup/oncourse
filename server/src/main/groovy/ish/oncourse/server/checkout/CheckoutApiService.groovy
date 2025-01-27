@@ -24,7 +24,6 @@ import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.service.*
-import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.api.v1.model.CheckoutModelDTO
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
@@ -41,11 +40,13 @@ import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.query.ObjectSelect
+import org.eclipse.jetty.http.HttpStatus
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
 class CheckoutApiService {
+    private static final int STATUS_WAITING_TIME_IN_MILLIS = 240000
 
     @Inject
     PreferenceController preferenceController
@@ -99,10 +100,21 @@ class CheckoutApiService {
         return paymentService.makeRefund(amount, merchantReference, transactionId)
     }
 
-    SessionStatusDTO status(String sessionIdOrAccessCode) {
-        SessionStatusDTO dto = new SessionStatusDTO()
+    SessionStatusDTO getStatus(String sessionIdOrAccessCode) {
         paymentService = getPaymentServiceByGatewayType()
-        SessionAttributes attributes = paymentService.checkStatus(sessionIdOrAccessCode)
+        def attributes = paymentService.checkStatus(sessionIdOrAccessCode)
+
+        if (paymentService instanceof EmbeddedFormPaymentServiceInterface) {
+            long waitingStart = System.currentTimeMillis()
+            while (!attributes.sessionEnded) {
+                if (System.currentTimeMillis() - waitingStart > STATUS_WAITING_TIME_IN_MILLIS)
+                    handleError(HttpStatus.GATEWAY_TIMEOUT_504, [new CheckoutValidationErrorDTO(error: "Your payment wasn't processed with our system.")])
+                Thread.sleep(10000)
+                attributes = paymentService.checkStatus(sessionIdOrAccessCode)
+            }
+        }
+
+        SessionStatusDTO dto = new SessionStatusDTO()
         dto.authorised = attributes.authorised
         dto.complete = attributes.complete
         dto.responseText = attributes.statusText
@@ -116,7 +128,7 @@ class CheckoutApiService {
 
         if (!checkout.errors.empty) {
             paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
-        } else  {
+        } else {
             eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
         }
 
@@ -150,7 +162,7 @@ class CheckoutApiService {
 
     void submitPayment(String xPaymentSessionId) {
         paymentService = getPaymentServiceByGatewayType()
-        def checkoutModel = checkoutSessionService.getCheckoutSession(xPaymentSessionId, paymentService)
+        def checkoutModel = checkoutSessionService.getCheckoutModel(xPaymentSessionId, paymentService)
         Checkout checkout = checkoutController.createCheckout(checkoutModel)
 
         if (!checkout.errors.empty) {
@@ -159,13 +171,13 @@ class CheckoutApiService {
 
         String cardId = null
         if (checkoutModel.payWithSavedCard) {
-            cardId =  paymentInDao.getCreditCardId(checkout.paymentIn.payer)
+            cardId = paymentInDao.getCreditCardId(checkout.paymentIn.payer)
             if (cardId == null) {
                 paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
             }
         }
 
-        Money amount  = checkout.paymentIn.amount
+        Money amount = checkout.paymentIn.amount
         SessionAttributes sessionAttributes
         String merchantReference = null
 
@@ -187,7 +199,7 @@ class CheckoutApiService {
         }
 
         if (!sessionAttributes.authorised) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " +  sessionAttributes.errorMessage) : ""}")])
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
         }
 
         if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(cayenneService.newContext) != null) {
@@ -208,11 +220,116 @@ class CheckoutApiService {
 
         CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
 
+        checkoutSessionService.removeNotCommitCheckoutSession(xPaymentSessionId, checkout.context)
         paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
 
         postEnrolmentSuccessfulEvents(checkout)
-        checkoutSessionService.removeCheckoutSession(xPaymentSessionId)
     }
+
+    //duplicated for eway, windcave system. Needs to be remove after they are migrated to new pipeline
+    CheckoutResponseDTO submit(CheckoutModelDTO checkoutModel, Boolean xValidateOnly, String xPaymentSessionId, String xOrigin ) {
+        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
+        Checkout checkout = checkoutController.createCheckout(checkoutModel)
+        String cardId = null
+
+        paymentService = getPaymentServiceByGatewayType()
+
+        if (!checkout.errors.empty) {
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
+        }  else if (xValidateOnly) {
+            eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
+        }
+
+        if (checkoutModel.payWithSavedCard) {
+            cardId =  paymentInDao.getCreditCardId(checkout.paymentIn.payer)
+            if (cardId == null) {
+                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
+            }
+        }
+
+        if (checkout.isCreditCard()) {
+
+            if (xValidateOnly) {
+                paymentService.saveCheckout(checkout)
+
+                if (checkoutModel.payWithSavedCard) {
+                    return dtoResponse
+                }
+
+                String merchantReference = UUID.randomUUID().toString()
+                SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
+                if (attributes.sessionId) {
+                    dtoResponse.sessionId = attributes.sessionId
+                    dtoResponse.ccFormUrl = attributes.ccFormUrl
+                    dtoResponse.clientSecret = attributes.clientSecret
+                    dtoResponse.merchantReference = merchantReference
+                } else if (attributes.errorMessage) {
+                    paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
+                } else {
+                    paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
+                }
+
+            } else {
+                Money amount  = checkout.paymentIn.amount
+                SessionAttributes sessionAttributes
+                String merchantReference = null
+
+                if (checkoutModel.payWithSavedCard) {
+                    merchantReference = UUID.randomUUID().toString()
+                    sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
+                } else {
+                    if (!checkoutModel.merchantReference) {
+                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
+                    } else {
+                        merchantReference = checkoutModel.merchantReference
+                    }
+
+                    sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
+
+                    if (!sessionAttributes.complete) {
+                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+                    }
+                }
+
+                if (!sessionAttributes.authorised) {
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " +  sessionAttributes.errorMessage) : ""}")])
+                }
+
+                if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(cayenneService.newContext) != null) {
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card payment already complete")])
+                }
+
+                PaymentIn paymentIn = checkout.paymentIn
+                paymentIn.creditCardExpiry = sessionAttributes.creditCardExpiry
+                paymentIn.creditCardName = sessionAttributes.creditCardName
+                paymentIn.creditCardNumber = sessionAttributes.creditCardNumber
+                paymentIn.creditCardType = sessionAttributes.creditCardType
+                paymentIn.gatewayResponse = sessionAttributes.statusText
+                paymentIn.gatewayReference = sessionAttributes.transactionId
+                paymentIn.paymentDate = sessionAttributes.paymentDate
+                paymentIn.billingId = sessionAttributes.billingId
+                paymentIn.sessionId = merchantReference
+                paymentIn.privateNotes = sessionAttributes.responceJson
+
+                paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
+            }
+        } else {
+            paymentService.saveCheckout(checkout)
+            paymentService.fillResponse(dtoResponse, checkout)
+        }
+
+        postEnrolmentSuccessfulEvents(checkout, xValidateOnly)
+        return dtoResponse
+    }
+
+    private void postEnrolmentSuccessfulEvents(Checkout checkout, Boolean xValidateOnly) {
+        if (checkout.invoice && !xValidateOnly) {
+            checkout.invoice.invoiceLines.findAll { it.enrolment }*.enrolment.each { enrol ->
+                eventService.postEvent(SystemEvent.valueOf(SystemEventType.ENROLMENT_SUCCESSFUL, enrol))
+            }
+        }
+    }
+
 
     private void postEnrolmentSuccessfulEvents(Checkout checkout) {
         if (checkout.invoice) {
@@ -223,7 +340,7 @@ class CheckoutApiService {
     }
 
     private CheckoutController getCheckoutController() {
-        new CheckoutController(cayenneService, systemUserService, contactApiService, invoiceApiService, courseClassApiService,  membershipApiService,  voucherApiService,  articleApiService, fundingSourceDao, moduleDao)
+        new CheckoutController(cayenneService, systemUserService, contactApiService, invoiceApiService, courseClassApiService, membershipApiService, voucherApiService, articleApiService, fundingSourceDao, moduleDao)
     }
 
     private PaymentServiceInterface getPaymentServiceByGatewayType() {
@@ -255,14 +372,14 @@ class CheckoutApiService {
         throw new ClientErrorException(response)
     }
 
-    String getClientKey(){
+    String getClientKey() {
         try {
             def service = getPaymentServiceByGatewayType()
             if (!(service instanceof EmbeddedFormPaymentServiceInterface))
                 throw new IllegalAccessException("Client key not supported for selected system")
 
             return (service as EmbeddedFormPaymentServiceInterface).getClientKey()
-        } catch(Exception e) {
+        } catch (Exception e) {
             handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
             return null
         }

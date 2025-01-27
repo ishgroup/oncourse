@@ -37,8 +37,10 @@ paths:
     $ref: './path/access/api.yml'
   /checkout/createSession:
     $ref: './path/checkout/createSession/api.yaml'
+  /checkout/submitPayment:
+    $ref: './path/checkout/submitPayment/api.yaml'
   /checkout/submit:
-    $ref: './path/checkout/submit/api.yaml'
+    $ref: './path/checkout/api.yaml'
   /checkout/status:
     $ref: './path/checkout/status/api.yaml'
   /checkout/discount:

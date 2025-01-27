@@ -127,10 +127,12 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         def sessionAttributes = new SessionAttributes()
 
         try {
+            def status = StripeSessionStatus.from(session.status)
             sessionAttributes = new SessionAttributes().with {
                 it.sessionId = session.id
                 // payment expire time = 10 min - ? check it on server side ???
-                it.complete = StripeSessionStatus.from(session.status) == StripeSessionStatus.Complete
+                it.complete = status == StripeSessionStatus.Complete
+                it.sessionEnded = status in [StripeSessionStatus.Complete, StripeSessionStatus.Failed, StripeSessionStatus.Expired]
                 it.type = session.mode
                 it.responceJson = session.toJson()
                 it.statusText = session.paymentStatus // paid / unpaid / no_payment_required + message for client
