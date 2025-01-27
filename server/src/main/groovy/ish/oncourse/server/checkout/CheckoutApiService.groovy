@@ -108,7 +108,7 @@ class CheckoutApiService {
             long waitingStart = System.currentTimeMillis()
             while (!attributes.sessionEnded) {
                 if (System.currentTimeMillis() - waitingStart > STATUS_WAITING_TIME_IN_MILLIS)
-                    handleError(HttpStatus.GATEWAY_TIMEOUT_504, [new CheckoutValidationErrorDTO(error: "Your payment wasn't processed with our system.")])
+                    handleError(HttpStatus.REQUEST_TIMEOUT_408, [new CheckoutValidationErrorDTO(error: "Your payment wasn't processed with our system.")])
                 Thread.sleep(10000)
                 attributes = paymentService.checkStatus(sessionIdOrAccessCode)
             }
