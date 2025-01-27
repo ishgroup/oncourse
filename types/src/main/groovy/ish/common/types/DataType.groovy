@@ -149,7 +149,15 @@ public enum DataType implements DisplayableExtendedEnumeration<Integer> {
      * Database value: 15
      */
     @API
-    NUMBER(15, "Number");
+    NUMBER(15, "Number"),
+
+    /**
+     * Sub domain of portal website url
+     *
+     * Database value: 16
+     */
+    @API
+    PORTAL_SUBDOMAIN(16, "Portal subdomain");
 
 
 

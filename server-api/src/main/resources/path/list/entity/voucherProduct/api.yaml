@@ -75,26 +75,3 @@ put:
     mask: edit
     keyCode: VOUCHER
     errorMessage: Sorry, you have no permissions to edit voucher product. Please contact your administrator
-
-patch:
-  operationId: bulkChange
-  tags:
-    - VoucherProduct
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: voucher product for update
-  responses:
-    '200':
-      description: Success responce
-    '400':
-      description: Bad request error.
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: edit
-    keyCode: VOUCHER
-    errorMessage: Sorry, you have no permissions to edit voucher product. Please contact your administrator

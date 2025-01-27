@@ -3,25 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CustomFieldType } from "@api/model";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { NoArgFunction, stubFunction } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
+import { CustomFieldType } from '@api/model';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { NoArgFunction, stubFunction } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { State } from '../../../../../reducers/state';
 
 interface CustomFieldsDeleteDialogProps {
   value?: string;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   item?: CustomFieldType;
   setFieldToDelete?: any;
   onConfirm?: NoArgFunction;

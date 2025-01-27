@@ -6,33 +6,33 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { SystemPreference } from "@api/model";
-import { withStyles } from "@mui/styles";
-import createStyles from "@mui/styles/createStyles";
-import { ShowConfirmCaller } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router";
-import { Dispatch } from "redux";
-import { initialize, SubmissionError } from "redux-form";
-import { setUserPreference, showConfirm } from "../../../common/actions";
-import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../constants/Config";
-import { Fetch } from "../../../model/common/Fetch";
-import { Categories } from "../../../model/preferences";
-import * as avetmiss from "../../../model/preferences/Avetmiss";
-import * as classDefaults from "../../../model/preferences/ClassDefaults";
-import * as college from "../../../model/preferences/College";
-import * as financial from "../../../model/preferences/Financial";
-import * as ldap from "../../../model/preferences/Ldap";
-import * as licences from "../../../model/preferences/Licences";
-import * as maintenance from "../../../model/preferences/Maintenance";
-import * as messaging from "../../../model/preferences/Messaging";
-import * as security from "../../../model/preferences/security";
-import { State } from "../../../reducers/state";
-import { getPreferences, savePreferences } from "../actions";
+import { SystemPreference } from '@api/model';
+import { ShowConfirmCaller } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import { initialize, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { setUserPreference, showConfirm } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../constants/Config';
+import { Fetch } from '../../../model/common/Fetch';
+import { Categories } from '../../../model/preferences';
+import * as avetmiss from '../../../model/preferences/Avetmiss';
+import * as classDefaults from '../../../model/preferences/ClassDefaults';
+import * as college from '../../../model/preferences/College';
+import * as financial from '../../../model/preferences/Financial';
+import * as ldap from '../../../model/preferences/Ldap';
+import * as licences from '../../../model/preferences/Licences';
+import * as maintenance from '../../../model/preferences/Maintenance';
+import * as messaging from '../../../model/preferences/Messaging';
+import * as security from '../../../model/preferences/security';
+import { State } from '../../../reducers/state';
+import { getPreferences, savePreferences } from '../actions';
 
 const styles = () =>
-  createStyles({
+  ({
     subheadingButton: {
       width: "30px",
       minWidth: "unset"
@@ -228,7 +228,7 @@ const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch,
   onInit: category => dispatch(getPreferences(category)),
   onSubmit: (category, {defaultInvoiceLineAccount, ...fields}) => {
@@ -240,4 +240,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   openConfirm: props => dispatch(showConfirm(props))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(FormContainer)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(withRouter(FormContainer), styles));

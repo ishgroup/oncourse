@@ -71,8 +71,6 @@ class DateFormatterTest3 {
                 ["1-3-05", new GregorianCalendar(2005, Calendar.MARCH, 1)],
                 ["2/3", new GregorianCalendar(currentYear, Calendar.MARCH, 2)],
                 ["2-3", new GregorianCalendar(currentYear, Calendar.MARCH, 2)],
-                ["+10y", new GregorianCalendar(currentYear + 10, currentMonth, currentDate)],
-                ["-1y", new GregorianCalendar(currentYear - 1, currentMonth, currentDate)],
 
                 ["now", Calendar.getInstance()],
                 ["today", Calendar.getInstance()],
@@ -124,6 +122,15 @@ class DateFormatterTest3 {
         temp.add(Calendar.DATE, 3)
         dataList.add(Arguments.of("+3d", temp))
 
+
+        temp = Calendar.getInstance()
+        temp.add(Calendar.YEAR, -1)
+        dataList.add(Arguments.of("-1y", temp))
+
+
+        temp = Calendar.getInstance()
+        temp.add(Calendar.YEAR, 10)
+        dataList.add(Arguments.of("+10y", temp))
         return dataList
     }
 

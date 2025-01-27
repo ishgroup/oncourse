@@ -594,9 +594,9 @@
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
   <Node id="2" isWebVisible="1" nodeType="1" name="ClassWithoutSpaceTag"
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-  <Node id="3" isWebVisible="1" nodeType="2" name="Course With space Tag"
+  <Node id="3" isWebVisible="1" nodeType="1" name="Course With space Tag"
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
-  <Node id="4" isWebVisible="1" nodeType="2" name="CourseWithoutSpaceTag"
+  <Node id="4" isWebVisible="1" nodeType="1" name="CourseWithoutSpaceTag"
         createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
   <NodeRelation id="1" entityIdentifier="2" entityRecordId="202" nodeId="1"
                 createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
@@ -728,85 +728,85 @@
   <PriorLearning id="3" studentId="226" title="Childcare Traineeship (Cert III)" externalRef="CCTrainIII"
                  qualificationId="12085" createdOn="2017-06-20 12:00:00.0" modifiedOn="2017-06-20 12:00:00.0"/>
 
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090505" ID="1946" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090505" ID="1946" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-25 13:12:28.479" NATIONALCODE="CHCCHILD401A" TRAININGPACKAGEID="335" WILLOWID="33874"
           TITLE="Identify and respond to children and young people at risk"/>
-  <Module CREATEDON="2011-03-25 18:54:00.0" FIELDOFEDUCATION="090507" ID="2729" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:54:00.0" FIELDOFEDUCATION="090507" ID="2729" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC17A" TRAININGPACKAGEID="263" WILLOWID="2797"
           TITLE="Support the older person to maintain their independence"/>
-  <Module CREATEDON="2011-03-25 18:54:01.0" FIELDOFEDUCATION="090507" ID="3434" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:54:01.0" FIELDOFEDUCATION="090507" ID="3434" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC1A" TRAININGPACKAGEID="338" WILLOWID="2798"
           TITLE="Provide care support to aged people"/>
-  <Module CREATEDON="2011-03-25 20:46:17.0" FIELDOFEDUCATION="020305" ID="4625" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 20:46:17.0" FIELDOFEDUCATION="020305" ID="4625" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-09 09:23:01.867" NATIONALCODE="ICAA4047A" TRAININGPACKAGEID="236" WILLOWID="6999"
           TITLE="Determine project specifications and secure client agreement"/>
-  <Module CREATEDON="2011-03-25 20:46:15.0" FIELDOFEDUCATION="020305" ID="5461" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 20:46:15.0" FIELDOFEDUCATION="020305" ID="5461" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-09 09:23:01.867" NATIONALCODE="ICAA4041A" TRAININGPACKAGEID="236" WILLOWID="6998"
           TITLE="Determine and confirm client business expectations and needs"/>
-  <Module CREATEDON="2011-03-25 18:57:19.0" FIELDOFEDUCATION="090505" ID="5549" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:19.0" FIELDOFEDUCATION="090505" ID="5549" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-25 13:12:28.479" NATIONALCODE="CHCCHILD301A" TRAININGPACKAGEID="335" WILLOWID="33873"
           TITLE="Support behaviour of children and young people"/>
-  <Module CREATEDON="2011-03-25 18:53:53.0" FIELDOFEDUCATION="090507" ID="7150" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:53:53.0" FIELDOFEDUCATION="090507" ID="7150" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC13A" TRAININGPACKAGEID="338" WILLOWID="2794"
           TITLE="Coordinate work in the aged care sector"/>
-  <Module CREATEDON="2011-03-25 18:53:59.0" FIELDOFEDUCATION="090507" ID="10397" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:53:59.0" FIELDOFEDUCATION="090507" ID="10397" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC15A" TRAININGPACKAGEID="263" WILLOWID="2795"
           TITLE="Provide care support which is responsive to the specific nature of dementia"/>
-  <Module CREATEDON="2011-03-25 18:54:01.0" FIELDOFEDUCATION="110111" ID="11146" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:54:01.0" FIELDOFEDUCATION="110111" ID="11146" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC16A" TRAININGPACKAGEID="263" WILLOWID="2796"
           TITLE="Provide food services"/>
-  <Module CREATEDON="2008-06-04 16:57:58.0" FIELDOFEDUCATION="120103" ID="12821" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2008-06-04 16:57:58.0" FIELDOFEDUCATION="120103" ID="12821" type="1" ISOFFERED="1"
           MODIFIEDON="2013-04-16 16:07:57.612" NATIONALCODE="90990NSW/B" WILLOWID="31931" NOMINALHOURS="30.0"
           TITLE="Speaking Skills for Further Education"/>
-  <Module CREATEDON="2011-03-25 18:53:50.0" FIELDOFEDUCATION="090507" ID="14247" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:53:50.0" FIELDOFEDUCATION="090507" ID="14247" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC12A" TRAININGPACKAGEID="338" WILLOWID="2792"
           TITLE="Provide services to meet aged people&apos;s personal needs"/>
-  <Module CREATEDON="2011-03-26 01:18:31.0" FIELDOFEDUCATION="070109" ID="14443" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-26 01:18:31.0" FIELDOFEDUCATION="070109" ID="14443" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-20 17:11:58.0" NATIONALCODE="TAEASS403A" TRAININGPACKAGEID="305" WILLOWID="1110580"
           TITLE="Participate in assessment validation"/>
-  <Module CREATEDON="2011-03-25 20:46:32.0" FIELDOFEDUCATION="020305" ID="14481" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 20:46:32.0" FIELDOFEDUCATION="020305" ID="14481" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-09 09:23:01.867" NATIONALCODE="ICAA5044A" TRAININGPACKAGEID="236" WILLOWID="7005"
           TITLE="Develop system infrastructure design plan"/>
-  <Module CREATEDON="2008-06-04 16:57:58.0" FIELDOFEDUCATION="120103" ID="14901" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2008-06-04 16:57:58.0" FIELDOFEDUCATION="120103" ID="14901" type="1" ISOFFERED="1"
           MODIFIEDON="2013-04-16 16:07:57.613" NATIONALCODE="90990NSW/A" WILLOWID="31930" NOMINALHOURS="30.0"
           TITLE="Advanced Grammar for Further Education"/>
-  <Module CREATEDON="2011-03-26 01:18:31.0" FIELDOFEDUCATION="070109" ID="16272" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-26 01:18:31.0" FIELDOFEDUCATION="070109" ID="16272" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-20 17:32:29.0" NATIONALCODE="TAEASS402A" TRAININGPACKAGEID="305" WILLOWID="1110579"
           TITLE="Assess competence"/>
-  <Module CREATEDON="2011-03-26 01:18:29.0" FIELDOFEDUCATION="070109" ID="18691" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-26 01:18:29.0" FIELDOFEDUCATION="070109" ID="18691" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-20 17:32:29.0" NATIONALCODE="TAEASS401A" TRAININGPACKAGEID="305" WILLOWID="1110578"
           TITLE="Plan assessment activities and processes"/>
-  <Module CREATEDON="2011-03-25 20:46:27.0" FIELDOFEDUCATION="020305" ID="20801" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 20:46:27.0" FIELDOFEDUCATION="020305" ID="20801" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-09 09:23:01.867" NATIONALCODE="ICAA4142A" TRAININGPACKAGEID="236" WILLOWID="7002"
           TITLE="Design a website to meet technical requirements"/>
-  <Module CREATEDON="2011-03-25 18:53:50.0" FIELDOFEDUCATION="090507" ID="21359" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:53:50.0" FIELDOFEDUCATION="090507" ID="21359" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC10A" TRAININGPACKAGEID="338" WILLOWID="2790"
           TITLE="Develop a service delivery strategy"/>
-  <Module CREATEDON="2011-03-26 01:18:29.0" FIELDOFEDUCATION="070109" ID="21768" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-26 01:18:29.0" FIELDOFEDUCATION="070109" ID="21768" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-13 11:03:42.0" NATIONALCODE="TAEASS301A" TRAININGPACKAGEID="305" WILLOWID="1111265"
           TITLE="Contribute to assessment"/>
-  <Module CREATEDON="2008-06-04 16:57:58.0" FIELDOFEDUCATION="120103" ID="22368" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2008-06-04 16:57:58.0" FIELDOFEDUCATION="120103" ID="22368" type="1" ISOFFERED="1"
           MODIFIEDON="2013-04-16 16:07:57.613" NATIONALCODE="90990NSW/C" WILLOWID="31932" NOMINALHOURS="30.0"
           TITLE="Reading Skills for Further Education"/>
-  <Module CREATEDON="2011-03-25 18:53:52.0" FIELDOFEDUCATION="090507" ID="23816" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:53:52.0" FIELDOFEDUCATION="090507" ID="23816" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC11A" TRAININGPACKAGEID="338" WILLOWID="2791"
           TITLE="Safeguard the rights and needs of aged people"/>
-  <Module CREATEDON="2011-03-25 20:55:19.0" FIELDOFEDUCATION="080905" ID="34548" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 20:55:19.0" FIELDOFEDUCATION="080905" ID="34548" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-25 13:34:51.286" NATIONALCODE="ICAITU129A" TRAININGPACKAGEID="339" WILLOWID="7468"
           TITLE="Operate a word processing application"/>
-  <Module CREATEDON="2011-03-25 18:57:16.0" FIELDOFEDUCATION="091103" ID="39251" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:16.0" FIELDOFEDUCATION="091103" ID="39251" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-25 13:12:28.479" NATIONALCODE="CHCCHILD1A" TRAININGPACKAGEID="338" WILLOWID="2935"
           TITLE="Work within legislative and ethical requirements"/>
-  <Module CREATEDON="2011-03-25 18:54:03.0" FIELDOFEDUCATION="090507" ID="41142" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:54:03.0" FIELDOFEDUCATION="090507" ID="41142" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC2C" TRAININGPACKAGEID="263" WILLOWID="2801"
           TITLE="Provide personal care"/>
-  <Module CREATEDON="2011-03-25 18:57:19.0" FIELDOFEDUCATION="091103" ID="43457" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:19.0" FIELDOFEDUCATION="091103" ID="43457" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="CHCCHILD2A" TRAININGPACKAGEID="338" WILLOWID="2937"
           TITLE="Support the rights and safety of children within duty of care requirements"/>
-  <Module CREATEDON="2011-03-25 18:54:03.0" FIELDOFEDUCATION="090507" ID="46428" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:54:03.0" FIELDOFEDUCATION="090507" ID="46428" type="0" ISOFFERED="0"
           MODIFIEDON="2013-04-16 16:14:30.511" NATIONALCODE="CHCAC2A" TRAININGPACKAGEID="338" WILLOWID="2800"
           TITLE="Assist with aged people&apos;s personal needs"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="47981" type="0" ISOFFERED="0"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="47981" type="0" ISOFFERED="0"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="CHCCHILD3A" TRAININGPACKAGEID="263" WILLOWID="2939"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <Outcome CREATEDON="2013-03-25 13:12:28.476" ENROLMENTID="200" ID="200" MODIFIEDON="2013-04-09 09:57:21.108"

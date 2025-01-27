@@ -6,22 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Edit from "@mui/icons-material/Edit";
-import { green } from "@mui/material/colors";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import withTheme from "@mui/styles/withTheme";
-import { orange } from "@mui/material/colors";
-import { differenceInCalendarWeeks } from "date-fns";
-import { AppTheme, NumberArgFunction } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Area, AreaChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { Dispatch } from "redux";
-import { State } from "../../../../../reducers/state";
-import { getCourseClassEnrolments, setCourseClassEnrolments } from "../../actions";
-import { CourseClassState } from "../../reducers";
+import Edit from '@mui/icons-material/Edit';
+import { green, orange } from '@mui/material/colors';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { differenceInCalendarWeeks } from 'date-fns';
+import { AppTheme, NumberArgFunction, useAppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Area, AreaChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { Dispatch } from 'redux';
+import { State } from '../../../../../reducers/state';
+import { getCourseClassEnrolments, setCourseClassEnrolments } from '../../actions';
+import { CourseClassState } from '../../reducers';
 
 interface Props {
   classId: number;
@@ -145,7 +143,6 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     enrolments,
     enrolmentsFetching,
     classStart,
-    theme,
     openBudget,
     hasBudged,
     actualEnrolmentsToProfit
@@ -155,9 +152,11 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
     const [todayWeek, setTodayWeek] = useState(null);
     const [allWeeksTodayWeek, setAllWeeksTodayWeek] = useState(null);
     const [showLabels, setShowLabels] = useState(false);
+
+    const theme = useAppTheme();
     
-    const maxLabelEl = useRef<SVGAElement>();
-    const minLabelEl = useRef<SVGAElement>();
+    const maxLabelEl = useRef<SVGAElement>(undefined);
+    const minLabelEl = useRef<SVGAElement>(undefined);
 
     const clearData = useCallback(() => {
       setData(prev => prev.map(({ week }) => ({ week, enrolments: 0, value: 0, averageValue: 0 })));
@@ -459,4 +458,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   clearEnrolments: () => dispatch(setCourseClassEnrolments([]))
 });
 
-export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withTheme(CourseClassEnrolmentsChart));
+export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(CourseClassEnrolmentsChart);

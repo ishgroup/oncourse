@@ -6,17 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Grid } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { AppTheme } from "ish-ui";
-import React from "react";
-import DocumentHeader from "./DocumentHeader";
-import DocumentTags from "./DocumentTags";
+import { Grid } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import DocumentHeader from './DocumentHeader';
+import DocumentTags from './DocumentTags';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   container: {
     paddingLeft: `${theme.spacing(10.5)} !important`
   },
@@ -63,4 +62,4 @@ class DocumentItem extends React.PureComponent<any, any> {
   }
 }
 
-export default withStyles(styles)(DocumentItem);
+export default withStyles(DocumentItem, styles);

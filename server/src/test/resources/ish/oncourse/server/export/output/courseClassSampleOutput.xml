@@ -63,7 +63,7 @@
           <startDate />
           <endDate />
           <status>Competency achieved/pass (20)</status>
-          <module nationalCode='TESTCODE1' />
+          <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" nationalCode='TESTCODE1' />
         </outcome>
       </enrolment>
       <enrolment id='2'>
@@ -79,7 +79,7 @@
           <startDate>2013-01-01T12:00:00Z</startDate>
           <endDate>2013-02-01T12:00:00Z</endDate>
           <status>Competency not achieved/fail (30)</status>
-          <module nationalCode='TESTCODE2' />
+          <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" nationalCode='TESTCODE2' />
         </outcome>
       </enrolment>
       <session id='1'>

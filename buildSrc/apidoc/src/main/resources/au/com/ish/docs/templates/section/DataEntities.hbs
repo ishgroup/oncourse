@@ -1,0 +1,16 @@
+---
+title: Data Entities
+category: 668405923201e5005af7a89e
+---
+
+These are objects which represent the data stored in onCourse.
+You will typically search for them using the onCourse query language.
+These objects will be in the Cayenne Context named 'context' by default, so you can make changes and store them back
+into onCourse using context.commitChanges(). The database tables often don't match the description of
+the entities here since we use inheritance and different naming to better describe the data schema in code.
+
+{{#splitClasses classes}}
+{{#each (sort entities "name")}}
+{{{renderChapter this}}}
+{{/each}}
+{{/splitClasses}}

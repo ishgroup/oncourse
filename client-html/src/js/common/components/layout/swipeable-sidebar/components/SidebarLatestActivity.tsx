@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import React from "react";
-import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
-import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
-import { LSGetItem } from "../../../../utils/storage";
-import ListLinksGroup from "./searchResults/ListLinksGroup";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { DASHBOARD_ACTIVITY_STORAGE_NAME } from '../../../../../constants/Config';
+import { getEntityDisplayName } from '../../../../utils/getEntityDisplayName';
+import { LSGetItem } from '../../../../utils/storage';
+import ListLinksGroup from './searchResults/ListLinksGroup';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   activityStatistic: {
     marginTop: 4
   },
@@ -64,4 +63,4 @@ const SidebarLatestActivity: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(SidebarLatestActivity);
+export default withStyles(SidebarLatestActivity, styles);

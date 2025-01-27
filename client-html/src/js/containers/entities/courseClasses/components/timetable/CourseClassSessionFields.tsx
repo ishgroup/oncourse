@@ -6,27 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance, } from "@api/model";
-import Grid from "@mui/material/Grid";
-import { addMinutes, differenceInMinutes } from "date-fns";
-import { EditInPlaceDurationField, ErrorMessage, LinkAdornment, NoWrapOption, stubFunction } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayPush, arrayRemove, change, Field, formValueSelector } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { greaterThanNullValidation } from "../../../../../common/utils/validation";
-import { ClassCostExtended, CourseClassTutorExtended } from "../../../../../model/entities/CourseClass";
-import { TimetableSession } from "../../../../../model/timetable";
-import { State } from "../../../../../reducers/state";
-import { openRoomLink } from "../../../rooms/utils";
-import { setShiftedTutorAttendances } from "../../utils";
-import CourseClassTutorRooster from "./CourseClassTutorRooster";
+import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance, } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { addMinutes, differenceInMinutes } from 'date-fns';
+import { EditInPlaceDurationField, ErrorMessage, LinkAdornment, NoWrapOption, stubFunction } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayPush, arrayRemove, change, Field, formValueSelector } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { greaterThanNullValidation } from '../../../../../common/utils/validation';
+import { ClassCostExtended, CourseClassTutorExtended } from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import { openRoomLink } from '../../../rooms/utils';
+import { setShiftedTutorAttendances } from '../../utils';
+import CourseClassTutorRooster from './CourseClassTutorRooster';
 
 interface Props {
   form: string;
   index: number;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   tutors: CourseClassTutorExtended[];
   session?: TimetableSession;
   triggerDebounseUpdate?: any;
@@ -46,6 +47,10 @@ const getSiteAndRoomLabel = session => `${session?.site || ""}${session?.room ? 
 const validateDuration = value => (value < 5 || value > 1440
     ? "Each entry in the timetable cannot be shorter than 5 minutes or longer than 24 hours."
     : undefined);
+
+export const siteAndRoomSort = (a, b) => {
+  return (roomLabel(a).toLowerCase() > roomLabel(b).toLowerCase() ? 1 : -1);
+};
 
 const CourseClassSessionFields: React.FC<Props> = ({
   form,
@@ -244,6 +249,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           onInnerValueChange={onRoomIdChange}
           itemRenderer={NoWrapOption}
           hasError={Boolean(warningTypes.Room.length)}
+          sort={siteAndRoomSort}
           allowEmpty
         />
       </Grid>

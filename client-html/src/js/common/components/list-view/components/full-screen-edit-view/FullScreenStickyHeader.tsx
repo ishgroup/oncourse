@@ -1,13 +1,13 @@
-import { Edit } from "@mui/icons-material";
-import { ClickAwayListener, Collapse, Grid, Typography } from "@mui/material";
-import clsx from "clsx";
-import { makeAppStyles } from "ish-ui";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { APP_BAR_HEIGHT } from "../../../../../constants/Config";
+import { Edit } from '@mui/icons-material';
+import { ClickAwayListener, Collapse, Grid, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { makeAppStyles } from 'ish-ui';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { APP_BAR_HEIGHT } from '../../../../../constants/Config';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'fullScreenTitleItem' | 'disableInteraction' | 'titleIcon'>()((theme, p, classes) => ({
   root: {
-    "& $fullScreenTitleItem": {
+    [`& .${classes.fullScreenTitleItem}`]: {
       background: theme.appBar.headerAlternate.background,
       position: "fixed",
       top: 0,
@@ -41,10 +41,10 @@ const useStyles = makeAppStyles(theme => ({
     position: "relative",
     display: "inline-flex",
     justifyContent: "space-between",
-    "&:not($disableInteraction)": {
+    [`&:not(.${classes.disableInteraction})`]: {
       paddingBottom: theme.spacing(0.5),
     },
-    "&:not($disableInteraction):before": {
+    [`&:not(.${classes.disableInteraction}):before`]: {
       borderBottom: '1px solid transparent',
       left: 0,
       bottom: 0,
@@ -57,10 +57,10 @@ const useStyles = makeAppStyles(theme => ({
       }),
       pointerEvents: "none"
     },
-    "&:not($disableInteraction):hover:before": {
+    [`&:not(.${classes.disableInteraction}):hover:before`]: {
       borderBottom: `1px solid ${theme.palette.primary.main}`,
     },
-    "&:not($disableInteraction):hover $titleIcon": {
+    [`&:not(.${classes.disableInteraction}):hover .${classes.titleIcon}`]: {
       visibility: 'visible',
     }
   },
@@ -109,12 +109,12 @@ const FullScreenStickyHeader = React.memo<Props>(props => {
     leftOffset
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   
   const [isEditing, setIsEditing] = useState<boolean>(opened);
   const [isStuck, setIsStuck] = useState<boolean>(false);
 
-  const rootRef = useRef<HTMLDivElement>();
+  const rootRef = useRef<HTMLDivElement>(undefined);
   
   useEffect(() => {
     if (!isEditing && opened) {

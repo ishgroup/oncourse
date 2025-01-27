@@ -6,33 +6,34 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ImportModel } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import FileCopy from "@mui/icons-material/FileCopy";
-import PlayArrow from "@mui/icons-material/PlayArrow";
-import Grid from "@mui/material/Grid";
-import Grow from "@mui/material/Grow";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate, InfoPill, NumberArgFunction } from "ish-ui";
-import React, { useCallback, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import getConfigActions from "../../../components/ImportExportConfig";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import ScriptCard from "../../scripts/components/cards/CardBase";
-import ExecuteImportModal from "../components/ExecuteImportModal";
+import { ImportModel } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import FileCopy from '@mui/icons-material/FileCopy';
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate, InfoPill, NumberArgFunction } from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import ScriptCard from '../../scripts/components/cards/CardBase';
+import ExecuteImportModal from '../components/ExecuteImportModal';
 
-const manualUrl = getManualLink("advancedSetup_Import");
+const manualUrl = getManualLink("importing");
 const getAuditsUrl = (id: number) => `audit?search=~"ImportTemplate" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps {
@@ -40,7 +41,7 @@ interface Props extends InjectedFormProps {
   values: any;
   history: any;
   syncErrors: any;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (template: ImportModel) => void;
   onUpdateInternal: (template: ImportModel) => void;
   onUpdate: (template: ImportModel) => void;
@@ -220,6 +221,27 @@ const ImportTemplatesForm = React.memo<Props>(
             )}
           >
             <Grid container columnSpacing={3} rowSpacing={2}>
+              <Grid item xs={12} sm={9}>
+                <FormField
+                  type="multilineText"
+                  name="shortDescription"
+                  disabled={isInternal}
+                  className="overflow-hidden mb-1"
+                  placeholder="Short description"
+                />
+                <Typography variant="caption" fontSize="13px">
+                  <FormField
+                    type="multilineText"
+                    name="description"
+                    disabled={isInternal}
+                    className="overflow-hidden mb-1"
+                    placeholder="Description"
+                    fieldClasses={{
+                      text: "fw300 fsInherit"
+                    }}
+                  />
+                </Typography>
+              </Grid>
               <FieldArray
                 name="options"
                 itemsType="component"
@@ -252,14 +274,6 @@ const ImportTemplatesForm = React.memo<Props>(
                   disabled={!isNew}
                   className="mb-2"
                   required
-                />
-
-                <FormField
-                  type="text"
-                  label="Description"
-                  name="description"
-                  disabled={isInternal}
-                                    multiline
                 />
               </Grid>
               <Grid item xs={3}>

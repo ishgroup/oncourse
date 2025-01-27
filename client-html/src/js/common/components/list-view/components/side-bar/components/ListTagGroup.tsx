@@ -6,25 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import DragIndicator from "@mui/icons-material/DragIndicator";
-import TreeView from "@mui/lab/TreeView";
-import makeStyles from "@mui/styles/makeStyles";
-import clsx from "clsx";
-import React, { useCallback, useMemo, useState } from "react";
-import { Draggable } from "react-beautiful-dnd-next";
-import { FormMenuTag } from "../../../../../../model/tags";
-import { getUpdated, updateIndeterminateState } from "../../../utils/listFiltersUtils";
-import styles from "../../list/styles";
-import ListTagItem from "./ListTagItem";
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { makeAppStyles } from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd-next';
+import { FormMenuTag } from '../../../../../../model/tags';
+import { getUpdated, updateIndeterminateState } from '../../../utils/listFiltersUtils';
+import styles from '../../list/styles';
+import ListTagItem from './ListTagItem';
 
-const useStyles = makeStyles(styles);
+const useStyles = makeAppStyles()(styles);
 
 interface Props {
   rootTag: FormMenuTag;
   classes: any;
   showColoredDots: boolean;
   updateActive: (updated: FormMenuTag) => void;
-  dndKey: number;
+  dndKey?: number;
   dndEnabled?: boolean;
 }
 
@@ -40,7 +39,7 @@ const ListTagGroup: React.FC<Props> = (
 ) => {
   const [expanded, setExpanded] = useState([]);
 
-  const customStyles = useStyles();
+  const { classes: customStyles, cx } = useStyles();
 
   const hasOffset = useMemo(() => !rootTag.children.some(c => Boolean(c.children.length)), [rootTag.children]);
 
@@ -79,20 +78,20 @@ const ListTagGroup: React.FC<Props> = (
   });
   
   const heading = (
-    <div className={clsx("heading", classes.listHeaderOffset)}>
+    <div className={cx("heading", classes.listHeaderOffset)}>
       {rootTag.prefix ? `${rootTag.prefix} (${rootTag.tagBody.name})` : rootTag.tagBody.name}
     </div>
   );
-  
+
   const tree = (
-    <TreeView expanded={expanded}>
+    <SimpleTreeView expandedItems={expanded}>
       {rootTag.children.map(c => {
       const key = c.prefix + c.tagBody.id.toString();
       return (
         <ListTagItem
           hasOffset={hasOffset}
           handleExpand={handleExpand}
-          nodeId={key}
+          itemId={key}
           item={c}
           key={key}
           toggleActive={toggleActive}
@@ -100,7 +99,7 @@ const ListTagGroup: React.FC<Props> = (
         />
       );
     })}
-    </TreeView>
+    </SimpleTreeView>
   );
 
   return dndEnabled ? (
@@ -113,8 +112,8 @@ const ListTagGroup: React.FC<Props> = (
         {(provided, snapshot) => {
           const isDragging = snapshot.isDragging;
 
-          return (            
-            <div
+          return (
+            (<div
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
@@ -122,10 +121,10 @@ const ListTagGroup: React.FC<Props> = (
                 snapshot.isDragging,
                 provided.draggableProps.style
               )}
-              className={clsx("pt-2", { [customStyles.isDragging]: isDragging })}
+              className={cx("pt-2", { [customStyles.isDragging]: isDragging })}
             >
               <div
-                className={clsx(
+                className={cx(
                   "p-0",
                   customStyles.draggableCellItem,
                   { "pl-3": isDragging },
@@ -135,7 +134,7 @@ const ListTagGroup: React.FC<Props> = (
                   <span className="relative">
                     <DragIndicator
                       className={
-                        clsx(
+                        cx(
                           "dndActionIcon",
                           customStyles.dragIndicator,
                           {
@@ -149,7 +148,7 @@ const ListTagGroup: React.FC<Props> = (
                 </div>
               </div>
               {tree}
-            </div>
+            </div>)
           );
         }}
       </Draggable>

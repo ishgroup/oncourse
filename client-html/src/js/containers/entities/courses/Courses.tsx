@@ -19,13 +19,13 @@ import { getManualLink } from "../../../common/utils/getManualLink";
 import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
 import { CourseExtended } from "../../../model/entities/Course";
 import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
-import { getListTags } from "../../tags/actions";
+import { getEntitySpecialTags, getListTags } from "../../tags/actions";
 import CourseCogWheel from "./components/CourseCogWheel";
 import CourseEditView from "./components/CourseEditView";
 
 export const ENTITY_NAME = "Course";
 
-const manualLink = getManualLink("courses");
+const manualLink = getManualLink("working-with-courses");
 
 interface CoursesProps {
   getArticleProductRecord?: () => void;
@@ -234,6 +234,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   getTags: () => {
     dispatch(getListTags(ENTITY_NAME));
+    dispatch(getEntitySpecialTags(ENTITY_NAME));
   },
   getPermissions: () => {
     dispatch(checkPermissions({ keyCode: "VET_COURSE" }));

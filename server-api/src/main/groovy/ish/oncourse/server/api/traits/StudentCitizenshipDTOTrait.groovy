@@ -33,6 +33,8 @@ trait StudentCitizenshipDTOTrait {
                 return StudentCitizenship.NONE_OF_THE_ABOVE_CATEGORIES
             case StudentCitizenshipDTO.NO_INFORMATION:
                 return StudentCitizenship.NO_INFORMATION
+            case StudentCitizenshipDTO.STUDENTS_APPLICANTS_WITH_PACIFIC_ENGAGEMENT_VISA:
+                return StudentCitizenship.STUDENT_WITH_PACIFIC_ENGAGEMENT_VISA
             default:
                 throw new IllegalArgumentException("${toString()}")
         }
@@ -57,6 +59,8 @@ trait StudentCitizenshipDTOTrait {
                 return StudentCitizenshipDTO.NOT_ONE_OF_THE_ABOVE_CATEGORIES
             case StudentCitizenship.NO_INFORMATION:
                 return StudentCitizenshipDTO.NO_INFORMATION
+            case StudentCitizenship.STUDENT_WITH_PACIFIC_ENGAGEMENT_VISA:
+                return StudentCitizenshipDTO.STUDENTS_APPLICANTS_WITH_PACIFIC_ENGAGEMENT_VISA
             default:
                 throw new IllegalArgumentException("$dataType.displayName")
         }

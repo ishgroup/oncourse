@@ -90,7 +90,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const manualLink = getManualLink("applications");
+const manualLink = getManualLink("navigating-the-application-window");
 
 const nameCondition = values => (values ? values.studentName : "");
 

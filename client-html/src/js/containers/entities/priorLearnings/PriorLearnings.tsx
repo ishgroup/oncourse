@@ -52,7 +52,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Outcomes", list: "outcome", expression: "priorLearning.id" }
 ];
 
-const manualLink = getManualLink("delivery_rpl");
+const manualLink = getManualLink("importing-and-adding-prior-learning");
 
 const PriorLearnings: React.FC<PriorLearningsProps> = props => {
   const {

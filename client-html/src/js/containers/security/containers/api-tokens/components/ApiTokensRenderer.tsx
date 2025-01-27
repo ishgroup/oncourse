@@ -6,22 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ApiToken, User } from "@api/model";
-import { Card, Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import { LinkAdornment, NumberArgFunction, openInternalLink } from "ish-ui";
-import React, { useRef } from "react";
-import { Dispatch } from "redux";
-import { WrappedFieldArrayProps } from "redux-form";
-import { showMessage } from "../../../../../common/actions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { getContactFullName } from "../../../../entities/contacts/utils";
-import UserSelectItemRenderer from "../../users/components/UserSelectItemRenderer";
+import { ApiToken, User } from '@api/model';
+import { Button, Card, Grid, Typography } from '@mui/material';
+import { LinkAdornment, NumberArgFunction, openInternalLink } from 'ish-ui';
+import React, { useRef } from 'react';
+import { Dispatch } from 'redux';
+import { WrappedFieldArrayProps } from 'redux-form';
+import { showMessage } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { getContactFullName } from '../../../../entities/contacts/utils';
+import UserSelectItemRenderer from '../../users/components/UserSelectItemRenderer';
 
 interface RendererProps {
   users: User[];
   onDelete: NumberArgFunction;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
 }
 
 interface ItemsProps extends RendererProps {
@@ -44,7 +44,7 @@ const ApiTokenItem: React.FC<ItemsProps> = (
 ) => {
   const isNew = typeof field.id !== "number";
 
-  const linkInput = useRef<HTMLInputElement>();
+  const linkInput = useRef<HTMLInputElement>(undefined);
 
   const onCopy = () => {
     linkInput.current.select();

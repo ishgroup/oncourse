@@ -3,27 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PayrollRequest, WagesToProcess } from "@api/model";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { openInternalLink, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, getFormValues, reduxForm } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
-import { State } from "../../../../reducers/state";
+import { PayrollRequest, WagesToProcess } from '@api/model';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { openInternalLink, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues, reduxForm } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
+import { State } from '../../../../reducers/state';
 
 export const PAYSLIP_GENERATE_FORM = "PayslipGenerateForm";
 
@@ -34,7 +35,7 @@ interface Props {
   confirmNowIsAllowed: boolean;
   preparePayroll: (request: PayrollRequest) => void;
   generatePayslip: (payrollRequest: PayrollRequest, confirm: boolean) => void;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   handleSubmit?: any;
   invalid?: boolean;
 }

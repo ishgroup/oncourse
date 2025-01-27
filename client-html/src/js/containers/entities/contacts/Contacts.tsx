@@ -6,36 +6,40 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import Typography from "@mui/material/Typography";
-import { isBefore } from "date-fns";
-import React, { Dispatch, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import company from "../../../../images/company.png";
-import person from "../../../../images/person.png";
-import tutorStudent from "../../../../images/student-tutor.png";
-import student from "../../../../images/student.png";
-import tutor from "../../../../images/tutor.png";
-import { checkPermissions } from "../../../common/actions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from "../../preferences/actions";
-import { PreferencesState } from "../../preferences/reducers/state";
-import { getDefaultInvoiceTerms } from "../invoices/actions";
-import { getContactsConcessionTypes, getContactsRelationTypes, getContactsTaxTypes, getContactTags } from "./actions";
-import ContactCogWheel from "./components/ContactCogWheel";
-import ContactEditView from "./components/ContactEditView";
-import { getContactFullName } from "./utils";
+import { Contact } from '@api/model';
+import Typography from '@mui/material/Typography';
+import { isBefore } from 'date-fns';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import company from '../../../../images/company.png';
+import person from '../../../../images/person.png';
+import tutorStudent from '../../../../images/student-tutor.png';
+import student from '../../../../images/student.png';
+import tutor from '../../../../images/tutor.png';
+import { checkPermissions } from '../../../common/actions';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import EntityService from '../../../common/services/EntityService';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getContactRelationTypes, getCountries, getLanguages, getPaymentTypes } from '../../preferences/actions';
+import { PreferencesState } from '../../preferences/reducers/state';
+import { getDefaultInvoiceTerms } from '../invoices/actions';
+import { getContactsConcessionTypes, getContactsRelationTypes, getContactsTaxTypes, getContactTags } from './actions';
+import ContactCogWheel from './components/ContactCogWheel';
+import ContactEditView from './components/ContactEditView';
+import { getContactFullName } from './utils';
 
 export type ContactType = "STUDENT" | "TUTOR" | "COMPANY" | "TUTOR_STUDENT";
 
 export interface ContactsProps {
+  dispatch?: Dispatch<any>;
   onInit?: () => void;
   getRecords?: () => void;
   getFilters?: () => void;
@@ -166,7 +170,7 @@ const findRelatedGroup: FindRelatedItem[] = [
 
 const secondaryColumnCondition = row => row.birthDate || "Birthday not specified";
 
-const manualLink = getManualLink("contacts");
+const manualLink = getManualLink("creating-and-modifying-contacts");
 
 const getContactTypeImage = (type: ContactType) => {
   switch (type) {
@@ -196,7 +200,7 @@ export const getDisabledSubmitCondition = (isVerifyingUSI, usiVerificationResult
   isVerifyingUSI || (usiVerificationResult && usiVerificationResult.verifyStatus === "Invalid format")
 );
 
-const SearchMenuItem = React.memo<any>(({ content, data }) => (
+const SearchMenuItem = React.memo<{ content, data }>(({ content, data }) => (
   <div className="d-flex align-items-baseline">
     {content}
     <Typography className="ml-0-5" variant="caption" color="textSecondary">
@@ -207,8 +211,8 @@ const SearchMenuItem = React.memo<any>(({ content, data }) => (
   </div>
 ));
 
-const searchMenuItemsRenderer = (content, data, search) => (
-  data.prefix ? <SearchMenuItem content={content} data={data} search={search} /> : content
+const searchMenuItemsRenderer = (content, data) => (
+  data.prefix ? <SearchMenuItem content={content} data={data} /> : content
 );
 
 const today = new Date();
@@ -226,6 +230,7 @@ const setRowClasses = row => {
 
 const Contacts: React.FC<ContactsProps> = props => {
   const {
+    dispatch,
     getFilters,
     clearListState,
     onInit,
@@ -308,6 +313,32 @@ const Contacts: React.FC<ContactsProps> = props => {
   const getContactFullNameWithTitle = (values: Contact) =>
     `${!values.isCompany && values.title && values.title.trim().length > 0 ? `${values.title} ` : ""}${!values.isCompany ? getContactFullName(values) : values.lastName}`;
 
+  const getCustomBulkEditFields = useCallback(async () => {
+    if (!selection || !selection.length) return [];
+
+    const result = [];
+
+    await EntityService.getPlainRecords(
+      "CustomField",
+      "customFieldType.key,customFieldType.name",
+      `entityIdentifier is Contact and customFieldType.dataType is PORTAL_SUBDOMAIN`
+    )
+      .then(res => {
+        if (res.rows.length) {
+          const values = res.rows[0].values;
+          result.push({
+            keyCode: `customFields.${values[0]}`,
+            label: values[1],
+            name: values[1],
+            type: "Portal subdomain"
+          });
+        }
+      })
+      .catch(err => instantFetchErrorHandler(dispatch, err));
+
+    return result;
+  }, [selection]);
+
   return (
     <ListView
       listProps={{
@@ -333,11 +364,13 @@ const Contacts: React.FC<ContactsProps> = props => {
       filterGroupsInitial={filterGroups}
       CogwheelAdornment={ContactCogWheel}
       searchMenuItemsRenderer={searchMenuItemsRenderer}
+      getCustomBulkEditFields={getCustomBulkEditFields}
     />
   );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+  dispatch,
   onInit: () => {
     dispatch(setListEditRecord(ContactInitial));
     dispatch(initialize(LIST_EDIT_VIEW_FORM_NAME, ContactInitial));
@@ -376,4 +409,4 @@ const mapStateToProps = (state: State) => ({
   usiVerificationResult: state.contacts.usiVerificationResult
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(Contacts);
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

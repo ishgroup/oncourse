@@ -5,10 +5,9 @@
 
 import { Qualification, QualificationType } from "@api/model";
 import { FormControlLabel, Grid } from "@mui/material";
-import { normalizeNumber } from "ish-ui";
+import { normalizeNumber, sortDefaultSelectItems } from "ish-ui";
 import * as React from "react";
 import FormField from "../../../../common/components/form/formFields/FormField";
-import { sortDefaultSelectItems } from "../../../../common/utils/common";
 import { EditViewProps } from "../../../../model/common/ListView";
 
 const qualificationTypes = Object.keys(QualificationType)

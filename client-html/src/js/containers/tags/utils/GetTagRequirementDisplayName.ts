@@ -44,6 +44,8 @@ const GetTagRequirementDisplayName = (type: TagRequirementType) => {
       return "Membership types";
     case TagRequirementType.ArticleProduct:
       return "Products";
+    case "Faculty":
+      return "Faculties";
     default:
       return type + "s";
   }

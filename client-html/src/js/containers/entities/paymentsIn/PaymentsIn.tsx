@@ -67,7 +67,7 @@ const filterGroups: FilterGroup[] = [
   }
 ];
 
-const manualLink = getManualLink("processingEnrolments_PaymentIn");
+const manualLink = getManualLink("processing-a-payment-in");
 
 const nameCondition = (paymentIn: PaymentIn) => paymentIn.paymentInType;
 
