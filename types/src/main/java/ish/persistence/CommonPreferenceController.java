@@ -1122,6 +1122,8 @@ public abstract class CommonPreferenceController {
 			return getCustomLogoColour();
 		} else if (CUSTOM_LOGO_COLOUR_SMALL.equals(key)) {
 			return getCustomLogoColourSmall();
+		} else if (AUS_REPORTING.equals(key)) {
+			return getAusReporting();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1517,6 +1519,13 @@ public abstract class CommonPreferenceController {
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
 	}
+
+	public Boolean getAusReporting(){
+		String value = getValue(AUS_REPORTING, false);
+		return Boolean.parseBoolean(value);
+	}
+
+
 
 	public String getChargebeeSubscriptionId() {
 		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
