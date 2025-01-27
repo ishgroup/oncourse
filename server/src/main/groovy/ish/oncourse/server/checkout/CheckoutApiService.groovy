@@ -48,6 +48,8 @@ import javax.ws.rs.core.Response
 class CheckoutApiService {
     private static final int STATUS_WAITING_TIME_IN_MILLIS = 240000
 
+    private static final Set<String> sessionsInProcessing = new HashSet<>()
+
     @Inject
     PreferenceController preferenceController
 
@@ -162,68 +164,82 @@ class CheckoutApiService {
 
     void submitPayment(String xPaymentSessionId) {
         paymentService = getPaymentServiceByGatewayType()
-        def checkoutModel = checkoutSessionService.getCheckoutModel(xPaymentSessionId, paymentService)
-        Checkout checkout = checkoutController.createCheckout(checkoutModel)
 
-        if (!checkout.errors.empty) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
+        synchronized (this.getClass()) {
+            if(sessionsInProcessing.contains(xPaymentSessionId))
+                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Already in progress")])
+            sessionsInProcessing.add(xPaymentSessionId)
         }
 
-        String cardId = null
-        if (checkoutModel.payWithSavedCard) {
-            cardId = paymentInDao.getCreditCardId(checkout.paymentIn.payer)
-            if (cardId == null) {
-                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
+        try {
+
+            def checkoutModel = checkoutSessionService.getCheckoutModel(xPaymentSessionId, paymentService)
+            Checkout checkout = checkoutController.createCheckout(checkoutModel)
+
+            if (!checkout.errors.empty) {
+                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
             }
-        }
 
-        Money amount = checkout.paymentIn.amount
-        SessionAttributes sessionAttributes
-        String merchantReference = null
+            String cardId = null
+            if (checkoutModel.payWithSavedCard) {
+                cardId = paymentInDao.getCreditCardId(checkout.paymentIn.payer)
+                if (cardId == null) {
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'payWithSavedCard', error: 'Payer has no credit card history')])
+                }
+            }
 
-        if (checkoutModel.payWithSavedCard) {
-            merchantReference = UUID.randomUUID().toString()
-            sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
-        } else {
-            if (!checkoutModel.merchantReference) {
-                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
+            Money amount = checkout.paymentIn.amount
+            SessionAttributes sessionAttributes
+            String merchantReference = null
+
+            if (checkoutModel.payWithSavedCard) {
+                merchantReference = UUID.randomUUID().toString()
+                sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
             } else {
-                merchantReference = checkoutModel.merchantReference
+                if (!checkoutModel.merchantReference) {
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
+                } else {
+                    merchantReference = checkoutModel.merchantReference
+                }
+
+                sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
+
+                if (!sessionAttributes.complete) {
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+                }
             }
 
-            sessionAttributes = paymentService.checkStatus(xPaymentSessionId)
+            if (!sessionAttributes.authorised) {
+                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+            }
 
-            if (!sessionAttributes.complete) {
-                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+            if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(cayenneService.newContext) != null) {
+                paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card payment already complete")])
+            }
+
+            PaymentIn paymentIn = checkout.paymentIn
+            paymentIn.creditCardExpiry = sessionAttributes.creditCardExpiry
+            paymentIn.creditCardName = sessionAttributes.creditCardName
+            paymentIn.creditCardNumber = sessionAttributes.creditCardNumber
+            paymentIn.creditCardType = sessionAttributes.creditCardType
+            paymentIn.gatewayResponse = sessionAttributes.statusText
+            paymentIn.gatewayReference = sessionAttributes.transactionId
+            paymentIn.paymentDate = sessionAttributes.paymentDate
+            paymentIn.billingId = sessionAttributes.billingId
+            paymentIn.sessionId = merchantReference
+            paymentIn.privateNotes = sessionAttributes.responceJson
+
+            CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
+
+            checkoutSessionService.removeNotCommitCheckoutSession(xPaymentSessionId, checkout.context)
+            paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
+
+            postEnrolmentSuccessfulEvents(checkout)
+        } finally {
+            synchronized (this.getClass()) {
+                sessionsInProcessing.remove(xPaymentSessionId)
             }
         }
-
-        if (!sessionAttributes.authorised) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card declined: $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
-        }
-
-        if (ObjectSelect.query(PaymentIn).where(PaymentIn.GATEWAY_REFERENCE.eq(sessionAttributes.transactionId)).selectFirst(cayenneService.newContext) != null) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card payment already complete")])
-        }
-
-        PaymentIn paymentIn = checkout.paymentIn
-        paymentIn.creditCardExpiry = sessionAttributes.creditCardExpiry
-        paymentIn.creditCardName = sessionAttributes.creditCardName
-        paymentIn.creditCardNumber = sessionAttributes.creditCardNumber
-        paymentIn.creditCardType = sessionAttributes.creditCardType
-        paymentIn.gatewayResponse = sessionAttributes.statusText
-        paymentIn.gatewayReference = sessionAttributes.transactionId
-        paymentIn.paymentDate = sessionAttributes.paymentDate
-        paymentIn.billingId = sessionAttributes.billingId
-        paymentIn.sessionId = merchantReference
-        paymentIn.privateNotes = sessionAttributes.responceJson
-
-        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
-
-        checkoutSessionService.removeNotCommitCheckoutSession(xPaymentSessionId, checkout.context)
-        paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
-
-        postEnrolmentSuccessfulEvents(checkout)
     }
 
     //duplicated for eway, windcave system. Needs to be remove after they are migrated to new pipeline
