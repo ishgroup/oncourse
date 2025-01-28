@@ -13,8 +13,6 @@ export const CHECKOUT_GET_SAVED_CARD = _toRequestType("checkout/get/saved/card")
 export const CHECKOUT_GET_SAVED_CARD_FULFILLED = FULFILLED(CHECKOUT_GET_SAVED_CARD);
 
 export const CHECKOUT_SET_PAYMENT_TYPE = "checkout/set/paymentType";
-export const CHECKOUT_EMPTY_PAYMENT_ACTION = "checkout/empty/payment/action";
-
 export const CHECKOUT_SET_PAYMENT_PROCESSING = "checkout/set/payment/processing";
 export const CHECKOUT_SET_PAYMENT_SUCCESS = "checkout/set/payment/success";
 export const CHECKOUT_SET_PAYMENT_SET_STATUS = "checkout/set/payment/set/status";
@@ -76,15 +74,8 @@ export const checkoutSetPaymentSuccess = (isSuccess: boolean) => ({
   payload: { isSuccess }
 });
 
-export const checkoutProcessPayment = (
-  xValidateOnly: boolean,
-  xPaymentSessionId: string,
-  xOrigin: string
-) => ({
-  type: CHECKOUT_PROCESS_PAYMENT,
-  payload: {
-    xValidateOnly, xPaymentSessionId, xOrigin
-  }
+export const checkoutProcessPayment = () => ({
+  type: CHECKOUT_PROCESS_PAYMENT
 });
 
 export const checkoutPaymentSetStatus = (status, statusCode, statusText, data) => ({

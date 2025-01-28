@@ -14,10 +14,15 @@ import {
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class CheckoutService {
-  readonly checkoutApi = new CheckoutApi(new DefaultHttpService());
+  readonly httpService = new DefaultHttpService();
 
-  public checkoutSubmitPayment(checkoutModel: CheckoutModel, xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string): Promise<CheckoutResponse> {
-    return this.checkoutApi.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
+  readonly checkoutApi = new CheckoutApi(this.httpService);
+
+  readonly controller = new AbortController();
+  
+  public createSession(checkoutModel: CheckoutModel): Promise<CheckoutResponse> {
+    // this.controller.abort("Aborted");
+    return this.checkoutApi.createSession(checkoutModel, window.location.origin);
   }
 
   public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number, payerId: number = null): Promise<CourseClassDiscount[]> {
@@ -25,7 +30,7 @@ class CheckoutService {
   }
 
   public getSessionStatus(sessionId: string): Promise<SessionStatus> {
-    return this.checkoutApi.status(sessionId);
+    return this.httpService.GET(`/v1/checkout/status/${sessionId}`, { headers: {  }, params: { }, signal: this.controller.signal });
   }
 
   public getSaleRelations(courseIds: string, productIds: string, contactId: number): Promise<CheckoutSaleRelation[]> {

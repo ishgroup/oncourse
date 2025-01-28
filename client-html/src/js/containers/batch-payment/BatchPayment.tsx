@@ -461,7 +461,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           listRef.current.scrollToItem(filterByStoreCard ? index : c.index, "start");
           setTimeout(() => {
             dispatch(change(FORM, `contacts[${c.index}].processing`, true ));
-            CheckoutService.checkoutSubmitPayment(getBachCheckoutModel(c), null, null, null)
+            CheckoutService.createSession(getBachCheckoutModel(c))
               .then(() => {
                 dispatch(change(FORM, `contacts[${c.index}]`, {
                   ...c, processing: false, processed: true,

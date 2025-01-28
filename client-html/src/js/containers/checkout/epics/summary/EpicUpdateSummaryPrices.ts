@@ -23,11 +23,8 @@ const request: EpicUtils.Request = {
   getData: async (p, s) => {
     const model = getCheckoutModel(s.checkout, [], null, {}, true);
     await getCheckoutModelMembershipsValidTo(model);
-    return CheckoutService.checkoutSubmitPayment(
-      model,
-      true,
-      null,
-      window.location.origin
+    return CheckoutService.createSession(
+      model
     );
   },
   processData: res => [
