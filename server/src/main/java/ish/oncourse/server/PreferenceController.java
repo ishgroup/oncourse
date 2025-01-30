@@ -13,6 +13,7 @@ package ish.oncourse.server;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ish.oncourse.server.cayenne.Preference;
+import ish.oncourse.server.display.DisplayService;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.services.ISchedulerService;
@@ -62,6 +63,7 @@ public class PreferenceController extends CommonPreferenceController {
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
+								TagService tagService, DisplayService displayService,
 								ISchedulerService schedulerService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
@@ -69,6 +71,12 @@ public class PreferenceController extends CommonPreferenceController {
 		this.pluginsPrefsService = pluginsPrefsService;
 		this.schedulerService = schedulerService;
 		sharedController = this;
+		initDisplayPreferencesFromConfigFile(displayService);
+	}
+
+	private void initDisplayPreferencesFromConfigFile(DisplayService displayService) {
+		if(displayService.getAusReporting() != null)
+			setAusReporting(displayService.getAusReporting());
 	}
 
 

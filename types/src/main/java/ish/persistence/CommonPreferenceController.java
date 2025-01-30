@@ -1525,6 +1525,9 @@ public abstract class CommonPreferenceController {
 		return Boolean.parseBoolean(value);
 	}
 
+	public void setAusReporting(Boolean value){
+		setValue(AUS_REPORTING, false, String.valueOf(value));
+	}
 
 
 	public String getChargebeeSubscriptionId() {
