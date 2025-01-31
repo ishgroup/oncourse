@@ -106,7 +106,9 @@ class CheckoutApiService {
     CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
         Checkout checkout = checkoutController.createCheckout(checkoutModel)
         paymentService = getPaymentServiceByGatewayType()
-        return paymentService.fillResponse(new CheckoutResponseDTO(), checkout)
+        def dtoResponse = new CheckoutResponseDTO()
+        paymentService.fillResponse(dtoResponse, checkout)
+        return dtoResponse
     }
 
 
