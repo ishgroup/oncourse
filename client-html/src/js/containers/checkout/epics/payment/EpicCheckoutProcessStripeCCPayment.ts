@@ -1,9 +1,13 @@
 /*
- * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
- * No copying or use of this code is allowed without permission in writing from ish.
+ * Copyright ish group pty ltd 2025.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 import { CheckoutResponse } from '@api/model';
+import { Stripe } from '@stripe/stripe-js';
 import { format } from 'date-fns';
 import { YYYY_MM_DD_MINUSED } from 'ish-ui';
 import { getFormValues } from 'redux-form';
@@ -13,7 +17,7 @@ import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/Fetc
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import {
   CHECKOUT_EMPTY_PAYMENT_ACTION,
-  CHECKOUT_PROCESS_PAYMENT,
+  CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   checkoutPaymentSetCustomStatus,
   checkoutPaymentSetStatus,
   checkoutProcessPaymentFulfilled,
@@ -27,12 +31,13 @@ import { CHECKOUT_SUMMARY_FORM } from '../../components/summary/CheckoutSummaryL
 import CheckoutService from '../../services/CheckoutService';
 import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } from '../../utils';
 
-const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
-  type: CHECKOUT_PROCESS_PAYMENT,
-  getData: ({
-  xValidateOnly, xPaymentSessionId, xOrigin
+const request: EpicUtils.Request<any, { confirmationToken: string, stripe: Stripe }> = {
+  type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
+  getData: async ({
+    confirmationToken,
+    stripe
   }, s) => {
-    
+
     const paymentPlans = (getFormValues(CHECKOUT_SELECTION_FORM_NAME)(s) as any)?.paymentPlans || [];
 
     const checkoutModel = getCheckoutModel(
@@ -41,22 +46,40 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
       (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(s) as any).fundingInvoices,
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
-    
-    return CheckoutService.checkoutSubmitPayment(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
+
+    checkoutModel.confirmationToken = confirmationToken;
+
+    const checkoutResponse = await CheckoutService.createSession(checkoutModel);
+
+    if ((checkoutResponse as any).actionRequired) {
+      const {
+        error,
+        paymentIntent
+      } = await stripe.handleNextAction({
+        clientSecret: checkoutResponse.clientSecret
+      });
+
+      if (error) {
+        throw error;
+      } else {
+        return  CheckoutService.submitPayment(paymentIntent.id);
+      }
+    }
+    return checkoutResponse;
   },
-  processData: (checkoutResponse: CheckoutResponse, s, { xValidateOnly }) => {
+  processData: (checkoutResponse: CheckoutResponse, s) => {
     const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
     const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
 
     return [
-      paymentType !== "Credit card" && !xValidateOnly
+      paymentType !== "Credit card"
         ? checkoutPaymentSetCustomStatus("success")
         : { type: CHECKOUT_EMPTY_PAYMENT_ACTION },
       checkoutProcessPaymentFulfilled(checkoutResponse),
       checkoutSetPaymentProcessing(false),
     ];
   },
-  processError: (response, { xValidateOnly }) => {
+  processError: response => {
     const actions: any = [
       checkoutSetPaymentProcessing(false),
       checkoutProcessPaymentFulfilled({
@@ -67,18 +90,16 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
         invoice: null,
       })
     ];
-    
+
     if (response) {
-      if (!xValidateOnly) {
-        actions.push(
-          checkoutPaymentSetStatus(
-            "fail",
-            response.status,
-            response.statusText,
-            { ...response.data, responseText: getPaymentErrorMessage(response) }
-          )
-        );
-      }
+      actions.push(
+        checkoutPaymentSetStatus(
+          "fail",
+          response.status,
+          response.statusText,
+          { ...response.data, responseText: getPaymentErrorMessage(response) }
+        )
+      );
       if (Array.isArray(response.data)) {
         actions.push({
           type: SHOW_MESSAGE,
@@ -100,4 +121,4 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
   }
 };
 
-export const EpicCheckoutProcessPayment: Epic<any, any> = EpicUtils.Create(request);
+export const EpicCheckoutProcessStripeCCPayment: Epic<any, any> = EpicUtils.Create(request);

@@ -188,7 +188,9 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
-  checkoutProcessCcPayment: () => dispatch(checkoutProcessPayment()),
+  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
+    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  },
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
 });
 

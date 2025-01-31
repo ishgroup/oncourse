@@ -14,15 +14,14 @@ import {
 import { DefaultHttpService } from "../../../common/services/HttpService";
 
 class CheckoutService {
-  readonly httpService = new DefaultHttpService();
-
-  readonly checkoutApi = new CheckoutApi(this.httpService);
-
-  readonly controller = new AbortController();
+  readonly checkoutApi = new CheckoutApi(new DefaultHttpService());
   
   public createSession(checkoutModel: CheckoutModel): Promise<CheckoutResponse> {
-    // this.controller.abort("Aborted");
     return this.checkoutApi.createSession(checkoutModel, window.location.origin);
+  }
+
+  public checkoutSubmitPayment(checkoutModel: CheckoutModel, xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string): Promise<CheckoutResponse> {
+    return this.checkoutApi.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
   }
 
   public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number, payerId: number = null): Promise<CourseClassDiscount[]> {
@@ -30,11 +29,19 @@ class CheckoutService {
   }
 
   public getSessionStatus(sessionId: string): Promise<SessionStatus> {
-    return this.httpService.GET(`/v1/checkout/status/${sessionId}`, { headers: {  }, params: { }, signal: this.controller.signal });
+    return this.checkoutApi.status(sessionId);
   }
 
   public getSaleRelations(courseIds: string, productIds: string, contactId: number): Promise<CheckoutSaleRelation[]> {
     return this.checkoutApi.getSaleRelations(courseIds, productIds, contactId);
+  }
+
+  public updateModel(checkoutModel: CheckoutModel): Promise<CheckoutResponse> {
+    return this.checkoutApi.updateModel(checkoutModel);
+  }
+  
+  public submitPayment(xPaymentSessionId: string): Promise<CheckoutResponse> {
+    return this.submitPayment(xPaymentSessionId);
   }
 
   getCartDataIds(checkoutId: number): Promise<CartIds> {

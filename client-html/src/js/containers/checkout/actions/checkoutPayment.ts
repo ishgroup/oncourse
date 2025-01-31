@@ -4,6 +4,7 @@
  */
 
 import { CheckoutPaymentPlan, CheckoutResponse } from "@api/model";
+import { Stripe } from '@stripe/stripe-js';
 import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
 
 export const CHECKOUT_GET_ACTIVE_PAYMENT_TYPES = _toRequestType("checkout/get/peyment/method");
@@ -13,6 +14,8 @@ export const CHECKOUT_GET_SAVED_CARD = _toRequestType("checkout/get/saved/card")
 export const CHECKOUT_GET_SAVED_CARD_FULFILLED = FULFILLED(CHECKOUT_GET_SAVED_CARD);
 
 export const CHECKOUT_SET_PAYMENT_TYPE = "checkout/set/paymentType";
+export const CHECKOUT_EMPTY_PAYMENT_ACTION = "checkout/empty/payment/action";
+
 export const CHECKOUT_SET_PAYMENT_PROCESSING = "checkout/set/payment/processing";
 export const CHECKOUT_SET_PAYMENT_SUCCESS = "checkout/set/payment/success";
 export const CHECKOUT_SET_PAYMENT_SET_STATUS = "checkout/set/payment/set/status";
@@ -24,6 +27,7 @@ export const CHECKOUT_SET_PAYMENT_STATUS_DETAILS = "checkout/set/payment/status/
 export const CHECKOUT_CLEAR_PAYMENT_STATUS = _toRequestType("checkout/clear/payment/status");
 
 export const CHECKOUT_PROCESS_PAYMENT = _toRequestType("checkout/process/cc/payment");
+export const CHECKOUT_PROCESS_STRIPE_CC_PAYMENT = _toRequestType("checkout/process/stripe/cc/payment");
 export const CHECKOUT_PROCESS_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_PAYMENT);
 
 export const CHECKOUT_CLEAR_CC_IFRAME_URL = "checkout/clear/wcIframe/url";
@@ -74,8 +78,26 @@ export const checkoutSetPaymentSuccess = (isSuccess: boolean) => ({
   payload: { isSuccess }
 });
 
-export const checkoutProcessPayment = () => ({
-  type: CHECKOUT_PROCESS_PAYMENT
+export const checkoutProcessStripeCCPayment = (
+  confirmationToken: string,
+  stripe: Stripe
+) => ({
+  type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
+  payload: {
+    confirmationToken,
+    stripe
+  }
+});
+
+export const checkoutProcessPayment = (
+  xValidateOnly: boolean,
+  xPaymentSessionId: string,
+  xOrigin: string
+) => ({
+  type: CHECKOUT_PROCESS_PAYMENT,
+  payload: {
+    xValidateOnly, xPaymentSessionId, xOrigin
+  }
 });
 
 export const checkoutPaymentSetStatus = (status, statusCode, statusText, data) => ({

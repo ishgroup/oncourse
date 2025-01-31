@@ -5,22 +5,24 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { EmbeddedCheckout, EmbeddedCheckoutProvider } from '@stripe/react-stripe-js';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
-import { makeAppStyles } from 'ish-ui';
+import { decimalMul, makeAppStyles } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { showMessage } from '../../../../../../common/actions';
 import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { useAppSelector } from '../../../../../../common/utils/hooks';
-import history from '../../../../../../constants/History';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutGetPaymentStatusDetails,
-  checkoutProcessPayment,
+  checkoutProcessStripeCCPayment,
+  checkoutSetPaymentProcessing,
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
 import CheckoutService from '../../../../services/CheckoutService';
@@ -35,6 +37,54 @@ const useStyles = makeAppStyles()({
     }
   }
 });
+
+const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, checkoutProcessStripeCCPayment }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+
+
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+
+    if (!stripe) {
+      return;
+    }
+
+    setLoading(true);
+
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      handleError(submitError);
+      return;
+    }
+
+    const { error, confirmationToken } = await stripe.createConfirmationToken({
+      elements
+    });
+
+    if (error) {
+      handleError(error);
+      return;
+    }
+
+    checkoutProcessStripeCCPayment(confirmationToken.id);
+  };
+
+  return <form onSubmit={handleSubmit} className="flex-column">
+    <PaymentElement />
+    <LoadingButton
+      variant="contained"
+      color="primary"
+      size="large"
+      type="submit"
+      className="mt-3 ml-auto mr-auto"
+      disabled={!stripe || isPaymentProcessing}
+      loading={isPaymentProcessing}>
+      Finalize checkout
+    </LoadingButton>
+  </form>;
+};
 
 const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
@@ -51,38 +101,34 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     dispatch
   } = props;
 
-  const query = new URLSearchParams(window.location.search);
-  const sessionId = query.get("sessionId");
-
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>(null);
   const { classes } = useStyles();
   
   useEffect(() => {
-    if (sessionId) {
-      checkoutGetPaymentStatusDetails(sessionId);
-      setStripePromise(null);
-      query.delete('sessionId');
-      history.replace({
-        pathname: history.location.pathname,
-        search: query.toString()
-      });
-    } else {
-      CheckoutService.getClientKey()
-        .then(res => setStripePromise(loadStripe(res)))
-        .catch(res => InstantFetchErrorHandler(dispatch, res));
-    }
+    CheckoutService.getClientKey()
+      .then(res => setStripePromise(loadStripe(res)))
+      .catch(res => InstantFetchErrorHandler(dispatch, res));
   }, []);
 
-  const clientSecret = useAppSelector(state => state.checkout.payment.clientSecret);
+  const currency = useAppSelector(state => state.currency);
+  
+  const setLoading = (loading: boolean) => {
+    dispatch(checkoutSetPaymentProcessing(loading));
+  };
 
   const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
     clearCcIframeUrl();
     checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
   };
+  
+  const handleError = error => {
+    setLoading(false);
+    dispatch(showMessage({ message: error?.message }));
+  };
 
   useEffect(() => {
-    if (!sessionId && summary.payNowTotal > 0) {
+    if (summary.payNowTotal > 0) {
       proceedPayment();
     }
   }, [
@@ -97,15 +143,22 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       style={disablePayment ? { pointerEvents: "none" } : null}
       className={clsx(stripePromise && classes.iframe)}
     >
-      {stripePromise && clientSecret &&
-        <EmbeddedCheckoutProvider
+      {stripePromise &&
+        <Elements
           stripe={stripePromise}
           options={{
-            clientSecret
+            mode: 'payment',
+            currency: currency.currencySymbol.toLowerCase(),
+            amount: decimalMul(summary.payNowTotal, 100)
           }}
         >
-          <EmbeddedCheckout />
-        </EmbeddedCheckoutProvider>
+          <StripePaymentForm
+            isPaymentProcessing={isPaymentProcessing}
+            checkoutProcessStripeCCPayment={checkoutProcessStripeCCPayment}
+            handleError={handleError}
+            setLoading={setLoading}
+          />
+        </Elements>
       }
 
       {process.status !== "" && !isPaymentProcessing && (
@@ -129,12 +182,12 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
-    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  checkoutProcessStripeCCPayment: (confirmationToken: string, stripe: Stripe) => {
+    dispatch(checkoutProcessStripeCCPayment(confirmationToken, stripe));
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
   checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(StripePaymentPage);
+export default connect(mapStateToProps, mapDispatchToProps)(StripePaymentPage);

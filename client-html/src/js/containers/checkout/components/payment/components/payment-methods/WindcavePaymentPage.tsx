@@ -50,7 +50,7 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const proceedPayment = React.useCallback(() => {
     onCheckoutClearPaymentStatus();
     setValidatePayment(true);
-    checkoutProcessCcPayment();
+    checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
   }, [summary.payNowTotal, merchantReference]);
 
   const onMessage = e => {
@@ -137,7 +137,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  checkoutProcessCcPayment: () => dispatch(checkoutProcessPayment()),
+  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
+    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
   checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
