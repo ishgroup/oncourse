@@ -102,6 +102,24 @@ class CheckoutApiService {
         return paymentService.makeRefund(amount, merchantReference, transactionId)
     }
 
+
+    CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
+        Checkout checkout = checkoutController.createCheckout(checkoutModel)
+        paymentService = getPaymentServiceByGatewayType()
+        return paymentService.fillResponse(new CheckoutResponseDTO(), checkout)
+    }
+
+
+    private void saveModel(CheckoutModelDTO checkoutModel, Checkout checkout, PaymentServiceInterface paymentService) {
+        if (!checkout.errors.empty) {
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
+        } else {
+            eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
+        }
+
+        paymentService.saveCheckout(checkout)
+    }
+
     SessionStatusDTO getStatus(String sessionIdOrAccessCode) {
         paymentService = getPaymentServiceByGatewayType()
         def attributes = paymentService.checkStatus(sessionIdOrAccessCode)
@@ -124,17 +142,10 @@ class CheckoutApiService {
     }
 
     CheckoutResponseDTO createSession(CheckoutModelDTO checkoutModel, String xOrigin) {
-        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
         Checkout checkout = checkoutController.createCheckout(checkoutModel)
         paymentService = getPaymentServiceByGatewayType()
-
-        if (!checkout.errors.empty) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
-        } else {
-            eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
-        }
-
-        paymentService.saveCheckout(checkout)
+        saveModel(checkoutModel, checkout, paymentService)
+        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
 
         if (checkout.isCreditCard()) {
             if (checkoutModel.payWithSavedCard) {
@@ -172,7 +183,6 @@ class CheckoutApiService {
         }
 
         try {
-
             def checkoutModel = checkoutSessionService.getCheckoutModel(xPaymentSessionId, paymentService)
             Checkout checkout = checkoutController.createCheckout(checkoutModel)
 

@@ -73,6 +73,11 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
+    CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
+        return checkoutApiService.updateModel(checkoutModel)
+    }
+
+    @Override
     CartIdsDTO getCartDataIds(Long checkoutId) {
         def checkout = SelectById.query(Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
         return CartFunctions.toRestCartIds(checkout)

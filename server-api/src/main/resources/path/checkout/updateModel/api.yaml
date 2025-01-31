@@ -1,5 +1,5 @@
 post:
-  operationId: createSession
+  operationId: updateModel
   description: Process checkout
   tags:
     - Checkout
@@ -10,11 +10,6 @@ post:
       required: true
       schema:
         $ref: './def/entity/checkout/CheckoutModel.yaml'
-    - name: XOrigin
-      in: header
-      type: string
-      required: false
-      description: hostname of the onCourse client
   responses:
     '200':
       description: Success response
