@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 144-1
+      id: 145-1
       author: dmitriy
       preConditions:
         - onFail: HALT
