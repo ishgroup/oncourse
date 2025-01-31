@@ -4,7 +4,6 @@
  */
 
 import {
-  AbstractInvoiceLine,
   CheckoutArticle,
   CheckoutEnrolment,
   CheckoutMembership,
@@ -12,13 +11,14 @@ import {
   CheckoutPaymentPlan,
   CheckoutVoucher,
   ContactNode,
-  CourseClassType,
   Invoice,
+  AbstractInvoiceLine,
   InvoicePaymentPlan,
-  ProductType
-} from '@api/model';
-import { differenceInMinutes, format, isBefore } from 'date-fns';
-import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from 'ish-ui';
+  ProductType, CourseClassType
+} from "@api/model";
+import { differenceInMinutes, format, isBefore } from "date-fns";
+import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from "ish-ui";
+import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   CheckoutCourse,
   CheckoutCourseClass,
@@ -28,17 +28,17 @@ import {
   CheckoutState,
   CheckoutSummary,
   CheckoutSummaryListItem
-} from '../../../model/checkout';
-import { CheckoutFundingInvoice } from '../../../model/checkout/fundingInvoice';
-import MembershipProductService from '../../entities/membershipProducts/services/MembershipProductService';
+} from "../../../model/checkout";
+import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
+import MembershipProductService from "../../entities/membershipProducts/services/MembershipProductService";
 import {
   CHECKOUT_MEMBERSHIP_COLUMNS,
-  CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_PRODUCT_COLUMNS, CHECKOUT_STORED_STATE_KEY,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
   CheckoutCurrentStepType
 } from '../constants';
-import { getFundingInvoices } from './fundingInvoice';
+import { getFundingInvoices } from "./fundingInvoice";
 
 export const filterPastClasses = courseClasses => {
   const today = new Date();
@@ -604,6 +604,16 @@ export const getProductColumnsByType = (type: ProductType | string) => {
       return CHECKOUT_PRODUCT_COLUMNS;
     default:
       throw Error("Unknown product type");
+  }
+};
+
+export const getStoredPaymentStateKey = (xPaymentSessionId: string) => `${CHECKOUT_STORED_STATE_KEY}-${xPaymentSessionId}`;
+
+export const clearStoredPaymentsState = () => {
+  for (const storageKey in localStorage) {
+    if (storageKey.includes(CHECKOUT_STORED_STATE_KEY)) {
+      LSRemoveItem(storageKey);
+    }
   }
 };
 

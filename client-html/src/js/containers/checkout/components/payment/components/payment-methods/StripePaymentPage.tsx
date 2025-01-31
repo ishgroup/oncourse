@@ -14,10 +14,12 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { useAppSelector } from '../../../../../../common/utils/hooks';
+import history from '../../../../../../constants/History';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
+  checkoutGetPaymentStatusDetails,
   checkoutProcessPayment,
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
@@ -43,6 +45,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     checkoutProcessCcPayment,
     payment,
     onCheckoutClearPaymentStatus,
+    checkoutGetPaymentStatusDetails,
     clearCcIframeUrl,
     process,
     dispatch
@@ -55,9 +58,19 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const { classes } = useStyles();
   
   useEffect(() => {
-    CheckoutService.getClientKey()
-      .then(res => setStripePromise(loadStripe(res)))
-      .catch(res => InstantFetchErrorHandler(dispatch, res));
+    if (sessionId) {
+      checkoutGetPaymentStatusDetails(sessionId);
+      setStripePromise(null);
+      query.delete('sessionId');
+      history.replace({
+        pathname: history.location.pathname,
+        search: query.toString()
+      });
+    } else {
+      CheckoutService.getClientKey()
+        .then(res => setStripePromise(loadStripe(res)))
+        .catch(res => InstantFetchErrorHandler(dispatch, res));
+    }
   }, []);
 
   const clientSecret = useAppSelector(state => state.checkout.payment.clientSecret);
@@ -65,7 +78,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
     clearCcIframeUrl();
-    checkoutProcessCcPayment();
+    checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
   };
 
   useEffect(() => {
@@ -116,9 +129,12 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  checkoutProcessCcPayment: () => dispatch(checkoutProcessPayment()),
+  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
+    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
+  checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(StripePaymentPage);

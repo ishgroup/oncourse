@@ -59,7 +59,8 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
     onViewMore,
     accordion,
     twoColumn,
-    syncErrors
+    syncErrors,
+    fieldProps = {}
   } = props;
 
   const onDeleteHandler = (e, index, id) => {
@@ -138,7 +139,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
               )}
             </AccordionSummary>
             <AccordionDetails className="pb-0">
-              <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn}/>
+              <FieldsContent item={item} classes={classes} row={field} rows={rows} twoColumn={twoColumn} {...fieldProps}/>
             </AccordionDetails>
             {onViewMore && (
               <AccordionActions>

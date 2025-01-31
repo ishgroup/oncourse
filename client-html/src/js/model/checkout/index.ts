@@ -247,7 +247,7 @@ export interface CreditCardPaymentPageProps {
   iframeUrl?: string;
   xPaymentSessionId?: string;
   merchantReference?: string;
-  checkoutProcessCcPayment?: () => void;
+  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
   clearCcIframeUrl: () => void;
   checkoutGetPaymentStatusDetails: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;

@@ -29,12 +29,15 @@ class TotalCorporatePassProperty extends ChargebeePropertyProcessor{
             "          AND i.corporatePassId IS NOT NULL" +
             "          AND p.status IN (3, 6)"
 
-    TotalCorporatePassProperty(Date startDate, Date endDate) {
+    private DataSource dataSource
+
+    TotalCorporatePassProperty(Date startDate, Date endDate, DataSource dataSource) {
         super(startDate, endDate)
+        this.dataSource = dataSource
     }
 
     @Override
-    BigDecimal getValue(DataSource dataSource) {
+    BigDecimal getValue() {
         String paymentsInQuery = String.format(QUERY_FORMAT, PaymentInLine.simpleName, PaymentIn.simpleName,
                 StringUtils.toRootLowerCase(PaymentIn.simpleName), formattedStartDate, formattedEndDate)
         def paymentsInTotal = getBigDecimalForDbQuery(paymentsInQuery, dataSource)

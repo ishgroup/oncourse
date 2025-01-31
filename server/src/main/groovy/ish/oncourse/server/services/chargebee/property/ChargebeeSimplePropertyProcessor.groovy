@@ -13,13 +13,15 @@ import ish.oncourse.server.util.DbConnectionUtils
 import javax.sql.DataSource
 
 abstract class ChargebeeSimplePropertyProcessor extends ChargebeePropertyProcessor {
+    protected DataSource dataSource
 
-    ChargebeeSimplePropertyProcessor(Date startDate, Date endDate) {
+    ChargebeeSimplePropertyProcessor(Date startDate, Date endDate, DataSource dataSource) {
         super(startDate, endDate)
+        this.dataSource = dataSource
     }
 
     @Override
-    BigDecimal getValue(DataSource dataSource) {
+    BigDecimal getValue() {
         return DbConnectionUtils.getBigDecimalForDbQuery(getQuery(), dataSource)
     }
 
