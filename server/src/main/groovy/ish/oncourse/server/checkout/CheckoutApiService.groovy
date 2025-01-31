@@ -173,7 +173,7 @@ class CheckoutApiService {
         return dtoResponse
     }
 
-    void submitPayment(String xPaymentSessionId) {
+    CheckoutResponseDTO submitPayment(String xPaymentSessionId) {
         paymentService = getPaymentServiceByGatewayType()
 
         synchronized (this.getClass()) {
@@ -239,12 +239,14 @@ class CheckoutApiService {
             paymentIn.sessionId = merchantReference
             paymentIn.privateNotes = sessionAttributes.responceJson
 
-            CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
-
             checkoutSessionService.removeNotCommitCheckoutSession(xPaymentSessionId, checkout.context)
+
+            CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
             paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
 
             postEnrolmentSuccessfulEvents(checkout)
+
+            return dtoResponse
         } finally {
             synchronized (this.getClass()) {
                 sessionsInProcessing.remove(xPaymentSessionId)

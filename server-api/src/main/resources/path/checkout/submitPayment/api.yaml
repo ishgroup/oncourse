@@ -10,8 +10,10 @@ get:
       required: false
       description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
   responses:
-    '204':
+    '200':
       description: Success response
+      schema:
+        $ref: './def/entity/checkout/CheckoutResponse.yaml'
     '400':
       description: Validation error
       schema:
