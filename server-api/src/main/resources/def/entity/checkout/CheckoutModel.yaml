@@ -71,8 +71,4 @@ properties:
     type: string
     required: false
     description: invoice customer reference
-  confirmationToken:
-    type: string
-    required: false
-    description: confirmation token to confirm payment
 

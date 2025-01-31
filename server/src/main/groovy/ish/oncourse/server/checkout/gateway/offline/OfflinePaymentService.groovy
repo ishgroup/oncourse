@@ -24,7 +24,7 @@ class OfflinePaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    void succeedPaymentAndCompleteTransaction(CheckoutResponseDTO dtoResponse, Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
+    CheckoutResponseDTO succeedPaymentAndCompleteTransaction( Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
         handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Sorry, you cannot make a purchase. The credit card payment method is prohibited for the Offline payment system. Please contact the administrator.")])
     }
 

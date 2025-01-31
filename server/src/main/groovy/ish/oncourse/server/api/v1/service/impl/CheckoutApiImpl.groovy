@@ -216,8 +216,8 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    void submitPayment(String xPaymentSessionId) {
-        checkoutApiService.submitPayment(xPaymentSessionId)
+    CheckoutResponseDTO submitPayment(String xPaymentSessionId, String confirmationTokenId) {
+        checkoutApiService.submitPayment(xPaymentSessionId, confirmationTokenId)
     }
 
     @Override

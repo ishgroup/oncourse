@@ -36,9 +36,9 @@ class WindcavePaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    void succeedPaymentAndCompleteTransaction(CheckoutResponseDTO dtoResponse, Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
+    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
         if (preferenceController.isPurchaseWithoutAuth()) {
-            succeedPayment(dtoResponse, checkout, sendInvoice)
+            return succeedPayment(checkout, sendInvoice)
         } else {
             if (AUTH_TYPE != sessionAttributes.type) {
                 handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card transaction has wrong type")])
@@ -47,13 +47,14 @@ class WindcavePaymentService implements PaymentServiceInterface {
            sessionAttributes = windcavePaymentAPI.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
 
             if (sessionAttributes.authorised) {
-                succeedPayment(dtoResponse, checkout, sendInvoice)
+                return succeedPayment(checkout, sendInvoice)
             } else {
                 checkout.paymentIn.gatewayResponse = sessionAttributes.statusText
                 checkout.paymentIn.privateNotes = sessionAttributes.responceJson
                 checkout.context.commitChanges()
                 handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber,  new SessionStatusDTO(complete: sessionAttributes.complete, authorised: sessionAttributes.authorised, responseText: sessionAttributes.statusText))
             }
+            return new CheckoutResponseDTO()
         }
     }
 

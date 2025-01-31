@@ -21,6 +21,7 @@ import groovy.transform.CompileDynamic
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.stripe.CardTypeAdapter
+import ish.common.checkout.gateway.stripe.payment.PaymentIntentStatus
 import ish.common.checkout.gateway.stripe.session.StripeSessionStatus
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
@@ -115,9 +116,56 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         return sessionAttributes
     }
 
+    SessionAttributes sendPaymentConfirmation(Money amount, String cardId, String confirmationToken) {
+        Stripe.apiKey = apiKey
+        PaymentIntentCreateParams params =
+                PaymentIntentCreateParams.builder()
+                        .setAmount(amount.multiply(100).toLong())
+                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCustomer(cardId)
+                        .setConfirmationToken(confirmationToken)
+                        .build()
+
+        try {
+            def paymentIntent = PaymentIntent.create(params)
+            def sessionAttributes = new SessionAttributes()
+            buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
+            return sessionAttributes
+        } catch (Exception e) {
+            logger.catching(e)
+            handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
+            return null //unreachable
+        }
+    }
+
     @Override
-    void succeedPaymentAndCompleteTransaction(CheckoutResponseDTO dtoResponse, Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
-        succeedPayment(dtoResponse, checkout, sendInvoice)
+    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice,
+                                              SessionAttributes sessionAttributes, Money amount,
+                                                             String merchantReference) {
+        Stripe.apiKey = apiKey
+        PaymentIntentCreateParams params =
+                PaymentIntentCreateParams.builder()
+                        .setAmount(amount.multiply(100).toLong())
+                        .setCurrency(CURRENCY_CODE_AUD)
+                        //.setCustomer(cardId) ?!
+                        .setConfirmationToken(confirmationToken)
+                        .build()
+        try {
+            def paymentIntent = PaymentIntent.create(params)
+            //buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
+            //def paymentStatus = PaymentIntentStatus.from(paymentIntent.status)
+            sessionAttributes = checkStatus(sessionAttributes.sessionId)
+
+            //if (!paymentIntent.status.equals("succeeded")) {
+            if (!sessionAttributes.complete) {
+                handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+            }
+            return succeedPayment(checkout, sendInvoice)
+        } catch (Exception e) {
+            logger.catching(e)
+            handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
+            return new CheckoutResponseDTO()
+        }
     }
 
     @Override
@@ -132,7 +180,6 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                 it.sessionId = session.id
                 // payment expire time = 10 min - ? check it on server side ???
                 it.complete = status == StripeSessionStatus.Complete
-                it.sessionEnded = status in [StripeSessionStatus.Complete, StripeSessionStatus.Failed, StripeSessionStatus.Expired]
                 it.type = session.mode
                 it.responceJson = session.toJson()
                 it.statusText = session.paymentStatus // paid / unpaid / no_payment_required + message for client
@@ -207,7 +254,8 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
 
     private static void buildSessionAttributesFromPaymentIntent(SessionAttributes sessionAttributes, PaymentIntent paymentIntent) {
         sessionAttributes.transactionId = paymentIntent.id // to make refund could be used
-
+        def status = PaymentIntentStatus.from(paymentIntent.status)
+        sessionAttributes.secure3dRequired = status == PaymentIntentStatus.RequiresAction
         def charge = Charge.retrieve(paymentIntent.latestCharge)
         if (charge) {
             sessionAttributes.authorised = charge.outcome.type == "authorized"

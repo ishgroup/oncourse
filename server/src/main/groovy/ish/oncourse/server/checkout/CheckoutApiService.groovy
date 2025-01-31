@@ -12,6 +12,7 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
+import ish.common.checkout.gateway.stripe.payment.PaymentIntentStatus
 import ish.common.types.PaymentGatewayType
 import ish.common.types.SystemEventType
 import ish.math.Money
@@ -123,20 +124,9 @@ class CheckoutApiService {
     }
 
     SessionStatusDTO getStatus(String sessionIdOrAccessCode) {
-        paymentService = getPaymentServiceByGatewayType()
-        def attributes = paymentService.checkStatus(sessionIdOrAccessCode)
-
-        if (paymentService instanceof EmbeddedFormPaymentServiceInterface) {
-            long waitingStart = System.currentTimeMillis()
-            while (!attributes.sessionEnded) {
-                if (System.currentTimeMillis() - waitingStart > STATUS_WAITING_TIME_IN_MILLIS)
-                    handleError(HttpStatus.REQUEST_TIMEOUT_408, [new CheckoutValidationErrorDTO(error: "Your payment wasn't processed with our system.")])
-                Thread.sleep(10000)
-                attributes = paymentService.checkStatus(sessionIdOrAccessCode)
-            }
-        }
-
         SessionStatusDTO dto = new SessionStatusDTO()
+        paymentService = getPaymentServiceByGatewayType()
+        SessionAttributes attributes = paymentService.checkStatus(sessionIdOrAccessCode)
         dto.authorised = attributes.authorised
         dto.complete = attributes.complete
         dto.responseText = attributes.statusText
@@ -175,7 +165,7 @@ class CheckoutApiService {
         return dtoResponse
     }
 
-    CheckoutResponseDTO submitPayment(String xPaymentSessionId) {
+    CheckoutResponseDTO submitPayment(String xPaymentSessionId, String confirmationToken) {
         paymentService = getPaymentServiceByGatewayType()
 
         synchronized (this.getClass()) {
@@ -208,6 +198,17 @@ class CheckoutApiService {
                 merchantReference = UUID.randomUUID().toString()
                 sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
             } else {
+                if(paymentService instanceof StripePaymentService) {
+                    sessionAttributes = (paymentService as StripePaymentService).sendPaymentConfirmation(amount, cardId, confirmationToken)
+                    if(sessionAttributes.secure3dRequired) {
+                        return new CheckoutResponseDTO().with {
+                            it.clientSecret = sessionAttributes.clientSecret
+                            it.actionRequired = sessionAttributes.secure3dRequired
+                            it
+                        }
+                    }
+                }
+
                 if (!checkoutModel.merchantReference) {
                     paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
                 } else {
@@ -243,9 +244,7 @@ class CheckoutApiService {
 
             checkoutSessionService.removeNotCommitCheckoutSession(xPaymentSessionId, checkout.context)
 
-            CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
-            paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
-
+            CheckoutResponseDTO dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
             postEnrolmentSuccessfulEvents(checkout)
 
             return dtoResponse
@@ -341,7 +340,7 @@ class CheckoutApiService {
                 paymentIn.sessionId = merchantReference
                 paymentIn.privateNotes = sessionAttributes.responceJson
 
-                paymentService.succeedPaymentAndCompleteTransaction(dtoResponse, checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
+                dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
             }
         } else {
             paymentService.saveCheckout(checkout)

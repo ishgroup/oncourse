@@ -20,7 +20,7 @@ interface PaymentServiceInterface extends PaymentServiceTrait {
 
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact)
 
-    void succeedPaymentAndCompleteTransaction(CheckoutResponseDTO dtoResponse, Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference)
+    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference)
 
     SessionAttributes checkStatus(String sessionIdOrAccessCode)
 

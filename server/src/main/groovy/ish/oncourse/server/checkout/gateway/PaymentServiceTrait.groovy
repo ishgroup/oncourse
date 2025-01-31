@@ -38,7 +38,7 @@ trait PaymentServiceTrait {
 
     private static final Logger logger = LogManager.getLogger(PaymentServiceTrait)
 
-    void succeedPayment(CheckoutResponseDTO dtoResponse, Checkout checkout, Boolean sendInvoice) {
+    CheckoutResponseDTO succeedPayment(Checkout checkout, Boolean sendInvoice) {
         checkout.paymentIn.status = PaymentStatus.SUCCESS
         checkout.paymentIn.privateNotes += ' Payment successful.'
         checkout.paymentIn.confirmationStatus = sendInvoice ? NOT_SENT : DO_NOT_SEND
@@ -48,7 +48,10 @@ trait PaymentServiceTrait {
             line.invoice.updateOverdue()
         }
         saveCheckout(checkout)
+
+        def dtoResponse = new CheckoutResponseDTO()
         fillResponse(dtoResponse, checkout)
+        return dtoResponse
     }
 
     void saveCheckout(Checkout checkout) {

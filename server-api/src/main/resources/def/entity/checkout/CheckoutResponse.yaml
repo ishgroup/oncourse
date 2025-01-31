@@ -22,4 +22,7 @@ properties:
     required: true
   invoice:
     $ref: '../invoice/Invoice.yaml'
-
+  actionRequired:
+    type: boolean
+    required: false
+    description: if transaction requires additional client actions
