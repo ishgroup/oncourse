@@ -14,6 +14,7 @@ import com.stripe.model.Charge
 import com.stripe.model.PaymentIntent
 import com.stripe.model.Refund
 import com.stripe.model.checkout.Session
+import com.stripe.param.PaymentIntentConfirmParams
 import com.stripe.param.PaymentIntentCreateParams
 import com.stripe.param.RefundCreateParams
 import com.stripe.param.checkout.SessionCreateParams
@@ -116,6 +117,22 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         return sessionAttributes
     }
 
+    SessionAttributes confirmExistedPayment(String transactionId) {
+        PaymentIntent resource = PaymentIntent.retrieve(transactionId)
+        PaymentIntentConfirmParams params = PaymentIntentConfirmParams.builder().build()
+
+        try {
+            PaymentIntent paymentIntent = resource.confirm(params)
+            def sessionAttributes = new SessionAttributes()
+            buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
+            return sessionAttributes
+        } catch (Exception e) {
+            logger.catching(e)
+            handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
+            return null //unreachable
+        }
+    }
+
     SessionAttributes sendPaymentConfirmation(Money amount, String cardId, String confirmationToken) {
         Stripe.apiKey = apiKey
         PaymentIntentCreateParams params =
@@ -139,33 +156,8 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
     }
 
     @Override
-    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice,
-                                              SessionAttributes sessionAttributes, Money amount,
-                                                             String merchantReference) {
-        Stripe.apiKey = apiKey
-        PaymentIntentCreateParams params =
-                PaymentIntentCreateParams.builder()
-                        .setAmount(amount.multiply(100).toLong())
-                        .setCurrency(CURRENCY_CODE_AUD)
-                        //.setCustomer(cardId) ?!
-                        .setConfirmationToken(confirmationToken)
-                        .build()
-        try {
-            def paymentIntent = PaymentIntent.create(params)
-            //buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
-            //def paymentStatus = PaymentIntentStatus.from(paymentIntent.status)
-            sessionAttributes = checkStatus(sessionAttributes.sessionId)
-
-            //if (!paymentIntent.status.equals("succeeded")) {
-            if (!sessionAttributes.complete) {
-                handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
-            }
-            return succeedPayment(checkout, sendInvoice)
-        } catch (Exception e) {
-            logger.catching(e)
-            handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
-            return new CheckoutResponseDTO()
-        }
+    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
+        succeedPayment(checkout, sendInvoice)
     }
 
     @Override

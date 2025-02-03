@@ -14,6 +14,11 @@ get:
       type: string
       required: false
       description: Set this to the confirmation token id from the successful Payment system create payment request to submit it on server
+    - name: transactionId
+      in: query
+      type: string
+      required: false
+      description: if 3d secure is required, configured on client transaction will be passed to server for submit
   responses:
     '200':
       description: Success response

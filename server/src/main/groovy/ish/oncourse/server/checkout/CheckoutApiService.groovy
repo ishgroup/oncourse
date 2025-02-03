@@ -165,7 +165,7 @@ class CheckoutApiService {
         return dtoResponse
     }
 
-    CheckoutResponseDTO submitPayment(String xPaymentSessionId, String confirmationToken) {
+    CheckoutResponseDTO submitPayment(String xPaymentSessionId, String confirmationToken, String transactionId) {
         paymentService = getPaymentServiceByGatewayType()
 
         synchronized (this.getClass()) {
@@ -199,7 +199,11 @@ class CheckoutApiService {
                 sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
             } else {
                 if(paymentService instanceof StripePaymentService) {
-                    sessionAttributes = (paymentService as StripePaymentService).sendPaymentConfirmation(amount, cardId, confirmationToken)
+                    if(transactionId != null)
+                        sessionAttributes = (paymentService as StripePaymentService).confirmExistedPayment(transactionId)
+                    else
+                        sessionAttributes = (paymentService as StripePaymentService).sendPaymentConfirmation(amount, cardId, confirmationToken)
+
                     if(sessionAttributes.secure3dRequired) {
                         return new CheckoutResponseDTO().with {
                             it.clientSecret = sessionAttributes.clientSecret
