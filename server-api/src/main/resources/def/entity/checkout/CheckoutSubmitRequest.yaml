@@ -1,0 +1,18 @@
+type: object
+properties:
+  xPaymentSessionId:
+    type: string
+    required: true
+    description: session id
+  confirmationTokenId:
+    type: string
+    required: false
+    description: Set this to the confirmation token id from the successful Payment system create payment request to submit it on server
+  transactionId:
+    type: string
+    required: false
+    description: if 3d secure is required, configured on client transaction will be passed to server for submit
+  origin:
+    type: string
+    required: false
+    description: return url for new payment intents created

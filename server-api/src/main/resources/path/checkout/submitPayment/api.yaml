@@ -4,21 +4,12 @@ get:
   tags:
     - Checkout
   parameters:
-    - name: xPaymentSessionId
-      in: query
-      type: string
+    - name: submitRequest
+      in: body
       required: true
+      schema:
+        $ref: './def/entity/checkout/CheckoutSubmitRequest.yaml'
       description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
-    - name: confirmationTokenId
-      in: query
-      type: string
-      required: false
-      description: Set this to the confirmation token id from the successful Payment system create payment request to submit it on server
-    - name: transactionId
-      in: query
-      type: string
-      required: false
-      description: if 3d secure is required, configured on client transaction will be passed to server for submit
   responses:
     '200':
       description: Success response

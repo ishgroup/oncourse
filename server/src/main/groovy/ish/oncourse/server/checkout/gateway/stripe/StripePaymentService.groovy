@@ -29,6 +29,7 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.servlet.ISessionManager
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
+import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.CheckoutUtils
@@ -88,7 +89,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .addLineItem(lineItem)
                         .setCustomerEmail(contact.email)
                         .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
-                        .setReturnUrl(sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?xPaymentSessionId={CHECKOUT_SESSION_ID}")
+                        .setReturnUrl(origin + "/checkout?sessionId={CHECKOUT_SESSION_ID}")
                         .setMode(SessionCreateParams.Mode.PAYMENT)
 
         def futureUsage = storeCard ? OFF_SESSION : ON_SESSION
@@ -133,7 +134,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         }
     }
 
-    SessionAttributes sendPaymentConfirmation(Money amount, String cardId, String confirmationToken) {
+    SessionAttributes sendPaymentConfirmation(Money amount, String cardId, CheckoutSubmitRequestDTO requestDTO) {
         Stripe.apiKey = apiKey
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
@@ -141,7 +142,8 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setCustomer(cardId)
                         .setConfirm(true)
-                        .setConfirmationToken(confirmationToken)
+                        .setReturnUrl(requestDTO.origin + "/checkout?sessionId={CHECKOUT_SESSION_ID}")
+                        .setConfirmationToken(requestDTO.confirmationTokenId)
                         .build()
 
         try {
