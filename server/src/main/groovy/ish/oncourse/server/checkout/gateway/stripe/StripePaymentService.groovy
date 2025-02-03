@@ -140,6 +140,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .setAmount(amount.multiply(100).toLong())
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setCustomer(cardId)
+                        .setConfirm(true)
                         .setConfirmationToken(confirmationToken)
                         .build()
 
