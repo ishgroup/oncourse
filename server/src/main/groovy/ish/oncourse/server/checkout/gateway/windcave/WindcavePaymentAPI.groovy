@@ -94,7 +94,7 @@ class WindcavePaymentAPI {
                                                 declined :  origin + '/checkout?paymentStatus=fail',
                                                 cancelled:  origin + '/checkout?paymentStatus=cancel'
                                             ],
-                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?xPaymentSessionId=$merchantReference"
+                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?paymentSessionId=$merchantReference"
                                         ]
             if (storeCard) {
                 body['storeCard'] = true

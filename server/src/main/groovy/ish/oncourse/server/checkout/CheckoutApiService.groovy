@@ -170,13 +170,13 @@ class CheckoutApiService {
         paymentService = getPaymentServiceByGatewayType()
 
         synchronized (this.getClass()) {
-            if(sessionsInProcessing.contains(submitRequestDTO.xPaymentSessionId))
+            if(sessionsInProcessing.contains(submitRequestDTO.paymentSessionId))
                 paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Already in progress")])
-            sessionsInProcessing.add(submitRequestDTO.xPaymentSessionId)
+            sessionsInProcessing.add(submitRequestDTO.paymentSessionId)
         }
 
         try {
-            def checkoutModel = checkoutSessionService.getCheckoutModel(submitRequestDTO.xPaymentSessionId, paymentService)
+            def checkoutModel = checkoutSessionService.getCheckoutModel(submitRequestDTO.paymentSessionId, paymentService)
             Checkout checkout = checkoutController.createCheckout(checkoutModel)
 
             if (!checkout.errors.empty) {
@@ -224,7 +224,7 @@ class CheckoutApiService {
                     merchantReference = checkoutModel.merchantReference
                 }
 
-                sessionAttributes = paymentService.checkStatus(submitRequestDTO.xPaymentSessionId)
+                sessionAttributes = paymentService.checkStatus(submitRequestDTO.paymentSessionId)
 
                 if (!sessionAttributes.complete) {
                     paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
@@ -251,7 +251,7 @@ class CheckoutApiService {
             paymentIn.sessionId = merchantReference
             paymentIn.privateNotes = sessionAttributes.responceJson
 
-            checkoutSessionService.removeNotCommitCheckoutSession(submitRequestDTO.xPaymentSessionId, checkout.context)
+            checkoutSessionService.removeNotCommitCheckoutSession(submitRequestDTO.paymentSessionId, checkout.context)
 
             CheckoutResponseDTO dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
             postEnrolmentSuccessfulEvents(checkout)
@@ -259,7 +259,7 @@ class CheckoutApiService {
             return dtoResponse
         } finally {
             synchronized (this.getClass()) {
-                sessionsInProcessing.remove(submitRequestDTO.xPaymentSessionId)
+                sessionsInProcessing.remove(submitRequestDTO.paymentSessionId)
             }
         }
     }

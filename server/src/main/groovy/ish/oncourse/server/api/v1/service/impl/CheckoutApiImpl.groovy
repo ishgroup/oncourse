@@ -221,9 +221,9 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    void submitPaymentRedirect(String xPaymentSessionId) {
+    void submitPaymentRedirect(String paymentSessionId) {
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
-            it.XPaymentSessionId = xPaymentSessionId
+            it.paymentSessionId = paymentSessionId
             it
         }
         checkoutApiService.submitPayment(submitRequestDTO)

@@ -1,6 +1,6 @@
 type: object
 properties:
-  xPaymentSessionId:
+  paymentSessionId:
     type: string
     required: true
     description: session id
