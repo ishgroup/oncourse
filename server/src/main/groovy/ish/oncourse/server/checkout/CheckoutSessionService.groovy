@@ -58,7 +58,7 @@ class CheckoutSessionService {
                 .selectOne(context)
 
         if(session == null) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Checkout session for this id not found in db: $sessionId")])
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Unexpected request")])
         }
 
         ObjectMapper mapper = new ObjectMapper()

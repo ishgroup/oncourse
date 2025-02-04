@@ -39,7 +39,7 @@ class ApiFilter implements Filter {
     private static final Logger logger = LogManager.getLogger()
 
     private static final String LOGIN_PATH_INFO = 'login'
-    private static final String CHECKOUT_PATH_INFO = '/checkout/submitRedirect'
+    private static final String CHECKOUT_PATH_INFO = '/checkout/submitPaymentRedirect'
     private static final String CHECK_PASSWORD_INFO = 'user/checkPassword/'
     private static final String INVITATION = 'invite/'
     private static final String SSO_TYPES = 'integration/ssoTypes'

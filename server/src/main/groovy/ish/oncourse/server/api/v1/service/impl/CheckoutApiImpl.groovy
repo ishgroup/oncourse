@@ -221,6 +221,15 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
+    void submitPaymentRedirect(String xPaymentSessionId) {
+        def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
+            it.XPaymentSessionId = xPaymentSessionId
+            it
+        }
+        checkoutApiService.submitPayment(submitRequestDTO)
+    }
+
+    @Override
     CheckoutResponseDTO submit(CheckoutModelDTO checkoutModel, Boolean xValidateOnly, String xPaymentSessionId, String xOrigin ) {
         return checkoutApiService.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin)
     }

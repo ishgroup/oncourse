@@ -1,20 +1,17 @@
-post:
-  operationId: submitPayment
+get:
+  operationId: submitPaymentRedirect
   description: Process checkout
   tags:
     - Checkout
   parameters:
-    - name: submitRequest
-      in: body
+    - name: xPaymentSessionId
+      in: query
+      type: string
       required: true
-      schema:
-        $ref: './def/entity/checkout/CheckoutSubmitRequest.yaml'
       description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
   responses:
-    '200':
+    '204':
       description: Success response
-      schema:
-        $ref: './def/entity/checkout/CheckoutResponse.yaml'
     '400':
       description: Validation error
       schema:

@@ -9,5 +9,5 @@
 package ish.oncourse.server.checkout
 
 class CheckoutUtils {
-    public static final String SERVER_REDIRECT_PATH = "/a/v1/checkout/submit"
+    public static final String SERVER_REDIRECT_PATH = "/a/v1/checkout/submitPaymentRedirect"
 }
