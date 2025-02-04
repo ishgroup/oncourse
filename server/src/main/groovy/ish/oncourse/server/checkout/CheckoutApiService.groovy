@@ -218,10 +218,10 @@ class CheckoutApiService {
                     }
                 }
 
-                if (!checkoutModel.merchantReference) {
+                if (!submitRequestDTO.merchantReference) {
                     paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
                 } else {
-                    merchantReference = checkoutModel.merchantReference
+                    merchantReference = submitRequestDTO.merchantReference
                 }
 
                 sessionAttributes = paymentService.checkStatus(submitRequestDTO.paymentSessionId)

@@ -16,3 +16,6 @@ properties:
     type: string
     required: false
     description: return url for new payment intents created
+  merchantReference:
+    type: string
+    description: server side generated reference on x-validate step. Required for complte request.
