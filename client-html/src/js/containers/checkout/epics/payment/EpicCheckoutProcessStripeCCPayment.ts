@@ -47,9 +47,9 @@ const request: EpicUtils.Request<any, { confirmationToken: string, stripe: Strip
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
 
-    checkoutModel.confirmationToken = confirmationToken;
+    const sessionResponse = await CheckoutService.createSession(checkoutModel);
 
-    const checkoutResponse = await CheckoutService.createSession(checkoutModel);
+    const checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, confirmationToken, null, sessionResponse.merchantReference);
 
     if ((checkoutResponse as any).actionRequired) {
       const {
@@ -62,7 +62,7 @@ const request: EpicUtils.Request<any, { confirmationToken: string, stripe: Strip
       if (error) {
         throw error;
       } else {
-        return  CheckoutService.submitPayment(paymentIntent.id);
+        return  CheckoutService.submitPayment(sessionResponse.sessionId, null, paymentIntent.id, checkoutResponse.merchantReference);
       }
     }
     return checkoutResponse;

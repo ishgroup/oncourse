@@ -29,8 +29,8 @@ import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } 
 
 const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
   type: CHECKOUT_PROCESS_PAYMENT,
-  getData: ({
-  xValidateOnly, xPaymentSessionId, xOrigin
+  getData: async ({
+  xValidateOnly, xPaymentSessionId
   }, s) => {
     
     const paymentPlans = (getFormValues(CHECKOUT_SELECTION_FORM_NAME)(s) as any)?.paymentPlans || [];
@@ -41,8 +41,10 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
       (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(s) as any).fundingInvoices,
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
-    
-    return CheckoutService.checkoutSubmitPayment(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
+
+    const sessionResponse = await CheckoutService.createSession(checkoutModel);
+
+    return CheckoutService.submitPayment(sessionResponse.sessionId, null, xPaymentSessionId, sessionResponse.merchantReference);
   },
   processData: (checkoutResponse: CheckoutResponse, s, { xValidateOnly }) => {
     const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);

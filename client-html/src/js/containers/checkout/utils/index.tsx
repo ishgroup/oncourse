@@ -286,8 +286,6 @@ export const getCheckoutModel = (
 
     paymentPlans,
 
-    merchantReference: payment.merchantReference,
-
     contactNodes: summary.list.map((l): ContactNode => ({
 
       contactId: l.contact.id,

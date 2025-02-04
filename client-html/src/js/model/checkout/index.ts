@@ -20,7 +20,7 @@ import {
   VoucherProduct
 } from '@api/model';
 import { Stripe } from '@stripe/stripe-js';
-import { StringArgFunction } from 'ish-ui';
+import { NoArgFunction, StringArgFunction } from 'ish-ui';
 import { Dispatch } from 'redux';
 import { IAction } from '../../common/actions/IshAction';
 
@@ -252,8 +252,9 @@ export interface CreditCardPaymentPageProps {
   checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
   clearCcIframeUrl: () => void;
   checkoutProcessStripeCCPayment?: (confirmationToken: string, stripe: Stripe) => void;
-  checkoutGetPaymentStatusDetails: StringArgFunction;
+  checkoutGetPaymentStatusDetails?: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;
+  checkoutUpdateSummaryPrices?: NoArgFunction;
   onCheckoutClearPaymentStatus: () => void;
   process?: CheckoutPaymentProcess;
   paymentInvoice?: any;

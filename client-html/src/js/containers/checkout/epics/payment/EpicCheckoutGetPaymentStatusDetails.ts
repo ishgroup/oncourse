@@ -32,7 +32,7 @@ const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
         checkoutPaymentSetCustomStatus("success")
       );
       if (merchantReference !== "") {
-        actions.push(checkoutProcessPayment(false, sessionId, window.location.origin));
+        actions.push(checkoutProcessPayment(false, sessionId));
       }
     } else {
       actions.push(

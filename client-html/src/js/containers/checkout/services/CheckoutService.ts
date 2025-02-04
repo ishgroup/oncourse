@@ -20,10 +20,6 @@ class CheckoutService {
     return this.checkoutApi.createSession(checkoutModel, window.location.origin);
   }
 
-  public checkoutSubmitPayment(checkoutModel: CheckoutModel, xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string): Promise<CheckoutResponse> {
-    return this.checkoutApi.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
-  }
-
   public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number, payerId: number = null): Promise<CourseClassDiscount[]> {
     return this.checkoutApi.getContactDiscounts(contactId, classId, courseIds, productIds, classIds, promoIds, membershipIds, purchaseTotal, payerId);
   }
@@ -40,8 +36,10 @@ class CheckoutService {
     return this.checkoutApi.updateModel(checkoutModel);
   }
   
-  public submitPayment(xPaymentSessionId: string): Promise<CheckoutResponse> {
-    return this.submitPayment(xPaymentSessionId);
+  public submitPayment(paymentSessionId: string, confirmationTokenId: string, transactionId: string, merchantReference: string): Promise<CheckoutResponse> {
+    return this.checkoutApi.submitPayment({
+      paymentSessionId, confirmationTokenId, transactionId, origin: window.location.origin, merchantReference
+    });
   }
 
   getCartDataIds(checkoutId: number): Promise<CartIds> {

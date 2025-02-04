@@ -51,7 +51,6 @@ import {
   CHECKOUT_CHANGE_SUMMARY_ITEM_QUANTITY,
   CHECKOUT_REMOVE_PROMOTIONAL_CODE,
   CHECKOUT_REMOVE_VOUCHER_PROMO,
-  CHECKOUT_RESTORE_STATE,
   CHECKOUT_SET_DEFAULT_PAYER,
   CHECKOUT_SET_DISABLE_DISCOUNTS,
   CHECKOUT_SET_PREVIOUS_CREDIT,
@@ -143,15 +142,6 @@ const initial: CheckoutState = {
 
 export const checkoutReducer = (state: CheckoutState = initial, action: IAction): CheckoutState => {
   switch (action.type) {
-    case CHECKOUT_RESTORE_STATE: {
-      const storedState = action.payload;
-
-      return {
-        ...state,
-        ...storedState
-      };
-    }
-    
     case CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED: {
       const { invoice } = action.payload;
 

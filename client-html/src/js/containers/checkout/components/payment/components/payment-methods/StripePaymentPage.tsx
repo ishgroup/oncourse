@@ -20,11 +20,11 @@ import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
-  checkoutGetPaymentStatusDetails,
   checkoutProcessStripeCCPayment,
   checkoutSetPaymentProcessing,
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
+import { checkoutUpdateSummaryPrices } from '../../../../actions/checkoutSummary';
 import CheckoutService from '../../../../services/CheckoutService';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 
@@ -41,8 +41,7 @@ const useStyles = makeAppStyles()({
 const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, checkoutProcessStripeCCPayment }) => {
   const stripe = useStripe();
   const elements = useElements();
-
-
+  const [ready, setReady] = useState(false);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -72,14 +71,14 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
   };
 
   return <form onSubmit={handleSubmit} className="flex-column">
-    <PaymentElement />
+    <PaymentElement onReady={() => setReady(true)} />
     <LoadingButton
       variant="contained"
       color="primary"
       size="large"
       type="submit"
       className="mt-3 ml-auto mr-auto"
-      disabled={!stripe || isPaymentProcessing}
+      disabled={!ready || !stripe || isPaymentProcessing}
       loading={isPaymentProcessing}>
       Finalize checkout
     </LoadingButton>
@@ -91,12 +90,10 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     summary,
     isPaymentProcessing,
     disablePayment,
-    xPaymentSessionId,
-    checkoutProcessCcPayment,
     payment,
     onCheckoutClearPaymentStatus,
-    checkoutGetPaymentStatusDetails,
-    clearCcIframeUrl,
+    checkoutUpdateSummaryPrices,
+    checkoutProcessStripeCCPayment,
     process,
     dispatch
   } = props;
@@ -119,7 +116,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
     clearCcIframeUrl();
-    checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
+    checkoutUpdateSummaryPrices();
   };
   
   const handleError = error => {
@@ -148,7 +145,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           stripe={stripePromise}
           options={{
             mode: 'payment',
-            currency: currency.currencySymbol.toLowerCase(),
+            currency: 'aud',
             amount: decimalMul(summary.payNowTotal, 100)
           }}
         >
@@ -176,7 +173,6 @@ const mapStateToProps = (state: State) => ({
   payment: state.checkout.payment,
   paymentInvoice: state.checkout.payment.invoice,
   paymentId: state.checkout.payment.paymentId,
-  xPaymentSessionId: state.checkout.payment.xPaymentSessionId,
   process: state.checkout.payment.process
 });
 
@@ -185,9 +181,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   checkoutProcessStripeCCPayment: (confirmationToken: string, stripe: Stripe) => {
     dispatch(checkoutProcessStripeCCPayment(confirmationToken, stripe));
   },
+  checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices()),
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
-  checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StripePaymentPage);

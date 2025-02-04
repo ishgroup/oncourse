@@ -137,8 +137,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
-    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string) => {
+    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId));
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),

@@ -15,11 +15,13 @@ import {
   CHECKOUT_UPDATE_RELATED_ITEMS
 } from "../../actions";
 import { CHECKOUT_UPDATE_CONTACT_FULFILLED } from "../../actions/checkoutContact";
+import { CHECKOUT_SET_PAYMENT_TYPE } from '../../actions/checkoutPayment';
 import { CHECKOUT_TRIGGER_UPDATE_SUMMARY_PRICES, CHECKOUT_UPDATE_SUMMARY_PRICES } from "../../actions/checkoutSummary";
 
 export const EpicTriggerPricesUpdate: Epic<any, any, State> = (action$: Observable<any>, state$): any =>
   action$.pipe(
     ofType(
+      CHECKOUT_SET_PAYMENT_TYPE,
       CHECKOUT_ADD_ITEM,
       CHECKOUT_REMOVE_ITEM,
       CHECKOUT_ADD_CONTACT,

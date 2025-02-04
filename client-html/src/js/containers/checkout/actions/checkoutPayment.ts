@@ -92,11 +92,10 @@ export const checkoutProcessStripeCCPayment = (
 export const checkoutProcessPayment = (
   xValidateOnly: boolean,
   xPaymentSessionId: string,
-  xOrigin: string
 ) => ({
   type: CHECKOUT_PROCESS_PAYMENT,
   payload: {
-    xValidateOnly, xPaymentSessionId, xOrigin
+    xValidateOnly, xPaymentSessionId
   }
 });
 
