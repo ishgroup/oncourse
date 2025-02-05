@@ -177,13 +177,13 @@ class CheckoutApiService {
         paymentService = getPaymentServiceByGatewayType()
 
         synchronized (this.getClass()) {
-            if(sessionsInProcessing.contains(submitRequestDTO.paymentSessionId))
+            if(sessionsInProcessing.contains(submitRequestDTO.onCoursePaymentSessionId))
                 paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Already in progress")])
-            sessionsInProcessing.add(submitRequestDTO.paymentSessionId)
+            sessionsInProcessing.add(submitRequestDTO.onCoursePaymentSessionId)
         }
 
         try {
-            def checkoutModel = checkoutSessionService.getCheckoutModel(submitRequestDTO.paymentSessionId, paymentService)
+            def checkoutModel = checkoutSessionService.getCheckoutModel(submitRequestDTO.onCoursePaymentSessionId, paymentService)
             Checkout checkout = checkoutController.createCheckout(checkoutModel)
 
             if (!checkout.errors.empty) {
@@ -201,6 +201,7 @@ class CheckoutApiService {
             Money amount = checkout.paymentIn.amount
             SessionAttributes sessionAttributes
             String merchantReference = null
+            String paymentSystemSessionId = submitRequestDTO.onCoursePaymentSessionId
 
             if (checkoutModel.payWithSavedCard) {
                 merchantReference = UUID.randomUUID().toString()
@@ -224,18 +225,18 @@ class CheckoutApiService {
                         }
                     }
 
-                    submitRequestDTO.paymentSessionId = sessionAttributes.transactionId
+                    paymentSystemSessionId = sessionAttributes.transactionId
                 }
 
                 if(paymentService instanceof StripePaymentService) {
-                    merchantReference = submitRequestDTO.paymentSessionId
+                    merchantReference = paymentSystemSessionId
                 } else if (!submitRequestDTO.merchantReference) {
                     paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
                 } else {
                     merchantReference = submitRequestDTO.merchantReference
                 }
 
-                sessionAttributes = paymentService.checkStatus(submitRequestDTO.paymentSessionId)
+                sessionAttributes = paymentService.checkStatus(paymentSystemSessionId)
 
                 if (!sessionAttributes.complete) {
                     paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
@@ -262,15 +263,16 @@ class CheckoutApiService {
             paymentIn.sessionId = merchantReference
             paymentIn.privateNotes = sessionAttributes.responceJson
 
-            checkoutSessionService.removeNotCommitCheckoutSession(submitRequestDTO.paymentSessionId, checkout.context)
+            checkoutSessionService.removeNotCommitCheckoutSession(submitRequestDTO.onCoursePaymentSessionId, checkout.context)
 
-            CheckoutResponseDTO dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, amount, merchantReference)
+            CheckoutResponseDTO dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, merchantReference)
+            dtoResponse.sessionId = paymentSystemSessionId
+
             postEnrolmentSuccessfulEvents(checkout)
-
             return dtoResponse
         } finally {
             synchronized (this.getClass()) {
-                sessionsInProcessing.remove(submitRequestDTO.paymentSessionId)
+                sessionsInProcessing.remove(submitRequestDTO.onCoursePaymentSessionId)
             }
         }
     }

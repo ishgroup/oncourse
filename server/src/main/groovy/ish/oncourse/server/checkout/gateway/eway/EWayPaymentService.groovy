@@ -32,7 +32,7 @@ class EWayPaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
+    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
         succeedPayment(checkout, sendInvoice)
     }
 

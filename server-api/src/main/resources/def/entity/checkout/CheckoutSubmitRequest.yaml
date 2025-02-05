@@ -1,6 +1,6 @@
 type: object
 properties:
-  paymentSessionId:
+  onCoursePaymentSessionId:
     type: string
     required: true
     description: session id
