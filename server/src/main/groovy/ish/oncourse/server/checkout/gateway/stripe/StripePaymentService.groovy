@@ -42,9 +42,6 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
     @Inject
     private PreferenceController preferenceController
 
-    @Inject
-    private ISessionManager sessionManager
-
 
     protected String getApiKey() {
         try {
@@ -191,6 +188,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
 
     private static void buildSessionAttributesFromPaymentIntent(SessionAttributes sessionAttributes, PaymentIntent paymentIntent) {
         sessionAttributes.transactionId = paymentIntent.id // to make refund could be used
+        sessionAttributes.sessionId = paymentIntent.id
         sessionAttributes.clientSecret = paymentIntent.clientSecret
         def status = PaymentIntentStatus.from(paymentIntent.status)
         sessionAttributes.secure3dRequired = status == PaymentIntentStatus.RequiresAction
