@@ -146,6 +146,13 @@ class CheckoutApiService {
             }
 
             String merchantReference = UUID.randomUUID().toString()
+
+            if(paymentService instanceof StripePaymentService) {
+                checkoutSessionService.saveCheckoutSession(checkoutModel, merchantReference)
+                dtoResponse.sessionId = merchantReference
+                return dtoResponse
+            }
+
             SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
             if (attributes.sessionId) {
                 dtoResponse.sessionId = attributes.sessionId
@@ -216,9 +223,13 @@ class CheckoutApiService {
                             it
                         }
                     }
+
+                    submitRequestDTO.paymentSessionId = sessionAttributes.transactionId
                 }
 
-                if (!submitRequestDTO.merchantReference) {
+                if(paymentService instanceof StripePaymentService) {
+                    merchantReference = submitRequestDTO.paymentSessionId
+                } else if (!submitRequestDTO.merchantReference) {
                     paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
                 } else {
                     merchantReference = submitRequestDTO.merchantReference
@@ -260,14 +271,6 @@ class CheckoutApiService {
         } finally {
             synchronized (this.getClass()) {
                 sessionsInProcessing.remove(submitRequestDTO.paymentSessionId)
-            }
-        }
-    }
-
-    private void postEnrolmentSuccessfulEvents(Checkout checkout, Boolean xValidateOnly) {
-        if (checkout.invoice && !xValidateOnly) {
-            checkout.invoice.invoiceLines.findAll { it.enrolment }*.enrolment.each { enrol ->
-                eventService.postEvent(SystemEvent.valueOf(SystemEventType.ENROLMENT_SUCCESSFUL, enrol))
             }
         }
     }

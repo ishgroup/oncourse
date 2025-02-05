@@ -13,17 +13,14 @@ import com.stripe.Stripe
 import com.stripe.model.Charge
 import com.stripe.model.PaymentIntent
 import com.stripe.model.Refund
-import com.stripe.model.checkout.Session
 import com.stripe.param.PaymentIntentConfirmParams
 import com.stripe.param.PaymentIntentCreateParams
 import com.stripe.param.RefundCreateParams
-import com.stripe.param.checkout.SessionCreateParams
 import groovy.transform.CompileDynamic
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.stripe.CardTypeAdapter
 import ish.common.checkout.gateway.stripe.payment.PaymentIntentStatus
-import ish.common.checkout.gateway.stripe.session.StripeSessionStatus
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
@@ -32,13 +29,9 @@ import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.checkout.CheckoutUtils
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-
-import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.SetupFutureUsage.OFF_SESSION
-import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.SetupFutureUsage.ON_SESSION
 
 @CompileDynamic
 class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
@@ -65,57 +58,8 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
 
     @Override
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact) {
-        Stripe.apiKey = apiKey
-        def product = SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                .setName("onCourse payment operation")
-                .build()
-
-        def price = SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency(CURRENCY_CODE_AUD)
-                .setUnitAmount(amount.multiply(100).toInteger())
-                .setProductData(product)
-                .build()
-
-        def lineItem = SessionCreateParams.LineItem.builder()
-                .setPriceData(price)
-                .setQuantity(1L)
-                .build()
-
-        SessionCreateParams.Builder paramsBuilder =
-                SessionCreateParams.builder()
-                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                        .setCurrency(CURRENCY_CODE_AUD)
-                        .setClientReferenceId(merchantReference)
-                        .addLineItem(lineItem)
-                        .setCustomerEmail(contact.email)
-                        .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
-                        .setReturnUrl(origin + "/checkout?sessionId={CHECKOUT_SESSION_ID}")
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
-
-        def futureUsage = storeCard ? OFF_SESSION : ON_SESSION
-        paramsBuilder.setPaymentIntentData(
-                SessionCreateParams.PaymentIntentData.builder()
-                        .setSetupFutureUsage(futureUsage) // OFF_SESSION is auto payments
-                        .build()
-        )
-        def sessionAttributes = new SessionAttributes()
-        try {
-            def session = Session.create(paramsBuilder.build())
-            def status = StripeSessionStatus.from(session.status)
-            if(status == StripeSessionStatus.Open) {
-                sessionAttributes.sessionId = session.id
-                sessionAttributes.ccFormUrl = session.url
-                sessionAttributes.clientSecret = session.clientSecret
-                sessionAttributes.billingId = session.customer
-            } else {
-                sessionAttributes.errorMessage = "Unable to establish a connection with the Stripe application. Please contact ish support or try again later"
-            }
-        } catch (Exception e) {
-            logger.catching(e)
-            sessionAttributes.errorMessage = e.message
-        }
-
-        return sessionAttributes
+        //useless for stripe. all payments will be made in transaction in accordance with our workflow
+        return new SessionAttributes()
     }
 
     SessionAttributes confirmExistedPayment(String transactionId) {
@@ -167,26 +111,23 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
     @Override
     SessionAttributes checkStatus(String sessionIdOrAccessCode) {
         Stripe.apiKey = apiKey
-        def session = Session.retrieve(sessionIdOrAccessCode)
+        //for stripe we check transaction status
+        def paymentIntent = PaymentIntent.retrieve(sessionIdOrAccessCode)
         def sessionAttributes = new SessionAttributes()
 
         try {
-            def status = StripeSessionStatus.from(session.status)
+            def status = PaymentIntentStatus.from(paymentIntent.status)
             sessionAttributes = new SessionAttributes().with {
-                it.sessionId = session.id
+                it.sessionId = paymentIntent.id
                 // payment expire time = 10 min - ? check it on server side ???
-                it.complete = status == StripeSessionStatus.Complete
-                it.type = session.mode
-                it.responceJson = session.toJson()
-                it.statusText = session.paymentStatus // paid / unpaid / no_payment_required + message for client
-                it.billingId = session.customer // ? - billingId == customerID
+                it.complete = status == PaymentIntentStatus.Succeeded
+                it.type = paymentIntent.paymentMethodTypes.first()
+                it.responceJson = paymentIntent.toJson()
+                it.statusText = paymentIntent.status
+                it.billingId = paymentIntent.customer // ? - billingId == customerID
                 it
             }
-
-            if (session.paymentIntent) {
-                PaymentIntent paymentIntent = PaymentIntent.retrieve(session.paymentIntent)
-                buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
-            }
+            buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
         } catch (Exception e) {
             logger.catching(e)
             sessionAttributes.errorMessage = e.message
@@ -250,6 +191,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
 
     private static void buildSessionAttributesFromPaymentIntent(SessionAttributes sessionAttributes, PaymentIntent paymentIntent) {
         sessionAttributes.transactionId = paymentIntent.id // to make refund could be used
+        sessionAttributes.clientSecret = paymentIntent.clientSecret
         def status = PaymentIntentStatus.from(paymentIntent.status)
         sessionAttributes.secure3dRequired = status == PaymentIntentStatus.RequiresAction
         def charge = Charge.retrieve(paymentIntent.latestCharge)
