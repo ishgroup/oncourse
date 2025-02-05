@@ -51,13 +51,11 @@ const request: EpicUtils.Request<any, { confirmationToken: string, stripe: Strip
 
     const checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, confirmationToken, null, sessionResponse.merchantReference);
 
-    if ((checkoutResponse as any).actionRequired) {
+    if (checkoutResponse.actionRequired) {
       const {
         error,
         paymentIntent
-      } = await stripe.handleNextAction({
-        clientSecret: checkoutResponse.clientSecret
-      });
+      } = await stripe.handleCardAction(checkoutResponse.clientSecret);
 
       if (error) {
         throw error;
