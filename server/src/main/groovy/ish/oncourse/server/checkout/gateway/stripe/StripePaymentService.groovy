@@ -45,7 +45,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
     protected String getApiKey() {
         try {
             return preferenceController.paymentGatewayPassStripe
-        } catch(Exception e) {
+        } catch (Exception e) {
             handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
             return null
         }
@@ -83,7 +83,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setCustomer(cardId)
                         .setConfirm(true)
-                        .setReturnUrl(requestDTO.origin + "/checkout?sessionId={CHECKOUT_SESSION_ID}")
+                        .setReturnUrl(requestDTO.origin + "/checkout")
                         .setConfirmationToken(requestDTO.confirmationTokenId)
                         .build()
 
@@ -191,27 +191,31 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         sessionAttributes.clientSecret = paymentIntent.clientSecret
         def status = PaymentIntentStatus.from(paymentIntent.status)
         sessionAttributes.secure3dRequired = status == PaymentIntentStatus.RequiresAction
-        def charge = Charge.retrieve(paymentIntent.latestCharge)
-        if (charge) {
-            sessionAttributes.authorised = charge.outcome.type == "authorized"
-
-            // set up info about credit card
-            def creditCard = charge.paymentMethodDetails?.card
-            if (creditCard) {
-                sessionAttributes.creditCardExpiry = "${creditCard.expMonth}/${creditCard.expYear}"
-                sessionAttributes.creditCardName = charge.billingDetails?.name
-                sessionAttributes.creditCardNumber = 'XXXXXXXXXXXX' + creditCard.last4
-                // https://docs.stripe.com/testing?testing-method=payment-methods
-                sessionAttributes.creditCardType = CardTypeAdapter.convertFromStripeBrand(creditCard.brand)
-            }
-
-            // set up info about payment data
-            Long paymentDateUnix = paymentIntent.getCreated()
-            sessionAttributes.paymentDate = new Date(paymentDateUnix * 1000).toLocalDate()
-        }
 
         if (paymentIntent.lastPaymentError) {
             sessionAttributes.errorMessage = paymentIntent.lastPaymentError
+        }
+
+        if (paymentIntent.latestCharge) {
+            def charge = Charge.retrieve(paymentIntent.latestCharge)
+            if (charge) {
+                sessionAttributes.authorised = charge.outcome.type == "authorized"
+
+                // set up info about credit card
+                def creditCard = charge.paymentMethodDetails?.card
+                if (creditCard) {
+                    sessionAttributes.creditCardExpiry = "${creditCard.expMonth}/${creditCard.expYear}"
+                    sessionAttributes.creditCardName = charge.billingDetails?.name
+                    sessionAttributes.creditCardNumber = 'XXXXXXXXXXXX' + creditCard.last4
+                    // https://docs.stripe.com/testing?testing-method=payment-methods
+                    sessionAttributes.creditCardType = CardTypeAdapter.convertFromStripeBrand(creditCard.brand)
+                }
+
+                // set up info about payment data
+                Long paymentDateUnix = paymentIntent.getCreated()
+                sessionAttributes.paymentDate = new Date(paymentDateUnix * 1000).toLocalDate()
+            }
+
             if (charge?.outcome?.sellerMessage) {
                 sessionAttributes.errorMessage += '\n' + charge.outcome.sellerMessage
             }
