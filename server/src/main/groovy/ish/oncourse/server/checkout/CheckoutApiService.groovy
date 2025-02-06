@@ -12,7 +12,6 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
-import ish.common.checkout.gateway.stripe.payment.PaymentIntentStatus
 import ish.common.types.PaymentGatewayType
 import ish.common.types.SystemEventType
 import ish.math.Money
@@ -25,11 +24,7 @@ import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.service.*
-import ish.oncourse.server.api.v1.model.CheckoutModelDTO
-import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
-import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
-import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
-import ish.oncourse.server.api.v1.model.SessionStatusDTO
+import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
@@ -42,14 +37,11 @@ import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.query.ObjectSelect
-import org.eclipse.jetty.http.HttpStatus
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
 class CheckoutApiService {
-    private static final int STATUS_WAITING_TIME_IN_MILLIS = 240000
-
     private static final Set<String> sessionsInProcessing = new HashSet<>()
 
     @Inject
