@@ -83,6 +83,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .setCurrency(CURRENCY_CODE_AUD)
                         .setCustomer(cardId)
                         .setConfirm(true)
+                        .setConfirmationMethod(PaymentIntentCreateParams.ConfirmationMethod.MANUAL)
                         .setReturnUrl(requestDTO.origin + "/checkout")
                         .setConfirmationToken(requestDTO.confirmationTokenId)
                         .build()
