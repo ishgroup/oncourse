@@ -65,7 +65,7 @@ class ContactMixin {
 	static List<Invoice> getUnbalancedInvoices(Contact self) {
 		return ObjectSelect.query(Invoice)
 				.where(Invoice.CONTACT.eq(self))
-				.and(Invoice.AMOUNT_OWING.ne(Money.ZERO))
+				.and(Invoice.AMOUNT_OWING.ne(Money.ZERO()))
 				.orderBy(Invoice.DATE_DUE.asc())
 				.select(self.context)
 	}

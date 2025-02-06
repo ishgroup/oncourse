@@ -41,7 +41,7 @@ public class DiscountUtils {
 
 		Money tax = InvoiceUtil.calculateTaxEachForInvoiceLine(invoiceLine.getPriceEachExTax(), discountValue, taxRate, taxAdjustments);
 		if (tax.isNegative()) {
-			tax = Money.ZERO;
+			tax = Money.ZERO();
 		}
 		if (rounding.getDatabaseValue() > 0) {
 			Money total = invoiceLine.getPriceEachExTax().subtract(discountValue).add(tax);
@@ -68,12 +68,12 @@ public class DiscountUtils {
 			return priceExTax.multiply(BigDecimal.ONE.add(taxRate));
 		}
 
-		Money discountAmount = Money.ZERO;
+		Money discountAmount = Money.ZERO();
 
 		discountAmount = discountAmount.add(discountValue(classDiscount, priceExTax));
 
 		if (discountAmount.compareTo(priceExTax) >= 0) {
-			return  Money.ZERO;
+			return  Money.ZERO();
 		}
 
 		MoneyRounding rounding = classDiscount.getDiscount().getRounding();
@@ -91,7 +91,7 @@ public class DiscountUtils {
 	 */
 	public static Money discountValue(DiscountCourseClassInterface classDiscount, Money priceExTax, BigDecimal taxRate) {
 		if (classDiscount == null ) {
-			return  Money.ZERO;
+			return  Money.ZERO();
 		}
 		Money total = getDiscountedFee(classDiscount, priceExTax, taxRate);
 		return priceExTax.subtract(total.divide(BigDecimal.ONE.add(taxRate)));
@@ -101,7 +101,7 @@ public class DiscountUtils {
 		if (price.isZero()) {
 			return price;
 		}
-		Money discountValue = Money.ZERO;
+		Money discountValue = Money.ZERO();
 
 		if (classDiscount.getDiscountDollar() != null) {
 			discountValue = classDiscount.getDiscountDollar();
@@ -131,11 +131,11 @@ public class DiscountUtils {
 			}
 
 			Money maximumDiscount = discount.getDiscountMax();
-			if (Money.ZERO.isLessThan(maximumDiscount) && discountValue.compareTo(maximumDiscount) > 0) {
+			if (Money.ZERO().isLessThan(maximumDiscount) && discountValue.compareTo(maximumDiscount) > 0) {
 				discountValue = maximumDiscount;
 			} else {
 				Money minimumDiscount = discount.getDiscountMin();
-				if (Money.ZERO.isLessThan(minimumDiscount) && discountValue.compareTo(minimumDiscount) < 0) {
+				if (Money.ZERO().isLessThan(minimumDiscount) && discountValue.compareTo(minimumDiscount) < 0) {
 					discountValue = minimumDiscount;
 				}
 			}
@@ -172,13 +172,13 @@ public class DiscountUtils {
 				Money overriddenValue = classDiscount.getDiscountDollar();
 
 				if (overriddenValue != null) {
-					if (overriddenValue.isLessThan(Money.ZERO))
+					if (overriddenValue.isLessThan(Money.ZERO()))
 					negativeDiscounts.add(classDiscount);
 				} else {
 					DiscountInterface discount = classDiscount.getDiscount();
 					switch (discount.getDiscountType()) {
 						case DOLLAR:
-							if (discount.getDiscountDollar().isLessThan(Money.ZERO)) {
+							if (discount.getDiscountDollar().isLessThan(Money.ZERO())) {
 								negativeDiscounts.add(classDiscount);
 							}
 							break;
@@ -203,7 +203,7 @@ public class DiscountUtils {
 	}
 
 	private static DiscountCourseClassInterface getByAbsoluteValue(List<? extends DiscountCourseClassInterface> classDiscounts, Money feeExGst, BigDecimal taxRate) {
-		Money maxDiscount = Money.ZERO;
+		Money maxDiscount = Money.ZERO();
 		DiscountCourseClassInterface bestDeal = null;
 		for (DiscountCourseClassInterface classDiscount : classDiscounts) {
 			Money val = discountValue(classDiscount, feeExGst, taxRate).abs();

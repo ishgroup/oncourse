@@ -60,7 +60,7 @@ class ArticleProduct extends _ArticleProduct implements AttachableTrait, Notable
 			setIsWebVisible(true)
 		}
 		if (getTaxAdjustment() == null) {
-			setTaxAdjustment(Money.ZERO)
+			setTaxAdjustment(Money.ZERO())
 		}
 	}
 

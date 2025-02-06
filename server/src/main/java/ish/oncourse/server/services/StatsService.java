@@ -107,7 +107,7 @@ public class StatsService {
 		}
 
 		var list = cayenneService.getNewContext().select(SelectQuery.query(Invoice.class, expr));
-		var result = Money.ZERO;
+		var result = Money.ZERO();
 		for (var i : list) {
 			result = result.add(i.getTotalIncTax());
 		}
@@ -140,9 +140,9 @@ public class StatsService {
 		var weeklyEnrolmentCount = 0;
 		var monthlyEnrolmentCount = 0;
 		var monthlyWebEnrolmentCount = 0;
-		var weeklyRevenue = Money.ZERO;
-		var monthlyRevenue = Money.ZERO;
-		var monthlyWebRevenue = Money.ZERO;
+		var weeklyRevenue = Money.ZERO();
+		var monthlyRevenue = Money.ZERO();
+		var monthlyWebRevenue = Money.ZERO();
 
 
 		List<Integer> enrolmentsCountList = new ArrayList<>(28);
@@ -174,7 +174,7 @@ public class StatsService {
 			c.add(Calendar.DATE, -i);
 
 			dataEnrolments.add(new Day(c.getTime()), enrolmentsCount);
-			dataRevenue.add(new Day(c.getTime()), revenue);
+			dataRevenue.add(new Day(c.getTime()), revenue.getNumber());
 
 			enrolmentsCountList.add(0,enrolmentsCount);
 			ravenueList.add(0,revenue);
@@ -198,7 +198,7 @@ public class StatsService {
 		} else {
 			newStats.setValue(EnrolmentStatsField.ENROLMENTS_WEB, "" + monthlyWebEnrolmentCount * 100 / monthlyEnrolmentCount);
 		}
-		if (Money.ZERO.equals(monthlyRevenue)) {
+		if (Money.ZERO().equals(monthlyRevenue)) {
 			newStats.setValue(EnrolmentStatsField.REVENUE_WEB, "0");
 		} else {
 			newStats.setValue(EnrolmentStatsField.REVENUE_WEB, monthlyWebRevenue.divide(monthlyRevenue).multiply(100).toBigDecimal().toBigInteger().toString());

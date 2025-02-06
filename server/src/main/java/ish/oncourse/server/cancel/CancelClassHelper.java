@@ -137,7 +137,7 @@ public class CancelClassHelper {
                     new RefundInvoiceParam(invoiceLine,
                         courseCLass.getIncomeAccount(),
                         courseCLass.getIncomeAccount().getTax(),
-                        Money.ZERO,
+                        Money.ZERO(),
                             sendEmail
                     )
             );
@@ -156,7 +156,7 @@ public class CancelClassHelper {
             RefundHelper.createRefundInvoice(invoiceLine,
                     courseCLass.getIncomeAccount(),
                     courseCLass.getIncomeAccount().getTax(),
-                    Money.ZERO,
+                    Money.ZERO(),
                     Boolean.FALSE,
                     validationResult,
                     "Invoice line", false, false, systemUser);

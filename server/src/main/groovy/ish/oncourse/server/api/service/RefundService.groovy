@@ -68,7 +68,7 @@ class RefundService {
 
         SetPaymentMethod.valueOf(PaymentMethodUtil.getCONTRAPaymentMethods(context, PaymentMethod), contraPayment).set()
         contraPayment.source = PaymentSource.SOURCE_ONCOURSE
-        contraPayment.amount = Money.ZERO
+        contraPayment.amount = Money.ZERO()
         contraPayment.status = PaymentStatus.SUCCESS
         contraPayment.paymentDate = LocalDate.now()
         contraPayment.createdBy = contraPayment.context.localObject(userService.currentUser)
@@ -93,7 +93,7 @@ class RefundService {
         }
 
         // reverse GL records
-        InvoiceUtil.allocateMoneyToInvoices(Money.ZERO, invoices, contraPayment, [])
+        InvoiceUtil.allocateMoneyToInvoices(Money.ZERO(), invoices, contraPayment, [])
 
         return result
     }
@@ -120,7 +120,7 @@ class RefundService {
         // because of any applied on fly tax adjustment this value can be not the same
         refundInvoiceLine.taxEach  = invoiceLineToRefund.taxEach.negate()
 
-        if (cancellationFee != null && Money.ZERO.isLessThan(cancellationFee)) {
+        if (cancellationFee != null && Money.ZERO().isLessThan(cancellationFee)) {
             InvoiceLine cancelaltionFeeLine = context.newObject(InvoiceLine)
 
             cancelaltionFeeLine.account = account // specified refund account
@@ -141,9 +141,9 @@ class RefundService {
 
             // calculate the refund amount based on this enrolment paid price, so include the discount:
             cancelaltionFeeLine.priceEachExTax = cancellationFee
-            cancelaltionFeeLine.discountEachExTax = Money.ZERO
+            cancelaltionFeeLine.discountEachExTax = Money.ZERO()
 
-            cancelaltionFeeLine.taxEach = InvoiceUtil.calculateTaxEachForInvoiceLine(cancellationFee, Money.ZERO, tax.rate,  Money.ZERO)
+            cancelaltionFeeLine.taxEach = InvoiceUtil.calculateTaxEachForInvoiceLine(cancellationFee, Money.ZERO(), tax.rate,  Money.ZERO())
         }
 
         ValidationResult result = new ValidationResult()

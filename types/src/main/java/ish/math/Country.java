@@ -8,9 +8,11 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
+
 package ish.math;
 
-import java.util.Currency;
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
 import java.util.Locale;
 
 /**
@@ -29,21 +31,20 @@ public enum Country {
 	NORWAY(new Locale("no", "NO"), "kr", "NOK"),
 	SOUTH_AFRICA(new Locale("en", "ZA"), "R", "ZAR");
 
-	private String symbol;
-	private String shortSymbol;
-	private Currency currency;
-	private Locale locale;
+	private final Locale locale;
+	private final String shortSymbol;
+	private final String symbol;
+	private final CurrencyUnit currency;
 
-	private Country(Locale locale, String shortCurrencySymbol, String currencySymbol) {
+	Country(Locale locale, String shortCurrencySymbol, String currencySymbol) {
 		this.locale = locale;
-		this.currency = Currency.getInstance(locale);
+		this.currency = Monetary.getCurrency(locale);
 		this.shortSymbol = shortCurrencySymbol;
 		this.symbol = currencySymbol;
-
 	}
 
 	/**
-	 * @return short currency symbol, eg. "$"
+	 * @return short currency symbol, e.g. "$"
 	 */
 	public String currencyShortSymbol() {
 		return this.shortSymbol;
@@ -66,7 +67,7 @@ public enum Country {
 	/**
 	 * @return currency object associated with the country
 	 */
-	public java.util.Currency currency() {
+	public CurrencyUnit currency() {
 		return this.currency;
 	}
 

@@ -47,7 +47,7 @@ class ClassCostDao implements CayenneLayer<ClassCost> {
         cc.invoiceToStudent = true
         cc.payableOnEnrolment = true
         cc.description = 'Student enrolment fee'
-        cc.perUnitAmountExTax = Money.ZERO
+        cc.perUnitAmountExTax = Money.ZERO()
         cc
     }
 

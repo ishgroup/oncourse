@@ -192,9 +192,9 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
         if (getPriceEachExTax() == null || getPriceEachExTax().isZero()) {
             return getTax().getRate().floatValue()
         }
-        float taxEachFloat = getTaxEach().floatValue()
-        float priceEachExTax = getPriceEachExTax().floatValue()
-        float discountEach = getDiscountEachExTax().floatValue()
+        float taxEachFloat = getTaxEach().toFloatValue()
+        float priceEachExTax = getPriceEachExTax().toFloatValue()
+        float discountEach = getDiscountEachExTax().toFloatValue()
         return taxEachFloat / (priceEachExTax - discountEach)
     }
 
@@ -386,18 +386,18 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
     }
 
     void setDiscountEachIncTax(Money discount) {
-        if (discount == null || discount > Money.ZERO || tax == null) {
-            discountEachExTax = Money.ZERO
+        if (discount == null || discount > Money.ZERO() || tax == null) {
+            discountEachExTax = Money.ZERO()
         } else {
             discountEachExTax = discount.divide(BigDecimal.ONE + tax.rate)
         }
         if (discountEachExTax != null && tax != null) {
-            if (discountEachExTax != Money.ZERO) {
+            if (discountEachExTax != Money.ZERO()) {
                 if (discount == null) {
                     throw new IllegalStateException("Not 0 discounteach founded for 0 discount")
                 }
                 Money taxAdjustment = (discountEachExTax.multiply(BigDecimal.ONE + tax.rate)).subtract(discount)
-                if (taxAdjustment != Money.ZERO) {
+                if (taxAdjustment != Money.ZERO()) {
                     taxEach = taxEach.add(taxAdjustment)
                 }
             }

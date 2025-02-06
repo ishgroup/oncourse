@@ -40,7 +40,7 @@ class PaymentOutDao implements CayenneLayer<PaymentOut>  {
         ObjectSelect.query(PaymentOut)
                 .where(PaymentOut.PAYMENT_METHOD.dot(PaymentMethod.TYPE).eq(PaymentType.CREDIT_CARD))
                 .and(PaymentOut.STATUS.eq(PaymentStatus.SUCCESS))
-                .and(PaymentOut.AMOUNT.gt(Money.ZERO))
+                .and(PaymentOut.AMOUNT.gt(Money.ZERO()))
                 .and(PaymentOut.PAYMENT_IN_GATEWAY_REFERENCE.eq(paymentIn.gatewayReference))
                 .select(paymentIn.context)
     }

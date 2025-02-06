@@ -166,7 +166,7 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Prevent">
-			<printWhenExpression><![CDATA[$F{account}.getBalance($F{global.localdateRange_from}) != Money.ZERO || $F{account}.getMovements($F{global.localdateRange_from}, $F{global.localdateRange_to}) != Money.ZERO || $F{account}.getBalance($F{global.localdateRange_to}) != Money.ZERO]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$F{account}.getBalance($F{global.localdateRange_from}) != Money.ZERO() || $F{account}.getMovements($F{global.localdateRange_from}, $F{global.localdateRange_to}) != Money.ZERO() || $F{account}.getBalance($F{global.localdateRange_to}) != Money.ZERO()]]></printWhenExpression>
 			<rectangle>
 				<reportElement style="alternateRow" stretchType="RelativeToBandHeight" x="0" y="0" width="730" height="20" uuid="f49197f9-a28e-459d-82a6-fc8111d777e3">
 					<property name="com.jaspersoft.studio.unit.x" value="mm"/>

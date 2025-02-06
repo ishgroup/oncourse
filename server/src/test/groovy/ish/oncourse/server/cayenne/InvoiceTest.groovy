@@ -47,10 +47,10 @@ class InvoiceTest extends TestWithDatabase {
         il.setInvoice(invoice)
         il.setTax(cayenneContext.localObject(tax))
         il.setPriceEachExTax(invoiceMoney)
-        il.setDiscountEachExTax(Money.ZERO)
+        il.setDiscountEachExTax(Money.ZERO())
         il.setTitle("test title")
         il.setQuantity(BigDecimal.ONE)
-        il.setTaxEach(Money.ZERO)
+        il.setTaxEach(Money.ZERO())
         il.setPrepaidFeesAccount(AccountUtil.getDefaultPrepaidFeesAccount(cayenneContext, Account.class))
 
         invoice.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(cayenneContext, Account.class))
@@ -111,10 +111,10 @@ class InvoiceTest extends TestWithDatabase {
         il.setInvoice(invoice)
         il.setTax(cayenneContext.localObject(tax))
         il.setPriceEachExTax(invoiceMoney)
-        il.setDiscountEachExTax(Money.ZERO)
+        il.setDiscountEachExTax(Money.ZERO())
         il.setTitle("test title")
         il.setQuantity(BigDecimal.ONE)
-        il.setTaxEach(Money.ZERO)
+        il.setTaxEach(Money.ZERO())
         il.setPrepaidFeesAccount(AccountUtil.getDefaultPrepaidFeesAccount(cayenneContext, Account.class))
 
         invoice.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(cayenneContext, Account.class))
@@ -174,10 +174,10 @@ class InvoiceTest extends TestWithDatabase {
         il.setInvoice(invoice)
         il.setTax(cayenneContext.localObject(tax))
         il.setPriceEachExTax(invoiceMoney)
-        il.setDiscountEachExTax(Money.ZERO)
+        il.setDiscountEachExTax(Money.ZERO())
         il.setTitle("test title")
         il.setQuantity(BigDecimal.ONE)
-        il.setTaxEach(Money.ZERO)
+        il.setTaxEach(Money.ZERO())
         il.setPrepaidFeesAccount(AccountUtil.getDefaultPrepaidFeesAccount(cayenneContext, Account.class))
 
         invoice.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(cayenneContext, Account.class))
@@ -197,7 +197,7 @@ class InvoiceTest extends TestWithDatabase {
 
         invoice.addToPaymentInLines(paymentInLine)
 
-        Assertions.assertEquals(Money.ZERO, invoice.getAmountOwing())
+        Assertions.assertEquals(Money.ZERO(), invoice.getAmountOwing())
 
         cayenneContext.commitChanges()
 
@@ -227,10 +227,10 @@ class InvoiceTest extends TestWithDatabase {
         il.setInvoice(invoice)
         il.setTax(cayenneContext.localObject(tax))
         il.setPriceEachExTax(invoiceMoney)
-        il.setDiscountEachExTax(Money.ZERO)
+        il.setDiscountEachExTax(Money.ZERO())
         il.setTitle("test title")
         il.setQuantity(BigDecimal.ONE)
-        il.setTaxEach(Money.ZERO)
+        il.setTaxEach(Money.ZERO())
         il.setPrepaidFeesAccount(AccountUtil.getDefaultPrepaidFeesAccount(cayenneContext, Account.class))
 
         invoice.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(cayenneContext, Account.class))
@@ -250,7 +250,7 @@ class InvoiceTest extends TestWithDatabase {
 
         invoice.addToPaymentInLines(paymentInLine)
 
-        Assertions.assertEquals(Money.ZERO, invoice.getAmountOwing())
+        Assertions.assertEquals(Money.ZERO(), invoice.getAmountOwing())
 
         // see PaymentInLifecycleListener.postPersist(): NEW -> SUCCESS became automatically for cache payments
         cayenneContext.commitChanges()

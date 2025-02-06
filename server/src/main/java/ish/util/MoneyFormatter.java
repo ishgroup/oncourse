@@ -117,7 +117,7 @@ public class MoneyFormatter extends DefaultFormatter {
 		String string = StringUtils.trimToEmpty(aString);
 
 		if (StringUtils.isBlank(string)) {
-			result = nullIfBlank ? null : Money.ZERO;
+			result = nullIfBlank ? null : Money.ZERO();
 		} else {
 			if (this.useBracketsForNegative && string.startsWith("(") && string.endsWith(")")) {
 				string = string.replace("(", "");
@@ -136,7 +136,7 @@ public class MoneyFormatter extends DefaultFormatter {
 			}
 
 			try {
-				result = new Money(string);
+				result = Money.of(string);
 			} catch (Exception e) {
 				throw new ParseException(String.format("Unable to parse '%s' to Money", string), -1);
 			}
@@ -153,9 +153,9 @@ public class MoneyFormatter extends DefaultFormatter {
 			return null;
 		}
 
-		double v = Money.ZERO.doubleValue();
+		double v = Money.ZERO().toDoubleValue();
 		if (value instanceof Money) {
-			v = ((Money) value).doubleValue();
+			v = ((Money) value).toDoubleValue();
 		} else if (value instanceof Number) {
 			v = ((Number) value).doubleValue();
 		}

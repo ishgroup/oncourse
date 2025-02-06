@@ -76,7 +76,7 @@ public class CreatePaylinesPerTimetabledHour extends AbstractAttendanceBasedPayl
 
 			if (alreadyGenerated || !eligibleToGenerate) {
 				logger.debug("paylines exlude perTimeTabledHour attendance (end date)... {}", attendanceItem.getEndDatetime());
-			} else if (eligibleRate != null && eligibleRate.isGreaterThan(Money.ZERO)) {
+			} else if (eligibleRate != null && eligibleRate.isGreaterThan(Money.ZERO())) {
 
 				if (UNMARKED == attendanceItem.getAttendanceType()) {
 					attendanceItem.setAttendanceType(ATTENDED);

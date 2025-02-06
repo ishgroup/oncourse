@@ -39,7 +39,7 @@ class PaymentHelperTest extends TestWithDatabase {
 
         PaymentIn pIn = cayenneContext.newObject(PaymentIn.class)
         pIn.setPaymentDate(LocalDate.now())
-        pIn.setAmount(Money.ONE)
+        pIn.setAmount(Money.ONE())
         pIn.setPayer(contact)
         pIn.setAccountIn(account)
         pIn.setStatus(PaymentStatus.IN_TRANSACTION)
@@ -51,13 +51,13 @@ class PaymentHelperTest extends TestWithDatabase {
 
         invoice.setContact(contact)
         invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
 
         invoice.setDebtorsAccount(account)
 
         PaymentInLine piLine = cayenneContext.newObject(PaymentInLine.class)
         piLine.setInvoice(invoice)
-        piLine.setAmount(Money.ONE)
+        piLine.setAmount(Money.ONE())
         piLine.setAccountOut(account)
 
         pIn.addToPaymentInLines(piLine)
@@ -92,7 +92,7 @@ class PaymentHelperTest extends TestWithDatabase {
 
         PaymentIn pIn = cayenneContext.newObject(PaymentIn.class)
         pIn.setPaymentDate(LocalDate.now())
-        pIn.setAmount(Money.ONE)
+        pIn.setAmount(Money.ONE())
         pIn.setPayer(contact)
         pIn.setAccountIn(account)
         pIn.setStatus(PaymentStatus.IN_TRANSACTION)
@@ -104,13 +104,13 @@ class PaymentHelperTest extends TestWithDatabase {
 
         invoice.setContact(contact)
         invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
 
         invoice.setDebtorsAccount(account)
 
         PaymentInLine piLine = cayenneContext.newObject(PaymentInLine.class)
         piLine.setInvoice(invoice)
-        piLine.setAmount(Money.ONE)
+        piLine.setAmount(Money.ONE())
         piLine.setAccountOut(account)
 
         pIn.addToPaymentInLines(piLine)
@@ -143,7 +143,7 @@ class PaymentHelperTest extends TestWithDatabase {
 
         PaymentIn pIn = cayenneContext.newObject(PaymentIn.class)
         pIn.setPaymentDate(LocalDate.now())
-        pIn.setAmount(Money.ZERO)
+        pIn.setAmount(Money.ZERO())
         pIn.setPayer(contact)
         pIn.setAccountIn(account)
         pIn.setStatus(PaymentStatus.IN_TRANSACTION)
@@ -155,13 +155,13 @@ class PaymentHelperTest extends TestWithDatabase {
 
         invoice.setContact(contact)
         invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
 
         invoice.setDebtorsAccount(account)
 
         PaymentInLine piLine = cayenneContext.newObject(PaymentInLine.class)
         piLine.setInvoice(invoice)
-        piLine.setAmount(Money.ZERO)
+        piLine.setAmount(Money.ZERO())
         piLine.setAccountOut(account)
 
         pIn.addToPaymentInLines(piLine)
@@ -194,7 +194,7 @@ class PaymentHelperTest extends TestWithDatabase {
 
         PaymentOut pOut = cayenneContext.newObject(PaymentOut.class)
         pOut.setPaymentDate(LocalDate.now())
-        pOut.setAmount(Money.ONE)
+        pOut.setAmount(Money.ONE())
         pOut.setPayee(contact)
         pOut.setAccountOut(account)
         pOut.setStatus(PaymentStatus.IN_TRANSACTION)
@@ -204,13 +204,13 @@ class PaymentHelperTest extends TestWithDatabase {
 
         invoice.setContact(contact)
         invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
 
         invoice.setDebtorsAccount(account)
 
         PaymentOutLine pLine = cayenneContext.newObject(PaymentOutLine.class)
         pLine.setInvoice(invoice)
-        pLine.setAmount(Money.ONE)
+        pLine.setAmount(Money.ONE())
         pLine.setAccountIn(account)
 
         pOut.addToPaymentOutLines(pLine)
@@ -247,7 +247,7 @@ class PaymentHelperTest extends TestWithDatabase {
 
         PaymentIn pIn = cayenneContext.newObject(PaymentIn.class)
         pIn.setPaymentDate(LocalDate.now())
-        pIn.setAmount(Money.ONE)
+        pIn.setAmount(Money.ONE())
         pIn.setPayer(contact)
         pIn.setAccountIn(account)
         pIn.setStatus(PaymentStatus.IN_TRANSACTION)
@@ -261,13 +261,13 @@ class PaymentHelperTest extends TestWithDatabase {
 
         invoice.setContact(contact)
         invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
 
         invoice.setDebtorsAccount(account)
 
         PaymentInLine piLine = cayenneContext.newObject(PaymentInLine.class)
         piLine.setInvoice(invoice)
-        piLine.setAmount(Money.ONE)
+        piLine.setAmount(Money.ONE())
         piLine.setAccountOut(account)
 
         pIn.addToPaymentInLines(piLine)
@@ -299,7 +299,7 @@ class PaymentHelperTest extends TestWithDatabase {
 
         PaymentIn reversePIn = cayenneContext.newObject(PaymentIn.class)
         reversePIn.setPaymentDate(LocalDate.now())
-        reversePIn.setAmount(Money.ONE.negate())
+        reversePIn.setAmount(Money.ONE().negate())
         reversePIn.setPayer(contact)
         reversePIn.setAccountIn(account)
         reversePIn.setStatus(PaymentStatus.SUCCESS)
@@ -309,7 +309,7 @@ class PaymentHelperTest extends TestWithDatabase {
 
         PaymentInLine rPiLine = cayenneContext.newObject(PaymentInLine.class)
         rPiLine.setInvoice(invoice)
-        rPiLine.setAmount(Money.ONE.negate())
+        rPiLine.setAmount(Money.ONE().negate())
         rPiLine.setAccountOut(account)
         reversePIn.addToPaymentInLines(rPiLine)
 

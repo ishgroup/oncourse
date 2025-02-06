@@ -30,8 +30,6 @@ import ish.oncourse.server.export.avetmiss.functions.GetPredominantDeliveryMode
 
 import ish.util.LocalDateUtils
 import org.apache.commons.lang3.StringUtils
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.Month
@@ -404,28 +402,28 @@ class Avetmiss120Factory extends AvetmissFactory {
 
             Money hourlyFee, fee
             if (totalHours.intValue() == 0) {
-                hourlyFee = Money.ZERO
+                hourlyFee = Money.ZERO()
             } else {
-                hourlyFee = (outcome.enrolment.invoiceLines*.finalPriceToPayIncTax.inject(Money.ZERO, { a, b -> a.add(b) }) as Money).divide(totalHours)
+                hourlyFee = (outcome.enrolment.invoiceLines*.finalPriceToPayIncTax.inject(Money.ZERO(), { a, b -> a.add(b) }) as Money).divide(totalHours)
             }
 
             switch (jurisdiction) {
                 case ExportJurisdiction.NSW:
                 case ExportJurisdiction.SMART:
                 case ExportJurisdiction.OLIV:
-                    fee = Money.ZERO
+                    fee = Money.ZERO()
                     break
 
                 case ExportJurisdiction.VIC:
-                    fee = hourlyFee.multiply(100) // hourly fee in cents
+                    fee = hourlyFee.multiply(100l) // hourly fee in cents
                     break
 
                 default:
                     fee = hourlyFee.multiply(outcome.reportableHours) // fee in dollars for this unit
-                    def cents = fee.getCents()
+                    def cents = fee.getFractional()
                     fee = fee.round(MoneyRounding.ROUNDING_1D)
                     if (cents > 0 && cents < 50) {
-                        fee = fee.add(Money.ONE)
+                        fee = fee.add(Money.ONE())
                     }
                     break
             }
@@ -436,10 +434,10 @@ class Avetmiss120Factory extends AvetmissFactory {
                                         OutcomeStatus.STATUS_ASSESSABLE_RCC_GRANTED,
                                         OutcomeStatus.STATUS_ASSESSABLE_RCC_NOT_GRANTED]
             ) {
-                fee = Money.ZERO
+                fee = Money.ZERO()
             }
 
-            line.setStudentFee(fee.intValue())
+            line.setStudentFee(fee.toIntegerValue())
 
 
             // ------------------
@@ -510,7 +508,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                             line.setFeeExemption("C")
                         } else if (VETFeeExemptionType.N == outcome.getEnrolment()?.getVetFeeExemptionType()) {
                             line.setFeeExemption("N")
-                        } else if (fee == Money.ZERO) {
+                        } else if (fee == Money.ZERO()) {
                             line.setFeeExemption("Y")
                         } else if (VETFeeExemptionType.YES == outcome.getEnrolment()?.getVetFeeExemptionType()) {
                             line.setFeeExemption("Y")
@@ -521,7 +519,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                         break
 
                     default:
-                        if (fee == Money.ZERO) {
+                        if (fee == Money.ZERO()) {
                             line.setFeeExemption("Y")
                         } else if (outcome.getEnrolment() && VETFeeExemptionType.YES == outcome.getEnrolment().getVetFeeExemptionType()) {
                             line.setFeeExemption("Y")

@@ -141,7 +141,7 @@ trait ExpandableTrait {
             case MONEY:
                 if (value instanceof String) {
                     try {
-                        Money money = new Money(value)
+                        Money money = Money.of(value)
                         customField.value = value.toString()
                     } catch (NumberFormatException e) {
                         throw new NumberFormatException(e.message)

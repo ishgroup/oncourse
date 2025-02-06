@@ -371,7 +371,7 @@ public class PayrollService {
 
     protected boolean hasEligibleRateOnDate(ClassCost classCost, Date date) {
         return classCost.getPerUnitAmountExTax() != null || classCost.getTutorRole().getDefinedTutorRole().getPayRates().stream()
-                .anyMatch(r -> r.getValidFrom().before(date) && r.getRate().isGreaterThan(Money.ZERO));
+                .anyMatch(r -> r.getValidFrom().before(date) && r.getRate().isGreaterThan(Money.ZERO()));
     }
 
     private boolean isAlreadyPaid(ClassCost classCost, Session session) {

@@ -32,7 +32,7 @@ class CorporatePassMixin {
 	*/
 	@API
 	static getTotalAmountOwing(CorporatePass self) {
-		return self.invoices.inject(Money.ZERO) { Money total, invoice -> total.add(invoice.amountOwing) }
+		return self.invoices.inject(Money.ZERO()) { Money total, invoice -> total.add(invoice.amountOwing) }
 	}
 
 	/**

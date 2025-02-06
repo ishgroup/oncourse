@@ -1,415 +1,464 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2025.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
 package ish.math;
 
+import ish.math.format.PlainMoneyDecimalFormatter;
 import ish.oncourse.API;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
+import javax.money.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Money is a class which handles all the common features needed for handling currency.
- *
+ * <p>
  * Most importantly, this class properly handles rounding at all times.
  *
  */
+// деление на 0 не обрабывается
+// получение остатка от 0 и 1 не учитвается
 @API
-public class Money extends BigDecimal {
+public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LogManager.getLogger();
 
-	public static final RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
-	public static final int DEFAULT_SCALE = 2;
-	private static final int EXPANDED_SCALE = DEFAULT_SCALE * 4;
-	public static final int CENTS_IN_DOLLAR = 10 ^ DEFAULT_SCALE;
+	private static volatile MoneyContext context;
+	private final MonetaryAmount money;
 
-	public static final Money ZERO = new Money(BigDecimal.ZERO);
-	public static final Money ONE = new Money(BigDecimal.ONE);
+	@API
+	@Deprecated
+	public Money(String amount) {
+		this.money = of(amount).money;
+	}
 
-	private BigDecimal decimalValue;
+	@API
+	@Deprecated
+	public Money(Integer majorAmountUnit, Integer fractionalAmountUnit) {
+		BigDecimal amount = BigDecimal.valueOf(majorAmountUnit)
+				.add(BigDecimal.valueOf(fractionalAmountUnit, context.getCurrency().getDefaultFractionDigits()));
+		this.money = of(amount).money;
+	}
 
-	/**
-	 * Construct a new money instance. If null is passed, then a Money.ZERO amount will be created.
-	 *
-	 * @param val value to create
-	 */
-	public Money(BigDecimal val) {
-		super(val == null ? BigDecimal.ZERO.toString() : val.toString());
-		setValue(val == null ? BigDecimal.ZERO : val);
+	@API
+	@Deprecated
+	public Money(Number amount) {
+		this.money = org.javamoney.moneta.Money.of(
+				Objects.requireNonNullElse(amount, 0),
+				context.getCurrency(),
+				MonetaryContextBuilder.of()
+						.setMaxScale(context.getCurrency().getDefaultFractionDigits())
+						.set(context.DEFAULT_ROUND)
+						.build()
+		);
+	}
+
+	private Money(Number amount, CurrencyUnit currency, MonetaryContext context) {
+		this.money = org.javamoney.moneta.Money.of(
+				Objects.requireNonNullElse(amount, 0),
+				currency,
+				context
+		);
 	}
 
 	/**
-	 * Construct a new money instance. If null or empty string is passed, then a Money.ZERO amount will be created.
-	 *
-	 * @param val value to create
+	 * Private constructor to enforce immutability.
+	 * Use only if the provided amount is already immutable.
 	 */
-	@API
-	public Money(String val) {
-		super(StringUtils.isBlank(val) ? BigDecimal.ZERO.toString() : val);
-		setValue(StringUtils.isBlank(val) ? BigDecimal.ZERO : new BigDecimal(val));
+	private Money(MonetaryAmount amount) {
+		this.money = Objects.requireNonNullElse(amount, new Money(0));
 	}
 
-	/**
-	 * Construct a new money instance, first argument is dollars, second is cents
-	 *
-	 * @param dollars dollars value
-	 * @param cents cents value
-	 */
 	@API
-	public Money(int dollars, int cents) {
-		super(BigDecimal.valueOf(dollars).add(BigDecimal.valueOf(cents, DEFAULT_SCALE)).toString());
-		setValue(BigDecimal.valueOf(dollars).add(BigDecimal.valueOf(cents, DEFAULT_SCALE)));
+	public static Money of(@Nullable MonetaryAmount amount) {
+		return new Money(Objects.requireNonNullElse(amount, Money.ZERO()));
 	}
 
-	/**
-	 * returns sum
-	 *
-	 * @param val to be added to this money object
-	 * @return new money object
-	 */
 	@API
-	public Money add(Money val) {
-		if (val == null) {
-			logger.info("Money.add() called with null argument, assuming zero value");
-			return new Money(this.decimalValue);
-		}
-		return new Money(this.decimalValue.add(val.toBigDecimal()));
+	public static Money of(@Nullable Number amount) {
+		return new Money(Objects.requireNonNullElse(amount, 0));
 	}
 
-	/**
-	 * returns sum
-	 *
-	 * @param val to be added to this money object
-	 * @return new money object
-	 */
 	@API
-	public Money add(BigDecimal val) {
-		if (val == null) {
-			logger.info("Money.add() called with null argument, assuming zero value");
-			return new Money(this.decimalValue);
-		}
-		return new Money(this.decimalValue.add(val));
+	public static Money of(@Nullable String amount) {
+		return new Money(StringUtils.isBlank(amount) ? BigDecimal.ZERO : new BigDecimal(amount));
 	}
 
-	/**
-	 * returns quotient, where object is dividend and the param is divisor
-	 *
-	 * @param val divisor
-	 * @return new money object
-	 */
 	@API
-	public Money divide(Money val) {
-		if (val == null) {
-			logger.info("Money.divide() called with null argument, assuming value of 1");
-			return new Money(this.decimalValue);
-		}
-		return divide(val.toBigDecimal());
+	public static Money of(@NonNull Integer majorAmountUnit, @NonNull Integer fractionalAmountUnit) {
+		return new Money(majorAmountUnit, fractionalAmountUnit);
 	}
 
-	/**
-	 * returns quotient, where object is dividend and the param is divisor
-	 *
-	 * @param val divisor
-	 * @return new money object
-	 */
 	@API
-	public Money divide(BigDecimal val) {
-		if (val == null) {
-			logger.info("Money.divide() called with null argument, assuming value of 1");
-			return new Money(this.decimalValue);
-		}
-		return new Money(this.decimalValue.setScale(EXPANDED_SCALE).divide(val, DEFAULT_SCALE, DEFAULT_ROUND));
+	protected static Money of(@NonNull Number amount, @NonNull CurrencyUnit currency, @NonNull MonetaryContext context) {
+		return new Money(amount, currency, context);
 	}
 
-	/**
-	 * returns quotient, where object is dividend and the param is divisor
-	 * Used for rounding any value with cents to a greater integer value
-	 *
-	 * @param val divisor
-	 * @param roundingUp rounded up to the nearest dollar
-	 * @return new money object
-	 */
+	@Override
+	public MonetaryContext getContext() {
+		return money.getContext();
+	}
+
+	@Override
+	public MonetaryAmountFactory<Money> getFactory() {
+		return new MoneyAmountFactory().setAmount(this);
+	}
+
+	@Override
 	@API
-	public Money divide(BigDecimal val, boolean roundingUp) {
-		if (val == null) {
-			logger.info("Money.divide() called with null argument, assuming value of 1");
-			return new Money(this.decimalValue);
-		}
+	public Money add(@Nullable MonetaryAmount amount) {
+		return Objects.isNull(amount) ? of(this) : of(money.add(amount));
+	}
+
+	@API
+	public Money add(@Nullable Number amount) {
+		return Objects.isNull(amount) ? of(this) : add(of(amount));
+	}
+
+	@Override
+	@API
+	public Money subtract(@Nullable MonetaryAmount amount) {
+		return Objects.isNull(amount) ? of(this) : of(money.subtract(amount));
+	}
+
+	@API
+	public Money subtract(@Nullable Number amount) {
+		return Objects.isNull(amount) ? of(this) : subtract(of(amount));
+	}
+
+	@Override
+	@API
+	public Money multiply(long l) {
+		return of(money.multiply(l));
+	}
+
+	@Override
+	@API
+	public Money multiply(double v) {
+		return of(money.multiply(v));
+	}
+
+	@Override
+	@API
+	public Money multiply(@Nullable Number amount) {
+		return Objects.isNull(amount) ? of(this) : of(money.multiply(amount));
+	}
+
+	@API
+	public Money multiply(@Nullable MonetaryAmount amount) {
+		return Objects.isNull(amount) ? of(this) : multiply(amount.getNumber());
+	}
+
+	@Override
+	@API
+	public Money divide(long l) {
+		return of(money.divide(l));
+	}
+
+	@Override
+	@API
+	public Money divide(double v) {
+		return of(money.divide(v));
+	}
+
+	@Override
+	@API
+	public Money divide(@Nullable Number amount) {
+		return divide(amount, false);
+	}
+
+	@API
+	public Money divide(@Nullable Number amount, boolean roundingUp) {
 		if (roundingUp) {
-			return new Money(this.decimalValue.setScale(EXPANDED_SCALE).divide(val, 0, RoundingMode.UP));
-		} else {
-			return divide(val);
+			MonetaryContext monetaryContext = MonetaryContextBuilder.of(money.getContext())
+					.setMaxScale(Math.min(256, context.getCurrency().getDefaultFractionDigits() * 4))
+					.build();
+
+			return of(money.getFactory()
+					.setCurrency(context.getCurrency())
+					.setContext(monetaryContext)
+					.setNumber(money.getNumber())
+					.create()
+					.divide(amount)
+					.with(Monetary.getRounding(RoundingQueryBuilder.of().setScale(0).set(RoundingMode.UP).build()))
+			);
 		}
+		return of(money.divide(amount));
 	}
 
-	/**
-	 * returns quotient, where object is dividend and the param is divisor
-	 * Used for rounding any value with cents to a greater integer value
-	 *
-	 * @param val divisor
-	 * @param roundingUp rounded up to the nearest dollar
-	 * @return new money object
-	 */
 	@API
-	public Money divide(Money val, boolean roundingUp) {
-		if (val == null) {
-			logger.info("Money.divide() called with null argument, assuming value of 1");
-			return new Money(this.decimalValue);
-		}
-		return divide(val.toBigDecimal(), roundingUp);
+	public Money divide(@Nullable MonetaryAmount amount) {
+		return divide(amount, false);
 	}
 
-	/**
-	 * returns difference, where object is minuend and param is subtrahend
-	 *
-	 * @param val subtrahend
-	 * @return new money object
-	 */
 	@API
-	public Money subtract(Money val) {
-		if (val == null) {
-			return new Money(this.decimalValue);
-		}
-		return new Money(this.decimalValue.subtract(val.toBigDecimal()));
+	public Money divide(@Nullable MonetaryAmount amount, boolean roundingUp) {
+		return Objects.isNull(amount) ? of(this) : divide(amount.getNumber(), roundingUp);
 	}
 
-	/**
-	 * returns difference, where object is minuend and param is subtrahend
-	 *
-	 * @param val subtrahend
-	 * @return new money object
-	 */
-	@API
-	public Money subtract(BigDecimal val) {
-		if (val == null) {
-			return new Money(decimalValue);
-		}
-		return new Money(decimalValue.subtract(val));
+	@Override
+	public boolean isGreaterThan(@Nullable MonetaryAmount amount) {
+		return Objects.isNull(amount) || money.isGreaterThan(amount);
 	}
 
-	/**
-	 * returns product
-	 *
-	 * @param val factor
-	 * @return new money object
-	 */
-	public Money multiply(Money val) {
-		if (val == null) {
-			return new Money(this.decimalValue);
-		}
-		return multiply(val.toBigDecimal());
+	@Override
+	public boolean isGreaterThanOrEqualTo(@Nullable MonetaryAmount amount) {
+		return Objects.isNull(amount) || money.isGreaterThanOrEqualTo(amount);
 	}
 
-	/**
-	 * returns product
-	 *
-	 * @param val factor
-	 * @return new money object
-	 */
-	@API
-	public Money multiply(long val) {
-		return multiply(BigDecimal.valueOf(val));
+	@Override
+	public boolean isLessThan(@Nullable MonetaryAmount amount) {
+		return !Objects.isNull(amount) && money.isLessThan(amount);
 	}
 
-	/**
-	 * returns product
-	 *
-	 * @param val factor
-	 * @return new money object
-	 */
-	public Money multiply(Double val) {
-		return multiply(BigDecimal.valueOf(val));
+	@Override
+	public boolean isLessThanOrEqualTo(@Nullable MonetaryAmount amount) {
+		return !Objects.isNull(amount) && money.isLessThanOrEqualTo(amount);
 	}
 
-	/**
-	 * returns product
-	 *
-	 * @param val factor
-	 * @return new money object
-	 */
-	@API
-	public Money multiply(BigDecimal val) {
-		if (val == null) {
-			return new Money(this.decimalValue);
-		}
-		// expand for fraction multiplication for better precision
-		return new Money(this.decimalValue.setScale(EXPANDED_SCALE).multiply(val));
+	@Override
+	public boolean isEqualTo(@Nullable MonetaryAmount amount) {
+		return !Objects.isNull(amount) && money.isEqualTo(amount);
 	}
 
-	public boolean isGreaterThan(Money val) {
-		if (val == null) {
-			return true;
-		}
-		return compareTo(val) > 0;
+	@Override
+	public int signum() {
+		return money.signum();
 	}
 
-	public boolean isLessThan(Money val) {
-		if (val == null) {
-			return false;
-		}
-		return compareTo(val) < 0;
+	@Override
+	public Money remainder(long l) {
+		return of(money.remainder(l));
 	}
 
-	public boolean isZero() {
-		return compareTo(Money.ZERO) == 0;
+	@Override
+	public Money remainder(double v) {
+		return of(money.remainder(v));
 	}
 
-	public boolean isNegative() {
-		return isLessThan(Money.ZERO);
+	@Override
+	public Money remainder(@Nullable Number amount) {
+		return Objects.isNull(amount) ? of(this) : of(money.remainder(amount));
 	}
 
-	public static boolean isZeroOrEmpty(Money value) {
-		return value == null || value.isZero();
+	@Override
+	public Money[] divideAndRemainder(long l) {
+		return Arrays.stream(money.divideAndRemainder(l)).map(Money::of).toArray(Money[]::new);
 	}
 
-	public Money negate() {
-		return new Money(this.decimalValue.negate());
+	@Override
+	public Money[] divideAndRemainder(double v) {
+		return Arrays.stream(money.divideAndRemainder(v)).map(Money::of).toArray(Money[]::new);
 	}
 
-	/**
-	 * Set the backing BigDecimal value for this Money. This is private since for the moment, Money is immutable.
-	 *
-	 * @param newValue
-	 */
-	private void setValue(BigDecimal newValue) {
-		this.decimalValue = newValue.setScale(DEFAULT_SCALE, DEFAULT_ROUND);
+	@Override
+	public Money[] divideAndRemainder(@Nullable Number amount) {
+		return Objects.isNull(amount) ?
+				new Money[]{ this } :
+				Arrays.stream(money.divideAndRemainder(amount)).map(Money::of).toArray(Money[]::new);
 	}
 
-	public Money min(Money val) {
-		return isLessThan(val) ? this : val;
+	@Override
+	public Money divideToIntegralValue(long l) {
+		return of(money.divideToIntegralValue(l));
 	}
 
-	public Money max(Money val) {
-		return isLessThan(val) ? val : this;
+	@Override
+	public Money divideToIntegralValue(double v) {
+		return of(money.divideToIntegralValue(v));
 	}
 
+	@Override
+	public Money divideToIntegralValue(@Nullable Number amount) {
+		return Objects.isNull(amount) ? of(this) : of(money.divideToIntegralValue(amount));
+	}
+
+	@Override
+	public Money scaleByPowerOfTen(int i) {
+		return of(money.scaleByPowerOfTen(i));
+	}
+
+	@Override
 	public Money abs() {
-		return this.decimalValue.signum() < 0 ? negate() : this;
+		return of(money.abs());
 	}
 
-	/**
-	 *
-	 * @return a big decimal representation
-	 */
 	@API
-	public BigDecimal toBigDecimal() {
-		return this.decimalValue;
+	public Money min(@Nullable MonetaryAmount amount) {
+		return Objects.isNull(amount) || isLessThan(amount) ? of(this) : of(amount);
 	}
 
-	public int getCents() {
-		// ( 10.99 - 10 ) * 100
-		return this.decimalValue.subtract(new BigDecimal(this.decimalValue.toBigInteger())).multiply(BigDecimal.valueOf(100)).intValue();
+	@API
+	public Money max(@Nullable MonetaryAmount amount) {
+		return Objects.isNull(amount) || !isLessThan(amount) ? of(this) : of(amount);
+	}
+
+	@Override
+	public Money negate() {
+		return of(money.negate());
+	}
+
+	@Override
+	public Money plus() {
+		return of(money.plus());
+	}
+
+	@Override
+	public Money stripTrailingZeros() {
+		return of(money.stripTrailingZeros());
 	}
 
 	public Money round(MoneyRounding roundType) {
+		switch (roundType) {
+			case ROUNDING_10C:
+				return of(money.with(Monetary.getRounding(
+						RoundingQueryBuilder.of()
+								.setScale(1)
+								.set(RoundingMode.HALF_UP)
+								.build()))
+				);
+			case ROUNDING_50C:
+				double cents = money.remainder(1).getNumber().doubleValue(); // Получаем дробную часть (центы)
+				MonetaryAmount roundedAmount = money.with(Monetary.getRounding(
+						RoundingQueryBuilder.of()
+								.setScale(0)
+								.set(RoundingMode.DOWN)
+								.build())
+				);
 
-		if (MoneyRounding.ROUNDING_10C.equals(roundType)) {
-			return new Money(this.decimalValue.setScale(1, DEFAULT_ROUND));
-		} else if (MoneyRounding.ROUNDING_50C.equals(roundType)) {
+				if (cents == 0.0 || cents == 0.50 || cents == -0.50) {
+					return of(money);
+				}
+				if (cents > -0.25 && cents < 0.25) {
+					return of(roundedAmount); // Округление вниз
+				}
+				if (cents >= 0.25 && cents < 0.75) {
+					MonetaryAmount half = money.getFactory().setNumber(0.5)
+							.setContext(money.getContext())
+							.setCurrency(money.getCurrency()).create();
 
-			int cents = getCents();
+					return of(roundedAmount.add(half)); // Добавляем 0.5
+				}
+				if (cents <= -0.25 && cents > -0.75) {
+					MonetaryAmount half = money.getFactory().setNumber(0.5)
+							.setContext(money.getContext())
+							.setCurrency(money.getCurrency()).create();
 
-			if (cents == 0 || cents == 50 || cents == -50) {
-				return this;
-			} else if (cents > -25 && cents < 25) {
-				return new Money(this.decimalValue.setScale(0, BigDecimal.ROUND_DOWN));
-			} else if (cents >= 25 && cents < 75) {
-				BigDecimal result = this.decimalValue.setScale(0, BigDecimal.ROUND_DOWN);
-				return new Money(result.add(new BigDecimal("0.5")));
-			} else if (cents <= -25 && cents > -75) {
-				BigDecimal result = this.decimalValue.setScale(0, BigDecimal.ROUND_DOWN);
-				return new Money(result.subtract(new BigDecimal("0.5")));
-			} else if (cents >= 75 || cents <= -75) {
-				return new Money(this.decimalValue.setScale(0, BigDecimal.ROUND_UP));
-			}
-		} else if (MoneyRounding.ROUNDING_1D.equals(roundType)) {
-			return new Money(this.decimalValue.setScale(0, DEFAULT_ROUND));
+					return of(roundedAmount.subtract(half)); // Вычитаем 0.5
+				}
+				// cents >= 0.75 || cents <= -0.75
+				return of(money.with(Monetary.getRounding(
+						RoundingQueryBuilder.of()
+								.setScale(0)
+								.set(RoundingMode.UP)
+								.build()))
+				);
+
+			case ROUNDING_1D:
+				return of(money.with(Monetary.getRounding(
+						RoundingQueryBuilder.of()
+								.setScale(0)
+								.set(RoundingMode.HALF_UP)
+								.build()))
+				);
+			default:
+				return of(money);
 		}
-		return this;
 	}
 
-	public static Money valueOf(BigDecimal value) {
-		return new Money(value);
+
+	@Override
+	public CurrencyUnit getCurrency() {
+		return money.getCurrency();
+	}
+
+	@Override
+	public NumberValue getNumber() {
+		return money.getNumber();
+	}
+
+	@API
+	public BigDecimal toBigDecimal() {
+		return getNumber().numberValue(BigDecimal.class);
+	}
+
+	public Double toDoubleValue() {
+		return getNumber().doubleValue();
+	}
+
+	public Float toFloatValue() {
+		return getNumber().floatValue();
+	}
+
+	public Integer toIntegerValue() {
+		return getNumber().intValue();
+	}
+
+	public Long toLongValue() {
+		return getNumber().longValue();
+	}
+
+	public Integer getFractional() {
+		MonetaryAmount minorUnit = money.remainder(1); // 10.99 -> 0.99
+		return minorUnit.multiply(Math.pow(10, minorUnit.getNumber().getScale())).getNumber().intValue(); // 0.99 -> 99.0
 	}
 
 	@Override
 	public String toString() {
-		return CurrencyFormat.formatMoney(this);
+		return context.getFormatter().format(this);
 	}
 
 	/**
-	 *
 	 * @return a string representation skipping currency sign
 	 * $25 -> "25.00"
 	 */
 	@API
 	public String toPlainString() {
-		return new MoneyDecimalFormatter().valueToString(this, DEFAULT_SCALE);
+		return new PlainMoneyDecimalFormatter(context.getLocale()).format(this);
 	}
 
 	@Override
-	public double doubleValue() {
-		return decimalValue.doubleValue();
-	}
-
-	@Override
-	public float floatValue() {
-		return decimalValue.floatValue();
-	}
-
-	@Override
-	public int intValue() {
-		return decimalValue.intValue();
-	}
-
-	@Override
-	public long longValue() {
-		return decimalValue.longValue();
-	}
-
-	@Override
-	public int compareTo(BigDecimal value) {
-		if (value == null) {
-			throw new IllegalArgumentException("cannot compare money to null object");
-		}
-
-		BigDecimal val = value;
-		if (value instanceof Money) {
-			val = ((Money) value).decimalValue;
-		}
-
-		return toBigDecimal().compareTo(val);
+	public int compareTo(@NonNull MonetaryAmount o) {
+		return money.compareTo(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return this.decimalValue.hashCode();
+		return money.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof BigDecimal)) {
+		if (obj == this) {
+			return true;
+		} else if (!(obj instanceof Money)) {
 			return false;
+		} else {
+			Money other = (Money) obj;
+			return this.getCurrency().equals(other.getCurrency()) && this.money.compareTo(other.money) == 0;
 		}
+	}
 
-		BigDecimal val = (BigDecimal) obj;
-		if (obj instanceof Money) {
-			val = ((Money) obj).decimalValue;
-		}
+	public static Money ZERO() {
+		return of(BigDecimal.ZERO);
+	}
 
-		return decimalValue.equals(val);
+	public static Money ONE() {
+		return of(BigDecimal.ONE);
+	}
+
+	public synchronized static void setContext(MoneyContext context) {
+		Money.context = context;
 	}
 }

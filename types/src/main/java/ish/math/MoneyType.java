@@ -8,6 +8,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
+
 package ish.math;
 
 import org.apache.cayenne.access.types.ExtendedType;
@@ -15,7 +16,6 @@ import org.apache.cayenne.dba.TypesMapping;
 import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.validation.ValidationResult;
 
-import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +42,7 @@ public class MoneyType implements ExtendedType {
 			return null;
 		}
 
-		return new Money(new BigDecimal(object.toString()));
+		return Money.of(object.toString());
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class MoneyType implements ExtendedType {
 		if (rs.wasNull()) {
 			return null;
 		}
-		return new Money(object.toString());
+		return Money.of(object.toString());
 	}
 
 	@Override

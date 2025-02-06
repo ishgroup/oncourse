@@ -108,7 +108,7 @@ public class DelayedEnrolmentIncomePostingJob implements Job {
 	 */
 	protected List<InvoiceLine> getListOfInvoiceLinesToProcess() {
 		var expr = InvoiceLine.INVOICE.dot(Invoice.TYPE).eq(InvoiceType.INVOICE)
-				.andExp(InvoiceLine.PREPAID_FEES_REMAINING.ne(Money.ZERO));
+				.andExp(InvoiceLine.PREPAID_FEES_REMAINING.ne(Money.ZERO()));
 		return this.cayenneService.getNewContext().select(SelectQuery.query(InvoiceLine.class, expr));
 	}
 
@@ -150,17 +150,17 @@ public class DelayedEnrolmentIncomePostingJob implements Job {
 
 		if (invoiceLine.getPrepaidFeesRemaining().isZero()) {
 			// how did we get here? Nevermind, just exit.
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		if (invoiceLine.getEnrolment() == null && invoiceLine.getCourseClass() == null) {
 			// this really shouldn't happen
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		if (invoiceLine.getCreatedOn() != null && invoiceLine.getCreatedOn().after(date)) {
 			// invoiceline has been created after the given date, do not process it.
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		if (invoiceLine.getEnrolment() != null) {
@@ -191,7 +191,7 @@ public class DelayedEnrolmentIncomePostingJob implements Job {
 
         if (firstStart.after(date)) {
 			// post nothing
-			return Money.ZERO; // shortcut to avoid more calculations
+			return Money.ZERO(); // shortcut to avoid more calculations
 		}
 
 		if (Preferences.ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION.equals(delayedIncomePreference)) {
@@ -225,7 +225,7 @@ public class DelayedEnrolmentIncomePostingJob implements Job {
 			return invoiceLine.getFinalPriceToPayExTax();
 		}
 
-		var prepaidFeesRemaining = Money.ZERO;
+		var prepaidFeesRemaining = Money.ZERO();
 
 		for (var transaction : transactions) {
 			prepaidFeesRemaining = prepaidFeesRemaining.add(transaction.getAmount());

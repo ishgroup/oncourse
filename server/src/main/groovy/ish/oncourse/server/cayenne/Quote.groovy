@@ -39,8 +39,8 @@ class Quote extends _Quote implements ExpandableTrait{
 		if (getQuoteNumber() == null) {
 			setQuoteNumber(autoIncrementService.getNextQuoteNumber())
 		}
-		setAmountOwing(Money.ZERO)
-		setOverdue(Money.ZERO)
+		setAmountOwing(Money.ZERO())
+		setOverdue(Money.ZERO())
 	}
 
 	@Override
@@ -220,7 +220,7 @@ class Quote extends _Quote implements ExpandableTrait{
 	@API
 	@Override
 	Money getAmountOwing() {
-		return Money.ZERO
+		return Money.ZERO()
 	}
 
 	/**
@@ -230,15 +230,15 @@ class Quote extends _Quote implements ExpandableTrait{
 	@API
 	@Override
 	Money getOverdue() {
-		return Money.ZERO
+		return Money.ZERO()
 	}
 
 	void updateAmountOwing() {
-		setAmountOwing(Money.ZERO)
+		setAmountOwing(Money.ZERO())
 	}
 
 	void updateOverdue() {
-		setOverdue(Money.ZERO)
+		setOverdue(Money.ZERO())
 	}
 
 	@Override

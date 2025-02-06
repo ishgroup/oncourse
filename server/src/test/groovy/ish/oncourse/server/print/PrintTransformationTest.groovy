@@ -101,7 +101,7 @@ class PrintTransformationTest extends TestWithDatabase {
         for (int i = 0; i <= 2001; i++) {
             PaymentIn paymentIn = cayenneContext.newObject(PaymentIn.class)
             paymentIn.setPaymentDate(LocalDate.now())
-            paymentIn.setAmount(Money.ZERO)
+            paymentIn.setAmount(Money.ZERO())
             paymentIn.setStatus(PaymentStatus.SUCCESS)
             SetPaymentMethod.valueOf(PaymentMethodUtil.getINTERNALPaymentMethods(cayenneContext, PaymentMethod.class), paymentIn).set()
             paymentIn.setPayer(contact)

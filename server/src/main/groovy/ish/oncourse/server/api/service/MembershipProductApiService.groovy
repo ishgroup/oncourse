@@ -183,7 +183,7 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
                 validator.throwClientErrorException(id, 'tax', "Tax with id=$membershipProductDTO.taxId doesn't exist.")
             }
             Money adjustment = calculateTaxAdjustment(toMoneyValue(membershipProductDTO.totalFee), toMoneyValue(membershipProductDTO.feeExTax), tax.rate)
-            if (Math.abs(adjustment.doubleValue()) > 0.01) {
+            if (Math.abs(adjustment.toDoubleValue()) > 0.01) {
                 validator.throwClientErrorException(id, 'tax', "Incorrect money values for product price.")
             }
         }

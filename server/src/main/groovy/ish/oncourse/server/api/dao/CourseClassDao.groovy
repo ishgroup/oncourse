@@ -49,9 +49,9 @@ class CourseClassDao implements CayenneLayer<CourseClass> {
     }
 
     void addStudentFeeCost(ObjectContext context, CourseClass courseClass) {
-        courseClass.feeExGst = Money.ZERO
-        courseClass.deposit = Money.ZERO
-        courseClass.taxAdjustment = Money.ZERO
+        courseClass.feeExGst = Money.ZERO()
+        courseClass.deposit = Money.ZERO()
+        courseClass.taxAdjustment = Money.ZERO()
 
         Account account = AccountUtil.getDefaultStudentEnrolmentsAccount(context, Account.class)
         courseClass.incomeAccount = account

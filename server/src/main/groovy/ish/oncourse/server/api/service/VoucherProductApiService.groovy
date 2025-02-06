@@ -163,7 +163,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
         updateCourses(voucherProduct, voucherProductDTO.courses)
         if (voucherProduct.newRecord) {
             voucherProduct.tax = taxDao.getNonSupplyTax(voucherProduct.context)
-            voucherProduct.taxAdjustment = Money.ZERO
+            voucherProduct.taxAdjustment = Money.ZERO()
             voucherProduct.setExpiryType(ExpiryType.DAYS)
         }
         voucherProduct

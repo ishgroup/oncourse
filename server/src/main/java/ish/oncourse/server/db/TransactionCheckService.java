@@ -156,8 +156,8 @@ public class TransactionCheckService {
 
     private Money getLiabilityMismatchAmount(InvoiceLine il) {
 
-        if (!il.getPrepaidFeesRemaining().equals(Money.ZERO)) {
-            return Money.ZERO;
+        if (!il.getPrepaidFeesRemaining().equals(Money.ZERO())) {
+            return Money.ZERO();
         }
         var liabilityTransactions = ObjectSelect.query(AccountTransaction.class)
                 .where(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.INVOICE_LINE))
@@ -165,7 +165,7 @@ public class TransactionCheckService {
                 .and(AccountTransaction.ACCOUNT.eq(il.getPrepaidFeesAccount())).select(context);
 
 
-        return liabilityTransactions.stream().map(AccountTransaction::getAmount).reduce(Money.ZERO, Money::add);
+        return liabilityTransactions.stream().map(AccountTransaction::getAmount).reduce(Money.ZERO(), Money::add);
     }
 
     private void checkTransactions(String sql, String title,

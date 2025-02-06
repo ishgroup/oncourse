@@ -46,7 +46,7 @@ public final class InvoiceUtil {
 		// update invoice owing
 		if (payable.getContact() == null) {
 			// commented out because of the fact that sometimes existing invoices with no contact related to them are found
-			// payable.setAmountOwing(Money.ZERO);
+			// payable.setAmountOwing(Money.ZERO());
 			logger.info("found payable (probably an invoice) with no contact attached to it: {}", payable);
 		} else {
 			List<PaymentLineInterface> paymentLines = getSuccessfulPaymentLines(payable);
@@ -96,7 +96,7 @@ public final class InvoiceUtil {
 	 * @return sum of amounts for given payment lines
 	 */
 	public static Money sumPaymentLines(List<? extends PaymentLineInterface> paymentLines, String ofPaymentType, boolean onlySuccessfulPayments) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (!ofPaymentType.equals(PaymentInterface.TYPE_IN) && !ofPaymentType.equals(PaymentInterface.TYPE_OUT)) {
 			throw new RuntimeException("the payment type is defined :" + ofPaymentType);
 		}
@@ -131,7 +131,7 @@ public final class InvoiceUtil {
 	 * @return sum
 	 */
 	public static Money sumInvoiceLines(List<? extends PayableLineInterface> theInvoiceLines, boolean incTax) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		for (PayableLineInterface il : theInvoiceLines) {
 
 			Money invoicePriceToAdd = incTax ? (il.getFinalPriceToPayIncTax()) : il.getFinalPriceToPayExTax();
@@ -151,7 +151,7 @@ public final class InvoiceUtil {
 	 * @return Money amount associated with the payment line
 	 */
 	public static Money invoiceDeallocate(InvoiceInterface invoice, PaymentInterface payment, List<? extends PaymentLineInterface> paymentL) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (invoice == null || invoice.getPaymentLines() == null) {
 			return result;
 		}
@@ -161,7 +161,7 @@ public final class InvoiceUtil {
 			if (pLine.getPersistenceState() == PersistenceState.NEW) {
 				invoice.removeFromPaymentLines(pLine);
 				payment.removeFromPaymentLines(pLine);
-				invoice.setValueForKey(InvoiceInterface.TO_BE_PAID_PROPERTY, Money.ZERO);
+				invoice.setValueForKey(InvoiceInterface.TO_BE_PAID_PROPERTY, Money.ZERO());
 				result = pLine.getAmount();
 				payment.getObjectContext().deleteObjects(pLine);
 				paymentL.remove(pLine);
@@ -231,13 +231,13 @@ public final class InvoiceUtil {
 
 		logger.debug("invoice no: {}, amount owing: {}, amount to allocate:{}", invoice.getInvoiceNumber(), invoice.getAmountOwing(), amountToAllocate);
 
-		Money amount = Money.ZERO;
+		Money amount = Money.ZERO();
 		if (allocateAll) {
 			// invoice is to be overpaid or underpaid
 			amount = amountToAllocate;
 		} else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN)) {
 			// payment in has to be processed
-			if (invoice.getAmountOwing().compareTo(Money.ZERO) < 0) {
+			if (invoice.getAmountOwing().compareTo(Money.ZERO()) < 0) {
 				// if credit invoice
 				if (invoice.getAmountOwing().compareTo(amountToAllocate) < 0) {
 					amount = amountToAllocate;
@@ -253,7 +253,7 @@ public final class InvoiceUtil {
 			}
 		} else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT)) {
 			// payment out has to be processed
-			if (invoice.getAmountOwing().compareTo(Money.ZERO) > 0) {
+			if (invoice.getAmountOwing().compareTo(Money.ZERO()) > 0) {
 				// if invoice
 				amount = invoice.getAmountOwing().negate();
 			} else if (invoice.getAmountOwing().compareTo(amountToAllocate.negate()) > 0) {
@@ -272,7 +272,7 @@ public final class InvoiceUtil {
 		// finalise the payment in line values
 		pLine.setAmount(amount);
 		invoice.setValueForKey(InvoiceInterface.TO_BE_PAID_PROPERTY, amount);
-		invoice.setValueForKey(InvoiceInterface.IS_SELECTED, !amount.equals(Money.ZERO));
+		invoice.setValueForKey(InvoiceInterface.IS_SELECTED, !amount.equals(Money.ZERO()));
 		return amount;
 	}
 
@@ -309,24 +309,24 @@ public final class InvoiceUtil {
 
 				Money amountRequredToAllocate = spendingMoney.subtract(moneyRequiredForPayingAllInvoices);
 
-				if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO) < 0 &&
-						amountRequredToAllocate.compareTo(Money.ZERO) < 0) {
+				if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) < 0 &&
+						amountRequredToAllocate.compareTo(Money.ZERO()) < 0) {
 
 					Money allocatedAmount = invoiceAllocate(anInvoice, amountRequredToAllocate, payment, paymentLines);
 					spendingMoney = spendingMoney.subtract(allocatedAmount);
-				} else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO) > 0 &&
-						amountRequredToAllocate.compareTo(Money.ZERO) > 0) {
+				} else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) > 0 &&
+						amountRequredToAllocate.compareTo(Money.ZERO()) > 0) {
 					Money allocatedAmount = invoiceAllocate(anInvoice, amountRequredToAllocate, payment, paymentLines);
 					spendingMoney = spendingMoney.subtract(allocatedAmount);
 				}
 			}
 			// now go through the invoices and pay as much as possible
 			for (InvoiceInterface anInvoice : invoices) {
-				if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO) > 0) {
+				if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) > 0) {
 					Money allocatedAmount = invoiceAllocate(anInvoice, spendingMoney, payment, paymentLines, allowOverpayment &&
 							invoices.indexOf(anInvoice) == invoices.size());
 					spendingMoney = spendingMoney.subtract(allocatedAmount);
-				} else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO) < 0) {
+				} else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) < 0) {
 					Money allocatedAmount = invoiceAllocate(anInvoice, spendingMoney, payment, paymentLines, allowOverpayment &&
 							invoices.indexOf(anInvoice) == invoices.size());
 					spendingMoney = spendingMoney.subtract(allocatedAmount);
@@ -381,7 +381,7 @@ public final class InvoiceUtil {
 	 * @return Money sum of amount owing
 	 */
 	public static Money amountOwingForPayer(ContactInterface payer) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 
 		// update invoice owing
 		if (payer != null) {
@@ -402,7 +402,7 @@ public final class InvoiceUtil {
 	 * @return Money sum of amount overdue
 	 */
 	public static Money amountOverdueForPayer(ContactInterface payer) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (payer != null) {
 			List<? extends InvoiceInterface> invoices = payer.getInvoices();
 
@@ -423,7 +423,7 @@ public final class InvoiceUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<InvoiceInterface> getUnbalancedInvoices(ObjectContext oc, Class<? extends InvoiceInterface> aClass, Expression optionalQualifier) {
-		Expression qualifier = ExpressionFactory.greaterExp(InvoiceInterface.AMOUNT_OWING_PROPERTY, Money.ZERO);
+		Expression qualifier = ExpressionFactory.greaterExp(InvoiceInterface.AMOUNT_OWING_PROPERTY, Money.ZERO());
 		if (optionalQualifier != null) {
 			optionalQualifier.andExp(qualifier);
 		}
@@ -439,7 +439,7 @@ public final class InvoiceUtil {
 	 * @return Money sum of amount owing
 	 */
 	public static Money sumInvoices(List<? extends InvoiceInterface> invoices) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		for (InvoiceInterface invoice : invoices) {
 			result = result.add(invoice.getAmountOwing());
 		}
@@ -492,7 +492,7 @@ public final class InvoiceUtil {
 		Money finalPriceEachEx = priceEachEx.subtract(discountEachEx);
 		// calculate final total value inc tax
 		Money priceEachInc = MoneyUtil.getPriceIncTax(priceEachEx, taxRate, taxAdjustment);
-		Money discountEachInc = MoneyUtil.getPriceIncTax(discountEachEx, taxRate, Money.ZERO);
+		Money discountEachInc = MoneyUtil.getPriceIncTax(discountEachEx, taxRate, Money.ZERO());
 		Money finalPriceEachInc = priceEachInc.subtract(discountEachInc);
 		// and finally taxEach
 		Money taxEach = finalPriceEachInc.subtract(finalPriceEachEx);

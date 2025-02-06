@@ -63,7 +63,7 @@ class InvoiceFunctions {
             pp.id = dbInvoice.id
             pp.entityName = Invoice.simpleName
             pp.date = dbInvoice.createdOn?.toInstant()?.atZone(ZoneOffset.systemDefault())?.toLocalDate()
-            pp.type = "${InvoiceUtil.sumInvoiceLines(dbInvoice.getLines()).isLessThan(Money.ZERO) ? 'Credit note' : 'Invoice'} $dbInvoice.source.displayName"
+            pp.type = "${InvoiceUtil.sumInvoiceLines(dbInvoice.getLines()).isLessThan(Money.ZERO()) ? 'Credit note' : 'Invoice'} $dbInvoice.source.displayName"
             pp.successful = true
             pp.amount = dbInvoice.totalIncTax.toBigDecimal()
             pp

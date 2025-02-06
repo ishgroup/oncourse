@@ -13,8 +13,7 @@ package ish.oncourse.server;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ish.math.Country;
-import ish.math.CurrencyFormat;
-import ish.oncourse.entity.services.TagService;
+import ish.math.MoneyContext;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.license.LicenseService;
@@ -46,25 +45,25 @@ public class PreferenceController extends CommonPreferenceController {
 
 	private static final Logger logger = LogManager.getLogger();
 
+	private ObjectContext objectContext;
+
 	private final ICayenneService cayenneService;
 	private final ISystemUserService systemUserService;
 	private final LicenseService licenseService;
 	private final PluginsPrefsService pluginsPrefsService;
-	private final TagService tagService;
-	private ObjectContext objectContext;
-
-    @Inject
-    private ISchedulerService schedulerService;
+	private final MoneyContext moneyContext;
+    private final ISchedulerService schedulerService;
 
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
-								TagService tagService) {
+								MoneyContext moneyContext, ISchedulerService schedulerService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		this.pluginsPrefsService = pluginsPrefsService;
-		this.tagService = tagService;
+		this.moneyContext = moneyContext;
+		this.schedulerService = schedulerService;
 		sharedController = this;
 	}
 
@@ -134,7 +133,7 @@ public class PreferenceController extends CommonPreferenceController {
 	public void setValueForKey(String key, Object value) {
 	    if ((key.equals(ACCOUNT_CURRENCY)) && (value != null)) {
 			var country = (Country) value;
-	        CurrencyFormat.updateLocale(country.locale());
+			moneyContext.updateCountry(country);
         }
         if (defaultAccountPreferences.contains(key)) {
             setDefaultAccountId(key, (Long)value);

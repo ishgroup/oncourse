@@ -63,7 +63,7 @@
 	<field name="financialItemType" class="java.lang.Object"/>
 	<sortField name="date"/>
 	<variable name="firstBalance" class="ish.math.Money" resetType="Column" calculation="First">
-		<variableExpression><![CDATA[$F{total}.subtract(($F{description}.startsWith("PaymentIn") ? (PaymentStatus.STATUSES_FAILED.contains($F{status}) ? $F{amount}.negate() : Money.ZERO) : $F{amount}))]]></variableExpression>
+		<variableExpression><![CDATA[$F{total}.subtract(($F{description}.startsWith("PaymentIn") ? (PaymentStatus.STATUSES_FAILED.contains($F{status}) ? $F{amount}.negate() : Money.ZERO()) : $F{amount}))]]></variableExpression>
 	</variable>
 	<variable name="totalBalance" class="ish.math.Money">
 		<variableExpression><![CDATA[$F{total}]]></variableExpression>

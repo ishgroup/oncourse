@@ -82,8 +82,8 @@ class InvoiceLineTest extends TestWithDatabase {
         Assertions.assertEquals(amount.multiply(BigDecimal.ONE.add(tax.getRate())), invoiceLine.getPriceEachIncTax())
 
         // quantity not set, calculations will assume 0
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPriceTotalExTax())
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPriceTotalIncTax())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPriceTotalExTax())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPriceTotalIncTax())
 
         invoiceLine.setQuantity(BigDecimal.valueOf(3d))
 
@@ -112,9 +112,9 @@ class InvoiceLineTest extends TestWithDatabase {
 
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
-        invoiceLine.setPriceEachExTax(Money.ZERO)
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
-        invoiceLine.setTaxEach(Money.ZERO)
+        invoiceLine.setPriceEachExTax(Money.ZERO())
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
+        invoiceLine.setTaxEach(Money.ZERO())
         invoiceLine.setQuantity(BigDecimal.valueOf(1d))
         invoiceLine.setAccount(accountIncome)
         invoiceLine.setPrepaidFeesAccount(accountPrepaidFees)
@@ -172,7 +172,7 @@ class InvoiceLineTest extends TestWithDatabase {
 
         List<Money> amounts = new ArrayList<>()
         amounts.add(new Money("-10.00"))
-        // amounts.add(Money.ZERO) covered in test above
+        // amounts.add(Money.ZERO()) covered in test above
         amounts.add(new Money("100.00"))
 
         for (Money amount : amounts) {
@@ -188,7 +188,7 @@ class InvoiceLineTest extends TestWithDatabase {
                 InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
                 invoiceLine.setTax(newContext.localObject(tax))
                 invoiceLine.setPriceEachExTax(amount)
-                invoiceLine.setDiscountEachExTax(Money.ZERO)
+                invoiceLine.setDiscountEachExTax(Money.ZERO())
                 invoiceLine.setTaxEach(amount.multiply(tax.getRate()))
                 invoiceLine.setQuantity(BigDecimal.valueOf(quantity))
                 invoiceLine.setAccount(newContext.localObject(accountIncome))
@@ -266,7 +266,7 @@ class InvoiceLineTest extends TestWithDatabase {
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
         invoiceLine.setPriceEachExTax(amount)
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setTaxEach(amount.multiply(tax.getRate()))
         invoiceLine.setQuantity(BigDecimal.valueOf(3d))
         invoiceLine.setAccount(accountIncome)
@@ -311,7 +311,7 @@ class InvoiceLineTest extends TestWithDatabase {
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
         invoiceLine.setPriceEachExTax(amount)
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setTaxEach(amount.multiply(tax.getRate()))
         invoiceLine.setQuantity(BigDecimal.valueOf(3d))
         invoiceLine.setAccount(accountIncome)
@@ -357,7 +357,7 @@ class InvoiceLineTest extends TestWithDatabase {
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
         invoiceLine.setPriceEachExTax(courseClass.getFeeExGst())
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setTaxEach(invoiceLine.getPriceEachExTax().multiply(tax.getRate()))
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setAccount(accountIncome)
@@ -435,7 +435,7 @@ class InvoiceLineTest extends TestWithDatabase {
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
         invoiceLine.setPriceEachExTax(courseClass.getFeeExGst())
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setTaxEach(invoiceLine.getPriceEachExTax().multiply(tax.getRate()))
         invoiceLine.setAccount(accountIncome)
@@ -512,7 +512,7 @@ class InvoiceLineTest extends TestWithDatabase {
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
         invoiceLine.setPriceEachExTax(courseClass.getFeeExGst())
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setTaxEach(invoiceLine.getPriceEachExTax().multiply(tax.getRate()))
         invoiceLine.setAccount(accountIncome)
@@ -594,13 +594,13 @@ class InvoiceLineTest extends TestWithDatabase {
         InvoiceLine invoiceLine = newContext.newObject(InvoiceLine.class)
         invoiceLine.setTax(tax)
         invoiceLine.setPriceEachExTax(voucherType.getPriceExTax())
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setTaxEach(voucherType.getFeeGST())
         invoiceLine.setAccount(voucherType.getLiabilityAccount())
         invoiceLine.setInvoice(invoice)
         invoiceLine.setTitle("test")
-        invoiceLine.setPrepaidFeesRemaining(Money.ZERO)
+        invoiceLine.setPrepaidFeesRemaining(Money.ZERO())
 
         Voucher voucher = newContext.newObject(Voucher.class)
         voucher.setProduct(voucherType)

@@ -34,7 +34,7 @@ class InvoiceLineInitHelperTest extends TestWithDatabase {
         reversePayment.setSource(PaymentSource.SOURCE_WEB)
         SetPaymentMethod.valueOf(PaymentMethodUtil.getREVERSPaymentMethods(cayenneContext, PaymentMethod.class), reversePayment).set()
         reversePayment.setAccountIn(AccountUtil.getDefaultBankAccount(cayenneContext, Account.class))
-        reversePayment.setAmount(Money.ZERO)
+        reversePayment.setAmount(Money.ZERO())
         reversePayment.setStatus(PaymentStatus.SUCCESS)
 
         reversePayment.setPayer(originalInvoice.getContact())
@@ -102,7 +102,7 @@ class InvoiceLineInitHelperTest extends TestWithDatabase {
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setPriceEachExTax(courseClass1.getFeeExGst())
         invoiceLine.setTaxEach(courseClass1.getFeeGST())
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
 
         Assertions.assertNull(invoiceLine.getAccount())
 
@@ -139,7 +139,7 @@ class InvoiceLineInitHelperTest extends TestWithDatabase {
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setPriceEachExTax(membership.getProduct().getPriceExTax())
         invoiceLine.setTaxEach(membership.getProduct().getFeeGST())
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
 
         membership.setInvoiceLine(invoiceLine)
 
@@ -179,7 +179,7 @@ class InvoiceLineInitHelperTest extends TestWithDatabase {
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setPriceEachExTax(voucher.getProduct().getPriceExTax())
         invoiceLine.setTaxEach(voucher.getProduct().getFeeGST())
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
 
         voucher.setInvoiceLine(invoiceLine)
 
@@ -208,9 +208,9 @@ class InvoiceLineInitHelperTest extends TestWithDatabase {
             refundInvoiceLine.setTitle(originalLine.getTitle())
             refundInvoiceLine.setUnit(originalLine.getUnit())
             refundInvoiceLine.setQuantity(new BigDecimal("1.00"))
-            refundInvoiceLine.setPriceEachExTax(Money.ZERO.subtract(originalLine.getPriceEachExTax()))
-            refundInvoiceLine.setDiscountEachExTax(Money.ZERO.subtract(originalLine.getDiscountEachExTax()))
-            refundInvoiceLine.setTaxEach(Money.ZERO.subtract(originalLine.getTaxEach()))
+            refundInvoiceLine.setPriceEachExTax(Money.ZERO().subtract(originalLine.getPriceEachExTax()))
+            refundInvoiceLine.setDiscountEachExTax(Money.ZERO().subtract(originalLine.getDiscountEachExTax()))
+            refundInvoiceLine.setTaxEach(Money.ZERO().subtract(originalLine.getTaxEach()))
         }
 
         return refundInvoice

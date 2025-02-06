@@ -284,7 +284,7 @@ class CheckoutController {
 
         invoiceLine.tax = taxOverride ?: membershipProduct.tax
         invoiceLine.quantity = ONE
-        invoiceLine.discountEachExTax = Money.ZERO
+        invoiceLine.discountEachExTax = Money.ZERO()
         invoiceLine.priceEachExTax = membershipProduct.priceExTax
         invoiceLine.account = membershipProduct.incomeAccount
         invoiceLine.prepaidFeesAccount = prepaidFeesAccount
@@ -315,7 +315,7 @@ class CheckoutController {
 
         invoiceLine.tax = taxOverride ?: articleProduct.tax
         invoiceLine.priceEachExTax = articleProduct.priceExTax
-        invoiceLine.discountEachExTax = Money.ZERO
+        invoiceLine.discountEachExTax = Money.ZERO()
         invoiceLine.quantity = dto.quantity
         invoiceLine.account = articleProduct.incomeAccount
         invoiceLine.prepaidFeesAccount = prepaidFeesAccount
@@ -350,14 +350,14 @@ class CheckoutController {
             voucher.redemptionValue = product.value ?: product.priceExTax
         } else {
             //else set the initial value as $0
-            voucher.redemptionValue = new Money(dto.value)
+            voucher.redemptionValue = Money.of(dto.value)
         }
         voucher.valueOnPurchase = voucher.redemptionValue
         voucher.redeemedCourseCount = 0
 
         invoiceLine.quantity = ONE
         invoiceLine.priceEachExTax = product.priceExTax != null ? product.priceExTax : voucher.redemptionValue
-        invoiceLine.discountEachExTax = Money.ZERO
+        invoiceLine.discountEachExTax = Money.ZERO()
         invoiceLine.tax = nonSupplyTax(context)
         invoiceLine.account = product.liabilityAccount
 
@@ -369,7 +369,7 @@ class CheckoutController {
     private void initInvoice() {
         if (checkout.contactNodes.any {node -> !node.enrolments.empty || !node.products.empty  || !node.vouchers.empty || !node.memberships.empty }) {
             invoice = context.newObject(Invoice)
-            invoice.amountOwing = Money.ZERO
+            invoice.amountOwing = Money.ZERO()
             invoice.source  = SOURCE_ONCOURSE
             invoice.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
             invoice.contact = payer
@@ -415,7 +415,7 @@ class CheckoutController {
 
     private void initPayment() {
         if (checkout.paymentMethodId == null && !checkout.payWithSavedCard &&
-                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.valueOf(amount) != Money.ZERO })) {
+                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.of(amount) != Money.ZERO() })) {
             return
         }
 
@@ -456,7 +456,7 @@ class CheckoutController {
             PaymentInLine line = context.newObject(PaymentInLine)
             line.payment = paymentIn
             line.invoice = invoice
-            line.amount =  Money.ZERO
+            line.amount =  Money.ZERO()
         }
 
 
@@ -492,7 +492,7 @@ class CheckoutController {
 
         checkout.previousInvoices.each { id, amount ->
             Money payAmount = new Money(amount)
-            if (payAmount != Money.ZERO) {
+            if (payAmount != Money.ZERO()) {
                 Invoice previousInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
                 previousInvoice.updateAmountOwing()
                 Money payByVouchers = getAmountPaidByVouchers(previousInvoice)
@@ -517,7 +517,7 @@ class CheckoutController {
         }
 
         paymentIn.amount = paymentIn.paymentInLines
-                .collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) } as Money
+                .collect { it.amount }.inject(Money.ZERO()) { a, b -> a.add(b) } as Money
 
         if (paymentIn.amount != new Money(checkout.payNow)) {
             result << new CheckoutValidationErrorDTO(propertyName: "payNow",  error:  "Payment amount doesn't match invoice allocated total amount")
@@ -557,7 +557,7 @@ class CheckoutController {
                 invoiceLine.sortOrder = 0
                 invoiceLine.account = enrolment.courseClass.incomeAccount
                 invoiceLine.prepaidFeesAccount = prepaidFeesAccount
-                invoiceLine.discountEachIncTax = Money.ZERO
+                invoiceLine.discountEachIncTax = Money.ZERO()
                 invoiceLine.title = "Funding provided for the enrolment of ${enrolment.student.contact.getFullName()} " +
                         "in ${enrolment.courseClass.uniqueCode} ${enrolment.courseClass.course.name} " +
                         "commencing ${enrolment.courseClass.startDateTime?.format('dd-MM-yyyy', enrolment.courseClass.timeZone)}"
@@ -599,7 +599,7 @@ class CheckoutController {
         invoiceLine.sortOrder = 0
         invoiceLine.account = courseClass.incomeAccount
         invoiceLine.prepaidFeesAccount = prepaidFeesAccount
-        invoiceLine.discountEachIncTax = Money.ZERO
+        invoiceLine.discountEachIncTax = Money.ZERO()
         invoiceLine.title = GetInvoiceLineTitle.valueOf(enrolment).get()
         invoiceLine.description = GetInvoiceLineDescription.valueOf(enrolment).get()
 
@@ -644,10 +644,10 @@ class CheckoutController {
 
         if (totalOverride != null) {
 
-            Money total = Money.valueOf(totalOverride)
+            Money total = Money.of(totalOverride)
             BigDecimal taxRate = (taxOverride?:courseClass.tax).rate
 
-            invoiceLine.discountEachExTax = invoiceLine.priceEachExTax.subtract(total.divide(Money.ONE.add(taxRate)))
+            invoiceLine.discountEachExTax = invoiceLine.priceEachExTax.subtract(total.divide(Money.ONE().add(taxRate)))
             invoiceLine.taxEach = total.subtract(invoiceLine.priceEachExTax.subtract(invoiceLine.discountEachExTax))
 
         } else {
@@ -670,7 +670,7 @@ class CheckoutController {
     private void processRedeemedVouchers() {
         checkout.redeemedVouchers.each { id, amount ->
             Money payAmount = new Money(amount)
-            if (payAmount != Money.ZERO) {
+            if (payAmount != Money.ZERO()) {
                 Voucher voucher = getRedeemedVoucherAndValidate(id)
 
                 if (voucher.voucherProduct.maxCoursesRedemption != null) {
@@ -743,17 +743,17 @@ class CheckoutController {
 
 
     private void processMoneyVoucher(Voucher voucher, Money amountVoucher) {
-        Money leftToPay = Money.ZERO.add(amountVoucher)
+        Money leftToPay = Money.ZERO().add(amountVoucher)
         PaymentIn vPaymentIn = createPaymentInPaidByVoucher()
         createVoucherPaymentIn(voucher, vPaymentIn)
 
         checkout.previousInvoices.each { id, amount ->
-            Money payNow = Money.valueOf(amount)
-            if (payNow > Money.ZERO) {
+            Money payNow = Money.of(amount)
+            if (payNow > Money.ZERO()) {
                 Invoice prevInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
 
                 Money amountForInvoice = payNow.min(leftToPay)
-                if (amountForInvoice.isGreaterThan(Money.ZERO)) {
+                if (amountForInvoice.isGreaterThan(Money.ZERO())) {
                     PaymentInLine line = context.newObject(PaymentInLine)
                     line.payment = vPaymentIn
                     line.invoice = prevInvoice
@@ -765,7 +765,7 @@ class CheckoutController {
             }
         }
 
-        if (leftToPay > Money.ZERO) {
+        if (leftToPay > Money.ZERO()) {
             if (invoice) {
                 PaymentInLine line = context.newObject(PaymentInLine)
                 line.payment = vPaymentIn
@@ -776,7 +776,7 @@ class CheckoutController {
         }
 
         vPaymentIn.amount = vPaymentIn.paymentInLines
-                .collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) } as Money
+                .collect { it.amount }.inject(Money.ZERO()) { a, b -> a.add(b) } as Money
 
         if (vPaymentIn.amount != amountVoucher) {
             result << new CheckoutValidationErrorDTO(itemId: voucher.id, propertyName: "redeemedVouchers",  error:  "Redeemed voucher amount isn't correct.")
@@ -788,7 +788,7 @@ class CheckoutController {
     }
 
 
-    private PaymentIn createPaymentInPaidByVoucher(Money amount = Money.ZERO) {
+    private PaymentIn createPaymentInPaidByVoucher(Money amount = Money.ZERO()) {
         PaymentIn vPaymentIn = context.newObject(PaymentIn)
         vPaymentIn.source = SOURCE_ONCOURSE
         vPaymentIn.payer = payer
@@ -820,8 +820,8 @@ class CheckoutController {
 
         invoicePaidByVouchers.paymentLines
                 .findAll { line -> line.isNewRecord() }
-                .findAll { line -> line.amount.isGreaterThan(Money.ZERO) }
-                .inject(Money.ZERO) { a, b -> a.add(b.amount) }
+                .findAll { line -> line.amount.isGreaterThan(Money.ZERO()) }
+                .inject(Money.ZERO()) { a, b -> a.add(b.amount) }
 
     }
 }

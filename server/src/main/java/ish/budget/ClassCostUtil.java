@@ -71,7 +71,7 @@ public class ClassCostUtil {
 	 * @return Money value
 	 */
 	public static Money getCost(ClassCost classCost, Date until, Integer plannedEnrolmentsCount, String type) {
-		Money cost = Money.ZERO;
+		Money cost = Money.ZERO();
 		if (classCost.getCourseClass() == null) {
 			return cost;
 		}
@@ -143,7 +143,7 @@ public class ClassCostUtil {
 			switch (type) {
 				case ClassBudgetUtil.ACTUAL:
 					if (ClassCostFlowType.INCOME.equals(classCost.getFlowType()) && classCost.getInvoiceToStudent()) {
-						Money result = Money.ZERO;
+						Money result = Money.ZERO();
 						for (Enrolment e : classCost.getCourseClass().getActualEnrolments()) {
 							result = result.add(e.getOriginalInvoiceLine().getPriceTotalExTax());
 						}
@@ -295,7 +295,7 @@ public class ClassCostUtil {
 	 * @return calculated fee
 	 */
 	public static Money calculateFee(List<ClassCost> costs) {
-		Money fee = Money.ZERO;
+		Money fee = Money.ZERO();
 		if (costs != null && costs.size() != 0) {
 			for (ClassCost cc : costs) {
 				if (ClassCostFlowType.INCOME.equals(cc.getFlowType()) && Boolean.TRUE.equals(cc.getInvoiceToStudent())) {
@@ -313,7 +313,7 @@ public class ClassCostUtil {
 	 * @return calculated deposit
 	 */
 	public static Money calculateDeposit(List<ClassCost> costs) {
-		Money deposit = Money.ZERO;
+		Money deposit = Money.ZERO();
 		if (costs != null && costs.size() != 0) {
 			for (ClassCost cc : costs) {
 				if (ClassCostFlowType.INCOME.equals(cc.getFlowType()) && Boolean.TRUE.equals(cc.getPayableOnEnrolment())) {
@@ -338,7 +338,7 @@ public class ClassCostUtil {
 				.filter(il -> !il.getInvoiceLineDiscounts().isEmpty() && il.getInvoiceLineDiscounts()
 						.stream().anyMatch(ild -> ild.getDiscount() != null && ild.getDiscount().equalsIgnoreContext(discount)))
 				// summ of discount values
-				.map(AbstractInvoiceLine::getDiscountEachExTax).reduce(Money.ZERO, Money::add);
+				.map(AbstractInvoiceLine::getDiscountEachExTax).reduce(Money.ZERO(), Money::add);
 	}
 
 	public static Money getPerUnitAmountExTax(ClassCost cost) {
@@ -381,7 +381,7 @@ public class ClassCostUtil {
 				return pr.getRate();
 			} else {
 				// if no applicable pay rate defined then return $0
-				return Money.ZERO;
+				return Money.ZERO();
 			}
 		}
 

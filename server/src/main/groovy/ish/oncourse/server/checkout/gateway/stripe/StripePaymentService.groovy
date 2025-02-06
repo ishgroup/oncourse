@@ -10,7 +10,6 @@ package ish.oncourse.server.checkout.gateway.stripe
 
 import com.google.inject.Inject
 import com.stripe.Stripe
-import com.stripe.model.BalanceTransaction
 import com.stripe.model.Charge
 import com.stripe.model.PaymentIntent
 import com.stripe.model.Refund
@@ -30,7 +29,6 @@ import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
-import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -153,7 +151,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         SessionAttributes sessionAttributes = new SessionAttributes()
 
         try {
-            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.longValue())
+            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.toLongValue())
                     .setCurrency(CURRENCY_CODE_AUD)
                     .setPaymentIntent(transactionId)
                     .build())

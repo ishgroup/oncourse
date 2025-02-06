@@ -301,11 +301,11 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
         if (error) {
             validator.throwClientErrorException(error)
         } else if (cancelRequest.createCrediNote) {
-            Money fee = Money.ZERO
+            Money fee = Money.ZERO()
             Account account = null
             Tax tax = null
             if (cancelRequest.retainAdministrativeFee) {
-                fee = Money.valueOf(cancelRequest.feeAmount)
+                fee = Money.of(cancelRequest.feeAmount)
                 account = accountDao.getById(context, cancelRequest.retainAccountId)
                 tax = taxDao.getById(context, cancelRequest.feeTaxId)
             }

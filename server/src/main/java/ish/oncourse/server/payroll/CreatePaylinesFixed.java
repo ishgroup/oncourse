@@ -47,7 +47,7 @@ public class CreatePaylinesFixed extends AbstractPaylinesCreator {
 
 		logger.entry();
 		if (classCost.getPaylines().size() == 0 && eligibleRate != null
-				&& eligibleRate.isGreaterThan(Money.ZERO)) {
+				&& eligibleRate.isGreaterThan(Money.ZERO())) {
 
 			var pl = classCost.getObjectContext().newObject(PayLine.class);
 			logger.debug("fixed payline {} ... {}", pl.hashCode(), eligibleRate);

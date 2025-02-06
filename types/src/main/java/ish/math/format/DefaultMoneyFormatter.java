@@ -1,15 +1,15 @@
 /*
- * Copyright ish group pty ltd 2020.
+ * Copyright ish group pty ltd 2025.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the
- * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Affero General Public License for more details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.math;
+package ish.math.format;
+
+import ish.math.Country;
+import ish.math.Money;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * Default Ish currency formatter.
  */
-public class DefaultCurrencyFormatter implements CurrencyFormatter {
+public class DefaultMoneyFormatter implements MoneyFormatter {
 
     private static final String EMPTY_SYMBOL = "";
     private static final String MINUS_SYMBOL = "-";
@@ -28,12 +28,12 @@ public class DefaultCurrencyFormatter implements CurrencyFormatter {
     private static final char MONEY_DECIMAL_SEPARATOR = '.';
     private static final char MONEY_THOUSAND_SEPARATOR = ',';
 
-    protected Locale currentLocale;
-    private NumberFormat formatter;
+    protected final Locale currentLocale;
+    private final NumberFormat formatter;
 
-    public DefaultCurrencyFormatter() {
-        currentLocale = Locale.getDefault();
-        formatter = initializeFormatter(currentLocale);
+    public DefaultMoneyFormatter(Country country) {
+        this.currentLocale = country.locale();
+        this.formatter = initializeFormatter(currentLocale);
     }
 
     /**
@@ -43,32 +43,8 @@ public class DefaultCurrencyFormatter implements CurrencyFormatter {
      */
     @Override
     public String format(Money money) {
-        String value = formatter
-                .format(money.toBigDecimal())
-                .replaceAll(CLEAR_UP_REGEX, EMPTY_SYMBOL);
-        if (money.isNegative()) {
-            value = MINUS_SYMBOL + value;
-        }
-        return value;
-    }
-
-    /**
-     * Updates formatter locale.
-     * @param locale which will be used.
-     */
-    @Override
-    public void updateLocale(Locale locale) {
-        currentLocale = locale;
-        formatter = initializeFormatter(currentLocale);
-    }
-
-    /**
-     * Returns current locale which uses formatter.
-     * @return locale instance.
-     */
-    @Override
-    public Locale getCurrentLocale() {
-        return currentLocale;
+        String value = formatter.format(money.toBigDecimal()).replaceAll(CLEAR_UP_REGEX, EMPTY_SYMBOL);
+        return money.isNegative() ? MINUS_SYMBOL + value : value;
     }
 
     /**

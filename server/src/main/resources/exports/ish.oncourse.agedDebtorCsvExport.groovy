@@ -9,7 +9,7 @@ List<ExportInvoice> rows = []
 def invoices = ObjectSelect.query(Invoice)
         .where(Invoice.INVOICE_DATE.lte(atDate)
                 .andExp(
-                    Invoice.AMOUNT_OWING.ne(Money.ZERO)
+                    Invoice.AMOUNT_OWING.ne(Money.ZERO())
                     .orExp(Invoice.PAYMENT_IN_LINES.outer().dot(PaymentInLine.PAYMENT_IN.outer().dot(PaymentIn.PAYMENT_DATE)).gt(atDate))
                     .orExp(Invoice.PAYMENT_OUT_LINES.outer().dot(PaymentOutLine.PAYMENT_OUT.outer().dot(PaymentOut.PAYMENT_DATE)).gt(atDate))
                 )
@@ -24,18 +24,18 @@ invoices.each { i ->
             .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.PAYMENT_DATE).lte(atDate))
             .and(PaymentOutLine.PAYMENT_OUT.dot(PaymentOut.STATUS).eq(PaymentStatus.SUCCESS))
             .sum(PaymentOutLine.AMOUNT)
-            .selectOne(context) ?: Money.ZERO
+            .selectOne(context) ?: Money.ZERO()
 
     def paymentIn = ObjectSelect.query(PaymentInLine)
             .where(PaymentInLine.INVOICE.eq(i))
             .and(PaymentInLine.PAYMENT_IN.dot(PaymentIn.PAYMENT_DATE).lte(atDate))
             .and(PaymentInLine.PAYMENT_IN.dot(PaymentIn.STATUS).eq(PaymentStatus.SUCCESS))
             .sum(PaymentInLine.AMOUNT)
-            .selectOne(context) ?: Money.ZERO
+            .selectOne(context) ?: Money.ZERO()
 
     def owing = i.totalIncTax - paymentIn + paymentOut
 
-    if (owing != Money.ZERO) {
+    if (owing != Money.ZERO()) {
         def row = new ExportInvoice(i)
 
         // For each payment plan due date, starting from the latest, allocate some of the amount owing
@@ -44,7 +44,7 @@ invoices.each { i ->
             owing = owing - thisAmount
             row.addOwing(thisAmount, invoiceDueDate.dueDate, atDate)
 
-            return owing != Money.ZERO  // breaks the loop when we run out of owing
+            return owing != Money.ZERO()  // breaks the loop when we run out of owing
         }
 
         // anything remaining just attch to the invoice due date
@@ -94,11 +94,11 @@ class ExportInvoice {
     String key // a contact key for grouping and sorting (unique id, but starting with name for alphabetical sorting)
     Invoice invoice
 
-    Money b_0 = Money.ZERO
-    Money b_1_30 = Money.ZERO
-    Money b_31_60 = Money.ZERO
-    Money b_61_90 = Money.ZERO
-    Money b_90 = Money.ZERO
+    Money b_0 = Money.ZERO()
+    Money b_1_30 = Money.ZERO()
+    Money b_31_60 = Money.ZERO()
+    Money b_61_90 = Money.ZERO()
+    Money b_90 = Money.ZERO()
 
     ExportInvoice(Invoice invoice) {
         this.invoice = invoice
@@ -106,7 +106,7 @@ class ExportInvoice {
     }
 
     boolean nonZero() {
-        return b_0 != Money.ZERO || b_1_30 != Money.ZERO || b_31_60 != Money.ZERO || b_61_90 != Money.ZERO || b_90 != Money.ZERO
+        return b_0 != Money.ZERO() || b_1_30 != Money.ZERO() || b_31_60 != Money.ZERO() || b_61_90 != Money.ZERO() || b_90 != Money.ZERO()
     }
 
     String getName() {
@@ -114,7 +114,7 @@ class ExportInvoice {
     }
 
     void addOwing(Money owing, dateDue, atDate) {
-        if (owing == Money.ZERO) {
+        if (owing == Money.ZERO()) {
             return
         }
         switch (java.time.temporal.ChronoUnit.DAYS.between(dateDue, atDate).intValue()) {

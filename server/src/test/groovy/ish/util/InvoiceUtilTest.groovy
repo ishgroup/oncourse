@@ -132,7 +132,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         for (PaymentStatus ps : PaymentStatus.values()) {
             PaymentInLine pInLine = (PaymentInLine) InvoiceUtil.paymentLineForInvoiceAndPayment(cayenneContext.newObject(PaymentIn.class), invoice)
             // pInLine.getPaymentIn().setAccountIn(aAsset);
-            // pInLine.getPaymentIn().setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))));
+            // pInLine.getPaymentIn().setAmount(Money.of(new BigDecimal("" + Math.pow(2, i))));
             pInLine.getPaymentIn().setStatus(ps)
             // i++;
         }
@@ -153,7 +153,7 @@ class InvoiceUtilTest extends TestWithDatabase {
             PaymentInLine pInLine = cayenneContext.newObject(PaymentInLine.class)
             pInLine.setPaymentIn(pIn)
             // payments are powers of 2, every second is success
-            pInLine.setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))))
+            pInLine.setAmount(Money.of(new BigDecimal("" + Math.pow(2, i))))
             pInLine.getPaymentIn().setStatus(i % 2 == 0 ? PaymentStatus.FAILED : PaymentStatus.SUCCESS)
             list.add(pInLine)
 
@@ -161,7 +161,7 @@ class InvoiceUtilTest extends TestWithDatabase {
             PaymentOutLine pOutLine = cayenneContext.newObject(PaymentOutLine.class)
             pOutLine.setPaymentOut(pOut)
             // payments are powers of 2, every second is success
-            pOutLine.setAmount(Money.valueOf(new BigDecimal("" + Math.pow(2, i))))
+            pOutLine.setAmount(Money.of(new BigDecimal("" + Math.pow(2, i))))
             pOutLine.getPaymentOut().setStatus(i % 2 != 0 ? PaymentStatus.FAILED : PaymentStatus.SUCCESS)
 
             list.add(pOutLine)
@@ -190,13 +190,13 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine1.setTax(tax)
         invoiceLine1.setQuantity(BigDecimal.ONE)
         invoiceLine1.setPriceEachExTax(new Money("100"))
-        invoiceLine1.setTaxEach(Money.ZERO)
+        invoiceLine1.setTaxEach(Money.ZERO())
 
         InvoiceLine invoiceLine2 = cayenneContext.newObject(InvoiceLine.class)
         invoiceLine2.setTax(tax)
         invoiceLine2.setQuantity(BigDecimal.ONE)
         invoiceLine2.setPriceEachExTax(new Money("200"))
-        invoiceLine2.setTaxEach(Money.ZERO)
+        invoiceLine2.setTaxEach(Money.ZERO())
 
         list.add(invoiceLine1)
         list.add(invoiceLine2)
@@ -306,7 +306,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         pinLine.setAmount(new Money("360"))
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
+        assertEquals(Money.ZERO(), invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
@@ -333,7 +333,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         Invoice invoice = cayenneContext.newObject(Invoice.class)
         invoice.setDebtorsAccount(account)
         invoice.setContact(contact)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
         invoice.setAllowAutoPay(Boolean.FALSE)
 
         Tax tax = cayenneContext.newObject(Tax.class)
@@ -346,7 +346,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine.setTax(tax)
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setPriceEachExTax(new Money("100"))
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setTaxEach(new Money("10"))
         invoiceLine.setInvoice(invoice)
         invoiceLine.setTitle("test")
@@ -366,7 +366,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine2.setTax(tax2)
         invoiceLine2.setQuantity(BigDecimal.valueOf(5d))
         invoiceLine2.setPriceEachExTax(new Money("50"))
-        invoiceLine2.setDiscountEachExTax(Money.ZERO)
+        invoiceLine2.setDiscountEachExTax(Money.ZERO())
         invoiceLine2.setTaxEach(new Money("0"))
         invoiceLine2.setInvoice(invoice)
         invoiceLine2.setTitle("test2")
@@ -416,7 +416,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         pinLine2.setAccountOut(account2)
 
         cayenneContext.commitChanges()
-        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
+        assertEquals(Money.ZERO(), invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
@@ -441,7 +441,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         Invoice invoice = cayenneContext.newObject(Invoice.class)
         invoice.setDebtorsAccount(account)
         invoice.setContact(contact)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
 
         Tax tax = cayenneContext.newObject(Tax.class)
         tax.setRate(BigDecimal.valueOf(0.1d))
@@ -453,7 +453,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine.setTax(tax)
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setPriceEachExTax(new Money("100"))
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setTaxEach(new Money("10"))
         invoiceLine.setInvoice(invoice)
         invoiceLine.setTitle("test")
@@ -473,7 +473,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine2.setTax(tax2)
         invoiceLine2.setQuantity(BigDecimal.valueOf(5d))
         invoiceLine2.setPriceEachExTax(new Money("50"))
-        invoiceLine2.setDiscountEachExTax(Money.ZERO)
+        invoiceLine2.setDiscountEachExTax(Money.ZERO())
         invoiceLine2.setInvoice(invoice)
         invoiceLine2.setTitle("test2")
         invoiceLine2.setAccount(account)
@@ -520,7 +520,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         pinLine2.setAccountIn(account2)
 
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
+        assertEquals(Money.ZERO(), invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
@@ -547,7 +547,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         Invoice invoice = cayenneContext.newObject(Invoice.class)
         invoice.setDebtorsAccount(account)
         invoice.setContact(contact)
-        invoice.setAmountOwing(Money.ZERO)
+        invoice.setAmountOwing(Money.ZERO())
         invoice.setAllowAutoPay(Boolean.FALSE)
 
         Tax tax = cayenneContext.newObject(Tax.class)
@@ -560,7 +560,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine.setTax(tax)
         invoiceLine.setQuantity(BigDecimal.ONE)
         invoiceLine.setPriceEachExTax(new Money("100"))
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setTaxEach(new Money("10"))
         invoiceLine.setInvoice(invoice)
         invoiceLine.setTitle("test")
@@ -580,7 +580,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine2.setTax(tax2)
         invoiceLine2.setQuantity(BigDecimal.valueOf(5d))
         invoiceLine2.setPriceEachExTax(new Money("50"))
-        invoiceLine2.setDiscountEachExTax(Money.ZERO)
+        invoiceLine2.setDiscountEachExTax(Money.ZERO())
         invoiceLine2.setTaxEach(new Money("0"))
         invoiceLine2.setInvoice(invoice)
         invoiceLine2.setTitle("test2")
@@ -630,7 +630,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         pinLine2.setAccountIn(account2)
 
         cayenneContext.commitChanges()
-        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking amount owing")
+        assertEquals(Money.ZERO(), invoice.getAmountOwing(), "Checking amount owing")
 
     }
 
@@ -695,7 +695,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine.setInvoice(invoice)
         invoiceLine.setAccount(aDebtors)
         invoiceLine.setTitle("test")
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setPrepaidFeesAccount(account3)
 
         // lets create first payment
@@ -736,11 +736,11 @@ class InvoiceUtilTest extends TestWithDatabase {
         assertEquals(0, payment.getPaymentLines().size(), "Checking number of payment lines")
 
         // then creates a $0 payment
-        result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO, payment, list, false)
-        assertEquals(Money.ZERO, result, "Checking money allocation for invoice")
+        result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO(), payment, list, false)
+        assertEquals(Money.ZERO(), result, "Checking money allocation for invoice")
         assertEquals(1, invoice.getPaymentLines().size(), "Checking number of payment lines")
         assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
-        assertEquals(Money.ZERO, payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
+        assertEquals(Money.ZERO(), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // removes it again
         InvoiceUtil.invoiceDeallocate(invoice, payment, list)
@@ -798,13 +798,13 @@ class InvoiceUtilTest extends TestWithDatabase {
         assertEquals(new Money("11"), payment2.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then $0
-        result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO, payment2, list2, false)
-        assertEquals(Money.ZERO, result, "Checking money allocation for invoice")
+        result = InvoiceUtil.invoiceAllocate(invoice, Money.ZERO(), payment2, list2, false)
+        assertEquals(Money.ZERO(), result, "Checking money allocation for invoice")
         assertEquals(2, invoice.getPaymentLines().size(), "Checking number of payment lines")
         assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
         assertEquals(1, payment2.getPaymentLines().size(), "Checking number of payment lines")
         assertEquals(new Money("55"), payment.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
-        assertEquals(Money.ZERO, payment2.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
+        assertEquals(Money.ZERO(), payment2.getPaymentLines().get(0).getAmount(), "Checking money allocation for paymentline")
 
         // then removes the payment alltogether
         InvoiceUtil.invoiceDeallocate(invoice, payment2, list2)
@@ -830,7 +830,7 @@ class InvoiceUtilTest extends TestWithDatabase {
 
         // verify all
         InvoiceUtil.updateAmountOwing(invoice)
-        assertEquals(Money.ZERO, invoice.getAmountOwing(), "Checking money owing for invoice")
+        assertEquals(Money.ZERO(), invoice.getAmountOwing(), "Checking money owing for invoice")
         assertEquals(2, invoice.getPaymentLines().size(), "Checking number of payment lines")
         assertEquals(1, payment.getPaymentLines().size(), "Checking number of payment lines")
         assertEquals(1, payment2.getPaymentLines().size(), "Checking number of payment lines")
@@ -901,7 +901,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine.setInvoice(invoice)
         invoiceLine.setAccount(aDebtors)
         invoiceLine.setTitle("test")
-        invoiceLine.setDiscountEachExTax(Money.ZERO)
+        invoiceLine.setDiscountEachExTax(Money.ZERO())
         invoiceLine.setPrepaidFeesAccount(account3)
 
         // second invoice
@@ -922,7 +922,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine2.setInvoice(invoice2)
         invoiceLine2.setAccount(aDebtors)
         invoiceLine2.setTitle("test")
-        invoiceLine2.setDiscountEachExTax(Money.ZERO)
+        invoiceLine2.setDiscountEachExTax(Money.ZERO())
         invoiceLine2.setPrepaidFeesAccount(account3)
 
         // save
@@ -942,7 +942,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         ArrayList<PaymentLineInterface> list = new ArrayList<>()
 
         Money result = InvoiceUtil.allocateMoneyToInvoices(payment.getAmount(), contact.getInvoices(), payment, list)
-        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(Money.ZERO(), result, "Checking money left over")
         assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(1, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(2, payment.getPaymentLines().size(), "Checking number of payment lines")
@@ -961,7 +961,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         // save...
         cayenneContext.commitChanges()
         // and verify again
-        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(Money.ZERO(), result, "Checking money left over")
         assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(1, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(2, payment.getPaymentLines().size(), "Checking number of payment lines")
@@ -991,7 +991,7 @@ class InvoiceUtilTest extends TestWithDatabase {
         invoiceLine3.setTax(tax)
         invoiceLine3.setQuantity(BigDecimal.ONE)
         invoiceLine3.setPriceEachExTax(new Money("-63.64"))
-        invoiceLine3.setDiscountEachExTax(Money.ZERO)
+        invoiceLine3.setDiscountEachExTax(Money.ZERO())
         invoiceLine3.setTaxEach(invoiceLine3.getPriceEachExTax().multiply(invoiceLine3.getTax().getRate()))
         invoiceLine3.setInvoice(invoice3)
         invoiceLine3.setAccount(aDebtors)
@@ -1005,13 +1005,13 @@ class InvoiceUtilTest extends TestWithDatabase {
         payment2.setStatus(PaymentStatus.SUCCESS)
         payment2.setPayer(contact)
         payment2.setAccountIn(accountIn)
-        payment2.setAmount(Money.ZERO)
+        payment2.setAmount(Money.ZERO())
         SetPaymentMethod.valueOf(PaymentMethodUtil.getINTERNALPaymentMethods(cayenneContext, PaymentMethod.class), payment2).set()
 
         ArrayList<PaymentLineInterface> list2 = new ArrayList<>()
 
         result = InvoiceUtil.allocateMoneyToInvoices(payment2.getAmount(), contact.getInvoices(), payment2, list2)
-        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(Money.ZERO(), result, "Checking money left over")
         assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(2, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(1, invoice3.getPaymentLines().size(), "Checking number of invoice payment lines")
@@ -1025,13 +1025,13 @@ class InvoiceUtilTest extends TestWithDatabase {
             assertEquals(new Money("70"), pLine2.getAmount(), "Checking money allocation for paymentline")
             assertEquals(new Money("-70"), pLine1.getAmount(), "Checking money allocation for paymentline")
         }
-        assertEquals(Money.ZERO, payment2.getAmount(), "Checking payment total")
-        assertEquals(Money.ZERO, InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
+        assertEquals(Money.ZERO(), payment2.getAmount(), "Checking payment total")
+        assertEquals(Money.ZERO(), InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
 
         // save...
         cayenneContext.commitChanges()
         // and verify again
-        assertEquals(Money.ZERO, result, "Checking money left over")
+        assertEquals(Money.ZERO(), result, "Checking money left over")
         assertEquals(1, invoice.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(2, invoice2.getPaymentLines().size(), "Checking number of invoice payment lines")
         assertEquals(1, invoice3.getPaymentLines().size(), "Checking number of invoice payment lines")
@@ -1045,8 +1045,8 @@ class InvoiceUtilTest extends TestWithDatabase {
             assertEquals(new Money("70"), pLine2.getAmount(), "Checking money allocation for paymentline")
             assertEquals(new Money("-70"), pLine1.getAmount(), "Checking money allocation for paymentline")
         }
-        assertEquals(Money.ZERO, payment2.getAmount(), "Checking payment total")
-        assertEquals(Money.ZERO, InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
+        assertEquals(Money.ZERO(), payment2.getAmount(), "Checking payment total")
+        assertEquals(Money.ZERO(), InvoiceUtil.amountOwingForPayer(contact), "Checking the amount owing")
     }
 
     private static Enrolment createEnrolment(ObjectContext cayenneContext, Account account, Tax tax) {
@@ -1065,8 +1065,8 @@ class InvoiceUtilTest extends TestWithDatabase {
         cc.setTax(tax)
         cc.setIncomeAccount(account)
         cc.setIsActive(true)
-        cc.setFeeExGst(Money.ZERO)
-        cc.setTaxAdjustment(Money.ZERO)
+        cc.setFeeExGst(Money.ZERO())
+        cc.setTaxAdjustment(Money.ZERO())
         cc.setDeliveryMode(DeliveryMode.CLASSROOM)
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)

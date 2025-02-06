@@ -55,7 +55,7 @@ public class InvoiceOverdueUpdateJob implements Job {
 		dataContext.setUserProperty(INVOICE_OVERDUE_UPDATE_JOB, "true");
 
 		var invoices = ObjectSelect.query(Invoice.class)
-				.where(Invoice.AMOUNT_OWING.gt(Money.ZERO)).and(Invoice.DATE_DUE.lte(LocalDate.now())).select(dataContext);
+				.where(Invoice.AMOUNT_OWING.gt(Money.ZERO())).and(Invoice.DATE_DUE.lte(LocalDate.now())).select(dataContext);
 
 		logger.warn("Updating of overdue amounts started, found {} invoices as candidates for processing.", invoices.size());
 

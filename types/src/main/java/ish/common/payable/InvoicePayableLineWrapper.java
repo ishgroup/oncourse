@@ -32,45 +32,45 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 
 	public Money getDiscountTotalExTax() {
 		if (getQuantity() == null || getDiscountEachExTax() == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
-		return Money.valueOf(getQuantity()).multiply(getDiscountEachExTax());
+		return Money.of(getQuantity()).multiply(getDiscountEachExTax());
 	}
 
 	public Money getDiscountEachIncTax() {
-		if (getDiscountEachExTax() == null || Money.ZERO.equals(getDiscountEachExTax()) || getInvoiceTax() == null) {
-			setDiscountEachExTax(Money.ZERO);
-			return Money.ZERO;
+		if (getDiscountEachExTax() == null || Money.ZERO().equals(getDiscountEachExTax()) || getInvoiceTax() == null) {
+			setDiscountEachExTax(Money.ZERO());
+			return Money.ZERO();
 		}
 		return getDiscountEachExTax().add(getDiscountedTaxOnPriceEach().subtract(getTaxEach()));
 	}
 
 	public Money getDiscountTotalIncTax() {
-		if (getDiscountEachExTax() == null || Money.ZERO.equals(getDiscountEachExTax()) || getQuantity() == null) {
-			return Money.ZERO;
+		if (getDiscountEachExTax() == null || Money.ZERO().equals(getDiscountEachExTax()) || getQuantity() == null) {
+			return Money.ZERO();
 		}
 		return getDiscountEachIncTax().multiply(getQuantity());
 	}
 
 	public Money getPriceTotalExTax() {
 		if (getQuantity() == null || getPriceEachExTax() == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
-		return Money.valueOf(getQuantity()).multiply(getPriceEachExTax());
+		return Money.of(getQuantity()).multiply(getPriceEachExTax());
 	}
 
 	public Money getPriceEachIncTax() {
 		if (getPriceEachExTax() == null || getInvoiceTax() == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 		return getPriceEachExTax().add(getDiscountedTaxOnPriceEach());
 	}
 
 	public Money getPriceTotalIncTax() {
 		if (getQuantity() == null || getPriceEachExTax() == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
-		return Money.valueOf(getQuantity()).multiply(getPriceEachIncTax());
+		return Money.of(getQuantity()).multiply(getPriceEachIncTax());
 	}
 
 	public Money getDiscountedPriceTotalTax() {
@@ -83,11 +83,11 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 
 	public Money getDiscountedTaxOnPriceEach() {
 		if (getPriceEachExTax() == null || getInvoiceTax() == null || getPriceEachExTax().equals(getDiscountEachExTax())) {
-			return Money.ZERO;
-		} else if (getDiscountEachExTax() == null || getDiscountEachExTax().equals(Money.ZERO)) {
+			return Money.ZERO();
+		} else if (getDiscountEachExTax() == null || getDiscountEachExTax().equals(Money.ZERO())) {
 			return getTaxEach();
 		}
-		return new Money(getPriceEachExTax().toBigDecimal()
+		return Money.of(getPriceEachExTax().toBigDecimal()
 				.divide(getPriceEachExTax().subtract(getDiscountEachExTax()).toBigDecimal(), 10, RoundingMode.HALF_UP).multiply(getTaxEach().toBigDecimal()));
 	}
 
@@ -97,7 +97,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 
 	public Money getTotalTax() {
 		if (getQuantity() == null || getTaxEach() == null || getInvoiceTax() == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 		return getTaxEach().multiply(getQuantity());
 	}

@@ -76,14 +76,14 @@ class EffectiveDatesServerTest extends TestWithDatabase {
 
         InvoiceLine line = cayenneContext.newObject(InvoiceLine.class)
         line.setInvoice(invoice)
-        line.setDiscountEachExTax(Money.ZERO)
-        line.setPriceEachExTax(Money.ONE)
+        line.setDiscountEachExTax(Money.ZERO())
+        line.setPriceEachExTax(Money.ONE())
         Tax tax = ObjectSelect.query(Tax.class).where(Tax.ID.eq(1L)).selectOne(cayenneContext)
         Account account = tax.getPayableToAccount()
         line.setTax(tax)
         line.setAccount(account)
         line.setTitle("junit test enrolment")
-        line.setTaxEach(Money.ZERO)
+        line.setTaxEach(Money.ZERO())
         line.setQuantity(BigDecimal.ONE)
     }
 

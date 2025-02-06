@@ -76,7 +76,7 @@ reader.eachLine { line  ->
         throwException("validation error - Row [${i}]: Payment In can not be processed with a date in the future.")
     }
 
-    if (amount.isZero() || amount.isLessThan(Money.ZERO)) {
+    if (amount.isZero() || amount.isLessThan(Money.ZERO())) {
         throwException("validation error - Row [${i}]: Amount can not be equal to or less than \$0.00.")
     }
 

@@ -52,7 +52,7 @@ public class CreatePaylinesPerStudentContactHour extends AbstractPaylinesCreator
 
 		if (classCost.getPaylines().size() == 0
 				&& eligibleRate != null
-				&& eligibleRate.isGreaterThan(Money.ZERO)
+				&& eligibleRate.isGreaterThan(Money.ZERO())
 				&& BigDecimal.ZERO.compareTo(count) < 0) {
 			var pl = classCost.getObjectContext().newObject(PayLine.class);
 			logger.debug("hour payline {}", pl.hashCode());

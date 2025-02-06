@@ -25,7 +25,7 @@ public class ScriptResult implements Serializable {
 
 	public static ScriptResult success(Object resultValue) {
 		ScriptResult result = new ScriptResult(ResultType.SUCCESS);
-		result.setResultValue(resultValue == null ? null : resultValue);
+		result.setResultValue(resultValue);
 
 		return result;
 	}

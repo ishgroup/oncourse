@@ -47,7 +47,7 @@ public class PaymentPlan {
 	}
 
 	public PaymentLine pay(double amount) {
-		return pay(new Money(BigDecimal.valueOf(amount)));
+		return pay(Money.of(BigDecimal.valueOf(amount)));
 	}
 
 	public PaymentLine pay(Money amount) {
@@ -75,7 +75,7 @@ public class PaymentPlan {
 
 	private class PaymentLine {
 
-		private Money amount = Money.ZERO;
+		private Money amount = Money.ZERO();
 		private Integer offsetDays;
 
 		public void setAmount(Money amount) {

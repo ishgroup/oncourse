@@ -27,8 +27,8 @@ class InvoiceDueDateMixin {
 
         Money amountToBePaid = self.invoice.invoiceDueDates
                 .findAll { it -> it.dueDate <= self.dueDate }
-                .inject(Money.ZERO) { total, it -> it.amount.add((Money) total) }
+                .inject(Money.ZERO()) { total, it -> it.amount.add((Money) total) }
 
-        amountToBePaid.subtract(amountPaid).max(Money.ZERO).min(self.amount)
+        amountToBePaid.subtract(amountPaid).max(Money.ZERO()).min(self.amount)
     }
 }

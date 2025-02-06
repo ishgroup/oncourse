@@ -78,7 +78,7 @@
         <variableExpression><![CDATA[(($F{enrolment}.feeStatus == null
             || ish.common.types.StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED.equals($F{enrolment}.feeStatus)
             || ish.common.types.StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT.equals($F{enrolment}.feeStatus)) ?
-            $F{enrolment}.feeHelpAmount.multiply(0.2) : ish.math.Money.ZERO).floatValue()]]></variableExpression>
+            $F{enrolment}.feeHelpAmount.multiply(0.2) : ish.math.Money.ZERO()).floatValue()]]></variableExpression>
     </variable>
     <variable name="vslLoanFee" class="java.lang.Float" calculation="Sum" resetType="Group" resetGroup="student">
         <variableExpression><![CDATA[(($F{enrolment}.feeStatus == null
@@ -317,7 +317,7 @@
                 <textFieldExpression><![CDATA[($F{enrolment}.feeStatus == null
             || ish.common.types.StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_NON_STATE_GOVERNMENT_SUBSIDISED.equals($F{enrolment}.feeStatus)
             || ish.common.types.StudentStatusForUnitOfStudy.DEFERRED_ALL_OR_PART_OF_TUITION_FEE_THROUGH_VET_FEE_HELP_RESTRICTED_ACCESS_ARRANGEMENT.equals($F{enrolment}.feeStatus)) ?
-            $F{enrolment}.feeHelpAmount.multiply(0.2) : ish.math.Money.ZERO]]></textFieldExpression>
+            $F{enrolment}.feeHelpAmount.multiply(0.2) : ish.math.Money.ZERO()]]></textFieldExpression>
             </textField>
             <textField isBlankWhenNull="true">
                 <reportElement style="header 3 (right)" x="720" y="0" width="60" height="40"/>

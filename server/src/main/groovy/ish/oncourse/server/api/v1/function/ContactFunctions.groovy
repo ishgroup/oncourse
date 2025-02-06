@@ -160,7 +160,7 @@ class ContactFunctions {
                         l ->
                             l.relatedEntityId = i.id
                             l.type = FinancialTypeDTO.INVOICE
-                            l.description = "${InvoiceUtil.sumInvoiceLines(i.invoiceLines).isLessThan(Money.ZERO) ? 'Credit note' : 'Invoice'} (${i.source.displayName})"
+                            l.description = "${InvoiceUtil.sumInvoiceLines(i.invoiceLines).isLessThan(Money.ZERO()) ? 'Credit note' : 'Invoice'} (${i.source.displayName})"
                             l.date = i.invoiceDate
                             l.createdOn = LocalDateUtils.dateToTimeValue(i.createdOn)
                             l.referenceNumber = i.invoiceNumber

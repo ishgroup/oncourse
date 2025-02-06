@@ -27,7 +27,7 @@ class MockInvoiceLine implements IInvoiceLineInterface {
 			}
         }
 
-		Money result = Money.ZERO
+		Money result = Money.ZERO()
         if (getPriceEachExTax() != null) {
 			result = result.add(getPriceEachExTax())
         }

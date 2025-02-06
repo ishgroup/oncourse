@@ -45,7 +45,7 @@ class PaymentInTest extends TestWithDatabase {
 
         PaymentIn pIn = newContext.newObject(PaymentIn.class)
         pIn.setPaymentDate(LocalDate.now())
-        pIn.setAmount(Money.ONE)
+        pIn.setAmount(Money.ONE())
         pIn.setPayer(contact)
         pIn.setAccountIn(account)
         pIn.setStatus(PaymentStatus.SUCCESS)
@@ -63,7 +63,7 @@ class PaymentInTest extends TestWithDatabase {
 
         PaymentInLine piLine = newContext.newObject(PaymentInLine.class)
         piLine.setInvoice(invoice)
-        piLine.setAmount(Money.ONE)
+        piLine.setAmount(Money.ONE())
         piLine.setAccountOut(account)
 
         pIn.addToPaymentInLines(piLine)
@@ -182,7 +182,7 @@ class PaymentInTest extends TestWithDatabase {
         paymentMethod.setType(PaymentType.CONTRA)
 
         PaymentIn pIn = context.newObject(PaymentIn.class)
-        pIn.setAmount(Money.ONE)
+        pIn.setAmount(Money.ONE())
         pIn.setPayer(contact)
         pIn.setReconciled(true)
         pIn.setBanking(banking)

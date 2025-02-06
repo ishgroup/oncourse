@@ -64,7 +64,7 @@ public class InvoiceLineInitHelper {
 
 				// original payment line should be the only payment line of a positive amount
 				var originalPaymentLines =
-						_PaymentInLine.AMOUNT.gt(Money.ZERO).filterObjects(reversePayment.getPaymentInLines());
+						_PaymentInLine.AMOUNT.gt(Money.ZERO()).filterObjects(reversePayment.getPaymentInLines());
 
 				if (originalPaymentLines.size() == 1) {
 					var orginalPaymentLine = originalPaymentLines.get(0);

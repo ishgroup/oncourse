@@ -24,7 +24,7 @@ while(true) {
         //must create an invoice/invoiceline for voucher validation
         Invoice invoice = dataContext.newObject(Invoice)
         invoice.contact = contact
-        invoice.amountOwing = Money.ZERO
+        invoice.amountOwing = Money.ZERO()
         invoice.source = PaymentSource.SOURCE_ONCOURSE
         invoice.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
 
@@ -33,9 +33,9 @@ while(true) {
         invoiceLine.account = product.liabilityAccount
         invoiceLine.tax = product.tax
         invoiceLine.title = product.name
-        invoiceLine.priceEachExTax = Money.ZERO
-        invoiceLine.taxEach = Money.ZERO
-        invoiceLine.discountEachExTax = Money.ZERO
+        invoiceLine.priceEachExTax = Money.ZERO()
+        invoiceLine.taxEach = Money.ZERO()
+        invoiceLine.discountEachExTax = Money.ZERO()
         invoiceLine.quantity = 1
         invoiceLine.description = "${contact.getName(true)} (${product.sku} ${product.name})"
 

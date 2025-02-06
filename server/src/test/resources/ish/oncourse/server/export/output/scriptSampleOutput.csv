@@ -173,7 +173,7 @@ send class confirmed,"def run(args) {
 send payment receipt,"def run(args) {
   def paymentIn = args.entity
 
-  if (paymentIn.status == PaymentStatus.SUCCESS && paymentIn.confirmationStatus == ConfirmationStatus.NOT_SENT && !Money.ZERO.equals(paymentIn.amount)) {
+  if (paymentIn.status == PaymentStatus.SUCCESS && paymentIn.confirmationStatus == ConfirmationStatus.NOT_SENT && !Money.ZERO().equals(paymentIn.amount)) {
     email {
       template ""Payment Receipt""
       bindings paymentIn: paymentIn
@@ -1090,14 +1090,14 @@ def run(args) {
     def plusWeek = today.plusDays(7)
 
     def invoices = ObjectSelect.query(Invoice)
-            .where(Invoice.AMOUNT_OWING.gt(Money.ZERO))
+            .where(Invoice.AMOUNT_OWING.gt(Money.ZERO()))
             .and(Invoice.DATE_DUE.lte(plusWeek))
             .select(context)
 
     invoices.findAll { i ->
         plusWeek.isEqual(i.dateDue) || // 7 days before the payment due date
                 today.isEqual(i.dateDue.plusDays(1)) || // day after the payment is due to avoid a $0 payable instance
-                ((Period.between(today, i.dateDue).days % 7 == 0) && i.overdue.isGreaterThan(Money.ZERO)) // every 7 days of overdue
+                ((Period.between(today, i.dateDue).days % 7 == 0) && i.overdue.isGreaterThan(Money.ZERO())) // every 7 days of overdue
     }.each { i ->
         email {
             template ""Payment reminder""
@@ -1145,7 +1145,7 @@ def run(args) {
 		//must create an invoice/invoiceline for voucher validation
 		def Invoice invoice = args.context.newObject(Invoice)
 		invoice.contact = c
-		invoice.amountOwing = Money.ZERO
+		invoice.amountOwing = Money.ZERO()
 		invoice.source = PaymentSource.SOURCE_ONCOURSE
 		invoice.confirmationStatus = ConfirmationStatus.DO_NOT_SEND
 
@@ -1154,9 +1154,9 @@ def run(args) {
 		invoiceLine.account = product.liabilityAccount
 		invoiceLine.tax = product.tax
 		invoiceLine.title = product.name
-		invoiceLine.priceEachExTax = Money.ZERO
-		invoiceLine.taxEach = Money.ZERO
-		invoiceLine.discountEachExTax = Money.ZERO
+		invoiceLine.priceEachExTax = Money.ZERO()
+		invoiceLine.taxEach = Money.ZERO()
+		invoiceLine.discountEachExTax = Money.ZERO()
 		invoiceLine.quantity = 1
 		invoiceLine.description = ""${c.getName(true)} (${product.sku} ${product.name})""
 
@@ -1186,7 +1186,7 @@ send invoice,"def run(args) {
 	def invoice = args.entity
 
 	if (invoice.confirmationStatus == ConfirmationStatus.NOT_SENT) {
-		if (!Money.ZERO.equals(invoice.totalIncTax)) {
+		if (!Money.ZERO().equals(invoice.totalIncTax)) {
 			email {
 				template ""Tax Invoice""
 				bindings invoice: invoice

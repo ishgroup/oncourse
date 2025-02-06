@@ -144,7 +144,7 @@ class InvoiceLine extends _InvoiceLine {
         } else if (getEnrolment() == null && getCourseClass() == null && !getPrepaidFeesRemaining().isZero()) {
             result.addFailure(ValidationFailure.validationFailure(this, PREPAID_FEES_REMAINING_PROPERTY,
                     "The prepaid fees remaining must be zero for invoice line without enrolment."))
-        } else if (getPrepaidFeesRemaining().isGreaterThan(Money.ZERO) &&
+        } else if (getPrepaidFeesRemaining().isGreaterThan(Money.ZERO()) &&
                 getPrepaidFeesRemaining().isGreaterThan(getFinalPriceToPayExTax())) {
             // value of prepaid fees cannot be greater than absolute value of the invoice total ex tax
             result.addFailure(ValidationFailure.validationFailure(this, PREPAID_FEES_REMAINING_PROPERTY,
@@ -156,7 +156,7 @@ class InvoiceLine extends _InvoiceLine {
         if (enrolment != null || courseClass != null) {
             prepaidFeesRemaining = finalPriceToPayExTax
         } else {
-            prepaidFeesRemaining = Money.ZERO
+            prepaidFeesRemaining = Money.ZERO()
         }
     }
 
@@ -165,17 +165,17 @@ class InvoiceLine extends _InvoiceLine {
             Money localPriceEachExTax = priceEachExTax
             Money localDiscountEachExTax = discountEachExTax
             if (localPriceEachExTax == null) {
-                localPriceEachExTax = Money.ZERO
+                localPriceEachExTax = Money.ZERO()
             }
             if (localDiscountEachExTax == null) {
-                localDiscountEachExTax = Money.ZERO;
+                localDiscountEachExTax = Money.ZERO();
             }
-            Money taxAdjustment = Money.ZERO;
-            if (enrolment != null && enrolment.courseClass != null && !Money.isZeroOrEmpty(enrolment.courseClass.taxAdjustment)) {
+            Money taxAdjustment = Money.ZERO();
+            if (enrolment != null && enrolment.courseClass != null && !enrolment.courseClass.taxAdjustment.isZero()) {
                 taxAdjustment = taxAdjustment.add(enrolment.courseClass.taxAdjustment)
             }
             for (ProductItem item : getProductItems()) {
-                if (item != null && item.getProduct() != null && !Money.isZeroOrEmpty(item.product.taxAdjustment)) {
+                if (item != null && item.getProduct() != null && !item.product.taxAdjustment.isZero()) {
                     taxAdjustment = taxAdjustment.add(item.product.taxAdjustment)
                 }
             }

@@ -18,6 +18,8 @@ import ish.oncourse.server.cayenne.glue._PayLine
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import javax.money.Monetary
+import javax.money.RoundingQueryBuilder
 import java.math.RoundingMode
 import java.time.LocalDate
 
@@ -34,13 +36,13 @@ class PayLine extends _PayLine {
 		super.postAdd()
 
 		if (getValue() == null) {
-			setValue(Money.ZERO)
+			setValue(Money.ZERO())
 		}
 		if (getQuantity() == null) {
-			setQuantity(Money.ZERO.toBigDecimal())
+			setQuantity(Money.ZERO().toBigDecimal())
 		}
 		if (getTaxValue() == null) {
-			setTaxValue(Money.ZERO)
+			setTaxValue(Money.ZERO())
 		}
 	}
 
@@ -221,6 +223,9 @@ class PayLine extends _PayLine {
 	}
 
 	Money getAmount(int scale, RoundingMode mode) {
-		return Money.valueOf((this.value * this.quantity).setScale(scale, mode))
+		return Money.of(
+				(this.value * this.quantity)
+						.with(Monetary.getRounding(RoundingQueryBuilder.of().setScale(scale).set(mode).build()))
+		)
 	}
 }

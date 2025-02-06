@@ -627,7 +627,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccPerc.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccPerc.setIsSunk(false)
         ccPerc.setPayableOnEnrolment(true)
-        ccPerc.setTaxAdjustment(Money.ZERO)
+        ccPerc.setTaxAdjustment(Money.ZERO())
 
         // calculating actual amount for 10% discount, class price excluding tax $100.00,
         // 1 active enrolment with this discount applied
@@ -644,7 +644,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccPercChanged.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccPercChanged.setIsSunk(false)
         ccPercChanged.setPayableOnEnrolment(true)
-        ccPercChanged.setTaxAdjustment(Money.ZERO)
+        ccPercChanged.setTaxAdjustment(Money.ZERO())
 
         // calculating actual amount for 10% discount which had been changed to 20% after it was applied,
         // class price excluding tax $100.00, should receive same value as for 10% discount applied originally
@@ -660,7 +660,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccDollar.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccDollar.setIsSunk(false)
         ccDollar.setPayableOnEnrolment(true)
-        ccDollar.setTaxAdjustment(Money.ZERO)
+        ccDollar.setTaxAdjustment(Money.ZERO())
 
         // calculating actual amount for $20.00 discount, class price excluding tax $100.00,
         // 1 active enrolment with this discount applied
@@ -675,7 +675,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccFee.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccFee.setIsSunk(false)
         ccFee.setPayableOnEnrolment(true)
-        ccFee.setTaxAdjustment(Money.ZERO)
+        ccFee.setTaxAdjustment(Money.ZERO())
 
         // calculating actual amount for $50.00 fixed price discount, class price excluding tax $100.00,
         // 1 active enrolment with this discount applied
@@ -699,7 +699,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccPerc.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccPerc.setIsSunk(false)
         ccPerc.setPayableOnEnrolment(true)
-        ccPerc.setTaxAdjustment(Money.ZERO)
+        ccPerc.setTaxAdjustment(Money.ZERO())
 
         // calculating budgeted amount for 10% discount, class price excluding tax $100.00,
         // projected enrolments count 5, predicted discount usage 50%
@@ -714,7 +714,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccDollar.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccDollar.setIsSunk(false)
         ccDollar.setPayableOnEnrolment(true)
-        ccDollar.setTaxAdjustment(Money.ZERO)
+        ccDollar.setTaxAdjustment(Money.ZERO())
 
         // calculating budgeted amount for $20.00 discount, class price excluding tax $100.00,
         // projected enrolments count 5, predicted discount usage 50%
@@ -729,7 +729,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccFee.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccFee.setIsSunk(false)
         ccFee.setPayableOnEnrolment(true)
-        ccFee.setTaxAdjustment(Money.ZERO)
+        ccFee.setTaxAdjustment(Money.ZERO())
 
         // calculating budgeted amount for $50.00 fixed price discount, class price excluding tax $100.00,
         // projected enrolments count 5, predicted discount usage 10%
@@ -753,7 +753,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccPerc.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccPerc.setIsSunk(false)
         ccPerc.setPayableOnEnrolment(true)
-        ccPerc.setTaxAdjustment(Money.ZERO)
+        ccPerc.setTaxAdjustment(Money.ZERO())
 
         // calculating maximum amount for 10% discount, class price excluding tax $100.00,
         // maximum enrolments count 10, predicted discount usage 50%
@@ -768,7 +768,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccDollar.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccDollar.setIsSunk(false)
         ccDollar.setPayableOnEnrolment(true)
-        ccDollar.setTaxAdjustment(Money.ZERO)
+        ccDollar.setTaxAdjustment(Money.ZERO())
 
         // calculating maximum amount for $20.00 discount, class price excluding tax $100.00,
         // maximum enrolments count 10, predicted discount usage 50%
@@ -783,7 +783,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ccFee.setRepetitionType(ClassCostRepetitionType.DISCOUNT)
         ccFee.setIsSunk(false)
         ccFee.setPayableOnEnrolment(true)
-        ccFee.setTaxAdjustment(Money.ZERO)
+        ccFee.setTaxAdjustment(Money.ZERO())
 
         // calculating maximum amount for $50.00 fixed price discount, class price excluding tax $100.00,
         // maximum enrolments count 10, predicted discount usage 10%

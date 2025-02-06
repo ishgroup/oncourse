@@ -204,7 +204,7 @@ class CourseClassTest extends TestWithDatabase {
         discount.setAvailableFor(DiscountAvailabilityType.ONLINE_AND_OFFICE)
         discount.setPredictedStudentsPercentage(new BigDecimal(0.1))
         discount.setMinEnrolments(1)
-        discount.setMinValue(Money.ZERO)
+        discount.setMinValue(Money.ZERO())
         DiscountCourseClass dc = cayenneContext.newObject(DiscountCourseClass.class)
         dc.setCourseClass(cclass)
         dc.setDiscount(discount)
@@ -219,7 +219,7 @@ class CourseClassTest extends TestWithDatabase {
         discount2.setAvailableFor(DiscountAvailabilityType.ONLINE_AND_OFFICE)
         discount2.setPredictedStudentsPercentage(new BigDecimal(0.1))
         discount2.setMinEnrolments(1)
-        discount2.setMinValue(Money.ZERO)
+        discount2.setMinValue(Money.ZERO())
         DiscountCourseClass dc2 = cayenneContext.newObject(DiscountCourseClass.class)
         dc2.setCourseClass(cclass)
         dc2.setDiscount(discount2)
@@ -234,7 +234,7 @@ class CourseClassTest extends TestWithDatabase {
         discount3.setAvailableFor(DiscountAvailabilityType.ONLINE_AND_OFFICE)
         discount3.setPredictedStudentsPercentage(new BigDecimal(0.1))
         discount3.setMinEnrolments(1)
-        discount3.setMinValue(Money.ZERO)
+        discount3.setMinValue(Money.ZERO())
 
         Discount discount4 = cayenneContext.newObject(Discount.class)
         discount4.setName("assignByDefault_2")
@@ -246,7 +246,7 @@ class CourseClassTest extends TestWithDatabase {
         discount4.setAvailableFor(DiscountAvailabilityType.ONLINE_AND_OFFICE)
         discount4.setPredictedStudentsPercentage(new BigDecimal(0.1))
         discount4.setMinEnrolments(1)
-        discount4.setMinValue(Money.ZERO)
+        discount4.setMinValue(Money.ZERO())
 
         ClassCost cost = cayenneContext.newObject(ClassCost.class)
         ClassCost cost2 = cayenneContext.newObject(ClassCost.class)
@@ -498,8 +498,8 @@ class CourseClassTest extends TestWithDatabase {
         cc.setTax(tax)
         cc.setIncomeAccount(account)
         cc.setIsActive(true)
-        cc.setFeeExGst(Money.ZERO)
-        cc.setTaxAdjustment(Money.ZERO)
+        cc.setFeeExGst(Money.ZERO())
+        cc.setTaxAdjustment(Money.ZERO())
         cc.setDeliveryMode(DeliveryMode.CLASSROOM)
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
@@ -540,8 +540,8 @@ class CourseClassTest extends TestWithDatabase {
         cc.setTax(tax)
         cc.setIncomeAccount(account)
         cc.setIsActive(true)
-        cc.setFeeExGst(Money.ZERO)
-        cc.setTaxAdjustment(Money.ZERO)
+        cc.setFeeExGst(Money.ZERO())
+        cc.setTaxAdjustment(Money.ZERO())
         cc.setDeliveryMode(DeliveryMode.CLASSROOM)
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
@@ -725,8 +725,8 @@ class CourseClassTest extends TestWithDatabase {
         cc.setTax(tax)
         cc.setIncomeAccount(account)
         cc.setIsActive(true)
-        cc.setFeeExGst(Money.ZERO)
-        cc.setTaxAdjustment(Money.ZERO)
+        cc.setFeeExGst(Money.ZERO())
+        cc.setTaxAdjustment(Money.ZERO())
         cc.setDeliveryMode(DeliveryMode.CLASSROOM)
         cc.setIsClassFeeApplicationOnly(true)
         cc.setSuppressAvetmissExport(false)
@@ -740,14 +740,14 @@ class CourseClassTest extends TestWithDatabase {
 
         cc.addToCosts(classCost)
 
-        Assertions.assertEquals(Money.ZERO, cc.getFeeExGst(), "Checking FeeExGst ")
-        Assertions.assertEquals(Money.ZERO, cc.getFeeGST(), "Checking FeeGST ")
-        Assertions.assertEquals(Money.ZERO, cc.getFeeIncGst(), "Checking FeeIncGst ")
+        Assertions.assertEquals(Money.ZERO(), cc.getFeeExGst(), "Checking FeeExGst ")
+        Assertions.assertEquals(Money.ZERO(), cc.getFeeGST(), "Checking FeeGST ")
+        Assertions.assertEquals(Money.ZERO(), cc.getFeeIncGst(), "Checking FeeIncGst ")
 
         feeExGst = money
-        feeGST = Money.ZERO
+        feeGST = Money.ZERO()
         feeIncGst = feeExGst
-        deposit = Money.ZERO
+        deposit = Money.ZERO()
 
         cayenneContext.commitChanges()
 
@@ -767,7 +767,7 @@ class CourseClassTest extends TestWithDatabase {
         cc.addToCosts(classCost2)
 
         feeExGst = money.add(money2)
-        feeGST = Money.ZERO
+        feeGST = Money.ZERO()
         feeIncGst = feeExGst
         deposit = money2
 

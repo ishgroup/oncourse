@@ -171,7 +171,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 800L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
 
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
         List<AccountTransaction> att = cayenneContext.select(SelectQuery.query(AccountTransaction.class))
     }
 
@@ -196,7 +196,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 100L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertTrue(at.isEmpty())
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 100).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertTrue(at.isEmpty())
@@ -210,7 +210,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertTrue(at.isEmpty())
         invoiceLine = SelectById.query(InvoiceLine.class, 300).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertTrue(at.isEmpty())
@@ -291,42 +291,42 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 100L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertTrue(at.isEmpty())
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 100).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("33.00"), at.get(0).getAmount())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-33.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 200).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertTrue(at.isEmpty())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertTrue(at.isEmpty())
         invoiceLine = SelectById.query(InvoiceLine.class, 300).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.get(0).getAmount())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 400).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 500L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("67.00"), at.get(0).getAmount())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 500L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-67.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 500).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("10.00"), at.get(0).getAmount())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-10.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 600).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertTrue(at.isEmpty())
@@ -340,28 +340,28 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 800L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 800).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 900L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("80.00"), at.get(0).getAmount())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 900L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-80.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 900).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 1700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.get(0).getAmount())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 1700L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1700).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 1800L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("-100.00"), at.get(0).getAmount())
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 1800L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("100.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1800).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
     }
 
 	
@@ -386,77 +386,77 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 100L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertNull(at)
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 100).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("33.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-33.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 200).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertNull(at)
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertNull(at)
         invoiceLine = SelectById.query(InvoiceLine.class, 300).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 400).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 500L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("67.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 500L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-67.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 500).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("10.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-10.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 600).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("10.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 700L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-10.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 700).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 800L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 800L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 800).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 900L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("80.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 900L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-80.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 900).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1700L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1700).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1800L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1800L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1800).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
     }
 
 	
@@ -481,7 +481,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         transactions = getAccountTransactionsForInvoiceLineWithId(newContext, 100L, getRecordWithId(newContext, Account.class, 500L))
         Assertions.assertTrue(transactions.isEmpty())
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 100).selectOne(newContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         transactions = getAccountTransactionsForInvoiceLineWithId(newContext, 200L, getRecordWithId(newContext, Account.class, 200L))
         Assertions.assertTrue(transactions.isEmpty())
@@ -495,7 +495,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         transactions = getAccountTransactionsForInvoiceLineWithId(newContext, 300L, getRecordWithId(newContext, Account.class, 500L))
         Assertions.assertTrue(transactions.isEmpty())
         invoiceLine = SelectById.query(InvoiceLine.class, 300).selectOne(newContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         transactions = getAccountTransactionsForInvoiceLineWithId(newContext, 400L, getRecordWithId(newContext, Account.class, 200L))
         Assertions.assertTrue(transactions.isEmpty())
@@ -577,7 +577,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 100L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertTrue(at.isEmpty())
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 100).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertTrue(at.isEmpty())
@@ -591,7 +591,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertTrue(at.isEmpty())
         invoiceLine = SelectById.query(InvoiceLine.class, 300).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("33.00"), at.get(0).getAmount())
@@ -612,7 +612,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-10.00"), at.get(0).getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 600).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getAccountTransactionsForInvoiceLineWithId(cayenneContext, 700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertTrue(at.isEmpty())
@@ -672,21 +672,21 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 100L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertNull(at)
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 100).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("33.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-33.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 200).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertNull(at)
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertNull(at)
         invoiceLine = SelectById.query(InvoiceLine.class, 300).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("67.00"), at.getAmount())
@@ -707,7 +707,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-10.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 600).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("-40.00"), at.getAmount())
@@ -767,56 +767,56 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 100L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertNull(at)
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 100).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("33.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 200L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-33.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 200).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertNull(at)
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 300L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertNull(at)
         invoiceLine = SelectById.query(InvoiceLine.class, 300).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 400L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 400).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 500L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("67.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 500L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-67.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 500).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("10.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 600L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-10.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 600).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("10.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 700L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-10.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 700).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 800L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 800L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 800).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         Assertions.assertEquals(new Money("80.00"), getRecordWithId(cayenneContext, InvoiceLine.class, 900L).getFinalPriceToPayExTax())
 
@@ -825,7 +825,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 900L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-80.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 900).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1700L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
@@ -833,14 +833,14 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1700
         ).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1800L, getRecordWithId(cayenneContext, Account.class, 200L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1800L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1800).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
     }
 
 	
@@ -864,7 +864,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1400L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertNull(at)
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 1400).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         // testing self paced class with some fees remaining
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1500L, getRecordWithId(cayenneContext, Account.class, 200L))
@@ -872,7 +872,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1500L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-50.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1500).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         // testing self paced class with all fees remaining
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1600L, getRecordWithId(cayenneContext, Account.class, 200L))
@@ -880,7 +880,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1600L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1600).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
     }
 
 	
@@ -900,7 +900,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1200L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         InvoiceLine invoiceLine = SelectById.query(InvoiceLine.class, 1200).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
 
         // testing cancelled class not started yet.
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1300L, getRecordWithId(cayenneContext, Account.class, 200L))
@@ -908,7 +908,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         at = getLastAccountTransactionForInvoiceLineWithId(cayenneContext, 1300L, getRecordWithId(cayenneContext, Account.class, 500L))
         Assertions.assertEquals(new Money("-100.00"), at.getAmount())
         invoiceLine = SelectById.query(InvoiceLine.class, 1300).selectOne(cayenneContext)
-        Assertions.assertEquals(Money.ZERO, invoiceLine.getPrepaidFeesRemaining())
+        Assertions.assertEquals(Money.ZERO(), invoiceLine.getPrepaidFeesRemaining())
     }
 
 	
@@ -927,7 +927,7 @@ class DelayedEnrolmentIncomePostingJobTest extends TestWithDatabase {
         e.setSource(PaymentSource.SOURCE_ONCOURSE)
 
         Invoice i = cayenneContext.newObject(Invoice.class)
-        i.setAmountOwing(Money.ZERO)
+        i.setAmountOwing(Money.ZERO())
         i.setDebtorsAccount(getRecordWithId(cayenneContext, Account.class, 100L))
 
         InvoiceLine il = cayenneContext.newObject(InvoiceLine.class)

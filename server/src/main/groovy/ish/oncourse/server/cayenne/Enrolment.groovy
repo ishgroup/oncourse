@@ -99,7 +99,7 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 		}
 
 		if (getFeeHelpAmount() == null) {
-			setFeeHelpAmount(Money.ZERO)
+			setFeeHelpAmount(Money.ZERO())
 		}
 
 		if (getSuppressAvetmissExport() == null) {

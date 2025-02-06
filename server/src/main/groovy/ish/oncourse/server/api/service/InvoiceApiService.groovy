@@ -417,7 +417,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
                 iLine.courseClass = null
                 iLine.enrolment = null
             }
-            iLine.prepaidFeesRemaining = il.courseClassId || il.enrolmentId ? iLine.priceEachExTax.subtract(iLine.discountEachExTax).multiply(iLine.quantity) : Money.ZERO
+            iLine.prepaidFeesRemaining = il.courseClassId || il.enrolmentId ? iLine.priceEachExTax.subtract(iLine.discountEachExTax).multiply(iLine.quantity) : Money.ZERO()
             iLine.prepaidFeesAccount = accountDao.getById(cayenneModel.context, preferenceController.getDefaultAccountId(DefaultAccount.PREPAID_FEES.preferenceName))
 
             Money totalEachExTax = toMoneyValue(il.priceEachExTax - (il.discountEachExTax?:BigDecimal.ZERO))
@@ -466,13 +466,13 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
         Invoice currentInvoice = getEntityAndValidateExistence(context, id) as Invoice
         List<Invoice> listOfInvoices = invoicesToPay.collect { getEntityAndValidateExistence(context, it) as Invoice }
 
-        if (!currentInvoice.amountOwing.isLessThan(Money.ZERO)) {
+        if (!currentInvoice.amountOwing.isLessThan(Money.ZERO())) {
             validator.throwClientErrorException(id, 'id', "Invoice with id=$id is not a credit note.")
         }
         if (listOfInvoices.empty) {
             validator.throwClientErrorException(id, 'id', "There are no invoices selected.")
         } else {
-            listOfInvoices.find { !it.amountOwing.isGreaterThan(Money.ZERO) }
+            listOfInvoices.find { !it.amountOwing.isGreaterThan(Money.ZERO()) }
                     ?.with { EntityValidator.throwClientErrorException(it.id, 'id', "Invoice with id=$id has no amount owing.") }
         }
 
