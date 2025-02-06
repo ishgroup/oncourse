@@ -4,11 +4,16 @@ get:
   tags:
     - Checkout
   parameters:
-    - name: xPaymentSessionId
+    - name: sessionId
       in: query
       type: string
       required: true
       description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
+    - name: key
+      in: query
+      type: string
+      required: false
+      description: key of college instance
   responses:
     '204':
       description: Success response

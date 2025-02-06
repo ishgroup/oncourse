@@ -29,10 +29,14 @@ import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.checkout.CheckoutApiService
+import ish.oncourse.server.license.LicenseService
 import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
+
+import javax.ws.rs.ClientErrorException
+import javax.ws.rs.core.Response
 
 @CompileStatic
 class CheckoutApiImpl implements CheckoutApi {
@@ -66,6 +70,9 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     DiscountApiService discountApiService
+
+    @Inject
+    LicenseService licenseService
 
     @Override
     CheckoutResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin) {
@@ -221,7 +228,10 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    void submitPaymentRedirect(String paymentSessionId) {
+    void submitPaymentRedirect(String paymentSessionId, String key) {
+        if(licenseService.college_key && !key.equals(licenseService.getCollege_key()))
+            throw new ClientErrorException("Unexpected college request", Response.Status.BAD_REQUEST)
+
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
             it.onCoursePaymentSessionId = paymentSessionId
             it
