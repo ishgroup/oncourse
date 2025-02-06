@@ -23,9 +23,7 @@ import {
   checkoutSetPaymentProcessing
 } from '../../actions/checkoutPayment';
 import { CHECKOUT_SELECTION_FORM_NAME } from '../../components/CheckoutSelection';
-import {
-  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
-} from '../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from '../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
 import { CHECKOUT_SUMMARY_FORM } from '../../components/summary/CheckoutSummaryList';
 import CheckoutService from '../../services/CheckoutService';
 import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } from '../../utils';

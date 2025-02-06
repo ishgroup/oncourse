@@ -66,7 +66,7 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
       return;
     }
 
-    checkoutProcessStripeCCPayment(confirmationToken.id);
+    checkoutProcessStripeCCPayment(confirmationToken.id, stripe);
   };
 
   return <form onSubmit={handleSubmit} className="flex-column">
@@ -137,9 +137,9 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   return (
     <div
       style={disablePayment ? { pointerEvents: "none" } : null}
-      className={clsx(stripePromise && classes.iframe)}
+      className={clsx(stripePromise && !process.status && classes.iframe)}
     >
-      {!process.status && stripePromise &&
+      {!process.status && stripePromise && summary.payNowTotal > 0 &&
         <Elements
           stripe={stripePromise}
           options={{
