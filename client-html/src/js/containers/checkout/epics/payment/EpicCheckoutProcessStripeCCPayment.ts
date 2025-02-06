@@ -16,9 +16,8 @@ import { SHOW_MESSAGE } from '../../../../common/actions';
 import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import {
-  CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
-  checkoutPaymentSetCustomStatus,
+  checkoutGetPaymentStatusDetails,
   checkoutPaymentSetStatus,
   checkoutProcessPaymentFulfilled,
   checkoutSetPaymentProcessing
@@ -31,7 +30,7 @@ import { CHECKOUT_SUMMARY_FORM } from '../../components/summary/CheckoutSummaryL
 import CheckoutService from '../../services/CheckoutService';
 import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } from '../../utils';
 
-const request: EpicUtils.Request<any, { confirmationToken: string, stripe: Stripe }> = {
+const request: EpicUtils.Request<CheckoutResponse, { confirmationToken: string, stripe: Stripe }> = {
   type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   getData: async ({
     confirmationToken,
@@ -49,7 +48,7 @@ const request: EpicUtils.Request<any, { confirmationToken: string, stripe: Strip
 
     const sessionResponse = await CheckoutService.createSession(checkoutModel);
 
-    const checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, confirmationToken, null, sessionResponse.merchantReference);
+    let checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, confirmationToken, null, sessionResponse.merchantReference);
 
     if (checkoutResponse.actionRequired) {
       const {
@@ -60,23 +59,16 @@ const request: EpicUtils.Request<any, { confirmationToken: string, stripe: Strip
       if (error) {
         throw error;
       } else {
-        return  CheckoutService.submitPayment(sessionResponse.sessionId, null, paymentIntent.id, checkoutResponse.merchantReference);
+        checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, null, paymentIntent.id, checkoutResponse.merchantReference);
       }
     }
     return checkoutResponse;
   },
-  processData: (checkoutResponse: CheckoutResponse, s) => {
-    const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
-    const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
-
-    return [
-      paymentType !== "Credit card"
-        ? checkoutPaymentSetCustomStatus("success")
-        : { type: CHECKOUT_EMPTY_PAYMENT_ACTION },
-      checkoutProcessPaymentFulfilled(checkoutResponse),
-      checkoutSetPaymentProcessing(false),
-    ];
-  },
+  processData: checkoutResponse => [
+    checkoutGetPaymentStatusDetails(checkoutResponse.sessionId),
+    checkoutProcessPaymentFulfilled(checkoutResponse),
+    checkoutSetPaymentProcessing(false),
+  ],
   processError: response => {
     const actions: any = [
       checkoutSetPaymentProcessing(false),

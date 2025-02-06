@@ -15,7 +15,6 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { showMessage } from '../../../../../../common/actions';
 import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
-import { useAppSelector } from '../../../../../../common/utils/hooks';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
@@ -107,8 +106,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       .catch(res => InstantFetchErrorHandler(dispatch, res));
   }, []);
 
-  const currency = useAppSelector(state => state.currency);
-  
+
   const setLoading = (loading: boolean) => {
     dispatch(checkoutSetPaymentProcessing(loading));
   };
@@ -125,10 +123,11 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   };
 
   useEffect(() => {
-    if (summary.payNowTotal > 0) {
+    if (!process.status && summary.payNowTotal > 0) {
       proceedPayment();
     }
   }, [
+    process.status,
     summary.payNowTotal,
     summary.allowAutoPay,
     summary.paymentDate,
@@ -140,7 +139,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       style={disablePayment ? { pointerEvents: "none" } : null}
       className={clsx(stripePromise && classes.iframe)}
     >
-      {stripePromise &&
+      {!process.status && stripePromise &&
         <Elements
           stripe={stripePromise}
           options={{

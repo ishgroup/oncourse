@@ -3,18 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Epic } from "redux-observable";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
+import { Epic } from 'redux-observable';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import {
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
   checkoutPaymentSetCustomStatus,
-  checkoutProcessPayment,
   checkoutSetPaymentDetailsFetching,
   checkoutSetPaymentStatusDetails,
   checkoutSetPaymentSuccess
-} from "../../actions/checkoutPayment";
-import CheckoutService from "../../services/CheckoutService";
+} from '../../actions/checkoutPayment';
+import CheckoutService from '../../services/CheckoutService';
 
 const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
   type: CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
@@ -31,9 +30,6 @@ const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
         checkoutSetPaymentSuccess(true),
         checkoutPaymentSetCustomStatus("success")
       );
-      if (merchantReference !== "") {
-        actions.push(checkoutProcessPayment(false, sessionId));
-      }
     } else {
       actions.push(
         checkoutSetPaymentSuccess(false),
