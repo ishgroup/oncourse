@@ -27,10 +27,12 @@ import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.checkout.CheckoutApiService
 import ish.oncourse.server.license.LicenseService
 import ish.util.DiscountUtils
+import ish.validation.Validator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
@@ -230,7 +232,7 @@ class CheckoutApiImpl implements CheckoutApi {
     @Override
     void submitPaymentRedirect(String paymentSessionId, String key) {
         if(licenseService.college_key && !key.equals(licenseService.getCollege_key()))
-            throw new ClientErrorException("Unexpected college request", Response.Status.BAD_REQUEST)
+            EntityValidator.throwClientErrorException("key", "Unexpected college request")
 
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
             it.onCoursePaymentSessionId = paymentSessionId
