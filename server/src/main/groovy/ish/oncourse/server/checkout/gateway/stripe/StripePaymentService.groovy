@@ -84,7 +84,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                         .setCustomer(cardId)
                         .setConfirm(true)
                         .setConfirmationMethod(PaymentIntentCreateParams.ConfirmationMethod.MANUAL)
-                        .setReturnUrl(requestDTO.origin + "/checkout&onCourseSessionId="+requestDTO.onCoursePaymentSessionId)
+                        .setReturnUrl(requestDTO.origin + "/checkout?onCourseSessionId="+requestDTO.onCoursePaymentSessionId)
                         .setPaymentMethod(requestDTO.paymentMethodId)
                         .build()
 
