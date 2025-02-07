@@ -4,10 +4,10 @@ properties:
     type: string
     required: true
     description: session id
-  confirmationTokenId:
+  paymentMethod:
     type: string
     required: false
-    description: Set this to the confirmation token id from the successful Payment system create payment request to submit it on server
+    description: Set this to the payment method id from the successful Payment system create payment request to submit it on server
   transactionId:
     type: string
     required: false
