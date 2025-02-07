@@ -5,10 +5,12 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
+import { CheckoutResponse } from '@api/model';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { Elements, PaymentElement, useElements, useStripe, } from '@stripe/react-stripe-js';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
+import history from '../../../../../../constants/History';
 import { decimalMul, makeAppStyles } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -18,7 +20,7 @@ import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
-  checkoutClearPaymentStatus,
+  checkoutClearPaymentStatus, checkoutGetPaymentStatusDetails, checkoutProcessPaymentFulfilled,
   checkoutProcessStripeCCPayment,
   checkoutSetPaymentProcessing,
   clearCcIframeUrl
@@ -45,19 +47,20 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
   const handleSubmit = async event => {
     event.preventDefault();
 
-    if (!stripe) {
+    if (!stripe || !elements) {
       return;
     }
 
     setLoading(true);
 
     const { error: submitError } = await elements.submit();
+
     if (submitError) {
       handleError(submitError);
       return;
     }
 
-    const { error, confirmationToken } = await stripe.createConfirmationToken({
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
       elements
     });
 
@@ -66,7 +69,7 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
       return;
     }
 
-    checkoutProcessStripeCCPayment(confirmationToken.id, stripe);
+    checkoutProcessStripeCCPayment(paymentMethod.id, stripe);
   };
 
   return <form onSubmit={handleSubmit} className="flex-column">
@@ -87,6 +90,7 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
 const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
     summary,
+    completePayment,
     isPaymentProcessing,
     disablePayment,
     payment,
@@ -97,15 +101,28 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     dispatch
   } = props;
 
+  const query = new URLSearchParams(window.location.search);
+  const paymentIntentId = query.get("payment_intent");
+  const onCourseSessionId = query.get("onCourseSessionId");
+
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>(null);
   const { classes } = useStyles();
   
   useEffect(() => {
-    CheckoutService.getClientKey()
-      .then(res => setStripePromise(loadStripe(res)))
-      .catch(res => InstantFetchErrorHandler(dispatch, res));
+    if (paymentIntentId) {
+      history.replace({
+        pathname: history.location.pathname,
+        search: ""
+      });
+      CheckoutService.submitPayment(onCourseSessionId, null, paymentIntentId, null)
+        .then(res => completePayment(res))
+        .catch(error => InstantFetchErrorHandler(dispatch, error));
+    } else {
+      CheckoutService.getClientKey()
+        .then(res => setStripePromise(loadStripe(res)))
+        .catch(res => InstantFetchErrorHandler(dispatch, res));
+    }
   }, []);
-
 
   const setLoading = (loading: boolean) => {
     dispatch(checkoutSetPaymentProcessing(loading));
@@ -145,6 +162,7 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           options={{
             mode: 'payment',
             currency: 'aud',
+            paymentMethodCreation: 'manual',
             amount: decimalMul(summary.payNowTotal, 100)
           }}
         >
@@ -177,12 +195,17 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  checkoutProcessStripeCCPayment: (confirmationToken: string, stripe: Stripe) => {
-    dispatch(checkoutProcessStripeCCPayment(confirmationToken, stripe));
+  checkoutProcessStripeCCPayment: (paymentMethod: string, stripe: Stripe) => {
+    dispatch(checkoutProcessStripeCCPayment(paymentMethod, stripe));
   },
   checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices()),
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
+  completePayment: (checkoutResponse: CheckoutResponse) => {
+    dispatch(checkoutGetPaymentStatusDetails(checkoutResponse.sessionId));
+    dispatch(checkoutProcessPaymentFulfilled(checkoutResponse));
+    dispatch(checkoutSetPaymentProcessing(false));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StripePaymentPage);

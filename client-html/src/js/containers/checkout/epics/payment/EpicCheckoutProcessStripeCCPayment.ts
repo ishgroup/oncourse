@@ -15,6 +15,7 @@ import { Epic } from 'redux-observable';
 import { SHOW_MESSAGE } from '../../../../common/actions';
 import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import { LSSetItem } from '../../../../common/utils/storage';
 import {
   CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   checkoutGetPaymentStatusDetails,
@@ -26,12 +27,17 @@ import { CHECKOUT_SELECTION_FORM_NAME } from '../../components/CheckoutSelection
 import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from '../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
 import { CHECKOUT_SUMMARY_FORM } from '../../components/summary/CheckoutSummaryList';
 import CheckoutService from '../../services/CheckoutService';
-import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } from '../../utils';
+import {
+  getCheckoutModel,
+  getPaymentErrorMessage,
+  getStoredPaymentStateKey,
+  paymentErrorMessageDefault
+} from '../../utils';
 
-const request: EpicUtils.Request<CheckoutResponse, { confirmationToken: string, stripe: Stripe }> = {
+const request: EpicUtils.Request<CheckoutResponse, { paymentMethod: string, stripe: Stripe }> = {
   type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   getData: async ({
-    confirmationToken,
+                    paymentMethod,
     stripe
   }, s) => {
 
@@ -46,18 +52,18 @@ const request: EpicUtils.Request<CheckoutResponse, { confirmationToken: string, 
 
     const sessionResponse = await CheckoutService.createSession(checkoutModel);
 
-    let checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, confirmationToken, null, sessionResponse.merchantReference);
+    const checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, paymentMethod, null, sessionResponse.merchantReference);
 
     if (checkoutResponse.actionRequired) {
+
+      LSSetItem(getStoredPaymentStateKey(sessionResponse.sessionId), JSON.stringify(s.checkout));
+
       const {
         error,
-        paymentIntent
       } = await stripe.handleCardAction(checkoutResponse.clientSecret);
 
       if (error) {
         throw error;
-      } else {
-        checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, null, paymentIntent.id, checkoutResponse.merchantReference);
       }
     }
     return checkoutResponse;

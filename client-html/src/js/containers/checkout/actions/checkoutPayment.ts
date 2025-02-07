@@ -79,12 +79,12 @@ export const checkoutSetPaymentSuccess = (isSuccess: boolean) => ({
 });
 
 export const checkoutProcessStripeCCPayment = (
-  confirmationToken: string,
+  paymentMethod: string,
   stripe: Stripe
 ) => ({
   type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   payload: {
-    confirmationToken,
+    paymentMethod,
     stripe
   }
 });

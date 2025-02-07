@@ -252,6 +252,7 @@ export interface CreditCardPaymentPageProps {
   checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
   clearCcIframeUrl: () => void;
   checkoutProcessStripeCCPayment?: (confirmationToken: string, stripe: Stripe) => void;
+  completePayment?: (checkoutResponse: CheckoutResponse) => void;
   checkoutGetPaymentStatusDetails?: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;
   checkoutUpdateSummaryPrices?: NoArgFunction;

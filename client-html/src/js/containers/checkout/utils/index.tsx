@@ -19,6 +19,7 @@ import {
 } from '@api/model';
 import { differenceInMinutes, format, isBefore } from 'date-fns';
 import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   CheckoutCourse,
   CheckoutCourseClass,
@@ -34,6 +35,7 @@ import MembershipProductService from '../../entities/membershipProducts/services
 import {
   CHECKOUT_MEMBERSHIP_COLUMNS,
   CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_STORED_STATE_KEY,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
   CheckoutCurrentStepType
@@ -619,6 +621,16 @@ export const getPaymentErrorMessage = response => {
         ? response.error
         : paymentErrorMessageDefault
       : null;
+};
+
+export const getStoredPaymentStateKey = (xPaymentSessionId: string) => `${CHECKOUT_STORED_STATE_KEY}-${xPaymentSessionId}`;
+
+export const clearStoredPaymentsState = () => {
+  for (const storageKey in localStorage) {
+    if (storageKey.includes(CHECKOUT_STORED_STATE_KEY)) {
+      LSRemoveItem(storageKey);
+    }
+  }
 };
 
 export * from "./asyncActions";

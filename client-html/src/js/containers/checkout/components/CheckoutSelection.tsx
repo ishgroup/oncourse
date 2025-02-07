@@ -26,7 +26,7 @@ import AppBarContainer from '../../../common/components/layout/AppBarContainer';
 import Drawer from '../../../common/components/layout/Drawer';
 import { setListEditRecord } from '../../../common/components/list-view/actions';
 import LoadingIndicator from '../../../common/components/progress/LoadingIndicator';
-import { latestActivityStorageHandler } from '../../../common/utils/storage';
+import { latestActivityStorageHandler, LSGetItem } from '../../../common/utils/storage';
 import uniqid from '../../../common/utils/uniqid';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../constants/Config';
 import history from '../../../constants/History';
@@ -61,7 +61,7 @@ import {
 } from '../actions';
 import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from '../actions/checkoutContact';
 import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from '../actions/checkoutPayment';
-import { checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
+import { checkoutRestoreState, checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
 import {
   checkoutClearCourseClassList,
   checkoutGetClassPaymentPlans,
@@ -86,7 +86,9 @@ import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
+  clearStoredPaymentsState,
   getCheckoutCurrentStep,
+  getStoredPaymentStateKey,
   processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
@@ -553,9 +555,21 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
     const cartId = query.get("cartId");
+    const paymentIntentId = query.get("payment_intent");
+    const onCourseSessionId = query.get("onCourseSessionId");
 
-    if (window.location.search) {
+    if (!paymentIntentId && window.location.search) {
       history.replace("/checkout");
+    }
+
+    if (paymentIntentId && onCourseSessionId) {
+      const storedState = LSGetItem(getStoredPaymentStateKey(onCourseSessionId));
+      if (storedState) {
+        dispatch(checkoutRestoreState(JSON.parse(storedState)));
+        clearStoredPaymentsState();
+      } else {
+        history.replace("/checkout");
+      }
     }
 
     if (cartId) {

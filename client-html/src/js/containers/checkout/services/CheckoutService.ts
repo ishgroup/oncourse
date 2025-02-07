@@ -36,9 +36,9 @@ class CheckoutService {
     return this.checkoutApi.updateModel(checkoutModel);
   }
   
-  public submitPayment(onCoursePaymentSessionId: string, confirmationTokenId: string, transactionId: string, merchantReference: string): Promise<CheckoutResponse> {
+  public submitPayment(onCoursePaymentSessionId: string, paymentMethodId: string, transactionId: string, merchantReference: string): Promise<CheckoutResponse> {
     return this.checkoutApi.submitPayment({
-      onCoursePaymentSessionId, confirmationTokenId, transactionId, origin: window.location.origin, merchantReference
+      onCoursePaymentSessionId, paymentMethodId, transactionId, origin: window.location.origin, merchantReference
     });
   }
 
