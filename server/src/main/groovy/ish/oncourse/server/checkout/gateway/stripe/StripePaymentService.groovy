@@ -61,10 +61,9 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
     SessionAttributes confirmExistedPayment(String transactionId) {
         Stripe.apiKey = apiKey
         PaymentIntent resource = PaymentIntent.retrieve(transactionId)
-        PaymentIntentConfirmParams params = PaymentIntentConfirmParams.builder().build()
 
         try {
-            PaymentIntent paymentIntent = resource.confirm(params)
+            PaymentIntent paymentIntent = resource.confirm()
             def sessionAttributes = new SessionAttributes()
             buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
             return sessionAttributes
