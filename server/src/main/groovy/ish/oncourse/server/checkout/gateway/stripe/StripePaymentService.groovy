@@ -58,12 +58,15 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         return new SessionAttributes()
     }
 
-    SessionAttributes confirmExistedPayment(String transactionId) {
+    SessionAttributes confirmExistedPayment(CheckoutSubmitRequestDTO requestDTO) {
         Stripe.apiKey = apiKey
-        PaymentIntent resource = PaymentIntent.retrieve(transactionId)
+        PaymentIntent resource = PaymentIntent.retrieve(requestDTO.transactionId)
+        PaymentIntentConfirmParams params = PaymentIntentConfirmParams.builder()
+                .setReturnUrl(requestDTO.origin + "/checkout?onCourseSessionId="+requestDTO.onCoursePaymentSessionId)
+                .build()
 
         try {
-            PaymentIntent paymentIntent = resource.confirm()
+            PaymentIntent paymentIntent = resource.confirm(params)
             def sessionAttributes = new SessionAttributes()
             buildSessionAttributesFromPaymentIntent(sessionAttributes, paymentIntent)
             return sessionAttributes

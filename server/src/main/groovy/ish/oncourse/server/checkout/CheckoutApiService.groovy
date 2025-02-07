@@ -201,7 +201,7 @@ class CheckoutApiService {
             } else {
                 if(paymentService instanceof StripePaymentService) {
                     if(submitRequestDTO.transactionId != null)
-                        sessionAttributes = (paymentService as StripePaymentService).confirmExistedPayment(submitRequestDTO.transactionId)
+                        sessionAttributes = (paymentService as StripePaymentService).confirmExistedPayment(submitRequestDTO)
                     else {
                         if(submitRequestDTO.paymentMethodId == null || submitRequestDTO.origin == null)
                             paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'paymentMethodId', error: 'confirmation token and origin are required for this method')])
