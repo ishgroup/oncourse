@@ -4,7 +4,7 @@ properties:
     type: string
     required: true
     description: session id
-  paymentMethod:
+  paymentMethodId:
     type: string
     required: false
     description: Set this to the payment method id from the successful Payment system create payment request to submit it on server
