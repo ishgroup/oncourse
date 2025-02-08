@@ -43,7 +43,8 @@
   category: 
   sortOn: ""
   visible: true
-  
+  locale: aus
+
 - name: "Traineeship Training Plan (No Tutor Details)"
   entityClass: "Enrolment"
   keyCode: "ish.onCourse.traineeTrainingPlanReportNoTutorDetails"
@@ -55,7 +56,8 @@
   category: 
   sortOn: ""
   visible: false
-  
+  locale: aus
+
 - name: "Training Plan Report"
   entityClass: "SessionModule"
   keyCode: "ish.onCourse.trainingPlanSubreport"
@@ -65,7 +67,8 @@
   category: 
   sortOn: ""
   visible: false
-  
+  locale: aus
+
 - name: "Transaction report"
   entityClass: "Contact"
   keyCode: "ish.onCourse.statementReport"
@@ -189,7 +192,8 @@
   category: 
   sortOn: "releaseDate"
   visible: false
-  
+  locale: aus
+
 - name: "Invoice"
   entityClass: "InvoiceLine"
   keyCode: "ish.onCourse.invoiceReport"
@@ -276,7 +280,8 @@
   category: 
   sortOn: ""
   visible: false
-  
+  locale: aus
+
 - name: "Class InvoiceLine Liability Subreport"
   entityClass: "InvoiceLine"
   keyCode: "ish.onCourse.CourseClass.prepaidFeesLiability.invoiceLines"
@@ -466,7 +471,8 @@
   category: 
   sortOn: "outcome.startDate"
   visible: false
-  
+  locale: aus
+
 - name: "Voucher Products List"
   entityClass: "VoucherProduct"
   keyCode: "ish.onCourse.VoucherProductListReport"
@@ -538,7 +544,8 @@
   category: 
   sortOn: ""
   visible: false
-  
+  locale: aus
+
 - name: "Class Roll - Single Session"
   entityClass: "CourseClass"
   keyCode: "ish.onCourse.ClassRollSingleSession"
@@ -735,7 +742,8 @@
   category: 
   sortOn: "enrolment.courseClass.course.qualification.nationalCode;fundingSource"
   visible: true
-  
+  locale: aus
+
 - name: "Individual Assessment Plan"
   entityClass: "Enrolment"
   keyCode: "ish.onCourse.trainingPlanAssessmentReport"
@@ -747,7 +755,8 @@
   category: 
   sortOn: ""
   visible: true
-  
+  locale: aus
+
 - name: "Individual Training and Assessment Plan"
   entityClass: "Enrolment"
   keyCode: "ish.onCourse.accreditedTrainingPlanConditionsReport"
@@ -759,7 +768,8 @@
   category: 
   sortOn: ""
   visible: true
-  
+  locale: aus
+
 - name: "InvoiceLines Subreport"
   entityClass: "InvoiceLine"
   keyCode: "ish.oncourse.discount.takeUp.discountedInvoiceLines"
@@ -1014,7 +1024,8 @@
   category: 
   sortOn: ""
   visible: false
-  
+  locale: aus
+
 - name: "Simple Class Roll Detail"
   entityClass: "PrintableAttendance"
   keyCode: "ish.onCourse.simpleroll"
@@ -1179,7 +1190,8 @@
   category: 
   sortOn: ""
   visible: true
-  
+  locale: aus
+
 - name: "Session Tutor Pay Subreport"
   entityClass: "Session"
   keyCode: "ish.onCourse.sessionTutorPaySubreport"
@@ -1469,7 +1481,8 @@
   category: 
   sortOn: ""
   visible: false
-  
+  locale: aus
+
 - name: "Payline Subreport"
   entityClass: "Payline"
   keyCode: "ish.onCourse.paylineSubreport"
@@ -1785,7 +1798,8 @@
   category: 
   sortOn: ""
   visible: true
-  
+  locale: aus
+
 - name: "Training Plan Delivery"
   entityClass: "SessionModule"
   keyCode: "ish.onCourse.trainingPlanDeliverySubreport"
@@ -1795,7 +1809,8 @@
   category: 
   sortOn: ""
   visible: false
-  
+  locale: aus
+
 - name: "Mailing List"
   entityClass: "Contact"
   keyCode: "ish.onCourse.mailingListReport"

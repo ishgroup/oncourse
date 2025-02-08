@@ -19,7 +19,7 @@ public class DisplayService {
     private Boolean ausReporting = null;
 
     public Boolean getAusReporting() {
-        return ausReporting;
+        return ausReporting == null ? Boolean.TRUE : ausReporting;
     }
 
 

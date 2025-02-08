@@ -60,25 +60,25 @@ public class PreferenceController extends CommonPreferenceController {
 			CUSTOM_LOGO_COLOUR, CUSTOM_LOGO_COLOUR_SMALL
 	);
 
+    @Inject
+    private DisplayService displayService;
+
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
-								TagService tagService, DisplayService displayService,
-								ISchedulerService schedulerService) {
+								TagService tagService, ISchedulerService schedulerService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		this.pluginsPrefsService = pluginsPrefsService;
 		this.schedulerService = schedulerService;
 		sharedController = this;
-		initDisplayPreferencesFromConfigFile(displayService);
 	}
 
-	private void initDisplayPreferencesFromConfigFile(DisplayService displayService) {
-		if(displayService.getAusReporting() != null)
-			setAusReporting(displayService.getAusReporting());
-	}
 
+	public Boolean getAusReporting() {
+		return displayService.getAusReporting();
+	}
 
 	public Long getTimeoutMs() {
 		Integer timeout =  getTimeoutSec();
@@ -109,6 +109,9 @@ public class PreferenceController extends CommonPreferenceController {
 		if (defaultAccountPreferences.contains(key)) {
 			return getDefaultAccountId(key);
 		}
+
+		if(key.equals(AUS_REPORTING))
+			return getAusReporting();
 
 		if(key.startsWith("plugins.")){
 			return pluginsPrefsService.getProperty(key);
