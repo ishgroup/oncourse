@@ -32,13 +32,9 @@ import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.checkout.CheckoutApiService
 import ish.oncourse.server.license.LicenseService
 import ish.util.DiscountUtils
-import ish.validation.Validator
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
-
-import javax.ws.rs.ClientErrorException
-import javax.ws.rs.core.Response
 
 @CompileStatic
 class CheckoutApiImpl implements CheckoutApi {
@@ -77,7 +73,7 @@ class CheckoutApiImpl implements CheckoutApi {
     LicenseService licenseService
 
     @Override
-    CheckoutResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin) {
+    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin) {
         return checkoutApiService.createSession(checkoutModel, xorigin)
     }
 
@@ -224,9 +220,14 @@ class CheckoutApiImpl implements CheckoutApi {
        return checkoutApiService.getStatus(sessionId)
     }
 
+
+    CheckoutCCResponseDTO submitCreditCardPayment(CheckoutSubmitRequestDTO submitRequestDTO) {
+        checkoutApiService.submitCreditCardPayment(submitRequestDTO)
+    }
+
     @Override
-    CheckoutResponseDTO submitPayment(CheckoutSubmitRequestDTO submitRequestDTO) {
-        checkoutApiService.submitPayment(submitRequestDTO)
+    CheckoutResponseDTO submitPayment(CheckoutModelDTO checkoutModelDTO) {
+        checkoutApiService.submitPayment(checkoutModelDTO)
     }
 
     @Override
@@ -238,7 +239,7 @@ class CheckoutApiImpl implements CheckoutApi {
             it.onCoursePaymentSessionId = paymentSessionId
             it
         }
-        checkoutApiService.submitPayment(submitRequestDTO)
+        checkoutApiService.submitCreditCardPayment(submitRequestDTO)
     }
 
 }

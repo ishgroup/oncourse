@@ -1,25 +1,20 @@
 post:
-  operationId: createSession
+  operationId: submitCreditCardPayment
   description: Process checkout
   tags:
     - Checkout
   parameters:
-    - name: checkoutModel
+    - name: submitRequest
       in: body
-      description: checkout objects
       required: true
       schema:
-        $ref: './def/entity/checkout/CheckoutModel.yaml'
-    - name: XOrigin
-      in: header
-      type: string
-      required: false
-      description: hostname of the onCourse client
+        $ref: './def/entity/checkout/CheckoutSubmitRequest.yaml'
+      description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
   responses:
     '200':
       description: Success response
       schema:
-        $ref: './def/entity/checkout/CreateSessionResponse.yaml'
+        $ref: './def/entity/checkout/CheckoutCCResponse.yaml'
     '400':
       description: Validation error
       schema:

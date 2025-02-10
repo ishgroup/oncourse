@@ -41,6 +41,8 @@ paths:
     $ref: './path/checkout/updateModel/api.yaml'
   /checkout/submitPaymentRedirect:
     $ref: './path/checkout/submitPaymentRedirect/api.yaml'
+  /checkout/submitCCPayment:
+    $ref: './path/checkout/submitCCPayment/api.yaml'
   /checkout/submitPayment:
     $ref: './path/checkout/submitPayment/api.yaml'
   /checkout/status:

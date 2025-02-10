@@ -8,11 +8,11 @@
 
 package ish.oncourse.server.checkout.gateway
 
+import ish.common.checkout.gateway.SessionAttributes
 import ish.math.Money
 import ish.oncourse.server.api.checkout.Checkout
-import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
+import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.cayenne.Contact
-import ish.common.checkout.gateway.SessionAttributes
 
 interface PaymentServiceInterface extends PaymentServiceTrait {
 
@@ -20,7 +20,7 @@ interface PaymentServiceInterface extends PaymentServiceTrait {
 
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact)
 
-    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference)
+    CheckoutCCResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference)
 
     SessionAttributes checkStatus(String sessionIdOrAccessCode)
 

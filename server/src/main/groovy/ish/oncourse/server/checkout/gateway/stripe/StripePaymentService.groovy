@@ -24,7 +24,7 @@ import ish.common.checkout.gateway.stripe.payment.PaymentIntentStatus
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
-import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
+import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
@@ -103,7 +103,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
     }
 
     @Override
-    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
+    CheckoutCCResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
         succeedPayment(checkout, sendInvoice)
     }
 

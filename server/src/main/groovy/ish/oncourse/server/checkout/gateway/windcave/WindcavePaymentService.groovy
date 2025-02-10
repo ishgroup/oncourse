@@ -13,6 +13,7 @@ import ish.common.checkout.gateway.SessionAttributes
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
+import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.SessionStatusDTO
@@ -36,7 +37,7 @@ class WindcavePaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
+    CheckoutCCResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
         if (preferenceController.isPurchaseWithoutAuth()) {
             return succeedPayment(checkout, sendInvoice)
         } else {
@@ -54,7 +55,7 @@ class WindcavePaymentService implements PaymentServiceInterface {
                 checkout.context.commitChanges()
                 handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber,  new SessionStatusDTO(complete: sessionAttributes.complete, authorised: sessionAttributes.authorised, responseText: sessionAttributes.statusText))
             }
-            return new CheckoutResponseDTO()
+            return new CheckoutCCResponseDTO()
         }
     }
 

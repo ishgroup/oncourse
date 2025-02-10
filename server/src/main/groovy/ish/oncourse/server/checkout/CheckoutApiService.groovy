@@ -126,46 +126,58 @@ class CheckoutApiService {
         return dto
     }
 
-    CheckoutResponseDTO createSession(CheckoutModelDTO checkoutModel, String xOrigin) {
-        Checkout checkout = checkoutController.createCheckout(checkoutModel)
+    private Checkout processPaymentTypeChoice(CheckoutModelDTO checkoutModelDTO, Boolean creditCardExpected) {
         paymentService = getPaymentServiceByGatewayType()
-        saveModel(checkoutModel, checkout, paymentService)
+        Checkout checkout = checkoutController.createCheckout(checkoutModelDTO)
+        if(!checkout.isCreditCard().equals(creditCardExpected))
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, "This endpoint cannot be used for selected payment type. See submitCCPayment, submitPayment")
+        saveModel(checkoutModelDTO, checkout, paymentService)
+
+        return checkout
+    }
+
+    CheckoutResponseDTO submitPayment(CheckoutModelDTO checkoutModelDTO) {
+        def checkout = processPaymentTypeChoice(checkoutModelDTO, false)
+
         CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
+        paymentService.fillResponse(dtoResponse, checkout)
+        return dtoResponse
+    }
 
-        if (checkout.isCreditCard()) {
-            if (checkoutModel.payWithSavedCard) {
-                return dtoResponse
-            }
+    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xOrigin) {
+        def checkout = processPaymentTypeChoice(checkoutModel, true)
 
-            String merchantReference = UUID.randomUUID().toString()
+        CreateSessionResponseDTO dtoResponse = new CreateSessionResponseDTO()
+        if (checkoutModel.payWithSavedCard) {
+            return dtoResponse
+        }
 
-            if(paymentService instanceof StripePaymentService) {
-                checkoutSessionService.saveCheckoutSession(checkoutModel, merchantReference)
-                dtoResponse.sessionId = merchantReference
-                return dtoResponse
-            }
+        String merchantReference = UUID.randomUUID().toString()
 
-            SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
-            if (attributes.sessionId) {
-                dtoResponse.sessionId = attributes.sessionId
-                dtoResponse.ccFormUrl = attributes.ccFormUrl
-                dtoResponse.clientSecret = attributes.clientSecret
-                dtoResponse.merchantReference = merchantReference
+        if(paymentService instanceof StripePaymentService) {
+            checkoutSessionService.saveCheckoutSession(checkoutModel, merchantReference)
+            dtoResponse.sessionId = merchantReference
+            return dtoResponse
+        }
 
-                checkoutSessionService.saveCheckoutSession(checkoutModel, dtoResponse.sessionId)
-            } else if (attributes.errorMessage) {
-                paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
-            } else {
-                paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
-            }
+        SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
+        if (attributes.sessionId) {
+            dtoResponse.sessionId = attributes.sessionId
+            dtoResponse.ccFormUrl = attributes.ccFormUrl
+            dtoResponse.clientSecret = attributes.clientSecret
+            dtoResponse.merchantReference = merchantReference
+
+            checkoutSessionService.saveCheckoutSession(checkoutModel, dtoResponse.sessionId)
+        } else if (attributes.errorMessage) {
+            paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
         } else {
-            paymentService.fillResponse(dtoResponse, checkout)
+            paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
         }
 
         return dtoResponse
     }
 
-    CheckoutResponseDTO submitPayment(CheckoutSubmitRequestDTO submitRequestDTO) {
+    CheckoutCCResponseDTO submitCreditCardPayment(CheckoutSubmitRequestDTO submitRequestDTO) {
         paymentService = getPaymentServiceByGatewayType()
 
         synchronized (this.getClass()) {
@@ -210,7 +222,7 @@ class CheckoutApiService {
                     }
 
                     if(sessionAttributes.secure3dRequired) {
-                        return new CheckoutResponseDTO().with {
+                        return new CheckoutCCResponseDTO().with {
                             it.clientSecret = sessionAttributes.clientSecret
                             it.actionRequired = sessionAttributes.secure3dRequired
                             it
@@ -256,9 +268,7 @@ class CheckoutApiService {
             paymentIn.privateNotes = sessionAttributes.responceJson
 
             checkoutSessionService.removeNotCommitCheckoutSession(submitRequestDTO.onCoursePaymentSessionId, checkout.context)
-
-            CheckoutResponseDTO dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, merchantReference)
-            dtoResponse.sessionId = paymentSystemSessionId
+            CheckoutCCResponseDTO dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, merchantReference)
 
             postEnrolmentSuccessfulEvents(checkout)
             return dtoResponse

@@ -11,6 +11,7 @@ package ish.oncourse.server.checkout.gateway
 import ish.common.types.PaymentStatus
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutArticleDTO
+import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutEnrolmentDTO
 import ish.oncourse.server.api.v1.model.CheckoutMembershipDTO
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
@@ -38,7 +39,7 @@ trait PaymentServiceTrait {
 
     private static final Logger logger = LogManager.getLogger(PaymentServiceTrait)
 
-    CheckoutResponseDTO succeedPayment(Checkout checkout, Boolean sendInvoice) {
+    CheckoutCCResponseDTO succeedPayment(Checkout checkout, Boolean sendInvoice) {
         checkout.paymentIn.status = PaymentStatus.SUCCESS
         checkout.paymentIn.privateNotes += ' Payment successful.'
         checkout.paymentIn.confirmationStatus = sendInvoice ? NOT_SENT : DO_NOT_SEND
@@ -49,9 +50,10 @@ trait PaymentServiceTrait {
         }
         saveCheckout(checkout)
 
-        def dtoResponse = new CheckoutResponseDTO()
-        fillResponse(dtoResponse, checkout)
-        return dtoResponse
+        return new CheckoutCCResponseDTO().with {
+            it.paymentId = checkout.paymentIn.id
+            it
+        }
     }
 
     void saveCheckout(Checkout checkout) {

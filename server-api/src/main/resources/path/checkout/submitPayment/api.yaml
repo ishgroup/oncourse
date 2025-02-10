@@ -1,14 +1,14 @@
 post:
   operationId: submitPayment
-  description: Process checkout
+  description: Process not credit card payment type
   tags:
     - Checkout
   parameters:
-    - name: submitRequest
+    - name: checkoutModel
       in: body
       required: true
       schema:
-        $ref: './def/entity/checkout/CheckoutSubmitRequest.yaml'
+        $ref: './def/entity/checkout/CheckoutModel.yaml'
       description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
   responses:
     '200':

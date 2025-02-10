@@ -12,6 +12,7 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import ish.math.Money
 import ish.oncourse.server.api.checkout.Checkout
+import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
@@ -32,7 +33,7 @@ class EWayPaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    CheckoutResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
+    CheckoutCCResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
         succeedPayment(checkout, sendInvoice)
     }
 

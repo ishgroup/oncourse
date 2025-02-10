@@ -1,0 +1,14 @@
+type: object
+properties:
+  actionRequired:
+    type: boolean
+    required: false
+    description: if transaction requires additional client actions
+  paymentId:
+    type: integer
+    format: int64
+    required: true
+  clientSecret:
+    type: string
+    require: false
+    description: client secret for embedded form operation
