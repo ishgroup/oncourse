@@ -13,7 +13,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 import clsx from 'clsx';
 import { format } from 'date-fns';
