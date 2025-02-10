@@ -271,7 +271,7 @@
   sortOn: ""
   visible: false
   
-- name: "MCC-isVET Subreport"
+- name: "Class Roll - Contact No-isVET Subreport"
   entityClass: "Enrolment"
   keyCode: "ish.onCourse.roll.isVET.sub"
   report: "CourseClass/subreports/ClassRollDetailnewInvoice.jrxml"
@@ -367,7 +367,8 @@
   description: "To create a Class Roll that includes the contact telephone numbers\
     \ of students in the Class. This roll is not designed to be distributed around\
     \ the Class Room. This report prints in Landscape format."
-  category: 
+  category:
+  locale: aus
   sortOn: ""
   visible: true
   
