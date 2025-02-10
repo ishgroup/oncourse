@@ -32,6 +32,7 @@ import {
 import {
   CHECKOUT_CLEAR_CC_IFRAME_URL,
   CHECKOUT_CLEAR_PAYMENT_STATUS,
+  CHECKOUT_CREATE_PAYMENT_SESSION_FULFILLED,
   CHECKOUT_GET_ACTIVE_PAYMENT_TYPES_FULFILLED,
   CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
   CHECKOUT_GET_SAVED_CARD_FULFILLED,
@@ -122,8 +123,8 @@ const initial: CheckoutState = {
     isProcessing: false,
     isFetchingDetails: false,
     isSuccess: false,
-    wcIframeUrl: "",
-    xPaymentSessionId: "",
+    ccFormUrl: "",
+    sessionId: "",
     merchantReference: "",
     process: {
       status: null,
@@ -861,18 +862,14 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
       };
     }
 
+    case CHECKOUT_CREATE_PAYMENT_SESSION_FULFILLED:
     case CHECKOUT_PROCESS_PAYMENT_FULFILLED: {
-      const {
-        sessionId, ccFormUrl, ...rest
-      } = action.payload;
 
       return {
         ...state,
         payment: {
           ...state.payment,
-          xPaymentSessionId: sessionId,
-          wcIframeUrl: ccFormUrl,
-          ...rest
+          ...action.payload
         }
       };
     }
@@ -883,7 +880,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         payment: {
           ...state.payment,
           clientSecret: null,
-          wcIframeUrl: ""
+          ccFormUrl: ""
         }
       };
     }

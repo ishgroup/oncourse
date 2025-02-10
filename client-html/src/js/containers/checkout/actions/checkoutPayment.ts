@@ -3,9 +3,9 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CheckoutPaymentPlan, CheckoutResponse } from "@api/model";
+import { CheckoutCCResponse, CheckoutPaymentPlan, CheckoutResponse, CreateSessionResponse } from '@api/model';
 import { Stripe } from '@stripe/stripe-js';
-import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
+import { _toRequestType, FULFILLED } from '../../../common/actions/ActionUtils';
 
 export const CHECKOUT_GET_ACTIVE_PAYMENT_TYPES = _toRequestType("checkout/get/peyment/method");
 export const CHECKOUT_GET_ACTIVE_PAYMENT_TYPES_FULFILLED = FULFILLED(CHECKOUT_GET_ACTIVE_PAYMENT_TYPES);
@@ -30,12 +30,20 @@ export const CHECKOUT_PROCESS_PAYMENT = _toRequestType("checkout/process/cc/paym
 export const CHECKOUT_PROCESS_STRIPE_CC_PAYMENT = _toRequestType("checkout/process/stripe/cc/payment");
 export const CHECKOUT_PROCESS_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_PAYMENT);
 
+export const CHECKOUT_CREATE_PAYMENT_SESSION = _toRequestType("checkout/create/payment/session");
+export const CHECKOUT_CREATE_PAYMENT_SESSION_FULFILLED = FULFILLED(CHECKOUT_CREATE_PAYMENT_SESSION);
+
 export const CHECKOUT_CLEAR_CC_IFRAME_URL = "checkout/clear/wcIframe/url";
 
 export const CHECKOUT_SET_PAYMENT_PLANS = "checkout/set/payment/plans";
 
-export const checkoutProcessPaymentFulfilled = (response: CheckoutResponse) => ({
+export const checkoutProcessPaymentFulfilled = (response: CheckoutResponse | CheckoutCCResponse) => ({
   type: CHECKOUT_PROCESS_PAYMENT_FULFILLED,
+  payload: response
+});
+
+export const checkoutCreatePaymentSessionFulfilled = (response: CreateSessionResponse) => ({
+  type: CHECKOUT_CREATE_PAYMENT_SESSION_FULFILLED,
   payload: response
 });
 
@@ -79,24 +87,21 @@ export const checkoutSetPaymentSuccess = (isSuccess: boolean) => ({
 });
 
 export const checkoutProcessStripeCCPayment = (
-  paymentMethod: string,
+  stripePaymentMethodId: string,
   stripe: Stripe
 ) => ({
   type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   payload: {
-    paymentMethod,
+    stripePaymentMethodId,
     stripe
   }
 });
 
 export const checkoutProcessPayment = (
   xValidateOnly: boolean,
-  xPaymentSessionId: string,
 ) => ({
   type: CHECKOUT_PROCESS_PAYMENT,
-  payload: {
-    xValidateOnly, xPaymentSessionId
-  }
+  payload: xValidateOnly
 });
 
 export const checkoutPaymentSetStatus = (status, statusCode, statusText, data) => ({

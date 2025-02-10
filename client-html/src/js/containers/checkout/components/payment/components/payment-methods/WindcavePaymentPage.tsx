@@ -33,8 +33,6 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     disablePayment,
     currencySymbol,
     iframeUrl,
-    xPaymentSessionId,
-    merchantReference,
     checkoutProcessCcPayment,
     clearCcIframeUrl,
     payment,
@@ -50,8 +48,8 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const proceedPayment = React.useCallback(() => {
     onCheckoutClearPaymentStatus();
     setValidatePayment(true);
-    checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
-  }, [summary.payNowTotal, merchantReference]);
+    checkoutProcessCcPayment(true);
+  }, [summary.payNowTotal]);
 
   const onMessage = e => {
     const paymentDetails = e.data.payment;
@@ -67,7 +65,7 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     return () => {
       window.removeEventListener("message", onMessage);
     };
-  }, [merchantReference, summary, payment]);
+  }, [summary, payment]);
 
   React.useEffect(() => {
     if (summary.payNowTotal > 0) {
@@ -129,16 +127,16 @@ const mapStateToProps = (state: State) => ({
   paymentInvoice: state.checkout.payment.invoice,
   paymentId: state.checkout.payment.paymentId,
   currencySymbol: state.currency && state.currency.shortCurrencySymbol,
-  iframeUrl: state.checkout.payment.wcIframeUrl,
-  xPaymentSessionId: state.checkout.payment.xPaymentSessionId,
+  iframeUrl: state.checkout.payment.ccFormUrl,
+  xPaymentSessionId: state.checkout.payment.paymentId,
   merchantReference: state.checkout.payment.merchantReference,
   process: state.checkout.payment.process,
   hasSummarryErrors: isInvalid(CheckoutSelectionForm)(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string) => {
-    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId));
+  checkoutProcessCcPayment: (xValidateOnly: boolean) => {
+    dispatch(checkoutProcessPayment(xValidateOnly));
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),

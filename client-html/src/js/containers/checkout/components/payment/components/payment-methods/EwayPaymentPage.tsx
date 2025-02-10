@@ -30,7 +30,6 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     isPaymentProcessing,
     disablePayment,
     iframeUrl,
-    xPaymentSessionId,
     checkoutProcessCcPayment,
     clearCcIframeUrl,
     payment,
@@ -45,7 +44,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
 
   const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
-    checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
+    checkoutProcessCcPayment(true);
   };
 
   const pymentCallback = result => {
@@ -111,15 +110,15 @@ const mapStateToProps = (state: State) => ({
   payment: state.checkout.payment,
   paymentInvoice: state.checkout.payment.invoice,
   paymentId: state.checkout.payment.paymentId,
-  iframeUrl: state.checkout.payment.wcIframeUrl,
-  xPaymentSessionId: state.checkout.payment.xPaymentSessionId,
+  iframeUrl: state.checkout.payment.ccFormUrl,
+  xPaymentSessionId: state.checkout.payment.sessionId,
   process: state.checkout.payment.process
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string) => {
-    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId));
+  checkoutProcessCcPayment: (xValidateOnly: boolean) => {
+    dispatch(checkoutProcessPayment(xValidateOnly));
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),

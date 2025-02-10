@@ -13,6 +13,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import Zoom from '@mui/material/Zoom';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -461,8 +462,9 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
           listRef.current.scrollToItem(filterByStoreCard ? index : c.index, "start");
           setTimeout(async () => {
             dispatch(change(FORM, `contacts[${c.index}].processing`, true ));
-            const sessionResponse = await CheckoutService.createSession(getBachCheckoutModel(c));
-            CheckoutService.submitPayment(sessionResponse.sessionId, null, null, sessionResponse.merchantReference)
+            const model = getBachCheckoutModel(c);
+            await CheckoutService.createSession(model);
+            CheckoutService.submitPayment(model)
               .then(() => {
                 dispatch(change(FORM, `contacts[${c.index}]`, {
                   ...c, processing: false, processed: true,

@@ -5,18 +5,21 @@
 import {
   CartIds,
   CheckoutApi,
+  CheckoutCCResponse,
   CheckoutModel,
   CheckoutResponse,
   CheckoutSaleRelation,
+  CheckoutSubmitRequest,
   CourseClassDiscount,
+  CreateSessionResponse,
   SessionStatus
-} from "@api/model";
-import { DefaultHttpService } from "../../../common/services/HttpService";
+} from '@api/model';
+import { DefaultHttpService } from '../../../common/services/HttpService';
 
 class CheckoutService {
   readonly checkoutApi = new CheckoutApi(new DefaultHttpService());
   
-  public createSession(checkoutModel: CheckoutModel): Promise<CheckoutResponse> {
+  public createSession(checkoutModel: CheckoutModel): Promise<CreateSessionResponse> {
     return this.checkoutApi.createSession(checkoutModel, window.location.origin);
   }
 
@@ -36,17 +39,19 @@ class CheckoutService {
     return this.checkoutApi.updateModel(checkoutModel);
   }
   
-  public submitPayment(onCoursePaymentSessionId: string, paymentMethodId: string, transactionId: string, merchantReference: string): Promise<CheckoutResponse> {
-    return this.checkoutApi.submitPayment({
-      onCoursePaymentSessionId, paymentMethodId, transactionId, origin: window.location.origin, merchantReference
-    });
+  public submitPayment(checkoutModel: CheckoutModel): Promise<CheckoutResponse> {
+    return this.checkoutApi.submitPayment(checkoutModel);
   }
 
-  getCartDataIds(checkoutId: number): Promise<CartIds> {
+  public submitCreditCardPayment(submitRequest: CheckoutSubmitRequest): Promise<CheckoutCCResponse> {
+    return this.checkoutApi.submitCreditCardPayment(submitRequest);
+  }
+
+  public getCartDataIds(checkoutId: number): Promise<CartIds> {
     return this.checkoutApi.getCartDataIds(checkoutId);
   }
 
-  getClientKey(): Promise<any> {
+  public getClientKey(): Promise<any> {
     return this.checkoutApi.getClientKey();
   }
 }

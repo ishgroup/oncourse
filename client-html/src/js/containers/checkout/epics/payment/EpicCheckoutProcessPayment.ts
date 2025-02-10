@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CheckoutResponse } from '@api/model';
+import { CheckoutCCResponse, CheckoutResponse } from '@api/model';
 import { format } from 'date-fns';
 import { YYYY_MM_DD_MINUSED } from 'ish-ui';
 import { getFormValues } from 'redux-form';
@@ -27,12 +27,11 @@ import { CHECKOUT_SUMMARY_FORM } from '../../components/summary/CheckoutSummaryL
 import CheckoutService from '../../services/CheckoutService';
 import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } from '../../utils';
 
-const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string }> = {
+const request: EpicUtils.Request<CheckoutResponse | CheckoutCCResponse, boolean> = {
   type: CHECKOUT_PROCESS_PAYMENT,
-  getData: async ({
-  xValidateOnly, xPaymentSessionId
-  }, s) => {
-    
+  getData: async (xValidateOnly, s) => {
+    const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
+    const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
     const paymentPlans = (getFormValues(CHECKOUT_SELECTION_FORM_NAME)(s) as any)?.paymentPlans || [];
 
     const checkoutModel = getCheckoutModel(
@@ -42,11 +41,20 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
 
-    const sessionResponse = await CheckoutService.createSession(checkoutModel);
+    if (paymentType === "Credit card") {
+      const sessionResponse = await CheckoutService.createSession(checkoutModel);
+      return CheckoutService.submitCreditCardPayment({
+        onCoursePaymentSessionId: sessionResponse.sessionId,
+        paymentMethodId: String(paymentMethod.id),
+        transactionId: null,
+        merchantReference: sessionResponse.merchantReference,
+        origin: window.location.origin
+      });
+    }
 
-    return CheckoutService.submitPayment(sessionResponse.sessionId, null, xPaymentSessionId, sessionResponse.merchantReference);
+    return xValidateOnly ? CheckoutService.updateModel(checkoutModel) : CheckoutService.submitPayment(checkoutModel);
   },
-  processData: (checkoutResponse: CheckoutResponse, s, { xValidateOnly }) => {
+  processData: (checkoutResponse, s, xValidateOnly) => {
     const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
     const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
 
@@ -58,13 +66,10 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
       checkoutSetPaymentProcessing(false),
     ];
   },
-  processError: (response, { xValidateOnly }) => {
+  processError: (response, xValidateOnly) => {
     const actions: any = [
       checkoutSetPaymentProcessing(false),
       checkoutProcessPaymentFulfilled({
-        sessionId: null,
-        ccFormUrl: null,
-        merchantReference: null,
         paymentId: null,
         invoice: null,
       })

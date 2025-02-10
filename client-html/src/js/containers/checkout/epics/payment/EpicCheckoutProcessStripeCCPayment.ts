@@ -18,13 +18,17 @@ import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import { LSSetItem } from '../../../../common/utils/storage';
 import {
   CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
+  checkoutClearPaymentStatus,
   checkoutGetPaymentStatusDetails,
   checkoutPaymentSetStatus,
   checkoutProcessPaymentFulfilled,
-  checkoutSetPaymentProcessing
+  checkoutSetPaymentProcessing,
+  clearCcIframeUrl
 } from '../../actions/checkoutPayment';
 import { CHECKOUT_SELECTION_FORM_NAME } from '../../components/CheckoutSelection';
-import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from '../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from '../../components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
 import { CHECKOUT_SUMMARY_FORM } from '../../components/summary/CheckoutSummaryList';
 import CheckoutService from '../../services/CheckoutService';
 import {
@@ -34,10 +38,10 @@ import {
   paymentErrorMessageDefault
 } from '../../utils';
 
-const request: EpicUtils.Request<CheckoutResponse, { paymentMethod: string, stripe: Stripe }> = {
+const request: EpicUtils.Request<{ checkoutResponse: CheckoutResponse, sessionId: string }, { stripePaymentMethodId: string, stripe: Stripe }> = {
   type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   getData: async ({
-                    paymentMethod,
+    stripePaymentMethodId,
     stripe
   }, s) => {
 
@@ -52,12 +56,16 @@ const request: EpicUtils.Request<CheckoutResponse, { paymentMethod: string, stri
 
     const sessionResponse = await CheckoutService.createSession(checkoutModel);
 
-    const checkoutResponse = await CheckoutService.submitPayment(sessionResponse.sessionId, paymentMethod, null, sessionResponse.merchantReference);
+    const checkoutResponse = await CheckoutService.submitCreditCardPayment({
+      onCoursePaymentSessionId: sessionResponse.sessionId,
+      paymentMethodId: stripePaymentMethodId,
+      transactionId: null,
+      merchantReference: sessionResponse.merchantReference,
+      origin: window.location.origin
+    });
 
     if (checkoutResponse.actionRequired) {
-
       LSSetItem(getStoredPaymentStateKey(sessionResponse.sessionId), JSON.stringify(s.checkout));
-
       const {
         error,
       } = await stripe.handleCardAction(checkoutResponse.clientSecret);
@@ -66,23 +74,18 @@ const request: EpicUtils.Request<CheckoutResponse, { paymentMethod: string, stri
         throw error;
       }
     }
-    return checkoutResponse;
+    return { checkoutResponse, sessionId: sessionResponse.sessionId };
   },
-  processData: checkoutResponse => [
-    checkoutGetPaymentStatusDetails(checkoutResponse.sessionId),
+  processData: ({ checkoutResponse, sessionId }) => [
+    checkoutGetPaymentStatusDetails(sessionId),
     checkoutProcessPaymentFulfilled(checkoutResponse),
     checkoutSetPaymentProcessing(false),
   ],
   processError: response => {
     const actions: any = [
       checkoutSetPaymentProcessing(false),
-      checkoutProcessPaymentFulfilled({
-        sessionId: null,
-        ccFormUrl: null,
-        merchantReference: null,
-        paymentId: null,
-        invoice: null,
-      })
+      checkoutClearPaymentStatus(),
+      clearCcIframeUrl()
     ];
 
     if (response) {

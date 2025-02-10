@@ -5,11 +5,12 @@
 
 import {
   ArticleProduct,
+  CheckoutCCResponse,
   CheckoutPaymentPlan,
-  CheckoutResponse,
   CheckoutSaleRelation,
   Course,
   CourseClass,
+  CreateSessionResponse,
   Discount,
   EnrolmentStudyReason,
   EntityRelationCartAction,
@@ -184,16 +185,13 @@ export interface CheckoutPaymentProcess {
   data?: any;
 }
 
-export interface CheckoutPayment extends CheckoutResponse {
+export interface CheckoutPayment extends CreateSessionResponse {
   availablePaymentTypes?: PaymentMethod[];
   selectedPaymentType?: any;
   paymentPlans?: CheckoutPaymentPlan[];
   isProcessing?: boolean;
   isFetchingDetails?: boolean;
   isSuccess?: boolean;
-  wcIframeUrl?: string;
-  xPaymentSessionId?: string;
-  merchantReference?: string;
   process?: CheckoutPaymentProcess;
   invoice?: Invoice;
   paymentId?: number;
@@ -247,12 +245,10 @@ export interface CreditCardPaymentPageProps {
   hasSummarryErrors?: boolean;
   currencySymbol?: any;
   iframeUrl?: string;
-  xPaymentSessionId?: string;
-  merchantReference?: string;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
+  checkoutProcessCcPayment?: (xValidateOnly: boolean) => void;
   clearCcIframeUrl: () => void;
-  checkoutProcessStripeCCPayment?: (confirmationToken: string, stripe: Stripe) => void;
-  completePayment?: (checkoutResponse: CheckoutResponse) => void;
+  checkoutProcessStripeCCPayment?: (stripePaymentMethodId: string, stripe: Stripe) => void;
+  completePayment?: (checkoutCCResponse: CheckoutCCResponse, sessionId: string) => void;
   checkoutGetPaymentStatusDetails?: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;
   checkoutUpdateSummaryPrices?: NoArgFunction;
