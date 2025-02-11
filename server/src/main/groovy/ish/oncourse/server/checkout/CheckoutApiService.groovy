@@ -271,6 +271,7 @@ class CheckoutApiService {
             CheckoutCCResponseDTO dtoResponse = paymentService.succeedPaymentAndCompleteTransaction(checkout, checkoutModel.sendInvoice, sessionAttributes, merchantReference)
 
             postEnrolmentSuccessfulEvents(checkout)
+            dtoResponse.paymentSystemSessionId = paymentSystemSessionId
             return dtoResponse
         } finally {
             synchronized (this.getClass()) {
