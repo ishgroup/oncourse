@@ -83,10 +83,10 @@
 		<variableExpression><![CDATA[(AccountType.EQUITY.equals($F{accountTransaction}.account.type) || AccountType.LIABILITY.equals($F{accountTransaction}.account.type) || AccountType.INCOME.equals($F{accountTransaction}.account.type)) ? $V{TOTAL_AT_GROUP} : new BigDecimal("0")]]></variableExpression>
 	</variable>
 	<variable name="SUBTOTAL_DEBIT" class="java.math.BigDecimal" resetType="Group" resetGroup="Account" calculation="Sum">
-		<variableExpression><![CDATA[(AccountType.ASSET.equals($F{accountTransaction}.account.type) || AccountType.EXPENSE.equals($F{accountTransaction}.account.type) || AccountType.COS.equals($F{accountTransaction}.account.type)) ? (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? BigDecimal.ZERO : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : BigDecimal.ZERO)]]></variableExpression>
+		<variableExpression><![CDATA[(AccountType.ASSET.equals($F{accountTransaction}.account.type) || AccountType.EXPENSE.equals($F{accountTransaction}.account.type) || AccountType.COS.equals($F{accountTransaction}.account.type)) ? (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? BigDecimal.ZERO : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : BigDecimal.ZERO)]]></variableExpression>
 	</variable>
 	<variable name="SUBTOTAL_CREDIT" class="java.math.BigDecimal" resetType="Group" resetGroup="Account" calculation="Sum">
-		<variableExpression><![CDATA[(AccountType.EQUITY.equals($F{accountTransaction}.account.type) || AccountType.LIABILITY.equals($F{accountTransaction}.account.type) || AccountType.INCOME.equals($F{accountTransaction}.account.type)) ? (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? BigDecimal.ZERO : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : BigDecimal.ZERO)]]></variableExpression>
+		<variableExpression><![CDATA[(AccountType.EQUITY.equals($F{accountTransaction}.account.type) || AccountType.LIABILITY.equals($F{accountTransaction}.account.type) || AccountType.INCOME.equals($F{accountTransaction}.account.type)) ? (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? BigDecimal.ZERO : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : BigDecimal.ZERO)]]></variableExpression>
 	</variable>
 	<group name="Account" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{account.accountCode}]]></groupExpression>
@@ -200,7 +200,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-16" style="data field (money)" x="238" y="0" width="60" height="15" uuid="0ff8b2ab-5193-49a4-aa65-d7b23dde3c75"/>
-				<textFieldExpression><![CDATA[(AccountType.ASSET.equals($F{accountTransaction}.account.type) || AccountType.EXPENSE.equals($F{accountTransaction}.account.type) || AccountType.COS.equals($F{accountTransaction}.account.type)) ? (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? "-" : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : "-")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(AccountType.ASSET.equals($F{accountTransaction}.account.type) || AccountType.EXPENSE.equals($F{accountTransaction}.account.type) || AccountType.COS.equals($F{accountTransaction}.account.type)) ? (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? "-" : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : "-")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-17" style="data field" x="367" y="0" width="172" height="15" uuid="4030291c-1724-49a6-a5ea-bf1a189fb28b"/>
@@ -208,7 +208,7 @@
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-21" style="data field (money)" x="302" y="0" width="60" height="15" uuid="275564d4-2239-451f-a9b3-b6bf42dbe235"/>
-				<textFieldExpression><![CDATA[(AccountType.EQUITY.equals($F{accountTransaction}.account.type) || AccountType.LIABILITY.equals($F{accountTransaction}.account.type) || AccountType.INCOME.equals($F{accountTransaction}.account.type)) ? (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? "-" : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO.isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : "-")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(AccountType.EQUITY.equals($F{accountTransaction}.account.type) || AccountType.LIABILITY.equals($F{accountTransaction}.account.type) || AccountType.INCOME.equals($F{accountTransaction}.account.type)) ? (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? "-" : ((ish.math.Money)$F{amount}).toBigDecimal()) : (Money.ZERO().isGreaterThan((ish.math.Money)$F{amount}) ? ((ish.math.Money)$F{amount}).negate().toBigDecimal() : "-")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

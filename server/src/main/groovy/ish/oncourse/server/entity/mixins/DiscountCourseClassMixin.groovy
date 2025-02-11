@@ -61,7 +61,7 @@ class DiscountCourseClassMixin {
      */
     @API
     static getTotalDiscountedValue(DiscountCourseClass self, Date from, Date to) {
-        Money totalFromToDiscountValue = Money.ZERO
+        Money totalFromToDiscountValue = Money.ZERO()
         List<Enrolment> enrolmentList = getDiscountedEnrolments(self, from ,to)
 
 
@@ -75,8 +75,8 @@ class DiscountCourseClassMixin {
                 Money feeExGst = enrol.courseClass.feeExGst
 
                 List<Discount> discounts = enrol.originalInvoiceLine.discounts as List<Discount>
-                Money currentTotalDiscountAmount = Money.ZERO
-                Money currentDiscountAmount = Money.ZERO
+                Money currentTotalDiscountAmount = Money.ZERO()
+                Money currentDiscountAmount = Money.ZERO()
                 for (Discount discount : discounts) {
 
                     DiscountCourseClass classDiscount = self.classCost.discountCourseClass.find { dcc -> dcc.discount.equals(discount)}
@@ -89,7 +89,7 @@ class DiscountCourseClassMixin {
                     }
                 }
 
-                if (currentTotalDiscountAmount.compareTo(Money.ZERO) != 0) {
+                if (currentTotalDiscountAmount.compareTo(Money.ZERO()) != 0) {
                     totalFromToDiscountValue = totalFromToDiscountValue.add(enrol.originalInvoiceLine.getDiscountTotalExTax()
                             .multiply(currentDiscountAmount.divide(currentTotalDiscountAmount)))
                 }

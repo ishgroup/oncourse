@@ -363,7 +363,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@Nonnull
 	@Override
 	List<Invoice> getOwingInvoices() {
-		Expression qualifier = ExpressionFactory.greaterExp(InvoiceInterface.AMOUNT_OWING_PROPERTY, Money.ZERO)
+		Expression qualifier = ExpressionFactory.greaterExp(InvoiceInterface.AMOUNT_OWING_PROPERTY, Money.ZERO())
 		List<Invoice> result = qualifier.filterObjects(getInvoices())
 		Invoice.INVOICES_DUE_ORDERING.orderList(result)
 		return result
@@ -873,7 +873,7 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 	@Nonnull
 	@API
 	Money getTotalInvoiced() {
-		return invoices*.amountPaid?.sum() as Money ?: Money.ZERO
+		return invoices*.amountPaid?.sum() as Money ?: Money.ZERO()
 	}
 
 	/**

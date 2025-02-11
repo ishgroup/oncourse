@@ -49,7 +49,7 @@ public class CreatePaylinesPerUnit extends AbstractPaylinesCreator {
 		logger.debug("paylines generate perHour, hours: {}", classCost.getUnitCount());
 		if (classCost.getPaylines().size() == 0
 				&& eligibleRate != null
-				&& eligibleRate.isGreaterThan(Money.ZERO)
+				&& eligibleRate.isGreaterThan(Money.ZERO())
 				&& BigDecimal.ZERO.compareTo(classCost.getUnitCount()) < 0) {
 
 			var pl = classCost.getObjectContext().newObject(PayLine.class);

@@ -63,7 +63,7 @@ class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait {
 			if (getValueOnPurchase() == null) {
 				result.addFailure(ValidationFailure.validationFailure(
 						this, VALUE_ON_PURCHASE_PROPERTY, "Value on purchase must be set for money vouchers."))
-			} else if (!getValueOnPurchase().isGreaterThan(Money.ZERO)) {
+			} else if (!getValueOnPurchase().isGreaterThan(Money.ZERO())) {
 				result.addFailure(ValidationFailure.validationFailure(
 						this, VALUE_ON_PURCHASE_PROPERTY, "Voucher purchase value must be greater than zero."))
 			}
@@ -228,7 +228,7 @@ class Voucher extends _Voucher implements ExpandableTrait, AttachableTrait {
 		if (vProduct.getMaxCoursesRedemption() != null && vProduct.getMaxCoursesRedemption() > 0) {
 			return getClassesRemaining() <= 0
 		}
-		return !getValueRemaining().isGreaterThan(Money.ZERO);
+		return !getValueRemaining().isGreaterThan(Money.ZERO());
 	}
 
 	@Override

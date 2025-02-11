@@ -65,7 +65,7 @@ trait CourseClassTrait {
             classCost.description = discount.name
             classCost.flowType = ClassCostFlowType.DISCOUNT
             classCost.repetitionType = ClassCostRepetitionType.DISCOUNT
-            classCost.taxAdjustment = Money.ZERO
+            classCost.taxAdjustment = Money.ZERO()
             classCost.invoiceToStudent = false
             classCost.payableOnEnrolment = true
             classCost.isSunk = false

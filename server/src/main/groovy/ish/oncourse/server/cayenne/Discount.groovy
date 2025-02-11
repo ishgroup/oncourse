@@ -64,9 +64,9 @@ class Discount extends _Discount implements DiscountTrait, DiscountInterface, Qu
 		// data sanity check:
 		if (getDiscountPercent() == null || BigDecimal.ZERO == getDiscountPercent()) {
 			if(discountMax != null)
-				setDiscountMax(Money.ZERO)
+				setDiscountMax(Money.ZERO())
 			if(discountMin != null)
-				setDiscountMin(Money.ZERO)
+				setDiscountMin(Money.ZERO())
 		}
 	}
 
@@ -102,9 +102,9 @@ class Discount extends _Discount implements DiscountTrait, DiscountInterface, Qu
 					DiscountUtils.discountValue(discountCourseClass, courseClass.getFeeExGst(), courseClass.getTax().getRate())
 				}
 			}
-			return Money.ZERO
+			return Money.ZERO()
 		} else {
-			return Money.ZERO
+			return Money.ZERO()
 		}
 	}
 

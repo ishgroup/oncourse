@@ -174,7 +174,7 @@ class CourseClassMixin {
 	@API
 	static getFullFeeEnrolments(CourseClass self) {
 		return getService(CourseClassService).getSuccessfulAndQueuedEnrolments(self).findAll { Enrolment e ->
-			e.invoiceLines.findAll { il -> il.discountTotalExTax.isGreaterThan(Money.ZERO) }.empty
+			e.invoiceLines.findAll { il -> il.discountTotalExTax.isGreaterThan(Money.ZERO()) }.empty
 		}
 	}
 
@@ -199,7 +199,7 @@ class CourseClassMixin {
 	*/
 	@API
 	static getFullFeeEnrolmentsFeesSum(CourseClass self) {
-		return getFullFeeEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO) {
+		return getFullFeeEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO()) {
 			Money sum, InvoiceLine il -> sum.add(il.finalPriceToPayExTax)
 		}
 	}
@@ -211,18 +211,18 @@ class CourseClassMixin {
 	@API
 	static getManuallyDiscountedEnrolments(CourseClass self) {
 		return getService(CourseClassService).getSuccessfulAndQueuedEnrolments(self).findAll { Enrolment e ->
-			!e.invoiceLines.findAll { il -> il.discountTotalExTax.isGreaterThan(Money.ZERO) && il.discounts.empty }.empty
+			!e.invoiceLines.findAll { il -> il.discountTotalExTax.isGreaterThan(Money.ZERO()) && il.discounts.empty }.empty
 		}
 	}
 
 	static getManuallyDiscountedEnrolmentsFeesSum(CourseClass self) {
-		return getManuallyDiscountedEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO) {
+		return getManuallyDiscountedEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO()) {
 			Money sum, InvoiceLine il -> sum.add(il.finalPriceToPayExTax)
 		}
 	}
 
 	static getManuallyDiscountedEnrolmentsDiscountSum(CourseClass self) {
-		return getManuallyDiscountedEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO) {
+		return getManuallyDiscountedEnrolments(self)*.invoiceLines.flatten().inject(Money.ZERO()) {
 			Money sum, InvoiceLine il -> sum.add(il.discountTotalExTax)
 		}
 	}
@@ -231,14 +231,14 @@ class CourseClassMixin {
 		Money total = courseClass.enrolmentsInvoiceLines
 				.findAll { it -> !it.discountedPriceTotalIncTax.isNegative() }
 				.sum { it -> it.discountedPriceTotalIncTax } as Money
-		return total != null ? total : Money.ZERO
+		return total != null ? total : Money.ZERO()
 	}
 
 	static Money getTotalCredits(CourseClass courseClass){
 		Money total = courseClass.enrolmentsInvoiceLines
 				.findAll { it -> it.discountedPriceTotalIncTax.isNegative() }
 				.sum { it -> it.discountedPriceTotalIncTax } as Money
-		return total != null ? total : Money.ZERO
+		return total != null ? total : Money.ZERO()
 	}
 
 	/**
@@ -367,16 +367,16 @@ class CourseClassMixin {
 
 	@API
 	static getTotalIncomeAmount(CourseClass self) {
-		return self.successAndQueuedEnrolments*.invoiceLines.flatten().inject(Money.ZERO) {
+		return self.successAndQueuedEnrolments*.invoiceLines.flatten().inject(Money.ZERO()) {
 			Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax)
-		}.add(self.invoiceLines.inject(Money.ZERO) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
+		}.add(self.invoiceLines.inject(Money.ZERO()) { Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax) })
 	}
 
 	@API
 	static getTotalIncomeAmountWithoutPrepaidFees(CourseClass self) {
-		return self.successAndQueuedEnrolments*.invoiceLines.flatten().inject(Money.ZERO) {
+		return self.successAndQueuedEnrolments*.invoiceLines.flatten().inject(Money.ZERO()) {
 			Money total,  InvoiceLine il -> total.add(il.finalPriceToPayExTax.subtract(il.prepaidFeesRemaining))
-		}.add(self.invoiceLines.inject(Money.ZERO) {
+		}.add(self.invoiceLines.inject(Money.ZERO()) {
 			Money total, InvoiceLine il -> total.add(il.finalPriceToPayExTax.subtract(il.prepaidFeesRemaining))
 		})
 	}
@@ -394,7 +394,7 @@ class CourseClassMixin {
 	// TODO: this logic is used and makes sense only for the "Income projection report", and probably should be moved there altogether
 	@API
 	static getPrepaidFeesForMonth(CourseClass self, int monthsCount) {
-		Money totalByMonth = Money.ZERO
+		Money totalByMonth = Money.ZERO()
 
 		Date currentDate = new Date()
 

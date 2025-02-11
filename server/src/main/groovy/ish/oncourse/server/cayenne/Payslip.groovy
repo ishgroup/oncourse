@@ -133,7 +133,7 @@ class Payslip extends _Payslip implements ContactActivityTrait{
 			if (it.budgetedQuantity != null && it.budgetedValue != null)
 				return it.budgetedValue * it.budgetedQuantity
 			else
-				return Money.ZERO
+				return Money.ZERO()
 		} as Money
 	}
 

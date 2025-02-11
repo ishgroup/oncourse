@@ -519,7 +519,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 	void onEntityCreation() {
 		super.onEntityCreation()
 		if (getFeeExGst() == null) {
-			setFeeExGst(Money.ZERO)
+			setFeeExGst(Money.ZERO())
 		}
 		if (getDeliveryMode() == null) {
 			setDeliveryMode(DeliveryMode.CLASSROOM)
@@ -543,7 +543,7 @@ class CourseClass extends _CourseClass implements CourseClassTrait, Queueable, N
 			setIsClassFeeApplicationOnly(false)
 		}
 		if (getTaxAdjustment() == null) {
-			setTaxAdjustment(Money.ZERO)
+			setTaxAdjustment(Money.ZERO())
 		}
 		if (getSuppressAvetmissExport() == null) {
 			setSuppressAvetmissExport(false)

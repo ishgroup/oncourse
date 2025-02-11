@@ -105,10 +105,10 @@ class Product extends _Product implements Queueable, Taggable{
 	}
 
 	void setPriceIncTax(Money value) {
-		Money priceIncTax = value == null ? Money.ZERO : value
+		Money priceIncTax = value == null ? Money.ZERO() : value
 		if (getTax() == null || getTax().getRate() == null) {
 			setPriceExTax(priceIncTax)
-			setTaxAdjustment(Money.ZERO)
+			setTaxAdjustment(Money.ZERO())
 		}
 		BigDecimal taxRate = BigDecimal.ONE.add(getTax().getRate())
 		setPriceExTax(priceIncTax.divide(taxRate))

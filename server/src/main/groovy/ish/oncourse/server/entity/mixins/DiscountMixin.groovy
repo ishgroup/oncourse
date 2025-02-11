@@ -66,7 +66,7 @@ class DiscountMixin {
      */
 	@API
 	static @Nonnull getTotalDiscountExTax(Discount self, @Nullable Date from, @Nullable Date to) {
-		return getDiscountedEnrolments(self, from, to).inject(Money.ZERO) {
+		return getDiscountedEnrolments(self, from, to).inject(Money.ZERO()) {
 			Money total, e -> total.add(e.originalInvoiceLine.discountTotalExTax)
 		}
 	}
@@ -82,7 +82,7 @@ class DiscountMixin {
      */
 	@API
 	static @Nonnull Money getTotalDiscountIncTax(Discount self, @Nullable Date from, @Nullable Date to) {
-		return getDiscountedEnrolments(self, from, to).inject(Money.ZERO) {
+		return getDiscountedEnrolments(self, from, to).inject(Money.ZERO()) {
 			Money total, e -> total.add(e.originalInvoiceLine.discountTotalIncTax)
 		}
 	}

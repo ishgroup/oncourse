@@ -45,10 +45,10 @@ public class GetAmountOfLiabilityExpenseTransaction {
                     .map(VoucherPaymentIn::getPaymentIn)
                     .distinct()
                     .map(PaymentIn::getAmount)
-                    .reduce(Money.ZERO, Money::add);
+                    .reduce(Money.ZERO(), Money::add);
 
             var allRedemptionValue = voucher.getInvoiceLine().getPriceEachExTax();
-            var redemptionValueLeft = allRedemptionValue.add(amountPaid).subtract(allAmountPaid).max(Money.ZERO);
+            var redemptionValueLeft = allRedemptionValue.add(amountPaid).subtract(allAmountPaid).max(Money.ZERO());
 
             return ((voucherProduct.getMaxCoursesRedemption() != null && voucherProduct.getMaxCoursesRedemption().equals(voucher.getRedeemedCourseCount())) ||
                     (allAmountPaid.equals(voucher.getValueOnPurchase()))) ? redemptionValueLeft : redemptionValueLeft.min(amountPaid);

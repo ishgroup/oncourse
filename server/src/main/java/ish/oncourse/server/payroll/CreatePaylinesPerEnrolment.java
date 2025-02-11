@@ -51,7 +51,7 @@ public class CreatePaylinesPerEnrolment  extends AbstractPaylinesCreator {
 
 		var quantity = BigDecimal.valueOf(classCost.getCourseClass().getValidEnrolmentCount());
 		if (classCost.getPaylines().size() == 0 && eligibleRate != null
-				&& eligibleRate.isGreaterThan(Money.ZERO)
+				&& eligibleRate.isGreaterThan(Money.ZERO())
 				&& BigDecimal.ZERO.compareTo(quantity) < 0) {
 
 			var pl = classCost.getObjectContext().newObject(PayLine.class);

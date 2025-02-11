@@ -230,7 +230,7 @@
 							<reportElement key="textField-2" style="data field (money)" x="6" y="1" width="50" height="14" uuid="1bb53f34-4b26-444d-b3f2-8eac7af864a5">
 								<printWhenExpression><![CDATA[$V{discountValue}.compareTo(BigDecimal.ZERO) == 0 || $V{classExpectedIncome}.compareTo(BigDecimal.ZERO) == 0]]></printWhenExpression>
 							</reportElement>
-							<textFieldExpression><![CDATA[Money.ZERO]]></textFieldExpression>
+							<textFieldExpression><![CDATA[Money.ZERO()]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>

@@ -205,10 +205,10 @@ class MicropowerIntegration implements PluginTrait {
             invoiceLine.title = "${membershipProduct.name} for ${contact.fullName}".toString()
             invoiceLine.unit = StringUtils.EMPTY
             invoiceLine.quantity = BigDecimal.ONE
-            invoiceLine.priceEachExTax = Money.ZERO
-            invoiceLine.discountEachExTax = Money.ZERO
-            invoiceLine.taxEach = Money.ZERO
-            invoiceLine.prepaidFeesRemaining = Money.ZERO
+            invoiceLine.priceEachExTax = Money.ZERO()
+            invoiceLine.discountEachExTax = Money.ZERO()
+            invoiceLine.taxEach = Money.ZERO()
+            invoiceLine.prepaidFeesRemaining = Money.ZERO()
             invoiceLine.account = this.context.localObject(membershipProduct.incomeAccount)
 
             this.context.commitChanges()

@@ -95,7 +95,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 	Money getTotalIncTax() {
 		List<AbstractInvoiceLine> theInvoiceLines = getLines()
 		if (theInvoiceLines == null || theInvoiceLines.size() == 0) {
-			return Money.ZERO
+			return Money.ZERO()
 		}
 		return InvoiceUtil.sumInvoiceLines(theInvoiceLines)
 	}
@@ -127,7 +127,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 			List<InvoiceDueDate> dueDates = getInvoiceDueDates()
 
 			InvoiceDueDate.DUE_DATE.asc().orderList(dueDates)
-			Money payedLinesSum = Money.ZERO
+			Money payedLinesSum = Money.ZERO()
 			for (InvoiceDueDate dueDate : dueDates) {
 				payedLinesSum = payedLinesSum.add(dueDate.getAmount())
 				if (amountPaid.isLessThan(payedLinesSum)) {
@@ -144,7 +144,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 			List<InvoiceDueDate> dueDates = getInvoiceDueDates()
 
 			InvoiceDueDate.DUE_DATE.asc().orderList(dueDates)
-			Money overdue = Money.ZERO
+			Money overdue = Money.ZERO()
 
 			for (InvoiceDueDate dueDate : dueDates) {
 				if (currentDate.isAfter(dueDate.getDueDate()) || currentDate.equals(dueDate.getDueDate())) {
@@ -153,9 +153,9 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 			}
 
 			overdue = overdue.subtract(getAmountPaid())
-			setOverdue(overdue.isGreaterThan(Money.ZERO) ? overdue : Money.ZERO)
+			setOverdue(overdue.isGreaterThan(Money.ZERO()) ? overdue : Money.ZERO())
 		} else {
-			setOverdue(getDateDue().isAfter(currentDate) ? Money.ZERO : getAmountOwing())
+			setOverdue(getDateDue().isAfter(currentDate) ? Money.ZERO() : getAmountOwing())
 		}
 	}
 
@@ -200,7 +200,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 	Money getTotal() {
 		List<AbstractInvoiceLine> theInvoiceLines = getLines()
 		if (theInvoiceLines == null || theInvoiceLines.size() == 0) {
-			return Money.ZERO
+			return Money.ZERO()
 		}
 		return InvoiceUtil.sumInvoiceLines(theInvoiceLines, false)
 	}
@@ -211,7 +211,7 @@ abstract class AbstractInvoice extends _AbstractInvoice implements PayableInterf
 	 */
 	@API
 	Money getTotalTax() {
-		Money result = Money.ZERO
+		Money result = Money.ZERO()
 		Money exTotal = getTotal()
 		Money incTotal = getTotalIncTax()
 

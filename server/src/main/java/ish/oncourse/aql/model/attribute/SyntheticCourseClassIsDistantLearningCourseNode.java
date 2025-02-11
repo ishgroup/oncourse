@@ -46,7 +46,7 @@ public class SyntheticCourseClassIsDistantLearningCourseNode extends LazyExpress
             throw new IllegalArgumentException("Invalid search expression, can not convert " + args.get(2) + " to Boolean value");
         }
 
-        if (value == false) {
+        if (!value) {
             parent = (parent instanceof ASTEqual) ? new ASTNotEqual() : new ASTEqual();
         }
         var counter = 0;

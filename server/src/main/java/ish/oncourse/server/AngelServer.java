@@ -25,6 +25,7 @@ import ish.oncourse.server.http.HttpModule;
 import ish.oncourse.server.license.LicenseModule;
 import ish.oncourse.server.messaging.SMTPModule;
 import ish.oncourse.server.modules.*;
+import ish.oncourse.server.money.MoneyModule;
 import ish.oncourse.server.security.api.PermissionModule;
 import ish.oncourse.server.services.chargebee.ChargebeeModule;
 
@@ -63,6 +64,7 @@ public class AngelServer {
                 .module(DocumentModule.class)
                 .module(JasperReportsModule.class)
                 .module(MonitoringModule.class)
+                .module(MoneyModule.class)
                 .exec()
                 .exit();
     }

@@ -29,7 +29,7 @@ class InvoiceMixin {
 	*/
 	@API
 	static getPrintHeading(Invoice self) {
-		return self.total >= Money.ZERO ? "Tax Invoice" : "Credit Note"
+		return self.total >= Money.ZERO() ? "Tax Invoice" : "Credit Note"
 	}
 
 	/**

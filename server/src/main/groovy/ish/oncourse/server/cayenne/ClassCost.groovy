@@ -55,7 +55,7 @@ class ClassCost extends _ClassCost implements ClassCostTrait {
 		}
 
 		if (super.getTaxAdjustment() == null) {
-			setTaxAdjustment(Money.ZERO)
+			setTaxAdjustment(Money.ZERO())
 		}
 
 	}

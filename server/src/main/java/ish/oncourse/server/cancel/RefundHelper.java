@@ -90,13 +90,13 @@ public class RefundHelper {
             SetPaymentMethod.valueOf(PaymentMethodUtil.getCONTRAPaymentMethods(context, PaymentMethod.class), contraPayment).set();
             contraPayment.setPaymentDate(LocalDate.now());
             contraPayment.setSource(PaymentSource.SOURCE_ONCOURSE);
-            contraPayment.setAmount(Money.ZERO);
+            contraPayment.setAmount(Money.ZERO());
             contraPayment.setStatus(PaymentStatus.SUCCESS);
 
 
             if (isEnrolmentCancellation) {
 
-                allocateMoneyToInvoices(Money.ZERO, Arrays.asList(invoiceLineToRefund.getInvoice(), refundInvoice), contraPayment, new ArrayList<>());
+                allocateMoneyToInvoices(Money.ZERO(), Arrays.asList(invoiceLineToRefund.getInvoice(), refundInvoice), contraPayment, new ArrayList<>());
 
             } else {
 
@@ -114,7 +114,7 @@ public class RefundHelper {
                 }
 
                 // reverse GL records
-                InvoiceUtil.allocateMoneyToInvoices(Money.ZERO, invoices, contraPayment, new ArrayList<>());
+                InvoiceUtil.allocateMoneyToInvoices(Money.ZERO(), invoices, contraPayment, new ArrayList<>());
             }
         }
         return refundInvoice;
@@ -149,7 +149,7 @@ public class RefundHelper {
             invoiceLineDiscount.setDiscount(ilDiscount.getDiscount());
         }
 
-        if (cancellationFee != null && Money.ZERO.isLessThan(cancellationFee)) {
+        if (cancellationFee != null && Money.ZERO().isLessThan(cancellationFee)) {
             var cancelaltionFeeLine = context.newObject(InvoiceLine.class);
 
             cancelaltionFeeLine.setAccount(account); // specified refund account
@@ -169,8 +169,8 @@ public class RefundHelper {
             cancelaltionFeeLine.setCourseClass(invoiceLineToRefund.getCourseClass());
             // calculate the refund amount based on this enrolment paid price, so include the discount:
             cancelaltionFeeLine.setPriceEachExTax(cancellationFee);
-            cancelaltionFeeLine.setDiscountEachExTax(Money.ZERO);
-            cancelaltionFeeLine.setTaxEach(recalculateTaxEach(cancellationFee, Money.ZERO, tax.getRate()));
+            cancelaltionFeeLine.setDiscountEachExTax(Money.ZERO());
+            cancelaltionFeeLine.setTaxEach(recalculateTaxEach(cancellationFee, Money.ZERO(), tax.getRate()));
         }
 
         refundInvoice.validateForSave(result);
@@ -191,7 +191,7 @@ public class RefundHelper {
                                                  PaymentInterface payment,
                                                  List<PaymentLineInterface> paymentLines) {
 
-        List<Invoice> owingInvoices = Invoice.AMOUNT_OWING.gt(Money.ZERO).filterObjects(invoices);
+        List<Invoice> owingInvoices = Invoice.AMOUNT_OWING.gt(Money.ZERO()).filterObjects(invoices);
 
         Money moneyRequiredForPayingAllInvoices = InvoiceUtil.sumInvoices(owingInvoices);
         if (invoices.size() > 0) {
@@ -200,23 +200,23 @@ public class RefundHelper {
 
                 Money amountRequredToAllocate = spendingMoney.subtract(moneyRequiredForPayingAllInvoices);
 
-                if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO) < 0 &&
-                        amountRequredToAllocate.compareTo(Money.ZERO) < 0) {
+                if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) < 0 &&
+                        amountRequredToAllocate.compareTo(Money.ZERO()) < 0) {
 
                     Money allocatedAmount = InvoiceUtil.invoiceAllocate(anInvoice, amountRequredToAllocate, payment, paymentLines);
                     spendingMoney = spendingMoney.subtract(allocatedAmount);
-                } else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO) > 0 &&
-                        amountRequredToAllocate.compareTo(Money.ZERO) > 0) {
+                } else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) > 0 &&
+                        amountRequredToAllocate.compareTo(Money.ZERO()) > 0) {
                     Money allocatedAmount = InvoiceUtil.invoiceAllocate(anInvoice, amountRequredToAllocate, payment, paymentLines);
                     spendingMoney = spendingMoney.subtract(allocatedAmount);
                 }
             }
             // now go through the invoices and pay as much as possible
             for (InvoiceInterface anInvoice : invoices) {
-                if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO) > 0) {
+                if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_IN) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) > 0) {
                     Money allocatedAmount = InvoiceUtil.invoiceAllocate(anInvoice, spendingMoney, payment, paymentLines);
                     spendingMoney = spendingMoney.subtract(allocatedAmount);
-                } else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO) < 0) {
+                } else if (payment.getTypeOfPayment().equals(PaymentInterface.TYPE_OUT) && anInvoice.getAmountOwing().compareTo(Money.ZERO()) < 0) {
                     Money allocatedAmount = InvoiceUtil.invoiceAllocate(anInvoice, spendingMoney, payment, paymentLines);
                     spendingMoney = spendingMoney.subtract(allocatedAmount);
                 }
@@ -231,7 +231,7 @@ public class RefundHelper {
         Money finalPriceEachEx = priceEachEx.subtract(discountEachEx);
         // calculate final total value inc tax
         Money priceEachInc = MoneyUtil.getPriceIncTax(priceEachEx, taxRate, null);
-        Money discountEachInc = MoneyUtil.getPriceIncTax(discountEachEx, taxRate, Money.ZERO);
+        Money discountEachInc = MoneyUtil.getPriceIncTax(discountEachEx, taxRate, Money.ZERO());
         Money finalPriceEachInc = priceEachInc.subtract(discountEachInc);
         // and finally taxEach
         Money taxEach = finalPriceEachInc.subtract(finalPriceEachEx);

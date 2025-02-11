@@ -155,7 +155,7 @@ class BankingApiImpl implements BankingApi {
 				.where(PaymentIn.ACCOUNT_IN.dot(Account.ID).eq(accountId.toLong()))
 				.and(PaymentIn.BANKING.isNull())
 				.and(PaymentIn.STATUS.eq(PaymentStatus.SUCCESS))
-				.and(PaymentIn.AMOUNT.nin(Money.ZERO))
+				.and(PaymentIn.AMOUNT.nin(Money.ZERO()))
 				.and(PaymentIn.ADMINISTRATION_CENTRE.eq(site).orExp(PaymentIn.ADMINISTRATION_CENTRE.isNull()))
 				.and(PaymentIn.PAYMENT_METHOD.dot(PaymentMethod.TYPE).nin(PaymentType.VOUCHER))
 				.select(cayenneService.newContext)
@@ -164,7 +164,7 @@ class BankingApiImpl implements BankingApi {
 				.where(PaymentOut.ACCOUNT_OUT.dot(Account.ID).eq(accountId.toLong()))
 				.and(PaymentOut.BANKING.isNull())
 				.and(PaymentOut.STATUS.eq(PaymentStatus.SUCCESS))
-				.and(PaymentOut.AMOUNT.nin(Money.ZERO))
+				.and(PaymentOut.AMOUNT.nin(Money.ZERO()))
 				.and(PaymentOut.ADMINISTRATION_CENTRE.eq(site).orExp(PaymentOut.ADMINISTRATION_CENTRE.isNull()))
 				.select(cayenneService.newContext)
 

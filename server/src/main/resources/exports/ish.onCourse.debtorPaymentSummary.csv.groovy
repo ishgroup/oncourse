@@ -21,8 +21,8 @@ records.each { Invoice i ->
         "Last Payment In Date"		: (!i.paymentInLines.isEmpty()) ? i.paymentInLines.sort{it.createdOn}.last().createdOn?.format("dd/MM/YYYY") : "No payments",
         "Last Payment In Amount"	: (!i.paymentInLines.isEmpty()) ? i.paymentInLines.sort{it.createdOn}.last().amount.toPlainString() : "No payments",
         "Payment Due Date"			: i.dateDue,
-        "Days Overdue"				: i.overdue > Money.ZERO ? dateDiff(i.dateDue, today) : "0" ,
+        "Days Overdue"				: i.overdue > Money.ZERO() ? dateDiff(i.dateDue, today) : "0" ,
         "Overdue Amount"			: i.overdue.toPlainString(),
-        "Percent Overdue of Owing"	: i.overdue > Money.ZERO ? moneyPercentage(i.amountOwing.toBigDecimal(), i.overdue.toBigDecimal()) + "%" : "0%"
+        "Percent Overdue of Owing"	: i.overdue > Money.ZERO() ? moneyPercentage(i.amountOwing.toBigDecimal(), i.overdue.toBigDecimal()) + "%" : "0%"
     ]
 }

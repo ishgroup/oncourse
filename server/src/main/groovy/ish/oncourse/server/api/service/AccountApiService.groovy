@@ -65,13 +65,13 @@ class AccountApiService extends EntityApiService<AccountDTO, Account, AccountDao
         return (ObjectSelect.query(Account.class)
                 .where(Account.PAYMENTS.dot(PaymentIn.BANKING).isNull())
                 .and(Account.PAYMENTS.dot(PaymentIn.STATUS).eq(PaymentStatus.SUCCESS))
-                .and(Account.PAYMENTS.dot(PaymentIn.AMOUNT).nin(Money.ZERO))
+                .and(Account.PAYMENTS.dot(PaymentIn.AMOUNT).nin(Money.ZERO()))
                 .and(Account.PAYMENTS.dot(PaymentIn.PAYMENT_METHOD.dot(PaymentMethod.TYPE)).nin(PaymentMethodUtil.SYSTEM_TYPES))
                 .select(cayenneService.newContext) +
                 ObjectSelect.query(Account.class)
                         .where(Account.PAYMENTS_OUT.dot(PaymentOut.BANKING).isNull())
                         .and(Account.PAYMENTS_OUT.dot(PaymentOut.STATUS).eq(PaymentStatus.SUCCESS))
-                        .and(Account.PAYMENTS_OUT.dot(PaymentOut.AMOUNT).gt(Money.ZERO))
+                        .and(Account.PAYMENTS_OUT.dot(PaymentOut.AMOUNT).gt(Money.ZERO()))
                         .select(cayenneService.newContext))
                 .unique { it.id }
                 .stream()

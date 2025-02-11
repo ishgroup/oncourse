@@ -95,7 +95,7 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
         ObjectContext context = cayenneModel.context
         cayenneModel.studentCount = dtoModel.studentCount
         cayenneModel.customer = contactApiService.getEntityAndValidateExistence(context, dtoModel.contactId)
-        cayenneModel.estimatedValue = dtoModel.estimatedValue != null ? Money.valueOf(dtoModel.estimatedValue) : null as Money
+        cayenneModel.estimatedValue = dtoModel.estimatedValue != null ? Money.of(dtoModel.estimatedValue) : null as Money
         cayenneModel.nextActionOn = LocalDateUtils.timeValueToDate(dtoModel.nextActionOn)
         cayenneModel.status = dtoModel.status.getDbType()
 

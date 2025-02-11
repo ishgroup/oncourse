@@ -61,7 +61,7 @@ class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable, Con
 	void onEntityCreation() {
 		super.onEntityCreation()
 		if (getAmount() == null) {
-			setAmount(Money.ZERO)
+			setAmount(Money.ZERO())
 		}
 		if (getPrivateNotes() == null) {
 			setPrivateNotes("")
@@ -79,7 +79,7 @@ class PaymentIn extends _PaymentIn implements PaymentInInterface, Queueable, Con
 		super.postAdd()
 
 		if (getAmount() == null) {
-			setAmount(Money.ZERO)
+			setAmount(Money.ZERO())
 		}
 
 		if (getConfirmationStatus() == null) {

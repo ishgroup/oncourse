@@ -64,7 +64,7 @@ public class CreatePaylinesPerSession extends AbstractAttendanceBasedPaylinesCre
 				logger.debug("paylines exlude per session attendance...{}", attendanceItem);
 				continue;
 			}
-			if (eligibleRate != null && eligibleRate.isGreaterThan(Money.ZERO)
+			if (eligibleRate != null && eligibleRate.isGreaterThan(Money.ZERO())
 					&& attendanceItem.getActualPayableDurationHours().compareTo(new BigDecimal(0)) > 0) {
 
 				if (UNMARKED == attendanceItem.getAttendanceType()) {

@@ -48,7 +48,7 @@ public class AbstractInvoiceLifecycleListener {
             entity.setConfirmationStatus(ConfirmationStatus.NOT_SENT);
         }
         if (entity.getOverdue() == null) {
-            entity.setOverdue(Money.ZERO);
+            entity.setOverdue(Money.ZERO());
         }
     }
 }

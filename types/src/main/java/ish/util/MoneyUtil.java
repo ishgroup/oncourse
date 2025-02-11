@@ -33,7 +33,7 @@ public final class MoneyUtil {
 	public static Money calculatePriceExFromPriceInc(Money price, BigDecimal taxRate) {
 
 		if (price == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		if (taxRate == null) {
@@ -56,7 +56,7 @@ public final class MoneyUtil {
 	public static Money getPriceIncTax(Money price, BigDecimal taxRate, Money taxAdjustment) {
 
 		if (price == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		if (taxRate == null) {
@@ -83,11 +83,11 @@ public final class MoneyUtil {
 	public static Money getPriceTax(Money price, BigDecimal taxRate, Money taxAdjustment) {
 
 		if (price == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		if (taxRate == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		Money result = price.multiply(taxRate);
@@ -109,11 +109,11 @@ public final class MoneyUtil {
 	 */
 	public static Money calculateTaxAdjustment(Money priceInc, Money priceEx, BigDecimal taxRate) {
 		if (priceEx == null || priceInc == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		if (taxRate == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		return priceInc.subtract(priceEx.multiply(taxRate.add(BigDecimal.ONE)));

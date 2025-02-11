@@ -161,7 +161,7 @@ public class ClassBudgetUtil {
 	}
 
 	private static Money getClassDiscountsExTax(CourseClass cclass, String type) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
 		}
@@ -170,7 +170,7 @@ public class ClassBudgetUtil {
 		// way to calculate it is by summing up all discount amounts in invoice lines for successful enrolments.
 		if (ACTUAL.equals(type)) {
 			List<Enrolment> enrolments = cclass.getSuccessAndQueuedEnrolments();
-			return enrolments.stream().flatMap(e -> e.getInvoiceLines().stream()).map(InvoiceLine::getDiscountTotalExTax).reduce(Money.ZERO, (a, b) -> a.add(b));
+			return enrolments.stream().flatMap(e -> e.getInvoiceLines().stream()).map(InvoiceLine::getDiscountTotalExTax).reduce(Money.ZERO(), (a, b) -> a.add(b));
 		}
 
 		return calculateCostsFor(cclass, false, Collections.singletonList(ClassCostRepetitionType.DISCOUNT), false, type);
@@ -184,21 +184,21 @@ public class ClassBudgetUtil {
 		switch (type) {
 			case BUDGETED:
 				if (cclass.getBudgetedPlaces() == null) {
-					return Money.ZERO;
+					return Money.ZERO();
 				}
 				return cclass.getFeeExGst().multiply(cclass.getBudgetedPlaces());
 
 			case ACTUAL:
 				List<Enrolment> enrolments = cclass.getSuccessAndQueuedEnrolments();
 				if (enrolments != null) {
-					return enrolments.stream().map(e -> e.getOriginalInvoiceLine().getPriceTotalExTax()).reduce(Money.ZERO, Money::add);
+					return enrolments.stream().map(e -> e.getOriginalInvoiceLine().getPriceTotalExTax()).reduce(Money.ZERO(), Money::add);
 				} else {
-					return Money.ZERO;
+					return Money.ZERO();
 				}
 
 			default:
 				if (cclass.getMaximumPlaces() == null) {
-					return Money.ZERO;
+					return Money.ZERO();
 				}
 				return cclass.getFeeExGst().multiply(cclass.getMaximumPlaces());
 		}
@@ -212,12 +212,12 @@ public class ClassBudgetUtil {
 	}
 
 	private static Money getClassOtherIncomeExTax(CourseClass cclass, String type) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
 		}
 		if (BUDGETED.equals(type) && cclass.getBudgetedPlaces() == null) {
-			return Money.ZERO;
+			return Money.ZERO();
 		}
 
 		result = calculateCostsFor(cclass, true, Arrays.asList(ClassCostRepetitionType.values()), false, type);
@@ -225,7 +225,7 @@ public class ClassBudgetUtil {
 	}
 
 	private static Money getClassSunkCostsExTax(CourseClass cclass, String type) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
 		}
@@ -250,7 +250,7 @@ public class ClassBudgetUtil {
 	 * @return the projected cost of the class based on budgetedPlaces field
 	 */
 	public static Money getClassCostsExTax(CourseClass cclass, String type) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
@@ -263,7 +263,7 @@ public class ClassBudgetUtil {
 	}
 
 	public static Money getClassRunningCostsExTax(CourseClass cclass, String type) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
 		}
@@ -293,7 +293,7 @@ public class ClassBudgetUtil {
 	 * @return
 	 */
 	private static Money calculateCostsFor(CourseClass cclass, boolean funding, List<ClassCostRepetitionType> costsTypes, boolean flag, String type) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		if (cclass.getCosts() == null || cclass.getCosts().size() == 0) {
 			return result;
 		}
@@ -327,7 +327,7 @@ public class ClassBudgetUtil {
 	}
 
 	private static Money getClassCustomInvoicesExTax(CourseClass cclass) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 
 		List<InvoiceLine> invoiceLines = cclass.getInvoiceLines();
 		if (invoiceLines != null && invoiceLines.size() != 0) {

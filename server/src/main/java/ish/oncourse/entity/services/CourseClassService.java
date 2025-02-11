@@ -98,7 +98,7 @@ public class CourseClassService {
 		}
 
 		return (int) Math.ceil(ClassBudgetUtil.getClassCostsExTax(courseClass, ClassBudgetUtil.ACTUAL)
-				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).doubleValue());
+				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).toDoubleValue());
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class CourseClassService {
 		}
 
 		return (int) Math.ceil(ClassBudgetUtil.getClassRunningCostsExTax(courseClass, ClassBudgetUtil.ACTUAL)
-				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).doubleValue());
+				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).toDoubleValue());
 	}
 
 	/**
@@ -198,13 +198,13 @@ public class CourseClassService {
 	 */
 	@Deprecated
 	public Money getClassTotalFeeIncomeExTaxForRefundedAndCancelledEnrolments(CourseClass courseClass) {
-		Money result = Money.ZERO;
+		Money result = Money.ZERO();
 		List<Enrolment> canceledRefundedEnrolmentList = (List<Enrolment>) CourseClassUtil.getRefundedAndCancelledEnrolments(courseClass.getEnrolments());
 
 		if (canceledRefundedEnrolmentList != null) {
 			result = canceledRefundedEnrolmentList.stream().flatMap(e -> e.getInvoiceLines().stream())
-					.map(il -> il.getPriceTotalExTax() != null ? il.getPriceTotalExTax().subtract(il.getDiscountEachExTax()) : Money.ZERO)
-					.reduce(Money.ZERO, (a, b) -> a.add(b));
+					.map(il -> il.getPriceTotalExTax() != null ? il.getPriceTotalExTax().subtract(il.getDiscountEachExTax()) : Money.ZERO())
+					.reduce(Money.ZERO(), (a, b) -> a.add(b));
 		}
 		return result;
 	}

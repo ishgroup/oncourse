@@ -56,7 +56,7 @@ class PaymentOut extends _PaymentOut implements PaymentOutInterface, Queueable, 
 	void onEntityCreation() {
 		super.onEntityCreation()
 		if (getAmount() == null) {
-			setAmount(Money.ZERO)
+			setAmount(Money.ZERO())
 		}
 		if (getPrivateNotes() == null) {
 			setPrivateNotes("")
@@ -182,7 +182,7 @@ class PaymentOut extends _PaymentOut implements PaymentOutInterface, Queueable, 
 		if (getAmount() == null) {
 			result.addFailure(ValidationFailure.validationFailure(this, AMOUNT_PROPERTY, "The payment amount cannot be empty."))
 		} else {
-			Money sum = Money.ZERO
+			Money sum = Money.ZERO()
 			List<PaymentOutLine> list = getPaymentOutLines()
 			if (list != null) {
 				for (PaymentOutLine poutl : list) {

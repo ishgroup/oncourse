@@ -61,7 +61,7 @@ public class ContactUtils {
 		//we use this ordering for calculating balance which we show on ui
 		Ordering.orderList(financials, GetDateOrderingForFinancialItem.valueOf().get());
 
-		Money total = Money.ZERO;
+		Money total = Money.ZERO();
 
 		for (FinancialItem item : financials) {
 			if (FinancialItem.FinancialItemType.INVOICE.equals(item.getFinancialItemType())) {
