@@ -14,14 +14,27 @@ import io.bootique.ConfigModule;
 import io.bootique.config.ConfigurationFactory;
 import ish.math.Money;
 import ish.math.MoneyContext;
+import ish.math.MoneyContextUpdater;
 
 public class MoneyModule extends ConfigModule {
 
     @Singleton
     @Provides
-    MoneyContext createMoneyContext(ConfigurationFactory configFactory) {
-        MoneyContext context = configFactory.config(MoneyContextProvider.class, defaultConfigPrefix());
+    MoneyContextProvider createMoneyContextProvider(ConfigurationFactory configFactory) {
+        MoneyContextProvider context = configFactory.config(MoneyContextProvider.class, defaultConfigPrefix());
         Money.setContext(context);
         return context;
+    }
+
+    @Singleton
+    @Provides
+    MoneyContext createMoneyContext(MoneyContextProvider contextProvider) {
+        return contextProvider;
+    }
+
+    @Singleton
+    @Provides
+    MoneyContextUpdater createMoneyContextUpdater(MoneyContextProvider contextProvider) {
+        return contextProvider;
     }
 }

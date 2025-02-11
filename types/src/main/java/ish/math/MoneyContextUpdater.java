@@ -8,18 +8,8 @@
 
 package ish.math;
 
-import ish.math.format.MoneyFormatter;
+public interface MoneyContextUpdater {
 
-import javax.money.CurrencyUnit;
-import java.math.RoundingMode;
-import java.util.Locale;
-
-public interface MoneyContext {
-
-    RoundingMode DEFAULT_ROUND = RoundingMode.HALF_UP;
-
-    CurrencyUnit getCurrency();
-    Locale getLocale();
-    MoneyFormatter getFormatter();
+    void updateCountry(Country country);
 
 }

@@ -17,7 +17,7 @@ import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
-import ish.math.MoneyContext;
+import ish.math.MoneyContextUpdater;
 import ish.oncourse.server.api.servlet.AngelSessionDataStoreFactory;
 import ish.oncourse.server.bugsnag.BugsnagFactory;
 import ish.oncourse.server.db.SchemaUpdateService;
@@ -47,7 +47,7 @@ public class AngelCommand extends CommandWithMetadata {
     final private Provider<PluginService> pluginServiceProvider;
     final private Provider<MailDeliveryService> mailDeliveryServiceProvider;
     final private Provider<EventService> eventServiceProvider;
-    final private Provider<MoneyContext> moneyContextProvider;
+    final private Provider<MoneyContextUpdater> moneyContextProvider;
 
     private static final Logger logger =  LogManager.getLogger();
 
@@ -65,7 +65,7 @@ public class AngelCommand extends CommandWithMetadata {
                         Provider<PluginService> pluginServiceProvider,
                         Provider<MailDeliveryService> mailDeliveryServiceProvider,
                         Provider<EventService> eventServiceProvider,
-                        Provider<MoneyContext> moneyContextProvider) {
+                        Provider<MoneyContextUpdater> moneyContextProvider) {
         super(CommandMetadata.builder(AngelCommand.class).description("Run onCourse server.").build());
         this.serverProvider = serverProvider;
         this.cayenneServiceProvider = cayenneServiceProvider;

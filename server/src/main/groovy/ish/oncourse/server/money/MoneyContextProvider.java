@@ -11,6 +11,7 @@ package ish.oncourse.server.money;
 import groovy.lang.Singleton;
 import ish.math.Country;
 import ish.math.MoneyContext;
+import ish.math.MoneyContextUpdater;
 import ish.math.format.DefaultMoneyFormatter;
 import ish.math.format.MoneyFormatter;
 
@@ -20,7 +21,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
-public class MoneyContextProvider implements MoneyContext {
+public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
 
     private final AtomicReference<CurrencyUnit> currency = new AtomicReference<>();
     private final AtomicReference<Locale> locale = new AtomicReference<>();
@@ -31,6 +32,7 @@ public class MoneyContextProvider implements MoneyContext {
         locale.set(Locale.getDefault());
     }
 
+    @Override
     public void updateCountry(Country country) {
         this.currency.set(country.currency());
         this.locale.set(country.locale());

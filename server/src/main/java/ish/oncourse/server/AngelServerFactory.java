@@ -14,7 +14,7 @@ package ish.oncourse.server;
 import com.google.inject.Inject;
 import io.bootique.annotation.BQConfig;
 import ish.math.Country;
-import ish.math.MoneyContext;
+import ish.math.MoneyContextUpdater;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.SystemUser;
@@ -98,7 +98,7 @@ public class AngelServerFactory {
                       PluginService pluginService,
                       MailDeliveryService mailDeliveryService,
                       HttpFactory httpFactory,
-                      MoneyContext moneyContext) {
+                      MoneyContextUpdater moneyContextUpdater) {
         try {
 
             // Create DB schema
@@ -204,10 +204,10 @@ public class AngelServerFactory {
             var preference = prefController.getPreference(ACCOUNT_CURRENCY, false);
             if ((preference != null) && (preference.getValueString() != null)) {
                 var country = Country.forCurrencySymbol(preference.getValueString());
-                moneyContext.updateCountry(country);
+                moneyContextUpdater.updateCountry(country);
             } else {
                 prefController.setValue(ACCOUNT_CURRENCY, false, Country.AUSTRALIA.currencySymbol());
-                moneyContext.updateCountry(Country.AUSTRALIA);
+                moneyContextUpdater.updateCountry(Country.AUSTRALIA);
             }
 
         } catch (SchedulerException e1) {
