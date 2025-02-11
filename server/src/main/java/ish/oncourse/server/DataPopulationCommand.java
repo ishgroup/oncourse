@@ -18,6 +18,7 @@ import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
+import ish.oncourse.server.display.DisplayService;
 import ish.oncourse.server.scripting.GroovyScriptService;
 import ish.oncourse.server.upgrades.DataPopulation;
 import org.apache.logging.log4j.LogManager;
@@ -30,22 +31,23 @@ public class DataPopulationCommand  extends CommandWithMetadata {
     private String angelVersion;
     private Provider<CayenneService> cayenneServiceProvider;
     private Provider<GroovyScriptService> groovyScriptServiceProvider;
+    private Provider<DisplayService> displayServiceProvider;
     @Inject
     public DataPopulationCommand(@Named(AngelModule.ANGEL_VERSION) String angelVersion,
                                  Provider<CayenneService> cayenneServiceProvider,
-                                 Provider<GroovyScriptService> groovyScriptServiceProvider) {
+                                 Provider<GroovyScriptService> groovyScriptServiceProvider, Provider<DisplayService> displayServiceProvider) {
         super(CommandMetadata.builder(DataPopulationCommand.class).description("Run data population.").build());
         this.angelVersion = angelVersion;
         this.cayenneServiceProvider = cayenneServiceProvider;
         this.groovyScriptServiceProvider = groovyScriptServiceProvider;
-
+        this.displayServiceProvider = displayServiceProvider;
     }
     @Override
     public CommandOutcome run(Cli cli) {
         try {
             // Populate resources in the background
             var dataPopulation = new DataPopulation(angelVersion,
-                    this.cayenneServiceProvider.get());
+                    this.cayenneServiceProvider.get(), displayServiceProvider.get());
             dataPopulation.run();
             logger.warn("initialize script triggers...");
             groovyScriptServiceProvider.get().initTriggers();
