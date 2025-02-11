@@ -52,6 +52,7 @@ trait PaymentServiceTrait {
 
         return new CheckoutCCResponseDTO().with {
             it.paymentId = checkout.paymentIn.id
+            it.invoiceId = checkout.invoice?.id
             it
         }
     }

@@ -8,6 +8,10 @@ properties:
     type: integer
     format: int64
     required: true
+  invoiceId:
+    type: integer
+    format: int64
+    required: true
   clientSecret:
     type: string
     require: false
