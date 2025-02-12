@@ -5,7 +5,6 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import { CheckoutCCResponse } from '@api/model';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Elements, PaymentElement, useElements, useStripe, } from '@stripe/react-stripe-js';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
@@ -16,13 +15,11 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { showMessage } from '../../../../../../common/actions';
 import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
-import history from '../../../../../../constants/History';
+import { useAppSelector } from '../../../../../../common/utils/hooks';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
-  checkoutGetPaymentStatusDetails,
-  checkoutProcessPaymentFulfilled,
   checkoutProcessStripeCCPayment,
   checkoutSetPaymentProcessing,
   clearCcIframeUrl
@@ -46,6 +43,8 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
   const elements = useElements();
   const [ready, setReady] = useState(false);
 
+  const email = useAppSelector(state => state.checkout.summary.list.find(c => c.payer)?.contact.email);
+
   const handleSubmit = async event => {
     event.preventDefault();
 
@@ -63,7 +62,12 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
     }
 
     const { paymentMethod, error } = await stripe.createPaymentMethod({
-      elements
+      elements,
+      params: {
+        billing_details: {
+          email
+        }
+      }
     });
 
     if (error) {
@@ -92,7 +96,6 @@ const StripePaymentForm = ({ isPaymentProcessing, handleError, setLoading, check
 const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
     summary,
-    completePayment,
     isPaymentProcessing,
     disablePayment,
     payment,
@@ -103,37 +106,13 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     dispatch
   } = props;
 
-  const query = new URLSearchParams(window.location.search);
-  const transactionId = query.get("payment_intent");
-  const onCoursePaymentSessionId = query.get("onCourseSessionId");
-
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null>>(null);
   const { classes } = useStyles();
   
   useEffect(() => {
-    if (transactionId) {
-      dispatch(checkoutSetPaymentProcessing(true));
-      history.replace({
-        pathname: history.location.pathname,
-        search: ""
-      });
-      CheckoutService.submitCreditCardPayment({
-        onCoursePaymentSessionId,
-        paymentMethodId: null,
-        transactionId,
-        merchantReference: null,
-        origin: window.location.origin
-      })
-        .then(res => completePayment(res, onCoursePaymentSessionId))
-        .catch(error => {
-          dispatch(checkoutSetPaymentProcessing(false));
-          InstantFetchErrorHandler(dispatch, error);
-        });
-    } else {
-      CheckoutService.getClientKey()
-        .then(res => setStripePromise(loadStripe(res)))
-        .catch(res => InstantFetchErrorHandler(dispatch, res));
-    }
+    CheckoutService.getClientKey()
+      .then(res => setStripePromise(loadStripe(res)))
+      .catch(res => InstantFetchErrorHandler(dispatch, res));
   }, []);
 
   const setLoading = (loading: boolean) => {
@@ -212,12 +191,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices()),
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
-  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
-  completePayment: (checkoutCCResponse: CheckoutCCResponse, sessionId: string) => {
-    dispatch(checkoutGetPaymentStatusDetails(sessionId));
-    dispatch(checkoutProcessPaymentFulfilled(checkoutCCResponse));
-    dispatch(checkoutSetPaymentProcessing(false));
-  }
+  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StripePaymentPage);

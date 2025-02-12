@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { CheckoutResponse } from '@api/model';
+import { CheckoutCCResponse } from '@api/model';
 import { Stripe } from '@stripe/stripe-js';
 import { format } from 'date-fns';
 import { YYYY_MM_DD_MINUSED } from 'ish-ui';
@@ -38,7 +38,7 @@ import {
   paymentErrorMessageDefault
 } from '../../utils';
 
-const request: EpicUtils.Request<{ checkoutResponse: CheckoutResponse, sessionId: string }, { stripePaymentMethodId: string, stripe: Stripe }> = {
+const request: EpicUtils.Request<{ checkoutResponse: CheckoutCCResponse, sessionId: string }, { stripePaymentMethodId: string, stripe: Stripe }> = {
   type: CHECKOUT_PROCESS_STRIPE_CC_PAYMENT,
   getData: async ({
     stripePaymentMethodId,
@@ -65,7 +65,11 @@ const request: EpicUtils.Request<{ checkoutResponse: CheckoutResponse, sessionId
     });
 
     if (checkoutResponse.actionRequired) {
-      LSSetItem(getStoredPaymentStateKey(sessionResponse.sessionId), JSON.stringify(s.checkout));
+      LSSetItem(getStoredPaymentStateKey(sessionResponse.sessionId), JSON.stringify({
+        checkoutState: s.checkout,
+        selectionForm: getFormValues(CHECKOUT_SELECTION_FORM_NAME)(s)
+      }));
+
       const {
         error,
       } = await stripe.handleCardAction(checkoutResponse.clientSecret);
@@ -74,11 +78,11 @@ const request: EpicUtils.Request<{ checkoutResponse: CheckoutResponse, sessionId
         throw error;
       }
     }
-    return { checkoutResponse, sessionId: sessionResponse.sessionId };
+    return { checkoutResponse, sessionId: checkoutResponse.paymentSystemSessionId };
   },
   processData: ({ checkoutResponse, sessionId }) => [
     checkoutGetPaymentStatusDetails(sessionId),
-    checkoutProcessPaymentFulfilled(checkoutResponse),
+    checkoutProcessPaymentFulfilled(checkoutResponse.checkoutResponse),
     checkoutSetPaymentProcessing(false),
   ],
   processError: response => {

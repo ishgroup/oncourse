@@ -5,7 +5,6 @@
 
 import {
   ArticleProduct,
-  CheckoutCCResponse,
   CheckoutPaymentPlan,
   CheckoutSaleRelation,
   Course,
@@ -248,7 +247,6 @@ export interface CreditCardPaymentPageProps {
   checkoutProcessCcPayment?: (xValidateOnly: boolean) => void;
   clearCcIframeUrl: () => void;
   checkoutProcessStripeCCPayment?: (stripePaymentMethodId: string, stripe: Stripe) => void;
-  completePayment?: (checkoutCCResponse: CheckoutCCResponse, sessionId: string) => void;
   checkoutGetPaymentStatusDetails?: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;
   checkoutUpdateSummaryPrices?: NoArgFunction;

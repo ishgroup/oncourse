@@ -7,6 +7,7 @@
  */
 import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import { FormControlLabel } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
@@ -363,7 +364,12 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     });
   };
 
+  const query = new URLSearchParams(window.location.search);
+  const transactionId = query.get("payment_intent");
+
   useEffect(() => {
+      if (transactionId || paymentProcessStatus === "success") return;
+
       let updated = decimalPlus(
         decimalMinus(checkoutSummary.finalTotal, classVouchersTotal),
         checkoutSummary.previousOwing.invoiceTotal,
@@ -394,11 +400,14 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     [
       vouchersTotal,
       classVouchersTotal,
+      paymentProcessStatus,
       checkoutSummary.finalTotal,
       checkoutSummary.previousOwing.invoices,
       checkoutSummary.previousCredit.invoices]);
 
   useEffect(() => {
+    if (transactionId || paymentProcessStatus === "success") return;
+
     const planItems = [];
     let updatedPaymentPlans = [];
 
@@ -498,6 +507,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     classVouchersTotal,
     payerContact,
     paymentPlans,
+    paymentProcessStatus,
     checkoutSummary.invoiceDueDate,
     checkoutSummary.payNowTotal,
     checkoutSummary.previousOwing.invoices,
