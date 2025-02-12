@@ -110,7 +110,8 @@ const initial: CheckoutState = {
       payDueAmounts: true
     },
     voucherItems: [],
-    invoiceDueDate: null
+    invoiceDueDate: null,
+    paymentDate: null
   },
   contactEditRecord: null,
   itemEditRecord: null,

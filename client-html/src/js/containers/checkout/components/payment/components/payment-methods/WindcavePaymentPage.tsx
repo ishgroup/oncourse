@@ -45,11 +45,11 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
 
   const [validatePayment, setValidatePayment] = React.useState(true);
 
-  const proceedPayment = React.useCallback(() => {
+  const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
     setValidatePayment(true);
-    checkoutProcessCcPayment(true);
-  }, [summary.payNowTotal]);
+    checkoutProcessCcPayment();
+  };
 
   const onMessage = e => {
     const paymentDetails = e.data.payment;
@@ -68,10 +68,10 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   }, [summary, payment]);
 
   React.useEffect(() => {
-    if (summary.payNowTotal > 0) {
+    if (!process.status && summary.payNowTotal > 0) {
       proceedPayment();
     }
-  }, [summary.payNowTotal, summary.allowAutoPay, summary.paymentDate, summary.invoiceDueDate]);
+  }, [process.status, summary.payNowTotal, summary.allowAutoPay, summary.paymentDate, summary.invoiceDueDate]);
 
   return (
     <div
@@ -135,8 +135,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  checkoutProcessCcPayment: (xValidateOnly: boolean) => {
-    dispatch(checkoutProcessPayment(xValidateOnly));
+  checkoutProcessCcPayment: () => {
+    dispatch(checkoutProcessPayment());
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),

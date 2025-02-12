@@ -244,7 +244,7 @@ export interface CreditCardPaymentPageProps {
   hasSummarryErrors?: boolean;
   currencySymbol?: any;
   iframeUrl?: string;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean) => void;
+  checkoutProcessCcPayment?: () => void;
   clearCcIframeUrl: () => void;
   checkoutProcessStripeCCPayment?: (stripePaymentMethodId: string, stripe: Stripe) => void;
   checkoutGetPaymentStatusDetails?: StringArgFunction;

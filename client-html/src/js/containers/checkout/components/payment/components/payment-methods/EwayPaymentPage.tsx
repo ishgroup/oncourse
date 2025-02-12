@@ -44,7 +44,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
 
   const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
-    checkoutProcessCcPayment(true);
+    checkoutProcessCcPayment();
   };
 
   const pymentCallback = result => {
@@ -117,8 +117,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  checkoutProcessCcPayment: (xValidateOnly: boolean) => {
-    dispatch(checkoutProcessPayment(xValidateOnly));
+  checkoutProcessCcPayment: () => {
+    dispatch(checkoutProcessPayment());
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),

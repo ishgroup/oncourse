@@ -12,7 +12,6 @@ import { SHOW_MESSAGE } from '../../../../common/actions';
 import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
 import * as EpicUtils from '../../../../common/epics/EpicUtils';
 import {
-  CHECKOUT_EMPTY_PAYMENT_ACTION,
   CHECKOUT_PROCESS_PAYMENT,
   checkoutPaymentSetCustomStatus,
   checkoutPaymentSetStatus,
@@ -27,9 +26,9 @@ import { CHECKOUT_SUMMARY_FORM } from '../../components/summary/CheckoutSummaryL
 import CheckoutService from '../../services/CheckoutService';
 import { getCheckoutModel, getPaymentErrorMessage, paymentErrorMessageDefault } from '../../utils';
 
-const request: EpicUtils.Request<CheckoutResponse | CheckoutCCResponse, boolean> = {
+const request: EpicUtils.Request<CheckoutResponse | CheckoutCCResponse, undefined> = {
   type: CHECKOUT_PROCESS_PAYMENT,
-  getData: async (xValidateOnly, s) => {
+  getData: async (p, s) => {
     const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
     const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
     const paymentPlans = (getFormValues(CHECKOUT_SELECTION_FORM_NAME)(s) as any)?.paymentPlans || [];
@@ -42,26 +41,17 @@ const request: EpicUtils.Request<CheckoutResponse | CheckoutCCResponse, boolean>
     );
 
     if (paymentType === "Credit card") {
-      const sessionResponse = await CheckoutService.createSession(checkoutModel);
-      return CheckoutService.submitCreditCardPayment({
-        onCoursePaymentSessionId: sessionResponse.sessionId,
-        paymentMethodId: String(paymentMethod.id),
-        transactionId: null,
-        merchantReference: sessionResponse.merchantReference,
-        origin: window.location.origin
-      });
+      return CheckoutService.createSession(checkoutModel);
     }
 
-    return xValidateOnly ? CheckoutService.updateModel(checkoutModel) : CheckoutService.submitPayment(checkoutModel);
+    return CheckoutService.submitPayment(checkoutModel);
   },
-  processData: (checkoutResponse, s, xValidateOnly) => {
+  processData: (checkoutResponse, s) => {
     const paymentMethod = s.checkout.payment.availablePaymentTypes.find(t => t.name === s.checkout.payment.selectedPaymentType);
     const paymentType = paymentMethod ? paymentMethod.type : s.checkout.payment.selectedPaymentType;
 
     return [
-      paymentType !== "Credit card" && !xValidateOnly
-        ? checkoutPaymentSetCustomStatus("success")
-        : { type: CHECKOUT_EMPTY_PAYMENT_ACTION },
+      ...paymentType !== "Credit card" ? [checkoutPaymentSetCustomStatus("success")] : [],
       checkoutProcessPaymentFulfilled(checkoutResponse),
       checkoutSetPaymentProcessing(false),
     ];

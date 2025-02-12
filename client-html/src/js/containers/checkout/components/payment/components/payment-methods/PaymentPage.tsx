@@ -13,6 +13,7 @@ import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
 import { InjectedFormProps, isInvalid, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
+import { validate } from 'uuid';
 import { CheckoutPayment, CheckoutSummary } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
@@ -39,7 +40,7 @@ interface CashPaymentPageProps {
   payment?: CheckoutPayment;
   paymentInvoice?: any;
   setPaymentSuccess?: BooleanArgFunction;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
+  checkoutProcessPayment?: () => void;
   onCheckoutClearPaymentStatus?: () => void;
   paymentStatus?: any;
   hasSummarryErrors?: boolean;
@@ -55,7 +56,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
     currencySymbol,
     invalid,
     summary,
-    checkoutProcessCcPayment,
+    checkoutProcessPayment,
     payment,
     onCheckoutClearPaymentStatus,
     hasSummarryErrors,
@@ -64,23 +65,20 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
   } = props;
 
   const [finalized, setFinalized] = React.useState(false);
-  const [validatePayment, setValidatePayment] = React.useState(true);
 
-  const proceedPayment = React.useCallback(validate => {
+  const proceedPayment = React.useCallback(() => {
     onCheckoutClearPaymentStatus();
 
-    setValidatePayment(validate);
+    setFinalized(true);
 
-    if (!validate) setFinalized(true);
-
-    checkoutProcessCcPayment(validate, null, window.location.origin);
+    checkoutProcessPayment();
   }, [summary.payNowTotal]);
 
   React.useEffect(() => {
     if (hasSummarryErrors || (paymentType === "No payment" && summary.payNowTotal > 0)) {
       return;
     }
-    proceedPayment(true);
+    proceedPayment();
   }, [summary.payNowTotal, summary.paymentDate, summary.invoiceDueDate, paymentType]);
 
   return (
@@ -154,7 +152,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
                               !summary.list.some(l => l.items.some(li => li.checked))
                               && !summary.voucherItems.some(i => i.checked)
                               && summary.previousOwing.invoiceTotal === 0)) && "disabled")}
-                      onClick={() => proceedPayment(false)}
+                      onClick={() => proceedPayment()}
                     >
                       Finalise checkout
                     </div>
@@ -166,9 +164,9 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
         </form>
         ) : paymentStatus !== "" ? (
           <PaymentMessageRenderer
-            tryAgain={() => proceedPayment(true)}
+            tryAgain={() => proceedPayment()}
             payment={payment}
-            validatePayment={validatePayment}
+            validatePayment={false}
             summary={summary}
           />
         ) : null}
@@ -188,8 +186,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
-  checkoutProcessCcPayment: (xValidateOnly: boolean) => {
-    dispatch(checkoutProcessPayment(xValidateOnly));
+  checkoutProcessPayment: () => {
+    dispatch(checkoutProcessPayment());
   },
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
 });
