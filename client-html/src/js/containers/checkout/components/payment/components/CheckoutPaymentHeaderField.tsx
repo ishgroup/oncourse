@@ -7,7 +7,6 @@
  */
 import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { FormControlLabel } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
