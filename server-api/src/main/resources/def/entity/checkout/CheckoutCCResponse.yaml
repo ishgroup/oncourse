@@ -4,13 +4,8 @@ properties:
     type: boolean
     required: false
     description: if transaction requires additional client actions
-  paymentId:
-    type: integer
-    format: int64
-    required: true
-  invoiceId:
-    type: integer
-    format: int64
+  checkoutResponse:
+    $ref: './CheckoutResponse.yaml'
     required: true
   clientSecret:
     type: string

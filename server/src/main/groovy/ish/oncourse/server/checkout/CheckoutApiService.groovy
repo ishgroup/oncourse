@@ -100,9 +100,7 @@ class CheckoutApiService {
     CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
         Checkout checkout = checkoutController.createCheckout(checkoutModel)
         paymentService = getPaymentServiceByGatewayType()
-        def dtoResponse = new CheckoutResponseDTO()
-        paymentService.fillResponse(dtoResponse, checkout)
-        return dtoResponse
+        return paymentService.fillResponse(checkout)
     }
 
 
@@ -138,10 +136,7 @@ class CheckoutApiService {
 
     CheckoutResponseDTO submitPayment(CheckoutModelDTO checkoutModelDTO) {
         def checkout = processPaymentTypeChoice(checkoutModelDTO, false)
-
-        CheckoutResponseDTO dtoResponse = new CheckoutResponseDTO()
-        paymentService.fillResponse(dtoResponse, checkout)
-        return dtoResponse
+        return paymentService.fillResponse(checkout)
     }
 
     CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xOrigin) {
