@@ -24,6 +24,7 @@ import ish.oncourse.server.api.dao.FundingSourceDao
 import ish.oncourse.server.api.dao.ModuleDao
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.service.*
+import ish.oncourse.server.api.servlet.ApiFilter
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
@@ -104,14 +105,11 @@ class CheckoutApiService {
     }
 
 
-    private void saveModel(CheckoutModelDTO checkoutModel, Checkout checkout, PaymentServiceInterface paymentService) {
-        if (!checkout.errors.empty) {
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
-        } else {
-            eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModel))
-        }
-
+    private void imitateCheckoutCommitForValidation(Checkout checkout) {
+        //see ValidationFilter for reason. Additional validation of cayenne model without commit
+        ApiFilter.validateOnly.set(true)
         paymentService.saveCheckout(checkout)
+        ApiFilter.validateOnly.set(false)
     }
 
     SessionStatusDTO getStatus(String sessionIdOrAccessCode) {
@@ -129,18 +127,25 @@ class CheckoutApiService {
         Checkout checkout = checkoutController.createCheckout(checkoutModelDTO)
         if(!checkout.isCreditCard().equals(creditCardExpected))
             paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, "This endpoint cannot be used for selected payment type. See submitCCPayment, submitPayment")
-        saveModel(checkoutModelDTO, checkout, paymentService)
+
+        if (!checkout.errors.empty) {
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
+        } else {
+            eventService.postEvent(SystemEvent.valueOf(SystemEventType.VALIDATE_CHECKOUT, checkoutModelDTO))
+        }
 
         return checkout
     }
 
     CheckoutResponseDTO submitPayment(CheckoutModelDTO checkoutModelDTO) {
         def checkout = processPaymentTypeChoice(checkoutModelDTO, false)
+        paymentService.saveCheckout(checkout)
         return paymentService.fillResponse(checkout)
     }
 
-    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xOrigin) {
+    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xOrigin, String deprecatedSessionId) {
         def checkout = processPaymentTypeChoice(checkoutModel, true)
+        imitateCheckoutCommitForValidation(checkout)
 
         CreateSessionResponseDTO dtoResponse = new CreateSessionResponseDTO()
         if (checkoutModel.payWithSavedCard) {
@@ -161,6 +166,9 @@ class CheckoutApiService {
             dtoResponse.ccFormUrl = attributes.ccFormUrl
             dtoResponse.clientSecret = attributes.clientSecret
             dtoResponse.merchantReference = merchantReference
+
+            if(deprecatedSessionId)
+                checkoutSessionService.removeSession(deprecatedSessionId)
 
             checkoutSessionService.saveCheckoutSession(checkoutModel, dtoResponse.sessionId)
         } else if (attributes.errorMessage) {

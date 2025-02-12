@@ -73,8 +73,8 @@ class CheckoutApiImpl implements CheckoutApi {
     LicenseService licenseService
 
     @Override
-    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin) {
-        return checkoutApiService.createSession(checkoutModel, xorigin)
+    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin, String deprecatedSessionId) {
+        return checkoutApiService.createSession(checkoutModel, xorigin, deprecatedSessionId)
     }
 
     @Override
@@ -237,6 +237,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
             it.onCoursePaymentSessionId = paymentSessionId
+            it.merchantReference = paymentSessionId
             it
         }
         checkoutApiService.submitCreditCardPayment(submitRequestDTO)

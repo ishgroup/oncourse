@@ -51,6 +51,12 @@ class CheckoutSessionService {
         }
     }
 
+    void removeSession(String sessionId) {
+        def context = cayenneService.newContext
+        removeNotCommitCheckoutSession(sessionId, context)
+        context.commitChanges()
+    }
+
     CheckoutModelDTO getCheckoutModel(String sessionId, PaymentServiceInterface paymentService) {
         def context = cayenneService.newReadonlyContext
         def session = ObjectSelect.query(CheckoutSession)

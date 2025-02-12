@@ -98,7 +98,7 @@ class WindcavePaymentAPI {
                                                 declined :  origin + '/checkout?paymentStatus=fail',
                                                 cancelled:  origin + '/checkout?paymentStatus=cancel'
                                             ],
-                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key"
+                                        notificationUrl: "https://private-anon-9ad5b98d28-px5.apiary-mock.com" + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key"
                                         ]
             if (storeCard) {
                 body['storeCard'] = true
