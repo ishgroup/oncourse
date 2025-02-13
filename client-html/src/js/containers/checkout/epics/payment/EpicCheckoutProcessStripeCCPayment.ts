@@ -54,7 +54,7 @@ const request: EpicUtils.Request<{ checkoutResponse: CheckoutCCResponse, session
       (getFormValues(CHECKOUT_SUMMARY_FORM)(s) as any)
     );
 
-    const sessionResponse = await CheckoutService.createSession(checkoutModel);
+    const sessionResponse = await CheckoutService.createSession(checkoutModel, s.checkout.payment.sessionId);
 
     const checkoutResponse = await CheckoutService.submitCreditCardPayment({
       onCoursePaymentSessionId: sessionResponse.sessionId,

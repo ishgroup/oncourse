@@ -8,12 +8,11 @@
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { BooleanArgFunction, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import { BooleanArgFunction, formatCurrency, NoArgFunction, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
 import { InjectedFormProps, isInvalid, reduxForm } from 'redux-form';
 import { withStyles } from 'tss-react/mui';
-import { validate } from 'uuid';
 import { CheckoutPayment, CheckoutSummary } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
@@ -21,6 +20,7 @@ import {
   checkoutProcessPayment,
   checkoutSetPaymentSuccess
 } from '../../../../actions/checkoutPayment';
+import { checkoutUpdateSummaryPrices } from '../../../../actions/checkoutSummary';
 import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 import styles from './styles';
@@ -39,6 +39,7 @@ interface CashPaymentPageProps {
   summary?: CheckoutSummary;
   payment?: CheckoutPayment;
   paymentInvoice?: any;
+  checkoutUpdateSummaryPrices?: NoArgFunction;
   setPaymentSuccess?: BooleanArgFunction;
   checkoutProcessPayment?: () => void;
   onCheckoutClearPaymentStatus?: () => void;
@@ -61,6 +62,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
     onCheckoutClearPaymentStatus,
     hasSummarryErrors,
     paymentStatus,
+    checkoutUpdateSummaryPrices,
     payerName
   } = props;
 
@@ -78,8 +80,9 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
     if (hasSummarryErrors || (paymentType === "No payment" && summary.payNowTotal > 0)) {
       return;
     }
-    proceedPayment();
-  }, [summary.payNowTotal, summary.paymentDate, summary.invoiceDueDate, paymentType]);
+
+    checkoutUpdateSummaryPrices();
+  }, [summary.payNowTotal, hasSummarryErrors, summary.paymentDate, summary.invoiceDueDate, paymentType]);
 
   return (
     <div className={clsx("d-flex flex-fill justify-content-center", classes.content)}>
@@ -189,7 +192,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   checkoutProcessPayment: () => {
     dispatch(checkoutProcessPayment());
   },
-  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
+  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
+  checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices())
 });
 
 export default reduxForm<any, CashPaymentPageProps>({

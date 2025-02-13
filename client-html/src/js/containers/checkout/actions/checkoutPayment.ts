@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CheckoutCCResponse, CheckoutPaymentPlan, CheckoutResponse, CreateSessionResponse } from '@api/model';
+import { CheckoutCCResponse, CheckoutPaymentPlan, CheckoutResponse } from '@api/model';
 import { Stripe } from '@stripe/stripe-js';
 import { _toRequestType, FULFILLED } from '../../../common/actions/ActionUtils';
 
@@ -20,6 +20,7 @@ export const CHECKOUT_SET_PAYMENT_SUCCESS = "checkout/set/payment/success";
 export const CHECKOUT_SET_PAYMENT_SET_STATUS = "checkout/set/payment/set/status";
 
 export const CHECKOUT_GET_PAYMENT_STATUS_DETAILS = _toRequestType("checkout/get/payment/status/details");
+export const CHECKOUT_GET_PAYMENT_DETAILS_BY_REFERENCE = _toRequestType("checkout/get/payment/details");
 export const CHECKOUT_SET_PAYMENT_DETAILS_FETCHING = "checkout/set/payment/status/details/fetching";
 export const CHECKOUT_SET_PAYMENT_STATUS = "checkout/get/payment/status";
 export const CHECKOUT_SET_PAYMENT_STATUS_DETAILS = "checkout/set/payment/status/details";
@@ -28,9 +29,6 @@ export const CHECKOUT_CLEAR_PAYMENT_STATUS = _toRequestType("checkout/clear/paym
 export const CHECKOUT_PROCESS_PAYMENT = _toRequestType("checkout/process/cc/payment");
 export const CHECKOUT_PROCESS_STRIPE_CC_PAYMENT = _toRequestType("checkout/process/stripe/cc/payment");
 export const CHECKOUT_PROCESS_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_PAYMENT);
-
-export const CHECKOUT_CREATE_PAYMENT_SESSION = _toRequestType("checkout/create/payment/session");
-export const CHECKOUT_CREATE_PAYMENT_SESSION_FULFILLED = FULFILLED(CHECKOUT_CREATE_PAYMENT_SESSION);
 
 export const CHECKOUT_CLEAR_CC_IFRAME_URL = "checkout/clear/wcIframe/url";
 
@@ -41,9 +39,9 @@ export const checkoutProcessPaymentFulfilled = (response: CheckoutResponse | Che
   payload: response
 });
 
-export const checkoutCreatePaymentSessionFulfilled = (response: CreateSessionResponse) => ({
-  type: CHECKOUT_CREATE_PAYMENT_SESSION_FULFILLED,
-  payload: response
+export const checkoutGetPaymentDetailsByReference = (reference: string) => ({
+  type: CHECKOUT_GET_PAYMENT_DETAILS_BY_REFERENCE,
+  payload: reference
 });
 
 export const checkoutGetSavedCard = (payerId: number, paymentMethodId: number) => ({

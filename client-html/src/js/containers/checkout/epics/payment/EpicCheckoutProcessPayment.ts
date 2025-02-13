@@ -41,7 +41,7 @@ const request: EpicUtils.Request<CheckoutResponse | CheckoutCCResponse, undefine
     );
 
     if (paymentType === "Credit card") {
-      return CheckoutService.createSession(checkoutModel);
+      return CheckoutService.createSession(checkoutModel, s.checkout.payment.sessionId);
     }
 
     return CheckoutService.submitPayment(checkoutModel);

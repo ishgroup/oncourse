@@ -18,7 +18,7 @@ import CheckoutService from '../../services/CheckoutService';
 const request: EpicUtils.Request<any, { status: any; sessionId: string }> = {
   type: CHECKOUT_GET_PAYMENT_STATUS_DETAILS,
   getData: ({ sessionId }) => CheckoutService.getSessionStatus(sessionId),
-  processData: (data, { checkout: { payment: { merchantReference } } }, { sessionId }) => {
+  processData: (data) => {
 
     const actions: any = [
       checkoutSetPaymentStatusDetails(data),

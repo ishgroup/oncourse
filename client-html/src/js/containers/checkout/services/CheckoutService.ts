@@ -19,8 +19,8 @@ import { DefaultHttpService } from '../../../common/services/HttpService';
 class CheckoutService {
   readonly checkoutApi = new CheckoutApi(new DefaultHttpService());
   
-  public createSession(checkoutModel: CheckoutModel): Promise<CreateSessionResponse> {
-    return this.checkoutApi.createSession(checkoutModel, window.location.origin);
+  public createSession(checkoutModel: CheckoutModel, deprecatedSessionId: string = null): Promise<CreateSessionResponse> {
+    return this.checkoutApi.createSession(checkoutModel, window.location.origin, deprecatedSessionId);
   }
 
   public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number, payerId: number = null): Promise<CourseClassDiscount[]> {
