@@ -205,6 +205,8 @@ paths:
     $ref: './path/list/entity/outcome/api.yaml'
   /list/entity/paymentIn/reverse:
     $ref: './path/list/entity/paymentIn/reverse/api.yaml'
+  /checkout/paymentIn/session:
+    $ref: './path/list/entity/paymentIn/session/api.yaml'
   /list/entity/paymentIn:
     $ref: './path/list/entity/paymentIn/api.yaml'
   /list/entity/paymentOut:
