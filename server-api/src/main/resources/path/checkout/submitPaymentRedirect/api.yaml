@@ -15,7 +15,7 @@ get:
       required: false
       description: key of college instance
   responses:
-    '204':
+    '200':
       description: Success response
     '400':
       description: Validation error
