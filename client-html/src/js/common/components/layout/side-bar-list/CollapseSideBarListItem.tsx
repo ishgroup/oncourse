@@ -10,20 +10,21 @@ import clsx from "clsx";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const CollapseSideBarListItem: React.FC<any> = ({
-                                                  to,
-                                                  index,
-                                                  item,
-                                                  isActiveLink,
-                                                  activeLink,
-                                                  ItemIcon,
-                                                  classes,
-                                                  handleOpenTooltip,
-                                                  handleCloseTooltip,
-                                                  openedTooltip,
-                                                  ItemIconRenderer
-                                                }) => (
-  <NavLink to={to} className="link" isActive={(match, location) => isActiveLink(location, to, index, item.name)}>
+const CollapseSideBarListItem: React.FC<any> = (
+  {
+    to,
+    index,
+    item,
+    isActiveLink,
+    activeLink,
+    ItemIcon,
+    classes,
+    handleOpenTooltip,
+    handleCloseTooltip,
+    openedTooltip,
+    ItemIconRenderer
+}) => (
+  <NavLink to={to} className={clsx("link", item.disabled && "pointer-events-none")} isActive={(match, location) => isActiveLink(location, to, index, item.name)}>
     <Tooltip
       title={item.name}
       disableTouchListener
@@ -31,7 +32,7 @@ const CollapseSideBarListItem: React.FC<any> = ({
       open={openedTooltip === index}
       placement="bottom"
     >
-      <MenuItem className={classes.listItemPadding} selected={activeLink === index.toString()}>
+      <MenuItem disabled={item.disabled} className={classes.listItemPadding} selected={activeLink === index.toString()}>
         <Typography
           variant="body2"
           onMouseOver={() => handleOpenTooltip(index)}

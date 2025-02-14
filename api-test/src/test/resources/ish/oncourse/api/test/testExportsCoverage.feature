@@ -10,10 +10,10 @@ Feature: Feature which checks exports implementation and their coverage
         * def pdfImportPath = 'pdf/template'
         * def ishPathLogin = 'login'
         * def JavaFunctions = Java.type('ish.oncourse.api.test.ExportsCoverageTest')
-        * def excludedForCsvXml = excludedForCsvXml: ["contact", "articleProduct", "assessment", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "outcome", "sales", "report", "reportOverlay", "note", "import", "priorLearning"]
+        * def excludedForCsvXml = excludedForCsvXml: ["contact", "articleProduct", "assessment", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "outcome", "sales", "report", "reportOverlay", "note", "import", "priorLearning", "faculty"]
         * def csvXmlEntities = JavaFunctions.getListEntitiesAndExclude(excludedForCsvXml)
         * print csvXmlEntities
-        * def excludedForPdf = excludedForPdf: ["contact", "articleProduct", "assessment", "assessmentSubmission", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "sales", "report", "reportOverlay", "note", "import", "priorLearning", "corporatepass"]
+        * def excludedForPdf = excludedForPdf: ["contact", "articleProduct", "assessment", "assessmentSubmission", "definedTutorRole", "document", "emailTemplate", "exportTemplate", "membershipProduct", "sales", "report", "reportOverlay", "note", "import", "priorLearning", "corporatepass", "faculty"]
         * def pdfEntities = JavaFunctions.getListEntitiesAndExclude(excludedForPdf)
 
 

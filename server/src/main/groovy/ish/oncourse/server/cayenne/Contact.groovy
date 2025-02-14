@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.cayenne
 
-import com.google.inject.Inject
+
 import ish.common.types.ContactType
 import ish.common.types.Gender
 import ish.common.types.NodeType
@@ -19,7 +19,6 @@ import ish.math.Money
 import ish.oncourse.API
 import ish.oncourse.cayenne.*
 import ish.oncourse.function.GetContactFullName
-import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.glue._Contact
 import ish.util.InvoiceUtil
 import ish.util.LocalDateUtils
@@ -105,6 +104,14 @@ class Contact extends _Contact implements ContactTrait, ExpandableTrait, Contact
 		updateUniqueCode()
 		updateStudentTutorFlags()
 
+	}
+
+	@Override
+	protected void preRemove() {
+		if(!checkoutRelations.empty)
+			context.deleteObjects(checkoutRelations.checkout.unique())
+
+		super.preRemove()
 	}
 
 	@Override

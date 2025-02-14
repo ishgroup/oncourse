@@ -93,7 +93,10 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "tags":[230],
         "documents":"#ignore",
         "isTraineeship":false,
-        "customFields":{}
+        "customFields":{},
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """
 
@@ -203,6 +206,9 @@ Feature: Main feature for all GET requests with path 'list/entity/courseClass'
         "tags":[],
         "documents":[],
         "isTraineeship":false,
-        "customFields":{}
+        "customFields":{},
+        "specialTagId":null,
+        "portalDocAccessStart":null,
+        "portalDocAccessEnd":null
         }
         """

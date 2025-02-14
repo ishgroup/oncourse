@@ -78,7 +78,7 @@ const customColumnFormats = {
   created: v => (v ? format(new Date(v), III_DD_MMM_YYYY_HH_MM_SPECIAL) : null)
 };
 
-const manualLink = getManualLink("advancedSetup_Help");
+const manualLink = getManualLink("audit-logging");
 
 const nameCondition = audit => audit.action;
 

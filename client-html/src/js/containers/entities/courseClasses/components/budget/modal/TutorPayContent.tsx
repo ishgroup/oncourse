@@ -3,13 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ClassCostRepetitionType } from "@api/model";
-import Lock from "@mui/icons-material/Lock";
-import LockOpen from "@mui/icons-material/LockOpen";
-import { Collapse, Divider, FormControlLabel, Grid } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
+import { ClassCostRepetitionType } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
+import { Collapse, Divider, FormControlLabel, Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import {
   decimalMinus,
   decimalMul,
@@ -20,20 +18,21 @@ import {
   parseFieldPercent,
   preventNegativeOrLogEnter,
   WarningMessage
-} from "ish-ui";
-import React, { useCallback, useMemo, useState } from "react";
-import { change } from "redux-form";
-import { ContactLinkAdornment } from "../../../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../../../common/utils/validation";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { DefinedTutorRoleExtended } from "../../../../../../model/preferences/TutorRole";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import { getClassCostFee } from "../utils";
-import { PayRateTypes, validatePayRateTypes } from "./BudgetCostModal";
+} from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { change } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../../../common/utils/validation';
+import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
+import { DefinedTutorRoleExtended } from '../../../../../../model/preferences/TutorRole';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
+import { getClassCostFee } from '../utils';
+import { PayRateTypes, validatePayRateTypes } from './BudgetCostModal';
 
-const styles = theme => createStyles({
+const styles = theme => ({
   divider: {
     borderBottom: `1px solid ${theme.palette.divider}`
   },
@@ -291,4 +290,4 @@ const TutorPayContent: React.FC<Props> = ({
   );
 };
 
-export default withStyles(styles)(TutorPayContent);
+export default withStyles(TutorPayContent, styles);

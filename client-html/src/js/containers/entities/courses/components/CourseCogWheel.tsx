@@ -2,6 +2,7 @@ import MenuItem from "@mui/material/MenuItem";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { IAction } from '../../../../common/actions/IshAction';
 import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
 import { duplicateCourses } from "../actions";
 import RelationshipView from "./RelationshipView";
@@ -55,7 +56,7 @@ const CourseCogWheel = React.memo<any>(props => {
   );
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   duplicate: (ids: number[]) => dispatch(duplicateCourses(ids))
 });
 

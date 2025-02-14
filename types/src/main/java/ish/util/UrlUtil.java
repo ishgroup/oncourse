@@ -35,8 +35,9 @@ public class UrlUtil {
     private static final String URL_PART_DELIMITER = "/";
     private static final String USI_PART = "usi";
     private static final Pattern PORTAL_LINK_PATTERN = Pattern.compile("http(s?)://(.*).skillsoncourse.com.au/portal(.*)&key=");
-    private static final String PORTAL_LINK_FORMAT= "https://%s.skillsoncourse.com.au";
-    private static final String OLD_PORTAL_URL= "https://www.skillsoncourse.com.au";
+    private static final String PORTAL_LINK_FORMAT = "https://%s.skillsoncourse.com.au";
+    private static final String OLD_PORTAL_URL = "https://www.skillsoncourse.com.au";
+    private static final String CERTIFICATE_OLD_PORTAL_URL = "http://skills.courses";
 
     /**
      * Creates link to portal's USI details entry page and signs it with hash.
@@ -242,29 +243,30 @@ public class UrlUtil {
         return Base64.encodeBase64URLSafeString(hash);
     }
 
-    public static String buildCertificatePortalUrl(String certificateKey, String portalSubDomain){
+    public static String buildCertificatePortalUrl(String certificateKey, String portalSubDomain) {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append(URL_PART_DELIMITER);
-        urlBuilder.append("certificate/");
+        if (portalSubDomain != null)
+            urlBuilder.append("certificate/");
         urlBuilder.append(certificateKey);
-        return buildPortalUrl(portalSubDomain, urlBuilder, false);
+        return portalSubDomain != null ? buildPortalUrl(portalSubDomain, urlBuilder, false) : CERTIFICATE_OLD_PORTAL_URL + urlBuilder;
     }
 
-	private static String buildPortalUrl(String portalWebsiteSubDomain, StringBuilder urlBuilder, boolean prefixRequred){
-		try {
+    private static String buildPortalUrl(String portalWebsiteSubDomain, StringBuilder urlBuilder, boolean prefixRequred) {
+        try {
             String portalUrl = getPortalUrlFor(portalWebsiteSubDomain);
-			URL url = new URL(portalUrl);
+            URL url = new URL(portalUrl);
             String urlStr = url.getProtocol() + "://" + url.getAuthority();
-            if(prefixRequred)
+            if (prefixRequred)
                 urlStr = urlStr + "/portal";
-			return urlStr + urlBuilder.toString();
-		} catch (MalformedURLException e) {
-			throw new IllegalArgumentException("Incorrect portal.website.url preference value. Connect your administrator");
-		}
-	}
+            return urlStr + urlBuilder.toString();
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Incorrect portal.website.url preference value. Connect your administrator");
+        }
+    }
 
-    public static String getPortalUrlFor(String subDomain){
-        if(subDomain == null || subDomain.isEmpty()){
+    public static String getPortalUrlFor(String subDomain) {
+        if (subDomain == null || subDomain.isEmpty()) {
             return OLD_PORTAL_URL;
         }
 

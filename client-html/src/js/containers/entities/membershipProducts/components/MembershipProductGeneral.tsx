@@ -21,9 +21,10 @@ import { EditViewProps } from "../../../../model/common/ListView";
 import { State } from "../../../../reducers/state";
 import { PreferencesState } from "../../../preferences/reducers/state";
 import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+import { useTagGroups } from "../../../tags/utils/useTagGroups";
 import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
 
-interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct>{
+interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct> {
   accounts?: Account[];
   taxes?: Tax[];
   tags?: Tag[];
@@ -130,7 +131,9 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
   } = props;
   const initialIndexExpiry = getInitialIndexExpiry(values);
 
-  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts])
+  const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
+
+  const { tagsGrouped, subjectsField } = useTagGroups({ tags, tagsValue: values.tags, dispatch, form });
 
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
@@ -184,8 +187,11 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="tags"
           name="tags"
-          tags={tags}
+          tags={tagsGrouped.tags}
+          className="mb-2"
         />
+
+        {subjectsField}
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>

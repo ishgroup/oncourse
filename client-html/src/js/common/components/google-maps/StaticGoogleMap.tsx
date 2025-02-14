@@ -1,7 +1,7 @@
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import * as React from "react";
-import { GOOGLE_MAPS_API_KEY } from "../../../constants/Config";
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { GOOGLE_MAPS_API_KEY } from '../../../constants/Config';
 
 const styles = theme => ({
   noAddressContainer: {
@@ -42,4 +42,4 @@ const StaticGoogleMap = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(StaticGoogleMap as React.FunctionComponent<Props>);
+export default withStyles(StaticGoogleMap as React.FunctionComponent<Props>, styles);

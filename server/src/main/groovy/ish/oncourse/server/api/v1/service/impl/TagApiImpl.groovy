@@ -16,21 +16,23 @@ import ish.common.types.NodeType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.ICayenneService
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.function.CayenneFunctions
+import ish.oncourse.server.api.service.SpecialTagsApiService
+import ish.oncourse.server.api.v1.model.SpecialTagDTO
 import ish.oncourse.server.api.v1.model.TagDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.TagApi
 import ish.oncourse.server.cayenne.Tag
-import ish.oncourse.server.cayenne.TagRequirement
+import ish.oncourse.server.cayenne.glue.TaggableCayenneDataObject
 import org.apache.cayenne.ObjectContext
-import org.apache.cayenne.exp.Expression
-import org.apache.cayenne.exp.parser.ASTTrue
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
+import static ish.oncourse.server.api.function.TagApiFunctions.*
 import static ish.oncourse.server.api.v1.function.TagFunctions.*
 
 class TagApiImpl implements TagApi {
@@ -41,34 +43,32 @@ class TagApiImpl implements TagApi {
     @Inject
     private AqlService aqlService
 
+    @Inject
+    private SpecialTagsApiService specialTagsApiService
+
+    @Inject
+    private PreferenceController preferenceController
+
     @Override
     List<TagDTO> getChecklists(String entityName, Long id) {
         def taggableClassesForEntity = taggableClassesFor(entityName)
         def expr = tagExprFor(NodeType.CHECKLIST, taggableClassesForEntity)
-        def checklists = ObjectSelect.query(Tag)
-                .where(expr)
-                .prefetch(tagGroupPrefetch)
-                .orderBy(Tag.CREATED_ON.name)
-                .select(cayenneService.newContext)
-        if(id != null)
-            checklists = checklists.findAll {checklistAllowed(it, taggableClassesForEntity, id, aqlService)}
-        checklists.collect {toRestTag(it)}
+                .andExp(Tag.SPECIAL_TYPE.isNull().orExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES)))
+        def checklists = getTagsForExpression(expr, cayenneService.newContext)
+        if (id != null)
+            checklists = checklists.findAll { checklistAllowed(it, taggableClassesForEntity, id, aqlService) }
+        checklists.collect { toRestTag(it) }
     }
 
     @Override
     void create(TagDTO tag) {
-        ObjectContext context = cayenneService.newContext
-
-        ValidationErrorDTO error = validateForSave(context, tag)
-        if (error) {
-            context.rollbackChanges()
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
-        }
-        toDbTag(context, tag, context.newObject(Tag))
-
-        context.commitChanges()
+        createOrUpdateTag(tag, cayenneService.newContext)
+    }
 
 
+    @Override
+    void updateSpecial(SpecialTagDTO specialTagDTO) {
+        specialTagsApiService.updateSpecial(specialTagDTO)
     }
 
     @Override
@@ -76,11 +76,19 @@ class TagApiImpl implements TagApi {
         ObjectContext context = cayenneService.newContext
 
         def tag = SelectById.query(Tag, id).selectOne(context)
+
+
         if (tag == null) {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity("Record with id = " + id + " doesn't exist.").build())
         }
 
         toRestTag(tag)
+    }
+
+
+    @Override
+    SpecialTagDTO getSpecialTags(String entityName) {
+        specialTagsApiService.getSpecialTags(entityName)
     }
 
     @Override
@@ -97,7 +105,10 @@ class TagApiImpl implements TagApi {
         if (entityName) {
             taggableClassesForEntity = taggableClassesFor(entityName)
         }
+
         def expr = tagExprFor(NodeType.TAG, taggableClassesForEntity)
+                .andExp(Tag.SPECIAL_TYPE.isNull().orExp(Tag.SPECIAL_TYPE.nin(TaggableCayenneDataObject.HIDDEN_SPECIAL_TYPES)))
+
         ObjectSelect.query(Tag)
                 .where(expr)
                 .prefetch(tagGroupPrefetch)
@@ -106,41 +117,13 @@ class TagApiImpl implements TagApi {
                 .collect { toRestTag(it, childCountMap) }
     }
 
-    private static Expression tagExprFor(NodeType nodeType, List<TaggableClasses> taggableClasses){
-        Tag.PARENT_TAG.isNull()
-                .andExp(Tag.NODE_TYPE.eq(nodeType))
-                .andExp(buildTagExprFor(taggableClasses))
-    }
-
-    private static Expression buildTagExprFor(List<TaggableClasses> taggableClasses){
-        if(taggableClasses.isEmpty())
-            return new ASTTrue()
-        Expression tagExpr = Tag.TAG_REQUIREMENTS
-                .dot(TagRequirement.ENTITY_IDENTIFIER).in(taggableClasses)
-        tagExpr
-    }
-
-    private static List<TaggableClasses> taggableClassesFor(String entityName){
-        TaggableClasses taggableClass = getRequirementTaggableClassForName(entityName)
-        TaggableClasses[] additionalTags = getAdditionalTaggableClasses(taggableClass)
-        def classes = additionalTags.collect {it}
-        classes.add(taggableClass)
-        return classes
-    }
-
     @Override
     void remove(Long id) {
         ObjectContext context = cayenneService.newContext
         Tag dbTag = CayenneFunctions
                 .getRecordById(context, Tag, id)
 
-        ValidationErrorDTO error = validateForDelete(dbTag, id)
-        if (error) {
-            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())
-        }
-
-        context.deleteObjects(dbTag)
-        context.commitChanges()
+        removeTag(dbTag, context, id)
     }
 
     @Override
@@ -150,7 +133,7 @@ class TagApiImpl implements TagApi {
         Tag dbTag = CayenneFunctions
                 .getRecordById(context, Tag, id, tagGroupPrefetch)
 
-        ValidationErrorDTO error = validateForSave(context, tag)
+        ValidationErrorDTO error = validateForSave(context, tag, preferenceController.extendedSearchTypesAllowed)
         if (error) {
             context.rollbackChanges()
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(error).build())

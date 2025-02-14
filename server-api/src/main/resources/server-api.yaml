@@ -43,6 +43,8 @@ paths:
     $ref: './path/checkout/discount/api.yaml'
   /checkout/cartIds:
     $ref: './path/checkout/cartIds/api.yaml'
+  /checkout/clientKey:
+    $ref: './path/checkout/clientKey/api.yaml'
   /checkout/saleRelations:
     $ref: './path/checkout/saleRelations/api.yaml'
   /control:
@@ -53,6 +55,8 @@ paths:
     $ref: './path/dashboard/search/api.yaml'
   /datacollection/field/type:
     $ref: './path/datacollection/field/type/api.yaml'
+  /datacollection/field/validationType:
+    $ref: './path/datacollection/field/validationType/api.yaml'
   /datacollection/form:
     $ref: './path/datacollection/form/api.yaml'
   /datacollection/rule:
@@ -163,6 +167,8 @@ paths:
     $ref: './path/list/entity/exportTemplate/export/api.yaml'
   /list/entity/exportTemplate/preview:
     $ref: './path/list/entity/exportTemplate/preview/api.yaml'
+  /list/entity/faculty:
+    $ref: './path/list/entity/faculty/api.yaml'
   /list/entity/import:
     $ref: './path/list/entity/import/api.yaml'
   /list/entity/import/execution:
@@ -181,6 +187,8 @@ paths:
     $ref: './path/list/entity/message/api.yaml'
   /list/entity/membershipProduct:
     $ref: './path/list/entity/membershipProduct/api.yaml'
+  /list/entity/membershipProduct/checkout:
+    $ref: './path/list/entity/membershipProduct/checkout/api.yaml'
   /list/entity/note:
     $ref: './path/list/entity/note/api.yaml'
   /list/entity/module:
@@ -257,6 +265,8 @@ paths:
     $ref: './path/list/plain/api.yaml'
   /list/plain/bulkDelete:
     $ref: './path/list/plain/bulkDelete/api.yaml'
+  /list/plain/bulkChange:
+    $ref: './path/list/plain/bulkChange/api.yaml'
   /login:
     $ref: './path/login/api.yaml'
   /login/sso:
@@ -309,6 +319,9 @@ paths:
     $ref: './path/tag/list/api.yaml'
   /tag/checklist:
     $ref: './path/tag/checklist/api.yaml'
+
+  /tag/special:
+    $ref: './path/tag/special/api.yaml'
   /timetable/calendar:
     $ref: './path/timetable/calendar/api.yaml'
   /timetable/session:
@@ -359,3 +372,6 @@ definitions:
 
   ExecuteImportRequest:
     $ref: './def/entity/import/ExecuteImportRequest.yaml'
+
+  FieldValidationType:
+    $ref: './def/enum/FieldValidationType.yaml'

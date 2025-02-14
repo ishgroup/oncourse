@@ -1,10 +1,10 @@
-import Card from "@mui/material/Card";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import React from "react";
+import Card from '@mui/material/Card';
+import clsx from 'clsx';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const styles = theme =>
-  createStyles({
+  ({
     wrapper: {
       position: "relative",
       paddingRight: `${theme.spacing(5)}`,
@@ -108,4 +108,4 @@ const SpeechCard = props => {
   );
 };
 
-export default withStyles(styles)(SpeechCard);
+export default withStyles(SpeechCard, styles);

@@ -1,19 +1,19 @@
-import { Tax } from "@api/model";
-import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import { idsToString, ShowConfirmCaller } from "ish-ui";
-import isEqual from "lodash.isequal";
-import * as React from "react";
-import { withRouter } from "react-router";
-import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { formCommonStyles } from "../../../styles/formCommonStyles";
-import TaxTypesRenderer from "./TaxTypesRenderer";
+import { Tax } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { withRouter } from 'react-router';
+import { arrayInsert, arrayRemove, FieldArray, Form, initialize, reduxForm, SubmissionError } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { formCommonStyles } from '../../../styles/formCommonStyles';
+import TaxTypesRenderer from './TaxTypesRenderer';
 
-const manualUrl = getManualLink("generalPrefs_taxTypes");
+const manualUrl = getManualLink("setting-your-general-preferences#tax-types");
 
 interface Props {
   data: any;
@@ -206,6 +206,6 @@ class TaxTypesBaseForm extends React.Component<Props, any> {
 const TaxTypesForm = reduxForm({
   onSubmitFail,
   form: "TaxTypesForm"
-})(withStyles(formCommonStyles)(withRouter(TaxTypesBaseForm)) as any);
+})(withStyles(withRouter(TaxTypesBaseForm), formCommonStyles));
 
 export default TaxTypesForm;

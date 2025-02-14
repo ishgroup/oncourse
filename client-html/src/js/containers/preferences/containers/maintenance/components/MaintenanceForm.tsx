@@ -20,7 +20,7 @@ import * as Model from "../../../../../model/preferences/Maintenance";
 import { State } from "../../../../../reducers/state";
 import { PREFERENCES_AUDITS_LINK } from "../../../constants";
 
-const manualUrl = getManualLink("generalPrefs_maintenance");
+const manualUrl = getManualLink("setting-your-general-preferences#maintenance");
 
 class MaintenanceBaseForm extends React.Component<any, any> {
   private formModel: FormModelSchema;

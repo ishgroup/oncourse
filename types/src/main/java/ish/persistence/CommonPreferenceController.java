@@ -10,7 +10,10 @@
  */
 package ish.persistence;
 
-import ish.common.types.*;
+import ish.common.types.ClassFundingSource;
+import ish.common.types.DeliveryMode;
+import ish.common.types.TwoFactorAuthorizationStatus;
+import ish.common.types.TypesUtil;
 import ish.math.Country;
 import ish.oncourse.common.ExportJurisdiction;
 import ish.util.Maps;
@@ -19,7 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -170,6 +174,38 @@ public abstract class CommonPreferenceController {
 		String apiKey = getValue(PAYMENT_GATEWAY_PASS_EWAY, false);
 		if (apiKey == null) {
 			throw new IllegalArgumentException();
+		}
+		return apiKey;
+	}
+
+	public  String getPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test client key is not configured");
 		}
 		return apiKey;
 	}
@@ -1046,8 +1082,8 @@ public abstract class CommonPreferenceController {
 			return getNumberOfLoginAttempts();
 		} else if (TUTORIAL_SKIP_SYSTEMUSER.equals(key)) {
 			return getTutorialSkipSystemUser();
-		} else if (DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)) {
-			return getDefaultInvoiceLineAccount();
+		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
+			return getExtendedSearchTypesAllowed();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1217,6 +1253,8 @@ public abstract class CommonPreferenceController {
 			setBackgroundQualityScale((String) value);
 		} else if(DEFAULT_INVOICE_LINE_ACCOUNT.equals(key)){
 			setDefaultInvoiceLineAccount((Long) value);
+		} else if(EXTENDED_SEARCH_TYPES.equals(key)){
+			setExtendedTypesAllowed((Boolean) value);
 		}
 	}
 
@@ -1432,5 +1470,29 @@ public abstract class CommonPreferenceController {
 
 	public void setDefaultInvoiceLineAccount(Long value){
 		setValue(DEFAULT_INVOICE_LINE_ACCOUNT, false, String.valueOf(value));
+	}
+
+	public Boolean getExtendedSearchTypesAllowed(){
+		String value = getValue(EXTENDED_SEARCH_TYPES, false);
+		return Boolean.parseBoolean(value);
+	}
+
+	public void setExtendedTypesAllowed(Boolean value){
+		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
+	}
+
+
+
+	public String getChargebeeSubscriptionId() {
+		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
+	}
+
+	public String getChargebeeAllowedAddons() {
+		return getValue(CHARGEBEE_ALLOWED_ADDONS, false);
+	}
+
+	public Boolean ifCollegeActive() {
+		String value = getValue(COLLEGE_ACTIVE, false);
+		return value == null || Boolean.parseBoolean(value);
 	}
 }

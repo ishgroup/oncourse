@@ -6,42 +6,43 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { CustomFieldType, Enrolment } from "@api/model";
-import { Dialog, FormControlLabel } from "@mui/material";
-import Button from "@mui/material/Button";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import { AnyArgFunction, openInternalLink, StyledCheckbox } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormInitialValues, getFormValues, initialize } from "redux-form";
-import { checkPermissions } from "../../../common/actions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getWindowHeight, getWindowWidth } from "../../../common/utils/common";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { OutcomeChangeField } from "../../../model/entities/Enrolment";
-import { State } from "../../../reducers/state";
-import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import { getGradingTypes } from "../../preferences/actions";
-import { getListTags } from "../../tags/actions";
-import { updateEntityRecord } from "../common/actions";
-import { processOtcomeChangeFields, setOtcomeChangeFields } from "./actions";
-import EnrolmentCogWheel from "./components/EnrolmentCogWheel";
-import EnrolmentEditView from "./components/EnrolmentEditView";
-import { getOutcomeCommonFieldName, outcomeCommonFields } from "./constants";
+import { CustomFieldType, Enrolment } from '@api/model';
+import { Dialog, FormControlLabel } from '@mui/material';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import { AnyArgFunction, openInternalLink, StyledCheckbox } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormInitialValues, getFormValues, initialize } from 'redux-form';
+import { checkPermissions } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { clearListState, getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getWindowHeight, getWindowWidth } from '../../../common/utils/common';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { OutcomeChangeField } from '../../../model/entities/Enrolment';
+import { State } from '../../../reducers/state';
+import { getActiveFundingContracts } from '../../avetmiss-export/actions';
+import { getGradingTypes } from '../../preferences/actions';
+import { getListTags } from '../../tags/actions';
+import { updateEntityRecord } from '../common/actions';
+import { processOtcomeChangeFields, setOtcomeChangeFields } from './actions';
+import EnrolmentCogWheel from './components/EnrolmentCogWheel';
+import EnrolmentEditView from './components/EnrolmentEditView';
+import { getOutcomeCommonFieldName, outcomeCommonFields } from './constants';
 
 const nameCondition = (val: Enrolment) => val.studentName;
 
-const manualLink = getManualLink("processingEnrolments");
+const manualLink = getManualLink("terms-and-definitions");
 
 interface EnrolmentsProps {
   onInit?: (initial: Enrolment) => void;
@@ -57,7 +58,7 @@ interface EnrolmentsProps {
   hasQePermissions?: boolean;
   initialValues?: Enrolment;
   values?: Enrolment;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   changedOutcomeFields?: OutcomeChangeField[],
   setChangedFields?: AnyArgFunction<OutcomeChangeField[]>
   processOtcomeChangeFields?: AnyArgFunction<number[]>

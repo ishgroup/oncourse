@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ish.math.Country;
 import ish.math.CurrencyFormat;
+import ish.oncourse.entity.services.TagService;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.license.LicenseService;
@@ -49,17 +50,21 @@ public class PreferenceController extends CommonPreferenceController {
 	private final ISystemUserService systemUserService;
 	private final LicenseService licenseService;
 	private final PluginsPrefsService pluginsPrefsService;
+	private final TagService tagService;
 	private ObjectContext objectContext;
 
     @Inject
     private ISchedulerService schedulerService;
 
 	@Inject
-	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,LicenseService licenseService, PluginsPrefsService pluginsPrefsService) {
+	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
+								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
+								TagService tagService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		this.pluginsPrefsService = pluginsPrefsService;
+		this.tagService = tagService;
 		sharedController = this;
 	}
 

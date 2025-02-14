@@ -76,7 +76,7 @@
              vetFeeIndicator="0" vetIsFullTime="0" status="3" createdOn="2013-01-01 00:00:00"
              modifiedOn="2013-01-01 00:00:00" confirmationStatus="2" feeHelpAmount="0" attendanceType="9"/>
 
-  <Module id="1" nationalCode="TESTCODE1" title="Test module 1" type="1" isOffered="1" createdOn="2013-01-01 00:00:00"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" id="1" nationalCode="TESTCODE1" title="Test module 1" type="1" isOffered="1" createdOn="2013-01-01 00:00:00"
           modifiedOn="2013-02-01"/>
 
   <Outcome id="1" enrolmentId="1" status="20" moduleId="1" createdOn="2013-01-01 00:00:00" modifiedOn="2013-02-01"

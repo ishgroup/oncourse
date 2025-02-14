@@ -9,7 +9,21 @@
  * See the GNU Affero General Public License for more details.
  */
 
-apply plugin: 'groovy'
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+}
+
+plugins {
+	id 'java'
+	id 'groovy'
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
 
 repositories {
 	mavenCentral()
@@ -19,37 +33,12 @@ dependencies {
 	implementation gradleApi()
 	implementation 'antlr:antlr:2.7.7'
 	implementation 'org.apache.ant:ant-antlr:1.9.6'
-	implementation project.fileTree(include: ['*.jar'], dir: "${project.rootDir}/buildSrc/apidoc/build/libs/")
+	implementation 'org.apache.commons:commons-lang3:3.16.0'
+	implementation 'commons-io:commons-io:2.11.0' // Reverted version
+	implementation 'org.apache.commons:commons-collections4:4.4'
+	implementation 'org.springframework:spring-core:5.3.31'
+	implementation 'org.apache.commons:commons-text:1.12.0'
+	implementation 'com.github.jknack:handlebars:4.3.1'
 
 	testImplementation 'junit:junit:4.11'
-}
-
-sourceCompatibility = JavaVersion.VERSION_11
-
-task generateGrammar {
-	description = 'Ensure all the Antlr generated files are up to date.'
-	ext.antlrDirectory = "$projectDir/src/main/java/au/com/ish/docs/antlr"
-	ext.javaParserDirectory = "$ext.antlrDirectory"
-	ext.genPath = "$ext.antlrDirectory"
-	ext.groovyOutDir = "$ext.genPath/groovy"
-	ext.javaOutDir = "$ext.genPath/java"
-	inputs.dir(antlrDirectory)
-	outputs.dir(groovyOutDir)
-	outputs.dir(javaOutDir)
-	doFirst {
-		new File(groovyOutDir).mkdirs()
-		new File(javaOutDir).mkdirs()
-		ant {
-			taskdef(name: 'antlr',
-					classname: 'org.apache.tools.ant.taskdefs.optional.ANTLR',
-					classpath: configurations.antlr.asPath)
-
-			antlr(target: "$ext.antlrDirectory/groovy.g", outputdirectory: ext.groovyOutDir) {
-				classpath path: configurations.compile.asPath
-			}
-			antlr(target: "$ext.javaParserDirectory/java.g", outputdirectory: ext.javaOutDir) {
-				classpath path: configurations.compile.asPath
-			}
-		}
-	}
 }

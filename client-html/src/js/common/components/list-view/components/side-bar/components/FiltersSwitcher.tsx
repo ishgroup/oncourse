@@ -8,11 +8,11 @@
 
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import Typography from "@mui/material/Typography";
-import { makeAppStyles } from "ish-ui";
-import React from "react";
+import Typography from '@mui/material/Typography';
+import { makeAppStyles } from 'ish-ui';
+import React from 'react';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     minHeight: "unset",
     marginRight: theme.spacing(1)
@@ -26,7 +26,7 @@ const useStyles = makeAppStyles(theme => ({
 }));
 
 export default function FiltersSwitcher({ setValue, value }) {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

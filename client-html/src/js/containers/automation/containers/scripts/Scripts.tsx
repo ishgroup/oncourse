@@ -4,13 +4,13 @@
  */
 
 import { ScheduleType, Script } from "@api/model";
+import { mapSelectItems } from "ish-ui";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Dispatch } from "redux";
 import { getFormInitialValues, getFormSyncErrors, getFormValues, initialize, reduxForm } from "redux-form";
 import { showConfirm } from "../../../../common/actions";
-import { mapSelectItems } from "../../../../common/utils/common";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import { createScriptItem, deleteScriptItem, getScriptItem, saveScriptItem } from "./actions";

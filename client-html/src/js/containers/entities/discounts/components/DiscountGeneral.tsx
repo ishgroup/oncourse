@@ -6,7 +6,7 @@
 import { Discount, DiscountType, MoneyRounding } from "@api/model";
 import { Collapse, Divider, FormControlLabel, Grid, Typography } from "@mui/material";
 import Decimal from "decimal.js-light";
-import { Switch } from "ish-ui";
+import { mapSelectItems, Switch } from "ish-ui";
 import * as React from "react";
 import { connect } from "react-redux";
 import { change } from "redux-form";
@@ -15,7 +15,6 @@ import FormField from "../../../../common/components/form/formFields/FormField";
 import Subtitle from "../../../../common/components/layout/Subtitle";
 import FullScreenStickyHeader
   from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { mapSelectItems } from "../../../../common/utils/common";
 import {
   validateNonNegative,
   validateRangeInclusive,

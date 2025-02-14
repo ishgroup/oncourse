@@ -1,0 +1,10 @@
+type: object
+properties:
+  specialType:
+    $ref: '../enum/SpecialTagType.yaml'
+    required: true
+  childTags:
+    required: true
+    type: array
+    items:
+      $ref: './Tag.yaml'

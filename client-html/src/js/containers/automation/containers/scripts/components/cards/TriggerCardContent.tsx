@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Script, TagRequirementType, TriggerType } from "@api/model";
-import * as Entities from "@aql/queryLanguageModel";
-import Help from "@mui/icons-material/Help";
-import IconButton from "@mui/material/IconButton";
-import { TagInputList } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { mapSelectItems } from "../../../../../../common/utils/common";
-import { CatalogItemType } from "../../../../../../model/common/Catalog";
-import { SelectItemDefault } from "../../../../../../model/entities/common";
-import TagsService from "../../../../../tags/services/TagsService";
-import { AQL_ENTITY_ITEMS } from "../../../../constants";
-import { getEntityTags } from "../../../../../tags/actions";
-import { useAppSelector } from "../../../../../../common/utils/hooks";
+import { Script, TagRequirementType, TriggerType } from '@api/model';
+import * as Entities from '@aql/queryLanguageModel';
+import Help from '@mui/icons-material/Help';
+import IconButton from '@mui/material/IconButton';
+import { mapSelectItems, SelectItemDefault, TagInputList } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { useAppSelector } from '../../../../../../common/utils/hooks';
+import { CatalogItemType } from '../../../../../../model/common/Catalog';
+import { getEntityTags } from '../../../../../tags/actions';
+import TagsService from '../../../../../tags/services/TagsService';
+import { AQL_ENTITY_ITEMS } from '../../../../constants';
 
 // Filter AbstractInvoice and include Quote
 const AllEntities = [
@@ -37,7 +36,7 @@ interface Props {
   enableEntityNameField: boolean;
   values: Script;
   isInternal: boolean;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   form: string;
   timeZone: string;
   classes: any;

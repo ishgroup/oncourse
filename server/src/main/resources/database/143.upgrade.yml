@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 143-1
+      author: dmitriy
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - uniqueConstraintExists:
+                constraintName: unique_keyCode_constraint
+                tableName: Script
+      changes:
+        - addUniqueConstraint:
+            columnNames: keyCode
+            constraintName: unique_keyCode_constraint
+            tableName: Script
+  - changeSet:
+      id: 143-2
+      author: dmitriy
+      changes:
+        - addNotNullConstraint:
+            columnDataType: BIGINT(20)
+            columnName: contactId
+            constraintName: not_null_contact_id_constraint
+            tableName: Student

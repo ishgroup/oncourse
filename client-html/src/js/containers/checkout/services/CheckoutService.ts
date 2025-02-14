@@ -35,6 +35,10 @@ class CheckoutService {
   getCartDataIds(checkoutId: number): Promise<CartIds> {
     return this.checkoutApi.getCartDataIds(checkoutId);
   }
+
+  getClientKey(): Promise<any> {
+    return this.checkoutApi.getClientKey();
+  }
 }
 
 export default new CheckoutService();

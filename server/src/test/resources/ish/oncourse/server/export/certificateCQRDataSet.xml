@@ -142,25 +142,25 @@
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="1" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="CHC02"
                    TITLE="Community Services Training Package (Superseded by CHC08)" TYPE="TrainingPackage"
                    WILLOWID="1"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="1" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="090501" ID="1" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="CHCCHILD3A" TRAININGPACKAGEID="1" WILLOWID="1"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="2" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="XHX02"
                    TITLE="Community Services Training Package (Superseded by XHX08)" TYPE="TrainingPackage"
                    WILLOWID="2"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989490" ID="2" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989490" ID="2" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="XHXXHILD3A" TRAININGPACKAGEID="2" WILLOWID="2"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="3" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="XHDDF"
                    TITLE="Community Services Training Package (Superseded by XHDDF)" TYPE="TrainingPackage"
                    WILLOWID="3"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="3" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="3" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="ABCDEFG" TRAININGPACKAGEID="3" WILLOWID="3"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <TrainingPackage CREATEDON="2011-03-25 17:50:49.0" ID="4" MODIFIEDON="2013-03-22 20:35:16.417" NATIONALISC="YYY333222"
                    TITLE="Community Services Training Package (Superseded by YYY333222)" TYPE="TrainingPackage"
                    WILLOWID="4"/>
-  <Module CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="4" type="1" ISOFFERED="1"
+  <Module isCreditPointsOffered="0" isCreditPointsShownOnWeb="1" CREATEDON="2011-03-25 18:57:22.0" FIELDOFEDUCATION="989456" ID="4" type="1" ISOFFERED="1"
           MODIFIEDON="2013-03-25 13:12:28.48" NATIONALCODE="A2VGDIOD" TRAININGPACKAGEID="4" WILLOWID="4"
           TITLE="Promote the safety, well-being and welfare of children, young people and their families"/>
   <Outcome CREATEDON="2013-03-25 13:12:28.478" ENROLMENTID="1" ID="1" MODIFIEDON="2013-03-25 13:12:28.478" MODULEID="1"

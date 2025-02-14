@@ -6,21 +6,22 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import { Grid } from "@mui/material";
-import { ShowConfirmCaller } from "ish-ui";
-import React, { useCallback } from "react";
-import { Dispatch } from "redux";
-import { Field } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Contact } from '@api/model';
+import { Grid } from '@mui/material';
+import { ShowConfirmCaller } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { Dispatch } from 'redux';
+import { Field } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { getContactFullName } from "../utils";
-import AvatarRenderer from "./AvatarRenderer";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { getContactFullName } from '../utils';
+import AvatarRenderer from './AvatarRenderer';
 
 interface Props {
   form: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   showConfirm: ShowConfirmCaller;
   values: Contact;
   twoColumn: boolean;

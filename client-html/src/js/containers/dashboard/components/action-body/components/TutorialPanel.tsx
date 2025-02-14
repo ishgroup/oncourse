@@ -7,19 +7,17 @@
  */
 
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
-import { Divider, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import { alpha } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { makeAppStyles, openInternalLink } from "ish-ui";
-import React from "react";
-import { setUserPreference } from "../../../../../common/actions";
-import { useAppDispatch } from "../../../../../common/utils/hooks";
-import { SYSTEM_USER_TUTORIAL_SKIP } from "../../../../../constants/Config";
+import { Button, Divider, Grid, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import { alpha } from '@mui/material/styles';
+import clsx from 'clsx';
+import { makeAppStyles, openInternalLink } from 'ish-ui';
+import React from 'react';
+import { setUserPreference } from '../../../../../common/actions';
+import { useAppDispatch } from '../../../../../common/utils/hooks';
+import { SYSTEM_USER_TUTORIAL_SKIP } from '../../../../../constants/Config';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     margin: theme.spacing(3),
     padding: theme.spacing(4),
@@ -64,7 +62,7 @@ interface Props {
 const TutorialPanel = ({ tutorial, customLink }: Props) => {
   const dispatch = useAppDispatch();
   
-  const classes = useStyles();
+  const { classes } = useStyles();
   
   const onSkip = () => dispatch(setUserPreference({
     key: SYSTEM_USER_TUTORIAL_SKIP,
