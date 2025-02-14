@@ -27,13 +27,12 @@ import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.TransactionPaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 @CompileDynamic
-class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
+class StripePaymentService implements TransactionPaymentServiceInterface {
     private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     private static final String CURRENCY_CODE_AUD = "AUD"
@@ -51,7 +50,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         }
     }
 
-    SessionAttributes confirmExistedPayment(CheckoutSubmitRequestDTO requestDTO) {
+    SessionAttributes confirmExistedPayment(Money money, CheckoutSubmitRequestDTO requestDTO) {
         Stripe.apiKey = apiKey
         PaymentIntent resource = PaymentIntent.retrieve(requestDTO.transactionId)
         PaymentIntentConfirmParams params = PaymentIntentConfirmParams.builder()
@@ -70,13 +69,15 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         }
     }
 
-    SessionAttributes sendPaymentConfirmation(Money amount, String cardId, CheckoutSubmitRequestDTO requestDTO) {
+    SessionAttributes sendTwoStepPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
+        if(requestDTO.paymentMethodId == null || requestDTO.origin == null)
+            handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'paymentMethodId', error: 'confirmation token and origin are required for this method')])
+
         Stripe.apiKey = apiKey
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount.multiply(100).toLong())
                         .setCurrency(CURRENCY_CODE_AUD)
-                        .setCustomer(cardId)
                         .setConfirm(true)
                         .setConfirmationMethod(PaymentIntentCreateParams.ConfirmationMethod.MANUAL)
                         .setReturnUrl(requestDTO.origin + "/checkout?onCourseSessionId="+requestDTO.onCoursePaymentSessionId)

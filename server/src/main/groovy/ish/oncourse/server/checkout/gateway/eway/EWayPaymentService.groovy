@@ -10,21 +10,20 @@ package ish.oncourse.server.checkout.gateway.eway
 
 import com.google.inject.Inject
 import com.google.inject.Injector
-import com.stripe.Stripe
-import com.stripe.model.PaymentIntent
-import com.stripe.param.PaymentIntentConfirmParams
-import ish.common.checkout.gateway.PaymentGatewayError
 import ish.math.Money
+import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
-import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
-import ish.oncourse.server.cayenne.Contact
-import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.TransactionPaymentServiceInterface
 import ish.common.checkout.gateway.SessionAttributes
+import org.eclipse.jetty.http.HttpStatus
 
-class EWayPaymentService implements PaymentServiceInterface {
+class EWayPaymentService implements TransactionPaymentServiceInterface {
+
+    @Inject
+    private PreferenceController preferenceController
 
     protected EWayPaymentAPI eWayPaymentAPI
 
@@ -57,5 +56,29 @@ class EWayPaymentService implements PaymentServiceInterface {
         SessionAttributes transactionAttributes = eWayPaymentAPI.getTransaction(attributes.transactionId)
         attributes.paymentDate = transactionAttributes.paymentDate
         return attributes
+    }
+
+    @Override
+    String getClientKey() {
+        return preferenceController.paymentGatewayClientPassEway
+    }
+
+    @Override
+    SessionAttributes sendTwoStepPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
+        if(requestDTO.secureCode == null)
+            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'secureCode', error: "Secure code is required for 3dsecure verify")])
+
+        return eWayPaymentAPI.verify3dSecure(requestDTO.secureCode)
+    }
+
+    @Override
+    SessionAttributes confirmExistedPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
+        if(requestDTO.transactionId == null)
+            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'transactionId', error: "Transaction id is required to capture")])
+
+        if(requestDTO.merchantReference == null)
+            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required to capture")])
+
+        return eWayPaymentAPI.capturePayment(amount, UUID.randomUUID().toString(), requestDTO.transactionId)
     }
 }

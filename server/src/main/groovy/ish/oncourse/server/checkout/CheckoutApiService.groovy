@@ -27,7 +27,7 @@ import ish.oncourse.server.api.service.*
 import ish.oncourse.server.api.servlet.ApiFilter
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.PaymentIn
-import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.TransactionPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
@@ -42,7 +42,6 @@ import org.apache.cayenne.query.ObjectSelect
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
-import java.util.concurrent.ConcurrentHashMap
 
 class CheckoutApiService {
     private static final Set<String> sessionsInProcessing = new HashSet<>()
@@ -220,14 +219,11 @@ class CheckoutApiService {
                 merchantReference = UUID.randomUUID().toString()
                 sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
             } else {
-                if(paymentService instanceof StripePaymentService) {
+                if(paymentService instanceof TransactionPaymentServiceInterface) {
                     if(submitRequestDTO.transactionId != null)
-                        sessionAttributes = (paymentService as StripePaymentService).confirmExistedPayment(submitRequestDTO)
+                        sessionAttributes = (paymentService as TransactionPaymentServiceInterface).confirmExistedPayment(amount, submitRequestDTO)
                     else {
-                        if(submitRequestDTO.paymentMethodId == null || submitRequestDTO.origin == null)
-                            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'paymentMethodId', error: 'confirmation token and origin are required for this method')])
-
-                        sessionAttributes = (paymentService as StripePaymentService).sendPaymentConfirmation(amount, cardId, submitRequestDTO)
+                        sessionAttributes = (paymentService as TransactionPaymentServiceInterface).sendTwoStepPayment(amount, submitRequestDTO)
                     }
 
                     if(sessionAttributes.secure3dRequired) {
@@ -243,9 +239,10 @@ class CheckoutApiService {
 
                 if(paymentService instanceof StripePaymentService) {
                     merchantReference = paymentSystemSessionId
-                } else if (!submitRequestDTO.merchantReference) {
-                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
                 } else {
+                    if (!submitRequestDTO.merchantReference)
+                        paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
+
                     merchantReference = submitRequestDTO.merchantReference
                 }
 
@@ -335,10 +332,10 @@ class CheckoutApiService {
     String getClientKey() {
         try {
             def service = getPaymentServiceByGatewayType()
-            if (!(service instanceof EmbeddedFormPaymentServiceInterface))
+            if (!(service instanceof TransactionPaymentServiceInterface))
                 throw new IllegalAccessException("Client key not supported for selected system")
 
-            return (service as EmbeddedFormPaymentServiceInterface).getClientKey()
+            return (service as TransactionPaymentServiceInterface).getClientKey()
         } catch (Exception e) {
             handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
             return null

@@ -266,6 +266,78 @@ class EWayPaymentAPI {
         return attributes
     }
 
+    SessionAttributes capturePayment(Money amount, String merchantReference, String transactionId) {
+        SessionAttributes attributes = new SessionAttributes()
+        try {
+            HTTPBuilder builder  = new HTTPBuilder()
+            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
+
+            builder.handler['success'] = { response, body ->
+                logger.info("Make eWay capture request finished, response body: ${body.toString()}")
+                buildSessionAttributesFromCaptureResponse(attributes, body as Map<String, Object>)
+                attributes.transactionId = merchantReference
+                logStatusOrError(attributes)
+            }
+            builder.post(
+                    [uri               : eWayBaseUrl,
+                     path              : '/CapturePayment',
+                     contentType       : ContentType.JSON,
+                     headers           : [
+                             Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                             "X-EWAY-APIVERSION": 47
+                     ],
+                     requestContentType: ContentType.JSON,
+                     body              : [
+                             TransactionId    : transactionId,
+                             payment            : [
+                                     // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
+                                     totalAmount: amount.multiply(100).toInteger(),
+                                     // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
+                                     currencyCode: CURRENCY_CODE_AUD,
+                                     invoiceReference: merchantReference
+                             ]
+                     ]
+                    ])
+        } catch(Exception e) {
+            attributes.errorMessage = "Something unexpected has happened, please contact ish support or try again later"
+            logger.error("Fail to create eWay transaction")
+            logger.catching(e)
+        }
+        return attributes
+    }
+
+    SessionAttributes verify3dSecure(String secureCode) {
+        SessionAttributes attributes = new SessionAttributes()
+        try {
+            HTTPBuilder builder  = new HTTPBuilder()
+            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
+
+            builder.handler['success'] = { response, body ->
+                logger.info("Make eWay capture request finished, response body: ${body.toString()}")
+                buildSessionAttributesFrom3dSecureResponse(attributes, body as Map<String, Object>)
+                logStatusOrError(attributes)
+            }
+            builder.post(
+                    [uri               : eWayBaseUrl,
+                     path              : '/3dsverify',
+                     contentType       : ContentType.JSON,
+                     headers           : [
+                             Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                             "X-EWAY-APIVERSION": 47
+                     ],
+                     requestContentType: ContentType.JSON,
+                     body              : [
+                             AccessCode    : secureCode
+                     ]
+                    ])
+        } catch(Exception e) {
+            attributes.errorMessage = "Something unexpected has happened, please contact ish support or try again later"
+            logger.error("Fail to create eWay transaction")
+            logger.catching(e)
+        }
+        return attributes
+    }
+
     @CompileStatic(TypeCheckingMode.SKIP)
     SessionAttributes makeTransaction(Money amount, String merchantReference, String cardId) {
         SessionAttributes attributes = new SessionAttributes()
@@ -373,6 +445,26 @@ class EWayPaymentAPI {
             }
             attributes.responceJson = JsonOutput.prettyPrint(JsonOutput.toJson(body))
         }
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    static void buildSessionAttributesFromCaptureResponse(SessionAttributes attributes, Map<String, Object> captureResponse) {
+        attributes.complete = captureResponse['TransactionStatus']
+        attributes.statusText = EWayResponseMessage.getExplanationByCode(captureResponse['ResponseMessage'] as String)
+        attributes.reCo  = captureResponse['ResponseMessage']
+        attributes.errorMessage = captureResponse['Errors']
+
+        attributes.responceJson = JsonOutput.prettyPrint(JsonOutput.toJson(captureResponse))
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    static void buildSessionAttributesFrom3dSecureResponse(SessionAttributes attributes, Map<String, Object> secureResponse) {
+        attributes.complete = secureResponse['Enrolled']
+        if(secureResponse['ThreeDSecureAuth']) {
+            attributes.transactionId = secureResponse['ThreeDSecureAuth']['34898df8-aeaf-4cc1-9200-b18c88b52522']
+        }
+        attributes.errorMessage = secureResponse['Errors']
+        attributes.responceJson = JsonOutput.prettyPrint(JsonOutput.toJson(secureResponse))
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)

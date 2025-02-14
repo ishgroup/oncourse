@@ -88,6 +88,11 @@ public interface Preferences {
 	String PAYMENT_GATEWAY_CLIENT_PASS_STRIPE = "payment.gateway.stripe.client.key";
 
 	/**
+	 * Unique client key issued by the Stripe payment system for a particular college
+	 */
+	String PAYMENT_GATEWAY_CLIENT_PASS_EWAY = "payment.gateway.eway.client.key";
+
+	/**
 	 * Unique test API key issued by the Stripe payment system for a particular college
 	 */
 	String PAYMENT_GATEWAY_TEST_PASS_STRIPE = "payment.gateway.stripe.test.api.key";
