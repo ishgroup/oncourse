@@ -115,7 +115,6 @@ const styles = (theme: AppTheme) =>
   });
 
 interface Props {
-  form: string;
   resetEditView: any;
   classes: any;
   opened: boolean;
@@ -150,7 +149,6 @@ const sortItems = (a, b) => {
 
 const SwipeableSidebar: React.FC<Props> = props => {
   const {
-    form,
     dispatch,
     classes,
     opened,
@@ -427,7 +425,7 @@ const SwipeableSidebar: React.FC<Props> = props => {
       >
         <div className={classes.drawerWidth}>
           <div className={clsx("pl-2", classes.toolbar)}>
-            <HamburgerMenu variant={variant} form={form}/>
+            <HamburgerMenu variant={variant} liteBackground />
           </div>
           <UserSearch
             getSearchResults={getSearchResults}
