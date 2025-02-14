@@ -17,6 +17,8 @@ get:
   responses:
     '200':
       description: Success response
+      schema:
+        type: string
     '400':
       description: Validation error
       schema:

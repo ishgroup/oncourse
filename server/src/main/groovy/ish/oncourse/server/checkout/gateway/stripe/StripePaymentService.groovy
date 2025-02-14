@@ -51,13 +51,6 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         }
     }
 
-
-    @Override
-    SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact) {
-        //useless for stripe. all payments will be made in transaction in accordance with our workflow
-        return new SessionAttributes()
-    }
-
     SessionAttributes confirmExistedPayment(CheckoutSubmitRequestDTO requestDTO) {
         Stripe.apiKey = apiKey
         PaymentIntent resource = PaymentIntent.retrieve(requestDTO.transactionId)

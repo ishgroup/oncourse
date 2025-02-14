@@ -16,10 +16,6 @@ import ish.oncourse.server.cayenne.Contact
 
 interface PaymentServiceInterface extends PaymentServiceTrait {
 
-    public static String Test = "400"
-
-    SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact)
-
     CheckoutCCResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference)
 
     SessionAttributes checkStatus(String sessionIdOrAccessCode)

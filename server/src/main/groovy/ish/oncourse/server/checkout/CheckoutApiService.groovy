@@ -29,6 +29,7 @@ import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
@@ -41,6 +42,7 @@ import org.apache.cayenne.query.ObjectSelect
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
+import java.util.concurrent.ConcurrentHashMap
 
 class CheckoutApiService {
     private static final Set<String> sessionsInProcessing = new HashSet<>()
@@ -115,6 +117,13 @@ class CheckoutApiService {
     SessionStatusDTO getStatus(String sessionIdOrAccessCode) {
         SessionStatusDTO dto = new SessionStatusDTO()
         paymentService = getPaymentServiceByGatewayType()
+
+        if(paymentService instanceof WindcavePaymentService) {
+            while(checkoutSessionService.sessionExists(sessionIdOrAccessCode)) {
+                Thread.sleep(1000)
+            }
+        }
+
         SessionAttributes attributes = paymentService.checkStatus(sessionIdOrAccessCode)
         dto.authorised = attributes.authorised
         dto.complete = attributes.complete
@@ -154,28 +163,25 @@ class CheckoutApiService {
 
         String merchantReference = UUID.randomUUID().toString()
 
-        if(paymentService instanceof StripePaymentService) {
-            checkoutSessionService.saveCheckoutSession(checkoutModel, merchantReference)
-            dtoResponse.sessionId = merchantReference
-            return dtoResponse
-        }
-
-        SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
-        if (attributes.sessionId) {
-            dtoResponse.sessionId = attributes.sessionId
-            dtoResponse.ccFormUrl = attributes.ccFormUrl
-            dtoResponse.clientSecret = attributes.clientSecret
-            dtoResponse.merchantReference = merchantReference
-
-            if(deprecatedSessionId)
-                checkoutSessionService.removeSession(deprecatedSessionId)
-
-            checkoutSessionService.saveCheckoutSession(checkoutModel, dtoResponse.sessionId)
-        } else if (attributes.errorMessage) {
-            paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
+        if(paymentService instanceof SessionPaymentServiceInterface) {
+            SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
+            if (attributes.sessionId) {
+                dtoResponse.sessionId = attributes.sessionId
+                dtoResponse.ccFormUrl = attributes.ccFormUrl
+                dtoResponse.clientSecret = attributes.clientSecret
+                dtoResponse.merchantReference = merchantReference
+            } else if (attributes.errorMessage) {
+                paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: attributes.errorMessage)])
+            } else {
+                paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
+            }
         } else {
-            paymentService.handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber)
+            dtoResponse.sessionId = merchantReference
         }
+
+        if(deprecatedSessionId)
+            checkoutSessionService.removeSession(deprecatedSessionId)
+        checkoutSessionService.saveCheckoutSession(checkoutModel, dtoResponse.sessionId)
 
         return dtoResponse
     }
@@ -246,6 +252,7 @@ class CheckoutApiService {
                 sessionAttributes = paymentService.checkStatus(paymentSystemSessionId)
 
                 if (!sessionAttributes.complete) {
+                    checkoutSessionService.removeSession(submitRequestDTO.onCoursePaymentSessionId)
                     paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
                 }
             }
@@ -296,7 +303,7 @@ class CheckoutApiService {
         new CheckoutController(cayenneService, systemUserService, contactApiService, invoiceApiService, courseClassApiService, membershipApiService, voucherApiService, articleApiService, fundingSourceDao, moduleDao)
     }
 
-    private PaymentServiceInterface getPaymentServiceByGatewayType() {
+    public PaymentServiceInterface getPaymentServiceByGatewayType() {
         String gatewayType = preferenceController.getPaymentGatewayType()
         switch (gatewayType) {
             case PaymentGatewayType.WINDCAVE.value:

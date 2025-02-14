@@ -12,6 +12,10 @@ properties:
     type: string
     required: false
     description: if 3d secure is required, configured on client transaction will be passed to server for submit
+  secureCode:
+    type: string
+    required: false
+    description: if 3d secure is required and must be performed on server, secure code will be passed
   origin:
     type: string
     required: false

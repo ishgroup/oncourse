@@ -16,8 +16,9 @@ import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
 
-class OfflinePaymentService implements PaymentServiceInterface {
+class OfflinePaymentService implements SessionPaymentServiceInterface {
     @Override
     SessionAttributes createSession(String origin, Money amount, String merchantReference, Boolean storeCard, Contact contact) {
         handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Sorry, you cannot make a purchase. The credit card payment method is prohibited for the Offline payment system. Please contact the administrator.")])

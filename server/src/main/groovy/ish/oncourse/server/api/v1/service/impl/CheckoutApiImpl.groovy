@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.EntityRelationCartAction
 import ish.math.Money
 import ish.oncourse.server.CayenneService
@@ -30,6 +31,8 @@ import ish.oncourse.server.api.v1.service.CheckoutApi
 import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.checkout.CheckoutApiService
+import ish.oncourse.server.checkout.CheckoutSessionService
+import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
 import ish.oncourse.server.license.LicenseService
 import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
@@ -65,6 +68,9 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     CheckoutApiService checkoutApiService
+
+    @Inject
+    CheckoutSessionService checkoutSessionService
 
     @Inject
     DiscountApiService discountApiService
@@ -231,9 +237,23 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    void submitPaymentRedirect(String paymentSessionId, String key) {
+    String submitPaymentRedirect(String paymentSessionId, String key) {
         if(licenseService.college_key && !key.equals(licenseService.getCollege_key()))
             EntityValidator.throwClientErrorException("key", "Unexpected college request")
+
+        if(!checkoutSessionService.sessionExists(paymentSessionId))
+            EntityValidator.throwClientErrorException("session", "Session already processed")
+
+        def paymentService = checkoutApiService.getPaymentServiceByGatewayType()
+        if(!(paymentService instanceof SessionPaymentServiceInterface))
+            EntityValidator.throwClientErrorException("paymentService", "Redirect not allowed")
+
+        def sessionAttributes = paymentService.checkStatus(paymentSessionId)
+
+        if (!sessionAttributes.complete) {
+            checkoutSessionService.removeSession(paymentSessionId)
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+        }
 
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
             it.onCoursePaymentSessionId = paymentSessionId
@@ -241,6 +261,7 @@ class CheckoutApiImpl implements CheckoutApi {
             it
         }
         checkoutApiService.submitCreditCardPayment(submitRequestDTO)
+        return "Success"
     }
 
 }

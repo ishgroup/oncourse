@@ -70,4 +70,11 @@ class CheckoutSessionService {
         ObjectMapper mapper = new ObjectMapper()
         return mapper.readValue(session.value, CheckoutModelDTO.class)
     }
+
+    Boolean sessionExists(String sessionId) {
+        def session = ObjectSelect.query(CheckoutSession)
+                .where(CheckoutSession.SESSION_ID.eq(sessionId))
+                .selectOne(cayenneService.newContext)
+        return session != null
+    }
 }
