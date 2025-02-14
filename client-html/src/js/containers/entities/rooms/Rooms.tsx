@@ -23,7 +23,7 @@ import { getListTags } from "../../tags/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import RoomEditView from "./components/RoomEditView";
 
-const manualLink = getManualLink("sitesRooms_rooms");
+const manualLink = getManualLink("working-with-sites-and-rooms#rooms");
 
 const filterGroups: FilterGroup[] = [
   {

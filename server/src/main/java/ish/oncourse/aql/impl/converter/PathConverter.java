@@ -11,6 +11,7 @@
 
 package ish.oncourse.aql.impl.converter;
 
+import ish.common.types.NodeType;
 import ish.oncourse.aql.impl.AqlParser;
 import ish.oncourse.aql.impl.CompilationContext;
 import ish.oncourse.aql.model.*;
@@ -99,8 +100,6 @@ class PathConverter implements Converter<AqlParser.PathContext> {
         if(syntheticAttribute.isPresent()) {
             ctx.addNode(syntheticAttribute.get().spawnNode());
             ctx.addNode(objPath);
-            if(pathCtx.getText().equals("tags") || last.equals("tags"))
-                return new LazyTagsNode(objPath);
             return null;
         }
 

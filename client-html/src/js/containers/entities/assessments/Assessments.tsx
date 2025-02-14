@@ -18,7 +18,7 @@ import { getListTags } from "../../tags/actions";
 import BulkEditCogwheelOption from "../common/components/BulkEditCogwheelOption";
 import AssessmentEditView from "./components/AssessmentEditView";
 
-const manualLink = getManualLink("assessment");
+const manualLink = getManualLink("assessment-tasks-list-view");
 
 interface AssessmentsProps {
   onInit?: () => void;

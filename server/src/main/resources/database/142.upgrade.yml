@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 142-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Field
+                columnName: validationType
+      changes:
+        - addColumn:
+            tableName: Field
+            columns:
+              - column:
+                  name: validationType
+                  type: SMALLINT

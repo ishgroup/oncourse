@@ -3,24 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PreferenceEnum } from "@api/model";
-import Grid from "@mui/material/Grid";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme, ResizableWrapper } from "ish-ui";
-import React from "react";
-import { Dispatch } from "redux";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { SWIPEABLE_SIDEBAR_WIDTH } from "../../../../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import NewsRender from "../../../../common/components/news/NewsRender";
-import { AccessState } from "../../../../common/reducers/accessReducer";
-import EntityService from "../../../../common/services/EntityService";
-import { DASHBOARD_CATEGORY_WIDTH_KEY } from "../../../../constants/Config";
-import Statistics from "./components/Statistics";
-import TutorialPanel from "./components/TutorialPanel";
-import tutorials from "./tutorials.json";
+import { PreferenceEnum } from '@api/model';
+import Grid from '@mui/material/Grid';
+import { AppTheme, ResizableWrapper } from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { SWIPEABLE_SIDEBAR_WIDTH } from '../../../../common/components/layout/swipeable-sidebar/SwipeableSidebar';
+import NewsRender from '../../../../common/components/news/NewsRender';
+import { AccessState } from '../../../../common/reducers/accessReducer';
+import EntityService from '../../../../common/services/EntityService';
+import { DASHBOARD_CATEGORY_WIDTH_KEY } from '../../../../constants/Config';
+import Statistics from './components/Statistics';
+import TutorialPanel from './components/TutorialPanel';
+import tutorials from './tutorials.json';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   root: {
     marginTop: "64px",
     height: "calc(100% - 64px)"
@@ -41,7 +41,7 @@ interface Props {
   preferencesNewsLatestReadDate?: string;
   drawerOpened?: boolean;
   skipSystemUser?: boolean;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   access?: AccessState;
 }
 
@@ -253,4 +253,4 @@ class ActionBody extends React.PureComponent<Props, any> {
   }
 }
 
-export default withStyles(styles)(ActionBody);
+export default withStyles(ActionBody, styles);

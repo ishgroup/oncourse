@@ -16,9 +16,9 @@ import {
   Enrolment,
   Outcome,
   TableModel
-} from "@api/model";
-import { Dialog, Button, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from "@mui/material";
-import { format } from "date-fns";
+} from '@api/model';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from '@mui/material';
+import { format } from 'date-fns';
 import {
   appendTimezone,
   BooleanArgFunction,
@@ -26,63 +26,62 @@ import {
   NoArgFunction,
   normalizeNumberToZero,
   StyledCheckbox
-} from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FormErrors, getFormInitialValues, getFormValues, initialize } from "redux-form";
-import { checkPermissions, getUserPreferences } from "../../../common/actions";
-import { getCommonPlainRecords } from "../../../common/actions/CommonPlainRecordsActions";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { postNoteItem, putNoteItem } from "../../../common/components/form/notes/actions";
-import { validateNoteCreate, validateNoteUpdate } from "../../../common/components/form/notes/utils";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { FormErrors, getFormInitialValues, getFormValues, initialize } from 'redux-form';
+import { checkPermissions, getUserPreferences } from '../../../common/actions';
+import { getCommonPlainRecords } from '../../../common/actions/CommonPlainRecordsActions';
+import { IAction } from '../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { postNoteItem, putNoteItem } from '../../../common/components/form/notes/actions';
+import { validateNoteCreate, validateNoteUpdate } from '../../../common/components/form/notes/utils';
 import {
   clearListState,
   getFilters,
   setListCreatingNew,
   setListEditRecord,
   setListSelection,
-} from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { UserPreferencesState } from "../../../common/reducers/userPreferencesReducer";
-import EntityService from "../../../common/services/EntityService";
-import { fieldUpdateHandler } from "../../../common/utils/actionsQueue";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import uniqid from "../../../common/utils/uniqid";
+} from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { UserPreferencesState } from '../../../common/reducers/userPreferencesReducer';
+import EntityService from '../../../common/services/EntityService';
+import { fieldUpdateHandler } from '../../../common/utils/actionsQueue';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import uniqid from '../../../common/utils/uniqid';
 import {
   courseClassBudgetPath,
   courseClassCancelPath,
   courseClassTimetablePath,
   plainEnrolmentPath
-} from "../../../constants/Api";
+} from '../../../constants/Api';
 import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
   DEFAULT_MAXIMUM_PLACES_KEY,
   DEFAULT_MINIMUM_PLACES_KEY,
   PLAIN_LIST_MAX_PAGE_SIZE
-} from "../../../constants/Config";
-import history from "../../../constants/History";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { CourseClassExtended } from "../../../model/entities/CourseClass";
-import { State } from "../../../reducers/state";
-import { getActiveFundingContracts } from "../../avetmiss-export/actions";
-import { getGradingTypes, getTutorRoles } from "../../preferences/actions";
-import PreferencesService from "../../preferences/services/PreferencesService";
-import { getEntitySpecialTags } from "../../tags/actions";
-import { getPlainAccounts } from "../accounts/actions";
-import EnrolmentService from "../enrolments/services/EnrolmentService";
-import OutcomeService from "../outcomes/services/OutcomeService";
-import { getVirtualSites } from "../sites/actions";
-import { getPlainTaxes } from "../taxes/actions";
-import { getCourseClassTags, updateCourseClass } from "./actions";
-import { createCourseClassAssessment, updateCourseClassAssessment } from "./components/assessments/actions";
-import { validateAssesmentCreate, validateAssesmentUpdate } from "./components/assessments/utils";
-import CourseClassCogWheel from "./components/CourseClassCogWheel";
-import CourseClassEditView from "./components/CourseClassEditView";
-import { postCourseClassTutor, putCourseClassTutor } from "./components/tutors/actions";
-import { validateTutorCreate, validateTutorUpdate } from "./components/tutors/utils";
+} from '../../../constants/Config';
+import history from '../../../constants/History';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { CourseClassExtended } from '../../../model/entities/CourseClass';
+import { State } from '../../../reducers/state';
+import { getActiveFundingContracts } from '../../avetmiss-export/actions';
+import { getGradingTypes, getTutorRoles } from '../../preferences/actions';
+import PreferencesService from '../../preferences/services/PreferencesService';
+import { getEntitySpecialTags } from '../../tags/actions';
+import { getPlainAccounts } from '../accounts/actions';
+import { getVirtualSites } from '../sites/actions';
+import { getPlainTaxes } from '../taxes/actions';
+import { getCourseClassTags, updateCourseClass } from './actions';
+import { createCourseClassAssessment, updateCourseClassAssessment } from './components/assessments/actions';
+import { validateAssesmentCreate, validateAssesmentUpdate } from './components/assessments/utils';
+import CourseClassCogWheel from './components/CourseClassCogWheel';
+import CourseClassEditView from './components/CourseClassEditView';
+import { postCourseClassTutor, putCourseClassTutor } from './components/tutors/actions';
+import { validateTutorCreate, validateTutorUpdate } from './components/tutors/utils';
 
 const manualLink = getManualLink("classes");
 
@@ -94,7 +93,7 @@ interface CourseClassesProps {
   onUpdate?: (id: number, courseClass: CourseClass) => void;
   clearListState?: NoArgFunction;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   values?: CourseClass;
   initialValues?: CourseClass;
   userPreferences?: UserPreferencesState;
@@ -597,7 +596,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         EntityService.getPlainRecords("Outcome", "id", `enrolment.courseClass.id is ${values.id}`)
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
-            return OutcomeService.bulkChange({
+            return EntityService.bulkChange('Outcome', {
               ids,
               diff: outcomeFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;
@@ -613,7 +612,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           .then(res => {
             const ids = res.rows.map(r => Number(r.id));
 
-            return EnrolmentService.bulkChange({
+            return EntityService.bulkChange('Enrolment', {
               ids,
               diff: enrolmentFieldsToUpdate.reduce((p, o) => {
                 p[o.name] = o.value;
@@ -751,7 +750,7 @@ const mapStateToProps = (state: State) => ({
   initialValues: getFormInitialValues(LIST_EDIT_VIEW_FORM_NAME)(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch,
   onFirstRender: () => {
     dispatch(getEntitySpecialTags('CourseClass'));

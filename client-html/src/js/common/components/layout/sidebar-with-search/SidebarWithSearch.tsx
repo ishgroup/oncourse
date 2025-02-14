@@ -78,7 +78,6 @@ export const SidebarWithSearch = (props: Props) => {
         onResizeStop={handleResizeStopCallback}
         onResize={handleResizeCallback}
         sidebarWidth={sidebarWidth}
-        minWidth="244px"
         maxWidth="50%"
       >
         <Drawer>

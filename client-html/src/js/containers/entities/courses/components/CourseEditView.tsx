@@ -3,19 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import React, { useMemo } from "react";
-import { useSelector } from "react-redux";
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
 import AvailabilityFormComponent
-  from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import { State } from "../../../../reducers/state";
-import CourseClassesTab from "./CourseClassesTab";
-import CourseGeneralTab from "./CourseGeneralTab";
-import CourseMarketingTab from "./CourseMarketingTab";
-import CourseVetTab from "./CourseVetTab";
+  from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import { State } from '../../../../reducers/state';
+import CourseClassesTab from './CourseClassesTab';
+import CourseGeneralTab from './CourseGeneralTab';
+import CourseMarketingTab from './CourseMarketingTab';
+import CourseVetTab from './CourseVetTab';
 
 const items: TabsListItem[] = [
   {
@@ -45,7 +44,7 @@ const items: TabsListItem[] = [
 ];
 
 const styles = () =>
-  createStyles({
+  ({
     icon: {
       alignItems: "right"
     },
@@ -64,4 +63,4 @@ const CourseEditView = props => {
   return <TabsList onParentScroll={props.onScroll} items={props.values ? usedItems : []} itemProps={props} />;
 };
 
-export default withStyles(styles)(CourseEditView);
+export default withStyles(CourseEditView, styles);

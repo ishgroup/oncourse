@@ -101,26 +101,3 @@ delete:
     mask: delete
     keyCode: FACULTY
     errorMessage: Sorry, you have no permissions to delete faculty. Please contact your administrator
-
-patch:
-  operationId: bulkChange
-  tags:
-    - Faculty
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: faculty for update
-  responses:
-    '200':
-      description: Success response.
-    '400':
-      description: Bad request error.
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: edit
-    keyCode: FACULTY
-    errorMessage: Sorry, you have no permissions to edit faculty. Please contact your administrator

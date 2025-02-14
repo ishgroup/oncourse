@@ -520,6 +520,7 @@ class DefaultUserPreference {
                         attribute: Course.FACULTY.dot(Faculty.NAME).name,
                         sortable: true,
                         width: W200,
+                        sortFields: [Course.FACULTY.outer().dot(Faculty.NAME).name,],
                         visible: true),
         ]
         it.sortings = [

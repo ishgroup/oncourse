@@ -17,7 +17,7 @@ import { initDeposit } from "./actions";
 import BankingCogwheelOptions from "./components/BankingCogwheelOptions";
 import BankingEditViewResolver from "./components/BankingEditViewResolver";
 
-const manualLink = getManualLink("accounting_Deposit");
+const manualLink = getManualLink("banking-and-reconciliation");
 
 const filterGroups: FilterGroup[] = [
   {

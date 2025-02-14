@@ -1,0 +1,20 @@
+get:
+  description: Get avalible validation types for requested form type
+  operationId: getFieldValidationTypes
+  tags:
+    - DataCollection
+  parameters:
+    - name: formType
+      in: query
+      description: Datacollection form type
+      required: true
+      type: string
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: array
+        items:
+          $ref: './def/enum/FieldValidationType.yaml'
+    default:
+      description: Unexpected error

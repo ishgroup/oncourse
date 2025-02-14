@@ -3,25 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, ClassCost, CourseClassDuplicate, Tax } from "@api/model";
-import { Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import Tooltip from "@mui/material/Tooltip";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from "date-fns";
-import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { Account, ClassCost, CourseClassDuplicate, Tax } from '@api/model';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Tooltip from '@mui/material/Tooltip';
+import clsx from 'clsx';
+import { addDays, differenceInDays, getHours, getMilliseconds, getMinutes, getSeconds } from 'date-fns';
+import { BooleanArgFunction, NoArgFunction, NumberArgFunction } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import {
   change,
   DecoratedComponentClass,
@@ -30,25 +29,26 @@ import {
   initialize,
   InjectedFormProps,
   reduxForm
-} from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import EntityService from "../../../../../common/services/EntityService";
-import history from "../../../../../constants/History";
-import { TimetableMonth, TimetableSession } from "../../../../../model/timetable";
-import { State } from "../../../../../reducers/state";
-import { getAllMonthsWithSessions } from "../../../../timetable/utils";
-import { getPlainAccounts } from "../../../accounts/actions";
-import { getPlainTaxes } from "../../../taxes/actions";
+} from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import EntityService from '../../../../../common/services/EntityService';
+import history from '../../../../../constants/History';
+import { TimetableMonth, TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import { getAllMonthsWithSessions } from '../../../../timetable/utils';
+import { getPlainAccounts } from '../../../accounts/actions';
+import { getPlainTaxes } from '../../../taxes/actions';
 import {
   clearDuplicateCourseClassesSessions,
   duplicateCourseClass,
   getDuplicateCourseClassesBudget,
   getDuplicateCourseClassesSessions,
   setDuplicateCourseClassesBudget
-} from "../../actions";
-import StudentFeeContent from "../budget/modal/StudentFeeContent";
-import DuplicateCourseClassTimetable from "./DuplicateCourseClassTimetable";
-import modalStyles from "./modalStyles";
+} from '../../actions';
+import StudentFeeContent from '../budget/modal/StudentFeeContent';
+import DuplicateCourseClassTimetable from './DuplicateCourseClassTimetable';
+import modalStyles from './modalStyles';
 
 export const DUPLICATE_TRAINEESHIP_FORM: string = "DuplicateTraineeshipForm";
 
@@ -568,5 +568,5 @@ export default reduxForm({
   form: DUPLICATE_TRAINEESHIP_FORM,
   initialValues
 })(
-  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(modalStyles)(DuplicateCourseClassModal))
+  connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(DuplicateCourseClassModal, modalStyles))
 ) as DecoratedComponentClass<CourseClassDuplicate & { toDate: string }, Props>;

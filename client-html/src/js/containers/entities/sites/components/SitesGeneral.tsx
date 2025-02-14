@@ -3,32 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Room, Site } from "@api/model";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import ScreenShare from "@mui/icons-material/ScreenShare";
-import { FormControlLabel, Grid, GridSize } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { normalizeNumber, openInternalLink, TimetableButton } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayInsert, arrayRemove } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
-import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoogleMap";
+import { Room, Site } from '@api/model';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ScreenShare from '@mui/icons-material/ScreenShare';
+import { Collapse, FormControlLabel, Grid } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { normalizeNumber, openInternalLink, TimetableButton } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayInsert, arrayRemove } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import MinifiedEntitiesList from '../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList';
+import CoordinatesValueUpdater from '../../../../common/components/google-maps/CoordinatesValueUpdater';
+import StaticGoogleMap from '../../../../common/components/google-maps/StaticGoogleMap';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { validateDeleteRoom } from "../../rooms/actions";
-import { openRoomLink } from "../../rooms/utils";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import {
+  greaterThanNullValidation,
+  validateSingleMandatoryField,
+  validateURL
+} from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { validateDeleteRoom } from '../../rooms/actions';
+import { openRoomLink } from '../../rooms/utils';
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -48,7 +51,7 @@ export const validateRoomUniqueName = (value, allValues) => {
   return matches.length > 1 ? "Room name must be unique" : undefined;
 };
 
-const SitesRoomFields = ({ item }) => (
+const SitesRoomFields = ({ item, isParenSiteVirtual }) => (
   <Grid container columnSpacing={3} rowSpacing={2}>
     <Grid item xs={12}>
       <FormField
@@ -71,10 +74,17 @@ const SitesRoomFields = ({ item }) => (
         required
       />
     </Grid>
+
+    {isParenSiteVirtual && <Grid item xs={12}><FormField
+      type="text"
+      label="Virtual room URL"
+      name={`${item}.virtualRoomUrl`}
+      validate={validateURL}
+    /></Grid>}
   </Grid>
 );
 
-const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
+const getLayoutArray = (twoColumn: boolean): { [key: string]: any }[] =>
   (twoColumn
     ? [{ xs: 12 }, { xs: 12 }, { xs: 4 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 8 }, { xs: 12 }]
     : [{ xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }]);
@@ -322,6 +332,9 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             count={values.rooms && values.rooms.length}
             validate={validateRooms}
             syncErrors={syncErrors}
+            fieldProps={{
+              isParenSiteVirtual: values.isVirtual
+            }}
           />
         </Grid>
       </Grid>

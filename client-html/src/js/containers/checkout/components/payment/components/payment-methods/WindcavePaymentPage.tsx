@@ -5,46 +5,25 @@
  *
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { formatCurrency, StringArgFunction } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { isInvalid } from "redux-form";
-import { CheckoutPayment, CheckoutPaymentProcess, CheckoutSummary } from "../../../../../../model/checkout";
-import { State } from "../../../../../../reducers/state";
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
+import { formatCurrency } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { isInvalid } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
+import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutGetPaymentStatusDetails,
   checkoutProcessPayment,
   clearCcIframeUrl
-} from "../../../../actions/checkoutPayment";
-import { FORM as CheckoutSelectionForm } from "../../../CheckoutSelection";
-import PaymentMessageRenderer from "../PaymentMessageRenderer";
-import styles from "./styles";
-
-interface CreditCardPaymentPageProps {
-  classes?: any;
-  summary?: CheckoutSummary;
-  payment?: CheckoutPayment;
-  isPaymentProcessing?: boolean;
-  disablePayment?: boolean;
-  hasSummarryErrors?: boolean;
-  currencySymbol?: any;
-  iframeUrl?: string;
-  xPaymentSessionId?: string;
-  merchantReference?: string;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
-  clearCcIframeUrl: () => void;
-  checkoutGetPaymentStatusDetails: StringArgFunction;
-  onCheckoutClearPaymentStatus: () => void;
-  process?: CheckoutPaymentProcess;
-  paymentInvoice?: any;
-  paymentId?: number;
-  payerName: string;
-}
+} from '../../../../actions/checkoutPayment';
+import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
+import PaymentMessageRenderer from '../PaymentMessageRenderer';
+import styles from './styles';
 
 const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
@@ -166,4 +145,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WindcavePaymentPage));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(WindcavePaymentPage, styles));

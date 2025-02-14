@@ -101,26 +101,3 @@ delete:
     mask: delete
     keyCode: SITE
     errorMessage: Sorry, you have no permissions to delete site. Please contact your administrator
-
-patch:
-  operationId: bulkChange
-  tags:
-    - Site
-  parameters:
-    - name: diff
-      in: body
-      schema:
-        $ref: './def/entity/Diff.yaml'
-      required: true
-      description: sites for update
-  responses:
-    '200':
-      description: Success response
-    '400':
-      description: Bad request error
-    default:
-      description: Unexpected error
-  x-permission:
-    mask: edit
-    keyCode: SITE
-    errorMessage: Sorry, you have no permissions to edit site. Please contact your administrator.

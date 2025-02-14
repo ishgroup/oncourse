@@ -1,15 +1,15 @@
-import { AccessStatus } from "@api/model";
-import Lock from "@mui/icons-material/Lock";
-import Slider from "@mui/material/Slider";
+import { AccessStatus } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import Slider from '@mui/material/Slider';
 import { lighten } from '@mui/material/styles';
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import React, { ComponentClass, useEffect, useRef, useState } from "react";
+import clsx from 'clsx';
+import React, { useEffect, useRef, useState } from 'react';
+import { withStyles } from 'tss-react/mui';
 
 const AccessStatusKeys = Object.keys(AccessStatus);
 
-const styles = theme =>
-  createStyles({
+const styles = (theme, p, classes) =>
+  ({
     root: {
       padding: "15px 0"
     },
@@ -46,7 +46,7 @@ const styles = theme =>
       zIndex: 3
     },
     stepperMarkWrapper: {
-      "&:first-child $stepperMark": {
+      [`&:first-child .${classes.stepperMark}`]: {
         left: "5px"
       }
     },
@@ -60,7 +60,7 @@ const styles = theme =>
   });
 
 const SliderStepper = React.memo<any>(props => {
-  const prevValue = useRef<number>();
+  const prevValue = useRef<number>(undefined);
   
   const [innerValue, setInnerValue] = useState<string>();
   
@@ -138,4 +138,4 @@ const SliderStepper = React.memo<any>(props => {
     </div>);
 });
 
-export default withStyles(styles)(SliderStepper) as ComponentClass<any>;
+export default withStyles(SliderStepper, styles);

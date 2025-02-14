@@ -27,7 +27,7 @@ import { ChecklistTree, TagTree } from "../components/Trees";
 import { EmptyTag, TAGS_FORM_NAME } from "../constants";
 import { TagsFormBase, TagsFormWrapper } from "./TagsFormBase";
 
-const manualUrl = getManualLink("tagging");
+const manualUrl = getManualLink("tags-in-oncourse");
 
 class TagsFormRenderer extends TagsFormBase {
   render() {

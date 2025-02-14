@@ -6,13 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Tag } from "@api/model";
-import { TreeData } from "@atlaskit/tree";
-import { withStyles } from "@mui/styles";
-import { ShowConfirmCaller } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { Tag } from '@api/model';
+import { TreeData } from '@atlaskit/tree';
+import { ShowConfirmCaller } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import {
   arrayPush,
   arrayRemove,
@@ -21,20 +20,22 @@ import {
   getFormValues,
   InjectedFormProps,
   reduxForm
-} from "redux-form";
-import { showConfirm } from "../../../common/actions";
-import { onSubmitFail } from "../../../common/utils/highlightFormErrors";
-import { getPluralSuffix } from "../../../common/utils/strings";
-import { CatalogItemType } from "../../../model/common/Catalog";
-import { Fetch } from "../../../model/common/Fetch";
-import { FormTag } from "../../../model/tags";
-import { State } from "../../../reducers/state";
-import { createTag, deleteTag, updateTag } from "../actions";
-import { treeDataToTags } from "../components/Trees";
-import { EmptyTag, TAGS_FORM_NAME } from "../constants";
-import { styles } from "../styles/TagItemsStyles";
-import { COLORS, getAllTags, rootTagToServerModel } from "../utils";
-import { validateTagsForm } from "../utils/validation";
+} from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { showConfirm } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import { onSubmitFail } from '../../../common/utils/highlightFormErrors';
+import { getPluralSuffix } from '../../../common/utils/strings';
+import { CatalogItemType } from '../../../model/common/Catalog';
+import { Fetch } from '../../../model/common/Fetch';
+import { FormTag } from '../../../model/tags';
+import { State } from '../../../reducers/state';
+import { createTag, deleteTag, updateTag } from '../actions';
+import { treeDataToTags } from '../components/Trees';
+import { EmptyTag, TAGS_FORM_NAME } from '../constants';
+import { styles } from '../styles/TagItemsStyles';
+import { COLORS, getAllTags, rootTagToServerModel } from '../utils';
+import { validateTagsForm } from '../utils/validation';
 
 interface Props {
   tags: CatalogItemType[];
@@ -200,7 +201,7 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   onUpdate: (tag: Tag) => dispatch(updateTag(TAGS_FORM_NAME, tag)),
   onCreate: (tag: Tag) => dispatch(createTag(TAGS_FORM_NAME, tag)),
   onDelete: (tag: Tag) => dispatch(deleteTag(tag)),
@@ -212,4 +213,4 @@ export const TagsFormWrapper = reduxForm<any, any, any>({
   onSubmitFail,
   validate: validateTagsForm,
   shouldError: () => true
-})(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)((props: any) => <props.Root {...props} />)));
+})(connect(mapStateToProps, mapDispatchToProps)(withStyles((props: any) => <props.Root {...props} />, styles)));
