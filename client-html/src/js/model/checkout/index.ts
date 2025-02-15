@@ -249,6 +249,7 @@ export interface CreditCardPaymentPageProps {
   checkoutProcessStripeCCPayment?: (stripePaymentMethodId: string, stripe: Stripe) => void;
   checkoutGetPaymentStatusDetails?: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;
+  checkoutProcessEwayCCPayment?: StringArgFunction;
   checkoutGetPaymentDetailsByReference?: StringArgFunction;
   checkoutUpdateSummaryPrices?: NoArgFunction;
   onCheckoutClearPaymentStatus: () => void;

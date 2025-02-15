@@ -28,6 +28,7 @@ export const CHECKOUT_CLEAR_PAYMENT_STATUS = _toRequestType("checkout/clear/paym
 
 export const CHECKOUT_PROCESS_PAYMENT = _toRequestType("checkout/process/cc/payment");
 export const CHECKOUT_PROCESS_STRIPE_CC_PAYMENT = _toRequestType("checkout/process/stripe/cc/payment");
+export const CHECKOUT_PROCESS_EWAY_CC_PAYMENT = _toRequestType("checkout/process/eway/cc/payment");
 export const CHECKOUT_PROCESS_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_PAYMENT);
 
 export const CHECKOUT_CLEAR_CC_IFRAME_URL = "checkout/clear/wcIframe/url";
@@ -92,6 +93,13 @@ export const checkoutProcessStripeCCPayment = (
     stripePaymentMethodId,
     stripe
   }
+});
+
+export const checkoutProcessEwayCCPayment = (
+  eWaySecureFieldCode: string
+) => ({
+  type: CHECKOUT_PROCESS_EWAY_CC_PAYMENT,
+  payload: eWaySecureFieldCode
 });
 
 export const checkoutProcessPayment = () => ({
