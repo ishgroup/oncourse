@@ -18,6 +18,9 @@ import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.windcave.WindcaveResponseCode
+import ish.oncourse.server.api.servlet.ISessionManager
+import ish.oncourse.server.checkout.CheckoutUtils
+import ish.oncourse.server.license.LicenseService
 import ish.util.DateFormatter
 import org.apache.commons.lang3.time.DateUtils
 
@@ -47,6 +50,12 @@ class WindcavePaymentAPI {
 
     @Inject
     PreferenceController preferenceController
+
+    @Inject
+    LicenseService licenseService
+
+    @Inject
+    private ISessionManager sessionManager
 
     Closure failHandler =  { Object response, Object body, SessionAttributes attributes  ->
         logger.error('Fail to create session {} {}', body, response)
@@ -88,7 +97,8 @@ class WindcavePaymentAPI {
                                                 approved :  origin + '/checkout?paymentStatus=success',
                                                 declined :  origin + '/checkout?paymentStatus=fail',
                                                 cancelled:  origin + '/checkout?paymentStatus=cancel'
-                                            ]
+                                            ],
+                                        notificationUrl: sessionManager.host + CheckoutUtils.SERVER_REDIRECT_PATH+"?key=$licenseService.college_key"
                                         ]
             if (storeCard) {
                 body['storeCard'] = true

@@ -3,38 +3,91 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ProductType } from "@api/model";
-import { decimalPlus } from "ish-ui";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EntityService from "../../../common/services/EntityService";
-import { getCustomColumnsMap } from "../../../common/utils/common";
-import uniqid from "../../../common/utils/uniqid";
+import { ProductType } from '@api/model';
+import { decimalPlus } from 'ish-ui';
+import { initialize } from 'redux-form';
+import InstantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../common/services/EntityService';
+import { getCustomColumnsMap } from '../../../common/utils/common';
+import { LSGetItem } from '../../../common/utils/storage';
+import uniqid from '../../../common/utils/uniqid';
+import history from '../../../constants/History';
 import {
   CheckoutContact,
   CheckoutCourse,
   CheckoutEnrolmentCustom,
   CheckoutProductPurchase
-} from "../../../model/checkout";
-import { getProductAqlType } from "../../entities/sales/utils";
-import { addContact, checkoutAddItems } from "../actions";
-import { checkoutUpdateSummaryPrices } from "../actions/checkoutSummary";
+} from '../../../model/checkout';
+import { getProductAqlType } from '../../entities/sales/utils';
+import { addContact, checkoutAddItems } from '../actions';
+import {
+  checkoutGetPaymentStatusDetails,
+  checkoutProcessPaymentFulfilled,
+  checkoutSetPaymentProcessing
+} from '../actions/checkoutPayment';
+import { checkoutRestoreState, checkoutUpdateSummaryPrices } from '../actions/checkoutSummary';
+import { CHECKOUT_SELECTION_FORM_NAME } from '../components/CheckoutSelection';
 import {
   CHECKOUT_CONTACT_COLUMNS,
   CHECKOUT_COURSE_CLASS_COLUMNS,
   CheckoutCurrentStep,
   CheckoutPage
-} from "../constants";
-import CheckoutService from "../services/CheckoutService";
+} from '../constants';
+import CheckoutService from '../services/CheckoutService';
 import {
   checkoutCourseClassMap,
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
+  clearStoredPaymentsState,
   getProductColumnsByType,
+  getStoredPaymentStateKey,
   processCheckoutSale
-} from "./index";
+} from './index';
 
-export const processCeckoutCartIds = async (cartId, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
+export const processCheckoutStripePaymentRedirect = async (
+  transactionId,
+  onCoursePaymentSessionId,
+  dispatch
+  ) => {
+  const storedState = LSGetItem(getStoredPaymentStateKey(onCoursePaymentSessionId));
+  
+  if (storedState) {
+    dispatch(checkoutSetPaymentProcessing(true));
+
+    const { checkoutState, selectionForm } = JSON.parse(storedState);
+
+    dispatch(checkoutRestoreState(checkoutState));
+    dispatch(initialize(CHECKOUT_SELECTION_FORM_NAME, selectionForm));
+
+    CheckoutService.submitCreditCardPayment({
+      onCoursePaymentSessionId,
+      paymentMethodId: null,
+      transactionId,
+      merchantReference: null,
+      origin: window.location.origin
+    })
+      .then(checkoutCCResponse => {
+        dispatch(checkoutGetPaymentStatusDetails(checkoutCCResponse.paymentSystemSessionId));
+        dispatch(checkoutProcessPaymentFulfilled(checkoutCCResponse.checkoutResponse));
+        dispatch(checkoutSetPaymentProcessing(false));
+
+        history.replace({
+          pathname: history.location.pathname,
+          search: ""
+        });
+
+        clearStoredPaymentsState();
+      })
+      .catch(error => {
+        InstantFetchErrorHandler(dispatch, error);
+        dispatch(checkoutSetPaymentProcessing(false));
+      });
+  }
+};
+
+export const processChekoutCartIds = async (cartId, onChangeStep, setActiveField, setCustomLoading, dispatch) => {
   setCustomLoading(true);
 
   const cartIds = await CheckoutService.getCartDataIds(cartId);

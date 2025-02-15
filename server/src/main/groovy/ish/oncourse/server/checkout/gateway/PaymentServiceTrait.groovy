@@ -8,9 +8,11 @@
 
 package ish.oncourse.server.checkout.gateway
 
+import groovy.transform.CompileDynamic
 import ish.common.types.PaymentStatus
 import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutArticleDTO
+import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutEnrolmentDTO
 import ish.oncourse.server.api.v1.model.CheckoutMembershipDTO
 import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
@@ -34,11 +36,12 @@ import javax.ws.rs.core.Response
 import static ish.common.types.ConfirmationStatus.DO_NOT_SEND
 import static ish.common.types.ConfirmationStatus.NOT_SENT
 
+@CompileDynamic
 trait PaymentServiceTrait {
 
     private static final Logger logger = LogManager.getLogger(PaymentServiceTrait)
 
-    void succeedPayment(CheckoutResponseDTO dtoResponse, Checkout checkout, Boolean sendInvoice) {
+    CheckoutCCResponseDTO succeedPayment(Checkout checkout, Boolean sendInvoice) {
         checkout.paymentIn.status = PaymentStatus.SUCCESS
         checkout.paymentIn.privateNotes += ' Payment successful.'
         checkout.paymentIn.confirmationStatus = sendInvoice ? NOT_SENT : DO_NOT_SEND
@@ -48,7 +51,11 @@ trait PaymentServiceTrait {
             line.invoice.updateOverdue()
         }
         saveCheckout(checkout)
-        fillResponse(dtoResponse, checkout)
+
+        return new CheckoutCCResponseDTO().with {
+            it.checkoutResponse = fillResponse(checkout)
+            it
+        }
     }
 
     void saveCheckout(Checkout checkout) {
@@ -67,7 +74,8 @@ trait PaymentServiceTrait {
         }
     }
 
-    void fillResponse(CheckoutResponseDTO dtoResponse, Checkout checkout) {
+    CheckoutResponseDTO fillResponse(Checkout checkout) {
+        def dtoResponse = new CheckoutResponseDTO()
         dtoResponse.paymentId = checkout.paymentIn?.id
 
         if (checkout.invoice) {
@@ -123,6 +131,7 @@ trait PaymentServiceTrait {
                 dtoInvoice
             }
         }
+        dtoResponse
     }
 
     void handleError(int status, Object entity = null) {

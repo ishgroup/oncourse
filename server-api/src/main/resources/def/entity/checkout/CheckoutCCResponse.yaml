@@ -1,0 +1,17 @@
+type: object
+properties:
+  actionRequired:
+    type: boolean
+    required: false
+    description: if transaction requires additional client actions
+  checkoutResponse:
+    $ref: './CheckoutResponse.yaml'
+    required: true
+  clientSecret:
+    type: string
+    require: false
+    description: client secret for embedded form operation
+  paymentSystemSessionId:
+    type: string
+    require: false
+    description: session id of payment system for payments, created on server side during submit

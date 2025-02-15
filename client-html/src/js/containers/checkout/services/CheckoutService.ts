@@ -5,19 +5,22 @@
 import {
   CartIds,
   CheckoutApi,
+  CheckoutCCResponse,
   CheckoutModel,
   CheckoutResponse,
   CheckoutSaleRelation,
+  CheckoutSubmitRequest,
   CourseClassDiscount,
+  CreateSessionResponse,
   SessionStatus
-} from "@api/model";
-import { DefaultHttpService } from "../../../common/services/HttpService";
+} from '@api/model';
+import { DefaultHttpService } from '../../../common/services/HttpService';
 
 class CheckoutService {
   readonly checkoutApi = new CheckoutApi(new DefaultHttpService());
-
-  public checkoutSubmitPayment(checkoutModel: CheckoutModel, xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string): Promise<CheckoutResponse> {
-    return this.checkoutApi.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin);
+  
+  public createSession(checkoutModel: CheckoutModel, deprecatedSessionId: string = null): Promise<CreateSessionResponse> {
+    return this.checkoutApi.createSession(checkoutModel, window.location.origin, deprecatedSessionId);
   }
 
   public getContactDiscounts(contactId: number, classId: number, courseIds: string, productIds: string, classIds: string, promoIds: string, membershipIds: string, purchaseTotal: number, payerId: number = null): Promise<CourseClassDiscount[]> {
@@ -32,11 +35,23 @@ class CheckoutService {
     return this.checkoutApi.getSaleRelations(courseIds, productIds, contactId);
   }
 
-  getCartDataIds(checkoutId: number): Promise<CartIds> {
+  public updateModel(checkoutModel: CheckoutModel): Promise<CheckoutResponse> {
+    return this.checkoutApi.updateModel(checkoutModel);
+  }
+  
+  public submitPayment(checkoutModel: CheckoutModel): Promise<CheckoutResponse> {
+    return this.checkoutApi.submitPayment(checkoutModel);
+  }
+
+  public submitCreditCardPayment(submitRequest: CheckoutSubmitRequest): Promise<CheckoutCCResponse> {
+    return this.checkoutApi.submitCreditCardPayment(submitRequest);
+  }
+
+  public getCartDataIds(checkoutId: number): Promise<CartIds> {
     return this.checkoutApi.getCartDataIds(checkoutId);
   }
 
-  getClientKey(): Promise<any> {
+  public getClientKey(): Promise<any> {
     return this.checkoutApi.getClientKey();
   }
 }
