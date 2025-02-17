@@ -289,7 +289,7 @@ class EWayPaymentAPI {
                      requestContentType: ContentType.JSON,
                      body              : [
                              transactionType    : TRX_PURCHASE_TYPE,
-                             SecureCardData    : cardDataId,
+                             SecuredCardData    : cardDataId,
                              payment            : [
                                      // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                      totalAmount: amount.multiply(100).toInteger(),

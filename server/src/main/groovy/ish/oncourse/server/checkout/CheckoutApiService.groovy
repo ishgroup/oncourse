@@ -220,7 +220,7 @@ class CheckoutApiService {
                 sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
             } else {
                 if(paymentService instanceof TransactionPaymentServiceInterface) {
-                    if(submitRequestDTO.transactionId != null || submitRequestDTO.cardDataToken != null)
+                    if(submitRequestDTO.transactionId != null || submitRequestDTO.secureCode != null)
                         sessionAttributes = (paymentService as TransactionPaymentServiceInterface).confirmExistedPayment(amount, submitRequestDTO)
                     else {
                         sessionAttributes = (paymentService as TransactionPaymentServiceInterface).sendTwoStepPayment(amount, submitRequestDTO)
