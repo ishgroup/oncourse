@@ -16,6 +16,10 @@ properties:
     type: string
     required: false
     description: if 3d secure is required and must be performed on server, secure code will be passed
+  cardDataToken:
+    type: string
+    required: false
+    description: for eway payment system should contain card data, recieved on client
   origin:
     type: string
     required: false

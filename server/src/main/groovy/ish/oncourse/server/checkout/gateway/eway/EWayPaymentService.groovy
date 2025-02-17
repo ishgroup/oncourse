@@ -65,20 +65,20 @@ class EWayPaymentService implements TransactionPaymentServiceInterface {
 
     @Override
     SessionAttributes sendTwoStepPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
-        if(requestDTO.secureCode == null)
-            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'secureCode', error: "Secure code is required for 3dsecure verify")])
+        if(requestDTO.cardDataToken == null)
+            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'transactionId', error: "Card data is required to make payment")])
 
-        return eWayPaymentAPI.verify3dSecure(requestDTO.secureCode)
+        if(requestDTO.merchantReference == null)
+            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required to make payment")])
+
+        return eWayPaymentAPI.sendTwoStepPayment(amount, requestDTO.merchantReference, requestDTO.cardDataToken)
     }
 
     @Override
     SessionAttributes confirmExistedPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
-        if(requestDTO.transactionId == null)
-            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'transactionId', error: "Transaction id is required to capture")])
+        if(requestDTO.secureCode == null)
+            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'secureCode', error: "Secure code is required for 3dsecure verify")])
 
-        if(requestDTO.merchantReference == null)
-            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required to capture")])
-
-        return eWayPaymentAPI.capturePayment(amount, UUID.randomUUID().toString(), requestDTO.transactionId)
+        return eWayPaymentAPI.verify3dSecure(requestDTO.secureCode)
     }
 }

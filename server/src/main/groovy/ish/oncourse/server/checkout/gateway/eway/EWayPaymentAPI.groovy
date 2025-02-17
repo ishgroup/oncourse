@@ -266,7 +266,7 @@ class EWayPaymentAPI {
         return attributes
     }
 
-    SessionAttributes capturePayment(Money amount, String merchantReference, String transactionId) {
+    SessionAttributes sendTwoStepPayment(Money amount, String merchantReference, String cardDataId) {
         SessionAttributes attributes = new SessionAttributes()
         try {
             HTTPBuilder builder  = new HTTPBuilder()
@@ -274,13 +274,13 @@ class EWayPaymentAPI {
 
             builder.handler['success'] = { response, body ->
                 logger.info("Make eWay capture request finished, response body: ${body.toString()}")
-                buildSessionAttributesFromCaptureResponse(attributes, body as Map<String, Object>)
+                buildSessionAttributesFromTransaction(attributes, body as Map<String, Object>)
                 attributes.transactionId = merchantReference
                 logStatusOrError(attributes)
             }
             builder.post(
                     [uri               : eWayBaseUrl,
-                     path              : '/CapturePayment',
+                     path              : '/transaction',
                      contentType       : ContentType.JSON,
                      headers           : [
                              Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
@@ -288,7 +288,8 @@ class EWayPaymentAPI {
                      ],
                      requestContentType: ContentType.JSON,
                      body              : [
-                             TransactionId    : transactionId,
+                             transactionType    : TRX_PURCHASE_TYPE,
+                             SecureCardData    : cardDataId,
                              payment            : [
                                      // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                      totalAmount: amount.multiply(100).toInteger(),
@@ -445,16 +446,6 @@ class EWayPaymentAPI {
             }
             attributes.responceJson = JsonOutput.prettyPrint(JsonOutput.toJson(body))
         }
-    }
-
-    @CompileStatic(TypeCheckingMode.SKIP)
-    static void buildSessionAttributesFromCaptureResponse(SessionAttributes attributes, Map<String, Object> captureResponse) {
-        attributes.complete = captureResponse['TransactionStatus']
-        attributes.statusText = EWayResponseMessage.getExplanationByCode(captureResponse['ResponseMessage'] as String)
-        attributes.reCo  = captureResponse['ResponseMessage']
-        attributes.errorMessage = captureResponse['Errors']
-
-        attributes.responceJson = JsonOutput.prettyPrint(JsonOutput.toJson(captureResponse))
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)
