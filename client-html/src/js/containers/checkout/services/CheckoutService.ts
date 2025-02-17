@@ -54,6 +54,10 @@ class CheckoutService {
   public getClientKey(): Promise<any> {
     return this.checkoutApi.getClientKey();
   }
+  
+  public submitPaymentRedirect(sessionId: string, key: string): Promise<string> {
+    return this.checkoutApi.submitPaymentRedirect(sessionId, key);
+  }
 }
 
 export default new CheckoutService();

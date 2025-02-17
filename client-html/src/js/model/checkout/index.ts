@@ -247,10 +247,10 @@ export interface CreditCardPaymentPageProps {
   checkoutProcessCcPayment?: () => void;
   clearCcIframeUrl: () => void;
   checkoutProcessStripeCCPayment?: (stripePaymentMethodId: string, stripe: Stripe) => void;
+  checkoutCompleteWindcaveCcPayment?: StringArgFunction;
   checkoutGetPaymentStatusDetails?: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;
   checkoutProcessEwayCCPayment?: StringArgFunction;
-  checkoutGetPaymentDetailsByReference?: StringArgFunction;
   checkoutUpdateSummaryPrices?: NoArgFunction;
   onCheckoutClearPaymentStatus: () => void;
   process?: CheckoutPaymentProcess;

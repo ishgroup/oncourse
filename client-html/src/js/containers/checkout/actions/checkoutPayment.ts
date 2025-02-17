@@ -29,6 +29,7 @@ export const CHECKOUT_CLEAR_PAYMENT_STATUS = _toRequestType("checkout/clear/paym
 export const CHECKOUT_PROCESS_PAYMENT = _toRequestType("checkout/process/cc/payment");
 export const CHECKOUT_PROCESS_STRIPE_CC_PAYMENT = _toRequestType("checkout/process/stripe/cc/payment");
 export const CHECKOUT_PROCESS_EWAY_CC_PAYMENT = _toRequestType("checkout/process/eway/cc/payment");
+export const CHECKOUT_COMPLETE_WINDCAVE_CC_PAYMENT = _toRequestType("checkout/complete/windcave/cc/payment");
 export const CHECKOUT_PROCESS_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_PAYMENT);
 
 export const CHECKOUT_CLEAR_CC_IFRAME_URL = "checkout/clear/wcIframe/url";
@@ -43,6 +44,11 @@ export const checkoutProcessPaymentFulfilled = (response: CheckoutResponse | Che
 export const checkoutGetPaymentDetailsByReference = (reference: string) => ({
   type: CHECKOUT_GET_PAYMENT_DETAILS_BY_REFERENCE,
   payload: reference
+});
+
+export const checkoutCompleteWindcaveCcPayment = (sessionId: string) => ({
+  type: CHECKOUT_COMPLETE_WINDCAVE_CC_PAYMENT,
+  payload: { sessionId }
 });
 
 export const checkoutGetSavedCard = (payerId: number, paymentMethodId: number) => ({

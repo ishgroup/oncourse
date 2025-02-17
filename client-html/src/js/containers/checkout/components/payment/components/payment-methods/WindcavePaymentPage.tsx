@@ -17,8 +17,7 @@ import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
-  checkoutGetPaymentDetailsByReference,
-  checkoutGetPaymentStatusDetails,
+  checkoutCompleteWindcaveCcPayment,
   checkoutProcessPayment,
   checkoutSetPaymentProcessing,
   clearCcIframeUrl
@@ -39,8 +38,7 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     clearCcIframeUrl,
     payment,
     onCheckoutClearPaymentStatus,
-    checkoutGetPaymentStatusDetails,
-    checkoutGetPaymentDetailsByReference,
+    checkoutCompleteWindcaveCcPayment,
     process,
     payerName,
     dispatch,
@@ -59,8 +57,7 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     const paymentDetails = e.data.payment;
     if (paymentDetails && paymentDetails.status) {
       dispatch(checkoutSetPaymentProcessing(true));
-      checkoutGetPaymentStatusDetails(paymentDetails.sessionId);
-      checkoutGetPaymentDetailsByReference(payment.merchantReference);
+      checkoutCompleteWindcaveCcPayment(paymentDetails.sessionId);
       setValidatePayment(false);
       clearCcIframeUrl();
     }
@@ -147,8 +144,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
-  checkoutGetPaymentDetailsByReference: (ref) => dispatch(checkoutGetPaymentDetailsByReference(ref)),
-  checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
+  checkoutCompleteWindcaveCcPayment: (sessionId: string) => dispatch(checkoutCompleteWindcaveCcPayment(sessionId)),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(WindcavePaymentPage, styles));

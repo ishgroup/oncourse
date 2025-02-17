@@ -21,6 +21,7 @@ import { EpicCheckoutGetSavedCard } from './payment/EpicCheckoutGetSavedCard';
 import { EpicCheckoutProcessEwayPayment } from './payment/EpicCheckoutProcessEwayPayment';
 import { EpicCheckoutProcessPayment } from './payment/EpicCheckoutProcessPayment';
 import { EpicCheckoutProcessStripeCCPayment } from './payment/EpicCheckoutProcessStripeCCPayment';
+import { EpicCompleteWindcavePaymentRedirect } from './payment/EpicCompleteWindcavePaymentRedirect';
 import { EpicGetPaymentInfoByReference } from './payment/EpicGetPaymentInfoByReference';
 import { EpicCheckoutGetPromoCode } from './summary/EpicCheckoutGetPromoCode';
 import { EpicCheckoutGetVoucherToRedeem } from './summary/EpicCheckoutGetVoucherToRedeem';
@@ -44,6 +45,7 @@ export const EpicCheckout = combineEpics(
   EpicCheckoutGetVoucher,
   EpicCheckoutGetActivePaymentTypes,
   EpicCheckoutProcessPayment,
+  EpicCompleteWindcavePaymentRedirect,
   EpicCheckoutProcessEwayPayment,
   EpicGetPaymentInfoByReference,
   EpicCheckoutProcessStripeCCPayment,
