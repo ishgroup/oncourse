@@ -48,7 +48,8 @@ const request: EpicUtils.Request<{ checkoutResponse: CheckoutCCResponse, session
 
     const checkoutResponse = await CheckoutService.submitCreditCardPayment({
       onCoursePaymentSessionId: sessionResponse.sessionId,
-      paymentMethodId: eWaySecureFieldCode,
+      cardDataToken: eWaySecureFieldCode,
+      paymentMethodId: null,
       transactionId: null,
       merchantReference: sessionResponse.merchantReference,
       origin: window.location.origin

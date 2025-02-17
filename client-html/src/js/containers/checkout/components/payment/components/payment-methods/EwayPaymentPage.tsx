@@ -173,7 +173,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     <div
       style={disablePayment ? { pointerEvents: "none" } : null}
     >
-      <form onSubmit={handleSubmit} ref={formRef} className="d-flex flex-column justify-content-center">
+      {!process.status && <form onSubmit={handleSubmit} ref={formRef} className="d-flex flex-column justify-content-center">
         <img alt="EwayLogo" className={classes.logo} src="https://eway.io/api-v3/images/eway-logo-yellow-ec3677c6.png" />
         <div id="eway-secure-panel" />
         <LoadingButton
@@ -187,7 +187,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
         >
           Finalize checkout
         </LoadingButton>
-      </form>
+      </form>}
 
       {process.status !== "" && !isPaymentProcessing && (
         <PaymentMessageRenderer
