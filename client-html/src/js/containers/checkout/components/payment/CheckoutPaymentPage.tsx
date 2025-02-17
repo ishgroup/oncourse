@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
-import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
+import React, { useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
+import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
 import {
   CheckoutDiscount,
   CheckoutItem,
@@ -14,17 +14,17 @@ import {
   CheckoutPaymentGateway,
   CheckoutSummary
 } from '../../../../model/checkout';
-import { State } from "../../../../reducers/state";
-import { getContactFullName } from "../../../entities/contacts/utils";
-import { CheckoutPage } from "../../constants";
-import CheckoutAppBar from "../CheckoutAppBar";
-import RestartButton from "../RestartButton";
-import CheckoutPreviousInvoiceList from "../summary/CheckoutPreviousInvoiceList";
-import CheckoutDiscountEditView from "../summary/promocode/CheckoutDiscountEditView";
-import EwayPaymentPage from "./components/payment-methods/EwayPaymentPage";
-import PaymentPage from "./components/payment-methods/PaymentPage";
+import { State } from '../../../../reducers/state';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import { CheckoutPage } from '../../constants';
+import CheckoutAppBar from '../CheckoutAppBar';
+import RestartButton from '../RestartButton';
+import CheckoutPreviousInvoiceList from '../summary/CheckoutPreviousInvoiceList';
+import CheckoutDiscountEditView from '../summary/promocode/CheckoutDiscountEditView';
+import EwayPaymentPage from './components/payment-methods/EwayPaymentPage';
+import PaymentPage from './components/payment-methods/PaymentPage';
 import StripePaymentPage from './components/payment-methods/StripePaymentPage';
-import WindcavePaymentPage from "./components/payment-methods/WindcavePaymentPage";
+import WindcavePaymentPage from './components/payment-methods/WindcavePaymentPage';
 
 interface PaymentPageProps {
   payment?: CheckoutPayment;
@@ -46,6 +46,21 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
   const selectedPaymentType = payment.availablePaymentTypes.find(t => t.name === payment.selectedPaymentType);
 
   const voucherItem = selectedDiscount ? summaryVouchers.find(v => v.id === selectedDiscount.id) : null;
+  
+  useEffect(() => {
+    if (['EWAY', 'EWAY_TEST'].includes(gateway)) {
+      [
+        'https://secure.ewaypayments.com/scripts/eWAY.min.js',
+        // Switch between production and test environments
+        gateway === 'EWAY' ? 'https://static.assets.eway.io/cerberus/6.6.2.54470/assets/sdk/cerberus.bundle.js' : 'https://static.assets.eway.io/cerberus/6.6.2.54470/assets/sdk/cerberus-sandbox.bundle.js'
+      ].forEach(url => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        document.head.appendChild(script);
+      });
+    }
+  }, [gateway]);
 
   const payerName = useMemo(() => {
     const payer = summary.list.find(l => l.payer);
