@@ -127,7 +127,7 @@ class EWayPaymentAPI {
                      path: '/AccessCodesShared',
                      contentType: ContentType.JSON,
                      headers: [
-                                Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                 "X-EWAY-APIVERSION": 47
                      ],
                      requestContentType: ContentType.JSON,
@@ -150,7 +150,7 @@ class EWayPaymentAPI {
                      path: "/transaction/$accessCodeOrTransactionId",
                      contentType: ContentType.JSON,
                      headers: [
-                                Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                 "X-EWAY-APIVERSION": 47
                               ],
                     ]) { response, body ->
@@ -263,6 +263,7 @@ class EWayPaymentAPI {
             logger.catching(e)
         }
 
+
         return attributes
     }
 
@@ -270,25 +271,30 @@ class EWayPaymentAPI {
         SessionAttributes attributes = new SessionAttributes()
         try {
             HTTPBuilder builder  = new HTTPBuilder()
-            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
+            builder.handler['failure'] = {
+                response, body -> failHandler(response, body, attributes)
+            }
 
             builder.handler['success'] = { response, body ->
                 logger.info("Make eWay capture request finished, response body: ${body.toString()}")
                 buildSessionAttributesFromTransaction(attributes, body as Map<String, Object>)
                 attributes.transactionId = merchantReference
+                attributes.clientSecret = body["AuthorisationCode"]
                 logStatusOrError(attributes)
             }
+
             builder.post(
                     [uri               : eWayBaseUrl,
                      path              : '/transaction',
                      contentType       : ContentType.JSON,
                      headers           : [
-                             Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                             Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                              "X-EWAY-APIVERSION": 47
                      ],
                      requestContentType: ContentType.JSON,
                      body              : [
                              transactionType    : TRX_PURCHASE_TYPE,
+                             Method             : METHOD_PROCESS_PAYMENT,
                              SecuredCardData    : cardDataId,
                              payment            : [
                                      // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
@@ -323,7 +329,7 @@ class EWayPaymentAPI {
                      path              : '/3dsverify',
                      contentType       : ContentType.JSON,
                      headers           : [
-                             Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                             Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                              "X-EWAY-APIVERSION": 47
                      ],
                      requestContentType: ContentType.JSON,
@@ -356,7 +362,7 @@ class EWayPaymentAPI {
                      path              : '/transaction',
                      contentType       : ContentType.JSON,
                      headers           : [
-                                            Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                            Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                             "X-EWAY-APIVERSION": 47
                                          ],
                      requestContentType: ContentType.JSON,
@@ -401,7 +407,7 @@ class EWayPaymentAPI {
                      path              : "/transaction/$transactionId/refund",
                      contentType       : ContentType.JSON,
                      headers           : [
-                                            Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                            Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                             "X-EWAY-APIVERSION": 47
                                         ],
                      requestContentType: ContentType.JSON,

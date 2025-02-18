@@ -176,6 +176,7 @@ class CheckoutApiService {
             }
         } else {
             dtoResponse.sessionId = merchantReference
+            dtoResponse.merchantReference = merchantReference
         }
 
         if(deprecatedSessionId)
@@ -212,7 +213,7 @@ class CheckoutApiService {
 
             Money amount = checkout.paymentIn.amount
             SessionAttributes sessionAttributes
-            String merchantReference = null
+            String merchantReference
             String paymentSystemSessionId = submitRequestDTO.onCoursePaymentSessionId
 
             if (checkoutModel.payWithSavedCard) {
@@ -235,11 +236,12 @@ class CheckoutApiService {
                     }
 
                     paymentSystemSessionId = sessionAttributes.transactionId
+
+                    if(paymentService instanceof StripePaymentService)
+                        merchantReference = sessionAttributes.transactionId
                 }
 
-                if(paymentService instanceof StripePaymentService) {
-                    merchantReference = paymentSystemSessionId
-                } else {
+                if(merchantReference == null) {
                     if (!submitRequestDTO.merchantReference)
                         paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required")])
 

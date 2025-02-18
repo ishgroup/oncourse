@@ -69,7 +69,7 @@ class EWayPaymentService implements TransactionPaymentServiceInterface {
             handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'transactionId', error: "Card data is required to make payment")])
 
         if(requestDTO.merchantReference == null)
-            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "Merchant reference is required to make payment")])
+            handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'merchantReference', error: "onCourse session id is required to make payment")])
 
         return eWayPaymentAPI.sendTwoStepPayment(amount, requestDTO.merchantReference, requestDTO.cardDataToken)
     }

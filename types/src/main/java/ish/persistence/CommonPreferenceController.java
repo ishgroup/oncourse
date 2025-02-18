@@ -170,7 +170,7 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
-	public  String getPaymentGatewayPassEWay() {
+	public  String getPaymentGatewayPassEway() {
 		String apiKey = getValue(PAYMENT_GATEWAY_PASS_EWAY, false);
 		if (apiKey == null) {
 			throw new IllegalArgumentException();
