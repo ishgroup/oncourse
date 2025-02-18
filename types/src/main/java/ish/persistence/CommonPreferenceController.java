@@ -186,6 +186,14 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
+	public  String getPaymentGatewayPassSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway api key is not configured");
+		}
+		return apiKey;
+	}
+
 	public String getPaymentGatewayClientPassStripe() {
 		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_STRIPE, false);
 		if (apiKey == null) {
