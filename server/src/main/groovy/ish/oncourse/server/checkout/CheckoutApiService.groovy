@@ -33,6 +33,7 @@ import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
+import ish.oncourse.server.checkout.gateway.square.SquarePaymentService
 import ish.oncourse.server.checkout.gateway.stripe.StripePaymentService
 import ish.oncourse.server.checkout.gateway.stripe.StripePaymentTestService
 import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
@@ -317,6 +318,10 @@ class CheckoutApiService {
                 return injector.getInstance(StripePaymentTestService.class)
             case PaymentGatewayType.OFFLINE.value:
                 return injector.getInstance(OfflinePaymentService.class)
+            case PaymentGatewayType.SQUARE.value:
+                return injector.getInstance(SquarePaymentService.class)
+            case PaymentGatewayType.SQUARE_TEST.value:
+                return injector.getInstance(StripePaymentTestService.class)
             default:
                 handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Sorry, you cannot make a purchase. The selected payment method is prohibited for the ${gatewayType} payment system. Please contact the administrator.")])
         }
