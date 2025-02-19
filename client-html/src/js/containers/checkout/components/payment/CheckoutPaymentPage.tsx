@@ -7,6 +7,7 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import AppBarContainer from '../../../../common/components/layout/AppBarContainer';
 import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
+import { attachScript } from '../../../../common/utils/common';
 import {
   CheckoutDiscount,
   CheckoutItem,
@@ -23,6 +24,7 @@ import CheckoutPreviousInvoiceList from '../summary/CheckoutPreviousInvoiceList'
 import CheckoutDiscountEditView from '../summary/promocode/CheckoutDiscountEditView';
 import EwayPaymentPage from './components/payment-methods/EwayPaymentPage';
 import PaymentPage from './components/payment-methods/PaymentPage';
+import SquarePaymentPage from './components/payment-methods/SquarePaymentPage';
 import StripePaymentPage from './components/payment-methods/StripePaymentPage';
 import WindcavePaymentPage from './components/payment-methods/WindcavePaymentPage';
 
@@ -53,13 +55,12 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
         'https://secure.ewaypayments.com/scripts/eWAY.min.js',
         // Switch between production and test environments
         gateway === 'EWAY' ? 'https://static.assets.eway.io/cerberus/6.6.2.54470/assets/sdk/cerberus.bundle.js' : 'https://static.assets.eway.io/cerberus/6.6.2.54470/assets/sdk/cerberus-sandbox.bundle.js'
-      ].forEach(url => {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = url;
-        document.head.appendChild(script);
-      });
+      ].forEach(attachScript);
     }
+    if (['SQUARE', 'SQUARE_TEST'].includes(gateway)) {
+      attachScript('https://sandbox.web.squarecdn.com/v1/square.js');
+    }
+    
   }, [gateway]);
 
   const payerName = useMemo(() => {
@@ -76,36 +77,38 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
           : payment.selectedPaymentType || "Select payment method";
   
   const renderGatewayForm = useMemo(() => {
+    let PaymentComp = null;
+    
     switch (gateway) {
+      case 'SQUARE':
+      case 'SQUARE_TEST':
+        PaymentComp = SquarePaymentPage;
+        break;
       case 'EWAY':
       case 'EWAY_TEST':
-        return <EwayPaymentPage
-          isPaymentProcessing={isPaymentProcessing}
-          payerName={payerName}
-          summary={summary}
-          disablePayment={disablePayment}
-        />;
+        PaymentComp = EwayPaymentPage;
+        break;
       case 'WINDCAVE':
       case 'TEST':
-        return <WindcavePaymentPage
-          isPaymentProcessing={isPaymentProcessing}
-          payerName={payerName}
-          summary={summary}
-          disablePayment={disablePayment}
-        />;
+        PaymentComp = WindcavePaymentPage;
+        break;
       case 'STRIPE':
       case 'STRIPE_TEST':
-        return <StripePaymentPage
-          isPaymentProcessing={isPaymentProcessing}
-          payerName={payerName}
-          summary={summary}
-          disablePayment={disablePayment}
-        />;
+        PaymentComp = StripePaymentPage;
+        break;
       case 'OFFLINE':
       case 'DISABLED':
       default:
         return null;
     }
+    
+    return <PaymentComp
+      isPaymentProcessing={isPaymentProcessing}
+      payerName={payerName}
+      summary={summary}
+      disablePayment={disablePayment}
+    />;
+    
   }, [
     gateway,
     isPaymentProcessing,

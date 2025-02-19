@@ -28,6 +28,7 @@ export const CHECKOUT_CLEAR_PAYMENT_STATUS = _toRequestType("checkout/clear/paym
 
 export const CHECKOUT_PROCESS_PAYMENT = _toRequestType("checkout/process/cc/payment");
 export const CHECKOUT_PROCESS_STRIPE_CC_PAYMENT = _toRequestType("checkout/process/stripe/cc/payment");
+export const CHECKOUT_PROCESS_SQUARE_CC_PAYMENT = _toRequestType("checkout/process/square/cc/payment");
 export const CHECKOUT_PROCESS_EWAY_CC_PAYMENT = _toRequestType("checkout/process/eway/cc/payment");
 export const CHECKOUT_COMPLETE_WINDCAVE_CC_PAYMENT = _toRequestType("checkout/complete/windcave/cc/payment");
 export const CHECKOUT_PROCESS_PAYMENT_FULFILLED = FULFILLED(CHECKOUT_PROCESS_PAYMENT);
@@ -98,6 +99,17 @@ export const checkoutProcessStripeCCPayment = (
   payload: {
     stripePaymentMethodId,
     stripe
+  }
+});
+
+export const checkoutProcessSquareCcPayment = (
+  creditCardToken: string,
+  verificationToken: string,
+) => ({
+  type: CHECKOUT_PROCESS_SQUARE_CC_PAYMENT,
+  payload: {
+    creditCardToken,
+    verificationToken
   }
 });
 

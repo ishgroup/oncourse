@@ -20,6 +20,7 @@ import { EpicCheckoutGetPaymentStatusDetails } from './payment/EpicCheckoutGetPa
 import { EpicCheckoutGetSavedCard } from './payment/EpicCheckoutGetSavedCard';
 import { EpicCheckoutProcessEwayPayment } from './payment/EpicCheckoutProcessEwayPayment';
 import { EpicCheckoutProcessPayment } from './payment/EpicCheckoutProcessPayment';
+import { EpicCheckoutProcessSquareCCPayment } from './payment/EpicCheckoutProcessSquareCCPayment';
 import { EpicCheckoutProcessStripeCCPayment } from './payment/EpicCheckoutProcessStripeCCPayment';
 import { EpicCompleteWindcavePaymentRedirect } from './payment/EpicCompleteWindcavePaymentRedirect';
 import { EpicGetPaymentInfoByReference } from './payment/EpicGetPaymentInfoByReference';
@@ -48,6 +49,7 @@ export const EpicCheckout = combineEpics(
   EpicCompleteWindcavePaymentRedirect,
   EpicCheckoutProcessEwayPayment,
   EpicGetPaymentInfoByReference,
+  EpicCheckoutProcessSquareCCPayment,
   EpicCheckoutProcessStripeCCPayment,
   EpicCheckoutGetPromoCode,
   EpicCheckoutGetRelatedContacts,

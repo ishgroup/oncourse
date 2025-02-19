@@ -168,6 +168,8 @@ export interface CheckoutSummaryListItem {
 }
 
 export type CheckoutPaymentGateway =
+  'SQUARE' |
+  'SQUARE_TEST' |
   'EWAY' |
   'EWAY_TEST' |
   'STRIPE' |
