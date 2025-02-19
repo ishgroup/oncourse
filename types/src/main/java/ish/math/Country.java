@@ -8,66 +8,42 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
+
 package ish.math;
 
-import java.util.Currency;
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
 import java.util.Locale;
 
 /**
- * Java provides lots of locales, mostly based on os time zone and keyboard type. We have produced subset of countries, to make things easier.
- *
- * @author marcin
+ * Defines a set of supported countries with their associated locales and currency.
+ * <p>
+ * Java provides many locales, primarily based on the OS time zone and keyboard type.
+ * To simplify currency-related operations, we have selected a specific subset of countries.
+ * Each country is associated with a {@link Locale}, a currency symbol, and a {@link CurrencyUnit}.
+ * </p>
  */
 public enum Country {
 
-	AUSTRALIA(new Locale("en", "AU"), "$", "AUD"),
-	EUROPE(Locale.GERMANY, "\u20AC", "EUR"),
-	ENGLAND(Locale.UK, "\u00A3", "GBP"),
-	US(Locale.US, "$", "USD"),
-	HONG_KONG(Locale.US, "$", "HKD"),
-	SWITZERLAND(new Locale("de", "CH"), "SFr.", "CHF"),
-	NORWAY(new Locale("no", "NO"), "kr", "NOK"),
-	SOUTH_AFRICA(new Locale("en", "ZA"), "R", "ZAR");
+	AUSTRALIA(new Locale("en", "AU"), "$"),
+	EUROPE(Locale.GERMANY, "\u20AC"),
+	ENGLAND(Locale.UK, "\u00A3"),
+	US(Locale.US, "$"),
+	HONG_KONG(new Locale("zh", "HK"), "$"),
+	SWITZERLAND(new Locale("de", "CH"), "SFr."),
+	NORWAY(new Locale("no", "NO"), "kr"),
+	SOUTH_AFRICA(new Locale("en", "ZA"), "R");
 
-	private String symbol;
-	private String shortSymbol;
-	private Currency currency;
-	private Locale locale;
+	private final Locale locale;
+	private final CurrencyUnit currency;
+	private final String currentcyCode;
+	private final String currencyCode;
 
-	private Country(Locale locale, String shortCurrencySymbol, String currencySymbol) {
+	Country(Locale locale, String shortCurrencySymbol) {
 		this.locale = locale;
-		this.currency = Currency.getInstance(locale);
-		this.shortSymbol = shortCurrencySymbol;
-		this.symbol = currencySymbol;
-
-	}
-
-	/**
-	 * @return short currency symbol, eg. "$"
-	 */
-	public String currencyShortSymbol() {
-		return this.shortSymbol;
-	}
-
-	/**
-	 * @return currency symbol, eg. "AUD", "USD"
-	 */
-	public String currencySymbol() {
-		return this.symbol;
-	}
-
-	/**
-	 * @return combined currency symbol, eg. "AUD ($)", "USD ($)"
-	 */
-	public String currencyCombinedSymbol() {
-		return this.symbol + (this.shortSymbol != null ? " (" + this.shortSymbol + ")" : "");
-	}
-
-	/**
-	 * @return currency object associated with the country
-	 */
-	public java.util.Currency currency() {
-		return this.currency;
+		this.currency = Monetary.getCurrency(locale);
+		this.currencyCode = Monetary.getCurrency(locale).getCurrencyCode();
+		this.currentcyCode = shortCurrencySymbol;
 	}
 
 	/**
@@ -78,25 +54,68 @@ public enum Country {
 	}
 
 	/**
-	 * Returns enumeration key by passed integer value. Not ideal but number of keys is still small.
+	 * Gets the currency symbol for this country.
+	 * <p>
+	 * Example: "$" for Australia, "€" for Germany.
+	 * </p>
 	 *
-	 * @param val integer value taken from or stored to database.
-	 * @return enumeration key.
+	 * @return the short currency symbol.
+	 */
+	public String currencySymbol() {
+		return this.currentcyCode;
+	}
+
+	/**
+	 * Gets the standard currency code symbol for this country.
+	 * <p>
+	 * Example: "AUD" for Australia, "USD" for the United States.
+	 * </p>
+	 *
+	 * @return the currency symbol (ISO 4217 code).
+	 */
+	public String currencyCode() {
+		return currencyCode;
+	}
+
+	/**
+	 * Gets the {@link CurrencyUnit} associated with this Country locale.
+	 *
+	 * @return the currency unit.
+	 */
+	public CurrencyUnit currency() {
+		return this.currency;
+	}
+
+	/**
+	 * Finds a {@link Country} based on a given currency symbol.
+	 * <p>
+	 * This method searches for a country by either standard currency code (e.g., "USD")
+	 * or short symbol (e.g., "$").
+	 * </p>
+	 *
+	 * @param val the currency symbol or code to match.
+	 * @return the corresponding {@link Country} enum.
+	 * @throws IllegalArgumentException if no matching country is found.
 	 */
 	public static Country forCurrencySymbol(String val) {
 		for (Country c : Country.values()) {
-			if (c.currencySymbol().equals(val.trim()) || c.currencyShortSymbol() != null && c.currencyShortSymbol().equals(val.trim())) {
+			if (c.currencyCode().equals(val.trim()) || c.currencySymbol() != null && c.currencySymbol().equals(val.trim())) {
 				return c;
 			}
 		}
 		throw new IllegalArgumentException("Enumeration key doesn't exist for value:'" + val + "'");
 	}
 
-    /**
-     * Finds Country instance based on locale
-     * @param locale key
-     * @return country with some locale or null, if country for locale doesn't exist
-     */
+	/**
+	 * Finds a {@link Country} based on a given {@link Locale}.
+	 * <p>
+	 * This method searches for a country that matches the provided locale.
+	 * If no match is found, it returns {@code null}.
+	 * </p>
+	 *
+	 * @param locale the locale to search for.
+	 * @return the corresponding {@link Country} or {@code null} if no match is found.
+	 */
 	public static Country findCountryByLocale(Locale locale) {
 	    if (locale != null) {
             for (Country country : Country.values()) {
