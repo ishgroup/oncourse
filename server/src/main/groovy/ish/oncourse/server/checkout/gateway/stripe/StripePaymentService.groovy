@@ -28,11 +28,12 @@ import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.checkout.gateway.TransactionPaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.TwoStepPaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 @CompileDynamic
-class StripePaymentService implements TransactionPaymentServiceInterface {
+class StripePaymentService implements TwoStepPaymentServiceInterface {
     private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     private static final String CURRENCY_CODE_AUD = "AUD"
@@ -69,7 +70,7 @@ class StripePaymentService implements TransactionPaymentServiceInterface {
         }
     }
 
-    SessionAttributes sendTwoStepPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
+    SessionAttributes sendPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
         if(requestDTO.paymentMethodId == null || requestDTO.origin == null)
             handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(propertyName: 'paymentMethodId', error: 'confirmation token and origin are required for this method')])
 

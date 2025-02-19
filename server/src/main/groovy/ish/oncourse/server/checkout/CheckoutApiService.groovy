@@ -30,6 +30,7 @@ import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.checkout.gateway.TransactionPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.TwoStepPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
@@ -222,10 +223,10 @@ class CheckoutApiService {
                 sessionAttributes = paymentService.makeTransaction(amount, merchantReference, cardId)
             } else {
                 if(paymentService instanceof TransactionPaymentServiceInterface) {
-                    if(submitRequestDTO.transactionId != null || submitRequestDTO.secureCode != null)
-                        sessionAttributes = (paymentService as TransactionPaymentServiceInterface).confirmExistedPayment(amount, submitRequestDTO)
-                    else {
-                        sessionAttributes = (paymentService as TransactionPaymentServiceInterface).sendTwoStepPayment(amount, submitRequestDTO)
+                    if (paymentService instanceof TwoStepPaymentServiceInterface && submitRequestDTO.transactionId != null || submitRequestDTO.secureCode != null){
+                        sessionAttributes = (paymentService as TwoStepPaymentServiceInterface).confirmExistedPayment(amount, submitRequestDTO)
+                    } else {
+                        sessionAttributes = (paymentService as TransactionPaymentServiceInterface).sendPayment(amount, submitRequestDTO)
                     }
 
                     if(sessionAttributes.secure3dRequired) {
@@ -253,7 +254,7 @@ class CheckoutApiService {
 
                 if (!sessionAttributes.complete) {
                     checkoutSessionService.removeSession(submitRequestDTO.onCoursePaymentSessionId)
-                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+                    paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not completed, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
                 }
             }
 

@@ -252,7 +252,7 @@ class CheckoutApiImpl implements CheckoutApi {
 
         if (!sessionAttributes.complete) {
             checkoutSessionService.removeSession(paymentSessionId)
-            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not complite, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not completed, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
         }
 
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {

@@ -18,9 +18,10 @@ import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.checkout.gateway.TransactionPaymentServiceInterface
 import ish.common.checkout.gateway.SessionAttributes
+import ish.oncourse.server.checkout.gateway.TwoStepPaymentServiceInterface
 import org.eclipse.jetty.http.HttpStatus
 
-class EWayPaymentService implements TransactionPaymentServiceInterface {
+class EWayPaymentService implements TwoStepPaymentServiceInterface {
 
     @Inject
     private PreferenceController preferenceController
@@ -64,7 +65,7 @@ class EWayPaymentService implements TransactionPaymentServiceInterface {
     }
 
     @Override
-    SessionAttributes sendTwoStepPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
+    SessionAttributes sendPayment(Money amount, CheckoutSubmitRequestDTO requestDTO) {
         if(requestDTO.cardDataToken == null)
             handleError(HttpStatus.BAD_REQUEST_400, [new CheckoutValidationErrorDTO(propertyName: 'transactionId', error: "Card data is required to make payment")])
 

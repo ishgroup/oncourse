@@ -12,8 +12,7 @@ import ish.common.checkout.gateway.SessionAttributes
 import ish.math.Money
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 
-interface TransactionPaymentServiceInterface extends PaymentServiceInterface{
-    String getClientKey()
+interface TwoStepPaymentServiceInterface extends TransactionPaymentServiceInterface{
 
-    SessionAttributes sendPayment(Money amount, CheckoutSubmitRequestDTO requestDTO)
+    SessionAttributes confirmExistedPayment(Money amount, CheckoutSubmitRequestDTO requestDTO)
 }
