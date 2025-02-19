@@ -48,7 +48,6 @@ abstract class TestWithBootique {
     protected static final String ANGEL_NODE = "AngelNode"
     protected static final String MARIADB = "mariadb"
 
-
     private static boolean loggingInitialised = false
 
     public BQRuntime injector
@@ -64,10 +63,6 @@ abstract class TestWithBootique {
     @BeforeAll
     @Order(1)
     void setupEnvironment() throws Exception {
-        def context = new MoneyContextProvider()
-        context.updateCountry(Country.AUSTRALIA)
-        MoneyManager.updateSystemContext(context)
-
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
         JasperReportsConfig.configureGroovyCompiler()
@@ -78,6 +73,9 @@ abstract class TestWithBootique {
         }
 
         createInjectors()
+        def context = new MoneyContextProvider()
+        context.updateCountry(Country.AUSTRALIA)
+        MoneyManager.updateSystemContext(context)
     }
 
     @AfterAll

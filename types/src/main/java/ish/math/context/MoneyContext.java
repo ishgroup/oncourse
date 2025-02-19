@@ -59,7 +59,7 @@ public interface MoneyContext {
      *
      * @return a {@code String} representing the short currency symbol.
      */
-    String getShortCurrencySymbol();
+    String getCurrencySymbol();
 
     /**
      * Retrieves the money formatter associated with this context.

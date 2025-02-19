@@ -45,7 +45,7 @@ public class MoneyAmountFactory extends AbstractAmountFactory<Money> {
         }
 
         @Override
-        public String getShortCurrencySymbol() {
+        public String getCurrencySymbol() {
             return Currency.getInstance(getCurrencyCode()).getSymbol();
         }
 
@@ -56,7 +56,7 @@ public class MoneyAmountFactory extends AbstractAmountFactory<Money> {
 
         @Override
         public MoneyFormatter getFormatter() {
-            return new DefaultMoneyFormatter(getLocale(), getCurrencyCode());
+            return new DefaultMoneyFormatter(getLocale(), getCurrencySymbol());
         }
     };
 
@@ -132,7 +132,7 @@ public class MoneyAmountFactory extends AbstractAmountFactory<Money> {
             }
 
             @Override
-            public String getShortCurrencySymbol() {
+            public String getCurrencySymbol() {
                 return country.currencySymbol();
             }
 
@@ -143,7 +143,7 @@ public class MoneyAmountFactory extends AbstractAmountFactory<Money> {
 
             @Override
             public MoneyFormatter getFormatter() {
-                return new DefaultMoneyFormatter(getLocale(), getCurrencyCode());
+                return new DefaultMoneyFormatter(getLocale(), getCurrencySymbol());
             }
         };
     }

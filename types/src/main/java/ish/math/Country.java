@@ -36,14 +36,14 @@ public enum Country {
 
 	private final Locale locale;
 	private final CurrencyUnit currency;
-	private final String currentcyCode;
 	private final String currencyCode;
+	private final String currencySymbol;
 
 	Country(Locale locale, String shortCurrencySymbol) {
 		this.locale = locale;
 		this.currency = Monetary.getCurrency(locale);
 		this.currencyCode = Monetary.getCurrency(locale).getCurrencyCode();
-		this.currentcyCode = shortCurrencySymbol;
+		this.currencySymbol = shortCurrencySymbol;
 	}
 
 	/**
@@ -51,18 +51,6 @@ public enum Country {
 	 */
 	public Locale locale() {
 		return this.locale;
-	}
-
-	/**
-	 * Gets the currency symbol for this country.
-	 * <p>
-	 * Example: "$" for Australia, "€" for Germany.
-	 * </p>
-	 *
-	 * @return the short currency symbol.
-	 */
-	public String currencySymbol() {
-		return this.currentcyCode;
 	}
 
 	/**
@@ -75,6 +63,18 @@ public enum Country {
 	 */
 	public String currencyCode() {
 		return currencyCode;
+	}
+
+	/**
+	 * Gets the currency symbol for this country.
+	 * <p>
+	 * Example: "$" for Australia, "€" for Germany.
+	 * </p>
+	 *
+	 * @return the short currency symbol.
+	 */
+	public String currencySymbol() {
+		return currencySymbol;
 	}
 
 	/**

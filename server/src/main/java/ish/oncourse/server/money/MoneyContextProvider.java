@@ -27,8 +27,8 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
     private final AtomicReference<Locale> locale = new AtomicReference<>();
 
     private final AtomicReference<CurrencyUnit> currency = new AtomicReference<>();
+    private final AtomicReference<String> currencyCode = new AtomicReference<>();
     private final AtomicReference<String> currencySymbol = new AtomicReference<>();
-    private final AtomicReference<String> currencyShortSymbol = new AtomicReference<>();
 
     private final AtomicReference<MoneyFormatter> formatter = new AtomicReference<>();
 
@@ -40,8 +40,8 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
             updateCountry(defaultCountry);
         } else {
             this.currency.set(Monetary.getCurrency(this.locale.get()));
-            this.currencySymbol.set(this.currency.get().getCurrencyCode());
-            this.currencyShortSymbol.set(Currency.getInstance(currency.get().getCurrencyCode()).getSymbol());
+            this.currencyCode.set(this.currency.get().getCurrencyCode());
+            this.currencySymbol.set(Currency.getInstance(currency.get().getCurrencyCode()).getSymbol());
             this.formatter.set(new DefaultMoneyFormatter(this.locale.get(), this.currencySymbol.get()));
         }
     }
@@ -50,8 +50,8 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
     public void updateCountry(Country country) {
         this.locale.set(country.locale());
         this.currency.set(country.currency());
-        this.currencySymbol.set(country.currencyCode());
-        this.currencyShortSymbol.set(country.currencySymbol());
+        this.currencyCode.set(country.currencyCode());
+        this.currencySymbol.set(country.currencySymbol());
         this.formatter.set(new DefaultMoneyFormatter(this.locale.get(), this.currencySymbol.get()));
     }
 
@@ -67,12 +67,12 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
 
     @Override
     public String getCurrencyCode() {
-        return currencySymbol.get();
+        return currencyCode.get();
     }
 
     @Override
-    public String getShortCurrencySymbol() {
-        return currencyShortSymbol.get();
+    public String getCurrencySymbol() {
+        return currencySymbol.get();
     }
 
     @Override

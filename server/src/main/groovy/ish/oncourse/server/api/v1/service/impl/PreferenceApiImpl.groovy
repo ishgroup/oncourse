@@ -147,7 +147,7 @@ class PreferenceApiImpl implements PreferenceApi {
     CurrencyDTO getCurrency() {
         CurrencyDTO currency = new CurrencyDTO().with {
             it.currencySymbol = moneyContext.currencyCode
-            it.shortCurrencySymbol = moneyContext.shortCurrencySymbol
+            it.shortCurrencySymbol = moneyContext.currencySymbol
             ish.math.Country currentCountry = ish.math.Country.findCountryByLocale(moneyContext.locale)
             it.name = currentCountry != null ? currentCountry.name() : moneyContext.locale.displayCountry
             it
