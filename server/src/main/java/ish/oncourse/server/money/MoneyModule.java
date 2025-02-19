@@ -35,7 +35,6 @@ public class MoneyModule extends ConfigModule {
     @Singleton
     @Provides
     MoneyContextUpdater createMoneyContextUpdater(MoneyContextProvider contextProvider) {
-
         return contextProvider;
     }
 }
