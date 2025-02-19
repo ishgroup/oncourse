@@ -10,7 +10,9 @@
 package ish.math
 
 import groovy.transform.CompileStatic
+import ish.math.context.MoneyContext
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -20,6 +22,7 @@ import java.math.RoundingMode
 
 @CompileStatic
 class MoneyTest {
+
     static Collection<Arguments> values() {
         List<List<BigDecimal>> data = [
                 [10.00, 10.00, 10.00, 10.00],
@@ -41,9 +44,14 @@ class MoneyTest {
 
         Collection<Arguments> resultData = []
         for (List<BigDecimal> test : data) {
-            resultData.add(Arguments.of(new Money(test[0]), new Money(test[1]), new Money(test[2]), new Money(test[3])))
+            resultData.add(Arguments.of(Money.of(test[0]), Money.of(test[1]), Money.of(test[2]), Money.of(test[3])))
         }
         return resultData
+    }
+
+    @BeforeAll
+    static void setupEnvironment() throws Exception {
+        MoneyManager.updateSystemContext(MoneyAmountFactory.buildMoneyContext(Country.AUSTRALIA))
     }
 
     @ParameterizedTest
@@ -60,34 +68,34 @@ class MoneyTest {
 
         // no rounding
         Assertions.assertEquals(original.negate(),
-                new Money(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_NONE), "non rounding failed for -${original}")
+                Money.of(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_NONE), "non rounding failed for -${original}")
         // 10c rounding
         Assertions.assertEquals(round10.negate(),
-                new Money(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_10C), "10c rounding failed for -${original}")
+                Money.of(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_10C), "10c rounding failed for -${original}")
         // 50c rounding
         Assertions.assertEquals(round50.negate(),
-                new Money(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_50C), "50c rounding failed for -${original}")
+                Money.of(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_50C), "50c rounding failed for -${original}")
         // 1$ rounding
         Assertions.assertEquals(round1d.negate(),
-                new Money(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_1D), "1d rounding failed for -${original}")
+                Money.of(original.toBigDecimal()).negate().round(MoneyRounding.ROUNDING_1D), "1d rounding failed for -${original}")
     }
 
     @Test
     void testCents() {
-        Assertions.assertEquals(99, Money.valueOf(new BigDecimal("10.99")).getCents())
-        Assertions.assertEquals(1, Money.valueOf(new BigDecimal("10.01")).getCents())
-        Assertions.assertEquals(-1, Money.valueOf(new BigDecimal("-10.01")).getCents())
-        Assertions.assertEquals(-99, Money.valueOf(new BigDecimal("-10.99")).getCents())
+        Assertions.assertEquals(99, Money.of(new BigDecimal("10.99")).getFractional())
+        Assertions.assertEquals(1, Money.of(new BigDecimal("10.01")).getFractional())
+        Assertions.assertEquals(-1, Money.of(new BigDecimal("-10.01")).getFractional())
+        Assertions.assertEquals(-99, Money.of(new BigDecimal("-10.99")).getFractional())
     }
 
     @Test
     void testOneCentRoundingErrorWithAngelCode() {
-        Money valueEnteredIncTax = new Money(225, 0)
+        Money valueEnteredIncTax = Money.of(225, 0)
         BigDecimal taxRate = BigDecimal.valueOf(1, 1) // 0.1
 
         Money exTaxAmount = valueEnteredIncTax.divide(BigDecimal.ONE.add(taxRate))
 
-        Money expectedResult = new Money(204, 55)
+        Money expectedResult = Money.of(204, 55)
         Assertions.assertEquals(expectedResult.toBigDecimal(), exTaxAmount.toBigDecimal(), "Ex tax rounding error")
 
         // multiplier = rate * 10 / 11
@@ -103,28 +111,28 @@ class MoneyTest {
 
     @Test
     void testMoneyConstructorDollarWithCents() {
-        Money actualResult = new Money(204, 55)
+        Money actualResult = Money.of(204, 55)
         BigDecimal expectedResult = BigDecimal.valueOf(20455, 2)
         Assertions.assertEquals(expectedResult, actualResult.toBigDecimal(), "Money construction error")
     }
 
     @Test
     void testMoneyConstructorWithNULLString() {
-        Money actualResult = new Money((String) null)
+        Money actualResult = Money.of((String) null)
         BigDecimal expectedResult = BigDecimal.ZERO.setScale(2)
         Assertions.assertEquals(expectedResult, actualResult.toBigDecimal(), "Money construction error")
     }
 
     @Test
     void testMoneyConstructorWithNULLBigDecimal() {
-        Money actualResult = new Money((BigDecimal) null)
+        Money actualResult = Money.of((BigDecimal) null)
         BigDecimal expectedResult = BigDecimal.ZERO.setScale(2)
         Assertions.assertEquals(expectedResult, actualResult.toBigDecimal(), "Money construction error")
     }
 
     @Test
     void testMoneyMultiplyFractionAccuracy() {
-        Money valueEnteredIncTax = new Money(204, 55) // $204.55
+        Money valueEnteredIncTax = Money.of(204, 55) // $204.55
         BigDecimal taxRate = BigDecimal.valueOf(1, 1) // 0.1
 
         Money taxAmount = valueEnteredIncTax.multiply(taxRate) // $20.455
@@ -147,15 +155,15 @@ class MoneyTest {
         BigDecimal taxAmount = valueEnteredIncTax.setScale(2).divide(taxDivisor, RoundingMode.HALF_UP)
         // System.out.println("exTaxAmount:" + taxAmount);
 
-        Money moneyValueEntered = Money.valueOf(valueEnteredIncTax)
+        Money moneyValueEntered = Money.of(valueEnteredIncTax)
         Money moneyExTaxAmount = moneyValueEntered.multiply(exTaxMultiplier)
         // System.out.println("exTaxAmount:" + moneyExTaxAmount);
 
         Money moneyTaxAmount = moneyValueEntered.divide(taxDivisor)
         // System.out.println("exTaxAmount:" + moneyTaxAmount);
 
-        exTaxAmount = exTaxAmount.setScale(2, Money.DEFAULT_ROUND)
-        taxAmount = taxAmount.setScale(2, Money.DEFAULT_ROUND)
+        exTaxAmount = exTaxAmount.setScale(2, MoneyContext.DEFAULT_ROUND)
+        taxAmount = taxAmount.setScale(2, MoneyContext.DEFAULT_ROUND)
 
         Assertions.assertEquals(exTaxAmount.unscaledValue(), moneyExTaxAmount.toBigDecimal().unscaledValue(), "Ex tax rounding error")
         Assertions.assertEquals(taxAmount.unscaledValue(), moneyTaxAmount.toBigDecimal().unscaledValue(), "Tax rounding error")
@@ -163,24 +171,24 @@ class MoneyTest {
 
     @Test
     void testEquals() {
-        Assertions.assertFalse(new Money("20.44").equals(new Money("30.55")), "Checking equals")
-        Assertions.assertTrue(new Money("20.44").equals(new Money("20.44")), "Checking equals")
-        Assertions.assertFalse(Money.ZERO.equals(new Money("20.44")), "Checking equals")
-        Assertions.assertFalse(new Money("20.44").equals(new Money("-20.44")), "Checking equals")
-        Assertions.assertTrue(new Money("40.66").equals(new Money("30.55").add(new Money("10.11"))), "Checking equals")
-        Assertions.assertTrue(new Money("40.66").equals(new Money("30.55").add(new BigDecimal("10.11"))), "Checking equals")
+        Assertions.assertFalse(Money.of("20.44").equals(Money.of("30.55")), "Checking equals")
+        Assertions.assertTrue(Money.of("20.44").equals(Money.of("20.44")), "Checking equals")
+        Assertions.assertFalse(Money.ZERO.equals(Money.of("20.44")), "Checking equals")
+        Assertions.assertFalse(Money.of("20.44").equals(Money.of("-20.44")), "Checking equals")
+        Assertions.assertTrue(Money.of("40.66").equals(Money.of("30.55").add(Money.of("10.11"))), "Checking equals")
+        Assertions.assertTrue(Money.of("40.66").equals(Money.of("30.55").add(new BigDecimal("10.11"))), "Checking equals")
 
-        Assertions.assertTrue(new Money("20.44").hashCode() == new Money("20.44").hashCode(), "Checking equals")
-        Assertions.assertFalse(new Money("20.44").hashCode() == new Money("20.45").hashCode(), "Checking equals")
+        Assertions.assertTrue(Money.of("20.44").hashCode() == Money.of("20.44").hashCode(), "Checking equals")
+        Assertions.assertFalse(Money.of("20.44").hashCode() == Money.of("20.45").hashCode(), "Checking equals")
     }
 
     @Test
     void testRoundingUpDivide() {
-        Money money = new Money("5.00")
+        Money money = Money.of("5.00")
 
         //division without rounding, 5/13 == 0.38
         Money money1 = money.divide(new BigDecimal(13))
-        Assertions.assertEquals(new Money("0.38"), money1, "division failed for value " + money1)
+        Assertions.assertEquals(Money.of("0.38"), money1, "division failed for value " + money1)
 
         //Rounded up to the nearest dollar, 5/13 == 0.38 (less then 0.50) should be rounded to the 1.00
         Money money2 = money.divide(new BigDecimal(13), true)
@@ -188,38 +196,89 @@ class MoneyTest {
 
         //should be rounded to the 2.00
         Money money3 = money.divide(new BigDecimal(4), true)
-        Assertions.assertEquals(new Money("2.00"), money3, "2d rounding failed for value " + money3)
+        Assertions.assertEquals(Money.of("2.00"), money3, "2d rounding failed for value " + money3)
 
         // do nothing if value is already integer, 5/5 == 1
         Money money4 = money.divide(new BigDecimal(5), true)
         Assertions.assertEquals(Money.ONE, money4, "1d rounding failed for value " + money4)
 
-        money = new Money("-5.00")
+        money = Money.of("-5.00")
 
         //the same test for negative value
         Money money5 = money.divide(new BigDecimal(13), true)
-        Assertions.assertEquals(new Money("-1.00"), money5, "1d rounding failed for value " + money3)
+        Assertions.assertEquals(Money.of("-1.00"), money5, "1d rounding failed for value " + money3)
 
     }
 
     @Test
-    void testNumberFormatter() {
-        Money money = new Money("5.00")
+    void testNumberFormatterUsingAustraliaLocale() {
+        Money money = Money.of("5.00")
         Assertions.assertEquals("5.00", money.toPlainString())
 
-        money = new Money("-5.00")
+        money = Money.of("-5.00")
         Assertions.assertEquals("-5.00", money.toPlainString())
 
-        money = new Money("-005.55")
+        money = Money.of("-005.55")
         Assertions.assertEquals("-5.55", money.toPlainString())
 
-        money = Money.valueOf(-34.5555)
+        money = Money.of(-34.5555)
         Assertions.assertEquals("-34.56", money.toPlainString())
 
-        money = Money.valueOf(1892.5555)
+        money = Money.of(1892.5555)
         Assertions.assertEquals("1892.56", money.toPlainString())
 
         money = Money.ZERO
         Assertions.assertEquals("0.00", money.toPlainString())
+    }
+
+    @Test
+    void testNumberFormatterInCustomLocale() {
+        Money money = Money.of("5.00", MoneyAmountFactory.buildMoneyContext(Country.AUSTRALIA))
+        Assertions.assertEquals("5.00", money.toPlainString())
+
+        money = Money.of("-5.00", MoneyAmountFactory.buildMoneyContext(Country.US))
+        Assertions.assertEquals("-5.00", money.toPlainString())
+
+        money = Money.of("-005.55", MoneyAmountFactory.buildMoneyContext(Country.NORWAY))
+        Assertions.assertEquals("-5,55", money.toPlainString())
+
+        money = Money.of(-34.5555,  MoneyAmountFactory.buildMoneyContext(Country.EUROPE))
+        Assertions.assertEquals("-34,56", money.toPlainString())
+
+        money = Money.of(1892.5555,  MoneyAmountFactory.buildMoneyContext(Country.SOUTH_AFRICA))
+        Assertions.assertEquals("1892.56", money.toPlainString())
+
+        money = Money.ZERO
+        Assertions.assertEquals("0.00", money.toPlainString())
+    }
+
+    @Test
+    void testMoneyInCustomContext() {
+        MoneyContext usContext = MoneyAmountFactory.buildMoneyContext(Country.US)
+        Money usMoney = Money.of(1, usContext)
+
+        Assertions.assertNotEquals(usMoney, Money.of(1))
+
+        Assertions.assertEquals(usMoney, Money.of(1.0, usContext))
+        Assertions.assertEquals(usMoney, Money.of('1.0', usContext))
+        Assertions.assertEquals(usMoney, Money.of(1, usContext))
+
+        Assertions.assertNotEquals(usMoney, Money.of(4.0, usContext))
+        Assertions.assertNotEquals(usMoney, Money.of('4.0', usContext))
+        Assertions.assertNotEquals(usMoney, Money.of(4, usContext))
+
+        MoneyContext hongKongContext = MoneyAmountFactory.buildMoneyContext(Country.HONG_KONG)
+        Assertions.assertNotEquals(usMoney, Money.of(1.0, hongKongContext))
+        Assertions.assertNotEquals(usMoney, Money.of('1.0', hongKongContext))
+        Assertions.assertNotEquals(usMoney, Money.of(1, hongKongContext))
+
+        MoneyManager.updateSystemContext(usContext)
+
+        Assertions.assertEquals(usMoney, Money.of(1))
+
+        Assertions.assertEquals(usMoney, Money.of(1.0, usContext))
+        Assertions.assertEquals(usMoney, Money.of('1.0', usContext))
+        Assertions.assertEquals(usMoney, Money.of(1, usContext))
+
     }
 }
