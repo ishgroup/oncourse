@@ -15,6 +15,7 @@ import { Dispatch } from 'redux';
 import square from '../../../../../../../images/square.svg';
 import squareLight from '../../../../../../../images/squareLight.svg';
 import { showMessage } from '../../../../../../common/actions';
+import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
@@ -25,6 +26,7 @@ import {
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
 import { checkoutUpdateSummaryPrices } from '../../../../actions/checkoutSummary';
+import CheckoutService from '../../../../services/CheckoutService';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 
 const useStyles = makeAppStyles()({
@@ -51,7 +53,6 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     payment,
     onCheckoutClearPaymentStatus,
     checkoutUpdateSummaryPrices,
-    checkoutProcessStripeCCPayment,
     process,
     dispatch
   } = props;
@@ -62,19 +63,21 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const { classes, theme } = useStyles();
   
   const init = async () => {
-    const squarePayments = (window as any).Square.payments('sandbox-sq0idb--dGorAER1MMCm2wwAZkELA', 'L12H8VNBMK0XE');
-    const squareCard = await squarePayments.card();
-    setCard(squareCard);
-    setPayments(squarePayments);
-    await squareCard.attach('#card-container');
-    setReady(true);
+    try {
+      const clientKey =  await CheckoutService.getClientKey();
+      const squarePayments = (window as any).Square.payments(clientKey);
+      const squareCard = await squarePayments.card();
+      setCard(squareCard);
+      setPayments(squarePayments);
+      await squareCard.attach('#card-container');
+      setReady(true);
+    } catch (res) {
+      InstantFetchErrorHandler(dispatch, res);
+    }
   };
 
   useEffect(() => {
     init();
-    // CheckoutService.getClientKey()
-    //   .then(res => setStripePromise(loadStripe(res)))
-    //   .catch(res => InstantFetchErrorHandler(dispatch, res));
   }, []);
 
   const setLoading = (loading: boolean) => {
@@ -114,11 +117,10 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       intent: 'CHARGE',
     };
 
-    const verificationResults = await payments.verifyBuyer(
+    return payments.verifyBuyer(
       token,
       verificationDetails
     );
-    return verificationResults;
   };
   
   const processSquarePayment = async () => {
@@ -185,9 +187,6 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   dispatch,
-  checkoutProcessStripeCCPayment: (stripePaymentMethodId: string, stripe: Stripe) => {
-    dispatch(checkoutProcessStripeCCPayment(stripePaymentMethodId, stripe));
-  },
   checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices()),
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
