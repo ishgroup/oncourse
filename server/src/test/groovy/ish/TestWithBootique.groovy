@@ -11,12 +11,15 @@ import io.bootique.cayenne.ServerRuntimeFactory
 import io.bootique.cayenne.annotation.CayenneConfigs
 import io.bootique.config.ConfigurationFactory
 import io.bootique.jdbc.DataSourceFactory
-
+import ish.math.Country
+import ish.math.MoneyManager
 import ish.oncourse.common.ResourcesUtil
 import ish.oncourse.server.AngelModule
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.jasper.JasperReportsConfig
 import ish.oncourse.server.modules.TestModule
+import ish.oncourse.server.money.MoneyContextProvider
+import ish.oncourse.server.money.MoneyModule
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import org.apache.cayenne.configuration.server.ServerRuntime
 import org.apache.cayenne.datasource.DriverDataSource
@@ -35,7 +38,6 @@ import java.sql.DatabaseMetaData
 
 import static org.mockito.Mockito.mock
 import static org.mockito.Mockito.when
-
 /**
  * Subclass this when you need injectors to get services for your test
  */
@@ -61,7 +63,11 @@ abstract class TestWithBootique {
 
     @BeforeAll
     @Order(1)
-    void setupOnceRoot() throws Exception {
+    void setupEnvironment() throws Exception {
+        def context = new MoneyContextProvider()
+        context.updateCountry(Country.AUSTRALIA)
+        MoneyManager.updateSystemContext(context)
+
         System.setProperty(DefaultJasperReportsContext.PROPERTIES_FILE, "jasperreports.properties")
         //set JRGroovy compiler as default for tests
         JasperReportsConfig.configureGroovyCompiler()
@@ -89,6 +95,7 @@ abstract class TestWithBootique {
                 .app("--config=classpath:application-test.yml")
                 .module(AngelModule.class)
                 .module(TestModule.class)
+                .module(MoneyModule.class)
                 .module(new Module() {
 
                     @Provides

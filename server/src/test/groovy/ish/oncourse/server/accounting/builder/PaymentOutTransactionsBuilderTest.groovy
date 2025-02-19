@@ -55,7 +55,7 @@ class PaymentOutTransactionsBuilderTest {
         when(paymentOut.undepositedFundsAccount).thenReturn(secondaryAccountUndeposit)
         when(paymentOut.accountOut).thenReturn(secondaryAccountDeposit)
 
-        amount = new Money(99.0)
+        amount = Money.of(99.0)
 
         Invoice invoice = mock(Invoice)
         when(invoice.debtorsAccount).thenReturn(primaryAccount)

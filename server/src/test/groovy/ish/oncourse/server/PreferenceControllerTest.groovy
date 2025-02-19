@@ -1,11 +1,11 @@
 package ish.oncourse.server
 
-
 import groovy.transform.CompileStatic
-import ish.oncourse.entity.services.TagService
+import ish.math.context.MoneyContextUpdater
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.integration.PluginsPrefsService
 import ish.oncourse.server.license.LicenseService
+import ish.oncourse.server.services.ISchedulerService
 import ish.oncourse.server.services.ISystemUserService
 import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.Select
@@ -50,8 +50,9 @@ class PreferenceControllerTest {
         ISystemUserService systemUserService = Mockito.mock(ISystemUserService.class)
         LicenseService licenseService = Mockito.mock(LicenseService.class)
         PluginsPrefsService pluginsService = Mockito.mock(PluginsPrefsService.class)
-        TagService tagService = Mockito.mock(TagService.class)
+        ISchedulerService schedulerService = Mockito.mock(ISchedulerService.class)
+        MoneyContextUpdater contextUpdater = Mockito.mock(MoneyContextUpdater)
 
-        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService, tagService)
+        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService,  schedulerService, contextUpdater)
     }
 }

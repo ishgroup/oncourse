@@ -7,6 +7,7 @@ package ish.oncourse.server.report
 import groovy.transform.CompileStatic
 import ish.DatabaseSetup
 import ish.TestWithDatabase
+import ish.math.Money
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
 import ish.oncourse.common.ResourcesUtil
@@ -27,7 +28,6 @@ import org.apache.cayenne.access.DataContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SortOrder
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.junit.jupiter.api.Assertions
@@ -242,7 +242,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class)) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class), Money.ZERO.currencyContext) {
 
             @CompileStatic
             @Override
@@ -291,7 +291,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class)) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class), Money.ZERO.currencyContext) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -345,7 +345,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class)) {
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class), Money.ZERO.currencyContext) {
 
             @Override
             protected List<PersistentObjectI> getRecords(Map<String, List<Long>> ids) {
@@ -388,7 +388,7 @@ class ReportServiceTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class))
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(DocumentService.class), injector.getInstance(UserPreferenceService.class), Money.ZERO.currencyContext)
 
         worker.run()
 

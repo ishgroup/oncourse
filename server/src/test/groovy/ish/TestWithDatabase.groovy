@@ -76,7 +76,7 @@ abstract class TestWithDatabase extends TestWithBootique {
 
     @BeforeEach
     @Order(2)
-    private void setup() throws Exception {
+    void setup() throws Exception {
         validateAccountAndTaxDefaults()
         checkPaymentMethods()
     }

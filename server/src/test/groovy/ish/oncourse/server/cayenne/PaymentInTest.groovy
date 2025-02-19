@@ -57,7 +57,7 @@ class PaymentInTest extends TestWithDatabase {
 
         invoice.setContact(contact)
         invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(new Money("0"))
+        invoice.setAmountOwing(Money.of("0"))
 
         invoice.setDebtorsAccount(account)
 

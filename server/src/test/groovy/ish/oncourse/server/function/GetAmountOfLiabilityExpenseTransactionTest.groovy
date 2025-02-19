@@ -38,25 +38,25 @@ class GetAmountOfLiabilityExpenseTransactionTest {
         invoiceLine = mock(InvoiceLine.class)
 
         when(paymentIn.getVoucherPayments()).thenReturn(voucherPayments)
-        when(paymentIn.getAmount()).thenReturn(new Money("100"))
+        when(paymentIn.getAmount()).thenReturn(Money.of("100"))
 
         when(voucherPaymentIn.getPaymentIn()).thenReturn(paymentIn)
         when(voucherPaymentIn.getVoucher()).thenReturn(voucher)
 
         when(paymentInLine.getPaymentIn()).thenReturn(paymentIn)
-        when(paymentInLine.getAmount()).thenReturn(new Money("100"))
+        when(paymentInLine.getAmount()).thenReturn(Money.of("100"))
 
         when(voucherProduct.getMaxCoursesRedemption()).thenReturn(null) // money voucher
-        when(voucherProduct.getPriceExTax()).thenReturn(new Money("100")) // voucher's default price
+        when(voucherProduct.getPriceExTax()).thenReturn(Money.of("100")) // voucher's default price
 
-        when(invoiceLine.getPriceEachExTax()).thenReturn(new Money("100")) //voucher's price when buy it
+        when(invoiceLine.getPriceEachExTax()).thenReturn(Money.of("100")) //voucher's price when buy it
 
         when(voucher.getVoucherPaymentsIn()).thenReturn(voucherPayments)
         // all previous voucher payments to calculate the balance
         when(voucher.getVoucherProduct()).thenReturn(voucherProduct)
         when(voucher.getInvoiceLine()).thenReturn(invoiceLine)
         when(voucher.getRedeemedCourseCount()).thenReturn(0) // money voucher
-        when(voucher.getValueOnPurchase()).thenReturn(new Money("100")) //voucher's amount
+        when(voucher.getValueOnPurchase()).thenReturn(Money.of("100")) //voucher's amount
     }
 
 
@@ -68,7 +68,7 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     
     @Test
     void standardVoucherPay() {
-        assertEquals(new Money("100"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("100"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
 
@@ -82,17 +82,17 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     @Test
     void voucherPaySeveralTimes() {
         PaymentIn previousPaymentIn = mock(PaymentIn.class)
-        when(previousPaymentIn.getAmount()).thenReturn(new Money("50"))
+        when(previousPaymentIn.getAmount()).thenReturn(Money.of("50"))
 
         VoucherPaymentIn previousVoucherPaymentIn = mock(VoucherPaymentIn.class)
         when(previousVoucherPaymentIn.getPaymentIn()).thenReturn(previousPaymentIn)
         when(previousVoucherPaymentIn.getVoucher()).thenReturn(voucher)
         voucherPayments.add(0, previousVoucherPaymentIn)
 
-        when(paymentInLine.getAmount()).thenReturn(new Money("50"))
-        when(paymentIn.getAmount()).thenReturn(new Money("50"))
+        when(paymentInLine.getAmount()).thenReturn(Money.of("50"))
+        when(paymentIn.getAmount()).thenReturn(Money.of("50"))
 
-        assertEquals(new Money("50"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("50"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
     /**
@@ -106,20 +106,20 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     @Test
     void voucherPaySeveralTimesPriceLessThanAmount() {
         PaymentIn previousPaymentIn = mock(PaymentIn.class)
-        when(previousPaymentIn.getAmount()).thenReturn(new Money("50"))
+        when(previousPaymentIn.getAmount()).thenReturn(Money.of("50"))
 
         VoucherPaymentIn previousVoucherPaymentIn = mock(VoucherPaymentIn.class)
         when(previousVoucherPaymentIn.getPaymentIn()).thenReturn(previousPaymentIn)
         when(previousVoucherPaymentIn.getVoucher()).thenReturn(voucher)
         voucherPayments.add(0, previousVoucherPaymentIn)
 
-        when(paymentInLine.getAmount()).thenReturn(new Money("50"))
-        when(paymentIn.getAmount()).thenReturn(new Money("50"))
+        when(paymentInLine.getAmount()).thenReturn(Money.of("50"))
+        when(paymentIn.getAmount()).thenReturn(Money.of("50"))
 
-        when(voucherProduct.getPriceExTax()).thenReturn(new Money("50"))
-        when(invoiceLine.getPriceEachExTax()).thenReturn(new Money("50"))
+        when(voucherProduct.getPriceExTax()).thenReturn(Money.of("50"))
+        when(invoiceLine.getPriceEachExTax()).thenReturn(Money.of("50"))
 
-        assertEquals(new Money("0"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("0"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
 
@@ -130,10 +130,10 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     
     @Test
     void voucherCoversPartOfPayment() {
-        when(paymentInLine.getAmount()).thenReturn(new Money("200"))
-        when(paymentIn.getAmount()).thenReturn(new Money("200"))
+        when(paymentInLine.getAmount()).thenReturn(Money.of("200"))
+        when(paymentIn.getAmount()).thenReturn(Money.of("200"))
 
-        assertEquals(new Money("100"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("100"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
 
@@ -149,9 +149,9 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     
     @Test
     void voucherPayMoreThanItsPrice() {
-        when(invoiceLine.getPriceEachExTax()).thenReturn(new Money("10"))
+        when(invoiceLine.getPriceEachExTax()).thenReturn(Money.of("10"))
 
-        assertEquals(new Money("10"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("10"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
 
@@ -168,11 +168,11 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     
     @Test
     void voucherPayLessThanItsPrice() {
-        when(invoiceLine.getPriceEachExTax()).thenReturn(new Money("50"))
-        when(paymentInLine.getAmount()).thenReturn(new Money("20"))
-        when(paymentIn.getAmount()).thenReturn(new Money("20"))
+        when(invoiceLine.getPriceEachExTax()).thenReturn(Money.of("50"))
+        when(paymentInLine.getAmount()).thenReturn(Money.of("20"))
+        when(paymentIn.getAmount()).thenReturn(Money.of("20"))
 
-        assertEquals(new Money("20"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("20"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
 
@@ -189,9 +189,9 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     
     @Test
     void voucherPurchaseAmountDiffersFromDefaultAmountLessThanItsPrice() {
-        when(invoiceLine.getPriceEachExTax()).thenReturn(new Money("65"))
+        when(invoiceLine.getPriceEachExTax()).thenReturn(Money.of("65"))
 
-        assertEquals(new Money("65"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("65"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
 
@@ -205,12 +205,12 @@ class GetAmountOfLiabilityExpenseTransactionTest {
     void enrolmentVoucherPay() {
         when(voucherProduct.getMaxCoursesRedemption()).thenReturn(1)
         when(voucher.getRedeemedCourseCount()).thenReturn(0)
-        when(invoiceLine.getPriceEachExTax()).thenReturn(new Money("75"))
-        when(voucher.getValueOnPurchase()).thenReturn(new Money("75"))
-        when(voucherProduct.getPriceExTax()).thenReturn(new Money("75"))
+        when(invoiceLine.getPriceEachExTax()).thenReturn(Money.of("75"))
+        when(voucher.getValueOnPurchase()).thenReturn(Money.of("75"))
+        when(voucherProduct.getPriceExTax()).thenReturn(Money.of("75"))
 
 
-        assertEquals(new Money("75"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("75"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 
     /**
@@ -224,9 +224,9 @@ class GetAmountOfLiabilityExpenseTransactionTest {
         when(voucherProduct.getMaxCoursesRedemption()).thenReturn(1)
         when(voucher.getRedeemedCourseCount()).thenReturn(0)
 
-        when(paymentIn.getAmount()).thenReturn(new Money("25"))
-        when(paymentInLine.getAmount()).thenReturn(new Money("25"))
+        when(paymentIn.getAmount()).thenReturn(Money.of("25"))
+        when(paymentInLine.getAmount()).thenReturn(Money.of("25"))
 
-        assertEquals(new Money("25"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
+        assertEquals(Money.of("25"), GetAmountOfLiabilityExpenseTransaction.valueOf(paymentInLine).get())
     }
 }

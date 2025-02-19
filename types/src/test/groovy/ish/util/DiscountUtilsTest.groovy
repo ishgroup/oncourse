@@ -26,7 +26,7 @@ class DiscountUtilsTest {
 	@Test
     void testPersentDiscountValue() {
 		BigDecimal taxRate = 0.1
-        Money priceExTax = new Money("120.00")
+        Money priceExTax = Money.of("120.00")
 
         IInvoiceLineInterface invoiceLine = mock(InvoiceLine.class)
         when(invoiceLine.getPriceEachExTax()).thenReturn(priceExTax)
@@ -48,44 +48,44 @@ class DiscountUtilsTest {
         when(classDiscount.getDiscountDollar()).thenReturn(null)
 
         Money discountAmount = DiscountUtils.discountValue(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("18.18"), discountAmount)
+        Assertions.assertEquals(Money.of("18.18"), discountAmount)
         Money finalPrice = DiscountUtils.getDiscountedFee(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("112.00"), finalPrice)
+        Assertions.assertEquals(Money.of("112.00"), finalPrice)
         DiscountUtils.applyDiscounts(classDiscount, invoiceLine, taxRate, Money.ZERO)
-        Assertions.assertEquals(new Money("112.00"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
+        Assertions.assertEquals(Money.of("112.00"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
 
         //12.5% discount, rounding to the nearest 50 cents, priceExTax $125
 		when(discount.getDiscountPercent()).thenReturn(0.125)
         when(discount.getRounding()).thenReturn(MoneyRounding.ROUNDING_50C)
-        priceExTax = new Money("125.00")
+        priceExTax = Money.of("125.00")
         when(invoiceLine.getPriceEachExTax()).thenReturn(priceExTax)
 
         discountAmount = DiscountUtils.discountValue(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("15.45"), discountAmount)
+        Assertions.assertEquals(Money.of("15.45"), discountAmount)
         finalPrice = DiscountUtils.getDiscountedFee(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("120.50"), finalPrice)
+        Assertions.assertEquals(Money.of("120.50"), finalPrice)
         DiscountUtils.applyDiscounts(classDiscount, invoiceLine, taxRate, Money.ZERO)
-        Assertions.assertEquals(new Money("120.50"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
+        Assertions.assertEquals(Money.of("120.50"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
 
         //12.5% discount, rounding to the nearest 10 cents
 		when(discount.getDiscountPercent()).thenReturn(0.125)
         when(discount.getRounding()).thenReturn(MoneyRounding.ROUNDING_10C)
-        priceExTax = new Money("125.00")
+        priceExTax = Money.of("125.00")
 
         when(invoiceLine.getPriceEachExTax()).thenReturn(priceExTax)
         discountAmount = DiscountUtils.discountValue(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("15.64"), discountAmount)
+        Assertions.assertEquals(Money.of("15.64"), discountAmount)
         finalPrice = DiscountUtils.getDiscountedFee(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("120.30"), finalPrice)
+        Assertions.assertEquals(Money.of("120.30"), finalPrice)
         DiscountUtils.applyDiscounts(classDiscount, invoiceLine, taxRate, Money.ZERO)
-        Assertions.assertEquals(new Money("120.30"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
+        Assertions.assertEquals(Money.of("120.30"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
     }
 
 	@Test
     void testDollarDiscountValue() {
 		BigDecimal taxRate = 0.1
-        Money priceExTax = new Money("144.55")
-        Money taxAdjustmet = new Money("-0.01")
+        Money priceExTax = Money.of("144.55")
+        Money taxAdjustmet = Money.of("-0.01")
 
         IInvoiceLineInterface invoiceLine = mock(InvoiceLine.class)
         when(invoiceLine.getPriceEachExTax()).thenReturn(priceExTax)
@@ -98,7 +98,7 @@ class DiscountUtilsTest {
 		DiscountInterface discount = mock(DiscountInterface.class)
         when(discount.getDiscountMax()).thenReturn(Money.ZERO)
         when(discount.getDiscountMin()).thenReturn(Money.ZERO)
-        when(discount.getDiscountDollar()).thenReturn(new Money("20.50"))
+        when(discount.getDiscountDollar()).thenReturn(Money.of("20.50"))
         when(discount.getRounding()).thenReturn(MoneyRounding.ROUNDING_50C)
         when(discount.getDiscountType()).thenReturn(DiscountType.DOLLAR)
 
@@ -108,21 +108,21 @@ class DiscountUtilsTest {
 
         //real case with priceExTax $144.55 ($159 priceIncTax) and taxAdjustment $-0.01
 		Money discountAmount = DiscountUtils.discountValue(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("20.46"), discountAmount)
+        Assertions.assertEquals(Money.of("20.46"), discountAmount)
         Money finalPrice = DiscountUtils.getDiscountedFee(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("136.50"), finalPrice)
+        Assertions.assertEquals(Money.of("136.50"), finalPrice)
         DiscountUtils.applyDiscounts(classDiscount, invoiceLine, taxRate, taxAdjustmet)
-        Assertions.assertEquals(new Money("136.50"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
+        Assertions.assertEquals(Money.of("136.50"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
 
         //the same case but  rounding to the nearest dollar
 		when(discount.getRounding()).thenReturn(MoneyRounding.ROUNDING_1D)
 
         discountAmount = DiscountUtils.discountValue(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("20.91"), discountAmount)
+        Assertions.assertEquals(Money.of("20.91"), discountAmount)
         finalPrice = DiscountUtils.getDiscountedFee(classDiscount, priceExTax, taxRate)
-        Assertions.assertEquals(new Money("136.00"), finalPrice)
+        Assertions.assertEquals(Money.of("136.00"), finalPrice)
         DiscountUtils.applyDiscounts(classDiscount, invoiceLine, taxRate, taxAdjustmet)
-        Assertions.assertEquals(new Money("136.00"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
+        Assertions.assertEquals(Money.of("136.00"), invoiceLine.getPriceEachExTax().subtract(invoiceLine.getDiscountEachExTax()).add(invoiceLine.getTaxEach()))
     }
 
 

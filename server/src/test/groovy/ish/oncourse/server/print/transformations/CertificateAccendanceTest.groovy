@@ -2,6 +2,7 @@ package ish.oncourse.server.print.transformations
 
 
 import groovy.transform.CompileStatic
+import ish.math.Money
 import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.CourseClass
 import ish.oncourse.server.cayenne.Enrolment
@@ -27,7 +28,6 @@ class CertificateAccendanceTest {
 
     private Report report
     private PrintWorker printWorker
-
     
     @BeforeEach
     void before() throws IOException {
@@ -43,7 +43,7 @@ class CertificateAccendanceTest {
 
     @Test
     void test() throws JRException, FileNotFoundException {
-        ReportDataSource reportDataSource = new ReportDataSource(printWorker, report, getItem())
+        ReportDataSource reportDataSource = new ReportDataSource(printWorker, Money.ZERO.currencyContext, report, getItem())
         JasperReport jasperReport = JasperCompileManager.compileReport(new ByteArrayInputStream(report.getData()))
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<>(), reportDataSource)
 
