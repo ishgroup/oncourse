@@ -350,7 +350,7 @@ class CheckoutController {
             voucher.redemptionValue = product.value ?: product.priceExTax
         } else {
             //else set the initial value as $0
-            voucher.redemptionValue = new Money(dto.value)
+            voucher.redemptionValue = Money.of(dto.value)
         }
         voucher.valueOnPurchase = voucher.redemptionValue
         voucher.redeemedCourseCount = 0
@@ -402,11 +402,11 @@ class CheckoutController {
 
         if (!checkout.paymentPlans.empty) {
             if (checkout.payForThisInvoice && checkout.payForThisInvoice > 0) {
-                createDueDate(new Money(checkout.payForThisInvoice),LocalDate.now())
+                createDueDate(Money.of(checkout.payForThisInvoice),LocalDate.now())
             }
 
             checkout.paymentPlans.each {
-                createDueDate(new Money(it.amount),  it.date)
+                createDueDate(Money.of(it.amount),  it.date)
             }
         } else if (checkout.invoiceDueDate)  {
             invoice.dateDue = checkout.invoiceDueDate
@@ -415,7 +415,7 @@ class CheckoutController {
 
     private void initPayment() {
         if (checkout.paymentMethodId == null && !checkout.payWithSavedCard &&
-                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.valueOf(amount) != Money.ZERO })) {
+                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.of(amount) != Money.ZERO })) {
             return
         }
 
@@ -426,11 +426,11 @@ class CheckoutController {
         paymentIn.administrationCentre = paymentIn.createdBy.defaultAdministrationCentre
         paymentIn.paymentDate = LocalDate.now()
 
-        paymentIn.amount = new Money(checkout.payNow)
+        paymentIn.amount = Money.of(checkout.payNow)
 
         PaymentMethod method
 
-        if (paymentIn.amount > ZERO) {
+        if (paymentIn.amount > Money.ZERO) {
             if (checkout.paymentMethodId != null) {
                 method =  SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
             } else if (checkout.payWithSavedCard) {
@@ -477,7 +477,7 @@ class CheckoutController {
         }
 
         if (invoice) {
-            Money payForThisInvoice = new Money(checkout.payForThisInvoice)
+            Money payForThisInvoice = Money.of(checkout.payForThisInvoice)
             Money payByVouchers = getAmountPaidByVouchers(invoice)
             Money finalPayAmount = payForThisInvoice.subtract(payByVouchers)
             if (finalPayAmount.isGreaterThan(invoice.amountOwing)) {
@@ -491,7 +491,7 @@ class CheckoutController {
         }
 
         checkout.previousInvoices.each { id, amount ->
-            Money payAmount = new Money(amount)
+            Money payAmount = Money.of(amount)
             if (payAmount != Money.ZERO) {
                 Invoice previousInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
                 previousInvoice.updateAmountOwing()
@@ -519,7 +519,7 @@ class CheckoutController {
         paymentIn.amount = paymentIn.paymentInLines
                 .collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) } as Money
 
-        if (paymentIn.amount != new Money(checkout.payNow)) {
+        if (paymentIn.amount != Money.of(checkout.payNow)) {
             result << new CheckoutValidationErrorDTO(propertyName: "payNow",  error:  "Payment amount doesn't match invoice allocated total amount")
         }
     }
@@ -553,7 +553,7 @@ class CheckoutController {
                 invoiceLine.courseClass = enrolment.courseClass
                 invoiceLine.quantity = ONE
                 invoiceLine.tax = nonSupplyTax(context)
-                invoiceLine.priceEachExTax = new Money(dtoLine.finalPriceToPayIncTax)
+                invoiceLine.priceEachExTax = Money.of(dtoLine.finalPriceToPayIncTax)
                 invoiceLine.sortOrder = 0
                 invoiceLine.account = enrolment.courseClass.incomeAccount
                 invoiceLine.prepaidFeesAccount = prepaidFeesAccount
@@ -644,7 +644,7 @@ class CheckoutController {
 
         if (totalOverride != null) {
 
-            Money total = Money.valueOf(totalOverride)
+            Money total = Money.of(totalOverride)
             BigDecimal taxRate = (taxOverride?:courseClass.tax).rate
 
             invoiceLine.discountEachExTax = invoiceLine.priceEachExTax.subtract(total.divide(Money.ONE.add(taxRate)))
@@ -669,7 +669,7 @@ class CheckoutController {
 
     private void processRedeemedVouchers() {
         checkout.redeemedVouchers.each { id, amount ->
-            Money payAmount = new Money(amount)
+            Money payAmount = Money.of(amount)
             if (payAmount != Money.ZERO) {
                 Voucher voucher = getRedeemedVoucherAndValidate(id)
 
@@ -748,7 +748,7 @@ class CheckoutController {
         createVoucherPaymentIn(voucher, vPaymentIn)
 
         checkout.previousInvoices.each { id, amount ->
-            Money payNow = Money.valueOf(amount)
+            Money payNow = Money.of(amount)
             if (payNow > Money.ZERO) {
                 Invoice prevInvoice = invoiceApiService.getEntityAndValidateExistence(context, Long.valueOf(id)) as Invoice
 

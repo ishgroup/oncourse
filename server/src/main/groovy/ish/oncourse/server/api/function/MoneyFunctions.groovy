@@ -16,6 +16,6 @@ import ish.math.Money
 class MoneyFunctions {
 
     static Money toMoneyValue(BigDecimal value) {
-        value == null ? null : new Money(value)
+        value == null ? null : Money.of(value)
     }
 }

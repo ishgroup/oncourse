@@ -47,7 +47,7 @@ public class PaymentPlan {
 	}
 
 	public PaymentLine pay(double amount) {
-		return pay(new Money(BigDecimal.valueOf(amount)));
+		return pay(Money.of(BigDecimal.valueOf(amount)));
 	}
 
 	public PaymentLine pay(Money amount) {

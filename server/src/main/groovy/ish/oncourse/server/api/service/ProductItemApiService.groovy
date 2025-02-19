@@ -305,7 +305,7 @@ class ProductItemApiService extends TaggableApiService<ProductItemDTO, ProductIt
             Account account = null
             Tax tax = null
             if (cancelRequest.retainAdministrativeFee) {
-                fee = Money.valueOf(cancelRequest.feeAmount)
+                fee = Money.of(cancelRequest.feeAmount)
                 account = accountDao.getById(context, cancelRequest.retainAccountId)
                 tax = taxDao.getById(context, cancelRequest.feeTaxId)
             }

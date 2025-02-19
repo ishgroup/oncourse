@@ -162,22 +162,22 @@
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-22" style="header 3 (right)" x="428" y="6" width="94" height="16" uuid="f6e8b2ef-7331-4ec2-9c51-bd017ff0ec25"/>
-					<textFieldExpression><![CDATA[(new Money($V{totalIA}.toString())).toString()+"/"+
-(new Money($V{totalIB}.toString())).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{totalIA}.toString())).toString()+"/"+
+(Money.of($V{totalIB}.toString())).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-25" style="header 3 (right)" x="527" y="6" width="109" height="16" uuid="4f2f29d3-c808-44ca-bd18-4288d0c0ab4a"/>
-					<textFieldExpression><![CDATA[(new Money($V{totalEA}.toString()).negate()).toString()+"/"+
-(new Money($V{totalEB}.toString()).negate()).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{totalEA}.toString()).negate()).toString()+"/"+
+(Money.of($V{totalEB}.toString()).negate()).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-28" style="header 3 (right)" x="642" y="6" width="101" height="16" uuid="6656c3fc-3d77-418e-8410-046aaa23c585"/>
-					<textFieldExpression><![CDATA[(new Money($V{totalPA}.toString())).toString()+"/"+
-(new Money($V{totalPB}.toString())).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{totalPA}.toString())).toString()+"/"+
+(Money.of($V{totalPB}.toString())).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-31" style="header 3 (right)" x="745" y="6" width="36" height="16" uuid="a7525c32-fd95-4d6d-9e3b-a5b8cb03b5b0"/>
-					<textFieldExpression><![CDATA[((($V{totalPB}==null)||($V{totalPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (new Money(String.valueOf($V{totalPA})).floatValue()) - (new Money(String.valueOf($V{totalPB})).floatValue()) ) /  (new Money(String.valueOf($V{totalPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
+					<textFieldExpression><![CDATA[((($V{totalPB}==null)||($V{totalPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (Money.of(String.valueOf($V{totalPA})).floatValue()) - (Money.of(String.valueOf($V{totalPB})).floatValue()) ) /  (Money.of(String.valueOf($V{totalPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -197,23 +197,23 @@
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-20" style="data field (money)" x="428" y="4" width="94" height="16" uuid="ae81d70c-efe6-4bb1-8abc-161bccf439ad"/>
-					<textFieldExpression><![CDATA[(new Money($V{catIA}.toString())).toString()+"/"+
-(new Money($V{catIB}.toString())).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{catIA}.toString())).toString()+"/"+
+(Money.of($V{catIB}.toString())).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-23" style="data field (money)" x="527" y="4" width="111" height="16" uuid="c478c3ec-da9d-4e12-9675-6e65481225ee"/>
-					<textFieldExpression><![CDATA[(new Money($V{catEA}.toString()).negate()).toString()+"/"+
-(new Money($V{catEB}.toString()).negate()).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{catEA}.toString()).negate()).toString()+"/"+
+(Money.of($V{catEB}.toString()).negate()).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-26" style="data field (money)" x="642" y="4" width="101" height="16" uuid="4e81080e-0986-48c6-bf87-e6c4ccc801c2"/>
-					<textFieldExpression><![CDATA[(new Money($V{catPA}.toString())).toString()+"/"+
-(new Money($V{catPB}.toString())).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{catPA}.toString())).toString()+"/"+
+(Money.of($V{catPB}.toString())).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="category" isBlankWhenNull="false">
 					<reportElement key="textField-29" style="data field" x="745" y="4" width="36" height="16" uuid="0cb1bf0d-a8bd-4cb0-a9c2-cdf4afad7570"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[((($V{catPB}==null)||($V{catPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (new Money(String.valueOf($V{catPA})).floatValue()) - (new Money(String.valueOf($V{catPB})).floatValue()) ) /  (new Money(String.valueOf($V{catPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
+					<textFieldExpression><![CDATA[((($V{catPB}==null)||($V{catPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (Money.of(String.valueOf($V{catPA})).floatValue()) - (Money.of(String.valueOf($V{catPB})).floatValue()) ) /  (Money.of(String.valueOf($V{catPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -237,23 +237,23 @@
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
 					<reportElement key="textField-21" style="data field (money)" x="428" y="3" width="93" height="14" uuid="5af0f75c-4fec-4111-9bf8-348d55d13381"/>
-					<textFieldExpression><![CDATA[(new Money($V{subIA}.toString())).toString()+"/"+
-(new Money($V{subIB}.toString())).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{subIA}.toString())).toString()+"/"+
+(Money.of($V{subIB}.toString())).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
 					<reportElement key="textField-24" style="data field (money)" x="527" y="3" width="111" height="14" uuid="198e3fd8-f892-40ac-8c77-2fc1ad06912f"/>
-					<textFieldExpression><![CDATA[(new Money($V{subEA}.toString()).negate()).toString()+"/"+
-(new Money($V{subEB}.toString()).negate()).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{subEA}.toString()).negate()).toString()+"/"+
+(Money.of($V{subEB}.toString()).negate()).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
 					<reportElement key="textField-27" style="data field (money)" x="642" y="3" width="101" height="14" uuid="934f20a4-0fda-4baf-a591-08450a20e98e"/>
-					<textFieldExpression><![CDATA[(new Money($V{subPA}.toString())).toString()+"/"+
-(new Money($V{subPB}.toString())).toString()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[(Money.of($V{subPA}.toString())).toString()+"/"+
+(Money.of($V{subPB}.toString())).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="subcategory" isBlankWhenNull="false">
 					<reportElement key="textField-30" style="data field" x="745" y="3" width="36" height="14" uuid="7a06a176-e864-42c7-b623-3d7458f41b5e"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[((($V{subPB}==null)||($V{subPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (new Money(String.valueOf($V{subPA})).floatValue()) - (new Money(String.valueOf($V{subPB})).floatValue()) ) /  (new Money(String.valueOf($V{subPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
+					<textFieldExpression><![CDATA[((($V{subPB}==null)||($V{subPB}.floatValue()==0))?"n.a.":String.valueOf(  ((float)Math.round(100*( (Money.of(String.valueOf($V{subPA})).floatValue()) - (Money.of(String.valueOf($V{subPB})).floatValue()) ) /  (Money.of(String.valueOf($V{subPB})).floatValue()) * 100  ))/100))]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

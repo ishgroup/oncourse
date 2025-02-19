@@ -196,7 +196,7 @@
 			<textField evaluationTime="Report" isBlankWhenNull="true">
 				<reportElement style="header 2" x="456" y="0" width="78" height="25"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[new Money($V{totalSum})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{totalSum})]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

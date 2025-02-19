@@ -57,7 +57,7 @@ public class CancelEnrolmentService {
             if (lineToRefund.getCancellationFee() != null) {
                 Account accountToRefund = SelectById.query(Account.class, lineToRefund.getAccountId()).selectOne(context);
                 Tax taxToRefund = SelectById.query(Tax.class, lineToRefund.getTaxId()).selectOne(context);
-                Money cancellationFee = new Money(lineToRefund.getCancellationFee());
+                Money cancellationFee = Money.of(lineToRefund.getCancellationFee());
                 linesToRefund.add(new RefundInvoiceParam(invoiceLineToRefund, accountToRefund, taxToRefund, cancellationFee, lineToRefund.getSendInvoice()));
             } else {
                 linesToRefund.add(new RefundInvoiceParam(invoiceLineToRefund, null, null, Money.ZERO, lineToRefund.getSendInvoice()));

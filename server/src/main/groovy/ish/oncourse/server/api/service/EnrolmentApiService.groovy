@@ -160,7 +160,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.outcomeIdTrainingOrg = dto.outcomeIdTrainingOrg
         enrolment.vetFeeIndicator = dto.vetFeeIndicator
         enrolment.trainingPlanDeveloped = dto.trainingPlanDeveloped
-        enrolment.feeHelpAmount = new Money(dto.feeHelpAmount)
+        enrolment.feeHelpAmount = Money.of(dto.feeHelpAmount)
         enrolment.feeStatus = FEE_STATUS_MAP.getByValue(dto.feeStatus)
         enrolment.attendanceType = dto.attendanceType.dbType
         enrolment.creditOfferedValue = dto.creditOfferedValue
