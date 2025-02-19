@@ -78,7 +78,7 @@ class WindcavePaymentAPI {
             Map<String, Object> body = [type               : transactionType,
                                         amount             : amount.toPlainString(),
                                         amountSurcharge    : "0.00",
-                                        currency           : preferenceController.country.currencySymbol(),
+                                        currency           : amount.currencyContext.currencyCode,
                                         merchantReference  : merchantReference,
                                         language           : "en",
                                         methods            : ["card"],
@@ -126,7 +126,7 @@ class WindcavePaymentAPI {
                      body              : [type             : "complete",
                                           amount           : amount.toPlainString(),
                                           amountSurcharge  : "0.00",
-                                          currency         : preferenceController.country.currencySymbol(),
+                                          currency         : amount.currencyContext.currencyCode,
                                           merchantReference: merchantReference,
                                           transactionId    : transactionId]
                     ]) { response, body ->
@@ -262,7 +262,7 @@ class WindcavePaymentAPI {
                      requestContentType: ContentType.JSON,
                      body              : [type             : "refund",
                                           amount           : amount.toPlainString(),
-                                          currency         : preferenceController.country.currencySymbol(),
+                                          currency         : amount.currencyContext.currencyCode,
                                           merchantReference: merchantReference,
                                           transactionId    : transactionId]
                     ])
@@ -295,7 +295,7 @@ class WindcavePaymentAPI {
                      requestContentType: ContentType.JSON,
                      body              : [type             : transactionType,
                                           amount           : amount.toPlainString(),
-                                          currency         : preferenceController.country.currencySymbol(),
+                                          currency         : amount.currencyContext.currencyCode,
                                           merchantReference: merchantReference,
                                           cardId    : cardId]
                     ])

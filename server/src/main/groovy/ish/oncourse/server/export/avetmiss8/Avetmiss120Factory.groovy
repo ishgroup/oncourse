@@ -417,12 +417,12 @@ class Avetmiss120Factory extends AvetmissFactory {
                     break
 
                 case ExportJurisdiction.VIC:
-                    fee = hourlyFee.multiply(100) // hourly fee in cents
+                    fee = hourlyFee.multiply(100l) // hourly fee in cents
                     break
 
                 default:
                     fee = hourlyFee.multiply(outcome.reportableHours) // fee in dollars for this unit
-                    def cents = fee.getCents()
+                    def cents = fee.getFractional()
                     fee = fee.round(MoneyRounding.ROUNDING_1D)
                     if (cents > 0 && cents < 50) {
                         fee = fee.add(Money.ONE)

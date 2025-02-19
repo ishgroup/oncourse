@@ -18,7 +18,6 @@ import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.cayenne.Taggable
 import ish.oncourse.server.api.dao.EntityRelationDao
 import ish.oncourse.server.cayenne.glue._Product
-import ish.util.MoneyFormatter
 import ish.util.MoneyUtil
 import org.apache.cayenne.query.Ordering
 import org.apache.cayenne.query.SelectById
@@ -27,8 +26,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 import javax.annotation.Nonnull
-import javax.swing.text.DefaultFormatter
-
 /**
  * Product is an abstract entity describing product type which can be sold through onCourse.
  * Currently this includes article, membership and voucher.
@@ -87,13 +84,6 @@ class Product extends _Product implements Queueable, Taggable{
 			return MoneyUtil.getPriceIncTax(getPriceExTax(), getTax().getRate(), getTaxAdjustment())
 		}
 		return MoneyUtil.getPriceIncTax(getPriceExTax(), null, getTaxAdjustment())
-	}
-
-	static DefaultFormatter getDefaultFormatterForKey(String key) {
-		if (PRICE_INC_TAX_PROPERTY == key || PRICE_EX_TAX.getName() == key) {
-			return MoneyFormatter.getInstance()
-		}
-		return null
 	}
 
 	static List<Ordering> getOrderingsForKey(String key, Boolean ascending) {
