@@ -35,6 +35,7 @@ import ish.oncourse.server.checkout.gateway.eway.EWayPaymentService
 import ish.oncourse.server.checkout.gateway.eway.test.EWayTestPaymentService
 import ish.oncourse.server.checkout.gateway.offline.OfflinePaymentService
 import ish.oncourse.server.checkout.gateway.square.SquarePaymentService
+import ish.oncourse.server.checkout.gateway.square.SquarePaymentTestService
 import ish.oncourse.server.checkout.gateway.stripe.StripePaymentService
 import ish.oncourse.server.checkout.gateway.stripe.StripePaymentTestService
 import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
@@ -102,7 +103,7 @@ class CheckoutApiService {
 
 
     CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
-        Checkout checkout = checkoutController.createCheckout(checkoutModel)
+        Checkout checkout = checkoutController.createCheckout(checkoutModel, true)
         paymentService = getPaymentServiceByGatewayType()
         return paymentService.fillResponse(checkout)
     }
@@ -134,7 +135,7 @@ class CheckoutApiService {
 
     private Checkout processPaymentTypeChoice(CheckoutModelDTO checkoutModelDTO, Boolean creditCardExpected) {
         paymentService = getPaymentServiceByGatewayType()
-        Checkout checkout = checkoutController.createCheckout(checkoutModelDTO)
+        Checkout checkout = checkoutController.createCheckout(checkoutModelDTO, false)
         if(!checkout.isCreditCard().equals(creditCardExpected))
             paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, "This endpoint cannot be used for selected payment type. See submitCCPayment, submitPayment")
 
@@ -199,7 +200,7 @@ class CheckoutApiService {
 
         try {
             def checkoutModel = checkoutSessionService.getCheckoutModel(submitRequestDTO.onCoursePaymentSessionId, paymentService)
-            Checkout checkout = checkoutController.createCheckout(checkoutModel)
+            Checkout checkout = checkoutController.createCheckout(checkoutModel, false)
 
             if (!checkout.errors.empty) {
                 paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
@@ -322,7 +323,7 @@ class CheckoutApiService {
             case PaymentGatewayType.SQUARE.value:
                 return injector.getInstance(SquarePaymentService.class)
             case PaymentGatewayType.SQUARE_TEST.value:
-                return injector.getInstance(StripePaymentTestService.class)
+                return injector.getInstance(SquarePaymentTestService.class)
             default:
                 handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Sorry, you cannot make a purchase. The selected payment method is prohibited for the ${gatewayType} payment system. Please contact the administrator.")])
         }
