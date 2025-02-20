@@ -86,7 +86,7 @@ class MoneyTest {
         Assertions.assertEquals(1, Money.of(new BigDecimal("10.01")).getFractional())
         Assertions.assertEquals(-1, Money.of(new BigDecimal("-10.01")).getFractional())
         Assertions.assertEquals(-99, Money.of(new BigDecimal("-10.99")).getFractional())
-        Assertions.assertEquals(40, Money.of(0,69).getFractional())
+        Assertions.assertEquals(40, Money.of(0.69).getFractional())
     }
 
     @Test
