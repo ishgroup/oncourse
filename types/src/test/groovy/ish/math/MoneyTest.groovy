@@ -86,7 +86,6 @@ class MoneyTest {
         Assertions.assertEquals(1, Money.of(new BigDecimal("10.01")).getFractional())
         Assertions.assertEquals(-1, Money.of(new BigDecimal("-10.01")).getFractional())
         Assertions.assertEquals(-99, Money.of(new BigDecimal("-10.99")).getFractional())
-        Assertions.assertEquals(40, Money.of(0.69).getFractional())
     }
 
     @Test
@@ -139,6 +138,9 @@ class MoneyTest {
         Money taxAmount = valueEnteredIncTax.multiply(taxRate) // $20.455
         BigDecimal expectedResult = BigDecimal.valueOf(2046, 2) // $20.46
         Assertions.assertEquals(expectedResult, taxAmount.toBigDecimal(), "Money rounding error")
+
+        Assertions.assertEquals(4, Money.of(0.69).multiply(16).getFractional())
+        Assertions.assertEquals(40, Money.of(0.18).multiply(30).getFractional())
     }
 
     @Test

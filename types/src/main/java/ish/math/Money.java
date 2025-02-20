@@ -193,8 +193,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 
 	private Money(Number amount, MoneyContext customContext) {
 		contextManager.setUpCustomContext(customContext);
-		this.number = MoneyUtils.getBigDecimal(Objects.requireNonNullElse(amount, BigDecimal.ZERO), getContext())
-				.setScale(contextManager.getContext().getCurrency().getDefaultFractionDigits(), MoneyContext.DEFAULT_ROUND);
+		this.number = MoneyUtils.getBigDecimal(Objects.requireNonNullElse(amount, BigDecimal.ZERO), getContext());
 	}
 
 	/**
@@ -254,8 +253,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@Override
 	public MonetaryContext getContext() {
 		return MonetaryContextBuilder.of()
-				.setMaxScale(contextManager.getContext().getCurrency().getDefaultFractionDigits())
-				.setFixedScale(true)
+				.setMaxScale(Math.min(256, getCurrency().getDefaultFractionDigits() * 4))
 				.set(MoneyContext.DEFAULT_ROUND)
 				.build();
 	}
@@ -517,20 +515,12 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	public Money divide(@Nullable Number amount, boolean roundingUp) {
 		if (Objects.isNull(amount)) return this;
 
-		if (roundingUp) {
-			var moneta = org.javamoney.moneta.Money.of(number,
-					getCurrency(),
-					MonetaryContextBuilder.of(getContext())
-							.setMaxScale(Math.min(256, getCurrency().getDefaultFractionDigits() * 4))
-							.set(MoneyContext.DEFAULT_ROUND)
-							.build())
-					.divide(amount)
-					.with(Monetary.getRounding(RoundingQueryBuilder.of().setScale(0).set(RoundingMode.UP).build()));
+		var result = toMoneta().divide(amount);
+		result = roundingUp ?
+				result.with(Monetary.getRounding(RoundingQueryBuilder.of().setScale(0).set(RoundingMode.UP).build())) :
+                result;
 
-			return toInstance(moneta.getNumber());
-
-		}
-		return toInstance(toMoneta().divide(amount));
+		return toInstance(result);
 	}
 
 	/**
