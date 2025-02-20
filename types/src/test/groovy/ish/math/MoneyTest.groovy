@@ -86,6 +86,7 @@ class MoneyTest {
         Assertions.assertEquals(1, Money.of(new BigDecimal("10.01")).getFractional())
         Assertions.assertEquals(-1, Money.of(new BigDecimal("-10.01")).getFractional())
         Assertions.assertEquals(-99, Money.of(new BigDecimal("-10.99")).getFractional())
+        Assertions.assertEquals(40, Money.of(0,69).getFractional())
     }
 
     @Test
@@ -206,6 +207,9 @@ class MoneyTest {
 
         //the same test for negative value
         Money money5 = money.divide(new BigDecimal(13), true)
+        Assertions.assertEquals(Money.of("-1.00"), money5, "1d rounding failed for value " + money3)
+
+        Money money6 = Money.of(11.04)
         Assertions.assertEquals(Money.of("-1.00"), money5, "1d rounding failed for value " + money3)
 
     }

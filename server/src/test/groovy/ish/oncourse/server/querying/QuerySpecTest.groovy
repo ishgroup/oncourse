@@ -1,9 +1,8 @@
 package ish.oncourse.server.querying
 
 import groovy.transform.CompileStatic
-import ish.DatabaseOperation
-import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
 import ish.common.types.AutomationStatus
 import ish.oncourse.server.cayenne.Script
 import ish.oncourse.server.scripting.GroovyScriptService

@@ -109,7 +109,6 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	public static Money ZERO = Money.of(BigDecimal.ZERO);
 	public static Money ONE = Money.of(BigDecimal.ONE);
 
-
 	/**
 	 * Constructs a new {@code Money} instance. If {@code null} is passed as value,
 	 * a {@code Money.ZERO} amount will be created.
@@ -255,9 +254,9 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@Override
 	public MonetaryContext getContext() {
 		return MonetaryContextBuilder.of()
-				.setMaxScale(getCurrency().getDefaultFractionDigits())
+				.setMaxScale(contextManager.getContext().getCurrency().getDefaultFractionDigits())
+				.setFixedScale(true)
 				.set(MoneyContext.DEFAULT_ROUND)
-				.set("org.javamoney.moneta.Money.defaults.roundingMode", MoneyContext.DEFAULT_ROUND)
 				.build();
 	}
 
@@ -521,7 +520,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 		if (roundingUp) {
 			var moneta = org.javamoney.moneta.Money.of(number,
 					getCurrency(),
-					MonetaryContextBuilder.of()
+					MonetaryContextBuilder.of(getContext())
 							.setMaxScale(Math.min(256, getCurrency().getDefaultFractionDigits() * 4))
 							.set(MoneyContext.DEFAULT_ROUND)
 							.build())
@@ -845,8 +844,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	 *         For example, if the value is $10.99, this method will return 99.
 	 */
 	public Integer getFractional() {
-		MonetaryAmount minorUnit = toMoneta().remainder(1); // 10.99 -> 0.99
-		return minorUnit.multiply(Math.pow(10, minorUnit.getNumber().getScale())).getNumber().intValue(); // 0.99 -> 99.0
+		return number.remainder(BigDecimal.ONE).movePointRight(number.scale()).intValue();
 	}
 
 	@Override

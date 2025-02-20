@@ -5,35 +5,24 @@
 package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
 import ish.DatabaseSetup
-import ish.math.Country
+import ish.TestWithDatabase
 import ish.math.Money
-import ish.math.MoneyManager
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
 import ish.oncourse.server.document.DocumentService
-import ish.oncourse.server.money.MoneyContextProvider
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.print.PrintRequest
 import ish.print.PrintTransformationsFactory
 import ish.print.transformations.PrintTransformation
 import ish.print.transformations.PrintTransformationField
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 @CompileStatic
 @DatabaseSetup(value = "ish/util/entityUtilTest.xml")
 class PrintWorkerTest extends TestWithDatabase {
-
-    @BeforeAll
-    static void setupEnvironment() {
-        def context = new MoneyContextProvider()
-        context.updateCountry(Country.AUSTRALIA)
-        MoneyManager.updateSystemContext(context)
-    }
 
     @Test
     void testGetRecords() throws Exception {
