@@ -278,7 +278,6 @@ class EWayPaymentAPI {
             builder.handler['success'] = { response, body ->
                 logger.info("Make eWay capture request finished, response body: ${body.toString()}")
                 buildSessionAttributesFromTransaction(attributes, body as Map<String, Object>)
-                attributes.transactionId = merchantReference
                 attributes.clientSecret = body["AuthorisationCode"]
                 logStatusOrError(attributes)
             }
