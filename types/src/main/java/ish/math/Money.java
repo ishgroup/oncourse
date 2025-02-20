@@ -859,12 +859,14 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 
 	@Override
 	public int compareTo(@NonNull MonetaryAmount o) {
-		return toMoneta().compareTo(o);
+		RoundingMode mode = RoundingMode.HALF_UP;
+		Integer scale = getCurrency().getDefaultFractionDigits();
+		return number.setScale(scale, mode).compareTo(o.getNumber().numberValue(BigDecimal.class).setScale(scale, mode));
 	}
 
 	@Override
 	public int hashCode() {
-		return toMoneta().hashCode();
+		return Objects.hash(getCurrency(), number.stripTrailingZeros());
 	}
 
 	@Override
@@ -875,7 +877,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 			return false;
 		} else {
 			Money other = (Money) obj;
-			return getCurrency().equals(other.getCurrency()) && this.toMoneta().compareTo(other.toMoneta()) == 0;
+			return getCurrency().equals(other.getCurrency()) && compareTo(other) == 0;
 		}
 	}
 
