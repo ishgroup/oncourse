@@ -10,6 +10,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { addDays, compareAsc, isSameDay } from 'date-fns';
 import { format } from 'date-fns-tz';
@@ -511,7 +512,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
     <>
       <div className="pl-2 pr-2">
         <HeaderFieldTypo
-          title="This invoice"
+          title={$t('this_invoice')}
           field="thisInvoice"
           amount={checkoutSummary.finalTotal}
           currencySymbol={currencySymbol}
@@ -520,7 +521,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
         />
         {Boolean(checkoutSummary.previousCredit.invoices.length) && (
           <HeaderFieldTypo
-            title="Apply previous credit"
+            title={$t('apply_previous_credit')}
             activeField={activeField}
             field={CheckoutPage.previousCredit}
             onClick={onClickPreviousCredit}
@@ -578,7 +579,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
 
       <HeaderField
         name="vouchers"
-        placeholder="Enter voucher code"
+        placeholder={$t('enter_voucher_code')}
         onFocus={clearSelectedDiscount}
         validate={validateVoucher}
         form={form}
@@ -606,19 +607,19 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           canChangePaymentDate={canChangePaymentDate}
         />
         <div className="centeredFlex">
-          <div className="secondaryHeading flex-fill">Payment method</div>
+          <div className="secondaryHeading flex-fill">{$t('payment_method')}</div>
         </div>
 
         <FormField
           type="select"
           name="payment_method"
-          placeholder="Payment method"
+          placeholder={$t('payment_method')}
           items={isZeroPayment ? noPaymentItems : paymentTypes}
           onChange={hendelMethodChange}
           disabled={paymentProcessStatus === "success" || isZeroPayment || formInvalid}
         />
         {!['STRIPE', 'STRIPE_TEST'].includes(paymentGateway) && selectedPaymentMethod && selectedPaymentMethod.type === "Credit card" && (
-          <Tooltip title="Retain a secure link to the bank which allows this card to be used for future billing or payment plans">
+          <Tooltip title={$t('retain_a_secure_link_to_the_bank_which_allows_this')}>
             <FormControlLabel
               classes={{
                 root: "mt-1 mb-3"
@@ -629,7 +630,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
                   onChange={onAllowAutoPayChange}
                 />
               )}
-              label="Store Card"
+              label={$t('store_card')}
               disabled={paymentProcessStatus === "success"}
             />
           </Tooltip>
@@ -638,7 +639,7 @@ const CheckoutPaymentHeaderFieldForm: React.FC<PaymentHeaderFieldProps> = props 
           <div className="relative selectedItemArrow mb-2">
             <div className={clsx("centeredFlex", classes.success)}>
               <Typography variant="body2" className="flex-fill fontWeight600" component="span">
-                Paid
+                {$t('paid')}
               </Typography>
               <Typography variant="body2" component="span" className="fontWeight600 money">
                 {formatCurrency(checkoutSummary.payNowTotal, currencySymbol)}

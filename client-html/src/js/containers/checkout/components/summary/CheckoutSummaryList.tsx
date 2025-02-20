@@ -5,6 +5,7 @@
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { formatCurrency } from 'ish-ui';
 import React, { useMemo } from 'react';
@@ -135,11 +136,11 @@ const CheckoutSummaryListForm: React.FC<Props & InjectedFormProps> = props => {
           </Grid>
 
           <Grid item xs={6}>
-            <FormField type="text" name="invoiceCustomerReference" label="Customer reference" />
+            <FormField type="text" name="invoiceCustomerReference" label={$t('customer_reference')} />
           </Grid>
 
           <Grid item xs={6}>
-            <FormField type="multilineText" name="invoicePublicNotes" label="Public notes" multiline  />
+            <FormField type="multilineText" name="invoicePublicNotes" label={$t('public_notes')} multiline  />
           </Grid>
         </Grid>
       </AppBarContainer>

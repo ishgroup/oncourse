@@ -7,9 +7,9 @@
  */
 
 import { Message } from '@api/model';
-import { CardContent, Grid } from '@mui/material';
-import Card from '@mui/material/Card';
+import { Card, CardContent, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { format } from 'date-fns';
 import { III_DD_MMM_YYYY } from 'ish-ui';
 import React, { useEffect, useMemo, useRef } from 'react';
@@ -53,25 +53,25 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
   return (
     <div className="p-3 saveButtonTableOffset">
       <Grid container columnSpacing={3} rowSpacing={2} className="mb-2">
-        {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label="Subject" /></Grid>)}
+        {!twoColumn && (<Grid item xs={12}><Uneditable value={values.subject} label={$t('subject')} /></Grid>)}
         <Grid item xs={twoColumn ? 2 : 6}>
           <Uneditable
             value={values.sentToContactFullname}
-            label="Sent to"
+            label={$t('sent_to')}
             labelAdornment={(
               <ContactLinkAdornment id={values?.contactId} />
             )}
           />
         </Grid>
         <Grid item xs={twoColumn ? 2 : 6}>
-          <Uneditable value={createdOn} label="Created on" />
+          <Uneditable value={createdOn} label={$t('created_on')} />
         </Grid>
       </Grid>
       <Grid container columnSpacing={3} rowSpacing={2}>
         {values.message && (
           <Grid item xs={twoColumn ? 6 : 12}>
             <Typography variant="caption" color="textSecondary">
-              Message
+              {$t('message')}
             </Typography>
             <Typography variant="body1" component="div">
               <Card>
@@ -87,7 +87,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
 
         <Grid item xs={twoColumn ? 6 : 12} className={values.htmlMessage ? undefined : "d-none"}>
           <Typography variant="caption" color="textSecondary">
-            HTML message
+            {$t('html_message')}
           </Typography>
           <Card>
             <CardContent>
@@ -97,15 +97,15 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
         </Grid>
 
         <Grid item xs={12} className={values.sms ? undefined : "d-none"}>
-          <Uneditable value={values.sms} label="SMS" />
+          <Uneditable value={values.sms} label={$t('sms')} />
         </Grid>
 
         <Grid item xs={12} className={values.postDescription ? undefined : "d-none"}>
-          <Uneditable value={values.postDescription} label="Post description" />
+          <Uneditable value={values.postDescription} label={$t('post_description')} />
         </Grid>
 
         <Grid item xs={12}>
-          <Uneditable value={values.creatorKey} label="Creator key" />
+          <Uneditable value={values.creatorKey} label={$t('creator_key')} />
         </Grid>
       </Grid>
     </div>

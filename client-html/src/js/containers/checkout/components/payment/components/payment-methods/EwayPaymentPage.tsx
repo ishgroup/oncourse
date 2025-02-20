@@ -6,6 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import LoadingButton from '@mui/lab/LoadingButton';
+import $t from '@t';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -22,7 +23,6 @@ import {
 } from '../../../../actions/checkoutPayment';
 import { CHECKOUT_SELECTION_FORM_NAME } from '../../../CheckoutSelection';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
-
 
 const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const {
@@ -93,7 +93,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           className="mt-auto mb-auto"
           onClick={openCardFrame}
         >
-          Enter card details
+          {$t('enter_card_details')}
         </LoadingButton>
       }
       {process.status !== "" && !isPaymentProcessing && (

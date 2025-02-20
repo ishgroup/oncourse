@@ -2,6 +2,7 @@ import { Check, Clear } from '@mui/icons-material';
 import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { III_DD_MMM_YYYY_HH_MM } from 'ish-ui';
@@ -61,7 +62,7 @@ const ScriptRunAudit = React.memo<{
             color="textSecondary"
             underline="none"
           >
-            <span>more...</span>
+            <span>{$t('more2')}</span>
           </Link>
         </Typography>
       </div>

@@ -10,6 +10,7 @@ import { Column, DataResponse, TableModel } from '@api/model';
 import DragIndicator from '@mui/icons-material/DragIndicator';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import {
   ColumnDef,
   ColumnOrderState,
@@ -445,7 +446,7 @@ const Table = ({
   ) : (
     <div className="noRecordsMessage h-100">
       <Typography variant="h6" color="inherit" align="center">
-        No data
+        {$t('no_data')}
       </Typography>
     </div>
   )), [sorting, columnSizing, columnVisibility, columnOrder, rowSelection, recordsCount, mainContentWidth, threeColumn, onRowDoubleClick]);

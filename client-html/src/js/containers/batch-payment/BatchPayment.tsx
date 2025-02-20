@@ -14,6 +14,7 @@ import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import {
@@ -21,7 +22,6 @@ import {
   decimalPlus,
   DynamicSizeList,
   formatCurrency,
-  formatRelativeDate,
   LinkAdornment,
   makeAppStyles,
   openInternalLink,
@@ -158,7 +158,7 @@ const ContactItem = memo<ContactItemProps>(({
                 disableHoverListener={!checkDisabled}
                 disableFocusListener={!checkDisabled}
                 disableTouchListener={!checkDisabled}
-                title="This contact does not have a stored card. You can process the payment manually."
+                title={$t('this_contact_does_not_have_a_stored_card_you_can_p')}
               >
                 <div>
                   <FormField
@@ -176,7 +176,7 @@ const ContactItem = memo<ContactItemProps>(({
                 </div>
                 {
                   item.hasStoredCard && (
-                    <Tooltip title="Has stored card">
+                    <Tooltip title={$t('has_stored_card')}>
                       <CreditCard color="action" />
                     </Tooltip>
                   )
@@ -184,7 +184,7 @@ const ContactItem = memo<ContactItemProps>(({
                 {!item.processing && !item.processed && (
                   <Chip
                     size="small"
-                    label="Open in checkout"
+                    label={$t('open_in_checkout')}
                     color="primary"
                     onClick={e => {
                       e.stopPropagation();
@@ -194,14 +194,14 @@ const ContactItem = memo<ContactItemProps>(({
                   />
                 )}
                 <CircularProgress size={32} className={clsx("ml-1", !item.processing && "d-none")} />
-                {item.processing && <Typography variant="caption" className="ml-1" color="primary">Processing</Typography>}
+                {item.processing && <Typography variant="caption" className="ml-1" color="primary">{$t('processing')}</Typography>}
                 <Zoom in={item.processed && animate}>
                   {item.error
                       ? <Close className="ml-1 errorColor" />
                       : <Done className="ml-1 successColor" />}
                 </Zoom>
-                {item.processed && !item.error && <Typography variant="caption" className="ml-1 successColor">Processed</Typography>}
-                {item.error && <Typography variant="caption" className="ml-1 errorColor">Failed</Typography>}
+                {item.processed && !item.error && <Typography variant="caption" className="ml-1 successColor">{$t('processed')}</Typography>}
+                {item.error && <Typography variant="caption" className="ml-1 errorColor">{$t('failed')}</Typography>}
               </div>
 
               {!expanded && <span className="money">{total}</span>}
@@ -231,10 +231,7 @@ const ContactItem = memo<ContactItemProps>(({
                 </div>
                 <Tooltip title={format(new Date(i.dateDue), D_MMM_YYYY)}>
                   <Typography className="mr-1">
-                    {' '}
-                    due
-                    {' '}
-                    {formatRelativeDate(new Date(i.dateDue), today, D_MMM_YYYY, true, true)}
+                    {$t('due')}
                   </Typography>
                 </Tooltip>
 
@@ -494,14 +491,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
         disabled={processing || contactsLoading || checkedContacts.length === 0}
         title={(
           <div>
-            Batch payment in (showing
-            {' '}
-            {values.contacts.length}
-            {' '}
-            contact
-            {values.contacts.length !== 1 ? "s" : ""}
-            {' '}
-            with amounts due or overdue)
+            {$t('batch_payment_in_showing_contact_with_amounts_due')}
           </div>
         )}
         manualUrl={manualUrl}
@@ -526,7 +516,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
                 classes={{
                   labelPlacementStart: "m-0",
                 }}
-                label="Only show contacts with a stored card"
+                label={$t('only_show_contacts_with_a_stored_card')}
                 labelPlacement="start"
                 disabled={processing}
               />

@@ -3,26 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from "@api/model";
-import { Grid } from "@mui/material";
-import { Decimal } from "decimal.js-light";
-import { normalizeNumber } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Account, ExpiryType, MembershipProduct, ProductStatus, Tag, Tax } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { Decimal } from 'decimal.js-light';
+import { normalizeNumber } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import CustomSelector, { CustomSelectorOption } from '../../../../common/components/custom-selector/CustomSelector';
+import { FormEditorField } from '../../../../common/components/form/formFields/FormEditor';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { normalizeString } from "../../../../common/utils/strings";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { useTagGroups } from "../../../tags/utils/useTagGroups";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { normalizeString } from '../../../../common/utils/strings';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { PreferencesState } from '../../../preferences/reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { useTagGroups } from '../../../tags/utils/useTagGroups';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
 
 interface MembershipProductGeneralProps extends EditViewProps<MembershipProduct> {
   accounts?: Account[];
@@ -165,7 +166,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
-                  label="SKU"
+                  label={$t('sku')}
                   name="code"
                   required
                 />
@@ -173,7 +174,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
-                  label="Name"
+                  label={$t('name')}
                   name="name"
                   required
                 />
@@ -207,7 +208,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="select"
           name="incomeAccountId"
-          label="Income account"
+          label={$t('income_account')}
           validate={validateIncomeAccount}
           onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
           debounced={false}
@@ -218,7 +219,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormEditorField name="description" label="Description" />
+        <FormEditorField name="description" label={$t('description')} />
       </Grid>
 
       <CustomFields
@@ -238,7 +239,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           validate={[validateSingleMandatoryField, validateNonNegative]}
           onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
           debounced={false}
-          label="Fee ex tax"
+          label={$t('fee_ex_tax')}
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
@@ -248,7 +249,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           validate={validateNonNegative}
           onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
           debounced={false}
-          label="Total fee"
+          label={$t('total_fee')}
         />
       </Grid>
       <Grid item xs={twoColumn ? 2 : 4}>
@@ -257,7 +258,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
           name="taxId"
           onChange={handleChangeTax(values, taxes, dispatch, form)}
           debounced={false}
-          label="Tax"
+          label={$t('tax')}
           items={taxes}
           selectValueMark="id"
           selectLabelCondition={tax => tax.code}
@@ -269,7 +270,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="select"
           name="status"
-          label="Status"
+          label={$t('status')}
           items={productStatusItems}
           selectLabelMark="value"
         />
@@ -278,7 +279,7 @@ const MembershipProductGeneral: React.FC<MembershipProductGeneralProps> = props 
         <FormField
           type="select"
           name="dataCollectionRuleId"
-          label="Data collection rule"
+          label={$t('data_collection_rule')}
           selectValueMark="id"
           selectLabelMark="name"
           items={dataCollectionRules || []}

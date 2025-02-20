@@ -10,6 +10,7 @@ import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import Decimal from 'decimal.js-light';
@@ -283,7 +284,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
   return (
     <div>
       <div className={classes.root}>
-        <div>Class fee</div>
+        <div>{$t('class_fee')}</div>
         <div className="money">
           {
             formatCurrency(

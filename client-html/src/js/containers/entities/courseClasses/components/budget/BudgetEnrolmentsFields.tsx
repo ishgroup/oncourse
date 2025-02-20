@@ -5,6 +5,7 @@
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { AppTheme, normalizeNumberToZero, preventDecimalEnter } from 'ish-ui';
 import React, { useMemo } from 'react';
 import { Dispatch } from 'redux';
@@ -61,13 +62,13 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
   return (
     <Grid container direction="row" columnSpacing={3} className={classes.root}>
       <Grid item xs={3} className="centeredFlex pl-2">
-        <Typography variant="body1">Enrolments</Typography>
+        <Typography variant="body1">{$t('enrolments4')}</Typography>
       </Grid>
       <Grid item xs={2} className="text-end">
         <FormField
           type="number"
           name="minimumPlaces"
-          label="Minimum"
+          label={$t('minimum')}
           className="flex-fill"
           onKeyPress={preventDecimalEnter}
           normalize={normalizeNumberToZero}
@@ -81,7 +82,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
         <FormField
           name="maximumPlaces"
           type="number"
-          label="Maximum"
+          label={$t('maximum')}
           className="flex-fill"
           onKeyPress={preventDecimalEnter}
           format={normalizeNumberToZero}
@@ -94,7 +95,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
         <FormField
           type="number"
           name="budgetedPlaces"
-          label="Projected"
+          label={$t('projected')}
           className="flex-fill"
           onKeyPress={preventDecimalEnter}
           format={normalizeNumberToZero}
@@ -103,7 +104,7 @@ const BudgetEnrolmentsFields = React.memo<Props>(({
         />
       </Grid>
       <Grid item xs={2} className="d-flex justify-content-end">
-        <Uneditable value={enrolmentsCount || "0"} label="Actual" rightAligned />
+        <Uneditable value={enrolmentsCount || "0"} label={$t('actual')} rightAligned />
       </Grid>
       <Grid item xs={1} />
     </Grid>

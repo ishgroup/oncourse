@@ -8,6 +8,7 @@
 
 import { CheckoutSaleRelation, ColumnWidth } from '@api/model';
 import Button from '@mui/material/Button';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
 import debounce from 'lodash.debounce';
@@ -1007,7 +1008,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           : ""}
         target="_blank"
       >
-        Create Lead
+        {$t('create_lead')}
       </Button>
     </div>
     ),
@@ -1028,7 +1029,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <div className="pl-2 pr-2 pt-3">
               <CheckoutSectionExpandableRenderer
-                title="Shopping Cart"
+                title={$t('shopping_cart')}
                 expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart)}
                 onExpanded={handleShoppingCartExpand}
                 disabled={paymentProcessStatus === "success" || summarryInvalid}
@@ -1051,7 +1052,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 <HeaderField
                   heading="Items"
                   name={CheckoutPage.items}
-                  placeholder="Find course or item..."
+                  placeholder={$t('find_course_or_item')}
                   onFocus={handleFocusCallback}
                   SelectedItemView={(
                     <SelectedItemRenderer
@@ -1077,7 +1078,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 && (
                 <>
                   <CheckoutSectionExpandableRenderer
-                    title="Summary"
+                    title={$t('summary')}
                     expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.summary)}
                     onExpanded={handleSummmayClick}
                     disabled={paymentProcessStatus === "success"}
@@ -1102,7 +1103,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
                   {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
                     <CheckoutSectionExpandableRenderer
-                      title="Funding Invoices"
+                      title={$t('funding_invoices')}
                       expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
                       onExpanded={handleFundingInvoiceClick}
                       disabled={paymentProcessStatus === "success"}
@@ -1112,7 +1113,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                  )}
 
                   <CheckoutSectionExpandableRenderer
-                    title="Payment"
+                    title={$t('payment')}
                     expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
                     onExpanded={handlePaymentClick}
                     disabled={

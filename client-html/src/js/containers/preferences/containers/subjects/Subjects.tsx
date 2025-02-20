@@ -8,6 +8,7 @@
 
 import { TreeData } from '@atlaskit/tree';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { makeAppStyles } from 'ish-ui';
 import React, { useEffect, useRef, useState } from 'react';
 import { change, Form, FormErrors, getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
@@ -116,14 +117,14 @@ function Subjects(
       <AppBarContainer
         disabled={disabled || !dirty}
         invalid={invalid}
-        title='Subjects'
+        title={$t('subjects')}
         disableInteraction
         onAddMenu={!disabled && onAddNew}
       >
         <div className={cx(classes.legend, classes.legendPadding, 'mt-3')}>
-          <Typography variant="caption" color="textSecondary">Name</Typography>
-          <Typography variant="caption" color="textSecondary">URL path</Typography>
-          <Typography variant="caption" color="textSecondary" textAlign="center">Website visibility</Typography>
+          <Typography variant="caption" color="textSecondary">{$t('name')}</Typography>
+          <Typography variant="caption" color="textSecondary">{$t('url_path')}</Typography>
+          <Typography variant="caption" color="textSecondary" textAlign="center">{$t('website_visibility')}</Typography>
         </div>
 
         {values && (

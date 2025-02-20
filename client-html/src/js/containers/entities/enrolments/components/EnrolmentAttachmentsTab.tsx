@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Grid } from "@mui/material";
-import * as React from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
+import { Grid } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 
 const EnrolmentAttachmentsTab: React.FC<any> = props => {
   const {
@@ -18,7 +19,7 @@ const EnrolmentAttachmentsTab: React.FC<any> = props => {
     <Grid container rowSpacing={2} className="pl-3 pr-3 pb-3">
       <FieldArray
         name="documents"
-        label="Documents"
+        label={$t('documents')}
         entity="Enrolment"
         classes={classes}
         component={DocumentsRenderer}

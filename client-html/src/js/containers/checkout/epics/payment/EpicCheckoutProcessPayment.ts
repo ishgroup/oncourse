@@ -97,9 +97,6 @@ const request: EpicUtils.Request<any, { xValidateOnly: boolean, xPaymentSessionI
     const actions: any = [
       checkoutSetPaymentProcessing(false),
       checkoutProcessPaymentFulfilled({
-        sessionId: null,
-        ccFormUrl: null,
-        merchantReference: null,
         paymentId: null,
         invoice: null,
       })

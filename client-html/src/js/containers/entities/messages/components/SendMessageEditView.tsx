@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import {
   AnyArgFunction,
@@ -532,9 +533,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
           submitButtonText="Send"
           title={(
             <div>
-              Send
-              {' '}
-              { isEmailView ? "email" : "SMS" }
+              {$t('send')}
             </div>
           )}
         >
@@ -555,7 +554,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                 <FormField
                   type="select"
                   name="templateId"
-                  label="Template"
+                  label={$t('template')}
                   selectValueMark="id"
                   selectLabelMark="name"
                   categoryKey="entity"
@@ -569,7 +568,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                 <FieldArray name="bindings" component={bindingsRenderer} rerenderOnEveryChange />
 
                 {isEmailView && (
-                  <FormField type="text" name="fromAddress" label="From address" className="mb-2" />
+                  <FormField type="text" name="fromAddress" label={$t('from_address')} className="mb-2" />
                 )}
 
                 <FormControlLabel
@@ -583,7 +582,7 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
                       color="primary"
                     />
                   )}
-                  label="This is a marketing message"
+                  label={$t('this_is_a_marketing_message')}
                 />
                 <br />
                 {counterItems}
@@ -591,12 +590,12 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
 
               <Grid item xs={12} md={6} className="relative">
                 <Typography variant="body1" className={clsx(classes.noRecipients, { "d-none": values.recipientsCount })}>
-                  No recipients
+                  {$t('no_recipients')}
                 </Typography>
                 <div className={clsx({ "d-none": !values.recipientsCount })}>
                   <div className={isEmailView ? undefined : "d-none"}>
                     <Typography variant="caption" color="textSecondary">
-                      Preview
+                      {$t('preview')}
                     </Typography>
                     <Card>
                       <CardContent>

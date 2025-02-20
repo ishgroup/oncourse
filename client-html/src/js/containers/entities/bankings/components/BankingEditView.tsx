@@ -3,32 +3,33 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Payment } from "@api/model";
-import Launch from "@mui/icons-material/Launch";
-import { IconButton } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { compareAsc, format as formatDate } from "date-fns";
-import { Decimal } from "decimal.js-light";
-import { DD_MMM_YYYY_MINUSED, formatCurrency, III_DD_MMM_YYYY, validateMinMaxDate } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change, FieldArray, getFormInitialValues } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import { Payment } from '@api/model';
+import Launch from '@mui/icons-material/Launch';
+import { IconButton } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { compareAsc, format as formatDate } from 'date-fns';
+import { Decimal } from 'decimal.js-light';
+import { DD_MMM_YYYY_MINUSED, formatCurrency, III_DD_MMM_YYYY, validateMinMaxDate } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change, FieldArray, getFormInitialValues } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { openSiteLink } from "../../sites/utils";
-import { PaymentInType } from "../consts";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import { openSiteLink } from '../../sites/utils';
+import { PaymentInType } from '../consts';
 
 const disabledHandler = (p: Payment) => {
   if (!p) {
@@ -242,21 +243,21 @@ class BankingEditView extends React.PureComponent<any, any> {
               type="date"
               disabled={this.isDateLocked(lockedDate, editRecord)}
               name="settlementDate"
-              label="Settlement Date"
+              label={$t('settlement_date')}
               onBlur={this.onSettlementDateChanged}
               validate={[validateSingleMandatoryField, this.validateSettlementDate]}
             />
           </Grid>
           <Grid item xs={twoColumn ? 4 : 12}>
             <Uneditable
-              label="Created by"
+              label={$t('created_by')}
               value={values?.createdBy}
             />
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel
               control={<Checkbox onChange={this.reconcileAllPayments} checked={this.isAllPaymentsReconciled()} />}
-              label="Reconcile this banking deposit"
+              label={$t('reconcile_this_banking_deposit')}
               disabled={this.isReconcileAllDisabled()}
             />
           </Grid>

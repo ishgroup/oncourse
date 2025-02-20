@@ -1,8 +1,9 @@
-import { MergeLine } from "@api/model";
-import Typography from "@mui/material/Typography";
-import React, { useCallback, useMemo } from "react";
-import { WrappedFieldProps } from "redux-form";
-import RadioLabel from "./RadioLabel";
+import { MergeLine } from '@api/model';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import React, { useCallback, useMemo } from 'react';
+import { WrappedFieldProps } from 'redux-form';
+import RadioLabel from './RadioLabel';
 
 export interface RadioLabelGroupProps extends WrappedFieldProps {
   line: MergeLine;
@@ -37,7 +38,7 @@ const RadioLabelGroup = React.memo(
             </Typography>
           ) : (
             <Typography variant="body2" color="error">
-              Select one
+              {$t('select_one')}
             </Typography>
           )
         ) : (
