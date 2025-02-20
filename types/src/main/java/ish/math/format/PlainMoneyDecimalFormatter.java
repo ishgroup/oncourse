@@ -31,8 +31,8 @@ public class PlainMoneyDecimalFormatter implements MoneyFormatter {
 	public String format(Money money) {
 		NumberFormat xmlDecimal = NumberFormat.getNumberInstance(locale);
 		xmlDecimal.setGroupingUsed(false);
-		xmlDecimal.setMinimumFractionDigits(money.getContext().getMaxScale());
-		xmlDecimal.setMaximumFractionDigits(money.getContext().getMaxScale());
+		xmlDecimal.setMinimumFractionDigits(money.getCurrency().getDefaultFractionDigits());
+		xmlDecimal.setMaximumFractionDigits(money.getCurrency().getDefaultFractionDigits());
 		return xmlDecimal.format(money.doubleValue());
 	}
 }
