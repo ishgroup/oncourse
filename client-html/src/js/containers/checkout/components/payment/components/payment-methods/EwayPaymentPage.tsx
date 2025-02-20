@@ -142,7 +142,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       },
     ]
     }
-  }), [cardStyles,publicApiKey]);
+  }), [cardStyles, publicApiKey]);
 
   const securePanelCallback = useCallback(event => {
     if (!event.fieldValid) {
@@ -157,8 +157,10 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   }, [secureCodeRef.current]);
 
   useEffect(() => {
-    (window as any).eWAY.setupSecureField(groupFieldConfig, securePanelCallback);
-  }, []);
+    if (publicApiKey) {
+      (window as any).eWAY.setupSecureField(groupFieldConfig, securePanelCallback);
+    }
+  }, [publicApiKey]);
 
   const pymentCallback = () => {
     checkoutProcessEwayCCPayment(secureCodeRef.current);
