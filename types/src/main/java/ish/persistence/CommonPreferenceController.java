@@ -186,7 +186,7 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
-	public  String getPaymentGatewayPassSquare() {
+	public String getPaymentGatewayPassSquare() {
 		String apiKey = getValue(PAYMENT_GATEWAY_PASS_SQUARE, false);
 		if (apiKey == null) {
 			throw new IllegalArgumentException("Gateway api key is not configured");
@@ -194,8 +194,16 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
-	public  String getPaymentGatewayClientPassSquare() {
+	public String getPaymentGatewayClientPassSquare() {
 		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayLocationIdSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_LOCATION_ID_SQUARE, false);
 		if (apiKey == null) {
 			throw new IllegalArgumentException("Gateway client key is not configured");
 		}

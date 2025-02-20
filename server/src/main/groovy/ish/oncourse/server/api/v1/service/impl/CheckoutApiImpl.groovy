@@ -95,8 +95,8 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    String getClientKey() {
-        checkoutApiService.getClientKey()
+    ClientPreferencesDTO getClientPreferences() {
+        return checkoutApiService.getClientPreferences()
     }
 
     @Override

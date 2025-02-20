@@ -338,13 +338,18 @@ class CheckoutApiService {
         throw new ClientErrorException(response)
     }
 
-    String getClientKey() {
+    ClientPreferencesDTO getClientPreferences() {
         try {
             def service = getPaymentServiceByGatewayType()
             if (!(service instanceof TransactionPaymentServiceInterface))
                 throw new IllegalAccessException("Client key not supported for selected system")
 
-            return (service as TransactionPaymentServiceInterface).getClientKey()
+            return new ClientPreferencesDTO().with {
+                it.clientKey = (service as TransactionPaymentServiceInterface).getClientKey()
+                if(service instanceof SquarePaymentService)
+                    it.locationId = (service as SquarePaymentService).locationId
+                it
+            }
         } catch (Exception e) {
             handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
             return null

@@ -185,6 +185,10 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
         return preferenceController.paymentGatewayClientPassSquare
     }
 
+    String getLocationId() {
+        return preferenceController.paymentGatewayLocationIdSquare
+    }
+
     private static void buildSessionAttributesFromPaymentResponse(SessionAttributes sessionAttributes, CreatePaymentResponse paymentResponse) {
         if(paymentResponse.errors && !paymentResponse.errors.empty) {
             sessionAttributes.errorMessage = paymentResponse.errors.join("; ")
