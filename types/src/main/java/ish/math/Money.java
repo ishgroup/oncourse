@@ -71,7 +71,7 @@ import java.util.Objects;
  *
  * <h2>Money Behavior</h2>
  * <p>
- * Note that the {@link Money} type is immutable — a new instance of {@link Money} type is created after every operation.
+ * Note that the {@link Money} type is immutable - a new instance of {@link Money} type is created after every operation.
  * To compare values, use methods:
  * <ul>
  *     <li>{@code  isEqualTo({@link Money amount})}</li>
@@ -743,7 +743,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 						RoundingQueryBuilder.of().setScale(1).set(RoundingMode.HALF_UP).build()))
 				);
 			case ROUNDING_50C:
-				double cents = toMoneta().remainder(1).getNumber().doubleValue(); // Получаем дробную часть (центы)
+				double cents = toMoneta().remainder(1).getNumber().doubleValue(); // get minor part (coins, cents, etc.)
 				MonetaryAmount roundedAmount = toMoneta().with(Monetary.getRounding(
 						RoundingQueryBuilder.of().setScale(0).set(RoundingMode.DOWN).build())
 				);
@@ -752,21 +752,21 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 					return toInstance(toMoneta());
 				}
 				if (cents > -0.25 && cents < 0.25) {
-					return toInstance(roundedAmount); // Округление вниз
+					return toInstance(roundedAmount); // Rounding down
 				}
 				if (cents >= 0.25 && cents < 0.75) {
 					MonetaryAmount half = toMoneta().getFactory().setNumber(0.5)
 							.setContext(toMoneta().getContext())
 							.setCurrency(toMoneta().getCurrency()).create();
 
-					return toInstance(roundedAmount.add(half)); // Добавляем 0.5
+					return toInstance(roundedAmount.add(half)); // Add 0.5
 				}
 				if (cents <= -0.25 && cents > -0.75) {
 					MonetaryAmount half = toMoneta().getFactory().setNumber(0.5)
 							.setContext(toMoneta().getContext())
 							.setCurrency(toMoneta().getCurrency()).create();
 
-					return toInstance(roundedAmount.subtract(half)); // Вычитаем 0.5
+					return toInstance(roundedAmount.subtract(half)); // Subtract 0.5
 				}
 				// cents >= 0.75 || cents <= -0.75
 				return toInstance(toMoneta().with(Monetary
