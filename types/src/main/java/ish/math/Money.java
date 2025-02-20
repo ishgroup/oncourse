@@ -792,7 +792,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	 */
 	@API
 	public BigDecimal toBigDecimal() {
-		return number;
+		return round(number);
 	}
 
 	/**
@@ -834,7 +834,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	 *         For example, if the value is $10.99, this method will return 99.
 	 */
 	public Integer getFractional() {
-		return number.remainder(BigDecimal.ONE).movePointRight(number.scale()).intValue();
+		return number.remainder(BigDecimal.ONE).movePointRight(getCurrency().getDefaultFractionDigits()).intValue();
 	}
 
 	@Override
@@ -859,9 +859,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 
 	@Override
 	public int compareTo(@NonNull MonetaryAmount o) {
-		RoundingMode mode = RoundingMode.HALF_UP;
-		Integer scale = getCurrency().getDefaultFractionDigits();
-		return number.setScale(scale, mode).compareTo(o.getNumber().numberValue(BigDecimal.class).setScale(scale, mode));
+		return round(number).compareTo(round(o.getNumber().numberValue(BigDecimal.class)));
 	}
 
 	@Override
@@ -891,6 +889,12 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 
 	private Money toInstance(Number number) {
 		return contextManager.isCustomized() ? Money.of(number, contextManager.getContext()) : new Money(number);
+	}
+
+	private BigDecimal round(BigDecimal value) {
+		RoundingMode mode = MoneyContext.DEFAULT_ROUND;
+		int scale = getCurrency().getDefaultFractionDigits();
+		return value.setScale(scale, mode);
 	}
 
 	/**
