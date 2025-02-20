@@ -9,7 +9,7 @@ import {
   CheckoutModel,
   CheckoutResponse,
   CheckoutSaleRelation,
-  CheckoutSubmitRequest,
+  CheckoutSubmitRequest, ClientPreferences,
   CourseClassDiscount,
   CreateSessionResponse,
   SessionStatus
@@ -51,8 +51,8 @@ class CheckoutService {
     return this.checkoutApi.getCartDataIds(checkoutId);
   }
 
-  public getClientKey(): Promise<any> {
-    return this.checkoutApi.getClientKey();
+  public getClientPreferences(): Promise<ClientPreferences> {
+    return this.checkoutApi.getClientPreferences();
   }
   
   public submitPaymentRedirect(sessionId: string, key: string): Promise<string> {

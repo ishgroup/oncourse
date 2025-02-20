@@ -110,8 +110,8 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const { classes } = useStyles();
   
   useEffect(() => {
-    CheckoutService.getClientKey()
-      .then(res => setStripePromise(loadStripe(res)))
+    CheckoutService.getClientPreferences()
+      .then(res => setStripePromise(loadStripe(res.clientKey)))
       .catch(res => InstantFetchErrorHandler(dispatch, res));
   }, []);
 

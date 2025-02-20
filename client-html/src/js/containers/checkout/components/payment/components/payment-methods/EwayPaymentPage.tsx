@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { showMessage } from '../../../../../../common/actions';
+import InstantFetchErrorHandler from '../../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
@@ -21,9 +22,8 @@ import {
   checkoutProcessEwayCCPayment
 } from '../../../../actions/checkoutPayment';
 import { checkoutUpdateSummaryPrices } from '../../../../actions/checkoutSummary';
+import CheckoutService from '../../../../services/CheckoutService';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
-
-const publicApiKey = "epk-FC3DB326-9DDC-431F-AC97-11ED55BFE8FA";
 
 const validationCodes = {
   "V6021": "Cardholder Name Required",
@@ -65,6 +65,13 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
 
   const formRef = useRef<HTMLFormElement>(null);
   const secureCodeRef = useRef<string>(null);
+  const [publicApiKey, setPublicApiKey] = useState(null);
+
+  useEffect(() => {
+    CheckoutService.getClientPreferences()
+      .then(res => setPublicApiKey(res.clientKey))
+      .catch(res => InstantFetchErrorHandler(dispatch, res));
+  }, []);
 
   const [ready, setReady] = useState(false);
 
@@ -135,7 +142,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
       },
     ]
     }
-  }), [cardStyles]);
+  }), [cardStyles,publicApiKey]);
 
   const securePanelCallback = useCallback(event => {
     if (!event.fieldValid) {

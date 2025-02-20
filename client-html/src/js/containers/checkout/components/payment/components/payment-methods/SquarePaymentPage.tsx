@@ -6,7 +6,6 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Stripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
 import { makeAppStyles } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
@@ -21,7 +20,6 @@ import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
   checkoutProcessSquareCcPayment,
-  checkoutProcessStripeCCPayment,
   checkoutSetPaymentProcessing,
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
@@ -64,8 +62,8 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   
   const init = async () => {
     try {
-      const clientKey =  await CheckoutService.getClientKey();
-      const squarePayments = (window as any).Square.payments(clientKey);
+      const { clientKey, locationId } =  await CheckoutService.getClientPreferences();
+      const squarePayments = (window as any).Square.payments(clientKey, locationId);
       const squareCard = await squarePayments.card();
       setCard(squareCard);
       setPayments(squarePayments);
