@@ -12,6 +12,8 @@ import ish.common.payable.IInvoiceLineInterface
 import ish.common.types.DiscountType
 import ish.math.Country
 import ish.math.Money
+import ish.math.MoneyContextFactory
+import ish.math.MoneyManager
 import ish.math.MoneyRounding
 import ish.oncourse.cayenne.DiscountCourseClassInterface
 import ish.oncourse.cayenne.DiscountInterface
@@ -24,6 +26,11 @@ import static org.mockito.Mockito.*
 
 @CompileStatic
 class DiscountUtilsTest {
+
+    @BeforeAll
+    static void setupEnvironment() {
+        MoneyManager.updateSystemContext(MoneyContextFactory.create(Country.AUSTRALIA))
+    }
 
 	@Test
     void testPersentDiscountValue() {
