@@ -18,6 +18,7 @@ import ish.oncourse.server.db.SanityCheckService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.license.LicenseModule
 import ish.oncourse.server.modules.ApiCayenneLayerModule
+import ish.oncourse.server.money.MoneyModule
 import ish.util.AccountUtil
 import org.apache.cayenne.Persistent
 import org.apache.cayenne.access.DataContext
@@ -51,6 +52,7 @@ import java.sql.Statement
 abstract class TestWithDatabase extends TestWithBootique {
 
     protected DataContext cayenneContext
+    protected ICayenneService cayenneService
 
     ICayenneService getCayenneService() {
         if (!cayenneService) {
@@ -58,9 +60,6 @@ abstract class TestWithDatabase extends TestWithBootique {
         }
         return cayenneService
     }
-    protected ICayenneService cayenneService
-
-
 
     @RegisterExtension
     protected dbExtension = new TestWithDatabaseExtension({getCayenneService()}, {cayenneContext}, {dataSource})
@@ -76,7 +75,7 @@ abstract class TestWithDatabase extends TestWithBootique {
 
     @BeforeEach
     @Order(2)
-    private void setup() throws Exception {
+    void setup() throws Exception {
         validateAccountAndTaxDefaults()
         checkPaymentMethods()
     }
@@ -87,6 +86,7 @@ abstract class TestWithDatabase extends TestWithBootique {
                 .module(AngelModule.class)
                 .module(JdbcModule.class)
                 .module(LicenseModule.class)
+                .module(MoneyModule.class)
                 .module(new Module() {
                     @Override
                     void configure(Binder binder) {

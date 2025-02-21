@@ -91,7 +91,6 @@ import ish.util.PaymentMethodUtil
 import ish.util.ProductUtil
 import ish.util.SecurityUtil
 import static java.math.BigDecimal.ONE
-import static java.math.BigDecimal.ZERO
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById

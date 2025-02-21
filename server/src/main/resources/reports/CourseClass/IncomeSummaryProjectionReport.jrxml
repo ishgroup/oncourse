@@ -140,39 +140,39 @@
                 </staticText>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="200" y="22" width="75" height="13" uuid="dc675900-8a03-4a37-9168-a7dab9f9734c"/>
-                    <textFieldExpression><![CDATA[new Money($V{total_amount_exclude_prepaid_fees})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{total_amount_exclude_prepaid_fees})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="300" y="22" width="60" height="13" uuid="74cb5658-38af-4908-9d26-61aaaeae7e6c"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_0})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_0})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="360" y="22" width="60" height="13" uuid="96b172d9-8eb6-4fb9-b148-55613f134384"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_1})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_1})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="420" y="22" width="60" height="13" uuid="a57ad511-86e4-4b83-8549-416caa34e342"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_2})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_2})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="480" y="22" width="60" height="13" uuid="bfb5be31-dce2-4577-b17c-61e7151076e4"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_3})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_3})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="540" y="22" width="60" height="13" uuid="92befcf0-3f90-4f8d-b501-80ba08dd020a"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_4})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_4})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="600" y="22" width="60" height="13" uuid="5bc71774-f2ac-4d0e-85a3-cba668813206"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_5})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_5})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="660" y="22" width="60" height="13" uuid="29dd4efc-d5da-4bfb-abab-6e30ffe794ac"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_6})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_6})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="720" y="22" width="66" height="13" uuid="480791ba-e789-4b80-a4ee-d29c2622d051"/>
-                    <textFieldExpression><![CDATA[new Money($V{total_amount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{total_amount})]]></textFieldExpression>
                 </textField>
             </band>
         </groupFooter>
@@ -191,39 +191,39 @@
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="200" y="22" width="75" height="13" uuid="dc675900-8a03-4a37-9168-a7dab9f9734c"/>
-                    <textFieldExpression><![CDATA[new Money($V{total_amount_exclude_prepaid_fees_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{total_amount_exclude_prepaid_fees_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="300" y="22" width="60" height="13" uuid="74cb5658-38af-4908-9d26-61aaaeae7e6c"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_0_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_0_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="360" y="22" width="60" height="13" uuid="96b172d9-8eb6-4fb9-b148-55613f134384"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_1_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_1_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="420" y="22" width="60" height="13" uuid="a57ad511-86e4-4b83-8549-416caa34e342"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_2_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_2_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="480" y="22" width="60" height="13" uuid="bfb5be31-dce2-4577-b17c-61e7151076e4"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_3_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_3_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="540" y="22" width="60" height="13" uuid="92befcf0-3f90-4f8d-b501-80ba08dd020a"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_4_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_4_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="600" y="22" width="60" height="13" uuid="5bc71774-f2ac-4d0e-85a3-cba668813206"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_5_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_5_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="660" y="22" width="60" height="13" uuid="29dd4efc-d5da-4bfb-abab-6e30ffe794ac"/>
-                    <textFieldExpression><![CDATA[new Money($V{prepaid_fees_for_month_6_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{prepaid_fees_for_month_6_byAccount})]]></textFieldExpression>
                 </textField>
                 <textField isBlankWhenNull="true">
                     <reportElement key="textField-1" style="header 3 (right)" x="720" y="22" width="66" height="13" uuid="480791ba-e789-4b80-a4ee-d29c2622d051"/>
-                    <textFieldExpression><![CDATA[new Money($V{total_amount_byAccount})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[Money.of($V{total_amount_byAccount})]]></textFieldExpression>
                 </textField>
             </band>
         </groupFooter>

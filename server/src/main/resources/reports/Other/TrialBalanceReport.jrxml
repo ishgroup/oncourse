@@ -210,27 +210,27 @@
 		<band height="31" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-16" style="header 3 (right)" x="243" y="11" width="80" height="15" uuid="c80e629d-68fd-4f68-a0ae-cb463c9dfe1f"/>
-				<textFieldExpression><![CDATA[new Money($V{TOTAL_OPENING_DEBIT}).toString()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{TOTAL_OPENING_DEBIT}).toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-21" style="header 3 (right)" x="323" y="11" width="77" height="15" uuid="d085bd80-66b3-4a76-b943-8f5d53c84fc2"/>
-				<textFieldExpression><![CDATA[new Money($V{TOTAL_OPENING_CREDIT}).toString()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{TOTAL_OPENING_CREDIT}).toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-16" style="header 3 (right)" x="404" y="11" width="80" height="15" uuid="eaf64cee-b4b7-4132-adf5-aefffdc56c46"/>
-				<textFieldExpression><![CDATA[new Money($V{TOTAL_CURRENT_DEBIT}).toString()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{TOTAL_CURRENT_DEBIT}).toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-21" style="header 3 (right)" x="484" y="11" width="77" height="15" uuid="093baa4a-73a5-49ef-88af-4d093dc5a279"/>
-				<textFieldExpression><![CDATA[new Money($V{TOTAL_CURRENT_CREDIT}).toString()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{TOTAL_CURRENT_CREDIT}).toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-16" style="header 3 (right)" x="565" y="11" width="80" height="15" uuid="c107767b-b66d-471f-9a7d-9c23b849fc55"/>
-				<textFieldExpression><![CDATA[new Money($V{TOTAL_CLOSING_DEBIT}).toString()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{TOTAL_CLOSING_DEBIT}).toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField-21" style="header 3 (right)" x="645" y="11" width="77" height="15" uuid="727138b6-d0a1-42ee-a9fa-5901a1ca42f8"/>
-				<textFieldExpression><![CDATA[new Money($V{TOTAL_CLOSING_CREDIT}).toString()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{TOTAL_CLOSING_CREDIT}).toString()]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
