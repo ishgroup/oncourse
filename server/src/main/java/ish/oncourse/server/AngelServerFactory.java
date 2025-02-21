@@ -14,7 +14,7 @@ package ish.oncourse.server;
 import com.google.inject.Inject;
 import io.bootique.annotation.BQConfig;
 import ish.math.Country;
-import ish.math.CurrencyFormat;
+import ish.math.context.MoneyContextUpdater;
 import ish.oncourse.common.ResourcesUtil;
 import ish.oncourse.server.api.dao.UserDao;
 import ish.oncourse.server.cayenne.SystemUser;
@@ -24,9 +24,8 @@ import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
-import ish.oncourse.server.services.ISchedulerService;
-import ish.oncourse.server.services.*;
 import ish.oncourse.server.security.CertificateUpdateWatcher;
+import ish.oncourse.server.services.*;
 import ish.oncourse.server.services.chargebee.ChargebeeUploadJob;
 import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
@@ -98,7 +97,8 @@ public class AngelServerFactory {
                       CayenneService cayenneService,
                       PluginService pluginService,
                       MailDeliveryService mailDeliveryService,
-                      HttpFactory httpFactory) {
+                      HttpFactory httpFactory,
+                      MoneyContextUpdater moneyContextUpdater) {
         try {
 
             // Create DB schema
@@ -204,10 +204,10 @@ public class AngelServerFactory {
             var preference = prefController.getPreference(ACCOUNT_CURRENCY, false);
             if ((preference != null) && (preference.getValueString() != null)) {
                 var country = Country.forCurrencySymbol(preference.getValueString());
-                CurrencyFormat.updateLocale(country.locale());
+                moneyContextUpdater.updateCountry(country);
             } else {
                 prefController.setValue(ACCOUNT_CURRENCY, false, Country.AUSTRALIA.currencySymbol());
-                CurrencyFormat.updateLocale(Country.AUSTRALIA.locale());
+                moneyContextUpdater.updateCountry(Country.AUSTRALIA);
             }
 
         } catch (SchedulerException e1) {

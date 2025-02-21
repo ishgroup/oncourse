@@ -10,7 +10,7 @@
  */
 package ish.oncourse.server.print;
 
-import ish.oncourse.server.PreferenceController;
+import ish.math.context.MoneyContext;
 import ish.oncourse.server.cayenne.Report;
 import net.sf.jasperreports.engine.*;
 import org.apache.cayenne.query.Ordering;
@@ -32,6 +32,7 @@ public class ReportDataSource extends AbstractReportDataSource implements JRRewi
 	private static final Logger logger = LogManager.getLogger();
 
 	private PrintWorker printWorker;
+	private MoneyContext moneyContext;
 
 	private Report report;
 	private int index = -1;
@@ -39,12 +40,13 @@ public class ReportDataSource extends AbstractReportDataSource implements JRRewi
 	private Map<String, Object> parameters;
 
 
-	public ReportDataSource(PrintWorker printWorker, Report report, List<?> records) {
+	public ReportDataSource(PrintWorker printWorker, MoneyContext moneyContext, Report report, List<?> records) {
 		super();
 		this.parameters = new HashMap<>();
 		this.report = report;
 		this.records = records;
 		this.printWorker = printWorker;
+		this.moneyContext = moneyContext;
 	}
 
 	/**
@@ -64,9 +66,9 @@ public class ReportDataSource extends AbstractReportDataSource implements JRRewi
 
 	@Override
 	public JasperPrint getJPrint() throws Exception {
-		logger.debug("Current Currency = {}", PreferenceController.getController().getCountry());
+		logger.debug("Current Currency = {}", moneyContext.getCurrencyCode());
 
-		this.parameters = BuildJasperReportParams.valueOf(getReportName(), PreferenceController.getController().getCountry().locale()).get();
+		this.parameters = BuildJasperReportParams.valueOf(getReportName(), moneyContext.getLocale()).get();
 		if (printWorker != null && printWorker.getPrintRequest() != null && printWorker.getPrintRequest().getBindings() != null) {
 			this.parameters.putAll(printWorker.getPrintRequest().getBindings());
 		}
@@ -149,7 +151,7 @@ public class ReportDataSource extends AbstractReportDataSource implements JRRewi
 	}
 
 	public ReportDataSource buildChildDataSource(List<?> records) {
-		return new ReportDataSource(printWorker, report, records);
+		return new ReportDataSource(printWorker, moneyContext, report, records);
 	}
 
 	public Object getAdditionalValueForKey(String key) {

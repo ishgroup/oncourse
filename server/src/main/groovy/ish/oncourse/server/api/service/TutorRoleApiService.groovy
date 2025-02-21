@@ -133,14 +133,14 @@ class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedT
                     (rate.type == payRate.type.getDbType() &&
                             rate.validFrom?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDate() == payRate.validFrom) &&
                     rate.description == trimToNull(payRate.notes) &&
-                    rate.rate == toMoneyValue(payRate.rate) &&
-                    rate.oncostRate == toMoneyValue(payRate.oncostRate)) {
+                    rate.rate == Money.exactOf(payRate.rate) &&
+                    Money.exactOf(payRate.oncostRate).isEqualTo(Money.of(rate.oncostRate))) {
                 rate.editedByUser =  context.localObject(systemUserService.currentUser)
             }
             rate.type = payRate.type.getDbType()
             rate.validFrom = payRate.validFrom?.atStartOfDay(ZoneOffset.UTC)?.toDate()
-            rate.rate = toMoneyValue(payRate.rate)
-            rate.oncostRate = toMoneyValue(payRate.oncostRate)
+            rate.rate = Money.exactOf(payRate.rate)
+            rate.oncostRate = payRate.oncostRate
             rate.description = trimToNull(payRate.notes)
         }
     }
