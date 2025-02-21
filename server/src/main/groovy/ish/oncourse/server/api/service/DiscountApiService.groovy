@@ -12,6 +12,7 @@ import groovy.transform.CompileDynamic
 import ish.common.types.CourseClassType
 import ish.common.types.DiscountAvailabilityType
 import ish.common.types.DiscountType
+import ish.math.Money
 import ish.math.MoneyRounding
 import ish.oncourse.server.api.BidiMap
 import ish.oncourse.server.api.dao.DiscountDao
@@ -26,20 +27,13 @@ import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.lang3.StringUtils
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.ConcessionTypeFunctions.toRestConcessionType
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.toRestDiscountCorporatePass
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.updateCorporatePassDiscount
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.updateDiscountConcessionTypes
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.updateDiscountCourseClasses
-import static ish.oncourse.server.api.v1.function.DiscountFunctions.updateDiscountMemberships
+import static ish.oncourse.server.api.v1.function.DiscountFunctions.*
 import static ish.oncourse.server.api.v1.function.DiscountMembershipFunctions.toRestDiscountMembership
 import static ish.oncourse.server.api.v1.model.DiscountTypeDTO.*
 import static ish.oncourse.server.api.v1.model.MoneyRoundingDTO.*
 import static org.apache.commons.lang3.StringUtils.trimToEmpty
 import static org.apache.commons.lang3.StringUtils.trimToNull
-
 
 @CompileDynamic
 class DiscountApiService extends EntityApiService<DiscountDTO, Discount, DiscountDao>{
@@ -159,11 +153,11 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
         }
 
         dbDiscount.discountType = discountTypeMap.getByValue(dto.discountType)
-        dbDiscount.discountDollar = toMoneyValue(dto.discountValue)
+        dbDiscount.discountDollar = Money.exactOf(dto.discountValue)
         dbDiscount.discountPercent = dto.discountPercent
         dbDiscount.rounding = roundingMap.getByValue(dto.rounding)
-        dbDiscount.discountMin = toMoneyValue(dto.discountMin)
-        dbDiscount.discountMax = toMoneyValue(dto.discountMax)
+        dbDiscount.discountMin = Money.exactOf(dto.discountMin)
+        dbDiscount.discountMax = Money.exactOf(dto.discountMax)
         if (dto.cosAccount != null) {
             dbDiscount.cosAccount = getRecordById(dbDiscount.context, Account, dto.cosAccount)
         } else {
@@ -186,7 +180,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
         updateDiscountCourseClasses(dbDiscount.context, dbDiscount, dto.discountCourseClasses)
         dbDiscount.addByDefault = dto.addByDefault
         dbDiscount.minEnrolments = dto.minEnrolments
-        dbDiscount.minValue = toMoneyValue(dto.minValue)
+        dbDiscount.minValue = Money.exactOf(dto.minValue)
         dbDiscount.limitPreviousEnrolment = dto.limitPreviousEnrolment != null ? dto.limitPreviousEnrolment : false
         dbDiscount.minEnrolmentsForAnyCourses = dto.minEnrolmentsForAnyCourses
         dbDiscount.courseMustEnrol = dto.courseIdMustEnrol ? getRecordById(dbDiscount.context, Course, dto.courseIdMustEnrol) : null

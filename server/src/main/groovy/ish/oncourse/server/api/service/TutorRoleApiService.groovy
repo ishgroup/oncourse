@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.service
 
 import com.google.inject.Inject
+import ish.math.Money
 import ish.oncourse.server.api.dao.DefinedTutorRoleDao
 import ish.oncourse.server.api.dao.PayRateDao
 import ish.oncourse.server.api.v1.model.ClassCostRepetitionTypeDTO
@@ -25,7 +26,6 @@ import org.apache.commons.lang3.StringUtils
 
 import java.time.ZoneOffset
 
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedTutorRole, DefinedTutorRoleDao> {
@@ -133,14 +133,14 @@ class TutorRoleApiService extends EntityApiService<DefinedTutorRoleDTO, DefinedT
                     (rate.type == payRate.type.getDbType() &&
                             rate.validFrom?.toInstant()?.atZone(ZoneOffset.UTC)?.toLocalDate() == payRate.validFrom) &&
                     rate.description == trimToNull(payRate.notes) &&
-                    rate.rate == toMoneyValue(payRate.rate) &&
-                    rate.oncostRate == toMoneyValue(payRate.oncostRate)) {
+                    rate.rate == Money.exactOf(payRate.rate) &&
+                    Money.exactOf(payRate.oncostRate).isEqualTo(Money.of(rate.oncostRate))) {
                 rate.editedByUser =  context.localObject(systemUserService.currentUser)
             }
             rate.type = payRate.type.getDbType()
             rate.validFrom = payRate.validFrom?.atStartOfDay(ZoneOffset.UTC)?.toDate()
-            rate.rate = toMoneyValue(payRate.rate)
-            rate.oncostRate = toMoneyValue(payRate.oncostRate)
+            rate.rate = Money.exactOf(payRate.rate)
+            rate.oncostRate = payRate.oncostRate
             rate.description = trimToNull(payRate.notes)
         }
     }

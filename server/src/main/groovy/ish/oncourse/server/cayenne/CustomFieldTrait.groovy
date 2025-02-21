@@ -68,7 +68,7 @@ trait CustomFieldTrait {
                 case BOOLEAN:
                     return Boolean.valueOf(value)
                 case MONEY:
-                    return new Money(value)
+                    return Money.of(value)
                 case ENTITY:
                 case FILE:
                 case MESSAGE_TEMPLATE:

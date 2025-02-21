@@ -13,6 +13,7 @@ package ish.oncourse.server.print;
 import com.google.inject.Inject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import ish.math.context.MoneyContext;
 import ish.oncourse.server.ICayenneService;
 import ish.oncourse.server.cayenne.Report;
 import ish.oncourse.server.document.DocumentService;
@@ -49,6 +50,7 @@ public class PrintService {
 	private ICayenneService cayenneService;
 	private DocumentService documentService;
 	private UserPreferenceService userPreferenceService;
+	private MoneyContext moneyContext;
 
 	private final Map<UID, PrintWorker> workerMap;
 
@@ -56,10 +58,11 @@ public class PrintService {
 	private ScheduledExecutorService cleanupThreadExecutor;
 
 	@Inject
-	public PrintService(ICayenneService cayenneService, DocumentService documentService, UserPreferenceService userPreferenceService) {
+	public PrintService(ICayenneService cayenneService, DocumentService documentService, UserPreferenceService userPreferenceService, MoneyContext moneyContext) {
 		this.cayenneService = cayenneService;
 		this.documentService = documentService;
 		this.userPreferenceService = userPreferenceService;
+		this.moneyContext = moneyContext;
 
 		workerThreadExecutor = Executors.newFixedThreadPool(MAX_THREADS);
 		cleanupThreadExecutor = Executors.newScheduledThreadPool(1);
@@ -78,7 +81,7 @@ public class PrintService {
 	 */
 	public synchronized Future<PrintResult> print(PrintRequest printRequest) {
 		if (!workerMap.containsKey(printRequest.getUID())) {
-			var worker = new PrintWorker(printRequest, cayenneService, documentService, userPreferenceService);
+			var worker = new PrintWorker(printRequest, cayenneService, documentService, userPreferenceService, moneyContext);
 			workerMap.put(printRequest.getUID(), worker);
 
 			return workerThreadExecutor.submit(() -> {

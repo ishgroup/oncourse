@@ -66,7 +66,7 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         il1.setPrepaidFeesRemaining(Money.ZERO)
         il1.setPriceEachExTax(Money.ONE)
         il1.setQuantity(BigDecimal.ONE)
-        il1.setTaxEach(new Money("0.1"))
+        il1.setTaxEach(Money.of("0.1"))
         il1.setTitle("il1")
 
         InvoiceLine il2 = cayenneContext.newObject(InvoiceLine.class)
@@ -78,7 +78,7 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         il2.setPrepaidFeesRemaining(Money.ZERO)
         il2.setPriceEachExTax(Money.ONE)
         il2.setQuantity(BigDecimal.ONE)
-        il2.setTaxEach(new Money("0.1"))
+        il2.setTaxEach(Money.of("0.1"))
         il2.setTitle("il2")
 
         Enrolment enrol1 = cayenneContext.newObject(Enrolment.class)
@@ -154,7 +154,7 @@ class InvoiceLifecycleListenerTest extends TestWithDatabase {
         il1.setPrepaidFeesRemaining(Money.ZERO)
         il1.setPriceEachExTax(Money.ONE)
         il1.setQuantity(BigDecimal.ONE)
-        il1.setTaxEach(new Money("0.1"))
+        il1.setTaxEach(Money.of("0.1"))
         il1.setTitle("il1")
 
         Enrolment enrol1 = cayenneContext.newObject(Enrolment.class)

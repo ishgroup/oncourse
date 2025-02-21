@@ -61,14 +61,14 @@ class PayLineFunctions {
                     dbPayLine.quantity = payLine.quantity
                 }
                 if (dbPayLine.value.toBigDecimal() != payLine.value) {
-                    dbPayLine.value = new Money(payLine.value)
+                    dbPayLine.value = Money.of(payLine.value)
                 }
             } else {
                 context.newObject(PayLine).with { it ->
                     it.payslip = dbPayslip
                     it.description = trimToNull(payLine.description)
                     it.quantity = new BigDecimal(1)
-                    it.value = new Money(payLine.value)
+                    it.value = Money.of(payLine.value)
                     it.dateFor = LocalDate.now()
                 }
             }

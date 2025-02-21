@@ -32,7 +32,7 @@ class JournalTransactionsBuilderTest {
         secondaryAccount = mock(Account)
         when(secondaryAccount.id).thenReturn(88L)
 
-        amount = new Money(10.0)
+        amount = Money.of(10.0)
         transactionDate = LocalDate.of(2017, Month.MAY, 28)
     }
 

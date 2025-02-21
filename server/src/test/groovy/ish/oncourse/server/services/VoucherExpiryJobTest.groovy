@@ -82,20 +82,20 @@ class VoucherExpiryJobTest extends TestWithDatabase {
 
         // voucher for 4 enrolments sold for $10, 2 enrolments are currently redeemed
         Assertions.assertEquals(voucherLiabilityAccount, transactions.get(0).getAccount())
-        Assertions.assertEquals(new Money("-5.0"), transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-5.0"), transactions.get(0).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(0).getTableName())
 
         Assertions.assertEquals(vouchersExpiredAccount, transactions.get(3).getAccount())
-        Assertions.assertEquals(new Money("5.0"), transactions.get(3).getAmount())
+        Assertions.assertEquals(Money.of("5.0"), transactions.get(3).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(3).getTableName())
 
         // voucher with $200 value sold for $11, $90 is remaining
         Assertions.assertEquals(voucherLiabilityAccount, transactions.get(1).getAccount())
-        Assertions.assertEquals(new Money("-4.95"), transactions.get(1).getAmount())
+        Assertions.assertEquals(Money.of("-4.95"), transactions.get(1).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(1).getTableName())
 
         Assertions.assertEquals(vouchersExpiredAccount, transactions.get(2).getAccount())
-        Assertions.assertEquals(new Money("4.95"), transactions.get(2).getAmount())
+        Assertions.assertEquals(Money.of("4.95"), transactions.get(2).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(2).getTableName())
     }
 
@@ -111,8 +111,8 @@ class VoucherExpiryJobTest extends TestWithDatabase {
         Assertions.assertEquals(ProductStatus.ACTIVE, unexpiredVoucher.getStatus())
 
         // change voucher product price
-        expiredMoneyVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
-        expiredCourseVoucher.getVoucherProduct().setPriceExTax(new Money("1.00"))
+        expiredMoneyVoucher.getVoucherProduct().setPriceExTax(Money.of("1.00"))
+        expiredCourseVoucher.getVoucherProduct().setPriceExTax(Money.of("1.00"))
 
         cayenneContext.commitChanges()
 
@@ -144,20 +144,20 @@ class VoucherExpiryJobTest extends TestWithDatabase {
 
         // voucher for 4 enrolments sold for $10, 2 enrolments are currently redeemed
         Assertions.assertEquals(voucherLiabilityAccount, transactions.get(0).getAccount())
-        Assertions.assertEquals(new Money("-5.0"), transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-5.0"), transactions.get(0).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(0).getTableName())
 
         Assertions.assertEquals(vouchersExpiredAccount, transactions.get(3).getAccount())
-        Assertions.assertEquals(new Money("5.0"), transactions.get(3).getAmount())
+        Assertions.assertEquals(Money.of("5.0"), transactions.get(3).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(3).getTableName())
 
         // voucher with $200 value sold for $11, $90 is remaining
         Assertions.assertEquals(voucherLiabilityAccount, transactions.get(1).getAccount())
-        Assertions.assertEquals(new Money("-4.95"), transactions.get(1).getAmount())
+        Assertions.assertEquals(Money.of("-4.95"), transactions.get(1).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(1).getTableName())
 
         Assertions.assertEquals(vouchersExpiredAccount, transactions.get(2).getAccount())
-        Assertions.assertEquals(new Money("4.95"), transactions.get(2).getAmount())
+        Assertions.assertEquals(Money.of("4.95"), transactions.get(2).getAmount())
         Assertions.assertEquals(AccountTransactionType.INVOICE_LINE, transactions.get(2).getTableName())
     }
 

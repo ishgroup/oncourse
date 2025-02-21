@@ -18,6 +18,8 @@ import ish.oncourse.server.cayenne.glue._PayLine
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable
+import javax.money.Monetary
+import javax.money.RoundingQueryBuilder
 import java.math.RoundingMode
 import java.time.LocalDate
 
@@ -26,8 +28,6 @@ import java.time.LocalDate
  */
 @API
 class PayLine extends _PayLine {
-
-
 
 	@Override
 	protected void postAdd() {
@@ -221,6 +221,8 @@ class PayLine extends _PayLine {
 	}
 
 	Money getAmount(int scale, RoundingMode mode) {
-		return Money.valueOf((this.value * this.quantity).setScale(scale, mode))
+		return Money.of((this.value.multiply(this.quantity))
+				.with(Monetary.getRounding(RoundingQueryBuilder.of().setScale(scale).set(mode).build()))
+		)
 	}
 }
