@@ -8,6 +8,11 @@
 
 package ish.oncourse.server.checkout.gateway
 
-interface EmbeddedFormPaymentServiceInterface extends PaymentServiceInterface{
-    String getClientKey()
+import ish.common.checkout.gateway.SessionAttributes
+import ish.math.Money
+import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
+
+interface TwoStepPaymentServiceInterface extends TransactionPaymentServiceInterface{
+
+    SessionAttributes confirmExistedPayment(Money amount, CheckoutSubmitRequestDTO requestDTO)
 }

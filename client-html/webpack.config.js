@@ -143,6 +143,12 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               " https://*.googleapis.com" +
               " https://*.google.com" +
               " https://*.stripe.com" +
+              " https://*.squarecdn.com" +
+              " https://js.squareupsandbox.com" +
+              " https://pci-connect.squareupsandbox.com" +
+              " https://js.squareup.com" +
+              " https://pci-connect.squareup.com" +
+              " https://secure.ewaypayments.com" +
               " https://*.s3.ap-southeast-2.amazonaws.com" +
               " https://*.ish.com.au" +
               " 'unsafe-inline';" +

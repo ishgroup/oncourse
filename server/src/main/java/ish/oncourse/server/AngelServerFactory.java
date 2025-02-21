@@ -21,6 +21,7 @@ import ish.oncourse.server.cayenne.SystemUser;
 import ish.oncourse.server.db.SchemaUpdateService;
 import ish.oncourse.server.http.HttpFactory;
 import ish.oncourse.server.integration.PluginService;
+import ish.oncourse.server.jobs.RemoveOldCheckoutSessionsJob;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.messaging.MailDeliveryService;
@@ -198,6 +199,10 @@ public class AngelServerFactory {
             }
             schedulerService.scheduleCronJob(ChargebeeUploadJob.class, CHARGEBEE_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
                     CHARGEBEE_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
+
+
+            schedulerService.scheduleCronJob(RemoveOldCheckoutSessionsJob.class, REMOVE_SESSIONS_JOB_ID, BACKGROUND_JOBS_GROUP_ID,
+                    REMOVE_SESSIONS_JOB_INTERVAL, prefController.getOncourseServerDefaultTimezone(), false, false);
 
             LOGGER.warn("Starting cron");
             scheduler.start();

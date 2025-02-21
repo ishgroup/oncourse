@@ -1,0 +1,49 @@
+post:
+  operationId: createSession
+  description: Process checkout
+  tags:
+    - Checkout
+  parameters:
+    - name: checkoutModel
+      in: body
+      description: checkout objects
+      required: true
+      schema:
+        $ref: './def/entity/checkout/CheckoutModel.yaml'
+    - name: XOrigin
+      in: header
+      type: string
+      required: false
+      description: hostname of the onCourse client
+    - name: deprecatedSessionId
+      in: query
+      type: string
+      required: false
+      description: id of checkout session to remove
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/checkout/CreateSessionResponse.yaml'
+    '400':
+      description: Validation error
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutValidationError.yaml'
+    '411':
+      description: Windcave error, contact ish support
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutValidationError.yaml'
+    '412':
+      description: Can not complite payment transaction
+      schema:
+        $ref: './def/entity/checkout/SessionStatus.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to make checkout. Please contact your administrator

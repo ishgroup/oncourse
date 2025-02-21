@@ -14,7 +14,6 @@ export const getBachCheckoutModel = (contact: BatchPaymentContact):CheckoutModel
     paymentMethodId: null,
     payNow: contact.total,
     paymentDate: format(new Date(), YYYY_MM_DD_MINUSED),
-    merchantReference: null,
     contactNodes: [{
       contactId: contact.id,
       enrolments: [],

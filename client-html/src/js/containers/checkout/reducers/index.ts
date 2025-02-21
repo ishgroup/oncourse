@@ -109,7 +109,8 @@ const initial: CheckoutState = {
       payDueAmounts: true
     },
     voucherItems: [],
-    invoiceDueDate: null
+    invoiceDueDate: null,
+    paymentDate: null
   },
   contactEditRecord: null,
   itemEditRecord: null,
@@ -122,8 +123,8 @@ const initial: CheckoutState = {
     isProcessing: false,
     isFetchingDetails: false,
     isSuccess: false,
-    wcIframeUrl: "",
-    xPaymentSessionId: "",
+    ccFormUrl: "",
+    sessionId: "",
     merchantReference: "",
     process: {
       status: null,
@@ -151,7 +152,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         ...storedState
       };
     }
-    
+
     case CHECKOUT_UPDATE_SUMMARY_PRICES_FULFILLED: {
       const { invoice } = action.payload;
 
@@ -862,17 +863,12 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
     }
 
     case CHECKOUT_PROCESS_PAYMENT_FULFILLED: {
-      const {
-        sessionId, ccFormUrl, ...rest
-      } = action.payload;
 
       return {
         ...state,
         payment: {
           ...state.payment,
-          xPaymentSessionId: sessionId,
-          wcIframeUrl: ccFormUrl,
-          ...rest
+          ...action.payload
         }
       };
     }
@@ -883,7 +879,7 @@ export const checkoutReducer = (state: CheckoutState = initial, action: IAction)
         payment: {
           ...state.payment,
           clientSecret: null,
-          wcIframeUrl: ""
+          ccFormUrl: ""
         }
       };
     }

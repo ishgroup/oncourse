@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.EntityRelationCartAction
 import ish.math.Money
 import ish.oncourse.server.CayenneService
@@ -27,8 +28,12 @@ import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.checkout.CheckoutApiService
+import ish.oncourse.server.checkout.CheckoutSessionService
+import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
+import ish.oncourse.server.license.LicenseService
 import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
@@ -65,7 +70,23 @@ class CheckoutApiImpl implements CheckoutApi {
     CheckoutApiService checkoutApiService
 
     @Inject
+    CheckoutSessionService checkoutSessionService
+
+    @Inject
     DiscountApiService discountApiService
+
+    @Inject
+    LicenseService licenseService
+
+    @Override
+    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin, String deprecatedSessionId) {
+        return checkoutApiService.createSession(checkoutModel, xorigin, deprecatedSessionId)
+    }
+
+    @Override
+    CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
+        return checkoutApiService.updateModel(checkoutModel)
+    }
 
     @Override
     CartIdsDTO getCartDataIds(Long checkoutId) {
@@ -74,8 +95,8 @@ class CheckoutApiImpl implements CheckoutApi {
     }
 
     @Override
-    String getClientKey() {
-        checkoutApiService.getClientKey()
+    ClientPreferencesDTO getClientPreferences() {
+        return checkoutApiService.getClientPreferences()
     }
 
     @Override
@@ -202,12 +223,45 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Override
     SessionStatusDTO status(String sessionId) {
-       return checkoutApiService.status(sessionId)
+       return checkoutApiService.getStatus(sessionId)
+    }
+
+
+    CheckoutCCResponseDTO submitCreditCardPayment(CheckoutSubmitRequestDTO submitRequestDTO) {
+        checkoutApiService.submitCreditCardPayment(submitRequestDTO)
     }
 
     @Override
-    CheckoutResponseDTO submit(CheckoutModelDTO checkoutModel, Boolean xValidateOnly, String xPaymentSessionId, String xOrigin ) {
-        return checkoutApiService.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin)
+    CheckoutResponseDTO submitPayment(CheckoutModelDTO checkoutModelDTO) {
+        checkoutApiService.submitPayment(checkoutModelDTO)
+    }
+
+    @Override
+    String submitPaymentRedirect(String paymentSessionId, String key) {
+        if(licenseService.college_key && !key.equals(licenseService.getCollege_key()))
+            EntityValidator.throwClientErrorException("key", "Unexpected college request")
+
+        if(!checkoutSessionService.sessionExists(paymentSessionId))
+            EntityValidator.throwClientErrorException("session", "Session already processed")
+
+        def paymentService = checkoutApiService.getPaymentServiceByGatewayType()
+        if(!(paymentService instanceof SessionPaymentServiceInterface))
+            EntityValidator.throwClientErrorException("paymentService", "Redirect not allowed")
+
+        def sessionAttributes = paymentService.checkStatus(paymentSessionId)
+
+        if (!sessionAttributes.complete) {
+            checkoutSessionService.removeSession(paymentSessionId)
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not completed, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+        }
+
+        def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
+            it.onCoursePaymentSessionId = paymentSessionId
+            it.merchantReference = paymentSessionId
+            it
+        }
+        checkoutApiService.submitCreditCardPayment(submitRequestDTO)
+        return "Success"
     }
 
 }

@@ -132,6 +132,8 @@ class CheckoutController {
     private Invoice invoice
     private PaymentIn paymentIn
 
+    private boolean updateRequest
+
     CheckoutController(CayenneService cayenneService,
                        SystemUserService systemUserService,
                        ContactApiService contactApiService,
@@ -154,8 +156,9 @@ class CheckoutController {
         this.moduleDao = moduleDao
     }
 
-    Checkout createCheckout(CheckoutModelDTO checkout) {
+    Checkout createCheckout(CheckoutModelDTO checkout, boolean updateRequest) {
         this.checkout = checkout
+        this.updateRequest = updateRequest
         this.multyPurchase = (checkout.contactNodes.sum { it.memberships.size() + it.vouchers.size() + it.products.size() + it.enrolments.size() } as int) > 1
         this.context = cayenneService.newContext
         this.prepaidFeesAccount = AccountUtil.getDefaultPrepaidFeesAccount(context, Account)
@@ -430,26 +433,38 @@ class CheckoutController {
 
         PaymentMethod method
 
-        if (paymentIn.amount > ZERO) {
-            if (checkout.paymentMethodId != null) {
-                method =  SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
-            } else if (checkout.payWithSavedCard) {
-                method = PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod)
+        if(!updateRequest) {
+            if (paymentIn.amount > ZERO) {
+                if (checkout.paymentMethodId != null) {
+                    method = SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
+                } else if (checkout.payWithSavedCard) {
+                    method = PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod)
+                } else {
+                    logger.error('Payment method must be set: {}', checkout.toString())
+                    throw new IllegalStateException('Payment method must be set')
+                }
             } else {
-                logger.error('Payment method must be set: {}', checkout.toString())
-                throw new IllegalStateException('Payment method must be set')
+                method = PaymentMethodUtil.getCONTRAPaymentMethods(context, PaymentMethod)
             }
-        } else {
-            method = PaymentMethodUtil.getCONTRAPaymentMethods(context, PaymentMethod)
-        }
 
-        paymentIn.paymentMethod = method
+            paymentIn.paymentMethod = method
 
-        if (CREDIT_CARD != paymentIn.paymentMethod.type) {
-            paymentIn.paymentDate = checkout.paymentDate?:LocalDate.now()
+            if (CREDIT_CARD != paymentIn.paymentMethod.type) {
+                paymentIn.paymentDate = checkout.paymentDate?:LocalDate.now()
+            }
+
+            if (CREDIT_CARD == paymentIn.paymentMethod.type) {
+                paymentIn.status =PaymentStatus.IN_TRANSACTION
+                //send only when payment success
+                paymentIn.confirmationStatus = DO_NOT_SEND
+            } else {
+                paymentIn.status = PaymentStatus.SUCCESS
+                paymentIn.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
+            }
+
+            paymentIn.account = paymentIn.paymentMethod.account
+            paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
         }
-        paymentIn.account = paymentIn.paymentMethod.account
-        paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
 
 
         if (invoice) {
@@ -457,16 +472,6 @@ class CheckoutController {
             line.payment = paymentIn
             line.invoice = invoice
             line.amount =  Money.ZERO
-        }
-
-
-        if (CREDIT_CARD == paymentIn.paymentMethod.type) {
-            paymentIn.status =PaymentStatus.IN_TRANSACTION
-            //send only when payment success
-            paymentIn.confirmationStatus = DO_NOT_SEND
-        } else {
-            paymentIn.status = PaymentStatus.SUCCESS
-            paymentIn.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
         }
     }
 

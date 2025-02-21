@@ -4,20 +4,21 @@
  */
 
 import {
+  AbstractInvoiceLine,
   CheckoutArticle,
   CheckoutEnrolment,
   CheckoutMembership,
   CheckoutModel,
-  CheckoutPaymentPlan,
   CheckoutVoucher,
   ContactNode,
+  CourseClassType,
   Invoice,
-  AbstractInvoiceLine,
   InvoicePaymentPlan,
-  ProductType, CourseClassType
-} from "@api/model";
-import { differenceInMinutes, format, isBefore } from "date-fns";
-import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from "ish-ui";
+  ProductType
+} from '@api/model';
+import { differenceInMinutes, format, isBefore } from 'date-fns';
+import { decimalMinus, decimalPlus, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import { getFormValues } from 'redux-form';
 import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   CheckoutCourse,
@@ -25,20 +26,25 @@ import {
   CheckoutDiscount,
   CheckoutEntity,
   CheckoutItem,
-  CheckoutState,
   CheckoutSummary,
   CheckoutSummaryListItem
-} from "../../../model/checkout";
-import { CheckoutFundingInvoice } from "../../../model/checkout/fundingInvoice";
-import MembershipProductService from "../../entities/membershipProducts/services/MembershipProductService";
+} from '../../../model/checkout';
+import { State } from '../../../reducers/state';
+import MembershipProductService from '../../entities/membershipProducts/services/MembershipProductService';
+import { CHECKOUT_SELECTION_FORM_NAME } from '../components/CheckoutSelection';
+import {
+  CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
+} from '../components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
+import { CHECKOUT_SUMMARY_FORM } from '../components/summary/CheckoutSummaryList';
 import {
   CHECKOUT_MEMBERSHIP_COLUMNS,
-  CHECKOUT_PRODUCT_COLUMNS, CHECKOUT_STORED_STATE_KEY,
+  CHECKOUT_PRODUCT_COLUMNS,
+  CHECKOUT_STORED_STATE_KEY,
   CHECKOUT_VOUCHER_COLUMNS,
   CheckoutCurrentStep,
   CheckoutCurrentStepType
 } from '../constants';
-import { getFundingInvoices } from "./fundingInvoice";
+import { getFundingInvoices } from './fundingInvoice';
 
 export const filterPastClasses = courseClasses => {
   const today = new Date();
@@ -185,13 +191,15 @@ export const getCheckoutModelMembershipsValidTo = async (model: CheckoutModel) =
 };
 
 export const getCheckoutModel = (
-  state: CheckoutState,
-  paymentPlans: CheckoutPaymentPlan[],
-  fundingInvoices: CheckoutFundingInvoice[],
-  summaryValues: any = {},
-  pricesOnly?: boolean
+  appState: State
 ): CheckoutModel => {
-  const { summary, payment } = state;
+  const { summary, payment } = appState.checkout;
+
+  const paymentPlans = ((getFormValues(CHECKOUT_SELECTION_FORM_NAME)(appState) as any)?.paymentPlans || []).filter(p => p.amount && p.date).map(p => ({ amount: p.amount, date: format(new Date(p.date), YYYY_MM_DD_MINUSED) }));
+
+  const fundingInvoices = (getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(appState) as any).fundingInvoices;
+
+  const summaryValues = (getFormValues(CHECKOUT_SUMMARY_FORM)(appState) as any);
 
   const payerItem = summary.list.find(l => l.payer);
 
@@ -220,7 +228,7 @@ export const getCheckoutModel = (
     payForThisInvoice = summary.finalTotal;
   }
 
-  if (pricesOnly || payForThisInvoice < 0 || paymentPlansTotal >= summary.finalTotal) {
+  if (payForThisInvoice < 0 || paymentPlansTotal >= summary.finalTotal) {
     payForThisInvoice = 0;
   }
 
@@ -234,7 +242,7 @@ export const getCheckoutModel = (
     ? absCredit
     : decimalMinus(absCredit, decimalMinus(absCredit, totalIncOwingExVouchers));
 
-  const previousInvoices = pricesOnly ? {} : [...summary.previousOwing.invoices, ...summary.previousCredit.invoices]
+  const previousInvoices = [...summary.previousOwing.invoices, ...summary.previousCredit.invoices]
     .filter(i => i.checked)
     .reduce((p, c) => {
       const amount = c.amountOwing;
@@ -268,7 +276,7 @@ export const getCheckoutModel = (
 
   const paymentType = payment.availablePaymentTypes.find(t => t.name === payment.selectedPaymentType);
 
-  const redeemedVouchers = pricesOnly ? {} : summary.vouchers.reduce((p, v) => {
+  const redeemedVouchers = summary.vouchers.reduce((p, v) => {
     p[v.id] = v.appliedValue;
     return p;
   }, {});
@@ -276,17 +284,15 @@ export const getCheckoutModel = (
   return {
     payerId: payerItem ? payerItem.contact.id : null,
 
-    paymentMethodId: paymentType && !pricesOnly
+    paymentMethodId: paymentType
       ? paymentType.id
       : null,
 
-    payNow: pricesOnly ? 0 : summary.payNowTotal,
+    payNow: summary.payNowTotal,
 
     paymentDate: summary.paymentDate,
 
     paymentPlans,
-
-    merchantReference: payment.merchantReference,
 
     contactNodes: summary.list.map((l): ContactNode => ({
 
@@ -329,7 +335,7 @@ export const getCheckoutModel = (
 
     allowAutoPay: summary.allowAutoPay,
 
-    payWithSavedCard: pricesOnly ? false : payment.selectedPaymentType === "Saved credit card",
+    payWithSavedCard: payment.selectedPaymentType === "Saved credit card",
 
     payForThisInvoice,
 
@@ -337,9 +343,9 @@ export const getCheckoutModel = (
       && paymentPlans.reduce((p, c) => (new Date(p.date) < new Date(c.date) ? p : c))?.date)
       || summary.invoiceDueDate,
 
-    invoiceCustomerReference: summaryValues.invoiceCustomerReference,
+    invoiceCustomerReference: summaryValues?.invoiceCustomerReference,
 
-    invoicePublicNotes: summaryValues.invoicePublicNotes
+    invoicePublicNotes: summaryValues?.invoicePublicNotes
   };
 };
 
@@ -605,6 +611,22 @@ export const getProductColumnsByType = (type: ProductType | string) => {
     default:
       throw Error("Unknown product type");
   }
+};
+
+export const paymentErrorMessageDefault = "Payment gateway cannot be contacted. Please try again later or contact ish support.";
+
+export const getPaymentErrorMessage = response => {
+  if (Array.isArray(response.data)) {
+    return response.data.reduce((p, c, i) => p + c.error + (i === response.data.length - 1 ? "" : "\n\n"), "");
+  }
+
+  return response.data?.responseText
+    ? response.data.responseText
+    : /(4|5)+/.test(response.status)
+      ? response.error
+        ? response.error
+        : paymentErrorMessageDefault
+      : null;
 };
 
 export const getStoredPaymentStateKey = (xPaymentSessionId: string) => `${CHECKOUT_STORED_STATE_KEY}-${xPaymentSessionId}`;
