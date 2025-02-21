@@ -37,10 +37,10 @@ class BankingMixin {
 				.select(self.context)
 
 		def paymentsIn = Money.ZERO
-		ins.each { paymentsIn.add(it) }
+		ins.each { paymentsIn = paymentsIn.add(it) }
 
 		def paymentsOut = Money.ZERO
-		paymentsOuts.each { paymentsOut.add(it) }
+		paymentsOuts.each { paymentsOut = paymentsOut.add(it) }
 
 		return paymentsIn.subtract(paymentsOut)
 	}

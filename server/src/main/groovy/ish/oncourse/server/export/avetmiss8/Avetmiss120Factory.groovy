@@ -35,7 +35,6 @@ import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 import java.time.Month
-
 /**
  * AVETMISS export for outcomes - also known as file 120.
  */
@@ -439,7 +438,7 @@ class Avetmiss120Factory extends AvetmissFactory {
                 fee = Money.ZERO
             }
 
-            line.setStudentFee(fee.intValue())
+            line.setStudentFee(fee.toInteger())
 
 
             // ------------------
