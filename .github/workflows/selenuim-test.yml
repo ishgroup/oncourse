@@ -14,8 +14,6 @@ jobs:
         java: [11]
     env:
       SHELL: bash
-      LANG: en_AU.UTF-8
-      LC_ALL: en_AU.UTF-8
 
     steps:
       - uses: ankane/setup-mariadb@v1
@@ -36,6 +34,13 @@ jobs:
         uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
+
+      - name: Setup locale
+        uses: zcong1993/setup-locale@v1.0.0
+        with:
+          locale: "en_AU.UTF-8"
+
+
 
       - name: Set up JDK
         uses: actions/setup-java@v2

@@ -37,6 +37,12 @@ jobs:
         with:
           timezone: "Australia/Sydney"
 
+      - name: Setup locale
+        uses: zcong1993/setup-locale@v1.0.0
+        with:
+          locale: "en_AU.UTF-8"
+
+
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
