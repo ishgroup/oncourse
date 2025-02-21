@@ -16,8 +16,6 @@ jobs:
 
     env:
       SHELL: bash
-      LANG: en_AU.UTF-8
-      LC_ALL: en_AU.UTF-8
 
     steps:
       - uses: ankane/setup-mariadb@v1

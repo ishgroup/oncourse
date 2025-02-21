@@ -29,10 +29,12 @@ class BankingMixin {
 
 	static Money getTotal(Banking self) {
 		def ins = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_IN.dot(PaymentIn.AMOUNT))
+				.suppressDistinct()
 				.where(Banking.ID.eq(self.id))
 				.select(self.context)
 
 		def paymentsOuts = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_OUT.dot(PaymentOut.AMOUNT))
+				.suppressDistinct()
 				.where(Banking.ID.eq(self.id))
 				.select(self.context)
 
