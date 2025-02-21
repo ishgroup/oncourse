@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
-import javax.money.UnknownCurrencyException;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
@@ -58,7 +57,7 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
     private boolean serverLocaleUnknown(Locale locale) {
         try {
             return Monetary.getCurrency(locale) == null;
-        } catch (UnknownCurrencyException e ) {
+        } catch (javax.money.MonetaryException e ) {
             LOGGER.error(e.getMessage());
         }
         return true;
