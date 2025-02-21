@@ -205,9 +205,6 @@ public class AngelServerFactory {
             if ((preference != null) && (preference.getValueString() != null)) {
                 var country = Country.forCurrencySymbol(preference.getValueString());
                 moneyContextUpdater.updateCountry(country);
-            } else {
-                prefController.setValue(ACCOUNT_CURRENCY, false, Country.AUSTRALIA.currencySymbol());
-                moneyContextUpdater.updateCountry(Country.AUSTRALIA);
             }
 
         } catch (SchedulerException e1) {
