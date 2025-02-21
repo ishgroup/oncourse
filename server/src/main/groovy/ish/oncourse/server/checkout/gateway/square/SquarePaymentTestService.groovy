@@ -8,22 +8,12 @@
 
 package ish.oncourse.server.checkout.gateway.square
 
-import com.google.inject.Inject
+
 import com.squareup.square.Environment
 import groovy.transform.CompileDynamic
-import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.checkout.gateway.stripe.StripePaymentService
 
 @CompileDynamic
 class SquarePaymentTestService extends SquarePaymentService {
-
-    @Inject
-    private PreferenceController preferenceController
-
-    @Override
-    protected String getApiKey() {
-        return preferenceController.testPaymentGatewayPassStripe
-    }
 
     @Override
     Environment getEnvironment() {

@@ -204,10 +204,11 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
         sessionAttributes.transactionId = payment.id // to make refund could be used
         sessionAttributes.sessionId = payment.id
         sessionAttributes.complete = payment.status.equals("COMPLETED")
-        sessionAttributes.paymentDate = LocalDateUtils.stringToValue(payment.updatedAt)
+        sessionAttributes.paymentDate = LocalDateUtils.stringToTimeValue(payment.updatedAt).toLocalDate()
         sessionAttributes.statusText = payment.status
 
         if(payment.cardDetails?.card) {
+            sessionAttributes.authorised = true
             def creditCard = payment.cardDetails?.card
             sessionAttributes.creditCardExpiry = "${creditCard.expMonth}/${creditCard.expYear}"
             sessionAttributes.creditCardName = creditCard.cardholderName
@@ -223,7 +224,7 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
         sessionAttributes.transactionId = refund.paymentId
         sessionAttributes.responceJson = new ObjectMapper().writeValueAsString(refund)
         sessionAttributes.statusText = refund.status
-        sessionAttributes.paymentDate = LocalDateUtils.stringToValue(refund.updatedAt)
+        sessionAttributes.paymentDate = LocalDateUtils.stringToTimeValue(refund.updatedAt).toLocalDate()
         sessionAttributes
     }
 
