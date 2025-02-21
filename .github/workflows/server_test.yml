@@ -29,15 +29,6 @@ jobs:
         with:
           timezone: "Australia/Sydney"
 
-      - name: Setup Locale
-        run: |
-          sudo locale-gen en_AU.UTF-8
-          sudo update-locale LANG=en_AU.UTF-8 LC_ALL=en_AU.UTF-8
-          export LANG=en_AU.UTF-8
-          export LC_ALL=en_AU.UTF-8
-          locale
-      
-
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
@@ -130,14 +121,6 @@ jobs:
         uses: zcong1993/setup-timezone@v1.1.1
         with:
           timezone: "Australia/Sydney"
-
-      - name: Setup Locale
-        run: |
-          sudo locale-gen en_AU.UTF-8
-          sudo update-locale LANG=en_AU.UTF-8 LC_ALL=en_AU.UTF-8
-          export LANG=en_AU.UTF-8
-          export LC_ALL=en_AU.UTF-8
-          locale
 
       - name: Set up JDK
         uses: actions/setup-java@v2

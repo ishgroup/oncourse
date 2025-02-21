@@ -14,15 +14,20 @@ import ish.math.context.MoneyContext;
 import ish.math.context.MoneyContextUpdater;
 import ish.math.format.DefaultMoneyFormatter;
 import ish.math.format.MoneyFormatter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
+import javax.money.UnknownCurrencyException;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
 public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private final AtomicReference<Locale> locale = new AtomicReference<>();
 
@@ -38,12 +43,25 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
 
         if (defaultCountry != null) {
             updateCountry(defaultCountry);
-        } else {
+        }
+        else {
+            if (serverLocaleUnknown(this.locale.get())) {
+                updateCountry(Country.AUSTRALIA);
+            }
             this.currency.set(Monetary.getCurrency(this.locale.get()));
             this.currencyCode.set(this.currency.get().getCurrencyCode());
             this.currencySymbol.set(Currency.getInstance(currency.get().getCurrencyCode()).getSymbol());
             this.formatter.set(new DefaultMoneyFormatter(this.locale.get(), this.currencySymbol.get()));
         }
+    }
+
+    private boolean serverLocaleUnknown(Locale locale) {
+        try {
+            return Monetary.getCurrency(locale) == null;
+        } catch (UnknownCurrencyException e ) {
+            LOGGER.error(e.getMessage());
+        }
+        return true;
     }
 
     @Override
