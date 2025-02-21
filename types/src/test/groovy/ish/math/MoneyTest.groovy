@@ -145,28 +145,27 @@ class MoneyTest {
 
     @Test
     void testOneCentRoundingErrorWithValidCode() {
-        BigDecimal valueEnteredIncTax = BigDecimal.valueOf(22500, 2)
+        int scale = MoneyManager.getSystemContext().getCurrency().getDefaultFractionDigits()
+
+        BigDecimal valueEnteredIncTax = BigDecimal.valueOf(22500, scale)
 
         BigDecimal taxDivisor = BigDecimal.valueOf(11)
         BigDecimal taxMultiplier = BigDecimal.valueOf(10)
-        BigDecimal exTaxMultiplier = taxMultiplier.setScale(6).divide(taxDivisor, RoundingMode.HALF_UP)
+        BigDecimal exTaxMultiplier = taxMultiplier.setScale(8).divide(taxDivisor, RoundingMode.HALF_UP)
         // System.out.println("exTaxMult:" + exTaxMultiplier);
 
         BigDecimal exTaxAmount = valueEnteredIncTax.multiply(exTaxMultiplier)
         // System.out.println("exTaxAmount:" + exTaxAmount);
 
-        BigDecimal taxAmount = valueEnteredIncTax.setScale(2).divide(taxDivisor, RoundingMode.HALF_UP)
+        BigDecimal taxAmount = valueEnteredIncTax.setScale(scale).divide(taxDivisor, RoundingMode.HALF_UP)
         // System.out.println("exTaxAmount:" + taxAmount);
 
         Money moneyValueEntered = Money.of(valueEnteredIncTax)
         Money moneyExTaxAmount = moneyValueEntered.multiply(exTaxMultiplier)
-        // System.out.println("exTaxAmount:" + moneyExTaxAmount);
-
         Money moneyTaxAmount = moneyValueEntered.divide(taxDivisor)
-        // System.out.println("exTaxAmount:" + moneyTaxAmount);
 
-        exTaxAmount = exTaxAmount.setScale(2, MoneyContext.DEFAULT_ROUND)
-        taxAmount = taxAmount.setScale(2, MoneyContext.DEFAULT_ROUND)
+        exTaxAmount = exTaxAmount.setScale(scale, MoneyContext.DEFAULT_ROUND)
+        taxAmount = taxAmount.setScale(scale, MoneyContext.DEFAULT_ROUND)
 
         Assertions.assertEquals(exTaxAmount.unscaledValue(), moneyExTaxAmount.toBigDecimal().unscaledValue(), "Ex tax rounding error")
         Assertions.assertEquals(taxAmount.unscaledValue(), moneyTaxAmount.toBigDecimal().unscaledValue(), "Tax rounding error")

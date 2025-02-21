@@ -70,8 +70,8 @@ public class MoneyManager {
      *
      * @return the currency unit of the system context
      */
-    public static CurrencyUnit getSystemCurrency() {
-        return systemContext.getCurrency();
+    public static MoneyContext getSystemContext() {
+        return systemContext;
     }
 
     /**

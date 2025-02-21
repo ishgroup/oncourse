@@ -10,11 +10,15 @@ package ish.util
 import groovy.transform.CompileStatic
 import ish.common.payable.IInvoiceLineInterface
 import ish.common.types.DiscountType
+import ish.math.Country
 import ish.math.Money
+import ish.math.MoneyAmountFactory
+import ish.math.MoneyManager
 import ish.math.MoneyRounding
 import ish.oncourse.cayenne.DiscountCourseClassInterface
 import ish.oncourse.cayenne.DiscountInterface
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 import static org.mockito.Matchers.any
@@ -22,6 +26,11 @@ import static org.mockito.Mockito.*
 
 @CompileStatic
 class DiscountUtilsTest {
+
+    @BeforeAll
+    static void setupEnvironment() {
+        MoneyManager.updateSystemContext(MoneyAmountFactory.buildMoneyContext(Country.AUSTRALIA))
+    }
 
 	@Test
     void testPersentDiscountValue() {

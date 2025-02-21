@@ -184,7 +184,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	 */
 	@API
 	public static Money of(@NonNull Integer majorAmountUnit, @NonNull Integer fractionalAmountUnit) {
-		return new Money(Converter.convert(majorAmountUnit, fractionalAmountUnit, MoneyManager.getSystemCurrency()));
+		return new Money(Converter.convert(majorAmountUnit, fractionalAmountUnit, MoneyManager.getSystemContext().getCurrency()));
 	}
 
 	public static Money of(@NonNull Integer majorAmountUnit, @NonNull Integer fractionalAmountUnit, MoneyContext customContext) {
@@ -247,13 +247,13 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Deprecated
 	public Money(Integer majorAmountUnit, Integer fractionalAmountUnit) {
-		this(Converter.convert(majorAmountUnit, fractionalAmountUnit, MoneyManager.getSystemCurrency()));
+		this(Converter.convert(majorAmountUnit, fractionalAmountUnit, MoneyManager.getSystemContext().getCurrency()));
 	}
 
 	@Override
 	public MonetaryContext getContext() {
 		return MonetaryContextBuilder.of()
-				.setMaxScale(Math.min(256, getCurrency().getDefaultFractionDigits() * 4))
+				.setMaxScale(Math.min(256, getCurrency().getDefaultFractionDigits() * 2))
 				.set(MoneyContext.DEFAULT_ROUND)
 				.build();
 	}
@@ -514,12 +514,13 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	public Money divide(@Nullable Number amount, boolean roundingUp) {
 		if (Objects.isNull(amount)) return this;
+		org.javamoney.moneta.Money result = org.javamoney.moneta.Money
+				.of(number, getCurrency(),getContext().toBuilder().build())
+				.divide(amount);
 
-		var result = toMoneta().divide(amount);
-		result = roundingUp ?
-				result.with(Monetary.getRounding(RoundingQueryBuilder.of().setScale(0).set(RoundingMode.UP).build())) :
-                result;
-
+		if (roundingUp) {
+			result = result.with(Monetary.getRounding(RoundingQueryBuilder.of().setScale(0).set(RoundingMode.UP).build()));
+		}
 		return toInstance(result);
 	}
 
@@ -937,7 +938,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	private BigDecimal round(BigDecimal value) {
-		RoundingMode mode = RoundingMode.UP;
+		RoundingMode mode = RoundingMode.HALF_UP;
 		int scale = getCurrency().getDefaultFractionDigits();
 		return value.setScale(scale, mode);
 	}
