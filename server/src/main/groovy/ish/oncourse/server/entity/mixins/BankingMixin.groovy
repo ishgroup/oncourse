@@ -28,18 +28,20 @@ class BankingMixin {
 	}
 
 	static Money getTotal(Banking self) {
-		def paymentsIn = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_IN.dot(PaymentIn.AMOUNT))
+		def ins = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_IN.dot(PaymentIn.AMOUNT))
 				.where(Banking.ID.eq(self.id))
 				.select(self.context)
-				.stream()
-				.reduce(Money.of(0), Money.&add)
 
-		def paymentsOut = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_OUT.dot(PaymentOut.AMOUNT))
+		def paymentsOuts = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_OUT.dot(PaymentOut.AMOUNT))
 				.where(Banking.ID.eq(self.id))
 				.select(self.context)
-				.stream()
-				.reduce(Money.of(0), Money.&add)
 
-		return Money.ZERO.add(paymentsIn).subtract(paymentsOut)
+		def paymentsIn = Money.ZERO
+		ins.each { paymentsIn.add(it) }
+
+		def paymentsOut = Money.ZERO
+		paymentsOuts.each { paymentsOut.add(it) }
+
+		return paymentsIn.subtract(paymentsOut)
 	}
 }

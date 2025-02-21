@@ -774,7 +774,8 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 				);
 
 			case ROUNDING_1D:
-				return toInstance(toMoneta().with(Monetary
+				// 5.4999999 -> 5.50 -> 6.00
+				return toInstance(of(number.intValue(), getFractional()).with(Monetary
 						.getRounding(RoundingQueryBuilder.of().setScale(0).set(RoundingMode.HALF_UP).build()))
 				);
 			default:
@@ -797,6 +798,8 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 
 	/**
 	 * Returns the monetary value as a {@link Double}.
+	 *
+	 * @deprecated use {@link #toDouble()}
 	 */
 	@API
 	public double doubleValue() {
@@ -804,7 +807,17 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	/**
+	 * Returns the monetary value as a {@link Double}.
+	 */
+	@API
+	public Double toDouble() {
+		return getNumber().doubleValue();
+	}
+
+	/**
 	 * Returns the monetary value as a {@link Float}.
+	 *
+	 * @deprecated use {@link #toFloat()}
 	 */
 	@API
 	public float floatValue() {
@@ -812,7 +825,17 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	/**
+	 * Returns the monetary value as a {@link Float}.
+	 */
+	@API
+	public float toFloat() {
+		return getNumber().floatValue();
+	}
+
+	/**
 	 * Returns the monetary value as a {@link Integer}.
+	 *
+	 * @deprecated use {@link #toInteger()}
 	 */
 	@API
 	public int intValue() {
@@ -820,10 +843,28 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	/**
+	 * Returns the monetary value as a {@link Integer}.
+	 */
+	@API
+	public Integer toInteger() {
+		return getNumber().intValue();
+	}
+
+	/**
 	 * Returns the monetary value as a {@link Long}.
+	 *
+	 * @deprecated use {@link #toLong()}
 	 */
 	@API
 	public long longValue() {
+		return getNumber().longValue();
+	}
+
+	/**
+	 * Returns the monetary value as a {@link Long}.
+	 */
+	@API
+	public long toLong() {
 		return getNumber().longValue();
 	}
 
@@ -834,7 +875,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	 *         For example, if the value is $10.99, this method will return 99.
 	 */
 	public Integer getFractional() {
-		return number.remainder(BigDecimal.ONE).movePointRight(getCurrency().getDefaultFractionDigits()).intValue();
+		return round(number).remainder(BigDecimal.ONE).movePointRight(getCurrency().getDefaultFractionDigits()).intValue();
 	}
 
 	@Override
@@ -860,6 +901,10 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@Override
 	public int compareTo(@NonNull MonetaryAmount o) {
 		return round(number).compareTo(round(o.getNumber().numberValue(BigDecimal.class)));
+	}
+
+	public int compareTo(@NonNull Number o) {
+		return round(number).compareTo(round(BigDecimal.valueOf(o.doubleValue())));
 	}
 
 	@Override
@@ -892,7 +937,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	private BigDecimal round(BigDecimal value) {
-		RoundingMode mode = MoneyContext.DEFAULT_ROUND;
+		RoundingMode mode = RoundingMode.UP;
 		int scale = getCurrency().getDefaultFractionDigits();
 		return value.setScale(scale, mode);
 	}
