@@ -275,10 +275,16 @@ task addVersion {
 	}
 }
 
-distZip.dependsOn(copyWebApp,addVersion)
+distZip.enabled = false;
 
-task createChecksums(dependsOn: distZip) {
-	inputs.files(distZip.outputs.files)
+distTar {
+	compression = Compression.GZIP
+}
+
+distTar.dependsOn(copyWebApp,addVersion)
+
+task createChecksums(dependsOn: distTar) {
+	inputs.files(distTar.outputs.files)
 	outputs.files(inputs.files.collect({ it.path + ".sha256"}))
 	doLast {
 		inputs.files.each { f ->
@@ -291,7 +297,7 @@ task createChecksums(dependsOn: distZip) {
 		}
 	}
 }
-distZip.finalizedBy(createChecksums)
+distTar.finalizedBy(createChecksums)
 
 distributions {
 	main {
@@ -340,7 +346,7 @@ publishing {
 			}
 		}
 		executables(MavenPublication) {
-			artifact(distZip) {
+			artifact(distTar) {
 				classifier "executable"
 				extension "zip"
 			}
