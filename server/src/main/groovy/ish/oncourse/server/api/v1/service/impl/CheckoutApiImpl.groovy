@@ -182,14 +182,17 @@ class CheckoutApiImpl implements CheckoutApi {
         result
     }
 
-    private static CheckoutSaleRelationDTO createCourseCheckoutSaleRelation(Long id, String entityName, Course course, EntityRelationType relationType) {
+    private CheckoutSaleRelationDTO createCourseCheckoutSaleRelation(Long id, String entityName, Course course, EntityRelationType relationType) {
+        DiscountDTO discountDTO = null
+        if (relationType.discount) {
+            discountDTO = discountApiService.toNotFullRestModel(relationType.discount)
+        }
+
         new CheckoutSaleRelationDTO().with {saleRelation ->
             saleRelation.fromItem = new SaleDTO(id: id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(entityName))
             saleRelation.toItem = new SaleDTO(id: course.id, type: SaleTypeDTO.COURSE)
             saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
-            if (relationType.discount) {
-                saleRelation.discount = discountApiService.toNotFullRestModel(relationType.discount)
-            }
+            saleRelation.discount = discountDTO
             saleRelation
         }
     }
