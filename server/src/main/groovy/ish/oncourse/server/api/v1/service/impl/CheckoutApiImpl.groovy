@@ -12,6 +12,7 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.EntityRelationCartAction
@@ -39,7 +40,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
 
-@CompileStatic
+@CompileDynamic
 class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
