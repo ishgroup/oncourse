@@ -38,6 +38,4 @@ get:
     default:
       description: Unexpected error
   x-permission:
-    mask: create
-    keyCode: ENROLMENT
-    errorMessage: Sorry, you have no permissions to make checkout. Please contact your administrator
+    keyCode: UNDEFINED
