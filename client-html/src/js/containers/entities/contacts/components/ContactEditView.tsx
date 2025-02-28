@@ -9,11 +9,12 @@
 import { Contact } from '@api/model';
 import { formatCurrency, useAppTheme } from 'ish-ui';
 import React, { useMemo, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import AvailabilityFormComponent
   from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
 import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import { AUS_REPORTING_DISPLAY_KEY } from '../../../../constants/Config';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { State } from '../../../../reducers/state';
 import ContactsDetails from './ContactDetails';
@@ -115,6 +116,7 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
   const [isTutor, setIsTutor] = useState(false);
   const [isCompany, setIsCompany] = useState(false);
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
+  const hideAUSReporting = useSelector<State, any>(state => state.userPreferences[AUS_REPORTING_DISPLAY_KEY] === 'false');
 
   const theme = useAppTheme();
 
@@ -139,7 +141,7 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
     );
 
     if (isStudent) {
-      activeItems = [...activeItems, ...studentItems];
+      activeItems = [...activeItems, ...studentItems.filter(i => i.type === 'VET' ? !hideAUSReporting : true)];
     }
 
     if (isTutor) {
