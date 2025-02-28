@@ -17,7 +17,6 @@ import ish.oncourse.server.api.v1.model.LeadStatusDTO
 import ish.oncourse.server.api.v1.model.SaleDTO
 import ish.oncourse.server.api.v1.model.SaleTypeDTO
 import ish.oncourse.server.api.v1.model.SiteDTO
-import ish.oncourse.server.cayenne.Course
 import ish.oncourse.server.cayenne.Lead
 import ish.oncourse.server.cayenne.LeadAttachmentRelation
 import ish.oncourse.server.cayenne.LeadCustomField
@@ -95,7 +94,7 @@ class LeadApiService extends TaggableApiService<LeadDTO, Lead, LeadDao> {
         ObjectContext context = cayenneModel.context
         cayenneModel.studentCount = dtoModel.studentCount
         cayenneModel.customer = contactApiService.getEntityAndValidateExistence(context, dtoModel.contactId)
-        cayenneModel.estimatedValue = dtoModel.estimatedValue != null ? Money.valueOf(dtoModel.estimatedValue) : null as Money
+        cayenneModel.estimatedValue = dtoModel.estimatedValue != null ? Money.of(dtoModel.estimatedValue) : null as Money
         cayenneModel.nextActionOn = LocalDateUtils.timeValueToDate(dtoModel.nextActionOn)
         cayenneModel.status = dtoModel.status.getDbType()
 

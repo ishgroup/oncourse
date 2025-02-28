@@ -5,7 +5,12 @@
 package ish.util
 
 import groovy.transform.CompileStatic
+import ish.math.Country
+import ish.math.Money
+import ish.math.MoneyManager
+import ish.oncourse.server.money.MoneyContextProvider
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -13,38 +18,38 @@ import org.junit.jupiter.params.provider.MethodSource
 @CompileStatic
 class MoneyFormatterTest {
 
-    MoneyFormatter formatter = MoneyFormatter.defaultInstance()
+    @BeforeAll
+    static void setupEnvironment() {
+        def context = new MoneyContextProvider()
+        context.updateCountry(Country.AUSTRALIA)
+        MoneyManager.updateSystemContext(context)
+    }
 
     static Collection<Arguments> values() {
         def data = [
-                ['15', '$15.00'],
-                ['15.', '$15.00'],
-                ['15.5', '$15.50'],
-                ['15.05', '$15.05'],
-                ['15.50', '$15.50'],
-                ['.5', '$0.50'],
-                ['0.5', '$0.50'],
-                ['$15', '$15.00'],
-                ['$15.', '$15.00'],
-                ['$15.5', '$15.50'],
-                ['$15.05', '$15.05'],
-                ['$15.50', '$15.50'],
-                ['$.5', '$0.50'],
-                ['$0.5', '$0.50'],
-                ['-15', '-$15.00'],
-                ['-15.', '-$15.00'],
-                ['-15.5', '-$15.50'],
-                ['-15.05', '-$15.05'],
-                ['-15.50', '-$15.50'],
-                ['-.5', '-$0.50'],
-                ['-0.5', '-$0.50'],
-                ['-$15', '-$15.00'],
-                ['-$15.', '-$15.00'],
-                ['-$15.5', '-$15.50'],
-                ['-$15.05', '-$15.05'],
-                ['-$15.50', '-$15.50'],
-                ['-$.5', '-$0.50'],
-                ['-$0.5', '-$0.50']
+                [Money.of( 15), '$15.00'],
+                [Money.of(15.0), '$15.00'],
+                [Money.of(15.5), '$15.50'],
+                [Money.of(15.05), '$15.05'],
+                [Money.of(15.50), '$15.50'],
+                [Money.of(0.5), '$0.50'],
+                [Money.of(15), '$15.00'],
+                [Money.of(15.0), '$15.00'],
+                [Money.of(15.5), '$15.50'],
+                [Money.of(15.05), '$15.05'],
+                [Money.of(15.50), '$15.50'],
+                [Money.of(-15), '-$15.00'],
+                [Money.of(-15.0), '-$15.00'],
+                [Money.of(-15.5), '-$15.50'],
+                [Money.of(-15.05), '-$15.05'],
+                [Money.of(-15.50), '-$15.50'],
+                [Money.of(-0.5), '-$0.50'],
+                [Money.of(-15), '-$15.00'],
+                [Money.of(-15.0), '-$15.00'],
+                [Money.of(-15.5), '-$15.50'],
+                [Money.of(-15.05), '-$15.05'],
+                [Money.of(-15.50), '-$15.50'],
+                [Money.of(-0.5), '-$0.50']
         ]
         Collection<Arguments> dataList = new ArrayList<>()
         for (List test : data) {
@@ -56,8 +61,7 @@ class MoneyFormatterTest {
 
     @ParameterizedTest
     @MethodSource("values")
-    void testBoth(String stringInput, String correctResult) throws Exception {
-        String result = formatter.valueToString(formatter.stringToValue(stringInput))
-        Assertions.assertEquals(correctResult, result)
+    void testAustraliaFormat(Money input, String correctResult) throws Exception {
+        Assertions.assertEquals(input.toString(), correctResult)
     }
 }

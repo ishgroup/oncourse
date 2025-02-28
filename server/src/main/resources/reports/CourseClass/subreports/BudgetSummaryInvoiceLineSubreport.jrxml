@@ -109,15 +109,15 @@
 		<band height="26">
 			<textField pattern="">
 				<reportElement style="header 3 (right)" positionType="Float" x="668" y="3" width="115" height="14" uuid="ee15565b-5627-4664-a718-7f9283eb87ae"/>
-				<textFieldExpression><![CDATA[new Money($V{actual_sub_sum})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{actual_sub_sum})]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement style="header 3 (right)" positionType="Float" x="554" y="3" width="115" height="14" uuid="34828027-4f1f-4e12-ac77-ae9f5edd009e"/>
-				<textFieldExpression><![CDATA[new Money($V{budgeted_sub_sum})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{budgeted_sub_sum})]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement style="header 3 (right)" positionType="Float" x="440" y="2" width="115" height="14" uuid="b67b262f-6a52-4121-b6df-712836cd6c74"/>
-				<textFieldExpression><![CDATA[new Money($V{maximum_sub_sum})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{maximum_sub_sum})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>

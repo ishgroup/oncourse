@@ -5,8 +5,10 @@
 package ish.oncourse.server.print
 
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.TestWithDatabase
+import ish.math.Money
+import ish.math.MoneyManager
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.server.cayenne.Room
 import ish.oncourse.server.cayenne.Site
@@ -37,7 +39,7 @@ class PrintWorkerTest extends TestWithDatabase {
         request.setReportCode("test")
         request.setIds(ids)
 
-        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class))
+        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class), MoneyManager.systemContext)
 
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"),"Site", null, null)
 
@@ -63,7 +65,7 @@ class PrintWorkerTest extends TestWithDatabase {
 
         PrintTransformation trans = PrintTransformationsFactory.getPrintTransformationFor("Site", "Room", null)
 
-        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class))
+        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class), MoneyManager.systemContext)
         Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
         Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 1)
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), "Room", trans, null)
@@ -97,7 +99,7 @@ class PrintWorkerTest extends TestWithDatabase {
 
         request.setValueForKey(isOn.getFieldCode(), 1)
 
-        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class))
+        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class), MoneyManager.systemContext)
         Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
         Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 2)
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), "Site", trans, null)
@@ -132,7 +134,7 @@ class PrintWorkerTest extends TestWithDatabase {
 
         request.setValueForKey(maxSeats.getFieldCode(), 30)
 
-        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class))
+        PrintWorker pw = new PrintWorker(request, cayenneService, documentService, injector.getInstance(UserPreferenceService.class), MoneyManager.systemContext)
         Assertions.assertEquals(2000, trans.getBatchSize() + trans.getTransformationFilterParamsCount())
         Assertions.assertEquals(trans.getTransformationFilterParamsCount(), 2)
         List<PersistentObjectI> records = pw.transformRecords(ids.get("Site"), "Room", trans, null)

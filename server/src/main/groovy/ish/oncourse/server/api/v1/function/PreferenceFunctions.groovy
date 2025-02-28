@@ -23,11 +23,9 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.cayenne.SystemUser
-import ish.oncourse.server.license.LicenseService
 import static ish.persistence.Preferences.*
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
-import org.apache.commons.lang3.StringUtils
 
 import java.time.ZoneOffset
 
@@ -50,7 +48,7 @@ class PreferenceFunctions {
             }
 
             if (value instanceof Country) {
-                return (value as Country).currencySymbol()
+                return (value as Country).currencyCode()
             }
 
             return value.toString()

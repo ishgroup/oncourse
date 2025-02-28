@@ -1,7 +1,6 @@
 package ish.oncourse.server.querying
 
 import groovy.transform.CompileStatic
-import ish.DatabaseOperation
 import ish.TestWithDatabase
 import ish.DatabaseSetup
 import ish.common.types.AutomationStatus

@@ -11,6 +11,7 @@
 
 package ish.oncourse.aql.impl;
 
+import ish.math.Money;
 import ish.oncourse.aql.model.CustomFieldDateMarker;
 import ish.oncourse.aql.model.CustomFieldDateTimeMarker;
 import ish.oncourse.aql.model.CustomFieldMarker;
@@ -197,7 +198,7 @@ public enum TypeClassifier {
             return NUMERIC;
         }
 
-        if (Number.class.isAssignableFrom(javaType)) {
+        if (Number.class.isAssignableFrom(javaType) || Money.class.isAssignableFrom(javaType)) {
             return NUMERIC;
         }
 

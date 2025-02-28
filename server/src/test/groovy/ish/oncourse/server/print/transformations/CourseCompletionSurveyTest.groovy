@@ -2,7 +2,7 @@ package ish.oncourse.server.print.transformations
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import ish.TestWithDatabase
+import ish.math.MoneyManager
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.print.PrintWorker
@@ -34,7 +34,7 @@ class CourseCompletionSurveyTest {
     
     @CompileDynamic
     @BeforeEach
-    void before() throws IOException {
+    void setupEnvironment() throws IOException {
         InputStream is = CourseCompletionSurveyTest.class.getClassLoader().getResourceAsStream("reports/CourseClass/CourseCompletionSurvey.jrxml")
         report = mock(Report.class)
         when(report.getData()).thenReturn(IOUtils.toByteArray(is))
@@ -56,7 +56,7 @@ class CourseCompletionSurveyTest {
 
     @Test
     void test() throws JRException, FileNotFoundException {
-        ReportDataSource reportDataSource = new ReportDataSource(printWorker, report, getItems())
+        ReportDataSource reportDataSource = new ReportDataSource(printWorker, MoneyManager.systemContext, report, getItems())
         JasperReport jasperReport = JasperCompileManager.compileReport(new ByteArrayInputStream(report.getData()))
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<>(), reportDataSource)
 

@@ -192,9 +192,9 @@ abstract class AbstractInvoiceLine extends _AbstractInvoiceLine implements IInvo
         if (getPriceEachExTax() == null || getPriceEachExTax().isZero()) {
             return getTax().getRate().floatValue()
         }
-        float taxEachFloat = getTaxEach().floatValue()
-        float priceEachExTax = getPriceEachExTax().floatValue()
-        float discountEach = getDiscountEachExTax().floatValue()
+        float taxEachFloat = getTaxEach().toFloat()
+        float priceEachExTax = getPriceEachExTax().toFloat()
+        float discountEach = getDiscountEachExTax().toFloat()
         return taxEachFloat / (priceEachExTax - discountEach)
     }
 
