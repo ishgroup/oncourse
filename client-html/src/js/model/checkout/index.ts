@@ -5,10 +5,11 @@
 
 import {
   ArticleProduct,
-  CheckoutPaymentPlan, CheckoutResponse,
+  CheckoutPaymentPlan,
   CheckoutSaleRelation,
   Course,
   CourseClass,
+  CreateSessionResponse,
   Discount,
   EnrolmentStudyReason,
   EntityRelationCartAction,
@@ -18,7 +19,8 @@ import {
   Sale,
   VoucherProduct
 } from '@api/model';
-import { StringArgFunction } from 'ish-ui';
+import { Stripe } from '@stripe/stripe-js';
+import { NoArgFunction, StringArgFunction } from 'ish-ui';
 import { Dispatch } from 'redux';
 import { IAction } from '../../common/actions/IshAction';
 
@@ -166,6 +168,8 @@ export interface CheckoutSummaryListItem {
 }
 
 export type CheckoutPaymentGateway =
+  'SQUARE' |
+  'SQUARE_TEST' |
   'EWAY' |
   'EWAY_TEST' |
   'STRIPE' |
@@ -182,16 +186,13 @@ export interface CheckoutPaymentProcess {
   data?: any;
 }
 
-export interface CheckoutPayment extends CheckoutResponse {
+export interface CheckoutPayment extends CreateSessionResponse {
   availablePaymentTypes?: PaymentMethod[];
   selectedPaymentType?: any;
   paymentPlans?: CheckoutPaymentPlan[];
   isProcessing?: boolean;
   isFetchingDetails?: boolean;
   isSuccess?: boolean;
-  wcIframeUrl?: string;
-  xPaymentSessionId?: string;
-  merchantReference?: string;
   process?: CheckoutPaymentProcess;
   invoice?: Invoice;
   paymentId?: number;
@@ -245,12 +246,14 @@ export interface CreditCardPaymentPageProps {
   hasSummarryErrors?: boolean;
   currencySymbol?: any;
   iframeUrl?: string;
-  xPaymentSessionId?: string;
-  merchantReference?: string;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
+  checkoutProcessCcPayment?: () => void;
   clearCcIframeUrl: () => void;
-  checkoutGetPaymentStatusDetails: StringArgFunction;
+  checkoutProcessStripeCCPayment?: (stripePaymentMethodId: string, stripe: Stripe) => void;
+  checkoutCompleteWindcaveCcPayment?: StringArgFunction;
+  checkoutGetPaymentStatusDetails?: StringArgFunction;
   checkoutPaymentSetCustomStatus?: StringArgFunction;
+  checkoutProcessEwayCCPayment?: StringArgFunction;
+  checkoutUpdateSummaryPrices?: NoArgFunction;
   onCheckoutClearPaymentStatus: () => void;
   process?: CheckoutPaymentProcess;
   paymentInvoice?: any;

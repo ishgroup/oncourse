@@ -21,6 +21,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.v1.model.PaymentInDTO
 import ish.oncourse.server.api.v1.model.PaymentInvoiceDTO
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.services.TransactionLockedService
 import ish.oncourse.server.users.SystemUserService
@@ -28,6 +29,7 @@ import ish.util.AccountUtil
 import ish.util.PaymentMethodUtil
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.access.DataContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
 import java.time.LocalDate
@@ -108,6 +110,17 @@ class PaymentInApiService extends EntityApiService<PaymentInDTO, PaymentIn, Paym
             return result
         }
         return result
+    }
+
+
+    PaymentInDTO getByMerchantReference(String merchantReference) {
+        def context = cayenneService.newReadonlyContext
+        def paymentIn = ObjectSelect.query(PaymentIn).where(PaymentIn.SESSION_ID.eq(merchantReference))
+                .selectOne(context)
+        if(paymentIn == null)
+            EntityValidator.throwClientErrorException("merchantReference", "payment in for this session not found")
+
+        return toRestModel(paymentIn)
     }
 
     static String[] getCCSummary(PaymentIn paymentIn) {

@@ -1,0 +1,41 @@
+get:
+  operationId: submitPaymentRedirect
+  description: Process checkout
+  tags:
+    - Checkout
+  parameters:
+    - name: sessionId
+      in: query
+      type: string
+      required: true
+      description: Set this to the session id from the successful Payment system authorisation request to store the checkout data in onCourse.
+    - name: key
+      in: query
+      type: string
+      required: false
+      description: key of college instance
+  responses:
+    '200':
+      description: Success response
+      schema:
+        type: string
+    '400':
+      description: Validation error
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutValidationError.yaml'
+    '411':
+      description: Windcave error, contact ish support
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutValidationError.yaml'
+    '412':
+      description: Can not complite payment transaction
+      schema:
+        $ref: './def/entity/checkout/SessionStatus.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

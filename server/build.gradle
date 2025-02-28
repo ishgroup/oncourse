@@ -134,12 +134,14 @@ dependencies {
 	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
 	implementation 'com.google.apis:google-api-services-classroom:v1-rev135-1.23.0'
 
-	api 'com.nimbusds:nimbus-jose-jwt:8.9'
+	implementation 'net.minidev:json-smart:2.3'
+	implementation 'com.nimbusds:nimbus-jose-jwt:8.9'
 	implementation 'com.bugsnag:bugsnag:3.6.2'
 
 	implementation 'com.chargebee:chargebee-java:3.19.0'
 
 	implementation "com.stripe:stripe-java:28.1.0"
+	implementation 'com.squareup:square:43.0.0.20250123'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'

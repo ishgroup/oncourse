@@ -1,0 +1,10 @@
+type: object
+properties:
+  clientKey:
+    type: string
+    required: true
+    description: key for client operations with payment system
+  locationId:
+    type: string
+    required: false
+    description: location id of application for square payment system
