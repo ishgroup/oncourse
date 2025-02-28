@@ -14,6 +14,7 @@ package ish.oncourse.server.api.v1.service.impl
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import io.bootique.jetty.servlet.DefaultServletEnvironment
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.EntityRelationCartAction
 import ish.math.Money
@@ -39,6 +40,9 @@ import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
+import org.eclipse.jetty.server.Request
+
+import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
 
 @CompileDynamic
 class CheckoutApiImpl implements CheckoutApi {
@@ -78,6 +82,9 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
     LicenseService licenseService
+
+    @Inject
+    DefaultServletEnvironment defaultServletEnvironment
 
     @Override
     CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin, String deprecatedSessionId) {
@@ -258,6 +265,13 @@ class CheckoutApiImpl implements CheckoutApi {
             checkoutSessionService.removeSession(paymentSessionId)
             paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not completed, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
         }
+
+        def session = checkoutSessionService.getCheckoutSession(paymentSessionId)
+        if(session == null)
+            EntityValidator.throwClientErrorException("sessionId", "Unexpected request")
+
+        Request request = defaultServletEnvironment.request().orElse(null) as Request
+        request.setAttribute(USER_ATTRIBUTE, session.createdByUser)
 
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
             it.onCoursePaymentSessionId = paymentSessionId

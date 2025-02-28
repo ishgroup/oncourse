@@ -57,11 +57,15 @@ class CheckoutSessionService {
         context.commitChanges()
     }
 
-    CheckoutModelDTO getCheckoutModel(String sessionId, PaymentServiceInterface paymentService) {
+    CheckoutSession getCheckoutSession(String sessionId) {
         def context = cayenneService.newReadonlyContext
-        def session = ObjectSelect.query(CheckoutSession)
+        return ObjectSelect.query(CheckoutSession)
                 .where(CheckoutSession.SESSION_ID.eq(sessionId))
                 .selectOne(context)
+    }
+
+    CheckoutModelDTO getCheckoutModel(String sessionId, PaymentServiceInterface paymentService) {
+        def session = getCheckoutSession(sessionId)
 
         if(session == null) {
             paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Unexpected request")])
@@ -72,9 +76,7 @@ class CheckoutSessionService {
     }
 
     Boolean sessionExists(String sessionId) {
-        def session = ObjectSelect.query(CheckoutSession)
-                .where(CheckoutSession.SESSION_ID.eq(sessionId))
-                .selectOne(cayenneService.newContext)
+        def session = getCheckoutSession(sessionId)
         return session != null
     }
 }
