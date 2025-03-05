@@ -58,7 +58,7 @@ const CheckoutPaymentPage = React.memo<PaymentPageProps>(props => {
       ].forEach(attachScript);
     }
     if (['SQUARE', 'SQUARE_TEST'].includes(gateway)) {
-      attachScript('https://sandbox.web.squarecdn.com/v1/square.js');
+      attachScript(`https://${gateway === 'SQUARE_TEST' ? "sandbox." : ""}web.squarecdn.com/v1/square.js`);
     }
     
   }, [gateway]);
