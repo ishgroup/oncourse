@@ -271,7 +271,7 @@ class CheckoutApiImpl implements CheckoutApi {
             EntityValidator.throwClientErrorException("sessionId", "Unexpected request")
 
         Request request = defaultServletEnvironment.request().orElse(null) as Request
-        request.setAttribute(USER_ATTRIBUTE, session.createdByUser)
+        request.session.setAttribute(USER_ATTRIBUTE, session.createdByUser)
 
         def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
             it.onCoursePaymentSessionId = paymentSessionId
