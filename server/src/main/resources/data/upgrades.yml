@@ -901,3 +901,16 @@ databaseChangeLog:
       changes:
         - customChange:
             class: ish.oncourse.server.upgrades.liquibase.change.UpdateSubjectEntitiesToMultiple
+  - changeSet:
+      id: 139-0
+      author: kristina
+      comment: convert 'default.currency' Preference to 'account.default.country' Preference
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: Preference
+      changes:
+        - customChange:
+            class: ish.oncourse.server.upgrades.liquibase.change.ConvertPreferenceDefaultCurrentcyToDefaultCountry
+
+

@@ -32,6 +32,7 @@ import ish.persistence.Preferences;
 import ish.util.RuntimeUtil;
 import org.apache.cayenne.access.DataContext;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.staxutils.StaxUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +50,7 @@ import java.util.*;
 
 import static ish.oncourse.server.api.v1.function.UserFunctions.sendInvitationEmailToNewSystemUser;
 import static ish.oncourse.server.services.ISchedulerService.*;
-import static ish.persistence.Preferences.ACCOUNT_CURRENCY;
+import static ish.persistence.Preferences.ACCOUNT_COUNTRY;
 import static ish.validation.ValidationUtil.isValidEmailAddress;
 
 
@@ -206,9 +207,9 @@ public class AngelServerFactory {
 
             LOGGER.warn("Starting cron");
             scheduler.start();
-            var preference = prefController.getPreference(ACCOUNT_CURRENCY, false);
-            if ((preference != null) && (preference.getValueString() != null)) {
-                var country = Country.forCurrencySymbol(preference.getValueString());
+            var preference = prefController.getPreference(ACCOUNT_COUNTRY, false);
+            if ((preference != null) && StringUtils.isNotBlank(preference.getValueString())) {
+                var country = Country.fromDatabaseValue(preference.getValueString());
                 moneyContextUpdater.updateCountry(country);
             }
 

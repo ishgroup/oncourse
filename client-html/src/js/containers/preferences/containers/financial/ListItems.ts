@@ -1,12 +1,12 @@
 export const currency = [
-  { value: "AUD", label: "AUD ($)", symbol: "$" },
-  { value: "CHF", label: "CHF (SFr)", symbol: "SFr " },
-  { value: "EUR", label: "EUR (€)", symbol: "€" },
-  { value: "GBP", label: "GBP (£)", symbol: "£" },
-  { value: "HKD", label: "HKD ($)", symbol: "$" },
-  { value: "NOK", label: "NOK (kr)", symbol: "kr " },
-  { value: "USD", label: "USD ($)", symbol: "$" },
-  { value: "ZAR", label: "ZAR (R)", symbol: "R " }
+  { value: "1", label: "Australia", symbol: "" },
+  { value: "2", label: "Europe", symbol: "" },
+  { value: "3", label: "England", symbol: "" },
+  { value: "4", label: "USA", symbol: "" },
+  { value: "5", label: "Hong Kong", symbol: "" },
+  { value: "6", label: "Switizerland", symbol: "" },
+  { value: "7", label: "Norway", symbol: "" },
+  { value: "8", label: "South Africa", symbol: "" }
 ];
 
 export const postPrepaidFees = [

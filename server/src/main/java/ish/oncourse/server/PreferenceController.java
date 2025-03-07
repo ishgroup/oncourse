@@ -30,6 +30,8 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.JobKey;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
@@ -53,6 +55,12 @@ public class PreferenceController extends CommonPreferenceController {
 	private final MoneyContextUpdater moneyContextUpdater;
 
 	private ObjectContext objectContext;
+
+	public static final List<String> CUSTOM_LOGO_PREFERENCES = List.of(
+			CUSTOM_LOGO_BLACK, CUSTOM_LOGO_BLACK_SMALL,
+			CUSTOM_LOGO_WHITE, CUSTOM_LOGO_WHITE_SMALL,
+			CUSTOM_LOGO_COLOUR, CUSTOM_LOGO_COLOUR_SMALL
+	);
 
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
@@ -131,7 +139,7 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public void setValueForKey(String key, Object value) {
-	    if ((key.equals(ACCOUNT_CURRENCY)) && (value != null)) {
+	    if ((key.equals(ACCOUNT_COUNTRY)) && (value != null)) {
 			var country = (Country) value;
 	        moneyContextUpdater.updateCountry(country);
         }
@@ -154,11 +162,14 @@ public class PreferenceController extends CommonPreferenceController {
                     e.printStackTrace();
                 }
             }
-            super.setValueForKey(key, value);
+
+			if (CUSTOM_LOGO_PREFERENCES.contains(key)) {
+				setValue(key, false, Optional.ofNullable(value).orElse("").toString());
+			}
+
+			super.setValueForKey(key, value);
         }
 	}
-
-
 
 	/**
 	 * @deprecated Replace with Google Guice injection.

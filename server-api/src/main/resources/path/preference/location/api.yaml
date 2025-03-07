@@ -1,0 +1,14 @@
+get:
+  operationId: getLocation
+  description: Get current OnCourse location
+  tags:
+  - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/location/Location.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

@@ -41,16 +41,12 @@ class PreferenceFunctions {
         Object value = controller.getValueForKey(key)
 
         if (value != null) {
-
-
+            if (value instanceof Country) {
+                return (value as Country).displayName
+            }
             if (value instanceof DisplayableExtendedEnumeration) {
                 return (value as DisplayableExtendedEnumeration).databaseValue.toString()
             }
-
-            if (value instanceof Country) {
-                return (value as Country).currencyCode()
-            }
-
             return value.toString()
         }
         return null
@@ -106,8 +102,8 @@ class PreferenceFunctions {
                 return TypesUtil.getEnumForDatabaseValue(Integer.valueOf(value), ExportJurisdiction)
             case TWO_FACTOR_AUTHENTICATION:
                 return TypesUtil.getEnumForDatabaseValue(value, TwoFactorAuthorizationStatus)
-            case ACCOUNT_CURRENCY:
-                return Country.forCurrencySymbol(value)
+            case ACCOUNT_COUNTRY:
+                return Country.fromDatabaseValue(value)
             default:
                 return value
         }
