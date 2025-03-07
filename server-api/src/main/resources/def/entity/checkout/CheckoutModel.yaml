@@ -18,9 +18,6 @@ properties:
     format: date
     required: false
     description: custom payment date
-  merchantReference:
-    type: string
-    description: server side generated reference on x-validate step. Required for complte request.
   contactNodes:
     type: array
     required: true

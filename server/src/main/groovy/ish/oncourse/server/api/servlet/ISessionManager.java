@@ -31,5 +31,7 @@ public interface ISessionManager {
     void logout(HttpServletRequest request);
 
     void doKickOut(SystemUser user);
+
+    String getHost();
     
 }

@@ -23,6 +23,7 @@ class CardTypeAdapter {
             case "mastercard":
                 return CreditCardType.MASTERCARD
             case "amex":
+            case "american_express":
                 return CreditCardType.AMEX
             default:
                 logger.error("Can't map stripe credit card type ($cardBrand) to CreditCardType.")

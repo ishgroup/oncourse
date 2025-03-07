@@ -59,9 +59,15 @@ class SessionManager implements ISessionManager {
         Session session = request?.session as Session
         if (session) {
             return (SystemUser) session.getAttribute(USER_ATTRIBUTE)
-        } else {
-            return null
         }
+
+        return null
+    }
+
+    String getHost() {
+        Request request = defaultServletEnvironment.request().orElse(null) as Request
+        def url = new URL(request.requestURL.toString())
+        return url.getProtocol() + "://" + url.getAuthority()
     }
 
     boolean checkConcurrentUsersLimit(SystemUser user, Integer count, Date timeoutThreshold) {
