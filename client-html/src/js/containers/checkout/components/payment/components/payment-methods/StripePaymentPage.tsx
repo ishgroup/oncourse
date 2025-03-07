@@ -154,6 +154,9 @@ const StripePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
             mode: 'payment',
             currency: 'aud',
             paymentMethodCreation: 'manual',
+            payment_method_types: [
+              'card'
+            ],
             amount: decimalMul(summary.payNowTotal, 100)
           }}
         >
