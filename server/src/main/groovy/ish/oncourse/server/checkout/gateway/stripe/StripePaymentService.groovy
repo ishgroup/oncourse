@@ -10,7 +10,6 @@ package ish.oncourse.server.checkout.gateway.stripe
 
 import com.google.inject.Inject
 import com.stripe.Stripe
-import com.stripe.model.BalanceTransaction
 import com.stripe.model.Charge
 import com.stripe.model.PaymentIntent
 import com.stripe.model.Refund
@@ -30,7 +29,6 @@ import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.EmbeddedFormPaymentServiceInterface
-import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -39,9 +37,8 @@ import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.Se
 
 @CompileDynamic
 class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
-    private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
-    private static final String CURRENCY_CODE_AUD = "AUD"
+    private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     @Inject
     private PreferenceController preferenceController
@@ -65,7 +62,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                 .build()
 
         def price = SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency(CURRENCY_CODE_AUD)
+                .setCurrency(amount.currencyContext.currencyCode)
                 .setUnitAmount(amount.multiply(100).toInteger())
                 .setProductData(product)
                 .build()
@@ -78,7 +75,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         SessionCreateParams.Builder paramsBuilder =
                 SessionCreateParams.builder()
                         .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setClientReferenceId(merchantReference)
                         .addLineItem(lineItem)
                         .setCustomerEmail(contact.email)
@@ -153,8 +150,8 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         SessionAttributes sessionAttributes = new SessionAttributes()
 
         try {
-            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.longValue())
-                    .setCurrency(CURRENCY_CODE_AUD)
+            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.toLong())
+                    .setCurrency(amount.currencyContext.currencyCode)
                     .setPaymentIntent(transactionId)
                     .build())
 
@@ -178,7 +175,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount.multiply(100).toLong())
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setCustomer(cardId)
                         .build()
 

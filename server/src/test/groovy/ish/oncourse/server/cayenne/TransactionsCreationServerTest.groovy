@@ -72,7 +72,7 @@ class TransactionsCreationServerTest extends TestWithDatabase {
                 .selectOne(cayenneContext)
 
         Assertions.assertNotNull(deposit)
-        Assertions.assertEquals(new Money("100.00"), deposit.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), deposit.getAmount())
 
 
         AccountTransaction undeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount()))
@@ -86,7 +86,7 @@ class TransactionsCreationServerTest extends TestWithDatabase {
                 .selectOne(cayenneContext)
 
         Assertions.assertNotNull(debtor)
-        Assertions.assertEquals(new Money("-100.00"), debtor.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), debtor.getAmount())
     }
 
 
@@ -132,14 +132,14 @@ class TransactionsCreationServerTest extends TestWithDatabase {
                 .selectOne(context)
 
         Assertions.assertNotNull(deposit)
-        Assertions.assertEquals(new Money("100.00"), deposit.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), deposit.getAmount())
 
         AccountTransaction debtor = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(line.getInvoice().getDebtorsAccount()))
                 .and(AccountTransaction.TABLE_NAME.eq(AccountTransactionType.PAYMENT_IN_LINE))
                 .selectOne(context)
 
         Assertions.assertNotNull(debtor)
-        Assertions.assertEquals(new Money("-100.00"), debtor.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), debtor.getAmount())
 
         //unbank and check transactions
         paymentIn.setBanking(null)
@@ -147,7 +147,7 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         AccountTransaction undeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount())).selectOne(context)
         Assertions.assertNotNull(undeposit)
-        Assertions.assertEquals(new Money("100.00"), undeposit.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), undeposit.getAmount())
 
         List<AccountTransaction> deposits = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn())).select(context)
         Assertions.assertEquals(2, deposits.size())
@@ -169,14 +169,14 @@ class TransactionsCreationServerTest extends TestWithDatabase {
                 .selectOne(context)
 
         Assertions.assertNotNull(undepositNew)
-        Assertions.assertEquals(new Money("-100.00"), undepositNew.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), undepositNew.getAmount())
 
         AccountTransaction depositNew = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getAccountIn()))
                 .and(AccountTransaction.TRANSACTION_DATE.eq(newSettlementDate))
                 .selectOne(context)
 
         Assertions.assertNotNull(depositNew)
-        Assertions.assertEquals(new Money("100.00"), depositNew.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), depositNew.getAmount())
 
         List<AccountTransaction> allUndeposit = ObjectSelect.query(AccountTransaction.class).where(AccountTransaction.ACCOUNT.eq(paymentIn.getUndepositedFundsAccount()))
                 .select(context)
@@ -188,7 +188,7 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         Assertions.assertEquals(3, allDeposit.size())
 
         Assertions.assertEquals(Money.ZERO, allUndeposit.collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) })
-        Assertions.assertEquals(new Money("100.00"), allDeposit.collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) })
+        Assertions.assertEquals(Money.of("100.00"), allDeposit.collect { it.amount }.inject(Money.ZERO) { a, b -> a.add(b) })
 
     }
 
@@ -333,11 +333,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-10.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-10.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -345,8 +345,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-10.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-10.00"), liability_expense.getAmount())
 
 
         //redeem next time this voucher
@@ -399,11 +399,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, asset2Transactions.size())
-        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, expense2Transactions.size())
-        Assertions.assertEquals(new Money("30.00"), expense2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("30.00"), expense2Transactions.get(0).getAmount())
     }
 
     //VoucherProduct Purchase price: $120
@@ -467,11 +467,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -479,8 +479,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liability_expense.getAmount())
 
 
         //redeem next time this voucher
@@ -533,11 +533,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, asset2Transactions.size())
-        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> liability2Transactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, liability2Transactions.size())
-        Assertions.assertEquals(new Money("-20.00"), liability2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-20.00"), liability2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(2, expense2Transactions.size())
@@ -545,8 +545,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(1) : expense2Transactions.get(0)
         AccountTransaction liability_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(0) : expense2Transactions.get(1)
 
-        Assertions.assertEquals(new Money("30.00"), asset_expense2.getAmount())
-        Assertions.assertEquals(new Money("-20.00"), liability_expense2.getAmount())
+        Assertions.assertEquals(Money.of("30.00"), asset_expense2.getAmount())
+        Assertions.assertEquals(Money.of("-20.00"), liability_expense2.getAmount())
     }
 
     //VoucherProduct Purchase price: $120
@@ -609,11 +609,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-120.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-120.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -621,8 +621,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-120.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-120.00"), liability_expense.getAmount())
     }
 
     //VoucherProduct Purchase price: $30
@@ -686,11 +686,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-30.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -698,8 +698,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-30.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), liability_expense.getAmount())
 
         //redeem next time this voucher
 
@@ -751,11 +751,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, asset2Transactions.size())
-        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, expense2Transactions.size())
-        Assertions.assertEquals(new Money("30.00"), expense2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("30.00"), expense2Transactions.get(0).getAmount())
     }
 
     //VoucherProduct Purchase price: $120
@@ -819,11 +819,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -831,8 +831,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liability_expense.getAmount())
 
         //redeem next time this voucher
 
@@ -882,11 +882,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, asset2Transactions.size())
-        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> liability2Transactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, liability2Transactions.size())
-        Assertions.assertEquals(new Money("-20.00"), liability2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-20.00"), liability2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(2, expense2Transactions.size())
@@ -894,8 +894,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(1) : expense2Transactions.get(0)
         AccountTransaction liability_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(0) : expense2Transactions.get(1)
 
-        Assertions.assertEquals(new Money("30.00"), asset_expense2.getAmount())
-        Assertions.assertEquals(new Money("-20.00"), liability_expense2.getAmount())
+        Assertions.assertEquals(Money.of("30.00"), asset_expense2.getAmount())
+        Assertions.assertEquals(Money.of("-20.00"), liability_expense2.getAmount())
 
     }
 
@@ -959,11 +959,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-180.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-180.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -971,8 +971,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-180.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-180.00"), liability_expense.getAmount())
     }
 
     //VoucherProduct Purchase price: $200
@@ -1036,11 +1036,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -1048,8 +1048,8 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("100.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("100.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liability_expense.getAmount())
 
 
         //redeem next time this voucher
@@ -1104,11 +1104,11 @@ class TransactionsCreationServerTest extends TestWithDatabase {
 
         List<AccountTransaction> asset2Transactions = AccountTransaction.ACCOUNT.eq(assetAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, asset2Transactions.size())
-        Assertions.assertEquals(new Money("-30.00"), asset2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), asset2Transactions.get(0).getAmount())
 
         List<AccountTransaction> liability2Transactions = AccountTransaction.ACCOUNT.eq(liabilityAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(1, liability2Transactions.size())
-        Assertions.assertEquals(new Money("-30.00"), liability2Transactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), liability2Transactions.get(0).getAmount())
 
         List<AccountTransaction> expense2Transactions = AccountTransaction.ACCOUNT.eq(expenseAccount).filterObjects(secondTransactions)
         Assertions.assertEquals(2, expense2Transactions.size())
@@ -1116,7 +1116,7 @@ class TransactionsCreationServerTest extends TestWithDatabase {
         AccountTransaction asset_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(1) : expense2Transactions.get(0)
         AccountTransaction liability_expense2 = expense2Transactions.get(0).getAmount().isNegative() ? expense2Transactions.get(0) : expense2Transactions.get(1)
 
-        Assertions.assertEquals(new Money("30.00"), asset_expense2.getAmount())
-        Assertions.assertEquals(new Money("-30.00"), liability_expense2.getAmount())
+        Assertions.assertEquals(Money.of("30.00"), asset_expense2.getAmount())
+        Assertions.assertEquals(Money.of("-30.00"), liability_expense2.getAmount())
     }
 }

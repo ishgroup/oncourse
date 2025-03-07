@@ -98,7 +98,7 @@ public class CourseClassService {
 		}
 
 		return (int) Math.ceil(ClassBudgetUtil.getClassCostsExTax(courseClass, ClassBudgetUtil.ACTUAL)
-				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).doubleValue());
+				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).toDouble());
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class CourseClassService {
 		}
 
 		return (int) Math.ceil(ClassBudgetUtil.getClassRunningCostsExTax(courseClass, ClassBudgetUtil.ACTUAL)
-				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).doubleValue());
+				.subtract(ClassBudgetUtil.getClassIncomeExTax(courseClass, ClassBudgetUtil.ACTUAL)).divide(courseClass.getFeeExGst()).toDouble());
 	}
 
 	/**

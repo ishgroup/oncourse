@@ -7,6 +7,9 @@ package ish.oncourse.server.print
 import groovy.transform.CompileStatic
 import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.math.Country
+import ish.math.Money
+import ish.math.MoneyManager
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourceType
@@ -19,6 +22,7 @@ import ish.oncourse.server.cayenne.glue.CayenneDataObject
 import ish.oncourse.server.document.DocumentService
 import ish.oncourse.server.integration.PluginService
 import ish.oncourse.server.jasper.JasperReportsConfig
+import ish.oncourse.server.money.MoneyContextProvider
 import ish.oncourse.server.preference.UserPreferenceService
 import ish.oncourse.server.upgrades.DataPopulation
 import ish.print.AdditionalParameters
@@ -30,6 +34,7 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectQuery
 import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -42,7 +47,15 @@ import java.time.LocalDate
 @Disabled
 @DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
 class ConcurrentReportPrintingTest extends TestWithDatabase {
+
     List<String> keyCodeList = new ArrayList<>()
+
+    @BeforeAll
+    static void setupEnvironment() {
+        def context = new MoneyContextProvider()
+        context.updateCountry(Country.AUSTRALIA)
+        MoneyManager.updateSystemContext(context)
+    }
     
     @BeforeEach
     void dataPopulation() throws Exception {
@@ -135,7 +148,7 @@ class ConcurrentReportPrintingTest extends TestWithDatabase {
 
             request.setIds(mapOfIds)
 
-            PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class))
+            PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class),  MoneyManager.systemContext)
 
             reportsToRun.put(request, worker)
         }

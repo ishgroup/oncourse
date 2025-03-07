@@ -140,7 +140,7 @@ class CheckoutApiService {
                 }
 
                 String merchantReference = UUID.randomUUID().toString()
-                SessionAttributes attributes = paymentService.createSession(xOrigin, new Money(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
+                SessionAttributes attributes = paymentService.createSession(xOrigin, Money.of(checkoutModel.payNow), merchantReference, checkoutModel.allowAutoPay, checkout.paymentIn.payer)
                 if (attributes.sessionId) {
                     dtoResponse.sessionId = attributes.sessionId
                     dtoResponse.ccFormUrl = attributes.ccFormUrl

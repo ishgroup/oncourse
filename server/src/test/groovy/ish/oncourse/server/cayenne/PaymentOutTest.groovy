@@ -49,7 +49,7 @@ class PaymentOutTest extends TestWithDatabase {
         PaymentOut payment = context.newObject(PaymentOut.class)
         payment.setPaymentDate(LocalDate.now())
         payment.setAccountOut(accountOut)
-        payment.setAmount(new Money(new BigDecimal(50)))
+        payment.setAmount(Money.of(new BigDecimal(50)))
         payment.setPayee(payer)
         payment.setReconciled(false)
         payment.setStatus(PaymentStatus.IN_TRANSACTION)
