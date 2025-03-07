@@ -26,6 +26,7 @@ import ish.oncourse.server.api.dao.PaymentInDao
 import ish.oncourse.server.api.service.*
 import ish.oncourse.server.api.servlet.ApiFilter
 import ish.oncourse.server.api.v1.model.*
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.checkout.gateway.TransactionPaymentServiceInterface
 import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
@@ -42,6 +43,7 @@ import ish.oncourse.server.checkout.gateway.windcave.WindcavePaymentService
 import ish.oncourse.server.integration.EventService
 import ish.oncourse.server.users.SystemUserService
 import org.apache.cayenne.query.ObjectSelect
+import org.eclipse.jetty.http.HttpStatus
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
@@ -103,8 +105,11 @@ class CheckoutApiService {
 
 
     CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
-        Checkout checkout = checkoutController.createCheckout(checkoutModel, true)
+        Checkout checkout = checkoutController.createCheckout(checkoutModel)
         paymentService = getPaymentServiceByGatewayType()
+        if(!checkout.errors.empty) {
+            EntityValidator.throwClientErrorException("checkoutModel", checkout.errors.error.join(" ; "))
+        }
         return paymentService.fillResponse(checkout)
     }
 
@@ -135,7 +140,7 @@ class CheckoutApiService {
 
     private Checkout processPaymentTypeChoice(CheckoutModelDTO checkoutModelDTO, Boolean creditCardExpected) {
         paymentService = getPaymentServiceByGatewayType()
-        Checkout checkout = checkoutController.createCheckout(checkoutModelDTO, false)
+        Checkout checkout = checkoutController.createCheckout(checkoutModelDTO)
         if(!checkout.isCreditCard().equals(creditCardExpected))
             paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, "This endpoint cannot be used for selected payment type. See submitCCPayment, submitPayment")
 
@@ -200,7 +205,7 @@ class CheckoutApiService {
 
         try {
             def checkoutModel = checkoutSessionService.getCheckoutModel(submitRequestDTO.onCoursePaymentSessionId, paymentService)
-            Checkout checkout = checkoutController.createCheckout(checkoutModel, false)
+            Checkout checkout = checkoutController.createCheckout(checkoutModel)
 
             if (!checkout.errors.empty) {
                 paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, checkout.errors)
