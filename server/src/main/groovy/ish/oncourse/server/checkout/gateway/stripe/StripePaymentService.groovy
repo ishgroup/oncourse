@@ -37,9 +37,8 @@ import static com.stripe.param.checkout.SessionCreateParams.PaymentIntentData.Se
 
 @CompileDynamic
 class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
-    private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
-    private static final String CURRENCY_CODE_AUD = "AUD"
+    private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     @Inject
     private PreferenceController preferenceController
@@ -63,7 +62,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
                 .build()
 
         def price = SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency(CURRENCY_CODE_AUD)
+                .setCurrency(amount.currencyContext.currencyCode)
                 .setUnitAmount(amount.multiply(100).toInteger())
                 .setProductData(product)
                 .build()
@@ -76,7 +75,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         SessionCreateParams.Builder paramsBuilder =
                 SessionCreateParams.builder()
                         .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setClientReferenceId(merchantReference)
                         .addLineItem(lineItem)
                         .setCustomerEmail(contact.email)
@@ -152,7 +151,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
 
         try {
             def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.toLong())
-                    .setCurrency(CURRENCY_CODE_AUD)
+                    .setCurrency(amount.currencyContext.currencyCode)
                     .setPaymentIntent(transactionId)
                     .build())
 
@@ -176,7 +175,7 @@ class StripePaymentService implements EmbeddedFormPaymentServiceInterface {
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount.multiply(100).toLong())
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setCustomer(cardId)
                         .build()
 
