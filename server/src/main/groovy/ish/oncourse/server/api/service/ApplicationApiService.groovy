@@ -17,6 +17,7 @@ import ish.common.types.ApplicationStatus
 import ish.common.types.ConfirmationStatus
 import ish.common.types.CourseEnrolmentType
 import ish.common.types.PaymentSource
+import ish.math.Money
 import ish.oncourse.cayenne.TaggableClasses
 import ish.oncourse.server.api.dao.ApplicationDao
 import ish.oncourse.server.api.dao.ContactDao
@@ -31,14 +32,14 @@ import org.apache.cayenne.ObjectContext
 
 import java.time.ZoneOffset
 
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATION_SOURCE_MAP
 import static ish.oncourse.server.api.v1.function.ApplicationFunctions.APPLICATION_STATUS_MAP
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.validateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
-import static ish.oncourse.server.api.v1.function.TagFunctions.*
+import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
+import static ish.oncourse.server.api.v1.function.TagFunctions.validateRelationsForSave
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 @CompileStatic
@@ -91,7 +92,7 @@ class ApplicationApiService extends TaggableApiService<ApplicationDTO, Applicati
 
 
         application.status = APPLICATION_STATUS_MAP.getByValue(applicationDTO.status)
-        application.feeOverride = toMoneyValue(applicationDTO.feeOverride)
+        application.feeOverride = Money.exactOf(applicationDTO.feeOverride)
         application.enrolBy = applicationDTO.enrolBy?.atStartOfDay(ZoneOffset.UTC)?.toDate()
         application.reason = trimToNull(applicationDTO.reason)
         if (application.newRecord) {

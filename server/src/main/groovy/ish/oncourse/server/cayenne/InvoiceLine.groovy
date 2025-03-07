@@ -171,11 +171,11 @@ class InvoiceLine extends _InvoiceLine {
                 localDiscountEachExTax = Money.ZERO;
             }
             Money taxAdjustment = Money.ZERO;
-            if (enrolment != null && enrolment.courseClass != null && !Money.isZeroOrEmpty(enrolment.courseClass.taxAdjustment)) {
+            if (enrolment != null && enrolment.courseClass != null && !enrolment.courseClass.taxAdjustment.isZero()) {
                 taxAdjustment = taxAdjustment.add(enrolment.courseClass.taxAdjustment)
             }
             for (ProductItem item : getProductItems()) {
-                if (item != null && item.getProduct() != null && !Money.isZeroOrEmpty(item.product.taxAdjustment)) {
+                if (item != null && item.getProduct() != null && !item.product.taxAdjustment.isZero()) {
                     taxAdjustment = taxAdjustment.add(item.product.taxAdjustment)
                 }
             }

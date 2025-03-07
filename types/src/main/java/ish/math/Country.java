@@ -8,66 +8,50 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  */
+
 package ish.math;
 
-import java.util.Currency;
+import ish.common.util.DisplayableExtendedEnumeration;
+
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * Java provides lots of locales, mostly based on os time zone and keyboard type. We have produced subset of countries, to make things easier.
- *
- * @author marcin
+ * Defines a set of supported countries with their associated locales and currency.
+ * <p>
+ * Java provides many locales, primarily based on the OS time zone and keyboard type.
+ * To simplify currency-related operations, Angel has specific subset of countries.
+ * Each country is associated with a {@link Locale}, a currency symbol, and a {@link CurrencyUnit}.
+ * </p>
  */
-public enum Country {
+public enum Country implements DisplayableExtendedEnumeration<Integer> {
 
-	AUSTRALIA(new Locale("en", "AU"), "$", "AUD"),
-	EUROPE(Locale.GERMANY, "\u20AC", "EUR"),
-	ENGLAND(Locale.UK, "\u00A3", "GBP"),
-	US(Locale.US, "$", "USD"),
-	HONG_KONG(Locale.US, "$", "HKD"),
-	SWITZERLAND(new Locale("de", "CH"), "SFr.", "CHF"),
-	NORWAY(new Locale("no", "NO"), "kr", "NOK"),
-	SOUTH_AFRICA(new Locale("en", "ZA"), "R", "ZAR");
+	AUSTRALIA(1, "Australia", new Locale("en", "AU"), "$"),
+	EUROPE(2, "Europe", Locale.GERMANY, "\u20AC"),
+	ENGLAND(3, "England", Locale.UK, "\u00A3"),
+	US(4, "USA", Locale.US, "$"),
+	HONG_KONG(5, "Hong Kong", new Locale("zh", "HK"), "$"),
+	SWITZERLAND(6, "Switizerland", new Locale("de", "CH"), "SFr."),
+	NORWAY(7, "Norway", new Locale("no", "NO"), "kr"),
+	SOUTH_AFRICA(8, "South Africa", new Locale("en", "ZA"), "R");
 
-	private String symbol;
-	private String shortSymbol;
-	private Currency currency;
-	private Locale locale;
+	private final Integer value;
+	private final String displayName;
 
-	private Country(Locale locale, String shortCurrencySymbol, String currencySymbol) {
+	private final Locale locale;
+	private final CurrencyUnit currency;
+	private final String currencyCode;
+	private final String currencySymbol;
+
+	Country(Integer value, String displayName, Locale locale, String shortCurrencySymbol) {
+		this.value = value;
+		this.displayName = displayName;
 		this.locale = locale;
-		this.currency = Currency.getInstance(locale);
-		this.shortSymbol = shortCurrencySymbol;
-		this.symbol = currencySymbol;
-
-	}
-
-	/**
-	 * @return short currency symbol, eg. "$"
-	 */
-	public String currencyShortSymbol() {
-		return this.shortSymbol;
-	}
-
-	/**
-	 * @return currency symbol, eg. "AUD", "USD"
-	 */
-	public String currencySymbol() {
-		return this.symbol;
-	}
-
-	/**
-	 * @return combined currency symbol, eg. "AUD ($)", "USD ($)"
-	 */
-	public String currencyCombinedSymbol() {
-		return this.symbol + (this.shortSymbol != null ? " (" + this.shortSymbol + ")" : "");
-	}
-
-	/**
-	 * @return currency object associated with the country
-	 */
-	public java.util.Currency currency() {
-		return this.currency;
+		this.currency = Monetary.getCurrency(locale);
+		this.currencyCode = Monetary.getCurrency(locale).getCurrencyCode();
+		this.currencySymbol = shortCurrencySymbol;
 	}
 
 	/**
@@ -78,33 +62,93 @@ public enum Country {
 	}
 
 	/**
-	 * Returns enumeration key by passed integer value. Not ideal but number of keys is still small.
+	 * Gets standard currency code symbol for this country.
+	 * <p>
+	 * Example: "AUD" for Australia, "USD" for the United States.
+	 * </p>
 	 *
-	 * @param val integer value taken from or stored to database.
-	 * @return enumeration key.
+	 * @return currency code according to ISO 4217.
 	 */
-	public static Country forCurrencySymbol(String val) {
-		for (Country c : Country.values()) {
-			if (c.currencySymbol().equals(val.trim()) || c.currencyShortSymbol() != null && c.currencyShortSymbol().equals(val.trim())) {
-				return c;
-			}
-		}
-		throw new IllegalArgumentException("Enumeration key doesn't exist for value:'" + val + "'");
+	public String currencyCode() {
+		return currencyCode;
 	}
 
-    /**
-     * Finds Country instance based on locale
-     * @param locale key
-     * @return country with some locale or null, if country for locale doesn't exist
-     */
-	public static Country findCountryByLocale(Locale locale) {
-	    if (locale != null) {
-            for (Country country : Country.values()) {
-                if (country.locale().equals(locale)) {
-                    return country;
-                }
-            }
-        }
-        return null;
+	/**
+	 * Gets predefined currency symbol for this country.
+	 * <p>
+	 * Example: "$" for Australia, "€" for Germany.
+	 * </p>
+	 *
+	 * @return currency symbol
+	 */
+	public String currencySymbol() {
+		return currencySymbol;
+	}
+
+	/**
+	 * Gets the {@link CurrencyUnit} associated with this Country locale.
+	 *
+	 * @return currency unit.
+	 */
+	public CurrencyUnit currency() {
+		return this.currency;
+	}
+
+	/**
+	 * Finds a {@link Country} based on a given database value.
+	 * <p>
+	 * This method searches for a country that matches the provided database value.
+	 * If no match is found, it returns {@code null}.
+	 * </p>
+	 *
+	 * @param value - integer value presentation in database
+	 * @return corresponding {@link Country} or {@code null} if no match is found.
+	 */
+	public static Country fromDatabaseValue(Integer value) {
+		return Arrays.stream(values())
+				.filter( it -> it.getDatabaseValue().equals(value))
+				.findFirst()
+				.orElse(null);
+	}
+
+	/**
+	 * Finds a {@link Country} based on a given database value.
+	 * <p>
+	 * This method searches for a country that matches the provided database value.
+	 * If no match is found, it returns {@code null}.
+	 * </p>
+	 *
+	 * @param value - integer value presentation in database but in String format
+	 * @return corresponding {@link Country} or {@code null} if no match is found.
+	 */
+	public static Country fromDatabaseValue(String value) {
+		return fromDatabaseValue(Integer.parseInt(value));
+	}
+
+	/**
+	 * Finds a {@link Country} based on a given {@link Locale}.
+	 * <p>
+	 * This method searches for a country that matches the provided locale.
+	 * If no match is found, it returns {@code null}.
+	 * </p>
+	 *
+	 * @param locale locale to search for.
+	 * @return corresponding {@link Country} or {@code null} if no match is found.
+	 */
+	public static Country fromLocale(Locale locale) {
+		return Arrays.stream(values())
+				.filter( it -> it.locale().equals(locale))
+				.findFirst()
+				.orElse(null);
     }
+
+	@Override
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	@Override
+	public Integer getDatabaseValue() {
+		return value;
+	}
 }

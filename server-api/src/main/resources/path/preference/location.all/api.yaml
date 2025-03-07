@@ -1,0 +1,16 @@
+get:
+  operationId: getLocations
+  description: Get available location for onCourse deployment
+  tags:
+  - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/location/Location.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

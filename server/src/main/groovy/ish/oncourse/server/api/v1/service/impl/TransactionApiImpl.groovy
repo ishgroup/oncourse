@@ -45,7 +45,7 @@ class TransactionApiImpl implements TransactionApi {
         checkForBadRequest(validate(transaction, context))
 
         AccountTransactionRequest request = AccountTransactionRequest.valueOf(
-                new Money(transaction.amount),
+                Money.of(transaction.amount),
                 transaction.toAccount,
                 transaction.fromAccount,
                 transaction.transactionDate)

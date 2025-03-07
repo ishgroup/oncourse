@@ -207,7 +207,7 @@ class FinancialBaseForm extends React.Component<any, any> {
               <FormField
                 type="select"
                 name={this.formModel.AccountDefaultCurrency.uniqueKey}
-                label="Default currency"
+                label="Default Location"
                 items={currency}
                               />
             </Grid>
