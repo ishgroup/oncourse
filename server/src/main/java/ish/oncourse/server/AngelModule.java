@@ -29,6 +29,7 @@ import ish.oncourse.server.integration.PluginService;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.lifecycle.*;
+import ish.oncourse.server.logo.LogoUploadCommand;
 import ish.oncourse.server.modules.AngelJobFactory;
 import ish.oncourse.server.preference.UserPreferenceService;
 import ish.oncourse.server.scripting.GroovyScriptService;
@@ -140,11 +141,14 @@ public class AngelModule extends ConfigModule {
                 .addCommand(AngelCommand.class)
                 .addCommand(DataPopulationCommand.class)
                 .addCommand(SanityCheckCommand.class)
+                .addCommand(LogoUploadCommand.class)
                 .decorateCommand(ServerCommand.class,
                         CommandDecorator.builder()
                                 .beforeRun(AngelCommand.class)
                                 .alsoRun(DataPopulationCommand.class)
-                                .alsoRun(SanityCheckCommand.class).build());
+                                .alsoRun(SanityCheckCommand.class)
+                                .alsoRun(LogoUploadCommand.class)
+                                .build());
 
         CayenneModule.extend(binder)
                 .addModule(AngelCayenneModule.class)

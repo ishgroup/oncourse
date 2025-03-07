@@ -38,7 +38,7 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
 
     public MoneyContextProvider() {
         this.locale.set(Locale.getDefault());
-        Country defaultCountry = Country.findCountryByLocale(this.locale.get());
+        Country defaultCountry = Country.fromLocale(this.locale.get());
 
         if (defaultCountry != null) {
             updateCountry(defaultCountry);

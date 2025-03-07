@@ -21,6 +21,7 @@ import ish.oncourse.common.AvetmissConstants
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
+import ish.oncourse.server.api.v1.model.LocationDTO
 import ish.oncourse.server.api.v1.model.LockedDateDTO
 import ish.oncourse.server.cayenne.Message
 
@@ -156,12 +157,39 @@ class PreferenceApiImpl implements PreferenceApi {
     }
 
     @Override
+    LocationDTO getLocation() {
+        ish.math.Country country = ish.math.Country.fromLocale(moneyContext.locale)
+        return Objects.isNull(country) ? null : locationToRest(country)
+    }
+
+    @Override
+    List<LocationDTO> getLocations() {
+        return ish.math.Country.values().collect { country -> locationToRest(country) }
+    }
+
+    private static LocationDTO locationToRest(ish.math.Country country) {
+        return new LocationDTO().with {
+            it.id = country.databaseValue
+            it.name = country.displayName
+            it.countryCode = country.locale().language
+            it.languageCode = country.locale().country
+            it.currency = new CurrencyDTO().with { c ->
+                c.name = country.displayName
+                c.currencySymbol = country.currencyCode()
+                c.shortCurrencySymbol = country.currencySymbol()
+                c
+            }
+            it
+        }
+    }
+
+    @Override
     CurrencyDTO getCurrency() {
         CurrencyDTO currency = new CurrencyDTO().with {
             it.currencySymbol = moneyContext.currencyCode
             it.shortCurrencySymbol = moneyContext.currencySymbol
-            ish.math.Country currentCountry = ish.math.Country.findCountryByLocale(moneyContext.locale)
-            it.name = currentCountry != null ? currentCountry.name() : moneyContext.locale.displayCountry
+            ish.math.Country currentCountry = ish.math.Country.fromLocale(moneyContext.locale)
+            it.name = currentCountry != null ? currentCountry.displayName : moneyContext.locale.displayCountry
             it
         }
         return currency

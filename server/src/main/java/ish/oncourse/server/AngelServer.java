@@ -15,14 +15,15 @@ import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
 import io.bootique.jdbc.hikaricp.JdbcHikariCPModule;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;
 import ish.oncourse.server.bugsnag.BugsnagModule;
 import ish.oncourse.server.db.DbModule;
 import ish.oncourse.server.document.DocumentModule;
 import ish.oncourse.server.http.HttpModule;
+import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.license.LicenseModule;
+import ish.oncourse.server.logo.LogoModule;
 import ish.oncourse.server.messaging.SMTPModule;
 import ish.oncourse.server.modules.*;
 import ish.oncourse.server.money.MoneyModule;
@@ -65,6 +66,7 @@ public class AngelServer {
                 .module(JasperReportsModule.class)
                 .module(MonitoringModule.class)
                 .module(MoneyModule.class)
+                .module(LogoModule.class)
                 .exec()
                 .exit();
     }

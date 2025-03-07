@@ -11,8 +11,11 @@
 
 package ish.math;
 
+import ish.common.util.DisplayableExtendedEnumeration;
+
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -23,23 +26,28 @@ import java.util.Locale;
  * Each country is associated with a {@link Locale}, a currency symbol, and a {@link CurrencyUnit}.
  * </p>
  */
-public enum Country {
+public enum Country implements DisplayableExtendedEnumeration<Integer> {
 
-	AUSTRALIA(new Locale("en", "AU"), "$"),
-	EUROPE(Locale.GERMANY, "\u20AC"),
-	ENGLAND(Locale.UK, "\u00A3"),
-	US(Locale.US, "$"),
-	HONG_KONG(new Locale("zh", "HK"), "$"),
-	SWITZERLAND(new Locale("de", "CH"), "SFr."),
-	NORWAY(new Locale("no", "NO"), "kr"),
-	SOUTH_AFRICA(new Locale("en", "ZA"), "R");
+	AUSTRALIA(1, "Australia", new Locale("en", "AU"), "$"),
+	EUROPE(2, "Europe", Locale.GERMANY, "\u20AC"),
+	ENGLAND(3, "England", Locale.UK, "\u00A3"),
+	US(4, "USA", Locale.US, "$"),
+	HONG_KONG(5, "Hong Kong", new Locale("zh", "HK"), "$"),
+	SWITZERLAND(6, "Switizerland", new Locale("de", "CH"), "SFr."),
+	NORWAY(7, "Norway", new Locale("no", "NO"), "kr"),
+	SOUTH_AFRICA(8, "South Africa", new Locale("en", "ZA"), "R");
+
+	private final Integer value;
+	private final String displayName;
 
 	private final Locale locale;
 	private final CurrencyUnit currency;
 	private final String currencyCode;
 	private final String currencySymbol;
 
-	Country(Locale locale, String shortCurrencySymbol) {
+	Country(Integer value, String displayName, Locale locale, String shortCurrencySymbol) {
+		this.value = value;
+		this.displayName = displayName;
 		this.locale = locale;
 		this.currency = Monetary.getCurrency(locale);
 		this.currencyCode = Monetary.getCurrency(locale).getCurrencyCode();
@@ -87,22 +95,34 @@ public enum Country {
 	}
 
 	/**
-	 * Finds a {@link Country} based on a given currency symbol.
+	 * Finds a {@link Country} based on a given database value.
 	 * <p>
-	 * This method searches for a country by standard currency code (e.g., "USD") or symbol (e.g., "$").
+	 * This method searches for a country that matches the provided database value.
+	 * If no match is found, it returns {@code null}.
 	 * </p>
 	 *
-	 * @param val currency code or symbol to match.
-	 * @return the corresponding {@link Country} enum.
-	 * @throws IllegalArgumentException if no matching country is found.
+	 * @param value - integer value presentation in database
+	 * @return corresponding {@link Country} or {@code null} if no match is found.
 	 */
-	public static Country forCurrencySymbol(String val) {
-		for (Country c : Country.values()) {
-			if (c.currencyCode().equals(val.trim()) || c.currencySymbol() != null && c.currencySymbol().equals(val.trim())) {
-				return c;
-			}
-		}
-		throw new IllegalArgumentException("Enumeration key doesn't exist for value:'" + val + "'");
+	public static Country fromDatabaseValue(Integer value) {
+		return Arrays.stream(values())
+				.filter( it -> it.getDatabaseValue().equals(value))
+				.findFirst()
+				.orElse(null);
+	}
+
+	/**
+	 * Finds a {@link Country} based on a given database value.
+	 * <p>
+	 * This method searches for a country that matches the provided database value.
+	 * If no match is found, it returns {@code null}.
+	 * </p>
+	 *
+	 * @param value - integer value presentation in database but in String format
+	 * @return corresponding {@link Country} or {@code null} if no match is found.
+	 */
+	public static Country fromDatabaseValue(String value) {
+		return fromDatabaseValue(Integer.parseInt(value));
 	}
 
 	/**
@@ -115,14 +135,20 @@ public enum Country {
 	 * @param locale locale to search for.
 	 * @return corresponding {@link Country} or {@code null} if no match is found.
 	 */
-	public static Country findCountryByLocale(Locale locale) {
-	    if (locale != null) {
-            for (Country country : Country.values()) {
-                if (country.locale().equals(locale)) {
-                    return country;
-                }
-            }
-        }
-        return null;
+	public static Country fromLocale(Locale locale) {
+		return Arrays.stream(values())
+				.filter( it -> it.locale().equals(locale))
+				.findFirst()
+				.orElse(null);
     }
+
+	@Override
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	@Override
+	public Integer getDatabaseValue() {
+		return value;
+	}
 }
