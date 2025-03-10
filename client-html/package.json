@@ -18,8 +18,8 @@
     "@swc/jest": "^0.2.37",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.14",
     "@types/lodash.debounce": "4.0.9",
     "@types/lodash.isempty": "4.4.9",
@@ -140,7 +140,6 @@
       "@aql/AqlLexer": "<rootDir>/build/generated-sources/aql-parser/AqlLexer.ts",
       "@aql/AqlParser": "<rootDir>/build/generated-sources/aql-parser/AqlParser.ts",
       "@aql/queryLanguageModel": "<rootDir>/build/generated-sources/aql-model/queryLanguageModel.ts",
-      "@t": "<rootDir>/src/js/common/utils/translation.ts",
       "ace-builds": "<rootDir>/node_modules/ace-builds",
       "uuid": "<rootDir>/node_modules/uuid",
       "^d3-(.*)$": "<rootDir>/node_modules/d3-$1/dist/d3-$1"

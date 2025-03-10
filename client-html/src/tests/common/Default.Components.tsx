@@ -1,4 +1,5 @@
 import { act, fireEvent as testFireEvent, render as testRender, screen as testScreen } from '@testing-library/react';
+import * as React from 'react';
 import { mockedAPI, TestEntry } from '../TestEntry';
 
 interface Props {
@@ -35,6 +36,8 @@ export const defaultComponents = (props: Props) => {
   if (beforeFn) {
     beforeFn();
   }
+
+
 
   testRender(
     <TestEntry state={state ? { ...state({ mockedApi: mockedAPI, viewProps }) } : {}}>

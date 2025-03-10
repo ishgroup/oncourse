@@ -1,7 +1,7 @@
-import { defaultComponents } from "./Default.Components";
 import * as React from "react";
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../js/common/components/list-view/constants";
 import ListEditView, { editViewFormRole } from "../../js/common/components/list-view/components/edit-view/EditView";
+import { defaultComponents } from "./Default.Components";
 
 interface Props {
   entity: string;
