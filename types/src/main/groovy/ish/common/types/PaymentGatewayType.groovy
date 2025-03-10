@@ -18,6 +18,10 @@ enum PaymentGatewayType {
 
     STRIPE_TEST("STRIPE_TEST"),
 
+    SQUARE("SQUARE"),
+
+    SQUARE_TEST("SQUARE_TEST"),
+
     WINDCAVE("WINDCAVE"),
 
     TEST_PAYMENT_SYSTEM("TEST"),

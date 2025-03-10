@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { BooleanArgFunction, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import { BooleanArgFunction, formatCurrency, NoArgFunction, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import React, { Dispatch } from 'react';
 import { connect } from 'react-redux';
 import { InjectedFormProps, isInvalid, reduxForm } from 'redux-form';
@@ -21,6 +21,7 @@ import {
   checkoutProcessPayment,
   checkoutSetPaymentSuccess
 } from '../../../../actions/checkoutPayment';
+import { checkoutUpdateSummaryPrices } from '../../../../actions/checkoutSummary';
 import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
 import PaymentMessageRenderer from '../PaymentMessageRenderer';
 import styles from './styles';
@@ -39,8 +40,9 @@ interface CashPaymentPageProps {
   summary?: CheckoutSummary;
   payment?: CheckoutPayment;
   paymentInvoice?: any;
+  checkoutUpdateSummaryPrices?: NoArgFunction;
   setPaymentSuccess?: BooleanArgFunction;
-  checkoutProcessCcPayment?: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => void;
+  checkoutProcessPayment?: () => void;
   onCheckoutClearPaymentStatus?: () => void;
   paymentStatus?: any;
   hasSummarryErrors?: boolean;
@@ -56,33 +58,32 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
     currencySymbol,
     invalid,
     summary,
-    checkoutProcessCcPayment,
+    checkoutProcessPayment,
     payment,
     onCheckoutClearPaymentStatus,
     hasSummarryErrors,
     paymentStatus,
+    checkoutUpdateSummaryPrices,
     payerName
   } = props;
 
   const [finalized, setFinalized] = React.useState(false);
-  const [validatePayment, setValidatePayment] = React.useState(true);
 
-  const proceedPayment = React.useCallback(validate => {
+  const proceedPayment = React.useCallback(() => {
     onCheckoutClearPaymentStatus();
 
-    setValidatePayment(validate);
+    setFinalized(true);
 
-    if (!validate) setFinalized(true);
-
-    checkoutProcessCcPayment(validate, null, window.location.origin);
+    checkoutProcessPayment();
   }, [summary.payNowTotal]);
 
   React.useEffect(() => {
     if (hasSummarryErrors || (paymentType === "No payment" && summary.payNowTotal > 0)) {
       return;
     }
-    proceedPayment(true);
-  }, [summary.payNowTotal, summary.paymentDate, summary.invoiceDueDate, paymentType]);
+
+    checkoutUpdateSummaryPrices();
+  }, [summary.payNowTotal, hasSummarryErrors, summary.paymentDate, summary.invoiceDueDate, paymentType]);
 
   return (
     <div className={clsx("d-flex flex-fill justify-content-center", classes.content)}>
@@ -155,7 +156,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
                               !summary.list.some(l => l.items.some(li => li.checked))
                               && !summary.voucherItems.some(i => i.checked)
                               && summary.previousOwing.invoiceTotal === 0)) && "disabled")}
-                      onClick={() => proceedPayment(false)}
+                      onClick={() => proceedPayment()}
                     >
                       {$t('finalise_checkout')}
                     </div>
@@ -167,9 +168,9 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
         </form>
         ) : paymentStatus !== "" ? (
           <PaymentMessageRenderer
-            tryAgain={() => proceedPayment(true)}
+            tryAgain={() => proceedPayment()}
             payment={payment}
-            validatePayment={validatePayment}
+            validatePayment={false}
             summary={summary}
           />
         ) : null}
@@ -189,10 +190,11 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   setPaymentSuccess: (isSuccess: boolean) => dispatch(checkoutSetPaymentSuccess(isSuccess)),
-  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
-    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  checkoutProcessPayment: () => {
+    dispatch(checkoutProcessPayment());
   },
-  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus())
+  onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
+  checkoutUpdateSummaryPrices: () => dispatch(checkoutUpdateSummaryPrices())
 });
 
 export default reduxForm<any, CashPaymentPageProps>({
