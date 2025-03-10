@@ -368,11 +368,6 @@ class CheckoutController {
     }
 
     private void initInvoice() {
-        if (checkout.paymentMethodId == null && !checkout.payWithSavedCard &&
-                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.valueOf(amount) != Money.ZERO })) {
-            return
-        }
-
         if (checkout.contactNodes.any {node -> !node.enrolments.empty || !node.products.empty  || !node.vouchers.empty || !node.memberships.empty }) {
             invoice = context.newObject(Invoice)
             invoice.amountOwing = Money.ZERO
