@@ -81,7 +81,7 @@
 		<variableExpression><![CDATA[$F{account}.debit ? $F{account}.getMovements($F{global.localdateRange_from}, $F{global.localdateRange_to}).toBigDecimal() ?: BigDecimal.ZERO : BigDecimal.ZERO]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_CURRENT_CREDIT" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{account}.credit ? $F{account}.getMovements($F{global.localdateRange_from}, $F{global.localdateRange_to}) ?: BigDecimal.ZERO : BigDecimal.ZERO]]></variableExpression>
+		<variableExpression><![CDATA[$F{account}.credit ? $F{account}.getMovements($F{global.localdateRange_from}, $F{global.localdateRange_to}).toBigDecimal() ?: BigDecimal.ZERO : BigDecimal.ZERO]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_CLOSING_DEBIT" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{account}.debit ? $F{account}.getBalance($F{global.localdateRange_to}.plusDays(1))?.toBigDecimal() ?: BigDecimal.ZERO : BigDecimal.ZERO]]></variableExpression>
