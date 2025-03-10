@@ -25,7 +25,7 @@ public class MoneyContextFactory {
     public static final MoneyContext DEFAULT_MONEY_CONTEXT = new MoneyContext() {
         @Override
         public CurrencyUnit getCurrency() {
-            return Monetary.getCurrency(Locale.getDefault());
+            return Monetary.getCurrency(getLocale());
         }
 
         @Override
@@ -40,7 +40,7 @@ public class MoneyContextFactory {
 
         @Override
         public Locale getLocale() {
-            return Locale.getDefault();
+            return LocaleUtil.getDefaultLocale();
         }
 
         @Override

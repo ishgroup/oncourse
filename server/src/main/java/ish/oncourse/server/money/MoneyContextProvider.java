@@ -10,6 +10,7 @@ package ish.oncourse.server.money;
 
 import groovy.lang.Singleton;
 import ish.math.Country;
+import ish.math.LocaleUtil;
 import ish.math.context.MoneyContext;
 import ish.math.context.MoneyContextUpdater;
 import ish.math.format.DefaultMoneyFormatter;
@@ -37,29 +38,16 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
     private final AtomicReference<MoneyFormatter> formatter = new AtomicReference<>();
 
     public MoneyContextProvider() {
-        this.locale.set(Locale.getDefault());
-        Country defaultCountry = Country.findCountryByLocale(this.locale.get());
-
+        Country defaultCountry = Country.findCountryByLocale(LocaleUtil.getDefaultLocale());
         if (defaultCountry != null) {
             updateCountry(defaultCountry);
         } else {
-            if (serverLocaleUnknown(this.locale.get())) {
-                updateCountry(Country.AUSTRALIA);
-            }
+            this.locale.set(LocaleUtil.getDefaultLocale());
             this.currency.set(Monetary.getCurrency(this.locale.get()));
             this.currencyCode.set(this.currency.get().getCurrencyCode());
             this.currencySymbol.set(Currency.getInstance(currency.get().getCurrencyCode()).getSymbol());
             this.formatter.set(new DefaultMoneyFormatter(this.locale.get(), this.currencySymbol.get()));
         }
-    }
-
-    private boolean serverLocaleUnknown(Locale locale) {
-        try {
-            return Monetary.getCurrency(locale) == null;
-        } catch (javax.money.MonetaryException e ) {
-            LOGGER.error(e.getMessage());
-        }
-        return true;
     }
 
     @Override
