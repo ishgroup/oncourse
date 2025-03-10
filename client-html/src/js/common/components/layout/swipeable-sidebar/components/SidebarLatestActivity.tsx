@@ -5,6 +5,7 @@
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { AppTheme } from 'ish-ui';
 import React from 'react';
 import { withStyles } from 'tss-react/mui';
@@ -23,7 +24,7 @@ const styles = (theme: AppTheme) => ({
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const {classes, checkSelectedResult} = props;
+  const { classes, checkSelectedResult } = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
@@ -44,7 +45,7 @@ const SidebarLatestActivity: React.FC<any> = props => {
   return (
     <Grid container columnSpacing={3} className="p-2">
       <Grid item>
-        <Typography className="heading">Latest activity</Typography>
+        <Typography className="heading">{$t('latest_activity')}</Typography>
       </Grid>
       <Grid item xs={12} className={classes.activityStatistic}>
         {activities

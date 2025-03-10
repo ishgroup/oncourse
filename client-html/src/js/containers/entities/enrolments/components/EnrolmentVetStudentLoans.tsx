@@ -12,15 +12,16 @@ import {
   EnrolmentCreditType,
   EnrolmentFeeStatus,
   EnrolmentReportingStatus,
-} from "@api/model";
-import { Collapse, Grid } from "@mui/material";
-import { decimalMul, mapSelectItems } from "ish-ui";
-import React, { useMemo } from "react";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { EditViewProps } from "../../../../model/common/ListView";
+} from '@api/model';
+import { Collapse, Grid } from '@mui/material';
+import $t from '@t';
+import { decimalMul, mapSelectItems } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
+import { EditViewProps } from '../../../../model/common/ListView';
 
 const validateCharacter = (value, len, msg) => (value && value.length > len ? msg : undefined);
 
@@ -111,7 +112,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
               <FormField
                 type="select"
                 name="studentLoanStatus"
-                label="Reporting status"
+                label={$t('reporting_status')}
                 items={enrolmentReportingStatusItems}
                 onChange={onChangeSelectValue}
                 debounced={false}
@@ -123,21 +124,21 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
                   <FormField
                     type="money"
                     name="feeHelpAmount"
-                    label="Fee help requested"
+                    label={$t('fee_help_requested')}
                     disabled={values.studentLoanStatus === "Finalized"}
                   />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
-                  <Uneditable label="Loan fee" value={loanData.loanFee} money />
+                  <Uneditable label={$t('loan_fee')} value={loanData.loanFee} money />
                 </Grid>
                 <Grid item xs={twoColumn ? 3 : 12}>
-                  <Uneditable label="Total loan" value={loanData.loanTotal} money />
+                  <Uneditable label={$t('total_loan')} value={loanData.loanTotal} money />
                 </Grid>
                 <Grid item xs={twoColumn ? 6 : 12}>
                   <FormField
                     type="select"
                     name="feeStatus"
-                    label="Fee subsidy"
+                    label={$t('fee_subsidy')}
                     items={enrolmentFeeStatusItems}
                     disabled={values.studentLoanStatus === "Finalized"}
                     allowEmpty
@@ -147,7 +148,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
                   <FormField
                     type="select"
                     name="attendanceType"
-                    label="Type of attendance"
+                    label={$t('type_of_attendance')}
                     items={courseClassAttendanceTypeItems}
                     disabled={values.studentLoanStatus === "Finalized"}
                   />
@@ -170,7 +171,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="text"
               name="creditOfferedValue"
-              label="Credit offered value"
+              label={$t('credit_offered_value')}
               validate={validateCreditOfferedValue}
             />
           </Grid>
@@ -178,7 +179,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="text"
               name="creditUsedValue"
-              label="Credit used value"
+              label={$t('credit_used_value')}
               validate={validateCreditUsedValue}
             />
           </Grid>
@@ -186,7 +187,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="select"
               name="creditTotal"
-              label="RPL indicator"
+              label={$t('rpl_indicator')}
               items={enrolmentCreditTotalItems}
             />
           </Grid>
@@ -195,7 +196,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="text"
               name="creditFOEId"
-              label="Credit field of education ID"
+              label={$t('credit_field_of_education_id')}
               validate={validateCreditFoeId}
             />
           </Grid>
@@ -203,7 +204,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="text"
               name="creditProvider"
-              label="Credit offered provider code"
+              label={$t('credit_offered_provider_code')}
               validate={validateCreditOfferedProviderCode}
             />
           </Grid>
@@ -211,7 +212,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="select"
               name="creditProviderType"
-              label="Credit provider type"
+              label={$t('credit_provider_type')}
               items={enrolmentCreditProviderTypeItems}
             />
           </Grid>
@@ -220,7 +221,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="select"
               name="creditType"
-              label="Credit type"
+              label={$t('credit_type')}
               items={enrolmentCreditTypeItems}
             />
           </Grid>
@@ -228,7 +229,7 @@ const EnrolmentVetStudentLoans: React.FC<EditViewProps<Enrolment> & { namePrefix
             <FormField
               type="select"
               name="creditLevel"
-              label="Credit level"
+              label={$t('credit_level')}
               items={enrolmentCreditLevelItems}
             />
           </Grid>

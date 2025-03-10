@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import $t from '@t';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -28,7 +29,7 @@ const HamburgerMenu = React.memo<Props>(props => {
     <div className="centeredFlex mr-3">
       <IconButton
         color="inherit"
-        aria-label="Open drawer"
+        aria-label={$t('open_drawer')}
         edge="start"
         onClick={toggleSwipeableDrawer}
         size="large"

@@ -8,6 +8,7 @@ import Launch from '@mui/icons-material/Launch';
 import { ButtonBase, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import $t from '@t';
 import clsx from 'clsx';
 import { DynamicSizeList, openInternalLink } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -104,7 +105,7 @@ const RowContent = React.memo<{
           <>
             <span className="flex-fill"/>
             <Button className={classes.button} onClick={() => onClick(item, index)}>
-              Add
+              {$t('add')}
             </Button>
           </>
         )}
@@ -115,8 +116,8 @@ const RowContent = React.memo<{
 
 export const NestedListRow = withStyles(RowContent, listStyles);
 
-const RowRenderer = React.forwardRef<any, any>(({data, index, style}, ref) => {
-  const {items, ...rest} = data;
+const RowRenderer = React.forwardRef<any, any>(({ data, index, style }, ref) => {
+  const { items, ...rest } = data;
   return <RowContent item={items[index]} style={style} forwardedRef={ref} index={index} {...rest} />;
 });
 
@@ -154,10 +155,10 @@ const ListRenderer = React.memo<Props>(
     }), [items, dataRowClass, type, classes, disabled, deleteHandler, clickHandler, CustomCell]);
 
     return (
-      <Paper className={clsx(classes.root, {[classes.fade]: fade, [classes.root__height]: isVirtual})}>
+      <Paper className={clsx(classes.root, { [classes.fade]: fade, [classes.root__height]: isVirtual })}>
         {isVirtual ? (
           <AutoSizer disableHeight>
-            {({width}) => (
+            {({ width }) => (
               <DynamicSizeList
                 height={384}
                 width={width}

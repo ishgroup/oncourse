@@ -1,5 +1,6 @@
 import { GradingType } from '@api/model';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -87,7 +88,7 @@ const GradingTypes: React.FC<GradingProps & InjectedFormProps & { dispatch: Disp
         values={values}
         disabled={!dirty}
         invalid={invalid}
-        title="Grading types"
+        title={$t('grading_types')}
         disableInteraction
         hideHelpMenu
         onAddMenu={() => onAddNew()}

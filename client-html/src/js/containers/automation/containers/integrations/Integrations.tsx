@@ -1,4 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Grid } from '@mui/material';
+import $t from '@t';
 import React, { useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from 'tss-react/mui';
@@ -32,7 +33,7 @@ const Integrations = React.memo<any>(({
       hideSubmitButton
       hideHelpMenu
       noDrawer
-      title="Integrations"
+      title={$t('integrations')}
     >
       <Grid container spacing={5}>
         {Object.keys(IntegrationTypes).map(key => (
@@ -56,7 +57,7 @@ const Integrations = React.memo<any>(({
                     color="primary"
                     className="integrationsButton"
                   >
-                    Add
+                    {$t('add')}
                   </Button>
                 </CardActions>
               </div>

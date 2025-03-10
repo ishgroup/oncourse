@@ -4,6 +4,7 @@
  */
 
 import { CorporatePass, Sale, SaleType } from '@api/model';
+import $t from '@t';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -123,7 +124,7 @@ class CorporatePassLimit extends Component<Props, any> {
       <div className="pl-3 pr-3 mb-2">
         <div className="mw-600">
           <NestedList
-            title="Limit Use"
+            title={$t('limit_use')}
             titleCaption="This pass will only be available for the following classes and products"
             formId={values.id}
             values={listValues}

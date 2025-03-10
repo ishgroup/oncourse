@@ -24,6 +24,7 @@ import Drawer from '@mui/material/Drawer';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
+import $t from '@t';
 import clsx from 'clsx';
 import { ConfirmBase, EditInPlaceField, FilePreview, getDocumentContent, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import * as React from 'react';
@@ -580,16 +581,15 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                   <FormField
                     type="select"
                     name="backgroundId"
-                    label="Background"
-                    placeholder="Blank"
+                    label={$t('background')}
+                    placeholder={$t('blank')}
                     selectAdornment={{
                       position: "end",
                       content: (
                         <MenuItem className="relative w-100" key="upload" onClick={this.handleUploadBackgroundClick}>
                           <div className="heading centeredFlex">
                             <Publish/>
-                            {' '}
-                            <span className="ml-1">Upload from disk</span>
+                            {$t('ml1')}
                           </div>
                         </MenuItem>
                       ),
@@ -605,7 +605,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                 <Grid item xs={12}>
                   
                   <EditInPlaceField
-                    label="Send result on email"
+                    label={$t('send_result_on_email')}
                     placeholder={COMMON_PLACEHOLDER}
                     fieldClasses={{
                       text: classes.text,
@@ -661,12 +661,12 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     onClick={() => this.setState({ createPreview: !createPreview })}
                   />
                 )}
-                label="Create preview"
+                label={$t('create_preview')}
               />
             </Grid>
             <Grid item xs={12} container className={classes.label}>
               <Typography variant="caption" color="inherit">
-                There is no preview for this report yet. Choose this option to create preview.
+                {$t('there_is_no_preview_for_this_report_yet_choose_thi')}
               </Typography>
             </Grid>
           </>
@@ -763,12 +763,12 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     onClick={() => this.setState({ createPreview: !createPreview })}
                   />
                 )}
-                label="Create preview"
+                label={$t('create_preview')}
               />
             </Grid>
             <Grid item xs={12} container className={classes.label}>
               <Typography variant="caption" color="inherit">
-                There is no preview for this report yet. Choose this option to create preview.
+                {$t('there_is_no_preview_for_this_report_yet_choose_thi')}
               </Typography>
             </Grid>
           </>
@@ -831,7 +831,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
           <Grid container className={classes.header} wrap="nowrap" alignItems="center">
             <Grid item xs={2}>
               <Typography variant="body2" className={classes.headerText}>
-                Share
+                {$t('share')}
               </Typography>
             </Grid>
             <Grid item xs className="centeredFlex">
@@ -865,7 +865,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     onClick={() => this.selectPrimary(0)}
                   >
                     <Typography variant="body2" color="inherit" classes={{ root: classes.listItemsText }}>
-                      PDF
+                      {$t('pdf')}
                     </Typography>
 
                     {selectedPrimary === 0 && <div className={classes.menuCorner}/>}
@@ -957,7 +957,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
 
                 <Grid item xs={12} className={classes.closeShareButtons}>
                   <Button className={classes.closeButton} onClick={this.onClose} variant="text">
-                    Close
+                    {$t('close')}
                   </Button>
                   {templateSelected
                     && ["Excel", "Text", "XML"].includes(exportTemplateTypesArr[selectedPrimary - 1])
@@ -974,7 +974,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                         onClick={this.onSubmitClick}
                         loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                       >
-                        Copy to clipboard
+                        {$t('copy_to_clipboard')}
                       </LoadingButton>
                     )}
                   <LoadingButton
@@ -989,7 +989,7 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                     onClick={this.onSubmitClick}
                     loading={submitting || validating || exportTemplatesFetching || pdfReportsFetching}
                   >
-                    Share
+                    {$t('share')}
                   </LoadingButton>
                 </Grid>
               </form>

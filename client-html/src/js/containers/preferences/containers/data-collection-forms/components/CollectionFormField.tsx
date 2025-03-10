@@ -3,22 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FieldValidationType } from "@api/model";
-import { TreeItem } from "@atlaskit/tree";
-import { Grid } from "@mui/material";
-import { SelectItemDefault } from "ish-ui";
-import * as React from "react";
-import { useMemo } from "react";
-import { change, Field } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { ToogleCheckbox } from "../../../../../common/components/form/ToogleCheckbox";
-import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
+import { FieldValidationType } from '@api/model';
+import { TreeItem } from '@atlaskit/tree';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { SelectItemDefault } from 'ish-ui';
+import * as React from 'react';
+import { useMemo } from 'react';
+import { change, Field } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { ToogleCheckbox } from '../../../../../common/components/form/ToogleCheckbox';
+import { useAppDispatch, useAppSelector } from '../../../../../common/utils/hooks';
 import {
   CollectionFormField,
   CollectionFormItem
-} from "../../../../../model/preferences/data-collection-forms/collectionFormSchema";
-import { CustomField } from "../../../../entities/customFieldTypes/components/CustomFieldsTypes";
-import { DATA_COLLECTION_FORM } from "./DataCollectionForm";
+} from '../../../../../model/preferences/data-collection-forms/collectionFormSchema';
+import { CustomField } from '../../../../entities/customFieldTypes/components/CustomFieldsTypes';
+import { DATA_COLLECTION_FORM } from './DataCollectionForm';
 
 interface Props {
   item: TreeItem;
@@ -70,7 +71,7 @@ const CollectionFormField = ({
       : <FormField
         type="text"
         name={`items[${item.id}].relatedFieldValue`}
-        label="Display condition value"
+        label={$t('display_condition_value')}
         disabled={!field.relatedFieldKey}
       />;
   }, [customFieldType, field.relatedFieldValue, field.relatedFieldKey, item.id]);
@@ -82,7 +83,7 @@ const CollectionFormField = ({
           <FormField
             type="text"
             name={`items[${item.id}].label`}
-            label="Label"
+            label={$t('label')}
             required
           />
         </Grid>
@@ -90,7 +91,7 @@ const CollectionFormField = ({
           <FormField
             type="multilineText"
             name={`items[${item.id}].helpText`}
-            label="Help Text"
+            label={$t('help_text')}
             className="mt-1"
             truncateLines={4}
           />
@@ -103,7 +104,7 @@ const CollectionFormField = ({
             type="select"
             items={availableRelations}
             name={`items[${item.id}].relatedFieldKey`}
-            label="Display condition field"
+            label={$t('display_condition_field')}
             onChange={onRelatedKeyChange}
             allowEmpty
           />
@@ -117,7 +118,7 @@ const CollectionFormField = ({
         <Grid item xs={12}>
           <Field
             name={`items[${item.id}].mandatory`}
-            label="Label"
+            label={$t('label')}
             margin="none"
             type="checkbox"
             chackedLabel="Mandatory"
@@ -130,7 +131,7 @@ const CollectionFormField = ({
             type="select"
             items={validationTypes}
             name={`items[${item.id}].validationType`}
-            label="Validate against"
+            label={$t('validate_against')}
             allowEmpty
           />
         </Grid>}

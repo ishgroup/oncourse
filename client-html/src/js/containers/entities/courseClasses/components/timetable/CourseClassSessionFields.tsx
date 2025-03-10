@@ -8,6 +8,7 @@
 
 import { ClashType, CourseClassTutor, SessionWarning, TutorAttendance, } from '@api/model';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { addMinutes, differenceInMinutes } from 'date-fns';
 import { EditInPlaceDurationField, ErrorMessage, LinkAdornment, NoWrapOption, stubFunction } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -202,7 +203,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
 
       <Grid item xs={2}>
         <EditInPlaceDurationField
-          label="Duration"
+          label={$t('duration')}
           meta={{
             error: durationError,
             invalid: Boolean(durationError)
@@ -223,7 +224,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           onChange={onEndDateChange}
           debounced={false}
           type="time"
-          label="End"
+          label={$t('end')}
         />
       </Grid>
       {Boolean(warningTypes.Session.length || warningTypes.UnavailableRule.length) && (
@@ -240,7 +241,7 @@ const CourseClassSessionFields: React.FC<Props> = ({
           type="remoteDataSelect"
           entity="Room"
           name={`sessions[${session.index}].roomId`}
-          label="Site and room"
+          label={$t('site_and_room')}
           aqlColumns="name,site.name,site.localTimezone,site.id"
           selectValueMark="id"
           selectLabelCondition={roomLabel}
@@ -275,20 +276,20 @@ const CourseClassSessionFields: React.FC<Props> = ({
         />
       </Grid>
       <Grid item xs={12} className="secondaryHeading">
-        Notes
+        {$t('notes')}
       </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].publicNotes`}
-          label="Public notes"
+          label={$t('public_notes')}
                   />
       </Grid>
       <Grid item xs={6}>
         <FormField
           type="multilineText"
           name={`sessions[${session.index}].privateNotes`}
-          label="Private notes"
+          label={$t('private_notes')}
                   />
       </Grid>
     </Grid>

@@ -9,6 +9,7 @@
 import { AssessmentSubmission, GradingItem, GradingType } from '@api/model';
 import DateRange from '@mui/icons-material/DateRange';
 import { Grid, IconButton, Typography } from '@mui/material';
+import $t from '@t';
 import { normalizeNumber } from 'ish-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 import { arrayInsert, arrayRemove, change, WrappedFieldArrayProps } from 'redux-form';
@@ -30,7 +31,7 @@ const today = new Date().toISOString();
 
 const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
-    classes, namePrefix= "", values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
+    classes, namePrefix = "", values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
@@ -275,7 +276,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         <Grid item xs={3} />
         <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
           <span className="relative">
-            Submitted
+            {$t('submitted')}
             <IconButton
               size="small"
               className={classes.hiddenTitleIcon}
@@ -293,7 +294,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
           <>
             <Grid xs={3} className={classes.center}>
               <span className="relative">
-                Marked
+                {$t('marked')}
                 <IconButton
                   size="small"
                   className={classes.hiddenTitleIcon}
@@ -306,7 +307,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
               </span>
             </Grid>
             <Grid xs={3} className={classes.center}>
-              Grade
+              {$t('grade')}
             </Grid>
           </>
       )}

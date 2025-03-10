@@ -14,6 +14,7 @@ import OpenInNew from '@mui/icons-material/OpenInNew';
 import { Collapse, Grid, IconButton, MenuItem, Select, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
+import $t from '@t';
 import clsx from 'clsx';
 import { differenceInMinutes, format } from 'date-fns';
 import {
@@ -114,17 +115,17 @@ const RoosterStatuses = ({
   >
     <MenuItem value="Confirmed for payroll">
       <Typography variant="button" display="block" color="textPrimary" noWrap>
-        PAY CONFIRMED
+        {$t('pay_confirmed')}
       </Typography>
     </MenuItem>
     <MenuItem value="Rejected for payroll">
       <Typography variant="button" display="block" color="error" noWrap>
-        DON’T PAY
+        {$t('dont_pay')}
       </Typography>
     </MenuItem>
     <MenuItem value="Not confirmed for payroll">
       <Typography variant="button" display="block" color="textSecondary" noWrap>
-        PAY NOT CONFIRMED
+        {$t('pay_not_confirmed')}
         {" "}
         {payableTime}
       </Typography>
@@ -219,7 +220,7 @@ const CourseClassTutorRoosterItem = (
             {
               tutorAttendance.hasPayslip && (
                 <Typography variant="button" display="block" className="successColor centeredFlex" noWrap>
-                  Paid
+                  {$t('paid')}
                   <IconButton className="ml-05" size="small" onClick={() => openInternalLink(`/payslip?search=id in (${tutorAttendance.payslipIds.toString()})`)}>
                     <OpenInNew fontSize="inherit" color="secondary" />
                   </IconButton>
@@ -243,7 +244,7 @@ const CourseClassTutorRoosterItem = (
                     className={classes.noPay}
                     disabled
                   >
-                    No pay
+                    {$t('no_pay')}
                   </Button>
                   {Boolean(addTutorWage) && (
                     <Button
@@ -251,7 +252,7 @@ const CourseClassTutorRoosterItem = (
                       className={classes.addWage}
                       onClick={openTutorWage}
                     >
-                      Add pay
+                      {$t('add_pay')}
                     </Button>
                   )}
                 </div>
@@ -285,7 +286,7 @@ const CourseClassTutorRoosterItem = (
             <FormField
               name={`${fieldsName}.start`}
               type="time"
-              label="Roster start"
+              label={$t('roster_start')}
               onChange={onStartChange}
               timezone={session.siteTimezone}
               debounced={false}
@@ -295,7 +296,7 @@ const CourseClassTutorRoosterItem = (
             <FormField
               name={`${fieldsName}.end`}
               type="time"
-              label="Roster end"
+              label={$t('roster_end')}
               onChange={onEndChange}
               timezone={session.siteTimezone}
               debounced={false}
@@ -305,14 +306,14 @@ const CourseClassTutorRoosterItem = (
             <FormField
               name={`${fieldsName}.actualPayableDurationMinutes`}
               type="duration"
-              label="Payable time"
+              label={$t('payable_time')}
             />
           </Grid>
           <Grid item xs={6}>
             <FormField
               name={`${fieldsName}.note`}
               type="multilineText"
-              label="Attendance notes"
+              label={$t('attendance_notes')}
             />
           </Grid>
         </Grid>

@@ -14,6 +14,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import {
   addContentMarker,
@@ -324,7 +325,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             }
           >
             <div className="content-mode-wrapper">
-              <Tooltip title="Change content mode" disableFocusListener>
+              <Tooltip title={$t('change_content_mode')} disableFocusListener>
                 <ButtonBase
                   onClick={modeMenuOpen}
                   aria-owns={modeMenu ? "mode-menu" : null}

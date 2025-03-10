@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import { Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
 
 const EnrolmentsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
   const { row } = props;
@@ -37,15 +38,15 @@ export const EnrolmentsContentLine: React.FunctionComponent<any> = React.memo((p
         <FormField
           type="date"
           name={`${item}.createdOn`}
-          label="Created"
+          label={$t('created')}
           disabled
         />
       </Grid>
       <Grid item xs={6}>
-        <Uneditable value={row.uniqueCode} label="Unique code" />
+        <Uneditable value={row.uniqueCode} label={$t('unique_code')} />
       </Grid>
       <Grid item xs={6}>
-        <Uneditable value={row.status} label="Status" />
+        <Uneditable value={row.status} label={$t('status')} />
       </Grid>
     </Grid>
   );

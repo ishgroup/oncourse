@@ -7,6 +7,7 @@
  */
 
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
 import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
@@ -269,7 +270,7 @@ const Calendar = React.memo<Props>(props => {
 
     if (calendarModeUrl !== calendarMode) {
       params.set("calendarMode", calendarMode);
-      updateHistory(params,url);
+      updateHistory(params, url);
     }
   }, [calendarMode]);
 
@@ -279,7 +280,7 @@ const Calendar = React.memo<Props>(props => {
 
     if (targetDayUrlString !== targetDayString) {
       params.set("selectedDate", targetDayString);
-      updateHistory(params,url);
+      updateHistory(params, url);
     }
   }, [targetDay]);
 
@@ -294,7 +295,7 @@ const Calendar = React.memo<Props>(props => {
         } else {
           params.delete("filter");
         }
-        updateHistory(params,url);
+        updateHistory(params, url);
       }
     }
   }, [filters, params]);
@@ -306,7 +307,7 @@ const Calendar = React.memo<Props>(props => {
       } else {
         params.delete("search");
       }
-      updateHistory(params,url);
+      updateHistory(params, url);
     }
   }, [search, prevSearch]);
 
@@ -383,7 +384,7 @@ const Calendar = React.memo<Props>(props => {
         <div className={classes.centered}>
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
-              No sessions were found
+              {$t('no_sessions_were_found')}
             </Typography>
           </div>
         </div>

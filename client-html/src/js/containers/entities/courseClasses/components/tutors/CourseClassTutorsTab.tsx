@@ -3,28 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassTutor, DefinedTutorRole } from "@api/model";
-import Grid from "@mui/material/Grid";
-import { AddButton, StringKeyAndValueObject } from "ish-ui";
-import React, { useCallback, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayInsert, change, FieldArray, WrappedFieldArrayProps } from "redux-form";
-import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import uniqid from "../../../../../common/utils/uniqid";
-import { EditViewProps } from "../../../../../model/common/ListView";
+import { CourseClassTutor, DefinedTutorRole } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { AddButton, StringKeyAndValueObject } from 'ish-ui';
+import React, { useCallback, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayInsert, change, FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { addActionToQueue, removeActionsFromQueue } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import uniqid from '../../../../../common/utils/uniqid';
+import { EditViewProps } from '../../../../../model/common/ListView';
 import {
   ClassCostExtended,
   CourseClassExtended,
   CourseClassTutorExtended
-} from "../../../../../model/entities/CourseClass";
-import { State } from "../../../../../reducers/state";
-import { getContactFullName } from "../../../contacts/utils";
-import { deleteCourseClassTutor, postCourseClassTutor, setCourseClassTutorNamesWarnings } from "./actions";
-import CourseClassTutorsRenderer from "./CourseClassTutorsRenderer";
-import CourseClassTutorService from "./services/CourseClassTutorService";
-import { getTutorNameWarning, isTutorWageExist } from "./utils";
+} from '../../../../../model/entities/CourseClass';
+import { State } from '../../../../../reducers/state';
+import { getContactFullName } from '../../../contacts/utils';
+import { deleteCourseClassTutor, postCourseClassTutor, setCourseClassTutorNamesWarnings } from './actions';
+import CourseClassTutorsRenderer from './CourseClassTutorsRenderer';
+import CourseClassTutorService from './services/CourseClassTutorService';
+import { getTutorNameWarning, isTutorWageExist } from './utils';
 
 export interface CourseClassTutorsTabProps extends Partial<EditViewProps> {
   values?: CourseClassExtended;
@@ -170,7 +171,7 @@ const CourseClassTutorsTab = React.memo<CourseClassTutorsTabProps>(
     return (
       <Grid container columnSpacing={3} className="pl-3 pr-3 pb-2">
         <Grid item xs={12} className="centeredFlex">
-          <div className="heading">Tutors</div>
+          <div className="heading">{$t('tutors')}</div>
           <AddButton onClick={onAddTutor} />
         </Grid>
 

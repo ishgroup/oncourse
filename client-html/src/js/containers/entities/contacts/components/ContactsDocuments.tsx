@@ -1,8 +1,9 @@
-import { Contact } from "@api/model";
-import { Divider, Grid } from "@mui/material";
-import React from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import { Contact } from '@api/model';
+import { Divider, Grid } from '@mui/material';
+import $t from '@t';
+import React from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
 
 interface ContactsDocumentsProps {
   classes?: any;
@@ -26,7 +27,7 @@ const ContactsDocuments: React.FC<ContactsDocumentsProps> = props => {
       
       <FieldArray
         name="documents"
-        label="Documents"
+        label={$t('documents')}
         entity="Contact"
         classes={classes}
         component={DocumentsRenderer}

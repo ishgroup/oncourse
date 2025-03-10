@@ -10,6 +10,7 @@ import { User } from '@api/model';
 import { AlertTitle } from '@mui/lab';
 import Alert from '@mui/lab/Alert';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -80,7 +81,7 @@ const ApiTokensBase:React.FC<Props> = (
         values={values}
         disabled={!dirty}
         invalid={invalid}
-        title="API Tokens"
+        title={$t('api_tokens')}
         disableInteraction
         hideHelpMenu
         onAddMenu={onAdd}
@@ -89,9 +90,9 @@ const ApiTokensBase:React.FC<Props> = (
           <Grid item xs={12} md={10}>
             <Alert severity="info" className="mb-2">
               <AlertTitle>
-                API tokens can be used by third party tools
+                {$t('api_tokens_can_be_used_by_third_party_tools')}
               </AlertTitle>
-              Caution: these tokens will allow an attacker to access, change or delete your data, so take care of where you distribute the token secret.
+              {$t('caution_these_tokens_will_allow_an_attacker_to_acc')}
             </Alert>
           </Grid>
           <Grid item xs={12} md={10}>

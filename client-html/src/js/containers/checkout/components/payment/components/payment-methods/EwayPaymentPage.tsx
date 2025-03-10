@@ -9,6 +9,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import clsx from 'clsx';
 import { makeAppStyles } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import $t from '@t';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { showMessage } from '../../../../../../common/actions';
@@ -76,7 +77,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const [ready, setReady] = useState(false);
 
   const { classes, theme } = useStyles();
-  
+
   const cardStyles = useMemo(() => `
     font: inherit;
     letter-spacing: inherit;
@@ -194,7 +195,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           disabled={!ready || isPaymentProcessing}
           loading={isPaymentProcessing}
         >
-          Finalize checkout
+          {$t('finalize_checkout')}
         </LoadingButton>
       </form>}
 

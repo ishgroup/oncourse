@@ -2,6 +2,7 @@ import { DataCollectionType, FieldType } from '@api/model';
 import AddIcon from '@mui/icons-material/Add';
 import { Menu, MenuItem, Typography } from '@mui/material';
 import Fab from '@mui/material/Fab';
+import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -91,7 +92,7 @@ class CollectionFormFieldTypesMenu extends React.Component<Props, any> {
           className={classes.menu}
         >
           <MenuItem onClick={() => addHeading()}>
-            <Typography className="heading">Heading</Typography>
+            <Typography className="heading">{$t('heading')}</Typography>
           </MenuItem>
           {filteredTypes
             && filteredTypes.map(val => (

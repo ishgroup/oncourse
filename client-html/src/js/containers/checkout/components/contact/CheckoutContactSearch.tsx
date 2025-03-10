@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import debounce from "lodash.debounce";
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
-import { CheckoutSummary } from "../../../../model/checkout";
-import { CHECKOUT_CONTACT_COLUMNS, CheckoutPage } from "../../constants";
-import HeaderField from "../HeaderField";
-import SelectedContactRenderer from "./SelectedContactRenderer";
+import $t from '@t';
+import debounce from 'lodash.debounce';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getCommonPlainRecords, setCommonPlainSearch } from '../../../../common/actions/CommonPlainRecordsActions';
+import { CheckoutSummary } from '../../../../model/checkout';
+import { CHECKOUT_CONTACT_COLUMNS, CheckoutPage } from '../../constants';
+import HeaderField from '../HeaderField';
+import SelectedContactRenderer from './SelectedContactRenderer';
 
 export interface Props {
   setActiveField: (field: string) => void;
@@ -64,7 +65,7 @@ const CheckoutContactSearch = React.memo<Props>(props => {
     <HeaderField
       heading="Contacts"
       name={CheckoutPage.contacts}
-      placeholder="Find contact..."
+      placeholder={$t('find_contact')}
       onFocus={onFocus}
       SelectedItemView={(
         <SelectedContactRenderer

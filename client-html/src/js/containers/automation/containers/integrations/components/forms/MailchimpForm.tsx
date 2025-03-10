@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 
 class MailchimpBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -32,8 +33,8 @@ class MailchimpBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2"/>
-          <FormField name="fields.listId" label="Audience ID" type="text" className="mb-2" />
+          <FormField name="fields.apiKey" label={$t('api_key')} type="text" className="mb-2"/>
+          <FormField name="fields.listId" label={$t('audience_id')} type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

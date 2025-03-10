@@ -3,18 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormValues } from "redux-form";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormValues } from 'redux-form';
 import { IAction } from '../../../../common/actions/IshAction';
-import { getPluralSuffix } from "../../../../common/utils/strings";
-import { State } from "../../../../reducers/state";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGenerateCogwheelAction";
-import { closeMergeContactsSuccess, getMergeContacts } from "../actions";
-import MergeContactsModal from "./MergeContactsModal";
+import { getPluralSuffix } from '../../../../common/utils/strings';
+import { State } from '../../../../reducers/state';
+import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
+import PayslipGenerateCogwheelAction from '../../payslips/components/PayslipGenerateCogwheelAction';
+import { closeMergeContactsSuccess, getMergeContacts } from '../actions';
+import MergeContactsModal from './MergeContactsModal';
 
 const ContactCogWheel = props => {
   const {
@@ -64,9 +65,7 @@ const ContactCogWheel = props => {
       />
 
       <MenuItem disabled={!isMergeEnable} className={menuItemClass} onClick={onClickMerge}>
-        Merge
-        {' '}
-        {contactsCountLabel}
+        {$t('merge')}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />
     </>

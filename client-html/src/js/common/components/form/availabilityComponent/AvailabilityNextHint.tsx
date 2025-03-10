@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import Typography from "@mui/material/Typography";
-import { format as formatDate } from "date-fns";
-import { appendTimezone, III_DD_MMM_YYYY } from "ish-ui";
-import * as React from "react";
+import { Holiday, RepeatEndEnum, RepeatEnum } from '@api/model';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { format as formatDate } from 'date-fns';
+import { appendTimezone, III_DD_MMM_YYYY } from 'ish-ui';
+import * as React from 'react';
 
 function encreaseDate(date, step) {
   switch (step) {
@@ -143,7 +144,7 @@ const AvailabilityNextHint = (props: HintProps) => {
     startDate, startDateTime, endDate, endDateTime, ...rest
   } = props.item;
 
-  const computed: Holiday = {...rest};
+  const computed: Holiday = { ...rest };
 
   const allDay = Boolean(startDate && endDate);
 
@@ -154,7 +155,7 @@ const AvailabilityNextHint = (props: HintProps) => {
 
   return (
     <div className={props.className}>
-      <Typography variant="caption">Next</Typography>
+      <Typography variant="caption">{$t('next')}</Typography>
       {dates}
     </div>
   );

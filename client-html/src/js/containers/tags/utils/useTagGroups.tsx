@@ -7,6 +7,7 @@
  */
 
 import { Tag } from '@api/model';
+import $t from '@t';
 import { stubFunction, TagInputList } from 'ish-ui';
 import React, { useMemo } from 'react';
 import { Dispatch } from 'redux';
@@ -61,7 +62,7 @@ export function useTagGroups({ tagsValue, tags, form, dispatch }: Props) {
     meta={{}}
     tags={tagsGrouped.subjects}
     disabled={specialTypesDisabled}
-    label="Subjects"
+    label={$t('subjects')}
     className="mt-2"
     placeholder={COMMON_PLACEHOLDER}
     allowParentSelect

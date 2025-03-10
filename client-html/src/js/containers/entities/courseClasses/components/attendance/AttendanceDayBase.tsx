@@ -8,6 +8,7 @@ import Launch from '@mui/icons-material/Launch';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { appendTimezone, AppTheme } from 'ish-ui';
@@ -104,14 +105,14 @@ const AttendanceDayBase: React.FC<DayBaseProps> = ({
               className="invisible"
               onChange={changeSessionRow}
               type="Training plan"
-              label="Mark ALL modules for this sessions as..."
+              label={$t('mark_all_modules_for_this_sessions_as')}
             />
           ) : id && start && hasStudentAttendance && (
             <AttendanceActionsMenu
               className="invisible"
               onChange={changeSessionRow}
               type="Student"
-              label="Mark ALL attendances for this session as..."
+              label={$t('mark_all_attendances_for_this_session_as')}
             />
           )}
           {dueDate && (

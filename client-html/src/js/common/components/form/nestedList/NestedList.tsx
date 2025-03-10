@@ -5,6 +5,7 @@
 
 import { Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import $t from '@t';
 import debounce from 'lodash.debounce';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -93,8 +94,8 @@ interface NestedListState {
 
 const InnerFormField = React.memo((props: any) => {
   const {
-    input: {name},
-    meta: {error},
+    input: { name },
+    meta: { error },
     setFormError
   } = props;
 
@@ -131,7 +132,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       aqlEntities
     } = this.props;
 
-    const {selectedAqlEntity} = this.state;
+    const { selectedAqlEntity } = this.state;
 
     if (aqlEntities && selectedAqlEntity) {
       const searchTags = entityTags[selectedAqlEntity] && entityTags[selectedAqlEntity].length
@@ -155,7 +156,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       aqlEntities
     } = this.props;
 
-    const {selectedAqlEntity} = this.state;
+    const { selectedAqlEntity } = this.state;
 
     if (!prevProps.values.length && values.length) {
       this.setState({
@@ -191,8 +192,8 @@ class NestedList extends React.Component<Props, NestedListState> {
   }
 
   setSelectedEntity = newEntity => {
-    const {clearSearchResult} = this.props;
-    const {selectedAqlEntity} = this.state;
+    const { clearSearchResult } = this.props;
+    const { selectedAqlEntity } = this.state;
 
     clearSearchResult(false, selectedAqlEntity);
 
@@ -205,8 +206,8 @@ class NestedList extends React.Component<Props, NestedListState> {
   };
 
   triggerSearch = () => {
-    const {onSearch, searchType} = this.props;
-    const {searchExpression, selectedAqlEntity} = this.state;
+    const { onSearch, searchType } = this.props;
+    const { searchExpression, selectedAqlEntity } = this.state;
 
     if (searchExpression.length > 0 || searchType === "immediate") {
       onSearch(searchExpression, selectedAqlEntity);
@@ -214,10 +215,10 @@ class NestedList extends React.Component<Props, NestedListState> {
   };
 
   triggerAqlSearch = () => {
-    const {selectedAqlEntity} = this.state;
-    const {searchType} = this.props;
+    const { selectedAqlEntity } = this.state;
+    const { searchType } = this.props;
 
-    let {value} = this.inputRef.current;
+    let { value } = this.inputRef.current;
 
     if (value.match(SIMPLE_SEARCH_QUOTES_REGEX)) {
       value = `~${value}`;
@@ -235,7 +236,7 @@ class NestedList extends React.Component<Props, NestedListState> {
 
     clearSearchResult(true, selectedAqlEntity);
 
-    this.setState({searchExpression: this.inputRef.current.value}, () => {
+    this.setState({ searchExpression: this.inputRef.current.value }, () => {
       if (value.length > 0 || searchType === "immediate") {
         onSearch(value, selectedAqlEntity);
       }
@@ -251,7 +252,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       clearSearchResult, onToggleSearch, aqlEntities
     } = this.props;
 
-    const {searchEnabled, selectedAqlEntity} = this.state;
+    const { searchEnabled, selectedAqlEntity } = this.state;
 
     if (!searchEnabled) {
       if (typeof onToggleSearch === "function") {
@@ -282,8 +283,8 @@ class NestedList extends React.Component<Props, NestedListState> {
   };
 
   onAqlSearchClear = () => {
-    const {clearSearchResult} = this.props;
-    const {selectedAqlEntity} = this.state;
+    const { clearSearchResult } = this.props;
+    const { selectedAqlEntity } = this.state;
 
     clearSearchResult(true, selectedAqlEntity);
 
@@ -296,12 +297,12 @@ class NestedList extends React.Component<Props, NestedListState> {
   };
 
   onSearchChange = event => {
-    const {clearSearchResult} = this.props;
-    const {selectedAqlEntity} = this.state;
+    const { clearSearchResult } = this.props;
+    const { selectedAqlEntity } = this.state;
 
     clearSearchResult(true, selectedAqlEntity);
 
-    const {value} = event.target;
+    const { value } = event.target;
 
     this.setState(
       {
@@ -312,7 +313,7 @@ class NestedList extends React.Component<Props, NestedListState> {
   };
 
   onAddEvent = (valueToAdd?: NestedListItem) => {
-    const {onAdd, values, searchValues} = this.props;
+    const { onAdd, values, searchValues } = this.props;
 
     if (valueToAdd && valueToAdd.id) {
       const searchResultCount = searchValues.filter(v1 => !values.some(v2 => v1.id === v2.id)).length;
@@ -463,7 +464,7 @@ class NestedList extends React.Component<Props, NestedListState> {
       CustomCell
     } = this.props;
 
-    const {searchEnabled, searchExpression} = this.state;
+    const { searchEnabled, searchExpression } = this.state;
 
     const searchValuesToShow = searchValues ? searchValues.filter(v1 => !values.some(v2 => v1.id === v2.id)) : [];
 
@@ -474,11 +475,11 @@ class NestedList extends React.Component<Props, NestedListState> {
             name={name}
             validate={validate}
             component={InnerFormField}
-            setFormError={formError => this.setState({formError})}
+            setFormError={formError => this.setState({ formError })}
           />
         )}
 
-        <this.renderSearchType {...{...this.props, ...this.state, searchValuesToShow}} />
+        <this.renderSearchType {...{ ...this.props, ...this.state, searchValuesToShow }} />
 
         {searchEnabled
           && (searchExpression.length > 0 || searchType === "immediate")
@@ -493,7 +494,7 @@ class NestedList extends React.Component<Props, NestedListState> {
             <CircularProgress size={24} thickness={5} className={classes.buttonProgress}/>
           ) : (
             <Typography variant="body2" color="textSecondary" className={classes.rowMargin}>
-              No results found
+              {$t('no_results_found')}
             </Typography>
           ))}
 

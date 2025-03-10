@@ -3,9 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Typography from "@mui/material/Typography";
-import React, { useCallback, useEffect, useState } from "react";
-import DuplicateCourseClassModal from "./DuplicateCourseClassModal";
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import React, { useCallback, useEffect, useState } from 'react';
+import DuplicateCourseClassModal from './DuplicateCourseClassModal';
 
 export const DuplicateCourseClassSwingWrapper: React.FC<any> = () => {
   const [showCompleteMessage, setShowCompleteMessage] = useState(false);
@@ -44,7 +45,7 @@ export const DuplicateCourseClassSwingWrapper: React.FC<any> = () => {
         <div className="root">
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
-              Duplicate process completed. You can close the window
+              {$t('duplicate_process_completed_you_can_close_the_wind')}
             </Typography>
           </div>
         </div>

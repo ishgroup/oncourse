@@ -12,6 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
+import $t from '@t';
 import { makeAppStyles, NoArgFunction } from 'ish-ui';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
@@ -51,7 +52,7 @@ const useStyles = makeAppStyles()(theme => ({
   }
 }));
 
-const DataTypes = Object.keys(DataType).filter(k => !["Portal subdomain","Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
+const DataTypes = Object.keys(DataType).filter(k => !["Portal subdomain", "Record", "Pattern text", "List", "Map", "Long text", "URL", "Email"].includes(k));
 
 interface BindingEditPopupProps extends InjectedFormProps {
   popupAnchorEl: any;
@@ -115,7 +116,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
                 <DialogContent className="overflow-hidden">
                   <FormField
                     type="text"
-                    label="Label"
+                    label={$t('label')}
                     name="label"
                     inputRef={nameRef}
                     className="mb-2"
@@ -124,7 +125,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
                   <FormField
                     type="text"
-                    label="Name"
+                    label={$t('name')}
                     name="name"
                     validate={validateBindingName}
                     required
@@ -133,7 +134,7 @@ const BindingEditPopupBase = React.memo<BindingEditPopupProps>(
 
                 <DialogActions>
                   <Button onClick={onSubmit} color="primary" disabled={invalid}>
-                    Save
+                    {$t('save2')}
                   </Button>
                 </DialogActions>
               </Form>

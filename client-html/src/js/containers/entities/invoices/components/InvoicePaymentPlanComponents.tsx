@@ -9,6 +9,7 @@ import OpenInNew from '@mui/icons-material/OpenInNew';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format, isPast } from 'date-fns';
 import {
@@ -108,7 +109,7 @@ export const InvoicePaymentPlanHeader: React.FunctionComponent<PaymentPlanHeader
       </div>
 
       {hasLink && (
-        <Tooltip title="open payment">
+        <Tooltip title={$t('open_payment')}>
           <IconButton
             classes={{
               root: classes.deleteIcon
@@ -121,7 +122,7 @@ export const InvoicePaymentPlanHeader: React.FunctionComponent<PaymentPlanHeader
       )}
 
       {isPaymentDue && onDelete && (
-        <Tooltip title="remove payment due" className={hoverShowClasses.target}>
+        <Tooltip title={$t('remove_payment_due')} className={hoverShowClasses.target}>
           <IconButton
             classes={{
               root: classes.deleteIcon
@@ -196,7 +197,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
       <div>
         <div className="centeredFlex pt-1 pr-4 justify-content-end">
           <Typography variant="subtitle2" noWrap>
-            Overdue
+            {$t('overdue')}
           </Typography>
           <Typography variant="body2" color="textSecondary" className="pl-1 money">
             {formatCurrency(lineOwerdue, currency.shortCurrencySymbol)}
@@ -210,7 +211,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
     <div>
       <div className="centeredFlex pt-1 pr-4 justify-content-end">
         <Typography variant="subtitle2" noWrap>
-          Total Owing
+          {$t('total_owing2')}
         </Typography>
         <Typography variant="body2" color="textSecondary" className="pl-1 money">
           {formatCurrency(lineOwing, currency.shortCurrencySymbol)}
@@ -225,7 +226,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
         <FormField
           type="date"
           name={`${item}.date`}
-          label="Date"
+          label={$t('date')}
           disabled={!isPaymentDue}
           className="mb-2 mt-2"
         />
@@ -235,7 +236,7 @@ export const InvoicePaymentPlanContent: React.FunctionComponent<PaymentPlanConte
         <FormField
           type="money"
           name={`${item}.amount`}
-          label="Amount"
+          label={$t('amount')}
           validate={validatePaymentDueAmount}
           disabled={!isPaymentDue}
         />

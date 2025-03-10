@@ -1,7 +1,8 @@
-import * as React from "react";
-import { RouteComponentProps } from "react-router";
-import CatalogWithSearch from "../../common/components/layout/catalog/CatalogWithSearch";
-import { useAppSelector } from "../../common/utils/hooks";
+import $t from '@t';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
+import CatalogWithSearch from '../../common/components/layout/catalog/CatalogWithSearch';
+import { useAppSelector } from '../../common/utils/hooks';
 
 export const TagsCatalog = ({ history }: RouteComponentProps) => {
   const allTags = useAppSelector(state => state.tags.allTags);
@@ -17,7 +18,7 @@ export const TagsCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       items={allTags}
-      title="Tag groups"
+      title={$t('tag_groups')}
       itemsListTitle="Tag groups"
       onOpen={onOpen}
       customAddNew={onClickNew}

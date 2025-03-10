@@ -8,6 +8,7 @@ import { Person } from '@mui/icons-material';
 import { Grid, List, ListItem, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { alpha } from '@mui/material/styles';
+import $t from '@t';
 import clsx from 'clsx';
 import { AnyArgFunction, formatCurrency, openInternalLink } from 'ish-ui';
 import * as React from 'react';
@@ -119,8 +120,7 @@ const TotalStatisticInfo = props => {
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Typography className={clsx(classes.totalText)}>
         <Person className={classes.enrolmentsColor} />
-        {' '}
-        <span>{totalStudents}</span>
+        {$t('spanspan')}
         <strong className={classes.revenueColor}>{(currency && totalEnrolments !== null) && currency.shortCurrencySymbol}</strong>
         {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
       </Typography>
@@ -258,7 +258,7 @@ class Statistics extends React.Component<Props, any> {
           <Grid container className={classes.root}>
             <Grid item className="w-100 d-flex">
               <Typography className="heading flex-fill">{statisticData.moneyCount !== null ? 'Enrolments & Revenue' : 'Enrolments'}</Typography>
-              <Typography variant="caption">Past 4 weeks</Typography>
+              <Typography variant="caption">{$t('past_4_weeks')}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Chart data={chartData} />
@@ -273,7 +273,7 @@ class Statistics extends React.Component<Props, any> {
             </Grid>
             <Grid item xs={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-                Last enrolments
+                {$t('last_enrolments')}
               </Typography>
               <List dense disablePadding>
                 {statisticData.latestEnrolments
@@ -295,7 +295,7 @@ class Statistics extends React.Component<Props, any> {
             </Grid>
             <Grid item xs={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-                Largest waiting lists
+                {$t('largest_waiting_lists')}
               </Typography>
               <List dense disablePadding>
                 {statisticData.latestWaitingLists
@@ -318,8 +318,7 @@ class Statistics extends React.Component<Props, any> {
             <Grid item xs={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
                 {statisticData.openedClasses}
-                {' '}
-                classes open for enrolment
+                {$t('classes_open_for_enrolment')}
               </Typography>
               <List dense disablePadding>
                 <Grid container className={classes.containerStatisticGroup}>
@@ -327,8 +326,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.inDevelopmentClasses}
-                        {' '}
-                        preparing
+                        {$t('preparing')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -336,8 +334,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.cancelledClasses}
-                        {' '}
-                        cancelled
+                        {$t('cancelled')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -347,8 +344,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.completedClasses}
-                        {' '}
-                        completed
+                        {$t('completed')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -356,8 +352,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.commencedClasses}
-                        {' '}
-                        commenced
+                        {$t('commenced')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -369,7 +364,7 @@ class Statistics extends React.Component<Props, any> {
       {hasAuditPermissions && (
         <Grid item xs={12} className="mt-2 p-3">
           <Typography className={clsx("heading", classes.headingMargin)}>
-            Automation status
+            {$t('automation_status')}
           </Typography>
           <ScriptStatistic dispatch={dispatch} />
         </Grid>

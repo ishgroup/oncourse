@@ -3,27 +3,28 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseEnrolmentType, CourseStatus, Tag } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import { LinkAdornment, mapSelectItems, openInternalLink, TimetableButton } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
+import { CourseEnrolmentType, CourseStatus, Tag } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import { LinkAdornment, mapSelectItems, openInternalLink, TimetableButton } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedEntity from '../../../../common/components/form/nestedEntity/NestedEntity';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { CourseExtended } from "../../../../model/entities/Course";
-import { State } from "../../../../reducers/state";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { useTagGroups } from "../../../tags/utils/useTagGroups";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { openFacultyLink } from "../../faculties/utils";
-import { courseFilterCondition } from "../utils";
-import CourseAvailableClassChart from "./CourseAvailableClassChart";
-import CourseItemRenderer from "./CourseItemRenderer";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { CourseExtended } from '../../../../model/entities/Course';
+import { State } from '../../../../reducers/state';
+import { PreferencesState } from '../../../preferences/reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { useTagGroups } from '../../../tags/utils/useTagGroups';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { openFacultyLink } from '../../faculties/utils';
+import { courseFilterCondition } from '../utils';
+import CourseAvailableClassChart from './CourseAvailableClassChart';
+import CourseItemRenderer from './CourseItemRenderer';
 
 const CourseEnrolmentTypes = Object.keys(CourseEnrolmentType).map(mapSelectItems);
 const CourseStatusTypes = Object.keys(CourseStatus).map(mapSelectItems);
@@ -107,7 +108,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 <Grid item xs={twoColumn ? 2 : 12}>
                   <FormField
                     type="text"
-                    label="Code"
+                    label={$t('code')}
                     name="code"
                     placeholder={twoColumn ? "Code" : undefined}
                     required
@@ -116,7 +117,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 <Grid item xs={twoColumn ? 4 : 12}>
                   <FormField
                     type="text"
-                    label="Name"
+                    label={$t('name')}
                     name="name"
                     placeholder={twoColumn ? "Name" : undefined}
                     required
@@ -140,7 +141,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             items={specialTags}
             disabled={specialTypesDisabled}
             name="specialTagId"
-            label="Type"
+            label={$t('type')}
             selectValueMark="id"
             selectLabelMark="name"
             allowEmpty
@@ -161,7 +162,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             name='facultyId'
             type='remoteDataSelect'
             preloadEmpty={true}
-            label='Faculty'
+            label={$t('faculty')}
             entity='Faculty'
             aqlColumns='name,code'
             selectValueMark='id'
@@ -196,7 +197,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               <FormField
                 type="select"
                 name="enrolmentType"
-                label="Enrolment type"
+                label={$t('enrolment_type')}
                 items={CourseEnrolmentTypes}
                 disabled={values.isTraineeship}
               />
@@ -205,7 +206,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
               <FormField
                 type="select"
                 name="status"
-                label="Status"
+                label={$t('status')}
                 items={CourseStatusTypes}
                 disabled={values.isTraineeship}
               />
@@ -217,7 +218,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             type="select"
             name="dataCollectionRuleId"
             defaultValue={values.dataCollectionRuleName}
-            label="Data collection rule"
+            label={$t('data_collection_rule')}
             selectValueMark="id"
             selectLabelMark="name"
             items={dataCollectionRules || []}
@@ -237,7 +238,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
                 onChange={onIsTraineeshipChange}
               />
             )}
-            label="Traineeship"
+            label={$t('traineeship')}
           />
         </Grid>
 
@@ -245,7 +246,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="allowWaitingLists" />}
-            label="Allows Waiting lists"
+            label={$t('allows_waiting_lists')}
           />
         </Grid>
 
@@ -254,7 +255,7 @@ const CourseGeneralTab = React.memo<CourseGeneralTabProps>(
             <FormControlLabel
               className="checkbox"
               control={<FormField type="checkbox" name="currentlyOffered"/>}
-              label="Currently offered"
+              label={$t('currently_offered')}
             />
           </Grid>
         )}

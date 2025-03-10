@@ -3,17 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Note } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL, formatRelativeDate } from "ish-ui";
-import React from "react";
-import FormField from "../../formFields/FormField";
+import { Note } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Grid, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import clsx from 'clsx';
+import React from 'react';
+import FormField from '../../formFields/FormField';
 
 interface Props {
   item: Note;
@@ -46,35 +45,31 @@ const NoteItem = (props: Props) => {
             <Grid item>
               {item.created && (
                 <Typography className={classes.dateInfo}>
-                  Created
-                  {' '}
-                  {formatRelativeDate(new Date(item.created), new Date(), DD_MMM_YYYY_AT_HH_MM_A_SPECIAL)}
+                  {$t('created2')}
                 </Typography>
               )}
               {item.createdBy && (
                 <Typography className={classes.dateInfo}>
-                  by
+                  {$t('by')}
                   {" "}
                   {item.createdBy}
                 </Typography>
               )}
               {item.modified && (
                 <Typography className={clsx(classes.dateInfo, "mt-1")}>
-                  Modified
-                  {' '}
-                  {formatRelativeDate(new Date(item.modified), new Date(), DD_MMM_YYYY_AT_HH_MM_A_SPECIAL)}
+                  {$t('modified')}
                 </Typography>
               )}
               {item.modifiedBy && (
                 <Typography className={classes.dateInfo}>
-                  by
+                  {$t('by')}
                   {" "}
                   {item.modifiedBy}
                 </Typography>
               )}
             </Grid>
             <Grid item className="d-flex" alignItems="flex-end">
-              <Tooltip title="Remove Note">
+              <Tooltip title={$t('remove_note')}>
                 <IconButton
                   className="lightGrayIconButton"
                   color="secondary"

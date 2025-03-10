@@ -8,6 +8,7 @@
 
 import { GradingItem, GradingType } from '@api/model';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import clsx from 'clsx';
 import { D_MMM_YYYY, EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from 'ish-ui';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -17,7 +18,6 @@ import { EnrolmentAssessmentExtended, EnrolmentExtended } from '../../../../mode
 import AssessmentSubmissionIconButton from '../../courseClasses/components/assessments/AssessmentSubmissionIconButton';
 import GradeContent from '../../courseClasses/components/assessments/GradeContent';
 import { useGradeErrors } from '../../courseClasses/components/assessments/utils/hooks';
-
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
@@ -149,7 +149,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                     onBlur: stubFunction,
                     value: submission.markedById
                   }}
-                  placeholder="No assessor"
+                  placeholder={$t('no_assessor')}
                   items={elem.tutors || []}
                   allowEmpty
                   inline

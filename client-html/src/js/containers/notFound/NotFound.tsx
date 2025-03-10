@@ -11,6 +11,7 @@
 
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { AppTheme } from 'ish-ui';
 import React from 'react';
 import { withStyles } from 'tss-react/mui';
@@ -56,12 +57,12 @@ const NotFound: React.FC<any> = props => {
     <div className={`centeredFlex text-center ${classes.container}`}>
       <div className="w-100">
         <Typography variant="h4" className="mb-3">
-          You have gone offCourse.
+          {$t('you_have_gone_offcourse')}
         </Typography>
         <Typography variant="h5">
-          Return to
+          {$t('return_to')}
           {" "}
-          <Link href="/" color="inherit" className={classes.backLink}>dashboard</Link>
+          <Link href="/" color="inherit" className={classes.backLink}>{$t('dashboard')}</Link>
           .
         </Typography>
         <div className={classes.bgImage}>

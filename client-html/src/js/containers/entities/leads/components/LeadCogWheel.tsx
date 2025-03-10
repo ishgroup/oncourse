@@ -6,14 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import EntityService from "../../../../common/services/EntityService";
-import { useAppDispatch } from "../../../../common/utils/hooks";
-import { State } from "../../../../reducers/state";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import EntityService from '../../../../common/services/EntityService';
+import { useAppDispatch } from '../../../../common/utils/hooks';
+import { State } from '../../../../reducers/state';
+import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
 
 const LeadCogWheel = memo<any>(props => {
   const {
@@ -61,10 +62,10 @@ const LeadCogWheel = memo<any>(props => {
     <>
       <BulkEditCogwheelOption {...props} />
       <MenuItem className={menuItemClass} onClick={onQuickApplication} disabled={noSelectedOrNew || !hasCourseRelations}>
-        Convert lead to application...
+        {$t('convert_lead_to_application')}
       </MenuItem>
       <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions || noSelectedOrNew || !(hasProductRelations || hasCourseRelations)}>
-        Convert lead to sale...
+        {$t('convert_lead_to_sale')}
       </MenuItem>
     </>
   );

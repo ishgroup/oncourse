@@ -7,8 +7,8 @@
  */
 
 import { Course } from '@api/model';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Grid, Typography } from '@mui/material';
+import $t from '@t';
 import { Decimal } from 'decimal.js-light';
 import { decimalPlus, formatCurrency, LinkAdornment, normalizeNumber, usePrevious } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -353,7 +353,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
         <FormField
           type="text"
           name={`${item}.title`}
-          label="Title"
+          label={$t('title')}
           disabled={type !== "Quote" && !isNew}
           required
         />
@@ -362,7 +362,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
         <FormField
           type="number"
           name={`${item}.quantity`}
-          label="Quantity"
+          label={$t('quantity')}
           onChange={onQuantityChange}
           normalize={normalizeNumber}
           disabled={type !== "Quote" && !isNew}
@@ -371,14 +371,14 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 6}>
-        <FormField type="text" name={`${item}.unit`} label="Unit (e.g.,kg)" disabled={type !== "Quote" && !isNew} />
+        <FormField type="text" name={`${item}.unit`} label={$t('unit_egkg')} disabled={type !== "Quote" && !isNew} />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
         <FormField
           type="select"
           name={`${item}.incomeAccountId`}
-          label="Income account"
+          label={$t('income_account')}
           disabled={type !== "Quote" && !isNew}
           items={useAllAccounts ? accountTypes.all : incomeAccountOptions}
           defaultValue={row.incomeAccountName}
@@ -394,7 +394,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
         <FormField
           type="multilineText"
           name={`${item}.description`}
-          label="Description"
+          label={$t('description')}
           disabled={type !== "Quote" && !isNew}
         />
       </Grid>
@@ -402,7 +402,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       <Grid item xs={twoColumn ? 6 : 12}>
         <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={12}>
-            <div className="heading">Assign To Budget</div>
+            <div className="heading">{$t('assign_to_budget')}</div>
           </Grid>
 
           <Grid item xs={twoColumn ? 6 : 12}>
@@ -410,7 +410,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               type="remoteDataSelect"
               entity="Course"
               name={`${item}.courseName`}
-              label="Course"
+              label={$t('course')}
               selectValueMark="name"
               selectLabelMark="name"
               selectFilterCondition={courseFilterCondition}
@@ -432,7 +432,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
               entity="Discount"
               aqlColumns="name,discountType,discountDollar,discountPercent,rounding"
               aqlFilter="((validTo >= today) or (validTo == null)) and ((validFrom <= today) or (validFrom == null)) "
-              label="Discount"
+              label={$t('discount')}
               selectValueMark="id"
               selectLabelMark="name"
               name={`${item}.discountId`}
@@ -447,7 +447,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             <FormField
               type="select"
               name={`${item}.courseClassId`}
-              label="Class code"
+              label={$t('class_code')}
               defaultValue={row.classCode}
               selectValueMark="id"
               selectLabelMark="code"
@@ -462,7 +462,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
             <FormField
               type="select"
               name={`${item}.enrolmentId`}
-              label="Enrolled student"
+              label={$t('enrolled_student')}
               selectValueMark="id"
               defaultValue={row.enrolledStudent}
               disabled={(type !== "Quote" && !isNew) || !row.courseClassId}
@@ -476,14 +476,14 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
       <Grid item container xs={twoColumn ? 6 : 12} columnSpacing={3} rowSpacing={2} className={twoColumn ? undefined : "pt-2"}>
         <Grid item xs={12}>
-          <div className="heading">Amount</div>
+          <div className="heading">{$t('amount')}</div>
         </Grid>
 
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
             type="money"
             name={`${item}.priceEachExTax`}
-            label="Price each ExTax"
+            label={$t('price_each_extax')}
             onChange={onPriceEachExTaxChange}
             disabled={type !== "Quote" && !isNew}
           />
@@ -493,7 +493,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           <FormField
             type="money"
             name={`${item}.discountEachExTax`}
-            label="Discount each ExTax"
+            label={$t('discount_each_extax')}
             onChange={onDiscountEachExTaxChange}
             disabled={type !== "Quote" && !isNew}
           />
@@ -503,7 +503,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
           <FormField
             type="select"
             name={`${item}.taxId`}
-            label="Tax type"
+            label={$t('tax_type')}
             selectValueMark="id"
             selectLabelMark="code"
             onChange={onTaxIdChange}
@@ -515,7 +515,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
 
         <Grid item xs={twoColumn ? 6 : 12}>
           <Uneditable
-            label="Tax amount"
+            label={$t('tax_amount')}
             value={taxDisplayedAmount}
             money
           />
@@ -525,7 +525,7 @@ const InvoiceLineBase: React.FunctionComponent<any> = React.memo((props: any) =>
       <Grid item xs={12}>
         <div className="centeredFlex justify-content-end pr-0-5 mb-1">
           <Typography variant="subtitle2" noWrap>
-            Total
+            {$t('total')}
           </Typography>
           <Typography variant="body2" color="textSecondary" className="pl-1" component="div">
             <FormField

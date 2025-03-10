@@ -6,12 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { OutcomeProgression } from "@api/model";
+import { OutcomeProgression } from '@api/model';
 import { Tooltip, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import { normalizeNumber } from "ish-ui";
-import React, { useMemo, useState } from "react";
-import { Cell, Legend, Pie, PieChart } from "recharts";
+import $t from '@t';
+import { normalizeNumber } from 'ish-ui';
+import React, { useMemo, useState } from 'react';
+import { Cell, Legend, Pie, PieChart } from 'recharts';
 
 interface Props {
   data: OutcomeProgression
@@ -83,7 +84,7 @@ export function AttendanceChart({ data }: Props) {
                 && Math.round(chartData[attendedIndex].value / (chartData.reduce((p, c) => p + c.value, 0) / 100)))}
               %
             </tspan>
-            <tspan x="100" dy="15">attended</tspan>
+            <tspan x="100" dy="15">{$t('attended')}</tspan>
           </text>
           <Legend
             iconType="circle"
@@ -165,8 +166,8 @@ export function AssessmentChart({ data }: Props) {
                 && Math.round(chartData[markedIndex].value / ( (chartData.reduce((p, c) => p + c.value, 0) / 100))))}
               %
             </tspan>
-            <tspan x="100" dy="15">assessments</tspan>
-            <tspan x="100" dy="15">marked</tspan>
+            <tspan x="100" dy="15">{$t('assessments')}</tspan>
+            <tspan x="100" dy="15">{$t('marked2')}</tspan>
           </text>
           <Legend
             iconType="circle"

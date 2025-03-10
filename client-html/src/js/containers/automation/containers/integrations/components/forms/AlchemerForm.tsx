@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FormControlLabel } from "@mui/material";
-import * as React from "react";
-import { connect } from "react-redux";
-import { initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
+import { FormControlLabel } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 
 class AlchemerBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -34,12 +35,12 @@ class AlchemerBaseForm extends React.Component<any, any> {
       <form onSubmit={handleSubmit(onSubmit)}>
 
         <AppBarContent>
-          <FormField name="fields.apiToken" label="Api token" type="text" className="mb-2" />
-          <FormField name="fields.apiTokenSecret" label="Api token secret" type="text" className="mb-2" />
-          <FormField name="fields.surveyId" label="Survey ID" type="text" className="mb-2" />
+          <FormField name="fields.apiToken" label={$t('api_token')} type="text" className="mb-2" />
+          <FormField name="fields.apiTokenSecret" label={$t('api_token_secret')} type="text" className="mb-2" />
+          <FormField name="fields.surveyId" label={$t('survey_id')} type="text" className="mb-2" />
           <FormField
             name="fields.courseTag"
-            label="Only activate for enrolments in courses tagged with"
+            label={$t('only_activate_for_enrolments_in_courses_tagged_wit')}
             type="text"
             className="mb-2"
           />
@@ -47,11 +48,11 @@ class AlchemerBaseForm extends React.Component<any, any> {
           <div className="flex-column pt-2">
             <FormControlLabel
               control={<FormField name="fields.sendOnEnrolmentSuccess" color="primary" type="checkbox" />}
-              label="Send on successful enrolment"
+              label={$t('send_on_successful_enrolment')}
             />
             <FormControlLabel
               control={<FormField name="fields.sendOnEnrolmentCompletion" color="primary" type="checkbox" />}
-              label="Send on completion"
+              label={$t('send_on_completion')}
             />
           </div>
         </AppBarContent>

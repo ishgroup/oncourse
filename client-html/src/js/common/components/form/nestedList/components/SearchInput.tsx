@@ -7,6 +7,7 @@ import Close from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
+import $t from '@t';
 import { EditInPlaceSearchSelect, mapSelectItems, stubFunction } from 'ish-ui';
 import React, { useMemo } from 'react';
 import EditInPlaceQuerySelect from '../../formFields/EditInPlaceQuerySelect';
@@ -89,7 +90,7 @@ const SearchInput = React.memo<{
     <>
       {searchValuesToShow.length > 0 && !disableAddAll && (
         <Button size="small" className={classes.button} onClick={onAddEvent}>
-          Add all
+          {$t('add_all')}
         </Button>
       )}
       {(searchExpression || searchType === "immediate") && (
@@ -117,7 +118,7 @@ const SearchInput = React.memo<{
           && (
             <EditInPlaceSearchSelect
               className="mt-2 mb-2"
-              label="Entity"
+              label={$t('entity')}
               meta={{}}
               input={{
                 onChange: value => setSelectedEntity(value),

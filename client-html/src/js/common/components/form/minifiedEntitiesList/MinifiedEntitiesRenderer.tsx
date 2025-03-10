@@ -12,6 +12,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { AppTheme } from 'ish-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { withStyles } from 'tss-react/mui';
@@ -75,9 +76,9 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
   const onChangeBase = useCallback(
     index => {
       if (accordion) {
-        setExpanded(prev => (prev[index] ? {} : {[index]: true}));
+        setExpanded(prev => (prev[index] ? {} : { [index]: true }));
       } else {
-        setExpanded(prev => ({...prev, [index]: !prev[index]}));
+        setExpanded(prev => ({ ...prev, [index]: !prev[index] }));
       }
     },
     [accordion]
@@ -115,7 +116,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
             expanded={Boolean(fieldsWithError[index]) || Boolean(expanded[index])}
             onChange={() => onChangeBase(index)}
             defaultExpanded={!field.id}
-            TransitionProps={{unmountOnExit: true}}
+            TransitionProps={{ unmountOnExit: true }}
           >
             <AccordionSummary
               classes={{
@@ -151,7 +152,7 @@ const MinifiedEntitiesRenderer: React.FC<any> = props => {
                     }}
                     onClick={() => onViewMore(entity, field.id, field)}
                   >
-                    More options
+                    {$t('more_options2')}
                   </Button>
                 )}
               </AccordionActions>

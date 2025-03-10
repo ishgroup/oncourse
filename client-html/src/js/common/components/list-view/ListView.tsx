@@ -10,6 +10,7 @@ import { Currency, ExportTemplate, LayoutType, Report, TableModel } from '@api/m
 import ErrorOutline from '@mui/icons-material/ErrorOutline';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import $t from '@t';
 import {
   AnyArgFunction,
   BooleanArgFunction,
@@ -829,7 +830,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
           closeConfirm();
         }}
       >
-        SAVE
+        {$t('save')}
       </Button>
     );
 

@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Tax } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import { formatFieldPercent, parseFieldPercent, preventNegativeOrLogEnter } from "ish-ui";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import { Tax } from '@api/model';
+import { Button, Card, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import { formatFieldPercent, parseFieldPercent, preventNegativeOrLogEnter } from 'ish-ui';
+import * as React from 'react';
+import FormField from '../../../../../common/components/form/formFields/FormField';
 
 const validatePercentage = value => (!value && value !== 0
     ? "Field is mandatory"
@@ -34,7 +33,7 @@ const renderTaxTypes = props => {
                 <FormField
                   type="text"
                   name={`${item}.code`}
-                  label="Tax Code"
+                  label={$t('tax_code')}
                   disabled={field.systemType || !field.editable}
                   className={classes.field}
                   required
@@ -45,7 +44,7 @@ const renderTaxTypes = props => {
                 <FormField
                   type="number"
                   name={`${item}.rate`}
-                  label="Rate"
+                  label={$t('rate')}
                   min="0"
                   max="100"
                   step="0.01"
@@ -71,7 +70,7 @@ const renderTaxTypes = props => {
                         disabled={!field.editable}
                                               />
                     )}
-                    label="GST"
+                    label={$t('gst')}
                   />
                   <div className="flex-fill" />
                   {!field.systemType && (
@@ -82,7 +81,7 @@ const renderTaxTypes = props => {
                         className={classes.deleteButton}
                         onClick={() => onDelete(field, index)}
                       >
-                        Delete
+                        {$t('delete2')}
                       </Button>
                     </div>
                   )}
@@ -93,7 +92,7 @@ const renderTaxTypes = props => {
                 <FormField
                   type="select"
                   name={`${item}.payableAccountId`}
-                  label="Payable Account"
+                  label={$t('payable_account')}
                   items={assetAccounts}
                   className={classes.field}
                   disabled={!field.editable}
@@ -105,7 +104,7 @@ const renderTaxTypes = props => {
                 <FormField
                   type="select"
                   name={`${item}.receivableAccountId`}
-                  label="Receivable Account"
+                  label={$t('receivable_account')}
                   items={liabilityAccounts}
                   className={classes.field}
                   disabled={!field.editable}
@@ -117,7 +116,7 @@ const renderTaxTypes = props => {
                 <FormField
                   type="text"
                   name={`${item}.description`}
-                  label="Description"
+                  label={$t('description')}
                   className={classes.field}
                   disabled={!field.editable}
                 />

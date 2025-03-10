@@ -9,6 +9,7 @@ import { FormControlLabel, Grid, MenuItem } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
+import $t from '@t';
 import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from 'date-fns';
 import {
   appendTimezone,
@@ -732,7 +733,7 @@ const CourseClassTimetableTab = ({
             debounced={false}
           />
         )}
-        label="Hybrid"
+        label={$t('hybrid')}
         labelPlacement="start"
       />
     </div>
@@ -800,7 +801,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label="Hybrid class start date"
+                    label={$t('hybrid_class_start_date')}
                     name="startDateTime"
                     validate={validateStartDate}
                     timezone={values.sessions[0]?.siteTimezone}
@@ -810,7 +811,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label="Hybrid class end date"
+                    label={$t('hybrid_class_end_date')}
                     name="endDateTime"
                     validate={validateEndDate}
                     timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
@@ -820,7 +821,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
-                    label="Minimum sessions to complete"
+                    label={$t('minimum_sessions_to_complete')}
                     name="minimumSessionsToComplete"
                     step="1"
                     normalize={normalizeNumberToPositive}
@@ -833,7 +834,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
-                    label="Maximum days to complete"
+                    label={$t('maximum_days_to_complete')}
                     name="maximumDays"
                     min="1"
                     max="99"
@@ -846,7 +847,7 @@ const CourseClassTimetableTab = ({
               <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
-                  label="Expected study hours"
+                  label={$t('expected_study_hours')}
                   name="expectedHours"
                   min="1"
                   max="99"
@@ -859,7 +860,7 @@ const CourseClassTimetableTab = ({
               <Grid item xs={twoColumn ? 6 : 12}>
                 <FormField
                   type="select"
-                  label="Virtual site"
+                  label={$t('virtual_site')}
                   name="virtualSiteId"
                   items={virualSites}
                   allowEmpty

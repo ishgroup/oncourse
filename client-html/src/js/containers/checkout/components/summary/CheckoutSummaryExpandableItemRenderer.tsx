@@ -4,14 +4,14 @@
  */
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Grid, Typography } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Chip from '@mui/material/Chip';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { formatCurrency, StyledCheckbox } from 'ish-ui';
 import React from 'react';
@@ -145,7 +145,7 @@ export const SummaryItemRow = React.memo<
             <FormField
               type="date"
               name={`${item.id}_${listIndex}_validTo`}
-              label="Expires on"
+              label={$t('expires_on2')}
               onChange={handleValidToChange}
               required
             />
@@ -173,11 +173,11 @@ export const SummaryItemRow = React.memo<
       return (
         <Grid item xs={12}>
           {item.expiryType === "Never (Lifetime)" ? (
-            <Uneditable value="lifetime" label="Valid to" />
+            <Uneditable value="lifetime" label={$t('valid_to')} />
           ) : (
             <FormField
               name={`${item.id}_${listIndex}_validTo`}
-              label="Valid to"
+              label={$t('valid_to')}
               type="date"
               onChange={handleValidToChange}
               disabled={item.expiryType === "Never (Lifetime)"}
@@ -284,7 +284,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                 <>
                   <Chip
                     size="small"
-                    label="Payer"
+                    label={$t('payer')}
                     color="primary"
                     clickable={false}
                     className={classes.payerChip}
@@ -292,7 +292,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                   />
 
                   <Tooltip
-                    title="No email address"
+                    title={$t('no_email_address')}
                     disableFocusListener={Boolean(contact.email)}
                     disableHoverListener={Boolean(contact.email)}
                     disableTouchListener={Boolean(contact.email)}
@@ -308,7 +308,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                       )}
                       onClick={e => e.stopPropagation()}
                       onFocus={e => e.stopPropagation()}
-                      label="Send invoice"
+                      label={$t('send_invoice')}
                     />
                   </Tooltip>
 
@@ -318,13 +318,13 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                       disableHoverListener={!hasVoucherLinkedToPayer}
                       disableFocusListener={!hasVoucherLinkedToPayer}
                       disableTouchListener={!hasVoucherLinkedToPayer}
-                      title="Payer is locked due to voucher being redeemed"
+                      title={$t('payer_is_locked_due_to_voucher_being_redeemed')}
                     >
                       <div>
                         <Chip
                           variant="outlined"
                           size="small"
-                          label="Set as payer"
+                          label={$t('set_as_payer')}
                           color="primary"
                           className={classes.setPayerChip}
                           classes={{ label: classes.payerChipLabel }}
@@ -337,7 +337,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
 
                   )}
               <Tooltip
-                title="No email address"
+                title={$t('no_email_address')}
                 disableFocusListener={Boolean(contact.email)}
                 disableHoverListener={Boolean(contact.email)}
                 disableTouchListener={Boolean(contact.email)}
@@ -353,7 +353,7 @@ const CheckoutSummaryExpandableItemRenderer = React.memo<CheckoutSummaryExpandab
                   )}
                   onClick={e => e.stopPropagation()}
                   onFocus={e => e.stopPropagation()}
-                  label="Send confirmation email"
+                  label={$t('send_confirmation_email')}
                 />
               </Tooltip>
             </div>

@@ -3,14 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PaymentType, PayType } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import { mapSelectItems, sortDefaultSelectItems } from "ish-ui";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField, validateUniqueNamesInArray } from "../../../../../common/utils/validation";
+import { PaymentType, PayType } from '@api/model';
+import { Button, Card, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import { mapSelectItems, sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField, validateUniqueNamesInArray } from '../../../../../common/utils/validation';
 
 const PayTypes = Object.keys(PayType)
   .filter(val => Number.isNaN(Number(val)))
@@ -37,7 +36,7 @@ const renderPaymentTypes = props => {
                     <FormField
                       type="text"
                       name={`${item}.name`}
-                      label="Name"
+                      label={$t('name')}
                       disabled={field.systemType}
                       validate={[validateSingleMandatoryField, validateUniqueNamesInArray]}
                     />
@@ -53,7 +52,7 @@ const renderPaymentTypes = props => {
                           className={classes.deleteButton}
                           onClick={() => onDelete(field, index)}
                         >
-                          Delete
+                          {$t('delete2')}
                         </Button>
                       </div>
                     )}
@@ -69,7 +68,7 @@ const renderPaymentTypes = props => {
                           disabled={field.systemType}
                                                   />
                       )}
-                      label="Active"
+                      label={$t('active')}
                     />
                   </Grid>
 
@@ -83,7 +82,7 @@ const renderPaymentTypes = props => {
                           disabled={field.systemType}
                                                   />
                       )}
-                      label="Banked automatically"
+                      label={$t('banked_automatically')}
                     />
                   </Grid>
 
@@ -97,7 +96,7 @@ const renderPaymentTypes = props => {
                           disabled={field.systemType}
                                                   />
                       )}
-                      label="Reconcilable"
+                      label={$t('reconcilable')}
                     />
                   </Grid>
 
@@ -107,7 +106,7 @@ const renderPaymentTypes = props => {
                         <FormField
                           type="select"
                           name={`${item}.type`}
-                          label="Type"
+                          label={$t('type')}
                           items={PayTypes}
                           className={classes.field}
                           required
@@ -118,7 +117,7 @@ const renderPaymentTypes = props => {
                         <FormField
                           type="select"
                           name={`${item}.undepositAccountId`}
-                          label="Undeposited funds account"
+                          label={$t('undeposited_funds_account')}
                           items={assetAccounts}
                           className={classes.field}
                           required
@@ -129,7 +128,7 @@ const renderPaymentTypes = props => {
                         <FormField
                           type="select"
                           name={`${item}.accountId`}
-                          label="Account"
+                          label={$t('account')}
                           items={assetAccounts}
                           className={classes.field}
                           required

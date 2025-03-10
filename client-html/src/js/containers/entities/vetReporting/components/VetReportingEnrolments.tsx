@@ -6,25 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AssessmentClass, Enrolment, GradingType } from "@api/model";
-import { Divider, Grid } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import Collapse from "@mui/material/Collapse";
-import { LinkAdornment } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { change, FieldArray, FormSection } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import { AssessmentClass, Enrolment, GradingType } from '@api/model';
+import { Divider, Grid } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import Collapse from '@mui/material/Collapse';
+import $t from '@t';
+import { LinkAdornment } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { change, FieldArray, FormSection } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { VetReport } from "../../../../model/entities/VetReporting";
-import { getEntityItemById } from "../../common/entityItemsService";
-import EnrolmentDetails from "../../enrolments/components/EnrolmentDetails";
-import EnrolmentSubmissions from "../../enrolments/components/EnrolmentSubmissions";
-import EnrolmentVetStudentLoans from "../../enrolments/components/EnrolmentVetStudentLoans";
-import { EnrolmentSelectItemRenderer, EnrolmentSelectValueRenderer, openEnrolmentLink } from "../../enrolments/utils";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { VetReport } from '../../../../model/entities/VetReporting';
+import { getEntityItemById } from '../../common/entityItemsService';
+import EnrolmentDetails from '../../enrolments/components/EnrolmentDetails';
+import EnrolmentSubmissions from '../../enrolments/components/EnrolmentSubmissions';
+import EnrolmentVetStudentLoans from '../../enrolments/components/EnrolmentVetStudentLoans';
+import { EnrolmentSelectItemRenderer, EnrolmentSelectValueRenderer, openEnrolmentLink } from '../../enrolments/utils';
 
 const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
   const {
@@ -84,7 +85,7 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
       <FullScreenStickyHeader
         isFixed={false}
         twoColumn={twoColumn}
-        title="Enrolments"
+        title={$t('enrolments4')}
         disableInteraction
       />
       <Divider className="mt-3 mb-3" />
@@ -93,7 +94,7 @@ const VetReportingEnrolment = (props: EditViewProps<VetReport>) => {
         type="remoteDataSelect"
         name="selectedEnrolment"
         entity="Enrolment"
-        label="Select an enrolment"
+        label={$t('select_an_enrolment')}
         returnType="object"
         selectValueMark="id"
         selectLabelMark="courseClass.course.name"

@@ -3,31 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Application, ApplicationStatus } from "@api/model";
-import { Grid } from "@mui/material";
-import { LinkAdornment } from "ish-ui";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import { Application, ApplicationStatus } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { LinkAdornment } from 'ish-ui';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+} from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import EntityService from "../../../../common/services/EntityService";
-import history from "../../../../constants/History";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../contacts/utils";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import EntityService from '../../../../common/services/EntityService';
+import history from '../../../../constants/History';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
+import { courseFilterCondition, openCourseLink } from '../../courses/utils';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
 
 interface ApplicationGeneralProps extends EditViewProps<Application> {
   classes?: any;
@@ -125,7 +126,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="contactId"
-                label="Student"
+                label={$t('student')}
                 selectValueMark="id"
                 selectLabelCondition={getContactFullName}
                 disabled={!isNew}
@@ -162,7 +163,7 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
           entity="Course"
           aqlFilter="enrolmentType is ENROLMENT_BY_APPLICATION"
           name="courseId"
-          label="Course"
+          label={$t('course')}
           selectValueMark="id"
           selectLabelMark="name"
           selectFilterCondition={courseFilterCondition}
@@ -185,39 +186,39 @@ const ApplicationGeneral: React.FC<ApplicationGeneralProps> = props => {
         <FormField
           type="date"
           name="applicationDate"
-          label="Application Date"
+          label={$t('application_date')}
           disabled
         />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.source} label="Source" />
+        <Uneditable value={values.source} label={$t('source')} />
       </Grid>
       <Grid item {...gridItemProps}>
         {values && values.status !== ApplicationStatus.Accepted ? (
-          <FormField type="select" name="status" label="Status" items={statusItems} />
+          <FormField type="select" name="status" label={$t('status')} items={statusItems} />
           ) : (
-            <Uneditable value={values.status} label="Status" />
+            <Uneditable value={values.status} label={$t('status')} />
           )}
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
           type="money"
           name="feeOverride"
-          label="Fee Override (ex GST)"
+          label={$t('fee_override_ex_gst')}
           validate={validateNonNegative}
         />
       </Grid>
       <Grid item {...gridItemProps}>
-        <FormField name="enrolBy" label="Enrol by" type="date" />
+        <FormField name="enrolBy" label={$t('enrol_by')} type="date" />
       </Grid>
       <Grid item {...gridItemProps}>
-        {!isNew && <FormField type="text" name="createdBy" label="Created By" disabled />}
+        {!isNew && <FormField type="text" name="createdBy" label={$t('created_by2')} disabled />}
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
           type="text"
           name="reason"
-          label="Reason for decision (Student visible)"
+          label={$t('reason_for_decision_student_visible')}
           multiline
         />
       </Grid>

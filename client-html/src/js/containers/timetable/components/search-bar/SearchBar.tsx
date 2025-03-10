@@ -8,6 +8,7 @@ import { Theme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { darken } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
+import $t from '@t';
 import { AnyArgFunction, StringArgFunction } from 'ish-ui';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
@@ -113,7 +114,7 @@ const SearchBar = React.memo<Props>(
             onQuerySearch={onQuerySearch}
             setListSavingFilter={setSavingFilter}
             searchServerError={searchServerError}
-            placeholder="Find..."
+            placeholder={$t('find2')}
             alwaysExpanded
           />
         </Toolbar>

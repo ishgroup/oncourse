@@ -5,6 +5,7 @@
 
 import { Sale } from '@api/model';
 import { FormControlLabel, Typography } from '@mui/material';
+import $t from '@t';
 import { normalizeNumber } from 'ish-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -87,7 +88,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
         <div className={twoColumn ? "mb-2 mw-800" : "mb-2"}>
           <NestedList
             formId={values.id}
-            title="Classes"
+            title={$t('classes')}
             titleCaption="This discount will only available for the following classes"
             searchPlaceholder="Find classes"
             values={discountClassItems}
@@ -108,10 +109,10 @@ class DiscountClasses extends React.PureComponent<any, any> {
         <FormControlLabel
           className="pr-3 mb-2"
           control={<FormField type="checkbox" name="addByDefault" color="secondary"  />}
-          label="Add this discount when creating or duplicating all classes"
+          label={$t('add_this_discount_when_creating_or_duplicating_all')}
         />
         <Typography color="inherit" component="div" noWrap>
-          Require at least
+          {$t('require_at_least')}
           {" "}
           <FormField
             type="number"
@@ -122,10 +123,10 @@ class DiscountClasses extends React.PureComponent<any, any> {
             debounced={false}
           />
           {" "}
-          enrolments on one invoice from the classes above
+          {$t('enrolments_on_one_invoice_from_the_classes_above')}
         </Typography>
         <Typography color="inherit" component="div" noWrap>
-          Require at least
+          {$t('require_at_least')}
           {" "}
           <FormField
             type="money"
@@ -134,7 +135,7 @@ class DiscountClasses extends React.PureComponent<any, any> {
             validate={[validateSingleMandatoryField, validateNonNegative]}
           />
           {" "}
-          on one invoice
+          {$t('on_one_invoice')}
         </Typography>
       </div>
     );

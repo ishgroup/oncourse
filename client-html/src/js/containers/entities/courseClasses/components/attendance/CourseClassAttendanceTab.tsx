@@ -11,6 +11,7 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 import { Divider, Grid } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -693,12 +694,12 @@ const CourseClassAttendanceTab = React.memo<Props>(
       () => (studentsToAttend.length ? (
         <>
           <div className={clsx("d-inline-flex-center pt-0 pr-0 pb-2 pl-1", classes.attendanceGroupHeading)}>
-            <div className="heading">Students</div>
+            <div className="heading">{$t('students')}</div>
             <AttendanceActionsMenu
               className="invisible"
               type="Student"
               onChange={onChangeAllStudentsAttendance}
-              label="Mark ALL sessions for ALL students as..."
+              label={$t('mark_all_sessions_for_all_students_as')}
             />
           </div>
           {studentsToAttend.map(sa => (
@@ -741,7 +742,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
               className="invisible"
               type="Training plan"
               onChange={onChangeAllTrainingPlansAttendance}
-              label="Mark ALL sessions and tasks for ALL modules as..."
+              label={$t('mark_all_sessions_and_tasks_for_all_modules_as')}
             />
           </div>
           {modulesToAttend.map(sa => (
@@ -783,21 +784,21 @@ const CourseClassAttendanceTab = React.memo<Props>(
       if (sessionsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your timetable changes before editing attendances
+            {$t('please_save_your_timetable_changes_before_editing2')}
           </Typography>
         );
       }
       if (assessmentsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your assessments changes before editing attendances
+            {$t('please_save_your_assessments_changes_before_editin2')}
           </Typography>
         );
       }
       if (isNew) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your new class before editing attendances
+            {$t('please_save_your_new_class_before_editing_attendan')}
           </Typography>
         );
       }
@@ -808,21 +809,21 @@ const CourseClassAttendanceTab = React.memo<Props>(
       if (sessionsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your timetable changes before editing training plans
+            {$t('please_save_your_timetable_changes_before_editing')}
           </Typography>
         );
       }
       if (assessmentsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your assessments changes before editing training plans
+            {$t('please_save_your_assessments_changes_before_editin')}
           </Typography>
         );
       }
       if (isNew) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your new class before editing training plans
+            {$t('please_save_your_new_class_before_editing_training')}
           </Typography>
         );
       }
@@ -852,7 +853,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
       <>
         {stepItems.length > 0 && !sessionsChanged && !assessmentsChanged && !isNew ? (
           <div className="w-100">
-            <div className="heading">Training plan</div>
+            <div className="heading">{$t('training_plan')}</div>
             {daysScroller("Training plan")}
             <Grid container className={classes.sessionsLine}>
               <Grid item xs={12} className={classes.items}>

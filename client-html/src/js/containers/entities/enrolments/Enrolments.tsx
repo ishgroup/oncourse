@@ -15,6 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { AnyArgFunction, openInternalLink, StyledCheckbox } from 'ish-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -298,7 +299,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
             root: "listItemPadding"
           }}
         >
-          Create Enrolment
+          {$t('create_enrolment')}
         </MenuItem>
       </Menu>
 
@@ -307,7 +308,7 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
           root: "pb-0"
         }}
         >
-          You have updated the following enrolment default fields:
+          {$t('you_have_updated_the_following_enrolment_default_f')}
         </DialogTitle>
         <DialogContent className="pb-0">
           <div className="mt-2 mb-2">
@@ -328,19 +329,19 @@ const Enrolments: React.FC<EnrolmentsProps> = props => {
             }
           </div>
           <Typography variant="caption" color="textSecondary">
-            To update these same fields in any associated outcomes, click the checkbox next to each field.
+            {$t('to_update_these_same_fields_in_any_associated_outc2')}
           </Typography>
           <Typography variant="caption" color="textSecondary" gutterBottom paragraph>
-            If you do not want to update any fields, leave them unchecked.
+            {$t('if_you_do_not_want_to_update_any_fields_leave_them')}
           </Typography>
 
           <Typography variant="caption" color="textSecondary" paragraph>
-            NOTE: This action will override any values previously set in these outcomes.
+            {$t('note_this_action_will_override_any_values_previous2')}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button color="primary" onClick={onConfirm}>
-            OK
+            {$t('ok')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -6,10 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Menu, MenuItem } from "@mui/material";
-import { EditInPlaceField, normalizeNumber, stubFunction } from "ish-ui";
-import React, { useState } from "react";
-import { useGradeErrors } from "./utils/hooks";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Menu, MenuItem } from '@mui/material';
+import $t from '@t';
+import { EditInPlaceField, normalizeNumber, stubFunction } from 'ish-ui';
+import React, { useState } from 'react';
+import { useGradeErrors } from './utils/hooks';
 
 const AssessmentGradeModal = (
   {
@@ -46,7 +47,7 @@ const AssessmentGradeModal = (
       onClose={handleGradeMenuClose}
     >
       <MenuItem onClick={() => onSetGrade(null)}>
-        <span className="placeholderContent">No grade</span>
+        <span className="placeholderContent">{$t('no_grade')}</span>
       </MenuItem>
       {gradeItems?.map(g => (
         <MenuItem onClick={() => onSetGrade(g.lowerBound)}>
@@ -66,7 +67,7 @@ const AssessmentGradeModal = (
       disableRestoreFocus
     >
       <DialogContent>
-        <DialogTitle className="p-0 mb-2">Set all students grade as</DialogTitle>
+        <DialogTitle className="p-0 mb-2">{$t('set_all_students_grade_as')}</DialogTitle>
         <Grid container columnSpacing={3}>
           <Grid item xs={6}>
             <EditInPlaceField
@@ -87,7 +88,7 @@ const AssessmentGradeModal = (
           color="primary"
           onClick={handleGradeMenuClose}
         >
-          Close
+          {$t('close')}
         </Button>
         <Button
           variant="contained"
@@ -98,7 +99,7 @@ const AssessmentGradeModal = (
             handleGradeMenuClose();
           }}
         >
-          Save
+          {$t('save2')}
         </Button>
       </DialogActions>
     </Dialog>

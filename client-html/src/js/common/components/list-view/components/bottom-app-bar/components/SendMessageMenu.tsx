@@ -1,8 +1,9 @@
-import MenuItem from "@mui/material/MenuItem";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { openSendMessage } from "../../../../../actions";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { openSendMessage } from '../../../../../actions';
 import { IAction } from '../../../../../actions/IshAction';
 
 interface SendMessageMenuProps {
@@ -26,7 +27,7 @@ const SendMessageMenu: React.FC<SendMessageMenuProps> = props => {
 
   return (
     <MenuItem disabled={isNew} className="listItemPadding" onClick={onSendMessage}>
-      Send message
+      {$t('send_message2')}
     </MenuItem>
   );
 };

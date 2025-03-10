@@ -6,11 +6,11 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DoneRounded from '@mui/icons-material/DoneRounded';
 import Launch from '@mui/icons-material/Launch';
 import Share from '@mui/icons-material/Share';
+import { Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme, LinkAdornment, openInternalLink } from 'ish-ui';
 import React from 'react';
@@ -94,14 +94,14 @@ const CancelPaymentMessage: React.FC<any> = props => {
   return (
     <div className={classes.root}>
       <div>
-        <Typography variant="h5">Payment cancelled</Typography>
+        <Typography variant="h5">{$t('payment_cancelled')}</Typography>
         <div className={classes.iconsContainer}>
           <CancelIcon className={clsx(classes.icon, "rotateOutCustom")} color="error" />
         </div>
       </div>
       <div className="flex-column align-items-center">
         <Button color="primary" className={clsx("submitButton", classes.button)} onClick={tryAgain}>
-          Try again
+          {$t('try_again')}
         </Button>
       </div>
     </div>
@@ -116,20 +116,20 @@ const FailedPaymentMessage: React.FC<any> = props => {
   return (
     (<div className={classes.root}>
       <div>
-        <Typography variant="h5">Failed Payment</Typography>
+        <Typography variant="h5">{$t('failed_payment')}</Typography>
         <div className={classes.iconsContainer}>
           <CancelIcon className={clsx("rotateOutCustom", classes.icon)} color="error" />
         </div>
       </div>
       <Typography variant="subtitle1">
-        Reason:
+        {$t('reason')}
         {" "}
         {payment.process.data && payment.process.data.responseText}
       </Typography>
       {(validatePayment || (!validatePayment && !(/(4|5)+/.test(payment.process.statusCode)))) && (
         <div className="flex-column align-items-center">
           <Button color="primary" className={clsx("submitButton", classes.button)} onClick={tryAgain}>
-            Try again
+            {$t('try_again')}
           </Button>
         </div>
       )}
@@ -160,7 +160,7 @@ const SuccessPaymentMessage: React.FC<any> = props => {
         <div className={classes.iconsContainer}>
           <DoneRounded className={clsx(classes.icon, classes.iconSuccess, "rotateOutCustom")} />
         </div>
-        <Typography variant="h5">Transaction successful</Typography>
+        <Typography variant="h5">{$t('transaction_successful')}</Typography>
       </div>
       <div>
         <Grid container className="p-3 align-content-between">

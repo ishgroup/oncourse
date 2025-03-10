@@ -10,9 +10,9 @@ import { DataCollectionForm, DeliveryScheduleType } from '@api/model';
 import { TreeData, TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree/types';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import FileCopy from '@mui/icons-material/FileCopy';
+import { Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { mapSelectItems, NoArgFunction, sortDefaultSelectItems } from 'ish-ui';
 import * as React from 'react';
@@ -559,7 +559,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
                 <FormField
                   type="text"
                   name="form.name"
-                  label="Name"
+                  label={$t('name')}
                   validate={this.validateUniqueNames}
                   required
                 />
@@ -602,7 +602,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
                 <Grid container columnSpacing={3}>
                   <Grid item xs={12} className={clsx("centeredFlex", classes.headerControlsContainer)}>
                     <div className="pt-2 pb-2">
-                      <Typography variant="caption">Type</Typography>
+                      <Typography variant="caption">{$t('type')}</Typography>
 
                       <Typography id="form.type" variant="subtitle1">{type === "Survey" ? "Student Feedback" : type}</Typography>
                     </div>
@@ -613,7 +613,7 @@ class DataCollectionWrapper extends React.Component<Props & InjectedFormProps & 
                       <FormField
                         type="select"
                         name="form.deliverySchedule"
-                        label="Delivery Schedule"
+                        label={$t('delivery_schedule')}
                         items={deliveryScheduleTypes}
                         className={clsx("pt-2", classes.selectField)}
                         required

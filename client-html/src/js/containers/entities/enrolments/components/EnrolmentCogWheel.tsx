@@ -3,23 +3,24 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { IAction } from '../../../../common/actions/IshAction';
 import CreateCertificateMenu
-  from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
-import EntityService from "../../../../common/services/EntityService";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { State } from "../../../../reducers/state";
-import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
-import { getPlainAccounts } from "../../accounts/actions";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import { getPlainTaxes } from "../../taxes/actions";
-import { getEnrolmentInvoiceLines, setEnrolmentsDialog } from "../actions";
-import CancelEnrolmentModal from "./modal/CancelEnrolmentModal";
-import TransferEnrolmentModal from "./modal/TransferEnrolmentModal";
+  from '../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu';
+import EntityService from '../../../../common/services/EntityService';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { State } from '../../../../reducers/state';
+import AvetmissExportModal from '../../../avetmiss-export/components/modal/AvetmissExportModal';
+import { getPlainAccounts } from '../../accounts/actions';
+import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
+import { getPlainTaxes } from '../../taxes/actions';
+import { getEnrolmentInvoiceLines, setEnrolmentsDialog } from '../actions';
+import CancelEnrolmentModal from './modal/CancelEnrolmentModal';
+import TransferEnrolmentModal from './modal/TransferEnrolmentModal';
 
 const EnrolmentCogWheel = React.memo<any>(props => {
   const {
@@ -118,7 +119,7 @@ const EnrolmentCogWheel = React.memo<any>(props => {
       />
 
       <MenuItem disabled={!enrolmentActionsEnabled} className={menuItemClass} role="Cancel" onClick={onClick}>
-        Cancel an enrolment
+        {$t('cancel_an_enrolment')}
       </MenuItem>
       <MenuItem
         disabled={!hasQePermissions || !enrolmentActionsEnabled}
@@ -126,10 +127,10 @@ const EnrolmentCogWheel = React.memo<any>(props => {
         role="Transfer"
         onClick={onClick}
       >
-        Transfer an enrolment
+        {$t('transfer_an_enrolment')}
       </MenuItem>
       <MenuItem disabled={selection[0] === "NEW"} className={menuItemClass} role="Avetmiss-Export" onClick={onClick}>
-        AVETMISS 8 export {selection.length ? "selected" : "all"}
+        {$t('avetmiss_8_export')} {selection.length ? "selected" : "all"}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />
     </>

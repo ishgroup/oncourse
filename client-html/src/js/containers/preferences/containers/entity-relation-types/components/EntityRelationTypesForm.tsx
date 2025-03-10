@@ -1,5 +1,6 @@
 import { EntityRelationType } from '@api/model';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { idsToString, ShowConfirmCaller } from 'ish-ui';
 import isEqual from 'lodash.isequal';
 import * as React from 'react';
@@ -171,7 +172,7 @@ class EntityRelationTypesBaseForm extends React.Component<Props, any> {
           getAuditsUrl={() => `audit?search=~"EntityRelationType" and entityId in (${idsToString(data.types)})`}
           disabled={!dirty}
           invalid={invalid}
-          title="Sellable items relation types"
+          title={$t('sellable_items_relation_types')}
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}

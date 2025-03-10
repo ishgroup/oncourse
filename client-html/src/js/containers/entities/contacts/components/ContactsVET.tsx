@@ -24,6 +24,7 @@ import Chip from '@mui/material/Chip';
 import Link from '@mui/material/Link';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
 import { mapSelectItems, SettingsAdornment, usePrevious } from 'ish-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -144,7 +145,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     setMenuUSI(null);
   }, [setMenuUSI]);
 
-  const validateUSI = useCallback((value) => {
+  const validateUSI = useCallback(value => {
     if (!value || isSpecialUSI(values)) {
       return undefined;
     }
@@ -158,15 +159,15 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
     }
 
     return undefined;
-  },[values?.birthDate, values?.student?.usiStatus]);
+  }, [values?.birthDate, values?.student?.usiStatus]);
 
   const getUSIStatusMsg = () => {
     if (!values) return "";
 
-    if (isVerifyingUSI) return <Chip label="Verifying USI..." />;
+    if (isVerifyingUSI) return <Chip label={$t('verifying_usi')} />;
 
     if (usiVerificationResult && usiVerificationResult.verifyStatus === "Disabled") {
-      return <Chip label="Upgrade for automatic verification" color="secondary" onClick={openUpgradeLink} />;
+      return <Chip label={$t('upgrade_for_automatic_verification')} color="secondary" onClick={openUpgradeLink} />;
     }
 
     if (values.student && values.student.usiStatus) {
@@ -174,14 +175,14 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
 
       if (status === "Not supplied") {
         if (values.student.usi) {
-          return <Chip label="Not verified" className="errorBackgroundColor text-white" />;
+          return <Chip label={$t('not_verified')} className="errorBackgroundColor text-white" />;
         }
       }
 
-      if (status === "Not verified") return <Chip label="Verification failed" className="errorBackgroundColor text-white" />;
-      if (status === "Verified") return <Chip label="Verified" className="successBackgroundColor text-white" />;
-      if (status === "Exemption") return <Chip label="Student has exemption" className="successBackgroundColor text-white" />;
-      if (status === "International") return <Chip label="International student" className="successBackgroundColor text-white" />;
+      if (status === "Not verified") return <Chip label={$t('verification_failed')} className="errorBackgroundColor text-white" />;
+      if (status === "Verified") return <Chip label={$t('verified')} className="successBackgroundColor text-white" />;
+      if (status === "Exemption") return <Chip label={$t('student_has_exemption')} className="successBackgroundColor text-white" />;
+      if (status === "International") return <Chip label={$t('international_student')} className="successBackgroundColor text-white" />;
     }
 
     return "";
@@ -259,7 +260,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.countryOfBirth"
-                label="Country of birth"
+                label={$t('country_of_birth')}
                 returnType="object"
                 items={countries}
                 allowEmpty
@@ -267,10 +268,10 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             </Grid>
           )}
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-            <FormField type="text" name="student.townOfBirth" label="Town of birth" />
+            <FormField type="text" name="student.townOfBirth" label={$t('town_of_birth')} />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-            <FormField type="select" name="student.indigenousStatus" label="Indigenous status" items={indigenousStatuses} />
+            <FormField type="select" name="student.indigenousStatus" label={$t('indigenous_status')} items={indigenousStatuses} />
           </Grid>
           {languages && (
             <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
@@ -279,7 +280,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 selectValueMark="id"
                 selectLabelMark="name"
                 name="student.language"
-                label="Language spoken at home"
+                label={$t('language_spoken_at_home')}
                 returnType="object"
                 items={languages}
                 allowEmpty
@@ -290,7 +291,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.englishProficiency"
-              label="Proficiency in spoken English"
+              label={$t('proficiency_in_spoken_english')}
               items={englishProficiencies}
             />
           </Grid>
@@ -298,7 +299,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.highestSchoolLevel"
-              label="Highest school level"
+              label={$t('highest_school_level')}
               items={schoolLevels}
             />
           </Grid>
@@ -306,7 +307,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="number"
               name="student.yearSchoolCompleted"
-              label="Achieved in year"
+              label={$t('achieved_in_year')}
               validate={[validateNonNegative, validateYearSchoolCompleted]}
               parse={parseIntValue}
               debounced={false}
@@ -316,7 +317,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.priorEducationCode"
-              label="Prior educational achievement"
+              label={$t('prior_educational_achievement')}
               items={priorEducations}
             />
           </Grid>
@@ -324,7 +325,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.labourForceStatus"
-              label="Employment category"
+              label={$t('employment_category')}
               items={avetmissStudentLabourStatuses}
             />
           </Grid>
@@ -332,7 +333,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.isStillAtSchool"
-              label="Still at school"
+              label={$t('still_at_school')}
               items={stillAtSchoolItems}
             />
           </Grid>
@@ -340,7 +341,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.disabilityType"
-              label="Disability type"
+              label={$t('disability_type')}
               items={disabilityTypes}
             />
           </Grid>
@@ -351,7 +352,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 control={
                   <FormField type="checkbox" name="student.specialNeedsAssistance" color="secondary" />
                 }
-                label="Disability support requested"
+                label={$t('disability_support_requested')}
               />
             </div>
           </Grid>
@@ -359,7 +360,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.clientIndustryEmployment"
-              label="Client industry of employment (VIC)"
+              label={$t('client_industry_of_employment_vic')}
               items={industriesOfEmployment}
             />
           </Grid>
@@ -367,7 +368,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="select"
               name="student.clientOccupationIdentifier"
-              label="Client occupation identifier (VIC)"
+              label={$t('client_occupation_identifier_vic')}
               items={occupationIdentifiers}
             />
           </Grid>
@@ -375,14 +376,14 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
             <FormField
               type="text"
               name="student.uniqueLearnerIdentifier"
-              label="Government student number (VIC/QLD)"
+              label={$t('government_student_number_vicqld')}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
             <FormField
               type="text"
               name="student.chessn"
-              label="Commonwealth higher education support number (CHESSN)"
+              label={$t('commonwealth_higher_education_support_number_chess')}
             />
           </Grid>
           <Grid item container xs={12}>
@@ -390,7 +391,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormField
                 type="text"
                 name="student.usi"
-                label="Unique student identifier (USI)"
+                label={$t('unique_student_identifier_usi')}
                 validate={validateUSI}
                 labelAdornment={<SettingsAdornment clickHandler={e => setMenuUSI(e.currentTarget)} />}
                 disabled={isSpecialUSI(values) || usiLocked}
@@ -412,7 +413,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                           closeUSIMenu();
                         }}
                     >
-                      Remove special USI status
+                      {$t('remove_special_usi_status')}
                     </MenuItem>
                     ) : (
                       <>
@@ -424,8 +425,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                             underline="none"
                             className="centeredFlex"
                           >
-                            <span>Create a USI...</span>
-                            {' '}
+                            {$t('spancreate_a_usispan')}
                             <ExitToApp className={`ml-1 ${classes.exitToCreateUSI}`} />
                           </Link>
                         </MenuItem>
@@ -438,7 +438,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                               closeUSIMenu();
                             }}
                           >
-                            Update USI
+                            {$t('update_usi')}
                           </MenuItem>
                         ) : null}
                         <MenuItem
@@ -449,7 +449,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                             closeUSIMenu();
                           }}
                         >
-                          Student has exemption
+                          {$t('student_has_exemption')}
                         </MenuItem>
                         <MenuItem
                           onClick={() => {
@@ -459,7 +459,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                             closeUSIMenu();
                           }}
                         >
-                          International student
+                          {$t('international_student')}
                         </MenuItem>
                       </>
                     )}
@@ -482,7 +482,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                 control={
                   <FormField type="checkbox" name="student.isOverseasClient" color="secondary" />
                 }
-                label="Overseas student"
+                label={$t('overseas_student')}
               />
             </div>
           </Grid>
@@ -495,33 +495,33 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="student.countryOfResidency"
-                    label="Country of residency"
+                    label={$t('country_of_residency')}
                     returnType="object"
                     items={countries}
                   />
                 </Grid>
               )}
               <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField type="text" name="student.passportNumber" label="Passport number" />
+                <FormField type="text" name="student.passportNumber" label={$t('passport_number')} />
               </Grid>
               <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField type="text" name="student.visaType" label="Visa type" />
+                <FormField type="text" name="student.visaType" label={$t('visa_type')} />
               </Grid>
               <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
-                <FormField type="text" name="student.visaNumber" label="Visa number" />
+                <FormField type="text" name="student.visaNumber" label={$t('visa_number')} />
               </Grid>
               <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
                 <FormField
                   type="date"
                   name="student.visaExpiryDate"
-                  label="Visa expiry date"
+                  label={$t('visa_expiry_date')}
                 />
               </Grid>
               <Grid item xs={twoColumn ? 6 : 12} lg={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
                   name="student.medicalInsurance"
-                  label="Overseas health care cover"
+                  label={$t('overseas_health_care_cover')}
                 />
               </Grid>
             </>
@@ -531,7 +531,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormControlLabel
                 className="checkbox pr-3"
                 control={<FormField type="checkbox" name="student.feeHelpEligible" color="secondary" />}
-                label="VET student loan eligible"
+                label={$t('vet_student_loan_eligible')}
               />
             </div>
           </Grid>
@@ -540,7 +540,7 @@ const ContactsVET: React.FC<ContactsVETProps> = props => {
               <FormField
                 type="text"
                 name="tfn"
-                label="Tax file number"
+                label={$t('tax_file_number')}
                 max="9"
                 InputProps={{
                   inputComponent: TFNInputMask

@@ -7,6 +7,7 @@
  */
 
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -92,7 +93,7 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
         {!hasSelected && (
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
-              Nothing selected
+              {$t('nothing_selected')}
             </Typography>
           </div>
         )}

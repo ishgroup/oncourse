@@ -6,16 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Faculty } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import React from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Faculty } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import React from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
 
 function FacultyGeneralTab(
   {
@@ -57,7 +58,7 @@ function FacultyGeneralTab(
             <Grid item xs={twoColumn ? 2 : 12}>
               <FormField
                 type="text"
-                label="Code"
+                label={$t('code')}
                 name="code"
                 placeholder={twoColumn ? "Code" : undefined}
                 required
@@ -66,7 +67,7 @@ function FacultyGeneralTab(
             <Grid item xs={twoColumn ? 4 : 12}>
               <FormField
                 type="text"
-                label="Name"
+                label={$t('name')}
                 name="name"
                 placeholder={twoColumn ? "Name" : undefined}
                 required
@@ -99,7 +100,7 @@ function FacultyGeneralTab(
       <FormControlLabel
         className="switchWrapper"
         control={<FormField type="switch" name="isShownOnWeb" />}
-        label="Visible online"
+        label={$t('visible_online')}
         labelPlacement="start"
       />
     </Grid>

@@ -22,6 +22,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import {
   AppTheme,
@@ -442,7 +443,7 @@ const ScriptsForm = React.memo<Props>(props => {
     return (
       <div className="w-100 centeredFlex text-nowrap text-truncate">
         <Typography className="heading mr-5" component="div">
-          Trigger
+          {$t('trigger')}
         </Typography>
         {detail && !triggerExpand && !isTriggerExpanded && (
           <div className="text-nowrap text-truncate pr-1">
@@ -522,7 +523,7 @@ const ScriptsForm = React.memo<Props>(props => {
             <FormField
               type="text"
               name="name"
-              label="Name"
+              label={$t('name')}
               validate={validateScriptName}
               disabled={isInternal}
               required
@@ -577,7 +578,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   name="shortDescription"
                   disabled={isInternal}
                   className="overflow-hidden mb-1"
-                  placeholder="Short description"
+                  placeholder={$t('short_description')}
                 />
                 <Typography variant="caption" fontSize="13px">
                   <FormField
@@ -585,7 +586,7 @@ const ScriptsForm = React.memo<Props>(props => {
                     name="description"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    placeholder="Description"
+                    placeholder={$t('description')}
                     fieldClasses={{
                       text: "fw300 fsInherit"
                     }}
@@ -727,7 +728,7 @@ const ScriptsForm = React.memo<Props>(props => {
                   <Grid item xs className="d-flex">
                     <div className="flex-fill">
                       <Typography variant="caption" color="textSecondary">
-                        Last run
+                        {$t('last_run')}
                       </Typography>
 
                       {values.lastRun && values.lastRun.length ? (
@@ -743,7 +744,7 @@ const ScriptsForm = React.memo<Props>(props => {
                         ))
                       ) : (
                         <Typography variant="subtitle1" color="textSecondary">
-                          Never
+                          {$t('never')}
                         </Typography>
                       )}
                     </div>
@@ -756,7 +757,7 @@ const ScriptsForm = React.memo<Props>(props => {
                 >
                   <AccordionSummary classes={{ root: "p-0" }} expandIcon={<ExpandMoreIcon />}>
                     <Typography className="heading" component="div">
-                      Technical info
+                      {$t('technical_info')}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails classes={{ root: "p-0" }}>
@@ -767,7 +768,7 @@ const ScriptsForm = React.memo<Props>(props => {
                         form={form}
                         itemsType="component"
                         name="options"
-                        label="Configuration variables"
+                        label={$t('configuration_variables')}
                         disabled={isInternal}
                       />
                     </div>
@@ -777,24 +778,24 @@ const ScriptsForm = React.memo<Props>(props => {
                           dispatch={dispatch}
                           form={form}
                           name="variables"
-                          label="Runtime variables"
+                          label={$t('runtime_variables')}
                           itemsType="label"
                           disabled={isInternal}
                         />
                       </div>
                     )}
                     <FormField
-                      label="Output"
+                      label={$t('output')}
                       name="outputType"
                       type="select"
                       items={outputTypes}
                       disabled={isInternal}
-                      placeholder="no output"
+                      placeholder={$t('no_output')}
                       className="mb-2"
                     />
                     <FormField
                       type="text"
-                      label="Code"
+                      label={$t('code')}
                       name="keyCode"
                       validate={isNew || !isInternal ? validateKeycode : undefined}
                       disabled={isOriginallyInternal}

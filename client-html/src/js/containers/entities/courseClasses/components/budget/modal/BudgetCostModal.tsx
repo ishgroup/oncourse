@@ -3,22 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, ClassCostRepetitionType, Tax } from "@api/model";
-import { Dialog, DialogActions, DialogTitle } from "@mui/material";
-import Button from "@mui/material/Button";
-import DialogContent from "@mui/material/DialogContent";
-import { mapSelectItems } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { getFormValues, InjectedFormProps, reduxForm, submit } from "redux-form";
-import { valiadateSelectItemAvailable } from "../../../../../../common/utils/validation";
-import { ClassCostExtended, CourseClassExtended } from "../../../../../../model/entities/CourseClass";
-import { State } from "../../../../../../reducers/state";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
-import DiscountContent from "./DiscountContent";
-import IncomeAndExpenceContent from "./IncomeAndExpenceContent";
-import StudentFeeContent from "./StudentFeeContent";
-import TutorPayContent from "./TutorPayContent";
+import { Account, ClassCostRepetitionType, Tax } from '@api/model';
+import { Dialog, DialogActions, DialogTitle } from '@mui/material';
+import Button from '@mui/material/Button';
+import DialogContent from '@mui/material/DialogContent';
+import $t from '@t';
+import { mapSelectItems } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, InjectedFormProps, reduxForm, submit } from 'redux-form';
+import { valiadateSelectItemAvailable } from '../../../../../../common/utils/validation';
+import { ClassCostExtended, CourseClassExtended } from '../../../../../../model/entities/CourseClass';
+import { State } from '../../../../../../reducers/state';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
+import DiscountContent from './DiscountContent';
+import IncomeAndExpenceContent from './IncomeAndExpenceContent';
+import StudentFeeContent from './StudentFeeContent';
+import TutorPayContent from './TutorPayContent';
 
 export const PayRateTypes = Object.keys(ClassCostRepetitionType).filter(t => t !== "Discount").map(mapSelectItems);
 
@@ -175,10 +176,10 @@ const BudgetCostModal = React.memo<CourseClassCostModalProps & InjectedFormProps
         </DialogContent>
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           <Button variant="contained" color="primary" onClick={onSubmit} disabled={(values.id && !dirty) || invalid}>
-            Save
+            {$t('save2')}
           </Button>
         </DialogActions>
       </Dialog>

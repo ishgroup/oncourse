@@ -10,6 +10,7 @@ import StepContent from '@mui/material/StepContent';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
@@ -102,8 +103,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
           })}
         >
           {fields.length}
-          {' '}
-          Payment plan / payments
+          {$t('payment_plan_payments')}
         </Typography>
 
         <AddButton onClick={addPaymentDue} />

@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, ListItem, Typography } from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import { alpha } from '@mui/material/styles';
+import $t from '@t';
 import clsx from 'clsx';
 import { format as formatDate } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
@@ -101,7 +102,7 @@ const NewsItemRender = props => {
             width={twoColumn ? "220px" : "100%"}
             height="150"
             src={`https://www.youtube.com/embed/${post.video}`}
-            title="video"
+            title={$t('video')}
             className={clsx(classes.videoWrapper, twoColumn && "mr-2")}
           />
         )}
@@ -117,7 +118,7 @@ const NewsItemRender = props => {
                     classes.newCaption,
                   )}
                 >
-                  NEW
+                  {$t('new')}
                 </Typography>
               )}
               <Typography component="span" variant="body1" className={classes.newsTitle}>
@@ -136,7 +137,7 @@ const NewsItemRender = props => {
                     "blog-post-content d-block overflow-hidden", classes.postContentExpanded
                   )}
                 >
-                  <Box component="span" display="block" dangerouslySetInnerHTML={{__html: post.content}}/>
+                  <Box component="span" display="block" dangerouslySetInnerHTML={{ __html: post.content }}/>
                 </Typography>
                 {" "}
               </Box>
@@ -188,7 +189,7 @@ const NewsRender = props => {
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <Box className={className} sx={{marginTop: newsOffset}}>
+    <Box className={className} sx={{ marginTop: newsOffset }}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
@@ -204,7 +205,7 @@ const NewsRender = props => {
   ) : showPlaceholder ? (
     <div className="noRecordsMessage">
       <Typography variant="h6" color="inherit" align="center">
-        No unread news
+        {$t('no_unread_news')}
       </Typography>
     </div>
   ) : null;
@@ -216,7 +217,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setReadNews: (newsId: string) => dispatch(setUserPreference({key: READ_NEWS, value: newsId})),
+  setReadNews: (newsId: string) => dispatch(setUserPreference({ key: READ_NEWS, value: newsId })),
   setReadNewsLocal: (newsId: string) => dispatch(setReadNewsLocal(newsId))
 });
 

@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Divider, Grid } from "@mui/material";
-import { format } from "date-fns";
-import { III_DD_MMM_YYYY_HH_MM } from "ish-ui";
-import React, { useMemo } from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../../common/components/form/documents/DocumentsRenderer";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
+import { Divider, Grid } from '@mui/material';
+import $t from '@t';
+import { format } from 'date-fns';
+import { III_DD_MMM_YYYY_HH_MM } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../../common/components/form/documents/DocumentsRenderer';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { CourseClassExtended } from '../../../../../model/entities/CourseClass';
 
 const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
   twoColumn,
@@ -35,7 +36,7 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
     <Divider className='mb-2' />
     <FieldArray
       name="documents"
-      label="Documents"
+      label={$t('documents')}
       entity="CourseClass"
       component={DocumentsRenderer}
       xsGrid={12}
@@ -51,7 +52,7 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
         <FormField
           type="dateTime"
           name="portalDocAccessStart"
-          label="Portal access start"
+          label={$t('portal_access_start')}
           placeholder={portalDocsPlaceholders[0]}
         />
       </Grid>
@@ -59,7 +60,7 @@ const CourseClassDocumentsTab: React.FC<EditViewProps<CourseClassExtended>> = ({
         <FormField
           type="dateTime"
           name="portalDocAccessEnd"
-          label="Portal access end"
+          label={$t('portal_access_end')}
           placeholder={portalDocsPlaceholders[1]}
         />
       </Grid>

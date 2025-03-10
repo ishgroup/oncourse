@@ -3,10 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import clsx from "clsx";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
+import $t from '@t';
+import clsx from 'clsx';
+import * as React from 'react';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
 
 const validateUniqueNames = (value, allValues) => {
   const match = allValues.items.filter(
@@ -30,7 +31,7 @@ const CollectionFormHeading = props => {
         <FormField
           type="text"
           name={`items[${item.id}].name`}
-          label="Heading"
+          label={$t('heading')}
           validate={[validateSingleMandatoryField, validateUniqueNames]}
           fieldClasses={{
             label: "heading"
@@ -40,7 +41,7 @@ const CollectionFormHeading = props => {
         <FormField
           type="multilineText"
           name={`items[${item.id}].description`}
-          label="Description"
+          label={$t('description')}
           className="mt-1"
           truncateLines={4}
         />

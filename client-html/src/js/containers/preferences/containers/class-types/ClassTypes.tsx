@@ -6,15 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { reduxForm } from "redux-form";
-import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
-import { CLASS_TYPES_FORM_NAME } from "../../../../constants/Forms";
-import SpecialTagTypeForm from "../../components/SpecialTagTypeForm";
+import $t from '@t';
+import React from 'react';
+import { reduxForm } from 'redux-form';
+import { onSubmitFail } from '../../../../common/utils/highlightFormErrors';
+import { CLASS_TYPES_FORM_NAME } from '../../../../constants/Forms';
+import SpecialTagTypeForm from '../../components/SpecialTagTypeForm';
 
 const Decorated = reduxForm({
   onSubmitFail,
   form: CLASS_TYPES_FORM_NAME
-})(props => <SpecialTagTypeForm {...props} title="Class types" entity='CourseClass' />);
+})(props => <SpecialTagTypeForm {...props} title={$t('class_types')} entity='CourseClass' />);
 
 export default Decorated;

@@ -5,6 +5,7 @@
 
 import Chip from '@mui/material/Chip';
 import CircularProgress from '@mui/material/CircularProgress';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme } from 'ish-ui';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -136,7 +137,7 @@ const EnrolItemListRenderer = React.memo<{
               <Chip
                 onClick={() => showAllItems(type)}
                 className={clsx("textPrimaryColor", classes.showAllChip)}
-                label="Show all"
+                label={$t('show_all')}
               />
             )
           )}

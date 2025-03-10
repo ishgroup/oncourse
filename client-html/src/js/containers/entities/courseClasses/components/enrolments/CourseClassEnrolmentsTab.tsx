@@ -3,14 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
-import React, { useMemo } from "react";
-import { useSelector } from "react-redux";
-import NestedEntity from "../../../../../common/components/form/nestedEntity/NestedEntity";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import { State } from "../../../../../reducers/state";
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import NestedEntity from '../../../../../common/components/form/nestedEntity/NestedEntity';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { CourseClassExtended } from '../../../../../model/entities/CourseClass';
+import { State } from '../../../../../reducers/state';
 
 const CourseClassEnrolmentsTab: React.FC<EditViewProps<CourseClassExtended>> = props => {
   const {
@@ -51,9 +52,9 @@ const CourseClassEnrolmentsTab: React.FC<EditViewProps<CourseClassExtended>> = p
       <Divider className="mb-1" />
       {isNew ? (
         <div className="pb-1 pt-1">
-          <div className="heading pb-1">Enrolments</div>
+          <div className="heading pb-1">{$t('enrolments4')}</div>
           <Typography variant="caption" color="textSecondary">
-            Please save your new class before adding enrolments
+            {$t('please_save_your_new_class_before_adding_enrolment')}
           </Typography>
         </div>
       ) : (

@@ -1,11 +1,11 @@
-import MenuItem from "@mui/material/MenuItem";
-import { formatCurrency } from "ish-ui";
-import React, { memo, useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { getCustomValues, reverse } from "../actions";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { memo, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { CogwhelAdornmentProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { getCustomValues, reverse } from '../actions';
 
 interface PaymentInCustomValues {
   id: number;
@@ -77,15 +77,7 @@ const PaymentInCogwheel = memo<Props>(props => {
           closeMenu();
         },
         confirmMessage: <span>
-          You are about to make a payment of
-          {' '}
-          <span className="money">{formatCurrency(customValues.amount, currencySymbol)}</span>
-          {' '}
-          to
-          {' '}
-          {customValues.name}
-          {' '}
-          as a refund against their credit card.
+          {$t('money3')}
         </span>,
         cancelButtonText: "Continue"
       });
@@ -111,7 +103,7 @@ const PaymentInCogwheel = memo<Props>(props => {
         className={menuItemClass}
         onClick={onClick}
       >
-        Reverse Payment
+        {$t('reverse_payment')}
       </MenuItem>
     </>
   );

@@ -1,4 +1,5 @@
 import { ButtonBase, Typography } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import React, { useCallback, useEffect } from 'react';
 import { withStyles } from 'tss-react/mui';
@@ -62,8 +63,7 @@ const RecipientsSelectionSwitcher: React.FunctionComponent<any> = props => {
         >
           <Typography className={clsx(classes.selectTypography, selectAll ? "" : classes.highlightedSelectTypography)}>
             {selectedRecords}
-            {' '}
-            selected record
+            {$t('selected_record')}
             {selectedRecords > 1 ? "s" : ""}
           </Typography>
         </ButtonBase>

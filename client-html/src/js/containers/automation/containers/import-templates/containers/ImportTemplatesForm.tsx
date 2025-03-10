@@ -15,6 +15,7 @@ import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { DD_MMM_YYYY_AT_HH_MM_AAAA_SPECIAL, formatRelativeDate, InfoPill, NumberArgFunction } from 'ish-ui';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Dispatch } from 'redux';
@@ -97,7 +98,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
     const defaultVariables = useMemo(
       () => [
-        {name: "context", type: "Context"}
+        { name: "context", type: "Context" }
       ],
       [values]
     );
@@ -164,7 +165,7 @@ const ImportTemplatesForm = React.memo<Props>(
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   validate={validateTemplateName}
                   disabled={isInternal}
                   required
@@ -209,7 +210,7 @@ const ImportTemplatesForm = React.memo<Props>(
                       ]}
                     />
                     <Grow in={isInternal}>
-                      <Tooltip title="Save as new import template">
+                      <Tooltip title={$t('save_as_new_import_template')}>
                         <IconButton onClick={onInternalSaveClick} color="inherit">
                           <FileCopy color="primary" />
                         </IconButton>
@@ -227,7 +228,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   name="shortDescription"
                   disabled={isInternal}
                   className="overflow-hidden mb-1"
-                  placeholder="Short description"
+                  placeholder={$t('short_description')}
                 />
                 <Typography variant="caption" fontSize="13px">
                   <FormField
@@ -235,7 +236,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     name="description"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    placeholder="Description"
+                    placeholder={$t('description')}
                     fieldClasses={{
                       text: "fw300 fsInherit"
                     }}
@@ -268,7 +269,7 @@ const ImportTemplatesForm = React.memo<Props>(
 
                 <FormField
                   type="text"
-                  label="Key code"
+                  label={$t('key_code2')}
                   name="keyCode"
                   validate={isNew || !isInternal ? validateKeycode : undefined}
                   disabled={!isNew}
@@ -279,7 +280,7 @@ const ImportTemplatesForm = React.memo<Props>(
               <Grid item xs={3}>
                 <div>
                   <FormField
-                    label="Enabled"
+                    label={$t('enabled')}
                     type="switch"
                     name="status"
                     color="primary"
@@ -294,7 +295,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     dispatch={dispatch}
                     form={form}
                     name="variables"
-                    label="Variables"
+                    label={$t('variables')}
                     itemsType="label"
                     disabled={isInternal}
                   />
@@ -305,7 +306,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     form={form}
                     itemsType="component"
                     name="options"
-                    label="Options"
+                    label={$t('options')}
                     disabled={isInternal}
                   />
                 </div>
@@ -314,7 +315,7 @@ const ImportTemplatesForm = React.memo<Props>(
                   <FormField
                     type="text"
                     name="description"
-                    label="Description"
+                    label={$t('description')}
                     className="overflow-hidden"
                     multiline
                                       />
@@ -323,7 +324,7 @@ const ImportTemplatesForm = React.memo<Props>(
                     <Grid item xs className="d-flex">
                       <div className="flex-fill">
                         <Typography variant="caption" color="textSecondary">
-                          Last run
+                          {$t('last_run')}
                         </Typography>
 
                         {values.lastRun && values.lastRun.length ? (
@@ -334,7 +335,7 @@ const ImportTemplatesForm = React.memo<Props>(
                           ))
                         ) : (
                           <Typography variant="subtitle1" color="textSecondary">
-                            Never
+                            {$t('never')}
                           </Typography>
                         )}
                       </div>

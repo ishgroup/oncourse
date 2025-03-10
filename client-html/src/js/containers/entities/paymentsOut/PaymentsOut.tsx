@@ -11,6 +11,7 @@ import { ExitToApp } from '@mui/icons-material';
 import Link from '@mui/material/Link';
 import Popover from '@mui/material/Popover';
 import zIndex from '@mui/material/styles/zIndex';
+import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -178,7 +179,7 @@ class PaymentsOut extends React.Component<any, any> {
               underline="none"
               className={classes.createLink}
             >
-              <span>Use the cogwheel to refund credit notes.</span>
+              <span>{$t('use_the_cogwheel_to_refund_credit_notes')}</span>
               {" "}
               <ExitToApp className={classes.exitToApp} />
             </Link>

@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Contact } from "@api/model";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import React, { useCallback } from "react";
-import { change } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { getContactFullName } from "../utils";
-import ContactSelectItemRenderer from "./ContactSelectItemRenderer";
+import { Contact } from '@api/model';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import React, { useCallback } from 'react';
+import { change } from 'redux-form';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { getContactFullName } from '../utils';
+import ContactSelectItemRenderer from './ContactSelectItemRenderer';
 
 const RelationsHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
   const { row, relationTypes } = props;
@@ -94,7 +95,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
           type="remoteDataSelect"
           entity="Contact"
           name={`${item}.relatedContactId`}
-          label="Related contact"
+          label={$t('related_contact')}
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
           defaultValue={row.relatedContactName}
@@ -112,7 +113,7 @@ export const RelationsContent: React.FunctionComponent<any> = React.memo((props:
         <FormField
           type="select"
           name={`${item}.relationId`}
-          label="Contact above is"
+          label={$t('contact_above_is')}
           items={getUniqueRelationTypeItems()}
           required
         />

@@ -3,33 +3,35 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Report } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { format as formatDate } from "date-fns";
+import { Report } from '@api/model';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { format as formatDate } from 'date-fns';
 import {
   DD_MMM_YYYY_MINUSED,
   EditInPlaceSearchSelect,
   LinkAdornment,
   stubFunction,
-  StyledCheckbox, validateMinMaxDate,
+  StyledCheckbox,
+  validateMinMaxDate,
   YYYY_MM_DD_MINUSED
-} from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change, FieldArray, getFormInitialValues, initialize } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import { SYSTEM_USER_ADMINISTRATION_CENTER } from "../../../../constants/Config";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { getFormattedTotal } from "../../common/bankingPaymentUtils";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { getDepositPayments, updateBankingAccountId } from "../actions";
-import { BankingReport } from "../consts";
+} from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change, FieldArray, getFormInitialValues, initialize } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import { SYSTEM_USER_ADMINISTRATION_CENTER } from '../../../../constants/Config';
+import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import { getFormattedTotal } from '../../common/bankingPaymentUtils';
+import { getAdminCenterLabel, openSiteLink } from '../../sites/utils';
+import { getDepositPayments, updateBankingAccountId } from '../actions';
+import { BankingReport } from '../consts';
 
 const paymentColumns: NestedTableColumn[] = [
   {
@@ -205,7 +207,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
               <FormField
                 type="select"
                 name="administrationCenterId"
-                label="Administration center"
+                label={$t('administration_center')}
                 selectLabelCondition={getAdminCenterLabel}
                 onChange={this.onSiteIdChange as any}
                 items={adminSites || []}
@@ -228,7 +230,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
           <Grid item xs={4}>
             <EditInPlaceSearchSelect
               items={accounts || []}
-              label="Account"
+              label={$t('account')}
               input={{ name: "id", value: selectedAccountId, onChange: this.onChangeAccount as any, onFocus: stubFunction, onBlur: stubFunction }}
               meta={{ error: null, invalid: false, touched: false }}
               selectValueMark="id"
@@ -239,7 +241,7 @@ class BankingCreateView extends React.PureComponent<any, any> {
           <Grid item xs={4}>
             <FormField
               name="settlementDate"
-              label="Date banked"
+              label={$t('date_banked')}
               type="date"
               normalize={v => (v ? formatDate(new Date(v), YYYY_MM_DD_MINUSED) : v)}
               validate={this.validateSettlementDate}

@@ -1,4 +1,5 @@
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import * as React from 'react';
 import { withStyles } from 'tss-react/mui';
 import { GOOGLE_MAPS_API_KEY } from '../../../constants/Config';
@@ -36,7 +37,7 @@ const StaticGoogleMap = (props: Props) => {
   ) : (
     <div className={classes.noAddressContainer}>
       <Typography variant="h6" color="inherit" align="center">
-        Enter street and suburb to see a map of the site location
+        {$t('enter_street_and_suburb_to_see_a_map_of_the_site_l')}
       </Typography>
     </div>
   );

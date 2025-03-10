@@ -8,6 +8,7 @@
 
 import { Contact } from '@api/model';
 import { Grid } from '@mui/material';
+import $t from '@t';
 import { ShowConfirmCaller } from 'ish-ui';
 import React, { useCallback } from 'react';
 import { Dispatch } from 'redux';
@@ -51,7 +52,7 @@ const ProfileHeading = (props: Props) => {
   const Avatar = useCallback(aProps => (
     <Field
       name="profilePicture"
-      label="Profile picture"
+      label={$t('profile_picture')}
       component={AvatarRenderer}
       showConfirm={showConfirm}
       email={values.email}
@@ -82,13 +83,13 @@ const ProfileHeading = (props: Props) => {
           {!isCompany && (
             <>
               <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="title" label="Title" />
+                <FormField type="text" name="title" label={$t('title')} />
               </Grid>
               <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
+                <FormField type="text" name="firstName" label={$t('first_name')} disabled={usiLocked} required />
               </Grid>
               <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="middleName" label="Middle name" />
+                <FormField type="text" name="middleName" label={$t('middle_name')} />
               </Grid>
             </>
           )}

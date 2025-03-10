@@ -3,14 +3,15 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Holiday, RepeatEndEnum, RepeatEnum } from "@api/model";
-import Grid from "@mui/material/Grid";
-import { addHours } from "date-fns";
-import { idsToString, ShowConfirmCaller } from "ish-ui";
-import isEqual from "lodash.isequal";
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import { Holiday, RepeatEndEnum, RepeatEnum } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { addHours } from 'date-fns';
+import { idsToString, ShowConfirmCaller } from 'ish-ui';
+import isEqual from 'lodash.isequal';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import {
   arrayInsert,
   arrayRemove,
@@ -20,14 +21,14 @@ import {
   initialize,
   reduxForm,
   SubmissionError
-} from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import AvailabilityRenderer from "../../../../../common/components/form/availabilityComponent/AvailabilityRenderer";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import getTimestamps from "../../../../../common/utils/timestamps/getTimestamps";
-import { State } from "../../../../../reducers/state";
+} from 'redux-form';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import AvailabilityRenderer from '../../../../../common/components/form/availabilityComponent/AvailabilityRenderer';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import getTimestamps from '../../../../../common/utils/timestamps/getTimestamps';
+import { State } from '../../../../../reducers/state';
 
 const manualUrl = getManualLink("setting-your-general-preferences#holidays");
 
@@ -198,7 +199,7 @@ class HolidaysBaseForm extends React.Component<Props, any> {
           getAuditsUrl={() => `audit?search=~"UnavailableRule" and entityId in (${idsToString(values.holidays)})`}
           disabled={!dirty}
           invalid={invalid}
-          title="Holidays"
+          title={$t('holidays')}
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}

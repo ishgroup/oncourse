@@ -3,9 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import React from "react";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React from 'react';
 
 const QuerySaveMenu = props => {
   const { closeQuerySaveMenu, anchor, setSavingFilterState } = props;
@@ -18,7 +19,7 @@ const QuerySaveMenu = props => {
         }}
         onClick={() => setSavingFilterState(true)}
       >
-        Add custom filter
+        {$t('add_custom_filter')}
       </MenuItem>
       <MenuItem
         classes={{
@@ -26,7 +27,7 @@ const QuerySaveMenu = props => {
         }}
         onClick={() => setSavingFilterState(false)}
       >
-        Add custom filter visible to everyone
+        {$t('add_custom_filter_visible_to_everyone')}
       </MenuItem>
     </Menu>
   );

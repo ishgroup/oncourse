@@ -3,26 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Divider, FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import Hidden from "@mui/material/Hidden";
-import Typography from "@mui/material/Typography";
-import { ConfirmBase } from "ish-ui";
-import isEmpty from "lodash.isempty";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Form, getFormValues, initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import * as Model from "../../../../../model/preferences/Ldap";
-import { State } from "../../../../../reducers/state";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import { Button, Divider, FormControlLabel, Grid } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import Hidden from '@mui/material/Hidden';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { ConfirmBase } from 'ish-ui';
+import isEmpty from 'lodash.isempty';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Form, getFormValues, initialize, reduxForm } from 'redux-form';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { validateMultipleMandatoryFields } from '../../../../../common/utils/validation';
+import { FormModelSchema } from '../../../../../model/preferences/FormModelShema';
+import * as Model from '../../../../../model/preferences/Ldap';
+import { State } from '../../../../../reducers/state';
+import { PREFERENCES_AUDITS_LINK } from '../../../constants';
 
 const manualUrl = getManualLink("setting-your-general-preferences#ldap");
 
@@ -93,7 +93,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           getAuditsUrl={PREFERENCES_AUDITS_LINK}
           disabled={!dirty}
           invalid={invalid}
-          title="LDAP"
+          title={$t('ldap')}
           disableInteraction
           createdOn={v => v.created}
           modifiedOn={v => v.modified}
@@ -117,13 +117,13 @@ class LDAPBaseForm extends React.Component<any, any> {
                     <Checkbox onClick={this.showLicenceWarning} checked={false} />
                   )
                 }
-                label="Enable LDAP/AD authentication (ignored for admin users)"
+                label={$t('enable_ldapad_authentication_ignored_for_admin_use')}
               />
             </Grid>
           </Grid>
 
           <Typography variant="body1" className="heading mb-2">
-            LDAP server parameter
+            {$t('ldap_server_parameter')}
           </Typography>
 
           <Grid container columnSpacing={3}>
@@ -131,7 +131,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapHost.uniqueKey}
-                label="Host"
+                label={$t('host')}
                 disabled={!licence || !simpleAuthEnabled}
                               />
             </Grid>
@@ -144,7 +144,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapBindUserDN.uniqueKey}
-                label="Bind user DN"
+                label={$t('bind_user_dn')}
                 disabled={!licence || !simpleAuthEnabled}
                               />
             </Grid>
@@ -157,7 +157,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapServerPort.uniqueKey}
-                label="Port, e.g. 389"
+                label={$t('port_eg_389')}
                 disabled={!licence || !simpleAuthEnabled}
                               />
             </Grid>
@@ -181,7 +181,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                       stringValue
                     />
                   )}
-                  label="SSL"
+                  label={$t('ssl')}
                 />
               </div>
             </Grid>
@@ -194,7 +194,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="password"
                 name={this.formModel.LdapBindUserPass.uniqueKey}
-                label="Bind user password"
+                label={$t('bind_user_password')}
                 disabled={!licence || !simpleAuthEnabled}
                               />
             </Grid>
@@ -207,7 +207,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapBaseDN.uniqueKey}
-                label="Base DN"
+                label={$t('base_dn')}
                 disabled={!licence || !simpleAuthEnabled}
                               />
             </Grid>
@@ -222,7 +222,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                 onClick={testLdapConnection}
                 disabled={!licence || !simpleAuthEnabled}
               >
-                Test connection
+                {$t('test_connection')}
               </Button>
             </Grid>
           </Grid>
@@ -234,7 +234,7 @@ class LDAPBaseForm extends React.Component<any, any> {
           </Grid>
 
           <Typography variant="body1" className="heading mt-2 mb-2">
-            Users
+            {$t('users')}
           </Typography>
 
           <Grid container columnSpacing={3}>
@@ -242,7 +242,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapUsernameAttribute.uniqueKey}
-                label="Username attribute"
+                label={$t('username_attribute')}
                 disabled={!licence || !simpleAuthEnabled}
                               />
             </Grid>
@@ -255,7 +255,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapUserSearchFilter.uniqueKey}
-                label="User search filter"
+                label={$t('user_search_filter')}
                 disabled={!licence || !simpleAuthEnabled}
               />
             </Grid>
@@ -271,7 +271,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                   className="m-0"
                   disabled={!licence || !simpleAuthEnabled}
                 >
-                  Test user
+                  {$t('test_user')}
                 </Button>
               ) : (
                 <a href="ldapUserAccess" className="link">
@@ -280,7 +280,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                     className="m-0"
                     disabled={!licence || !simpleAuthEnabled}
                   >
-                    Test user
+                    {$t('test_user')}
                   </Button>
                 </a>
               )}
@@ -304,13 +304,13 @@ class LDAPBaseForm extends React.Component<any, any> {
                     stringValue
                   />
                 )}
-                label="Enable LDAP/AD authorisation"
+                label={$t('enable_ldapad_authorisation')}
               />
             </Grid>
           </Grid>
 
           <Typography variant="body1" className="heading mb-2">
-            Roles
+            {$t('roles')}
           </Typography>
 
           <Grid container columnSpacing={3}>
@@ -318,7 +318,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapGroupMemberAttribute.uniqueKey}
-                label="Group member attribute"
+                label={$t('group_member_attribute')}
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
               />
             </Grid>
@@ -331,7 +331,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapGroupAttribute.uniqueKey}
-                label="Group name attribute"
+                label={$t('group_name_attribute')}
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
               />
             </Grid>
@@ -344,7 +344,7 @@ class LDAPBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.LdapGroupSearchFilter.uniqueKey}
-                label="Group search filter"
+                label={$t('group_search_filter')}
                 disabled={!licence || !saslAuthEnabled || !simpleAuthEnabled}
               />
             </Grid>
@@ -367,7 +367,7 @@ class LDAPBaseForm extends React.Component<any, any> {
                     stringValue
                   />
                 )}
-                label="Posix style groups"
+                label={$t('posix_style_groups')}
               />
             </Grid>
 

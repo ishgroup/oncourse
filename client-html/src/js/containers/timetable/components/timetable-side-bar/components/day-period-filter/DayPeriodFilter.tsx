@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import { AfternoonIcon, EveningIcon, MorningIcon } from 'ish-ui';
 import React, { useContext } from 'react';
@@ -61,7 +62,7 @@ const DayPeriodFilter: React.FunctionComponent<Props> = props => {
         })}
         onClick={() => switchFilter(0)}
       >
-        <MorningIcon /> before 12pm
+        <MorningIcon /> {$t('before_12pm')}
       </Button>
       <Button
         color="inherit"
@@ -81,7 +82,7 @@ const DayPeriodFilter: React.FunctionComponent<Props> = props => {
         })}
         onClick={() => switchFilter(2)}
       >
-        <EveningIcon /> after 6pm
+        <EveningIcon /> {$t('after_6pm')}
       </Button>
     </div>
   );

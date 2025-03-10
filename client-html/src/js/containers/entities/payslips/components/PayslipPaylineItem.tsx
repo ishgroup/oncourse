@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Currency } from "@api/model";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { EEE_D_MMM_YYYY, normalizeNumber } from "ish-ui";
-import React, { useMemo } from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import { PayLineWithDefer } from "../../../../model/entities/Payslip";
+import { Currency } from '@api/model';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { EEE_D_MMM_YYYY, normalizeNumber } from 'ish-ui';
+import React, { useMemo } from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import { PayLineWithDefer } from '../../../../model/entities/Payslip';
 
 interface Props {
   threeColumn: boolean;
@@ -61,7 +61,7 @@ const PayslipPaylineItem = (props: Props) => {
               {field.className ? (
                 <div className={threeColumn ? "flex-column text-end" : "centeredFlex"}>
                   <Typography variant="caption" color="textSecondary">
-                    Include in payslip
+                    {$t('include_in_payslip')}
                   </Typography>
 
                   <FormField
@@ -75,7 +75,7 @@ const PayslipPaylineItem = (props: Props) => {
               ) : (
                 <div className={clsx(threeColumn ? classes.deleteButtonMargin : "m-0", "errorColor")}>
                   <Button size="small" color="inherit" onClick={() => onDelete(index)}>
-                    Delete
+                    {$t('delete2')}
                   </Button>
                 </div>
               )}
@@ -90,7 +90,7 @@ const PayslipPaylineItem = (props: Props) => {
                 <Grid item xs={paylineLayout[2].xs}>
                   <div className="flex-fill">
                     <Uneditable
-                      label="Date for"
+                      label={$t('date_for')}
                       value={format(new Date(field.dateFor), EEE_D_MMM_YYYY)}
                     />
                   </div>
@@ -102,7 +102,7 @@ const PayslipPaylineItem = (props: Props) => {
                 type="multilineText"
                 disabled={!field.deferred}
                 name={`${item}.description`}
-                label="Description"
+                label={$t('description')}
                 required
               />
             </Grid>
@@ -116,11 +116,11 @@ const PayslipPaylineItem = (props: Props) => {
                 <Grid item xs={2} />
 
                 <Grid item xs={5} className={classes.infoItem}>
-                  <Typography variant="caption">Pay</Typography>
+                  <Typography variant="caption">{$t('pay')}</Typography>
                 </Grid>
 
                 <Grid item xs={5} className={classes.infoItem}>
-                  <Typography variant="caption">Budget</Typography>
+                  <Typography variant="caption">{$t('budget')}</Typography>
                 </Grid>
 
                 <Grid item xs={3} className="centeredFlex">
@@ -193,7 +193,7 @@ const PayslipPaylineItem = (props: Props) => {
             {hasQuantityAndTotal && (
               <>
                 <Grid item xs={2} className="centeredFlex">
-                  <Typography variant="caption">Total</Typography>
+                  <Typography variant="caption">{$t('total')}</Typography>
                 </Grid>
 
                 <Grid item xs={5} className={classes.infoItem}>

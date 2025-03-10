@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Tax } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import * as React from "react";
-import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Tax } from '@api/model';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { State } from "../../../../reducers/state";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { State } from '../../../../reducers/state';
 
 const formattedAccountTypes: any[] = [
   {
@@ -74,7 +75,7 @@ const AccountsEditView = props => {
               <FormField
                 type="text"
                 name="accountCode"
-                label="Code"
+                label={$t('code')}
                 required
               />
             </Grid>
@@ -86,7 +87,7 @@ const AccountsEditView = props => {
           type="select"
           disabled={isDisabled}
           name="type"
-          label="Type"
+          label={$t('type')}
           items={formattedAccountTypes}
           required
         />
@@ -95,7 +96,7 @@ const AccountsEditView = props => {
         <FormField
           type="text"
           name="description"
-          label="Description"
+          label={$t('description')}
           required={isNew || isCustom}
           multiline
         />
@@ -106,7 +107,7 @@ const AccountsEditView = props => {
           control={
             <FormField type="checkbox" disabled={canDisable} name="isEnabled" color="secondary" />
           }
-          label="Enabled"
+          label={$t('enabled')}
         />
       </Grid>
       <Grid item xs={12}>
@@ -114,7 +115,7 @@ const AccountsEditView = props => {
           <FormField
             type="select"
             name="tax.id"
-            label="Tax type"
+            label={$t('tax_type')}
             required={isNew || isCustom}
             items={getFormattedTaxes(taxTypes) || []}
           />

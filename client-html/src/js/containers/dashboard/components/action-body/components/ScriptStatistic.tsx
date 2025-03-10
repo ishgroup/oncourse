@@ -8,6 +8,7 @@
 
 import { Check, Clear } from '@mui/icons-material';
 import { Grid, Link, List, ListItem, Tooltip, Typography } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import { differenceInHours, differenceInMinutes, format } from 'date-fns';
 import { III_DD_MMM_YYYY_HH_MM, openInternalLink } from 'ish-ui';
@@ -153,7 +154,7 @@ const ScriptStatistic = ({ dispatch, classes }: { dispatch, classes? }) => {
                   color="textSecondary"
                   underline="none"
                 >
-                  <Tooltip title="more...">
+                  <Tooltip title={$t('more2')}>
                     <span> ...</span>
                   </Tooltip>
                 </Link>

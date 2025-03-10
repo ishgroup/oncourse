@@ -3,26 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Currency } from "@api/model";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { BooleanArgFunction, decimalPlus, formatCurrency } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { postContraInvoices } from "../actions";
-import { ContraInvoiceFormData } from "../reducers/state";
+import { Currency } from '@api/model';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import $t from '@t';
+import { BooleanArgFunction, decimalPlus, formatCurrency } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, DecoratedComponentClass, FieldArray, getFormValues, reduxForm } from 'redux-form';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import { postContraInvoices } from '../actions';
+import { ContraInvoiceFormData } from '../reducers/state';
 
 const contraInvoiceColumnsBase: NestedTableColumn[] = [
   {
@@ -153,7 +153,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
   return (
     <Dialog open={opened} onClose={onClose} maxWidth="md" scroll="body">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>Contra Invoice</DialogTitle>
+        <DialogTitle>{$t('contra_invoice2')}</DialogTitle>
 
         <DialogContent className="overflow-hidden">
           <Grid container columnSpacing={3}>
@@ -161,7 +161,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
               <FormField
                 type="text"
                 name="contactName"
-                label="Payment from"
+                label={$t('payment_from')}
                 labelAdornment={
                   <ContactLinkAdornment id={values?.contactId} />
                 }
@@ -172,7 +172,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
             <Grid item xs={6}>
               <div>
                 <Typography variant="caption" color="textSecondary">
-                  Amount left to allocate
+                  {$t('amount_left_to_allocate')}
                 </Typography>
                 <Typography className="money">{amountLeft}</Typography>
               </div>
@@ -180,7 +180,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
 
             <Grid item xs={12} className="pr-3 pb-1">
               <Typography variant="caption">
-                Please choose one or more invoices to contra against the credit note for a total value of
+                {$t('please_choose_one_or_more_invoices_to_contra_again')}
                 <Typography variant="caption" component="span" className="money ">
                   {" "}
                   {amountTotal}
@@ -211,11 +211,11 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
 
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
 
           <Button variant="contained" color="primary" type="submit" disabled={!dirty}>
-            Save
+            {$t('save2')}
           </Button>
         </DialogActions>
       </form>

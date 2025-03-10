@@ -3,34 +3,36 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import SvgIcon from "@mui/material/SvgIcon";
-import { differenceInMinutes, format } from "date-fns";
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import SvgIcon from '@mui/material/SvgIcon';
+import $t from '@t';
+import { differenceInMinutes, format } from 'date-fns';
 import {
   appendTimezone,
   DD_MMM_YYYY_HH_MM_SS,
   EditInPlaceField,
   formatDurationMinutes,
   III_DD_MMM_YYYY_HH_MM_SS,
-  stubFunction, validateMinMaxDate
-} from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { AttandanceChangeType, StudentAttendanceExtended } from "../../../../../model/entities/CourseClass";
-import { TimetableSession } from "../../../../../model/timetable";
-import { State } from "../../../../../reducers/state";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
-import AttendanceIcon from "./AttendanceIcon";
-import { getStudentAttendanceLabel } from "./utils";
+  stubFunction,
+  validateMinMaxDate
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { AttandanceChangeType, StudentAttendanceExtended } from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
+import { State } from '../../../../../reducers/state';
+import AttendanceActionsMenu from './AttendanceActionsMenu';
+import AttendanceIcon from './AttendanceIcon';
+import { getStudentAttendanceLabel } from './utils';
 
 const getDifferenceInMinutes = (start: string, end: string): number => {
   const startDate = new Date(start);
@@ -126,7 +128,7 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
         <AttendanceActionsMenu
           onChange={onAttendanceTypeChange}
           type="Student"
-          label="Mark attendance for this student as..."
+          label={$t('mark_attendance_for_this_student_as')}
         />
         <Typography variant="body1">{getStudentAttendanceLabel(values.attendanceType)}</Typography>
       </Grid>
@@ -136,13 +138,13 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
             <FormField
               type="dateTime"
               name="attendedFrom"
-              label="Attended from"
+              label={$t('attended_from')}
               validate={validateMaxDate}
               timezone={bindedSession.siteTimezone}
               formatDateTime={DD_MMM_YYYY_HH_MM_SS}
             />
           ) : (
-            <Uneditable label="Attended from" value={attendedFromLabel} />
+            <Uneditable label={$t('attended_from')} value={attendedFromLabel} />
           )}
         </Grid>
         <Grid item xs={6}>
@@ -150,18 +152,18 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
             <FormField
               type="dateTime"
               name="attendedUntil"
-              label="Attended until"
+              label={$t('attended_until')}
               validate={validateMinDate}
               timezone={bindedSession.siteTimezone}
               formatDateTime={DD_MMM_YYYY_HH_MM_SS}
             />
           ) : (
-            <Uneditable label="Attended until" value={attendedUntilLabel} />
+            <Uneditable label={$t('attended_until')} value={attendedUntilLabel} />
           )}
         </Grid>
         <Grid item xs={6}>
           <EditInPlaceField
-            label="Attendance duration"
+            label={$t('attendance_duration')}
             input={{
               onChange: stubFunction,
               onFocus: stubFunction,
@@ -176,13 +178,13 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
           />
         </Grid>
         <Grid item xs={6}>
-          <Uneditable value={sessionDurationLabel} label="Session duration" />
+          <Uneditable value={sessionDurationLabel} label={$t('session_duration')} />
         </Grid>
         <Grid item xs={12}>
           <FormField
             type="multilineText"
             name="note"
-            label="Note"
+            label={$t('note')}
             validate={values.attendanceType === "Absent with reason" ? validateSingleMandatoryField : undefined}
                       />
         </Grid>
@@ -190,7 +192,6 @@ const StudentAttendanceContent: React.FC<StudentAttendanceContentProps> = ({
     </Grid>
   );
 };
-
 
 interface AttendanceActionModalProps {
   changeType: AttandanceChangeType;
@@ -257,7 +258,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
 
       <DialogActions className="p-3">
         <Button color="primary" onClick={onClose}>
-          Cancel
+          {$t('cancel')}
         </Button>
 
         <LoadingButton
@@ -267,7 +268,7 @@ const AttendanceActionModalForm: React.FC<AttendanceActionModalProps & InjectedF
           variant="contained"
           color="primary"
         >
-          OK
+          {$t('ok')}
         </LoadingButton>
       </DialogActions>
     </Dialog>

@@ -6,13 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import clsx from "clsx";
-import { AnyArgFunction, ShowConfirmCaller } from "ish-ui";
-import React, { memo } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
-import { ListActionEntity } from "../../../../model/entities/common";
-import { bulkDeleteEntityRecordsRequest } from "../actions";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import clsx from 'clsx';
+import { AnyArgFunction, ShowConfirmCaller } from 'ish-ui';
+import React, { memo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../common/utils/hooks';
+import { ListActionEntity } from '../../../../model/entities/common';
+import { bulkDeleteEntityRecordsRequest } from '../actions';
 
 interface BulkDeleteCogwheelOptionProps {
   menuItemClass: string;
@@ -57,7 +58,7 @@ const BulkDeleteCogwheelOption = memo<BulkDeleteCogwheelOptionProps>(({
 
   return hasAql || selection.length > 1 ? (
     <MenuItem className={clsx(menuItemClass, "errorColor")} onClick={onBulkEditClick} disabled={!selection.length && !hasAql}>
-      Bulk delete...
+      {$t('bulk_delete')}
     </MenuItem>
   ) : null;
 });

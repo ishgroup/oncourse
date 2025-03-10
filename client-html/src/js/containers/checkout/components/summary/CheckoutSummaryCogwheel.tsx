@@ -7,6 +7,7 @@ import Settings from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
 import { StyledCheckbox } from 'ish-ui';
 import React, { useRef, useState } from 'react';
 import { Dispatch } from 'redux';
@@ -67,13 +68,13 @@ export const CheckoutSummaryCogwheel: React.FC<Props> = ({
         <MenuItem className="centeredFlex" onClick={onNoDiscountClick}>
           <StyledCheckbox checked={disableDiscounts} className="m-0" />
           <span className="ml-1">
-            No discount
+            {$t('no_discount')}
           </span>
         </MenuItem>
         <MenuItem className="centeredFlex" onClick={onSendEmailClick}>
           <StyledCheckbox checked={sendEmaiChecked} className="m-0" />
           <span className="ml-1">
-            Send confirmation email
+            {$t('send_confirmation_email')}
           </span>
         </MenuItem>
       </Menu>

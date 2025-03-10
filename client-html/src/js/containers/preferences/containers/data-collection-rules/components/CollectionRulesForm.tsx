@@ -6,6 +6,7 @@
 import { DataCollectionForm, DataCollectionRule, DataCollectionType } from '@api/model';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { sortDefaultSelectItems } from 'ish-ui';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -207,7 +208,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
               <FormField
                 type="text"
                 name="name"
-                label="Name"
+                label={$t('name')}
                 validate={this.validateUniqueNames}
                 required
               />
@@ -236,7 +237,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="enrolmentFormName"
-                    label="Enrolment"
+                    label={$t('enrolment')}
                     items={this.getItems("Enrolment") || []}
                     className={classes.selectField}
                     required
@@ -247,7 +248,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="surveyForms"
-                    label="Student Feedback"
+                    label={$t('student_feedback')}
                     items={this.getItems("Survey") || []}
                     className={classes.selectField}
                     allowEmpty
@@ -259,7 +260,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="applicationFormName"
-                    label="Application"
+                    label={$t('application')}
                     items={this.getItems("Application") || []}
                     className={classes.selectField}
                     required
@@ -270,7 +271,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="payerFormName"
-                    label="Payer"
+                    label={$t('payer')}
                     allowEmpty
                     items={this.getItems("Payer") || []}
                     className={classes.selectField}
@@ -281,7 +282,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="waitingListFormName"
-                    label="Waiting List"
+                    label={$t('waiting_list')}
                     items={this.getItems("WaitingList") || []}
                     className={classes.selectField}
                     required
@@ -292,7 +293,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="parentFormName"
-                    label="Parent"
+                    label={$t('parent')}
                     allowEmpty
                     items={this.getItems("Parent") || []}
                     className={classes.selectField}
@@ -303,7 +304,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="productFormName"
-                    label="Product"
+                    label={$t('product')}
                     allowEmpty
                     items={this.getItems("Product") || []}
                     className={classes.selectField}
@@ -315,7 +316,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="voucherFormName"
-                    label="Voucher"
+                    label={$t('voucher')}
                     allowEmpty
                     items={this.getItems("Voucher") || []}
                     className={classes.selectField}
@@ -327,7 +328,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="membershipFormName"
-                    label="Membership"
+                    label={$t('membership')}
                     allowEmpty
                     items={this.getItems("Membership") || []}
                     className={classes.selectField}

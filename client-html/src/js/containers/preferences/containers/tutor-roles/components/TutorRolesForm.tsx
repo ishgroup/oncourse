@@ -9,6 +9,7 @@
 import { DefinedTutorRole } from '@api/model';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { ShowConfirmCaller } from 'ish-ui';
 import React from 'react';
 import { Dispatch } from 'redux';
@@ -77,7 +78,7 @@ const TutorRolesForm = React.memo<Props>(
               <FormField
                 type="text"
                 name="name"
-                label="Name"
+                label={$t('name')}
                 required
               />
             </Grid>
@@ -103,12 +104,12 @@ const TutorRolesForm = React.memo<Props>(
                   <FormField
                     type="text"
                     name="description"
-                    label="Public label"
+                    label={$t('public_label')}
                     required
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormField type="switch" name="active" label="Enabled" color="primary" />
+                  <FormField type="switch" name="active" label={$t('enabled')} color="primary" />
                 </Grid>
               </Grid>
             </Grid>

@@ -13,6 +13,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { addDays, differenceInMinutes, format as formatDate, subDays } from 'date-fns';
 import { AppTheme, DD_MMM_YYYY, EditInPlaceDurationField, NoWrapOption, stubFunction } from 'ish-ui';
@@ -299,7 +300,7 @@ const CourseClassBulkChangeSessionForm = props => {
             <Grid item xs={12}>
               <div className={clsx("centeredFlex")}>
                 <div className="heading mt-2 mb-2">
-                  Bulk change
+                  {$t('bulk_change')}
                 </div>
               </div>
               <div className="pb-2">
@@ -309,7 +310,7 @@ const CourseClassBulkChangeSessionForm = props => {
             <Grid item xs={12} container>
               <Grid item xs={12}>
                 {tutors.length > 0 && (
-                  <BulkItemWrapper classes={classes} title="Tutors" name="tutors" noCollapse>
+                  <BulkItemWrapper classes={classes} title={$t('tutors')} name="tutors" noCollapse>
                     <div>
                       <Field
                         name="tutorAttendances"
@@ -327,12 +328,12 @@ const CourseClassBulkChangeSessionForm = props => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Location" name="location">
+                <BulkItemWrapper classes={classes} title={$t('location')} name="location">
                   <FormField
                     type="remoteDataSelect"
                     entity="Room"
                     name="roomId"
-                    label="Site and room"
+                    label={$t('site_and_room')}
                     aqlColumns="name,site.name,site.localTimezone,site.id"
                     selectValueMark="id"
                     selectLabelCondition={roomLabel}
@@ -343,7 +344,7 @@ const CourseClassBulkChangeSessionForm = props => {
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Actual payable duration" name="payableDuration">
+                <BulkItemWrapper classes={classes} title={$t('actual_payable_duration')} name="payableDuration">
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
@@ -386,7 +387,7 @@ const CourseClassBulkChangeSessionForm = props => {
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Duration" name="duration">
+                <BulkItemWrapper classes={classes} title={$t('duration')} name="duration">
                   <Grid container>
                     <Grid item xs={6}>
                       <EditInPlaceDurationField
@@ -407,7 +408,7 @@ const CourseClassBulkChangeSessionForm = props => {
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Move later" name="moveForward">
+                <BulkItemWrapper classes={classes} title={$t('move_later')} name="moveForward">
                   <Grid container>
                     <Grid item xs={4}>
                       <FormField
@@ -419,7 +420,7 @@ const CourseClassBulkChangeSessionForm = props => {
                         debounced={false}
                       />
                       {" "}
-                      days
+                      {$t('days')}
                     </Grid>
                     <Grid item xs={8} id="moveForwardInfo">
                       {laterDate && `Earliest selected session will starts ${laterDate}`}
@@ -428,7 +429,7 @@ const CourseClassBulkChangeSessionForm = props => {
                 </BulkItemWrapper>
               </Grid>
               <Grid item xs={12}>
-                <BulkItemWrapper classes={classes} title="Move earlier" name="moveBackward">
+                <BulkItemWrapper classes={classes} title={$t('move_earlier')} name="moveBackward">
                   <Grid container>
                     <Grid item xs={4}>
                       <FormField
@@ -440,7 +441,7 @@ const CourseClassBulkChangeSessionForm = props => {
                         debounced={false}
                       />
                       {" "}
-                      days
+                      {$t('days')}
                     </Grid>
                     <Grid item xs={8} id="moveBackwardInfo">
                       {earlierDate && `Earliest selected session will be moved from ${earlierDate}`}
@@ -453,7 +454,7 @@ const CourseClassBulkChangeSessionForm = props => {
         </DialogContent>
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           <Button
             {...updateButtonProps}
@@ -462,7 +463,7 @@ const CourseClassBulkChangeSessionForm = props => {
             onClick={submitChanges}
             disabled={invalid || !dirty || Boolean(asyncValidating)}
           >
-            Update
+            {$t('update')}
           </Button>
         </DialogActions>
       </form>

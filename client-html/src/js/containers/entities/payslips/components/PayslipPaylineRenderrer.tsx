@@ -1,4 +1,5 @@
 import { Grid } from '@mui/material';
+import $t from '@t';
 import { formatCurrency } from 'ish-ui';
 import * as React from 'react';
 import { withStyles } from 'tss-react/mui';
@@ -23,7 +24,7 @@ const styles = theme =>
     infoContainer: {
       background: theme.palette.background.default,
       borderRadius: "4px",
-      padding: theme.spacing(1,2)
+      padding: theme.spacing(1, 2)
     },
     threeColumnCard: {
       marginBottom: "20px",
@@ -113,9 +114,7 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
           {customLines.length ? (
             <>
               <div className="heading mb-1 money">
-                Custom Lines (
-                {formatCurrency(classGroupsTotal["Custom Lines"], shortCurrencySymbol)}
-                )
+                {$t('custom_lines')}
               </div>
               {customLines}
             </>

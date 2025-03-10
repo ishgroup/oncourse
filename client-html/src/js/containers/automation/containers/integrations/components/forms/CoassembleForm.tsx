@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { getFormValues, initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../../reducers/state";
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { getFormValues, initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../../reducers/state';
 
 class CoassembleBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -33,9 +34,9 @@ class CoassembleBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField name="fields.baseUrl" label="Base Url" type="text" className="mb-2" />
-          <FormField name="fields.apiKey" label="API key" type="text" className="mb-2" />
-          <FormField name="fields.userId" label="User Id" type="text" className="mb-2" />
+          <FormField name="fields.baseUrl" label={$t('base_url3')} type="text" className="mb-2" />
+          <FormField name="fields.apiKey" label={$t('api_key')} type="text" className="mb-2" />
+          <FormField name="fields.userId" label={$t('user_id')} type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

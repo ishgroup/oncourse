@@ -6,24 +6,24 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact, Student, Tag, Tutor } from "@api/model";
+import { Contact, Student, Tag, Tutor } from '@api/model';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { Divider, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { openInternalLink, TimetableButton } from "ish-ui";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { connect } from "react-redux";
-import { change, getFormInitialValues } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { getContactFullName } from "../utils";
-import ProfileHeading from "./ProfileHeading";
+import { Button, Divider, Grid } from '@mui/material';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { openInternalLink, TimetableButton } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { change, getFormInitialValues } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { getContactFullName } from '../utils';
+import ProfileHeading from './ProfileHeading';
 
 const TutorInitial: Tutor = {
   wwChildrenStatus: "Not checked"
@@ -197,7 +197,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
       <Grid container columnSpacing={3} className="mt-3">
         <Grid item xs={12} md={twoColumn ? 7 : 12}>
           <Typography variant="caption" display="block" gutterBottom>
-            Type
+            {$t('type')}
           </Typography>
           <ButtonGroup variant="outlined" className="mb-3 mt-1">
             <Button
@@ -206,14 +206,14 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
               disabled={isCompany}
               onClick={toggleStudentRole}
             >
-              Student
+              {$t('student')}
             </Button>
             <Button
               className={isTutor ? "primaryColor" : "textSecondaryColor"}
               startIcon={isTutor ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
               onClick={toggleTutorRole}
             >
-              Tutor
+              {$t('tutor')}
             </Button>
             <Button
               className={isCompany ? "primaryColor" : "textSecondaryColor"}
@@ -221,7 +221,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
               disabled={isStudent}
               onClick={toggleCompanyRole}
             >
-              Company
+              {$t('company')}
             </Button>
           </ButtonGroup>
         </Grid>
@@ -248,7 +248,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
-              <TimetableButton onClick={onStudentCalendarClick} title="Student timetable"/>
+              <TimetableButton onClick={onStudentCalendarClick} title={$t('student_timetable')}/>
             </Grid>
           </Grid>
         </>
@@ -258,7 +258,7 @@ const ContactsGeneral: React.FC<ContactsGeneralProps> = props => {
           <Divider className="mt-3 mb-2"/>
           <Grid container columnSpacing={3} className="pt-0-5 pb-0-5">
             <Grid item xs={12}>
-              <TimetableButton onClick={onTutorCalendarClick} title="Tutor timetable"/>
+              <TimetableButton onClick={onTutorCalendarClick} title={$t('tutor_timetable')}/>
             </Grid>
           </Grid>
         </>

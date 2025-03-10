@@ -3,10 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import * as React from "react";
-import { FieldArray } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import * as React from 'react';
+import { FieldArray } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
 
 const ImportsRenderer = props => {
   const { fields, hasUpdateAccess, isInternal } = props;
@@ -16,7 +17,7 @@ const ImportsRenderer = props => {
       <FormField
         type="text"
         name={f}
-        label="Library"
+        label={$t('library')}
         disabled={!hasUpdateAccess || isInternal}
               />
     </Grid>

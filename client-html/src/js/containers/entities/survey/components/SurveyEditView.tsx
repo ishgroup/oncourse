@@ -6,19 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { SurveyItem } from "@api/model";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
-import { openInternalLink } from "ish-ui";
-import React, { useCallback } from "react";
-import { change, Field } from "redux-form";
-import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { SurveyItem } from '@api/model';
+import { Grid, Typography } from '@mui/material';
+import Link from '@mui/material/Link';
+import $t from '@t';
+import { openInternalLink } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { change, Field } from 'redux-form';
+import { HeaderContactTitle } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import Score from "./Score";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import Score from './Score';
 
 interface Props {
   classes?: any;
@@ -69,19 +69,19 @@ const SurveyEditView = (props: Props) => {
       <Grid container columnSpacing={3} rowSpacing={2} className="p-3">
         <Grid item xs={twoColumn ? 4 : 12} className="mb-2">
           <Grid item>
-            <Field name="netPromoterScore" label="Net Promoter Score" max={10} component={Score} />
+            <Field name="netPromoterScore" label={$t('net_promoter_score')} max={10} component={Score} />
           </Grid>
         </Grid>
         <Grid item xs={twoColumn ? 8 : 12}>
           <Grid container columnSpacing={3} rowSpacing={2} wrap={twoColumn ? "nowrap" : "wrap"}>
             <Grid item xs={twoColumn ? 8 : 12}>
-              <Field name="courseScore" label="Course" component={Score} />
+              <Field name="courseScore" label={$t('course')} component={Score} />
               <Link href="#" onClick={openClass} color="textSecondary">
                 {values.className}
               </Link>
             </Grid>
             <Grid item xs={twoColumn ? 8 : 12}>
-              <Field name="venueScore" label="Venue" component={Score} />
+              <Field name="venueScore" label={$t('venue')} component={Score} />
               <Typography variant="body2" component="div">
                 <Link href="#" className="pr-1" onClick={openSite} color="textSecondary">
                   {values.siteName}
@@ -92,7 +92,7 @@ const SurveyEditView = (props: Props) => {
               </Typography>
             </Grid>
             <Grid item xs={twoColumn ? 8 : 12}>
-              <Field name="tutorScore" label="Tutor" component={Score} />
+              <Field name="tutorScore" label={$t('tutor')} component={Score} />
               {Object.keys(values.tutors).map(id => (
                 <Link key={id} href={`/contact/${id}`} target="_blank" color="textSecondary" className="pr-1">
                   {values.tutors[id]}
@@ -103,7 +103,7 @@ const SurveyEditView = (props: Props) => {
         </Grid>
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="multilineText" label="Comment" name="comment" disabled />
+        <FormField type="multilineText" label={$t('comment')} name="comment" disabled />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
@@ -114,14 +114,14 @@ const SurveyEditView = (props: Props) => {
               dispatch(change(form, "testimonial", values.comment));
             }
           }}
-          label="Visibility"
+          label={$t('visibility')}
           items={visibilityItems}
         />
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
         <FormField
           type="multilineText"
-          label="Testimonial"
+          label={$t('testimonial')}
           name="testimonial"
           disabled={values.visibility !== "Public testimonial"}
         />

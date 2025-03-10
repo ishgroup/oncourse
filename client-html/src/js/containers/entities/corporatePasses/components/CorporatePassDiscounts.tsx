@@ -1,17 +1,18 @@
-import { CorporatePass, Discount } from "@api/model";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
+import { CorporatePass, Discount } from '@api/model';
+import $t from '@t';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { State } from "../../../../reducers/state";
-import { discountSort, mapPlainDiscounts, transformDiscountForNestedList } from "../../discounts/utils";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { State } from '../../../../reducers/state';
+import { discountSort, mapPlainDiscounts, transformDiscountForNestedList } from '../../discounts/utils';
 
 interface Props {
   values?: CorporatePass;
@@ -62,7 +63,7 @@ class CorporatePassDiscounts extends Component<Props, any> {
         <div className="mw-500">
           <NestedList
             formId={values.id}
-            title="Auto-Apply Discounts"
+            title={$t('autoapply_discounts')}
             searchPlaceholder="Find discounts"
             values={listValues}
             searchValues={searchValues}

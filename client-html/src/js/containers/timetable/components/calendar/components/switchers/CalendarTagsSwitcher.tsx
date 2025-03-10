@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import React, { useCallback, useContext } from "react";
-import { TimetableContextState } from "../../../../../../model/timetable";
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import $t from '@t';
+import React, { useCallback, useContext } from 'react';
+import { TimetableContextState } from '../../../../../../model/timetable';
 
 const CalendarTagsSwitcher = ({ className = null, TimetableContext }) => {
   const { tagsState, setTagsState } = useContext<TimetableContextState>(TimetableContext);
@@ -20,9 +21,9 @@ const CalendarTagsSwitcher = ({ className = null, TimetableContext }) => {
   return (
     <FormControl className={className} variant="standard">
       <Select value={tagsState} onChange={onChange}>
-        <MenuItem value="Tag names">Tag names</MenuItem>
-        <MenuItem value="Tag dots">Tag dots</MenuItem>
-        <MenuItem value="Tag off">Tag off</MenuItem>
+        <MenuItem value="Tag names">{$t('tag_names')}</MenuItem>
+        <MenuItem value="Tag dots">{$t('tag_dots')}</MenuItem>
+        <MenuItem value="Tag off">{$t('tag_off')}</MenuItem>
       </Select>
     </FormControl>
   );

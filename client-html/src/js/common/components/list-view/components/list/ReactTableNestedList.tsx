@@ -12,6 +12,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import {
   ColumnDef,
   ColumnSort,
@@ -165,7 +166,7 @@ const Table: React.FC<NestedListTableProps> = ({
   ) : (
     <div className="noRecordsMessage h-100">
       <Typography variant="h6" color="inherit" align="center">
-        No data
+        {$t('no_data')}
       </Typography>
     </div>
   )), [rows, selection, onRowDoubleClick, onCheckboxChange, onRowSelect]);
@@ -339,7 +340,7 @@ const ListRoot = React.memo<NestedListProps>(({
             <div className="centeredFlex justify-content-end">
               <div>
                 <Typography variant="subtitle2" noWrap>
-                  Total
+                  {$t('total')}
                 </Typography>
               </div>
 

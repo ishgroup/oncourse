@@ -6,13 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { TutorRolePayRate } from "@api/model";
-import { Grid } from "@mui/material";
-import { format, subYears } from "date-fns";
-import { AddButton, ShowConfirmCaller, YYYY_MM_DD_MINUSED } from "ish-ui";
-import * as React from "react";
-import { arrayInsert, arrayRemove, FieldArray } from "redux-form";
-import PayRateItem from "./PayRateItem";
+import { TutorRolePayRate } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { format, subYears } from 'date-fns';
+import { AddButton, ShowConfirmCaller, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import * as React from 'react';
+import { arrayInsert, arrayRemove, FieldArray } from 'redux-form';
+import PayRateItem from './PayRateItem';
 
 const FIELD_NAME: string = "payRates";
 
@@ -60,7 +61,7 @@ class PayRates extends React.Component<Props, any> {
       <Grid container className="h-100 overflow-hidden justify-content-center" alignContent="flex-start">
         <Grid item xs={12}>
           <div className="centeredFlex">
-            <div className="heading">Pay Rate</div>
+            <div className="heading">{$t('pay_rate')}</div>
             <AddButton onClick={this.addPayRate} />
           </div>
         </Grid>

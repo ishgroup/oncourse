@@ -6,25 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Help from "@mui/icons-material/Help";
-import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Hidden from "@mui/material/Hidden";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import isEmpty from "lodash.isempty";
-import * as React from "react";
-import { Form, initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { validateEmail } from "../../../../../common/utils/validation";
-import * as Model from "../../../../../model/preferences/Avetmiss";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import Help from '@mui/icons-material/Help';
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Hidden from '@mui/material/Hidden';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import isEmpty from 'lodash.isempty';
+import * as React from 'react';
+import { Form, initialize, reduxForm } from 'redux-form';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { validateEmail } from '../../../../../common/utils/validation';
+import * as Model from '../../../../../model/preferences/Avetmiss';
+import { FormModelSchema } from '../../../../../model/preferences/FormModelShema';
+import { PREFERENCES_AUDITS_LINK } from '../../../constants';
 
 const manualUrl = getManualLink("setting-your-general-preferences#avetmiss");
 
@@ -69,7 +70,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
           getAuditsUrl={PREFERENCES_AUDITS_LINK}
           disabled={!dirty}
           invalid={invalid}
-          title="AVETMISS"
+          title={$t('avetmiss')}
           disableInteraction
           createdOn={values => values.created}
           modifiedOn={values => values.modified}
@@ -88,13 +89,13 @@ class AvetmissBaseForm extends React.Component<any, any> {
                     stringValue
                                       />
                 )}
-                label="Show RTO related screens and menus"
+                label={$t('show_rto_related_screens_and_menus')}
               />
             </Grid>
 
             <Grid item xs={12}>
               <Typography variant="subtitle1" className="heading mb-2 mt-2">
-                Training organisation
+                {$t('training_organisation')}
               </Typography>
             </Grid>
 
@@ -102,7 +103,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.AvetmissCollegeName.uniqueKey}
-                label="Training organisation name"
+                label={$t('training_organisation_name')}
                               />
             </Grid>
 
@@ -110,7 +111,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="select"
                 name={this.formModel.Jurisdiction.uniqueKey}
-                label="AVETMISS jurisdiction"
+                label={$t('avetmiss_jurisdiction')}
                 items={enums.ExportJurisdiction}
                               />
             </Grid>
@@ -123,7 +124,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.Id.uniqueKey}
-                label="RTO Identifier"
+                label={$t('rto_identifier')}
                 labelAdornment={(
                   <span>
                     <a target="_blank" href="https://training.gov.au/Home/Tga" rel="noreferrer">
@@ -144,7 +145,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="select"
                 name={this.formModel.Type.uniqueKey}
-                label="Type"
+                label={$t('type')}
                 items={enums.TrainingOrg_Types}
                               />
             </Grid>
@@ -154,11 +155,11 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Hidden>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Address1.uniqueKey} label="Address 1"  />
+              <FormField type="text" name={this.formModel.Address1.uniqueKey} label={$t('address_1')}  />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Suburb.uniqueKey} label="Suburb"  />
+              <FormField type="text" name={this.formModel.Suburb.uniqueKey} label={$t('suburb')}  />
             </Grid>
 
             <Hidden smDown>
@@ -166,11 +167,11 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Hidden>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Address2.uniqueKey} label="Address 2" />
+              <FormField type="text" name={this.formModel.Address2.uniqueKey} label={$t('address_2')} />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Postcode.uniqueKey} label="Postcode" />
+              <FormField type="text" name={this.formModel.Postcode.uniqueKey} label={$t('postcode')} />
             </Grid>
 
             <Hidden smDown>
@@ -181,7 +182,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="select"
                 name={this.formModel.State.uniqueKey}
-                label="State"
+                label={$t('state')}
                 items={enums.AddressStates}
                               />
             </Grid>
@@ -196,7 +197,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
 
             <Grid item xs={12}>
               <Typography variant="subtitle1" className="heading mb-2 mt-2">
-                Optional
+                {$t('optional')}
               </Typography>
             </Grid>
 
@@ -204,7 +205,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.ContactName.uniqueKey}
-                label="Contact name"
+                label={$t('contact_name')}
                               />
             </Grid>
 
@@ -212,7 +213,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.Email.uniqueKey}
-                label="Email"
+                label={$t('email2')}
                 validate={validateEmail}
                               />
             </Grid>
@@ -222,11 +223,11 @@ class AvetmissBaseForm extends React.Component<any, any> {
             </Hidden>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Phone.uniqueKey} label="Telephone" />
+              <FormField type="text" name={this.formModel.Phone.uniqueKey} label={$t('telephone')} />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4}>
-              <FormField type="text" name={this.formModel.Fax.uniqueKey} label="Fax" />
+              <FormField type="text" name={this.formModel.Fax.uniqueKey} label={$t('fax2')} />
             </Grid>
 
             <Hidden smDown>
@@ -237,7 +238,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.CertSignatoryName.uniqueKey}
-                label="Full certificates signatory name (i.e. Dr Joe Bloggs MD)"
+                label={$t('full_certificates_signatory_name_ie_dr_joe_bloggs')}
                               />
             </Grid>
 
@@ -254,7 +255,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
                     stringValue
                   />
                 )}
-                label="Only show 'offered' Qualifications and Modules"
+                label={$t('only_show_offered_qualifications_and_modules')}
               />
             </Grid>
 
@@ -266,7 +267,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.QldIdentifier.uniqueKey}
-                label="Queensland RTO id"
+                label={$t('queensland_rto_id')}
                               />
             </Grid>
 
@@ -274,7 +275,7 @@ class AvetmissBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.FeeHelpProviderCode.uniqueKey}
-                label="Fee Help Provider Code"
+                label={$t('fee_help_provider_code')}
                 validate={this.providerCodeLengthValidation}
                               />
             </Grid>

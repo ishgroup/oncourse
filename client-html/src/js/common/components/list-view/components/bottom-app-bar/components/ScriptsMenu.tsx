@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Script } from "@api/model";
-import { Menu } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import React from "react";
-import { FilterScriptsBy } from "../../../../../../model/common/ListView";
+import { Script } from '@api/model';
+import { Menu, MenuItem } from '@mui/material';
+import $t from '@t';
+import React from 'react';
+import { FilterScriptsBy } from '../../../../../../model/common/ListView';
 
 interface ScriptsMenuProps {
   scripts?: Script[];
@@ -41,7 +41,7 @@ const ScriptsMenu = React.memo<ScriptsMenuProps>(props => {
                 }}
                 onClick={event => setScriptsMenuOpen({ anchor: event.currentTarget, entity: k })}
               >
-                Execute script for {filterScriptsBy[k].ids.length} {k.toLowerCase()}{filterScriptsBy[k].ids.length > 1 ? k[k.length - 1] === "s" ? "es" : "s" : ""}
+                {$t('execute_script_for')} {filterScriptsBy[k].ids.length} {k.toLowerCase()}{filterScriptsBy[k].ids.length > 1 ? k[k.length - 1] === "s" ? "es" : "s" : ""}
               </MenuItem>
             );
           })
@@ -53,7 +53,7 @@ const ScriptsMenu = React.memo<ScriptsMenuProps>(props => {
             }}
             onClick={event => setScriptsMenuOpen({ anchor: event.currentTarget })}
           >
-            Execute script
+            {$t('execute_script')}
           </MenuItem>
         )
       }

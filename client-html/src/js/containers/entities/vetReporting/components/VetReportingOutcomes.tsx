@@ -6,20 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@mui/material/CircularProgress";
-import Collapse from "@mui/material/Collapse";
-import Divider from "@mui/material/Divider";
-import { LinkAdornment } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { change } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import CircularProgress from '@mui/material/CircularProgress';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
+import $t from '@t';
+import { LinkAdornment } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { change } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { VetReport } from "../../../../model/entities/VetReporting";
-import { getEntityItemById } from "../../common/entityItemsService";
-import OutcomeEditFields from "../../outcomes/components/OutcomeEditFields";
-import { openOutcomeLink, OutcomeSelectItemRenderer, OutcomeSelectValueRenderer } from "../../outcomes/utils";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { VetReport } from '../../../../model/entities/VetReporting';
+import { getEntityItemById } from '../../common/entityItemsService';
+import OutcomeEditFields from '../../outcomes/components/OutcomeEditFields';
+import { openOutcomeLink, OutcomeSelectItemRenderer, OutcomeSelectValueRenderer } from '../../outcomes/utils';
 
 const getFieldName = name => `outcome.${name}`;
 
@@ -53,7 +54,7 @@ const VetReportingOutcome = (props: EditViewProps<VetReport>) => {
       <FullScreenStickyHeader
         isFixed={false}
         twoColumn={twoColumn}
-        title="Outcomes"
+        title={$t('outcomes3')}
         disableInteraction
       />
       <Divider className="mt-3 mb-3" />
@@ -62,7 +63,7 @@ const VetReportingOutcome = (props: EditViewProps<VetReport>) => {
         type="remoteDataSelect"
         name="selectedOutcome"
         entity="Outcome"
-        label="Select an outcome"
+        label={$t('select_an_outcome')}
         returnType="object"
         selectValueMark="id"
         selectLabelMark="module.nationalCode"

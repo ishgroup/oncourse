@@ -8,6 +8,7 @@ import { Grid, Typography } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import $t from '@t';
 import clsx from 'clsx';
 import { decimalPlus, formatCurrency, normalizeNumberToZero } from 'ish-ui';
 import debounce from 'lodash.debounce';
@@ -117,7 +118,7 @@ const CheckoutFundingInvoiceSummaryRow = React.memo<{
         <FormField
           type="money"
           name={`fundingInvoices[${selectedItemIndex}].item.enrolment.items[${index}].totalFee`}
-          label="Price"
+          label={$t('price')}
           onChange={handlePriceChange}
           normalize={normalizeNumberToZero}
           debounced={false}

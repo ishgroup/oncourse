@@ -3,22 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AssessmentClass, GradingType } from "@api/model";
-import { Divider, Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { arrayInsert, arrayRemove } from "redux-form";
-import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import MinifiedEntitiesList from "../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import uniqid from "../../../../../common/utils/uniqid";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { AssessmentClassExtended, CourseClassExtended } from "../../../../../model/entities/CourseClass";
-import { State } from "../../../../../reducers/state";
-import { deleteCourseClassAssessment } from "./actions";
-import CourseClassAssessmentItems from "./CourseClassAssessmentItems";
-import CourseClassAssessmentService from "./services/CourseClassAssessmentService";
+import { AssessmentClass, GradingType } from '@api/model';
+import { Divider, Grid, Typography } from '@mui/material';
+import $t from '@t';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { arrayInsert, arrayRemove } from 'redux-form';
+import { addActionToQueue, removeActionsFromQueue } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import MinifiedEntitiesList from '../../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList';
+import uniqid from '../../../../../common/utils/uniqid';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { AssessmentClassExtended, CourseClassExtended } from '../../../../../model/entities/CourseClass';
+import { State } from '../../../../../reducers/state';
+import { deleteCourseClassAssessment } from './actions';
+import CourseClassAssessmentItems from './CourseClassAssessmentItems';
+import CourseClassAssessmentService from './services/CourseClassAssessmentService';
 
 const assessmentInitial: AssessmentClass = {
   id: null,
@@ -153,9 +153,9 @@ const CourseClassAssessmentsTab: React.FC<Partial<EditViewProps<CourseClassExten
         <Divider className="mb-1" />
         {isNew ? (
           <div>
-            <div className="heading pb-1">Assessments</div>
+            <div className="heading pb-1">{$t('assessments2')}</div>
             <Typography variant="caption" color="textSecondary">
-              Please save your new class before editing assessments
+              {$t('please_save_your_new_class_before_editing_assessme')}
             </Typography>
           </div>
         ) : (

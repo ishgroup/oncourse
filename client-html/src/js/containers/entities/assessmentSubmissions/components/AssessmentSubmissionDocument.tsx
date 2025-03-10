@@ -6,10 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Grid from "@mui/material/Grid";
-import React from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
 
 interface AssessmentDocumentsProps {
   classes?: any;
@@ -28,7 +29,7 @@ const AssessmentSubmissionDocuments: React.FC<AssessmentDocumentsProps> = props 
     <Grid container className="p-3 saveButtonTableOffset">
       <FieldArray
         name="documents"
-        label="Documents"
+        label={$t('documents')}
         entity="AssessmentSubmission"
         classes={classes}
         component={DocumentsRenderer}

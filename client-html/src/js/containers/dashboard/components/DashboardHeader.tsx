@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
 import { makeAppStyles, ShowConfirmCaller } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
 import { Dispatch } from 'redux';
@@ -110,7 +111,7 @@ const DashboardHeader = (
         <Grid container className="justify-content-end" alignContent="center">
           <Grid item xs={6} container justifyContent="start" alignContent="center">
             <Typography variant="subtitle2" color="textSecondary" noWrap>
-              Welcome back
+              {$t('welcome_back')}
               {" "}
               {systemUser?.firstName}
             </Typography>
@@ -126,11 +127,11 @@ const DashboardHeader = (
                       root: classes.upgradeButton
                     }}
             >
-              Upgrade to onCourse Pro
+              {$t('upgrade_to_oncourse_pro')}
             </Button>
                 )}
 
-            <Tooltip title="Change Theme" disableFocusListener>
+            <Tooltip title={$t('change_theme')} disableFocusListener>
               <IconButton
                 onClick={themeMenuOpen}
                 aria-owns={themeMenu ? "theme-menu" : null}
@@ -156,7 +157,7 @@ const DashboardHeader = (
                     }}
                     selected={themeName === "default"}
                   >
-                    Light Theme
+                    {$t('light_theme')}
                   </MenuItem>
                   <MenuItem
                     id="dark"
@@ -167,7 +168,7 @@ const DashboardHeader = (
                         }}
                     selected={themeName === "dark"}
                   >
-                    Dark Theme
+                    {$t('dark_theme')}
                   </MenuItem>
                   <MenuItem
                     id="monochrome"
@@ -178,7 +179,7 @@ const DashboardHeader = (
                         }}
                     selected={themeName === "monochrome"}
                   >
-                    Monochrome Theme
+                    {$t('monochrome_theme')}
                   </MenuItem>
                   <MenuItem
                     id="highcontrast"
@@ -189,12 +190,12 @@ const DashboardHeader = (
                         }}
                     selected={themeName === "highcontrast"}
                   >
-                    High Contrast Theme
+                    {$t('high_contrast_theme')}
                   </MenuItem>
                 </Menu>
                   )}
             </ThemeContext.Consumer>
-            <Tooltip title="Logout">
+            <Tooltip title={$t('logout')}>
               <IconButton
                 onClick={toggleConfirm}
                 className={classes.toolBarButton}

@@ -1,8 +1,8 @@
-import { Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import React from "react";
+import { Grid, Typography } from '@mui/material';
+import $t from '@t';
+import React from 'react';
 
-const DocumentTags: React.FC<any> = ({tags, bold, classes}) => (
+const DocumentTags: React.FC<any> = ({ tags, bold, classes }) => (
   <Grid container columnSpacing={3}>
     {tags.length ? (
       tags.map(t => (
@@ -13,7 +13,7 @@ const DocumentTags: React.FC<any> = ({tags, bold, classes}) => (
       ))
     ) : (
       <Typography variant="body2" className={`placeholderContent ${classes && classes.documentNoTags}`}>
-        No Tags
+        {$t('no_tags')}
       </Typography>
     )}
   </Grid>

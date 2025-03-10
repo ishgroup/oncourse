@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import $t from '@t';
 import { History } from 'history';
 import { makeAppStyles } from 'ish-ui';
 import React from 'react';
@@ -56,43 +57,43 @@ const AutomationSideBar = ({
     <div className={classes.root}>
       <SideBarHeader
         selected={selected === 1}
-        label="Automations"
+        label={$t('automations')}
         onClick={selectHandler("/automation/scripts")}
       />
 
       <SideBarHeader
         selected={selected === 2}
-        label="Import Templates"
+        label={$t('import_templates')}
         onClick={selectHandler("/automation/import-templates/")}
       />
 
       <SideBarHeader
         selected={selected === 3}
-        label="Export Templates"
+        label={$t('export_templates')}
         onClick={selectHandler("/automation/export-templates/")}
       />
 
       <SideBarHeader
         selected={selected === 4}
-        label="Message Templates"
+        label={$t('message_templates2')}
         onClick={selectHandler("/automation/email-templates/")}
       />
 
       <SideBarHeader
         selected={selected === 5}
-        label="PDF Backgrounds"
+        label={$t('pdf_backgrounds')}
         onClick={selectHandler("/automation/pdf-backgrounds/")}
       />
 
       <SideBarHeader
         selected={selected === 6}
-        label="PDF Reports"
+        label={$t('pdf_reports')}
         onClick={selectHandler("/automation/pdf-reports/")}
       />
 
       <SideBarHeader
         selected={selected === 7}
-        label="Integrations"
+        label={$t('integrations')}
         onClick={selectHandler("/automation/integrations")}
       />
     </div>

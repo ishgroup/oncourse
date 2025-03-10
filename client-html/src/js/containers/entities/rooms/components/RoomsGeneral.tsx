@@ -8,6 +8,7 @@ import ScreenShare from '@mui/icons-material/ScreenShare';
 import Grid, { GridSize } from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { LinkAdornment, openInternalLink, TimetableButton } from 'ish-ui';
 import debounce from 'lodash.debounce';
 import * as React from 'react';
@@ -88,7 +89,7 @@ function RoomsGeneral({
             <FormField
               type="text"
               name="name"
-              label="Name"
+              label={$t('name')}
               required
             />
           )}
@@ -104,7 +105,7 @@ function RoomsGeneral({
           />
           {isParenSiteVirtual && <FormField
             type="text"
-            label="Virtual room URL"
+            label={$t('virtual_room_url')}
             name="virtualRoomUrl"
             validate={validateURL}
           />}
@@ -124,7 +125,7 @@ function RoomsGeneral({
               <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
                 <ScreenShare />
               </IconButton>
-              <Typography variant="caption">Kiosk</Typography>
+              <Typography variant="caption">{$t('kiosk')}</Typography>
             </div>
           </div>
         </Grid>
@@ -138,7 +139,7 @@ function RoomsGeneral({
         <FormField
           type="text"
           name="seatedCapacity"
-          label="Seated Capacity"
+          label={$t('seated_capacity')}
           required
           normalize={normalizeSeatedCapacity}
           debounced={false}
@@ -150,7 +151,7 @@ function RoomsGeneral({
           <FormField
             type="select"
             name="siteId"
-            label="Site"
+            label={$t('site')}
             selectLabelMark="name"
             selectValueMark="id"
             labelAdornment={
@@ -180,17 +181,17 @@ function RoomsGeneral({
       />
 
       <Grid item xs={layoutArray[5].xs}>
-        <FormEditorField name="facilities" label="Facilities" />
+        <FormEditorField name="facilities" label={$t('facilities')} />
       </Grid>
 
       <Grid item xs={layoutArray[6].xs}>
-        <FormEditorField name="directions" label="Directions" />
+        <FormEditorField name="directions" label={$t('directions')} />
       </Grid>
 
       <Grid item xs={layoutArray[7].xs} className="mb-1">
         <FieldArray
           name="documents"
-          label="Documents"
+          label={$t('documents')}
           entity="Room"
           component={DocumentsRenderer}
           xsGrid={layoutArray[3].xs}

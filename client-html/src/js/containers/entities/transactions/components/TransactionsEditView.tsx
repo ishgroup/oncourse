@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account } from "@api/model";
-import Grid from "@mui/material/Grid";
-import * as React from "react";
-import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
+import { Account } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { State } from '../../../../reducers/state';
 
 const getFormattedAccounts = (accounts: Account[]) => {
   const formattedAccount = [];
@@ -71,7 +72,7 @@ const TransactionsEditView = props => {
             type="select"
             disabled={!hasAccounts}
             name="toAccount"
-            label="To account"
+            label={$t('to_account')}
             required={isNew}
             items={formattedAccounts || []}
                       />
@@ -82,7 +83,7 @@ const TransactionsEditView = props => {
           type="money"
           disabled={!isNew}
           name="amount"
-          label="Amount"
+          label={$t('amount')}
           validate={isNew ? validateAmountField : undefined}
                   />
       </Grid>
@@ -91,7 +92,7 @@ const TransactionsEditView = props => {
           type="date"
           disabled={!isNew}
           name="transactionDate"
-          label="Transaction date"
+          label={$t('transaction_date')}
           required={isNew}
                   />
       </Grid>

@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import React, { useCallback, useContext } from "react";
-import { TimetableContextState } from "../../../../../../model/timetable";
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import $t from '@t';
+import React, { useCallback, useContext } from 'react';
+import { TimetableContextState } from '../../../../../../model/timetable';
 
 const CalendarGroupingsSwitcher = ({ className = null, TimetableContext }) => {
   const { calendarGrouping, setCalendarGrouping, calendarMode } = useContext<TimetableContextState>(TimetableContext);
@@ -30,9 +31,9 @@ const CalendarGroupingsSwitcher = ({ className = null, TimetableContext }) => {
         value={calendarGrouping}
         onChange={onChange}
       >
-        <MenuItem value="Group by tutor">Group by tutor</MenuItem>
-        <MenuItem value="Group by room">Group by room</MenuItem>
-        <MenuItem value="No grouping">No grouping</MenuItem>
+        <MenuItem value="Group by tutor">{$t('group_by_tutor')}</MenuItem>
+        <MenuItem value="Group by room">{$t('group_by_room')}</MenuItem>
+        <MenuItem value="No grouping">{$t('no_grouping')}</MenuItem>
       </Select>
     </FormControl>
   );

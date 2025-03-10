@@ -26,6 +26,7 @@ import {
   Hidden,
   Typography,
 } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import { format as formatDate, getDaysInMonth, setDate, setMonth, setYear } from 'date-fns';
 import { ErrorMessage, III_DD_MMM_YYYY, StyledCheckbox, validateMinMaxDate, YYYY_MM_DD_MINUSED } from 'ish-ui';
@@ -648,7 +649,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
       <FormField
         type="select"
         name="flavour"
-        label="Flavour"
+        label={$t('flavour')}
         items={flavourModel}
         onChange={this.onFlavourChange}
         className="mb-2"
@@ -662,7 +663,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
     return (
       <form className="container" onSubmit={handleSubmit(this.onFind)}>
         <AppBarContainer
-          title="AVETMISS 8"
+          title={$t('avetmiss_8')}
           disableInteraction
           manualUrl={manualUrl}
           onCloseClick={onClose}
@@ -703,7 +704,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                           "mb-2": hasOutcomesOrExport
                         })}
                       >
-                        Select
+                        {$t('select')}
                         {hasOutcomesOrExport && (
                           <>
                             <div className="flex-fill" />
@@ -724,13 +725,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                             <div>
                               {flavourField}
                               <Typography gutterBottom variant="caption">
-                                Exporting
-                                {' '}
-                                {enrolmentsCount}
-                                {' '}
-                                enrolment
-                                {enrolmentsCount !== 1 ? "s" : ""}
-                                ...
+                                {$t('exporting_enrolment')}
                                 {" "}
                               </Typography>
                             </div>
@@ -741,7 +736,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                 <FormField
                                   type="select"
                                   name="dateRange"
-                                  label="Outcomes in progress during"
+                                  label={$t('outcomes_in_progress_during')}
                                   items={
                                     values.flavour === "NCVER (Standard AVETMISS)"
                                       ? dateRangeModel.slice(1)
@@ -759,7 +754,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                     <FormField
                                       type="date"
                                       name="outcomesStart"
-                                      label="Start"
+                                      label={$t('start')}
                                       validate={this.validateMaxDate}
                                       className="mb-2"
                                     />
@@ -767,7 +762,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       <FormField
                                         type="date"
                                         name="outcomesEnd"
-                                        label="End"
+                                        label={$t('end')}
                                         validate={this.validateMinDate}
                                         className="mb-2"
                                       />
@@ -783,12 +778,11 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                   control={
                                     <FormField type="checkbox" name="includeLinkedOutcomes" color="primary" />
                                   }
-                                  label="Include linked outcomes"
+                                  label={$t('include_linked_outcomes')}
                                 />
 
                                 <Typography variant="caption" component="div" className="pr-2">
-                                  Outcomes outside the date range will be included if linked to the same enrolment or
-                                  if they have the same Purchasing contract identifier.
+                                  {$t('outcomes_outside_the_date_range_will_be_included_i')}
                                 </Typography>
                               </div>
                               <div className="flex-fill ml-2 pb-1">
@@ -823,7 +817,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                       onChange={this.onFeeChange}
                                     />
                                   )}
-                                  label="No funding contract (Fee for service VET)"
+                                  label={$t('no_funding_contract_fee_for_service_vet')}
                                 />
 
                                 <Collapse in={feeForServiceChecked}>
@@ -848,7 +842,7 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                                 </Collapse>
                                 {!checkboxesValid && (
                                   <Typography variant="body1" color="error">
-                                    Please select one or more options.
+                                    {$t('please_select_one_or_more_options')}
                                   </Typography>
                                 )}
                               </div>
@@ -870,13 +864,13 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                             disabled={invalid || !checkboxesValid}
                             loading={pending}
                           >
-                            Find
+                            {$t('find')}
                           </LoadingButton>
                         )}
 
                         {hasNoResults && (
                           <Typography variant="body1" color="error">
-                            No outcomes match your criteria above
+                            {$t('no_outcomes_match_your_criteria_above')}
                           </Typography>
                         )}
                       </div>

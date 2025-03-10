@@ -3,25 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Outcome, PriorLearning, Qualification } from "@api/model";
-import { Grid } from "@mui/material";
-import { LinkAdornment } from "ish-ui";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
+import { Outcome, PriorLearning, Qualification } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { LinkAdornment } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { arrayInsert, arrayRemove, change, FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import MinifiedEntitiesList from '../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import EntityService from "../../../../common/services/EntityService";
-import { EditViewProps } from "../../../../model/common/ListView";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../contacts/utils";
-import { OutcomeInitial } from "../../outcomes/Outcomes";
-import { openQualificationLink } from "../../qualifications/utils";
-import { OutcomesContentLine, OutcomesHeaderLine } from "./OutcomesLines";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import EntityService from '../../../../common/services/EntityService';
+import { EditViewProps } from '../../../../model/common/ListView';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import { OutcomeInitial } from '../../outcomes/Outcomes';
+import { openQualificationLink } from '../../qualifications/utils';
+import { OutcomesContentLine, OutcomesHeaderLine } from './OutcomesLines';
 
 interface PriorLearningEditViewProps extends EditViewProps<PriorLearning> {
   classes?: any;
@@ -124,7 +125,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
             )}
             fields={(
               <Grid item xs={twoColumn ? 6 : 12}>
-                <FormField type="text" name="title" label="Title" required />
+                <FormField type="text" name="title" label={$t('title')} required />
               </Grid>
             )}
           />
@@ -133,7 +134,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           <FormField
             type="remoteDataSelect"
             name="contactId"
-            label="Student"
+            label={$t('student')}
             entity="Contact"
             aqlFilter="isStudent is true"
             selectValueMark="id"
@@ -152,7 +153,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           <FormField
             type="remoteDataSelect"
             name="qualificationName"
-            label="Qualification"
+            label={$t('qualification')}
             entity="Qualification"
             selectValueMark="title"
             selectLabelMark="title"
@@ -172,7 +173,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
           <FormField
             type="remoteDataSelect"
             name="qualificationNationalCode"
-            label="National code"
+            label={$t('national_code')}
             selectValueMark="nationalCode"
             selectLabelMark="nationalCode"
             entity="Qualification"
@@ -189,21 +190,21 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
         </Grid>
 
         <Grid item xs={twoColumn ? 6 : 12}>
-          <FormField type="text" name="externalReference" label="External reference" />
+          <FormField type="text" name="externalReference" label={$t('external_reference')} />
         </Grid>
         <Grid item xs={twoColumn ? 6 : 12}>
-          <Uneditable value={values.qualificationLevel} label="Level" />
+          <Uneditable value={values.qualificationLevel} label={$t('level')} />
         </Grid>
 
         <Grid item xs={twoColumn ? 6 : 12}>
           <FormField
             type="text"
             name="outcomeIdTrainingOrg"
-            label="Outcome identifier - Training organization"
+            label={$t('outcome_identifier_training_organization')}
           />
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name="notes" label="Private notes" />
+          <FormField type="multilineText" name="notes" label={$t('private_notes')} />
         </Grid>
 
         <Grid item xs={12} className="pb-2 pt-2">
@@ -224,7 +225,7 @@ const PriorLearningEditView: React.FC<PriorLearningEditViewProps> = props => {
         <Grid item xs={12}>
           <FieldArray
             name="documents"
-            label="Documents"
+            label={$t('documents')}
             entity="PriorLearning"
             classes={classes}
             component={DocumentsRenderer}
