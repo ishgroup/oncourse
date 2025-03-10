@@ -170,7 +170,7 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
-	public  String getPaymentGatewayPassEWay() {
+	public  String getPaymentGatewayPassEway() {
 		String apiKey = getValue(PAYMENT_GATEWAY_PASS_EWAY, false);
 		if (apiKey == null) {
 			throw new IllegalArgumentException();
@@ -186,8 +186,40 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
+	public String getPaymentGatewayPassSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayLocationIdSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_LOCATION_ID_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
 	public String getPaymentGatewayClientPassStripe() {
 		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassEway() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_EWAY, false);
 		if (apiKey == null) {
 			throw new IllegalArgumentException("Gateway client key is not configured");
 		}

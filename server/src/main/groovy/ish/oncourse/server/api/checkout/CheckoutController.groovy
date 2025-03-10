@@ -132,6 +132,7 @@ class CheckoutController {
     private Invoice invoice
     private PaymentIn paymentIn
 
+
     CheckoutController(CayenneService cayenneService,
                        SystemUserService systemUserService,
                        ContactApiService contactApiService,
@@ -367,6 +368,11 @@ class CheckoutController {
     }
 
     private void initInvoice() {
+        if (checkout.paymentMethodId == null && !checkout.payWithSavedCard &&
+                (checkout.previousInvoices.isEmpty() || !checkout.previousInvoices.any { id, amount -> Money.valueOf(amount) != Money.ZERO })) {
+            return
+        }
+
         if (checkout.contactNodes.any {node -> !node.enrolments.empty || !node.products.empty  || !node.vouchers.empty || !node.memberships.empty }) {
             invoice = context.newObject(Invoice)
             invoice.amountOwing = Money.ZERO
@@ -430,9 +436,10 @@ class CheckoutController {
 
         PaymentMethod method
 
+
         if (paymentIn.amount > ZERO) {
             if (checkout.paymentMethodId != null) {
-                method =  SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
+                method = SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
             } else if (checkout.payWithSavedCard) {
                 method = PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod)
             } else {
@@ -448,17 +455,6 @@ class CheckoutController {
         if (CREDIT_CARD != paymentIn.paymentMethod.type) {
             paymentIn.paymentDate = checkout.paymentDate?:LocalDate.now()
         }
-        paymentIn.account = paymentIn.paymentMethod.account
-        paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
-
-
-        if (invoice) {
-            PaymentInLine line = context.newObject(PaymentInLine)
-            line.payment = paymentIn
-            line.invoice = invoice
-            line.amount =  Money.ZERO
-        }
-
 
         if (CREDIT_CARD == paymentIn.paymentMethod.type) {
             paymentIn.status =PaymentStatus.IN_TRANSACTION
@@ -467,6 +463,16 @@ class CheckoutController {
         } else {
             paymentIn.status = PaymentStatus.SUCCESS
             paymentIn.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
+        }
+
+        paymentIn.account = paymentIn.paymentMethod.account
+        paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
+
+        if (invoice) {
+            PaymentInLine line = context.newObject(PaymentInLine)
+            line.payment = paymentIn
+            line.invoice = invoice
+            line.amount =  Money.ZERO
         }
     }
 
