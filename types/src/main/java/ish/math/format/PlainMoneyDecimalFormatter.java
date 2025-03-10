@@ -10,6 +10,7 @@ package ish.math.format;
 
 import ish.math.Money;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -33,6 +34,11 @@ public class PlainMoneyDecimalFormatter implements MoneyFormatter {
 		xmlDecimal.setGroupingUsed(false);
 		xmlDecimal.setMinimumFractionDigits(money.getCurrency().getDefaultFractionDigits());
 		xmlDecimal.setMaximumFractionDigits(money.getCurrency().getDefaultFractionDigits());
+		if (xmlDecimal instanceof DecimalFormat) {
+			var symbols = ((DecimalFormat) xmlDecimal).getDecimalFormatSymbols();
+			symbols.setDecimalSeparator('.');
+			((DecimalFormat) xmlDecimal).setDecimalFormatSymbols(symbols);
+		}
 		return xmlDecimal.format(money.toDouble());
 	}
 }

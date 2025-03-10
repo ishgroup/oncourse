@@ -237,7 +237,7 @@ class EntityApiImpl implements EntityApi {
         if (value instanceof BigDecimal) {
             return ((BigDecimal)value).toPlainString()
         }
-        if ( value instanceof Money) {
+        if (value instanceof Money) {
             return value.toPlainString()
         }
         return value.toString()

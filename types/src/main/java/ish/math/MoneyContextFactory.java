@@ -11,43 +11,20 @@ package ish.math;
 import ish.math.context.MoneyContext;
 import ish.math.format.DefaultMoneyFormatter;
 import ish.math.format.MoneyFormatter;
+import org.springframework.lang.Nullable;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
 import java.util.Currency;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Factory to creating instances of {@link MoneyContext}.
  */
 public class MoneyContextFactory {
 
-    public static final MoneyContext DEFAULT_MONEY_CONTEXT = new MoneyContext() {
-        @Override
-        public CurrencyUnit getCurrency() {
-            return Monetary.getCurrency(getLocale());
-        }
-
-        @Override
-        public String getCurrencyCode() {
-            return getCurrency().getCurrencyCode();
-        }
-
-        @Override
-        public String getCurrencySymbol() {
-            return Currency.getInstance(getCurrencyCode()).getSymbol();
-        }
-
-        @Override
-        public Locale getLocale() {
-            return LocaleUtil.getDefaultLocale();
-        }
-
-        @Override
-        public MoneyFormatter getFormatter() {
-            return new DefaultMoneyFormatter(getLocale(), getCurrencySymbol());
-        }
-    };
+    public static final MoneyContext DEFAULT_MONEY_CONTEXT = new DefaultMoneyContext();
 
     public static MoneyContext create(Country country) {
         return new MoneyContext() {
@@ -76,5 +53,40 @@ public class MoneyContextFactory {
                 return new DefaultMoneyFormatter(getLocale(), getCurrencySymbol());
             }
         };
+    }
+
+    private static class DefaultMoneyContext implements MoneyContext {
+
+        @Nullable
+        private Country country;
+
+        public DefaultMoneyContext() {
+            this.country = Country.findCountryByLocale(LocaleUtil.getDefaultLocale());
+        }
+
+        @Override
+        public CurrencyUnit getCurrency() {
+            return !Objects.isNull(country) ? country.currency() : Monetary.getCurrency(getLocale());
+        }
+
+        @Override
+        public String getCurrencyCode() {
+            return !Objects.isNull(country) ? country.currencyCode() : getCurrency().getCurrencyCode();
+        }
+
+        @Override
+        public String getCurrencySymbol() {
+            return !Objects.isNull(country) ? country.currencySymbol() : Currency.getInstance(getCurrencyCode()).getSymbol();
+        }
+
+        @Override
+        public Locale getLocale() {
+            return !Objects.isNull(country) ? country.locale() : LocaleUtil.getDefaultLocale();
+        }
+
+        @Override
+        public MoneyFormatter getFormatter() {
+            return new DefaultMoneyFormatter(getLocale(), getCurrencySymbol());
+        }
     }
 }
