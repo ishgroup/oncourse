@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.math.context.MoneyContext
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
@@ -93,6 +94,9 @@ class PdfApiImpl implements PdfApi {
     @Inject
     private PreferenceController preferenceController
 
+    @Inject
+    private MoneyContext moneyContext
+
     @Context
     private HttpServletResponse response
 
@@ -130,7 +134,7 @@ class PdfApiImpl implements PdfApi {
                     return result
                 }
 
-                PrintWorker worker = new PrintWorker(request, cayenneService, documentService, userPreferenceService)
+                PrintWorker worker = new PrintWorker(request, cayenneService, documentService, userPreferenceService, moneyContext)
                 worker.run()
 
                 if (printRequest.emailToSent && !worker.result.error) {

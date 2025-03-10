@@ -125,7 +125,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 .collect { courseClassApiService.getEntityAndValidateExistence(context, Long.valueOf(it)) }
         List<MembershipProduct> memberships = membershipIds == null || membershipIds.empty ? [] :
                 membershipIds.split(',').collect { membershipApiService.getEntityAndValidateExistence(context,Long.valueOf(it)) }
-        Money total = new Money(purchaseTotal)
+        Money total = Money.of(purchaseTotal)
 
         List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, payerContact, courses, products, promos, enrolledClasses, memberships, total)
 
