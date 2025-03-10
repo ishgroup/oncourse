@@ -131,6 +131,7 @@ class CheckoutController {
     private Invoice invoice
     private PaymentIn paymentIn
 
+
     CheckoutController(CayenneService cayenneService,
                        SystemUserService systemUserService,
                        ContactApiService contactApiService,
@@ -431,7 +432,7 @@ class CheckoutController {
 
         if (paymentIn.amount > Money.ZERO) {
             if (checkout.paymentMethodId != null) {
-                method =  SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
+                method = SelectById.query(PaymentMethod, checkout.paymentMethodId).selectOne(context)
             } else if (checkout.payWithSavedCard) {
                 method = PaymentMethodUtil.getRealTimeCreditCardPaymentMethod(context, PaymentMethod)
             } else {
@@ -447,17 +448,6 @@ class CheckoutController {
         if (CREDIT_CARD != paymentIn.paymentMethod.type) {
             paymentIn.paymentDate = checkout.paymentDate?:LocalDate.now()
         }
-        paymentIn.account = paymentIn.paymentMethod.account
-        paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
-
-
-        if (invoice) {
-            PaymentInLine line = context.newObject(PaymentInLine)
-            line.payment = paymentIn
-            line.invoice = invoice
-            line.amount =  Money.ZERO
-        }
-
 
         if (CREDIT_CARD == paymentIn.paymentMethod.type) {
             paymentIn.status =PaymentStatus.IN_TRANSACTION
@@ -466,6 +456,16 @@ class CheckoutController {
         } else {
             paymentIn.status = PaymentStatus.SUCCESS
             paymentIn.confirmationStatus = checkout.sendInvoice ? NOT_SENT : DO_NOT_SEND
+        }
+
+        paymentIn.account = paymentIn.paymentMethod.account
+        paymentIn.undepositedFundsAccount = paymentIn.paymentMethod.undepositedFundsAccount
+
+        if (invoice) {
+            PaymentInLine line = context.newObject(PaymentInLine)
+            line.payment = paymentIn
+            line.invoice = invoice
+            line.amount =  Money.ZERO
         }
     }
 

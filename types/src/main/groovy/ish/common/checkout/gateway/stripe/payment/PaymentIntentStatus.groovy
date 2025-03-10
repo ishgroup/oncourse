@@ -16,7 +16,8 @@ enum PaymentIntentStatus {
     RequiresCapture ('requires_capture'),
     RequiresConfirmation ('requires_confirmation'),
     RequiresPaymentMethod ('requires_payment_method'),
-    Succeeded ('succeeded')
+    Succeeded ('succeeded'),
+    Failed ('failed')
 
     private String displayName
 
