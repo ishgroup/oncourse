@@ -195,8 +195,7 @@ const EwayPaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
           disabled={!ready || isPaymentProcessing}
           loading={isPaymentProcessing}
         >
-          {$t('enter_card_details')}
-          Finalize checkout
+          {$t('finalize_checkout')}
         </LoadingButton>
       </form>}
 
