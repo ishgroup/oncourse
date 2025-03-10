@@ -111,6 +111,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
             enrolmentDTO.cricosConfirmation = enrolment.cricosConfirmation
             enrolmentDTO.vetFeeIndicator = enrolment.vetFeeIndicator
             enrolmentDTO.trainingPlanDeveloped = enrolment.trainingPlanDeveloped
+            enrolmentDTO.effectiveFrom = LocalDateUtils.dateToTimeValue(enrolment.effectiveFrom)
             
             enrolmentDTO.feeHelpAmount = enrolment.feeHelpAmount?.toBigDecimal()
             enrolmentDTO.creditOfferedValue = enrolment.creditOfferedValue
@@ -173,6 +174,7 @@ class EnrolmentApiService extends TaggableApiService<EnrolmentDTO, Enrolment, En
         enrolment.creditLevel = CREDIT_LEVEL_MAP.getByValue(dto.creditLevel)
         enrolment.studentLoanStatus = dto.studentLoanStatus.getDbType()
         enrolment.vetPurchasingContractScheduleID = dto.vetPurchasingContractScheduleID
+        enrolment.effectiveFrom = LocalDateUtils.timeValueToDate(dto.effectiveFrom)
 
         updateSubmissions(submissionApiService, this, dto.submissions, enrolment.assessmentSubmissions, context)
         TagFunctions.updateTags(enrolment, enrolment.taggingRelations, dto.tags, EnrolmentTagRelation, context)
