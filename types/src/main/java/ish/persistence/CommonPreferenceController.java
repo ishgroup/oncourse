@@ -1514,7 +1514,6 @@ public abstract class CommonPreferenceController {
 	}
 
 
-
 	public String getChargebeeSubscriptionId() {
 		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
 	}

@@ -16,6 +16,7 @@ import ish.math.Country;
 import ish.math.CurrencyFormat;
 import ish.oncourse.entity.services.TagService;
 import ish.oncourse.server.cayenne.Preference;
+import ish.oncourse.server.display.DisplayService;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.license.LicenseService;
 import ish.oncourse.server.services.ISchedulerService;
@@ -56,6 +57,9 @@ public class PreferenceController extends CommonPreferenceController {
     @Inject
     private ISchedulerService schedulerService;
 
+    @Inject
+    private DisplayService displayService;
+
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
@@ -68,6 +72,10 @@ public class PreferenceController extends CommonPreferenceController {
 		sharedController = this;
 	}
 
+
+	public Boolean getAusReporting() {
+		return displayService.getAusReporting();
+	}
 
 	public Long getTimeoutMs() {
 		Integer timeout =  getTimeoutSec();
@@ -98,6 +106,9 @@ public class PreferenceController extends CommonPreferenceController {
 		if (defaultAccountPreferences.contains(key)) {
 			return getDefaultAccountId(key);
 		}
+
+		if(key.equals(AUS_REPORTING))
+			return getAusReporting();
 
 		if(key.startsWith("plugins.")){
 			return pluginsPrefsService.getProperty(key);
