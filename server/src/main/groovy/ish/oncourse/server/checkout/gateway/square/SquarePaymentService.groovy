@@ -13,6 +13,7 @@ import com.google.inject.Inject
 import com.squareup.square.Environment
 import com.squareup.square.SquareClient
 import com.squareup.square.authentication.BearerAuthModel
+import com.squareup.square.exceptions.ApiException
 import com.squareup.square.models.*
 import groovy.transform.CompileDynamic
 import ish.common.checkout.gateway.PaymentGatewayError
@@ -109,6 +110,10 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
             buildSessionAttributesFromPaymentResponse(sessionAttributes, paymentResponse)
             return sessionAttributes
         } catch (Exception e) {
+            if(e instanceof ApiException) {
+                logger.error((e as ApiException).httpContext.response.body)
+            }
+
             logger.catching(e)
             handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
             return null //unreachable
@@ -133,6 +138,9 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
 
             buildSessionAttributesFromPayment(sessionAttributes, paymentResponse.payment)
         } catch (Exception e) {
+            if(e instanceof ApiException) {
+                logger.error((e as ApiException).httpContext.response.body)
+            }
             logger.catching(e)
             sessionAttributes.errorMessage = e.message
         }
@@ -160,6 +168,9 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
 
             buildSessionAttributesFromRefund(sessionAttributes, refundPaymentResponse.refund)
         } catch (Exception e) {
+            if(e instanceof ApiException) {
+                logger.error((e as ApiException).httpContext.response.body)
+            }
             logger.catching(e)
             sessionAttributes.errorMessage = e.message
         }
