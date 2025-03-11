@@ -73,7 +73,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
         return (
           <div className="pt-2" key={field.id}>
             <Typography variant="body2" className="normalHeading">
-              {$t('invoice')}
+              {$t('Invoice')}
+              {' '}
+              {field && field.invoiceNumber}
             </Typography>
             <FormControlLabel
               control={(
@@ -87,7 +89,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
               )}
               label={
                 <>
-                  {$t('money2')} {field && field.contactName}
+                  {$t('Create credit note to reverse the enrolment fee of')} <span className="money">
+                  {formatCurrency(field.finalPriceToPayIncTax, currencySymbol)}
+                  </span> to {field && field.contactName}
                 </>
               }
             />
@@ -98,7 +102,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
               control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary"  />}
               label={
                 <>
-                  {$t('charge_an_administrative_fee_of')}
+                  {$t('charge_an_administrative_fee_of', [field && field.contactName])}
                   {" "}
                   <FormField
                     type="number"

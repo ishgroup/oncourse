@@ -39,7 +39,7 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
               {$t('courses')}
             </div>
             <Typography variant="caption" component="div" color="textSecondary" className="pb-1">
-              {$t('can_be_redeemed_for_in_classes_from')}
+              {$t('can_be_redeemed_for_in_classes_from',value)}
             </Typography>
             {values.courses && values.courses.map(c => (
               <Typography key={c.id} variant="body2" component="div" className="pb-2">

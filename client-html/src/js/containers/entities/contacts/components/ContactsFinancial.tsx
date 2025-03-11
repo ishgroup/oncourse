@@ -307,7 +307,7 @@ const ContactsFinancial: React.FC<ContactsFinancialProps> = props => {
               <Alert severity="info">
                 <Typography variant="body2">
                   <div>
-                    {$t('a_credit_card_was_collected_on_and_is_securely_sto')}
+                    {$t('a_credit_card_was_collected_on_and_is_securely_sto',[storedCard.created])}
                   </div>
                   <div className="centeredFlex">
                     {storedCard.creditCardType}

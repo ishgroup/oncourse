@@ -139,7 +139,7 @@ const TutorPayContent: React.FC<Props> = ({
     <Grid container columnSpacing={3}>
       <Grid item xs={6}>
         <Uneditable
-          label={$t('contact')}
+          label={$t('Contact')}
           value={values.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values.contactId} />

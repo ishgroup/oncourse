@@ -97,7 +97,7 @@ const MessageEditView = React.memo<MessageEditViewProps>(props => {
         </Grid>
 
         <Grid item xs={12} className={values.sms ? undefined : "d-none"}>
-          <Uneditable value={values.sms} label={$t('sms')} />
+          <Uneditable value={values.sms} label={$t('SMS')} />
         </Grid>
 
         <Grid item xs={12} className={values.postDescription ? undefined : "d-none"}>

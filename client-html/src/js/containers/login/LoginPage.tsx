@@ -441,7 +441,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                           className="cursor-pointer linkDecoration"
                           onClick={() => window.open(`https://ishoncourse.readme.io/changelog/release-${String(process.env.RELEASE_VERSION).match(/([0-9]+)\.?/)[0]}`, "_blank")}
                         >
-                          {$t('version')}
+                          {$t('version',[process.env.RELEASE_VERSION])}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -624,14 +624,22 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                 </div>
 
                                 <div className={classes.textWrapper}>
-                                  {$t('blank_httpsplaygooglecomstoreappsdetailsidcomgoogl')}
+                                  {$t('Download')}:
+                                  <a
+                                    className={classes.extLink}
+                                    target="_blank"
+                                    href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en"
+                                    rel="noreferrer"
+                                  >
+                                    {$t('Android')}
+                                  </a>
                                   <a
                                     className={classes.extLink}
                                     target="_blank"
                                     href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"
                                     rel="noreferrer"
                                   >
-                                    iPhone
+                                    {$t('iPhone')}
                                   </a>
                                 </div>
                               </div>
@@ -746,7 +754,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                         <span>{$t('credits')}</span>
                       </div>
                       <div>
-                        {$t('2005_ish_group_all_rights_reserved')}
+                        {$t('2005_ish_group_all_rights_reserved', [new Date().getFullYear().toString()])}
                       </div>
                     </div>
                     <div className={classes.footerIshLogo}>

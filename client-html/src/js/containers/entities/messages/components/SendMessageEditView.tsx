@@ -533,7 +533,9 @@ const SendMessageEditView = React.memo<MessageEditViewProps & DecoratedFormProps
           submitButtonText="Send"
           title={(
             <div>
-              {$t('send')}
+              {$t('Send')}
+              {' '}
+              { isEmailView ? $t('email') : $t('SMS')}
             </div>
           )}
         >

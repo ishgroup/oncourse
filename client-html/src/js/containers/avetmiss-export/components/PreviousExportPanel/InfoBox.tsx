@@ -5,7 +5,8 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
-import { AppTheme } from 'ish-ui';
+import { format } from 'date-fns';
+import { AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from 'ish-ui';
 import React from 'react';
 import { withStyles } from 'tss-react/mui';
 
@@ -69,7 +70,7 @@ const InfoBox = ({
       </ButtonBase>
       {created && (
       <span className="pl-1">
-        {$t('exported_on_by')}
+        {$t('exported_on_by', [format(new Date(created), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")])}
         {" "}
         {systemUser}
       </span>

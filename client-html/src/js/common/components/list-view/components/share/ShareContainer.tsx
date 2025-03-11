@@ -589,7 +589,8 @@ class ShareForm extends React.PureComponent<Props, ShareState> {
                         <MenuItem className="relative w-100" key="upload" onClick={this.handleUploadBackgroundClick}>
                           <div className="heading centeredFlex">
                             <Publish/>
-                            {$t('ml1')}
+                            {' '}
+                            <span className="ml-1">{$t('Upload from disk')}</span>
                           </div>
                         </MenuItem>
                       ),

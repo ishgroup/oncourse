@@ -33,6 +33,8 @@ import java.time.format.DateTimeFormatter
 @CompileStatic
 class EWayPaymentAPI {
 
+    private static final String CURRENCY_CODE_AUD = "AUD"
+
     private static final String EWAY_BASE_PROD = 'https://api.ewaypayments.com'
 
     private static final String  TRX_PURCHASE_TYPE = "Purchase"
