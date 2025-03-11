@@ -1,11 +1,12 @@
-import MenuItem from "@mui/material/MenuItem";
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { IAction } from '../../../../common/actions/IshAction';
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import { duplicateCourses } from "../actions";
-import RelationshipView from "./RelationshipView";
+import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
+import { duplicateCourses } from '../actions';
+import RelationshipView from './RelationshipView';
 
 const CourseCogWheel = React.memo<any>(props => {
   const {
@@ -41,14 +42,10 @@ const CourseCogWheel = React.memo<any>(props => {
       />
 
       <MenuItem disabled={!selectedAndNotNew} className={menuItemClass} onClick={onClick} role="RelationshipView">
-        Relationship view
+        {$t('relationship_view')}
       </MenuItem>
       <MenuItem disabled={!selectedAndNotNew} className={menuItemClass} onClick={onClick} role="Duplicate">
-        Duplicate
-        {' '}
-        {selection.length}
-        {' '}
-        cours
+        {$t('duplicate_cours')}
         {selection.length <= 1 ? "e" : "es"}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />

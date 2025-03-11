@@ -17,6 +17,7 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
+import $t from '@t';
 import { FormTextField } from 'ish-ui';
 import QRCode from 'qrcode.react';
 import * as React from 'react';
@@ -440,9 +441,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                           className="cursor-pointer linkDecoration"
                           onClick={() => window.open(`https://ishoncourse.readme.io/changelog/release-${String(process.env.RELEASE_VERSION).match(/([0-9]+)\.?/)[0]}`, "_blank")}
                         >
-                          Version
-                          {' '}
-                          {process.env.RELEASE_VERSION}
+                          {$t('version')}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -475,7 +474,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                             <div className={classes.textFieldWrapper}>
                               <Field
                                 name="user"
-                                placeholder="Email"
+                                placeholder={$t('email2')}
                                 autoComplete="user-name"
                                 component={FormTextField}
                                 validate={validateSingleMandatoryField}
@@ -487,7 +486,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                 name="password"
                                 type="password"
                                 autoComplete="current-password"
-                                placeholder="Password"
+                                placeholder={$t('password')}
                                 component={FormTextField}
                                 validate={validateSingleMandatoryField}
                                                               />
@@ -497,7 +496,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                               <div className="d-flex">
                                 <Field
                                   name="host"
-                                  placeholder="Host"
+                                  placeholder={$t('host')}
                                   autoComplete="host"
                                   className="flex-fill"
                                   component={FormTextField}
@@ -507,7 +506,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
 
                                 <Field
                                   name="port"
-                                  placeholder="Port"
+                                  placeholder={$t('port')}
                                   autoComplete="port"
                                   className={classes.portField}
                                   component={FormTextField}
@@ -527,7 +526,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                               </div>
                             )}
 
-                            <div className={classes.textWrapper}>Please create a new password below.</div>
+                            <div className={classes.textWrapper}>{$t('please_create_a_new_password_below')}</div>
 
                             <div className={classes.textFieldWrapper}>
                               {strongPasswordValidation || complexPass === "true" ? (
@@ -535,7 +534,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                   name="newPasswordAsync"
                                   type="password"
                                   autoComplete="new-password"
-                                  placeholder="New password"
+                                  placeholder={$t('new_password')}
                                   component={NewPasswordField}
                                   passwordScore={passwordScore}
                                   helperText={passwordFeedback}
@@ -545,7 +544,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                   name="newPassword"
                                   type="password"
                                   autoComplete="new-password"
-                                  placeholder="New password"
+                                  placeholder={$t('new_password')}
                                   component={FormTextField}
                                   validate={this.validatePasswordStrengthLight}
                                                                   />
@@ -557,7 +556,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                 name="newPasswordConfirm"
                                 type="password"
                                 autoComplete="off"
-                                placeholder="Confirm new password"
+                                placeholder={$t('confirm_new_password')}
                                 component={FormTextField}
                                 validate={validatePasswordConfirm}
                                                               />
@@ -579,7 +578,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                   name="newPasswordAsync"
                                   type="password"
                                   autoComplete="new-password"
-                                  placeholder="New password"
+                                  placeholder={$t('new_password')}
                                   component={NewPasswordField}
                                   passwordScore={passwordScore}
                                   helperText={passwordFeedback}
@@ -589,7 +588,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                   name="newPassword"
                                   type="password"
                                   autoComplete="new-password"
-                                  placeholder="Password"
+                                  placeholder={$t('password')}
                                   component={FormTextField}
                                   validate={this.validatePasswordStrengthLight}
                                                                   />
@@ -601,7 +600,7 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                                 name="passwordConfirm"
                                 type="password"
                                 autoComplete="off"
-                                placeholder="Confirm password"
+                                placeholder={$t('confirm_password')}
                                 component={FormTextField}
                                 validate={validatePasswordConfirm}
                                                               />
@@ -617,23 +616,15 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                             <Grid item xs={12} sm={8}>
                               <div>
                                 <div className={classes.textWrapper}>
-                                  Two-factor authentication is an extra layer of security for your onCourse application.
+                                  {$t('twofactor_authentication_is_an_extra_layer_of_secu')}
                                 </div>
 
                                 <div className={classes.textWrapper}>
-                                  Install TOTP software on your phone and scan the QR code before pressing 'enable'.
+                                  {$t('install_totp_software_on_your_phone_and_scan_the_q')}
                                 </div>
 
                                 <div className={classes.textWrapper}>
-                                  Download:
-                                  <a
-                                    className={classes.extLink}
-                                    target="_blank"
-                                    href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en"
-                                    rel="noreferrer"
-                                  >
-                                    Android
-                                  </a>
+                                  {$t('blank_httpsplaygooglecomstoreappsdetailsidcomgoogl')}
                                   <a
                                     className={classes.extLink}
                                     target="_blank"
@@ -650,10 +641,10 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
 
                         {isKickOut && (
                           <>
-                            <div className={classes.textWrapper}>You are currently logged in from another session.</div>
+                            <div className={classes.textWrapper}>{$t('you_are_currently_logged_in_from_another_session')}</div>
 
                             <div className={classes.textWrapper}>
-                              You can kick out the other session without giving that user time to save their work.
+                              {$t('you_can_kick_out_the_other_session_without_giving')}
                             </div>
                           </>
                         )}
@@ -752,13 +743,10 @@ export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProp
                         >
                           {openCredits ? <ExpandMore fontSize="inherit" /> : <ExpandLess fontSize="inherit" />}
                         </IconButton>
-                        <span>Credits</span>
+                        <span>{$t('credits')}</span>
                       </div>
                       <div>
-                        @2005-
-                        {new Date().getFullYear()}
-                        {' '}
-                        ish group. All rights reserved.
+                        {$t('2005_ish_group_all_rights_reserved')}
                       </div>
                     </div>
                     <div className={classes.footerIshLogo}>

@@ -11,6 +11,7 @@ import DeleteForever from '@mui/icons-material/DeleteForever';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { FilePreview, usePrevious } from 'ish-ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dispatch } from 'redux';
@@ -167,7 +168,7 @@ const PdfBackgroundsForm = React.memo<Props>(
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   required
                 />
               </Grid>
@@ -192,11 +193,11 @@ const PdfBackgroundsForm = React.memo<Props>(
           >
             <Grid container columnSpacing={3} rowSpacing={2}>
               <Grid item xs={12}>
-                <FilePreview data={values.preview} label="Preview" />
+                <FilePreview data={values.preview} label={$t('preview')} />
               </Grid>
               {(isNew || chosenFileName) && (
                 <Grid item xs={12}>
-                  <Uneditable value={chosenFileName} error={!chosenFileName && "File must be added"} label="Chosen file" className="mt-1" />
+                  <Uneditable value={chosenFileName} error={!chosenFileName && "File must be added"} label={$t('chosen_file')} className="mt-1" />
                 </Grid>
               )}
               
@@ -206,7 +207,7 @@ const PdfBackgroundsForm = React.memo<Props>(
                   color="secondary"
                   onClick={handleUploadClick}
                 >
-                  Upload New Version
+                  {$t('upload_new_version')}
                 </Button>
               </Grid>
               {Boolean(values.preview) && (
@@ -217,7 +218,7 @@ const PdfBackgroundsForm = React.memo<Props>(
                     color="secondary"
                     onClick={handleDownloadClick}
                   >
-                    Download copy
+                    {$t('download_copy')}
                   </LoadingButton>
                 </Grid>
               )}

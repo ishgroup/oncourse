@@ -1,10 +1,10 @@
-import { FundingStatus, FundingUpload } from "@api/model";
-import { Card, Divider } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import React from "react";
-import InfoBox from "./InfoBox";
+import { FundingStatus, FundingUpload } from '@api/model';
+import { Card, Divider, Typography } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import $t from '@t';
+import clsx from 'clsx';
+import React from 'react';
+import InfoBox from './InfoBox';
 
 interface Props {
   item: FundingUpload;
@@ -27,7 +27,7 @@ const PreviousExportPanel = (props: Props) => {
             "invisible": hideHeader
           })}
         >
-          Previous Export
+          {$t('previous_export')}
         </Typography>
 
         <Divider className={classes.divider} />

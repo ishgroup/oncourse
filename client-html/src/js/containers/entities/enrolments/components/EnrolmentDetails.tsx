@@ -6,23 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Grid from "@mui/material/Grid";
-import React, { useCallback } from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React, { useCallback } from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import {
   validateAssociatedCourseIdentifier,
   validateCharacter,
   validateCricosConfirmation,
-  validateOutcomeIdTrainingOrg, validatePurchasingContractScheduleIdentifier,
+  validateOutcomeIdTrainingOrg,
+  validatePurchasingContractScheduleIdentifier,
   validateVetFundingSourceState,
   validateVetPurchasingContractIdentifier,
-} from "../../../../common/utils/validation";
-import { formatFundingSourceId } from "../../common/utils";
-import { fundingSourceValues } from "../../courseClasses/constants";
-import { enrolmentExemptionTypeItems, enrolmentStudyReasonItems } from "../constants";
+} from '../../../../common/utils/validation';
+import { formatFundingSourceId } from '../../common/utils';
+import { fundingSourceValues } from '../../courseClasses/constants';
+import { enrolmentExemptionTypeItems, enrolmentStudyReasonItems } from '../constants';
 
 const EnrolmentDetails = (
   {
@@ -54,7 +56,7 @@ const EnrolmentDetails = (
             selectValueMark="id"
             selectLabelMark="name"
             name="relatedFundingSourceId"
-            label="Funding contract"
+            label={$t('funding_contract')}
             items={contracts}
             format={formatFundingSourceId}
           />
@@ -65,7 +67,7 @@ const EnrolmentDetails = (
         <FormField
           type="select"
           name="studyReason"
-          label="Study reason"
+          label={$t('study_reason')}
           items={enrolmentStudyReasonItems}
         />
       </Grid>
@@ -74,7 +76,7 @@ const EnrolmentDetails = (
         <FormField
           type="select"
           name="vetFeeExemptionType"
-          label="Fee exemption/concession type"
+          label={$t('fee_exemptionconcession_type')}
           items={enrolmentExemptionTypeItems}
         />
       </Grid>
@@ -83,7 +85,7 @@ const EnrolmentDetails = (
         <FormField
           type="select"
           name="fundingSource"
-          label="Default funding source national"
+          label={$t('default_funding_source_national')}
           items={fundingSourceValues}
         />
       </Grid>
@@ -92,7 +94,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="vetFundingSourceStateID"
-          label="Default funding source - State"
+          label={$t('default_funding_source_state2')}
           validate={validateVetFundingSourceState}
         />
       </Grid>
@@ -101,7 +103,7 @@ const EnrolmentDetails = (
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="vetIsFullTime" />}
-          label="Full time flag (QLD)"
+          label={$t('full_time_flag_qld')}
         />
       </Grid>
 
@@ -113,14 +115,14 @@ const EnrolmentDetails = (
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="vetInSchools" />}
-          label="VET in schools enrolment"
+          label={$t('vet_in_schools_enrolment')}
         />
       </Grid>
       <Grid item xs={twoColumn ? 8 : 12} className="mb-2">
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="suppressAvetmissExport" />}
-          label="Do not report for AVETMISS"
+          label={$t('do_not_report_for_avetmiss')}
         />
       </Grid>
 
@@ -128,7 +130,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="associatedCourseIdentifier"
-          label="Associated Course Identifier - (SA - SACE Student ID)"
+          label={$t('associated_course_identifier_sa_sace_student_id')}
           validate={validateAssociatedCourseIdentifier}
         />
       </Grid>
@@ -137,7 +139,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="vetPurchasingContractID"
-          label="Default purchasing contract identifier (NSW Commitment ID)"
+          label={$t('default_purchasing_contract_identifier_nsw_commitm')}
           validate={validateVetPurchasingContractIdentifier}
         />
       </Grid>
@@ -146,7 +148,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="vetPurchasingContractScheduleID"
-          label="Purchasing Contract Schedule Identifier"
+          label={$t('purchasing_contract_schedule_identifier2')}
           validate={validatePurchasingContractScheduleIdentifier}
         />
       </Grid>
@@ -155,7 +157,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="outcomeIdTrainingOrg"
-          label="Outcome identifier Training Organisation"
+          label={$t('outcome_identifier_training_organisation')}
           validate={validateOutcomeIdTrainingOrg}
         />
       </Grid>
@@ -164,7 +166,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="vetClientID"
-          label="Client identifier: apprenticeships"
+          label={$t('client_identifier_apprenticeships')}
           validate={validateVetClientID}
         />
       </Grid>
@@ -173,7 +175,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="vetTrainingContractID"
-          label="Training contract: apprenticeships"
+          label={$t('training_contract_apprenticeships')}
           validate={validateVetTrainingContractID}
         />
       </Grid>
@@ -182,7 +184,7 @@ const EnrolmentDetails = (
         <FormField
           type="text"
           name="cricosConfirmation"
-          label="CRICOS: Confirmation of Enrolment (CoE)"
+          label={$t('cricos_confirmation_of_enrolment_coe')}
           validate={validateCricosConfirmation}
         />
       </Grid>
@@ -192,17 +194,17 @@ const EnrolmentDetails = (
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="eligibilityExemptionIndicator" />}
-            label="Eligibility exemption  indicator (Vic)"
+            label={$t('eligibility_exemption_indicator_vic')}
           />
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="vetFeeIndicator" />}
-            label="VET FEE HELP indicator (Vic)"
+            label={$t('vet_fee_help_indicator_vic')}
           />
           <FormControlLabel
             className="checkbox"
             control={<FormField type="checkbox" name="trainingPlanDeveloped" />}
-            label="Training plan developed (NSW)"
+            label={$t('training_plan_developed_nsw')}
           />
         </FormGroup>
       </Grid>

@@ -8,6 +8,7 @@
 
 import { GradingEntryType, GradingType } from '@api/model';
 import { Button, Card, Collapse, Grid } from '@mui/material';
+import $t from '@t';
 import { makeAppStyles, normalizeNumber } from 'ish-ui';
 import React from 'react';
 import { Dispatch } from 'redux';
@@ -70,7 +71,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                     <FormField
                       type="text"
                       name={`${item}.name`}
-                      label="Name"
+                      label={$t('name')}
                       validate={validateUniqueNamesInArray}
                                             required
                     />
@@ -79,7 +80,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                     <FormField
                       type="select"
                       name={`${item}.entryType`}
-                      label="Entry Type"
+                      label={$t('entry_type')}
                       items={GradingEntryTypes}
                       onChange={val => onTypeChange(val, item)}
                       debounced={false}
@@ -95,7 +96,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             name={`${item}.minValue`}
                             normalize={normalizeNumber}
                             debounced={false}
-                            label="Min value"
+                            label={$t('min_value')}
                             required={field.entryType === "number"}
                                                       />
                         </Grid>
@@ -105,7 +106,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             name={`${item}.maxValue`}
                             normalize={normalizeNumber}
                             debounced={false}
-                            label="Max value"
+                            label={$t('max_value')}
                             required={field.entryType === "number"}
                                                       />
                         </Grid>
@@ -126,7 +127,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                   className={classes.delete}
                   onClick={() => onDelete(index)}
                 >
-                  Delete
+                  {$t('delete2')}
                 </Button>
               </Grid>
             </Grid>

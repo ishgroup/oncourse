@@ -14,6 +14,7 @@ import DialogContent from '@mui/material/DialogContent/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import $t from '@t';
 import { addDays, format } from 'date-fns';
 import { EEE_D_MMM_YYYY, openInternalLink, StringArgFunction, StyledCheckbox, validateMinMaxDate } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -138,7 +139,7 @@ const Finalise = React.memo<Props>(({
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>
           <div className="centeredFlex">
-            Finalise accounting period
+            {$t('finalise_accounting_period')}
             <IconButton
               target="_blank"
               href="https://www.ish.com.au/onCourse/doc/latest/manual/#accounting-finalise"
@@ -183,7 +184,7 @@ const Finalise = React.memo<Props>(({
 
         <DialogActions className="p-2 justify-content-start">
           <Button color="primary" type="submit" disabled={invalid || !finalise}>
-            Finalise
+            {$t('finalise')}
           </Button>
         </DialogActions>
       </form>

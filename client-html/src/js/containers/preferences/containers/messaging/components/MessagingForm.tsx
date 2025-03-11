@@ -3,29 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import ExitToApp from "@mui/icons-material/ExitToApp";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Hidden from "@mui/material/Hidden";
-import Typography from "@mui/material/Typography";
-import { openInternalLink } from "ish-ui";
-import isEmpty from "lodash.isempty";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Form, getFormValues, initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { validateEmail, validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import * as Model from "../../../../../model/preferences/Messaging";
-import { State } from "../../../../../reducers/state";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
-import DynamicText from "./DynamicText";
+import ExitToApp from '@mui/icons-material/ExitToApp';
+import { Button, Grid } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Hidden from '@mui/material/Hidden';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { openInternalLink } from 'ish-ui';
+import isEmpty from 'lodash.isempty';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Form, getFormValues, initialize, reduxForm } from 'redux-form';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { validateEmail, validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { FormModelSchema } from '../../../../../model/preferences/FormModelShema';
+import * as Model from '../../../../../model/preferences/Messaging';
+import { State } from '../../../../../reducers/state';
+import { PREFERENCES_AUDITS_LINK } from '../../../constants';
+import DynamicText from './DynamicText';
 
 const manualUrl = getManualLink("setting-your-general-preferences#messaging");
 
@@ -83,13 +83,13 @@ class MessagingBaseForm extends React.Component<any, any> {
           getAuditsUrl={PREFERENCES_AUDITS_LINK}
           disabled={!dirty}
           invalid={invalid}
-          title="Messaging"
+          title={$t('messaging')}
           disableInteraction
           createdOn={v => v.created}
           modifiedOn={v => v.modified}
         >
           <Typography variant="body1" className="heading mb-2">
-            Outgoing Emails
+            {$t('outgoing_emails')}
           </Typography>
 
           <Grid container columnSpacing={3} rowSpacing={2}>
@@ -97,7 +97,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.EmailFromAddress.uniqueKey}
-                label="Email"
+                label={$t('email2')}
                 validate={[this.validateEmailFromAddress, validateEmail]}
               />
             </Grid>
@@ -110,7 +110,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.EmailFromName.uniqueKey}
-                label="Email from name (e.g. College ABC)"
+                label={$t('email_from_name_eg_college_abc')}
               />
             </Grid>
 
@@ -122,7 +122,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.EmailAdminAddress.uniqueKey}
-                label="System administrator email address"
+                label={$t('system_administrator_email_address')}
                 validate={validateEmail}
               />
             </Grid>
@@ -159,7 +159,7 @@ class MessagingBaseForm extends React.Component<any, any> {
                     stringValue
                   />
                 )}
-                label="Detect and process bounced emails (VERP)"
+                label={$t('detect_and_process_bounced_emails_verp')}
               />
             </Grid>
 
@@ -167,7 +167,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.EmailPop3Host.uniqueKey}
-                label="Incoming mail server address (POP3)"
+                label={$t('incoming_mail_server_address_pop3')}
                 validate={emailBounceEnabled ? validateSingleMandatoryField : null}
               />
             </Grid>
@@ -180,7 +180,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.EmailBounceAddress.uniqueKey}
-                label="Email address to which bounces are sent"
+                label={$t('email_address_to_which_bounces_are_sent')}
                 validate={emailBounceEnabled ? [validateSingleMandatoryField, validateEmail] : validateEmail}
               />
             </Grid>
@@ -191,7 +191,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.EmailPop3Account.uniqueKey}
-                label="Account"
+                label={$t('account')}
                 validate={emailBounceEnabled ? validateSingleMandatoryField : null}
               />
             </Grid>
@@ -204,7 +204,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="password"
                 name={this.formModel.EmailPop3Password.uniqueKey}
-                label="Password"
+                label={$t('password')}
               />
             </Grid>
           </Grid>
@@ -216,7 +216,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           </Grid>
 
           <Typography variant="body1" className="heading">
-            SMS
+            {$t('sms')}
           </Typography>
 
           <Grid container columnSpacing={3}>
@@ -241,7 +241,7 @@ class MessagingBaseForm extends React.Component<any, any> {
               <FormField
                 type="text"
                 name={this.formModel.SMSFromAddress.uniqueKey}
-                label="SMS from"
+                label={$t('sms_from')}
               />
             </Grid>
           </Grid>

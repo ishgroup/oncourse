@@ -6,10 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { RouteComponentProps } from "react-router";
-import CatalogWithSearch from "../../common/components/layout/catalog/CatalogWithSearch";
-import { useAppSelector } from "../../common/utils/hooks";
+import $t from '@t';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
+import CatalogWithSearch from '../../common/components/layout/catalog/CatalogWithSearch';
+import { useAppSelector } from '../../common/utils/hooks';
 
 export const ChecklistsCatalog = ({ history }: RouteComponentProps) => {
   const allChecklists = useAppSelector(state => state.tags.allChecklists);
@@ -25,7 +26,7 @@ export const ChecklistsCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       items={allChecklists}
-      title="Checklists"
+      title={$t('checklists')}
       itemsListTitle="Checklists"
       onOpen={onOpen}
       customAddNew={onClickNew}

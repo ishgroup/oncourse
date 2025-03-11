@@ -10,6 +10,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { NoArgFunction, stubFunction } from 'ish-ui';
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
@@ -72,7 +73,7 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
     <Dialog open={Boolean(item)} onClose={onClose} fullWidth maxWidth="xs">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
-          <div className="heading pt-1">Delete custom field</div>
+          <div className="heading pt-1">{$t('delete_custom_field')}</div>
           <div className="centeredFlex pt-1">
             { item && (
               <Typography variant="body2">
@@ -92,10 +93,10 @@ const CustomFieldsDeleteDialog = React.memo<CustomFieldsDeleteDialogProps & Inje
         </DialogContent>
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           <Button color="primary" type="submit" disabled={invalid}>
-            Delete
+            {$t('delete2')}
           </Button>
         </DialogActions>
       </form>

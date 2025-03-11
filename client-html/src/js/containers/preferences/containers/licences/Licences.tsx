@@ -7,6 +7,7 @@
  */
 
 import { Button, List, ListItem, ListItemText, ListSubheader } from '@mui/material';
+import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from 'tss-react/mui';
@@ -60,7 +61,7 @@ class Licences extends React.Component<any, any> {
     return (
       <div>
         <AppBarContainer
-          title="Licences"
+          title={$t('licences')}
           hideHelpMenu
           hideSubmitButton
           disableInteraction
@@ -68,7 +69,7 @@ class Licences extends React.Component<any, any> {
           <List
             subheader={(
               <ListSubheader disableSticky className="heading mb-2 pl-0">
-                Enabled Features
+                {$t('enabled_features')}
               </ListSubheader>
             )}
           >
@@ -84,14 +85,14 @@ class Licences extends React.Component<any, any> {
               className="mt-1"
               subheader={(
                 <ListSubheader disableSticky className="heading mb-2">
-                  Inactive Features
+                  {$t('inactive_features')}
                   <a href="http://www.ish.com.au/oncourse/signup" target="_blank" className="link" rel="noreferrer">
                     <Button
                       color="primary"
                       size="small"
                       className="m-1 licencesUpgradeButton"
                     >
-                      Upgrade now
+                      {$t('upgrade_now')}
                     </Button>
                   </a>
                 </ListSubheader>
@@ -107,7 +108,7 @@ class Licences extends React.Component<any, any> {
                 className="mt-1"
                 subheader={(
                   <ListSubheader disableSticky className="heading pl-0 mb-2">
-                    Enabled Plugins
+                    {$t('enabled_plugins')}
                   </ListSubheader>
                 )}
               >
