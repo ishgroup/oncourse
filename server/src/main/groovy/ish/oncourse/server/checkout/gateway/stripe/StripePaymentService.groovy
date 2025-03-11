@@ -16,7 +16,6 @@ import com.stripe.model.Refund
 import com.stripe.param.PaymentIntentConfirmParams
 import com.stripe.param.PaymentIntentCreateParams
 import com.stripe.param.RefundCreateParams
-import groovy.transform.CompileDynamic
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.stripe.CardTypeAdapter
@@ -27,15 +26,12 @@ import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
-import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.TwoStepPaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-
 class StripePaymentService implements TwoStepPaymentServiceInterface {
-    private static final Logger logger = LogManager.getLogger(StripePaymentService)
-
+    
     private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     @Inject

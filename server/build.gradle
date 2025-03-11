@@ -142,6 +142,7 @@ dependencies {
 
 	implementation "com.stripe:stripe-java:28.1.0"
 	implementation 'com.squareup:square:43.0.0.20250123'
+	implementation 'com.google.code.gson:gson:2.11.0'
 
 	testImplementation "org.apache.cayenne:cayenne-dbsync:$cayenneVersion"
 	testImplementation 'org.mockito:mockito-core:2.18.3'
