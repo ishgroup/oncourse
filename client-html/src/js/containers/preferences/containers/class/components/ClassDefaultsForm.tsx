@@ -3,20 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import isEmpty from "lodash.isempty";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Form, initialize, reduxForm } from "redux-form";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { validateMultipleMandatoryFields } from "../../../../../common/utils/validation";
-import * as Model from "../../../../../model/preferences/ClassDefaults";
-import { FormModelSchema } from "../../../../../model/preferences/FormModelShema";
-import { PREFERENCES_AUDITS_LINK } from "../../../constants";
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import isEmpty from 'lodash.isempty';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Form, initialize, reduxForm } from 'redux-form';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { validateMultipleMandatoryFields } from '../../../../../common/utils/validation';
+import * as Model from '../../../../../model/preferences/ClassDefaults';
+import { FormModelSchema } from '../../../../../model/preferences/FormModelShema';
+import { PREFERENCES_AUDITS_LINK } from '../../../constants';
 
 const manualUrl = getManualLink("setting-your-general-preferences#class-defaults");
 
@@ -57,7 +58,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
           getAuditsUrl={PREFERENCES_AUDITS_LINK}
           disabled={!dirty}
           invalid={invalid}
-          title="Class Defaults"
+          title={$t('class_defaults')}
           disableInteraction
           createdOn={values => values.created}
           modifiedOn={values => values.modified}
@@ -68,7 +69,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 <FormField
                   type="number"
                   name={this.formModel.ClassMinPlaces.uniqueKey}
-                  label="Minimum places"
+                  label={$t('minimum_places')}
                   parse={val => val || "0"}
                   debounced={false}
                 />
@@ -78,7 +79,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 <FormField
                   type="select"
                   name={this.formModel.ClassDeliveryMode.uniqueKey}
-                  label="Delivery mode"
+                  label={$t('delivery_mode')}
                   items={enums.DeliveryMode}
                 />
               </Grid>
@@ -89,7 +90,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 <FormField
                   type="number"
                   name={this.formModel.ClassMaxPlaces.uniqueKey}
-                  label="Maximum places"
+                  label={$t('maximum_places')}
                   parse={val => val || "0"}
                   debounced={false}
                 />
@@ -99,7 +100,7 @@ class ClassDefaultsBaseForm extends React.Component<any, any> {
                 <FormField
                   type="select"
                   name={this.formModel.ClassFundingSourcePreference.uniqueKey}
-                  label="Funding source"
+                  label={$t('funding_source')}
                   items={enums.ClassFundingSource}
                 />
               </Grid>

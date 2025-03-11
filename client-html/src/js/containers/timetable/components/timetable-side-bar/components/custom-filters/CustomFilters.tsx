@@ -6,25 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Filter } from "@api/model";
-import clsx from "clsx";
-import React, { useCallback, useContext } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import FilterGroup from "../../../../../../common/components/list-view/components/side-bar/components/FilterGroup";
+import { Filter } from '@api/model';
+import $t from '@t';
+import clsx from 'clsx';
+import React, { useCallback, useContext } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import FilterGroup from '../../../../../../common/components/list-view/components/side-bar/components/FilterGroup';
 import {
   StubFilterItemBase
-} from "../../../../../../common/components/list-view/components/side-bar/components/StubFilterItem";
-import { Fetch } from "../../../../../../model/common/Fetch";
-import { CoreFilter, SavingFilterState } from "../../../../../../model/common/ListView";
-import { State } from "../../../../../../reducers/state";
+} from '../../../../../../common/components/list-view/components/side-bar/components/StubFilterItem';
+import { Fetch } from '../../../../../../model/common/Fetch';
+import { CoreFilter, SavingFilterState } from '../../../../../../model/common/ListView';
+import { State } from '../../../../../../reducers/state';
 import {
   deleteTimetableFilter,
   saveTimetableFilter,
   setTimetableFilters,
   setTimetableSavingFilter,
-} from "../../../../actions";
-import { TimetableContext } from "../../../../Timetable";
+} from '../../../../actions';
+import { TimetableContext } from '../../../../Timetable';
 
 interface Props {
   filters?: CoreFilter[];
@@ -63,7 +64,7 @@ const CustomFilters = React.memo<Props>(
 
     return (
       <div className={clsx("p-2", fetch.pending && "pointer-events-none")}>
-        {savingFilter && !filters.length && <div className="heading mt-2">Custom Filters</div>}
+        {savingFilter && !filters.length && <div className="heading mt-2">{$t('custom_filters')}</div>}
 
         {filters.length ? (
           <FilterGroup
@@ -71,7 +72,7 @@ const CustomFilters = React.memo<Props>(
             deleteFilter={onDeleteFilter}
             rootEntity="Session"
             onUpdate={onFiltersUpdate}
-            title="Custom Filters"
+            title={$t('custom_filters')}
             filters={filters}
           />
         ) : null}

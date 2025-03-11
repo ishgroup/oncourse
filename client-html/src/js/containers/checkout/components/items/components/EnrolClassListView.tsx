@@ -4,6 +4,7 @@
  */
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { Button, Grid, List, ListItemButton, Radio, Typography } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import { isBefore } from 'date-fns';
 import { appendTimezone, AppTheme, formatCurrency } from 'ish-ui';
@@ -182,7 +183,7 @@ const EnrolClassListView = React.memo<{
     <div className={clsx("p-2 overflow-auto", classes.root)}>
       <ListItemButton alignItems="flex-start" className="justify-content-space-between p-0-5" disabled>
         <Typography component="div" variant="body1">
-          There are no classes available for this course.
+          {$t('there_are_no_classes_available_for_this_course')}
         </Typography>
       </ListItemButton>
     </div>

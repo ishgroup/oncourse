@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
+import { FormControlLabel, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
 
 const CertificatesHeaderBase: React.FunctionComponent<any> = React.memo((props: any) => {
   const { row } = props;
@@ -43,20 +43,20 @@ export const CertificatesContentLine: React.FunctionComponent<any> = React.memo(
               disabled
             />
           )}
-          label="Full qualification or skill set"
+          label={$t('full_qualification_or_skill_set')}
         />
       </Grid>
       <Grid item xs={6}>
-        <Uneditable value={row.nationalCode} label="National code" />
+        <Uneditable value={row.nationalCode} label={$t('national_code')} />
       </Grid>
       <Grid item xs={6}>
-        <Uneditable value={row.certificateNumber} label="Certificate #" />
+        <Uneditable value={row.certificateNumber} label={$t('certificate')} />
       </Grid>
       <Grid item xs={6}>
-        <FormField type="date" name={`${item}.createdOn`} label="Created" disabled />
+        <FormField type="date" name={`${item}.createdOn`} label={$t('created')} disabled />
       </Grid>
       <Grid item xs={6}>
-        <FormField type="date" name={`${item}.lastPrintedOn`} label="Last printed" disabled />
+        <FormField type="date" name={`${item}.lastPrintedOn`} label={$t('last_printed')} disabled />
       </Grid>
     </Grid>
   );

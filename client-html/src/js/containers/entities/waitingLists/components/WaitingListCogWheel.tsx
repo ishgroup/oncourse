@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import React, { memo, useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { State } from "../../../../reducers/state";
-import BulkDeleteCogwheelOption from "../../common/components/BulkDeleteCogwheelOption";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { memo, useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { State } from '../../../../reducers/state';
+import BulkDeleteCogwheelOption from '../../common/components/BulkDeleteCogwheelOption';
+import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
 
 const WaitingListCogWheel = memo<any>(props => {
   const {
@@ -27,11 +28,7 @@ const WaitingListCogWheel = memo<any>(props => {
     <>
       {hoSelectedOrNew ? null : (
         <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions}>
-          Enrol
-          {' '}
-          {selection.length}
-          {' '}
-          highlighted student
+          {$t('enrol_highlighted_student')}
           {selection.length > 1 && "s"}
         </MenuItem>
       )}

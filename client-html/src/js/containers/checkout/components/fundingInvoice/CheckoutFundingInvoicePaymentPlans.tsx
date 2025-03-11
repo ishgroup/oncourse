@@ -4,12 +4,13 @@
  */
 
 import { InvoicePaymentPlan } from '@api/model';
+import { Typography } from '@mui/material';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import StepContent from '@mui/material/StepContent';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
-import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { AddButton, decimalPlus, formatCurrency, YYYY_MM_DD_MINUSED } from 'ish-ui';
@@ -106,7 +107,7 @@ const InvoicePaymentPlansBase: React.FC<WrappedFieldArrayProps<any> & PaymentPla
             "errorColor": error
           })}
         >
-          Payment plan
+          {$t('payment_plan')}
         </Typography>
 
         <AddButton onClick={addPaymentDue} />

@@ -1,6 +1,7 @@
-import React from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import $t from '@t';
+import React from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
 
 interface ApplicationDocumentsProps {
   classes?: any;
@@ -18,7 +19,7 @@ const ApplicationDocuments: React.FC<ApplicationDocumentsProps> = props => {
     <div className={classes.documentsRoot}>
       <FieldArray
         name="documents"
-        label="Documents"
+        label={$t('documents')}
         entity="Application"
         component={DocumentsRenderer}
         xsGrid={12}

@@ -6,20 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useMemo } from "react";
-import { RouteComponentProps } from "react-router";
-import { showConfirm } from "../../../common/actions";
-import CatalogWithSearch from "../../../common/components/layout/catalog/CatalogWithSearch";
-import { useAppDispatch, useAppSelector } from "../../../common/utils/hooks";
-import { AutomationEntity } from "../../../model/automation/common";
-import { CatalogItemType } from "../../../model/common/Catalog";
-import { installAutomation, uninstallAutomation } from "../actions";
-import { getEmailTemplatesListFulfilled } from "./email-templates/actions";
-import { getExportTemplatesListFulfilled } from "./export-templates/actions";
-import { getImportTemplatesListFulfilled } from "./import-templates/actions";
-import IntegrationTypes from "./integrations/IntegrationTypes";
-import { getAutomationPdfReportsListFulfilled } from "./pdf-reports/actions";
-import { getScriptsListFulfilled } from "./scripts/actions";
+import $t from '@t';
+import React, { useMemo } from 'react';
+import { RouteComponentProps } from 'react-router';
+import { showConfirm } from '../../../common/actions';
+import CatalogWithSearch from '../../../common/components/layout/catalog/CatalogWithSearch';
+import { useAppDispatch, useAppSelector } from '../../../common/utils/hooks';
+import { AutomationEntity } from '../../../model/automation/common';
+import { CatalogItemType } from '../../../model/common/Catalog';
+import { installAutomation, uninstallAutomation } from '../actions';
+import { getEmailTemplatesListFulfilled } from './email-templates/actions';
+import { getExportTemplatesListFulfilled } from './export-templates/actions';
+import { getImportTemplatesListFulfilled } from './import-templates/actions';
+import IntegrationTypes from './integrations/IntegrationTypes';
+import { getAutomationPdfReportsListFulfilled } from './pdf-reports/actions';
+import { getScriptsListFulfilled } from './scripts/actions';
 
 const useUpdateAutomationStatus = (entity: AutomationEntity) => {
   const dispatch = useAppDispatch();
@@ -118,7 +119,7 @@ export const EmailTemplatesCatalog = ({ history }: RouteComponentProps) => {
       }}
       toggleInstall={toggleInstall}
       items={emailTemplates}
-      title="Message templates"
+      title={$t('message_templates')}
       itemsListTitle="Installed message templates"
       onOpen={onOpen}
       onClickNew={onClickNew}
@@ -150,7 +151,7 @@ export const ExportTemplatesCatalog = ({ history }: RouteComponentProps) => {
 
       toggleInstall={toggleInstall}
       items={exportTemplates}
-      title="Exports"
+      title={$t('exports')}
       itemsListTitle="Installed export templates"
       onOpen={onOpen}
       onClickNew={onClickNew}
@@ -182,7 +183,7 @@ export const ImportTemplatesCatalog = ({ history }: RouteComponentProps) => {
 
       toggleInstall={toggleInstall}
       items={importTemplates}
-      title="Imports"
+      title={$t('imports')}
       itemsListTitle="Installed import templates"
       onOpen={onOpen}
       onClickNew={onClickNew}
@@ -214,7 +215,7 @@ export const PDFReportsCatalog = ({ history }: RouteComponentProps) => {
 
       toggleInstall={toggleInstall}
       items={pdfReports}
-      title="Reports"
+      title={$t('reports')}
       itemsListTitle="Installed reports"
       onOpen={onOpen}
       onClickNew={onClickNew}
@@ -238,7 +239,7 @@ export const PDFBackgroundsCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       items={pdfBackgrounds}
-      title="Report backgrounds"
+      title={$t('report_backgrounds')}
       itemsListTitle="Available report backgrounds"
       onOpen={onOpen}
       customAddNew={onClickNew}
@@ -273,7 +274,7 @@ export const IntegrationsCatalog = ({ history }: RouteComponentProps) => {
   return (
     <CatalogWithSearch
       items={items}
-      title="Integrations"
+      title={$t('integrations')}
       itemsListTitle="Activated integrations"
       onOpen={onOpen}
       customAddNew={onClickNew}
@@ -304,7 +305,7 @@ export const ScriptsCatalog = ({ history }: RouteComponentProps) => {
       }}
       toggleInstall={toggleInstall}
       items={scripts}
-      title="Automations"
+      title={$t('automations')}
       itemsListTitle="Installed automations"
       onOpen={onOpen}
       onClickNew={onClickNew}

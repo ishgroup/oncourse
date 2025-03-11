@@ -3,20 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-import { AnyArgFunction } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../reducers/state";
-import { getCertificatesRevokeStatus, revokeCertificate, setCertificatesRevokeStatus } from "../actions";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import { AnyArgFunction } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { State } from '../../../../reducers/state';
+import { getCertificatesRevokeStatus, revokeCertificate, setCertificatesRevokeStatus } from '../actions';
 
 interface RevokeConfirmProps extends InjectedFormProps {
   open: boolean;
@@ -41,12 +42,12 @@ const RevokeConfirmBase: React.FunctionComponent<RevokeConfirmProps> = props => 
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle id="alert-dialog-title">Revoke Certificate</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{$t('revoke_certificate2')}</DialogTitle>
       <DialogContent>
         <FormField
           type="multilineText"
           name="reason"
-          label="Reason for revoking certificate"
+          label={$t('reason_for_revoking_certificate')}
           onKeyDown={stopPropagation}
                     required
         />
@@ -54,10 +55,10 @@ const RevokeConfirmBase: React.FunctionComponent<RevokeConfirmProps> = props => 
 
       <DialogActions>
         <Button onClick={onClose} color="primary">
-          Cancel
+          {$t('cancel')}
         </Button>
         <Button onClick={onRevoke} color="primary" disabled={invalid} autoFocus>
-          Revoke
+          {$t('revoke')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -121,11 +122,7 @@ const RevokeCertificateCogwheel: React.FunctionComponent<any> = React.memo(props
         className={menuItemClass}
         onClick={() => setOpenDialog(true)}
       >
-        Revoke
-        {' '}
-        {selection.length}
-        {' '}
-        certificate
+        {$t('revoke_certificate')}
         {selection.length > 1 && "s"}
       </MenuItem>
     </>

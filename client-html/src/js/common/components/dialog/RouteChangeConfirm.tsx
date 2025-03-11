@@ -8,6 +8,7 @@
 
 import ErrorOutline from '@mui/icons-material/ErrorOutline';
 import Button from '@mui/material/Button';
+import $t from '@t';
 import { ShowConfirmCaller } from 'ish-ui';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
@@ -72,7 +73,7 @@ const RouteChangeConfirm = (
             closeConfirm();
           }}
         >
-          SAVE
+          {$t('save')}
         </Button>
       );
 

@@ -28,6 +28,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme, DocumentIconsChooser, formatRelativeDate, III_DD_MMM_YYYY_HH_MM_SPECIAL } from 'ish-ui';
 import React, { MouseEvent } from 'react';
@@ -166,7 +167,7 @@ class DocumentHeader extends React.PureComponent<Props, any> {
     return (
       <Grid container columnSpacing={3} className="mb-1">
         <div className="d-flex overflow-hidden">
-          <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
+          <Tooltip title={$t('open_document_url')} disableHoverListener={!validUrl}>
             <ButtonBase
               disabled={!validUrl}
               onClick={(e: any) => this.openDocumentURL(e, validUrl)}
@@ -233,13 +234,13 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             disableRestoreFocus
           >
             <Alert severity="info">
-              <AlertTitle>Who can view this document</AlertTitle>
+              <AlertTitle>{$t('who_can_view_this_document')}</AlertTitle>
               {getDocumentShareSummary(item.access, item.attachmentRelations)}
             </Alert>
           </Popover>
 
           <IconButton
-            aria-label="more"
+            aria-label={$t('more')}
             aria-controls="document-more-menu"
             aria-haspopup="true"
             onClick={this.onOpenMoreMenu}
@@ -254,13 +255,13 @@ class DocumentHeader extends React.PureComponent<Props, any> {
             onClose={this.onCloseMoreMenu}
           >
             <MenuItem onClick={this.openDocumentView}>
-              Document info
+              {$t('document_info')}
             </MenuItem>
             <MenuItem onClick={this.openDocumentView}>
-              Permissions
+              {$t('permissions')}
             </MenuItem>
             <MenuItem onClick={this.unlinkItem} className="errorColor">
-              Unlink
+              {$t('unlink')}
             </MenuItem>
           </Menu>
         </div>
