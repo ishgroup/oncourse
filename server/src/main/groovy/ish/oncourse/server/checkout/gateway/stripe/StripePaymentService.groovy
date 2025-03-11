@@ -77,7 +77,7 @@ class StripePaymentService implements TwoStepPaymentServiceInterface {
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount.multiply(100).toLong())
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setConfirm(true)
                         .setConfirmationMethod(PaymentIntentCreateParams.ConfirmationMethod.MANUAL)
                         .setReturnUrl(requestDTO.origin + "/checkout?onCourseSessionId="+requestDTO.onCoursePaymentSessionId)

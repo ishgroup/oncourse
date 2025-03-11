@@ -33,8 +33,6 @@ import org.apache.logging.log4j.Logger
 class SquarePaymentService implements TransactionPaymentServiceInterface {
     private static final Logger logger = LogManager.getLogger(SquarePaymentService)
 
-    private static final String CURRENCY_CODE_AUD = "AUD"
-
     @Inject
     private PreferenceController preferenceController
 
@@ -49,7 +47,7 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
     private static com.squareup.square.models.Money convertMoney(Money amount) {
         return new com.squareup.square.models.Money.Builder()
                 .amount(amount.multiply(100).toLong())
-                .currency(CURRENCY_CODE_AUD)
+                .currency(amount.currencyContext.currencyCode)
                 .build()
     }
 
