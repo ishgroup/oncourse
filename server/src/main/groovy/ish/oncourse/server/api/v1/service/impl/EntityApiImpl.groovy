@@ -13,6 +13,7 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileDynamic
+import ish.math.Money
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.service.BulkChangeApiService
@@ -235,6 +236,9 @@ class EntityApiImpl implements EntityApi {
         }
         if (value instanceof BigDecimal) {
             return ((BigDecimal)value).toPlainString()
+        }
+        if (value instanceof Money) {
+            return value.toPlainString()
         }
         return value.toString()
     }

@@ -603,17 +603,13 @@ public abstract class CommonPreferenceController {
 		setValue(preferenceName, false, String.valueOf(value));
 	}
 
-
 	public Country getCountry() {
 		String result = getValue(ACCOUNT_CURRENCY, false);
-		if (result == null) {
-			return Country.AUSTRALIA;
-		}
-		return Country.forCurrencySymbol(result);
+		return result == null ? null : Country.forCurrencySymbol(result);
 	}
 
 	public void setCountry(Country value) {
-		setValue(ACCOUNT_CURRENCY, false, value.currencySymbol());
+		setValue(ACCOUNT_CURRENCY, false, value.currencyCode());
 	}
 
 	public Long getTaxPK() {

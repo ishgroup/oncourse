@@ -13,6 +13,7 @@ import com.google.inject.Inject
 import com.squareup.square.Environment
 import com.squareup.square.SquareClient
 import com.squareup.square.authentication.BearerAuthModel
+import com.squareup.square.exceptions.ApiException
 import com.squareup.square.models.*
 import groovy.transform.CompileDynamic
 import ish.common.checkout.gateway.PaymentGatewayError
@@ -33,8 +34,6 @@ import org.apache.logging.log4j.Logger
 class SquarePaymentService implements TransactionPaymentServiceInterface {
     private static final Logger logger = LogManager.getLogger(SquarePaymentService)
 
-    private static final String CURRENCY_CODE_AUD = "AUD"
-
     @Inject
     private PreferenceController preferenceController
 
@@ -49,7 +48,7 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
     private static com.squareup.square.models.Money convertMoney(Money amount) {
         return new com.squareup.square.models.Money.Builder()
                 .amount(amount.multiply(100).toLong())
-                .currency(CURRENCY_CODE_AUD)
+                .currency(amount.currencyContext.currencyCode)
                 .build()
     }
 
@@ -111,6 +110,10 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
             buildSessionAttributesFromPaymentResponse(sessionAttributes, paymentResponse)
             return sessionAttributes
         } catch (Exception e) {
+            if(e instanceof ApiException) {
+                logger.error((e as ApiException).httpContext.response.body)
+            }
+
             logger.catching(e)
             handleError(PaymentGatewayError.GATEWAY_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: e.message)])
             return null //unreachable
@@ -135,6 +138,9 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
 
             buildSessionAttributesFromPayment(sessionAttributes, paymentResponse.payment)
         } catch (Exception e) {
+            if(e instanceof ApiException) {
+                logger.error((e as ApiException).httpContext.response.body)
+            }
             logger.catching(e)
             sessionAttributes.errorMessage = e.message
         }
@@ -162,6 +168,9 @@ class SquarePaymentService implements TransactionPaymentServiceInterface {
 
             buildSessionAttributesFromRefund(sessionAttributes, refundPaymentResponse.refund)
         } catch (Exception e) {
+            if(e instanceof ApiException) {
+                logger.error((e as ApiException).httpContext.response.body)
+            }
             logger.catching(e)
             sessionAttributes.errorMessage = e.message
         }

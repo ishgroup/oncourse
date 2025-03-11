@@ -24,23 +24,11 @@ import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.v1.model.LockedDateDTO
 import ish.oncourse.server.cayenne.Message
 
-import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
-import static ish.oncourse.server.api.v1.function.LanguageFunctions.toRestLanguage
 import ish.oncourse.server.api.v1.function.PreferenceFunctions
-import static ish.oncourse.server.api.v1.function.PreferenceFunctions.getOrCreateUserPreference
-import static ish.oncourse.server.api.v1.function.PreferenceFunctions.toValue
 import ish.oncourse.server.api.v1.model.ColumnWidthDTO
 import ish.oncourse.server.api.v1.model.CountryDTO
 import ish.oncourse.server.api.v1.model.CurrencyDTO
 import ish.oncourse.server.api.v1.model.EnumItemDTO
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.ADDRESSSTATES
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.CLASSFUNDINGSOURCE
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.DELIVERYMODE
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.EXPORTJURISDICTION
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.MAINTENANCETIMES
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.TRAININGORG_TYPES
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.TWOFACTORAUTHSTATUS
-import static ish.oncourse.server.api.v1.model.EnumNameDTO.fromValue
 import ish.oncourse.server.api.v1.model.LanguageDTO
 import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
@@ -48,7 +36,6 @@ import ish.oncourse.server.api.v1.service.PreferenceApi
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
 import ish.oncourse.server.cayenne.Preference
-import ish.oncourse.server.security.LdapAuthConnectionService
 import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.persistence.CommonPreferenceController
@@ -60,19 +47,19 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import ish.math.context.MoneyContext
 
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
-import java.time.LocalDate
+
+import static ish.oncourse.server.api.v1.function.CountryFunctions.toRestCountry
+import static ish.oncourse.server.api.v1.function.LanguageFunctions.toRestLanguage
+import static ish.oncourse.server.api.v1.function.PreferenceFunctions.getOrCreateUserPreference
+import static ish.oncourse.server.api.v1.function.PreferenceFunctions.toValue
+import static ish.oncourse.server.api.v1.model.EnumNameDTO.*
 
 class PreferenceApiImpl implements PreferenceApi {
 
-    private static final String KEYS_SPLITTER = ","
-    private static final String SECURITY_KEY_PIECE = "security"
-    private static final String CURRENCY_PREFERENCE_KEY = "default.currency"
-
-    @Inject
-    private LdapAuthConnectionService ldapAuthConnectionService
     @Inject
     private ICayenneService cayenneService
     @Inject
@@ -81,6 +68,8 @@ class PreferenceApiImpl implements PreferenceApi {
     private ISystemUserService userService
     @Inject
     private TransactionLockedService transactionLockedService
+    @Inject
+    private MoneyContext moneyContext
 
     private static Logger logger = LogManager.logger
 
@@ -168,19 +157,12 @@ class PreferenceApiImpl implements PreferenceApi {
 
     @Override
     CurrencyDTO getCurrency() {
-        Preference currencyPreference = ObjectSelect.query(Preference)
-                .where(Preference.UNIQUE_KEY.eq(CURRENCY_PREFERENCE_KEY))
-                .selectOne(cayenneService.newContext)
-        CurrencyDTO currency = new CurrencyDTO()
-        if (currencyPreference == null) {
-            currency.setName(ish.math.Country.AUSTRALIA.name())
-            currency.setCurrencySymbol(ish.math.Country.AUSTRALIA.currencySymbol())
-            currency.setShortCurrencySymbol(ish.math.Country.AUSTRALIA.currencyShortSymbol())
-        } else {
-            ish.math.Country country = ish.math.Country.forCurrencySymbol(currencyPreference.getValueString())
-            currency.setName(country.name())
-            currency.setCurrencySymbol(country.currencySymbol())
-            currency.setShortCurrencySymbol(country.currencyShortSymbol())
+        CurrencyDTO currency = new CurrencyDTO().with {
+            it.currencySymbol = moneyContext.currencyCode
+            it.shortCurrencySymbol = moneyContext.currencySymbol
+            ish.math.Country currentCountry = ish.math.Country.findCountryByLocale(moneyContext.locale)
+            it.name = currentCountry != null ? currentCountry.name() : moneyContext.locale.displayCountry
+            it
         }
         return currency
     }

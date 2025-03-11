@@ -12,13 +12,11 @@
 package ish.oncourse.server.entity.mixins
 
 import ish.math.Money
-import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.server.api.v1.function.BankingFunctions
-import ish.oncourse.server.api.v1.model.ReconciledStatusDTO
 import ish.oncourse.server.cayenne.Banking
 import ish.oncourse.server.cayenne.PaymentIn
 import ish.oncourse.server.cayenne.PaymentOut
-import static org.apache.cayenne.query.ObjectSelect.query
+import org.apache.cayenne.query.ObjectSelect
 
 class BankingMixin {
 
@@ -30,16 +28,22 @@ class BankingMixin {
 	}
 
 	static Money getTotal(Banking self) {
-		return Money.ZERO
-				.add(query(Banking.class)
-					.prefetch(Banking.PAYMENTS_IN.joint())
-					.where(Banking.ID.eq(self.id))
-					.sum(Banking.PAYMENTS_IN.dot(PaymentIn.AMOUNT))
-					.selectOne(self.context))
-				.subtract(query(Banking.class)
-					.prefetch(Banking.PAYMENTS_OUT.joint())
-					.where(Banking.ID.eq(self.id))
-					.sum(Banking.PAYMENTS_OUT.dot(PaymentOut.AMOUNT))
-					.selectOne(self.context))
+		List<Money> allPaymentIns = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_IN.dot(PaymentIn.AMOUNT))
+				.suppressDistinct()
+				.where(Banking.ID.eq(self.id))
+				.select(self.context)
+
+		List<Money> allPaymentOuts = ObjectSelect.columnQuery(Banking, Banking.PAYMENTS_OUT.dot(PaymentOut.AMOUNT))
+				.suppressDistinct()
+				.where(Banking.ID.eq(self.id))
+				.select(self.context)
+
+		def paymentInSum = Money.ZERO
+		allPaymentIns.each { paymentInSum = paymentInSum.add(it) }
+
+		def paymentsOutSum = Money.ZERO
+		allPaymentOuts.each { paymentsOutSum = paymentsOutSum.add(it) }
+
+		return paymentInSum.subtract(paymentsOutSum)
 	}
 }

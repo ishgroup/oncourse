@@ -16,7 +16,6 @@ import com.stripe.model.Refund
 import com.stripe.param.PaymentIntentConfirmParams
 import com.stripe.param.PaymentIntentCreateParams
 import com.stripe.param.RefundCreateParams
-import groovy.transform.CompileDynamic
 import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
 import ish.common.checkout.gateway.stripe.CardTypeAdapter
@@ -31,11 +30,9 @@ import ish.oncourse.server.checkout.gateway.TwoStepPaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-@CompileDynamic
 class StripePaymentService implements TwoStepPaymentServiceInterface {
+    
     private static final Logger logger = LogManager.getLogger(StripePaymentService)
-
-    private static final String CURRENCY_CODE_AUD = "AUD"
 
     @Inject
     private PreferenceController preferenceController
@@ -56,7 +53,6 @@ class StripePaymentService implements TwoStepPaymentServiceInterface {
         PaymentIntentConfirmParams params = PaymentIntentConfirmParams.builder()
                 .setReturnUrl(requestDTO.origin + "/checkout?onCourseSessionId="+requestDTO.onCoursePaymentSessionId)
                 .build()
-
         try {
             PaymentIntent paymentIntent = resource.confirm(params)
             def sessionAttributes = new SessionAttributes()
@@ -77,7 +73,7 @@ class StripePaymentService implements TwoStepPaymentServiceInterface {
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount.multiply(100).toLong())
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setConfirm(true)
                         .setConfirmationMethod(PaymentIntentCreateParams.ConfirmationMethod.MANUAL)
                         .setReturnUrl(requestDTO.origin + "/checkout?onCourseSessionId="+requestDTO.onCoursePaymentSessionId)
@@ -135,8 +131,8 @@ class StripePaymentService implements TwoStepPaymentServiceInterface {
         SessionAttributes sessionAttributes = new SessionAttributes()
 
         try {
-            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.longValue())
-                    .setCurrency(CURRENCY_CODE_AUD)
+            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.toLong())
+                    .setCurrency(amount.currencyContext.currencyCode)
                     .setPaymentIntent(transactionId)
                     .build())
 
@@ -160,7 +156,7 @@ class StripePaymentService implements TwoStepPaymentServiceInterface {
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount.multiply(100).toLong())
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setCustomer(cardId)
                         .build()
 

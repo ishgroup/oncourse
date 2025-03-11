@@ -16,50 +16,25 @@ import groovy.transform.CompileStatic
 import ish.common.types.AccountType
 import ish.common.types.ExpiryType
 import ish.math.Money
-import ish.oncourse.server.api.dao.AccountDao
-import ish.oncourse.server.api.dao.CorporatePassDao
-import ish.oncourse.server.api.dao.CorporatePassProductDao
-import ish.oncourse.server.api.dao.CourseDao
-import ish.oncourse.server.api.dao.EntityRelationDao
-import ish.oncourse.server.api.dao.FieldConfigurationSchemeDao
-import ish.oncourse.server.api.dao.ProductDao
-import ish.oncourse.server.api.dao.TaxDao
-import ish.oncourse.server.api.dao.VoucherProductCourseDao
-import ish.oncourse.server.api.dao.VoucherProductDao
-import ish.oncourse.server.api.v1.model.ProductTypeDTO
-import ish.oncourse.server.cayenne.Article
-import ish.oncourse.server.cayenne.ExpandableTrait
-import ish.oncourse.server.cayenne.FieldConfigurationScheme
-import ish.oncourse.server.cayenne.Membership
-import ish.oncourse.server.cayenne.Product
-import ish.oncourse.server.cayenne.Voucher
-import ish.oncourse.server.cayenne.VoucherProductTagRelation
-import ish.oncourse.server.cayenne.VoucherProductAttachmentRelation
+import ish.oncourse.server.api.dao.*
+import ish.oncourse.server.api.v1.model.VoucherCorporatePassDTO
+import ish.oncourse.server.api.v1.model.VoucherProductCourseDTO
+import ish.oncourse.server.api.v1.model.VoucherProductDTO
+import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.document.DocumentService
+import org.apache.cayenne.ObjectContext
 
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
+import java.time.ZoneId
+
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePassesByIds
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
-import static ish.oncourse.server.api.v1.model.ProductStatusDTO.DISABLED
-import ish.oncourse.server.api.v1.model.VoucherCorporatePassDTO
-import ish.oncourse.server.api.v1.model.VoucherProductCourseDTO
-import ish.oncourse.server.api.v1.model.VoucherProductDTO
-import ish.oncourse.server.cayenne.Account
-import ish.oncourse.server.cayenne.VoucherProduct
-import org.apache.cayenne.ObjectContext
-import static org.apache.commons.lang3.StringUtils.isBlank
-import static org.apache.commons.lang3.StringUtils.isNotBlank
-import static org.apache.commons.lang3.StringUtils.trimToNull
-
-import java.time.ZoneId
+import static ish.oncourse.server.api.v1.model.ProductStatusDTO.*
+import static org.apache.commons.lang3.StringUtils.*
 
 @CompileStatic
 class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, VoucherProduct, VoucherProductDao> {
@@ -144,11 +119,11 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
 
         voucherProduct.name = trimToNull(voucherProductDTO.name)
         voucherProduct.sku = trimToNull(voucherProductDTO.code)
-        voucherProduct.priceExTax = toMoneyValue(voucherProductDTO.feeExTax)
+        voucherProduct.priceExTax = Money.exactOf(voucherProductDTO.feeExTax)
         voucherProduct.liabilityAccount = accountDao.getById(voucherProduct.context, voucherProductDTO.liabilityAccountId.toLong())
         voucherProduct.underpaymentAccount = accountDao.getById(voucherProduct.context, voucherProductDTO.underpaymentAccountId.toLong())
         voucherProduct.expiryDays = voucherProductDTO.expiryDays
-        voucherProduct.value = toMoneyValue(voucherProductDTO.value)
+        voucherProduct.value = Money.exactOf(voucherProductDTO.value)
         voucherProduct.maxCoursesRedemption = voucherProductDTO.maxCoursesRedemption
         voucherProduct.description = trimToNull(voucherProductDTO.description)
         voucherProduct.isOnSale = voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE || voucherProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE
@@ -199,7 +174,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
             }
         }
 
-        if (voucherProductDTO.feeExTax && toMoneyValue(voucherProductDTO.feeExTax).isNegative()) {
+        if (voucherProductDTO.feeExTax && Money.exactOf(voucherProductDTO.feeExTax).isNegative()) {
             validator.throwClientErrorException(id, 'value', 'Voucher price cannot be negative.')
         }
 
@@ -261,7 +236,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
                 }
             }
 
-            if (voucherProductDTO.feeExTax == null || toMoneyValue(voucherProductDTO.feeExTax).isNegative()) {
+            if (voucherProductDTO.feeExTax == null || Money.exactOf(voucherProductDTO.feeExTax).isNegative()) {
                 validator.throwClientErrorException(id, 'feeExTax', 'If voucher product is linked to courses then price should not be null.')
             }
 
@@ -275,7 +250,7 @@ class VoucherProductApiService extends TaggableApiService<VoucherProductDTO, Vou
         }
 
         if (voucherProductDTO.value) {
-            if (toMoneyValue(voucherProductDTO.value).isNegative()) {
+            if (Money.exactOf(voucherProductDTO.value).isNegative()) {
                 validator.throwClientErrorException(id, 'value', 'Redemption value cannot be negative.')
             }
 
