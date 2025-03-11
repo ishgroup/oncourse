@@ -6,6 +6,7 @@
 import { User, UserRole } from '@api/model';
 import IconPhoneLocked from '@mui/icons-material/ScreenLockPortrait';
 import { Button, Collapse, FormControlLabel, FormGroup, Grid, Paper, Typography } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import { format as formatDate } from 'date-fns';
 import { III_DD_MMM_YYYY_HH_MM_SPECIAL, SelectItemDefault, ShowConfirmCaller } from 'ish-ui';
@@ -234,7 +235,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               <FormField
                 type="text"
                 name="email"
-                label="Email"
+                label={$t('email2')}
                 validate={validateUniqueNames}
                 required
               />
@@ -244,7 +245,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
         >
           <FormControlLabel
             control={<FormField type="switch" name="active" color="primary" />}
-            label="Active"
+            label={$t('active')}
             labelPlacement="start"
             classes={{
               root: "switchWrapper mb-2"
@@ -256,14 +257,14 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               <FormField
                 type="text"
                 name="firstName"
-                label="First name"
+                label={$t('first_name')}
                 className="mb-2"
                 required
               />
               <FormField
                 type="text"
                 name="lastName"
-                label="Last name"
+                label={$t('last_name')}
                 className="mb-2"
                 required
               />
@@ -271,7 +272,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               <FormField
                 type="select"
                 name="administrationCentre"
-                label="Bank cash/cheques to site"
+                label={$t('bank_cashcheques_to_site')}
                 className="mb-2"
                 items={sites || []}
                 required
@@ -281,7 +282,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 <Uneditable
                   value={lastLoggedIn}
                   format={v => formatDate(new Date(v), III_DD_MMM_YYYY_HH_MM_SPECIAL)}
-                  label="Last logged in"
+                  label={$t('last_logged_in')}
                   className="mb-2"
                 />
               )}
@@ -289,7 +290,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
               {!isNew && !values.inviteAgain && (
                 <FormControlLabel
                   control={<FormField type="switch" name="passwordUpdateRequired" color="primary" />}
-                  label="Require password update"
+                  label={$t('require_password_update')}
                   labelPlacement="start"
                   className={classes.passwordUpdateSection}
                   classes={{
@@ -302,7 +303,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                 <div className={classes.resetSection}>
                   {!values.inviteAgain && (
                     <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onResetPassword}>
-                      Reset password
+                      {$t('reset_password')}
                     </Button>
                   )}
                 </div>
@@ -316,14 +317,13 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     className="mb-1 centeredFlex"
                   >
                     <IconPhoneLocked className={classes.lockedIcon} />
-                    {' '}
-                    Two factor authentication is
+                    {$t('two_factor_authentication_is')}
                     {" "}
                     {tfaEnabled ? "enabled" : "disabled"}
                   </Typography>
                   {tfaEnabled && (
                     <Button variant="outlined" color="secondary" className={classes.button} onClick={this.onDisable2FA}>
-                      Disable 2FA
+                      {$t('disable_2fa')}
                     </Button>
                   )}
                 </div>
@@ -351,7 +351,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                         debounced={false}
                       />
                     )}
-                    label="Admin"
+                    label={$t('admin')}
                     labelPlacement="start"
                   />
 
@@ -359,7 +359,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     <FormField
                       type="select"
                       name="role"
-                      label="Role"
+                      label={$t('role')}
                       className={classes.inputField}
                       selectValueMark="id"
                       selectLabelMark="name"
@@ -376,7 +376,7 @@ class UsersFormBase extends React.PureComponent<FormProps, any> {
                     control={
                       <FormField type="switch" name="accessEditor" color="primary" className={classes.cardSwitch} />
                     }
-                    label="Can access #editor"
+                    label={$t('can_access_editor')}
                     labelPlacement="start"
                   />
                 </FormGroup>

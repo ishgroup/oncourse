@@ -2,10 +2,10 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
+import { Grid, Typography } from '@mui/material';
+import $t from '@t';
+import React from 'react';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
 
 const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
   if (!values) {
@@ -22,13 +22,13 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className="ml-0">
       <Grid item sm={2}>
-        <Uneditable value={values.code} label="SKU" />
+        <Uneditable value={values.code} label={$t('sku')} />
       </Grid>
       <Grid item sm={2}>
-        <Uneditable value={values.feeExTax || 0} label="Sale price" money />
+        <Uneditable value={values.feeExTax || 0} label={$t('sale_price')} money />
       </Grid>
       <Grid item sm={3}>
-        <Uneditable value={value} label="Value" money={!isClassVoucher} />
+        <Uneditable value={value} label={$t('value')} money={!isClassVoucher} />
       </Grid>
       {
         isClassVoucher
@@ -36,14 +36,10 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
         <Grid item sm={12} className="pt-2 pb-1">
           <div>
             <div className="heading">
-              Courses
+              {$t('courses')}
             </div>
             <Typography variant="caption" component="div" color="textSecondary" className="pb-1">
-              Can be redeemed for
-              {" "}
-              {value}
-              {" "}
-              in classes from
+              {$t('can_be_redeemed_for_in_classes_from')}
             </Typography>
             {values.courses && values.courses.map(c => (
               <Typography key={c.id} variant="body2" component="div" className="pb-2">
@@ -59,7 +55,7 @@ const VoucherEditView: React.FC<any> = ({ values, summaryVoucher }) => {
         )
       }
       <Grid item sm={12}>
-        <Uneditable value={values.description} label="Description" multiline />
+        <Uneditable value={values.description} label={$t('description')} multiline />
       </Grid>
     </Grid>
   );

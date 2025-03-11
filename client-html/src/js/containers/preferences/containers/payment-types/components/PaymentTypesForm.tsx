@@ -1,5 +1,6 @@
 import { PaymentMethod } from '@api/model';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { idsToString, ShowConfirmCaller } from 'ish-ui';
 import isEqual from 'lodash.isequal';
 import * as React from 'react';
@@ -174,7 +175,7 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
           getAuditsUrl={() => `audit?search=~"PaymentMethod" and entityId in (${idsToString(data.types)})`}
           disabled={!dirty}
           invalid={invalid}
-          title="Payment Types"
+          title={$t('payment_types')}
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}
@@ -204,7 +205,6 @@ class PaymentTypesBaseForm extends React.Component<Props, any> {
 const mapStateToProps = (state: State) => ({
   nextLocation: state.nextLocation
 });
-
 
 const PaymentTypesForm = reduxForm({
   onSubmitFail,

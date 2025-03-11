@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Grid } from "@mui/material";
-import { GridSize } from "@mui/material/Grid";
-import * as React from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
+import { Grid } from '@mui/material';
+import { GridSize } from '@mui/material/Grid';
+import $t from '@t';
+import * as React from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
+import { FormEditorField } from '../../../../common/components/form/formFields/FormEditor';
 
 const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
   (twoColumn
@@ -26,29 +27,29 @@ class Directions extends React.Component<any, any> {
     return (
       <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pb-1 pl-3 pr-3">
         <Grid item xs={12}>
-          <div className="heading">Directions</div>
+          <div className="heading">{$t('directions')}</div>
         </Grid>
         <Grid item xs={layoutArray[0].xs}>
           <FormEditorField
             name="drivingDirections"
-            label="Driving directions"
+            label={$t('driving_directions')}
           />
         </Grid>
         <Grid item xs={layoutArray[1].xs}>
           <FormEditorField
             name="publicTransportDirections"
-            label="Public transport directions"
+            label={$t('public_transport_directions')}
           />
         </Grid>
         <Grid item xs={layoutArray[2].xs} className="mb-3">
           <FormEditorField
             name="specialInstructions"
-            label="Special instructions"
+            label={$t('special_instructions')}
           />
         </Grid>
         <FieldArray
           name="documents"
-          label="Documents"
+          label={$t('documents')}
           entity="Site"
           component={DocumentsRenderer}
           xsGrid={layoutArray[3].xs}

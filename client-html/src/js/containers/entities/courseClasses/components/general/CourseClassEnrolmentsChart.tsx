@@ -11,6 +11,7 @@ import { green, orange } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { differenceInCalendarWeeks } from 'date-fns';
 import { AppTheme, NumberArgFunction, useAppTheme } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -45,15 +46,15 @@ const CustomizedTooltip = props => {
   return active && payload[0] && (
     <Paper className="p-1">
       <Typography component="div" variant="body2" noWrap>
-        <span className="mr-1">Total enrolments:</span>
+        <span className="mr-1">{$t('total_enrolments')}</span>
         <span>{data[data.length - 1].value}</span>
       </Typography>
       <Typography component="div" variant="body2" color="textSecondary" noWrap>
-        <span className="mr-1">This week enrolments:</span>
+        <span className="mr-1">{$t('this_week_enrolments')}</span>
         <span>{payload[0].payload["enrolments"]}</span>
       </Typography>
       <Typography component="div" variant="body2" color="textSecondary" noWrap>
-        <span className="mr-1">Average enrolments:</span>
+        <span className="mr-1">{$t('average_enrolments')}</span>
         <span>{payload[0].payload["averageValue"]}</span>
       </Typography>
     </Paper>
@@ -436,7 +437,7 @@ const CourseClassEnrolmentsChart = React.memo<Props>(
               isFront
               stroke={theme.palette.secondary.main}
               strokeWidth={2}
-              label={<CustomizedLabel label="Today" fill={theme.palette.text.primary} visible={showLabels} />}
+              label={<CustomizedLabel label={$t('today')} fill={theme.palette.text.primary} visible={showLabels} />}
             />
           </AreaChart>
         </ResponsiveContainer>

@@ -6,25 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Grid } from "@mui/material";
-import { LinkAdornment } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change } from "redux-form";
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { LinkAdornment } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change } from 'redux-form';
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
+} from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../contacts/utils";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
+import { courseFilterCondition, openCourseLink } from '../../courses/utils';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
 
 class WaitingListGeneral extends React.PureComponent<any, any> {
   handlerCourseChange = courseId => {
@@ -65,7 +66,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
                   entity="Contact"
                   aqlFilter="isStudent is true"
                   name="contactId"
-                  label="Student"
+                  label={$t('student')}
                   selectValueMark="id"
                   selectLabelCondition={getContactFullName}
                   defaultValue={values && values.studentName}
@@ -96,7 +97,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
           />
         </Grid>
         <Grid item xs={12}>
-          <FormField type="number" name="studentCount" label="Number of students" />
+          <FormField type="number" name="studentCount" label={$t('number_of_students')} />
         </Grid>
         <Grid item xs={12}>
           <FormField
@@ -104,7 +105,7 @@ class WaitingListGeneral extends React.PureComponent<any, any> {
             entity="Course"
             aqlFilter="allowWaitingLists is true"
             name="courseId"
-            label="Course"
+            label={$t('course')}
             selectValueMark="id"
             selectLabelCondition={v => v.name}
             selectFilterCondition={courseFilterCondition}

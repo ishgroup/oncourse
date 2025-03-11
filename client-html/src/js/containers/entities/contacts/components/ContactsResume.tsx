@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Contact } from "@api/model";
-import { Grid } from "@mui/material";
-import React from "react";
-import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
-import { EditViewProps } from "../../../../model/common/ListView";
+import { Contact } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import React from 'react';
+import { FormEditorField } from '../../../../common/components/form/formFields/FormEditor';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
+import { EditViewProps } from '../../../../model/common/ListView';
 
 const ContactsResume: React.FC<EditViewProps<Contact>> = ({
   tabIndex,
@@ -29,7 +30,7 @@ const ContactsResume: React.FC<EditViewProps<Contact>> = ({
     >
       <Grid container columnSpacing={3}>
         <Grid item xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
-          <FormEditorField name="tutor.resume" label="Resume" />
+          <FormEditorField name="tutor.resume" label={$t('resume')} />
         </Grid>
       </Grid>
     </ExpandableContainer>

@@ -3,15 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from "@mui/lab/LoadingButton";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
-import { State } from "../../../../../../reducers/state";
+import LoadingButton from '@mui/lab/LoadingButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change, getFormValues, initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { validateSingleMandatoryField } from '../../../../../../common/utils/validation';
+import { State } from '../../../../../../reducers/state';
 
 class CanvasBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -85,14 +86,14 @@ class CanvasBaseForm extends React.Component<any, any> {
             )
           }
 
-          <FormField disabled={configured} type="text" name="fields.baseUrl" label="Base url" required className="mb-2" />
-          <FormField disabled={configured} type="text" name="fields.accountId" label="Account id" required className="mb-2" />
-          <FormField disabled={configured} type="text" name="fields.clientToken" label="Client id" required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.baseUrl" label={$t('base_url2')} required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.accountId" label={$t('account_id')} required className="mb-2" />
+          <FormField disabled={configured} type="text" name="fields.clientToken" label={$t('client_id')} required className="mb-2" />
           <FormField
             disabled={configured}
             type="password"
             name="fields.clientSecret"
-            label="Client secret"
+            label={$t('client_secret')}
             required
             className="mb-2"
           />
@@ -100,7 +101,7 @@ class CanvasBaseForm extends React.Component<any, any> {
             configured
               ? (
                 <Typography variant="caption">
-                  Canvas access has been set up
+                  {$t('canvas_access_has_been_set_up')}
                   {
                     item && item.id ? "" : ". Press Save to finish"
                   }
@@ -109,7 +110,7 @@ class CanvasBaseForm extends React.Component<any, any> {
               : (
                 <>
                   <Typography variant="caption">
-                    Press ‘Configure’ to proceed with authorising onCourse to access your Canvas account.
+                    {$t('press_configure_to_proceed_with_authorising_oncour')}
                   </Typography>
                   <div>
                     <LoadingButton
@@ -118,13 +119,13 @@ class CanvasBaseForm extends React.Component<any, any> {
                       className="mt-1"
                       onClick={this.configure}
                     >
-                      Configure
+                      {$t('configure')}
                     </LoadingButton>
                   </div>
                 </>
               )
           ) : (
-            <Typography variant="caption">Fill all fields to proceed with authorization</Typography>
+            <Typography variant="caption">{$t('fill_all_fields_to_proceed_with_authorization')}</Typography>
           )}
         </AppBarContent>
       </form>
