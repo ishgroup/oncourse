@@ -17,8 +17,9 @@ import { CreditCardPaymentPageProps } from '../../../../../../model/checkout';
 import { State } from '../../../../../../reducers/state';
 import {
   checkoutClearPaymentStatus,
-  checkoutGetPaymentStatusDetails,
+  checkoutCompleteWindcaveCcPayment,
   checkoutProcessPayment,
+  checkoutSetPaymentProcessing,
   clearCcIframeUrl
 } from '../../../../actions/checkoutPayment';
 import { CHECKOUT_SELECTION_FORM_NAME as CheckoutSelectionForm } from '../../../CheckoutSelection';
@@ -33,30 +34,30 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     disablePayment,
     currencySymbol,
     iframeUrl,
-    xPaymentSessionId,
-    merchantReference,
     checkoutProcessCcPayment,
     clearCcIframeUrl,
     payment,
     onCheckoutClearPaymentStatus,
-    checkoutGetPaymentStatusDetails,
+    checkoutCompleteWindcaveCcPayment,
     process,
     payerName,
+    dispatch,
     hasSummarryErrors
   } = props;
 
   const [validatePayment, setValidatePayment] = React.useState(true);
 
-  const proceedPayment = React.useCallback(() => {
+  const proceedPayment = () => {
     onCheckoutClearPaymentStatus();
     setValidatePayment(true);
-    checkoutProcessCcPayment(true, xPaymentSessionId, window.location.origin);
-  }, [summary.payNowTotal, merchantReference]);
+    checkoutProcessCcPayment();
+  };
 
   const onMessage = e => {
     const paymentDetails = e.data.payment;
     if (paymentDetails && paymentDetails.status) {
-      checkoutGetPaymentStatusDetails(paymentDetails.sessionId);
+      dispatch(checkoutSetPaymentProcessing(true));
+      checkoutCompleteWindcaveCcPayment(paymentDetails.sessionId);
       setValidatePayment(false);
       clearCcIframeUrl();
     }
@@ -67,13 +68,13 @@ const WindcavePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
     return () => {
       window.removeEventListener("message", onMessage);
     };
-  }, [merchantReference, summary, payment]);
+  }, [summary, payment]);
 
   React.useEffect(() => {
-    if (summary.payNowTotal > 0) {
+    if (!process.status && summary.payNowTotal > 0) {
       proceedPayment();
     }
-  }, [summary.payNowTotal, summary.allowAutoPay, summary.paymentDate, summary.invoiceDueDate]);
+  }, [process.status, summary.payNowTotal, summary.allowAutoPay, summary.paymentDate, summary.invoiceDueDate]);
 
   return (
     <div
@@ -129,20 +130,21 @@ const mapStateToProps = (state: State) => ({
   paymentInvoice: state.checkout.payment.invoice,
   paymentId: state.checkout.payment.paymentId,
   currencySymbol: state.currency && state.currency.shortCurrencySymbol,
-  iframeUrl: state.checkout.payment.wcIframeUrl,
-  xPaymentSessionId: state.checkout.payment.xPaymentSessionId,
+  iframeUrl: state.checkout.payment.ccFormUrl,
+  xPaymentSessionId: state.checkout.payment.paymentId,
   merchantReference: state.checkout.payment.merchantReference,
   process: state.checkout.payment.process,
   hasSummarryErrors: isInvalid(CheckoutSelectionForm)(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  checkoutProcessCcPayment: (xValidateOnly: boolean, xPaymentSessionId: string, xOrigin: string) => {
-    dispatch(checkoutProcessPayment(xValidateOnly, xPaymentSessionId, xOrigin));
+  dispatch,
+  checkoutProcessCcPayment: () => {
+    dispatch(checkoutProcessPayment());
   },
   clearCcIframeUrl: () => dispatch(clearCcIframeUrl()),
   onCheckoutClearPaymentStatus: () => dispatch(checkoutClearPaymentStatus()),
-  checkoutGetPaymentStatusDetails: (sessionId: string) => dispatch(checkoutGetPaymentStatusDetails(sessionId))
+  checkoutCompleteWindcaveCcPayment: (sessionId: string) => dispatch(checkoutCompleteWindcaveCcPayment(sessionId)),
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(WindcavePaymentPage, styles));

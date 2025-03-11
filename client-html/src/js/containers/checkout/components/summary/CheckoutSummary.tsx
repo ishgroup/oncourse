@@ -3,20 +3,20 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { BooleanArgFunction, NumberArgFunction, usePrevious } from "ish-ui";
-import debounce from "lodash.debounce";
-import React from "react";
-import { connect } from "react-redux";
-import { CheckoutSummaryListItem as SummaryList } from "../../../../model/checkout";
+import { BooleanArgFunction, NumberArgFunction, usePrevious } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React from 'react';
+import { connect } from 'react-redux';
+import { CheckoutSummaryListItem as SummaryList } from '../../../../model/checkout';
 import {
   checkoutGetPreviousCredit,
   checkoutGetPreviousOwing,
   checkoutUpdateSummaryClassesDiscounts,
   checkoutUpdateSummaryPrices
-} from "../../actions/checkoutSummary";
-import { CheckoutPage } from "../../constants";
-import CheckoutSummaryList from "./CheckoutSummaryList";
-import CheckoutDiscountEditView from "./promocode/CheckoutDiscountEditView";
+} from '../../actions/checkoutSummary';
+import { CheckoutPage } from '../../constants';
+import CheckoutSummaryList from './CheckoutSummaryList';
+import CheckoutDiscountEditView from './promocode/CheckoutDiscountEditView';
 
 interface Props {
   checkoutStep?: number;
@@ -51,7 +51,10 @@ const CheckoutSummary = React.memo<Props>(props => {
     const currentPayerIndex = summaryList.findIndex(l => l.payer);
     const currentPayer = summaryList[currentPayerIndex];
 
-    if ((!prevPayer && currentPayer) || (prevPayer && currentPayer && prevPayer.contact.id !== currentPayer.contact.id)) {
+    const query = new URLSearchParams(window.location.search);
+    const transactionId = query.get("payment_intent");
+
+    if (!transactionId && (!prevPayer && currentPayer) || (prevPayer && currentPayer && prevPayer.contact.id !== currentPayer.contact.id)) {
       getPreviousCreditRecords(currentPayer.contact.id);
       getPreviousOwingRecords(currentPayer.contact.id);
     }
