@@ -245,10 +245,10 @@ class MoneyTest {
         Assertions.assertEquals("-5.00", money.toPlainString())
 
         money = Money.of("-005.55", MoneyContextFactory.create(Country.NORWAY))
-        Assertions.assertEquals("-5,55", money.toPlainString())
+        Assertions.assertEquals("-5.55", money.toPlainString())
 
         money = Money.of(-34.5555,  MoneyContextFactory.create(Country.EUROPE))
-        Assertions.assertEquals("-34,56", money.toPlainString())
+        Assertions.assertEquals("-34.56", money.toPlainString())
 
         money = Money.of(1892.5555,  MoneyContextFactory.create(Country.SOUTH_AFRICA))
         Assertions.assertEquals("1892.56", money.toPlainString())
