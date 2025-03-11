@@ -203,6 +203,7 @@ class CheckoutApiService {
             sessionsInProcessing.add(submitRequestDTO.onCoursePaymentSessionId)
         }
 
+
         try {
             def checkoutModel = checkoutSessionService.getCheckoutModel(submitRequestDTO.onCoursePaymentSessionId, paymentService)
             Checkout checkout = checkoutController.createCheckout(checkoutModel)

@@ -24,7 +24,7 @@ class ClassCostUtilTest extends TestWithDatabase {
 
     @Test
     void testApplyOnCostRateAndMinMaxCost() {
-        Money cost = new Money("100.00")
+        Money cost = Money.of("100.00")
         Money minimumCost = null
         Money maximumCost = null
         BigDecimal onCostRate = null
@@ -34,20 +34,20 @@ class ClassCostUtilTest extends TestWithDatabase {
         Assertions.assertEquals(cost, result)
 
         // test minimum cost calculations
-        minimumCost = new Money("200.00")
+        minimumCost = Money.of("200.00")
         result = ClassCostUtil.applyOnCostRateAndMinMaxCost(cost, minimumCost, maximumCost, onCostRate)
         Assertions.assertEquals(minimumCost, result)
 
-        minimumCost = new Money("50.00")
+        minimumCost = Money.of("50.00")
         result = ClassCostUtil.applyOnCostRateAndMinMaxCost(cost, minimumCost, maximumCost, onCostRate)
         Assertions.assertEquals(cost, result)
 
         // test maximim cost calculations
-        maximumCost = new Money("200.00")
+        maximumCost = Money.of("200.00")
         result = ClassCostUtil.applyOnCostRateAndMinMaxCost(cost, minimumCost, maximumCost, onCostRate)
         Assertions.assertEquals(cost, result)
 
-        maximumCost = new Money("75.00")
+        maximumCost = Money.of("75.00")
         result = ClassCostUtil.applyOnCostRateAndMinMaxCost(cost, minimumCost, maximumCost, onCostRate)
         Assertions.assertEquals(maximumCost, result)
 
@@ -57,17 +57,17 @@ class ClassCostUtilTest extends TestWithDatabase {
         minimumCost = null
 
         result = ClassCostUtil.applyOnCostRateAndMinMaxCost(cost, minimumCost, maximumCost, onCostRate)
-        Assertions.assertEquals(new Money("110.00"), result)
+        Assertions.assertEquals(Money.of("110.00"), result)
 
         // test onCostRate with maximum cost
-        maximumCost = new Money("100.00")
+        maximumCost = Money.of("100.00")
         result = ClassCostUtil.applyOnCostRateAndMinMaxCost(cost, minimumCost, maximumCost, onCostRate)
         Assertions.assertEquals(maximumCost, result)
     }
 
     @Test
     void testGetCost() {
-        Money cost = new Money("100.00")
+        Money cost = Money.of("100.00")
         Money minimumCost = null
         Money maximumCost = null
         BigDecimal onCostRate = null
@@ -79,17 +79,17 @@ class ClassCostUtilTest extends TestWithDatabase {
 
         unitCount = new BigDecimal("2")
         result = ClassCostUtil.getCost(cost, unitCount, minimumCost, maximumCost, onCostRate)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         onCostRate = new BigDecimal("0.1")
         result = ClassCostUtil.getCost(cost, unitCount, minimumCost, maximumCost, onCostRate)
-        Assertions.assertEquals(new Money("220.00"), result)
+        Assertions.assertEquals(Money.of("220.00"), result)
 
-        maximumCost = new Money("200.00")
+        maximumCost = Money.of("200.00")
         result = ClassCostUtil.getCost(cost, unitCount, minimumCost, maximumCost, onCostRate)
         Assertions.assertEquals(maximumCost, result)
 
-        minimumCost = new Money("300.00")
+        minimumCost = Money.of("300.00")
         result = ClassCostUtil.getCost(cost, unitCount, minimumCost, maximumCost, onCostRate)
         Assertions.assertEquals(minimumCost, result)
 
@@ -136,19 +136,19 @@ class ClassCostUtilTest extends TestWithDatabase {
         cc.setCourseClass(cl)
         cc.setRepetitionType(ClassCostRepetitionType.FIXED)
         ClassCostUtil.resetUnitCount(cc)
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("20.00"), result)
+        Assertions.assertEquals(Money.of("20.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("20.00"), result)
+        Assertions.assertEquals(Money.of("20.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("20.00"), result)
+        Assertions.assertEquals(Money.of("20.00"), result)
     }
 
     @Test
@@ -161,19 +161,19 @@ class ClassCostUtilTest extends TestWithDatabase {
         cc.setRepetitionType(ClassCostRepetitionType.PER_SESSION)
         ClassCostUtil.resetUnitCount(cc)
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -186,19 +186,19 @@ class ClassCostUtilTest extends TestWithDatabase {
         cc.setRepetitionType(ClassCostRepetitionType.PER_ENROLMENT)
         ClassCostUtil.resetUnitCount(cc)
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getBudgetedCost(cc, null, 10)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getBudgetedCost(cc, null, 10)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getBudgetedCost(cc, null, 10)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -211,19 +211,19 @@ class ClassCostUtilTest extends TestWithDatabase {
         ClassCostUtil.resetUnitCount(cc)
         cc.setUnitCount(new BigDecimal("10"))
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -236,7 +236,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ClassCostUtil.resetUnitCount(cc)
         cc.setUnitCount(new BigDecimal("10"))
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         // all total costs equal $0, because the total cost depends on the class projected enrolments.
@@ -257,19 +257,19 @@ class ClassCostUtilTest extends TestWithDatabase {
 
         // cc.setSessionPayableHours(new BigDecimal("10.2"));
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getBudgetedCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -286,19 +286,19 @@ class ClassCostUtilTest extends TestWithDatabase {
 
         // cc.setSessionPayableHours(new BigDecimal("10.2"));
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getBudgetedCost(cc, null, 10)
-        Assertions.assertEquals(new Money("2000.00"), result)
+        Assertions.assertEquals(Money.of("2000.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getBudgetedCost(cc, null, 10)
-        Assertions.assertEquals(new Money("2000.00"), result)
+        Assertions.assertEquals(Money.of("2000.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getBudgetedCost(cc, null, 10)
-        Assertions.assertEquals(new Money("2000.00"), result)
+        Assertions.assertEquals(Money.of("2000.00"), result)
     }
 
     @Test
@@ -311,19 +311,19 @@ class ClassCostUtilTest extends TestWithDatabase {
         cc.setContact(c)
         cc.setRepetitionType(ClassCostRepetitionType.FIXED)
         ClassCostUtil.resetUnitCount(cc)
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("20.00"), result)
+        Assertions.assertEquals(Money.of("20.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("20.00"), result)
+        Assertions.assertEquals(Money.of("20.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("20.00"), result)
+        Assertions.assertEquals(Money.of("20.00"), result)
     }
 
     @Test
@@ -337,19 +337,19 @@ class ClassCostUtilTest extends TestWithDatabase {
         cc.setRepetitionType(ClassCostRepetitionType.PER_SESSION)
         ClassCostUtil.resetUnitCount(cc)
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -365,24 +365,24 @@ class ClassCostUtilTest extends TestWithDatabase {
         cc.setRepetitionType(ClassCostRepetitionType.PER_ENROLMENT)
         ClassCostUtil.resetUnitCount(cc)
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setInvoiceToStudent(Boolean.TRUE)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("500.00"), result)
+        Assertions.assertEquals(Money.of("500.00"), result)
 
         cc.setInvoiceToStudent(Boolean.FALSE)
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -397,19 +397,19 @@ class ClassCostUtilTest extends TestWithDatabase {
         ClassCostUtil.resetUnitCount(cc)
         cc.setUnitCount(new BigDecimal("10"))
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -422,7 +422,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         ClassCostUtil.resetUnitCount(cc)
         cc.setUnitCount(new BigDecimal("10"))
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         // this cannot be tested at the moment
@@ -430,15 +430,15 @@ class ClassCostUtilTest extends TestWithDatabase {
             return
         }
         Money result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -454,19 +454,19 @@ class ClassCostUtilTest extends TestWithDatabase {
 
         // cc.setSessionPayableHours(new BigDecimal("10.2"));
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("200.00"), result)
+        Assertions.assertEquals(Money.of("200.00"), result)
     }
 
     @Test
@@ -482,19 +482,19 @@ class ClassCostUtilTest extends TestWithDatabase {
 
         // ccsetSessionPayableHours(new BigDecimal("10.2"));
 
-        cc.setPerUnitAmountExTax(new Money("20.00"))
+        cc.setPerUnitAmountExTax(Money.of("20.00"))
         cc.setFlowType(ClassCostFlowType.EXPENSE)
 
         Money result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("2000.00"), result)
+        Assertions.assertEquals(Money.of("2000.00"), result)
 
         cc.setFlowType(ClassCostFlowType.INCOME)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("2000.00"), result)
+        Assertions.assertEquals(Money.of("2000.00"), result)
 
         cc.setFlowType(ClassCostFlowType.WAGES)
         result = ClassCostUtil.getActualCost(cc)
-        Assertions.assertEquals(new Money("2000.00"), result)
+        Assertions.assertEquals(Money.of("2000.00"), result)
     }
 
     @Test
@@ -632,7 +632,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating actual amount for 10% discount, class price excluding tax $100.00,
         // 1 active enrolment with this discount applied
         Money actualCostPerc = ClassCostUtil.getActualCost(ccPerc)
-        Assertions.assertEquals(new Money("10.00"), actualCostPerc)
+        Assertions.assertEquals(Money.of("10.00"), actualCostPerc)
 
         percDiscountCC.getDiscount().setDiscountPercent(new BigDecimal('20.0'))
 
@@ -650,7 +650,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // class price excluding tax $100.00, should receive same value as for 10% discount applied originally
         // 1 active enrolment with this discount applied
         Money actualCostPercChanged = ClassCostUtil.getActualCost(ccPercChanged)
-        Assertions.assertEquals(new Money("10.00"), actualCostPercChanged)
+        Assertions.assertEquals(Money.of("10.00"), actualCostPercChanged)
 
         ClassCost ccDollar = cayenneContext.newObject(ClassCost.class)
         ccDollar.setCourseClass(courseClass)
@@ -665,7 +665,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating actual amount for $20.00 discount, class price excluding tax $100.00,
         // 1 active enrolment with this discount applied
         Money actualCostDollar = ClassCostUtil.getActualCost(ccDollar)
-        Assertions.assertEquals(new Money("20.00"), actualCostDollar)
+        Assertions.assertEquals(Money.of("20.00"), actualCostDollar)
 
         ClassCost ccFee = cayenneContext.newObject(ClassCost.class)
         ccFee.setCourseClass(courseClass)
@@ -680,7 +680,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating actual amount for $50.00 fixed price discount, class price excluding tax $100.00,
         // 1 active enrolment with this discount applied
         Money actualCostFee = ClassCostUtil.getActualCost(ccFee)
-        Assertions.assertEquals(new Money("50.00"), actualCostFee)
+        Assertions.assertEquals(Money.of("50.00"), actualCostFee)
     }
 
     @Test
@@ -704,7 +704,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating budgeted amount for 10% discount, class price excluding tax $100.00,
         // projected enrolments count 5, predicted discount usage 50%
         Money budgetedCostPerc = ClassCostUtil.getBudgetedCost(ccPerc)
-        Assertions.assertEquals(new Money("25.00"), budgetedCostPerc)
+        Assertions.assertEquals(Money.of("25.00"), budgetedCostPerc)
 
         ClassCost ccDollar = cayenneContext.newObject(ClassCost.class)
         ccDollar.setCourseClass(courseClass)
@@ -719,7 +719,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating budgeted amount for $20.00 discount, class price excluding tax $100.00,
         // projected enrolments count 5, predicted discount usage 50%
         Money budgetedCostDollar = ClassCostUtil.getBudgetedCost(ccDollar)
-        Assertions.assertEquals(new Money("50.00"), budgetedCostDollar)
+        Assertions.assertEquals(Money.of("50.00"), budgetedCostDollar)
 
         ClassCost ccFee = cayenneContext.newObject(ClassCost.class)
         ccFee.setCourseClass(courseClass)
@@ -734,7 +734,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating budgeted amount for $50.00 fixed price discount, class price excluding tax $100.00,
         // projected enrolments count 5, predicted discount usage 10%
         Money budgetedCostFee = ClassCostUtil.getBudgetedCost(ccFee)
-        Assertions.assertEquals(new Money("25.00"), budgetedCostFee)
+        Assertions.assertEquals(Money.of("25.00"), budgetedCostFee)
     }
 
     @Test
@@ -758,7 +758,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating maximum amount for 10% discount, class price excluding tax $100.00,
         // maximum enrolments count 10, predicted discount usage 50%
         Money maximumCostPerc = ClassCostUtil.getMaximumCost(ccPerc)
-        Assertions.assertEquals(new Money("50.00"), maximumCostPerc)
+        Assertions.assertEquals(Money.of("50.00"), maximumCostPerc)
 
         ClassCost ccDollar = cayenneContext.newObject(ClassCost.class)
         ccDollar.setCourseClass(courseClass)
@@ -773,7 +773,7 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating maximum amount for $20.00 discount, class price excluding tax $100.00,
         // maximum enrolments count 10, predicted discount usage 50%
         Money maximumCostDollar = ClassCostUtil.getMaximumCost(ccDollar)
-        Assertions.assertEquals(new Money("100.00"), maximumCostDollar)
+        Assertions.assertEquals(Money.of("100.00"), maximumCostDollar)
 
         ClassCost ccFee = cayenneContext.newObject(ClassCost.class)
         ccFee.setCourseClass(courseClass)
@@ -788,6 +788,6 @@ class ClassCostUtilTest extends TestWithDatabase {
         // calculating maximum amount for $50.00 fixed price discount, class price excluding tax $100.00,
         // maximum enrolments count 10, predicted discount usage 10%
         Money maximumCostFee = ClassCostUtil.getMaximumCost(ccFee)
-        Assertions.assertEquals(new Money("50.00"), maximumCostFee)
+        Assertions.assertEquals(Money.of("50.00"), maximumCostFee)
     }
 }

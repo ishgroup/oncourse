@@ -70,7 +70,7 @@ class EmailQueuingListenerTest extends TestWithDatabase {
         voucher.setCode("test")
         voucher.setInvoiceLine(il)
         voucher.setExpiryDate(new Date())
-        voucher.setRedemptionValue(new Money("100.0"))
+        voucher.setRedemptionValue(Money.of("100.0"))
         voucher.setStatus(ProductStatus.NEW)
         voucher.setSource(PaymentSource.SOURCE_ONCOURSE)
 
@@ -112,7 +112,7 @@ class EmailQueuingListenerTest extends TestWithDatabase {
         voucher.setCode("test")
         voucher.setInvoiceLine(il)
         voucher.setExpiryDate(new Date())
-        voucher.setRedemptionValue(new Money("100.0"))
+        voucher.setRedemptionValue(Money.of("100.0"))
         voucher.setStatus(ProductStatus.NEW)
         voucher.setSource(PaymentSource.SOURCE_ONCOURSE)
         voucher.setStatus(ProductStatus.ACTIVE)

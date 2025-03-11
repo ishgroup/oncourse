@@ -28,58 +28,6 @@ import java.time.LocalDate
 
 @CompileStatic
 class PaymentInTest extends TestWithDatabase {
-
-    /*@Test
-    void testDataModifiedOnForPaymentInLines() throws InterruptedException {
-        DataContext newContext = injector.getInstance(ICayenneService.class).getNewNonReplicatingContext()
-
-        Contact contact = newContext.newObject(Contact.class)
-        contact.setFirstName("firstName1")
-        contact.setLastName("lastName1")
-
-        Account account = newContext.newObject(Account.class)
-        account.setAccountCode("accountCode")
-        account.setDescription("description")
-        account.setType(AccountType.ASSET)
-        account.setIsEnabled(true)
-
-        PaymentIn pIn = newContext.newObject(PaymentIn.class)
-        pIn.setPaymentDate(LocalDate.now())
-        pIn.setAmount(Money.ONE)
-        pIn.setPayer(contact)
-        pIn.setAccountIn(account)
-        pIn.setStatus(PaymentStatus.SUCCESS)
-        SetPaymentMethod.valueOf(PaymentMethodUtil.getCustomPaymentMethod(newContext, PaymentMethod.class, PaymentType.CASH), pIn).set()
-
-        pIn.setSource(PaymentSource.SOURCE_ONCOURSE)
-
-        Invoice invoice = newContext.newObject(Invoice.class)
-
-        invoice.setContact(contact)
-        invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(new Money("0"))
-
-        invoice.setDebtorsAccount(account)
-
-        PaymentInLine piLine = newContext.newObject(PaymentInLine.class)
-        piLine.setInvoice(invoice)
-        piLine.setAmount(Money.ONE)
-        piLine.setAccountOut(account)
-
-        pIn.addToPaymentInLines(piLine)
-        newContext.commitChanges()
-
-        Thread.sleep(1000)
-        Date pInModifiedOn = pIn.getModifiedOn()
-
-        Banking banking = newContext.newObject(Banking.class)
-        banking.setType(BankingType.MANUAL)
-        banking.setSettlementDate(LocalDate.now())
-        pIn.setBanking(banking)
-        newContext.commitChanges()
-        Assertions.assertNotSame(pIn.getModifiedOn(), pInModifiedOn)
-    }*/
-
     
     @Test
     void testStatusConstraints() {

@@ -8,6 +8,8 @@ import groovy.transform.CompileStatic
 import ish.TestUtil
 import ish.TestWithDatabase
 import ish.DatabaseSetup
+import ish.math.Money
+import ish.math.MoneyManager
 import ish.oncourse.cayenne.PaymentInterface
 import ish.oncourse.cayenne.PersistentObjectI
 import ish.oncourse.common.ResourcesUtil
@@ -45,6 +47,7 @@ import java.time.LocalDate
 @CompileStatic
 @DatabaseSetup(value = "ish/oncourse/server/sampleData.xml")
 class ReportPrintingTest extends TestWithDatabase {
+
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd")
     protected static final Integer TEST_BUNCH_SIZE = 70
 
@@ -174,7 +177,7 @@ class ReportPrintingTest extends TestWithDatabase {
 
         request.setIds(mapOfIds)
 
-        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class))
+        PrintWorker worker = new PrintWorker(request, cayenneService, injector.getInstance(PreferenceController.class) as DocumentService, injector.getInstance(UserPreferenceService.class), MoneyManager.systemContext)
         worker.run()
 
         while (ResultType.IN_PROGRESS == worker.getResult().getResultType()) {

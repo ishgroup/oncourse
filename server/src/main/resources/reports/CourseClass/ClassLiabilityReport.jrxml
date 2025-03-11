@@ -87,11 +87,11 @@
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="courseClass" isBlankWhenNull="true">
 					<reportElement key="staticText-1" style="header 3 (right)" x="375" y="2" width="75" height="14" uuid="b4c36afc-9a74-46f8-a037-4b98ddda044d"/>
-					<textFieldExpression><![CDATA[new Money($V{classLiabilitySum})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{classLiabilitySum})]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="courseClass" isBlankWhenNull="true">
 					<reportElement key="staticText-2" style="header 3 (right)" x="456" y="2" width="78" height="14" uuid="b2ce653b-136c-4e5d-aae8-54c97ab55b5b"/>
-					<textFieldExpression><![CDATA[new Money($V{classTotalSum})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{classTotalSum})]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -193,12 +193,12 @@
 			<textField evaluationTime="Report" isBlankWhenNull="true">
 				<reportElement key="staticText-1" style="header 2" x="371" y="5" width="75" height="25" uuid="59eb6613-078c-4922-87ad-e30a5548fd97"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[new Money($V{liabilitySum})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{liabilitySum})]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="true">
 				<reportElement key="staticText-2" style="header 2" x="456" y="5" width="78" height="25" uuid="d246b0a2-5ba1-469c-a6e1-e0c651fc08ed"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[new Money($V{totalSum})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{totalSum})]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

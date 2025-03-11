@@ -40,7 +40,7 @@ class DelayedIncomeTransactionsBuilderTest {
         when(invoiceLine.prepaidFeesAccount).thenReturn(secondaryAccount)
         when(invoiceLine.id).thenReturn(invLineId)
 
-        amount = new Money(230.0)
+        amount = Money.of(230.0)
         transactionDate = LocalDate.of(2017, Month.MAY, 28)
     }
 

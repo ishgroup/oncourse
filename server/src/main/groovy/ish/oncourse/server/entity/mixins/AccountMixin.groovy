@@ -39,13 +39,13 @@ class AccountMixin {
 	 */
 	@API
 	static Money getBalance(Account self, LocalDate until) {
-		return new Money(performTransactionSumQuery(self.objectContext, buildWhereClause(self, BALANCE_QUERY_TEMPLATE, until)))
+		return Money.of(performTransactionSumQuery(self.objectContext, buildWhereClause(self, BALANCE_QUERY_TEMPLATE, until)))
 	}
 
 	//TODO docs
 	@API
 	static Money getMovements(Account self, LocalDate from, LocalDate to) {
-		return new Money(performTransactionSumQuery(self.objectContext, buildWhereClause(self, MOVEMENTS_QUERY_TEMPLATE, from, to)))
+		return Money.of(performTransactionSumQuery(self.objectContext, buildWhereClause(self, MOVEMENTS_QUERY_TEMPLATE, from, to)))
 	}
 
 	@Deprecated

@@ -27,15 +27,15 @@ import ish.oncourse.server.api.checkout.Checkout
 import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutSubmitRequestDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
+import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.checkout.gateway.TwoStepPaymentServiceInterface
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 @CompileDynamic
 class StripePaymentService implements TwoStepPaymentServiceInterface {
-    private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
-    private static final String CURRENCY_CODE_AUD = "AUD"
+    private static final Logger logger = LogManager.getLogger(StripePaymentService)
 
     @Inject
     private PreferenceController preferenceController
@@ -135,8 +135,8 @@ class StripePaymentService implements TwoStepPaymentServiceInterface {
         SessionAttributes sessionAttributes = new SessionAttributes()
 
         try {
-            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.longValue())
-                    .setCurrency(CURRENCY_CODE_AUD)
+            def refund = Refund.create(RefundCreateParams.builder().setAmount(amount.toLong())
+                    .setCurrency(amount.currencyContext.currencyCode)
                     .setPaymentIntent(transactionId)
                     .build())
 
@@ -160,7 +160,7 @@ class StripePaymentService implements TwoStepPaymentServiceInterface {
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
                         .setAmount(amount.multiply(100).toLong())
-                        .setCurrency(CURRENCY_CODE_AUD)
+                        .setCurrency(amount.currencyContext.currencyCode)
                         .setCustomer(cardId)
                         .build()
 

@@ -113,7 +113,7 @@
 				</textField>
 				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="total" isBlankWhenNull="false">
 					<reportElement key="textField-22" style="header 3 (right)" x="434" y="6" width="95" height="16" uuid="f6e8b2ef-7331-4ec2-9c51-bd017ff0ec25"/>
-					<textFieldExpression><![CDATA[new Money($V{totalIA})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{totalIA})]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -138,7 +138,7 @@
 					<textElement>
 						<font fontName="Open Sans Semibold" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[new Money($V{catIA})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{catIA})]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -211,7 +211,7 @@
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-9" style="data field (money)" x="434" y="1" width="95" height="14" uuid="950cac4d-c6b9-4c6b-b4dd-d2ee59886cad"/>
-				<textFieldExpression><![CDATA[new Money($V{incomeActual})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{incomeActual})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-12" style="data field" x="2" y="1" width="186" height="14" uuid="f6714de9-25bb-4ccd-87e6-8727babf65c4"/>

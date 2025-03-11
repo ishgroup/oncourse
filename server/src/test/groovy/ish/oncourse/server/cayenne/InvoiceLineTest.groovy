@@ -65,7 +65,7 @@ class InvoiceLineTest extends TestWithDatabase {
     void testInvoiceLineSetup2() {
         DataContext newContext = cayenneService.getNewNonReplicatingContext()
 
-        Money amount = new Money("100")
+        Money amount = Money.of("100")
 
         Tax tax = newContext.newObject(Tax.class)
         tax.setRate(BigDecimal.valueOf(0.1d))
@@ -171,9 +171,9 @@ class InvoiceLineTest extends TestWithDatabase {
                 .get(0)
 
         List<Money> amounts = new ArrayList<>()
-        amounts.add(new Money("-10.00"))
+        amounts.add(Money.of("-10.00"))
         // amounts.add(Money.ZERO) covered in test above
-        amounts.add(new Money("100.00"))
+        amounts.add(Money.of("100.00"))
 
         for (Money amount : amounts) {
             for (int quantity = 1; quantity < 4; quantity++) {
@@ -250,7 +250,7 @@ class InvoiceLineTest extends TestWithDatabase {
     void testCreateTransactions3() {
         DataContext newContext = cayenneService.getNewNonReplicatingContext()
         PreferenceController.getController().setAccountPrepaidFeesPostAt(Preferences.ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION)
-        Money amount = new Money("100")
+        Money amount = Money.of("100")
 
         Tax tax = newContext.select(SelectQuery.query(Tax.class, ExpressionFactory.matchExp(Tax.ID_PROPERTY, 1L))).get(0)
         Contact contact = newContext.select(SelectQuery.query(Contact.class, ExpressionFactory.matchExp(Contact.ID_PROPERTY, 1L))).get(0)
@@ -273,7 +273,7 @@ class InvoiceLineTest extends TestWithDatabase {
         invoiceLine.setPrepaidFeesAccount(accountPrepaidFees)
         invoiceLine.setInvoice(invoice)
         invoiceLine.setTitle("test")
-        invoiceLine.setPrepaidFeesRemaining(new Money("60"))
+        invoiceLine.setPrepaidFeesRemaining(Money.of("60"))
 
         invoice.updateAmountOwing()
 
@@ -295,7 +295,7 @@ class InvoiceLineTest extends TestWithDatabase {
     void testCreateTransactions4() {
         DataContext newContext = cayenneService.getNewNonReplicatingContext()
         PreferenceController.getController().setAccountPrepaidFeesPostAt(Preferences.ACCOUNT_PREPAID_FEES_POST_AT_EVERY_SESSION)
-        Money amount = new Money("100").negate()
+        Money amount = Money.of("100").negate()
 
         Tax tax = newContext.select(SelectQuery.query(Tax.class, ExpressionFactory.matchExp(Tax.ID_PROPERTY, 1L))).get(0)
         Contact contact = newContext.select(SelectQuery.query(Contact.class, ExpressionFactory.matchExp(Contact.ID_PROPERTY, 1L))).get(0)
@@ -318,7 +318,7 @@ class InvoiceLineTest extends TestWithDatabase {
         invoiceLine.setPrepaidFeesAccount(accountPrepaidFees)
         invoiceLine.setInvoice(invoice)
         invoiceLine.setTitle("test")
-        invoiceLine.setPrepaidFeesRemaining(new Money("60").negate())
+        invoiceLine.setPrepaidFeesRemaining(Money.of("60").negate())
 
         invoice.updateAmountOwing()
 
@@ -380,14 +380,14 @@ class InvoiceLineTest extends TestWithDatabase {
         List<AccountTransaction> list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals( 1, list.size(), "Checking tax transactions")
-        Assertions.assertEquals(new Money("10.00"), list.get(0).getAmount(),"Checking tax transactions amount")
+        Assertions.assertEquals(Money.of("10.00"), list.get(0).getAmount(),"Checking tax transactions amount")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountIncome)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals(1, list.size(), "Checking " + accountIncome.getDescription() + " transactions")
-        Assertions.assertEquals(new Money("100.00"), list.get(0).getAmount(), "Checking " + accountIncome.getDescription() + " transactions amount")
+        Assertions.assertEquals(Money.of("100.00"), list.get(0).getAmount(), "Checking " + accountIncome.getDescription() + " transactions amount")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountPrepaidFees)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
@@ -406,8 +406,8 @@ class InvoiceLineTest extends TestWithDatabase {
             amount2 = list.get(0).getAmount()
             amount1 = list.get(1).getAmount()
         }
-        Assertions.assertEquals(new Money("10.00"), amount1, "Checking " + accountDebtors.getDescription() + " transactions amount")
-        Assertions.assertEquals(new Money("100.00"), amount2, "Checking " + accountDebtors.getDescription() + " transactions amount")
+        Assertions.assertEquals(Money.of("10.00"), amount1, "Checking " + accountDebtors.getDescription() + " transactions amount")
+        Assertions.assertEquals(Money.of("100.00"), amount2, "Checking " + accountDebtors.getDescription() + " transactions amount")
 
     }
 
@@ -442,7 +442,7 @@ class InvoiceLineTest extends TestWithDatabase {
         invoiceLine.setPrepaidFeesAccount(accountPrepaidFees)
         invoiceLine.setInvoice(invoice)
         invoiceLine.setTitle("test")
-        invoiceLine.setPrepaidFeesRemaining(new Money("60"))
+        invoiceLine.setPrepaidFeesRemaining(Money.of("60"))
 
         Enrolment enrolment = newContext.newObject(Enrolment.class)
         enrolment.setStudent(student)
@@ -459,21 +459,21 @@ class InvoiceLineTest extends TestWithDatabase {
         List<AccountTransaction> list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals(1, list.size(), "Checking tax transactions")
-        Assertions.assertEquals(new Money("10.00"), list.get(0).getAmount(), "Checking tax transactions amount")
+        Assertions.assertEquals(Money.of("10.00"), list.get(0).getAmount(), "Checking tax transactions amount")
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountIncome)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals(1, list.size(), "Checking " + accountIncome.getDescription() + " transactions")
-        Assertions.assertEquals(new Money("40"), list.get(0).getAmount(), "Checking " + accountIncome.getDescription())
+        Assertions.assertEquals(Money.of("40"), list.get(0).getAmount(), "Checking " + accountIncome.getDescription())
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountPrepaidFees)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals(1, list.size(), "Checking " + accountPrepaidFees.getDescription() + " transactions")
-        Assertions.assertEquals(new Money("60"), list.get(0).getAmount(), "Checking " + accountPrepaidFees.getDescription())
+        Assertions.assertEquals(Money.of("60"), list.get(0).getAmount(), "Checking " + accountPrepaidFees.getDescription())
 
         e = ExpressionFactory.matchExp(AccountTransaction.ACCOUNT_PROPERTY, accountDebtors)
         e = e.andExp(ExpressionFactory.matchExp(_AccountTransaction.FOREIGN_RECORD_ID_PROPERTY, invoiceLine.getId()))
@@ -482,9 +482,9 @@ class InvoiceLineTest extends TestWithDatabase {
         list = newContext.select(sq)
 
         Assertions.assertEquals(3, list.size(),"Checking " + accountDebtors.getDescription() + " transactions")
-        Assertions.assertEquals(new Money("10"), list.get(0).getAmount(), "Checking " + accountDebtors.getDescription())
-        Assertions.assertEquals(new Money("40"), list.get(1).getAmount(), "Checking " + accountDebtors.getDescription())
-        Assertions.assertEquals(new Money("60"), list.get(2).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(Money.of("10"), list.get(0).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(Money.of("40"), list.get(1).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(Money.of("60"), list.get(2).getAmount(), "Checking " + accountDebtors.getDescription())
 
     }
 
@@ -545,7 +545,7 @@ class InvoiceLineTest extends TestWithDatabase {
         List<AccountTransaction> list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals( 1, list.size(),"Checking tax transactions")
-        Assertions.assertEquals(new Money("10.00"), list.get(0).getAmount(),"Checking tax transactions amount")
+        Assertions.assertEquals(Money.of("10.00"), list.get(0).getAmount(),"Checking tax transactions amount")
 
         Assertions.assertEquals( invoice.getInvoiceDate(), list.get(0).getTransactionDate(), "Checking transactions dates ")
 
@@ -560,7 +560,7 @@ class InvoiceLineTest extends TestWithDatabase {
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals(1, list.size(), "Checking " + accountPrepaidFees.getDescription() + " transactions")
-        Assertions.assertEquals(new Money("100"), list.get(0).getAmount(), "Checking " + accountPrepaidFees.getDescription())
+        Assertions.assertEquals(Money.of("100"), list.get(0).getAmount(), "Checking " + accountPrepaidFees.getDescription())
 
         e = AccountTransaction.ACCOUNT.eq(accountDebtors)
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
@@ -569,8 +569,8 @@ class InvoiceLineTest extends TestWithDatabase {
         list = newContext.select(sq)
 
         Assertions.assertEquals( 2, list.size(), "Checking " + accountDebtors.getDescription() + " transactions")
-        Assertions.assertEquals(new Money("10"), list.get(0).getAmount(), "Checking " + accountDebtors.getDescription())
-        Assertions.assertEquals(new Money("100"), list.get(1).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(Money.of("10"), list.get(0).getAmount(), "Checking " + accountDebtors.getDescription())
+        Assertions.assertEquals(Money.of("100"), list.get(1).getAmount(), "Checking " + accountDebtors.getDescription())
     }
 
     
@@ -632,7 +632,7 @@ class InvoiceLineTest extends TestWithDatabase {
         list = newContext.select(SelectQuery.query(AccountTransaction.class, e))
 
         Assertions.assertEquals( 1, list.size(),"Checking " + liabilityAccount.getDescription() + " transactions")
-        Assertions.assertEquals( new Money("100"), list.get(0).getAmount(), "Checking " + liabilityAccount.getDescription())
+        Assertions.assertEquals( Money.of("100"), list.get(0).getAmount(), "Checking " + liabilityAccount.getDescription())
 
         e = AccountTransaction.ACCOUNT.eq(debtorsAccount)
         e = e.andExp(AccountTransaction.FOREIGN_RECORD_ID.eq(invoiceLine.getId()))
@@ -641,6 +641,6 @@ class InvoiceLineTest extends TestWithDatabase {
         list = newContext.select(sq)
 
         Assertions.assertEquals(1, list.size(), "Checking " + debtorsAccount.getDescription() + " transactions")
-        Assertions.assertEquals(new Money("100"), list.get(0).getAmount(), "Checking " + debtorsAccount.getDescription())
+        Assertions.assertEquals(Money.of("100"), list.get(0).getAmount(), "Checking " + debtorsAccount.getDescription())
     }
 }

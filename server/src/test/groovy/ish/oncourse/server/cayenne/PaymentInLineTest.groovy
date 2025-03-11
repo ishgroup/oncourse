@@ -70,11 +70,11 @@ class PaymentInLineTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(debtorsAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-110.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-110.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(voucherLiabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(voucherUnderpaymentAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -82,8 +82,8 @@ class PaymentInLineTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("110.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("110.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liability_expense.getAmount())
 
         //VoucherProduct Purchase price: $100
         //Redemption : 4 enrolments (redeemed for 2 enrolments now)
@@ -95,11 +95,11 @@ class PaymentInLineTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions2 = AccountTransaction.ACCOUNT.eq(debtorsAccount).filterObjects(transactions2)
         Assertions.assertEquals(1, assetTransactions2.size())
-        Assertions.assertEquals(new Money("-110.00"), assetTransactions2.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-110.00"), assetTransactions2.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions2 = AccountTransaction.ACCOUNT.eq(voucherLiabilityAccount).filterObjects(transactions2)
         Assertions.assertEquals(1, liabilityTransactions2.size())
-        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions2.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liabilityTransactions2.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions2 = AccountTransaction.ACCOUNT.eq(voucherUnderpaymentAccount).filterObjects(transactions2)
         Assertions.assertEquals(2, expenseTransactions2.size())
@@ -107,8 +107,8 @@ class PaymentInLineTest extends TestWithDatabase {
         AccountTransaction asset_expense2 = expenseTransactions2.get(0).getAmount().isNegative() ? expenseTransactions2.get(1) : expenseTransactions2.get(0)
         AccountTransaction liability_expense2 = expenseTransactions2.get(0).getAmount().isNegative() ? expenseTransactions2.get(0) : expenseTransactions2.get(1)
 
-        Assertions.assertEquals(new Money("110.00"), asset_expense2.getAmount())
-        Assertions.assertEquals(new Money("-100.00"), liability_expense2.getAmount())
+        Assertions.assertEquals(Money.of("110.00"), asset_expense2.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liability_expense2.getAmount())
 
 
     }
@@ -139,11 +139,11 @@ class PaymentInLineTest extends TestWithDatabase {
 
         List<AccountTransaction> assetTransactions = AccountTransaction.ACCOUNT.eq(debtorsAccount).filterObjects(transactions)
         Assertions.assertEquals(1, assetTransactions.size())
-        Assertions.assertEquals(new Money("-220.00"), assetTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-220.00"), assetTransactions.get(0).getAmount())
 
         List<AccountTransaction> liabilityTransactions = AccountTransaction.ACCOUNT.eq(voucherLiabilityAccount).filterObjects(transactions)
         Assertions.assertEquals(1, liabilityTransactions.size())
-        Assertions.assertEquals(new Money("-100.00"), liabilityTransactions.get(0).getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liabilityTransactions.get(0).getAmount())
 
         List<AccountTransaction> expenseTransactions = AccountTransaction.ACCOUNT.eq(voucherUnderpaymentAccount).filterObjects(transactions)
         Assertions.assertEquals(2, expenseTransactions.size())
@@ -151,7 +151,7 @@ class PaymentInLineTest extends TestWithDatabase {
         AccountTransaction asset_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(1) : expenseTransactions.get(0)
         AccountTransaction liability_expense = expenseTransactions.get(0).getAmount().isNegative() ? expenseTransactions.get(0) : expenseTransactions.get(1)
 
-        Assertions.assertEquals(new Money("220.00"), asset_expense.getAmount())
-        Assertions.assertEquals(new Money("-100.00"), liability_expense.getAmount())
+        Assertions.assertEquals(Money.of("220.00"), asset_expense.getAmount())
+        Assertions.assertEquals(Money.of("-100.00"), liability_expense.getAmount())
     }
 }
