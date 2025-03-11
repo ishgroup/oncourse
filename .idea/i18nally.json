@@ -1,0 +1,46 @@
+{
+  "version" : "1.2",
+  "profiles" : [ {
+    "id" : "fc46a133-db8e-4a62-9e54-1f48ceb5292d",
+    "name" : "Default",
+    "keyNamingPattern" : "NATURAL_LANGUAGE_PATTERN",
+    "sink" : {
+      "id" : "8600a6ed-3257-49db-b23c-2547e5a124eb",
+      "type" : "singleFile",
+      "pathToFile" : "$PROJECT_DIR$/client-html/translate/translation.json",
+      "fileType" : "json",
+      "nestingType" : "DISABLED",
+      "placeholderFormatterName" : "I18NEXT"
+    },
+    "sources" : [ {
+      "id" : "c91fdae3-9986-4f35-8d26-b1de1862601f",
+      "type" : "jsx",
+      "scopeName" : "Project Files",
+      "scopePattern" : "",
+      "defaultReplacementTemplate" : "$t('%key%'',%varargs%)",
+      "attributeReplacementTemplate" : "$t('%key%'',%varargs%)",
+      "inlineTagsReplacementTemplate" : "$t('%key%'',%varargs%)",
+      "recognizedReplacementTemplates" : [ ],
+      "inlineTagNames" : [ "small", "tt", "big", "sub", "img", "strong", "code", "data", "samp", "wbr", "del", "slot", "sup", "br", "output", "abbr", "a", "b", "acronym", "bdi", "meter", "var", "em", "i", "label", "bdo", "kbd", "dfn", "ins", "ruby", "input", "q", "s", "u", "cite", "progress", "time", "mark", "span" ],
+      "translatableAttributeNames" : [ "alt", "placeholder", "label", "title", "aria-label" ],
+      "skipDefaultNamespace" : false,
+      "inlineTagHandler" : "I18NEXT"
+    }, {
+      "id" : "e444fe21-bd16-4cbb-8694-f2437efa2f77",
+      "type" : "js",
+      "scopeName" : "Project Files",
+      "scopePattern" : "",
+      "defaultReplacementTemplate" : "$t('%key%', %map%)",
+      "recognizedReplacementTemplates" : [ ],
+      "skipDefaultNamespace" : false
+    } ]
+  } ],
+  "ignores" : {
+    "valuesInProject" : [ "use strict" ],
+    "valuesInFile" : { },
+    "filesInProject" : [ ],
+    "unignoredFunctionNames" : [ ],
+    "unignoredFunctionArguments" : { },
+    "ignoredArrayKeys" : [ "template", "date", "dateFormat", "el", "query", "type", "sql", "layout", "component", "condition", "name", "selector", "id", "class", "key", "middleware" ]
+  }
+}
