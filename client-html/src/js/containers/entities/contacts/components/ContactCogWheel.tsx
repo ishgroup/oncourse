@@ -65,7 +65,7 @@ const ContactCogWheel = props => {
       />
 
       <MenuItem disabled={!isMergeEnable} className={menuItemClass} onClick={onClickMerge}>
-        {$t('merge')}
+        {$t('merge', [contactsCountLabel])}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />
     </>

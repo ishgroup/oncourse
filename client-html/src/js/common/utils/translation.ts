@@ -9,8 +9,16 @@
 import translationSource from '../../../../translate/translation.json';
 
 namespace translation {
-   export function translate(key: string) {
-    return translationSource[key];
+   export function translate(key: keyof typeof translationSource, variables?: string[] | number[]) {
+     let translated = translationSource[key];
+     
+     if (variables?.length) {
+       variables.forEach(v => {
+         translated = translated.replace(/{{.+}}/, v?.toString());
+       });
+     }
+     
+    return translated;
   }
 }
 

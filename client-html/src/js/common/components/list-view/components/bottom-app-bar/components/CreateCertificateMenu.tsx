@@ -167,7 +167,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
         <li>
           <Typography variant="body2" className="pb-2">
             {enrolments.withCertificate.length}
-            {$t('enrolment_already_have_certificates_linked_to_thei')}
+            {$t('enrolment_already_have_certificates_linked_to_thei', [enrolments.withCertificate.length !== 1 ? "s" : ""])}
           </Typography>
         </li>
       ) : null),
@@ -188,7 +188,7 @@ const CreateCertificateMenu: React.FC<CreateCertificateMenuProps> = ({
         <li>
           <Typography variant="body2" className="pb-2">
             {createdCertificatesCount}
-            {$t('new_certificate_will_be_created')}
+            {$t('new_certificate_will_be_created', [createdCertificatesCount > 1 ? "s" : ""])}
           </Typography>
         </li>
       ) : null),

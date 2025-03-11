@@ -33,7 +33,7 @@ const CustomizedTooltip = (props: any) => {
       return dataPayload.classCreated.map(classCreated => (
         <div key={classCreated.uniqueCode} className="mb-1">
           <Typography component="div" variant="body2" noWrap>
-            <span className="fontWeight600">{$t('class_published')}</span>
+            <span className="fontWeight600">{$t('class_published', classCreated.uniqueCode)}</span>
           </Typography>
           <Typography component="div" variant="body2" noWrap>
             <span className="fontWeight600">{format(parseISO(classCreated.createdOn), III_DD_MMM_YYYY_HH_MM)}</span>
@@ -49,7 +49,7 @@ const CustomizedTooltip = (props: any) => {
       return dataPayload.classStarted.map(classStarted => (
         <div key={classStarted.uniqueCode} className="mb-1">
           <Typography component="div" variant="body2" noWrap>
-            <span className="fontWeight600">{$t('class_started')}</span>
+            <span className="fontWeight600">{$t('class_started', classStarted.uniqueCode)}</span>
           </Typography>
           <Typography component="div" variant="body2" noWrap>
             <span className="fontWeight600">{format(parseISO(classStarted.startDateTime), III_DD_MMM_YYYY_HH_MM)}</span>

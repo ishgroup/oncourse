@@ -374,7 +374,7 @@ const BottomAppBar = (
                   root: "listItemPadding"
                 }}
               >
-                {$t('find_related_to_record')}
+                {$t('find_related_to_record',[selection.length])}
                 {selection.length > 1 ? "s" : ""}
               </MenuItem>
 

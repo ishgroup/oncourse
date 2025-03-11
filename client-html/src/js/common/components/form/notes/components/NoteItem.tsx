@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import $t from '@t';
 import clsx from 'clsx';
+import { DD_MMM_YYYY_AT_HH_MM_A_SPECIAL, formatRelativeDate } from 'ish-ui';
 import React from 'react';
 import FormField from '../../formFields/FormField';
 
@@ -45,7 +46,9 @@ const NoteItem = (props: Props) => {
             <Grid item>
               {item.created && (
                 <Typography className={classes.dateInfo}>
-                  {$t('created2')}
+                  {$t('Created')}
+                  {' '}
+                  {formatRelativeDate(new Date(item.created), new Date(), DD_MMM_YYYY_AT_HH_MM_A_SPECIAL)}
                 </Typography>
               )}
               {item.createdBy && (
@@ -57,7 +60,7 @@ const NoteItem = (props: Props) => {
               )}
               {item.modified && (
                 <Typography className={clsx(classes.dateInfo, "mt-1")}>
-                  {$t('modified')}
+                  {$t('modified', [formatRelativeDate(new Date(item.modified), new Date(), DD_MMM_YYYY_AT_HH_MM_A_SPECIAL)])}
                 </Typography>
               )}
               {item.modifiedBy && (

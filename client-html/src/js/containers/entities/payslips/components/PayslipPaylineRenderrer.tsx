@@ -114,7 +114,7 @@ class PayslipPaylineRenderrer extends React.PureComponent<any, any> {
           {customLines.length ? (
             <>
               <div className="heading mb-1 money">
-                {$t('custom_lines')}
+                {$t('custom_lines', [formatCurrency(classGroupsTotal["Custom Lines"], shortCurrencySymbol)])}
               </div>
               {customLines}
             </>

@@ -352,7 +352,10 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           <Collapse in={moreDetailcollapsed} mountOnEnter unmountOnExit className="mb-0">
             <Typography variant="caption" color="textSecondary">
               {documentVersion.size}
-              {$t('br_author')}
+              <br />
+              {$t('author')}:
+              {' '}
+              {documentVersion.createdBy}
             </Typography>
           </Collapse>
           <br />

@@ -385,7 +385,11 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           />
         </div>
         <Typography color="inherit" component="div">
-          {$t('money')}
+          {$t('Current class fee price range')}:
+          {' '}
+          <span className="money">{formatCurrency(minFee)}</span>
+          {' '}
+          {$t('to')}
           {" "}
           <span className="money">{formatCurrency(maxFee)}</span>
         </Typography>

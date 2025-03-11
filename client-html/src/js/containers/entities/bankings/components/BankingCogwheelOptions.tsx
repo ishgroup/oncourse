@@ -31,7 +31,7 @@ class BankingCogwheelOptions extends React.PureComponent<CogwhelAdornmentProps &
 
     return (
       <MenuItem disabled={!hasSelected} className={menuItemClass} role="Completed" onClick={this.reconcileBanking}>
-        {$t('reconcile_banking_deposit')}
+        {$t('reconcile_banking_deposit', [selection.length])}
         {suffix}
       </MenuItem>
     );
