@@ -1,5 +1,6 @@
 import MenuItem from '@mui/material/MenuItem';
 import $t from '@t';
+import { formatCurrency } from 'ish-ui';
 import React, { memo, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -77,9 +78,17 @@ const PaymentInCogwheel = memo<Props>(props => {
           closeMenu();
         },
         confirmMessage: <span>
-          {$t('money3')}
+          {$t('You are about to make a payment of')}
+          {' '}
+          <span className="money">{formatCurrency(customValues.amount, currencySymbol)}</span>
+          {' '}
+          {$t('to')}
+          {' '}
+          {customValues.name}
+          {' '}
+          {$t('as a refund against their credit card')}.
         </span>,
-        cancelButtonText: "Continue"
+        cancelButtonText: $t("Continue")
       });
       return;
     }
@@ -89,8 +98,8 @@ const PaymentInCogwheel = memo<Props>(props => {
         reverse(selection[0]);
         closeMenu();
       },
-      confirmMessage: "You are about to reverse payment",
-      cancelButtonText: "Continue"
+      confirmMessage: $t("You are about to reverse payment"),
+      cancelButtonText: $t("Continue")
   });
   };
 

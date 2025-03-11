@@ -174,7 +174,7 @@ const LeadGeneral = (props: Props) => {
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
                 type="remoteDataSelect"
-                label={$t('contact')}
+                label={$t('Contact')}
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"

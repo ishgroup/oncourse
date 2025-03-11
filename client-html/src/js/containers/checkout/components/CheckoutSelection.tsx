@@ -1111,7 +1111,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                  )}
 
                   <CheckoutSectionExpandableRenderer
-                    title={$t('payment')}
+                    title={$t('Payment')}
                     expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
                     onExpanded={handlePaymentClick}
                     disabled={

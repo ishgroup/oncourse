@@ -120,7 +120,7 @@ const TotalStatisticInfo = props => {
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Typography className={clsx(classes.totalText)}>
         <Person className={classes.enrolmentsColor} />
-        {$t('spanspan')}
+        <span>{totalStudents}</span>
         <strong className={classes.revenueColor}>{(currency && totalEnrolments !== null) && currency.shortCurrencySymbol}</strong>
         {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
       </Typography>

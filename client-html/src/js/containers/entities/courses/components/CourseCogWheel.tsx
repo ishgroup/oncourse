@@ -45,7 +45,7 @@ const CourseCogWheel = React.memo<any>(props => {
         {$t('relationship_view')}
       </MenuItem>
       <MenuItem disabled={!selectedAndNotNew} className={menuItemClass} onClick={onClick} role="Duplicate">
-        {$t('duplicate_cours')}
+        {$t('duplicate_cours', selection.length)}
         {selection.length <= 1 ? "e" : "es"}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />

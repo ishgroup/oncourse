@@ -725,7 +725,14 @@ class AvetmissExportForm extends React.PureComponent<Props & InjectedFormProps, 
                             <div>
                               {flavourField}
                               <Typography gutterBottom variant="caption">
-                                {$t('exporting_enrolment')}
+                                {" "}
+                                {$t('Exporting')}
+                                {' '}
+                                {enrolmentsCount}
+                                {' '}
+                                {$t('enrolment')}
+                                {enrolmentsCount !== 1 ? "s" : ""}
+                                ...
                                 {" "}
                               </Typography>
                             </div>

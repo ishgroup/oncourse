@@ -112,7 +112,7 @@ const VoucherView: React.FC<Props> = props => {
             <Grid item sm={12} className="mb-2">
               <div className="heading">{$t('apply_to')}</div>
               <Typography variant="caption">
-                {$t('can_be_used_for_up_to_enrolments')}
+                {$t('can_be_used_for_up_to_enrolments', [enrolmentsLeft.toString()])}
               </Typography>
             </Grid>
 
