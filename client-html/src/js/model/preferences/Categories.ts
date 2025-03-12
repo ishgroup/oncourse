@@ -20,5 +20,6 @@ export enum Categories {
   product,
   contact,
   courseTypes,
-  classTypes
+  classTypes,
+  logo
 }

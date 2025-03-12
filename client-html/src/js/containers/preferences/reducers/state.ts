@@ -13,6 +13,7 @@ import {
   PaymentMethod, Tag,
   Tax
 } from "@api/model";
+import { PreferenceSchema } from '../../../model/preferences/PreferencesSchema';
 
 export interface PreferencesState {
   contact?: any;
@@ -49,4 +50,5 @@ export interface PreferencesState {
   columnWidth?: ColumnWidth;
   product?: any;
   plugins?: string;
+  logo?: Record<string, PreferenceSchema>;
 }

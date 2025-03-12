@@ -6,22 +6,35 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import translationSource from '../../../../translate/translation.json';
+import translationSourceDefault from '../../../../translate/translation_AU.json';
+import PreferencesService from '../../containers/preferences/services/PreferencesService';
 
-namespace translation {
-   export function translate(key: keyof typeof translationSource, variables?: string[] | number[]) {
-     let translated = translationSource[key];
-     
-     if (variables?.length) {
-       variables.forEach(v => {
-         translated = translated.replace(/{{.+}}/, v?.toString());
-       });
-     }
-     
-    return translated;
+class TranslationServiceBase {
+  private translationSource = {};
+
+  constructor() {
+    PreferencesService.getLocation()
+      .then(l => {
+        this.translationSource = require(`../../../../translate/translation_${l.languageCode}.json`);
+      })
+      .catch(e => console.error(e));
   }
+
+  public translate = (key: keyof typeof translationSourceDefault, variables?: string[] | number[]) => {
+   let translated = this.translationSource[key];
+
+   if (variables?.length) {
+     variables.forEach(v => {
+       translated = translated.replace(/{{.+}}/, v?.toString());
+     });
+   }
+
+  return translated;
+  };
 }
 
-declare const $t: typeof translation.translate;
+const TranslationService = new TranslationServiceBase();
 
-export default translation.translate;
+declare const $t: typeof TranslationService.translate;
+
+export default TranslationService.translate;

@@ -41,7 +41,14 @@ import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/Swip
 import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY, FORM_NAMES_ALLOWED_FOR_REFRESH,
+  CUSTOM_LOGO_BLACK,
+  CUSTOM_LOGO_BLACK_SMALL,
+  CUSTOM_LOGO_COLOUR,
+  CUSTOM_LOGO_COLOUR_SMALL,
+  CUSTOM_LOGO_WHITE,
+  CUSTOM_LOGO_WHITE_SMALL,
+  DASHBOARD_THEME_KEY,
+  FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
   READ_NEWS,
   SPECIAL_TYPES_DISPLAY_KEY,
@@ -49,10 +56,11 @@ import {
 } from '../constants/Config';
 import { EnvironmentConstants } from '../constants/EnvironmentConstants';
 import { AppMessage } from '../model/common/Message';
+import { Categories } from '../model/preferences';
 import { State } from '../reducers/state';
 import { loginRoute, routes } from '../routes';
 import { getDashboardBlogPosts } from './dashboard/actions';
-import { getCurrency, isLoggedIn } from './preferences/actions';
+import { getCurrency, getPreferencesByKeys, isLoggedIn } from './preferences/actions';
 import { ThemeContext } from './ThemeContext';
 
 export const muiCache = createCache({
@@ -289,7 +297,20 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
+    dispatch(getUserPreferences([
+      SYSTEM_USER_ADMINISTRATION_CENTER, 
+      READ_NEWS, 
+      LICENSE_SCRIPTING_KEY, 
+      SPECIAL_TYPES_DISPLAY_KEY
+    ]));
+    dispatch(getPreferencesByKeys([
+      CUSTOM_LOGO_BLACK,
+      CUSTOM_LOGO_BLACK_SMALL,
+      CUSTOM_LOGO_WHITE,
+      CUSTOM_LOGO_WHITE_SMALL,
+      CUSTOM_LOGO_COLOUR,
+      CUSTOM_LOGO_COLOUR_SMALL
+    ], Categories.logo));
     dispatch(getDashboardBlogPosts());
   }
 });

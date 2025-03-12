@@ -21,7 +21,7 @@ import {
   GradingApi,
   GradingType,
   Holiday,
-  HolidayApi,
+  HolidayApi, Location,
   PaymentApi,
   PaymentMethod,
   PreferenceApi, PreferenceEnum,
@@ -30,7 +30,7 @@ import {
   TaxApi,
   TutorRoleApi,
   UserPreferenceApi
-} from "@api/model";
+} from '@api/model';
 import { DefaultHttpService } from "../../../common/services/HttpService";
 import { SearchService } from "../../../common/services/SearchService";
 import { AccountStudentEnrolments, Categories } from "../../../model/preferences";
@@ -73,6 +73,10 @@ class PreferencesService {
   readonly userPreferenceApi = new UserPreferenceApi(this.defaultApi);
 
   readonly gradingApi = new GradingApi(this.defaultApi);
+
+  public getLocation(): Promise<Location> {
+    return this.preferenceApi.getLocation();
+  }
 
   public getGradingTypes(): Promise<GradingType[]> {
     return this.gradingApi.get();
