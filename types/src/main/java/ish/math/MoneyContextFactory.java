@@ -61,7 +61,7 @@ public class MoneyContextFactory {
         private Country country;
 
         public DefaultMoneyContext() {
-            this.country = Country.findCountryByLocale(LocaleUtil.getDefaultLocale());
+            this.country = Country.fromLocale(LocaleUtil.getDefaultLocale());
         }
 
         @Override
