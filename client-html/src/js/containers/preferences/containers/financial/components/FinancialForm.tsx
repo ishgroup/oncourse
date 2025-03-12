@@ -205,15 +205,6 @@ class FinancialBaseForm extends React.Component<any, any> {
 
             <Grid item xs={12} sm={6} md={4}>
               <FormField
-                type="select"
-                name={this.formModel.AccountDefaultCurrency.uniqueKey}
-                label={$t('default_currency')}
-                items={currency}
-                              />
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={4}>
-              <FormField
                 type="number"
                 name={this.formModel.AccountInvoiceTerms.uniqueKey}
                 label={$t('default_invoice_terms_days')}

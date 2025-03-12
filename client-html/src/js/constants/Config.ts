@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PreferenceEnum } from "@api/model";
+import { PreferenceEnum } from '@api/model';
 import { CHECKOUT_SELECTION_FORM_NAME } from '../containers/checkout/components/CheckoutSelection';
 import {
   CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM
 } from '../containers/checkout/components/fundingInvoice/CheckoutFundingInvoiceSummaryList';
 import { CHECKOUT_ITEM_EDIT_VIEW_FORM } from '../containers/checkout/components/items/components/CkecoutItemViewForm';
-import { EntityName } from "../model/entities/common";
+import { EntityName } from '../model/entities/common';
 import { SEND_MESSAGE_FORM_NAME } from './Forms';
 
 export const SIMPLE_SEARCH_REGEX = /(^[^~\s."#]+$)/;
@@ -104,6 +104,13 @@ export const FAVORITE_SCRIPTS_KEY: PreferenceEnum = "dashboard.scripts.favorite.
 export const AVETMIS_ID_KEY: PreferenceEnum = "avetmiss.identifier";
 
 export const EMAIL_FROM_KEY: PreferenceEnum = "email.from";
+
+export const CUSTOM_LOGO_BLACK = "custom.logo.black";
+export const CUSTOM_LOGO_BLACK_SMALL = "custom.logo.black.small";
+export const CUSTOM_LOGO_WHITE = "custom.logo.white";
+export const CUSTOM_LOGO_WHITE_SMALL = "custom.logo.white.small";
+export const CUSTOM_LOGO_COLOUR = "custom.logo.colour";
+export const CUSTOM_LOGO_COLOUR_SMALL = "custom.logo.colour.small";
 
 export const DEFAULT_DELIVERY_MODE_KEY: PreferenceEnum = "courseclass_default_deliveryMode";
 export const DEFAULT_FUNDING_SOURCE_KEY: PreferenceEnum = "courseclass_default_fundingSource";
