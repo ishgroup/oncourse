@@ -19,7 +19,6 @@ import { getCheckoutModel, getCheckoutModelMembershipsValidTo } from '../../util
 
 const request: EpicUtils.Request = {
   type: CHECKOUT_UPDATE_SUMMARY_PRICES,
-  hideLoadIndicator: true,
   getData: async (p, s) => {
     const model = getCheckoutModel(s);
     await getCheckoutModelMembershipsValidTo(model);

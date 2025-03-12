@@ -7,6 +7,7 @@ import { BooleanArgFunction, NumberArgFunction, usePrevious } from 'ish-ui';
 import debounce from 'lodash.debounce';
 import React from 'react';
 import { connect } from 'react-redux';
+import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
 import { CheckoutSummaryListItem as SummaryList } from '../../../../model/checkout';
 import {
   checkoutGetPreviousCredit,
@@ -70,6 +71,7 @@ const CheckoutSummary = React.memo<Props>(props => {
 
   return (
     <div className="w-100">
+      <LoadingIndicator />
       {!openDiscountView
       && !selectedDiscount
       && activeField === CheckoutPage.summary
