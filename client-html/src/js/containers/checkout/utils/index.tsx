@@ -406,7 +406,7 @@ const getInvoiceLinePrices = (item: CheckoutItem, lines: AbstractInvoiceLine[], 
   };
 
   const validTo = item.type === "membership" ? {
-    validTo: lines[0]?.membership?.validTo
+    validTo: targetLine?.membership?.validTo
   } : {};
 
   return {
