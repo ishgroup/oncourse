@@ -5,9 +5,11 @@ properties:
     format: int64
   name:
     type: string
+    description: Proper name of the country
   currency:
     $ref: '../Currency.yaml'
   countryCode:
     type: string
+    description: Country code according to ISO 3166-1 A-2
   languageCode:
     type: string
