@@ -12,8 +12,6 @@ package ish.oncourse.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import ish.math.Country;
-import ish.math.context.MoneyContextUpdater;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.integration.PluginsPrefsService;
 import ish.oncourse.server.license.LicenseService;
@@ -52,7 +50,6 @@ public class PreferenceController extends CommonPreferenceController {
 	private final LicenseService licenseService;
 	private final PluginsPrefsService pluginsPrefsService;
 	private final ISchedulerService schedulerService;
-	private final MoneyContextUpdater moneyContextUpdater;
 
 	private ObjectContext objectContext;
 
@@ -65,13 +62,12 @@ public class PreferenceController extends CommonPreferenceController {
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
-								ISchedulerService schedulerService, MoneyContextUpdater moneyContextUpdater) {
+								ISchedulerService schedulerService) {
 		this.cayenneService = cayenneService;
 		this.systemUserService = systemUserService;
 		this.licenseService = licenseService;
 		this.pluginsPrefsService = pluginsPrefsService;
 		this.schedulerService = schedulerService;
-		this.moneyContextUpdater = moneyContextUpdater;
 		sharedController = this;
 	}
 
@@ -139,10 +135,6 @@ public class PreferenceController extends CommonPreferenceController {
 	}
 
 	public void setValueForKey(String key, Object value) {
-	    if ((key.equals(ACCOUNT_COUNTRY)) && (value != null)) {
-			var country = (Country) value;
-	        moneyContextUpdater.updateCountry(country);
-        }
         if (defaultAccountPreferences.contains(key)) {
             setDefaultAccountId(key, (Long)value);
         } else {

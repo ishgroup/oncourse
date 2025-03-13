@@ -23,7 +23,8 @@ import ish.oncourse.server.document.DocumentModule;
 import ish.oncourse.server.http.HttpModule;
 import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.license.LicenseModule;
-import ish.oncourse.server.logo.LogoModule;
+import ish.oncourse.server.localization.country.LocalizationModule;
+import ish.oncourse.server.localization.logo.LogoModule;
 import ish.oncourse.server.messaging.SMTPModule;
 import ish.oncourse.server.modules.*;
 import ish.oncourse.server.money.MoneyModule;
@@ -65,8 +66,9 @@ public class AngelServer {
                 .module(DocumentModule.class)
                 .module(JasperReportsModule.class)
                 .module(MonitoringModule.class)
-                .module(MoneyModule.class)
                 .module(LogoModule.class)
+                .module(LocalizationModule.class)
+                .module(MoneyModule.class)
                 .exec()
                 .exit();
     }
