@@ -113,7 +113,7 @@ const styles = theme => ({
 
 const TotalStatisticInfo = props => {
   const {
-    totalStudents, totalEnrolments, classes, currency
+    totalEnrolments, classes, currency
   } = props;
 
   return (
@@ -271,13 +271,12 @@ class Statistics extends React.Component<Props, any> {
                 currency={currency}
               />
             </Grid>
-            <Grid item xs={12} className="mt-2">
+            {Boolean(statisticData.latestEnrolments?.length) && <Grid item xs={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
                 {$t('last_enrolments')}
               </Typography>
               <List dense disablePadding>
-                {statisticData.latestEnrolments
-              && statisticData.latestEnrolments.map((e, index) => (
+                {statisticData.latestEnrolments.map((e, index) => (
                 <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
                   <Typography
                     onClick={() => openInternalLink(e.link)}
@@ -292,29 +291,28 @@ class Statistics extends React.Component<Props, any> {
                 </ListItem>
               ))}
               </List>
-            </Grid>
-            <Grid item xs={12} className="mt-2">
-              <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-                {$t('largest_waiting_lists')}
-              </Typography>
-              <List dense disablePadding>
-                {statisticData.latestWaitingLists
-              && statisticData.latestWaitingLists.map((e, index) => (
-                <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
-                  <Typography
-                    onClick={() => openInternalLink(e.link)}
-                    className={clsx(classes.smallText, "linkDecoration", classes.leftColumn)}
-                  >
-                    {e.title}
-                  </Typography>
-                  <Typography className={clsx(classes.smallText, classes.grayText, classes.rightColumn)}>
-                    {e.info}
-                  </Typography>
-                </ListItem>
-              ))}
-              </List>
-            </Grid>
-
+            </Grid>}
+            {Boolean(statisticData.latestWaitingLists?.length)
+              && <Grid item xs={12} className="mt-2">
+                <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+                  {$t('largest_waiting_lists')}
+                </Typography>
+                <List dense disablePadding>
+                  {statisticData.latestWaitingLists.map((e, index) => (
+                    <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
+                      <Typography
+                        onClick={() => openInternalLink(e.link)}
+                        className={clsx(classes.smallText, "linkDecoration", classes.leftColumn)}
+                      >
+                        {e.title}
+                      </Typography>
+                      <Typography className={clsx(classes.smallText, classes.grayText, classes.rightColumn)}>
+                        {e.info}
+                      </Typography>
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>}
             <Grid item xs={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
                 {statisticData.openedClasses}
