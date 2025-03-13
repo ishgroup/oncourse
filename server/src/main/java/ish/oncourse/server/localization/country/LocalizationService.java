@@ -16,15 +16,17 @@ import java.util.Optional;
 
 public class LocalizationService {
 
-    private Country country = null;
+    // todo remove default value
+    private Country country = Country.AUSTRALIA;
 
     @BQConfigProperty
     public void setCountry(String countryCode) {
-        country = Arrays
+        var configCountry = Arrays
                 .stream(Country.values()).filter(
                         country -> country.locale().getISO3Country().equals(countryCode)
                 )
-                .findFirst().orElse(null);
+                .findFirst();
+        configCountry.ifPresent(value -> this.country = value);
     }
 
     public Optional<Country> getCountry() {
