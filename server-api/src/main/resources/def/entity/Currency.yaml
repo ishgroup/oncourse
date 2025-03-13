@@ -11,6 +11,6 @@ properties:
     required: true
   currencySymbol:
     type: string
-    description: Currency represented by chars
+    description: Currency code according to ISO 3166-1 A-3
     example: AUD
     required: true

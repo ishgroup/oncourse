@@ -174,8 +174,8 @@ class PreferenceApiImpl implements PreferenceApi {
         return new LocationDTO().with {
             it.id = country.databaseValue
             it.name = country.displayName
-            it.countryCode = country.locale().language
-            it.languageCode = country.locale().country
+            it.countryCode = country.locale().country
+            it.languageCode = country.locale().language
             it.currency = new CurrencyDTO().with { c ->
                 c.name = country.displayName
                 c.currencySymbol = country.currencyCode()
