@@ -15,7 +15,7 @@ class TranslationServiceBase {
   constructor() {
     PreferencesService.getLocation()
       .then(l => {
-        this.translationSource = require(`../../../../translate/translation_${l.languageCode}.json`);
+        this.translationSource = require(`../../../../translate/translation_${l.countryCode || 'AU'}.json`);
       })
       .catch(e => console.error(e));
   }
@@ -23,7 +23,7 @@ class TranslationServiceBase {
   public translate = (key: keyof typeof translationSourceDefault, variables?: string[] | number[]) => {
    let translated = this.translationSource[key];
 
-   if (variables?.length) {
+   if (translated && variables?.length) {
      variables.forEach(v => {
        translated = translated.replace(/{{.+}}/, v?.toString());
      });

@@ -21,29 +21,32 @@ import {
   GradingApi,
   GradingType,
   Holiday,
-  HolidayApi, Location,
+  HolidayApi,
+  Location,
+  Logo,
   PaymentApi,
   PaymentMethod,
-  PreferenceApi, PreferenceEnum,
+  PreferenceApi,
+  PreferenceEnum,
   SystemPreference,
   Tax,
   TaxApi,
   TutorRoleApi,
   UserPreferenceApi
 } from '@api/model';
-import { DefaultHttpService } from "../../../common/services/HttpService";
-import { SearchService } from "../../../common/services/SearchService";
-import { AccountStudentEnrolments, Categories } from "../../../model/preferences";
-import * as ModelAvetmiss from "../../../model/preferences/Avetmiss";
-import * as ModelClass from "../../../model/preferences/ClassDefaults";
-import * as ModelCollege from "../../../model/preferences/College";
-import * as ModelFinancial from "../../../model/preferences/Financial";
-import * as ModelLdap from "../../../model/preferences/Ldap";
-import * as ModelLicences from "../../../model/preferences/Licences";
-import * as ModelMaintenance from "../../../model/preferences/Maintenance";
-import * as ModelMessaging from "../../../model/preferences/Messaging";
-import * as ModelPlugins from "../../../model/preferences/Plugins";
-import * as ModelSecurity from "../../../model/preferences/security";
+import { DefaultHttpService } from '../../../common/services/HttpService';
+import { SearchService } from '../../../common/services/SearchService';
+import { AccountStudentEnrolments, Categories } from '../../../model/preferences';
+import * as ModelAvetmiss from '../../../model/preferences/Avetmiss';
+import * as ModelClass from '../../../model/preferences/ClassDefaults';
+import * as ModelCollege from '../../../model/preferences/College';
+import * as ModelFinancial from '../../../model/preferences/Financial';
+import * as ModelLdap from '../../../model/preferences/Ldap';
+import * as ModelLicences from '../../../model/preferences/Licences';
+import * as ModelMaintenance from '../../../model/preferences/Maintenance';
+import * as ModelMessaging from '../../../model/preferences/Messaging';
+import * as ModelPlugins from '../../../model/preferences/Plugins';
+import * as ModelSecurity from '../../../model/preferences/security';
 
 class PreferencesService {
   readonly defaultApi = new DefaultHttpService();
@@ -236,6 +239,10 @@ class PreferencesService {
 
   public getTimezones(): Promise<string[]> {
     return this.preferenceApi.getTimezones();
+  }
+
+  public getLogo(): Promise<Logo> {
+    return this.preferenceApi.getLogo();
   }
 
   public getCountries(): Promise<Country[]> {
