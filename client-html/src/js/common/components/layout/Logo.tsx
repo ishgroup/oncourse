@@ -13,20 +13,12 @@ import IshLogoWhite from '../../../../images/IshLogoWhite.svg';
 import IshOncourseLogoBlack from '../../../../images/IshOncourseLogoBlack.svg';
 import IshOncourseLogoColour from '../../../../images/IshOncourseLogoColour.svg';
 import IshOncourseLogoWhite from '../../../../images/IshOncourseLogoWhite.svg';
-import {
-  CUSTOM_LOGO_BLACK,
-  CUSTOM_LOGO_BLACK_SMALL,
-  CUSTOM_LOGO_COLOUR,
-  CUSTOM_LOGO_COLOUR_SMALL,
-  CUSTOM_LOGO_WHITE,
-  CUSTOM_LOGO_WHITE_SMALL
-} from '../../../constants/Config';
 import { ThemeContext } from '../../../containers/ThemeContext';
 import { useAppSelector } from '../../utils/hooks';
 
 export default ({ whiteBackgound, small, className }: SVGProps<any> & { whiteBackgound?: boolean, small?: boolean, className?: string }) => {
   const themeC = useContext(ThemeContext);
-  
+
   const [logos, setLogos] = useState({
     IshOncourseLogoBlack,
     IshOncourseLogoColour,
@@ -41,12 +33,12 @@ export default ({ whiteBackgound, small, className }: SVGProps<any> & { whiteBac
   useEffect(() => {
     if (logoPreferences) {
       setLogos({
-        IshOncourseLogoBlack: logoPreferences[CUSTOM_LOGO_BLACK],
-        IshOncourseLogoColour: logoPreferences[CUSTOM_LOGO_COLOUR],
-        IshOncourseLogoWhite: logoPreferences[CUSTOM_LOGO_WHITE],
-        IshLogoBlack: logoPreferences[CUSTOM_LOGO_BLACK_SMALL],
-        IshLogoBlue: logoPreferences[CUSTOM_LOGO_COLOUR_SMALL],
-        IshLogoWhite: logoPreferences[CUSTOM_LOGO_WHITE_SMALL]
+        IshOncourseLogoBlack: logoPreferences.customLogoBlack,
+        IshOncourseLogoColour: logoPreferences.customLogoColour,
+        IshOncourseLogoWhite: logoPreferences.customLogoWhite,
+        IshLogoBlack: logoPreferences.customLogoBlackSmall,
+        IshLogoBlue: logoPreferences.customLogoColourSmall,
+        IshLogoWhite: logoPreferences.customLogoWhiteSmall
       });
     }
     

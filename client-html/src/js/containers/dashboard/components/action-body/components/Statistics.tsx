@@ -113,7 +113,7 @@ const styles = theme => ({
 
 const TotalStatisticInfo = props => {
   const {
-    totalEnrolments, classes, currency
+    totalStudents, totalEnrolments, classes, currency
   } = props;
 
   return (

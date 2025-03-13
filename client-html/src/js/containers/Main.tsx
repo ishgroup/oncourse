@@ -33,7 +33,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { getFormNames, isDirty } from 'redux-form';
 import { TssCacheProvider } from 'tss-react';
-import { getUserPreferences, showMessage } from '../common/actions';
+import { getLogo, getUserPreferences, showMessage } from '../common/actions';
 import ConfirmProvider from '../common/components/dialog/ConfirmProvider';
 import MessageProvider from '../common/components/dialog/MessageProvider';
 import { getGoogleTagManagerParameters } from '../common/components/google-tag-manager/actions';
@@ -41,12 +41,6 @@ import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/Swip
 import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  CUSTOM_LOGO_BLACK,
-  CUSTOM_LOGO_BLACK_SMALL,
-  CUSTOM_LOGO_COLOUR,
-  CUSTOM_LOGO_COLOUR_SMALL,
-  CUSTOM_LOGO_WHITE,
-  CUSTOM_LOGO_WHITE_SMALL,
   DASHBOARD_THEME_KEY,
   FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
@@ -56,11 +50,10 @@ import {
 } from '../constants/Config';
 import { EnvironmentConstants } from '../constants/EnvironmentConstants';
 import { AppMessage } from '../model/common/Message';
-import { Categories } from '../model/preferences';
 import { State } from '../reducers/state';
 import { loginRoute, routes } from '../routes';
 import { getDashboardBlogPosts } from './dashboard/actions';
-import { getCurrency, getPreferencesByKeys, isLoggedIn } from './preferences/actions';
+import { getCurrency, isLoggedIn } from './preferences/actions';
 import { ThemeContext } from './ThemeContext';
 
 export const muiCache = createCache({
@@ -99,6 +92,7 @@ interface Props {
   history: any;
   preferencesTheme: ThemeValues;
   onInit: AnyArgFunction;
+  getLogo: AnyArgFunction;
   isLogged: boolean;
   isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
@@ -155,8 +149,10 @@ export class MainBase extends React.PureComponent<Props, MainState> {
 
   UNSAFE_componentWillMount() {
     const {
-      isLogged, isLoggedIn, history
+      isLogged, isLoggedIn, getLogo, history
     } = this.props;
+
+    getLogo();
 
     if (routes) {
       const notFound = routes.find(route => route.url === history.location.pathname);
@@ -294,6 +290,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   showMessage: message => dispatch(showMessage(message)),
   isLoggedIn: () => dispatch(isLoggedIn()),
   getPreferencesTheme: () => dispatch(getUserPreferences([DASHBOARD_THEME_KEY])),
+  getLogo: () => dispatch(getLogo()),
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
@@ -303,16 +300,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
       LICENSE_SCRIPTING_KEY, 
       SPECIAL_TYPES_DISPLAY_KEY
     ]));
-    dispatch(getPreferencesByKeys([
-      CUSTOM_LOGO_BLACK,
-      CUSTOM_LOGO_BLACK_SMALL,
-      CUSTOM_LOGO_WHITE,
-      CUSTOM_LOGO_WHITE_SMALL,
-      CUSTOM_LOGO_COLOUR,
-      CUSTOM_LOGO_COLOUR_SMALL
-    ], Categories.logo));
     dispatch(getDashboardBlogPosts());
   }
 });
 
-export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(MainBase));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainBase));

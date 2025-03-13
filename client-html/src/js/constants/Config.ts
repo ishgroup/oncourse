@@ -105,13 +105,6 @@ export const AVETMIS_ID_KEY: PreferenceEnum = "avetmiss.identifier";
 
 export const EMAIL_FROM_KEY: PreferenceEnum = "email.from";
 
-export const CUSTOM_LOGO_BLACK = "custom.logo.black";
-export const CUSTOM_LOGO_BLACK_SMALL = "custom.logo.black.small";
-export const CUSTOM_LOGO_WHITE = "custom.logo.white";
-export const CUSTOM_LOGO_WHITE_SMALL = "custom.logo.white.small";
-export const CUSTOM_LOGO_COLOUR = "custom.logo.colour";
-export const CUSTOM_LOGO_COLOUR_SMALL = "custom.logo.colour.small";
-
 export const DEFAULT_DELIVERY_MODE_KEY: PreferenceEnum = "courseclass_default_deliveryMode";
 export const DEFAULT_FUNDING_SOURCE_KEY: PreferenceEnum = "courseclass_default_fundingSource";
 export const DEFAULT_MAXIMUM_PLACES_KEY: PreferenceEnum = "courseclass_default_maximumPlaces";
