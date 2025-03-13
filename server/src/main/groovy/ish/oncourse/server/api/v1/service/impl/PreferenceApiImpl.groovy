@@ -21,10 +21,6 @@ import ish.oncourse.common.AvetmissConstants
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.v1.model.LocationDTO
-import ish.oncourse.server.api.v1.model.LockedDateDTO
-import ish.oncourse.server.cayenne.Message
-
 import ish.oncourse.server.api.v1.function.PreferenceFunctions
 import ish.oncourse.server.api.v1.model.ColumnWidthDTO
 import ish.oncourse.server.api.v1.model.CountryDTO
@@ -33,10 +29,15 @@ import ish.oncourse.server.api.v1.model.EnumItemDTO
 import ish.oncourse.server.api.v1.model.LanguageDTO
 import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.LockedDateDTO
+import ish.oncourse.server.api.v1.model.LocationDTO
+import ish.oncourse.server.api.v1.model.LogoDTO
 import ish.oncourse.server.api.v1.service.PreferenceApi
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Preference
+import ish.oncourse.server.localization.logo.LogoService
 import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.persistence.CommonPreferenceController
@@ -71,6 +72,8 @@ class PreferenceApiImpl implements PreferenceApi {
     private TransactionLockedService transactionLockedService
     @Inject
     private MoneyContext moneyContext
+    @Inject
+    private LogoService logoService
 
     private static Logger logger = LogManager.logger
 
@@ -230,6 +233,19 @@ class PreferenceApiImpl implements PreferenceApi {
     @Override
     LockedDateDTO getLockedDate() {
         return new LockedDateDTO(transactionLockedService.transactionLocked)
+    }
+
+    @Override
+    LogoDTO getLogo() {
+        return new LogoDTO().with {
+            it.customLogoBlack = logoService.customLogoBlack
+            it.customLogoBlackSmall = logoService.customLogoBlackSmall
+            it.customLogoWhite = logoService.customLogoWhite
+            it.customLogoWhiteSmall = logoService.customLogoWhiteSmall
+            it.customLogoColour = logoService.customLogoColour
+            it.customLogoColourSmall = logoService.customLogoColourSmall
+            it
+        }
     }
 
     @Override

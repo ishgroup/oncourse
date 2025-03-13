@@ -321,6 +321,8 @@ paths:
     $ref: './path/preference/location/api.yaml'
   /preference/locations:
     $ref: './path/preference/location.all/api.yaml'
+  /preference/logo:
+    $ref: './path/preference/logo/api.yaml'
   /preference/language:
     $ref: './path/preference/language/api.yaml'
   /preference/lockedDate:

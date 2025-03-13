@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-package ish.oncourse.server.logo;
+package ish.oncourse.server.localization.logo;
 
 import io.bootique.annotation.BQConfigProperty;
 import org.apache.logging.log4j.LogManager;
@@ -69,4 +69,27 @@ public class LogoService {
         return logoMap;
     }
 
+    public String getCustomLogoBlack() {
+        return custom_logo_black;
+    }
+
+    public String getCustomLogoBlackSmall() {
+        return custom_logo_black_small;
+    }
+
+    public String getCustomLogoWhite() {
+        return custom_logo_white;
+    }
+
+    public String getCustomLogoWhiteSmall() {
+        return custom_logo_white_small;
+    }
+
+    public String getCustomLogoColour() {
+        return custom_logo_colour;
+    }
+
+    public String getCustomLogoColourSmall() {
+        return custom_logo_colour_small;
+    }
 }
