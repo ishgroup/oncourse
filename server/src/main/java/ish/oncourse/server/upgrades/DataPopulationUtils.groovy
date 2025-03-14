@@ -46,6 +46,7 @@ import org.apache.logging.log4j.Logger
 import java.nio.charset.Charset
 
 class DataPopulationUtils {
+    private static String AUS_LOCALE = "aus"
 
     private static final Logger logger = LogManager.logger
 
@@ -83,6 +84,13 @@ class DataPopulationUtils {
         automationTrait.category = getString(props, CATEGORY) ?: automationTrait.category
         automationTrait.automationTags = getString(props, TAG) ?: automationTrait.automationTags
         automationTrait.name = getString(props, NAME) ?: automationTrait.name
+
+        def ausReporting = getBoolean(props, AUS_REPORTING)
+        if(!ausReporting) {
+            def ausLocale = getString(props, LOCALE)?.equalsIgnoreCase(AUS_LOCALE)
+            if(ausLocale)
+                automationTrait.setAutomationStatus(AutomationStatus.INSTALLED_DISABLED)
+        }
     }
 
     static fillScriptWithCommonFields(Script script, Map<String, Object> props){
