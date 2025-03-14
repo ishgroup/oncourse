@@ -122,6 +122,7 @@ const useStyles = makeAppStyles<void, 'hoverIcon'>()((theme, p, classes) => ({
         }
       },
       "& .ck-editor": {
+        zoom: 1.01,
         "& .ck-content": {
           resize: "vertical",
           maxHeight: "80vh",
