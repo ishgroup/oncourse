@@ -32,14 +32,14 @@ export default ({ whiteBackgound, small, className }: SVGProps<any> & { whiteBac
   
   useEffect(() => {
     if (logoPreferences) {
-      setLogos({
-        IshOncourseLogoBlack: logoPreferences.customLogoBlack,
-        IshOncourseLogoColour: logoPreferences.customLogoColour,
-        IshOncourseLogoWhite: logoPreferences.customLogoWhite,
-        IshLogoBlack: logoPreferences.customLogoBlackSmall,
-        IshLogoBlue: logoPreferences.customLogoColourSmall,
-        IshLogoWhite: logoPreferences.customLogoWhiteSmall
-      });
+      setLogos(prevState => ({
+        IshOncourseLogoBlack: logoPreferences.customLogoBlack || prevState.IshOncourseLogoBlack,
+        IshOncourseLogoColour: logoPreferences.customLogoColour || prevState.IshOncourseLogoColour,
+        IshOncourseLogoWhite: logoPreferences.customLogoWhite || prevState.IshOncourseLogoWhite,
+        IshLogoBlack: logoPreferences.customLogoBlackSmall || prevState.IshLogoBlack,
+        IshLogoBlue: logoPreferences.customLogoColourSmall || prevState.IshLogoBlue,
+        IshLogoWhite: logoPreferences.customLogoWhiteSmall || prevState.IshLogoWhite
+      }));
     }
     
   }, [logoPreferences]);
