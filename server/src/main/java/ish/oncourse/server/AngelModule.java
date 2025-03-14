@@ -144,8 +144,8 @@ public class AngelModule extends ConfigModule {
                 .addCommand(SanityCheckCommand.class)
                 .decorateCommand(ServerCommand.class,
                         CommandDecorator.builder()
-                                .beforeRun(UploadLocalizationSettingsCommand.class)
                                 .beforeRun(AngelCommand.class)
+                                .alsoRun(UploadLocalizationSettingsCommand.class)
                                 .alsoRun(DataPopulationCommand.class)
                                 .alsoRun(SanityCheckCommand.class)
                                 .build());
