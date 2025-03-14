@@ -1,7 +1,6 @@
 package ish.oncourse.server
 
 import groovy.transform.CompileStatic
-import ish.math.context.MoneyContextUpdater
 import ish.oncourse.server.cayenne.Preference
 import ish.oncourse.server.integration.PluginsPrefsService
 import ish.oncourse.server.license.LicenseService
@@ -51,8 +50,7 @@ class PreferenceControllerTest {
         LicenseService licenseService = Mockito.mock(LicenseService.class)
         PluginsPrefsService pluginsService = Mockito.mock(PluginsPrefsService.class)
         ISchedulerService schedulerService = Mockito.mock(ISchedulerService.class)
-        MoneyContextUpdater contextUpdater = Mockito.mock(MoneyContextUpdater)
 
-        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService,  schedulerService, contextUpdater)
+        return new PreferenceController(iCayenneService, systemUserService, licenseService, pluginsService,  schedulerService)
     }
 }

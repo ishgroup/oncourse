@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -46,12 +44,11 @@ public class AuthenticationUtil {
 	 * Computes password hash and checks if it matches stored value.
 	 */
 	public static boolean checkPassword(String password, String hash) {
-		return true;
-//		Instant start = Instant.now();
-//		boolean result = encoder.matches(password, hash);
-//		Instant end = Instant.now();
-//		LOGGER.warn("Matches password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
-//		return result;
+		Instant start = Instant.now();
+		boolean result = encoder.matches(password, hash);
+		Instant end = Instant.now();
+		LOGGER.warn("Matches password hash in {} ms", ChronoUnit.MILLIS.between(start, end));
+		return result;
 	}
 
 	/**
