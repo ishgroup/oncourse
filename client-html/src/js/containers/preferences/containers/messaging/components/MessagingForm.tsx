@@ -216,7 +216,7 @@ class MessagingBaseForm extends React.Component<any, any> {
           </Grid>
 
           <Typography variant="body1" className="heading">
-            {$t('sms')}
+            {$t('SMS')}
           </Typography>
 
           <Grid container columnSpacing={3}>

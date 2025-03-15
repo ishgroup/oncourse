@@ -121,7 +121,11 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
               <Grid item xs={12}>
                 <div className="centeredFlex">
                   <div className="heading mt-2 mb-2">
-                    {$t('you_are_about_to_cancel_class')}
+                    {$t('you_are_about_to_cancel_class')} "
+                    {`${this.getSelectedClassRecord("course.name")} ${this.getSelectedClassRecord(
+                      "course.code"
+                    )}-${this.getSelectedClassRecord("code")}`}
+                    "
                   </div>
                 </div>
                 <div className={clsx("centeredFlex", !errMsg && "invisible")}>
@@ -143,7 +147,11 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
                   </FormGroup>
                   <Typography variant="caption" className="pl-2">
                     {enrolmentCount}
-                    {$t('credit_note_will_be_created')}
+                    {' '}
+                    {$t('credit note')}
+                    {enrolmentCount > 1 ? "s" : ""}
+                    {' '}
+                    {$t('will be created')}
                   </Typography>
                 </div>
                 <div>

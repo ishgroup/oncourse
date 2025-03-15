@@ -42,6 +42,8 @@ class ApiFilter implements Filter {
     private static final String CHECKOUT_PATH_INFO = '/checkout/submitPaymentRedirect'
     private static final String CHECK_PASSWORD_INFO = 'user/checkPassword/'
     private static final String INVITATION = 'invite/'
+    private static final String LOGO_PATH_INFO = '/preference/logo'
+    private static final String LOCATION_PATH_INFO = '/preference/location'
     private static final String SSO_TYPES = 'integration/ssoTypes'
     private static final String X_VALIDATE_ONLY = 'x-validate-only'
     private static final String XVALIDATEONLY = 'XValidateOnly'
@@ -52,7 +54,9 @@ class ApiFilter implements Filter {
             CHECK_PASSWORD_INFO,
             INVITATION,
             SSO_TYPES,
-            CHECKOUT_PATH_INFO
+            CHECKOUT_PATH_INFO,
+            LOGO_PATH_INFO,
+            LOCATION_PATH_INFO,
     ]
 
     public static final String AUTHORIZATION = 'Authorization'

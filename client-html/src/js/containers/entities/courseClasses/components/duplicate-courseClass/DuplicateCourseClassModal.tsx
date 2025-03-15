@@ -280,7 +280,7 @@ const DuplicateCourseClassModal: React.FunctionComponent<Props & InjectedFormPro
             <Grid item xs={4}>
               <div className={clsx("centeredFlex")}>
                 <div className="heading mt-2 mb-2">
-                  {$t('duplicate_class')}
+                  {$t('duplicate_class',[selection.length])}
                   {selection.length === 1 ? "" : "es"}
                 </div>
               </div>

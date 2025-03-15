@@ -21,7 +21,7 @@ import {
   D_MMM_YYYY,
   decimalPlus,
   DynamicSizeList,
-  formatCurrency,
+  formatCurrency, formatRelativeDate,
   LinkAdornment,
   makeAppStyles,
   openInternalLink,
@@ -231,7 +231,7 @@ const ContactItem = memo<ContactItemProps>(({
                 </div>
                 <Tooltip title={format(new Date(i.dateDue), D_MMM_YYYY)}>
                   <Typography className="mr-1">
-                    {$t('due')}
+                    {$t('due',[formatRelativeDate(new Date(i.dateDue), today, D_MMM_YYYY, true, true)])}
                   </Typography>
                 </Tooltip>
 
@@ -493,7 +493,14 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
         disabled={processing || contactsLoading || checkedContacts.length === 0}
         title={(
           <div>
-            {$t('batch_payment_in_showing_contact_with_amounts_due')}
+            {$t('Batch payment in (showing')}
+            {' '}
+            {values.contacts.length}
+            {' '}
+            {$t('contact')}
+            {values.contacts.length !== 1 ? "s" : ""}
+            {' '}
+            {$t('with amounts due or overdue')})
           </div>
         )}
         manualUrl={manualUrl}

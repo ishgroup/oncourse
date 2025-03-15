@@ -28,6 +28,7 @@ import ScriptRunAudit
 import { getExpression } from '../../../../../common/components/list-view/utils/listFiltersUtils';
 import { ProcessState } from '../../../../../common/reducers/processReducer';
 import EntityService from '../../../../../common/services/EntityService';
+import { getCookie } from '../../../../../common/utils/Cookie';
 import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
 import { LICENSE_SCRIPTING_KEY } from '../../../../../constants/Config';
 import { State } from '../../../../../reducers/state';
@@ -225,7 +226,9 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
         </DialogTitle>
 
         <DialogContent>
-          {$t('custom_scripts_execution_disabled_due_to_a_hrefreq')}
+          {$t('custom_scripts_execution_disabled_due_to')}
+          {' '}
+          <a href={`https://provisioning.ish.com.au?token=${getCookie("JSESSIONID")}`}>{$t('required license')}</a>
         </DialogContent>
 
         <DialogActions>

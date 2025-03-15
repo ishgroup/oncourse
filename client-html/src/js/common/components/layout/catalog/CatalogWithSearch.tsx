@@ -217,7 +217,7 @@ const CatalogWithSearch = React.memo<Props>((
                       item={i}
                       onOpen={() => toggleInstall(i)}
                       key={i.id}
-                      secondaryAction={i.installed && <Typography variant="caption">{$t('added')}</Typography>}
+                      secondaryAction={i.installed && <Typography variant="caption">{$t('Added')}</Typography>}
                       disabled={i.installed}
                     />
                   ))}
@@ -236,7 +236,7 @@ const CatalogWithSearch = React.memo<Props>((
                       item={i}
                       onOpen={() => toggleInstall(i)}
                       key={i.id}
-                      secondaryAction={i.installed && <Typography variant="caption">{$t('added')}</Typography>}
+                      secondaryAction={i.installed && <Typography variant="caption">{$t('Added')}</Typography>}
                       disabled={i.installed}
                     />
                   ))}

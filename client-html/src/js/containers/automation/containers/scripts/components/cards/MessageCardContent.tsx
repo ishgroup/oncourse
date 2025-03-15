@@ -140,7 +140,7 @@ const MessageCardContent = React.memo<Props>(props => {
             <FormField
               type="text"
               name={`${name}.to`}
-              label={$t('to')}
+              label={$t('To')}
               disabled={disabled}
                           />
           </Grid>

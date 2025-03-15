@@ -38,7 +38,7 @@ public class MoneyContextProvider implements MoneyContext, MoneyContextUpdater {
     private final AtomicReference<MoneyFormatter> formatter = new AtomicReference<>();
 
     public MoneyContextProvider() {
-        Country defaultCountry = Country.findCountryByLocale(LocaleUtil.getDefaultLocale());
+        Country defaultCountry = Country.fromLocale(LocaleUtil.getDefaultLocale());
         if (defaultCountry != null) {
             updateCountry(defaultCountry);
         } else {

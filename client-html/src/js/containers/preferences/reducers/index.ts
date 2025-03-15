@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Country, Currency, Language } from "@api/model";
-import { GET_MESSAGE_QUEUED_FULFILLED } from "../../../common/actions";
-import { IAction } from "../../../common/actions/IshAction";
-import getTimestamps from "../../../common/utils/timestamps/getTimestamps";
-import { Categories } from "../../../model/preferences";
-import { POST_AUTHENTICATION_FULFILLED } from "../../login/actions";
+import { Country, Currency, Language } from '@api/model';
+import { GET_LOGO_FULFILLED, GET_MESSAGE_QUEUED_FULFILLED } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import getTimestamps from '../../../common/utils/timestamps/getTimestamps';
+import { Categories } from '../../../model/preferences';
+import { POST_AUTHENTICATION_FULFILLED } from '../../login/actions';
 
 import {
   CREATE_DATA_COLLECTION_FORM_FULFILLED,
@@ -55,16 +55,23 @@ import {
   UPDATE_ENTITY_RELATION_TYPES_FULFILLED,
   UPDATE_PAYMENT_TYPES_FULFILLED,
   UPDATE_TAX_TYPES_FULFILLED
-} from "../actions";
+} from '../actions';
 import {
   DELETE_FUNDING_CONTACT_FULFILLED,
   GET_FUNDING_CONTACTS_FULFILLED,
   SAVE_FUNDING_CONTACTS_FULFILLED
-} from "../containers/funding-contracts/actions";
-import { PreferencesState } from "./state";
+} from '../containers/funding-contracts/actions';
+import { PreferencesState } from './state';
 
 export const preferencesReducer = (state: PreferencesState = {}, action: IAction<any>): PreferencesState => {
   switch (action.type) {
+    case GET_LOGO_FULFILLED: {
+      return {
+        ...state,
+        logo: action.payload
+      };
+    }
+    
     case GET_COMPLEX_PASS_FILLED: {
       const complexPass = action.payload;
       return {

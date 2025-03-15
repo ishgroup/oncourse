@@ -784,6 +784,11 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 		return toInstance(toMoneta().plus());
 	}
 
+	// Support for Groovy.sum() method
+	public Money plus(Money money) {
+		return this.add(money);
+	}
+
 	@Override
 	public Money stripTrailingZeros() {
 		return toInstance(toMoneta().stripTrailingZeros());

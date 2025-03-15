@@ -21,9 +21,6 @@ import ish.oncourse.common.AvetmissConstants
 import ish.oncourse.common.ExportJurisdiction
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
-import ish.oncourse.server.api.v1.model.LockedDateDTO
-import ish.oncourse.server.cayenne.Message
-
 import ish.oncourse.server.api.v1.function.PreferenceFunctions
 import ish.oncourse.server.api.v1.model.ColumnWidthDTO
 import ish.oncourse.server.api.v1.model.CountryDTO
@@ -32,10 +29,15 @@ import ish.oncourse.server.api.v1.model.EnumItemDTO
 import ish.oncourse.server.api.v1.model.LanguageDTO
 import ish.oncourse.server.api.v1.model.SystemPreferenceDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
+import ish.oncourse.server.api.v1.model.LockedDateDTO
+import ish.oncourse.server.api.v1.model.LocationDTO
+import ish.oncourse.server.api.v1.model.LogoDTO
 import ish.oncourse.server.api.v1.service.PreferenceApi
 import ish.oncourse.server.cayenne.Country
 import ish.oncourse.server.cayenne.Language
+import ish.oncourse.server.cayenne.Message
 import ish.oncourse.server.cayenne.Preference
+import ish.oncourse.server.localization.logo.LogoService
 import ish.oncourse.server.services.ISystemUserService
 import ish.oncourse.server.services.TransactionLockedService
 import ish.persistence.CommonPreferenceController
@@ -70,6 +72,8 @@ class PreferenceApiImpl implements PreferenceApi {
     private TransactionLockedService transactionLockedService
     @Inject
     private MoneyContext moneyContext
+    @Inject
+    private LogoService logoService
 
     private static Logger logger = LogManager.logger
 
@@ -156,12 +160,39 @@ class PreferenceApiImpl implements PreferenceApi {
     }
 
     @Override
+    LocationDTO getLocation() {
+        ish.math.Country country = ish.math.Country.fromLocale(moneyContext.locale)
+        return Objects.isNull(country) ? null : locationToRest(country)
+    }
+
+    @Override
+    List<LocationDTO> getLocations() {
+        return ish.math.Country.values().collect { country -> locationToRest(country) }
+    }
+
+    private static LocationDTO locationToRest(ish.math.Country country) {
+        return new LocationDTO().with {
+            it.id = country.databaseValue
+            it.name = country.displayName
+            it.countryCode = country.locale().country
+            it.languageCode = country.locale().language
+            it.currency = new CurrencyDTO().with { c ->
+                c.name = country.displayName
+                c.currencySymbol = country.currencyCode()
+                c.shortCurrencySymbol = country.currencySymbol()
+                c
+            }
+            it
+        }
+    }
+
+    @Override
     CurrencyDTO getCurrency() {
         CurrencyDTO currency = new CurrencyDTO().with {
             it.currencySymbol = moneyContext.currencyCode
             it.shortCurrencySymbol = moneyContext.currencySymbol
-            ish.math.Country currentCountry = ish.math.Country.findCountryByLocale(moneyContext.locale)
-            it.name = currentCountry != null ? currentCountry.name() : moneyContext.locale.displayCountry
+            ish.math.Country currentCountry = ish.math.Country.fromLocale(moneyContext.locale)
+            it.name = currentCountry != null ? currentCountry.displayName : moneyContext.locale.displayCountry
             it
         }
         return currency
@@ -202,6 +233,19 @@ class PreferenceApiImpl implements PreferenceApi {
     @Override
     LockedDateDTO getLockedDate() {
         return new LockedDateDTO(transactionLockedService.transactionLocked)
+    }
+
+    @Override
+    LogoDTO getLogo() {
+        return new LogoDTO().with {
+            it.customLogoBlack = logoService.customLogoBlack
+            it.customLogoBlackSmall = logoService.customLogoBlackSmall
+            it.customLogoWhite = logoService.customLogoWhite
+            it.customLogoWhiteSmall = logoService.customLogoWhiteSmall
+            it.customLogoColour = logoService.customLogoColour
+            it.customLogoColourSmall = logoService.customLogoColourSmall
+            it
+        }
     }
 
     @Override

@@ -59,7 +59,7 @@ const NotesRenderer = props => {
           <>
             <span className={classes.showMore}>
               <Button onClick={handleShowMore} color="primary">
-                {$t('show')}
+                {$t('show', [showMore ? $t("less") : $t("more")])}
               </Button>
             </span>
           </>

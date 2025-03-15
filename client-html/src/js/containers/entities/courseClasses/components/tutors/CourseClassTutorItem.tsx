@@ -10,7 +10,15 @@ import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
-import { AppTheme, DD_MM_YYYY_SLASHED, LinkAdornment, normalizeNumber, openInternalLink, WarningMessage } from 'ish-ui';
+import {
+  AppTheme,
+  DD_MM_YYYY_SLASHED,
+  EEE_D_MMM_YYYY,
+  LinkAdornment,
+  normalizeNumber,
+  openInternalLink,
+  WarningMessage
+} from 'ish-ui';
 import React from 'react';
 import { withStyles } from 'tss-react/mui';
 import { ContactLinkAdornment } from '../../../../../common/components/form/formFields/FieldAdornments';
@@ -125,7 +133,9 @@ const CourseClassTutorItem: React.FC<Props> = ({
             )}
             {tutor.confirmedOn ? (
               <Typography variant="caption" noWrap>
-                {$t('confirmed')}
+                {$t('Confirmed')}
+                {' '}
+                {format(new Date(tutor.confirmedOn), EEE_D_MMM_YYYY)}
               </Typography>
             ) : (
               <Typography variant="caption" color="textSecondary" noWrap>
@@ -140,7 +150,7 @@ const CourseClassTutorItem: React.FC<Props> = ({
           <FormField
             type="remoteDataSelect"
             name={`tutors[${index}].contactId`}
-            label={$t('contact')}
+            label={$t('Contact')}
             entity="Contact"
             aqlFilter={`isTutor is true and (tutor.dateFinished > ${today} or tutor.dateFinished is null)`}
             selectValueMark="id"

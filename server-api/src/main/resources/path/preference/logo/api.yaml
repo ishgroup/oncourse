@@ -1,0 +1,14 @@
+get:
+  operationId: getLogo
+  description: Get current OnCourse logo settings from OnCourse.yml
+  tags:
+  - Preference
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/logo/Logo.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    keyCode: UNDEFINED

@@ -74,7 +74,7 @@ const ChecklistItem = ({
         <MenuItem onClick={onEditClick}>{$t('edit_checklist')}</MenuItem>
         <MenuItem onClick={onShowCompleted}>{expandAll ? "Hide completed tasks" : "Show completed tasks"}</MenuItem>
         <MenuItem onClick={onMarkAllComplete}>
-          {$t('mark_all_tasks_complete')}
+          {$t('mark_all_tasks_complete', [allChecked ? " " + $t('in') : " "])}
         </MenuItem>
       </Menu>
     
