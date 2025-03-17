@@ -4,6 +4,8 @@
  */
 
 import { Chip, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -178,7 +180,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol
 });
 
 const mapDispatchToProps = dispatch => ({

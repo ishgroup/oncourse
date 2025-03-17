@@ -4,6 +4,7 @@
  */
 
 import { Report } from '@api/model';
+import { Typography } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -293,7 +294,7 @@ const mapStateToProps = (state: State) => ({
   payments: state.banking.payments,
   selectedAccountId: state.banking.selectedAccountId,
   lockedDate: state.lockedDate,
-  currency: state.currency,
+  currency: state.location.currency,
   editRecord: state.list.editRecord,
   initial: getFormInitialValues(LIST_EDIT_VIEW_FORM_NAME)(state),
   report: findReport(state.share.pdfReports as Report[], BankingReport),

@@ -5,6 +5,7 @@
 
 import Launch from '@mui/icons-material/Launch';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
+import { Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MaUTable from '@mui/material/Table';
 import TableCell from '@mui/material/TableCell';
@@ -239,7 +240,7 @@ const ListRoot = React.memo<NestedListProps>(({
     setSelection([]);
   };
 
-  const currencySymbol = useSelector<State, any>(state => state.currency && state.currency.shortCurrencySymbol);
+  const currencySymbol = useSelector<State, any>(state => state.location.currency && state.location.currency.shortCurrencySymbol);
 
   const columnsFormated = useMemo<ColumnDef<Record<any, any>>[]>(
     () => columns.concat(onRowDelete ? [{

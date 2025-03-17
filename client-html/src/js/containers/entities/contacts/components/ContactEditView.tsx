@@ -9,12 +9,12 @@
 import { Contact } from '@api/model';
 import { formatCurrency, useAppTheme } from 'ish-ui';
 import React, { useMemo, useState } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import AvailabilityFormComponent
   from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
 import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
-import { AUS_REPORTING_DISPLAY_KEY } from '../../../../constants/Config';
+import { useAppSelector } from '../../../../common/utils/hooks';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { State } from '../../../../reducers/state';
 import ContactsDetails from './ContactDetails';
@@ -116,7 +116,7 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
   const [isTutor, setIsTutor] = useState(false);
   const [isCompany, setIsCompany] = useState(false);
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
-  const hideAUSReporting = useSelector<State, any>(state => state.userPreferences[AUS_REPORTING_DISPLAY_KEY] === 'false');
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
 
   const theme = useAppTheme();
 
@@ -191,7 +191,7 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps)((props: any) =>

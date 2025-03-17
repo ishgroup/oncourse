@@ -7,6 +7,7 @@
  */
 
 import { Account, Currency, Tag, Tax } from '@api/model';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -504,7 +505,7 @@ const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["AbstractInvoice"],
   defaultInvoiceLineAccount: state.userPreferences[ACCOUNT_DEFAULT_INVOICELINE_ID],
   accounts: state.plainSearchRecords.Account.items,
-  currency: state.currency,
+  currency: state.location.currency,
   taxes: state.taxes.items,
   defaultTerms: state.invoices.defaultTerms,
   selectedContact: state.invoices.selectedContact

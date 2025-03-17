@@ -130,7 +130,7 @@ const mapStateToProps = (state: State) => ({
   payment: state.checkout.payment,
   paymentInvoice: state.checkout.payment.invoice,
   paymentId: state.checkout.payment.paymentId,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   iframeUrl: state.checkout.payment.ccFormUrl,
   xPaymentSessionId: state.checkout.payment.paymentId,
   merchantReference: state.checkout.payment.merchantReference,

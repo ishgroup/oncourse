@@ -10,6 +10,7 @@ import Close from '@mui/icons-material/Close';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Grid, IconButton, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import { BooleanArgFunction, makeAppStyles, NumberArgFunction, openInternalLink } from 'ish-ui';
 import React, { useMemo } from 'react';
@@ -90,7 +91,7 @@ const NavigationCategory = (
   const { classes } = useStyles();
 
   const scripts = useAppSelector(state => state.dashboard.scripts);
-  
+
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
   
   const features = useMemo(() => (category 

@@ -5,7 +5,7 @@
 
 import { Payment } from '@api/model';
 import Launch from '@mui/icons-material/Launch';
-import { IconButton } from '@mui/material';
+import { FormControlLabel, IconButton } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
@@ -280,7 +280,7 @@ class BankingEditView extends React.PureComponent<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  currency: state.currency,
+  currency: state.location.currency,
   payments: state.banking.payments,
   lockedDate: state.lockedDate,
   editRecord: state.list.editRecord,

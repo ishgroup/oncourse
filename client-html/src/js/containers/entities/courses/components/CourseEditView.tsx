@@ -10,7 +10,6 @@ import AvailabilityFormComponent
   from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
 import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
-import { AUS_REPORTING_DISPLAY_KEY } from '../../../../constants/Config';
 import { State } from '../../../../reducers/state';
 import CourseClassesTab from './CourseClassesTab';
 import CourseGeneralTab from './CourseGeneralTab';
@@ -56,7 +55,7 @@ const styles = () =>
 
 const CourseEditView = props => {
   const hasVetPermissions = useSelector<State, any>(state => state.access["VET_COURSE"]);
-  const hideAUSReporting = useSelector<State, any>(state => state.userPreferences[AUS_REPORTING_DISPLAY_KEY] === 'false');
+  const hideAUSReporting = useSelector<State, any>(state => state.location.countryCode !== 'AU');
 
   const usedItems = useMemo(() => (hasVetPermissions && !hideAUSReporting ? items : items.filter(i => i.label !== "Vet")), [
     hasVetPermissions

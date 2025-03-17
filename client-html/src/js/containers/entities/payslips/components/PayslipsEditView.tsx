@@ -7,6 +7,7 @@
  */
 
 import { Contact, PayslipPayType, PayslipStatus } from '@api/model';
+import { Grid, Typography } from '@mui/material';
 import Grid, { GridSize } from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
@@ -265,7 +266,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Payslip"],
-  currency: state.currency
+  currency: state.location.currency
 });
 
 export default connect<any, any, any>(mapStateToProps)(PayslipsEditView);

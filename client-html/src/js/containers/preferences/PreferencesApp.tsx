@@ -14,11 +14,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { SidebarWithSearch } from '../../common/components/layout/sidebar-with-search/SidebarWithSearch';
-import {
-  AUS_REPORTING_DISPLAY_KEY,
-  LICENSE_ACCESS_CONTROL_KEY,
-  SPECIAL_TYPES_DISPLAY_KEY
-} from '../../constants/Config';
+import { LICENSE_ACCESS_CONTROL_KEY, SPECIAL_TYPES_DISPLAY_KEY } from '../../constants/Config';
 import { Categories } from '../../model/preferences';
 import { State } from '../../reducers/state';
 import {
@@ -79,7 +75,7 @@ const mapStateToProps = (state: State) => ({
   preferenceLeftColumnWidth: state.preferences.columnWidth && state.preferences.columnWidth.preferenceLeftColumnWidth,
   accessLicense: state.userPreferences[LICENSE_ACCESS_CONTROL_KEY] === 'true',
   accessTypes: state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true',
-  hideAUSReporting: state.userPreferences[AUS_REPORTING_DISPLAY_KEY] === 'false',
+  hideAUSReporting: state.location.countryCode !== 'AU',
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

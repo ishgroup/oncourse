@@ -8,6 +8,7 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
+import { Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
@@ -34,8 +35,8 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
+import { useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
-import { AUS_REPORTING_DISPLAY_KEY } from '../../../../constants/Config';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../model/entities/CourseClass';
@@ -356,7 +357,7 @@ const CourseClassEditView: React.FC<Props> = ({
   const [expandedBudget, setExpandedBudget] = useState([]);
   const [items, setItems] = useState([...itemsBase]);
 
-  const hideAUSReporting = useSelector<State, any>(state => state.userPreferences[AUS_REPORTING_DISPLAY_KEY] === 'false');
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
 
   const hasBudgetPermissions = useSelector<State, any>(
     state => state && state.access["/a/v1/list/entity/courseClass/budget/"] && state.access["/a/v1/list/entity/courseClass/budget/"]["GET"]
@@ -599,7 +600,7 @@ const CourseClassEditView: React.FC<Props> = ({
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
   tutorRoles: state.preferences.tutorRoles,
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps)((props: any) => (props.values ? <CourseClassEditView {...props} /> : null));

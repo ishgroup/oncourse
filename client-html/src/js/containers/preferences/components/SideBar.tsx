@@ -6,21 +6,17 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getUserPreferences } from '../../../common/actions';
 import CollapseMenuList from '../../../common/components/layout/side-bar-list/CollapseSideBarList';
-import {
-  AUS_REPORTING_DISPLAY_KEY,
-  LICENSE_ACCESS_CONTROL_KEY,
-  SPECIAL_TYPES_DISPLAY_KEY
-} from '../../../constants/Config';
+import { LICENSE_ACCESS_CONTROL_KEY, SPECIAL_TYPES_DISPLAY_KEY } from '../../../constants/Config';
 import { SidebarSharedProps } from '../../../model/common/sidebar';
 import { State } from '../../../reducers/state';
 import Avetmiss from '../containers/avetmiss/Avetmiss';
 import ClassTypes from '../containers/class-types/ClassTypes';
 import CourseTypes from '../containers/course-types/CourseTypes';
-import CollectionForms from "../containers/data-collection-forms/CollectionFormContainer";
-import CollectionRules from "../containers/data-collection-rules/CollectionRuleFormContainer";
+import CollectionForms from '../containers/data-collection-forms/CollectionFormContainer';
+import CollectionRules from '../containers/data-collection-rules/CollectionRuleFormContainer';
 import LDAP from '../containers/ldap/LDAP';
 import Subjects from '../containers/subjects/Subjects';
-import TutorRoleForm from "../containers/tutor-roles/TutorRoleFormContainer";
+import TutorRoleForm from '../containers/tutor-roles/TutorRoleFormContainer';
 import routes from '../routes';
 
 const formTypes = Object.keys(DataCollectionType).map(type => {
@@ -146,7 +142,7 @@ const mapStateToProps = (state: State) => ({
   tutorRoles: state.preferences.tutorRoles,
   accessLicense: state.userPreferences[LICENSE_ACCESS_CONTROL_KEY] === 'true',
   accessTypes: state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true',
-  hideAUSReporting: state.userPreferences[AUS_REPORTING_DISPLAY_KEY] === 'false',
+  hideAUSReporting: state.location.countryCode !== 'AU'
 });
  
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

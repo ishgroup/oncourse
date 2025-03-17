@@ -9,11 +9,12 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import clsx from 'clsx';
 import { getHighlightedPartLabel, useHoverShowStyles } from 'ish-ui';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from 'tss-react/mui';
 import { State } from '../../../../../../reducers/state';
 import { getEntityDisplayName } from '../../../../../utils/getEntityDisplayName';
+import { useAppSelector } from '../../../../../utils/hooks';
 import navigation from '../../../../navigation/data/navigation.json';
 import { getResultId } from '../../utils';
 import ListLinkItem from './ListLinkItem';
@@ -46,11 +47,19 @@ const SearchResults = props => {
   } = props;
 
   const { classes: hoverClasses } = useHoverShowStyles();
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
+
+  const navigationFeatures = useMemo(() => {
+    if (hideAUSReporting) {
+      return navigation.features.filter(f => !['exportAVETMISS8', 'vetReporting'].includes(f.key))
+    }
+    return navigation.features;
+  }, [hideAUSReporting])
 
   return (
     <List disablePadding className={classes.root}>
       {userSearch
-        && navigation.features
+        && navigationFeatures
           .filter(c => c.title.toLowerCase().includes(userSearch.toLowerCase()))
           .map((c, i) => {
 

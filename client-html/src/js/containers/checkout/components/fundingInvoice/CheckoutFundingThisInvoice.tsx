@@ -58,7 +58,7 @@ const CheckoutFundingThisInvoice: React.FC<Props> = (
 };
 
 const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   fundingInvoiceValues: getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state)
 });
 
