@@ -53,7 +53,6 @@ import static ish.oncourse.server.services.ISchedulerService.*;
 import static ish.persistence.Preferences.ACCOUNT_COUNTRY;
 import static ish.validation.ValidationUtil.isValidEmailAddress;
 
-
 @BQConfig
 public class AngelServerFactory {
 
@@ -61,7 +60,6 @@ public class AngelServerFactory {
 
     public final static String YAML_SYSTEM_USERS_FILE = "createAdminUsers.yaml";
     public static boolean QUIT_SIGNAL_CAUGHT = false;
-
 
     @Inject
     public AngelServerFactory() {
@@ -88,21 +86,13 @@ public class AngelServerFactory {
 
     }
 
-    /**
-     * Starts the server.
-     */
-    public void start(PreferenceController prefController,
-                      SchemaUpdateService schemaUpdateService,
-                      ISchedulerService schedulerService,
-                      Scheduler scheduler,
-                      LicenseService licenseService,
-                      CayenneService cayenneService,
-                      PluginService pluginService,
-                      MailDeliveryService mailDeliveryService,
-                      HttpFactory httpFactory,
-                      MoneyContextUpdater moneyContextUpdater) {
+    public void applyingDatabaseSchemaChanges(PreferenceController prefController,
+                                              SchemaUpdateService schemaUpdateService,
+                                              LicenseService licenseService,
+                                              CayenneService cayenneService,
+                                              MailDeliveryService mailDeliveryService,
+                                              HttpFactory httpFactory) {
         try {
-
             // Create DB schema
             LOGGER.warn("Creating database schema");
             schemaUpdateService.updateSchema();
@@ -117,7 +107,11 @@ public class AngelServerFactory {
             // total failure, some essential services cannot be started
             throw new RuntimeException("Server start failed to create or update the database. Aborting startup of other services.", e);
         }
+    }
 
+    public void configureQRTZScheduler(ISchedulerService schedulerService,
+                                       Scheduler scheduler,
+                                       PreferenceController prefController) {
         try {
             LOGGER.warn("Configuring cron tasks");
 
@@ -179,11 +173,11 @@ public class AngelServerFactory {
                     false,
                     false);
 
-            
+
             // disable cristmas theme automatical update since we did not prepare anything this year (2021-2022)
             schedulerService.removeJob(JobKey.jobKey(CHRISTMAS_THEME_DISABLE_JOB_ID,BACKGROUND_JOBS_GROUP_ID ));
             schedulerService.removeJob(JobKey.jobKey(CHRISTMAS_THEME_ENABLE_JOB_ID,BACKGROUND_JOBS_GROUP_ID ));
-            
+
 
             schedulerService.scheduleCronJob(PermanentlyDeleteDocumentsJob.class,
                     PERMANENTLY_DELETE_DOCUMENTS_ID, BACKGROUND_JOBS_GROUP_ID,
@@ -207,21 +201,24 @@ public class AngelServerFactory {
 
             LOGGER.warn("Starting cron");
             scheduler.start();
-            var preference = prefController.getPreference(ACCOUNT_COUNTRY, false);
-            if ((preference != null) && StringUtils.isNotBlank(preference.getValueString())) {
-                var country = Country.fromDatabaseValue(preference.getValueString());
-                moneyContextUpdater.updateCountry(country);
-            }
 
         } catch (SchedulerException e1) {
             throw new RuntimeException("Server scheduler failed to initialise, aborting startup", e1);
         } catch (ParseException e2) {
             throw new RuntimeException("Scheduled service failed to initialise, aborting startup", e2);
         }
+    }
 
+    public void startPlugins(PluginService pluginService) {
         pluginService.onStart();
+    }
 
-        LOGGER.warn("Server ready.");
+    public void updateLocalizationSettingsInDB(PreferenceController prefController, MoneyContextUpdater moneyContextUpdater) {
+        var preference = prefController.getPreference(ACCOUNT_COUNTRY, false);
+        if ((preference != null) && StringUtils.isNotBlank(preference.getValueString())) {
+            var country = Country.fromDatabaseValue(preference.getValueString());
+            moneyContextUpdater.updateCountry(country);
+        }
     }
 
     private void createSystemUsers(DataContext context, String hostName, String ipAddress, Integer port, PreferenceController preferenceController, MailDeliveryService mailDeliveryService) {
