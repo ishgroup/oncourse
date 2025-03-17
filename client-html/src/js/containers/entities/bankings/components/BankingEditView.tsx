@@ -7,7 +7,6 @@ import { Payment } from '@api/model';
 import Launch from '@mui/icons-material/Launch';
 import { FormControlLabel, IconButton } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import $t from '@t';

@@ -7,7 +7,6 @@ import Delete from '@mui/icons-material/Delete';
 import { Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { AppTheme } from 'ish-ui';
 import React, { useEffect, useState } from 'react';

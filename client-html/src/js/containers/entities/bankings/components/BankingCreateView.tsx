@@ -4,10 +4,8 @@
  */
 
 import { Report } from '@api/model';
-import { Typography } from '@mui/material';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import { Typography, FormControlLabel } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { format as formatDate } from 'date-fns';
 import {

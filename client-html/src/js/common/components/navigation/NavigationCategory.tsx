@@ -10,7 +10,6 @@ import Close from '@mui/icons-material/Close';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Grid, IconButton, Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import { BooleanArgFunction, makeAppStyles, NumberArgFunction, openInternalLink } from 'ish-ui';
 import React, { useMemo } from 'react';

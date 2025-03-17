@@ -5,11 +5,9 @@
 
 import { Account, ClassCost, CourseClassDuplicate, Tax } from '@api/model';
 import { Button, FormControlLabel, Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
