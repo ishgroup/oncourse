@@ -46,6 +46,8 @@ properties:
     type: integer
   cancelledClassesCount:
     type: integer
+  hybridClassesCount:
+    type: integer
   studentWaitingListCount:
     type: integer
   hasEnrolments:
