@@ -26,10 +26,10 @@ const isSuccess = "status == SUCCESS";
 const isFailed = "(status == FAILED or status == FAILED_CARD_DECLINED or status == FAILED_NO_PLACES or status == CORRUPTED)";
 const bankingIsNull = "bankingId == null";
 const bankingIsNotNull = "bankingId !== null";
-// eslint-disable-next-line max-len
+
 const isNotSystem = "(paymentMethod.type !== CONTRA and paymentMethod.type !== INTERNAL and paymentMethod.type !== REVERSE and paymentMethod.type !== VOUCHER)";
 const reversable = "(paymentMethod.type !== INTERNAL and paymentMethod.type !== REVERSE and paymentMethod.type !== VOUCHER)";
-// eslint-disable-next-line max-len
+
 const isSystem = "(paymentMethod.type == CONTRA or paymentMethod.type == INTERNAL or paymentMethod.type == REVERSE or paymentMethod.type == VOUCHER)";
 const isNotReversed = "reversedById == null";
 const isReversal = "reversalOfId !== null";

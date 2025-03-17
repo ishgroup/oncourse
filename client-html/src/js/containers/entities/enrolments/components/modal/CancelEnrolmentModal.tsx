@@ -5,8 +5,7 @@
 
 import { Account, CancelEnrolment, Tax } from '@api/model';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { FormControlLabel, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Button, FormControlLabel, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -275,7 +274,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getCommonPlainRecords(
       "Enrolment",
       0,
-      // eslint-disable-next-line max-len
+      
       "cancelWarningMessage,student.contact.lastName,student.contact.firstName,courseClass.course.name,courseClass.course.code,courseClass.code"
     )
   )

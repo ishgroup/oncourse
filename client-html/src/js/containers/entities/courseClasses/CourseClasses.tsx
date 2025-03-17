@@ -218,7 +218,7 @@ const filterGroups: FilterGroup[] = [
         active: true
       },
       {
-        name: "Self paced classes",
+        name: "Self-paced classes",
         expression: "type is DISTANT_LEARNING and isCancelled is false",
         active: true
       },
@@ -375,8 +375,8 @@ const formatSelfPaced = (v, row, columns) => {
   if (selfPacedIndex !== -1) {
     const type: CourseClassType = row.values[selfPacedIndex];
 
-    if (type === "Distant Learning" ) return "Self paced";
-    if (type === "Hybrid") return  dateValue || "Hybrid";
+    if (type === "Distant Learning" ) return $t("Self-paced");
+    if (type === "Hybrid") return  dateValue || $t("Hybrid");
   }
 
   return dateValue;

@@ -29,7 +29,7 @@ const ContactCourseClass = React.memo<{ showConfirm?, twoColumn?, values?, isNew
       }
 
       if (tutor.selfPacedclassesCount) {
-        types.push(getNestedTutorClassItem("Self Paced", tutor.selfPacedclassesCount, tutor.id));
+        types.push(getNestedTutorClassItem("Self-Paced", tutor.selfPacedclassesCount, tutor.id));
       }
 
       if (tutor.unscheduledClasseCount) {
@@ -42,6 +42,10 @@ const ContactCourseClass = React.memo<{ showConfirm?, twoColumn?, values?, isNew
 
       if (tutor.cancelledClassesCount) {
         types.push(getNestedTutorClassItem("Cancelled", tutor.cancelledClassesCount, tutor.id));
+      }
+
+      if (tutor.cancelledClassesCount) {
+        types.push(getNestedTutorClassItem("Hybrid", tutor.hybridClassesCount, tutor.id));
       }
     }
 

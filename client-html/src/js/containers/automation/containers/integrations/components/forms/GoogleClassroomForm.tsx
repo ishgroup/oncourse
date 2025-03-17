@@ -56,7 +56,7 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
       redirect: window.location.href
     };
 
-    // eslint-disable-next-line max-len
+    
     window.open(`https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${values.fields.clientId}&redirect_uri=${window.location.href}&state=${JSON.stringify(state)}&response_type=code&scope=https://www.googleapis.com/auth/classroom.announcements.readonly%20https://www.googleapis.com/auth/classroom.courses%20https://www.googleapis.com/auth/classroom.guardianlinks.me.readonly%20https://www.googleapis.com/auth/classroom.push-notifications%20https://www.googleapis.com/auth/classroom.rosters.readonly%20https://www.googleapis.com/auth/classroom.student-submissions.students.readonly%20https://www.googleapis.com/auth/classroom.coursework.me.readonly%20https://www.googleapis.com/auth/classroom.rosters%20https://www.googleapis.com/auth/classroom.student-submissions.me.readonly%20https://www.googleapis.com/auth/classroom.coursework.me%20https://www.googleapis.com/auth/classroom.courses.readonly%20https://www.googleapis.com/auth/classroom.coursework.students%20https://www.googleapis.com/auth/classroom.guardianlinks.students.readonly%20https://www.googleapis.com/auth/classroom.profile.emails%20https://www.googleapis.com/auth/classroom.coursework.students.readonly%20https://www.googleapis.com/auth/classroom.guardianlinks.students%20https://www.googleapis.com/auth/classroom.profile.photos%20https://www.googleapis.com/auth/classroom.announcements`,
       "_self");
   };
