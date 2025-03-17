@@ -8,9 +8,7 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
-import { Typography } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { Typography, IconButton } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';

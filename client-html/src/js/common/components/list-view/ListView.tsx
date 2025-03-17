@@ -9,7 +9,6 @@
 import { Currency, ExportTemplate, LayoutType, Report, TableModel } from '@api/model';
 import ErrorOutline from '@mui/icons-material/ErrorOutline';
 import { Button } from '@mui/material';
-import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import $t from '@t';
 import {

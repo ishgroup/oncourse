@@ -4,8 +4,6 @@
  */
 
 import { FormControlLabel, Typography } from '@mui/material';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Typography from '@mui/material/Typography';
 import $t from '@t';
 import { Decimal } from 'decimal.js-light';
 import { formatCurrency, WarningMessage } from 'ish-ui';

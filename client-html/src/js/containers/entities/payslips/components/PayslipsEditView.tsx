@@ -7,9 +7,8 @@
  */
 
 import { Contact, PayslipPayType, PayslipStatus } from '@api/model';
-import { Grid, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Grid, { GridSize } from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
 import { AddButton, formatCurrency, mapSelectItems } from 'ish-ui';

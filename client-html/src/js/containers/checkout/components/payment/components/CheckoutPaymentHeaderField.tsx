@@ -7,10 +7,7 @@
  */
 import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { FormControlLabel, Typography } from '@mui/material';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import { FormControlLabel, Typography, Tooltip } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { addDays, compareAsc, isSameDay } from 'date-fns';

@@ -1,4 +1,3 @@
-import { MenuItem } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import $t from '@t';
 import { formatCurrency } from 'ish-ui';

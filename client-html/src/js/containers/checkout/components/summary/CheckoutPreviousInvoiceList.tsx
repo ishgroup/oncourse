@@ -4,8 +4,6 @@
  */
 
 import { Chip, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';

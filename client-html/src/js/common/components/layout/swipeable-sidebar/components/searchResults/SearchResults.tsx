@@ -51,10 +51,10 @@ const SearchResults = props => {
 
   const navigationFeatures = useMemo(() => {
     if (hideAUSReporting) {
-      return navigation.features.filter(f => !['exportAVETMISS8', 'vetReporting'].includes(f.key))
+      return navigation.features.filter(f => !['exportAVETMISS8', 'vetReporting'].includes(f.key));
     }
     return navigation.features;
-  }, [hideAUSReporting])
+  }, [hideAUSReporting]);
 
   return (
     <List disablePadding className={classes.root}>
@@ -128,7 +128,7 @@ const SearchResults = props => {
               checkSelectedResult={checkSelectedResult}
               items={r.items.map(item => {
                 const name = getHighlightedPartLabel(item.name, userSearch);
-                return {...item, name};
+                return { ...item, name };
               })}
               userSearch={userSearch}
               setSelected={setSelected}
