@@ -4,7 +4,7 @@
  */
 
 import { Account, ClassCost, CourseClassDuplicate, Tax } from '@api/model';
-import { Grid, Typography } from '@mui/material';
+import { Button, FormControlLabel, Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -551,7 +551,7 @@ const mapStateToProps = (state: State) => ({
   earliest: state.courseClass.timetable.earliest,
   sessions: state.courseClass.timetable.sessions,
   hasZeroWages: state.courseClass.timetable.hasZeroWages,
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

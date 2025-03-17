@@ -4,6 +4,7 @@
  */
 
 import Delete from '@mui/icons-material/Delete';
+import { Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -143,7 +144,7 @@ const SelectedPromoCodesRenderer = React.memo<{ items?, selectedDiscount?, class
 });
 
 const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   summaryList: state.checkout.summary.list
 });
 

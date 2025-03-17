@@ -279,7 +279,7 @@ const CheckoutDiscountEditView = React.memo<any>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   summary: state.checkout.summary
 });
 

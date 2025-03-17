@@ -409,7 +409,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 const mapStateToProps = (state: State) => ({
   paymentOutMethods: state.paymentsOut.paymentOutMethods,
   refundablePayments: state.paymentsOut.refundablePayments,
-  currency: state.currency,
+  currency: state.location.currency,
   accountItems: state.plainSearchRecords.Account.items,
   adminSites: state.sites.adminSites,
   lockedDate: state.lockedDate,

@@ -489,7 +489,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   accounts: state.plainSearchRecords.Account.items,
-  currency: state.currency,
+  currency: state.location.currency,
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
