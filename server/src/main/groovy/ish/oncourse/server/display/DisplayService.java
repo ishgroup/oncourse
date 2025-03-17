@@ -8,24 +8,22 @@
 
 package ish.oncourse.server.display;
 
+import com.google.inject.Inject;
 import io.bootique.annotation.BQConfigProperty;
+import ish.math.Country;
+import ish.math.context.MoneyContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 
 public class DisplayService {
-    private static final Logger logger = LogManager.getLogger();
-
-    private Boolean ausReporting = null;
+    @Inject
+    private MoneyContext moneyContext;
 
     public Boolean getAusReporting() {
-        return ausReporting == null ? Boolean.TRUE : ausReporting;
-    }
-
-
-    @BQConfigProperty
-    public void setAusReporting(boolean ausReporting) {
-        logger.warn("server has ausReporting = " + ausReporting);
-        this.ausReporting = ausReporting;
+        ish.math.Country country = ish.math.Country.fromLocale(moneyContext.getLocale());
+        return Objects.isNull(country) || country == Country.AUSTRALIA;
     }
 }

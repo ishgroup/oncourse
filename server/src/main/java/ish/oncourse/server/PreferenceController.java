@@ -12,6 +12,7 @@ package ish.oncourse.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import ish.math.Country;
 import ish.oncourse.server.cayenne.Preference;
 import ish.oncourse.server.display.DisplayService;
 import ish.oncourse.server.integration.PluginsPrefsService;
@@ -28,10 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobKey;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 import static ish.oncourse.DefaultAccount.defaultAccountPreferences;
 import static ish.oncourse.server.services.ISchedulerService.BACKGROUND_JOBS_GROUP_ID;
@@ -60,9 +58,6 @@ public class PreferenceController extends CommonPreferenceController {
 			CUSTOM_LOGO_COLOUR, CUSTOM_LOGO_COLOUR_SMALL
 	);
 
-    @Inject
-    private DisplayService displayService;
-
 	@Inject
 	public PreferenceController(ICayenneService cayenneService, ISystemUserService systemUserService,
 								LicenseService licenseService, PluginsPrefsService pluginsPrefsService,
@@ -73,11 +68,6 @@ public class PreferenceController extends CommonPreferenceController {
 		this.pluginsPrefsService = pluginsPrefsService;
 		this.schedulerService = schedulerService;
 		sharedController = this;
-	}
-
-
-	public Boolean getAusReporting() {
-		return displayService.getAusReporting();
 	}
 
 	public Long getTimeoutMs() {
@@ -109,9 +99,6 @@ public class PreferenceController extends CommonPreferenceController {
 		if (defaultAccountPreferences.contains(key)) {
 			return getDefaultAccountId(key);
 		}
-
-		if(key.equals(AUS_REPORTING))
-			return getAusReporting();
 
 		if(key.startsWith("plugins.")){
 			return pluginsPrefsService.getProperty(key);
