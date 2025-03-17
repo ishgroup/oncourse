@@ -28,7 +28,8 @@ public class MessageForSmtp {
 
     }
 
-    public static MessageForSmtp valueOf(ObjectContext context, String creatorKey, MailDeliveryParam param) {
+    public static MessageForSmtp valueOf(ObjectContext context, String creatorKey,
+                                         MailDeliveryParam param) {
         var messageForSmtp = new MessageForSmtp();
         messageForSmtp.context = context;
         messageForSmtp.creatorKey = creatorKey;
