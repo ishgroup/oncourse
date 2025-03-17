@@ -4,12 +4,12 @@ Feature: performance of payment with previous credits and previous owings
   Background: Authorize first, create checkoutModel
     * configure headers = { Authorization: 'admin' }
     * url 'https://127.0.0.1:8182/a/v1'
-    * def ishPath = 'checkout'
+    * def ishPath = 'checkout/updateModel'
     * table checkoutModelTable
       | i | payerId   | firstId   | secondId | enrolment                                                             | membershipIds                  | voucherData              | product |
       | 0 | 4         | 4         | null     | [{"classId": 6,"appliedDiscountId": null,"studyReason":"Not stated"}] | {"first": null,"second": null} | {"id": null, "value": 0} | []      |
     * call read('getCheckoutModel.feature') checkoutModelTable
-    
+
   Scenario: right payment with credits and owings
 
     * set checkoutModel.paymentMethodId = 1
@@ -19,7 +19,6 @@ Feature: performance of payment with previous credits and previous owings
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 200
     And match response.invoice.amountOwing == 0.0
@@ -33,7 +32,6 @@ Feature: performance of payment with previous credits and previous owings
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 200
     And match response.invoice.amountOwing == 0.0
@@ -47,7 +45,6 @@ Feature: performance of payment with previous credits and previous owings
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 200
     And match response.invoice.amountOwing == 0.0
@@ -89,10 +86,9 @@ Feature: performance of payment with previous credits and previous owings
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 400
-    And match response[0].error == 'Payment amount doesn\'t match invoice allocated total amount'
+    And match response.errorMessage contains 'Payment amount doesn\'t match invoice allocated total amount'
 
 
   Scenario: not right payment with credits and owings, amount of current invoice is more than summary of checkout
@@ -103,11 +99,10 @@ Feature: performance of payment with previous credits and previous owings
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 400
-    And match response[0].error == 'Payment amount allocated to current invoice is bigger than invoice total'
-    And match response[1].error == 'Payment amount doesn\'t match invoice allocated total amount'
+    And match response.errorMessage contains 'Payment amount allocated to current invoice is bigger than invoice total'
+    And match response.errorMessage contains 'Payment amount doesn\'t match invoice allocated total amount'
 
 
   Scenario: not right payment with credits and owings: amount of previous invoices is more than real one
@@ -118,11 +113,10 @@ Feature: performance of payment with previous credits and previous owings
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 400
-    And match response[0].error == 'Payment amount allocated to invoice #46 bigger than invoice outstanding amount'
-    And match response[1].error == 'Payment amount doesn\'t match invoice allocated total amount'
+    And match response.errorMessage contains 'Payment amount allocated to invoice #46 bigger than invoice outstanding amount'
+    And match response.errorMessage contains 'Payment amount doesn\'t match invoice allocated total amount'
 
 
   Scenario: not right payment with credits and owings: amount of previous credits is more than real one
@@ -133,8 +127,7 @@ Feature: performance of payment with previous credits and previous owings
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 400
-    And match response[0].error == 'Payment amount allocated to invoice #43 bigger than invoice outstanding amount'
-    And match response[1].error == 'Payment amount doesn\'t match invoice allocated total amount'
+    And match response.errorMessage contains 'Payment amount allocated to invoice #43 bigger than invoice outstanding amount'
+    And match response.errorMessage contains 'Payment amount doesn\'t match invoice allocated total amount'

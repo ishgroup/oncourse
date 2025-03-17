@@ -33,7 +33,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { getFormNames, isDirty } from 'redux-form';
 import { TssCacheProvider } from 'tss-react';
-import { getUserPreferences, showMessage } from '../common/actions';
+import { getLogo, getUserPreferences, showMessage } from '../common/actions';
 import ConfirmProvider from '../common/components/dialog/ConfirmProvider';
 import MessageProvider from '../common/components/dialog/MessageProvider';
 import { getGoogleTagManagerParameters } from '../common/components/google-tag-manager/actions';
@@ -95,6 +95,7 @@ interface Props {
   history: any;
   preferencesTheme: ThemeValues;
   onInit: AnyArgFunction;
+  getLogo: AnyArgFunction;
   isLogged: boolean;
   isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
@@ -107,7 +108,7 @@ interface MainState {
   theme: AppTheme;
 }
 
-export function MainBase(
+function MainBase(
   {
     showMessage,
     getPreferencesTheme,
@@ -118,7 +119,8 @@ export function MainBase(
     isAnyFormDirty,
     isLoggedIn,
     displayAUSReporting,
-    match
+    match,
+    getLogo
   }: Props) {
     const theme = getTheme();
     
@@ -149,6 +151,10 @@ export function MainBase(
       e.returnValue = "All unsaved data will be lost. Are you sure want to close window ?";
     }
   };
+  
+  useEffect(() => {
+    getLogo()
+  }, []);
   
   useEffect(() => {
     if (routes) {
@@ -265,6 +271,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   showMessage: message => dispatch(showMessage(message)),
   isLoggedIn: () => dispatch(isLoggedIn()),
   getPreferencesTheme: () => dispatch(getUserPreferences([DASHBOARD_THEME_KEY])),
+  getLogo: () => dispatch(getLogo()),
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());

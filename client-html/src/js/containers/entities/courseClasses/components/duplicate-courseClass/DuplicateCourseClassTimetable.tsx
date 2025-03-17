@@ -6,13 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import { TimetableMonth } from "../../../../../model/timetable";
-import CalendarDayBase from "../../../../timetable/components/calendar/components/day/CalendarDayBase";
-import CalendarMonthBase from "../../../../timetable/components/calendar/components/month/CalendarMonthBase";
-import CalendarSession from "../../../../timetable/components/calendar/components/session/CalendarSession";
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import React from 'react';
+import { TimetableMonth } from '../../../../../model/timetable';
+import CalendarDayBase from '../../../../timetable/components/calendar/components/day/CalendarDayBase';
+import CalendarMonthBase from '../../../../timetable/components/calendar/components/month/CalendarMonthBase';
+import CalendarSession from '../../../../timetable/components/calendar/components/session/CalendarSession';
 
 interface Props {
   months: TimetableMonth[];
@@ -50,7 +51,7 @@ const DuplicateCourseClassTimetable: React.FunctionComponent<Props> = ({ months,
       {showMessage && (
         <div className="noRecordsMessage">
           <Typography variant="h6" color="inherit" align="center">
-            No sessions were found
+            {$t('no_sessions_were_found')}
           </Typography>
         </div>
       )}

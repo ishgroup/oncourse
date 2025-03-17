@@ -2,6 +2,7 @@ import { MergeLine } from '@api/model';
 import Check from '@mui/icons-material/Check';
 import { Button, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper';
+import $t from '@t';
 import { AppTheme } from 'ish-ui';
 import React, { useCallback, useMemo } from 'react';
 import { change } from 'redux-form';
@@ -125,7 +126,7 @@ const InfoCard = React.memo<Props>(
               disabled={selectedA}
               endIcon={selectedA ? <Check color="inherit" /> : undefined}
             >
-              Select all
+              {$t('select_all')}
             </Button>
           </div>
 
@@ -148,7 +149,7 @@ const InfoCard = React.memo<Props>(
               disabled={selectedB}
               endIcon={selectedB ? <Check color="inherit" /> : undefined}
             >
-              Select all
+              {$t('select_all')}
             </Button>
           </div>
         </div>

@@ -3,10 +3,10 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DataRow } from "@api/model";
-import { format as formatDateTime } from "date-fns";
-import { FormErrors } from "redux-form";
-import history from "../../../constants/History";
+import { DataRow } from '@api/model';
+import { format as formatDateTime } from 'date-fns';
+import { FormErrors } from 'redux-form';
+import history from '../../../constants/History';
 
 export const updateHistory = (params, url) => {
   const paramsString = decodeURIComponent(params.toString());
@@ -141,6 +141,14 @@ export const createAndDownloadBase64File = (data: any, name: string, type: strin
 export const getArrayFieldMeta = name => {
   const match = name.match(/\[(\d)]\.([^.]+)$/);
   return { field: match[2], index: Number(match[1]) };
+};
+
+export const attachScript = url => {
+  if (document.querySelector(`script[src="${url}"]`)) return;
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = url;
+  document.head.appendChild(script);
 };
 
 export const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1920;

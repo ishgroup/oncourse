@@ -3,25 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PayrollRequest } from "@api/model";
-import OpenInNew from "@mui/icons-material/OpenInNew";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import IconButton from "@mui/material/IconButton";
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { openInternalLink, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { change, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import LoadingIndicator from "../../../../common/components/progress/LoadingIndicator";
-import { State } from "../../../../reducers/state";
+import { PayrollRequest } from '@api/model';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import IconButton from '@mui/material/IconButton';
+import $t from '@t';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { openInternalLink, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { change, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import LoadingIndicator from '../../../../common/components/progress/LoadingIndicator';
+import { State } from '../../../../reducers/state';
 
 interface Props extends InjectedFormProps {
   opened: boolean;
@@ -101,7 +102,7 @@ const GenerateTutorPayModalForm: React.FC<Props> = props => {
     <Dialog open={opened} onClose={onCloseDialog}>
       <LoadingIndicator />
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-        <div className="heading p-3">Generate Tutor Pay</div>
+        <div className="heading p-3">{$t('generate_tutor_pay')}</div>
 
         <DialogContent>
           <FormField
@@ -122,8 +123,7 @@ const GenerateTutorPayModalForm: React.FC<Props> = props => {
             >
               <span>
                 {item.unconfirmedWagesCount}
-                {' '}
-                wages are not confirmed and will be not processed
+                {$t('wages_are_not_confirmed_and_will_be_not_processed')}
               </span>
               <IconButton className="smallIconButton" onClick={onWagesLinkClick}>
                 <OpenInNew fontSize="small" color="secondary" />
@@ -138,14 +138,14 @@ const GenerateTutorPayModalForm: React.FC<Props> = props => {
                 "d-none": !item.unconfirmedWagesCount
               })}
             >
-              Confirm Now
+              {$t('confirm_now')}
             </Button>
           </Collapse>
         </DialogContent>
 
         <DialogActions className="p-1">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
 
           <LoadingButton
@@ -156,7 +156,7 @@ const GenerateTutorPayModalForm: React.FC<Props> = props => {
             loading={loading}
             disabled={!item.totalWagesCount}
           >
-            Generate
+            {$t('generate')}
           </LoadingButton>
         </DialogActions>
       </form>

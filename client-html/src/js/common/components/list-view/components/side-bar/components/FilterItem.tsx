@@ -4,6 +4,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme } from 'ish-ui';
 import * as React from 'react';
@@ -81,7 +82,7 @@ const FilterItem = props => {
       />
 
       {deletable && (
-        <Tooltip title="Delete Filter" placement="right">
+        <Tooltip title={$t('delete_filter')} placement="right">
           <IconButton className={classes.deleteButton} onClick={() => onDelete(id, rootEntity, checked, isPrivate)}>
             <Delete fontSize="inherit" color="secondary" />
           </IconButton>

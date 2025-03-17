@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import { initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { ServiceNSWVoucherTypes } from "../../../../../../model/automation/integrations/IntegrationsFields";
+import $t from '@t';
+import React from 'react';
+import { initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { ServiceNSWVoucherTypes } from '../../../../../../model/automation/integrations/IntegrationsFields';
 
 class NSWBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -34,11 +35,11 @@ class NSWBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField name="fields.voucher" label="Voucher type" type="select" items={ServiceNSWVoucherTypes} required className="mb-2" />
-          <FormField name="fields.chanelCode" label="Store channel code" type="text" required className="mb-2" />
-          <FormField name="fields.terminalId" label="POS terminal id" type="text" required className="mb-2" />
-          <FormField name="fields.programme" label="Programme" type="text" required className="mb-2" />
-          <FormField name="fields.apiKey" label="API key" type="password" required className="mb-2" />
+          <FormField name="fields.voucher" label={$t('voucher_type')} type="select" items={ServiceNSWVoucherTypes} required className="mb-2" />
+          <FormField name="fields.chanelCode" label={$t('store_channel_code')} type="text" required className="mb-2" />
+          <FormField name="fields.terminalId" label={$t('pos_terminal_id')} type="text" required className="mb-2" />
+          <FormField name="fields.programme" label={$t('programme')} type="text" required className="mb-2" />
+          <FormField name="fields.apiKey" label={$t('api_key')} type="password" required className="mb-2" />
         </AppBarContent>
       </form>
     );

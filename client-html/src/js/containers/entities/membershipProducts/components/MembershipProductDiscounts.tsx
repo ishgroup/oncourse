@@ -1,25 +1,26 @@
-import { MembershipDiscount, MembershipProduct } from "@api/model";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, FieldArray } from "redux-form";
+import { MembershipDiscount, MembershipProduct } from '@api/model';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, FieldArray } from 'redux-form';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
+import { PanelItemChangedMessage } from '../../../../common/components/form/nestedList/components/PaperListRenderer';
 import NestedList, {
   NestedListItem,
   NestedListPanelItem
-} from "../../../../common/components/form/nestedList/NestedList";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import RelationsCommon from "../../common/components/RelationsCommon";
+} from '../../../../common/components/form/nestedList/NestedList';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import RelationsCommon from '../../common/components/RelationsCommon';
 
-interface MembershipDiscountsProps extends EditViewProps<MembershipProduct>{
+interface MembershipDiscountsProps extends EditViewProps<MembershipProduct> {
   foundDiscounts?: MembershipDiscount[];
   searchDiscounts?: (search: string) => void;
   clearDiscountsSearch?: (pending: boolean) => void;
@@ -103,7 +104,7 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
       <div className={twoColumn ? "mb-2 mw-400" : "mb-2"}>
         <NestedList
           formId={values.id}
-          title="DISCOUNTS"
+          title={$t('discounts3')}
           searchPlaceholder="Add discounts"
           values={discountsToNestedListItems(discounts)}
           searchValues={discountsToNestedListItems(foundDiscounts)}
@@ -136,7 +137,7 @@ const MembershipProductDiscounts: React.FC<MembershipDiscountsProps> = props => 
       <div className="pb-3 mb-3 mt-1">
         <FieldArray
           name="documents"
-          label="Documents"
+          label={$t('documents')}
           entity="ArticleProduct"
           component={DocumentsRenderer}
           xsGrid={12}

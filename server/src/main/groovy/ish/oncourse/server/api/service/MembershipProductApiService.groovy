@@ -24,13 +24,13 @@ import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestFromEntityRelation
 import static ish.oncourse.server.api.v1.function.EntityRelationFunctions.toRestToEntityRelation
-import static ish.oncourse.server.api.v1.function.MembershipProductFunctions.*
+import static ish.oncourse.server.api.v1.function.MembershipProductFunctions.calculateNextDate
+import static ish.oncourse.server.api.v1.function.MembershipProductFunctions.toRestMembershipDiscount
 import static ish.oncourse.server.api.v1.function.ProductFunctions.expiryTypeMap
 import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorporatePasses
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
@@ -122,9 +122,9 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
         membershipProduct.name = trimToNull(membershipProductDTO.name)
         membershipProduct.sku = trimToNull(membershipProductDTO.code)
         membershipProduct.description = trimToNull(membershipProductDTO.description)
-        membershipProduct.priceExTax = toMoneyValue(membershipProductDTO.feeExTax)
+        membershipProduct.priceExTax = Money.exactOf(membershipProductDTO.feeExTax)
         membershipProduct.tax = taxDao.getById(context, membershipProductDTO.taxId.toLong())
-        membershipProduct.taxAdjustment = calculateTaxAdjustment(toMoneyValue(membershipProductDTO.totalFee), membershipProduct.priceExTax, membershipProduct.tax.rate)
+        membershipProduct.taxAdjustment = calculateTaxAdjustment(Money.exactOf(membershipProductDTO.totalFee), membershipProduct.priceExTax, membershipProduct.tax.rate)
         membershipProduct.expiryType = expiryTypeMap.getByValue(membershipProductDTO.expiryType)
         membershipProduct.expiryDays = membershipProductDTO.expiryDays
         membershipProduct.incomeAccount = accountDao.getById(context, membershipProductDTO.incomeAccountId.toLong())
@@ -182,8 +182,8 @@ class MembershipProductApiService extends TaggableApiService<MembershipProductDT
             if (!tax) {
                 validator.throwClientErrorException(id, 'tax', "Tax with id=$membershipProductDTO.taxId doesn't exist.")
             }
-            Money adjustment = calculateTaxAdjustment(toMoneyValue(membershipProductDTO.totalFee), toMoneyValue(membershipProductDTO.feeExTax), tax.rate)
-            if (Math.abs(adjustment.doubleValue()) > 0.01) {
+            Money adjustment = calculateTaxAdjustment(Money.exactOf(membershipProductDTO.totalFee), Money.exactOf(membershipProductDTO.feeExTax), tax.rate)
+            if (Math.abs(adjustment.toDouble()) > 0.01) {
                 validator.throwClientErrorException(id, 'tax', "Incorrect money values for product price.")
             }
         }

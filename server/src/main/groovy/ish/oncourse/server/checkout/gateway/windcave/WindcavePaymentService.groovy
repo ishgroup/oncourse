@@ -9,20 +9,20 @@
 package ish.oncourse.server.checkout.gateway.windcave
 
 import com.google.inject.Inject
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.checkout.gateway.SessionAttributes
 import ish.math.Money
 import ish.oncourse.server.PreferenceController
 import ish.oncourse.server.api.checkout.Checkout
-import ish.oncourse.server.api.v1.model.CheckoutResponseDTO
+import ish.oncourse.server.api.v1.model.CheckoutCCResponseDTO
 import ish.oncourse.server.api.v1.model.CheckoutValidationErrorDTO
 import ish.oncourse.server.api.v1.model.SessionStatusDTO
 import ish.oncourse.server.cayenne.Contact
-import ish.common.checkout.gateway.PaymentGatewayError
-import ish.oncourse.server.checkout.gateway.PaymentServiceInterface
+import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
 
 import static WindcavePaymentAPI.AUTH_TYPE
 
-class WindcavePaymentService implements PaymentServiceInterface {
+class WindcavePaymentService implements SessionPaymentServiceInterface {
 
     @Inject
     WindcavePaymentAPI windcavePaymentAPI
@@ -36,24 +36,25 @@ class WindcavePaymentService implements PaymentServiceInterface {
     }
 
     @Override
-    void succeedPaymentAndCompleteTransaction(CheckoutResponseDTO dtoResponse, Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, Money amount, String merchantReference) {
+    CheckoutCCResponseDTO succeedPaymentAndCompleteTransaction(Checkout checkout, Boolean sendInvoice, SessionAttributes sessionAttributes, String merchantReference) {
         if (preferenceController.isPurchaseWithoutAuth()) {
-            succeedPayment(dtoResponse, checkout, sendInvoice)
+            return succeedPayment(checkout, sendInvoice)
         } else {
             if (AUTH_TYPE != sessionAttributes.type) {
                 handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card transaction has wrong type")])
             }
 
-           sessionAttributes = windcavePaymentAPI.completeTransaction(sessionAttributes.transactionId, amount, merchantReference)
+           sessionAttributes = windcavePaymentAPI.completeTransaction(sessionAttributes.transactionId, checkout.paymentIn.amount, merchantReference)
 
             if (sessionAttributes.authorised) {
-                succeedPayment(dtoResponse, checkout, sendInvoice)
+                return succeedPayment(checkout, sendInvoice)
             } else {
                 checkout.paymentIn.gatewayResponse = sessionAttributes.statusText
                 checkout.paymentIn.privateNotes = sessionAttributes.responceJson
                 checkout.context.commitChanges()
                 handleError(PaymentGatewayError.PAYMENT_ERROR.errorNumber,  new SessionStatusDTO(complete: sessionAttributes.complete, authorised: sessionAttributes.authorised, responseText: sessionAttributes.statusText))
             }
+            return new CheckoutCCResponseDTO()
         }
     }
 

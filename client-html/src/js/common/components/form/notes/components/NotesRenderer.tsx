@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import * as React from "react";
-import NoteItem from "./NoteItem";
+import { Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import $t from '@t';
+import * as React from 'react';
+import NoteItem from './NoteItem';
 
 const NotesRenderer = props => {
   const {
@@ -58,9 +59,7 @@ const NotesRenderer = props => {
           <>
             <span className={classes.showMore}>
               <Button onClick={handleShowMore} color="primary">
-                Show
-                {' '}
-                {showMore ? "less" : "more"}
+                {$t('show', [showMore ? $t("less") : $t("more")])}
               </Button>
             </span>
           </>

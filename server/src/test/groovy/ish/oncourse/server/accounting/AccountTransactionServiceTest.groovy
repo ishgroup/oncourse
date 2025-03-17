@@ -35,7 +35,7 @@ class AccountTransactionServiceTest extends TestWithDatabase {
                 .select(cayenneContext)
         Assertions.assertTrue(accounts.size() > 2)
 
-        AccountTransactionRequest request = AccountTransactionRequest.valueOf(new Money(70,0), accounts[0].id, accounts[1].id, LocalDate.now())
+        AccountTransactionRequest request = AccountTransactionRequest.valueOf(Money.of(70,0), accounts[0].id, accounts[1].id, LocalDate.now())
         accountTransactionService.createManualTransactions(request)
 
         List<AccountTransaction> after = ObjectSelect.query(AccountTransaction)
@@ -45,8 +45,8 @@ class AccountTransactionServiceTest extends TestWithDatabase {
 
         TransactionsBuilder builder = new TransactionsBuilder() {
             TransactionSettings build() {
-                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[0], accounts[1], new Money(35 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
-                AccountTransactionDetail detail2 = AccountTransactionDetail.valueOf(accounts[0], accounts[1], new Money(50 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
+                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[0], accounts[1], Money.of(35 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
+                AccountTransactionDetail detail2 = AccountTransactionDetail.valueOf(accounts[0], accounts[1], Money.of(50 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
                 TransactionSettings.valueOf(detail1, detail2)
                         .initialTransaction()
             }
@@ -60,8 +60,8 @@ class AccountTransactionServiceTest extends TestWithDatabase {
 
         builder = new TransactionsBuilder() {
             TransactionSettings build() {
-                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(90 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
-                AccountTransactionDetail detail2 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(70 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
+                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], Money.of(90 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
+                AccountTransactionDetail detail2 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], Money.of(70 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
                 TransactionSettings.valueOf(detail1, detail2)
                         .initialTransaction()
             }
@@ -76,7 +76,7 @@ class AccountTransactionServiceTest extends TestWithDatabase {
 
         builder = new TransactionsBuilder() {
             TransactionSettings build() {
-                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(190 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
+                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], Money.of(190 as BigDecimal), AccountTransactionType.PAYMENT_IN_LINE, 7L, LocalDate.now())
                 TransactionSettings.valueOf(detail1)
             }
         }
@@ -90,7 +90,7 @@ class AccountTransactionServiceTest extends TestWithDatabase {
 
         builder = new TransactionsBuilder() {
             TransactionSettings build() {
-                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], new Money(120 as BigDecimal), AccountTransactionType.INVOICE_LINE, 7L, LocalDate.now())
+                AccountTransactionDetail detail1 = AccountTransactionDetail.valueOf(accounts[1], accounts[0], Money.of(120 as BigDecimal), AccountTransactionType.INVOICE_LINE, 7L, LocalDate.now())
                 TransactionSettings.valueOf(detail1)
                         .initialTransaction()
             }

@@ -8,6 +8,7 @@ import { Button, Grid } from '@mui/material';
 import { red } from '@mui/material/colors';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Paper from '@mui/material/Paper';
+import $t from '@t';
 import clsx from 'clsx';
 import { mapSelectItems, sortDefaultSelectItems } from 'ish-ui';
 import * as React from 'react';
@@ -48,7 +49,7 @@ const FundingContractItem = props => {
                   <FormField
                     type="text"
                     name={`${item}.name`}
-                    label="Name"
+                    label={$t('name')}
                     className={classes.inputWidth}
                                         required
                   />
@@ -58,7 +59,7 @@ const FundingContractItem = props => {
                     className={clsx("errorColor", classes.deleteButton)}
                     onClick={() => onDelete(field, index)}
                   >
-                    Delete
+                    {$t('delete2')}
                   </Button>
                 </Grid>
               </Grid>
@@ -66,7 +67,7 @@ const FundingContractItem = props => {
                 <FormField
                   type="select"
                   name={`${item}.flavour`}
-                  label="Flavour"
+                  label={$t('flavour')}
                   items={Flavours}
                   className="pr-3"
                                     required
@@ -75,7 +76,7 @@ const FundingContractItem = props => {
               <Grid item xs={5}>
                 <FormControlLabel
                   control={<FormField type="checkbox" name={`${item}.active`} color="primary" />}
-                  label="Active"
+                  label={$t('active')}
                 />
               </Grid>
             </Grid>

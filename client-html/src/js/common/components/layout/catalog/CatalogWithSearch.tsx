@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Fade, Typography } from '@mui/material';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
+import $t from '@t';
 import clsx from 'clsx';
 import { AddButton, AnyArgFunction, DynamicSizeList, makeAppStyles } from 'ish-ui';
 import React, { memo, useMemo, useState } from 'react';
@@ -178,10 +179,10 @@ const CatalogWithSearch = React.memo<Props>((
           >
             <AddIcon/>
           </Fab>
-          <Typography className={classes.fabTip} variant="overline" color="primary" fontWeight="bold">Close</Typography>
+          <Typography className={classes.fabTip} variant="overline" color="primary" fontWeight="bold">{$t('close')}</Typography>
         </div>
         <div className="flex-fill"/>
-        <UserSearch getSearchResults={setSearch} placeholder="Filter items"/>
+        <UserSearch getSearchResults={setSearch} placeholder={$t('filter_items')}/>
       </div>
       <Typography variant="h4" className="mt-5 mb-3">{title}</Typography>
       <NewsRender page className="mb-3"/>
@@ -216,7 +217,7 @@ const CatalogWithSearch = React.memo<Props>((
                       item={i}
                       onOpen={() => toggleInstall(i)}
                       key={i.id}
-                      secondaryAction={i.installed && <Typography variant="caption">Added</Typography>}
+                      secondaryAction={i.installed && <Typography variant="caption">{$t('Added')}</Typography>}
                       disabled={i.installed}
                     />
                   ))}
@@ -235,7 +236,7 @@ const CatalogWithSearch = React.memo<Props>((
                       item={i}
                       onOpen={() => toggleInstall(i)}
                       key={i.id}
-                      secondaryAction={i.installed && <Typography variant="caption">Added</Typography>}
+                      secondaryAction={i.installed && <Typography variant="caption">{$t('Added')}</Typography>}
                       disabled={i.installed}
                     />
                   ))}
@@ -253,7 +254,7 @@ const CatalogWithSearch = React.memo<Props>((
               <div className="flex-fill"/>
               <div className="centeredFlex primaryColor">
                 <Typography variant="button">
-                  Add new
+                  {$t('add_new')}
                 </Typography>
                 <AddButton className="p-1" onClick={open}/>
               </div>

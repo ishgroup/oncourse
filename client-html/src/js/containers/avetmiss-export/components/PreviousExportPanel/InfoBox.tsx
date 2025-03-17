@@ -3,6 +3,7 @@ import OpenInNew from '@mui/icons-material/OpenInNew';
 import Button from '@mui/material/Button';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL } from 'ish-ui';
@@ -54,8 +55,7 @@ const InfoBox = ({
   <div className="pl-2">
     <Typography className="mb-3">
       {outcomesCount}
-      {' '}
-      outcomes
+      {$t('outcomes2')}
       <ButtonBase
         href=""
         classes={{
@@ -70,11 +70,7 @@ const InfoBox = ({
       </ButtonBase>
       {created && (
       <span className="pl-1">
-        exported on
-        {' '}
-        {format(new Date(created), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")}
-        {' '}
-        by
+        {$t('exported_on_by', [format(new Date(created), III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL).replace(/\./g, "")])}
         {" "}
         {systemUser}
       </span>
@@ -82,13 +78,13 @@ const InfoBox = ({
     </Typography>
     <div className={clsx(classes.buttons, "d-flex justify-content-end pb-2")}>
       <Button variant="outlined" className="textSecondaryColor" onClick={() => onClick(id, FundingStatus.unknown)}>
-        Unknown
+        {$t('unknown')}
       </Button>
       <Button variant="outlined" className="errorColor" onClick={() => onClick(id, FundingStatus.fail)}>
-        Fail
+        {$t('fail')}
       </Button>
       <Button variant="contained" color="primary" onClick={() => onClick(id, FundingStatus.success)}>
-        Success
+        {$t('success')}
       </Button>
     </div>
   </div>

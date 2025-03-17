@@ -76,7 +76,7 @@ class PayrollGenerationSelfPacedTest {
 
         PayRate payRate = mock(PayRate.class)
         when(payRate.getValidFrom()).thenReturn(new Date(0L))
-        when(payRate.getRate()).thenReturn(new Money("1"))
+        when(payRate.getRate()).thenReturn(Money.of("1"))
         List<PayRate> payRates = new ArrayList<>()
         payRates.add(payRate)
         when(tutorRole.getPayRates()).thenReturn(payRates)

@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { connect } from "react-redux";
-import { change, getFormValues, initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
-import { validateSingleMandatoryField } from "../../../../../../common/utils/validation";
-import { State } from "../../../../../../reducers/state";
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, Typography } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { change, getFormValues, initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import { validateSingleMandatoryField } from '../../../../../../common/utils/validation';
+import { State } from '../../../../../../reducers/state';
 
 class XeroBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -128,7 +128,7 @@ class XeroBaseForm extends React.Component<any, any> {
                 className="mt-1"
                 onClick={this.onDisconnect}
               >
-                Disconnect from Xero
+                {$t('disconnect_from_xero')}
               </Button>
             </>
           ) : (
@@ -157,7 +157,7 @@ class XeroBaseForm extends React.Component<any, any> {
                   loading={loading}
                   onClick={this.showTokenField}
                 >
-                  Connect to Xero
+                  {$t('connect_to_xero')}
                 </LoadingButton>
               )}
             </>
