@@ -224,13 +224,12 @@ class EntityApiImpl implements EntityApi {
     }
 
     private static String formatValue(Object value) {
-        if (value instanceof Boolean) {
+        if (value == null) {
+            return null
+        }
+        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
             return value.toString()
         }
-
-        if (value == null)
-            return null
-
         if (value instanceof Date) {
             return DateFormatter.formatDateISO8601(value)
         }
@@ -239,6 +238,9 @@ class EntityApiImpl implements EntityApi {
         }
         if (value instanceof Money) {
             return value.toPlainString()
+        }
+        if (value instanceof GroovyObject) {
+            return value.toString()
         }
         return value.toString()
     }
