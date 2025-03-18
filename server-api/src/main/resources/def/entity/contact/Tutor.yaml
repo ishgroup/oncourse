@@ -38,6 +38,8 @@ properties:
     type: integer
   passedClasseCount:
     type: integer
+  hybridClassesCount:
+    type: integer
   cancelledClassesCount:
     type: integer
   defaultPayType:
