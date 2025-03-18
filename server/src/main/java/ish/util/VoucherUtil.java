@@ -15,23 +15,13 @@ import ish.math.Money;
 import java.math.BigDecimal;
 
 public class VoucherUtil {
-
-	private static final int PRECISION_SCALE = Money.DEFAULT_SCALE * 4;
-
 	/**
 	 * Calculates money voucher remaining liability for specific remaining value.<br>
 	 *
 	 *     remainingLiability = remainingValue * voucherPrice / voucherInitialValue
 	 */
 	public static Money calculateMoneyVoucherRemainingLiability(Money remainingValue, Money voucherPrice, Money voucherInitialValue) {
-
-		// using BigDecimal for calculations here to preserve precision until final conversion to Money
-
-		BigDecimal remaining = remainingValue.toBigDecimal();
-		BigDecimal price = voucherPrice.toBigDecimal();
-		BigDecimal valueOnPurchase = voucherInitialValue.toBigDecimal();
-
-		return Money.valueOf(remaining.multiply(price.divide(valueOnPurchase, PRECISION_SCALE, Money.DEFAULT_ROUND)));
+		return remainingValue.multiply(voucherPrice.divide(voucherInitialValue));
 	}
 
 	/**

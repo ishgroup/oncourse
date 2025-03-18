@@ -7,6 +7,7 @@ import { Script } from '@api/model';
 import Close from '@mui/icons-material/Close';
 import { Grid, IconButton, List, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
+import $t from '@t';
 import clsx from 'clsx';
 import { useHoverShowStyles } from 'ish-ui';
 import React, { useMemo } from 'react';
@@ -137,7 +138,7 @@ const Favorites: React.FC<Props> = props => {
   return (
     <Grid container alignItems="center">
       <Grid item xs={12} className={classes.topBar}>
-        <Typography className="heading">Favourites</Typography>
+        <Typography className="heading">{$t('favourites')}</Typography>
       </Grid>
 
       <Grid item xs={12}>

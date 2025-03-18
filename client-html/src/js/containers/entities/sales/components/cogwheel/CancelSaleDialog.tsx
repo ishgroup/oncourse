@@ -3,24 +3,25 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, ProductItemCancel, Tax } from "@api/model";
-import { FormControlLabel } from "@mui/material";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
-import { BooleanArgFunction } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, clearFields, DecoratedComponentClass, getFormValues, reduxForm } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { State } from "../../../../../reducers/state";
-import { accountLabelCondition } from "../../../accounts/utils";
-import { cancelSale } from "../../actions";
+import { Account, ProductItemCancel, Tax } from '@api/model';
+import { FormControlLabel } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { BooleanArgFunction } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, clearFields, DecoratedComponentClass, getFormValues, reduxForm } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { State } from '../../../../../reducers/state';
+import { accountLabelCondition } from '../../../accounts/utils';
+import { cancelSale } from '../../actions';
 
 interface Props {
   opened: boolean;
@@ -91,7 +92,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
   return (
     <Dialog open={opened} onClose={onClose} scroll="body" maxWidth="md">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>You are about to cancel this sale</DialogTitle>
+        <DialogTitle>{$t('you_are_about_to_cancel_this_sale')}</DialogTitle>
         <DialogContent className="overflow-hidden">
           <Grid container columnSpacing={3} rowSpacing={2}>
             <Grid item xs={12}>
@@ -107,7 +108,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
                     onChange={onCreateCrediNoteChange}
                   />
                 )}
-                label="Create credit note to reverse the sale fee"
+                label={$t('create_credit_note_to_reverse_the_sale_fee')}
               />
               <FormControlLabel
                 classes={{
@@ -122,7 +123,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
                     disabled={!values.createCrediNote}
                   />
                 )}
-                label="Retain administrative fee"
+                label={$t('retain_administrative_fee')}
               />
             </Grid>
 
@@ -130,7 +131,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
               <FormField
                 type="money"
                 name="feeAmount"
-                label="Fee amount"
+                label={$t('fee_amount')}
                 validate={!feeValuesDisabled ? validateSingleMandatoryField : undefined}
                 disabled={feeValuesDisabled}
               />
@@ -139,7 +140,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
               <FormField
                 type="select"
                 name="feeTaxId"
-                label="Tax type"
+                label={$t('tax_type')}
                 selectValueMark="id"
                 selectLabelMark="code"
                 items={taxes || []}
@@ -151,7 +152,7 @@ const CancelSaleDialog = React.memo<Props>(props => {
               <FormField
                 type="select"
                 name="retainAccountId"
-                label="Account"
+                label={$t('account')}
                 items={incomeAccounts || []}
                 selectValueMark="id"
                 selectLabelCondition={accountLabelCondition}
@@ -164,11 +165,11 @@ const CancelSaleDialog = React.memo<Props>(props => {
 
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
 
           <Button variant="contained" color="primary" type="submit" disabled={invalid}>
-            Proceed
+            {$t('proceed')}
           </Button>
         </DialogActions>
       </form>

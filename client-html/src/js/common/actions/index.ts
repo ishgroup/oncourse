@@ -7,20 +7,23 @@
  * Common actions of App
  * */
 
-import { PermissionRequest, PreferenceEnum, User, UserPreference } from "@api/model";
-import { ShowConfirmCaller } from "ish-ui";
-import { LoginState } from "../../containers/login/reducers/state";
-import { QueuedAction } from "../../model/common/ActionsQueue";
-import { ApiMethods } from "../../model/common/apiHandlers";
-import { AppMessage } from "../../model/common/Message";
-import { _toRequestType, FULFILLED, REJECTED } from "./ActionUtils";
-import { IAction } from "./IshAction";
+import { PermissionRequest, PreferenceEnum, User, UserPreference } from '@api/model';
+import { ShowConfirmCaller } from 'ish-ui';
+import { LoginState } from '../../containers/login/reducers/state';
+import { QueuedAction } from '../../model/common/ActionsQueue';
+import { ApiMethods } from '../../model/common/apiHandlers';
+import { AppMessage } from '../../model/common/Message';
+import { _toRequestType, FULFILLED, REJECTED } from './ActionUtils';
+import { IAction } from './IshAction';
 
 export const CHECK_PERMISSIONS_REQUEST = _toRequestType("post/access");
 export const CHECK_PERMISSIONS_REQUEST_FULFILLED = FULFILLED(CHECK_PERMISSIONS_REQUEST);
 
 export const INTERRUPT_PROCESS = _toRequestType("delete/control");
 export const INTERRUPT_PROCESS_FULFILLED = FULFILLED(INTERRUPT_PROCESS);
+
+export const GET_LOGO = _toRequestType("get/preferences/logo");
+export const GET_LOGO_FULFILLED = FULFILLED(GET_LOGO);
 
 export const GET_SCRIPTS_REQUEST = _toRequestType("get/entity/scripts");
 export const GET_SCRIPTS_FULFILLED = FULFILLED(GET_SCRIPTS_REQUEST);
@@ -103,7 +106,7 @@ interface RemoveQueuedActionMeta {
 
 export const removeActionsFromQueue = (meta: RemoveQueuedActionMeta[]) => ({
   type: REMOVE_ACTIONS_FROM_QUEUE,
-  payload: {meta}
+  payload: { meta }
 });
 
 export const executeActionsQueue = () => ({
@@ -146,7 +149,7 @@ export const closeDrawer = () => ({
 
 export const getScripts = (entity: string) => ({
   type: GET_SCRIPTS_REQUEST,
-  payload: {entity}
+  payload: { entity }
 });
 
 export const getOnDemandScripts = () => ({
@@ -155,7 +158,7 @@ export const getOnDemandScripts = () => ({
 
 export const getEmailTemplatesWithKeyCode = (entities: string[]) => ({
   type: GET_EMAIL_TEMPLATES_WITH_KEYCODE,
-  payload: {entities}
+  payload: { entities }
 });
 
 export const getLdapConnection = (host: string, port: string, isSsl: string, baseDn: string, user: string) => ({
@@ -167,7 +170,7 @@ export const getLdapConnection = (host: string, port: string, isSsl: string, bas
 
 export const getMessageQueued = (type: string) => ({
   type: GET_MESSAGE_QUEUED_REQUEST,
-  payload: {type}
+  payload: { type }
 });
 
 export const clearFetch = () => ({
@@ -176,12 +179,12 @@ export const clearFetch = () => ({
 
 export const getProcessStatus = (processId: string, actions: any[]) => ({
   type: START_PROCESS,
-  payload: {processId, actions}
+  payload: { processId, actions }
 });
 
 export const interruptProcess = (processId: string) => ({
   type: INTERRUPT_PROCESS,
-  payload: {processId}
+  payload: { processId }
 });
 
 export const clearProcess = () => ({
@@ -190,7 +193,11 @@ export const clearProcess = () => ({
 
 export const checkPermissions = (permissionRequest: PermissionRequest, onComplete?: IAction[]) => ({
   type: CHECK_PERMISSIONS_REQUEST,
-  payload: {permissionRequest, onComplete}
+  payload: { permissionRequest, onComplete }
+});
+
+export const getLogo = () => ({
+  type: GET_LOGO
 });
 
 export const getUserPreferences = (keys: PreferenceEnum[]) => ({

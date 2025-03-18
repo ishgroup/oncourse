@@ -18,6 +18,7 @@ import CheckoutService from "../../services/CheckoutService";
 
 const request: EpicUtils.Request<any, boolean> = {
   type: CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS,
+  hideLoadIndicator: true,
   getData: (forcePricesUpdate, state) => new Promise(async resolve => {
     const codes = state.checkout.summary.discounts.map(d => d.id).join(",");
 

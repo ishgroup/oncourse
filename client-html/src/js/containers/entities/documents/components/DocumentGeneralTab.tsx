@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
+import $t from '@t';
 import clsx from 'clsx';
 import { addDays, format } from 'date-fns';
 import {
@@ -285,7 +286,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   required
                 />
               </Grid>
@@ -294,7 +295,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         </Grid>
         <Grid item xs={twoColumn ? 4 : 12}>
           {Boolean(values.removed) && (
-          <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
+          <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>{$t('pending_deletion')}</div>
           )}
 
           <Paper className={clsx("relative cursor-pointer", classes.previewPaper)}>
@@ -315,7 +316,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                     color="textSecondary"
                     className="text-center flex-fill text-truncate"
                   >
-                    Click to view
+                    {$t('click_to_view')}
                   </Typography>
                 </div>
               </div>
@@ -330,7 +331,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                   onClick={(e: any) => openDocumentURL(e, validUrl)}
                   startIcon={<OpenWith />}
                 >
-                  View
+                  {$t('view2')}
                 </Button>
               </div>
             </div>
@@ -352,7 +353,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             <Typography variant="caption" color="textSecondary">
               {documentVersion.size}
               <br />
-              author:
+              {$t('author')}:
               {' '}
               {documentVersion.createdBy}
             </Typography>
@@ -368,19 +369,19 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormField type="multilineText" name="description" label="Description" />
+            <FormField type="multilineText" name="description" label={$t('description')} />
           </Grid>
           {Boolean(values.removed) && (
           <Grid item xs={12} className="pb-2">
             <Typography variant="body2" className={clsx("d-flex align-items-baseline mb-2", classes.textInfo)}>
               <span>
-                This document will be permanently deleted after
+                {$t('this_document_will_be_permanently_deleted_after')}
                 { ' ' }
                 { format(addDays(new Date(values.modifiedOn), 30), D_MMM_YYYY) }
               </span>
             </Typography>
             <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
-              RESTORE
+              {$t('restore')}
             </Button>
           </Grid>
           )}
@@ -396,7 +397,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           />
 
           <div className="heading mb-2">
-            History
+            {$t('history')}
           </div>
           <FieldArray
             name="versions"
@@ -408,7 +409,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           />
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
           <Button variant="outlined" size="medium" color="secondary" onClick={onUploadClick}>
-            UPLOAD NEW VERSION
+            {$t('upload_new_version2')}
           </Button>
         </Grid>
 

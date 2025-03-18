@@ -54,6 +54,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "unscheduledClasseCount":0,
             "passedClasseCount":0,
             "cancelledClassesCount":0,
+            "hybridClassesCount":0,
             "customFields":{}
             },
         "abn":"222",
@@ -135,7 +136,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
         {
         "id":23,
         "student":{"id":17, "customFields":{},"countryOfBirth":null,"disabilityType":"Not stated","labourForceStatus":"Not stated","englishProficiency":"Not stated","highestSchoolLevel":"Not stated","indigenousStatus":"Not stated","isOverseasClient":false,"isStillAtSchool":false,"language":null,"priorEducationCode":"Not stated","specialNeeds":null,"yearSchoolCompleted":null,"studentNumber":17,"countryOfResidency":null,"visaNumber":null,"visaType":null,"visaExpiryDate":null,"passportNumber":null,"medicalInsurance":null,"uniqueLearnerIdentifier":null,"usi":"3333333333","usiStatus":"Not supplied","chessn":null,"feeHelpEligible":false,"citizenship":"No information","townOfBirth":null,"specialNeedsAssistance":false,"clientIndustryEmployment":"Not Stated","clientOccupationIdentifier":"Not Stated","waitingLists":[],"concessions":[]},
-        "tutor":{"defaultPayType":"Employee", "customFields":{},"id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0},
+        "tutor":{"defaultPayType":"Employee", "customFields":{},"id":6,"dateFinished":null,"dateStarted":null,"familyNameLegal":null,"givenNameLegal":null,"payrollRef":null,"resume":null,"wwChildrenCheckedOn":null,"wwChildrenExpiry":null,"wwChildrenRef":null,"wwChildrenStatus":"Not checked","currentClassesCount":0,"futureClasseCount":0,"selfPacedclassesCount":1,"unscheduledClasseCount":0,"passedClasseCount":0,"cancelledClassesCount":0,"hybridClassesCount":0},
         "abn":null,
         "birthDate":"1995-05-06",
         "country":{"id":1,"isoCodeAlpha3":null,"isoCodeNumeric":null,"name":"Australia","saccCode":null},
@@ -349,6 +350,7 @@ Feature: Main feature for all POST requests with path 'list/entity/contact/merge
             "unscheduledClasseCount":0,
             "passedClasseCount":1,
             "cancelledClassesCount":0,
+            "hybridClassesCount":0,
             "customFields":{},
             },
         "abn":null,

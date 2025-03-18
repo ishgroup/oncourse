@@ -18,6 +18,7 @@ import {
   TableModel
 } from '@api/model';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Typography } from '@mui/material';
+import $t from '@t';
 import { format } from 'date-fns';
 import {
   appendTimezone,
@@ -217,7 +218,7 @@ const filterGroups: FilterGroup[] = [
         active: true
       },
       {
-        name: "Self paced classes",
+        name: "Self-paced classes",
         expression: "type is DISTANT_LEARNING and isCancelled is false",
         active: true
       },
@@ -374,8 +375,8 @@ const formatSelfPaced = (v, row, columns) => {
   if (selfPacedIndex !== -1) {
     const type: CourseClassType = row.values[selfPacedIndex];
 
-    if (type === "Distant Learning" ) return "Self paced";
-    if (type === "Hybrid") return  dateValue || "Hybrid";
+    if (type === "Distant Learning" ) return $t("Self-paced");
+    if (type === "Hybrid") return  dateValue || $t("Hybrid");
   }
 
   return dateValue;
@@ -677,22 +678,22 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
           root: "pb-0"
         }}
         >
-          You have updated the following default fields for the selected class:
+          {$t('you_have_updated_the_following_default_fields_for')}
         </DialogTitle>
         <DialogContent>
           <Typography className="mt-1" variant="caption" color="textSecondary">
-            To update these same fields in any associated outcomes and enrolments, click the checkbox next to each field.
+            {$t('to_update_these_same_fields_in_any_associated_outc')}
           </Typography>
           <Typography variant="caption" color="textSecondary" gutterBottom paragraph>
-            If you do not want to update any fields, leave them unchecked.
+            {$t('if_you_do_not_want_to_update_any_fields_leave_them')}
           </Typography>
           <Typography variant="caption" color="textSecondary" paragraph>
-            NOTE: This action will override any values previously set in these outcomes and enrolments.
+            {$t('note_this_action_will_override_any_values_previous')}
           </Typography>
           <div className="d-flex">
             <div className="flex-fill">
               <div className="heading">
-                Outcome
+                {$t('outcome')}
               </div>
               {
                 changedFields.filter(f => outcomeUpdateFields.includes(f.name)).map(f => (
@@ -712,7 +713,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
             </div>
             <div className="flex-fill">
               <div className="heading">
-                Enrolment
+                {$t('enrolment')}
               </div>
               {
                 changedFields.filter(f => enrolmentUpdateFields.includes(f.name)).map(f => (
@@ -735,7 +736,7 @@ const CourseClasses: React.FC<CourseClassesProps> = props => {
         </DialogContent>
         <DialogActions className="pr-2 pb-2">
           <Button color="primary" onClick={onConfirm}>
-            OK
+            {$t('ok')}
           </Button>
         </DialogActions>
       </Dialog>

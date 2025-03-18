@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Account, Currency, Tag, Tax } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { addDays } from "date-fns";
+import { Account, Currency, Tag, Tax } from '@api/model';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { addDays } from 'date-fns';
 import {
   AnyArgFunction,
   decimalPlus,
@@ -19,32 +20,32 @@ import {
   LinkAdornment,
   usePrevious,
   validateMinMaxDate
-} from "ish-ui";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router";
-import { Dispatch } from "redux";
-import { arrayInsert, arrayRemove, change, initialize } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { ACCOUNT_DEFAULT_INVOICELINE_ID } from "../../../../constants/Config";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { InvoiceLineWithTotal, InvoiceWithTotalLine } from "../../../../model/entities/Invoice";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../contacts/utils";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import LeadSelectItemRenderer from "../../leads/components/LeadSelectItemRenderer";
-import { leadLabelCondition, openLeadLink } from "../../leads/utils";
-import { setSelectedContact } from "../actions";
-import { getInvoiceClosestPaymentDueDate } from "../utils";
-import { HeaderContent, InvoiceLines } from "./InvoiceLines";
-import InvoicePaymentPlans from "./InvoicePaymentPlans";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import { arrayInsert, arrayRemove, change, initialize } from 'redux-form';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import MinifiedEntitiesList from '../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { ACCOUNT_DEFAULT_INVOICELINE_ID } from '../../../../constants/Config';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { InvoiceLineWithTotal, InvoiceWithTotalLine } from '../../../../model/entities/Invoice';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import LeadSelectItemRenderer from '../../leads/components/LeadSelectItemRenderer';
+import { leadLabelCondition, openLeadLink } from '../../leads/utils';
+import { setSelectedContact } from '../actions';
+import { getInvoiceClosestPaymentDueDate } from '../utils';
+import { HeaderContent, InvoiceLines } from './InvoiceLines';
+import InvoicePaymentPlans from './InvoicePaymentPlans';
 
 interface Props extends EditViewProps {
   currency: Currency;
@@ -187,12 +188,12 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
     dispatch(change(form, "leadId", value.id));
     dispatch(change(form, "contactId", value["customer.id"]));
     dispatch(change(form, "contactName", value["customer.fullName"]));
-    onContactChange(Object.keys(value).reduce((p,c) => {
+    onContactChange(Object.keys(value).reduce((p, c) => {
       if (c.includes('customer.')) {
-        p[c.replace('customer.','')] = value[c];
+        p[c.replace('customer.', '')] = value[c];
       }
       return p;
-    }, {}))
+    }, {}));
   };
 
   const onContactChange = value => {
@@ -283,7 +284,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <FormField
           type="text"
           name="title"
-          label="Title"
+          label={$t('title')}
         />
       </Grid>
 
@@ -292,7 +293,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="remoteDataSelect"
           entity="Lead"
           name="leadId"
-          label="Lead"
+          label={$t('lead')}
           selectValueMark="id"
           selectLabelCondition={leadLabelCondition}
           defaultValue={values && values.leadCustomerName}
@@ -312,7 +313,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
           type="remoteDataSelect"
           entity="Contact"
           name="contactId"
-          label="Invoice to"
+          label={$t('invoice_to')}
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
           defaultValue={values?.contactName}
@@ -328,13 +329,13 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="text" name="customerReference" label="Customer reference" />
+        <FormField type="text" name="customerReference" label={$t('customer_reference')} />
       </Grid>
 
       {values.type !== "Quote" && (
         <Grid item xs={twoColumn ? 3 : 12}>
           <Uneditable
-            label="Overdue"
+            label={$t('overdue')}
             value={values && values.overdue}
             money
           />
@@ -343,7 +344,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
 
       {!isNew && values.type === "Invoice" && (
         <Grid item xs={twoColumn ? 3 : 12}>
-          <FormField type="text" name="invoiceNumber" label="Invoice number" disabled />
+          <FormField type="text" name="invoiceNumber" label={$t('invoice_number')} disabled />
         </Grid>
       )}
 
@@ -351,7 +352,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <FormField
           type="date"
           name="invoiceDate"
-          label="Invoice date"
+          label={$t('invoice_date')}
           onChange={onInvoiceDateChange}
           validate={[validateSingleMandatoryField, validateMaxDate]}
           disabled={values.type !== "Quote" && !isNew}
@@ -362,25 +363,25 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         <FormField
           type="date"
           name="dateDue"
-          label="Due date"
+          label={$t('due_date')}
           validate={[validateSingleMandatoryField, validateMinDate]}
           disabled={values.type !== "Quote" && hasPaymentDues}
         />
       </Grid>
 
       <Grid item xs={twoColumn ? 3 : 12}>
-        <FormField type="multilineText" name="billToAddress" label="Billing address" />
+        <FormField type="multilineText" name="billToAddress" label={$t('billing_address')} />
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12}>
-        <FormField type="multilineText" name="shippingAddress" label="Shipping address" />
+        <FormField type="multilineText" name="shippingAddress" label={$t('shipping_address')} />
       </Grid>
 
       <Grid item xs={twoColumn ? 6 : 12} className="pb-2">
         <FormField
           type="multilineText"
           name="description"
-          label="Description"
+          label={$t('description')}
           disabled={values.type !== "Quote" && !isNew}
         />
       </Grid>
@@ -403,7 +404,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       <Grid item xs={12}>
         <div className="centeredFlex pt-1 pr-4 justify-content-end">
           <Typography variant="subtitle2" noWrap>
-            Total
+            {$t('total')}
           </Typography>
           <Typography variant="body2" color="textSecondary" className="pl-1 money">
             {total}
@@ -412,7 +413,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
         {values.type !== "Quote" && (
           <div className="centeredFlex pt-1 pr-4 justify-content-end">
             <Typography variant="subtitle2" noWrap>
-              Owing
+              {$t('owing2')}
             </Typography>
             <Typography variant="body2" color="textSecondary" className="pl-1 money">
               {totalOwing}
@@ -436,7 +437,7 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
       )}
 
       <Grid item xs={12}>
-        <FormField type="multilineText" name="publicNotes" label="Public notes" />
+        <FormField type="multilineText" name="publicNotes" label={$t('public_notes')} />
       </Grid>
 
       <Grid item xs={12}>
@@ -453,21 +454,21 @@ const InvoiceEditView: React.FunctionComponent<Props & RouteComponentProps> = pr
               root: "checkbox"
             }}
             control={<FormField type="checkbox" name="sendEmail" color="primary" />}
-            label="Send email"
+            label={$t('send_email')}
           />
         </Grid>
       )}
 
       <Grid item xs={12}>
         <Uneditable
-          label="Source"
+          label={$t('source')}
           value={values.source}
         />
       </Grid>
 
       <Grid item xs={12}>
         <Uneditable
-          label="Created by"
+          label={$t('created_by')}
           value={values.createdByUser}
         />
       </Grid>

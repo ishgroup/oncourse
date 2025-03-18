@@ -3,11 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Grid } from "@mui/material";
-import { EntityType } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import { getNestedCourseClassItem } from "../../courseClasses/utils";
+import { Grid } from '@mui/material';
+import { EntityType } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import NestedEntity from '../../../../common/components/form/nestedEntity/NestedEntity';
+import { getNestedCourseClassItem } from '../../courseClasses/utils';
 
 const CourseClassesTab: React.FC<any> = ({
    values,
@@ -30,7 +30,7 @@ const CourseClassesTab: React.FC<any> = ({
     }
 
     if (values.selfPacedclassesCount) {
-      types.push(getNestedCourseClassItem("Self Paced", values.selfPacedclassesCount, values.id));
+      types.push(getNestedCourseClassItem("Self-Paced", values.selfPacedclassesCount, values.id));
     }
 
     if (values.unscheduledClasseCount) {

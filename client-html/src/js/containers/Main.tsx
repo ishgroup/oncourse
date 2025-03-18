@@ -33,7 +33,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { getFormNames, isDirty } from 'redux-form';
 import { TssCacheProvider } from 'tss-react';
-import { getUserPreferences, showMessage } from '../common/actions';
+import { getLogo, getUserPreferences, showMessage } from '../common/actions';
 import ConfirmProvider from '../common/components/dialog/ConfirmProvider';
 import MessageProvider from '../common/components/dialog/MessageProvider';
 import { getGoogleTagManagerParameters } from '../common/components/google-tag-manager/actions';
@@ -41,7 +41,8 @@ import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/Swip
 import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
-  DASHBOARD_THEME_KEY, FORM_NAMES_ALLOWED_FOR_REFRESH,
+  DASHBOARD_THEME_KEY,
+  FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
   READ_NEWS,
   SPECIAL_TYPES_DISPLAY_KEY,
@@ -91,6 +92,7 @@ interface Props {
   history: any;
   preferencesTheme: ThemeValues;
   onInit: AnyArgFunction;
+  getLogo: AnyArgFunction;
   isLogged: boolean;
   isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
@@ -147,8 +149,10 @@ export class MainBase extends React.PureComponent<Props, MainState> {
 
   UNSAFE_componentWillMount() {
     const {
-      isLogged, isLoggedIn, history
+      isLogged, isLoggedIn, getLogo, history
     } = this.props;
+
+    getLogo();
 
     if (routes) {
       const notFound = routes.find(route => route.url === history.location.pathname);
@@ -286,12 +290,18 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   showMessage: message => dispatch(showMessage(message)),
   isLoggedIn: () => dispatch(isLoggedIn()),
   getPreferencesTheme: () => dispatch(getUserPreferences([DASHBOARD_THEME_KEY])),
+  getLogo: () => dispatch(getLogo()),
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
+    dispatch(getUserPreferences([
+      SYSTEM_USER_ADMINISTRATION_CENTER, 
+      READ_NEWS, 
+      LICENSE_SCRIPTING_KEY, 
+      SPECIAL_TYPES_DISPLAY_KEY
+    ]));
     dispatch(getDashboardBlogPosts());
   }
 });
 
-export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(MainBase));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainBase));

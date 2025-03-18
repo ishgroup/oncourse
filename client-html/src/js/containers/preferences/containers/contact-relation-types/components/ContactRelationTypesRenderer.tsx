@@ -3,13 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ContactRelationType } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import clsx from "clsx";
-import * as React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
+import { ContactRelationType } from '@api/model';
+import { Button, Card, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import * as React from 'react';
+import FormField from '../../../../../common/components/form/formFields/FormField';
 
 const renderContactRelationTypes = props => {
   const { fields, classes, onDelete } = props;
@@ -28,7 +27,7 @@ const renderContactRelationTypes = props => {
                     <FormField
                       type="text"
                       name={`${item}.relationName`}
-                      label="Relationship Name"
+                      label={$t('relationship_name')}
                                             className={classes.field}
                       disabled={field.systemType}
                       required
@@ -40,7 +39,7 @@ const renderContactRelationTypes = props => {
                       <FormField
                         type="text"
                         name={`${item}.reverseRelationName`}
-                        label="Reverse relationship Name"
+                        label={$t('reverse_relationship_name')}
                                                 className={clsx(classes.field, "flex-fill")}
                         disabled={field.systemType}
                         required
@@ -53,7 +52,7 @@ const renderContactRelationTypes = props => {
                             className={classes.deleteButton}
                             onClick={() => onDelete(field, index)}
                           >
-                            Delete
+                            {$t('delete2')}
                           </Button>
                         )}
                       </div>

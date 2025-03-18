@@ -13,7 +13,7 @@ export const AccountDebtors: PreferenceSchema = {
 };
 
 export const AccountDefaultCurrency: PreferenceSchema = {
-  uniqueKey: "default.currency",
+  uniqueKey: "account.default.country",
   mandatory: false,
   editable: true
 };

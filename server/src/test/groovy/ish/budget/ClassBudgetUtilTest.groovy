@@ -25,13 +25,13 @@ class ClassBudgetUtilTest extends TestWithDatabase {
         CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualCost = ClassBudgetUtil.getClassCostsExTax(cc, ClassBudgetUtil.ACTUAL)
-        Assertions.assertEquals(new Money("150.00"), actualCost)
+        Assertions.assertEquals(Money.of("150.00"), actualCost)
 
         Money budgetedCost = ClassBudgetUtil.getClassCostsExTax(cc, ClassBudgetUtil.BUDGETED)
-        Assertions.assertEquals(new Money("150.00"), budgetedCost)
+        Assertions.assertEquals(Money.of("150.00"), budgetedCost)
 
         Money maximumCost = ClassBudgetUtil.getClassCostsExTax(cc, ClassBudgetUtil.MAXIMUM)
-        Assertions.assertEquals(new Money("150.00"), maximumCost)
+        Assertions.assertEquals(Money.of("150.00"), maximumCost)
     }
 
     @Test
@@ -48,13 +48,13 @@ class ClassBudgetUtilTest extends TestWithDatabase {
         CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualIncome = ClassBudgetUtil.getClassIncomeExTax(cc, ClassBudgetUtil.ACTUAL)
-        Assertions.assertEquals(new Money("720.00"), actualIncome)
+        Assertions.assertEquals(Money.of("720.00"), actualIncome)
 
         Money budgetedIncome = ClassBudgetUtil.getClassIncomeExTax(cc, ClassBudgetUtil.BUDGETED)
-        Assertions.assertEquals(new Money("600.00"), budgetedIncome)
+        Assertions.assertEquals(Money.of("600.00"), budgetedIncome)
 
         Money maximumIncome = ClassBudgetUtil.getClassIncomeExTax(cc, ClassBudgetUtil.MAXIMUM)
-        Assertions.assertEquals(new Money("1000.00"), maximumIncome)
+        Assertions.assertEquals(Money.of("1000.00"), maximumIncome)
     }
 
     @Test
@@ -66,13 +66,13 @@ class ClassBudgetUtilTest extends TestWithDatabase {
         CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualRunningCost = ClassBudgetUtil.getClassRunningCostsExTax(cc, ClassBudgetUtil.ACTUAL)
-        Assertions.assertEquals(new Money("150.00"), actualRunningCost)
+        Assertions.assertEquals(Money.of("150.00"), actualRunningCost)
 
         Money budgetedRunningCost = ClassBudgetUtil.getClassRunningCostsExTax(cc, ClassBudgetUtil.BUDGETED)
-        Assertions.assertEquals(new Money("150.00"), budgetedRunningCost)
+        Assertions.assertEquals(Money.of("150.00"), budgetedRunningCost)
 
         Money maximumRunningCost = ClassBudgetUtil.getClassRunningCostsExTax(cc, ClassBudgetUtil.MAXIMUM)
-        Assertions.assertEquals(new Money("150.00"), maximumRunningCost)
+        Assertions.assertEquals(Money.of("150.00"), maximumRunningCost)
     }
 
     @Test
@@ -89,12 +89,12 @@ class ClassBudgetUtilTest extends TestWithDatabase {
         CourseClass cc = SelectById.query(CourseClass.class, 220).selectOne(cayenneContext)
 
         Money actualProfit = ClassBudgetUtil.getClassProfitExTax(cc, ClassBudgetUtil.ACTUAL)
-        Assertions.assertEquals(new Money("570.00"), actualProfit)
+        Assertions.assertEquals(Money.of("570.00"), actualProfit)
 
         Money budgetedProfit = ClassBudgetUtil.getClassProfitExTax(cc, ClassBudgetUtil.BUDGETED)
-        Assertions.assertEquals(new Money("450.00"), budgetedProfit)
+        Assertions.assertEquals(Money.of("450.00"), budgetedProfit)
 
         Money maximumProfit = ClassBudgetUtil.getClassProfitExTax(cc, ClassBudgetUtil.MAXIMUM)
-        Assertions.assertEquals(new Money("850.00"), maximumProfit)
+        Assertions.assertEquals(Money.of("850.00"), maximumProfit)
     }
 }

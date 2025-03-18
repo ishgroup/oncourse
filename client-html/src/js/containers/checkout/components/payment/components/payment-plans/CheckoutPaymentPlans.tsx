@@ -9,6 +9,7 @@ import StepButton from '@mui/material/StepButton';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { AppTheme, normalizeNumberToPositive } from 'ish-ui';
 import React from 'react';
 import { FieldArray, WrappedFieldArrayProps } from 'redux-form';
@@ -80,7 +81,7 @@ const CheckoutPaymentPlansBase = withStyles((props: WrappedFieldArrayProps & Pro
     <div className={classes.container}>
       <div className="centeredFlex mb-2">
         <Typography className="secondaryHeading">
-          Payment plan
+          {$t('payment_plan')}
         </Typography>
       </div>
 
@@ -125,7 +126,7 @@ const CheckoutPaymentPlansBase = withStyles((props: WrappedFieldArrayProps & Pro
                       type="date"
                       name={`${f}.payDate`}
                       inline
-                      placeholder="Pay now"
+                      placeholder={$t('pay_now')}
                       onChange={onPayDateChange}
                       validate={validateLockedDate}
                     />
@@ -146,7 +147,7 @@ const CheckoutPaymentPlansBase = withStyles((props: WrappedFieldArrayProps & Pro
             )}
               {last && (
               <Typography variant="caption" color="textSecondary" align="left" component="div" className={classes.inlineItem}>
-                Pay Later
+                {$t('pay_later')}
               </Typography>
             )}
             </StepLabel>

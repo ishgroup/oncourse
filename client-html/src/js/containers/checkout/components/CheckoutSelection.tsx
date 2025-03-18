@@ -8,6 +8,7 @@
 
 import { CheckoutSaleRelation, ColumnWidth } from '@api/model';
 import Button from '@mui/material/Button';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppTheme, NoArgFunction, ResizableWrapper, ShowConfirmCaller } from 'ish-ui';
 import debounce from 'lodash.debounce';
@@ -26,7 +27,7 @@ import AppBarContainer from '../../../common/components/layout/AppBarContainer';
 import Drawer from '../../../common/components/layout/Drawer';
 import { setListEditRecord } from '../../../common/components/list-view/actions';
 import LoadingIndicator from '../../../common/components/progress/LoadingIndicator';
-import { latestActivityStorageHandler, LSGetItem } from '../../../common/utils/storage';
+import { latestActivityStorageHandler } from '../../../common/utils/storage';
 import uniqid from '../../../common/utils/uniqid';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../constants/Config';
 import history from '../../../constants/History';
@@ -61,7 +62,7 @@ import {
 } from '../actions';
 import { checkoutClearContactEditRecord, checkoutGetContact, getRelatedContacts } from '../actions/checkoutContact';
 import { checkoutClearPaymentStatus, checkoutGetActivePaymentMethods } from '../actions/checkoutPayment';
-import { checkoutRestoreState, checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
+import { checkoutUpdateSummaryClassesDiscounts } from '../actions/checkoutSummary';
 import {
   checkoutClearCourseClassList,
   checkoutGetClassPaymentPlans,
@@ -86,17 +87,16 @@ import {
   checkoutCourseMap,
   checkoutProductMap,
   checkoutVoucherMap,
-  clearStoredPaymentsState,
   getCheckoutCurrentStep,
-  getStoredPaymentStateKey,
-  processCeckoutCartIds,
   processCheckoutContactId,
   processCheckoutCourseClassId,
   processCheckoutEnrolmentId,
   processCheckoutInvoiceId,
   processCheckoutLeadId,
   processCheckoutSale,
-  processCheckoutWaitingListIds
+  processCheckoutStripePaymentRedirect,
+  processCheckoutWaitingListIds,
+  processChekoutCartIds
 } from '../utils';
 import CheckoutAppBar from './CheckoutAppBar';
 import CheckoutSectionExpandableRenderer from './CheckoutSectionExpandableRenderer';
@@ -555,24 +555,23 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
     const courseClassId = query.get("courseClassId");
     const waitingListIds = query.get("waitingListIds");
     const cartId = query.get("cartId");
-    const sessionId = query.get("sessionId");
+    const transactionId = query.get("payment_intent");
+    const onCourseSessionId = query.get("onCourseSessionId");
 
-    if (!sessionId && window.location.search) {
+    if (!transactionId && window.location.search) {
       history.replace("/checkout");
     }
-    
-    if (sessionId) {
-      const storedState = LSGetItem(getStoredPaymentStateKey(sessionId));
-      if (storedState) {
-        dispatch(checkoutRestoreState(JSON.parse(storedState)?.checkout));
-      } else {
-        clearStoredPaymentsState();
-        history.replace("/checkout");
-      }
+
+    if (transactionId && onCourseSessionId) {
+      processCheckoutStripePaymentRedirect(
+        transactionId,
+        onCourseSessionId,
+        dispatch
+      );
     }
 
     if (cartId) {
-      processCeckoutCartIds(
+      processChekoutCartIds(
         cartId,
         onChangeStep,
         setActiveField,
@@ -1007,7 +1006,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           : ""}
         target="_blank"
       >
-        Create Lead
+        {$t('create_lead')}
       </Button>
     </div>
     ),
@@ -1028,7 +1027,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
           <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <div className="pl-2 pr-2 pt-3">
               <CheckoutSectionExpandableRenderer
-                title="Shopping Cart"
+                title={$t('shopping_cart')}
                 expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.shoppingCart)}
                 onExpanded={handleShoppingCartExpand}
                 disabled={paymentProcessStatus === "success" || summarryInvalid}
@@ -1051,7 +1050,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 <HeaderField
                   heading="Items"
                   name={CheckoutPage.items}
-                  placeholder="Find course or item..."
+                  placeholder={$t('find_course_or_item')}
                   onFocus={handleFocusCallback}
                   SelectedItemView={(
                     <SelectedItemRenderer
@@ -1077,7 +1076,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                 && (
                 <>
                   <CheckoutSectionExpandableRenderer
-                    title="Summary"
+                    title={$t('summary')}
                     expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.summary)}
                     onExpanded={handleSummmayClick}
                     disabled={paymentProcessStatus === "success"}
@@ -1102,7 +1101,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
 
                   {Boolean(fundingInvoiceValues.fundingInvoices.length && selectedItems.filter(i => i.checked).length > 0) && (
                     <CheckoutSectionExpandableRenderer
-                      title="Funding Invoices"
+                      title={$t('funding_invoices')}
                       expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.fundingInvoice)}
                       onExpanded={handleFundingInvoiceClick}
                       disabled={paymentProcessStatus === "success"}
@@ -1112,7 +1111,7 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
                  )}
 
                   <CheckoutSectionExpandableRenderer
-                    title="Payment"
+                    title={$t('Payment')}
                     expanded={checkoutStep === getCheckoutCurrentStep(CheckoutCurrentStep.payment)}
                     onExpanded={handlePaymentClick}
                     disabled={

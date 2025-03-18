@@ -1,0 +1,18 @@
+type: object
+properties:
+  sessionId:
+    type: string
+    require: true
+    description: Windcave session id
+  ccFormUrl:
+    type: string
+    require: true
+    description: Windcave iframe url
+  merchantReference:
+    type: string
+    require: true
+    description: server side generated UUID
+  clientSecret:
+    type: string
+    require: false
+    description: client secret for embedded form operation

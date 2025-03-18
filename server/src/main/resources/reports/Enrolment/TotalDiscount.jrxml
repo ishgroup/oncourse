@@ -190,7 +190,7 @@
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Right" verticalAlignment="Middle"/>
-							<textFieldExpression><![CDATA[new Money($V{discountValue}).toString()]]></textFieldExpression>
+							<textFieldExpression><![CDATA[Money.of($V{discountValue}).toString()]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement key="textField" style="data field" positionType="Float" stretchType="RelativeToTallestObject" x="6" y="15" width="50" height="12" forecolor="#404040" uuid="42033943-32e8-482a-9cde-95e9cd4b9c4f">
@@ -218,7 +218,7 @@
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Right" verticalAlignment="Middle"/>
-							<textFieldExpression><![CDATA[new Money($V{discountValue}).toString()]]></textFieldExpression>
+							<textFieldExpression><![CDATA[Money.of($V{discountValue}).toString()]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement key="textField" style="data field (numeric)" positionType="Float" stretchType="RelativeToTallestObject" x="6" y="15" width="50" height="12" uuid="3fe9dd7f-672d-49ce-8225-b312e3e76caa">
@@ -239,7 +239,7 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement key="textField" style="header 3 (right)" positionType="Float" stretchType="RelativeToTallestObject" x="6" y="0" width="50" height="26" uuid="ab5257b4-0804-4855-8371-32702905175d"/>
 							<textElement textAlignment="Right" verticalAlignment="Middle"/>
-							<textFieldExpression><![CDATA[new Money($V{discountValue}).toString()]]></textFieldExpression>
+							<textFieldExpression><![CDATA[Money.of($V{discountValue}).toString()]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -247,7 +247,7 @@
 					<cellContents mode="Opaque" style="crosstab">
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement key="textField" style="data field (money)" positionType="Float" stretchType="RelativeToTallestObject" x="6" y="0" width="50" height="15" uuid="61b989e7-d0a6-43a6-81ea-c3308a113af4"/>
-							<textFieldExpression><![CDATA[new Money($V{discountValue}).toString()]]></textFieldExpression>
+							<textFieldExpression><![CDATA[Money.of($V{discountValue}).toString()]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement key="textField" style="data field (numeric)" positionType="Float" stretchType="RelativeToTallestObject" x="6" y="15" width="50" height="14" uuid="51b6afba-ecd6-4aed-bc29-e555cae68f31"/>
@@ -260,7 +260,7 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement key="textField" style="header 3 (right)" positionType="Float" stretchType="RelativeToTallestObject" x="6" y="0" width="50" height="26" uuid="1c53946c-bf22-409e-ae35-fdd3448d6c4c"/>
 							<textElement textAlignment="Right" verticalAlignment="Middle"/>
-							<textFieldExpression><![CDATA[new Money($V{discountValue}).toString()]]></textFieldExpression>
+							<textFieldExpression><![CDATA[Money.of($V{discountValue}).toString()]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>

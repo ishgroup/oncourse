@@ -51,9 +51,8 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
 
     * if (contactId == 10) checkoutModel.contactNodes[0].enrolments[0].appliedDiscountId = discountId
 
-    Given path ishPath
+    Given path ishPath + "/updateModel"
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 200
     And def currentOwing = parseFloat(response.invoice.amountOwing)
@@ -65,9 +64,8 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
     And set checkoutModel.paymentMethodId = 1
     * if (contactId == 18) checkoutModel.previousInvoices = { 37: 750 }
     
-    Given path ishPath
+    Given path ishPath+"/submitPayment"
     And request checkoutModel
-    And header xValidateOnly = false
     When method POST
     Then status 200
     And def paymentId = response.paymentId
@@ -135,9 +133,8 @@ Feature: re-usable feature to performance of full payment cycle and delete all o
     Then status 200
     And match karate.sizeOf(karate.jsonPath(response, '[?(@.contactId=='+contactId+')]')) == classCessions
 
-    Given path ishPath
+    Given path ishPath + "/updateModel"
     And request checkoutModel
-    And header xValidateOnly = true
     When method POST
     Then status 400
-    And match response[0].error == studentName + ' is already enrolled'
+    And match response.errorMessage contains studentName + ' is already enrolled'

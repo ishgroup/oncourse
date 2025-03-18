@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { Decimal } from "decimal.js-light";
-import { formatCurrency, WarningMessage } from "ish-ui";
-import React, { useCallback } from "react";
-import { change } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { useAppSelector } from "../../../../../common/utils/hooks";
-import { accountLabelCondition } from "../../../accounts/utils";
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { Decimal } from 'decimal.js-light';
+import { formatCurrency, WarningMessage } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { change } from 'redux-form';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { useAppSelector } from '../../../../../common/utils/hooks';
+import { accountLabelCondition } from '../../../accounts/utils';
 
 const FORM: string = "CANCEL_ENROLMENT_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
@@ -77,7 +78,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
             return (
               <div className="pt-2" key={field.id}>
                 <Typography variant="body2" className="normalHeading">
-                  Invoice
+                  {$t('Invoice')}
                   {' '}
                   {field && field.invoiceNumber}
                 </Typography>
@@ -93,9 +94,9 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                   )}
                   label={
                     <>
-                      Create credit note to reverse the enrolment fee of <span className="money">
+                      {$t('Create credit note to reverse the enrolment fee of')} <span className="money">
                         {formatCurrency(field.finalPriceToPayIncTax, currencySymbol)}
-                      </span> to {field && field.contactName}
+                      </span> {$t('to')} {field && field.contactName}
                     </>
                   }
                 />
@@ -107,7 +108,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                     control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary" />}
                     label={
                       <>
-                        Charge {field && field.contactName} an administrative fee of
+                        {$t('charge_an_administrative_fee_of', [field && field.contactName])}
                         {" "}
                         <FormField
                           type="number"
@@ -165,7 +166,7 @@ const CancelEnrolmentInvoiceLines: React.FC<any> = ({
                       disabled={!field.isReverseCreditNotes}
                                           />
                   )}
-                  label="Send credit note email."
+                  label={$t('send_credit_note_email')}
                 />
               </div>
             );

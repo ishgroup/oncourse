@@ -6,20 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Site } from "@api/model";
-import { Grid } from "@mui/material";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
+import { Site } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { State } from "../../../../reducers/state";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { State } from '../../../../reducers/state';
 
 class LeadSites extends React.PureComponent<any, any> {
   sitesToNestedListItems = (sites: Site[]) =>
@@ -75,7 +76,7 @@ class LeadSites extends React.PureComponent<any, any> {
         <Grid item xs={twoColumn ? 6 : 12}>
           <NestedList
             formId={values && values.id}
-            title="Sites"
+            title={$t('sites')}
             searchPlaceholder="Find sites"
             values={values && values.sites ? this.sitesToNestedListItems(values.sites) : []}
             searchValues={foundQuickSearchSites ? this.sitesToNestedListItems(foundQuickSearchSites) : []}

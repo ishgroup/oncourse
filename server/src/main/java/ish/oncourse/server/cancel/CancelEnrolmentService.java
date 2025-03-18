@@ -20,7 +20,6 @@ import ish.math.Money;
 import ish.oncourse.common.SystemEvent;
 import ish.oncourse.server.cayenne.Account;
 import ish.oncourse.server.cayenne.Enrolment;
-import ish.oncourse.server.cayenne.Invoice;
 import ish.oncourse.server.cayenne.InvoiceLine;
 import ish.oncourse.server.cayenne.Tax;
 import ish.oncourse.server.integration.EventService;
@@ -57,7 +56,7 @@ public class CancelEnrolmentService {
             if (lineToRefund.getCancellationFee() != null) {
                 Account accountToRefund = SelectById.query(Account.class, lineToRefund.getAccountId()).selectOne(context);
                 Tax taxToRefund = SelectById.query(Tax.class, lineToRefund.getTaxId()).selectOne(context);
-                Money cancellationFee = new Money(lineToRefund.getCancellationFee());
+                Money cancellationFee = Money.of(lineToRefund.getCancellationFee());
                 linesToRefund.add(new RefundInvoiceParam(invoiceLineToRefund, accountToRefund, taxToRefund, cancellationFee, lineToRefund.getSendInvoice()));
             } else {
                 linesToRefund.add(new RefundInvoiceParam(invoiceLineToRefund, null, null, Money.ZERO, lineToRefund.getSendInvoice()));
