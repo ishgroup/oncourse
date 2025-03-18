@@ -3,19 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DataResponse } from "@api/model";
-import { Epic } from "redux-observable";
-import FetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import * as EpicUtils from "../../../../../common/epics/EpicUtils";
-import EntityService from "../../../../../common/services/EntityService";
-import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from "../../../../../common/utils/Catalog";
-import history from "../../../../../constants/History";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import { GET_EMAIL_TEMPLATES_LIST, getEmailTemplatesListFulfilled } from "../actions";
+import { DataResponse } from '@api/model';
+import { Epic } from 'redux-observable';
+import FetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import * as EpicUtils from '../../../../../common/epics/EpicUtils';
+import EntityService from '../../../../../common/services/EntityService';
+import { CATALOG_ITEM_COLUMNS, mapListToCatalogItem } from '../../../../../common/utils/Catalog';
+import history from '../../../../../constants/History';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import { GET_EMAIL_TEMPLATES_LIST, getEmailTemplatesListFulfilled } from '../actions';
 
 const request: EpicUtils.Request<any, { selectFirst: boolean; keyCodeToSelect: string }> = {
   type: GET_EMAIL_TEMPLATES_LIST,
-  getData: () => EntityService.getPlainRecords("EmailTemplate", CATALOG_ITEM_COLUMNS, "keyCode not is null", null, null, "id", true),
+  getData: () => EntityService.getPlainRecords("EmailTemplate", CATALOG_ITEM_COLUMNS, "keyCode not is null and automationStatus != Hidden", null, null, "id", true),
   processData: (response: DataResponse, s, p) => {
     const emailTemplates: CatalogItemType[] = response.rows.map(mapListToCatalogItem);
 
