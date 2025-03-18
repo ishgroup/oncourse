@@ -88,7 +88,7 @@ class DataPopulationUtils {
         def ausReporting = getBoolean(props, AUS_REPORTING)
         if(!ausReporting) {
             def ausLocale = getString(props, LOCALE)?.equalsIgnoreCase(AUS_LOCALE)
-            if(ausLocale)
+            if(ausLocale != null && ausLocale)
                 automationTrait.setAutomationStatus(AutomationStatus.INSTALLED_DISABLED)
         }
     }
