@@ -6,25 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CloseIcon from "@mui/icons-material/Close";
-import { Box, ListItem } from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
+import CloseIcon from '@mui/icons-material/Close';
+import { Box, ListItem, Typography } from '@mui/material';
+import ListItemText from '@mui/material/ListItemText';
 import { alpha } from '@mui/material/styles';
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from '@mui/styles';
-import clsx from "clsx";
-import { format as formatDate } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
-import { AppTheme, D_MMM_YYYY } from "ish-ui";
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { READ_NEWS } from "../../../constants/Config";
-import { State } from "../../../reducers/state";
-import { setUserPreference } from "../../actions";
-import { setReadNewsLocal } from "../list-view/actions";
+import $t from '@t';
+import clsx from 'clsx';
+import { format as formatDate } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
+import { AppTheme, D_MMM_YYYY } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { READ_NEWS } from '../../../constants/Config';
+import { State } from '../../../reducers/state';
+import { setUserPreference } from '../../actions';
+import { setReadNewsLocal } from '../list-view/actions';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   postWrapper: {
     background: theme.palette.background.paper,
     position: "relative",
@@ -102,7 +102,7 @@ const NewsItemRender = props => {
             width={twoColumn ? "220px" : "100%"}
             height="150"
             src={`https://www.youtube.com/embed/${post.video}`}
-            title="video"
+            title={$t('video')}
             className={clsx(classes.videoWrapper, twoColumn && "mr-2")}
           />
         )}
@@ -118,7 +118,7 @@ const NewsItemRender = props => {
                     classes.newCaption,
                   )}
                 >
-                  NEW
+                  {$t('new')}
                 </Typography>
               )}
               <Typography component="span" variant="body1" className={classes.newsTitle}>
@@ -137,7 +137,7 @@ const NewsItemRender = props => {
                     "blog-post-content d-block overflow-hidden", classes.postContentExpanded
                   )}
                 >
-                  <Box component="span" display="block" dangerouslySetInnerHTML={{__html: post.content}}/>
+                  <Box component="span" display="block" dangerouslySetInnerHTML={{ __html: post.content }}/>
                 </Typography>
                 {" "}
               </Box>
@@ -189,7 +189,7 @@ const NewsRender = props => {
   }, [blogPosts, page, preferences]);
 
   return postsForRender.length ? (
-    <Box className={className} sx={{marginTop: newsOffset}}>
+    <Box className={className} sx={{ marginTop: newsOffset }}>
       {postsForRender.map(post => (
         <NewsItemRender
           key={post.id}
@@ -205,7 +205,7 @@ const NewsRender = props => {
   ) : showPlaceholder ? (
     <div className="noRecordsMessage">
       <Typography variant="h6" color="inherit" align="center">
-        No unread news
+        {$t('no_unread_news')}
       </Typography>
     </div>
   ) : null;
@@ -217,8 +217,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  setReadNews: (newsId: string) => dispatch(setUserPreference({key: READ_NEWS, value: newsId})),
+  setReadNews: (newsId: string) => dispatch(setUserPreference({ key: READ_NEWS, value: newsId })),
   setReadNewsLocal: (newsId: string) => dispatch(setReadNewsLocal(newsId))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NewsRender));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(NewsRender, styles));

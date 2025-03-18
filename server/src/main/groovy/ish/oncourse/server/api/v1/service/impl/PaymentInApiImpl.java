@@ -42,4 +42,9 @@ public class PaymentInApiImpl implements PaymentInApi {
         service.update(id, restModel);
     }
 
+    @Override
+    public PaymentInDTO getPerformedPaymentInfo(String merchantReference) {
+        return service.getByMerchantReference(merchantReference);
+    }
+
 }

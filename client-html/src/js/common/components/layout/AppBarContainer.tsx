@@ -6,39 +6,39 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import AddIcon from "@mui/icons-material/Add";
-import MenuIcon from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
-import Fab from "@mui/material/Fab";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppBarHelpMenu, AppTheme } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from "../../../constants/Config";
-import { openDrawer } from "../../actions";
-import { useAppDispatch } from "../../utils/hooks";
-import { LSGetItem } from "../../utils/storage";
-import FormSubmitButton from "../form/FormSubmitButton";
-import FullScreenStickyHeader from "../list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import HamburgerMenu from "./swipeable-sidebar/components/HamburgerMenu";
-import { VARIANTS } from "./swipeable-sidebar/utils";
+import AddIcon from '@mui/icons-material/Add';
+import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import $t from '@t';
+import { AppBarHelpMenu, AppTheme } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
+import { APP_BAR_HEIGHT, APPLICATION_THEME_STORAGE_NAME } from '../../../constants/Config';
+import { openDrawer } from '../../actions';
+import { useAppDispatch } from '../../utils/hooks';
+import { LSGetItem } from '../../utils/storage';
+import FormSubmitButton from '../form/FormSubmitButton';
+import FullScreenStickyHeader from '../list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import HamburgerMenu from './swipeable-sidebar/components/HamburgerMenu';
+import { VARIANTS } from './swipeable-sidebar/utils';
 
-const useStyles = makeStyles((theme: AppTheme) => ({
+const useStyles = makeStyles<void, 'submitButtonAlternate' | 'closeButtonAlternate' | 'actionsWrapper'>()((theme: AppTheme, _params, classes) => ({
   header: {
     width: "100%",
     background: theme.appBar.header.background,
     color: theme.appBar.header.color,
     zIndex: theme.zIndex.appBar,
     height: `${APP_BAR_HEIGHT}px`,
-    "& $submitButtonAlternate": {
+    [`& .${classes.submitButtonAlternate}`]: {
       background: `${theme.appBar.headerAlternate.color}`,
       color: `${theme.appBar.headerAlternate.background}`,
     },
-    "& $closeButtonAlternate": {
+    [`& .${classes.closeButtonAlternate}`]: {
       color: `${theme.appBar.headerAlternate.color}`,
     }
   },
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: AppTheme) => ({
   headerAlternate: {
     background: `${theme.appBar.headerAlternate.background}`,
     color: `${theme.appBar.headerAlternate.color}`,
-    "& $actionsWrapper svg": {
+    [`& .${classes.actionsWrapper} svg`]: {
       color: `${theme.appBar.headerAlternate.color}`,
     }
   },
@@ -157,7 +157,7 @@ const AppBarContainer = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const [hasScrolling, setScrolling] = useState<boolean>(false);
 
@@ -179,106 +179,104 @@ const AppBarContainer = (props: Props) => {
 
   const childrenWithProps = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
-      return React.cloneElement<any>(child, {onScroll});
+      return React.cloneElement<any>(child, { onScroll });
     }
     return child;
   });
 
-  return (
-    <>
-      <AppBar
-        elevation={0}
-        position="absolute"
-        className={clsx(
-          classes.header,
-          hasFab && classes.headerFabOffset,
-          opened && "pt-2",
-          {[classes.headerAlternate]: hasScrolling},
-          {[classes.headerHighContrast]: isHighcontrastTheme}
+  return (<>
+    <AppBar
+      elevation={0}
+      position="absolute"
+      className={cx(
+        classes.header,
+        hasFab && classes.headerFabOffset,
+        opened && "pt-2",
+        { [classes.headerAlternate]: hasScrolling },
+        { [classes.headerHighContrast]: isHighcontrastTheme }
+      )}
+    >
+      <Toolbar>
+        {!noDrawer && !hamburgerMenu && (
+          <IconButton
+            color="inherit"
+            aria-label={$t('open_drawer')}
+            onClick={drawerHandler}
+            className={cx(!isSmallScreen && classes.hiddenContainer, classes.drawerToggle)}
+          >
+            <MenuIcon/>
+          </IconButton>
         )}
-      >
-        <Toolbar>
-          {!noDrawer && !hamburgerMenu && (
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={drawerHandler}
-              className={clsx(!isSmallScreen && classes.hiddenContainer, classes.drawerToggle)}
-            >
-              <MenuIcon/>
-            </IconButton>
+        {hamburgerMenu && (
+          <HamburgerMenu variant={VARIANTS.temporary}/>
+        )}
+        {
+          !noTitle && (
+            <FullScreenStickyHeader
+              opened={opened}
+              title={title}
+              fields={fields}
+              Avatar={Avatar}
+              disableInteraction={disableInteraction}
+              customStuck={hasScrolling}
+              twoColumn
+            />
+          )
+        }
+        <div className="flex-fill"/>
+        <div className={classes.actionsWrapper}>
+          {actions}
+          {!hideHelpMenu && (
+            <AppBarHelpMenu
+              created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
+              modified={values && (modifiedOn ? modifiedOn(values) : (values.modifiedOn ? new Date(values.modifiedOn) : null))}
+              manualUrl={manualUrl}
+              auditsUrl={values && getAuditsUrl && (typeof getAuditsUrl === "string" ? getAuditsUrl : getAuditsUrl(values.id))}
+            />
           )}
-          {hamburgerMenu && (
-            <HamburgerMenu variant={VARIANTS.temporary}/>
-          )}
-          {
-            !noTitle && (
-              <FullScreenStickyHeader
-                opened={opened}
-                title={title}
-                fields={fields}
-                Avatar={Avatar}
-                disableInteraction={disableInteraction}
-                customStuck={hasScrolling}
-                twoColumn
-              />
-            )
-          }
-          <div className="flex-fill"/>
-          <div className={classes.actionsWrapper}>
-            {actions}
-            {!hideHelpMenu && (
-              <AppBarHelpMenu
-                created={values && (createdOn ? createdOn(values) : (values.createdOn ? new Date(values.createdOn) : null))}
-                modified={values && (modifiedOn ? modifiedOn(values) : (values.modifiedOn ? new Date(values.modifiedOn) : null))}
-                manualUrl={manualUrl}
-                auditsUrl={values && getAuditsUrl && (typeof getAuditsUrl === "string" ? getAuditsUrl : getAuditsUrl(values.id))}
-              />
-            )}
 
-            {onCloseClick && (
-              <Button
-                onClick={onCloseClick}
-                className={clsx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
-              >
-                {closeButtonText || "Close"}
-              </Button>
-            )}
-            {!hideSubmitButton && (
-              <FormSubmitButton
-                disabled={disabled}
-                invalid={invalid}
-                className={isDarkTheme && classes.submitButtonAlternate}
-                text={submitButtonText || "Save"}
-                fab
-              />
-            )}
-          </div>
-        </Toolbar>
-      </AppBar>
-      <div className={clsx("w-100", {"appBarContainer": !disabledScrolling}, classes.container, containerClass)}
-           onScroll={noScrollSpy ? null : onScroll}>
-        {hasFab && (
-          <div className={classes.scriptAddMenu}>
-            {customAddMenu || (
-              <Fab
-                type="button"
-                size="small"
-                color="primary"
-                classes={{
-                  sizeSmall: "appBarFab"
-                }}
-                onClick={onAddMenu}
-              >
-                <AddIcon/>
-              </Fab>
-            )}
-          </div>
-        )}
-        {childrenWithProps}
-      </div>
-    </>
-  );
+          {onCloseClick && (
+            <Button
+              onClick={onCloseClick}
+              className={cx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
+            >
+              {closeButtonText || "Close"}
+            </Button>
+          )}
+          {!hideSubmitButton && (
+            <FormSubmitButton
+              disabled={disabled}
+              invalid={invalid}
+              className={isDarkTheme && classes.submitButtonAlternate}
+              text={submitButtonText || "Save"}
+              fab
+            />
+          )}
+        </div>
+      </Toolbar>
+    </AppBar>
+    <div className={cx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)}
+         onScroll={noScrollSpy ? null : onScroll}>
+      {hasFab && (
+        <div className={classes.scriptAddMenu}>
+          {customAddMenu || (
+            <Fab
+              type="button"
+              size="small"
+              color="primary"
+              classes={{
+                sizeSmall: "appBarFab"
+              }}
+              onClick={onAddMenu}
+            >
+              <AddIcon/>
+            </Fab>
+          )}
+        </div>
+      )}
+      {childrenWithProps}
+    </div>
+  </>);
 };
 
 export default AppBarContainer;

@@ -3,30 +3,30 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { DataCollectionForm, DataCollectionRule, DataCollectionType } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
-import { withStyles } from "@mui/styles";
-import createStyles from "@mui/styles/createStyles";
-import { sortDefaultSelectItems } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { getFormSyncErrors, initialize, reduxForm } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { State } from "../../../../../reducers/state";
+import { DataCollectionForm, DataCollectionRule, DataCollectionType } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getFormSyncErrors, initialize, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { State } from '../../../../../reducers/state';
 
-const manualUrl = getManualLink("dataCollection");
+const manualUrl = getManualLink("data-collection-forms-and-rules");
 
 export const DATA_COLLECTION_RULES_FORM: string = "CollectionRulesForm";
 
 const styles = () =>
-  createStyles({
+  ({
     selectField: {
       paddingRight: "60px"
     }
@@ -208,7 +208,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
               <FormField
                 type="text"
                 name="name"
-                label="Name"
+                label={$t('name')}
                 validate={this.validateUniqueNames}
                 required
               />
@@ -237,7 +237,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="enrolmentFormName"
-                    label="Enrolment"
+                    label={$t('enrolment')}
                     items={this.getItems("Enrolment") || []}
                     className={classes.selectField}
                     required
@@ -248,7 +248,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="surveyForms"
-                    label="Student Feedback"
+                    label={$t('student_feedback')}
                     items={this.getItems("Survey") || []}
                     className={classes.selectField}
                     allowEmpty
@@ -260,7 +260,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="applicationFormName"
-                    label="Application"
+                    label={$t('application')}
                     items={this.getItems("Application") || []}
                     className={classes.selectField}
                     required
@@ -271,7 +271,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="payerFormName"
-                    label="Payer"
+                    label={$t('payer')}
                     allowEmpty
                     items={this.getItems("Payer") || []}
                     className={classes.selectField}
@@ -282,7 +282,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="waitingListFormName"
-                    label="Waiting List"
+                    label={$t('waiting_list')}
                     items={this.getItems("WaitingList") || []}
                     className={classes.selectField}
                     required
@@ -293,7 +293,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="parentFormName"
-                    label="Parent"
+                    label={$t('parent')}
                     allowEmpty
                     items={this.getItems("Parent") || []}
                     className={classes.selectField}
@@ -304,7 +304,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="productFormName"
-                    label="Product"
+                    label={$t('product')}
                     allowEmpty
                     items={this.getItems("Product") || []}
                     className={classes.selectField}
@@ -316,7 +316,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="voucherFormName"
-                    label="Voucher"
+                    label={$t('voucher')}
                     allowEmpty
                     items={this.getItems("Voucher") || []}
                     className={classes.selectField}
@@ -328,7 +328,7 @@ class CollectionRulesBaseForm extends React.Component<Props, any> {
                   <FormField
                     type="select"
                     name="membershipFormName"
-                    label="Membership"
+                    label={$t('membership')}
                     allowEmpty
                     items={this.getItems("Membership") || []}
                     className={classes.selectField}
@@ -351,6 +351,9 @@ const mapStateToProps = (state: State) => ({
 const CollectionRulesForm = reduxForm({
   form: DATA_COLLECTION_RULES_FORM,
   onSubmitFail
-})(withStyles(styles)(withRouter(connect<any, any, any>(mapStateToProps)(CollectionRulesBaseForm))) as any);
+})(withStyles(
+  withRouter(connect<any, any, any>(mapStateToProps)(CollectionRulesBaseForm)),
+  styles
+) as any);
 
 export default CollectionRulesForm;

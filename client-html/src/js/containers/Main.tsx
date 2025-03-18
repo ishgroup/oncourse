@@ -15,8 +15,8 @@
 
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import {
   AnyArgFunction,
   AppTheme,
@@ -26,37 +26,43 @@ import {
   getTheme,
   GlobalStylesProvider,
   ThemeValues
-} from "ish-ui";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { Dispatch } from "redux";
-import { getFormNames, isDirty } from "redux-form";
-import { getUserPreferences, showMessage } from "../common/actions";
-import ConfirmProvider from "../common/components/dialog/ConfirmProvider";
-import MessageProvider from "../common/components/dialog/MessageProvider";
-import { getGoogleTagManagerParameters } from "../common/components/google-tag-manager/actions";
-import SwipeableSidebar from "../common/components/layout/swipeable-sidebar/SwipeableSidebar";
-import { LSGetItem, LSRemoveItem, LSSetItem } from "../common/utils/storage";
+} from 'ish-ui';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { getFormNames, isDirty } from 'redux-form';
+import { TssCacheProvider } from 'tss-react';
+import { getLogo, getUserPreferences, showMessage } from '../common/actions';
+import ConfirmProvider from '../common/components/dialog/ConfirmProvider';
+import MessageProvider from '../common/components/dialog/MessageProvider';
+import { getGoogleTagManagerParameters } from '../common/components/google-tag-manager/actions';
+import SwipeableSidebar from '../common/components/layout/swipeable-sidebar/SwipeableSidebar';
+import { LSGetItem, LSRemoveItem, LSSetItem } from '../common/utils/storage';
 import {
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_THEME_KEY,
+  FORM_NAMES_ALLOWED_FOR_REFRESH,
   LICENSE_SCRIPTING_KEY,
   READ_NEWS,
   SPECIAL_TYPES_DISPLAY_KEY,
   SYSTEM_USER_ADMINISTRATION_CENTER
-} from "../constants/Config";
-import { EnvironmentConstants } from "../constants/EnvironmentConstants";
-import { AppMessage } from "../model/common/Message";
-import { State } from "../reducers/state";
-import { loginRoute, routes } from "../routes";
-import { getDashboardBlogPosts } from "./dashboard/actions";
-import { getCurrency, isLoggedIn } from "./preferences/actions";
-import { ThemeContext } from "./ThemeContext";
+} from '../constants/Config';
+import { EnvironmentConstants } from '../constants/EnvironmentConstants';
+import { AppMessage } from '../model/common/Message';
+import { State } from '../reducers/state';
+import { loginRoute, routes } from '../routes';
+import { getDashboardBlogPosts } from './dashboard/actions';
+import { getCurrency, isLoggedIn } from './preferences/actions';
+import { ThemeContext } from './ThemeContext';
 
 export const muiCache = createCache({
   key: 'mui',
   prepend: true,
+});
+
+const tssCache = createCache({
+  key: "tss"
 });
 
 const RouteContentWrapper = props => {
@@ -86,6 +92,7 @@ interface Props {
   history: any;
   preferencesTheme: ThemeValues;
   onInit: AnyArgFunction;
+  getLogo: AnyArgFunction;
   isLogged: boolean;
   isAnyFormDirty: boolean;
   isLoggedIn: AnyArgFunction;
@@ -101,9 +108,20 @@ export class MainBase extends React.PureComponent<Props, MainState> {
   constructor(props) {
     super(props);
 
+    const theme = getTheme();
+
     this.state = {
       themeName: DefaultThemeKey,
-      theme: getTheme(),
+      theme: {
+        ...theme,
+        palette: {
+          ...theme.palette,
+          secondary: {
+            ...theme.palette.secondary,
+            main: '#434EA1',
+          }
+        }
+      },
     };
   }
 
@@ -131,8 +149,10 @@ export class MainBase extends React.PureComponent<Props, MainState> {
 
   UNSAFE_componentWillMount() {
     const {
-      isLogged, isLoggedIn, history
+      isLogged, isLoggedIn, getLogo, history
     } = this.props;
+
+    getLogo();
 
     if (routes) {
       const notFound = routes.find(route => route.url === history.location.pathname);
@@ -230,29 +250,31 @@ export class MainBase extends React.PureComponent<Props, MainState> {
 
     return (
       <CacheProvider value={muiCache}>
-        <ThemeContext.Provider
-          value={{
-            themeHandler: this.themeHandler,
-            themeName
-          }}
-        >
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <GlobalStylesProvider>
-              <BrowserWarning />
-              <Switch>
-                {isLogged ? (
-                  routes.map((route, i) => <RouteRenderer key={i} {...route} />)
-                ) : (
-                  loginRoute.map((route, i) => <RouteRenderer key={i} {...route} />)
-                )}
-              </Switch>
-              <ConfirmProvider />
-              {isLogged && <SwipeableSidebar />}
-            </GlobalStylesProvider>
-            <MessageProvider />
-          </ThemeProvider>
-        </ThemeContext.Provider>
+        <TssCacheProvider value={tssCache}>
+          <ThemeContext.Provider
+            value={{
+              themeHandler: this.themeHandler,
+              themeName
+            }}
+          >
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <GlobalStylesProvider>
+                <BrowserWarning />
+                <Switch>
+                  {isLogged ? (
+                    routes.map((route, i) => <RouteRenderer key={i} {...route} />)
+                  ) : (
+                    loginRoute.map((route, i) => <RouteRenderer key={i} {...route} />)
+                  )}
+                </Switch>
+                <ConfirmProvider />
+                {isLogged && <SwipeableSidebar />}
+              </GlobalStylesProvider>
+              <MessageProvider />
+            </ThemeProvider>
+          </ThemeContext.Provider>
+        </TssCacheProvider>
       </CacheProvider>
     );
   }
@@ -261,19 +283,25 @@ export class MainBase extends React.PureComponent<Props, MainState> {
 const mapStateToProps = (state: State) => ({
   isLogged: state.preferences.isLogged,
   preferencesTheme: state.userPreferences[DASHBOARD_THEME_KEY],
-  isAnyFormDirty: getFormNames()(state).reduce((p, name) => isDirty(name)(state) || p, false)
+  isAnyFormDirty: getFormNames()(state).filter(name => !FORM_NAMES_ALLOWED_FOR_REFRESH.includes(name)).reduce((p, name) => isDirty(name)(state) || p, false)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   showMessage: message => dispatch(showMessage(message)),
   isLoggedIn: () => dispatch(isLoggedIn()),
   getPreferencesTheme: () => dispatch(getUserPreferences([DASHBOARD_THEME_KEY])),
+  getLogo: () => dispatch(getLogo()),
   onInit: () => {
     dispatch(getGoogleTagManagerParameters());
     dispatch(getCurrency());
-    dispatch(getUserPreferences([SYSTEM_USER_ADMINISTRATION_CENTER, READ_NEWS, LICENSE_SCRIPTING_KEY, SPECIAL_TYPES_DISPLAY_KEY]));
+    dispatch(getUserPreferences([
+      SYSTEM_USER_ADMINISTRATION_CENTER, 
+      READ_NEWS, 
+      LICENSE_SCRIPTING_KEY, 
+      SPECIAL_TYPES_DISPLAY_KEY
+    ]));
     dispatch(getDashboardBlogPosts());
   }
 });
 
-export default withRouter(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(MainBase));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainBase));

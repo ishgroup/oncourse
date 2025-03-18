@@ -3,21 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AttendanceType } from "@api/model";
-import Launch from "@mui/icons-material/Launch";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { format } from "date-fns";
-import { appendTimezone, AppTheme } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { AttandanceStepItem } from "../../../../../model/entities/CourseClass";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
+import { AttendanceType } from '@api/model';
+import Launch from '@mui/icons-material/Launch';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
+import { appendTimezone, AppTheme } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { AttandanceStepItem } from '../../../../../model/entities/CourseClass';
+import AttendanceActionsMenu from './AttendanceActionsMenu';
 
 const styles = (theme: AppTheme) =>
-  createStyles({
+  ({
     sessionDay: {
       transform: "rotate(-60deg)",
       marginTop: 40,
@@ -104,14 +105,14 @@ const AttendanceDayBase: React.FC<DayBaseProps> = ({
               className="invisible"
               onChange={changeSessionRow}
               type="Training plan"
-              label="Mark ALL modules for this sessions as..."
+              label={$t('mark_all_modules_for_this_sessions_as')}
             />
           ) : id && start && hasStudentAttendance && (
             <AttendanceActionsMenu
               className="invisible"
               onChange={changeSessionRow}
               type="Student"
-              label="Mark ALL attendances for this session as..."
+              label={$t('mark_all_attendances_for_this_session_as')}
             />
           )}
           {dueDate && (
@@ -125,4 +126,4 @@ const AttendanceDayBase: React.FC<DayBaseProps> = ({
   );
 };
 
-export default withStyles(styles)(AttendanceDayBase);
+export default withStyles(AttendanceDayBase, styles);

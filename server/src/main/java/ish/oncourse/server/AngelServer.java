@@ -15,18 +15,21 @@ import io.bootique.Bootique;
 import io.bootique.cayenne.CayenneModule;
 import io.bootique.jdbc.JdbcModule;
 import io.bootique.jdbc.hikaricp.JdbcHikariCPModule;
-import ish.oncourse.server.display.DisplayModule;
-import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.api.ServerApiModule;
 import ish.oncourse.server.api.cxf.CXFModule;
 import ish.oncourse.server.bugsnag.BugsnagModule;
 import ish.oncourse.server.db.DbModule;
 import ish.oncourse.server.document.DocumentModule;
 import ish.oncourse.server.http.HttpModule;
+import ish.oncourse.server.jetty.AngelJettyModule;
 import ish.oncourse.server.license.LicenseModule;
+import ish.oncourse.server.localization.country.LocalizationModule;
+import ish.oncourse.server.localization.logo.LogoModule;
 import ish.oncourse.server.messaging.SMTPModule;
 import ish.oncourse.server.modules.*;
+import ish.oncourse.server.money.MoneyModule;
 import ish.oncourse.server.security.api.PermissionModule;
+import ish.oncourse.server.services.chargebee.ChargebeeModule;
 
 public class AngelServer {
     public static final String UTF_8 = "UTF-8";
@@ -58,11 +61,14 @@ public class AngelServer {
                 .module(HttpModule.class)
                 .module(DbModule.class)
                 .module(LicenseModule.class)
-                .module(DisplayModule.class)
+                .module(ChargebeeModule.class)
                 .module(SMTPModule.class)
                 .module(DocumentModule.class)
                 .module(JasperReportsModule.class)
                 .module(MonitoringModule.class)
+                .module(LogoModule.class)
+                .module(LocalizationModule.class)
+                .module(MoneyModule.class)
                 .exec()
                 .exit();
     }

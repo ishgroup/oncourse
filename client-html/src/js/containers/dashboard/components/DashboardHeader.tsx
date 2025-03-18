@@ -1,29 +1,30 @@
-import PaletteIcon from "@mui/icons-material/PaletteOutlined";
-import LogoutIcon from "@mui/icons-material/PowerSettingsNewOutlined";
-import { Grid, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
-import { makeAppStyles, ShowConfirmCaller } from "ish-ui";
-import React, { useEffect, useState } from "react";
-import { Dispatch } from "redux";
-import instantFetchErrorHandler from "../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import HamburgerMenu from "../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu";
-import { VARIANTS } from "../../../common/components/layout/swipeable-sidebar/utils";
-import { useAppSelector } from "../../../common/utils/hooks";
-import { LSRemoveItem } from "../../../common/utils/storage";
+import PaletteIcon from '@mui/icons-material/PaletteOutlined';
+import LogoutIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import { Grid, MenuItem, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import { makeAppStyles, ShowConfirmCaller } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
+import { Dispatch } from 'redux';
+import { IAction } from '../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import HamburgerMenu from '../../../common/components/layout/swipeable-sidebar/components/HamburgerMenu';
+import { VARIANTS } from '../../../common/components/layout/swipeable-sidebar/utils';
+import { useAppSelector } from '../../../common/utils/hooks';
+import { LSRemoveItem } from '../../../common/utils/storage';
 import {
   APP_BAR_HEIGHT,
   APPLICATION_THEME_STORAGE_NAME,
   DASHBOARD_ACTIVITY_STORAGE_NAME
-} from "../../../constants/Config";
-import { getSystemUserData } from "../../login/actions";
-import { ThemeContext } from "../../ThemeContext";
-import DashboardService from "../services/DashboardService";
+} from '../../../constants/Config';
+import { getSystemUserData } from '../../login/actions';
+import { ThemeContext } from '../../ThemeContext';
+import DashboardService from '../services/DashboardService';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   appBar: {
     backgroundColor: theme.palette.background.default,
     height: APP_BAR_HEIGHT,
@@ -55,7 +56,7 @@ interface Props {
   upgradePlanLink: any;
   setPreferencesTheme: any;
   openConfirm: ShowConfirmCaller;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   drawerOpened: boolean;
 }
 
@@ -68,7 +69,7 @@ const DashboardHeader = (
     drawerOpened,
   }: Props
 ) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [themeMenu, setThemeMenu] = useState();
 
@@ -110,7 +111,7 @@ const DashboardHeader = (
         <Grid container className="justify-content-end" alignContent="center">
           <Grid item xs={6} container justifyContent="start" alignContent="center">
             <Typography variant="subtitle2" color="textSecondary" noWrap>
-              Welcome back
+              {$t('welcome_back')}
               {" "}
               {systemUser?.firstName}
             </Typography>
@@ -126,11 +127,11 @@ const DashboardHeader = (
                       root: classes.upgradeButton
                     }}
             >
-              Upgrade to onCourse Pro
+              {$t('upgrade_to_oncourse_pro')}
             </Button>
                 )}
 
-            <Tooltip title="Change Theme" disableFocusListener>
+            <Tooltip title={$t('change_theme')} disableFocusListener>
               <IconButton
                 onClick={themeMenuOpen}
                 aria-owns={themeMenu ? "theme-menu" : null}
@@ -156,7 +157,7 @@ const DashboardHeader = (
                     }}
                     selected={themeName === "default"}
                   >
-                    Light Theme
+                    {$t('light_theme')}
                   </MenuItem>
                   <MenuItem
                     id="dark"
@@ -167,7 +168,7 @@ const DashboardHeader = (
                         }}
                     selected={themeName === "dark"}
                   >
-                    Dark Theme
+                    {$t('dark_theme')}
                   </MenuItem>
                   <MenuItem
                     id="monochrome"
@@ -178,7 +179,7 @@ const DashboardHeader = (
                         }}
                     selected={themeName === "monochrome"}
                   >
-                    Monochrome Theme
+                    {$t('monochrome_theme')}
                   </MenuItem>
                   <MenuItem
                     id="highcontrast"
@@ -189,12 +190,12 @@ const DashboardHeader = (
                         }}
                     selected={themeName === "highcontrast"}
                   >
-                    High Contrast Theme
+                    {$t('high_contrast_theme')}
                   </MenuItem>
                 </Menu>
                   )}
             </ThemeContext.Consumer>
-            <Tooltip title="Logout">
+            <Tooltip title={$t('logout')}>
               <IconButton
                 onClick={toggleConfirm}
                 className={classes.toolBarButton}

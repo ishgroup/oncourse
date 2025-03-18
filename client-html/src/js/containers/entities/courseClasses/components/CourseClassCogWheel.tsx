@@ -3,25 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import MenuItem from "@mui/material/MenuItem";
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../common/actions/CommonPlainRecordsActions";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getCommonPlainRecords, setCommonPlainSearch } from '../../../../common/actions/CommonPlainRecordsActions';
+import { IAction } from '../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import CreateCertificateMenu
-  from "../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu";
-import EntityService from "../../../../common/services/EntityService";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { getPluralSuffix } from "../../../../common/utils/strings";
-import { courseClassCancelPath } from "../../../../constants/Api";
-import { State } from "../../../../reducers/state";
-import AvetmissExportModal from "../../../avetmiss-export/components/modal/AvetmissExportModal";
-import BulkEditCogwheelOption from "../../common/components/BulkEditCogwheelOption";
-import PayslipGenerateCogwheelAction from "../../payslips/components/PayslipGenerateCogwheelAction";
-import CancelCourseClassModal from "./cancel/CancelCourseClassModal";
-import DuplicateCourseClassModal from "./duplicate-courseClass/DuplicateCourseClassModal";
-import DuplicateTraineeshipModal from "./duplicate-courseClass/DuplicateTraineeshipModal";
+  from '../../../../common/components/list-view/components/bottom-app-bar/components/CreateCertificateMenu';
+import EntityService from '../../../../common/services/EntityService';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { getPluralSuffix } from '../../../../common/utils/strings';
+import { courseClassCancelPath } from '../../../../constants/Api';
+import { State } from '../../../../reducers/state';
+import AvetmissExportModal from '../../../avetmiss-export/components/modal/AvetmissExportModal';
+import BulkEditCogwheelOption from '../../common/components/BulkEditCogwheelOption';
+import PayslipGenerateCogwheelAction from '../../payslips/components/PayslipGenerateCogwheelAction';
+import CancelCourseClassModal from './cancel/CancelCourseClassModal';
+import DuplicateCourseClassModal from './duplicate-courseClass/DuplicateCourseClassModal';
+import DuplicateTraineeshipModal from './duplicate-courseClass/DuplicateTraineeshipModal';
 
 const CourseClassCogWheel = memo<any>(props => {
   const {
@@ -168,20 +170,18 @@ const CourseClassCogWheel = memo<any>(props => {
       />
       {!isTraneeship && (
         <MenuItem disabled={!selectedAndNotNew} className={menuItemClass} role="Duplicate" onClick={onClick}>
-          Duplicate
-          {' '}
-          {classesCountLabel}
+          {$t('duplicate2', [classesCountLabel])}
         </MenuItem>
       )}
 
       {isTraneeship && selection.length === 1 && (
         <MenuItem className={menuItemClass} role="DuplicateTraineeship" onClick={onClick}>
-          Duplicate Traineeship and enrol
+          {$t('duplicate_traineeship_and_enrol')}
         </MenuItem>
       )}
       {isCancelEnabled && (
         <MenuItem className={menuItemClass} role="Cancel" onClick={onClick}>
-          Cancel class
+          {$t('cancel_class')}
         </MenuItem>
       )}
 
@@ -196,7 +196,7 @@ const CourseClassCogWheel = memo<any>(props => {
         selection={selection}
       />
       <MenuItem disabled={selection[0] === "NEW"} className={menuItemClass} role="Avetmiss-Export" onClick={onClick}>
-        AVETMISS 8 export {selection.length ? classesLabel : "all"}
+        {$t('avetmiss_8_export')} {selection.length ? classesLabel : "all"}
       </MenuItem>
       <BulkEditCogwheelOption {...props} />
     </>
@@ -210,7 +210,7 @@ const mapStateToProps = (state: State) => ({
   access: state.access
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   setCourseClassPlainRequest: id => dispatch(setCommonPlainSearch("CourseClass", `id is ${id}`)),
   getCourseClassPlainRecord: () => dispatch(
     getCommonPlainRecords("CourseClass", 0, "cancelWarningMessage,course.name,course.code,code,validEnrolmentCount")

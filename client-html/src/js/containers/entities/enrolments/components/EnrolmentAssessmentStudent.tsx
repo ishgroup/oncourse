@@ -6,17 +6,18 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { GradingItem, GradingType } from "@api/model";
-import Grid from "@mui/material/Grid";
-import clsx from "clsx";
-import { D_MMM_YYYY, EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from "ish-ui";
-import React, { useEffect, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
-import AssessmentSubmissionIconButton from "../../courseClasses/components/assessments/AssessmentSubmissionIconButton";
-import GradeContent from "../../courseClasses/components/assessments/GradeContent";
-import { useGradeErrors } from "../../courseClasses/components/assessments/utils/hooks";
-
+import { GradingItem, GradingType } from '@api/model';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import clsx from 'clsx';
+import { D_MMM_YYYY, EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { IAction } from '../../../../common/actions/IshAction';
+import { EnrolmentAssessmentExtended, EnrolmentExtended } from '../../../../model/entities/Enrolment';
+import AssessmentSubmissionIconButton from '../../courseClasses/components/assessments/AssessmentSubmissionIconButton';
+import GradeContent from '../../courseClasses/components/assessments/GradeContent';
+import { useGradeErrors } from '../../courseClasses/components/assessments/utils/hooks';
 
 interface Props {
   elem: EnrolmentAssessmentExtended;
@@ -25,7 +26,7 @@ interface Props {
   classes: any;
   hasGrades: boolean;
   index: number;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onToggleGrade: (elem: EnrolmentAssessmentExtended, grade: GradingItem) => void;
   onChangeGrade: (value: number, elem: EnrolmentAssessmentExtended) => void;
   handleGradeMenuOpen: any;
@@ -148,7 +149,7 @@ const EnrolmentAssessmentStudent: React.FC<Props> = (
                     onBlur: stubFunction,
                     value: submission.markedById
                   }}
-                  placeholder="No assessor"
+                  placeholder={$t('no_assessor')}
                   items={elem.tutors || []}
                   allowEmpty
                   inline

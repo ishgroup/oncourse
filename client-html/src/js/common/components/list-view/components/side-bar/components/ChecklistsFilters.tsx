@@ -7,15 +7,16 @@
  */
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ButtonBase, Collapse } from "@mui/material";
-import { alpha } from "@mui/material/styles";
-import clsx from "clsx";
-import { ColoredCheckBox, makeAppStyles, stubFunction } from "ish-ui";
-import React, { useState } from "react";
-import { useAppSelector } from "../../../../../utils/hooks";
-import ListTagGroup from "./ListTagGroup";
+import { ButtonBase, Collapse } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import $t from '@t';
+import clsx from 'clsx';
+import { ColoredCheckBox, makeAppStyles, stubFunction } from 'ish-ui';
+import React, { useState } from 'react';
+import { useAppSelector } from '../../../../../utils/hooks';
+import ListTagGroup from './ListTagGroup';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   expandable: {
     display: "flex",
     alignItems: "center",
@@ -50,7 +51,7 @@ const ChecklistsFilters = (
 }: Props
 ) => {
   const [expanded, setExpanded] = useState(null);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const checkedChecklists = useAppSelector(state => state.list.checkedChecklists);
   const uncheckedChecklists = useAppSelector(state => state.list.uncheckedChecklists);
@@ -70,13 +71,13 @@ const ChecklistsFilters = (
   return (
     <div className="pr-2">
       <div className="heading mt-3 mb-2">
-        Select task status
+        {$t('select_task_status')}
       </div>
 
       <ButtonBase className={classes.expandable} onClick={() => setExpanded(expanded === "1" ? null : "1")}>
         <ColoredCheckBox
           className="flex-fill"
-          label="Completed"
+          label={$t('completed2')}
           color="#43a047"
           input={{ onChange: stubFunction, value: true } as any}
           meta={{} as any}
@@ -106,7 +107,7 @@ const ChecklistsFilters = (
       <ButtonBase className={classes.expandable} onClick={() => setExpanded(expanded === "2" ? null : "2")}>
         <ColoredCheckBox
           className="flex-fill"
-          label="Incomplete"
+          label={$t('incomplete')}
           color="#43a047"
           input={{ onChange: stubFunction, value: false } as any}
           meta={{} as any}

@@ -6,16 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import CircularProgress from "@mui/material/CircularProgress";
-import { withStyles } from "@mui/styles";
-import clsx from "clsx";
-import * as React from "react";
-import { connect } from "react-redux";
-import { State } from "../../../reducers/state";
+import CircularProgress from '@mui/material/CircularProgress';
+import clsx from 'clsx';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { withStyles } from 'tss-react/mui';
+import { Fetch } from '../../../model/common/Fetch';
+import { State } from '../../../reducers/state';
 
-const styles: any = theme => ({
+const styles: any = (theme, _params, classes) => ({
   transparentBackdrop: {
-    "&$backdrop": {
+    [`&.${classes.backdrop}`]: {
       background: "unset"
     }
   },
@@ -49,7 +50,21 @@ const styles: any = theme => ({
 // approximate time in ms after which loading indicator is shown if request is still pending
 const PENDING_TIME = 100;
 
-class LoadingIndicator extends React.PureComponent<any, any> {
+interface Props {
+  classes?: any;
+  appBarOffset?: boolean;
+  transparentBackdrop?: boolean;
+  position?:  "absolute" | "fixed" ;
+  allowInteractions?: boolean;
+  customLoading?: boolean;
+  fetch?: Fetch;
+}
+
+interface CompState {
+  showLoading: boolean
+}
+
+class LoadingIndicator extends React.PureComponent<Props, CompState> {
   private timeout;
 
   private _isMounted: boolean;
@@ -132,7 +147,7 @@ const mapStateToProps = (state: State) => ({
   fetch: state.fetch
 });
 
-export default connect<any, any, any>(
+export default connect(
   mapStateToProps,
   null
-)(withStyles(styles)(LoadingIndicator));
+)(withStyles(LoadingIndicator, styles));

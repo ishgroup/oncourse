@@ -3,13 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ModuleCreditPointsStatus, ModuleType } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import { normalizeNumberToPositive, sortDefaultSelectItems } from "ish-ui";
-import * as React from "react";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { ModuleCreditPointsStatus, ModuleType } from '@api/model';
+import { FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import { normalizeNumberToPositive, sortDefaultSelectItems } from 'ish-ui';
+import * as React from 'react';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
 
 const moduleTypes = Object.keys(ModuleType).map(key => ({ value: ModuleType[key], label: key }));
 const creditPointsStatuses = Object.keys(ModuleCreditPointsStatus).map(key => ({ value: ModuleCreditPointsStatus[key], label: key }));
@@ -29,7 +30,7 @@ const ModulesEditView = (props: any) => {
 
   const isDisabled = isNew ? false : !isCustom;
 
-  const gridSpacing = { xs: twoColumn ? 6 : 12 }
+  const gridSpacing = { xs: twoColumn ? 6 : 12 };
 
   return (
     <Grid container rowSpacing={2} columnSpacing={3} className="pt-2 pl-3 pr-3">
@@ -45,7 +46,7 @@ const ModulesEditView = (props: any) => {
                 type="text"
                 disabled={isDisabled}
                 name="title"
-                label="Title"
+                label={$t('title')}
                 required={isNew || isCustom}
               />
             </Grid>
@@ -54,7 +55,7 @@ const ModulesEditView = (props: any) => {
       </Grid>
 
       <Grid item xs={12} className="d-flex">
-        <div className="heading mt-1 mb-1">AVETMISS DATA</div>
+        <div className="heading mt-1 mb-1">{$t('avetmiss_data')}</div>
       </Grid>
 
       <Grid item {...gridSpacing}>
@@ -62,7 +63,7 @@ const ModulesEditView = (props: any) => {
           type="text"
           disabled={!isNew}
           name="nationalCode"
-          label="National code"
+          label={$t('national_code')}
           required={isNew || isCustom}
         />
       </Grid>
@@ -72,7 +73,7 @@ const ModulesEditView = (props: any) => {
           type="select"
           disabled={isDisabled}
           name="type"
-          label="Type"
+          label={$t('type')}
           items={moduleTypes}
           required
         />
@@ -83,7 +84,7 @@ const ModulesEditView = (props: any) => {
           type="text"
           disabled={isDisabled}
           name="fieldOfEducation"
-          label="Field of education"
+          label={$t('field_of_education')}
         />
       </Grid>
 
@@ -91,7 +92,7 @@ const ModulesEditView = (props: any) => {
         <FormField
           type="text"
           name="specialization"
-          label="Specialization"
+          label={$t('specialization')}
           maxLength={128}
         />
       </Grid>
@@ -102,7 +103,7 @@ const ModulesEditView = (props: any) => {
           normalize={normalizeNumberToPositive}
           max="99999999.99"
           name="creditPoints"
-          label="Credit points"
+          label={$t('credit_points')}
           debounced={false}
         />
       </Grid>
@@ -111,7 +112,7 @@ const ModulesEditView = (props: any) => {
         <FormField
           type="select"
           name="creditPointsStatus"
-          label="Credit points status"
+          label={$t('credit_points_status')}
           items={creditPointsStatuses}
         />
       </Grid>
@@ -121,7 +122,7 @@ const ModulesEditView = (props: any) => {
           type="number"
           normalize={normalizeNumberToPositive}
           name="nominalHours"
-          label="Nominal hours"
+          label={$t('nominal_hours')}
           debounced={false}
         />
       </Grid>
@@ -136,18 +137,17 @@ const ModulesEditView = (props: any) => {
             }
           }}
           name="expiryDays"
-          label="Expiry days"
+          label={$t('expiry_days')}
           debounced={false}
         />
       </Grid>
 
-
       <Grid item {...gridSpacing}>
-        <div className="heading mb-2 mt-2">Internal options</div>
+        <div className="heading mb-2 mt-2">{$t('internal_options')}</div>
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isOffered" />}
-          label="Is offered"
+          label={$t('is_offered')}
         />
       </Grid>
     </Grid>

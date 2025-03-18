@@ -6,21 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import { Grid } from "@mui/material";
-import { ShowConfirmCaller } from "ish-ui";
-import React, { useCallback } from "react";
-import { Dispatch } from "redux";
-import { Field } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Contact } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { ShowConfirmCaller } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { Dispatch } from 'redux';
+import { Field } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { getContactFullName } from "../utils";
-import AvatarRenderer from "./AvatarRenderer";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { getContactFullName } from '../utils';
+import AvatarRenderer from './AvatarRenderer';
 
 interface Props {
   form: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   showConfirm: ShowConfirmCaller;
   values: Contact;
   twoColumn: boolean;
@@ -50,7 +52,7 @@ const ProfileHeading = (props: Props) => {
   const Avatar = useCallback(aProps => (
     <Field
       name="profilePicture"
-      label="Profile picture"
+      label={$t('profile_picture')}
       component={AvatarRenderer}
       showConfirm={showConfirm}
       email={values.email}
@@ -81,13 +83,13 @@ const ProfileHeading = (props: Props) => {
           {!isCompany && (
             <>
               <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="title" label="Title" />
+                <FormField type="text" name="title" label={$t('title')} />
               </Grid>
               <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="firstName" label="First name" disabled={usiLocked} required />
+                <FormField type="text" name="firstName" label={$t('first_name')} disabled={usiLocked} required />
               </Grid>
               <Grid item xs={twoColumn ? 2 : 6}>
-                <FormField type="text" name="middleName" label="Middle name" />
+                <FormField type="text" name="middleName" label={$t('middle_name')} />
               </Grid>
             </>
           )}

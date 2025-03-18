@@ -64,7 +64,7 @@ const findRelatedGroup: FindRelatedItem[] = [
   { title: "Invoices", list: "invoice", expression: "corporatePassUsed.id" }
 ];
 
-const manualLink = getManualLink("corporatePass");
+const manualLink = getManualLink("corporate-pass");
 
 const secondaryColumnCondition = dataRow => dataRow["expiryDate"] || COMMON_PLACEHOLDER;
 

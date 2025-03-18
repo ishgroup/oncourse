@@ -6,12 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Button, FormControlLabel, Grid } from "@mui/material";
-import { makeAppStyles, NumberArgFunction } from "ish-ui";
-import React from "react";
-import FormField from "../../../common/components/form/formFields/FormField";
-import { validateUniqueNamesInArray } from "../../../common/utils/validation";
-import { cardsFormStyles } from "../styles/formCommonStyles";
+import { Button, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import { makeAppStyles, NumberArgFunction } from 'ish-ui';
+import React from 'react';
+import FormField from '../../../common/components/form/formFields/FormField';
+import { validateUniqueNamesInArray } from '../../../common/utils/validation';
+import { cardsFormStyles } from '../styles/formCommonStyles';
 
 interface SpecialTagTypeProps {
   index: number;
@@ -19,17 +20,17 @@ interface SpecialTagTypeProps {
   disabled?: boolean;
 }
 
-const useStyles = makeAppStyles(cardsFormStyles);
+const useStyles = makeAppStyles()(cardsFormStyles as any);
 
 function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
-  const classes = useStyles();
+  const { classes }: any = useStyles();
   return (
     <Grid container columnSpacing={3} id={`special-tag-type-${index}`} className="relative">
       <Grid item xs={6}>
         <FormField
           type="text"
           name={`types.${index}.name`}
-          label="Name"
+          label={$t('name')}
           className={classes.field}
           disabled={disabled}
           validate={validateUniqueNamesInArray}
@@ -49,7 +50,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
               parse={v => (v ? "Show on website" : "Private")}
               debounced={false}
             />}
-            label="Visible on web"
+            label={$t('visible_on_web')}
             labelPlacement="start"
           />
           <div>
@@ -60,7 +61,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
               className={classes.deleteButton}
               disabled={disabled}
             >
-              Delete
+              {$t('delete2')}
             </Button>
           </div>
         </div>

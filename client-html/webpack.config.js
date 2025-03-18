@@ -74,6 +74,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
       plugins: [
         new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, './tsconfig.json') }),
       ],
+      fallback: { 'process/browser': require.resolve('process/browser') }
     },
     module: {
       rules: [
@@ -81,11 +82,7 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
           test: /\.ts(x?)$/,
           use: [
             {
-              loader: "ts-loader",
-              options: {
-                transpileOnly: true,
-                happyPackMode: true,
-              },
+              loader: "swc-loader"
             },
           ],
         },
@@ -97,6 +94,9 @@ const _main = (NODE_ENV, BUILD_NUMBER) => {
     devServer: {
       historyApiFallback: true,
       static: "./build/dist",
+      client: {
+        overlay: false
+      }
     },
     performance: {
       hints: false, // don't keep telling us to make the js smaller
@@ -142,6 +142,14 @@ const plugins = (NODE_ENV, BUILD_NUMBER) => {
               " https://*.googletagmanager.com" +
               " https://*.googleapis.com" +
               " https://*.google.com" +
+              " https://*.stripe.com" +
+              " https://*.squarecdn.com" +
+              " https://js.squareupsandbox.com" +
+              " https://pci-connect.squareupsandbox.com" +
+              " https://js.squareup.com" +
+              " https://pci-connect.squareup.com" +
+              " https://secure.ewaypayments.com" +
+              " https://*.s3.ap-southeast-2.amazonaws.com" +
               " https://*.ish.com.au" +
               " 'unsafe-inline';" +
               " img-src * 'self' data: https:;" +

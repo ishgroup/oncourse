@@ -1,19 +1,19 @@
-import { createStyles } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import * as React from "react";
-import { useState } from "react";
-import { FilterGroup } from "../../../../../model/common/ListView";
-import HamburgerMenu from "../../../layout/swipeable-sidebar/components/HamburgerMenu";
-import { VARIANTS } from "../../../layout/swipeable-sidebar/utils";
-import ChecklistsFilters from "./components/ChecklistsFilters";
-import FilterGroupComp from "./components/FilterGroup";
-import FiltersSwitcher from "./components/FiltersSwitcher";
-import ListTagGroups from "./components/ListTagGroups";
-import StubFilterItem from "./components/StubFilterItem";
+import $t from '@t';
+import clsx from 'clsx';
+import * as React from 'react';
+import { useState } from 'react';
+import { withStyles } from 'tss-react/mui';
+import { FilterGroup } from '../../../../../model/common/ListView';
+import HamburgerMenu from '../../../layout/swipeable-sidebar/components/HamburgerMenu';
+import { VARIANTS } from '../../../layout/swipeable-sidebar/utils';
+import ChecklistsFilters from './components/ChecklistsFilters';
+import FilterGroupComp from './components/FilterGroup';
+import FiltersSwitcher from './components/FiltersSwitcher';
+import ListTagGroups from './components/ListTagGroups';
+import StubFilterItem from './components/StubFilterItem';
 
 const styles = theme =>
-  createStyles({
+  ({
     root: {
       padding: theme.spacing(0, 0, 2, 2)
     },
@@ -32,7 +32,7 @@ const styles = theme =>
   });
 
 interface Props {
-  classes: any;
+  classes?: any;
   onChangeFilters: any;
   filterGroups: FilterGroup[]
   deleteFilter: any;
@@ -42,7 +42,7 @@ interface Props {
   fetching: boolean;
 }
 
-const SideBar: React.FC<Props> = props => {
+const SideBar = (props: Props) => {
   const {
    classes, onChangeFilters, filterGroups, deleteFilter, rootEntity, filterEntity, savingFilter, fetching
   } = props;
@@ -87,7 +87,7 @@ const SideBar: React.FC<Props> = props => {
             />
           ))}
 
-          {savingFilter && !hasCustomFilters && <div className="heading mt-2">Custom Filters</div>}
+          {savingFilter && !hasCustomFilters && <div className="heading mt-2">{$t('custom_filters')}</div>}
 
           {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} filterEntity={filterEntity} />}
 
@@ -104,4 +104,4 @@ const SideBar: React.FC<Props> = props => {
     </div>
   );
 };
-export default withStyles(styles)(SideBar);
+export default withStyles(SideBar, styles);

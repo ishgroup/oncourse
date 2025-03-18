@@ -3,13 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Discount, Tax } from "@api/model";
-import Lock from "@mui/icons-material/Lock";
-import LockOpen from "@mui/icons-material/LockOpen";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import { addDays, format } from "date-fns";
-import Decimal from "decimal.js-light";
+import { Discount, Tax } from '@api/model';
+import Lock from '@mui/icons-material/Lock';
+import LockOpen from '@mui/icons-material/LockOpen';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import $t from '@t';
+import { addDays, format } from 'date-fns';
+import Decimal from 'decimal.js-light';
 import {
   D_MMM_YYYY,
   decimalMul,
@@ -18,16 +19,17 @@ import {
   normalizeNumberToZero,
   parseFieldPercent,
   preventNegativeOrLogEnter
-} from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useMemo, useState } from "react";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../../common/components/form/formFields/Uneditable";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { getDiscountAmountExTax, getRoundingByType } from "../../../../discounts/utils";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../../constants";
+} from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
+import { IAction } from '../../../../../../common/actions/IshAction';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
+import { getDiscountAmountExTax, getRoundingByType } from '../../../../discounts/utils';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
 
 interface Props extends BudgetCostModalContentProps {
   classFee: number;
@@ -57,7 +59,7 @@ const getDiscountLabel = (discount: Discount, hasOverride: boolean, perUnit: num
 
 const onBeforeLockSet = (
   pr,
-  dispatch: Dispatch,
+  dispatch: Dispatch<IAction>,
   perUnit: number,
   currentTax: Tax,
   discount: Discount,
@@ -189,15 +191,15 @@ const DiscountContent: React.FC<Props> = ({
             values.courseClassDiscount.discount.name
             + (values.courseClassDiscount.discount.code ? ` (${values.courseClassDiscount.discount.code})` : "")
           }
-          label="Discount"
+          label={$t('discount')}
           url={`/discount/${values.courseClassDiscount.discount.id}`}
         />
       </Grid>
       <Grid item xs={4}>
-        <Uneditable value={validFrom} label="Valid from" />
+        <Uneditable value={validFrom} label={$t('valid_from')} />
       </Grid>
       <Grid item xs={4}>
-        <Uneditable value={validTo} label="Valid to" />
+        <Uneditable value={validTo} label={$t('valid_to')} />
       </Grid>
       <Grid item xs={4}>
         <FormField
@@ -210,7 +212,7 @@ const DiscountContent: React.FC<Props> = ({
           format={formatFieldPercent}
           parse={parseFieldPercent}
           onKeyPress={preventNegativeOrLogEnter}
-          label="Default forecast take-up"
+          label={$t('default_forecast_takeup')}
           labelAdornment={<IconButton className="inputAdornmentButton" onClick={onForecastLockClick}>
             {forecastLocked ? <Lock className="inputAdornmentIcon" /> : <LockOpen className="inputAdornmentIcon" />}
           </IconButton>}
@@ -219,11 +221,11 @@ const DiscountContent: React.FC<Props> = ({
         />
       </Grid>
       <Grid item xs={6}>
-        <Uneditable value={values.courseClassDiscount.discount.description} label="Description" />
+        <Uneditable value={values.courseClassDiscount.discount.description} label={$t('description')} />
       </Grid>
 
       <Grid item xs={12}>
-        <div className="heading pb-1 pt-2">Value</div>
+        <div className="heading pb-1 pt-2">{$t('value')}</div>
       </Grid>
 
       <Grid item xs={12} container>
@@ -245,16 +247,16 @@ const DiscountContent: React.FC<Props> = ({
             />
           </Grid>
           <Grid item xs={6}>
-            <Uneditable value={classFee} label="Class fee" money />
+            <Uneditable value={classFee} label={$t('class_fee')} money />
           </Grid>
           <Grid item xs={6}>
-            <Uneditable value={taxOnDiscount} label="Tax on discount" money />
+            <Uneditable value={taxOnDiscount} label={$t('tax_on_discount')} money />
           </Grid>
           <Grid item xs={6}>
-            <Uneditable value={values.courseClassDiscount.discount.rounding} label="Rounding" />
+            <Uneditable value={values.courseClassDiscount.discount.rounding} label={$t('rounding')} />
           </Grid>
           <Grid item xs={6}>
-            <Uneditable value={discountTotalFee} label="Final class fee" money />
+            <Uneditable value={discountTotalFee} label={$t('final_class_fee')} money />
           </Grid>
         </Grid>
         <Grid item xs={4} />

@@ -6,17 +6,17 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import SettingsIcon from "@mui/icons-material/Settings";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import clsx from "clsx";
-import { AppBarAction, makeAppStyles, ShowConfirmCaller } from "ish-ui";
-import React, { useCallback, useState } from "react";
-import { connect } from "react-redux";
-import { showConfirm } from "../../actions";
+import SettingsIcon from '@mui/icons-material/Settings';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import clsx from 'clsx';
+import { AppBarAction, makeAppStyles, ShowConfirmCaller } from 'ish-ui';
+import React, { useCallback, useState } from 'react';
+import { connect } from 'react-redux';
+import { showConfirm } from '../../actions';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'actions'>()((theme, p, classes) => ({
   root: {
     zIndex: theme.zIndex.drawer
   },
@@ -30,7 +30,7 @@ const useStyles = makeAppStyles(theme => ({
   },
   actions: {},
   directionLeft: {
-    "& $actions": {
+    [`& .${classes.actions}`]: {
       paddingRight: theme.spacing(4.5)
     }
   }
@@ -41,10 +41,10 @@ interface Props {
   showConfirm?: ShowConfirmCaller;
 }
 
-const AppBarActions = React.memo<Props>(({actions, showConfirm}) => {
+const AppBarActions = React.memo<Props>(({ actions, showConfirm }) => {
   const [opened, setOpened] = useState<boolean>(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onClickAction = useCallback((onConfirm, confirmMessage, confirmButtonText) => {
     if (confirmMessage) {

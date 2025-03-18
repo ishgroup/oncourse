@@ -6,15 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Grid from "@mui/material/Grid";
-import * as React from "react";
-import { Form, reduxForm } from "redux-form";
-import FormField from "../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../common/components/layout/AppBarContainer";
-import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
-import { onSubmitFail } from "../../common/utils/highlightFormErrors";
-import { useAppDispatch } from "../../common/utils/hooks";
-import { downloadLogs } from "./actions";
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import * as React from 'react';
+import { Form, reduxForm } from 'redux-form';
+import FormField from '../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../common/components/layout/AppBarContainer';
+import LoadingIndicator from '../../common/components/progress/LoadingIndicator';
+import { onSubmitFail } from '../../common/utils/highlightFormErrors';
+import { useAppDispatch } from '../../common/utils/hooks';
+import { downloadLogs } from './actions';
 
 export const LOGS_FORM_NAME = "DownloadLogsForm";
 
@@ -37,13 +38,13 @@ const Logs = ({
         disableInteraction
         disabled={invalid}
         submitButtonText="Download"
-        title="Download logs"
+        title={$t('download_logs')}
       >
         <Grid container rowSpacing={2} columnSpacing={3} className="mt-2">
           <Grid item xs={4}>
             <FormField
               type="dateTime"
-              label="From"
+              label={$t('from')}
               name="from"
               required
             />
@@ -51,7 +52,7 @@ const Logs = ({
           <Grid item xs={4}>
             <FormField
               type="dateTime"
-              label="To"
+              label={$t('to')}
               name="to"
             />
           </Grid>
@@ -60,7 +61,6 @@ const Logs = ({
     </Form>
   );
 };
-
 
 const LogsForm = reduxForm({
   onSubmitFail,

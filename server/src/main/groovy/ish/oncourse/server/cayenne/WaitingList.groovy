@@ -11,11 +11,11 @@
 
 package ish.oncourse.server.cayenne
 
-
 import ish.oncourse.API
 import ish.oncourse.cayenne.QueueableEntity
 import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._WaitingList
+import ish.oncourse.server.util.WaitingListUtils
 
 import javax.annotation.Nonnull
 /**
@@ -40,6 +40,25 @@ class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, Co
 		context.commitChanges()
 	}
 
+	@Override
+	protected void prePersist() {
+		super.prePersist()
+		validateDuplicate()
+	}
+
+	@Override
+	protected void preUpdate() {
+		super.preUpdate()
+		validateDuplicate()
+	}
+
+	private void validateDuplicate(){
+		//we need this duplicate with api service to prevent creation from scripts. If remove check from
+		//api service, then client will get 500 error instead of 400 due to cayenne object lifecycle
+		if(WaitingListUtils.waitingListExists(course, student, context, id)){
+			throw new IllegalArgumentException("Waiting list for this student and course already exists!")
+		}
+	}
 
 	/**
 	 * @return the date and time this record was created
@@ -129,7 +148,7 @@ class WaitingList extends _WaitingList implements Queueable, ExpandableTrait, Co
 	List<WaitingListSite> getWaitingListSites() {
 		return super.getWaitingListSites()
 	}
-	
+
 	@Override
 	Class<? extends CustomField> getCustomFieldClass() {
 		return WaitingListCustomField

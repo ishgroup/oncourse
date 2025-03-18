@@ -6,23 +6,21 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ContactInsight, ContactInteraction, EmailTemplate } from "@api/model";
-import Close from "@mui/icons-material/Close";
-import Launch from "@mui/icons-material/Launch";
-import Mail from "@mui/icons-material/Mail";
-import PhoneIcon from "@mui/icons-material/Phone";
+import { ContactInsight, ContactInteraction, EmailTemplate } from '@api/model';
+import Close from '@mui/icons-material/Close';
+import Launch from '@mui/icons-material/Launch';
+import Mail from '@mui/icons-material/Mail';
+import PhoneIcon from '@mui/icons-material/Phone';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, CircularProgress, Divider, Grid, ListItemText } from "@mui/material";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { formatDistanceStrict } from "date-fns";
+import { Box, Button, CircularProgress, Collapse, Divider, Grid, ListItemText, Typography } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Stack from '@mui/material/Stack';
+import $t from '@t';
+import clsx from 'clsx';
+import { formatDistanceStrict } from 'date-fns';
 import {
   countLines,
   DD_MM_YYYY_SLASHED,
@@ -32,23 +30,23 @@ import {
   makeAppStyles,
   openInternalLink,
   stubFunction
-} from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import NumberFormat from "react-number-format";
-import { getUserPreferences, openSendMessage } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import NotesService from "../../../../../common/components/form/notes/services/NotesService";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import HoverLink from "../../../../../common/components/layout/HoverLink";
-import { useAppDispatch, useAppSelector } from "../../../../../common/utils/hooks";
-import { getPluralSuffix } from "../../../../../common/utils/strings";
-import { EMAIL_FROM_KEY } from "../../../../../constants/Config";
-import EmailTemplateService from "../../../../automation/containers/email-templates/services/EmailTemplateService";
-import SendMessageEditView from "../../../messages/components/SendMessageEditView";
-import ContactsService from "../../services/ContactsService";
-import AvatarRenderer from "../AvatarRenderer";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import NumberFormat from 'react-number-format';
+import { getUserPreferences, openSendMessage } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import NotesService from '../../../../../common/components/form/notes/services/NotesService';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import HoverLink from '../../../../../common/components/layout/HoverLink';
+import { useAppDispatch, useAppSelector } from '../../../../../common/utils/hooks';
+import { getPluralSuffix } from '../../../../../common/utils/strings';
+import { EMAIL_FROM_KEY } from '../../../../../constants/Config';
+import EmailTemplateService from '../../../../automation/containers/email-templates/services/EmailTemplateService';
+import SendMessageEditView from '../../../messages/components/SendMessageEditView';
+import ContactsService from '../../services/ContactsService';
+import AvatarRenderer from '../AvatarRenderer';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   closeIcon: {
     position: "absolute",
     right: theme.spacing(2),
@@ -104,7 +102,7 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
         <span>
           {name}
           {' '}
-          <span className="fontWeight600">message </span>
+          <span className="fontWeight600">{$t('message')} </span>
         </span>
       );
     }
@@ -113,9 +111,9 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
         <span>
           {name}
           {' '}
-          <span className="fontWeight600">document </span>
+          <span className="fontWeight600">{$t('document')} </span>
           {' '}
-          added
+          {$t('added')}
         </span>
       );
     }
@@ -124,7 +122,7 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "Article": {
       return (
         <span>
-          <span className="fontWeight600">Purchased </span>
+          <span className="fontWeight600">{$t('Purchased')} </span>
           {name}
         </span>
       );
@@ -132,16 +130,16 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "Payslip": {
       return (
         <span>
-          <span className="fontWeight600">Tutor pay </span>
-          processed
+          <span className="fontWeight600">{$t('Tutor pay')} </span>
+          {$t('processed')}
         </span>
       );
     }
     case "Survey":
       return (
         <span>
-          <span className="fontWeight600">Feedback </span>
-          submitted for
+          <span className="fontWeight600">{$t('Feedback')} </span>
+          {$t('submitted for')}
           {' '}
           {name}
         </span>
@@ -149,20 +147,20 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "Certificate":
       return (
         <span>
-          <span className="fontWeight600">Certificate </span>
-          in
+          <span className="fontWeight600">{$t('Certificate')} </span>
+          {$t('in')}
           {' '}
           {name}
           {' '}
-          created
+          {$t('created')}
         </span>
       );
     case "AssessmentSubmission":
       return (
         <span>
-          Submitted
-          <span className="fontWeight600"> assessment </span>
-          for
+          {$t('Submitted')}
+          <span className="fontWeight600"> {$t('assessment')} </span>
+          {$t('for')}
           {' '}
           {name}
         </span>
@@ -172,8 +170,8 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
         <span>
           {name}
           {' '}
-          <span className="fontWeight600">quote </span>
-          created
+          <span className="fontWeight600">{$t('quote')} </span>
+          {$t('created')}
         </span>
       );
     case "Invoice":
@@ -182,8 +180,8 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
           {currencySymbol}
           {name}
           {' '}
-          <span className="fontWeight600">invoice </span>
-          created
+          <span className="fontWeight600">{$t("invoice")} </span>
+          {$t("created")}
         </span>
       );
     case "PaymentIn":
@@ -192,7 +190,7 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
           {currencySymbol}
           {name}
           {' '}
-          <span className="fontWeight600">payment</span>
+          <span className="fontWeight600">{$t("payment")}</span>
         </span>
       );
     case "PaymentOut":
@@ -201,15 +199,15 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
           {currencySymbol}
           {name}
           {' '}
-          <span className="fontWeight600">refund </span>
-          received
+          <span className="fontWeight600">{$t("refund")} </span>
+          {$t("received")}
         </span>
       );
     case "Note":
       return (
         <span>
-          <span className="fontWeight600">Note </span>
-          added by 
+          <span className="fontWeight600">{$t("Note")} </span>
+          {$t("added by")}
           {' '}
           {name}
         </span>
@@ -217,7 +215,7 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "Application":
       return (
         <span>
-          <span className="fontWeight600">Applied for </span>
+          <span className="fontWeight600">{$t('Applied for')} </span>
           {' '}
           {name}
         </span>
@@ -225,9 +223,9 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "WaitingList":
       return (
         <span>
-          Joined
-          <span className="fontWeight600"> waiting list </span>
-          for 
+          {$t('Joined')}
+          <span className="fontWeight600"> {$t('waiting list')} </span>
+          {$t('for')}
           {' '}
           {name}
         </span>
@@ -235,15 +233,15 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "Lead":
       return (
         <span>
-          <span className="fontWeight600">Lead </span>
-          created
+          <span className="fontWeight600">{$t('Lead')} </span>
+          {$t('created')}
         </span>
       );
     case "Enrolment":
       return (
         <span>
-          <span className="fontWeight600">Enrolled </span>
-          in
+          <span className="fontWeight600">{$t('Enrolled')} </span>
+          {$t('in')}
           {' '}
           {name}
         </span>
@@ -270,7 +268,7 @@ const Interaction = (interaction: ContactInteraction & { currencySymbol?: string
   const [clamped, setClamped] = useState(true);
   const [descriptionLines, setSescriptionLines] = useState(null);
   
-  const hiddenDescriptionRef = useRef<any>();
+  const hiddenDescriptionRef = useRef<any>(undefined);
 
   useEffect(() => {
     setSescriptionLines(countLines(hiddenDescriptionRef.current));
@@ -408,7 +406,7 @@ const ContactInsight = (
     dispatch(openSendMessage());
   };
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const Avatar = useCallback(aProps => (
     <AvatarRenderer
@@ -483,22 +481,22 @@ const ContactInsight = (
           <div className="mt-3 pt-1">
             <Stack spacing={1} direction="row" className="mt-4 mb-2">
               <Chip
-                label="Create lead"
+                label={$t('create_lead2')}
                 className="fontWeight600"
                 onClick={() => openInternalLink(`/lead/new?contactId=${id}&contactName=${data.fullName}`)}
               />
               <Chip
-                label="Create application"
+                label={$t('create_application')}
                 className="fontWeight600"
                 onClick={() => openInternalLink(`/application/new?contactId=${id}&contactName=${data.fullName}`)}
               />
               <Chip
-                label="Receive payment"
+                label={$t('receive_payment')}
                 className="fontWeight600"
                 onClick={() => openInternalLink(`/checkout?contactId=${id}`)}
               />
               <Chip
-                label="Create sale"
+                label={$t('create_sale')}
                 className="fontWeight600"
                 onClick={() => openInternalLink(`/checkout?contactId=${id}`)}
               />
@@ -508,9 +506,9 @@ const ContactInsight = (
               <Grid item sm={12} md={4}>
                 <div className={classes.box}>
                   <div className="centeredFlex mb-2">
-                    <div className="heading flex-fill">Overview</div>
+                    <div className="heading flex-fill">{$t('overview')}</div>
                     <Typography variant="caption" sx={{ fontSize: "10px" }} color="textSecondary">
-                      first seen
+                      {$t('first_seen')}
                       {' '}
                       {formatDistanceStrict(new Date(data.overview.firstSeen || undefined), new Date(), { addSuffix: true })}
                     </Typography>
@@ -522,14 +520,14 @@ const ContactInsight = (
                         {currencySymbol}
                         {data.overview.spent}
                       </Typography>
-                      <Typography variant="caption">spent</Typography>
+                      <Typography variant="caption">{$t('spent')}</Typography>
                     </div>
                     <div>
                       <Typography variant="h6" className="fontWeight600" sx={{ color: "error.main" }}>
                         {currencySymbol}
                         {data.overview.owing}
                       </Typography>
-                      <Typography variant="caption">owing</Typography>
+                      <Typography variant="caption">{$t('owing')}</Typography>
                     </div>
                   </Stack>
                   <Divider />
@@ -538,7 +536,7 @@ const ContactInsight = (
                       <Typography variant="caption" className="lh-1">
                         <span className="fontWeight600">{data.overview.enrolments.length}</span>
                         {" "}
-                        enrolments
+                        {$t('enrolments')}
                       </Typography>
                     </HoverLink>
                   </Stack>
@@ -548,7 +546,7 @@ const ContactInsight = (
                       <Typography variant="caption" className="lh-1">
                         <span className="fontWeight600">{data.overview.openApplications.length}</span>
                         {" "}
-                        open application
+                        {$t('open_application')}
                         {getPluralSuffix(data.overview.openApplications.length)}
                       </Typography>
                     </HoverLink>
@@ -556,7 +554,7 @@ const ContactInsight = (
                       <Typography variant="caption" className="lh-1">
                         <span className="fontWeight600">{data.overview.closeApplications.length}</span>
                         {" "}
-                        closed
+                        {$t('closed')}
                       </Typography>
                     </HoverLink>
                   </Stack>
@@ -566,7 +564,7 @@ const ContactInsight = (
                       <Typography variant="caption" className="lh-1">
                         <span className="fontWeight600">{data.overview.openLeads.length}</span>
                         {" "}
-                        open lead
+                        {$t('open_lead')}
                         {getPluralSuffix(data.overview.openLeads.length)}
                       </Typography>
                     </HoverLink>
@@ -574,25 +572,25 @@ const ContactInsight = (
                       <Typography variant="caption" className="lh-1">
                         <span className="fontWeight600">{data.overview.closeLeads.length}</span>
                         {" "}
-                        closed
+                        {$t('closed')}
                       </Typography>
                     </HoverLink>
                   </Stack>
                 </div>
 
                 <div className={clsx("mt-3", classes.box)}>
-                  <div className="heading mb-2">Contact</div>
-                  {data.workPhone && <PhoneLabel label="work" phone={data.workPhone} />}
-                  {data.homePhone && <PhoneLabel label="home" phone={data.homePhone} />}
-                  {data.mobilePhone && <PhoneLabel label="mobile" phone={data.mobilePhone} />}
-                  {data.fax && <PhoneLabel label="fax" phone={data.fax} />}
-                  {data.email && <MailLabel label="email" mail={data.email} />}
-                  <Chip label="Send Message" className="fontWeight600 mt-1" onClick={onSendMessage} />
+                  <div className="heading mb-2">{$t('Contact')}</div>
+                  {data.workPhone && <PhoneLabel label={$t('work')} phone={data.workPhone} />}
+                  {data.homePhone && <PhoneLabel label={$t('home')} phone={data.homePhone} />}
+                  {data.mobilePhone && <PhoneLabel label={$t('mobile')} phone={data.mobilePhone} />}
+                  {data.fax && <PhoneLabel label={$t('fax')} phone={data.fax} />}
+                  {data.email && <MailLabel label={$t('email')} mail={data.email} />}
+                  <Chip label={$t('send_message')} className="fontWeight600 mt-1" onClick={onSendMessage} />
                 </div>
               </Grid>
               <Grid item sm={12} md={8}>
                 <div className={classes.box}>
-                  <Typography className="heading mb-3" gutterBottom>Activity</Typography>
+                  <Typography className="heading mb-3" gutterBottom>{$t('activity')}</Typography>
                   <Box
                     sx={{
                       width: '100%', borderRadius: 1, border: "1px solid", borderColor: "divider"
@@ -602,7 +600,7 @@ const ContactInsight = (
                     <Stack spacing={0} direction="column">
                       <div className="d-flex">
                         <EditInPlaceField
-                          placeholder="Click here to add a note"
+                          placeholder={$t('click_here_to_add_a_note')}
                           className="pr-2 flex-fill"
                           meta={{}}
                           input={{
@@ -628,7 +626,7 @@ const ContactInsight = (
                                 value: dateValue
                               }}
                               type="datetime"
-                              label="Date"
+                              label={$t('date')}
                               formatDateTime={DD_MM_YYYY_SLASHED}
                             />
                             <EditInPlaceDateTimeField
@@ -641,7 +639,7 @@ const ContactInsight = (
                                 onBlur: stubFunction,
                                 value: dateValue
                               }}
-                              label="Time"
+                              label={$t('time')}
                               type="time"
                             />
                             <div className="flex-fill" />
@@ -656,7 +654,7 @@ const ContactInsight = (
                                 className="mt-auto"
                                 disableElevation
                               >
-                                Save
+                                {$t('save2')}
                               </LoadingButton>
                             </div>
                           </Stack>
@@ -679,11 +677,11 @@ const ContactInsight = (
                   {hasLastInteractions && (
                     <Box component="div" className="d-flex justify-content-center">
                       <Button variant="text" color="primary" sx={{ textTransform: "initial" }} size="small" onClick={() => setShowLast(prev => !prev)}>
-                        View 
+                        {$t('View')}
                         {' '}
-                        {lastInteractions.length} 
+                        {lastInteractions.length}
                         {' '}
-                        {showLast ? "less" : "more"}
+                        {showLast ? $t('less')  :  $t('more')}
                       </Button>
                     </Box>
                   )}

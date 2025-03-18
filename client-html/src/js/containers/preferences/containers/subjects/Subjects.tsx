@@ -6,40 +6,36 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { TreeData } from "@atlaskit/tree";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { makeAppStyles } from "ish-ui";
-import React, { useEffect, useRef, useState } from "react";
-import { change, Form, FormErrors, getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import AppBarContainer from "src/js/common/components/layout/AppBarContainer";
-import { showConfirm } from "../../../../common/actions";
-import RouteChangeConfirm from "../../../../common/components/dialog/RouteChangeConfirm";
-import { getInvalidValueOdjects } from "../../../../common/utils/common";
-import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
-import { useAppDispatch, useAppSelector } from "../../../../common/utils/hooks";
-import { SPECIAL_TYPES_DISPLAY_KEY } from "../../../../constants/Config";
-import { SUBJECTS_ENTITY_FORM_NAME } from "../../../../constants/Forms";
-import { FormTag } from "../../../../model/tags";
-import { updateTag } from "../../../tags/actions";
-import { treeDataToTags } from "../../../tags/components/Trees";
-import { EmptyTag } from "../../../tags/constants";
-import { styles } from "../../../tags/styles/TagItemsStyles";
-import { getAllTags, rootTagToServerModel } from "../../../tags/utils";
-import { validateTagsForm } from "../../../tags/utils/validation";
-import { getSubjects } from "./actions";
-import SubjectsTree from "./SubjectsTree";
+import { TreeData } from '@atlaskit/tree';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { makeAppStyles } from 'ish-ui';
+import React, { useEffect, useRef, useState } from 'react';
+import { change, Form, FormErrors, getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import AppBarContainer from 'src/js/common/components/layout/AppBarContainer';
+import { showConfirm } from '../../../../common/actions';
+import RouteChangeConfirm from '../../../../common/components/dialog/RouteChangeConfirm';
+import { getInvalidValueOdjects } from '../../../../common/utils/common';
+import { onSubmitFail } from '../../../../common/utils/highlightFormErrors';
+import { useAppDispatch, useAppSelector } from '../../../../common/utils/hooks';
+import { SPECIAL_TYPES_DISPLAY_KEY } from '../../../../constants/Config';
+import { SUBJECTS_ENTITY_FORM_NAME } from '../../../../constants/Forms';
+import { FormTag } from '../../../../model/tags';
+import { updateTag } from '../../../tags/actions';
+import { treeDataToTags } from '../../../tags/components/Trees';
+import { EmptyTag } from '../../../tags/constants';
+import { styles } from '../../../tags/styles/TagItemsStyles';
+import { getAllTags, rootTagToServerModel } from '../../../tags/utils';
+import { validateTagsForm } from '../../../tags/utils/validation';
+import { getSubjects } from './actions';
+import SubjectsTree from './SubjectsTree';
 
-const useStyles = makeAppStyles(theme => {
-  const tagStyles = styles(theme);
-  
-  return {
-    ...tagStyles,
-    legend: {
-      ...tagStyles.legend,
-      paddingLeft: '56px'
-    }
-  };
+const useTagStyles = makeAppStyles()(styles);
+
+const useStyles = makeAppStyles()({
+  legendPadding: {
+    paddingLeft: '56px'
+  }
 });
 
 function Subjects(
@@ -49,7 +45,10 @@ function Subjects(
 ) {
   const counter = useRef(1);
 
-  const classes = useStyles();
+  const { classes: tagClasses, cx } = useTagStyles();
+  const { classes: subjectClasses } = useStyles();
+  
+  const classes = { ...tagClasses, ...subjectClasses };
 
   const dispatch = useAppDispatch();
   const [editingIds, setEditingIds] = useState<number[]>([]);
@@ -116,16 +115,16 @@ function Subjects(
     <Form className="container" noValidate autoComplete="off" onSubmit={handleSubmit(onSave)} role={form}>
       <RouteChangeConfirm form={form} when={dirty} />
       <AppBarContainer
-        disabled={!dirty}
+        disabled={disabled || !dirty}
         invalid={invalid}
-        title='Subjects'
+        title={$t('subjects')}
         disableInteraction
         onAddMenu={!disabled && onAddNew}
       >
-        <div className={clsx(classes.legend, 'mt-3')}>
-          <Typography variant="caption" color="textSecondary">Name</Typography>
-          <Typography variant="caption" color="textSecondary">URL path</Typography>
-          <Typography variant="caption" color="textSecondary" textAlign="center">Website visibility</Typography>
+        <div className={cx(classes.legend, classes.legendPadding, 'mt-3')}>
+          <Typography variant="caption" color="textSecondary">{$t('name')}</Typography>
+          <Typography variant="caption" color="textSecondary">{$t('url_path')}</Typography>
+          <Typography variant="caption" color="textSecondary" textAlign="center">{$t('website_visibility')}</Typography>
         </div>
 
         {values && (

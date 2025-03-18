@@ -1,4 +1,4 @@
-import { Diff, VoucherProduct, VoucherProductApi } from "@api/model";
+import { VoucherProduct, VoucherProductApi } from "@api/model";
 import { DefaultHttpService } from "../../../../common/services/HttpService";
 
 class VoucherProductService {
@@ -14,10 +14,6 @@ class VoucherProductService {
 
   public createVoucherProduct(voucherProduct: VoucherProduct): Promise<any> {
     return this.voucherProductApi.create(voucherProduct);
-  }
-
-  public bulkChange(diff: Diff): Promise<any> {
-    return this.voucherProductApi.bulkChange(diff);
   }
 }
 

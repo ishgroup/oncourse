@@ -6,19 +6,20 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AssessmentSubmission, GradingItem, GradingType } from "@api/model";
-import DateRange from "@mui/icons-material/DateRange";
-import { Grid, IconButton, Typography } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import { normalizeNumber } from "ish-ui";
-import React, { useEffect, useMemo, useState } from "react";
-import { arrayInsert, arrayRemove, change, WrappedFieldArrayProps } from "redux-form";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { EnrolmentAssessmentExtended, EnrolmentExtended } from "../../../../model/entities/Enrolment";
-import GradeModal from "../../courseClasses/components/assessments/GradeModal";
-import styles from "../../courseClasses/components/assessments/styles";
-import SubmissionModal from "../../courseClasses/components/assessments/SubmissionModal";
-import EnrolmentAssessmentStudent from "./EnrolmentAssessmentStudent";
+import { AssessmentSubmission, GradingItem, GradingType } from '@api/model';
+import DateRange from '@mui/icons-material/DateRange';
+import { Grid, IconButton, Typography } from '@mui/material';
+import $t from '@t';
+import { normalizeNumber } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { arrayInsert, arrayRemove, change, WrappedFieldArrayProps } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { EnrolmentAssessmentExtended, EnrolmentExtended } from '../../../../model/entities/Enrolment';
+import GradeModal from '../../courseClasses/components/assessments/GradeModal';
+import styles from '../../courseClasses/components/assessments/styles';
+import SubmissionModal from '../../courseClasses/components/assessments/SubmissionModal';
+import EnrolmentAssessmentStudent from './EnrolmentAssessmentStudent';
 
 interface Props extends EditViewProps<EnrolmentExtended> {
   classes?: any;
@@ -30,7 +31,7 @@ const today = new Date().toISOString();
 
 const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => {
   const {
-    classes, namePrefix= "", values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
+    classes, namePrefix = "", values, dispatch, fields: { name }, meta: { error, form }, gradingTypes = []
   } = props;
 
   const [modalOpenedBy, setModalOpenedBy] = useState<string>(null);
@@ -91,7 +92,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
     } else {
       updatedSubmissions = values.submissions.map((s, index) => {
         if (submissionIndex === index) {
-          return { ...s, grade, ...grade === "" ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
+          return { ...s, grade, ...(grade === "" ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today }) };
         }
         return s;
       });
@@ -123,7 +124,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         if (submissionIndex === index) {
           const gradeIndex = prevGrade ? gradeItems?.findIndex(g => g.lowerBound === prevGrade.lowerBound) : -1;
           const grade = gradeItems[gradeIndex + 1]?.lowerBound;
-          return { ...s, grade, ...typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null } };
+          return { ...s, grade, ...(typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null }) };
         }
         return s;
       });
@@ -275,7 +276,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
         <Grid item xs={3} />
         <Grid item xs={hasGrades ? 3 : 6} className={classes.center}>
           <span className="relative">
-            Submitted
+            {$t('submitted')}
             <IconButton
               size="small"
               className={classes.hiddenTitleIcon}
@@ -293,7 +294,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
           <>
             <Grid xs={3} className={classes.center}>
               <span className="relative">
-                Marked
+                {$t('marked')}
                 <IconButton
                   size="small"
                   className={classes.hiddenTitleIcon}
@@ -306,7 +307,7 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
               </span>
             </Grid>
             <Grid xs={3} className={classes.center}>
-              Grade
+              {$t('grade')}
             </Grid>
           </>
       )}
@@ -338,4 +339,4 @@ const EnrolmentSubmissions: React.FC<Props & WrappedFieldArrayProps> = props => 
   ) : null;
 };
 
-export default withStyles(styles)(EnrolmentSubmissions) as React.FC<Props>;
+export default withStyles(EnrolmentSubmissions, styles) as React.FC<Props>;

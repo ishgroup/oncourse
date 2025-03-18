@@ -6,14 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClassCost, CourseClassTutor, Discount, Tax } from "@api/model";
-import { Grid, Popover } from "@mui/material";
-import { darken } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import makeStyles from "@mui/styles/makeStyles";
+import { ClassCost, CourseClassTutor, Discount, Tax } from '@api/model';
+import { Grid, Popover, Typography } from '@mui/material';
+import { darken } from '@mui/material/styles';
+import $t from '@t';
 import { isAfter, isBefore, isEqual } from 'date-fns';
-import Decimal from "decimal.js-light";
+import Decimal from 'decimal.js-light';
 import {
   AppTheme,
   BooleanArgFunction,
@@ -24,53 +22,55 @@ import {
   stopEventPropagation,
   StringArgFunction,
   stubFunction
-} from "ish-ui";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayInsert, arraySplice, change, initialize } from "redux-form";
-import { addActionToQueue, removeActionsFromQueue } from "../../../../../common/actions";
+} from 'ish-ui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayInsert, arraySplice, change, initialize } from 'redux-form';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import { addActionToQueue, removeActionsFromQueue } from '../../../../../common/actions';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../../common/actions/CommonPlainRecordsActions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import NestedList from "../../../../../common/components/form/nestedList/NestedList";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../constants/Config";
-import history from "../../../../../constants/History";
-import { EditViewProps } from "../../../../../model/common/ListView";
-import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from "../../../../../model/entities/CourseClass";
-import { DefinedTutorRoleExtended } from "../../../../../model/preferences/TutorRole";
-import { State } from "../../../../../reducers/state";
-import PreferencesService from "../../../../preferences/services/PreferencesService";
-import DiscountService from "../../../discounts/services/DiscountService";
+} from '../../../../../common/actions/CommonPlainRecordsActions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import NestedList from '../../../../../common/components/form/nestedList/NestedList';
+import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../constants/Config';
+import history from '../../../../../constants/History';
+import { EditViewProps } from '../../../../../model/common/ListView';
+import { ClassCostExtended, CourseClassExtended, CourseClassRoom } from '../../../../../model/entities/CourseClass';
+import { DefinedTutorRoleExtended } from '../../../../../model/preferences/TutorRole';
+import { State } from '../../../../../reducers/state';
+import PreferencesService from '../../../../preferences/services/PreferencesService';
+import DiscountService from '../../../discounts/services/DiscountService';
 import {
   discountSort,
   getDiscountAmountExTax,
   getRoundingByType,
   mapPlainDiscounts,
   transformDiscountForNestedList
-} from "../../../discounts/utils";
-import { getCurrentTax } from "../../../taxes/utils";
-import { setCourseClassBudgetModalOpened } from "../../actions";
-import { COURSE_CLASS_COST_DIALOG_FORM } from "../../constants";
-import { classCostInitial } from "../../CourseClasses";
-import { CourseClassState } from "../../reducers";
-import { getTutorPayInitial } from "../tutors/utils";
-import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from "./actions";
-import AddBudgetMenu from "./AddBudgetMenu";
-import BudgetEnrolmentsFields from "./BudgetEnrolmentsFields";
-import BudgetExpandableItemRenderer from "./BudgetExpandableItemRenderer";
-import BudgetInvoiceItemRenderer from "./BudgetInvoiceItemRenderer";
-import BudgetItemRow from "./BudgetItemRow";
-import BudgetCostModal from "./modal/BudgetCostModal";
-import ClassCostService from "./services/ClassCostService";
-import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from "./utils";
+} from '../../../discounts/utils';
+import { getCurrentTax } from '../../../taxes/utils';
+import { setCourseClassBudgetModalOpened } from '../../actions';
+import { COURSE_CLASS_COST_DIALOG_FORM } from '../../constants';
+import { classCostInitial } from '../../CourseClasses';
+import { CourseClassState } from '../../reducers';
+import { getTutorPayInitial } from '../tutors/utils';
+import { deleteCourseClassCost, postCourseClassCost, putCourseClassCost } from './actions';
+import AddBudgetMenu from './AddBudgetMenu';
+import BudgetEnrolmentsFields from './BudgetEnrolmentsFields';
+import BudgetExpandableItemRenderer from './BudgetExpandableItemRenderer';
+import BudgetInvoiceItemRenderer from './BudgetInvoiceItemRenderer';
+import BudgetItemRow from './BudgetItemRow';
+import BudgetCostModal from './modal/BudgetCostModal';
+import ClassCostService from './services/ClassCostService';
+import { dateForCompare, excludeOnEnrolPaymentPlan, getClassFeeTotal, includeOnEnrolPaymentPlan } from './utils';
 
-const styles = (theme: AppTheme) =>
-  createStyles({
+const styles = (theme: AppTheme, p, classes) =>
+  ({
     root: {
       paddingTop: "10px",
       paddingBottom: "10px"
@@ -84,7 +84,7 @@ const styles = (theme: AppTheme) =>
       "&:hover": {
         background: darken(theme.palette.background.paper, 0.1),
         cursor: "pointer",
-        "& $tableTabButtons": {
+        [`& .${classes.tableTabButtons}`]: {
           visibility: "visible"
         }
       },
@@ -127,14 +127,14 @@ const styles = (theme: AppTheme) =>
       paddingRight: 10
     },
     panelSumRoot: {
-      "&$panelSumFocus": {
+      [`&.${classes.panelSumFocus}`]: {
         background: "inherit"
       }
     },
     panelSumFocus: {}
   });
 
-const usePopoverStyles = makeStyles((theme: AppTheme) => ({
+const usePopoverStyles = makeStyles()((theme: AppTheme) => ({
   popover: {
     pointerEvents: 'none',
   },
@@ -196,7 +196,7 @@ const MouseOverPopover = ({
   anchorEl,
   handlePopoverClose,
 }) => {
-  const classes = usePopoverStyles();
+  const { classes } = usePopoverStyles();
   const open = Boolean(anchorEl);
 
   return (
@@ -221,23 +221,23 @@ const MouseOverPopover = ({
         disableRestoreFocus
       >
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Enrolments:</span>
+          <span className="mr-1">{$t('enrolments2')}</span>
           <span>{enrolments}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Income:</span>
+          <span className="mr-1">{$t('income')}</span>
           <span>{income}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Discounts:</span>
+          <span className="mr-1">{$t('discounts2')}</span>
           <span>{discounts}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Costs:</span>
+          <span className="mr-1">{$t('costs')}</span>
           <span>{costs}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Profit:</span>
+          <span className="mr-1">{$t('profit')}</span>
           <span>{profit}</span>
         </Typography>
       </Popover>
@@ -660,7 +660,7 @@ const CourseClassBudgetTab = React.memo<Props>(
               />
 
               <Typography variant="caption" color="textSecondary" className="pt-1">
-                Please save your new class before adding budget fees
+                {$t('please_save_your_new_class_before_adding_budget_fe')}
               </Typography>
             </div>
           ) : (
@@ -715,7 +715,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                     <div onClick={stopEventPropagation}>
                       <NestedList
                         formId={values.id}
-                        title="Discounts"
+                        title={$t('discounts')}
                         searchPlaceholder="Find discounts"
                         values={[]}
                         searchValues={searchValues}
@@ -761,9 +761,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                 {values.enrolmentsToProfitLeftCount > 0 && (
                   <Typography variant="body2" color="textSecondary" className="pl-3 pt-2">
                     {values.enrolmentsToProfitLeftCount}
-                    {' '}
-                    more enrolments required before running costs are covered and
-                    class should proceed
+                    {$t('more_enrolments_required_before_running_costs_are')}
                   </Typography>
                 )}
               </div>
@@ -838,7 +836,7 @@ const mapStateToProps = (state: State) => ({
   discountsError: state.plainSearchRecords["Discount"].error,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   setCourseClassBudgetModalOpened: (opened, onCostRate) => dispatch(setCourseClassBudgetModalOpened(opened, onCostRate)),
   getSearchResult: (search: string) => {
     dispatch(setCommonPlainSearch("Discount", search));
@@ -847,4 +845,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   clearSearchResult: (pending: boolean) => dispatch(clearCommonPlainRecords("Discount", pending)),
 });
 
-export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CourseClassBudgetTab));
+export default connect<any, any, Props>(mapStateToProps, mapDispatchToProps)(withStyles(CourseClassBudgetTab, styles));

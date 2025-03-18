@@ -2,11 +2,12 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React from "react";
-import { connect } from "react-redux";
-import { initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
+import $t from '@t';
+import React from 'react';
+import { connect } from 'react-redux';
+import { initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 
 class LearnDashFormBase extends React.Component<any, any> {
   constructor(props) {
@@ -31,12 +32,12 @@ class LearnDashFormBase extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField type="text" name="fields.baseUrl" label="Base url" className="mb-2" />
-          <FormField type="text" name="fields.userLogin" label="User login" className="mb-2" />
+          <FormField type="text" name="fields.baseUrl" label={$t('base_url2')} className="mb-2" />
+          <FormField type="text" name="fields.userLogin" label={$t('user_login')} className="mb-2" />
           <FormField
             type="password"
             name="fields.userPassword"
-            label="User password"
+            label={$t('user_password')}
             className="mb-2"
           />
         </AppBarContent>

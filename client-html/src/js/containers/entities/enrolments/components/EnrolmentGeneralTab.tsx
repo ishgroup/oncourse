@@ -6,30 +6,31 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AssessmentClass, Enrolment, FundingSource, GradingType, Tag } from "@api/model";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import clsx from "clsx";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FieldArray } from "redux-form";
-import { HeaderContactTitle } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import NestedEntity from "../../../../common/components/form/nestedEntity/NestedEntity";
-import ExpandableContainer from "../../../../common/components/layout/expandable/ExpandableContainer";
+import { AssessmentClass, Enrolment, FundingSource, GradingType, Tag } from '@api/model';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import clsx from 'clsx';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { FieldArray } from 'redux-form';
+import { HeaderContactTitle } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import NestedEntity from '../../../../common/components/form/nestedEntity/NestedEntity';
+import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { EnrolmentExtended } from "../../../../model/entities/Enrolment";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { setSelectedContact } from "../../invoices/actions";
-import { paymentSourceItems } from "../constants";
-import EnrolmentDetails from "./EnrolmentDetails";
-import EnrolmentSubmissions from "./EnrolmentSubmissions";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { EnrolmentExtended } from '../../../../model/entities/Enrolment';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { setSelectedContact } from '../../invoices/actions';
+import { paymentSourceItems } from '../constants';
+import EnrolmentDetails from './EnrolmentDetails';
+import EnrolmentSubmissions from './EnrolmentSubmissions';
 
 interface Props extends EditViewProps<EnrolmentExtended> {
   contracts?: FundingSource[];
@@ -132,20 +133,20 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
       <Grid item xs={twoColumn ? 8 : 12}>
         <Uneditable
           value={values && values.courseClassName}
-          label="Class"
+          label={$t('class')}
           url={`/class/${values.courseClassId}`}
         />
       </Grid>
 
       <Grid item xs={twoColumn ? 4 : 12}>
-        <FormField type="text" name="displayStatus" label="Status" disabled />
+        <FormField type="text" name="displayStatus" label={$t('status')} disabled />
       </Grid>
 
       <Grid item xs={twoColumn ? 8 : 12}>
         <FormField
           type="select"
           name="source"
-          label="Source"
+          label={$t('source')}
           items={paymentSourceItems}
           disabled={!isNew}
         />

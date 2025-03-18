@@ -14,6 +14,7 @@ import { Dispatch } from "redux";
 import { getFormSyncErrors, getFormValues, InjectedFormProps, reduxForm } from "redux-form";
 import { notesAsyncValidate } from "../../../../common/components/form/notes/utils";
 import AppBarContainer from "../../../../common/components/layout/AppBarContainer";
+import { shouldAsyncValidate } from "../../../../common/components/list-view/utils/listFormUtils";
 import { onSubmitFail } from "../../../../common/utils/highlightFormErrors";
 import { State } from "../../../../reducers/state";
 import ContactEditView from "../../../entities/contacts/components/ContactEditView";
@@ -130,6 +131,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 const CheckoutContactEditView = reduxForm({
   form: CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME,
   asyncValidate: notesAsyncValidate,
+  shouldAsyncValidate,
   asyncChangeFields: ["notes[].message"],
   onSubmitFail
 })(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(QuickEnrolContactEditViewForm));

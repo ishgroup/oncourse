@@ -3,32 +3,36 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Room, Site } from "@api/model";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import ScreenShare from "@mui/icons-material/ScreenShare";
-import { FormControlLabel, Grid, GridSize } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { normalizeNumber, openInternalLink, TimetableButton } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { arrayInsert, arrayRemove } from "redux-form";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import MinifiedEntitiesList from "../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList";
-import CoordinatesValueUpdater from "../../../../common/components/google-maps/CoordinatesValueUpdater";
-import StaticGoogleMap from "../../../../common/components/google-maps/StaticGoogleMap";
+import { Room, Site } from '@api/model';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ScreenShare from '@mui/icons-material/ScreenShare';
+import { Collapse, FormControlLabel, Grid } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { normalizeNumber, openInternalLink, TimetableButton } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { arrayInsert, arrayRemove } from 'redux-form';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import MinifiedEntitiesList from '../../../../common/components/form/minifiedEntitiesList/MinifiedEntitiesList';
+import CoordinatesValueUpdater from '../../../../common/components/google-maps/CoordinatesValueUpdater';
+import StaticGoogleMap from '../../../../common/components/google-maps/StaticGoogleMap';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { validateDeleteRoom } from "../../rooms/actions";
-import { openRoomLink } from "../../rooms/utils";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import {
+  greaterThanNullValidation,
+  validateSingleMandatoryField,
+  validateURL
+} from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { validateDeleteRoom } from '../../rooms/actions';
+import { openRoomLink } from '../../rooms/utils';
 
 const validateRooms = (value: Room[]) => {
   let error;
@@ -48,13 +52,13 @@ export const validateRoomUniqueName = (value, allValues) => {
   return matches.length > 1 ? "Room name must be unique" : undefined;
 };
 
-const SitesRoomFields = ({ item }) => (
+const SitesRoomFields = ({ item, isParenSiteVirtual }) => (
   <Grid container columnSpacing={3} rowSpacing={2}>
     <Grid item xs={12}>
       <FormField
         type="text"
         name={`${item}.name`}
-        label="Name"
+        label={$t('name')}
         className="mr-2"
         debounced={false}
         validate={validateRoomUniqueName}
@@ -65,16 +69,23 @@ const SitesRoomFields = ({ item }) => (
       <FormField
         type="number"
         name={`${item}.seatedCapacity`}
-        label="Seated Capacity"
+        label={$t('seated_capacity')}
         normalize={normalizeNumber}
         debounced={false}
         required
       />
     </Grid>
+
+    {isParenSiteVirtual && <Grid item xs={12}><FormField
+      type="text"
+      label={$t('virtual_room_url')}
+      name={`${item}.virtualRoomUrl`}
+      validate={validateURL}
+    /></Grid>}
   </Grid>
 );
 
-const getLayoutArray = (twoColumn: boolean): { [key: string]: GridSize }[] =>
+const getLayoutArray = (twoColumn: boolean): { [key: string]: any }[] =>
   (twoColumn
     ? [{ xs: 12 }, { xs: 12 }, { xs: 4 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 6 }, { xs: 8 }, { xs: 12 }]
     : [{ xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }, { xs: 12 }]);
@@ -169,7 +180,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   required
                 />
               </Grid>
@@ -200,7 +211,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 <IconButton href={values.kioskUrl} disabled={!values.kioskUrl} target="_blank">
                   <ScreenShare />
                 </IconButton>
-                <Typography variant="caption">Kiosk</Typography>
+                <Typography variant="caption">{$t('kiosk')}</Typography>
               </div>
             </div>
           </Grid>
@@ -215,19 +226,19 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             <FormControlLabel
               className="checkbox pr-3"
               control={<FormField type="checkbox" name="isAdministrationCentre" color="secondary" />}
-              label="Administration center"
+              label={$t('administration_center')}
             />
 
             <FormControlLabel
               className="checkbox pr-3"
               control={<FormField type="checkbox" name="isVirtual" color="secondary" />}
-              label="Virtual site"
+              label={$t('virtual_site')}
             />
 
             <FormControlLabel
               className="checkbox"
               control={<FormField type="checkbox" name="isShownOnWeb" color="secondary" />}
-              label="Show this site on the website"
+              label={$t('show_this_site_on_the_website')}
             />
           </div>
         </Grid>
@@ -237,10 +248,10 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             <FormField
               type="select"
               name="timezone"
-              label="Default timezone"
+              label={$t('default_timezone')}
               items={timezones}
               labelAdornment={(
-                <Tooltip title="Timetables will be adjusted to user's timezone where possible, but in cases where it is unknown such as emails, this default will be used.">
+                <Tooltip title={$t('timetables_will_be_adjusted_to_users_timezone_wher')}>
                   <IconButton classes={{ root: "inputAdornmentButton" }}>
                     <InfoOutlinedIcon className="inputAdornmentIcon" color="inherit" />
                   </IconButton>
@@ -258,19 +269,19 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                 <FormField
                   type="text"
                   name="street"
-                  label="Street"
+                  label={$t('street')}
                   validate={greaterThanNullValidation}
                   onBlur={this.updateLatLong}
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormField type="text" name="suburb" label="Suburb" onBlur={this.updateLatLong} />
+                <FormField type="text" name="suburb" label={$t('suburb')} onBlur={this.updateLatLong} />
               </Grid>
               <Grid item xs={12}>
-                <FormField type="text" name="state" label="State" />
+                <FormField type="text" name="state" label={$t('state')} />
               </Grid>
               <Grid item xs={12}>
-                <FormField type="text" name="postcode" label="Postcode" />
+                <FormField type="text" name="postcode" label={$t('postcode')} />
               </Grid>
               <Grid item xs={12}>
                 {Boolean(countries?.length) && (
@@ -279,7 +290,7 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
                     selectValueMark="id"
                     selectLabelMark="name"
                     name="country"
-                    label="Country"
+                    label={$t('country')}
                     returnType="object"
                     onBlur={this.updateLatLong}
                     required={!values.isVirtual}
@@ -322,6 +333,9 @@ class SitesGeneral extends React.PureComponent<EditViewProps<Site> & Props, any>
             count={values.rooms && values.rooms.length}
             validate={validateRooms}
             syncErrors={syncErrors}
+            fieldProps={{
+              isParenSiteVirtual: values.isVirtual
+            }}
           />
         </Grid>
       </Grid>

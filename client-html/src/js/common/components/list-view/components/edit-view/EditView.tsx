@@ -6,22 +6,23 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import * as React from "react";
-import { connect } from "react-redux";
-import { getFormSyncErrors, getFormValues, reduxForm } from "redux-form";
-import { TAB_LIST_SCROLL_TARGET_ID } from "../../../../../constants/Config";
-import { EditViewContainerProps } from "../../../../../model/common/ListView";
-import { State } from "../../../../../reducers/state";
-import FormSubmitButton from "../../../form/FormSubmitButton";
-import { pushGTMEvent } from "../../../google-tag-manager/actions";
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { getFormSyncErrors, getFormValues, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { TAB_LIST_SCROLL_TARGET_ID } from '../../../../../constants/Config';
+import { EditViewContainerProps } from '../../../../../model/common/ListView';
+import { State } from '../../../../../reducers/state';
+import FormSubmitButton from '../../../form/FormSubmitButton';
+import { pushGTMEvent } from '../../../google-tag-manager/actions';
 
 export const editViewFormRole: string = "editView-form";
 
 const styles = theme =>
-  createStyles({
+  ({
     root: {
       display: "flex",
       flexDirection: "column",
@@ -92,7 +93,7 @@ class EditView extends React.PureComponent<EditViewContainerProps, any> {
         {!hasSelected && (
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
-              Nothing selected
+              {$t('nothing_selected')}
             </Typography>
           </div>
         )}
@@ -138,5 +139,5 @@ const mapStateToProps = (state: State, props) => ({
 });
 
 export default reduxForm<any, EditViewContainerProps>({ destroyOnUnmount: false })(
-  connect(mapStateToProps, null)(withStyles(styles)(EditView))
+  connect(mapStateToProps, null)(withStyles(EditView, styles))
 );

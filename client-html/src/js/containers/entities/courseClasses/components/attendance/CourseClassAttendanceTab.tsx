@@ -3,25 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AttendanceType } from "@api/model";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faAdjust, faCheck, faCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
-import ChevronLeft from "@mui/icons-material/ChevronLeft";
-import ChevronRight from "@mui/icons-material/ChevronRight";
-import { Divider, Grid } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { AppTheme } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { change, initialize } from "redux-form";
-import { addActionToQueue } from "../../../../../common/actions";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import ExpandableContainer from "../../../../../common/components/layout/expandable/ExpandableContainer";
-import uniqid from "../../../../../common/utils/uniqid";
-import history from "../../../../../constants/History";
-import { EditViewProps } from "../../../../../model/common/ListView";
+import { AttendanceType } from '@api/model';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faAdjust, faCheck, faCircle, faTimes } from '@fortawesome/free-solid-svg-icons';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import { Divider, Grid } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { AppTheme } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { change, initialize } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { addActionToQueue } from '../../../../../common/actions';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import uniqid from '../../../../../common/utils/uniqid';
+import history from '../../../../../constants/History';
+import { EditViewProps } from '../../../../../model/common/ListView';
 import {
   AttandanceChangeType,
   AttandanceStepItem,
@@ -29,18 +30,18 @@ import {
   ContactAttendanceItem,
   CourseClassExtended,
   StudentAttendanceExtended
-} from "../../../../../model/entities/CourseClass";
-import { TimetableSession } from "../../../../../model/timetable";
-import { updateCourseClassStudentAttendance, updateCourseClassTrainingPlans } from "./actions";
-import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from "./AttendanceActionModal";
-import AttendanceActionsMenu from "./AttendanceActionsMenu";
-import AttendanceDayBase from "./AttendanceDayBase";
-import AttendanceGridItem from "./AttendanceGridItem";
-import CourseClassAttendanceService from "./services/CourseClassAttendanceService";
+} from '../../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../../model/timetable';
+import { updateCourseClassStudentAttendance, updateCourseClassTrainingPlans } from './actions';
+import AttendanceActionModal, { ATTENDANCE_COURSE_CLASS_FORM } from './AttendanceActionModal';
+import AttendanceActionsMenu from './AttendanceActionsMenu';
+import AttendanceDayBase from './AttendanceDayBase';
+import AttendanceGridItem from './AttendanceGridItem';
+import CourseClassAttendanceService from './services/CourseClassAttendanceService';
 
 library.add(faAdjust, faCheck, faTimes, faCircle);
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
     timeline: {
       marginLeft: theme.spacing(-1),
       background: theme.palette.background.default,
@@ -693,12 +694,12 @@ const CourseClassAttendanceTab = React.memo<Props>(
       () => (studentsToAttend.length ? (
         <>
           <div className={clsx("d-inline-flex-center pt-0 pr-0 pb-2 pl-1", classes.attendanceGroupHeading)}>
-            <div className="heading">Students</div>
+            <div className="heading">{$t('students')}</div>
             <AttendanceActionsMenu
               className="invisible"
               type="Student"
               onChange={onChangeAllStudentsAttendance}
-              label="Mark ALL sessions for ALL students as..."
+              label={$t('mark_all_sessions_for_all_students_as')}
             />
           </div>
           {studentsToAttend.map(sa => (
@@ -741,7 +742,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
               className="invisible"
               type="Training plan"
               onChange={onChangeAllTrainingPlansAttendance}
-              label="Mark ALL sessions and tasks for ALL modules as..."
+              label={$t('mark_all_sessions_and_tasks_for_all_modules_as')}
             />
           </div>
           {modulesToAttend.map(sa => (
@@ -783,21 +784,21 @@ const CourseClassAttendanceTab = React.memo<Props>(
       if (sessionsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your timetable changes before editing attendances
+            {$t('please_save_your_timetable_changes_before_editing2')}
           </Typography>
         );
       }
       if (assessmentsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your assessments changes before editing attendances
+            {$t('please_save_your_assessments_changes_before_editin2')}
           </Typography>
         );
       }
       if (isNew) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your new class before editing attendances
+            {$t('please_save_your_new_class_before_editing_attendan')}
           </Typography>
         );
       }
@@ -808,21 +809,21 @@ const CourseClassAttendanceTab = React.memo<Props>(
       if (sessionsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your timetable changes before editing training plans
+            {$t('please_save_your_timetable_changes_before_editing')}
           </Typography>
         );
       }
       if (assessmentsChanged) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your assessments changes before editing training plans
+            {$t('please_save_your_assessments_changes_before_editin')}
           </Typography>
         );
       }
       if (isNew) {
         return (
           <Typography variant="caption" color="textSecondary">
-            Please save your new class before editing training plans
+            {$t('please_save_your_new_class_before_editing_training')}
           </Typography>
         );
       }
@@ -852,7 +853,7 @@ const CourseClassAttendanceTab = React.memo<Props>(
       <>
         {stepItems.length > 0 && !sessionsChanged && !assessmentsChanged && !isNew ? (
           <div className="w-100">
-            <div className="heading">Training plan</div>
+            <div className="heading">{$t('training_plan')}</div>
             {daysScroller("Training plan")}
             <Grid container className={classes.sessionsLine}>
               <Grid item xs={12} className={classes.items}>
@@ -904,4 +905,4 @@ const CourseClassAttendanceTab = React.memo<Props>(
   }
 );
 
-export default withStyles(styles)(CourseClassAttendanceTab);
+export default withStyles(CourseClassAttendanceTab, styles);

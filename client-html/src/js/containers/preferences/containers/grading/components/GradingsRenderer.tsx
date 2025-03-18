@@ -6,27 +6,29 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { GradingEntryType, GradingType } from "@api/model";
-import { Button, Card, Collapse, Grid } from "@mui/material";
-import { makeAppStyles, normalizeNumber } from "ish-ui";
-import React from "react";
-import { Dispatch } from "redux";
-import { change, FieldArray, WrappedFieldArrayProps } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateUniqueNamesInArray } from "../../../../../common/utils/validation";
-import GradingItemsRenderer from "./GradingItemsRenderer";
+import { GradingEntryType, GradingType } from '@api/model';
+import { Button, Card, Collapse, Grid } from '@mui/material';
+import $t from '@t';
+import { makeAppStyles, normalizeNumber } from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { change, FieldArray, WrappedFieldArrayProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateUniqueNamesInArray } from '../../../../../common/utils/validation';
+import GradingItemsRenderer from './GradingItemsRenderer';
 
 interface Props {
   classes?: any;
   onDelete?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const GradingEntryTypes = Object.keys(GradingEntryType)
   // @ts-ignore
   .map(value => ({ value, label: value === "name" ? "Choice list" : value.capitalize() }));
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   delete: {
     position: "absolute",
     color: theme.palette.error.main,
@@ -44,7 +46,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
     fields, meta: { form }, onDelete, dispatch
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onTypeChange = (type, item) => {
     dispatch(change(form, `${item}.gradingItems`, []));
@@ -69,7 +71,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                     <FormField
                       type="text"
                       name={`${item}.name`}
-                      label="Name"
+                      label={$t('name')}
                       validate={validateUniqueNamesInArray}
                                             required
                     />
@@ -78,7 +80,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                     <FormField
                       type="select"
                       name={`${item}.entryType`}
-                      label="Entry Type"
+                      label={$t('entry_type')}
                       items={GradingEntryTypes}
                       onChange={val => onTypeChange(val, item)}
                       debounced={false}
@@ -94,7 +96,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             name={`${item}.minValue`}
                             normalize={normalizeNumber}
                             debounced={false}
-                            label="Min value"
+                            label={$t('min_value')}
                             required={field.entryType === "number"}
                                                       />
                         </Grid>
@@ -104,7 +106,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                             name={`${item}.maxValue`}
                             normalize={normalizeNumber}
                             debounced={false}
-                            label="Max value"
+                            label={$t('max_value')}
                             required={field.entryType === "number"}
                                                       />
                         </Grid>
@@ -125,7 +127,7 @@ export default (props: WrappedFieldArrayProps & Props) => {
                   className={classes.delete}
                   onClick={() => onDelete(index)}
                 >
-                  Delete
+                  {$t('delete2')}
                 </Button>
               </Grid>
             </Grid>

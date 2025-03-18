@@ -3,23 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Document, Tag } from "@api/model";
-import Button from "@mui/material/Button";
-import ButtonBase from "@mui/material/ButtonBase";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import Grid from "@mui/material/Grid";
-import LinearProgress from "@mui/material/LinearProgress";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { DocumentIconsChooser } from "ish-ui";
-import React from "react";
-import { getLatestDocumentItem } from "../../../../../utils/documents";
-import FormField from "../../../formFields/FormField";
-import DocumentShare from "../../DocumentShare";
-import { dialogStyles } from "./dialogStyles";
+import { Document, Tag } from '@api/model';
+import { Button, Grid, Typography } from '@mui/material';
+import ButtonBase from '@mui/material/ButtonBase';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import LinearProgress from '@mui/material/LinearProgress';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import clsx from 'clsx';
+import { DocumentIconsChooser } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { getLatestDocumentItem } from '../../../../../utils/documents';
+import FormField from '../../../formFields/FormField';
+import DocumentShare from '../../DocumentShare';
+import { dialogStyles } from './dialogStyles';
 
 export type DocumentDialogType = "edit" | "create" | "view";
 
@@ -65,7 +64,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
       <div>
         <Grid container rowSpacing={2} className="mt-0 mb-2 centeredFlex">
           <Grid item xs={12} className="d-flex">
-            <Tooltip title="Open Document URL" disableHoverListener={!validUrl}>
+            <Tooltip title={$t('open_document_url')} disableHoverListener={!validUrl}>
               <div>
                 <ButtonBase disabled={!validUrl} onClick={(e: any) => this.openDocumentURL(e, validUrl)}>
                   <DocumentIconsChooser
@@ -80,7 +79,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               <FormField
                 type="text"
                 name={`${itemPath}.name`}
-                label="Name"
+                label={$t('name')}
                 required
                 disabled={readOnly}
               />
@@ -110,7 +109,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
         <FormField
           type="text"
           name={`${itemPath}.description`}
-          label="Description"
+          label={$t('description')}
           multiline
           disabled={readOnly}
         />
@@ -126,7 +125,7 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
               className="documentsSubmitButton"
               onClick={type === "create" ? this.onAdd : onSave}
             >
-              Add
+              {$t('add')}
             </Button>
           )}
         </DialogActions>
@@ -207,4 +206,4 @@ class DocumentEditDialog extends React.PureComponent<Props, any> {
   }
 }
 
-export default withStyles(dialogStyles)(DocumentEditDialog) as React.ComponentClass<Props>;
+export default withStyles(DocumentEditDialog, dialogStyles) as React.ComponentClass<Props>;

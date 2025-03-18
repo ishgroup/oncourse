@@ -6,39 +6,39 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from "date-fns";
-import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { Dispatch } from "redux";
-import instantFetchErrorHandler from "../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import {
-  getFiltersNameString,
-} from "../../../../common/components/list-view/utils/listFiltersUtils";
-import EntityService from "../../../../common/services/EntityService";
-import { updateHistory } from "../../../../common/utils/common";
-import { CoreFilter } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { addMonths, endOfMonth, format, isAfter, isSameMonth, startOfMonth } from 'date-fns';
+import { DD_MMM_YYYY_MINUSED, DynamicSizeList, makeAppStyles, usePrevious } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { Dispatch } from 'redux';
+import { IAction } from '../../../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { getFiltersNameString, } from '../../../../common/components/list-view/utils/listFiltersUtils';
+import EntityService from '../../../../common/services/EntityService';
+import { updateHistory } from '../../../../common/utils/common';
+import { CoreFilter } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
 import {
   clearTimetableMonths,
   findTimetableSessions,
   getTimetableSessionsDays,
   setTimetableMonths,
   setTimetableSearch
-} from "../../actions";
-import { TimetableContext } from "../../Timetable";
-import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from "../../utils";
-import CalendarMonth from "./components/month/CalendarMonth";
-import CalendarGroupingsSwitcher from "./components/switchers/CalendarGroupingsSwitcher";
-import CalendarModesSwitcher from "./components/switchers/CalendarModesSwitcher";
-import CalendarTagsSwitcher from "./components/switchers/CalendarTagsSwitcher";
+} from '../../actions';
+import { TimetableContext } from '../../Timetable';
+import { animateListScroll, attachDayNodesObserver, getFormattedMonthDays } from '../../utils';
+import CalendarMonth from './components/month/CalendarMonth';
+import CalendarGroupingsSwitcher from './components/switchers/CalendarGroupingsSwitcher';
+import CalendarModesSwitcher from './components/switchers/CalendarModesSwitcher';
+import CalendarTagsSwitcher from './components/switchers/CalendarTagsSwitcher';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles()(theme => ({
   root: {
     display: "flex",
     position: "relative"
@@ -83,7 +83,7 @@ interface Props extends RouteComponentProps {
   filters?: CoreFilter[];
   sessionsLoading?: boolean;
   selectedMonthSessionDays?: number[];
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const MonthRenderer = React.forwardRef<any, any>(({
@@ -187,7 +187,7 @@ const Calendar = React.memo<Props>(props => {
     dispatch,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [dayNodesObserver, setDayNodesObserver] = useState<any>();
   const [scrollToTargetDayOnRender, setScrollToTargetDayOnRender] = useState(targetDay);
@@ -270,7 +270,7 @@ const Calendar = React.memo<Props>(props => {
 
     if (calendarModeUrl !== calendarMode) {
       params.set("calendarMode", calendarMode);
-      updateHistory(params,url);
+      updateHistory(params, url);
     }
   }, [calendarMode]);
 
@@ -280,7 +280,7 @@ const Calendar = React.memo<Props>(props => {
 
     if (targetDayUrlString !== targetDayString) {
       params.set("selectedDate", targetDayString);
-      updateHistory(params,url);
+      updateHistory(params, url);
     }
   }, [targetDay]);
 
@@ -295,7 +295,7 @@ const Calendar = React.memo<Props>(props => {
         } else {
           params.delete("filter");
         }
-        updateHistory(params,url);
+        updateHistory(params, url);
       }
     }
   }, [filters, params]);
@@ -307,7 +307,7 @@ const Calendar = React.memo<Props>(props => {
       } else {
         params.delete("search");
       }
-      updateHistory(params,url);
+      updateHistory(params, url);
     }
   }, [search, prevSearch]);
 
@@ -384,7 +384,7 @@ const Calendar = React.memo<Props>(props => {
         <div className={classes.centered}>
           <div className="noRecordsMessage">
             <Typography variant="h6" color="inherit" align="center">
-              No sessions were found
+              {$t('no_sessions_were_found')}
             </Typography>
           </div>
         </div>

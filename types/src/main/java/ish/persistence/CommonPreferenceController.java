@@ -170,10 +170,74 @@ public abstract class CommonPreferenceController {
 		return apiKey;
 	}
 
-	public  String getPaymentGatewayPassEWay() {
+	public  String getPaymentGatewayPassEway() {
 		String apiKey = getValue(PAYMENT_GATEWAY_PASS_EWAY, false);
 		if (apiKey == null) {
 			throw new IllegalArgumentException();
+		}
+		return apiKey;
+	}
+
+	public  String getPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayPassSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_PASS_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayLocationIdSquare() {
+		String apiKey = getValue(PAYMENT_GATEWAY_LOCATION_ID_SQUARE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getPaymentGatewayClientPassEway() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_PASS_EWAY, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway client key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test api key is not configured");
+		}
+		return apiKey;
+	}
+
+	public String getTestPaymentGatewayClientPassStripe() {
+		String apiKey = getValue(PAYMENT_GATEWAY_CLIENT_TEST_PASS_STRIPE, false);
+		if (apiKey == null) {
+			throw new IllegalArgumentException("Gateway test client key is not configured");
 		}
 		return apiKey;
 	}
@@ -539,17 +603,13 @@ public abstract class CommonPreferenceController {
 		setValue(preferenceName, false, String.valueOf(value));
 	}
 
-
 	public Country getCountry() {
-		String result = getValue(ACCOUNT_CURRENCY, false);
-		if (result == null) {
-			return Country.AUSTRALIA;
-		}
-		return Country.forCurrencySymbol(result);
+		String result = getValue(ACCOUNT_COUNTRY, false);
+		return result == null ? null : Country.fromDatabaseValue(result);
 	}
 
 	public void setCountry(Country value) {
-		setValue(ACCOUNT_CURRENCY, false, value.currencySymbol());
+		setValue(ACCOUNT_COUNTRY, false, value.getDatabaseValue().toString());
 	}
 
 	public Long getTaxPK() {
@@ -580,7 +640,6 @@ public abstract class CommonPreferenceController {
 	public void setPayPeriodDays(int value) {
 		setValue(PAY_PERIOD_DAYS, false, String.valueOf(value));
 	}
-
 
 	public synchronized Integer getAccountInvoiceTerms() {
 		try {
@@ -893,7 +952,6 @@ public abstract class CommonPreferenceController {
 		setValue(MYOB_LAST_EXPORT_DATE, false, dateFormat.format(value));
 	}
 
-
 	/**
 	 * Gets value for given key.
 	 *
@@ -970,7 +1028,7 @@ public abstract class CommonPreferenceController {
 			return getLogoutEnabled();
 		} else if (LOGOUT_TIMEOUT.equals(key)) {
 			return getLogoutTimeout();
-		} else if (ACCOUNT_CURRENCY.equals(key)) {
+		} else if (ACCOUNT_COUNTRY.equals(key)) {
 			return getCountry();
 		} else if (ACCOUNT_TAXPK.equals(key)) {
 			return getTaxPK();
@@ -1052,6 +1110,18 @@ public abstract class CommonPreferenceController {
 			return getTutorialSkipSystemUser();
 		} else if (EXTENDED_SEARCH_TYPES.equals(key)) {
 			return getExtendedSearchTypesAllowed();
+		} else if (CUSTOM_LOGO_BLACK.equals(key)) {
+			return getCustomLogoBlack();
+		} else if (CUSTOM_LOGO_BLACK_SMALL.equals(key)) {
+			return getCustomLogoBlackSmall();
+		} else if (CUSTOM_LOGO_WHITE.equals(key)) {
+			return getCustomLogoWhite();
+		} else if (CUSTOM_LOGO_WHITE_SMALL.equals(key)) {
+			return getCustomLogoWhiteSmall();
+		} else if (CUSTOM_LOGO_COLOUR.equals(key)) {
+			return getCustomLogoColour();
+		} else if (CUSTOM_LOGO_COLOUR_SMALL.equals(key)) {
+			return getCustomLogoColourSmall();
 		}
 
 		if (DEPRECATED_PREFERENCES.contains(key)) {
@@ -1139,7 +1209,7 @@ public abstract class CommonPreferenceController {
 			setLogoutEnabled((Boolean) value);
 		} else if (LOGOUT_TIMEOUT.equals(key)) {
 			setLogoutTimeout((String) value);
-		} else if (ACCOUNT_CURRENCY.equals(key)) {
+		} else if (ACCOUNT_COUNTRY.equals(key)) {
 			setCountry((Country) value);
 		} else if (ACCOUNT_TAXPK.equals(key)) {
 			setTaxPK((Long) value);
@@ -1388,7 +1458,6 @@ public abstract class CommonPreferenceController {
 		setValue(PASSWORD_COMPLEXITY, false, Boolean.toString(value));
 	}
 
-
 	public Integer getPasswordExpiryPeriod() {
 		String value = getValue(PASSWORD_EXPIRY_PERIOD, false);
 		return value == null ? null : Integer.parseInt(value);
@@ -1447,5 +1516,42 @@ public abstract class CommonPreferenceController {
 
 	public void setExtendedTypesAllowed(Boolean value){
 		setValue(EXTENDED_SEARCH_TYPES, false, String.valueOf(value));
+	}
+
+	public String getChargebeeSubscriptionId() {
+		return getValue(CHARGEBEE_SUBSCRIPTION_ID, false);
+	}
+
+	public String getChargebeeAllowedAddons() {
+		return getValue(CHARGEBEE_ALLOWED_ADDONS, false);
+	}
+
+	public Boolean ifCollegeActive() {
+		String value = getValue(COLLEGE_ACTIVE, false);
+		return value == null || Boolean.parseBoolean(value);
+	}
+
+	public String getCustomLogoBlack() {
+		return getValue(CUSTOM_LOGO_BLACK, false);
+	}
+
+	public String getCustomLogoBlackSmall() {
+		return getValue(CUSTOM_LOGO_BLACK_SMALL, false);
+	}
+
+	public String getCustomLogoWhite() {
+		return getValue(CUSTOM_LOGO_WHITE, false);
+	}
+
+	public String getCustomLogoWhiteSmall() {
+		return getValue(CUSTOM_LOGO_WHITE_SMALL, false);
+	}
+
+	public String getCustomLogoColour() {
+		return getValue(CUSTOM_LOGO_COLOUR, false);
+	}
+
+	public String getCustomLogoColourSmall() {
+		return getValue(CUSTOM_LOGO_COLOUR_SMALL, false);
 	}
 }

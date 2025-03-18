@@ -6,26 +6,26 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Course } from "@api/model";
-import React, { Dispatch, useEffect } from "react";
-import { connect } from "react-redux";
-import { initialize } from "redux-form";
-import { checkPermissions } from "../../../common/actions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { CourseExtended } from "../../../model/entities/Course";
-import { getDataCollectionRules, getEntityRelationTypes } from "../../preferences/actions";
-import { getEntitySpecialTags, getListTags } from "../../tags/actions";
-import CourseCogWheel from "./components/CourseCogWheel";
-import CourseEditView from "./components/CourseEditView";
+import { Course } from '@api/model';
+import React, { Dispatch, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
+import { checkPermissions } from '../../../common/actions';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { CourseExtended } from '../../../model/entities/Course';
+import { getDataCollectionRules, getEntityRelationTypes } from '../../preferences/actions';
+import { getEntitySpecialTags, getListTags } from '../../tags/actions';
+import CourseCogWheel from './components/CourseCogWheel';
+import CourseEditView from './components/CourseEditView';
 
 export const ENTITY_NAME = "Course";
 
-const manualLink = getManualLink("courses");
+const manualLink = getManualLink("working-with-courses");
 
 interface CoursesProps {
   getArticleProductRecord?: () => void;
@@ -109,14 +109,14 @@ const findRelatedGroup: FindRelatedItem[] = [
     title: "Current students",
     list: "contact",
     expression:
-    // eslint-disable-next-line max-len
+    
       "student.enrolments.status == SUCCESS and student.enrolments.courseClass.endDateTime > now and student.enrolments.courseClass.course.id"
   },
   {
     title: "Completed students",
     list: "contact",
     expression:
-    // eslint-disable-next-line max-len
+    
       "student.enrolments.status == SUCCESS and student.enrolments.courseClass.endDateTime <= now and student.enrolments.courseClass.course.id"
   },
   {

@@ -115,7 +115,7 @@ const secondaryColumnCondition = rows => {
   return "Non VET";
 };
 
-const manualLink = getManualLink("delivery_outcomes");
+const manualLink = getManualLink("setting-and-modifying-outcomes");
 
 const Outcomes: React.FC<OutcomesProps> = props => {
   const {

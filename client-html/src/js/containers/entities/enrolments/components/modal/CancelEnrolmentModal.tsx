@@ -3,30 +3,29 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, CancelEnrolment, Tax } from "@api/model";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Typography from "@mui/material/Typography";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { BooleanArgFunction, WarningMessage } from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from "redux-form";
-import { getUserPreferences } from "../../../../../common/actions";
-import { getCommonPlainRecords, setCommonPlainSearch } from "../../../../../common/actions/CommonPlainRecordsActions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from "../../../../../constants/Config";
-import { State } from "../../../../../reducers/state";
-import { cancelEnrolment } from "../../actions";
-import CancelEnrolmentInvoiceLines from "./CancelEnrolmentInvoiceLines";
-import { useOutcomeWarnings } from "./hooks";
-import { enrolmentModalStyles } from "./styles";
+import { Account, CancelEnrolment, Tax } from '@api/model';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, FormControlLabel, Typography } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import $t from '@t';
+import clsx from 'clsx';
+import { BooleanArgFunction, WarningMessage } from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { FieldArray, getFormValues, initialize, InjectedFormProps, reduxForm } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { getUserPreferences } from '../../../../../common/actions';
+import { getCommonPlainRecords, setCommonPlainSearch } from '../../../../../common/actions/CommonPlainRecordsActions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { ACCOUNT_DEFAULT_STUDENT_ENROLMENTS_ID } from '../../../../../constants/Config';
+import { State } from '../../../../../reducers/state';
+import { cancelEnrolment } from '../../actions';
+import CancelEnrolmentInvoiceLines from './CancelEnrolmentInvoiceLines';
+import { useOutcomeWarnings } from './hooks';
+import { enrolmentModalStyles } from './styles';
 
 interface CancelEnrolmentModalProps {
   opened: boolean;
@@ -205,7 +204,7 @@ const CancelEnrolmentModalForm = React.memo<CancelEnrolmentModalProps & Injected
     <Dialog open={opened} onClose={onClose} fullWidth maxWidth="md">
       <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
-          <div className="heading pt-1">Cancel Enrolment</div>
+          <div className="heading pt-1">{$t('cancel_enrolment')}</div>
           <div className={clsx("centeredFlex pt-1", !plainEnrolmentRecord.cancelWarningMessage && "invisible")}>
             <Typography variant="body2" className="errorColor">
               {plainEnrolmentRecord.cancelWarningMessage}
@@ -214,8 +213,7 @@ const CancelEnrolmentModalForm = React.memo<CancelEnrolmentModalProps & Injected
           <div className="pt-2">
             <Typography variant="body2">
               {plainEnrolmentRecord.studentName}
-              {' '}
-              is currently enrolled in
+              {$t('is_currently_enrolled_in')}
               {plainEnrolmentRecord.courseClassName}
               {" "}
               {plainEnrolmentRecord.courseClassCode}
@@ -248,10 +246,10 @@ const CancelEnrolmentModalForm = React.memo<CancelEnrolmentModalProps & Injected
         </DialogContent>
         <DialogActions className="p-3">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           <LoadingButton variant="contained" color="primary" type="submit" loading={loading}>
-            Proceed
+            {$t('proceed')}
           </LoadingButton>
         </DialogActions>
       </form>
@@ -276,7 +274,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getCommonPlainRecords(
       "Enrolment",
       0,
-      // eslint-disable-next-line max-len
+      
       "cancelWarningMessage,student.contact.lastName,student.contact.firstName,courseClass.course.name,courseClass.course.code,courseClass.code"
     )
   )
@@ -287,4 +285,4 @@ export default reduxForm<any, CancelEnrolmentModalProps>({
 })(connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(enrolmentModalStyles)(CancelEnrolmentModalForm)));
+)(withStyles(CancelEnrolmentModalForm, enrolmentModalStyles)));

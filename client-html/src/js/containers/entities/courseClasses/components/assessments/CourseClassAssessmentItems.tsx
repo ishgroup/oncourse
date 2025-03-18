@@ -6,31 +6,33 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType } from "@api/model";
-import { DateRange, Edit, ExpandMore } from "@mui/icons-material";
-import { FormControlLabel, Grid, IconButton, Typography } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import { differenceInDays } from "date-fns";
-import { normalizeNumber, stubComponent, StyledCheckbox } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Dispatch } from "redux";
-import { change, Field } from "redux-form";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { validateSingleMandatoryField } from "../../../../../common/utils/validation";
-import { AssessmentsSubmissionType } from "./AssessmentSubmissionIconButton";
-import CourseClassAssessmentStudent from "./CourseClassAssessmentStudent";
-import GradeModal from "./GradeModal";
-import styles from "./styles";
-import SubmissionModal from "./SubmissionModal";
+import { AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType } from '@api/model';
+import { DateRange, Edit, ExpandMore } from '@mui/icons-material';
+import { FormControlLabel, Grid, IconButton, Typography } from '@mui/material';
+import $t from '@t';
+import { differenceInDays } from 'date-fns';
+import { normalizeNumber, stubComponent, StyledCheckbox } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change, Field } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { validateSingleMandatoryField } from '../../../../../common/utils/validation';
+import { AssessmentsSubmissionType } from './AssessmentSubmissionIconButton';
+import CourseClassAssessmentStudent from './CourseClassAssessmentStudent';
+import GradeModal from './GradeModal';
+import styles from './styles';
+import SubmissionModal from './SubmissionModal';
 
 interface Props {
   form: string;
   item: string;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   tutors: CourseClassTutor[];
-  classes,
   courseClassEnrolments?: any[],
   twoColumn?: boolean;
+  classes?,
   row?: AssessmentClass;
   rows?: AssessmentClass[];
   gradingTypes?: GradingType[];
@@ -70,8 +72,8 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
   const modalProps = modalOpenedBy ? modalOpenedBy.split("-") : [];
 
-  const tutorsUpdater = useRef<any>();
-  const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>();
+  const tutorsUpdater = useRef<any>(undefined);
+  const submissionUpdater = useRef<(s: AssessmentSubmission[]) => void>(undefined);
 
   const uniqueIds = new Set([]);
   const submissionTutors = useMemo(() => tutors.filter(t => {
@@ -261,7 +263,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
     } else {
        updatedSubmissions = row.submissions.map((s, index) => {
         if (elem.submissionIndex === index) {
-          return { ...s, grade, ...["", null].includes(grade) ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today } };
+          return { ...s, grade, ...(["", null].includes(grade) ? { markedById: null, markedOn: null } : { markedOn: s.markedOn || today }) };
         }
         return s;
       });
@@ -289,7 +291,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         if (elem.submissionIndex === index) {
           const gradeIndex = prevGrade ? gradeItems?.findIndex(g => g.lowerBound === prevGrade.lowerBound) : -1;
           const grade = gradeItems[gradeIndex + 1]?.lowerBound;
-          return { ...s, grade, ...typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null } };
+          return { ...s, grade, ...(typeof grade === "number" ? { markedOn: s.markedOn || today } : { markedById: null, markedOn: null }) };
         }
         return s;
       });
@@ -416,7 +418,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
               name={`${item}.assessmentCode`}
-              label="Code"
+              label={$t('code')}
               selectValueMark="code"
               selectLabelMark="code"
               onInnerValueChange={onCodeChange}
@@ -431,7 +433,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
               name={`${item}.assessmentName`}
-              label="Name"
+              label={$t('name')}
               selectValueMark="name"
               selectLabelMark="name"
               onInnerValueChange={onNameChange}
@@ -443,14 +445,14 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <FormField
               type="dateTime"
               name={`${item}.releaseDate`}
-              label="Release date"
+              label={$t('release_date')}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
               type="dateTime"
               name={`${item}.dueDate`}
-              label="Due date"
+              label={$t('due_date')}
               validate={[validateSingleMandatoryField, validateDueDate]}
             />
           </Grid>
@@ -459,7 +461,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         <Grid container item xs={twoColumn ? 4 : 12}>
           <Grid item xs={12}>
             <div>
-              <div className="heading">Assessors</div>
+              <div className="heading">{$t('assessors')}</div>
               {tutorsCheckboxes}
             </div>
           </Grid>
@@ -468,12 +470,12 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
       {typeof row.id === "number" ? (
         <Grid item={true} xs={12} container className="pb-3">
-          <div className="heading">Assessment Submission</div>
+          <div className="heading">{$t('assessment_submission')}</div>
           <Grid container xs={12} className={classes.tableHeader}>
             <Grid item xs={4} />
             <Grid item xs={gradeType ? 2 : 4} className={classes.center}>
               <span className="relative">
-                Submitted
+                {$t('submitted')}
                 <IconButton
                   size="small"
                   className={classes.hiddenTitleIcon}
@@ -490,7 +492,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <>
               <Grid xs={2} className={classes.center}>
                 <span className="relative">
-                  Marked
+                  {$t('marked')}
                   <IconButton
                     size="small"
                     className={classes.hiddenTitleIcon}
@@ -504,7 +506,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               </Grid>
               <Grid xs={2} className={classes.center}>
                 <span className="relative">
-                  Grade
+                  {$t('grade')}
                   <IconButton
                     size="small"
                     className={classes.hiddenTitleIcon}
@@ -543,9 +545,9 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         </Grid>
       ) : (
         <div>
-          <div className="heading">Assessment Submission</div>
+          <div className="heading">{$t('assessment_submission')}</div>
           <Typography component="div" className="mt-2 mb-3" variant="caption" color="textSecondary">
-            Please save new assessment before editing submissions
+            {$t('please_save_new_assessment_before_editing_submissi')}
           </Typography>
         </div>
       )}
@@ -553,4 +555,4 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
   );
 };
 
-export default withStyles(styles)(CourseClassAssessmentItems);
+export default withStyles(CourseClassAssessmentItems, styles);

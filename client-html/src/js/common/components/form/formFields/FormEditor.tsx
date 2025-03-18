@@ -6,15 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import markdown2html from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html.js';
-import Edit from "@mui/icons-material/Edit";
-import { ButtonBase, FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
+import { MarkdownToHtml } from '@ckeditor/ckeditor5-markdown-gfm/src/markdown2html/markdown2html';
+import Edit from '@mui/icons-material/Edit';
+import { ButtonBase, FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
 import {
   addContentMarker,
   CONTENT_MODES,
@@ -24,15 +25,17 @@ import {
   makeAppStyles,
   removeContentMarker,
   WysiwygEditor,
-} from "ish-ui";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Field, WrappedFieldProps } from "redux-form";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
+} from 'ish-ui';
+import { GlobalStyles } from "tss-react";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Field, WrappedFieldProps } from 'redux-form';
+import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
 
-const useStyles = makeAppStyles(theme => ({
+
+const useStyles = makeAppStyles<void, 'hoverIcon'>()((theme, p, classes) => ({
   hoverIcon: {
     opacity: 0.5,
-    visibility: "hidden",
+    visibility: 'hidden',
     marginLeft: theme.spacing(1)
   },
   editable: {
@@ -45,7 +48,7 @@ const useStyles = makeAppStyles(theme => ({
     fontWeight: 400,
     justifyContent: "space-between",
     alignItems: "flex-end",
-    "&:hover $hoverIcon": {
+    [`&:hover .${classes.hoverIcon}`]: {
       visibility: "visible"
     },
     "&:before": {
@@ -119,6 +122,7 @@ const useStyles = makeAppStyles(theme => ({
         }
       },
       "& .ck-editor": {
+        zoom: 1.01,
         "& .ck-content": {
           resize: "vertical",
           maxHeight: "80vh",
@@ -226,6 +230,7 @@ const EditorResolver = ({ contentMode, draftContent, onChange, wysiwygRef }) => 
           value={draftContent}
           onChange={onChange}
           mode={contentMode}
+          height="250px"
         />
       );
     }
@@ -240,6 +245,8 @@ interface Props {
   className?: string;
 }
 
+const parser = new MarkdownToHtml();
+
 const FormEditor: React.FC<Props & WrappedFieldProps> = (
   {
     input: { value, name, onChange },
@@ -251,12 +258,12 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
     className
   }
 ) => {
-  const wysiwygRef = useRef<any>();
+  const wysiwygRef = useRef<any>(undefined);
 
   const [contentMode, setContentMode] = useState(getContentMarker(value));
   const [isEditing, setIsEditing] = useState(false);
   const [modeMenu, setModeMenu] = useState(null);
-  const classes = useStyles();
+  const { classes, theme } = useStyles();
   
   const contentWithoutMarker = useMemo(() => removeContentMarker(value), [value]);
 
@@ -278,7 +285,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
 
       const sourceEdit = document.querySelector<HTMLButtonElement>('.ck-source-editing-button');
 
-      if (wysiwygRef.current?.plugins.get("SourceEditing").isSourceEditingMode && sourceEdit) {
+      if (wysiwygRef.current?.plugins.get('SourceEditing').isSourceEditingMode && sourceEdit) {
         sourceEdit.click();
       }
 
@@ -300,6 +307,13 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
       mouseEvent="onMouseDown"
     >
       <FormControl className={className} id={name} error={meta && meta.invalid} variant="standard" fullWidth>
+        <GlobalStyles
+          styles={{
+            '.ck-body-wrapper .ck.ck-balloon-panel': {
+              zIndex: theme.zIndex.tooltip
+            }
+          }}
+        />
         <InputLabel
           shrink
           classes={{
@@ -321,7 +335,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             }
           >
             <div className="content-mode-wrapper">
-              <Tooltip title="Change content mode" disableFocusListener>
+              <Tooltip title={$t('change_content_mode')} disableFocusListener>
                 <ButtonBase
                   onClick={modeMenuOpen}
                   aria-owns={modeMenu ? "mode-menu" : null}
@@ -365,7 +379,8 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             component="div"
             onClick={onEditButtonFocus}
             className={clsx(classes.editable, {
-              [fieldClasses.text]: value
+              [fieldClasses.text]: value,
+              'pointer-events-none': disabled
             })}
           >
               <span
@@ -379,7 +394,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
                 {
                   value
                     ? contentMode === "md"
-                      ? <div dangerouslySetInnerHTML={{ __html: markdown2html(contentWithoutMarker) }}/>
+                      ? <div dangerouslySetInnerHTML={{ __html: parser.parse(contentWithoutMarker) }}/>
                       : removeContentMarker(value)
                     : placeholder || COMMON_PLACEHOLDER
                 }

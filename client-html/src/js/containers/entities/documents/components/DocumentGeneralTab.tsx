@@ -6,45 +6,47 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Document, DocumentVersion } from "@api/model";
-import { Delete, ExpandMore, OpenWith } from "@mui/icons-material";
-import Button from "@mui/material/Button";
-import Collapse from "@mui/material/Collapse";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import { createStyles, withStyles } from "@mui/styles";
-import clsx from "clsx";
-import { addDays, format } from "date-fns";
+import { Document, DocumentVersion } from '@api/model';
+import { Delete, ExpandMore, OpenWith } from '@mui/icons-material';
+import { Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import $t from '@t';
+import clsx from 'clsx';
+import { addDays, format } from 'date-fns';
 import {
   AppTheme,
   D_MMM_YYYY,
   FileTypeIcon,
   getDocumentContent,
-  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL, ShowConfirmCaller,
+  III_DD_MMM_YYYY_HH_MM_AAAA_SPECIAL,
+  ShowConfirmCaller,
   useAppTheme,
   useHoverShowStyles
-} from "ish-ui";
-import React, { useCallback, useRef } from "react";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { change, FieldArray, WrappedFieldArrayProps, } from "redux-form";
-import DocumentShare from "../../../../common/components/form/documents/DocumentShare";
-import FormField from "../../../../common/components/form/formFields/FormField";
+} from 'ish-ui';
+import React, { useCallback, useRef } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, FieldArray, WrappedFieldArrayProps, } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../common/actions/IshAction';
+import DocumentShare from '../../../../common/components/form/documents/DocumentShare';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { getLatestDocumentItem } from "../../../../common/utils/documents";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { getLatestDocumentItem } from '../../../../common/utils/documents';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme, p, classes) => ({
   previewPaper: {
     width: 200,
     height: 200,
     "&:hover": {
-      "& $viewDocument": {
+      [`& .${classes.viewDocument}`]: {
         display: "flex"
       }
     }
@@ -132,12 +134,12 @@ const DocumentVersionComp = ({
     });
   };
 
-  const hoverShowClasses = useHoverShowStyles();
+  const { classes: hoverShowClasses } = useHoverShowStyles();
 
   const theme = useAppTheme();
 
   return (
-    <div className={hoverShowClasses.container}>
+    (<div className={hoverShowClasses.container}>
       <div className={clsx("d-grid mb-2", classes.rootPanel)}>
         <div className="text-truncate">
           <Typography variant="body2" noWrap>
@@ -168,13 +170,13 @@ const DocumentVersionComp = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>)
   );
 };
 
 interface DocumentVersionsProps {
   classes: any;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   showConfirm: ShowConfirmCaller;
   onCurrentChange: any;
   hasOneVersion: boolean;
@@ -215,7 +217,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
     showConfirm
   } = props;
 
-  const fileRef = useRef<any>();
+  const fileRef = useRef<any>(undefined);
 
   const [moreDetailcollapsed, setMoreDetailcollapsed] = React.useState(false);
 
@@ -284,7 +286,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   required
                 />
               </Grid>
@@ -293,7 +295,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
         </Grid>
         <Grid item xs={twoColumn ? 4 : 12}>
           {Boolean(values.removed) && (
-          <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>PENDING DELETION</div>
+          <div className={clsx("backgroundText errorColorFade-0-2", twoColumn ? "fs10" : "fs8")}>{$t('pending_deletion')}</div>
           )}
 
           <Paper className={clsx("relative cursor-pointer", classes.previewPaper)}>
@@ -314,7 +316,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                     color="textSecondary"
                     className="text-center flex-fill text-truncate"
                   >
-                    Click to view
+                    {$t('click_to_view')}
                   </Typography>
                 </div>
               </div>
@@ -329,7 +331,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
                   onClick={(e: any) => openDocumentURL(e, validUrl)}
                   startIcon={<OpenWith />}
                 >
-                  View
+                  {$t('view2')}
                 </Button>
               </div>
             </div>
@@ -351,7 +353,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             <Typography variant="caption" color="textSecondary">
               {documentVersion.size}
               <br />
-              author:
+              {$t('author')}:
               {' '}
               {documentVersion.createdBy}
             </Typography>
@@ -367,19 +369,19 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormField type="multilineText" name="description" label="Description" />
+            <FormField type="multilineText" name="description" label={$t('description')} />
           </Grid>
           {Boolean(values.removed) && (
           <Grid item xs={12} className="pb-2">
             <Typography variant="body2" className={clsx("d-flex align-items-baseline mb-2", classes.textInfo)}>
               <span>
-                This document will be permanently deleted after
+                {$t('this_document_will_be_permanently_deleted_after')}
                 { ' ' }
                 { format(addDays(new Date(values.modifiedOn), 30), D_MMM_YYYY) }
               </span>
             </Typography>
             <Button variant="outlined" size="medium" color="secondary" onClick={restoreDocument}>
-              RESTORE
+              {$t('restore')}
             </Button>
           </Grid>
           )}
@@ -395,7 +397,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           />
 
           <div className="heading mb-2">
-            History
+            {$t('history')}
           </div>
           <FieldArray
             name="versions"
@@ -407,7 +409,7 @@ const DocumentGeneralTab: React.FC<DocumentGeneralProps> = props => {
           />
           <input type="file" ref={fileRef} onChange={handleFileSelect} className="d-none" />
           <Button variant="outlined" size="medium" color="secondary" onClick={onUploadClick}>
-            UPLOAD NEW VERSION
+            {$t('upload_new_version2')}
           </Button>
         </Grid>
 
@@ -428,4 +430,4 @@ const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Document"]
 });
 
-export default connect<any, any, any>(mapStateToProps, null)(withStyles(styles)(DocumentGeneralTab));
+export default connect<any, any, any>(mapStateToProps, null)(withStyles(DocumentGeneralTab, styles));

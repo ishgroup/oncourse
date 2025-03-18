@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import { AppTheme } from "ish-ui";
-import React from "react";
-import { DASHBOARD_ACTIVITY_STORAGE_NAME } from "../../../../../constants/Config";
-import { getEntityDisplayName } from "../../../../utils/getEntityDisplayName";
-import { LSGetItem } from "../../../../utils/storage";
-import ListLinksGroup from "./searchResults/ListLinksGroup";
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { AppTheme } from 'ish-ui';
+import React from 'react';
+import { withStyles } from 'tss-react/mui';
+import { DASHBOARD_ACTIVITY_STORAGE_NAME } from '../../../../../constants/Config';
+import { getEntityDisplayName } from '../../../../utils/getEntityDisplayName';
+import { LSGetItem } from '../../../../utils/storage';
+import ListLinksGroup from './searchResults/ListLinksGroup';
 
-const styles = (theme: AppTheme) => createStyles({
+const styles = (theme: AppTheme) => ({
   activityStatistic: {
     marginTop: 4
   },
@@ -24,7 +24,7 @@ const styles = (theme: AppTheme) => createStyles({
 });
 
 const SidebarLatestActivity: React.FC<any> = props => {
-  const {classes, checkSelectedResult} = props;
+  const { classes, checkSelectedResult } = props;
   const [activities, setActivities] = React.useState(JSON.parse(LSGetItem(DASHBOARD_ACTIVITY_STORAGE_NAME) || "null"));
 
   const updateActivity = React.useCallback(() => {
@@ -45,7 +45,7 @@ const SidebarLatestActivity: React.FC<any> = props => {
   return (
     <Grid container columnSpacing={3} className="p-2">
       <Grid item>
-        <Typography className="heading">Latest activity</Typography>
+        <Typography className="heading">{$t('latest_activity')}</Typography>
       </Grid>
       <Grid item xs={12} className={classes.activityStatistic}>
         {activities
@@ -64,4 +64,4 @@ const SidebarLatestActivity: React.FC<any> = props => {
   );
 };
 
-export default withStyles(styles)(SidebarLatestActivity);
+export default withStyles(SidebarLatestActivity, styles);

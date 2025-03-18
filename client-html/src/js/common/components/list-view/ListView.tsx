@@ -6,11 +6,11 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Currency, ExportTemplate, LayoutType, Report, TableModel } from "@api/model";
-import ErrorOutline from "@mui/icons-material/ErrorOutline";
-import { createTheme } from '@mui/material';
-import Button from "@mui/material/Button";
-import { createStyles, ThemeProvider, withStyles } from "@mui/styles";
+import { Currency, ExportTemplate, LayoutType, Report, TableModel } from '@api/model';
+import ErrorOutline from '@mui/icons-material/ErrorOutline';
+import Button from '@mui/material/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import $t from '@t';
 import {
   AnyArgFunction,
   BooleanArgFunction,
@@ -19,44 +19,46 @@ import {
   ResizableWrapper,
   ShowConfirmCaller,
   StringArgFunction
-} from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { Dispatch } from "redux";
-import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from "redux-form";
+} from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { getFormSyncErrors, initialize, isDirty, isInvalid, submit } from 'redux-form';
+import { withStyles } from 'tss-react/mui';
 import {
   ENTITY_AQL_STORAGE_NAME,
   LIST_MAIN_CONTENT_DEFAULT_WIDTH,
   LIST_SIDE_BAR_DEFAULT_WIDTH,
   LISTVIEW_MAIN_CONTENT_WIDTH
-} from "../../../constants/Config";
+} from '../../../constants/Config';
 import {
   createEntityRecord,
   deleteEntityRecord,
   getEntityRecord,
   updateEntityRecord
-} from "../../../containers/entities/common/actions";
-import { getCustomFieldTypes } from "../../../containers/entities/customFieldTypes/actions";
-import { Fetch } from "../../../model/common/Fetch";
+} from '../../../containers/entities/common/actions';
+import { getCustomFieldTypes } from '../../../containers/entities/customFieldTypes/actions';
+import { Fetch } from '../../../model/common/Fetch';
 import {
   EditViewContainerProps,
   FilterGroup,
   FindRelatedItem,
   ListAqlMenuItemsRenderer
-} from "../../../model/common/ListView";
-import { EntityName, FindEntityState } from "../../../model/entities/common";
-import { FormMenuTag } from "../../../model/tags";
-import { State } from "../../../reducers/state";
-import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from "../../actions";
-import { UserPreferencesState } from "../../reducers/userPreferencesReducer";
-import { getEntityDisplayName } from "../../utils/getEntityDisplayName";
-import { onSubmitFail } from "../../utils/highlightFormErrors";
-import { saveCategoryAQLLink } from "../../utils/links";
-import { LSGetItem } from "../../utils/storage";
-import { pushGTMEvent } from "../google-tag-manager/actions";
-import { GAEventTypes } from "../google-tag-manager/services/GoogleAnalyticsService";
-import LoadingIndicator from "../progress/LoadingIndicator";
+} from '../../../model/common/ListView';
+import { EntityName, FindEntityState } from '../../../model/entities/common';
+import { FormMenuTag } from '../../../model/tags';
+import { State } from '../../../reducers/state';
+import { closeConfirm, getScripts, getUserPreferences, setUserPreference, showConfirm } from '../../actions';
+import { IAction } from '../../actions/IshAction';
+import { UserPreferencesState } from '../../reducers/userPreferencesReducer';
+import { getEntityDisplayName } from '../../utils/getEntityDisplayName';
+import { onSubmitFail } from '../../utils/highlightFormErrors';
+import { saveCategoryAQLLink } from '../../utils/links';
+import { LSGetItem } from '../../utils/storage';
+import { pushGTMEvent } from '../google-tag-manager/actions';
+import { GAEventTypes } from '../google-tag-manager/services/GoogleAnalyticsService';
+import LoadingIndicator from '../progress/LoadingIndicator';
 import {
   clearListState,
   deleteCustomFilter,
@@ -74,33 +76,22 @@ import {
   setListUserAQLSearch,
   setSearch,
   updateTableModel,
-} from "./actions";
-import BottomAppBar from "./components/bottom-app-bar/BottomAppBar";
-import BulkEditContainer from "./components/bulk-edit/BulkEditContainer";
-import EditView from "./components/edit-view/EditView";
-import FullScreenEditView from "./components/full-screen-edit-view/FullScreenEditView";
-import ReactTableList, { TableListProps } from "./components/list/ReactTableList";
-import ShareContainer from "./components/share/ShareContainer";
-import SideBar from "./components/side-bar/SideBar";
-import { LIST_EDIT_VIEW_FORM_NAME } from "./constants";
+} from './actions';
+import BottomAppBar from './components/bottom-app-bar/BottomAppBar';
+import BulkEditContainer from './components/bulk-edit/BulkEditContainer';
+import EditView from './components/edit-view/EditView';
+import FullScreenEditView from './components/full-screen-edit-view/FullScreenEditView';
+import ReactTableList, { TableListProps } from './components/list/ReactTableList';
+import ShareContainer from './components/share/ShareContainer';
+import SideBar from './components/side-bar/SideBar';
+import { LIST_EDIT_VIEW_FORM_NAME } from './constants';
 import {
   getActiveTags,
   getFiltersNameString,
   getTagsUpdatedByIds,
   setActiveFiltersBySearch
-} from "./utils/listFiltersUtils";
-import { shouldAsyncValidate } from "./utils/listFormUtils";
-
-const styles = () => createStyles({
-  root: {
-    position: "relative",
-    display: "flex",
-    flexDirection: 'row',
-    width: "100vw",
-    height: "100vh",
-    overflow: "hidden"
-  },
-});
+} from './utils/listFiltersUtils';
+import { shouldAsyncValidate } from './utils/listFormUtils';
 
 const sideBarTheme = theme => createTheme({
   ...theme,
@@ -138,7 +129,7 @@ interface OwnProps {
   closeConfirm?: () => void;
   onLoadMore?: (startIndex: number, stopIndex: number, resolve: AnyArgFunction) => void;
   updateTableModel?: (model: TableModel, listUpdate?: boolean) => void;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   fetch?: Fetch;
   setFilterGroups?: (filterGroups: FilterGroup[]) => void;
   setListMenuTags?: ({ tags, checkedChecklists, uncheckedChecklists }: { tags: FormMenuTag[], checkedChecklists: FormMenuTag[], uncheckedChecklists: FormMenuTag[] }) => void;
@@ -785,8 +776,9 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
   };
 
   checkDirty = (handler, args, reset?: boolean) => {
-    const { isDirty, selection, creatingNew } = this.props;
-    if (isDirty) {
+    const { isDirty, selection, creatingNew, fullScreenEditView, records } = this.props;
+
+    if (isDirty && (records.layout === 'Two column' ? fullScreenEditView : true)) {
       this.showConfirm({
         onConfirm: () => {
           handler(...args);
@@ -838,7 +830,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
           closeConfirm();
         }}
       >
-        SAVE
+        {$t('save')}
       </Button>
     );
 
@@ -1132,7 +1124,6 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
             ignoreScreenWidth
             onResizeStop={this.handleResizeCallBack}
             sidebarWidth={sidebarWidth}
-            minWidth="265px"
             maxWidth="65%"
           >
             <ThemeProvider theme={sideBarTheme}>
@@ -1234,7 +1225,7 @@ const mapStateToProps = (state: State) => ({
   preferences: state.userPreferences,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>, ownProps) => ({
   dispatch,
   sendGAEvent: (event: GAEventTypes, screen: string, time?: number) => dispatch(pushGTMEvent(event, screen, time)),
   setEntity: entity => dispatch(setListEntity(entity)),
@@ -1288,4 +1279,13 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps)
-(withStyles(styles)(withRouter(ListView))) as React.FC<Props>;
+(withStyles(withRouter(ListView), {
+  root: {
+    position: "relative",
+    display: "flex",
+    flexDirection: 'row',
+    width: "100vw",
+    height: "100vh",
+    overflow: "hidden"
+  }
+}));

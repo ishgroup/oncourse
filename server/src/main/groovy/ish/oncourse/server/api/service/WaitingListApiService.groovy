@@ -18,8 +18,10 @@ import ish.oncourse.server.api.v1.function.TagFunctions
 import ish.oncourse.server.api.v1.model.SiteDTO
 import ish.oncourse.server.api.v1.model.WaitingListDTO
 import ish.oncourse.server.cayenne.*
+import ish.oncourse.server.util.WaitingListUtils
 import ish.util.LocalDateUtils
 import org.apache.cayenne.ObjectContext
+import org.apache.cayenne.query.ObjectSelect
 import org.apache.cayenne.query.SelectById
 
 import static ish.oncourse.server.api.function.CayenneFunctions.getRecordById
@@ -84,7 +86,10 @@ class WaitingListApiService extends TaggableApiService<WaitingListDTO, WaitingLi
     void validateModelBeforeSave(WaitingListDTO waitingListDTO, ObjectContext context, Long id) {
         if (!waitingListDTO.contactId) {
             validator.throwClientErrorException(id, 'studentContact', 'Student is required.')
-        } else if (!getRecordById(context, Contact, waitingListDTO.contactId)?.student) {
+        }
+
+        def contact = getRecordById(context, Contact, waitingListDTO.contactId)
+        if (!contact?.student) {
             validator.throwClientErrorException(id, 'studentContact', 'Contact is not a student.')
         }
 
@@ -96,9 +101,12 @@ class WaitingListApiService extends TaggableApiService<WaitingListDTO, WaitingLi
 
         if (!waitingListDTO.courseId) {
             validator.throwClientErrorException(id, 'course', 'Course is required.')
-        } else {
-            getRecordById(context, Course, waitingListDTO.courseId)
         }
+
+        Course course = getRecordById(context, Course, waitingListDTO.courseId)
+
+        if(WaitingListUtils.waitingListExists(course, contact.student, context, waitingListDTO.id))
+            validator.throwClientErrorException(id, "student", "Waiting list for this student and course already exists!")
 
         if (trimToEmpty(waitingListDTO.studentNotes).length() > 32000) {
             validator.throwClientErrorException(id, 'studentNotes', 'Student notes can not be more than 32000 chars.')

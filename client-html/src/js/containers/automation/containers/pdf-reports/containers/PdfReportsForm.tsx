@@ -6,44 +6,46 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Report } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
-import FileCopy from "@mui/icons-material/FileCopy";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Grow from "@mui/material/Grow";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { FilePreview, InfoPill, NumberArgFunction, ShowConfirmCaller, usePrevious } from "ish-ui";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Dispatch } from "redux";
-import { change, FieldArray, Form, initialize, InjectedFormProps } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { createAndDownloadFile } from "../../../../../common/utils/common";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { CatalogItemType } from "../../../../../model/common/Catalog";
-import { CommonListItem } from "../../../../../model/common/sidebar";
-import { EntityItems } from "../../../../../model/entities/common";
-import Bindings, { BindingsRenderer } from "../../../components/Bindings";
-import getConfigActions from "../../../components/ImportExportConfig";
-import SaveAsNewAutomationModal from "../../../components/SaveAsNewAutomationModal";
-import { validateKeycode, validateNameForQuotes } from "../../../utils";
-import { reportFullScreenPreview } from "../actions";
+import { Report } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import FileCopy from '@mui/icons-material/FileCopy';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { FilePreview, InfoPill, NumberArgFunction, ShowConfirmCaller, usePrevious } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch } from 'redux';
+import { change, FieldArray, Form, initialize, InjectedFormProps } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { createAndDownloadFile } from '../../../../../common/utils/common';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { CatalogItemType } from '../../../../../model/common/Catalog';
+import { CommonListItem } from '../../../../../model/common/sidebar';
+import { EntityItems } from '../../../../../model/entities/common';
+import Bindings, { BindingsRenderer } from '../../../components/Bindings';
+import getConfigActions from '../../../components/ImportExportConfig';
+import SaveAsNewAutomationModal from '../../../components/SaveAsNewAutomationModal';
+import { validateKeycode, validateNameForQuotes } from '../../../utils';
+import { reportFullScreenPreview } from '../actions';
 
-const manualUrl = getManualLink("reports");
+const manualUrl = getManualLink("using-reports");
 const getAuditsUrl = (id: number) => `audit?search=~"Report" and entityId == ${id}`;
 
 interface Props extends InjectedFormProps<Report> {
   isNew: boolean;
   values: Report;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (report: Report) => void;
   onUpdateInternal: (report: Report) => void;
   onUpdate: (report: Report) => void;
@@ -64,7 +66,7 @@ const fillAttributes = (
   names: string[],
   formFields: string[],
   document: Document,
-  dispatch: Dispatch,
+  dispatch: Dispatch<IAction>,
   form: string
 ) => {
   names.forEach((n, index) => {
@@ -102,7 +104,7 @@ const PdfReportsForm = React.memo<Props>(
     const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [chosenFileName, setChosenFileName] = useState(null);
 
-    const fileRef = useRef<any>();
+    const fileRef = useRef<any>(undefined);
 
     const isInternal = useMemo(() => values.keyCode && values.keyCode.startsWith("ish."), [values.keyCode]);
 
@@ -269,7 +271,7 @@ const PdfReportsForm = React.memo<Props>(
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   validate={validateReportName}
                   disabled={isInternal}
                   required
@@ -295,7 +297,7 @@ const PdfReportsForm = React.memo<Props>(
 
                 {isInternal && (
                   <Grow in={isInternal}>
-                    <Tooltip title="Save as new PDF report">
+                    <Tooltip title={$t('save_as_new_pdf_report')}>
                       <IconButton onClick={onInternalSaveClick} color="inherit">
                         <FileCopy color="primary" />
                       </IconButton>
@@ -312,7 +314,7 @@ const PdfReportsForm = React.memo<Props>(
                   name="shortDescription"
                   disabled={isInternal}
                   className="overflow-hidden mb-1"
-                  placeholder="Short description"
+                  placeholder={$t('short_description')}
                 />
                 <Typography variant="caption" fontSize="13px">
                   <FormField
@@ -320,7 +322,7 @@ const PdfReportsForm = React.memo<Props>(
                     name="description"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    placeholder="Description"
+                    placeholder={$t('description')}
                     fieldClasses={{
                       text: "fw300 fsInherit"
                     }}
@@ -329,7 +331,7 @@ const PdfReportsForm = React.memo<Props>(
               </Grid>
               <Grid item container columnSpacing={3} rowSpacing={2} xs={7} className="pr-3">
                 <Grid item xs={12}>
-                  <div className="heading">Type</div>
+                  <div className="heading">{$t('type')}</div>
                   <FormField
                     name="entity"
                     type="select"
@@ -348,13 +350,13 @@ const PdfReportsForm = React.memo<Props>(
                 />
 
                 <Grid item xs={12}>
-                  <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
+                  <FormField label={$t('sort_on')} name="sortOn" type="text" disabled={isInternal} />
                 </Grid>
 
                 <Grid item xs={12}>
                   <FormField
                     type="select"
-                    label="PDF background"
+                    label={$t('pdf_background')}
                     name="backgroundId"
                     selectValueMark="id"
                     selectLabelMark="title"
@@ -368,7 +370,7 @@ const PdfReportsForm = React.memo<Props>(
                 <Grid item xs={12}>
                   <FormField
                     type="text"
-                    label="Keycode"
+                    label={$t('keycode')}
                     name="keyCode"
                     validate={isNew || !isInternal ? validateKeycode : undefined}
                     disabled={!isNew}
@@ -379,25 +381,25 @@ const PdfReportsForm = React.memo<Props>(
                 <Grid item xs={12}>
                   {!isNew && (
                     <Button variant="outlined" color="secondary" onClick={handleEdit} disabled={isInternal}>
-                      Edit
+                      {$t('edit')}
                     </Button>
                   )}
                 </Grid>
                 
                 <Grid item xs={12}>
                   <Button variant="outlined" color="secondary" onClick={handleUploadClick} disabled={isInternal}>
-                    Upload New Version
+                    {$t('upload_new_version')}
                   </Button>
                 </Grid>
 
                 <Grid item xs={12}>
-                  {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" />}
+                  {chosenFileName && <Uneditable value={chosenFileName} label={$t('chosen_file')} />}
                 </Grid>
 
                 <Grid item xs={12}>
                   {isNew && !values.body && (
                     <Typography id="body" variant="caption" color="error" className="shakingError" paragraph>
-                      Report body is required. Press &quot;Upload New Version&quot; to attach xml
+                      {$t('report_body_is_required_press_upload_new_version_t')}
                     </Typography>
                   )}
                 </Grid>
@@ -405,7 +407,7 @@ const PdfReportsForm = React.memo<Props>(
               <Grid item xs={5}>
                 <div>
                   <FormField
-                    label="Enabled"
+                    label={$t('enabled')}
                     type="switch"
                     name="status"
                     color="primary"
@@ -419,7 +421,7 @@ const PdfReportsForm = React.memo<Props>(
                     dispatch={dispatch}
                     form={form}
                     name="variables"
-                    label="Variables"
+                    label={$t('variables')}
                     itemsType="label"
                     disabled={isInternal}
                   />
@@ -430,14 +432,14 @@ const PdfReportsForm = React.memo<Props>(
                     form={form}
                     itemsType="component"
                     name="options"
-                    label="Options"
+                    label={$t('options')}
                     disabled={isInternal}
                   />
                 </div>
                 <div className="mt-3">
                   {!isNew && (
                     <FilePreview
-                      label="Preview"
+                      label={$t('preview')}
                       actions={[
                         {
                           actionLabel: "Clear preview",

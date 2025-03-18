@@ -2,26 +2,26 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import { DiscountType } from "@api/model";
-import { FormControlLabel, Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { format } from "date-fns-tz";
-import { decimalMinus, decimalPlus, formatCurrency, III_DD_MMM_YYYY, StyledCheckbox } from "ish-ui";
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import Uneditable from "../../../../../common/components/form/formFields/Uneditable";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { CheckoutDiscount, CheckoutSummary } from "../../../../../model/checkout";
-import { State } from "../../../../../reducers/state";
-import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from "../../../actions/checkoutSummary";
-import CheckoutAppBar from "../../CheckoutAppBar";
-import { StyledCourseItemRenderer } from "../../items/components/SelectedItemRenderer";
+import { DiscountType } from '@api/model';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns-tz';
+import { decimalMinus, decimalPlus, formatCurrency, III_DD_MMM_YYYY, StyledCheckbox } from 'ish-ui';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { IAction } from '../../../../../common/actions/IshAction';
+import Uneditable from '../../../../../common/components/form/formFields/Uneditable';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { CheckoutDiscount, CheckoutSummary } from '../../../../../model/checkout';
+import { State } from '../../../../../reducers/state';
+import { checkoutChangeSummaryItemField, checkoutUpdatePromo } from '../../../actions/checkoutSummary';
+import CheckoutAppBar from '../../CheckoutAppBar';
+import { StyledCourseItemRenderer } from '../../items/components/SelectedItemRenderer';
 
-const styles = () => createStyles({
+const styles = () => ({
     history: {
       paddingBottom: "5px",
       width: "100%"
@@ -57,7 +57,7 @@ interface Props {
   selectedDiscount?: CheckoutDiscount;
   currencySymbol?: string;
   summary?: CheckoutSummary;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
 }
 
 const VoucherView: React.FC<Props> = props => {
@@ -110,13 +110,9 @@ const VoucherView: React.FC<Props> = props => {
         ? (
           <Grid container>
             <Grid item sm={12} className="mb-2">
-              <div className="heading">Apply to</div>
+              <div className="heading">{$t('apply_to')}</div>
               <Typography variant="caption">
-                Can be used for up to
-                {' '}
-                {enrolmentsLeft}
-                {' '}
-                enrolments
+                {$t('can_be_used_for_up_to_enrolments', [enrolmentsLeft.toString()])}
               </Typography>
             </Grid>
 
@@ -146,10 +142,10 @@ const VoucherView: React.FC<Props> = props => {
         : (
           <Grid container columnSpacing={3}>
             <Grid item sm={2}>
-              <Uneditable value={selectedDiscount.appliedValue} label="Apply now" money />
+              <Uneditable value={selectedDiscount.appliedValue} label={$t('apply_now')} money />
             </Grid>
             <Grid item sm={4}>
-              <Uneditable value={selectedDiscount.availableValue} label="Value remaining" money />
+              <Uneditable value={selectedDiscount.availableValue} label={$t('value_remaining')} money />
             </Grid>
           </Grid>
       )}
@@ -158,18 +154,18 @@ const VoucherView: React.FC<Props> = props => {
         <Grid item sm={4}>
           <Uneditable
             value={format(new Date(selectedDiscount.expiryDate), III_DD_MMM_YYYY)}
-            label="Expires on"
+            label={$t('expires_on2')}
           />
         </Grid>
       </Grid>
 
       <Grid container className="pt-2">
-        <div className="heading">History</div>
+        <div className="heading">{$t('history')}</div>
         <Grid item xs={12} container columnSpacing={3} className="pt-2">
           <Grid item sm={12} className={classes.history}>
             <div className={clsx("centeredFlex", classes.historyItem)}>
               <Grid item xs={4}>
-                <Typography variant="body2">Purchase</Typography>
+                <Typography variant="body2">{$t('purchase')}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="body2">{format(new Date(selectedDiscount.purchaseDate), III_DD_MMM_YYYY)}</Typography>
@@ -185,7 +181,7 @@ const VoucherView: React.FC<Props> = props => {
             <Grid item sm={12} className={classes.history} key={i}>
               <div className={clsx("centeredFlex", classes.historyItem)}>
                 <Grid item xs={4}>
-                  <Typography variant="body2">Redeemed</Typography>
+                  <Typography variant="body2">{$t('redeemed')}</Typography>
                 </Grid>
                 <Grid item xs={4}>
                   <Typography variant="body2">{format(new Date(h.createdOn), III_DD_MMM_YYYY)}</Typography>
@@ -223,7 +219,7 @@ const DiscountPromoView: React.FC<Props> = props => {
   return (
     <Grid container columnSpacing={3}>
       <Grid item sm={12} className="mb-2">
-        <div className="heading mb-2">Promotion</div>
+        <div className="heading mb-2">{$t('promotion')}</div>
         <Typography variant="body1" className={clsx(selectedDiscount.discountType !== "Percent" && "money")}>
           {getDiscountLabel(selectedDiscount, currencySymbol)}
         </Typography>
@@ -232,7 +228,7 @@ const DiscountPromoView: React.FC<Props> = props => {
       {Boolean(appliesToClasses.length) && (
         <Grid container columnSpacing={3} item sm={12}>
           <Grid item xs={12}>
-            <div className="heading mb-2 mt-2">Applies to</div>
+            <div className="heading mb-2 mt-2">{$t('applies_to')}</div>
           </Grid>
           {appliesToClasses.map(c => (
             <Grid container columnSpacing={3} item sm={12} lg={7}>
@@ -287,8 +283,8 @@ const mapStateToProps = (state: State) => ({
   summary: state.checkout.summary
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
   dispatch
 });
 
-export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CheckoutDiscountEditView));
+export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(withStyles(CheckoutDiscountEditView, styles));

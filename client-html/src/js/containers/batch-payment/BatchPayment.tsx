@@ -3,51 +3,51 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 import Close from '@mui/icons-material/Close';
-import CreditCard from "@mui/icons-material/CreditCard";
+import CreditCard from '@mui/icons-material/CreditCard';
 import Done from '@mui/icons-material/Done';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { FormControlLabel, Grid } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Chip from "@mui/material/Chip";
-import CircularProgress from "@mui/material/CircularProgress";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
+import { FormControlLabel, Grid, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Chip from '@mui/material/Chip';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
-import clsx from "clsx";
-import { format } from "date-fns";
+import $t from '@t';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import {
   D_MMM_YYYY,
   decimalPlus,
   DynamicSizeList,
-  formatCurrency,
-  formatRelativeDate,
+  formatCurrency, formatRelativeDate,
   LinkAdornment,
   makeAppStyles,
   openInternalLink,
   Switch
-} from "ish-ui";
-import React, { memo, useCallback, useEffect, useRef, useState, } from "react";
-import { connect } from "react-redux";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { areEqual } from "react-window";
-import { Dispatch } from "redux";
-import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from "redux-form";
-import instantFetchErrorHandler from "../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import FormField from "../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../common/components/layout/AppBarContainer";
-import LoadingIndicator from "../../common/components/progress/LoadingIndicator";
-import EntityService from "../../common/services/EntityService";
-import { getManualLink } from "../../common/utils/getManualLink";
-import { getPluralSuffix } from "../../common/utils/strings";
-import { BatchPaymentContact } from "../../model/batch-payment";
-import { State } from "../../reducers/state";
-import CheckoutService from "../checkout/services/CheckoutService";
-import { getContactFullName } from "../entities/contacts/utils";
-import { getBachCheckoutModel } from "./utils";
+} from 'ish-ui';
+import React, { memo, useCallback, useEffect, useRef, useState, } from 'react';
+import { connect } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { areEqual } from 'react-window';
+import { Dispatch } from 'redux';
+import { change, FieldArray, getFormValues, InjectedFormProps, reduxForm, } from 'redux-form';
+import { IAction } from '../../common/actions/IshAction';
+import instantFetchErrorHandler from '../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import FormField from '../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../common/components/layout/AppBarContainer';
+import LoadingIndicator from '../../common/components/progress/LoadingIndicator';
+import EntityService from '../../common/services/EntityService';
+import { getManualLink } from '../../common/utils/getManualLink';
+import { getPluralSuffix } from '../../common/utils/strings';
+import { BatchPaymentContact } from '../../model/batch-payment';
+import { State } from '../../reducers/state';
+import CheckoutService from '../checkout/services/CheckoutService';
+import { getContactFullName } from '../entities/contacts/utils';
+import { getBachCheckoutModel } from './utils';
 
-const useStyles = makeAppStyles(theme => ({
+const useStyles = makeAppStyles<void, 'openCheckoutButton' | 'panelExpanded'>()((theme, p, classes) => ({
   checkbox: {
     width: "auto",
     height: "auto",
@@ -69,16 +69,16 @@ const useStyles = makeAppStyles(theme => ({
     },
   },
   panelSummary: {
-    "&:hover $openCheckoutButton": {
+    [`&:hover .${classes.openCheckoutButton}`]: {
       visibility: "visible",
     },
     padding: theme.spacing(0, 2, 0, 0),
   },
   panelRoot: {
-    "&$panelExpanded:last-child": {
+    [`&.${classes.panelExpanded}:last-child`]: {
       margin: theme.spacing(2, 0),
     },
-    "&$panelExpanded:first-child": {
+    [`&.${classes.panelExpanded}:first-child`]: {
       margin: theme.spacing(2, 0),
     },
   },
@@ -158,7 +158,7 @@ const ContactItem = memo<ContactItemProps>(({
                 disableHoverListener={!checkDisabled}
                 disableFocusListener={!checkDisabled}
                 disableTouchListener={!checkDisabled}
-                title="This contact does not have a stored card. You can process the payment manually."
+                title={$t('this_contact_does_not_have_a_stored_card_you_can_p')}
               >
                 <div>
                   <FormField
@@ -176,7 +176,7 @@ const ContactItem = memo<ContactItemProps>(({
                 </div>
                 {
                   item.hasStoredCard && (
-                    <Tooltip title="Has stored card">
+                    <Tooltip title={$t('has_stored_card')}>
                       <CreditCard color="action" />
                     </Tooltip>
                   )
@@ -184,7 +184,7 @@ const ContactItem = memo<ContactItemProps>(({
                 {!item.processing && !item.processed && (
                   <Chip
                     size="small"
-                    label="Open in checkout"
+                    label={$t('open_in_checkout')}
                     color="primary"
                     onClick={e => {
                       e.stopPropagation();
@@ -194,14 +194,14 @@ const ContactItem = memo<ContactItemProps>(({
                   />
                 )}
                 <CircularProgress size={32} className={clsx("ml-1", !item.processing && "d-none")} />
-                {item.processing && <Typography variant="caption" className="ml-1" color="primary">Processing</Typography>}
+                {item.processing && <Typography variant="caption" className="ml-1" color="primary">{$t('processing')}</Typography>}
                 <Zoom in={item.processed && animate}>
                   {item.error
                       ? <Close className="ml-1 errorColor" />
                       : <Done className="ml-1 successColor" />}
                 </Zoom>
-                {item.processed && !item.error && <Typography variant="caption" className="ml-1 successColor">Processed</Typography>}
-                {item.error && <Typography variant="caption" className="ml-1 errorColor">Failed</Typography>}
+                {item.processed && !item.error && <Typography variant="caption" className="ml-1 successColor">{$t('processed')}</Typography>}
+                {item.error && <Typography variant="caption" className="ml-1 errorColor">{$t('failed')}</Typography>}
               </div>
 
               {!expanded && <span className="money">{total}</span>}
@@ -231,10 +231,7 @@ const ContactItem = memo<ContactItemProps>(({
                 </div>
                 <Tooltip title={format(new Date(i.dateDue), D_MMM_YYYY)}>
                   <Typography className="mr-1">
-                    {' '}
-                    due
-                    {' '}
-                    {formatRelativeDate(new Date(i.dateDue), today, D_MMM_YYYY, true, true)}
+                    {$t('due',[formatRelativeDate(new Date(i.dateDue), today, D_MMM_YYYY, true, true)])}
                   </Typography>
                 </Tooltip>
 
@@ -306,14 +303,14 @@ const ContactRenderer = ({
 };
 
 interface Props {
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   currencySymbol?: string;
   values?: {
     contacts: BatchPaymentContact[]
   };
 }
 
-const manualUrl = getManualLink("batchpayments_batchpayments");
+const manualUrl = getManualLink("batch-payments-in");
 
 const getContacts = (dispatch, setContactsLoading, onComplete?) => {
   EntityService.getPlainRecords(
@@ -413,7 +410,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
   const [processing, setProcessing] = useState(false);
   const cancel = useRef(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   useEffect(() => {
     setContactsLoading(true);
@@ -459,9 +456,11 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
             return;
           }
           listRef.current.scrollToItem(filterByStoreCard ? index : c.index, "start");
-          setTimeout(() => {
+          setTimeout(async () => {
             dispatch(change(FORM, `contacts[${c.index}].processing`, true ));
-            CheckoutService.checkoutSubmitPayment(getBachCheckoutModel(c), null, null, null)
+            const model = getBachCheckoutModel(c);
+            await CheckoutService.createSession(model);
+            CheckoutService.submitPayment(model)
               .then(() => {
                 dispatch(change(FORM, `contacts[${c.index}]`, {
                   ...c, processing: false, processed: true,
@@ -494,14 +493,14 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
         disabled={processing || contactsLoading || checkedContacts.length === 0}
         title={(
           <div>
-            Batch payment in (showing
+            {$t('Batch payment in (showing')}
             {' '}
             {values.contacts.length}
             {' '}
-            contact
+            {$t('contact')}
             {values.contacts.length !== 1 ? "s" : ""}
             {' '}
-            with amounts due or overdue)
+            {$t('with amounts due or overdue')})
           </div>
         )}
         manualUrl={manualUrl}
@@ -526,7 +525,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
                 classes={{
                   labelPlacementStart: "m-0",
                 }}
-                label="Only show contacts with a stored card"
+                label={$t('only_show_contacts_with_a_stored_card')}
                 labelPlacement="start"
                 disabled={processing}
               />

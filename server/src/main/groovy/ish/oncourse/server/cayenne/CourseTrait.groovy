@@ -93,6 +93,14 @@ trait CourseTrait {
     }
 
     /**
+     * @return count of hybrid classes for the course
+     */
+    @API
+    Integer getHybridClassesCount() {
+        getCourseClasses().findAll { it.isHybrid && !it.isCancelled }.size()
+    }
+
+    /**
      * @return count of cancelled classes for the course
      */
     @API

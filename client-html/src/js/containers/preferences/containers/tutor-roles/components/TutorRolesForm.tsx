@@ -6,26 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { DefinedTutorRole } from "@api/model";
-import DeleteForever from "@mui/icons-material/DeleteForever";
-import Grid from "@mui/material/Grid";
-import { ShowConfirmCaller } from "ish-ui";
-import React from "react";
-import { Dispatch } from "redux";
-import { getFormSyncErrors, InjectedFormProps, reduxForm } from "redux-form";
-import AppBarActions from "../../../../../common/components/appBar/AppBarActions";
-import RouteChangeConfirm from "../../../../../common/components/dialog/RouteChangeConfirm";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { getManualLink } from "../../../../../common/utils/getManualLink";
-import { onSubmitFail } from "../../../../../common/utils/highlightFormErrors";
-import { useAppSelector } from "../../../../../common/utils/hooks";
-import PayRates from "./PayRates";
+import { DefinedTutorRole } from '@api/model';
+import DeleteForever from '@mui/icons-material/DeleteForever';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import { ShowConfirmCaller } from 'ish-ui';
+import React from 'react';
+import { Dispatch } from 'redux';
+import { getFormSyncErrors, InjectedFormProps, reduxForm } from 'redux-form';
+import { IAction } from '../../../../../common/actions/IshAction';
+import AppBarActions from '../../../../../common/components/appBar/AppBarActions';
+import RouteChangeConfirm from '../../../../../common/components/dialog/RouteChangeConfirm';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { getManualLink } from '../../../../../common/utils/getManualLink';
+import { onSubmitFail } from '../../../../../common/utils/highlightFormErrors';
+import { useAppSelector } from '../../../../../common/utils/hooks';
+import PayRates from './PayRates';
 
 interface Props extends InjectedFormProps {
   isNew: boolean;
   value: DefinedTutorRole;
-  dispatch: Dispatch;
+  dispatch: Dispatch<IAction>
   onCreate: (role: DefinedTutorRole) => void;
   onUpdate: (role: DefinedTutorRole) => void;
   onDelete: any;
@@ -38,7 +40,7 @@ interface Props extends InjectedFormProps {
   fetch?: any;
 }
 
-const manualUrl = getManualLink("advancedSetup_Tutor");
+const manualUrl = getManualLink("tutor-pay-rates");
 
 export const TUTOR_ROLES_FORM: string = "TutorRolesForm";
 
@@ -76,7 +78,7 @@ const TutorRolesForm = React.memo<Props>(
               <FormField
                 type="text"
                 name="name"
-                label="Name"
+                label={$t('name')}
                 required
               />
             </Grid>
@@ -102,12 +104,12 @@ const TutorRolesForm = React.memo<Props>(
                   <FormField
                     type="text"
                     name="description"
-                    label="Public label"
+                    label={$t('public_label')}
                     required
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <FormField type="switch" name="active" label="Enabled" color="primary" />
+                  <FormField type="switch" name="active" label={$t('enabled')} color="primary" />
                 </Grid>
               </Grid>
             </Grid>

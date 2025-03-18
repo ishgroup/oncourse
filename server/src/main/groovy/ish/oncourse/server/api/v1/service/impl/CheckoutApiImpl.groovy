@@ -12,7 +12,10 @@
 package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import io.bootique.jetty.servlet.DefaultServletEnvironment
+import ish.common.checkout.gateway.PaymentGatewayError
 import ish.common.types.EntityRelationCartAction
 import ish.math.Money
 import ish.oncourse.server.CayenneService
@@ -27,14 +30,21 @@ import ish.oncourse.server.api.service.MembershipProductApiService
 import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.api.v1.model.*
 import ish.oncourse.server.api.v1.service.CheckoutApi
+import ish.oncourse.server.api.validation.EntityValidator
 import ish.oncourse.server.cayenne.*
 import ish.oncourse.server.checkout.CheckoutApiService
+import ish.oncourse.server.checkout.CheckoutSessionService
+import ish.oncourse.server.checkout.gateway.SessionPaymentServiceInterface
+import ish.oncourse.server.license.LicenseService
 import ish.util.DiscountUtils
 import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.SelectById
 import org.apache.commons.lang3.StringUtils
+import org.eclipse.jetty.server.Request
 
-@CompileStatic
+import static ish.oncourse.server.api.servlet.AngelSessionDataStore.USER_ATTRIBUTE
+
+@CompileDynamic
 class CheckoutApiImpl implements CheckoutApi {
 
     @Inject
@@ -65,12 +75,36 @@ class CheckoutApiImpl implements CheckoutApi {
     CheckoutApiService checkoutApiService
 
     @Inject
+    CheckoutSessionService checkoutSessionService
+
+    @Inject
     DiscountApiService discountApiService
+
+    @Inject
+    LicenseService licenseService
+
+    @Inject
+    DefaultServletEnvironment defaultServletEnvironment
+
+    @Override
+    CreateSessionResponseDTO createSession(CheckoutModelDTO checkoutModel, String xorigin, String deprecatedSessionId) {
+        return checkoutApiService.createSession(checkoutModel, xorigin, deprecatedSessionId)
+    }
+
+    @Override
+    CheckoutResponseDTO updateModel(CheckoutModelDTO checkoutModel) {
+        return checkoutApiService.updateModel(checkoutModel)
+    }
 
     @Override
     CartIdsDTO getCartDataIds(Long checkoutId) {
         def checkout = SelectById.query(Checkout,checkoutId).selectOne(cayenneService.newReadonlyContext)
         return CartFunctions.toRestCartIds(checkout)
+    }
+
+    @Override
+    ClientPreferencesDTO getClientPreferences() {
+        return checkoutApiService.getClientPreferences()
     }
 
     @Override
@@ -91,7 +125,7 @@ class CheckoutApiImpl implements CheckoutApi {
                 .collect { courseClassApiService.getEntityAndValidateExistence(context, Long.valueOf(it)) }
         List<MembershipProduct> memberships = membershipIds == null || membershipIds.empty ? [] :
                 membershipIds.split(',').collect { membershipApiService.getEntityAndValidateExistence(context,Long.valueOf(it)) }
-        Money total = new Money(purchaseTotal)
+        Money total = Money.of(purchaseTotal)
 
         List<DiscountCourseClass> discountCourseClasses = courseClass.getAvalibleDiscounts(contact, payerContact, courses, products, promos, enrolledClasses, memberships, total)
 
@@ -155,14 +189,17 @@ class CheckoutApiImpl implements CheckoutApi {
         result
     }
 
-    private static CheckoutSaleRelationDTO createCourseCheckoutSaleRelation(Long id, String entityName, Course course, EntityRelationType relationType) {
+    private CheckoutSaleRelationDTO createCourseCheckoutSaleRelation(Long id, String entityName, Course course, EntityRelationType relationType) {
+        DiscountDTO discountDTO = null
+        if (relationType.discount) {
+            discountDTO = discountApiService.toNotFullRestModel(relationType.discount)
+        }
+
         new CheckoutSaleRelationDTO().with {saleRelation ->
             saleRelation.fromItem = new SaleDTO(id: id, type: SaleTypeDTO.values()[0].getFromCayenneClassName(entityName))
             saleRelation.toItem = new SaleDTO(id: course.id, type: SaleTypeDTO.COURSE)
             saleRelation.cartAction = EntityRelationCartActionDTO.values()[0].fromDbType(relationType.shoppingCart)
-            if (relationType.discount) {
-                saleRelation.discount = discountApiService.toNotFullRestModel(relationType.discount)
-            }
+            saleRelation.discount = discountDTO
             saleRelation
         }
     }
@@ -197,12 +234,52 @@ class CheckoutApiImpl implements CheckoutApi {
 
     @Override
     SessionStatusDTO status(String sessionId) {
-       return checkoutApiService.status(sessionId)
+       return checkoutApiService.getStatus(sessionId)
+    }
+
+
+    CheckoutCCResponseDTO submitCreditCardPayment(CheckoutSubmitRequestDTO submitRequestDTO) {
+        checkoutApiService.submitCreditCardPayment(submitRequestDTO)
     }
 
     @Override
-    CheckoutResponseDTO submit(CheckoutModelDTO checkoutModel, Boolean xValidateOnly, String xPaymentSessionId, String xOrigin ) {
-        return checkoutApiService.submit(checkoutModel, xValidateOnly, xPaymentSessionId, xOrigin)
+    CheckoutResponseDTO submitPayment(CheckoutModelDTO checkoutModelDTO) {
+        checkoutApiService.submitPayment(checkoutModelDTO)
+    }
+
+    @Override
+    String submitPaymentRedirect(String paymentSessionId, String key) {
+        if(licenseService.college_key && !key.equals(licenseService.getCollege_key()))
+            EntityValidator.throwClientErrorException("key", "Unexpected college request")
+
+        if(!checkoutSessionService.sessionExists(paymentSessionId))
+            EntityValidator.throwClientErrorException("session", "Session already processed")
+
+        def paymentService = checkoutApiService.getPaymentServiceByGatewayType()
+        if(!(paymentService instanceof SessionPaymentServiceInterface))
+            EntityValidator.throwClientErrorException("paymentService", "Redirect not allowed")
+
+        def sessionAttributes = paymentService.checkStatus(paymentSessionId)
+
+        if (!sessionAttributes.complete) {
+            checkoutSessionService.removeSession(paymentSessionId)
+            paymentService.handleError(PaymentGatewayError.VALIDATION_ERROR.errorNumber, [new CheckoutValidationErrorDTO(error: "Credit card authorisation is not completed, $sessionAttributes.statusText ${sessionAttributes.errorMessage ? (", " + sessionAttributes.errorMessage) : ""}")])
+        }
+
+        def session = checkoutSessionService.getCheckoutSession(paymentSessionId)
+        if(session == null)
+            EntityValidator.throwClientErrorException("sessionId", "Unexpected request")
+
+        Request request = defaultServletEnvironment.request().orElse(null) as Request
+        request.session.setAttribute(USER_ATTRIBUTE, session.createdByUser)
+
+        def submitRequestDTO = new CheckoutSubmitRequestDTO().with {
+            it.onCoursePaymentSessionId = paymentSessionId
+            it.merchantReference = paymentSessionId
+            it
+        }
+        checkoutApiService.submitCreditCardPayment(submitRequestDTO)
+        return "Success"
     }
 
 }

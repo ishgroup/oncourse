@@ -3,26 +3,27 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Currency, StatisticData } from "@api/model";
-import { Person } from "@mui/icons-material";
-import { Grid, List, ListItem, Typography } from "@mui/material";
-import Paper from "@mui/material/Paper";
+import { Currency, StatisticData } from '@api/model';
+import { Person } from '@mui/icons-material';
+import { Grid, List, ListItem, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { alpha } from '@mui/material/styles';
-import createStyles from "@mui/styles/createStyles";
-import withStyles from "@mui/styles/withStyles";
-import clsx from "clsx";
-import { AnyArgFunction, formatCurrency, openInternalLink } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { Area, AreaChart, CartesianGrid, Tooltip, XAxis } from "recharts";
-import { Dispatch } from "redux";
-import { checkPermissions } from "../../../../../common/actions";
-import { State } from "../../../../../reducers/state";
-import { getDashboardStatistic } from "../../../actions";
-import ScriptStatistic from "./ScriptStatistic";
+import $t from '@t';
+import clsx from 'clsx';
+import { AnyArgFunction, formatCurrency, openInternalLink } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis } from 'recharts';
+import { Dispatch } from 'redux';
+import { withStyles } from 'tss-react/mui';
+import { checkPermissions } from '../../../../../common/actions';
+import { IAction } from '../../../../../common/actions/IshAction';
+import { State } from '../../../../../reducers/state';
+import { getDashboardStatistic } from '../../../actions';
+import ScriptStatistic from './ScriptStatistic';
 
-const styles = theme => createStyles({
+const styles = theme => ({
     root: {
       padding: theme.spacing(3),
       alignContent: "flex-start"
@@ -119,7 +120,6 @@ const TotalStatisticInfo = props => {
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Typography className={clsx(classes.totalText)}>
         <Person className={classes.enrolmentsColor} />
-        {' '}
         <span>{totalStudents}</span>
         <strong className={classes.revenueColor}>{(currency && totalEnrolments !== null) && currency.shortCurrencySymbol}</strong>
         {totalEnrolments && (<span className="money">{formatCurrency(totalEnrolments, "")}</span>)}
@@ -188,7 +188,7 @@ interface Props {
   isUpdating?: boolean;
   hideChart?: boolean;
   hasAuditPermissions?: boolean;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   getAuditPermissions?: () => void;
 }
 
@@ -258,7 +258,7 @@ class Statistics extends React.Component<Props, any> {
           <Grid container className={classes.root}>
             <Grid item className="w-100 d-flex">
               <Typography className="heading flex-fill">{statisticData.moneyCount !== null ? 'Enrolments & Revenue' : 'Enrolments'}</Typography>
-              <Typography variant="caption">Past 4 weeks</Typography>
+              <Typography variant="caption">{$t('past_4_weeks')}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Chart data={chartData} />
@@ -271,13 +271,12 @@ class Statistics extends React.Component<Props, any> {
                 currency={currency}
               />
             </Grid>
-            <Grid item xs={12} className="mt-2">
+            {Boolean(statisticData.latestEnrolments?.length) && <Grid item xs={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-                Last enrolments
+                {$t('last_enrolments')}
               </Typography>
               <List dense disablePadding>
-                {statisticData.latestEnrolments
-              && statisticData.latestEnrolments.map((e, index) => (
+                {statisticData.latestEnrolments.map((e, index) => (
                 <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
                   <Typography
                     onClick={() => openInternalLink(e.link)}
@@ -292,34 +291,32 @@ class Statistics extends React.Component<Props, any> {
                 </ListItem>
               ))}
               </List>
-            </Grid>
-            <Grid item xs={12} className="mt-2">
-              <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
-                Largest waiting lists
-              </Typography>
-              <List dense disablePadding>
-                {statisticData.latestWaitingLists
-              && statisticData.latestWaitingLists.map((e, index) => (
-                <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
-                  <Typography
-                    onClick={() => openInternalLink(e.link)}
-                    className={clsx(classes.smallText, "linkDecoration", classes.leftColumn)}
-                  >
-                    {e.title}
-                  </Typography>
-                  <Typography className={clsx(classes.smallText, classes.grayText, classes.rightColumn)}>
-                    {e.info}
-                  </Typography>
-                </ListItem>
-              ))}
-              </List>
-            </Grid>
-
+            </Grid>}
+            {Boolean(statisticData.latestWaitingLists?.length)
+              && <Grid item xs={12} className="mt-2">
+                <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
+                  {$t('largest_waiting_lists')}
+                </Typography>
+                <List dense disablePadding>
+                  {statisticData.latestWaitingLists.map((e, index) => (
+                    <ListItem key={index} dense disableGutters className={classes.smallTextGroup}>
+                      <Typography
+                        onClick={() => openInternalLink(e.link)}
+                        className={clsx(classes.smallText, "linkDecoration", classes.leftColumn)}
+                      >
+                        {e.title}
+                      </Typography>
+                      <Typography className={clsx(classes.smallText, classes.grayText, classes.rightColumn)}>
+                        {e.info}
+                      </Typography>
+                    </ListItem>
+                  ))}
+                </List>
+              </Grid>}
             <Grid item xs={12} className="mt-2">
               <Typography className={clsx(classes.coloredHeaderText, classes.marginBottom, classes.smallText)}>
                 {statisticData.openedClasses}
-                {' '}
-                classes open for enrolment
+                {$t('classes_open_for_enrolment')}
               </Typography>
               <List dense disablePadding>
                 <Grid container className={classes.containerStatisticGroup}>
@@ -327,8 +324,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.inDevelopmentClasses}
-                        {' '}
-                        preparing
+                        {$t('preparing')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -336,8 +332,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.cancelledClasses}
-                        {' '}
-                        cancelled
+                        {$t('cancelled')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -347,8 +342,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.completedClasses}
-                        {' '}
-                        completed
+                        {$t('completed')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -356,8 +350,7 @@ class Statistics extends React.Component<Props, any> {
                     <ListItem dense disableGutters className={classes.smallTextGroup}>
                       <Typography className={classes.smallText}>
                         {statisticData.commencedClasses}
-                        {' '}
-                        commenced
+                        {$t('commenced')}
                       </Typography>
                     </ListItem>
                   </Grid>
@@ -369,7 +362,7 @@ class Statistics extends React.Component<Props, any> {
       {hasAuditPermissions && (
         <Grid item xs={12} className="mt-2 p-3">
           <Typography className={clsx("heading", classes.headingMargin)}>
-            Automation status
+            {$t('automation_status')}
           </Typography>
           <ScriptStatistic dispatch={dispatch} />
         </Grid>
@@ -395,4 +388,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export default connect<any, any, any>(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Statistics));
+)(withStyles(Statistics, styles));

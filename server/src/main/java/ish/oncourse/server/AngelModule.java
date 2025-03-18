@@ -22,10 +22,7 @@ import io.bootique.jetty.MappedFilter;
 import io.bootique.jetty.MappedServlet;
 import io.bootique.jetty.command.ServerCommand;
 import ish.oncourse.common.ResourcesUtil;
-import ish.oncourse.server.api.servlet.ApiFilter;
-import ish.oncourse.server.api.servlet.ISessionManager;
-import ish.oncourse.server.api.servlet.ResourceServlet;
-import ish.oncourse.server.api.servlet.SessionManager;
+import ish.oncourse.server.api.servlet.*;
 import ish.oncourse.server.db.AngelCayenneModule;
 import ish.oncourse.server.integration.EventService;
 import ish.oncourse.server.integration.PluginService;
@@ -73,6 +70,11 @@ public class AngelModule extends ConfigModule {
 
     // api filter
     private static final TypeLiteral<MappedFilter<ApiFilter>> API_FILTER =
+            new TypeLiteral<>() {
+            };
+
+    // active college filter
+    private static final TypeLiteral<MappedFilter<ActiveCollegeFilter>> ACTIVE_COLLEGE_FILTER =
             new TypeLiteral<>() {
             };
 
@@ -142,7 +144,8 @@ public class AngelModule extends ConfigModule {
                         CommandDecorator.builder()
                                 .beforeRun(AngelCommand.class)
                                 .alsoRun(DataPopulationCommand.class)
-                                .alsoRun(SanityCheckCommand.class).build());
+                                .alsoRun(SanityCheckCommand.class)
+                                .build());
 
         CayenneModule.extend(binder)
                 .addModule(AngelCayenneModule.class)
@@ -150,6 +153,7 @@ public class AngelModule extends ConfigModule {
 
 
         AngelJettyModule.extend(binder)
+                .addMappedFilter(ACTIVE_COLLEGE_FILTER)
                 .addMappedFilter(API_FILTER)
                 .addMappedServlet(HEALTHCHECK_SERVLET)
                 .addServlet(new ResourceServlet(),"resources", ROOT_URL_PATTERN);
@@ -182,6 +186,19 @@ public class AngelModule extends ConfigModule {
                 paths,
                 ApiFilter.class.getSimpleName(),
                 0);
+    }
+
+    @Singleton
+    @Provides
+    MappedFilter<ActiveCollegeFilter> createActiveCollegeFilter(Injector injector) {
+        final Set<String> paths = new HashSet<>();
+        paths.add("/*");
+
+        return new MappedFilter<>(
+                new ActiveCollegeFilter(injector.getInstance(PreferenceController.class)),
+                paths,
+                ActiveCollegeFilter.class.getSimpleName(),
+                -1);
     }
 
     @Singleton

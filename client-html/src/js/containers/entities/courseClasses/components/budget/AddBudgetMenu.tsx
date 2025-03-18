@@ -3,11 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassTutor } from "@api/model";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { AnyArgFunction } from "ish-ui";
-import React, { useRef } from "react";
+import { CourseClassTutor } from '@api/model';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import { AnyArgFunction } from 'ish-ui';
+import React, { useRef } from 'react';
 
 interface Props {
   anchorEl: Element;
@@ -26,19 +27,19 @@ const AddBudgetMenu: React.FC<Props> = ({
   openAddTutorModal,
   tutors
 }) => {
-  const tutorsRef = useRef();
+  const tutorsRef = useRef(undefined);
 
   return (
     <>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={closeAddBudgetMenu}>
         <MenuItem role="expense" onClick={openAddModal}>
-          Expense
+          {$t('expense')}
         </MenuItem>
         <MenuItem role="income" onClick={openAddModal}>
-          Income
+          {$t('income2')}
         </MenuItem>
         <MenuItem ref={tutorsRef} role="tutorPay" onClick={openAddModal}>
-          Tutor Pay
+          {$t('tutor_pay')}
         </MenuItem>
       </Menu>
 
@@ -49,7 +50,7 @@ const AddBudgetMenu: React.FC<Props> = ({
         onClose={closeAddBudgetMenu}
       >
         {tutors &&
-          tutors.map(t => t.contactId !== null && t.roleId !== null &&(
+          tutors.map(t => t.contactId !== null && t.roleId !== null && (
             <MenuItem key={t.id} role="expense" onClick={() => openAddTutorModal(t)}>
               {`${t.tutorName} ${t.roleName}`}
             </MenuItem>

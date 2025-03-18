@@ -3,20 +3,22 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, getFormValues } from "redux-form";
-import { CheckoutFundingInvoice } from "../../../../model/checkout/fundingInvoice";
-import { State } from "../../../../reducers/state";
-import { getContactFullName } from "../../../entities/contacts/utils";
-import { CheckoutPage } from "../../constants";
-import { HeaderFieldTypo } from "../HeaderField";
-import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from "./CheckoutFundingInvoiceSummaryList";
+import $t from '@t';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, getFormValues } from 'redux-form';
+import { IAction } from '../../../../common/actions/IshAction';
+import { CheckoutFundingInvoice } from '../../../../model/checkout/fundingInvoice';
+import { State } from '../../../../reducers/state';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import { CheckoutPage } from '../../constants';
+import { HeaderFieldTypo } from '../HeaderField';
+import { CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM } from './CheckoutFundingInvoiceSummaryList';
 
 interface Props {
   currencySymbol?: any;
-  dispatch?: Dispatch;
+  dispatch?: Dispatch<IAction>;
   selectedCompanies?: any[];
   trackAmountOwing?: boolean;
   fundingInvoiceValues?: { fundingInvoices: CheckoutFundingInvoice[] };
@@ -41,7 +43,7 @@ const CheckoutFundingThisInvoice: React.FC<Props> = (
       {fundingInvoiceValues.fundingInvoices.map((f, index) => (
         <HeaderFieldTypo
           key={f.fundingProviderId}
-          title={f.company ? getContactFullName(f.company) : <span className="errorColor">Not set</span>}
+          title={f.company ? getContactFullName(f.company) : <span className="errorColor">{$t('not_set')}</span>}
           activeField={f.active ? CheckoutPage.fundingInvoiceSummary : null}
           field={CheckoutPage.fundingInvoiceSummary}
           onClick={() => setActive(index)}

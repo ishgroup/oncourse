@@ -6,26 +6,25 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact } from "@api/model";
-import { useTheme } from "@mui/styles";
-import { AppTheme, formatCurrency } from "ish-ui";
-import React, { useMemo, useState } from "react";
-import { connect } from "react-redux";
+import { Contact } from '@api/model';
+import { formatCurrency, useAppTheme } from 'ish-ui';
+import React, { useMemo, useState } from 'react';
+import { connect } from 'react-redux';
 import AvailabilityFormComponent
-  from "../../../../common/components/form/availabilityComponent/AvailabilityFormComponent";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import TabsList, { TabsListItem } from "../../../../common/components/navigation/TabsList";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import ContactsDetails from "./ContactDetails";
-import ContactsDocuments from "./ContactsDocuments";
-import ContactsEducation from "./ContactsEducation";
-import ContactsFinancial from "./ContactsFinancial";
-import ContactsGeneral from "./ContactsGeneral";
-import ContactsMessages from "./ContactsMessages";
-import ContactsResume from "./ContactsResume";
-import ContactsTutor from "./ContactsTutor";
-import ContactsVET from "./ContactsVET";
+  from '../../../../common/components/form/availabilityComponent/AvailabilityFormComponent';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import ContactsDetails from './ContactDetails';
+import ContactsDocuments from './ContactsDocuments';
+import ContactsEducation from './ContactsEducation';
+import ContactsFinancial from './ContactsFinancial';
+import ContactsGeneral from './ContactsGeneral';
+import ContactsMessages from './ContactsMessages';
+import ContactsResume from './ContactsResume';
+import ContactsTutor from './ContactsTutor';
+import ContactsVET from './ContactsVET';
 
 const studentItems: TabsListItem[] = [
   {
@@ -101,7 +100,6 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
     dispatch,
     dirty,
     form,
-    nestedIndex,
     rootEntity,
     twoColumn,
     showConfirm,
@@ -118,7 +116,7 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
   const [isCompany, setIsCompany] = useState(false);
   const [usiUpdateLocked, setUsiUpdateLocked] = useState(true);
 
-  const theme = useTheme<AppTheme>();
+  const theme = useAppTheme();
 
   const getActiveItems = () => {
     let activeItems = [...items];
@@ -170,7 +168,6 @@ const ContactEditView = (props: EditViewProps<Contact> & Props) => {
         dirty,
         invalid,
         form,
-        nestedIndex,
         rootEntity,
         twoColumn,
         showConfirm,
