@@ -8,7 +8,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Transaction Detail"
   entityClass: "AccountTransaction"
@@ -20,7 +20,7 @@
     \ in Portrait format."
   category: 
   sortOn: "account.accountCode;transactionDate"
-  visible: true
+  isVisible: true
 
 - name: "Site List"
   entityClass: "Site"
@@ -31,7 +31,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Training Packages List"
   entityClass: "TrainingPackage"
@@ -42,7 +42,7 @@
     \ prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   locale: aus
 
 - name: "Traineeship Training Plan (No Tutor Details)"
@@ -55,7 +55,7 @@
     \ Portrait format."
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Training Plan Report"
@@ -66,7 +66,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Transaction report"
@@ -78,7 +78,7 @@
     \ by period. This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Tutor List"
   entityClass: "CourseClassTutor"
@@ -90,7 +90,7 @@
     \ which can be used for payroll purposes.This report prints in Landscape format."
   category: 
   sortOn: "tutor.contact.lastName"
-  visible: true
+  isVisible: true
   
 - name: "Banking Payment Detail"
   entityClass: "Payment"
@@ -100,7 +100,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Invoice Subreport"
   entityClass: "InvoiceLine"
@@ -110,7 +110,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Enrolment Conf Tutors"
   entityClass: "CourseClassTutor"
@@ -120,7 +120,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Academic Transcript"
   entityClass: "Enrolment"
@@ -132,7 +132,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Income journal projection"
   entityClass: "CourseClass"
@@ -144,7 +144,7 @@
     \ income account. This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Roll - Simple"
   entityClass: "CourseClass"
@@ -155,7 +155,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
 
 - name: "Class Timetable Report - Planning"
   entityClass: "Session"
@@ -168,7 +168,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
 
 - name: "Class Timetable Report - Planning w/ page breaks"
   entityClass: "Session"
@@ -181,7 +181,7 @@
     \ format. Has page breaks before new dates "
   category:
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Individual Assessment Plan Subreport"
   entityClass: "AssessmentClass"
@@ -191,7 +191,7 @@
   description: ""
   category: 
   sortOn: "releaseDate"
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Invoice"
@@ -203,7 +203,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Course Details"
   entityClass: "Course"
@@ -214,7 +214,7 @@
     \ classes.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "CorporatePass List"
   entityClass: "CorporatePass"
@@ -225,7 +225,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Trial Balance"
   entityClass: "Account"
@@ -236,7 +236,7 @@
     \ period of time.This report prints in Landscape format."
   category: 
   sortOn: "accountCode"
-  visible: false
+  isVisible: false
   
 - name: "Enrolment Summary by Account"
   entityClass: "CourseClass"
@@ -247,7 +247,7 @@
     \ This report prints in Portrait format."
   category: 
   sortOn: "incomeAccount.accountCode"
-  visible: true
+  isVisible: true
   
 - name: "Discount Take Up Summary"
   entityClass: "Discount"
@@ -259,7 +259,7 @@
     \ It prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Course Completion Survey Subreport"
   entityClass: "Enrolment"
@@ -269,7 +269,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Roll - Contact No-isVET Subreport"
   entityClass: "Enrolment"
@@ -279,7 +279,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Class InvoiceLine Liability Subreport"
@@ -290,7 +290,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Subreport"
   entityClass: "Module"
@@ -300,7 +300,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Invoice Record"
   entityClass: "CourseClass"
@@ -313,7 +313,7 @@
     \ Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Tutors List"
   entityClass: "Contact"
@@ -324,7 +324,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Tutor Details"
   entityClass: "Contact"
@@ -335,7 +335,7 @@
     \ prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Promotional Enrolments"
   entityClass: "Enrolment"
@@ -345,7 +345,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Information"
   entityClass: "CourseClass"
@@ -357,7 +357,7 @@
     \ individual session details. This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Roll - Contact No"
   entityClass: "CourseClass"
@@ -370,7 +370,7 @@
   category:
   locale: aus
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Cash Movements Detail Report"
   entityClass: "PaymentInterface"
@@ -381,7 +381,7 @@
     \ prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Contact Sheet"
   entityClass: "CourseClass"
@@ -392,7 +392,7 @@
     \ addresses for those students.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Certificate-Attendance"
   entityClass: "Enrolment"
@@ -404,7 +404,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Student Special Needs"
   entityClass: "Enrolment"
@@ -417,7 +417,7 @@
     \ prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Enrolment summary by State subreport"
   entityClass: "CourseClass"
@@ -427,7 +427,7 @@
   description: ""
   category: 
   sortOn: "room.site.state"
-  visible: false
+  isVisible: false
   
 - name: "Class Roll Detail"
   entityClass: "PrintableAttendance"
@@ -437,7 +437,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "All Class Details"
   entityClass: "CourseClass"
@@ -450,7 +450,7 @@
     \ the campus. This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Course Completion Survey"
   entityClass: "CourseClass"
@@ -461,7 +461,7 @@
     \ summary for all."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Individual Training and Assessment Plan Unit Of Competency Subreport"
   entityClass: "Outcome"
@@ -471,7 +471,7 @@
   description: ""
   category: 
   sortOn: "outcome.startDate"
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Voucher Products List"
@@ -482,7 +482,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Payslip Report"
   entityClass: "PayLine"
@@ -493,7 +493,7 @@
     \ Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "No Tutor Details SubReport"
   entityClass: "CourseClassTutor"
@@ -503,7 +503,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Qualifications List"
   entityClass: "Qualification"
@@ -514,7 +514,7 @@
     \ building courses.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Rooms Subreport"
   entityClass: "Room"
@@ -524,7 +524,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Tutors"
   entityClass: "CourseClassTutor"
@@ -534,7 +534,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Individual Training and Assessment Plan Tutor subreport"
   entityClass: "CourseClassTutor"
@@ -544,7 +544,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Class Roll - Single Session"
@@ -557,7 +557,7 @@
     \ week or session.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "UnavailableRules Subreport"
   entityClass: "UnavailableRuleRelation"
@@ -567,7 +567,7 @@
   description: ""
   category: 
   sortOn: "rule.startDateTime"
-  visible: false
+  isVisible: false
   
 - name: "Session Subreport"
   entityClass: "Session"
@@ -577,7 +577,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Enrolment summary by State"
   entityClass: "CourseClass"
@@ -588,7 +588,7 @@
     \ classes, and enrolment numbers by gender. This report prints in Landscape format."
   category: 
   sortOn: "isCancelled;room.site.state"
-  visible: true
+  isVisible: true
   
 - name: "Waiting List"
   entityClass: "WaitingList"
@@ -600,7 +600,7 @@
     \ Portrait format."
   category: 
   sortOn: "course.name"
-  visible: true
+  isVisible: true
   
 - name: "Course Completion Survey Tutor Subreport"
   entityClass: "Enrolment"
@@ -610,7 +610,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Student Enrolments Subreport"
   entityClass: "Enrolment"
@@ -620,7 +620,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Budget Summary by Subject"
   entityClass: "CourseClass"
@@ -632,7 +632,7 @@
     \ report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Debtors and Creditors Report"
   entityClass: "Invoice"
@@ -643,7 +643,7 @@
     \ invoices.This report prints in Landscape format."
   category: 
   sortOn: "contact.lastName"
-  visible: true
+  isVisible: true
   
 - name: "Enrolment Conf Sessions"
   entityClass: "Session"
@@ -653,7 +653,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Enrolment Session Description"
   entityClass: "Session"
@@ -663,7 +663,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class by Site"
   entityClass: "CourseClass"
@@ -676,7 +676,7 @@
     \ Female breakdown. This report prints in Landscape format."
   category: 
   sortOn: "room.site.name"
-  visible: true
+  isVisible: true
   
 - name: "Session Subreport (Tutor)"
   entityClass: "TutorAttendance"
@@ -686,7 +686,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Tutor TutorPay Subreport"
   entityClass: "Tutor"
@@ -696,7 +696,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Enrolment Subreport"
   entityClass: "Enrolment"
@@ -706,7 +706,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Roll Single Session Studentdetail Sub"
   entityClass: "Enrolment"
@@ -716,7 +716,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Assessment Outcome Report"
   entityClass: "CourseClass"
@@ -729,7 +729,7 @@
     \ onCourse. This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Funding"
   entityClass: "Outcome"
@@ -742,7 +742,7 @@
     \ prints in Portrait format."
   category: 
   sortOn: "enrolment.courseClass.course.qualification.nationalCode;fundingSource"
-  visible: true
+  isVisible: true
   locale: aus
 
 - name: "Individual Assessment Plan"
@@ -755,7 +755,7 @@
     \ Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   locale: aus
 
 - name: "Individual Training and Assessment Plan"
@@ -768,7 +768,7 @@
     \ Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   locale: aus
 
 - name: "InvoiceLines Subreport"
@@ -779,7 +779,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Module List"
   entityClass: "Module"
@@ -789,7 +789,7 @@
   description: "List of all modules."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Budgets Details by Account"
   entityClass: "CourseClass"
@@ -800,7 +800,7 @@
     \ grouped by income account. This report prints in Landscape format."
   category: 
   sortOn: "incomeAccount.accountCode"
-  visible: true
+  isVisible: true
   
 - name: "Discount Take Up Summary Subreport"
   entityClass: "DiscountCourseClass"
@@ -810,7 +810,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Discount Take Up Subreport"
   entityClass: "DiscountCourseClass"
@@ -820,7 +820,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "CorpratePass Invoice Subreport"
   entityClass: "InvoiceLine"
@@ -830,7 +830,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Ceriticate-Transcript Subreport"
   entityClass: "Outcome"
@@ -840,7 +840,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "PaymentOut"
   entityClass: "PaymentOut"
@@ -852,7 +852,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Statement report"
   entityClass: "Contact"
@@ -863,7 +863,7 @@
     \ contact.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Session Subreport"
   entityClass: "Session"
@@ -873,7 +873,7 @@
   description: ""
   category: 
   sortOn: "startDatetime"
-  visible: false
+  isVisible: false
   
 - name: "Budgets Details by Subject"
   entityClass: "CourseClass"
@@ -884,7 +884,7 @@
     \ grouped by subject tag. This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Student Contact List"
   entityClass: "Enrolment"
@@ -895,7 +895,7 @@
     \ report prints in Landscape format."
   category: 
   sortOn: "student.contact.lastName"
-  visible: true
+  isVisible: true
   
 - name: "TutorAttendance Tutor Pay Subreport"
   entityClass: "TutorAttendance"
@@ -905,7 +905,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "LeadItem Course Subreport"
   entityClass: "Course"
@@ -915,7 +915,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "LeadItem Product Subreport"
   entityClass: "Product"
@@ -925,7 +925,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Roll Detail"
   entityClass: "PrintableAttendance"
@@ -935,7 +935,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Statement Line Detail"
   entityClass: "StatementLinePrintableObject"
@@ -945,7 +945,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Student Transcript"
   entityClass: "Contact"
@@ -957,7 +957,7 @@
     \ in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Details"
   entityClass: "CourseClass"
@@ -968,7 +968,7 @@
     \ is a list view of the timetabled sessions.This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Student Outcomes Subreport"
   entityClass: "Outcome"
@@ -978,7 +978,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Discount Take Up Report"
   entityClass: "Discount"
@@ -990,7 +990,7 @@
     \ It prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Tutor Pay Schedule"
   entityClass: "CourseClass"
@@ -1002,7 +1002,7 @@
     \ in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Promotional"
   entityClass: "DiscountCourseClass"
@@ -1012,7 +1012,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Individual Training and Assessment Plan Details"
   entityClass: "Enrolment"
@@ -1024,7 +1024,7 @@
     \ Portrait format."
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Simple Class Roll Detail"
@@ -1035,7 +1035,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "CorporatePass"
   entityClass: "CorporatePass"
@@ -1045,7 +1045,7 @@
   description: "CorporatePass details.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Assessment Outcomes Subreport"
   entityClass: "Outcome"
@@ -1055,7 +1055,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Roll"
   entityClass: "CourseClass"
@@ -1067,7 +1067,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Sales by Course Location"
   entityClass: "Enrolment"
@@ -1079,7 +1079,7 @@
     \ prints in Landscape format."
   category: 
   sortOn: "courseClass.room.site.name;invoiceLine.invoice.createdByUser.lastName;courseClass.course.name"
-  visible: true
+  isVisible: true
   
 - name: "Discounts By Class Subreport"
   entityClass: "InvoiceLine"
@@ -1089,7 +1089,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Transaction Summary"
   entityClass: "AccountTransaction"
@@ -1100,7 +1100,7 @@
     \ period of time.This report prints in Portrait format."
   category: 
   sortOn: "account.accountCode;transactionDate"
-  visible: true
+  isVisible: true
   
 - name: "ClassCost Tutor Pay Subreport"
   entityClass: "ClassCost"
@@ -1110,7 +1110,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Banking Payment Detail for Cheque"
   entityClass: "Payment"
@@ -1120,7 +1120,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Demographic Data Report"
   entityClass: "Enrolment"
@@ -1133,7 +1133,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Hours"
   entityClass: "CourseClass"
@@ -1145,7 +1145,7 @@
     \ in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Transcript"
   entityClass: "Certificate"
@@ -1156,7 +1156,7 @@
     \ each of their enrolments and current status of their outcomes."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Audit List"
   entityClass: "Audit"
@@ -1166,7 +1166,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Assessment Outcomes Per Student"
   entityClass: "Enrolment"
@@ -1178,7 +1178,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Roll - USI"
   entityClass: "CourseClass"
@@ -1190,7 +1190,7 @@
     \ the student's USI status. This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   locale: aus
 
 - name: "Session Tutor Pay Subreport"
@@ -1201,7 +1201,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Banking Report"
   entityClass: "PaymentInterface"
@@ -1212,7 +1212,7 @@
     \ bank when you deposit cash and cheques.This report prints in Portrait format."
   category: 
   sortOn: "administrationCentre.name;dateBanked;paymentMethod.name;createdOn"
-  visible: true
+  isVisible: true
   
 - name: "Lead"
   entityClass: "Lead"
@@ -1224,7 +1224,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class by Subject"
   entityClass: "CourseClass"
@@ -1236,7 +1236,7 @@
     \ report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Cash Movements Summary Report"
   entityClass: "PaymentInterface"
@@ -1247,7 +1247,7 @@
     \ prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Student Details"
   entityClass: "Contact"
@@ -1259,7 +1259,7 @@
     \ in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Timetable Report"
   entityClass: "Session"
@@ -1273,7 +1273,7 @@
     \ prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Cost Subreport"
   entityClass: "ClassCost"
@@ -1283,7 +1283,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Schedule"
   entityClass: "Session"
@@ -1293,7 +1293,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Tutors-ish"
   entityClass: "CourseClassTutor"
@@ -1303,7 +1303,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Budget Details by Class"
   entityClass: "CourseClass"
@@ -1316,7 +1316,7 @@
     \ item. This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Budget Summary ClassCost Subreport"
   entityClass: "ClassCost"
@@ -1326,7 +1326,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Site Details"
   entityClass: "Site"
@@ -1337,7 +1337,7 @@
     \ for the site.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Course List"
   entityClass: "Course"
@@ -1348,7 +1348,7 @@
     \ Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Total Discounts"
   entityClass: "Enrolment"
@@ -1359,7 +1359,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Certificate-Transcript"
   entityClass: "Certificate"
@@ -1370,7 +1370,7 @@
     \ each of their enrolments and current status of their outcomes."
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Assessment Task Matrix Subreport"
   entityClass: "PrintableAssessmentClassModule"
@@ -1380,7 +1380,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Certificate-SkillSet"
   entityClass: "Certificate"
@@ -1392,7 +1392,7 @@
     \ be generated from units that are recorded as part of onCourse enrolments."
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Rooms List"
   entityClass: "Room"
@@ -1403,7 +1403,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Sales Report"
   entityClass: "Enrolment"
@@ -1415,7 +1415,7 @@
     \ report prints in Landscape format."
   category: 
   sortOn: "invoiceLine.invoice.createdByUser.defaultAdministrationCentre.name;invoiceLine.invoice.createdByUser.lastName;invoiceLine.invoice.createdByUser.firstName"
-  visible: true
+  isVisible: true
   
 - name: "Student Attendance Averages"
   entityClass: "Contact"
@@ -1425,7 +1425,7 @@
   description: "A summary of their overall attendance."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Room Timetable"
   entityClass: "Room"
@@ -1437,7 +1437,7 @@
     \ prints in Landscape format."
   category: 
   sortOn: "name"
-  visible: true
+  isVisible: true
   
 - name: "Budget Summary InvoiceLine Subreport"
   entityClass: "InvoiceLine"
@@ -1447,7 +1447,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Prepaid Fees Liability"
   entityClass: "CourseClass"
@@ -1459,7 +1459,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: "startDateTime;course.code;code"
-  visible: true
+  isVisible: true
   
 - name: "Voucher Report"
   entityClass: "Voucher"
@@ -1469,7 +1469,7 @@
   description: " "
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Training Plan No Detail"
   entityClass: "Enrolment"
@@ -1481,7 +1481,7 @@
     \ Portrait format."
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Payline Subreport"
@@ -1492,7 +1492,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Certificate-Attainment"
   entityClass: "Certificate"
@@ -1504,7 +1504,7 @@
     \ be generated from units that are recorded as part of onCourse enrolments."
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Enrolment Subreport"
   entityClass: "Enrolment"
@@ -1514,7 +1514,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Quote"
   entityClass: "QuoteLine"
@@ -1525,7 +1525,7 @@
     \ prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Classes"
   entityClass: "CourseClass"
@@ -1536,7 +1536,7 @@
     \ such as a term.This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Modules Subreport"
   entityClass: "Module"
@@ -1546,7 +1546,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Roll Tutors"
   entityClass: "CourseClassTutor"
@@ -1556,7 +1556,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Employer SubReport"
   entityClass: "ContactRelation"
@@ -1566,7 +1566,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Unit Of Competency SubReport"
   entityClass: "Outcome"
@@ -1576,7 +1576,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Message List"
   entityClass: "Message"
@@ -1586,7 +1586,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Enrolment Confirmation"
   entityClass: "Enrolment"
@@ -1597,7 +1597,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Discounts by Class"
   entityClass: "CourseClass"
@@ -1608,7 +1608,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: "course.code;code"
-  visible: true
+  isVisible: true
   
 - name: "Course Completion Survey Tutor"
   entityClass: "CourseClass"
@@ -1619,7 +1619,7 @@
     \ results summary for all."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Assessment Task Matrix"
   entityClass: "CourseClass"
@@ -1632,7 +1632,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Vouchers"
   entityClass: "Voucher"
@@ -1642,7 +1642,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Application List"
   entityClass: "Application"
@@ -1652,7 +1652,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Certificate-Attainment Subreport"
   entityClass: "Outcome"
@@ -1662,7 +1662,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Tutor SubReport"
   entityClass: "CourseClassTutor"
@@ -1672,7 +1672,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Class Enrolment Liability Subreport"
   entityClass: "Enrolment"
@@ -1682,7 +1682,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   
 - name: "Assessment Outcome"
   entityClass: "Outcome"
@@ -1692,7 +1692,7 @@
   description: ""
   category: 
   sortOn: "code"
-  visible: false
+  isVisible: false
   
 - name: "Enrolments and Income by Account"
   entityClass: "CourseClass"
@@ -1703,7 +1703,7 @@
     \ by income account This report prints in Portrait format."
   category: 
   sortOn: "incomeAccount.accountCode"
-  visible: true
+  isVisible: true
   
 - name: "Class Timetable Report"
   entityClass: "Session"
@@ -1717,7 +1717,7 @@
     \ prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Sign for Door "
   entityClass: "CourseClass"
@@ -1728,7 +1728,7 @@
     \ of Training Room.This report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Budget Summary by Class"
   entityClass: "CourseClass"
@@ -1740,7 +1740,7 @@
     \ tab in the class window. This report prints in Landscape format."
   category: 
   sortOn: "course.code;code"
-  visible: true
+  isVisible: true
   
 - name: "Income summary projection"
   entityClass: "CourseClass"
@@ -1750,7 +1750,7 @@
   description: "This report prints in Landscape format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Certificate"
   entityClass: "Certificate"
@@ -1763,7 +1763,7 @@
     \ report prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Class Delivery Plan"
   entityClass: "CourseClass"
@@ -1776,7 +1776,7 @@
     \ format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Student feedback List"
   entityClass: "Survey"
@@ -1786,7 +1786,7 @@
   description: "List of all student feedback."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Commonwealth Assistance Notice"
   entityClass: "Enrolment"
@@ -1798,7 +1798,7 @@
     \ Other enrolments will be skipped."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   locale: aus
 
 - name: "Training Plan Delivery"
@@ -1809,7 +1809,7 @@
   description: ""
   category: 
   sortOn: ""
-  visible: false
+  isVisible: false
   locale: aus
 
 - name: "Mailing List"
@@ -1822,7 +1822,7 @@
     \ prints in Portrait format."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Script List"
   entityClass: "Script"
@@ -1832,7 +1832,7 @@
   description: "List of all scripts."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true
   
 - name: "Course Completion Survey Summary"
   entityClass: "CourseClass"
@@ -1842,4 +1842,4 @@
   description: "This report displays course completion survey summary results."
   category: 
   sortOn: ""
-  visible: true
+  isVisible: true

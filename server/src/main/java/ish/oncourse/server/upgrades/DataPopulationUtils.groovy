@@ -90,7 +90,8 @@ class DataPopulationUtils {
             def ausLocale = getString(props, LOCALE)?.equalsIgnoreCase(AUS_LOCALE)
             if(ausLocale != null && ausLocale)
                 automationTrait.setAutomationStatus(AutomationStatus.HIDDEN)
-        }
+        } else if(AutomationStatus.HIDDEN == automationTrait.automationStatus)
+            automationTrait.setAutomationStatus(AutomationStatus.NOT_INSTALLED)
     }
 
     static fillScriptWithCommonFields(Script script, Map<String, Object> props){
