@@ -227,14 +227,14 @@ class EntityApiImpl implements EntityApi {
         if (value == null) {
             return null
         }
+        if (value instanceof BigDecimal) {
+            return ((BigDecimal)value).toPlainString()
+        }
         if (value instanceof Boolean || value instanceof String || value instanceof Number) {
             return value.toString()
         }
         if (value instanceof Date) {
             return DateFormatter.formatDateISO8601(value)
-        }
-        if (value instanceof BigDecimal) {
-            return ((BigDecimal)value).toPlainString()
         }
         if (value instanceof Money) {
             return value.toPlainString()
