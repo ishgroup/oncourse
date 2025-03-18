@@ -349,32 +349,6 @@ task testJar(type: Jar) {
 	from sourceSets.test.output
 }
 
-// "gradlew publishToMavenLocal" if you want to publish this to your local .m2 folder
-publishing {
-	publications {
-		dsldocs(MavenPublication) {
-			artifact (packageDslDoc) {
-				artifactId "dsldocs"
-			}
-		}
-		jar(MavenPublication) {
-			from components.java
-			artifactId 'server-jar'
-		}
-		test(MavenPublication) {
-			artifact (testJar) {
-				artifactId "test"
-			}
-		}
-		executables(MavenPublication) {
-			artifact(distTar) {
-				classifier "executable"
-				extension "zip"
-			}
-		}
-	}
-}
-
 task queryGrammar(type: Aql) {
 	outputDir = file("${project.layout.buildDirectory.get()}/generated-resources/antlr/java/ish/oncourse/aql/impl")
 	packageDir = 'ish.oncourse.aql.impl'
