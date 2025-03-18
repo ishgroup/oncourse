@@ -41,6 +41,14 @@ public enum AutomationStatus implements DisplayableExtendedEnumeration<Integer> 
     @API
     ENABLED(2, "Enabled"),
 
+    /**
+     * Database value: 3
+     *
+     * Automation is hidden for current locale
+     */
+    @API
+    HIDDEN(3, "Hidden"),
+
 
     private String displayName
     private int value
