@@ -3,21 +3,21 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Payslip } from "@api/model";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { checkPermissions } from "../../../common/actions";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { getManualLink } from "../../../common/utils/getManualLink";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getListTags } from "../../tags/actions";
-import PayslipCogwheelOptions from "./components/PayslipCogwheelOptions";
-import PayslipsEditView from "./components/PayslipsEditView";
+import { Payslip } from '@api/model';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { checkPermissions } from '../../../common/actions';
+import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { getManualLink } from '../../../common/utils/getManualLink';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getListTags } from '../../tags/actions';
+import PayslipCogwheelOptions from './components/PayslipCogwheelOptions';
+import PayslipsEditView from './components/PayslipsEditView';
 
 const Initial: Payslip = {
   status: "New",
@@ -110,7 +110,7 @@ class Payslips extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: State) => ({
-  currency: state.currency
+  currency: state.location.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

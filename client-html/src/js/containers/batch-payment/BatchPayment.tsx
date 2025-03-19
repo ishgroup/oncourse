@@ -21,7 +21,8 @@ import {
   D_MMM_YYYY,
   decimalPlus,
   DynamicSizeList,
-  formatCurrency, formatRelativeDate,
+  formatCurrency,
+  formatRelativeDate,
   LinkAdornment,
   makeAppStyles,
   openInternalLink,
@@ -566,7 +567,7 @@ const BatchPayment: React.FC<Props & InjectedFormProps> = ({
 
 const mapStateToProps = (state: State) =>
   ({
-    currencySymbol: state.currency.shortCurrencySymbol,
+    currencySymbol: state.location.currency.shortCurrencySymbol,
     values: getFormValues(FORM)(state),
   });
 

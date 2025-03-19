@@ -4,12 +4,10 @@
  */
 
 import { Account, ClassCost, CourseClassDuplicate, Tax } from '@api/model';
-import { Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Button, FormControlLabel, Grid, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -551,7 +549,7 @@ const mapStateToProps = (state: State) => ({
   earliest: state.courseClass.timetable.earliest,
   sessions: state.courseClass.timetable.sessions,
   hasZeroWages: state.courseClass.timetable.hasZeroWages,
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -125,7 +125,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   customValues: state.paymentsIn.customValues,
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PaymentInCogwheel);

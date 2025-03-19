@@ -3,8 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Typography from '@mui/material/Typography';
+import { FormControlLabel, Typography } from '@mui/material';
 import $t from '@t';
 import { Decimal } from 'decimal.js-light';
 import { formatCurrency, WarningMessage } from 'ish-ui';
@@ -62,7 +61,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
     return (field.finalPriceToPayIncTax < field.chargedFee ? CANCEL_FEE_AMOUNT_WARNING_MESSAGE : null);
   };
 
-  const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+  const currencySymbol = useAppSelector(state => state.location.currency.shortCurrencySymbol);
 
   return (
     <div>

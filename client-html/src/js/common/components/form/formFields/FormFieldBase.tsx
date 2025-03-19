@@ -6,7 +6,7 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Tag } from "@api/model";
+import { Tag } from '@api/model';
 import {
   CheckboxField,
   CodeEditorField,
@@ -21,15 +21,15 @@ import {
   FormSwitch,
   stubFunction,
   TagInputList,
-} from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { WrappedFieldInputProps, WrappedFieldMetaProps } from "redux-form/lib/Field";
-import { COMMON_PLACEHOLDER } from "../../../../constants/Forms";
-import { AngelFormFieldProps } from "../../../../model/common/Fields";
-import { useAppSelector } from "../../../utils/hooks";
-import EditInPlaceQuerySelect from "./EditInPlaceQuerySelect";
-import EditInPlaceRemoteDataSearchSelect from "./EditInPlaceRemoteDataSearchSelect";
+} from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { WrappedFieldInputProps, WrappedFieldMetaProps } from 'redux-form/lib/Field';
+import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
+import { AngelFormFieldProps } from '../../../../model/common/Fields';
+import { useAppSelector } from '../../../utils/hooks';
+import EditInPlaceQuerySelect from './EditInPlaceQuerySelect';
+import EditInPlaceRemoteDataSearchSelect from './EditInPlaceRemoteDataSearchSelect';
 
 const stubFieldMocks = { input: { onChange: stubFunction, onBlur: stubFunction }, format: null, debounced: null, placeholder: null };
 
@@ -41,7 +41,7 @@ const FormFieldBase = (props: AngelFormFieldProps) => {
     ? props
     : stubFieldMocks;
 
-  const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+  const currencySymbol = useAppSelector(state => state.location.currency?.shortCurrencySymbol);
   const processActionId = useAppSelector(state => state.fieldProcessing[input?.name]);
 
   const entity = type === "remoteDataSelect" ? props.entity : null;
