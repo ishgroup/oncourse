@@ -24,6 +24,7 @@ public interface ISchedulerService {
 	String AUDIT_PURGE_JOB = "auditPurgeJob";
 	String EMAIL_DEQUEUEING_JOB_ID = "emailDequeueingJob";
 	String CHARGEBEE_JOB_ID = "chargebeeJob";
+	String REMOVE_SESSIONS_JOB_ID = "removeSessionsJob";
 	String BACKUP_JOB_ID = "backupJob";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_ID = "delayedEnrolmentIncomePostingJob";
 	String VOUCHER_EXPIRY_JOB_ID = "voucherExpiryJob";
@@ -39,6 +40,7 @@ public interface ISchedulerService {
 
 	String EMAIL_DEQUEUEING_JOB_INTERVAL = "45 * * * * ?";
 	String CHARGEBEE_JOB_INTERVAL = "0 0 3am * * ?";
+	String REMOVE_SESSIONS_JOB_INTERVAL = "0 0 4 ? * MON *";
 	String DELAYED_ENROLMENT_INCOME_POSTING_JOB_INTERVAL = "0 30 0am * * ?";
 	String VOUCHER_EXPIRY_JOB_CRON_SCHEDULE = "0 45 0am * * ?";
 	String INVOICE_OVERDUE_UPDATE_JOB_CRON_SCHEDULE_TEMPLATE = "0 %d 1am * * ?";

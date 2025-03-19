@@ -53,7 +53,7 @@ jobs:
         restore-keys: 11-
 
     - name: Build artifacts
-      run: ./gradlew clean server:distZip types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.format.outputs.value}}
+      run: ./gradlew clean server:build types:build -x types:test -x server:test -x client-html:test -PreleaseVersion=${{steps.format.outputs.value}}
 
     - name: Release
       uses: ncipollo/release-action@v1

@@ -8,8 +8,8 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { Typography, IconButton } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import Decimal from 'decimal.js-light';
@@ -33,6 +33,7 @@ import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
 import TabsList, { TabsListItem } from '../../../../common/components/navigation/TabsList';
 import EntityService from '../../../../common/services/EntityService';
 import { getCustomColumnsMap } from '../../../../common/utils/common';
+import { useAppSelector } from '../../../../common/utils/hooks';
 import { getLabelWithCount } from '../../../../common/utils/strings';
 import history from '../../../../constants/History';
 import { EditViewProps } from '../../../../model/common/ListView';
@@ -214,6 +215,7 @@ const getDiscountedFee = (discount, currentTax, classFee) => {
 
 interface BudgetAdornmentProps {
   budget: ClassCostExtended[],
+  budgetTabIndex: string,
   studentFee: ClassCostExtended;
   currencySymbol: string;
   isNew: boolean;
@@ -224,7 +226,6 @@ interface BudgetAdornmentProps {
 }
 
 const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
- budget,
  studentFee,
  currencySymbol,
  isNew,
@@ -232,6 +233,8 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
  expandedBudget,
  expandBudgetItem,
  currentTax,
+ budgetTabIndex,
+ budget
 }) => {
   const { classes } = useBudgetAdornmentStyles();
 
@@ -283,7 +286,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
   return (
     <div>
       <div className={classes.root}>
-        <div>Class fee</div>
+        <div>{$t('class_fee')}</div>
         <div className="money">
           {
             formatCurrency(
@@ -307,7 +310,7 @@ const BudgetAdornment: React.FC<BudgetAdornmentProps> = ({
                 );
 
                 const search = new URLSearchParams(window.location.search);
-                search.append("expandTab", "4");
+                search.append("expandTab", budgetTabIndex);
 
                 history.replace({
                   pathname: history.location.pathname,
@@ -345,28 +348,37 @@ const CourseClassEditView: React.FC<Props> = ({
   currencySymbol,
   taxes,
   tutorRoles,
-                                                onScroll
+  onScroll
 }) => {
   const [classRooms, setClassRooms] = useState<CourseClassRoom[]>([]);
   const [sessionsData, setSessionsData] = useState<any>(null);
   const [expandedBudget, setExpandedBudget] = useState([]);
   const [items, setItems] = useState([...itemsBase]);
 
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
+
   const hasBudgetPermissions = useSelector<State, any>(
     state => state && state.access["/a/v1/list/entity/courseClass/budget/"] && state.access["/a/v1/list/entity/courseClass/budget/"]["GET"]
   );
 
+  const budgetTabIndex = useMemo(() => items.findIndex(i => i.label === "BUDGET").toString(), [items]);
+
   useEffect(() => {
     setItems(itemsBase.filter(i => {
-      if (!hasBudgetPermissions && i.type === "BUDGET") {
-        return false;
+      switch (i.type) {
+        case "BUDGET":
+          return hasBudgetPermissions;
+        case "ATTENDANCE":
+          return values.type !== "Distant Learning";
+        case  "DET export":
+          return values.isTraineeship;
+        case "VET":
+          return !hideAUSReporting;
+        default:
+          return true;
       }
-      if (values.type === "Distant Learning" && i.type === "ATTENDANCE") {
-        return false;
-      }
-      return !(!values.isTraineeship && i.type === "DET export");
     }));
-  }, [hasBudgetPermissions, values.type, values.isTraineeship]);
+  }, [hasBudgetPermissions, hideAUSReporting, values.type, values.isTraineeship]);
 
   const currentTax = useMemo(() => getCurrentTax(taxes, values.taxId), [values.taxId, taxes]);
 
@@ -403,10 +415,11 @@ const CourseClassEditView: React.FC<Props> = ({
           expandBudgetItem={expandBudgetItem}
           budget={values.budget}
           currentTax={currentTax}
+          budgetTabIndex={budgetTabIndex}
         />
       ) : null);
     },
-    [values.budget, twoColumn, isNew, currencySymbol, expandedBudget, currentTax]
+    [values.budget, twoColumn, isNew, currencySymbol, expandedBudget, currentTax, budgetTabIndex]
   );
 
   const timetableLabelAdornment = useMemo(() => {
@@ -585,7 +598,7 @@ const CourseClassEditView: React.FC<Props> = ({
 const mapStateToProps = (state: State) => ({
   taxes: state.taxes.items,
   tutorRoles: state.preferences.tutorRoles,
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps)((props: any) => (props.values ? <CourseClassEditView {...props} /> : null));

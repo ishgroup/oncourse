@@ -9,6 +9,7 @@
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { makeAppStyles } from 'ish-ui';
 import React from 'react';
 
@@ -35,20 +36,20 @@ export default function FiltersSwitcher({ setValue, value }) {
   return (
     <div className="w100 centeredFlex mt-2">
       <Typography variant="caption" className="flex-fill">
-        Filter by
+        {$t('filter_by')}
       </Typography>
       <Tabs classes={{ root: classes.root }} value={value} onChange={handleChange}>
         <Tab
           classes={{
             root: classes.tab
           }}
-          label="Filters & Tags"
+          label={$t('filters_tags')}
         />
         <Tab
           classes={{
             root: classes.tab
           }}
-          label="Checklists"
+          label={$t('checklists')}
         />
       </Tabs>
     </div>

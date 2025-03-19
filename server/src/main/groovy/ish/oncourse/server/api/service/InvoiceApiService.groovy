@@ -38,11 +38,9 @@ import java.time.LocalDate
 
 import static ish.common.types.PaymentSource.SOURCE_ONCOURSE
 import static ish.oncourse.server.api.function.EntityFunctions.addAqlExp
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestInvoiceLineModel
 import static ish.oncourse.server.api.v1.function.InvoiceFunctions.toRestPaymentPlan
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.util.InvoiceUtil.calculateTaxEachForInvoiceLine
 import static ish.util.LocalDateUtils.dateToTimeValue
@@ -276,8 +274,8 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
                     if (iil.discountEachExTax == null) {
                         validator.throwClientErrorException(id, "invoiceLines[$idx].discountEachExTax", 'Invoice line discount each ex Tax is required.')
                     } else {
-                        Money discountTotalExTax = toMoneyValue(iil.discountEachExTax).multiply(iil.quantity)
-                        Money priceTotalExTax = toMoneyValue(iil.priceEachExTax).multiply(iil.quantity)
+                        Money discountTotalExTax = Money.exactOf(iil.discountEachExTax).multiply(iil.quantity)
+                        Money priceTotalExTax = Money.exactOf(iil.priceEachExTax).multiply(iil.quantity)
 
                         if (!discountTotalExTax.zero) {
                             if (priceTotalExTax.negative ? discountTotalExTax < priceTotalExTax : discountTotalExTax > priceTotalExTax) {
@@ -346,7 +344,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
                         : invoice.totalIncTax.toBigDecimal()
 
                 if (!(totalOverdue.round(2).compareTo(totalIncTax.round(2)) == 0)) {
-                    validator.throwClientErrorException(id, 'paymentPlans', "The payment plan adds up to ${toMoneyValue(totalOverdue)} but the invoice total is ${toMoneyValue(totalIncTax)}. These must match before you can save this invoice.")
+                    validator.throwClientErrorException(id, 'paymentPlans', "The payment plan adds up to ${Money.exactOf(totalOverdue)} but the invoice total is ${Money.exactOf(totalIncTax)}. These must match before you can save this invoice.")
                 }
             }
         }
@@ -403,8 +401,8 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
                 iLine.cosAccount = null
             }
             iLine.tax = taxDao.getById(cayenneModel.context, il.taxId)
-            iLine.priceEachExTax = toMoneyValue(il.priceEachExTax)
-            iLine.discountEachExTax = toMoneyValue(il.discountEachExTax?:BigDecimal.ZERO)
+            iLine.priceEachExTax = Money.exactOf(il.priceEachExTax)
+            iLine.discountEachExTax = Money.exactOf(il.discountEachExTax?:BigDecimal.ZERO)
             iLine.description = trimToNull(il.description)
             if (il.courseClassId) {
                 iLine.courseClass = courseClassDao.getById(cayenneModel.context, il.courseClassId)
@@ -420,8 +418,8 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
             iLine.prepaidFeesRemaining = il.courseClassId || il.enrolmentId ? iLine.priceEachExTax.subtract(iLine.discountEachExTax).multiply(iLine.quantity) : Money.ZERO
             iLine.prepaidFeesAccount = accountDao.getById(cayenneModel.context, preferenceController.getDefaultAccountId(DefaultAccount.PREPAID_FEES.preferenceName))
 
-            Money totalEachExTax = toMoneyValue(il.priceEachExTax - (il.discountEachExTax?:BigDecimal.ZERO))
-            Money totalEachIncTax = totalEachExTax.add(toMoneyValue(il.taxEach))
+            Money totalEachExTax = Money.exactOf(il.priceEachExTax - (il.discountEachExTax?:BigDecimal.ZERO))
+            Money totalEachIncTax = totalEachExTax.add(Money.exactOf(il.taxEach))
 
             Money taxAdjustment = MoneyUtil.calculateTaxAdjustment(totalEachIncTax, totalEachExTax,  iLine.tax.rate)
 
@@ -441,7 +439,7 @@ class InvoiceApiService extends TaggableApiService<InvoiceDTO, AbstractInvoice, 
                         i
                     }
 
-            dbInvoiceDueDate.amount = toMoneyValue(idd.amount)
+            dbInvoiceDueDate.amount = Money.exactOf(idd.amount)
             dbInvoiceDueDate.dueDate = idd.date
         }
         invoice.updateDateDue()

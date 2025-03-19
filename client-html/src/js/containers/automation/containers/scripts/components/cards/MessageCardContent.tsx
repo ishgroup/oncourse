@@ -9,6 +9,7 @@
 import { CustomFieldType } from '@api/model';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { Switch } from 'ish-ui';
 import React, { useMemo, } from 'react';
 import { connect } from 'react-redux';
@@ -92,7 +93,7 @@ const MessageCardContent = React.memo<Props>(props => {
       <FormField
         type="text"
         name={`${name}.from`}
-        label="From"
+        label={$t('from')}
         placeholder={(customPreferencesFields && customPreferencesFields[ADMIN_EMAIL_KEY]) || COMMON_PLACEHOLDER}
         disabled={disabled}
         validate={validateEmail}
@@ -104,7 +105,7 @@ const MessageCardContent = React.memo<Props>(props => {
     <Grid container columnSpacing={3} rowSpacing={2} className="mt-2 pb-2">
       <Grid item xs={12} className="centeredFlex">
         <Typography variant="caption" color="textSecondary">
-          Use template
+          {$t('use_template')}
         </Typography>
         <Switch
           checked={templateMessage}
@@ -121,7 +122,7 @@ const MessageCardContent = React.memo<Props>(props => {
               name={typeof templateOptionIndex === "number" && templateOptionIndex !== -1
                 ? `options[${templateOptionIndex}].value`
                 : `${name}.template`}
-              label="Template"
+              label={$t('template')}
               items={messageTemplateItems}
               itemRenderer={renderAutomationItems}
               valueRenderer={renderAutomationItems}
@@ -139,7 +140,7 @@ const MessageCardContent = React.memo<Props>(props => {
             <FormField
               type="text"
               name={`${name}.to`}
-              label="To"
+              label={$t('To')}
               disabled={disabled}
                           />
           </Grid>
@@ -148,7 +149,7 @@ const MessageCardContent = React.memo<Props>(props => {
               type="text"
               name={`${name}.cc`}
               disabled={disabled}
-              label="cc"
+              label={$t('cc')}
                           />
           </Grid>
           <Grid item xs={12}>
@@ -156,14 +157,14 @@ const MessageCardContent = React.memo<Props>(props => {
               type="text"
               name={`${name}.bcc`}
               disabled={disabled}
-              label="bcc"
+              label={$t('bcc')}
                           />
           </Grid>
           <Grid item xs={12}>
             <FormField
               type="text"
               name={`${name}.subject`}
-              label="Subject"
+              label={$t('subject')}
               disabled={disabled}
                           />
           </Grid>
@@ -171,7 +172,7 @@ const MessageCardContent = React.memo<Props>(props => {
             <FormField
               type="multilineText"
               name={`${name}.content`}
-              label="Content"
+              label={$t('content')}
               disabled={disabled}
                           />
           </Grid>
@@ -184,7 +185,7 @@ const MessageCardContent = React.memo<Props>(props => {
             type="text"
             name={`${name}.key`}
             disabled={disabled}
-            label="Key"
+            label={$t('key')}
                       />
         </Grid>
       )}
@@ -195,7 +196,7 @@ const MessageCardContent = React.memo<Props>(props => {
             type="text"
             name={`${name}.keyCollision`}
             disabled={disabled}
-            label="Key collision"
+            label={$t('key_collision')}
                       />
         </Grid>
       )}

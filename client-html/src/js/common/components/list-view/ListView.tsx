@@ -8,8 +8,9 @@
 
 import { Currency, ExportTemplate, LayoutType, Report, TableModel } from '@api/model';
 import ErrorOutline from '@mui/icons-material/ErrorOutline';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import $t from '@t';
 import {
   AnyArgFunction,
   BooleanArgFunction,
@@ -829,7 +830,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
           closeConfirm();
         }}
       >
-        SAVE
+        {$t('save')}
       </Button>
     );
 
@@ -1215,7 +1216,7 @@ class ListView extends React.PureComponent<Props & OwnProps & State["list"] & St
 }
 const mapStateToProps = (state: State) => ({
   fetch: state.fetch,
-  currency: state.currency,
+  currency: state.location.currency,
   isDirty: isDirty(LIST_EDIT_VIEW_FORM_NAME)(state),
   isInvalid: isInvalid(LIST_EDIT_VIEW_FORM_NAME)(state),
   syncErrors: getFormSyncErrors(LIST_EDIT_VIEW_FORM_NAME)(state),

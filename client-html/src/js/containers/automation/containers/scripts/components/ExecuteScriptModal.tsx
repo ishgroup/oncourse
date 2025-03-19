@@ -12,6 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { format } from 'date-fns';
 import { III_DD_MMM_YYYY_HH_MM, usePrevious, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -221,18 +222,18 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
     return (
       <Dialog open onClose={onDialogClose}>
         <DialogTitle>
-          Script execution disabled
+          {$t('script_execution_disabled')}
         </DialogTitle>
 
         <DialogContent>
-          Custom scripts execution disabled due to
+          {$t('custom_scripts_execution_disabled_due_to')}
           {' '}
-          <a href={`https://provisioning.ish.com.au?token=${getCookie("JSESSIONID")}`}>required license</a>
+          <a href={`https://provisioning.ish.com.au?token=${getCookie("JSESSIONID")}`}>{$t('required license')}</a>
         </DialogContent>
 
         <DialogActions>
           <Button color="primary" onClick={onDialogClose}>
-            Close
+            {$t('close')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -271,13 +272,13 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
           </Grid>
 
           {(values.trigger.type === 'On demand' && !filteredCount)
-            && <Alert severity="warning">Attention! This script will be executed against <strong>all</strong> records of the selected entity</Alert>}
+            && <Alert severity="warning">{$t('attention_this_script_will_be_executed_against_str')}</Alert>}
         </DialogContent>
 
         <DialogActions className="p-3">
           <ScriptRunAudit lastRun={lastRun} selectedScriptAudits={selectedScriptAudits} scriptIdSelected={scriptId} />
           <Button color="primary" onClick={onDialogClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           <LoadingButton
             variant="contained"
@@ -286,7 +287,7 @@ const ExecuteScriptModal = React.memo<Props & InjectedFormProps>(props => {
             disabled={invalid || submitting || executing}
             loading={submitting || executing}
           >
-            Run script
+            {$t('run_script')}
           </LoadingButton>
         </DialogActions>
       </form>

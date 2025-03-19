@@ -12,6 +12,7 @@ import Slide from '@mui/material/Slide';
 import { alpha } from '@mui/material/styles';
 import { TransitionProps } from '@mui/material/transitions';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import * as d3 from 'd3';
 import { getColor, makeAppStyles, NoArgFunction, StringArgFunction, useWindowSize } from 'ish-ui';
@@ -334,7 +335,7 @@ const RelationshipView: React.FC<Props> = props => {
     >
       <LoadingIndicator position="fixed" customLoading={coursesLoading} />
       <AppBarContainer
-        title="Relationships"
+        title={$t('relationships')}
         onCloseClick={onClose}
         disableInteraction
         hideHelpMenu
@@ -348,7 +349,7 @@ const RelationshipView: React.FC<Props> = props => {
           {
             (!courses.length || !sellables.length) &&  !coursesLoading && <div className="noRecordsMessage">
               <Typography variant="h6" color="inherit" align="center">
-                No relations were found
+                {$t('no_relations_were_found')}
               </Typography>
             </div>
           }

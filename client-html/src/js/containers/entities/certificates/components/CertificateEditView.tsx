@@ -6,6 +6,7 @@
 import { Certificate, CertificateOutcome, Contact } from '@api/model';
 import { FormControlLabel, Grid, Theme, Typography } from '@mui/material';
 import Link from '@mui/material/Link';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import { AnyArgFunction, III_DD_MMM_YYYY, LinkAdornment, NumberArgFunction, StringArgFunction } from 'ish-ui';
@@ -231,7 +232,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
       && values.code && (
         <div className="relative pt-2">
           <Typography variant="subtitle2" color="textSecondary">
-            Certificate verification
+            {$t('certificate_verification')}
           </Typography>
           <Typography variant="body2">{values.code}</Typography>
           <Link
@@ -270,7 +271,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
                 entity="Contact"
                 aqlFilter="isStudent is true"
                 name="studentContactId"
-                label="Student name"
+                label={$t('student_name')}
                 selectValueMark="id"
                 selectLabelCondition={getContactFullName}
                 defaultValue={values.studentName}
@@ -296,9 +297,9 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         rowSpacing={2}
         className={clsx( classes.root)}
       >
-        {isNew && <div className={clsx("backgroundText paperTextColor", { "fs19": twoColumn })}>Draft</div>}
+        {isNew && <div className={clsx("backgroundText paperTextColor", { "fs19": twoColumn })}>{$t('draft')}</div>}
         {Boolean(values.revokedOn) && (
-          <div className={clsx("backgroundText errorColorFade-0-2", { "fs19": twoColumn })}>Revoked</div>
+          <div className={clsx("backgroundText errorColorFade-0-2", { "fs19": twoColumn })}>{$t('revoked')}</div>
         )}
 
         <Grid item xs={12} className={clsx(classes.switch, "centeredFlex")}>
@@ -306,7 +307,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
             control={<FormField type="switch" name="isQualification" color="primary" />}
             label={(
               <Typography display="inline" variant="body2">
-                Full qualification or skillset
+                {$t('full_qualification_or_skillset')}
               </Typography>
             )}
             labelPlacement="start"
@@ -335,7 +336,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
             type="remoteDataSelect"
             entity="Qualification"
             name="nationalCode"
-            label="National code"
+            label={$t('national_code')}
             selectValueMark="nationalCode"
             selectLabelMark="nationalCode"
             validate={values.isQualification ? validateSingleMandatoryField : undefined}
@@ -357,7 +358,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
             type="remoteDataSelect"
             entity="Qualification"
             name="title"
-            label="Qualification"
+            label={$t('qualification')}
             selectValueMark="title"
             selectLabelMark="title"
             validate={values.isQualification ? validateSingleMandatoryField : undefined}
@@ -376,7 +377,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <Uneditable
-            label="Level"
+            label={$t('level')}
             value={values.level}
           />
         </Grid>
@@ -388,7 +389,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
             <FormField
               type="multilineText"
               name="publicNotes"
-              label="Printed public notes / Specialization"
+              label={$t('printed_public_notes_specialization')}
                           />
           </Grid>
         </Grid>
@@ -397,22 +398,22 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <FormField
             type="date"
             name="awardedOn"
-            label="Awarded"
+            label={$t('awarded')}
             required
           />
         </Grid>
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <Uneditable
-            label="Printed"
+            label={$t('printed')}
             value={printedValue}
-            placeholder="Not Printed"
+            placeholder={$t('not_printed')}
           />
         </Grid>
 
         <Grid item xs={twoColumn ? 3 : 12}>
           <Uneditable
-            label="Certificate Number"
+            label={$t('certificate_number')}
             value={certificateNumber}
           />
         </Grid>
@@ -420,18 +421,18 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
         {twoColumn && <Grid item xs={3} />}
 
         <Grid item xs={twoColumn ? 3 : 12}>
-          <FormField type="date" name="issuedOn" label="Issued" />
+          <FormField type="date" name="issuedOn" label={$t('issued')} />
         </Grid>
 
         <Grid item xs={twoColumn ? 3 : 12}>
-          <FormField type="date" name="expiryDate" label="Expiry" />
+          <FormField type="date" name="expiryDate" label={$t('expiry')} />
         </Grid>
 
         <Grid item xs={twoColumn ? 3 : 12} className={clsx({ "d-none": isNew })}>
           <Uneditable
-            label="Revoked"
+            label={$t('revoked')}
             value={revokedValue}
-            placeholder="None"
+            placeholder={$t('none')}
           />
         </Grid>
 
@@ -439,7 +440,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
 
         <Grid item container xs={12} className={twoColumn ? "pt-2 pb-2" : undefined}>
           <Grid item xs={twoColumn ? 6 : 12}>
-            <FormField type="multilineText" name="privateNotes" label="Private notes" />
+            <FormField type="multilineText" name="privateNotes" label={$t('private_notes')} />
           </Grid>
         </Grid>
 
@@ -447,7 +448,7 @@ const CertificateEditView: React.FunctionComponent<Props> = React.memo(props => 
           <NestedList
             formId={values.id}
             name="outcomes"
-            title="Transcript"
+            title={$t('transcript')}
             searchType="immediate"
             values={outcomes}
             validate={validateOutcomes}

@@ -11,6 +11,7 @@ import { Backdrop, Collapse, Divider } from '@mui/material';
 import { darken } from '@mui/material/styles';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { AnyArgFunction, AppTheme, openInternalLink } from 'ish-ui';
 import * as React from 'react';
@@ -437,10 +438,10 @@ const SwipeableSidebar: React.FC<Props> = props => {
             <Collapse in={(focusOnSearchInput && !showUserSearch)}>
               <div className="p-2">
                 <Typography className="mb-1" component="div" variant="body2" color="textSecondary">
-                  Navigate to an onCourse feature by typing the action you want to perform.
+                  {$t('navigate_to_an_oncourse_feature_by_typing_the_acti')}
                 </Typography>
                 <Typography className="mb-1" component="div" variant="body2" color="textSecondary">
-                  Search for contacts by phone, email or name. Find courses, invoices and much more.
+                  {$t('search_for_contacts_by_phone_email_or_name_find_co')}
                 </Typography>
               </div>
             </Collapse>

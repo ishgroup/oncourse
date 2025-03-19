@@ -6,19 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Faculty } from "@api/model";
-import React, { useEffect } from "react";
-import { initialize } from "redux-form";
-import { checkPermissions } from "../../../common/actions";
-import { notesAsyncValidate } from "../../../common/components/form/notes/utils";
-import { clearListState, getFilters, setListEditRecord } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { useAppDispatch } from "../../../common/utils/hooks";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { getEntityRelationTypes } from "../../preferences/actions";
-import { getListTags } from "../../tags/actions";
-import FacultyEditView from "./components/FacultyEditView";
+import { Faculty } from '@api/model';
+import React, { useEffect } from 'react';
+import { initialize } from 'redux-form';
+import { checkPermissions } from '../../../common/actions';
+import { notesAsyncValidate } from '../../../common/components/form/notes/utils';
+import { clearListState, getFilters, setListEditRecord } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { useAppDispatch } from '../../../common/utils/hooks';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { getEntityRelationTypes } from '../../preferences/actions';
+import { getListTags } from '../../tags/actions';
+import FacultyEditView from './components/FacultyEditView';
 
 const ENTITY_NAME = "Faculty";
 
@@ -53,14 +53,14 @@ const findRelatedGroup: FindRelatedItem[] = [
     title: "Current students",
     list: "contact",
     expression:
-    // eslint-disable-next-line max-len
+    
       "student.enrolments.status == SUCCESS and student.enrolments.courseClass.endDateTime > now and student.enrolments.courseClass.course.facultyId"
   },
   {
     title: "Completed students",
     list: "contact",
     expression:
-    // eslint-disable-next-line max-len
+    
       "student.enrolments.status == SUCCESS and student.enrolments.courseClass.endDateTime <= now and student.enrolments.courseClass.course.facultyId"
   },
   {

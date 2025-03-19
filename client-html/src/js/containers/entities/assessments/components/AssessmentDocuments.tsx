@@ -3,10 +3,11 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from "@mui/material/Grid";
-import React from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
 
 interface AssessmentDocumentsProps {
   classes?: any;
@@ -25,7 +26,7 @@ const AssessmentDocuments: React.FC<AssessmentDocumentsProps> = props => {
     <Grid container columnSpacing={3} className="p-3 saveButtonTableOffset">
       <FieldArray
         name="documents"
-        label="Documents"
+        label={$t('documents')}
         entity="Assessment"
         classes={classes}
         component={DocumentsRenderer}

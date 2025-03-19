@@ -92,7 +92,7 @@ const filterGroups: FilterGroup[] = [
       {
         name: "Students currently enrolled",
         expression:
-        // eslint-disable-next-line max-len
+        
           "(studentCourseClass.endDateTime >= yesterday or studentCourseClass.endDateTime == null) and studentCourseClass.isCancelled == false and studentEnrolments.status == SUCCESS",
         active: false
       },
@@ -247,7 +247,7 @@ const VetReporting: React.FC<VetReportingProps> = props => {
           relationTypesItem.items.push({
             title: t.relationName,
             list: "contact",
-            // eslint-disable-next-line max-len
+            
             customExpression: ids => `(fromRelationType.id = "${t.id}" and fromRelatedContacts.id in (${ids})) or (toRelationType.id = "${t.id}" and toRelatedContacts.id in (${ids}))`
           });
 

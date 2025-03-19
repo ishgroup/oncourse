@@ -3,12 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassPaymentPlan, Tax } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { addDays, format } from "date-fns";
+import { CourseClassPaymentPlan, Tax } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { addDays, format } from 'date-fns';
 import {
   AddButton,
   D_MMM_YYYY,
@@ -18,15 +19,15 @@ import {
   decimalPlus,
   formatCurrency,
   normalizeNumber
-} from "ish-ui";
-import React, { useCallback, useMemo } from "react";
-import { arrayInsert, arrayRemove, change } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { IS_JEST } from "../../../../../../constants/EnvironmentConstants";
-import { BudgetCostModalContentProps } from "../../../../../../model/entities/CourseClass";
-import { accountLabelCondition } from "../../../../accounts/utils";
-import { getCurrentTax } from "../../../../taxes/utils";
-import { getPaymentPlansTotal } from "../utils";
+} from 'ish-ui';
+import React, { useCallback, useMemo } from 'react';
+import { arrayInsert, arrayRemove, change } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { IS_JEST } from '../../../../../../constants/EnvironmentConstants';
+import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
+import { accountLabelCondition } from '../../../../accounts/utils';
+import { getCurrentTax } from '../../../../taxes/utils';
+import { getPaymentPlansTotal } from '../utils';
 
 const StudentFeePaymentPlan: React.FC<any> = ({
  index, item, onDelete, onBlur, classStart
@@ -59,7 +60,7 @@ const StudentFeePaymentPlan: React.FC<any> = ({
         />
       </Grid>
       <Grid item xs={3}>
-        <FormField type="money" name={`${name}.amount`} label="Amount" required {...fieldAmountProps}  />
+        <FormField type="money" name={`${name}.amount`} label={$t('amount')} required {...fieldAmountProps}  />
       </Grid>
 
       <Grid item xs={1}>
@@ -145,13 +146,13 @@ const StudentFeeContent: React.FC<Props> = ({
   return (
     <Grid container columnSpacing={3} rowSpacing={2}>
       <Grid item xs={8}>
-        <FormField type="text" name="description" label="Invoice line title"  />
+        <FormField type="text" name="description" label={$t('invoice_line_title')}  />
       </Grid>
       <Grid item xs={4}>
         <FormField
           type="select"
           name="taxId"
-          label="Tax type"
+          label={$t('tax_type')}
           selectValueMark="id"
           selectLabelMark="code"
           onChange={updateFormFeeByTax}
@@ -165,7 +166,7 @@ const StudentFeeContent: React.FC<Props> = ({
           type="select"
           name="accountId"
           selectValueMark="id"
-          label="Account"
+          label={$t('account')}
           selectLabelCondition={accountLabelCondition}
           onChange={onAccountIdChange}
           debounced={false}
@@ -176,14 +177,14 @@ const StudentFeeContent: React.FC<Props> = ({
         <FormField
           type="money"
           name="perUnitAmountIncTax"
-          label="On enrolment"
+          label={$t('on_enrolment')}
           onBlur={onPerUnitChange}
           required
         />
       </Grid>
 
       <Grid item xs={12} className="centeredFlex">
-        <div className="heading">Payment plans</div>
+        <div className="heading">{$t('payment_plans')}</div>
         <AddButton onClick={addPaymentPlan} />
       </Grid>
       <Grid container columnSpacing={3} item xs={12}>

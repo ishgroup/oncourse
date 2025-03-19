@@ -11,6 +11,7 @@ import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { mapSelectItems, normalizeNumberToPositive } from 'ish-ui';
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
@@ -91,9 +92,9 @@ const CopySessionDialogBase = React.memo<any>(props => {
             <form>
               <Paper className={classes.paper} elevation={8}>
                 <DialogContent className="overflow-hidden">
-                  <div className="heading pb-2">Repeat</div>
+                  <div className="heading pb-2">{$t('repeat')}</div>
                   <Typography variant="body2" color="inherit" component="div" className="pb-1">
-                    Repeat this session
+                    {$t('repeat_this_session')}
                     {" "}
                     <FormField
                       type="number"
@@ -107,11 +108,11 @@ const CopySessionDialogBase = React.memo<any>(props => {
                       inline
                     />
                     {" "}
-                    times
+                    {$t('times2')}
                   </Typography>
 
                   <Typography variant="body2" color="inherit" component="div" className="pb-2">
-                    Repeat every
+                    {$t('repeat_every')}
                     {" "}
                     <FormField
                       type="select"
@@ -125,10 +126,10 @@ const CopySessionDialogBase = React.memo<any>(props => {
 
                 <DialogActions>
                   <Button color="primary" onClick={onCancel}>
-                    Cancel
+                    {$t('cancel')}
                   </Button>
                   <Button color="primary" onClick={onSaveBase} disabled={invalid} variant="contained">
-                    Create Sessions
+                    {$t('create_sessions')}
                   </Button>
                 </DialogActions>
                 <div className={classes.corner} />

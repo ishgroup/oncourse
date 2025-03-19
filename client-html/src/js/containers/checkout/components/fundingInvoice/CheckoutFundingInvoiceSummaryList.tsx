@@ -3,8 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Grid, Typography } from '@mui/material';
+import $t from '@t';
 import { AppTheme } from 'ish-ui';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -81,7 +81,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           name={`fundingInvoices[${selectedItemIndex}].fundingProviderId`}
           entity="Contact"
           aqlFilter="isCompany is true"
-          label="Funding provider"
+          label={$t('funding_provider')}
           selectValueMark="id"
           selectLabelCondition={getContactFullName}
           defaultValue={fundingInvoice.company && getContactFullName(fundingInvoice.company)}
@@ -97,7 +97,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
         <FormField
           type="text"
           name={`fundingInvoices[${selectedItemIndex}].vetPurchasingContractID`}
-          label="Purchasing contract identifier (NSW Commitment ID)"
+          label={$t('purchasing_contract_identifier_nsw_commitment_id')}
           validate={validateVetPurchasingContractIdentifier}
         />
       </Grid>
@@ -131,7 +131,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
           <Grid item sm={6}>
             <div className="centeredFlex">
               <Typography className="heading pt-1 pb-1">
-                Training Plan
+                {$t('training_plan2')}
               </Typography>
             </div>
             <FieldArray
@@ -150,7 +150,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  currency: state.currency
+  currency: state.location.currency
 });
 
 export default connect<any, any, any>(

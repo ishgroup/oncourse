@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, Transaction } from "@api/model";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { initialize } from "redux-form";
-import { clearListState, getFilters, setListEditRecord, } from "../../../common/components/list-view/actions";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../common/components/list-view/constants";
-import ListView from "../../../common/components/list-view/ListView";
-import { FilterGroup, FindRelatedItem } from "../../../model/common/ListView";
-import { State } from "../../../reducers/state";
-import { getPlainAccounts } from "../accounts/actions";
-import TransactionsEditView from "./components/TransactionsEditView";
+import { Account, Transaction } from '@api/model';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { initialize } from 'redux-form';
+import { clearListState, getFilters, setListEditRecord, } from '../../../common/components/list-view/actions';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../common/components/list-view/constants';
+import ListView from '../../../common/components/list-view/ListView';
+import { FilterGroup, FindRelatedItem } from '../../../model/common/ListView';
+import { State } from '../../../reducers/state';
+import { getPlainAccounts } from '../accounts/actions';
+import TransactionsEditView from './components/TransactionsEditView';
 
 const primaryColumnCondition = rows => `${rows["transactionDate"]}  ${rows["amount"]}`;
 
@@ -118,7 +118,7 @@ class Transactions extends React.Component<any, any> {
 
 const mapStateToProps = (state: State) => ({
   accounts: state.plainSearchRecords.Account.items,
-  currency: state.currency
+  currency: state.location.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

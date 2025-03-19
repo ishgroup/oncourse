@@ -21,8 +21,8 @@ class VoucherTest extends TestWithDatabase {
         ValidationResult result = new ValidationResult()
 
         VoucherProduct vProduct = cayenneContext.newObject(VoucherProduct.class)
-        vProduct.setPriceExTax(new Money("100.0"))
-        vProduct.setValue(new Money("100.0"))
+        vProduct.setPriceExTax(Money.of("100.0"))
+        vProduct.setValue(Money.of("100.0"))
 
         InvoiceLine il = cayenneContext.newObject(InvoiceLine.class)
 

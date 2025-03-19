@@ -15,7 +15,7 @@ Feature: Main feature for all GET requests with path 'preference/currency'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == {"name":"AUSTRALIA","shortCurrencySymbol":"$","currencySymbol":"AUD"}
+        And match $ == {"name":"Australia","shortCurrencySymbol":"$","currencySymbol":"AUD"}
 
 
 
@@ -27,4 +27,4 @@ Feature: Main feature for all GET requests with path 'preference/currency'
         Given path ishPath
         When method GET
         Then status 200
-        And match $ == {"name":"AUSTRALIA","shortCurrencySymbol":"$","currencySymbol":"AUD"}
+        And match $ == {"name":"Australia","shortCurrencySymbol":"$","currencySymbol":"AUD"}

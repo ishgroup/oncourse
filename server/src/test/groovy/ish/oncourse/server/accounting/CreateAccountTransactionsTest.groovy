@@ -37,7 +37,7 @@ class CreateAccountTransactionsTest extends TestWithDatabase {
         Account secondaryAccount = allAssets[1]
         Assertions.assertFalse(primaryAccount.id == secondaryAccount.id)
 
-        Money amount = new Money(50 as BigDecimal)
+        Money amount = Money.of(50 as BigDecimal)
         LocalDate transactionDate = LocalDate.of(2018, Month.MAY, 28)
 
 
@@ -62,7 +62,7 @@ class CreateAccountTransactionsTest extends TestWithDatabase {
         Assertions.assertEquals(0L, accountTransaction.foreignRecordId)
 
 
-        Money amount2 = new Money(50 as BigDecimal)
+        Money amount2 = Money.of(50 as BigDecimal)
         detail = AccountTransactionDetail.valueOf(primaryAccount, liabilityAccount, amount2, AccountTransactionType.INVOICE_LINE, 11L, transactionDate)
         CreateAccountTransactions.valueOf(cayenneContext, detail).create()
 

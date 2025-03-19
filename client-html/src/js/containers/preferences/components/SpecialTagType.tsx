@@ -7,6 +7,7 @@
  */
 
 import { Button, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
 import { makeAppStyles, NumberArgFunction } from 'ish-ui';
 import React from 'react';
 import FormField from '../../../common/components/form/formFields/FormField';
@@ -29,7 +30,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
         <FormField
           type="text"
           name={`types.${index}.name`}
-          label="Name"
+          label={$t('name')}
           className={classes.field}
           disabled={disabled}
           validate={validateUniqueNamesInArray}
@@ -49,7 +50,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
               parse={v => (v ? "Show on website" : "Private")}
               debounced={false}
             />}
-            label="Visible on web"
+            label={$t('visible_on_web')}
             labelPlacement="start"
           />
           <div>
@@ -60,7 +61,7 @@ function SpecialTagType({ index, onDelete, disabled }: SpecialTagTypeProps) {
               className={classes.deleteButton}
               disabled={disabled}
             >
-              Delete
+              {$t('delete2')}
             </Button>
           </div>
         </div>

@@ -3,13 +3,14 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import React from "react";
-import { connect } from "react-redux";
-import { CheckoutSummaryListItem } from "../../../../model/checkout";
-import { State } from "../../../../reducers/state";
-import { getContactFullName } from "../../../entities/contacts/utils";
-import { CheckoutPage } from "../../constants";
-import { HeaderFieldTypo } from "../HeaderField";
+import $t from '@t';
+import React from 'react';
+import { connect } from 'react-redux';
+import { CheckoutSummaryListItem } from '../../../../model/checkout';
+import { State } from '../../../../reducers/state';
+import { getContactFullName } from '../../../entities/contacts/utils';
+import { CheckoutPage } from '../../constants';
+import { HeaderFieldTypo } from '../HeaderField';
 
 interface Props {
   classes?: any;
@@ -41,7 +42,7 @@ const CheckoutSummaryHeaderField = React.memo<Props>(props => {
   return (
     <>
       <HeaderFieldTypo
-        title="This invoice"
+        title={$t('this_invoice')}
         activeField={activeField}
         field={CheckoutPage.summary}
         onClick={onClickSummaryInvoice}
@@ -57,7 +58,7 @@ const CheckoutSummaryHeaderField = React.memo<Props>(props => {
 const mapStateToProps = (state: State) => ({
   summaryList: state.checkout.summary.list,
   summaryFinalTotal: state.checkout.summary.finalTotal,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(CheckoutSummaryHeaderField);
