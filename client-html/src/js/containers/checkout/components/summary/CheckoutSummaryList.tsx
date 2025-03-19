@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from '@mui/material/Grid';
+import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import $t from '@t';
 import clsx from 'clsx';
@@ -153,7 +153,7 @@ const mapStateToProps = (state: State) => ({
   selectedItems: state.checkout.items,
   summary: state.checkout.summary,
   finalTotal: state.checkout.summary.finalTotal,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   voucherItems: state.checkout.summary.voucherItems,
   disableDiscounts: state.checkout.disableDiscounts
 });

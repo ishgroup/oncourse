@@ -181,7 +181,7 @@ const PaymentForm: React.FC<CashPaymentPageProps & InjectedFormProps> = props =>
 const mapStateToProps = (state: State) => ({
   hasSummarryErrors: isInvalid(CheckoutSelectionForm)(state),
   priceToPay: state.checkout.summary.payNowTotal,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   payment: state.checkout.payment,
   paymentId: state.checkout.payment.paymentId,
   paymentInvoice: state.checkout.payment.invoice,

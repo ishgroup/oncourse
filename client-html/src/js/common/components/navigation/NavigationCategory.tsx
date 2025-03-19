@@ -90,7 +90,7 @@ const NavigationCategory = (
   const { classes } = useStyles();
 
   const scripts = useAppSelector(state => state.dashboard.scripts);
-  
+
   const category = useMemo(() => navigation.categories.find(c => c.key === selected), [selected]);
   
   const features = useMemo(() => (category 

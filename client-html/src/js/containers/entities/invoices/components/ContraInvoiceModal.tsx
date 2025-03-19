@@ -4,8 +4,7 @@
  */
 
 import { Currency } from '@api/model';
-import { Grid, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
+import { Button, Grid, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -225,7 +224,7 @@ const ContraInvoiceModal: React.FunctionComponent<Props> = props => {
 
 const mapStateToProps = (state: State) => ({
   values: getFormValues("ContraInvoiceForm")(state),
-  currency: state.currency
+  currency: state.location.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

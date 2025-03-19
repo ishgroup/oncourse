@@ -354,7 +354,7 @@ const ContactInsight = (
   const [dateValue, setDateValue] = useState<string>(null);
   const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>(null);
 
-  const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+  const currencySymbol = useAppSelector(state => state.location.currency.shortCurrencySymbol);
   const recepients = useAppSelector(state => state.list.recepients);
   const emailFrom = useAppSelector(state => state.userPreferences[EMAIL_FROM_KEY]);
   const fetchPending = useAppSelector(state => state.fetch.pending);

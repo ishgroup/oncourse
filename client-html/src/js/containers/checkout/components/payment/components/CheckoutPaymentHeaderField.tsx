@@ -7,9 +7,7 @@
  */
 import { CheckoutPaymentPlan, PaymentMethod } from '@api/model';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import { FormControlLabel, Typography, Tooltip } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { addDays, compareAsc, isSameDay } from 'date-fns';
@@ -670,7 +668,7 @@ const mapStateToProps = (state: State, ownProps) => ({
   checkoutSummary: state.checkout.summary,
   checkoutItems: state.checkout.items,
   savedCreditCard: state.checkout.payment.savedCreditCard,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   defaultTerms: state.invoices.defaultTerms,
   paymentProcessStatus: state.checkout.payment.process.status,
   paymentMethod: state.checkout.payment.selectedPaymentType,

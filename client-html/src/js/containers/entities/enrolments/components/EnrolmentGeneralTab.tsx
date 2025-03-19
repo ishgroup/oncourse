@@ -22,6 +22,7 @@ import NestedEntity from '../../../../common/components/form/nestedEntity/Nested
 import ExpandableContainer from '../../../../common/components/layout/expandable/ExpandableContainer';
 import FullScreenStickyHeader
   from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { useAppSelector } from '../../../../common/utils/hooks';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { EnrolmentExtended } from '../../../../model/entities/Enrolment';
 import { State } from '../../../../reducers/state';
@@ -102,6 +103,8 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
 
   const outcomesAddLink = useMemo(() => `/outcome/new?search=enrolment.id=${values.id}`, [values.id]);
 
+  const hideAUSReporting = useAppSelector(state => state.location.countryCode !== 'AU');
+
   return (
     <Grid container columnSpacing={3} rowSpacing={2} className={clsx("pl-3 pr-3", twoColumn ? "pt-2" : "pt-3")}>
       <Grid item xs={12}>
@@ -152,19 +155,20 @@ const EnrolmentGeneralTab: React.FC<Props> = props => {
         />
       </Grid>
 
-      <Grid item xs={12} className="pt-2 pb-3">
-        <Divider />
-      </Grid>
+      {!hideAUSReporting && <>
+        <Grid item xs={12} className="pt-2 pb-3">
+          <Divider />
+        </Grid>
+          <EnrolmentDetails
+            values={values}
+            twoColumn={twoColumn}
+            contracts={contracts}
+          />
+        <Grid item xs={12} className="pt-2 pb-3">
+          <Divider />
+        </Grid>
+      </> }
 
-      <EnrolmentDetails
-        values={values}
-        twoColumn={twoColumn}
-        contracts={contracts}
-      />
-
-      <Grid item xs={12} className="pt-2 pb-3">
-        <Divider />
-      </Grid>
       <Grid item xs={12}>
         <NestedEntity
           entityTypes={invoiceTypes}

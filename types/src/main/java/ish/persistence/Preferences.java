@@ -527,6 +527,7 @@ public interface Preferences {
 	// **************************************
 
 	String EXTENDED_SEARCH_TYPES = "ish.display.extendedSearchTypes";
+	String AUS_REPORTING = "ish.display.AUSReporting";
 
 
 	// **************************************

@@ -30,6 +30,8 @@ public enum  ResourceProperty {
     OUTPUT_TYPE("outputType"),
     SHORT_DESCRIPTION("short"),
     CATEGORY("category"),
+    LOCALE("locale"),
+    AUS_REPORTING("aus_reporting"),
     TAG("tag"),
 
     @Deprecated

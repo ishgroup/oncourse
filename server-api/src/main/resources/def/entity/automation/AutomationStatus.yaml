@@ -3,3 +3,4 @@ enum:
   - Not Installed
   - Installed but Disabled
   - Enabled
+  - Hidden

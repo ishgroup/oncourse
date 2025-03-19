@@ -376,7 +376,7 @@ const mapStateToProps = (state: State) => ({
   statisticData: state.dashboard.statistics.data,
   isUpdating: state.dashboard.statistics.updating,
   hasAuditPermissions: state.access["/a/v1/list/plain?entity=Audit"] && state.access["/a/v1/list/plain?entity=Audit"]["GET"],
-  currency: state.currency
+  currency: state.location.currency
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
