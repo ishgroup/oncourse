@@ -20,7 +20,6 @@ import javax.money.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -693,19 +692,35 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 
 	@Override
 	public Money[] divideAndRemainder(long l) {
-		return Arrays.stream(toMoneta().divideAndRemainder(l)).map(this::toInstance).toArray(Money[]::new);
+		// not use lambda and method reference because DSL compile everything as Groovy and Groovy doesn't support Java lambda and '::' syntax
+		org.javamoney.moneta.Money[] divideAndRemainderData = toMoneta().divideAndRemainder(l);
+		Money[] result = new Money[divideAndRemainderData.length];
+		for (int i = 0; i < divideAndRemainderData.length; i++) {
+			result[i] = toInstance(divideAndRemainderData[i]);
+		}
+		return result;
 	}
 
 	@Override
 	public Money[] divideAndRemainder(double v) {
-		return Arrays.stream(toMoneta().divideAndRemainder(v)).map(this::toInstance).toArray(Money[]::new);
+		// not use lambda and method reference because DSL compile everything as Groovy and Groovy doesn't support Java lambda and '::' syntax
+		org.javamoney.moneta.Money[] divideAndRemainderData = toMoneta().divideAndRemainder(v);
+		Money[] result = new Money[divideAndRemainderData.length];
+		for (int i = 0; i < divideAndRemainderData.length; i++) {
+			result[i] = toInstance(divideAndRemainderData[i]);
+		}
+		return result;
 	}
 
 	@Override
 	public Money[] divideAndRemainder(@Nullable Number amount) {
-		return Objects.isNull(amount) ?
-				new Money[]{ this } :
-				Arrays.stream(toMoneta().divideAndRemainder(amount)).map(this::toInstance).toArray(Money[]::new);
+		// not use lambda and method reference because DSL compile everything as Groovy and Groovy doesn't support Java lambda and '::' syntax
+		org.javamoney.moneta.Money[] divideAndRemainderData = toMoneta().divideAndRemainder(amount);
+		Money[] result = new Money[divideAndRemainderData.length];
+		for (int i = 0; i < divideAndRemainderData.length; i++) {
+			result[i] = toInstance(divideAndRemainderData[i]);
+		}
+		return result;
 	}
 
 	@Override
