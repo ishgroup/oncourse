@@ -37,8 +37,6 @@ class EWayPaymentAPI {
 
     private static final String  TRX_PURCHASE_TYPE = "Purchase"
     private static final String  TRX_RECURRING_TYPE = "Recurring"
-    private static final String  CURRENCY_CODE_AUD = "AUD"
-    private static final String  COUNTRY_CODE_AU = "AU"
     private static final String  METHOD_PROCESS_PAYMENT = "ProcessPayment"
     private static final String  METHOD_TOKEN_PAYMENT = "TokenPayment"
 
@@ -94,8 +92,7 @@ class EWayPaymentAPI {
                                         payment            : [
                                                                 // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                                                 totalAmount: amount.multiply(100).toInteger(),
-                                                                // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
-                                                                currencyCode: CURRENCY_CODE_AUD,
+                                                                currencyCode: amount.currencyContext.currencyCode,
                                                                 invoiceReference: merchantReference
                                         ],
                                         language           : "en",
@@ -105,7 +102,7 @@ class EWayPaymentAPI {
                                         Customer           : [
                                                                 firstName: contact.firstName,
                                                                 lastName: contact.lastName,
-                                                                country: COUNTRY_CODE_AU,
+                                                                country: amount.getCurrencyContext().locale.country,
                                                                 email: contact.email,
                                                                 phone: contact.mobilePhone
                                         ],
@@ -127,7 +124,7 @@ class EWayPaymentAPI {
                      path: '/AccessCodesShared',
                      contentType: ContentType.JSON,
                      headers: [
-                                Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                 "X-EWAY-APIVERSION": 47
                      ],
                      requestContentType: ContentType.JSON,
@@ -150,7 +147,7 @@ class EWayPaymentAPI {
                      path: "/transaction/$accessCodeOrTransactionId",
                      contentType: ContentType.JSON,
                      headers: [
-                                Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                 "X-EWAY-APIVERSION": 47
                               ],
                     ]) { response, body ->
@@ -263,6 +260,84 @@ class EWayPaymentAPI {
             logger.catching(e)
         }
 
+
+        return attributes
+    }
+
+    SessionAttributes sendTwoStepPayment(Money amount, String merchantReference, String cardDataId) {
+        SessionAttributes attributes = new SessionAttributes()
+        try {
+            HTTPBuilder builder  = new HTTPBuilder()
+            builder.handler['failure'] = {
+                response, body -> failHandler(response, body, attributes)
+            }
+
+            builder.handler['success'] = { response, body ->
+                logger.info("Make eWay capture request finished, response body: ${body.toString()}")
+                buildSessionAttributesFromTransaction(attributes, body as Map<String, Object>)
+                attributes.clientSecret = body["AuthorisationCode"]
+                logStatusOrError(attributes)
+            }
+
+            builder.post(
+                    [uri               : eWayBaseUrl,
+                     path              : '/transaction',
+                     contentType       : ContentType.JSON,
+                     headers           : [
+                             Authorization: "Basic $preferenceController.paymentGatewayPassEway",
+                             "X-EWAY-APIVERSION": 47
+                     ],
+                     requestContentType: ContentType.JSON,
+                     body              : [
+                             transactionType    : TRX_PURCHASE_TYPE,
+                             Method             : METHOD_PROCESS_PAYMENT,
+                             SecuredCardData    : cardDataId,
+                             payment            : [
+                                     // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
+                                     totalAmount: amount.multiply(100).toInteger(),
+                                     // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
+                                     currencyCode: amount.currencyContext.currencyCode,
+                                     invoiceReference: merchantReference
+                             ]
+                     ]
+                    ])
+        } catch(Exception e) {
+            attributes.errorMessage = "Something unexpected has happened, please contact ish support or try again later"
+            logger.error("Fail to create eWay transaction")
+            logger.catching(e)
+        }
+        return attributes
+    }
+
+    SessionAttributes verify3dSecure(String secureCode) {
+        SessionAttributes attributes = new SessionAttributes()
+        try {
+            HTTPBuilder builder  = new HTTPBuilder()
+            builder.handler['failure'] = { response, body -> failHandler(response, body, attributes)}
+
+            builder.handler['success'] = { response, body ->
+                logger.info("Make eWay capture request finished, response body: ${body.toString()}")
+                buildSessionAttributesFrom3dSecureResponse(attributes, body as Map<String, Object>)
+                logStatusOrError(attributes)
+            }
+            builder.post(
+                    [uri               : eWayBaseUrl,
+                     path              : '/3dsverify',
+                     contentType       : ContentType.JSON,
+                     headers           : [
+                             Authorization: "Basic $preferenceController.paymentGatewayPassEway",
+                             "X-EWAY-APIVERSION": 47
+                     ],
+                     requestContentType: ContentType.JSON,
+                     body              : [
+                             AccessCode    : secureCode
+                     ]
+                    ])
+        } catch(Exception e) {
+            attributes.errorMessage = "Something unexpected has happened, please contact ish support or try again later"
+            logger.error("Fail to create eWay transaction")
+            logger.catching(e)
+        }
         return attributes
     }
 
@@ -283,7 +358,7 @@ class EWayPaymentAPI {
                      path              : '/transaction',
                      contentType       : ContentType.JSON,
                      headers           : [
-                                            Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                            Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                             "X-EWAY-APIVERSION": 47
                                          ],
                      requestContentType: ContentType.JSON,
@@ -292,8 +367,7 @@ class EWayPaymentAPI {
                                             payment            : [
                                                                     // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                                                     totalAmount: amount.multiply(100).toInteger(),
-                                                                    // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
-                                                                    currencyCode: CURRENCY_CODE_AUD,
+                                                                    currencyCode: amount.currencyContext.currencyCode,
                                                                     invoiceReference: merchantReference
                                             ],
                                             language           : "en",
@@ -328,7 +402,7 @@ class EWayPaymentAPI {
                      path              : "/transaction/$transactionId/refund",
                      contentType       : ContentType.JSON,
                      headers           : [
-                                            Authorization: "Basic $preferenceController.paymentGatewayPassEWay",
+                                            Authorization: "Basic $preferenceController.paymentGatewayPassEway",
                                             "X-EWAY-APIVERSION": 47
                                         ],
                      requestContentType: ContentType.JSON,
@@ -337,8 +411,7 @@ class EWayPaymentAPI {
                                                         // totalAmount*100 (Docs: [1] For AUD, NZD, USD etc. These currencies have a decimal part: a $27.00 AUD transaction would have a TotalAmount = '2700')
                                                         amount              : amount.multiply(100).toInteger(),
                                                         invoiceReference    : merchantReference,
-                                                        // 'currencyCode' must be taken from 'preferenceController.country.currencySymbol()', but all colleges are from Australia that is why currency code will be 'AUD'
-                                                        currencyCode        : CURRENCY_CODE_AUD,
+                                                        currencyCode        : amount.currencyContext.currencyCode,
                                                      ],
                                         ]
                     ])
@@ -373,6 +446,16 @@ class EWayPaymentAPI {
             }
             attributes.responceJson = JsonOutput.prettyPrint(JsonOutput.toJson(body))
         }
+    }
+
+    @CompileStatic(TypeCheckingMode.SKIP)
+    static void buildSessionAttributesFrom3dSecureResponse(SessionAttributes attributes, Map<String, Object> secureResponse) {
+        attributes.complete = secureResponse['Enrolled']
+        if(secureResponse['ThreeDSecureAuth']) {
+            attributes.transactionId = secureResponse['ThreeDSecureAuth']['34898df8-aeaf-4cc1-9200-b18c88b52522']
+        }
+        attributes.errorMessage = secureResponse['Errors']
+        attributes.responceJson = JsonOutput.prettyPrint(JsonOutput.toJson(secureResponse))
     }
 
     @CompileStatic(TypeCheckingMode.SKIP)

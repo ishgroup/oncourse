@@ -40,7 +40,7 @@ class VoucherExpiryTransactionsBuilderTest {
 
         invLineId = 43L
         InvoiceLine invoiceLine = mock(InvoiceLine)
-        when(invoiceLine.finalPriceToPayExTax).thenReturn(new Money(300.0))
+        when(invoiceLine.finalPriceToPayExTax).thenReturn(Money.of(300.0))
         when(invoiceLine.id).thenReturn(invLineId)
 
         voucherProduct = mock(VoucherProduct)
@@ -51,11 +51,11 @@ class VoucherExpiryTransactionsBuilderTest {
         when(voucher.invoiceLine).thenReturn(invoiceLine)
         when(voucher.voucherProduct).thenReturn(voucherProduct)
         when(voucher.redeemedCourseCount).thenReturn(1)
-        when(voucher.valueOnPurchase).thenReturn(new Money(300.0))
-        when(voucher.redemptionValue).thenReturn(new Money(100.0))
+        when(voucher.valueOnPurchase).thenReturn(Money.of(300.0))
+        when(voucher.redemptionValue).thenReturn(Money.of(100.0))
 
-        amount1 = new Money(200.0)
-        amount2 = new Money(100.0)
+        amount1 = Money.of(200.0)
+        amount2 = Money.of(100.0)
 
         transactionDate = LocalDate.of(2017, Month.MAY, 28)
     }

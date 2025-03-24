@@ -24,6 +24,7 @@ import ish.oncourse.server.db.SanityCheckService;
 import ish.oncourse.server.db.TransactionCheckService;
 import ish.oncourse.server.deduplication.ContactMergeService;
 import ish.oncourse.server.entity.mixins.MixinHelper;
+import ish.oncourse.server.jobs.RemoveOldCheckoutSessionsJob;
 import ish.oncourse.server.lifecycle.InvoiceLineInitHelper;
 import ish.oncourse.server.messaging.EmailDequeueJob;
 import ish.oncourse.server.payroll.PayrollService;
@@ -54,6 +55,7 @@ public class ServiceModule implements Module {
 		// jobs
 		binder.bind(EmailDequeueJob.class);
 		binder.bind(ChargebeeUploadJob.class);
+		binder.bind(RemoveOldCheckoutSessionsJob.class);
 		binder.bind(StatsService.class).in(Scopes.SINGLETON);
 
 		binder.bind(AccountTransactionService.class).in(Scopes.SINGLETON);

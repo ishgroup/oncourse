@@ -3,25 +3,26 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CancelCourseClass } from "@api/model";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { BooleanArgFunction } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormValues, InjectedFormProps, reduxForm } from "redux-form";
-import { clearCommonPlainRecords } from "../../../../../common/actions/CommonPlainRecordsActions";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { State } from "../../../../../reducers/state";
-import { cancelCourseClass } from "../../actions";
+import { CancelCourseClass } from '@api/model';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import clsx from 'clsx';
+import { BooleanArgFunction } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import { clearCommonPlainRecords } from '../../../../../common/actions/CommonPlainRecordsActions';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { State } from '../../../../../reducers/state';
+import { cancelCourseClass } from '../../actions';
 
 interface Props extends InjectedFormProps {
   opened: boolean;
@@ -120,7 +121,7 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
               <Grid item xs={12}>
                 <div className="centeredFlex">
                   <div className="heading mt-2 mb-2">
-                    You are about to cancel class "
+                    {$t('you_are_about_to_cancel_class')} "
                     {`${this.getSelectedClassRecord("course.name")} ${this.getSelectedClassRecord(
                       "course.code"
                     )}-${this.getSelectedClassRecord("code")}`}
@@ -141,16 +142,16 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
                       control={
                         <FormField type="checkbox" name="refundEnrolmentInvoices" color="secondary" disabled />
                       }
-                      label="Create credit notes to reverse the enrolment fee."
+                      label={$t('create_credit_notes_to_reverse_the_enrolment_fee')}
                     />
                   </FormGroup>
                   <Typography variant="caption" className="pl-2">
                     {enrolmentCount}
                     {' '}
-                    credit note
+                    {$t('credit note')}
                     {enrolmentCount > 1 ? "s" : ""}
                     {' '}
-                    will be created
+                    {$t('will be created')}
                   </Typography>
                 </div>
                 <div>
@@ -160,7 +161,7 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
                         root: "checkbox"
                       }}
                       control={<FormField type="checkbox" name="refundManualInvoices" color="secondary" />}
-                      label="Create credit notes to reverse invoices manually linked to the class."
+                      label={$t('create_credit_notes_to_reverse_invoices_manually_l')}
                     />
                   </FormGroup>
                 </div>
@@ -171,7 +172,7 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
                         root: "checkbox"
                       }}
                       control={<FormField type="checkbox" name="sendEmail" color="secondary" disabled={!value} />}
-                      label="Send credit notes email."
+                      label={$t('send_credit_notes_email')}
                     />
                   </FormGroup>
                 </div>
@@ -181,11 +182,11 @@ class CancelCourseClassModalForm extends React.Component<Props, any> {
 
           <DialogActions className="p-3">
             <Button color="primary" onClick={this.onClose}>
-              Cancel
+              {$t('cancel')}
             </Button>
 
             <Button disabled={fetching || invalid} variant="contained" color="primary" type="submit">
-              Proceed
+              {$t('proceed')}
             </Button>
           </DialogActions>
         </form>

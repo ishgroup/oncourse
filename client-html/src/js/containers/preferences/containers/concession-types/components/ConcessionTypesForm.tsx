@@ -1,5 +1,6 @@
 import { ConcessionType } from '@api/model';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import { idsToString, ShowConfirmCaller } from 'ish-ui';
 import isEqual from 'lodash.isequal';
 import * as React from 'react';
@@ -166,7 +167,7 @@ class ConcessionTypesBaseForm extends React.Component<Props, any> {
           getAuditsUrl={() => `audit?search=~"ConcessionType" and entityId in (${idsToString(data.types)}})`}
           disabled={!dirty}
           invalid={invalid}
-          title="Concession Types"
+          title={$t('concession_types')}
           disableInteraction
           createdOn={() => created}
           modifiedOn={() => modified}

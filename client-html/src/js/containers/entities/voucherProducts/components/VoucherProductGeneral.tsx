@@ -3,37 +3,38 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from "@api/model";
-import { Grid, Typography } from "@mui/material";
-import { ConfirmProps, formatCurrency } from "ish-ui";
-import React, { useEffect, useMemo, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change, FieldArray } from "redux-form";
+import { Account, Course, Currency, ProductStatus, VoucherProduct, VoucherProductCourse } from '@api/model';
+import { Grid, Typography } from '@mui/material';
+import $t from '@t';
+import { ConfirmProps, formatCurrency } from 'ish-ui';
+import React, { useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change, FieldArray } from 'redux-form';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import CustomSelector, { CustomSelectorOption } from "../../../../common/components/custom-selector/CustomSelector";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import CustomSelector, { CustomSelectorOption } from '../../../../common/components/custom-selector/CustomSelector';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
+import { FormEditorField } from '../../../../common/components/form/formFields/FormEditor';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { normalizeString } from "../../../../common/utils/strings";
-import { validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { useTagGroups } from "../../../tags/utils/useTagGroups";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
-import { clearMinMaxFee, getMinMaxFee } from "../actions";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { normalizeString } from '../../../../common/utils/strings';
+import { validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { PreferencesState } from '../../../preferences/reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { useTagGroups } from '../../../tags/utils/useTagGroups';
+import RelationsCommon from '../../common/components/RelationsCommon';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
+import { clearMinMaxFee, getMinMaxFee } from '../actions';
 
 interface VoucherProductGeneralProps extends EditViewProps<VoucherProduct> {
   accounts?: Account[];
@@ -272,7 +273,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
-                  label="SKU"
+                  label={$t('sku')}
                   name="code"
                   required
                  />
@@ -280,7 +281,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
-                  label="Name"
+                  label={$t('name')}
                   name="name"
                   required
                 />
@@ -314,7 +315,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         <FormField
           type="select"
           name="liabilityAccountId"
-          label="Liability account"
+          label={$t('liability_account')}
           items={liabilityAccounts}
           selectValueMark="id"
           selectLabelCondition={accountLabelCondition}
@@ -326,7 +327,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         <FormField
           type="select"
           name="underpaymentAccountId"
-          label="Default voucher underpayment account"
+          label={$t('default_voucher_underpayment_account')}
           items={expenseAccounts}
           selectValueMark="id"
           selectLabelCondition={accountLabelCondition}
@@ -336,7 +337,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
 
       <Grid item xs={12}>
         <Typography color="inherit" component="div" noWrap>
-          Expires
+          {$t('expires')}
           {" "}
           <FormField
             type="number"
@@ -347,7 +348,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             inline
           />
           {" "}
-          days after purchase
+          {$t('days_after_purchase')}
         </Typography>
       </Grid>
 
@@ -366,7 +367,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         <div className={twoColumn ? "mb-2 mw-800" : "mb-2"}>
           <NestedList
             formId={values.id}
-            title="Courses"
+            title={$t('courses')}
             name="courses"
             searchPlaceholder="Find course"
             validate={validateCourses}
@@ -384,11 +385,11 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           />
         </div>
         <Typography color="inherit" component="div">
-          Current class fee price range:
+          {$t('Current class fee price range')}:
           {' '}
           <span className="money">{formatCurrency(minFee)}</span>
           {' '}
-          to
+          {$t('to')}
           {" "}
           <span className="money">{formatCurrency(maxFee)}</span>
         </Typography>
@@ -401,7 +402,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
             type="money"
             name="feeExTax"
             validate={[validateSingleMandatoryField, validateNonNegative]}
-            label="Voucher price"
+            label={$t('voucher_price')}
           />
         </Grid>
       )}
@@ -410,7 +411,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         <FormField
           type="select"
           name="status"
-          label="Status"
+          label={$t('status')}
           items={productStatusItems}
           selectLabelMark="value"
         />
@@ -420,7 +421,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
         <FormField
           type="select"
           name="dataCollectionRuleId"
-          label="Data collection rule"
+          label={$t('data_collection_rule')}
           selectValueMark="id"
           selectLabelMark="name"
           items={dataCollectionRules || []}
@@ -443,7 +444,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
       <Grid item xs={12}>
         <FormEditorField
           name="description"
-          label="Web description"
+          label={$t('web_description')}
         />
       </Grid>
 
@@ -461,7 +462,7 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
       <Grid item xs={12} className="pb-3 mb-3">
         <FieldArray
           name="documents"
-          label="Documents"
+          label={$t('documents')}
           entity="ArticleProduct"
           component={DocumentsRenderer}
           xsGrid={12}
@@ -488,7 +489,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   accounts: state.plainSearchRecords.Account.items,
-  currency: state.currency,
+  currency: state.location.currency,
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,

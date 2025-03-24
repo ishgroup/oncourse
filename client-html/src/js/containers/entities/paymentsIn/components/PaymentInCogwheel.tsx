@@ -1,11 +1,12 @@
-import MenuItem from "@mui/material/MenuItem";
-import { formatCurrency } from "ish-ui";
-import React, { memo, useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { getCustomValues, reverse } from "../actions";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import { formatCurrency } from 'ish-ui';
+import React, { memo, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { CogwhelAdornmentProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { getCustomValues, reverse } from '../actions';
 
 interface PaymentInCustomValues {
   id: number;
@@ -77,17 +78,17 @@ const PaymentInCogwheel = memo<Props>(props => {
           closeMenu();
         },
         confirmMessage: <span>
-          You are about to make a payment of
+          {$t('You are about to make a payment of')}
           {' '}
           <span className="money">{formatCurrency(customValues.amount, currencySymbol)}</span>
           {' '}
-          to
+          {$t('to')}
           {' '}
           {customValues.name}
           {' '}
-          as a refund against their credit card.
+          {$t('as a refund against their credit card')}.
         </span>,
-        cancelButtonText: "Continue"
+        cancelButtonText: $t("Continue")
       });
       return;
     }
@@ -97,8 +98,8 @@ const PaymentInCogwheel = memo<Props>(props => {
         reverse(selection[0]);
         closeMenu();
       },
-      confirmMessage: "You are about to reverse payment",
-      cancelButtonText: "Continue"
+      confirmMessage: $t("You are about to reverse payment"),
+      cancelButtonText: $t("Continue")
   });
   };
 
@@ -111,7 +112,7 @@ const PaymentInCogwheel = memo<Props>(props => {
         className={menuItemClass}
         onClick={onClick}
       >
-        Reverse Payment
+        {$t('reverse_payment')}
       </MenuItem>
     </>
   );
@@ -124,7 +125,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   customValues: state.paymentsIn.customValues,
-  currencySymbol: state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps, mapDispatchToProps)(PaymentInCogwheel);

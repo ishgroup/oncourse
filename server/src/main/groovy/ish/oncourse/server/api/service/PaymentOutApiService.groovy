@@ -121,13 +121,13 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
         if (cayenneModel.newRecord ) {
             if (PaymentType.CREDIT_CARD == method.type) {
                 context.deleteObject(cayenneModel)
-                cayenneModel = createCCpayment(Money.valueOf(dto.amount), paymentInDao.getById(context, dto.refundableId), dto.invoices)
+                cayenneModel = createCCpayment(Money.of(dto.amount), paymentInDao.getById(context, dto.refundableId), dto.invoices)
                 cayenneModel.privateNotes += "/n $dto.privateNotes"
             } else {
                 SetPaymentMethod.valueOf(method, cayenneModel).set()
                 cayenneModel.payee = contactDao.getById(context, dto.payeeId)
                 cayenneModel.reconciled = false
-                cayenneModel.amount =  Money.valueOf(dto.amount)
+                cayenneModel.amount =  Money.of(dto.amount)
                 cayenneModel.createdBy = cayenneModel.context.localObject(systemUserService.currentUser)
                 dto.invoices.each { invoiceDto ->
                     PaymentOutLine line = context.newObject(PaymentOutLine)
@@ -135,7 +135,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
                     line.accountIn = invoice.debtorsAccount
                     line.invoice = invoice
                     line.paymentOut = cayenneModel
-                    line.amount =  Money.valueOf(invoiceDto.amount)
+                    line.amount =  Money.of(invoiceDto.amount)
                 }
                 cayenneModel.status = SUCCESS
                 cayenneModel.confirmationStatus = ConfirmationStatus.NOT_SENT
@@ -196,8 +196,8 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
                 validator.throwClientErrorException("invoices", "Invoice is wrong")
             }
 
-            if (invoice.amountOwing.abs().isLessThan(Money.valueOf(it.amount))) {
-                validator.throwClientErrorException("invoices", "Allocated invoice amount is wrong: ${Money.valueOf(it.amount)}")
+            if (invoice.amountOwing.abs().isLessThan(Money.of(it.amount))) {
+                validator.throwClientErrorException("invoices", "Allocated invoice amount is wrong: ${Money.of(it.amount)}")
             }
         }
 
@@ -231,7 +231,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
                 validator.throwClientErrorException("refundableId", "Refundable payment in is recuired for credit card type")
             }
 
-            List<Long> paymentIn = paymentInDao.getRefundablePaymentIds(context, contact, Money.valueOf(dto.amount))
+            List<Long> paymentIn = paymentInDao.getRefundablePaymentIds(context, contact, Money.of(dto.amount))
 
             if (!(dto.refundableId in paymentIn)) {
                 validator.throwClientErrorException("refundableId", "Refundable payment in is wrong")
@@ -335,7 +335,7 @@ class PaymentOutApiService extends EntityApiService<PaymentOutDTO, PaymentOut, P
                 line.accountIn = invoice.debtorsAccount
                 line.invoice = invoice
                 line.paymentOut = paymentOut
-                line.amount = Money.valueOf(invoiceDto.amount)
+                line.amount = Money.of(invoiceDto.amount)
             }
         } else {
             paymentIn.paymentInLines.each { inLine ->

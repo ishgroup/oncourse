@@ -1,12 +1,12 @@
 import { Binding, ExecuteImportRequest, ImportModel } from '@api/model';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { usePrevious, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
@@ -170,7 +170,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
 
         <DialogActions className="p-3">
           <Button color="primary" onClick={onDialogClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
           <LoadingButton
             variant="contained"
@@ -179,7 +179,7 @@ const ExecuteImportModal = React.memo<Props & InjectedFormProps>(props => {
             disabled={invalid || submitting || executing}
             loading={submitting || executing}
           >
-            Run import
+            {$t('run_import')}
           </LoadingButton>
         </DialogActions>
       </form>

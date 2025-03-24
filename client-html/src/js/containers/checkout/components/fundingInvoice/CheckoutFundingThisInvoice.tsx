@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import $t from '@t';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -42,7 +43,7 @@ const CheckoutFundingThisInvoice: React.FC<Props> = (
       {fundingInvoiceValues.fundingInvoices.map((f, index) => (
         <HeaderFieldTypo
           key={f.fundingProviderId}
-          title={f.company ? getContactFullName(f.company) : <span className="errorColor">Not set</span>}
+          title={f.company ? getContactFullName(f.company) : <span className="errorColor">{$t('not_set')}</span>}
           activeField={f.active ? CheckoutPage.fundingInvoiceSummary : null}
           field={CheckoutPage.fundingInvoiceSummary}
           onClick={() => setActive(index)}
@@ -57,7 +58,7 @@ const CheckoutFundingThisInvoice: React.FC<Props> = (
 };
 
 const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol,
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol,
   fundingInvoiceValues: getFormValues(CHECKOUT_FUNDING_INVOICE_SUMMARY_LIST_FORM)(state)
 });
 

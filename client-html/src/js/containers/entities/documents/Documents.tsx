@@ -7,6 +7,7 @@ import { Document } from '@api/model';
 import { OpenWith } from '@mui/icons-material';
 import Delete from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
+import $t from '@t';
 import { BooleanArgFunction, NoArgFunction } from 'ish-ui';
 import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -103,7 +104,7 @@ const filterGroups: FilterGroup[] = [
         name: "Bin",
         customLabel: () => (
           <span className="centeredFlex">
-            Bin
+            {$t('bin')}
             {" "}
             <Delete style={{ fontSize: "18px" }} color="disabled" />
           </span>
@@ -226,7 +227,7 @@ const Documents: React.FC<DocumentProps> = props => {
         >
           <OpenWith className={classes.openDocIcon} />
           {` `}
-          View
+          {$t('view2')}
         </Button>
       </div>
     ) : v)

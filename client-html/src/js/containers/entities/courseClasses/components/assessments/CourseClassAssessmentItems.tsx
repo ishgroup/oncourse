@@ -9,6 +9,7 @@
 import { AssessmentClass, AssessmentSubmission, CourseClassTutor, GradingItem, GradingType } from '@api/model';
 import { DateRange, Edit, ExpandMore } from '@mui/icons-material';
 import { FormControlLabel, Grid, IconButton, Typography } from '@mui/material';
+import $t from '@t';
 import { differenceInDays } from 'date-fns';
 import { normalizeNumber, stubComponent, StyledCheckbox } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -417,7 +418,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
               name={`${item}.assessmentCode`}
-              label="Code"
+              label={$t('code')}
               selectValueMark="code"
               selectLabelMark="code"
               onInnerValueChange={onCodeChange}
@@ -432,7 +433,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               aqlFilter={assessmentAql}
               aqlColumns={assessmentAqlCols}
               name={`${item}.assessmentName`}
-              label="Name"
+              label={$t('name')}
               selectValueMark="name"
               selectLabelMark="name"
               onInnerValueChange={onNameChange}
@@ -444,14 +445,14 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <FormField
               type="dateTime"
               name={`${item}.releaseDate`}
-              label="Release date"
+              label={$t('release_date')}
             />
           </Grid>
           <Grid item xs={twoColumn ? 6 : 12}>
             <FormField
               type="dateTime"
               name={`${item}.dueDate`}
-              label="Due date"
+              label={$t('due_date')}
               validate={[validateSingleMandatoryField, validateDueDate]}
             />
           </Grid>
@@ -460,7 +461,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         <Grid container item xs={twoColumn ? 4 : 12}>
           <Grid item xs={12}>
             <div>
-              <div className="heading">Assessors</div>
+              <div className="heading">{$t('assessors')}</div>
               {tutorsCheckboxes}
             </div>
           </Grid>
@@ -469,12 +470,12 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
 
       {typeof row.id === "number" ? (
         <Grid item={true} xs={12} container className="pb-3">
-          <div className="heading">Assessment Submission</div>
+          <div className="heading">{$t('assessment_submission')}</div>
           <Grid container xs={12} className={classes.tableHeader}>
             <Grid item xs={4} />
             <Grid item xs={gradeType ? 2 : 4} className={classes.center}>
               <span className="relative">
-                Submitted
+                {$t('submitted')}
                 <IconButton
                   size="small"
                   className={classes.hiddenTitleIcon}
@@ -491,7 +492,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
             <>
               <Grid xs={2} className={classes.center}>
                 <span className="relative">
-                  Marked
+                  {$t('marked')}
                   <IconButton
                     size="small"
                     className={classes.hiddenTitleIcon}
@@ -505,7 +506,7 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
               </Grid>
               <Grid xs={2} className={classes.center}>
                 <span className="relative">
-                  Grade
+                  {$t('grade')}
                   <IconButton
                     size="small"
                     className={classes.hiddenTitleIcon}
@@ -544,9 +545,9 @@ const CourseClassAssessmentItems: React.FC<Props> = props => {
         </Grid>
       ) : (
         <div>
-          <div className="heading">Assessment Submission</div>
+          <div className="heading">{$t('assessment_submission')}</div>
           <Typography component="div" className="mt-2 mb-3" variant="caption" color="textSecondary">
-            Please save new assessment before editing submissions
+            {$t('please_save_new_assessment_before_editing_submissi')}
           </Typography>
         </div>
       )}

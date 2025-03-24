@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
+import $t from '@t';
 import { ShowConfirmCaller } from 'ish-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
@@ -317,7 +318,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
         <Grid container className={classes.header} wrap="nowrap" alignItems="center">
           <Grid item xs={2}>
             <Typography variant="body2" className={classes.headerText}>
-              Bulk edit
+              {$t('bulk_edit')}
             </Typography>
           </Grid>
           <Grid item xs className="centeredFlex">
@@ -374,7 +375,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
 
               <Grid item xs={12} className={classes.closeShareButtons}>
                 <Button className={classes.closeButton} onClick={onClose} variant="text">
-                  Cancel
+                  {$t('cancel')}
                 </Button>
                 <LoadingButton
                   variant="contained"
@@ -383,7 +384,7 @@ const BulkEditForm: React.FC<BulkEditProps> = props => {
                   type="submit"
                   loading={submitting || validating}
                 >
-                  Make changes
+                  {$t('make_changes')}
                 </LoadingButton>
               </Grid>
             </form>

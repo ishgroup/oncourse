@@ -121,6 +121,6 @@ class ReportTest {
     }
 
     private static boolean shouldVerify(Map<String, Object> props) {
-        return !exceptedReports.contains(props.get("keyCode") as String) && (props.get("visible") as Boolean).booleanValue()
+        return !exceptedReports.contains(props.get("keyCode") as String) && (props.get("isVisible") as Boolean).booleanValue()
     }
 }

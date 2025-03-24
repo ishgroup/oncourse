@@ -10,12 +10,13 @@
  * preferences app layout
  * */
 
-import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { SidebarWithSearch } from "../../common/components/layout/sidebar-with-search/SidebarWithSearch";
-import { Categories } from "../../model/preferences";
-import { State } from "../../reducers/state";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { SidebarWithSearch } from '../../common/components/layout/sidebar-with-search/SidebarWithSearch';
+import { LICENSE_ACCESS_CONTROL_KEY, SPECIAL_TYPES_DISPLAY_KEY } from '../../constants/Config';
+import { Categories } from '../../model/preferences';
+import { State } from '../../reducers/state';
 import {
   getColumnsWidth,
   getDataCollectionForms,
@@ -24,30 +25,57 @@ import {
   getPreferences,
   getTutorRoles,
   updateColumnsWidth
-} from "./actions";
-import SideBar from "./components/SideBar";
-import preferencesRoutes from "./routes";
+} from './actions';
+import SideBar from './components/SideBar';
+import Avetmiss from './containers/avetmiss/Avetmiss';
+import ClassTypes from './containers/class-types/ClassTypes';
+import CourseTypes from './containers/course-types/CourseTypes';
+import LDAP from './containers/ldap/LDAP';
+import Subjects from './containers/subjects/Subjects';
+import routes from './routes';
 
 const PreferencesApp = ({
-   onInit,
-   history,
-   match,
-   updateColumnsWidth,
-   preferenceLeftColumnWidth
-  }) => (
-    <SidebarWithSearch
-      leftColumnWidth={preferenceLeftColumnWidth}
-      updateColumnsWidth={updateColumnsWidth}
-      onInit={onInit}
-      SideBar={SideBar}
-      routes={preferencesRoutes}
-      history={history}
-      match={match}
-    />
-    );
+  onInit,
+  history,
+  match,
+  updateColumnsWidth,
+  preferenceLeftColumnWidth,
+  accessLicense,
+  accessTypes,
+  hideAUSReporting
+  }) => {
+  
+  const preferencesRoutes = routes
+    .filter(({ main }) => {
+      switch (main) {
+        case LDAP:
+          return accessLicense;
+        case ClassTypes:
+        case CourseTypes:
+        case Subjects:
+          return accessTypes;
+        case Avetmiss:
+          return !hideAUSReporting;
+      }
+      return true;
+    });
+  
+  return <SidebarWithSearch
+    leftColumnWidth={preferenceLeftColumnWidth}
+    updateColumnsWidth={updateColumnsWidth}
+    onInit={onInit}
+    SideBar={SideBar}
+    routes={preferencesRoutes}
+    history={history}
+    match={match}
+  />;
+};
 
 const mapStateToProps = (state: State) => ({
-  preferenceLeftColumnWidth: state.preferences.columnWidth && state.preferences.columnWidth.preferenceLeftColumnWidth
+  preferenceLeftColumnWidth: state.preferences.columnWidth && state.preferences.columnWidth.preferenceLeftColumnWidth,
+  accessLicense: state.userPreferences[LICENSE_ACCESS_CONTROL_KEY] === 'true',
+  accessTypes: state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true',
+  hideAUSReporting: state.location.countryCode !== 'AU',
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

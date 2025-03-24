@@ -6,9 +6,10 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
-import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from "ish-ui";
-import React, { useEffect, useState } from "react";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
+import $t from '@t';
+import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from 'ish-ui';
+import React, { useEffect, useState } from 'react';
 
 const SubmissionModal = (
   {
@@ -70,7 +71,7 @@ const SubmissionModal = (
             {type === "Marked" && (
               (
                 <EditInPlaceSearchSelect
-                  label="Assessor"
+                  label={$t('assessor')}
                   selectValueMark="contactId"
                   selectLabelMark="tutorName"
                   input={{
@@ -95,14 +96,14 @@ const SubmissionModal = (
           color="primary"
           onClick={onClose}
         >
-          Close
+          {$t('close')}
         </Button>
         <Button
           variant="contained"
           color="primary"
           onClick={() => onSave(dateVal, selectVal)}
         >
-          Save
+          {$t('save2')}
         </Button>
       </DialogActions>
     </Dialog>

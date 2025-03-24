@@ -2,12 +2,12 @@
  * Copyright ish group pty ltd. All rights reserved. https://www.ish.com.au
  * No copying or use of this code is allowed without permission in writing from ish.
  */
-import React from "react";
-import { connect } from "react-redux";
-import AppBarContainer from "../../../../../common/components/layout/AppBarContainer";
-import { State } from "../../../../../reducers/state";
-import CheckoutAppBar from "../../CheckoutAppBar";
-import EnrolClassListView from "./EnrolClassListView";
+import React from 'react';
+import { connect } from 'react-redux';
+import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
+import { State } from '../../../../../reducers/state';
+import CheckoutAppBar from '../../CheckoutAppBar';
+import EnrolClassListView from './EnrolClassListView';
 
 const EnrolCourseClassView = React.memo<any>(props => {
   const {
@@ -50,7 +50,7 @@ const EnrolCourseClassView = React.memo<any>(props => {
 
 const mapStateToProps = (state: State) => ({
   isClassesEmpty: state.checkout.checkCourseClassEmpty,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(EnrolCourseClassView);

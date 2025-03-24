@@ -3,22 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { PaymentIn } from "@api/model";
-import { Checkbox, FormControlLabel, Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { addDays, compareAsc, format as formatDate } from "date-fns";
-import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from "ish-ui";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { FieldArray, getFormInitialValues } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { SiteState } from "../../sites/reducers/state";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
+import { PaymentIn } from '@api/model';
+import { Checkbox, FormControlLabel, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import $t from '@t';
+import { addDays, compareAsc, format as formatDate } from 'date-fns';
+import { D_MMM_YYYY, III_DD_MMM_YYYY, LinkAdornment, openInternalLink } from 'ish-ui';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { FieldArray, getFormInitialValues } from 'redux-form';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import { SiteState } from '../../sites/reducers/state';
+import { getAdminCenterLabel, openSiteLink } from '../../sites/utils';
 
 const invoiceColumns: NestedTableColumn[] = [
   {
@@ -118,7 +119,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       <Grid item {...gridItemProps}>
         <Uneditable
           value={values.payerName}
-          label="Payment from"
+          label={$t('payment_from')}
           labelAdornment={
             <ContactLinkAdornment id={values?.payerId} />
           }
@@ -128,7 +129,7 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
         <FormField
           type="select"
           name="administrationCenterId"
-          label="Site"
+          label={$t('site')}
           defaultValue={values && values.administrationCenterName}
           selectLabelCondition={getAdminCenterLabel}
           items={adminSites || []}
@@ -137,17 +138,17 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
         />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.paymentInType} label="Type" />
+        <Uneditable value={values.paymentInType} label={$t('type')} />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.status} label="Status" />
+        <Uneditable value={values.status} label={$t('status')} />
       </Grid>
       {values.ccSummary && values.ccSummary.length > 0 && (
       <Grid item {...gridItemProps}>
         <div className="textField">
           <div>
             <Typography variant="caption" color="textSecondary">
-              Credit card
+              {$t('credit_card')}
             </Typography>
             {values.ccSummary.map(line => (
               <Typography variant="body1">{line}</Typography>
@@ -164,29 +165,29 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
       </Grid>
         )}
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.amount} money label="Amount" />
+        <Uneditable value={values.amount} money label={$t('amount')} />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.accountInName} label="Account" />
+        <Uneditable value={values.accountInName} label={$t('account')} />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.source} label="Source" />
+        <Uneditable value={values.source} label={$t('source')} />
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.ccTransaction} label="CC transaction" />
+        <Uneditable value={values.ccTransaction} label={$t('cc_transaction')} />
       </Grid>
       <Grid item {...gridItemProps}>
         <FormControlLabel
           className="pr-3"
           control={<Checkbox checked={values.emailConfirmation} />}
-          label="Email confirmation"
+          label={$t('email_confirmation')}
           disabled
         />
       </Grid>
       <Grid item {...gridItemProps}>
         <Uneditable
           value={values.datePayed}
-          label="Date paid"
+          label={$t('date_paid')}
           format={value => (value ? formatDate(new Date(value), III_DD_MMM_YYYY) : value)}
         />
       </Grid>
@@ -194,20 +195,20 @@ const PaymentInEditView: React.FC<PaymentInEditViewProps> = props => {
         {dateBankedDisabled ? (
           <Uneditable
             value={values.dateBanked}
-            label="Date banked"
+            label={$t('date_banked')}
             format={value => (value ? formatDate(new Date(value), III_DD_MMM_YYYY) : value)}
           />
           ) : (
             <FormField
               type="date"
               name="dateBanked"
-              label="Date banked"
+              label={$t('date_banked')}
               validate={[validateSettlementDate, validateSettlementDateBanked]}
             />
           )}
       </Grid>
       <Grid item {...gridItemProps}>
-        <Uneditable value={values.createdBy} label="Created by" />
+        <Uneditable value={values.createdBy} label={$t('created_by')} />
       </Grid>
       <Grid item xs={12} className="saveButtonTableOffset">
         <FieldArray

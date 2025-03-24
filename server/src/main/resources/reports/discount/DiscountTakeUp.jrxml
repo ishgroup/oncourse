@@ -104,11 +104,11 @@
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="data field (money)" x="190" y="27" width="100" height="15" uuid="14f07e8f-bbc1-40ce-90af-91b39e718273"/>
-					<textFieldExpression><![CDATA[new Money($V{totalDiscountExTax})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{totalDiscountExTax})]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="data field (money)" x="290" y="27" width="100" height="15" uuid="22d0b198-28d2-46f4-b7c8-2e1cf9214c1f"/>
-					<textFieldExpression><![CDATA[new Money($V{totalDiscountIncTax})]]></textFieldExpression>
+					<textFieldExpression><![CDATA[Money.of($V{totalDiscountIncTax})]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
