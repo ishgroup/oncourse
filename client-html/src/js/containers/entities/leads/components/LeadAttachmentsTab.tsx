@@ -6,13 +6,14 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Lead } from "@api/model";
-import React from "react";
-import { FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import OwnApiNotes from "../../../../common/components/form/notes/OwnApiNotes";
-import { EditViewProps } from "../../../../model/common/ListView";
+import { Lead } from '@api/model';
+import $t from '@t';
+import React from 'react';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import OwnApiNotes from '../../../../common/components/form/notes/OwnApiNotes';
+import { EditViewProps } from '../../../../model/common/ListView';
 
 interface LeadDocumentsProps {
   classes?: any;
@@ -23,7 +24,7 @@ interface LeadDocumentsProps {
   form?: string;
 }
 
-const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) => {
+const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = props => {
   const {
     twoColumn,
       dispatch,
@@ -36,7 +37,7 @@ const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) 
       <div className="mb-2 pl-3 pb-3 pr-3 pt-2">
         <FieldArray
           name="documents"
-          label="Documents"
+          label={$t('documents')}
           entity="Lead"
           component={DocumentsRenderer}
           xsGrid={12}
@@ -56,7 +57,7 @@ const LeadAttachmentsTab: React.FC<EditViewProps<LeadDocumentsProps>> = (props) 
           type="multilineText"
           name="studentNotes"
           disabled
-          label="Student notes"
+          label={$t('student_notes')}
                   />
       </div>
     </div>

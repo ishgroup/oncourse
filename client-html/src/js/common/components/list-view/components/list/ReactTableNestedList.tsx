@@ -5,13 +5,16 @@
 
 import Launch from '@mui/icons-material/Launch';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
-import IconButton from '@mui/material/IconButton';
-import MaUTable from '@mui/material/Table';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Typography from '@mui/material/Typography';
+import {
+  Typography,
+  IconButton,
+  Table as MaUTable,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableSortLabel
+} from '@mui/material';
+import $t from '@t';
 import {
   ColumnDef,
   ColumnSort,
@@ -165,7 +168,7 @@ const Table: React.FC<NestedListTableProps> = ({
   ) : (
     <div className="noRecordsMessage h-100">
       <Typography variant="h6" color="inherit" align="center">
-        No data
+        {$t('no_data')}
       </Typography>
     </div>
   )), [rows, selection, onRowDoubleClick, onCheckboxChange, onRowSelect]);
@@ -238,7 +241,7 @@ const ListRoot = React.memo<NestedListProps>(({
     setSelection([]);
   };
 
-  const currencySymbol = useSelector<State, any>(state => state.currency && state.currency.shortCurrencySymbol);
+  const currencySymbol = useSelector<State, any>(state => state.location.currency && state.location.currency.shortCurrencySymbol);
 
   const columnsFormated = useMemo<ColumnDef<Record<any, any>>[]>(
     () => columns.concat(onRowDelete ? [{
@@ -339,7 +342,7 @@ const ListRoot = React.memo<NestedListProps>(({
             <div className="centeredFlex justify-content-end">
               <div>
                 <Typography variant="subtitle2" noWrap>
-                  Total
+                  {$t('total')}
                 </Typography>
               </div>
 

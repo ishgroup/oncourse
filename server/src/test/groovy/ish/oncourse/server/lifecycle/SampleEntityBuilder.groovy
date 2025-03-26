@@ -48,7 +48,7 @@ class SampleEntityBuilder {
         c.setCode("12345")
         c.setMaximumPlaces(3)
         c.setCourse(course)
-        c.setFeeExGst(new Money(123, 25))
+        c.setFeeExGst(Money.of(123, 25))
         c.setMaterials("Test materials")
         c.setMaximumPlaces(18)
         c.setMinimumPlaces(10)
@@ -105,13 +105,13 @@ class SampleEntityBuilder {
         Account prepaidFeesAccount = SelectById.query(Account.class, 1000).selectOne(ctx)
         invLine.setPrepaidFeesAccount(prepaidFeesAccount)
 
-        invLine.setDiscountEachExTax(new Money(123, 25))
+        invLine.setDiscountEachExTax(Money.of(123, 25))
         invLine.setInvoice(invoice)
-        invLine.setPriceEachExTax(new Money(123, 25))
+        invLine.setPriceEachExTax(Money.of(123, 25))
         invLine.setQuantity(new BigDecimal(5))
         invLine.setPrepaidFeesAccount(SelectById.query(Account.class, 900).selectOne(ctx))
 
-        invLine.setTaxEach(new Money(10, 1))
+        invLine.setTaxEach(Money.of(10, 1))
         invLine.setUnit("unit")
         return invLine
     }
@@ -119,7 +119,7 @@ class SampleEntityBuilder {
     
     Invoice createInvoice(Contact contact) {
         Invoice inv = this.ctx.newObject(Invoice.class)
-        inv.setAmountOwing(new Money(new BigDecimal(10)))
+        inv.setAmountOwing(Money.of(new BigDecimal(10)))
         inv.setContact(contact)
         inv.setCustomerReference("customer reference")
         inv.setDateDue(LocalDate.now())

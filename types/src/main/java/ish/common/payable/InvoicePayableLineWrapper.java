@@ -34,7 +34,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 		if (getQuantity() == null || getDiscountEachExTax() == null) {
 			return Money.ZERO;
 		}
-		return Money.valueOf(getQuantity()).multiply(getDiscountEachExTax());
+		return Money.of(getQuantity()).multiply(getDiscountEachExTax());
 	}
 
 	public Money getDiscountEachIncTax() {
@@ -56,7 +56,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 		if (getQuantity() == null || getPriceEachExTax() == null) {
 			return Money.ZERO;
 		}
-		return Money.valueOf(getQuantity()).multiply(getPriceEachExTax());
+		return Money.of(getQuantity()).multiply(getPriceEachExTax());
 	}
 
 	public Money getPriceEachIncTax() {
@@ -70,7 +70,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 		if (getQuantity() == null || getPriceEachExTax() == null) {
 			return Money.ZERO;
 		}
-		return Money.valueOf(getQuantity()).multiply(getPriceEachIncTax());
+		return Money.of(getQuantity()).multiply(getPriceEachIncTax());
 	}
 
 	public Money getDiscountedPriceTotalTax() {
@@ -87,7 +87,7 @@ public class InvoicePayableLineWrapper implements IInvoiceLineInterface {
 		} else if (getDiscountEachExTax() == null || getDiscountEachExTax().equals(Money.ZERO)) {
 			return getTaxEach();
 		}
-		return new Money(getPriceEachExTax().toBigDecimal()
+		return Money.of(getPriceEachExTax().toBigDecimal()
 				.divide(getPriceEachExTax().subtract(getDiscountEachExTax()).toBigDecimal(), 10, RoundingMode.HALF_UP).multiply(getTaxEach().toBigDecimal()));
 	}
 

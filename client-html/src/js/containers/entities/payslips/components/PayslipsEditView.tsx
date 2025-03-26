@@ -6,27 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Contact, PayslipPayType, PayslipStatus } from "@api/model";
-import Grid, { GridSize } from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import clsx from "clsx";
-import { AddButton, formatCurrency, mapSelectItems } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { arrayInsert, arrayRemove, change, FieldArray } from "redux-form";
+import { Contact, PayslipPayType, PayslipStatus } from '@api/model';
+import { Typography } from '@mui/material';
+import Grid, { GridSize } from '@mui/material/Grid';
+import $t from '@t';
+import clsx from 'clsx';
+import { AddButton, formatCurrency, mapSelectItems } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { arrayInsert, arrayRemove, change, FieldArray } from 'redux-form';
 import {
   ContactLinkAdornment,
   HeaderContactTitle
-} from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
+} from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { PayLineWithDefer } from "../../../../model/entities/Payslip";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import ContactSelectItemRenderer from "../../contacts/components/ContactSelectItemRenderer";
-import { getContactFullName } from "../../contacts/utils";
-import PayslipPaylineRenderrer from "./PayslipPaylineRenderrer";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { PayLineWithDefer } from '../../../../model/entities/Payslip';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import ContactSelectItemRenderer from '../../contacts/components/ContactSelectItemRenderer';
+import { getContactFullName } from '../../contacts/utils';
+import PayslipPaylineRenderrer from './PayslipPaylineRenderrer';
 
 const getLayoutArray = (threeColumn: boolean): { [key: string]: boolean | GridSize }[] => (threeColumn
     ? [
@@ -138,7 +139,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
                   entity="Contact"
                   aqlFilter="isTutor is true"
                   name="tutorId"
-                  label="Tutor"
+                  label={$t('tutor')}
                   selectValueMark="id"
                   selectLabelCondition={getContactFullName}
                   defaultValue={values?.tutorFullName}
@@ -159,7 +160,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
           <FormField
             type="select"
             name="payType"
-            label="Pay type"
+            label={$t('pay_type')}
             items={payslipPayTypes}
             disabled={values && values.status === "Paid/Exported"}
             required
@@ -202,7 +203,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
           >
             <Grid container columnSpacing={3}>
               <Grid item xs={paislipsLayout[8].xs} className="centeredFlex">
-                <span className="heading flex-fill money">Payrun total</span>
+                <span className="heading flex-fill money">{$t('payrun_total')}</span>
               </Grid>
               <Grid item xs={paislipsLayout[9].xs}>
                 <Grid container columnSpacing={3}>
@@ -240,7 +241,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
         <Grid item xs={12}>
           <div className="centeredFlex">
             <Typography component="span" variant="body1" color="textSecondary">
-              Add New Custom pay item
+              {$t('add_new_custom_pay_item')}
             </Typography>
             <AddButton
               onClick={this.addCustomPayLine}
@@ -251,11 +252,11 @@ class PayslipsEditView extends React.PureComponent<any, any> {
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="publicNotes" label="Public notes"  />
+          <FormField type="multilineText" name="publicNotes" label={$t('public_notes')}  />
         </Grid>
 
         <Grid item xs={paislipsLayout[12].xs}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
+          <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
         </Grid>
       </Grid>
     ) : null;
@@ -264,7 +265,7 @@ class PayslipsEditView extends React.PureComponent<any, any> {
 
 const mapStateToProps = (state: State) => ({
   tags: state.tags.entityTags["Payslip"],
-  currency: state.currency
+  currency: state.location.currency
 });
 
 export default connect<any, any, any>(mapStateToProps)(PayslipsEditView);

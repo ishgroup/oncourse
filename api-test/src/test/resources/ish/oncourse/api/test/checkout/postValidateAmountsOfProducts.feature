@@ -5,7 +5,7 @@ Feature: Validations on invoices amount after payment
     * configure headers = { Authorization: 'admin' }
     * url 'https://127.0.0.1:8182/a/v1'
     
-    * def ishPath = 'checkout'
+    * def ishPath = 'checkout/submitPayment'
     * def ishPathEntity = 'list/entity/'
 
 
@@ -22,7 +22,6 @@ Feature: Validations on invoices amount after payment
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = false
     When method POST
     Then status 200
     And def invoiceId = response.invoice.id
@@ -57,7 +56,6 @@ Feature: Validations on invoices amount after payment
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = false
     When method POST
     Then status 200
     And def invoiceId = response.invoice.id
@@ -91,7 +89,6 @@ Feature: Validations on invoices amount after payment
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = false
     When method POST
     Then status 200
     And def invoiceId = response.invoice.id
@@ -125,7 +122,6 @@ Feature: Validations on invoices amount after payment
 
     Given path ishPath
     And request checkoutModel
-    And header xValidateOnly = false
     When method POST
     Then status 200
     And def invoiceId = response.invoice.id

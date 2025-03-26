@@ -14,6 +14,7 @@ import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import $t from '@t';
 import { AppBarHelpMenu, AppTheme } from 'ish-ui';
 import React, { useCallback, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -178,7 +179,7 @@ const AppBarContainer = (props: Props) => {
 
   const childrenWithProps = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
-      return React.cloneElement<any>(child, {onScroll});
+      return React.cloneElement<any>(child, { onScroll });
     }
     return child;
   });
@@ -191,15 +192,15 @@ const AppBarContainer = (props: Props) => {
         classes.header,
         hasFab && classes.headerFabOffset,
         opened && "pt-2",
-        {[classes.headerAlternate]: hasScrolling},
-        {[classes.headerHighContrast]: isHighcontrastTheme}
+        { [classes.headerAlternate]: hasScrolling },
+        { [classes.headerHighContrast]: isHighcontrastTheme }
       )}
     >
       <Toolbar>
         {!noDrawer && !hamburgerMenu && (
           <IconButton
             color="inherit"
-            aria-label="Open drawer"
+            aria-label={$t('open_drawer')}
             onClick={drawerHandler}
             className={cx(!isSmallScreen && classes.hiddenContainer, classes.drawerToggle)}
           >
@@ -254,7 +255,7 @@ const AppBarContainer = (props: Props) => {
         </div>
       </Toolbar>
     </AppBar>
-    <div className={cx("w-100", {"appBarContainer": !disabledScrolling}, classes.container, containerClass)}
+    <div className={cx("w-100", { "appBarContainer": !disabledScrolling }, classes.container, containerClass)}
          onScroll={noScrollSpy ? null : onScroll}>
       {hasFab && (
         <div className={classes.scriptAddMenu}>

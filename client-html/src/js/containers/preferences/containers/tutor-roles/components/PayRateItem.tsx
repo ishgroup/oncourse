@@ -6,15 +6,16 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { ClassCostRepetitionType } from "@api/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Card, Grid, IconButton } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import { ClassCostRepetitionType } from '@api/model';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Card, Grid, IconButton } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
 import { Decimal } from "decimal.js-light";
-import { decimalMul, mapSelectItems, YYYY_MM_DD_MINUSED } from "ish-ui";
-import React from "react";
-import FormField from "../../../../../common/components/form/formFields/FormField";
-import { valiadateSelectItemAvailable } from "../../../../../common/utils/validation";
+import { decimalMul, mapSelectItems, YYYY_MM_DD_MINUSED } from 'ish-ui';
+import React from 'react';
+import FormField from '../../../../../common/components/form/formFields/FormField';
+import { valiadateSelectItemAvailable } from '../../../../../common/utils/validation';
 
 const repetitionTypes = Object.keys(ClassCostRepetitionType).filter(t => !["Discount", "Per student contact hour"].includes(t)).map(mapSelectItems);
 
@@ -37,7 +38,7 @@ const PayRateItem = props => {
             <FormField
               type="date"
               name={`${item}.validFrom`}
-              label="Valid from"
+              label={$t('valid_from')}
               formatValue={YYYY_MM_DD_MINUSED}
               required
             />
@@ -46,7 +47,7 @@ const PayRateItem = props => {
             <FormField
               type="money"
               name={`${item}.rate`}
-              label="Hourly rate"
+              label={$t('hourly_rate')}
               required
             />
           </Grid>
@@ -54,7 +55,7 @@ const PayRateItem = props => {
             <FormField
               type="select"
               name={`${item}.type`}
-              label="Type"
+              label={$t('type')}
               items={repetitionTypes}
               validate={validateRepetition}
             />
@@ -63,13 +64,13 @@ const PayRateItem = props => {
             <FormField
               type="number"
               name={`${item}.oncostRate`}
-              label="Oncosts"
+              label={$t('oncosts')}
               step="0.01"
               format={formatFieldPercent}
               parse={parseFieldPercent}
               validate={validatePercentage}
             />
-            <Tooltip title="Remove pay rate">
+            <Tooltip title={$t('remove_pay_rate')}>
               <IconButton
                 className="lightGrayIconButton"
                 color="secondary"
@@ -81,7 +82,7 @@ const PayRateItem = props => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <FormField type="multilineText" name={`${item}.notes`} label="Description" />
+          <FormField type="multilineText" name={`${item}.notes`} label={$t('description')} />
         </Grid>
       </Grid>
     </Card>

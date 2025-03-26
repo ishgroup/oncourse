@@ -28,8 +28,8 @@ class InvoiceTest extends TestWithDatabase {
 
     @Test
     void testAmountOwing() throws Exception {
-        Money invoiceMoney = new Money("90").negate()
-        Money paymentMoney = new Money("40")
+        Money invoiceMoney = Money.of("90").negate()
+        Money paymentMoney = Money.of("40")
 
         Tax tax = Tax.getTaxWithCode("N", cayenneContext)
 
@@ -92,8 +92,8 @@ class InvoiceTest extends TestWithDatabase {
 
     @Test
     void testAmountOwing2() throws Exception {
-        Money invoiceMoney = new Money("90")
-        Money paymentMoney = new Money("40")
+        Money invoiceMoney = Money.of("90")
+        Money paymentMoney = Money.of("40")
 
         Tax tax = Tax.getTaxWithCode("N", cayenneContext)
 
@@ -155,8 +155,8 @@ class InvoiceTest extends TestWithDatabase {
     
     @Test
     void testAmountOwing3() throws Exception {
-        Money invoiceMoney = new Money("90")
-        Money paymentMoney = new Money("40")
+        Money invoiceMoney = Money.of("90")
+        Money paymentMoney = Money.of("40")
 
         Tax tax = Tax.getTaxWithCode("N", cayenneContext)
 
@@ -208,8 +208,8 @@ class InvoiceTest extends TestWithDatabase {
 
     @Test
     void testAmountOwing4() throws Exception {
-        Money invoiceMoney = new Money("90")
-        Money paymentMoney = new Money("40")
+        Money invoiceMoney = Money.of("90")
+        Money paymentMoney = Money.of("40")
 
         Tax tax = Tax.getTaxWithCode("N", cayenneContext)
 
@@ -283,7 +283,7 @@ class InvoiceTest extends TestWithDatabase {
         contact.setLastName("lastName4")
         invoice.setContact(contact)
         invoice.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice.setAmountOwing(new Money("90"))
+        invoice.setAmountOwing(Money.of("90"))
 
         invoice.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(cayenneContext, Account.class))
 
@@ -298,7 +298,7 @@ class InvoiceTest extends TestWithDatabase {
         contact2.setLastName("lastName5")
         invoice2.setContact(contact2)
         invoice2.setSource(PaymentSource.SOURCE_ONCOURSE)
-        invoice2.setAmountOwing(new Money("90"))
+        invoice2.setAmountOwing(Money.of("90"))
 
         invoice2.setDebtorsAccount(AccountUtil.getDefaultDebtorsAccount(cayenneContext, Account.class))
 

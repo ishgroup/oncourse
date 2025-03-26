@@ -9,6 +9,7 @@
 import { ClassCost, CourseClassTutor, Discount, Tax } from '@api/model';
 import { Grid, Popover, Typography } from '@mui/material';
 import { darken } from '@mui/material/styles';
+import $t from '@t';
 import { isAfter, isBefore, isEqual } from 'date-fns';
 import Decimal from 'decimal.js-light';
 import {
@@ -220,23 +221,23 @@ const MouseOverPopover = ({
         disableRestoreFocus
       >
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Enrolments:</span>
+          <span className="mr-1">{$t('enrolments2')}</span>
           <span>{enrolments}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Income:</span>
+          <span className="mr-1">{$t('income')}</span>
           <span>{income}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Discounts:</span>
+          <span className="mr-1">{$t('discounts2')}</span>
           <span>{discounts}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Costs:</span>
+          <span className="mr-1">{$t('costs')}</span>
           <span>{costs}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Profit:</span>
+          <span className="mr-1">{$t('profit')}</span>
           <span>{profit}</span>
         </Typography>
       </Popover>
@@ -659,7 +660,7 @@ const CourseClassBudgetTab = React.memo<Props>(
               />
 
               <Typography variant="caption" color="textSecondary" className="pt-1">
-                Please save your new class before adding budget fees
+                {$t('please_save_your_new_class_before_adding_budget_fe')}
               </Typography>
             </div>
           ) : (
@@ -714,7 +715,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                     <div onClick={stopEventPropagation}>
                       <NestedList
                         formId={values.id}
-                        title="Discounts"
+                        title={$t('discounts')}
                         searchPlaceholder="Find discounts"
                         values={[]}
                         searchValues={searchValues}
@@ -760,9 +761,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                 {values.enrolmentsToProfitLeftCount > 0 && (
                   <Typography variant="body2" color="textSecondary" className="pl-3 pt-2">
                     {values.enrolmentsToProfitLeftCount}
-                    {' '}
-                    more enrolments required before running costs are covered and
-                    class should proceed
+                    {$t('more_enrolments_required_before_running_costs_are')}
                   </Typography>
                 )}
               </div>

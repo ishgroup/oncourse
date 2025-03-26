@@ -9,6 +9,7 @@
 import { Lead, LeadStatus, Sale, Tag, User } from '@api/model';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import clsx from 'clsx';
 import { decimalMul, decimalPlus, makeAppStyles, mapSelectItems, normalizeNumberToZero } from 'ish-ui';
 import React, { useEffect } from 'react';
@@ -173,7 +174,7 @@ const LeadGeneral = (props: Props) => {
             <Grid item xs={twoColumn ? 6 : 12}>
               <FormField
                 type="remoteDataSelect"
-                label="Contact"
+                label={$t('Contact')}
                 entity="Contact"
                 name="contactId"
                 selectValueMark="id"
@@ -206,7 +207,7 @@ const LeadGeneral = (props: Props) => {
             <FormField
               type="select"
               name="assignToId"
-              label="Assigned to"
+              label={$t('assigned_to')}
               selectValueMark="id"
               selectLabelCondition={getContactFullName}
               defaultValue={values.assignTo}
@@ -217,10 +218,10 @@ const LeadGeneral = (props: Props) => {
           </Grid>
         )}
         <Grid item xs={12}>
-          <FormField type="number" name="studentCount" label="Number of students" />
+          <FormField type="number" name="studentCount" label={$t('number_of_students')} />
         </Grid>
         <Grid item xs={12}>
-          <FormField type="dateTime" name="nextActionOn" label="Next action on" />
+          <FormField type="dateTime" name="nextActionOn" label={$t('next_action_on')} />
         </Grid>
       </Grid>
       <Grid item xs={twoColumn ? 6 : 12}>
@@ -236,13 +237,13 @@ const LeadGeneral = (props: Props) => {
           <FormField
             type="money"
             name="estimatedValue"
-            label="Estimated value"
+            label={$t('estimated_value')}
             normalize={normalizeNumberToZero}
             debounced={false}
           />
           <Chip
             size="small"
-            label="Calculate"
+            label={$t('calculate')}
             className={clsx(classes.chipButton, "ml-2, mt-1")}
             onClick={() => (
               asyncUpdateEstimatedValue(dispatch, form, values.relatedSellables, values.studentCount).catch(e => console.error(e))
@@ -255,7 +256,7 @@ const LeadGeneral = (props: Props) => {
         <FormField
           type="select"
           name="status"
-          label="Status"
+          label={$t('status')}
           items={statusItems}
           required
         />

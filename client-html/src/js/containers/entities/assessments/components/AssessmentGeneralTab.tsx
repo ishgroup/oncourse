@@ -3,17 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Assessment, GradingType, Tag } from "@api/model";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import React from "react";
-import { connect } from "react-redux";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Assessment, GradingType, Tag } from '@api/model';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import $t from '@t';
+import React from 'react';
+import { connect } from 'react-redux';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
 
 interface Props extends Partial<EditViewProps<Assessment>> {
   tags?: Tag[];
@@ -62,7 +63,7 @@ const AssessmentGeneralTab = React.memo<Props>(
             <Grid item xs={twoColumn ? 2 : 12}>
               <FormField
                 type="text"
-                label="Code"
+                label={$t('code')}
                 name="code"
                 placeholder={twoColumn ? "Code" : undefined}
                 required
@@ -71,7 +72,7 @@ const AssessmentGeneralTab = React.memo<Props>(
             <Grid item xs={twoColumn ? 4 : 12}>
               <FormField
                 type="text"
-                label="Name"
+                label={$t('name')}
                 name="name"
                 placeholder={twoColumn ? "Name" : undefined}
                 required
@@ -103,7 +104,7 @@ const AssessmentGeneralTab = React.memo<Props>(
       <FormField
         type="select"
         name="gradingTypeId"
-        label="Grading type"
+        label={$t('grading_type')}
         selectValueMark="id"
         selectLabelMark="name"
         items={gradingTypes}
@@ -114,14 +115,14 @@ const AssessmentGeneralTab = React.memo<Props>(
       <FormControlLabel
         className="checkbox mb-2"
         control={<FormField type="checkbox" name="active" color="secondary"  />}
-        label="Active"
+        label={$t('active')}
       />
     </Grid>
     <Grid item xs={12}>
       <FormField
         type="multilineText"
         name="description"
-        label="Description"
+        label={$t('description')}
         required
               />
     </Grid>

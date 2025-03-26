@@ -14,6 +14,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import {
   addContentMarker,
@@ -25,9 +26,11 @@ import {
   removeContentMarker,
   WysiwygEditor,
 } from 'ish-ui';
+import { GlobalStyles } from "tss-react";
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Field, WrappedFieldProps } from 'redux-form';
 import { COMMON_PLACEHOLDER } from '../../../../constants/Forms';
+
 
 const useStyles = makeAppStyles<void, 'hoverIcon'>()((theme, p, classes) => ({
   hoverIcon: {
@@ -119,6 +122,7 @@ const useStyles = makeAppStyles<void, 'hoverIcon'>()((theme, p, classes) => ({
         }
       },
       "& .ck-editor": {
+        zoom: 1.01,
         "& .ck-content": {
           resize: "vertical",
           maxHeight: "80vh",
@@ -259,7 +263,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
   const [contentMode, setContentMode] = useState(getContentMarker(value));
   const [isEditing, setIsEditing] = useState(false);
   const [modeMenu, setModeMenu] = useState(null);
-  const { classes } = useStyles();
+  const { classes, theme } = useStyles();
   
   const contentWithoutMarker = useMemo(() => removeContentMarker(value), [value]);
 
@@ -303,6 +307,13 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
       mouseEvent="onMouseDown"
     >
       <FormControl className={className} id={name} error={meta && meta.invalid} variant="standard" fullWidth>
+        <GlobalStyles
+          styles={{
+            '.ck-body-wrapper .ck.ck-balloon-panel': {
+              zIndex: theme.zIndex.tooltip
+            }
+          }}
+        />
         <InputLabel
           shrink
           classes={{
@@ -324,7 +335,7 @@ const FormEditor: React.FC<Props & WrappedFieldProps> = (
             }
           >
             <div className="content-mode-wrapper">
-              <Tooltip title="Change content mode" disableFocusListener>
+              <Tooltip title={$t('change_content_mode')} disableFocusListener>
                 <ButtonBase
                   onClick={modeMenuOpen}
                   aria-owns={modeMenu ? "mode-menu" : null}

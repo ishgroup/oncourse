@@ -59,10 +59,10 @@ class InvoiceLineTransactionsBuilderTest {
         when(invoice.invoiceDate).thenReturn(transactionDate)
 
         invLineId = 22L
-        amount1 = new Money(30.0)
-        amount2 = new Money(200.0)
-        amount4 = new Money(25.0)
-        Money total = new Money(300.0)
+        amount1 = Money.of(30.0)
+        amount2 = Money.of(200.0)
+        amount4 = Money.of(25.0)
+        Money total = Money.of(300.0)
         invoiceLine = mock(InvoiceLine)
         when(invoiceLine.invoice).thenReturn(invoice)
         when(invoiceLine.tax).thenReturn(tax)
@@ -74,7 +74,7 @@ class InvoiceLineTransactionsBuilderTest {
         when(invoiceLine.finalPriceToPayExTax).thenReturn(total)
         when(invoiceLine.prepaidFeesRemaining).thenReturn(amount2)
         when(invoiceLine.discountTotalExTax).thenReturn(amount4)
-        amount3 = new Money(100.0)
+        amount3 = Money.of(100.0)
     }
 
     @Test

@@ -1,0 +1,28 @@
+get:
+  operationId: getPerformedPaymentInfo
+  description: get payment in and related invoice by merchant reference
+  tags:
+    - PaymentIn
+  parameters:
+    - name: merchantReference
+      in: path
+      type: string
+      required: true
+      description: Set this to the merchant reference from createSession request response
+  responses:
+    '200':
+      description: Success response
+      schema:
+        $ref: './def/entity/PaymentIn.yaml'
+    '400':
+      description: Validation error
+      schema:
+        type: array
+        items:
+          $ref: './def/entity/checkout/CheckoutValidationError.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: create
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to make checkout. Please contact your administrator

@@ -20,9 +20,9 @@ import {
   Tax,
   TrainingPlan,
   TutorAttendanceType
-} from "@api/model";
-import { TimetableSession } from "../timetable";
-import { AccountExtended } from "./Account";
+} from '@api/model';
+import { TimetableSession } from '../timetable';
+import { AccountExtended } from './Account';
 
 export interface CourseClassRoom {
   id: number;
@@ -78,7 +78,7 @@ export interface BudgetCostModalContentProps {
   currencySymbol?: string;
 }
 
-export type CourseClassStatus = "Current" | "Future" | "Self Paced" | "Unscheduled" | "Finished" | "Cancelled";
+export type CourseClassStatus = "Current" | "Future" | "Self-Paced" | "Unscheduled" | "Finished" | "Cancelled" | "Hybrid";
 
 export interface ClassCostItem {
   value: ClassCostExtended;

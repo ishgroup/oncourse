@@ -7,6 +7,7 @@
  */
 
 import { Grid, Typography } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import React, { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { connect } from 'react-redux';
@@ -131,7 +132,7 @@ const GapDay: React.FunctionComponent<any> = React.memo(
                             tagsState={tagsState}
                           />
                         ) : (
-                          <Typography className="text-disabled">available</Typography>
+                          <Typography className="text-disabled">{$t('available')}</Typography>
                         )}
                       </Grid>
                     </Fragment>
@@ -200,7 +201,7 @@ const GroupingDay = React.memo<GroupingDayProps>(
                   variant="body2"
                   className="text-disabled"
                 >
-                  Loading...
+                  {$t('loading')}
                 </Typography>
               )}
            </Grid>
@@ -217,14 +218,14 @@ const GroupingDay = React.memo<GroupingDayProps>(
                   />
                 ))
               ) : (
-                <Typography className="text-disabled dayOffset">available</Typography>
+                <Typography className="text-disabled dayOffset">{$t('available')}</Typography>
               )}
            </Grid>
          </Grid>
           ))}
      </>
     ) : (
-      <Typography className="text-disabled dayOffset">available</Typography>
+      <Typography className="text-disabled dayOffset">{$t('available')}</Typography>
     ))
 );
 
@@ -299,7 +300,7 @@ const CalendarDayWrapper: React.FunctionComponent<CompactModeDayProps> = React.m
           />
         ))
       ) : (
-        <Typography className="text-disabled dayOffset">available</Typography>
+        <Typography className="text-disabled dayOffset">{$t('available')}</Typography>
       )),
     [sessions, updated, selectedDayPeriods, tagsState, calendarGrouping]
   );

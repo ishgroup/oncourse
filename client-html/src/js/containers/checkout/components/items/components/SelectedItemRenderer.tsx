@@ -7,6 +7,7 @@ import Delete from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format as formatDate } from 'date-fns';
 import { appendTimezone, AppTheme, III_DD_MMM_YYYY_HH_MM_AAAA } from 'ish-ui';
@@ -68,7 +69,7 @@ const CourseItemRenderer: React.FC<any> = props => {
                 )
                 : (
                   <>
-                    No class selected
+                    {$t('no_class_selected')}
                   </>
                 )}
             </Typography>

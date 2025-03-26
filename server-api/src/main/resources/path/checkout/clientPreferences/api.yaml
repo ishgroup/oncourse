@@ -1,0 +1,16 @@
+get:
+  operationId: getClientPreferences
+  description: Get client key for embedded form payment systems
+  tags:
+    - Checkout
+  responses:
+    '200':
+      description: Success response.
+      schema:
+        $ref: './def/entity/checkout/ClientPreferences.yaml'
+    default:
+      description: Unexpected error
+  x-permission:
+    mask: view
+    keyCode: ENROLMENT
+    errorMessage: Sorry, you have no permissions to view checkout. Please contact your administrator

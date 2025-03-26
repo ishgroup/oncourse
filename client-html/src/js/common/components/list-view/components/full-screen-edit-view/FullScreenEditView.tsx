@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
+import $t from '@t';
 import clsx from 'clsx';
 import { AppBarHelpMenu } from 'ish-ui';
 import React from 'react';
@@ -220,7 +221,7 @@ class FullScreenEditViewBase extends React.PureComponent<EditViewContainerProps,
                 onClick={this.onCloseClick}
                 className={clsx("closeAppBarButton", hasScrolling && classes.closeButtonAlternate)}
               >
-                Close
+                {$t('close')}
               </Button>
               <FormSubmitButton
                 disabled={Boolean(asyncValidating) || (!creatingNew && !dirty) || disabledSubmitCondition}

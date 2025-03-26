@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import {
@@ -220,7 +221,7 @@ const DocumentAddDialog = (
             input={{ value: searchValue, onChange: onSelectChange as any, onBlur: stubFunction } as any}
             meta={{} as any}
             onInputChange={onSelectInputChange}
-            placeholder="Find existing documents"
+            placeholder={$t('find_existing_documents')}
             items={searchItems || []}
             itemRenderer={searchItemsRenderer}
             popperAnchor={searchContainerNode.current}

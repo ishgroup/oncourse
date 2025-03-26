@@ -6,14 +6,15 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React, { useCallback, useEffect } from "react";
-import { Typography, Button } from "@mui/material";
-import okta from "../../../../../../images/okta.svg";
-import instantFetchErrorHandler from "../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler";
-import { useAppDispatch } from "../../../../../common/utils/hooks";
-import { IntegrationTypesEnum } from "../../../../../model/automation/integrations/IntegrationSchema";
-import { postSsoAuthenticationRequest } from "../../../../login/actions";
-import LoginService from "../../../../login/services/LoginService";
+import { Button, Typography } from '@mui/material';
+import $t from '@t';
+import React, { useCallback, useEffect } from 'react';
+import okta from '../../../../../../images/okta.svg';
+import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
+import { useAppDispatch } from '../../../../../common/utils/hooks';
+import { IntegrationTypesEnum } from '../../../../../model/automation/integrations/IntegrationSchema';
+import { postSsoAuthenticationRequest } from '../../../../login/actions';
+import LoginService from '../../../../login/services/LoginService';
 
 export const OktaButton = () => {
   const dispatch = useAppDispatch();
@@ -41,7 +42,7 @@ export const OktaButton = () => {
     color="inherit"
     onClick={openOktaConcent}
   >
-    <img src={okta} width={80} alt="okta"/>
+    <img src={okta} width={80} alt={$t('okta')}/>
   </Button>;
 };
 
@@ -62,7 +63,7 @@ export const SSOProviders = ({ providers }: SSOProvidersProps) => {
   
   return providers.length ? <div className="w-100 d-flex justify-content-center">
     <div>
-      <Typography component="div" variant="caption" align="center" className="mb-2">or login with</Typography>
+      <Typography component="div" variant="caption" align="center" className="mb-2">{$t('or_login_with')}</Typography>
       <div className="w-100 d-flex justify-content-center">
         {
           providers.map(p => getProvider(p))

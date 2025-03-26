@@ -180,7 +180,7 @@ class DuplicateCourseServiceTest extends TestWithDatabase {
         Product product = context.newObject(Product.class)
         product.setTax(tax)
         product.setIsWebVisible(false)
-        product.setTaxAdjustment(new Money(100, 0))
+        product.setTaxAdjustment(Money.of(100, 0))
         product.setIsOnSale(false)
         product.setSku("sku")
         product.setType(1)
