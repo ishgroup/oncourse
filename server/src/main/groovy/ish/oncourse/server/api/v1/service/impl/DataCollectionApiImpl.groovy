@@ -161,14 +161,19 @@ class DataCollectionApiImpl implements DataCollectionApi {
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(id, null, "The data collection rule $id is not exist")).build())
         }
 
-        if (dbRule.courses.empty) {
-            context.deleteObjects(dbRule.fieldConfigurationLinks)
-            context.deleteObject(dbRule)
-            context.commitChanges()
-        } else {
+        if(!dbRule.courses.empty) {
             String[] courses = dbRule.courses*.name.flatten().toArray()
             throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(id, null, "The data collection form rule not be deleted, used for courses: ${courses.join(', ')}")).build())
         }
+
+        if(!dbRule.products.empty) {
+            String[] products = dbRule.products*.name.flatten().toArray()
+            throw new ClientErrorException(Response.status(Response.Status.BAD_REQUEST).entity(new ValidationErrorDTO(id, null, "The data collection form rule not be deleted, used for products: ${products.join(', ')}")).build())
+        }
+
+        context.deleteObjects(dbRule.fieldConfigurationLinks)
+        context.deleteObject(dbRule)
+        context.commitChanges()
     }
 
     @Override
