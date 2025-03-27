@@ -9,10 +9,10 @@ import LockOpen from '@mui/icons-material/LockOpen';
 import { Collapse, Divider, FormControlLabel, Grid, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import $t from '@t';
+import { Decimal } from 'decimal.js-light';
 import {
   decimalMinus,
   decimalMul,
-  decimalPlus,
   formatCurrency,
   formatFieldPercent,
   normalizeNumberToZero,
@@ -22,7 +22,6 @@ import {
 } from 'ish-ui';
 import React, { useCallback, useMemo, useState } from 'react';
 import { change } from 'redux-form';
-import { withStyles } from 'tss-react/mui';
 import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
@@ -32,25 +31,6 @@ import { DefinedTutorRoleExtended } from '../../../../../../model/preferences/Tu
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
 import { getClassCostFee } from '../utils';
 import { PayRateTypes, validatePayRateTypes } from './BudgetCostModal';
-
-const styles = theme => ({
-  divider: {
-    borderBottom: `1px solid ${theme.palette.divider}`
-  },
-  textRight: {
-    textAlign: "right"
-  },
-  textTopMargin: {
-    marginTop: "20px"
-  },
-  modalAction: {
-    paddingRight: "20px"
-  },
-  onCostRate: {
-    position: "relative",
-    left: "-5px"
-  }
-});
 
 interface Props extends BudgetCostModalContentProps {
   tutorRoles?: DefinedTutorRoleExtended[];
@@ -67,13 +47,14 @@ const TutorPayContent: React.FC<Props> = ({
   hasMinMaxFields,
   hasCountField,
   dispatch,
-  defaultOnCostRate,
-  classes
+  defaultOnCostRate
 }) => {
-  const [onCostLocked, setOnCostLocked] = useState(values.onCostRate === null);
+  const [onCostLocked, setOnCostLocked] = useState(true);
   const onLockClick = () => {
     setOnCostLocked(prev => {
-      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : 0));
+      if (!prev) {
+        dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", defaultOnCostRate));
+      }
       return !prev;
     });
   };
@@ -110,9 +91,10 @@ const TutorPayContent: React.FC<Props> = ({
   const budgetedCostLabel = useMemo(() => formatCurrency(budgetedCost, currencySymbol), [budgetedCost, currencySymbol]);
 
   const budgetedIncOnCost = useMemo(
-    () => decimalMul(budgetedCost, decimalPlus(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate, 1)),
+    () => decimalMul(budgetedCost, new Decimal(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate).plus(1).toNumber()),
     [budgetedCost, values.onCostRate, defaultOnCostRate]
   );
+
   const budgetedIncOnCostLabel = useMemo(() => formatCurrency(budgetedIncOnCost, currencySymbol), [
     budgetedIncOnCost,
     currencySymbol
@@ -237,7 +219,7 @@ const TutorPayContent: React.FC<Props> = ({
           </Typography>
         </Grid>
         <Grid item xs={6} className="centeredFlex">
-          <Typography variant="body1" className={classes.onCostRate}>
+          <Typography variant="body1" className="relative">
             <FormField
               type="number"
               name="onCostRate"
@@ -291,4 +273,4 @@ const TutorPayContent: React.FC<Props> = ({
   );
 };
 
-export default withStyles(TutorPayContent, styles);
+export default TutorPayContent;
