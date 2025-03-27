@@ -6,8 +6,7 @@
 import { Account, ArticleProduct, ProductStatus, Tag, Tax } from '@api/model';
 import { Grid } from '@mui/material';
 import $t from '@t';
-import { Decimal } from 'decimal.js-light';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { change, FieldArray } from 'redux-form';
 import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
@@ -15,6 +14,7 @@ import { FormEditorField } from '../../../../common/components/form/formFields/F
 import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
   from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { getFeeExTaxByFeeIncTax, getTotalByFeeExTax } from '../../../../common/utils/hooks';
 import { normalizeString } from '../../../../common/utils/strings';
 import { EditViewProps } from '../../../../model/common/ListView';
 import { State } from '../../../../reducers/state';
@@ -35,22 +35,18 @@ const validateNonNegative = value => (value < 0 ? "Must be non negative" : undef
 
 const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 
-const handleChangeFeeExTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === values.taxId);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal((value || 0) * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
+const handleChangeFeeExTax = (taxRate, dispatch, form) => value => {
+  dispatch(change(form, "totalFee", getTotalByFeeExTax(taxRate, value)));
 };
 
-const handleChangeFeeIncTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === values.taxId);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "feeExTax", new Decimal(value / (1 + taxRate)).toDecimalPlaces(2).toNumber()));
+const handleChangeFeeIncTax = (taxRate, dispatch, form) => value => {
+  dispatch(change(form, "feeExTax", getFeeExTaxByFeeIncTax(taxRate, value)));
 };
 
-const handleChangeTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
+const handleChangeTax = (taxes: Tax[], dispatch, form, feeExTax) => value => {
   const tax = taxes.find(item => item.id === value);
   const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal(values.feeExTax * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
+  dispatch(change(form, "totalFee", getTotalByFeeExTax(taxRate, feeExTax)));
 };
 
 const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
@@ -59,7 +55,7 @@ const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Acc
   if (tax.id !== values.taxId) {
     const taxRate = tax ? tax.rate : 0;
     dispatch(change(form, "taxId", tax.id));
-    dispatch(change(form, "totalFee", new Decimal(values.feeExTax * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
+    dispatch(change(form, "totalFee", getTotalByFeeExTax(taxRate, values.feeExTax)));
   }
 };
 
@@ -77,8 +73,9 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
 
-  return (
+  const taxRate = useMemo(() => taxes.find(t => t.id === values.taxId)?.rate, [taxes, values.taxId]);
 
+  return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
       <Grid item container xs={12}>
         <FullScreenStickyHeader
@@ -166,7 +163,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           name="feeExTax"
           label={$t('fee_ex_tax')}
           validate={validateNonNegative}
-          onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+          onChange={handleChangeFeeExTax(taxRate, dispatch, form)}
           debounced={false}
           required
         />
@@ -177,7 +174,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           name="totalFee"
           label={$t('total_fee')}
           validate={validateNonNegative}
-          onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          onChange={handleChangeFeeIncTax(taxRate, dispatch, form)}
           debounced={false}
         />
       </Grid>
@@ -186,7 +183,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
           type="select"
           label={$t('tax')}
           name="taxId"
-          onChange={handleChangeTax(values, taxes, dispatch, form)}
+          onChange={handleChangeTax(taxes, dispatch, form, values.feeExTax)}
           debounced={false}
           items={taxes}
           selectValueMark="id"
