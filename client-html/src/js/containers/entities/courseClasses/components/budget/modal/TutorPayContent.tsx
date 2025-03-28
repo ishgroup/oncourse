@@ -91,7 +91,7 @@ const TutorPayContent: React.FC<Props> = ({
   const budgetedCostLabel = useMemo(() => formatCurrency(budgetedCost, currencySymbol), [budgetedCost, currencySymbol]);
 
   const budgetedIncOnCost = useMemo(
-    () => decimalMul(budgetedCost, new Decimal(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate).plus(1).toNumber()),
+    () => decimalMul(budgetedCost, new Decimal(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate || 0).plus(1).toNumber()),
     [budgetedCost, values.onCostRate, defaultOnCostRate]
   );
 
