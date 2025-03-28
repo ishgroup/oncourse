@@ -15,6 +15,11 @@ import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.query.ObjectSelect
 
 class TotalLmsEnrolmentsProperty extends ChargebeePropertyProcessor {
+    private static final List<String> REQUIRED_ULS = List.of(
+            "doublealabs.com",
+            "doublea.com"
+    )
+
     private ObjectContext context
 
     TotalLmsEnrolmentsProperty(Date startDate, Date endDate, ObjectContext context) {
@@ -29,7 +34,9 @@ class TotalLmsEnrolmentsProperty extends ChargebeePropertyProcessor {
                 .select(context)
 
         def recordsToFetch = records.findAll {
-            it.courseClass.room?.virtualRoomUrl?.contains("doublealabs.com")
+            REQUIRED_ULS.any {urlFragment ->
+                it.courseClass.room?.virtualRoomUrl?.contains(urlFragment)
+            }
         }
 
         return (recordsToFetch.sum() { it.createdOn.after(it.courseClass.startDateTime) ? 2 : 1 } as Integer)?.toBigDecimal() ?: BigDecimal.ZERO
