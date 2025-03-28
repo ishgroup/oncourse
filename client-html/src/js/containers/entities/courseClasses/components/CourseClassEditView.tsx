@@ -8,7 +8,7 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
-import { Typography, IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -17,7 +17,6 @@ import {
   appendTimezone,
   D_MMM,
   decimalMinus,
-  decimalMul,
   decimalPlus,
   formatCurrency,
   makeAppStyles,
@@ -203,7 +202,7 @@ const useBudgetAdornmentStyles = makeAppStyles()(theme => ({
 }));
 
 const getDiscountedFee = (discount, currentTax, classFee) => {
-  const taxOnDiscount = decimalMul(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0, currentTax.rate);
+  const taxOnDiscount = new Decimal(discount.courseClassDiscount.discountOverride || discount.perUnitAmountExTax || 0).mul(currentTax.rate);
 
   let decimal = new Decimal(classFee).minus(discount.perUnitAmountExTax || 0).minus(taxOnDiscount);
   

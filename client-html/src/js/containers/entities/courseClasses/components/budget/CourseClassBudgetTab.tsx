@@ -15,8 +15,6 @@ import Decimal from 'decimal.js-light';
 import {
   AppTheme,
   BooleanArgFunction,
-  decimalMinus,
-  decimalPlus,
   formatCurrency,
   stopEventPropagation,
   StringArgFunction,
@@ -469,7 +467,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                 const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";
                 const isFeeOverride = d.value.courseClassDiscount.discount.discountType === "Fee override";
 
-                const taxMul = decimalPlus(1, currentTax.rate);
+                const taxMul = new Decimal(1).mul(currentTax.rate);
 
                 if ((isPersent || isFeeOverride) && d.value.courseClassDiscount.discountOverride === null) {
                   const discountValue = new Decimal(feeWithTax)
@@ -477,8 +475,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                       isPersent
                         ? getRoundingByType(
                             d.value.courseClassDiscount.discount.rounding,
-                            new Decimal(feeWithTax).mul(
-                              decimalMinus(1, d.value.courseClassDiscount.discount.discountPercent)
+                            new Decimal(feeWithTax).mul(new Decimal(1).minus(d.value.courseClassDiscount.discount.discountPercent)
                             )
                           )
                         : getRoundingByType(
@@ -487,7 +484,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                           )
                     )
                     .div(taxMul)
-                    .toDecimalPlaces(2)
+                    .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
                     .toNumber();
 
                   dispatch(change(form, `budget[${d.value.index}].perUnitAmountExTax`, discountValue));

@@ -11,8 +11,6 @@ import IconButton from '@mui/material/IconButton';
 import $t from '@t';
 import {
   decimalMinus,
-  decimalMul,
-  decimalPlus,
   formatCurrency,
   formatFieldPercent,
   normalizeNumberToZero,
@@ -26,6 +24,7 @@ import { withStyles } from 'tss-react/mui';
 import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { getTotalByFeeExTax } from '../../../../../../common/utils/financial';
 import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../../../common/utils/validation';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import { DefinedTutorRoleExtended } from '../../../../../../model/preferences/TutorRole';
@@ -110,7 +109,7 @@ const TutorPayContent: React.FC<Props> = ({
   const budgetedCostLabel = useMemo(() => formatCurrency(budgetedCost, currencySymbol), [budgetedCost, currencySymbol]);
 
   const budgetedIncOnCost = useMemo(
-    () => decimalMul(budgetedCost, decimalPlus(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate, 1)),
+    () => getTotalByFeeExTax(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate, budgetedCost),
     [budgetedCost, values.onCostRate, defaultOnCostRate]
   );
   const budgetedIncOnCostLabel = useMemo(() => formatCurrency(budgetedIncOnCost, currencySymbol), [
