@@ -8,7 +8,7 @@
 
 import { ClassCost, CourseClassTutor, DefinedTutorRole, Tax } from '@api/model';
 import Edit from '@mui/icons-material/Edit';
-import { Typography, IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import $t from '@t';
 import clsx from 'clsx';
 import { format } from 'date-fns';
@@ -494,7 +494,7 @@ const CourseClassEditView: React.FC<Props> = ({
       dispatch(initialize(COURSE_CLASS_COST_DIALOG_FORM, initWage));
       if (twoColumn) {
         const search = new URLSearchParams(window.location.search);
-        search.append("expandTab", "4");
+        search.append("expandTab", items.findIndex(i => i.label === 'BUDGET')?.toString());
         history.replace({
           pathname: history.location.pathname,
           search: decodeURIComponent(search.toString())
@@ -505,7 +505,7 @@ const CourseClassEditView: React.FC<Props> = ({
         }
       }
     },
-    [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget]
+    [tutorRoles, twoColumn, values.taxId, values.id, expandedBudget, items]
   );
 
   const classCostTypes = useMemo(

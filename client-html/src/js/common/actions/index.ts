@@ -7,7 +7,7 @@
  * Common actions of App
  * */
 
-import { PermissionRequest, PreferenceEnum, User, UserPreference } from '@api/model';
+import { PermissionRequest, PermissionResponse, PreferenceEnum, User, UserPreference } from '@api/model';
 import { ShowConfirmCaller } from 'ish-ui';
 import { LoginState } from '../../containers/login/reducers/state';
 import { QueuedAction } from '../../model/common/ActionsQueue';
@@ -111,6 +111,11 @@ export const removeActionsFromQueue = (meta: RemoveQueuedActionMeta[]) => ({
 
 export const executeActionsQueue = () => ({
   type: EXECUTE_ACTIONS_QUEUE
+});
+
+export const checkPermissionsRequestFulfilled = ({ path, method, keyCode, hasAccess }: PermissionRequest & PermissionResponse): IAction<PermissionRequest & PermissionResponse> => ({
+  type: CHECK_PERMISSIONS_REQUEST_FULFILLED,
+  payload: { path, method, keyCode, hasAccess }
 });
 
 export const clearActionsQueue = () => ({

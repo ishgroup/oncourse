@@ -82,7 +82,7 @@ export const SidebarWithSearch = (props: Props) => {
       >
         <Drawer>
           <div className="pl-2">
-            <HamburgerMenu variant={VARIANTS.temporary}/>
+            <HamburgerMenu variant={VARIANTS.temporary} liteBackground />
           </div>
           {!noSearch && <SidebarSearch setParentSearch={setSearch} smallIcons/>}
           {Boolean(filters.length) && (
