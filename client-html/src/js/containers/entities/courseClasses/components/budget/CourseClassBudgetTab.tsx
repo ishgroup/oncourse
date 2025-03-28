@@ -16,7 +16,6 @@ import {
   AppTheme,
   BooleanArgFunction,
   decimalMinus,
-  decimalMul,
   decimalPlus,
   formatCurrency,
   stopEventPropagation,
@@ -38,6 +37,7 @@ import { IAction } from '../../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import NestedList from '../../../../../common/components/form/nestedList/NestedList';
 import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import { getCurrentTax, getTotalByFeeExTax } from '../../../../../common/utils/financial';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../constants/Config';
 import history from '../../../../../constants/History';
 import { EditViewProps } from '../../../../../model/common/ListView';
@@ -53,7 +53,6 @@ import {
   mapPlainDiscounts,
   transformDiscountForNestedList
 } from '../../../discounts/utils';
-import { getCurrentTax } from '../../../taxes/utils';
 import { setCourseClassBudgetModalOpened } from '../../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../constants';
 import { classCostInitial } from '../../CourseClasses';
@@ -464,7 +463,7 @@ const CourseClassBudgetTab = React.memo<Props>(
               dispatch(change(form, "taxId", postData.taxId));
 
               const currentTax = getCurrentTax(taxes, postData.taxId);
-              const feeWithTax = decimalMul(postData.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
+              const feeWithTax = getTotalByFeeExTax(currentTax?.rate, postData.perUnitAmountExTax);
 
               classCostTypes.discount.items.forEach(d => {
                 const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";

@@ -4,4 +4,4 @@
  */
 
 export * from './redux';
-export * from './financial';
+export * from '../financial';
