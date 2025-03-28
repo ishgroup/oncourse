@@ -18,6 +18,7 @@ package au.com.ish.docs
 import groovyjarjarantlr.RecognitionException
 import groovyjarjarantlr.TokenStreamException
 import groovyjarjarantlr.collections.AST
+import org.apache.groovy.antlr.override.GroovydocVisitor
 import org.apache.commons.lang3.StringUtils
 import org.codehaus.groovy.antlr.AntlrASTProcessor
 import org.codehaus.groovy.antlr.SourceBuffer
@@ -29,13 +30,13 @@ import org.codehaus.groovy.antlr.java.JavaRecognizer
 import org.codehaus.groovy.antlr.parser.GroovyLexer
 import org.codehaus.groovy.antlr.parser.GroovyRecognizer
 import org.codehaus.groovy.antlr.treewalker.PreOrderTraversal
-import org.codehaus.groovy.antlr.treewalker.SourceCodeTraversal
 import org.codehaus.groovy.antlr.treewalker.Visitor
+import org.codehaus.groovy.ast.ModuleNode
+import org.codehaus.groovy.control.*
 import org.codehaus.groovy.groovydoc.GroovyClassDoc
 import org.codehaus.groovy.groovydoc.GroovyRootDoc
 import org.codehaus.groovy.runtime.ResourceGroovyMethods
 import org.codehaus.groovy.tools.groovydoc.LinkArgument
-import org.codehaus.groovy.tools.groovydoc.SimpleGroovyClassDocAssembler
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyExecutableMemberDoc
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyPackageDoc
 import org.codehaus.groovy.tools.groovydoc.SimpleGroovyRootDoc
@@ -44,140 +45,168 @@ import java.util.regex.Matcher
 
 class DslGroovyRootDocBuilder {
 
-	List<LinkArgument> links
-	DslGroovyDocTool tool
-	SimpleGroovyRootDoc rootDoc
-	Properties properties
+    List<LinkArgument> links
+    DslGroovyDocTool tool
+    SimpleGroovyRootDoc rootDoc
+    Properties properties
 
-	def log = tool.project.logger
+    def log = tool.project.logger
 
-	DslGroovyRootDocBuilder(DslGroovyDocTool tool, List<LinkArgument> links) {
-		this.tool = tool
-		this.links = links
-		this.rootDoc = new SimpleGroovyRootDoc("root")
-		this.properties = new Properties()
-	}
+    DslGroovyRootDocBuilder(DslGroovyDocTool tool, List<LinkArgument> links) {
+        this.tool = tool
+        this.links = links
+        this.rootDoc = new SimpleGroovyRootDoc("root")
+        this.properties = new Properties()
+    }
 
-	private Map<String, GroovyClassDoc> parseGroovy(String src, String packagePath, String file) throws RecognitionException, TokenStreamException {
-		boolean isJava = file.endsWith(".java")
-		SourceBuffer sourceBuffer = new SourceBuffer()
-		UnicodeEscapingReader unicodeReader = new UnicodeEscapingReader(new StringReader(src), sourceBuffer)
+    private Map<String, GroovyClassDoc> parseGroovy(String src, String packagePath, String file) throws RecognitionException, TokenStreamException {
+        boolean isJava = file.endsWith(".java")
+        SourceBuffer sourceBuffer = new SourceBuffer()
+        UnicodeEscapingReader unicodeReader = new UnicodeEscapingReader(new StringReader(src), sourceBuffer)
 
-		def parser
-		if (isJava) {
-			JavaLexer lexer = new JavaLexer(unicodeReader)
-			unicodeReader.setLexer(lexer)
-			parser = JavaRecognizer.make(lexer)
-			parser.setSourceBuffer(sourceBuffer)
-			parser.compilationUnit()
-		} else {
-			GroovyLexer lexer = new GroovyLexer(unicodeReader)
-			unicodeReader.setLexer(lexer)
-			parser = GroovyRecognizer.make(lexer)
-			parser.setSourceBuffer(sourceBuffer)
-			parser.compilationUnit()
-		}
+        def parser
+        if (isJava) {
+            JavaLexer lexer = new JavaLexer(unicodeReader)
+            unicodeReader.setLexer(lexer)
+            parser = JavaRecognizer.make(lexer)
+            parser.setSourceBuffer(sourceBuffer)
+            parser.compilationUnit()
+        } else {
+            GroovyLexer lexer = new GroovyLexer(unicodeReader)
+            unicodeReader.setLexer(lexer)
+            parser = GroovyRecognizer.make(lexer)
+            parser.setSourceBuffer(sourceBuffer)
+            parser.compilationUnit()
+        }
 
-		AST ast = parser.getAST()
-		if (isJava) {
-			// modify the Java AST into ssh Groovy AST (just token types)
-			Visitor java2groovyConverter = new Java2GroovyConverter(parser.getTokenNames())
-			AntlrASTProcessor java2groovyTraverser = new PreOrderTraversal(java2groovyConverter)
-			java2groovyTraverser.process(ast)
+        if (isJava) {
+            parser.setSourceBuffer(sourceBuffer)
+            parser.compilationUnit()
+            AST ast = parser.getAST()
+            // modify the Java AST into ssh Groovy AST (just token types)
+            Visitor java2groovyConverter = new Java2GroovyConverter(parser.getTokenNames())
+            AntlrASTProcessor java2groovyTraverser = new PreOrderTraversal(java2groovyConverter)
+            java2groovyTraverser.process(ast)
 
-			// now mutate (groovify) the ast into groovy
-			Visitor groovifier = new Groovifier(parser.getTokenNames(), false)
-			AntlrASTProcessor groovifierTraverser = new PreOrderTraversal(groovifier)
-			groovifierTraverser.process(ast)
-		}
-		Visitor visitor = new SimpleGroovyClassDocAssembler(packagePath, file, sourceBuffer, links, properties, !isJava)
-		AntlrASTProcessor traverser = new SourceCodeTraversal(visitor)
-		traverser.process(ast)
-		return ((SimpleGroovyClassDocAssembler)visitor).getGroovyClassDocs()
-	}
+            // now mutate (groovify) the ast into groovy
+            Visitor groovifier = new Groovifier(parser.getTokenNames(), false)
+            AntlrASTProcessor groovifierTraverser = new PreOrderTraversal(groovifier)
+            groovifierTraverser.process(ast)
+        }
 
-	protected void setOverview() {
-		String path = properties.getProperty("overviewFile")
-		if (path != null && path.length() > 0) {
-			try {
-				String content = ResourceGroovyMethods.getText(new File(path))
-				rootDoc.setDescription(content)
-			} catch (IOException e) {
-				log.error("Unable to load overview file", e)
-			}
-		}
-	}
+        CompilerConfiguration config = new CompilerConfiguration()
+        config.getOptimizationOptions().put(CompilerConfiguration.GROOVYDOC, true)
+        CompilationUnit compUnit = new CompilationUnit(config)
+        SourceUnit unit = new SourceUnit(file, src, config, null, new ErrorCollector(config));
+        compUnit.addSource(unit);
+        int phase = Phases.CONVERSION;
+        if (properties.containsKey("phaseOverride")) {
+            String raw = properties.getProperty("phaseOverride")
+            try {
+                phase = Integer.parseInt(raw)
+            } catch(NumberFormatException ignore) {
+                raw = raw.toUpperCase();
+                switch(raw) {
+                // some dup here but kept simple since we may swap Phases to an enum
+                    case "CONVERSION": phase = 3; break;
+                    case "SEMANTIC_ANALYSIS": phase = 4; break;
+                    case "CANONICALIZATION": phase = 5; break;
+                    case "INSTRUCTION_SELECTION": phase = 6; break;
+                    case "CLASS_GENERATION": phase = 7; break;
+                    default:
+                        System.err.println("Ignoring unrecognised or unsuitable phase and keeping default");
+                }
+            }
+        }
+        compUnit.compile(phase);
+        ModuleNode root = unit.getAST()
+        GroovydocVisitor visitor = new GroovydocVisitor(unit, packagePath, links, properties)
+        root.getClasses().forEach(clazz -> visitor.visitClass(clazz))
+        return visitor.getGroovyClassDocs()
+    }
 
-	/** Extract the package name from inside the source file */
-	private static String getPackageName(String source) {
-		if (StringUtils.isNotBlank(source)) {
-			Matcher packageName = source =~ /(?m)^\s*?package\s+?([A-Za-z.0-9]+);?$/
-			if (packageName && packageName[0] && packageName[0][1]) {
-				return (packageName[0] as String[])[1].replaceAll(/\./, '/')
-			}
-		}
-		return "DefaultPackage"
-	}
+    protected void setOverview() {
+        String path = properties.getProperty("overviewFile")
+        if (path != null && path.length() > 0) {
+            try {
+                String content = ResourceGroovyMethods.getText(new File(path))
+                rootDoc.setDescription(content)
+            } catch (IOException e) {
+                log.error("Unable to load overview file", e)
+            }
+        }
+    }
 
-	protected void processFile(File srcFile) throws IOException {
-		def src = ResourceGroovyMethods.getText(srcFile)
-		def packagePath = getPackageName(src)
+    /** Extract the package name from inside the source file */
+    private static String getPackageName(String source) {
+        if (StringUtils.isNotBlank(source)) {
+            Matcher packageName = source =~ /(?m)^\s*?package\s+?([A-Za-z.0-9]+);?$/
+            if (packageName && packageName[0] && packageName[0][1]) {
+                return (packageName[0] as String[])[1].replaceAll(/\./, '/')
+            }
+        }
+        return "DefaultPackage"
+    }
 
-		def filename = srcFile.getName()
-		SimpleGroovyPackageDoc packageDoc = (SimpleGroovyPackageDoc) rootDoc.packageNamed(packagePath)
+    protected void processFile(File srcFile) throws IOException {
+        def src = ResourceGroovyMethods.getText(srcFile)
+        def packagePath = getPackageName(src)
 
-		try {
-			Map<String, GroovyClassDoc> classDocs
-			classDocs = parseGroovy(src, packagePath, filename)
-			rootDoc.putAllClasses(classDocs)
+        def filename = srcFile.getName()
+        SimpleGroovyPackageDoc packageDoc = (SimpleGroovyPackageDoc) rootDoc.packageNamed(packagePath)
 
-			if (packageDoc == null) {
-				packageDoc = new SimpleGroovyPackageDoc(packagePath)
-			}
-			packageDoc.putAll(classDocs)
-			rootDoc.put(packagePath, packageDoc)
+        try {
+            Map<String, GroovyClassDoc> classDocs
+            classDocs = parseGroovy(src, packagePath, filename)
+            rootDoc.putAllClasses(classDocs)
 
-		} catch (RecognitionException | TokenStreamException e) {
-			throw new IllegalStateException("Parsing failed for '${filename}' due to: ${e.message}", e)
-		}
-	}
+            if (packageDoc == null) {
+                packageDoc = new SimpleGroovyPackageDoc(packagePath)
+            }
+            packageDoc.putAll(classDocs)
+            rootDoc.put(packagePath, packageDoc)
 
-	GroovyRootDoc resolve() {
-		rootDoc.resolve()
-		return rootDoc
-	}
+        } catch (RecognitionException | TokenStreamException e) {
+            throw new IllegalStateException("Parsing failed for '${filename}' due to: ${e.message}", e)
+        }
+    }
 
-	/**
-	 * Find all the mixin classes and merge their javadoc with the class they are designed to mix to.
-	 * So ArtistMixin.class should be added to Artist.class
-	 */
-	void mergeMixins() {
-		def mixins = rootDoc.classes().findAll { it.name().endsWith("Mixin") }
+    GroovyRootDoc resolve() {
+        rootDoc.resolve()
+        return rootDoc
+    }
 
-		for (GroovyClassDoc mixin : mixins) {
-			def doc = rootDoc.classes().find { it.name() == mixin.name().replace("Mixin", "") }
-			if (doc) {
-				mixin.methods().each { m ->
-					log.info("Found mixin {}.{} adding to {}", mixin.name(), m.name(), doc.name())
-					if (m.parameters() && m.parameters()[0]?.name() == "self") {
-						// use reflection to drop the first fake 'self' param for the mixin method
-						SimpleGroovyExecutableMemberDoc.metaClass.setAttribute(m, 'parameters', m.parameters().drop(1))
-						((SimpleGroovyExecutableMemberDoc)m).setStatic(false)
-					}
-					doc.add(m)
-				}
-			}
-		}
-	}
+    /**
+     * Find all the mixin classes and merge their javadoc with the class they are designed to mix to.
+     * So ArtistMixin.class should be added to Artist.class
+     */
+    void mergeMixins() {
+        def mixins = rootDoc.classes().findAll { it.name().endsWith("Mixin") }
 
-	void mergeTraits(List<GroovyClassDoc> classes) {
-		for (GroovyClassDoc annotatedClass : classes) {
-			for (GroovyClassDoc implementedInterface : annotatedClass.interfaces()) {
-				implementedInterface.methods().each { method ->
-					log.info("found method {} in interface {}, adding to class {}", method.name(), implementedInterface.name(), annotatedClass.name())
-					annotatedClass.add(method)
-				}
-			}
-		}
-	}
+        for (GroovyClassDoc mixin : mixins) {
+            def doc = rootDoc.classes().find { it.name() == mixin.name().replace("Mixin", "") }
+            if (doc) {
+                mixin.methods().each { m ->
+                    log.info("Found mixin {}.{} adding to {}", mixin.name(), m.name(), doc.name())
+                    if (m.parameters() && m.parameters()[0]?.name() == "self") {
+                        // use reflection to drop the first fake 'self' param for the mixin method
+                        SimpleGroovyExecutableMemberDoc.metaClass.setAttribute(m, 'parameters', m.parameters().drop(1))
+                        ((SimpleGroovyExecutableMemberDoc)m).setStatic(false)
+                    }
+                    doc.add(m)
+                }
+            }
+        }
+    }
+
+    void mergeTraits(List<GroovyClassDoc> classes) {
+        for (GroovyClassDoc annotatedClass : classes) {
+            for (GroovyClassDoc implementedInterface : annotatedClass.interfaces()) {
+                implementedInterface.methods().each { method ->
+                    log.info("found method {} in interface {}, adding to class {}", method.name(), implementedInterface.name(), annotatedClass.name())
+                    annotatedClass.add(method)
+                }
+            }
+        }
+    }
 }
