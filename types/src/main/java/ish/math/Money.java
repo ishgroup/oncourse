@@ -1056,7 +1056,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	private BigDecimal round(BigDecimal value) {
-		RoundingMode mode = RoundingMode.HALF_UP;
+		RoundingMode mode = RoundingMode.HALF_EVEN;
 		int scale = getCurrency().getDefaultFractionDigits();
 		return value.setScale(scale, mode);
 	}

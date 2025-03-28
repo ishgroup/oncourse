@@ -16,6 +16,7 @@ import {
   decimalMul,
   formatCurrency,
   formatFieldPercent,
+  formatPercent,
   normalizeNumberToZero,
   parseFieldPercent,
   preventNegativeOrLogEnter
@@ -44,7 +45,7 @@ const getDiscountLabel = (discount: Discount, hasOverride: boolean, perUnit: num
   } else {
     switch (discount.discountType) {
       case "Percent":
-        calculated = decimalMul(discount.discountPercent, 100) + "%";
+        calculated = formatPercent(discount.discountPercent);
         break;
       case "Dollar":
         calculated = formatCurrency(discount.discountValue, currencySymbol);
