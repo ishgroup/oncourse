@@ -979,3 +979,24 @@
   short: Send portal password notification for contacts
   category: Notifications
   tag:
+
+- name: Print enrolment summary report
+  keyCode: ish.script.enrolmentSummary
+  body: ish.script.enrolmentSummary.groovy
+  status: NOT_INSTALLED
+  triggerType: ON_DEMAND
+  description: Print enrolment summary report with statistic for months
+  short: Print enrolment summary report with statistic for months
+  category: Marketing
+  outputType: PDF
+  tag:
+  variables:
+    - name: yearToCheck
+      label: year to check
+      dataType: NUMBER
+    - name: monthToCheck
+      label: month to check
+      dataType: NUMBER
+    - name: actualRooms
+      label: actual room number for interval
+      dataType: NUMBER
