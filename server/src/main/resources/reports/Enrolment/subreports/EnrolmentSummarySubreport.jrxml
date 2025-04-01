@@ -53,9 +53,12 @@
     </style>
     <parameter name="ReportName" class="java.lang.String"/>
     <field name="image.poweredby" class="java.io.InputStream"/>
-    <field name="first" class="java.lang.Long"/>
-    <field name="second" class="java.lang.Long"/>
-    <field name="name" class="java.lang.String"/>
+    <field name="month1" class="java.lang.String"/>
+    <field name="month2" class="java.lang.String"/>
+    <field name="month3" class="java.lang.String"/>
+    <field name="lastYear" class="java.lang.String"/>
+    <field name="yearToDate" class="java.lang.String"/>
+    <field name="rowName" class="java.lang.String"/>
 
     <background>
         <band splitType="Stretch"/>
@@ -93,27 +96,27 @@
         <band height="25" splitType="Stretch">
             <textField isBlankWhenNull="true">
                 <reportElement key="textField-1" style="rawHeaderTab" x="0" y="0" width="200" height="25" uuid="0a22d378-f979-4067-b965-5caa63af7c4a"/>
-                <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{rowName}]]></textFieldExpression>
             </textField>
             <textField isBlankWhenNull="true">
                 <reportElement key="textField-2" style="datatab" x="200" y="0" width="100" height="25" uuid="0a22d378-f979-4067-b965-5caa63af7c4a"/>
-                <textFieldExpression><![CDATA[$F{first}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{month1}]]></textFieldExpression>
             </textField>
             <textField isBlankWhenNull="true">
                 <reportElement key="textField-3" style="datatab" x="300" y="0" width="100" height="25" uuid="e4c9934b-701f-444c-a964-0b26f09cd526"/>
-                <textFieldExpression><![CDATA[$F{second}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{month2}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement key="staticText-4" style="datatab" x="400" y="0" width="100" height="25" uuid="6d248445-2327-48df-934c-70c50d60415a"/>
-                <textFieldExpression><![CDATA[$F{first}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{month3}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement key="staticText-5" style="datatab" x="500" y="0" width="100" height="25" uuid="6d248445-2327-48df-934c-70c50d60415a"/>
-                <textFieldExpression><![CDATA[$F{first}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{yearToDate}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement key="staticText-6" style="datatab" x="600" y="0" width="100" height="25" uuid="6d248445-2327-48df-934c-70c50d60415a"/>
-                <textFieldExpression><![CDATA[$F{first}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{lastYear}]]></textFieldExpression>
             </textField>
         </band>
     </detail>
