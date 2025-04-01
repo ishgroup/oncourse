@@ -30,7 +30,7 @@
   <parameter name="ReportName" class="java.lang.String"/>
   <field name="image.poweredby" class="java.io.InputStream"/>
   <field name="datasource.entitiesToPrint" class="net.sf.jasperreports.engine.JRDataSource"/>
-  <field name="subreport.test.onCourse.testCountSubreport" class="net.sf.jasperreports.engine.JasperReport"/>
+  <field name="subreport.ish.onCourse.Enrolment.summary.subreport" class="net.sf.jasperreports.engine.JasperReport"/>
 
 
   <background>
@@ -56,7 +56,7 @@
         <reportElement key="subreport-2" style="Footer" mode="Transparent" x="1" y="2" width="785" height="16" isRemoveLineWhenBlank="true" uuid="61b3970f-132d-420c-a3e5-10b18e648f6e">
         </reportElement>
         <dataSourceExpression><![CDATA[$F{datasource.entitiesToPrint}]]></dataSourceExpression>
-        <subreportExpression><![CDATA[$F{subreport.test.onCourse.testCountSubreport}]]></subreportExpression>
+        <subreportExpression><![CDATA[$F{subreport.ish.onCourse.Enrolment.summary.subreport}]]></subreportExpression>
       </subreport>
     </band>
   </detail>
