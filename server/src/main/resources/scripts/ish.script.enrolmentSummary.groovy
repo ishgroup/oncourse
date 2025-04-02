@@ -139,12 +139,16 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
 
     result.put("Course capacity", df.format(classesPercentage) + "%")
 
+    def defaultSessionsExpression = Session.START_DATETIME.gte(startDate.toDate()).andExp(Session.START_DATETIME.lt(excludeEndDate.toDate()))
+            .orExp(Session.END_DATETIME.gte(startDate.toDate()).andExp(Session.END_DATETIME.lt(excludeEndDate.toDate())))
+
+    if(!siteNameToCheck?.isBlank()) {
+        defaultSessionsExpression = defaultSessionsExpression.andExp(Session.ROOM.dot(Room.SITE).dot(Site.NAME).eq(defaultSessionsExpression))
+    }
 
     def sessions = ObjectSelect.query(Session)
-            .where(Session.ROOM.dot(Room.SITE).dot(Site.NAME).eq("WEA Sydney")
-                    .andExp(Session.START_DATETIME.gte(startDate.toDate()).andExp(Session.START_DATETIME.lt(excludeEndDate.toDate()))
-                            .orExp(Session.END_DATETIME.gte(startDate.toDate()).andExp(Session.END_DATETIME.lt(excludeEndDate.toDate())))
-                    )).batchIterator(context, 500)
+            .where(defaultSessionsExpression)
+            .batchIterator(context, 500)
 
 
     def nineThirty = 9 * 60 + 30
