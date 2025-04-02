@@ -1000,3 +1000,7 @@
     - name: actualRooms
       label: actual room number for interval
       dataType: NUMBER
+  options:
+    - name: siteNameToCheck
+      value: ""
+      dataType: TEXT
