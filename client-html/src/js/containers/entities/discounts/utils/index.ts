@@ -3,16 +3,16 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Discount, DiscountType, MoneyRounding, Tax } from "@api/model";
-import Decimal from "decimal.js-light";
-import { decimalDivide, decimalMinus, decimalMul, decimalPlus } from "ish-ui";
-import { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
+import { Discount, DiscountType, MoneyRounding, Tax } from '@api/model';
+import Decimal from 'decimal.js-light';
+import { decimalDivide, decimalMinus } from 'ish-ui';
+import { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
 
 export const getRoundingByType = (type: MoneyRounding, value: Decimal): number => {
   switch (type) {
     default:
     case "No Rounding":
-      return value.toDecimalPlaces(2).toNumber();
+      return parseFloat(value.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]);
     case "Nearest 10 cents":
       return value.toDecimalPlaces(1, Decimal.ROUND_UP).toNumber();
     case "Nearest 50 cents": {
@@ -40,20 +40,20 @@ export const getRoundingByType = (type: MoneyRounding, value: Decimal): number =
 };
 
 export const getDiscountAmountExTax = (discount: Discount, currentTax: Tax, classFee: number = 0) => {
-  const taxMul = decimalPlus(1, currentTax?.rate);
+  const taxMul = new Decimal(1).plus(currentTax?.rate);
   let perUnitWithTax;
 
   switch (discount.discountType) {
     case "Percent":
       perUnitWithTax = decimalMinus(
         classFee,
-        getRoundingByType(discount.rounding, new Decimal(classFee).mul(decimalMinus(1, discount.discountPercent)))
+        getRoundingByType(discount.rounding, new Decimal(classFee).mul(new Decimal(1).minus(discount.discountPercent)))
       );
       break;
     case "Dollar":
       perUnitWithTax = decimalMinus(
         classFee,
-        getRoundingByType(discount.rounding, new Decimal(classFee).minus(decimalMul(discount.discountValue, taxMul)))
+        getRoundingByType(discount.rounding, new Decimal(classFee).minus(new Decimal(discount.discountValue).mul(taxMul)))
       );
       break;
     case "Fee override":
@@ -63,7 +63,7 @@ export const getDiscountAmountExTax = (discount: Discount, currentTax: Tax, clas
       );
   }
 
-  return decimalDivide(perUnitWithTax, taxMul);
+  return decimalDivide(perUnitWithTax, taxMul.toNumber());
 };
 
 const secondaryDiscountText = (discountType: DiscountType, discountValue: number, discountPercent: number) => {
