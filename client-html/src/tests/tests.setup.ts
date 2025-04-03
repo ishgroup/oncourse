@@ -13,13 +13,13 @@ jest.mock('react', () => ({
 }));
 
 // Show only console errors
-// global.console = {
-//   ...global.console,
-//   log: jest.fn(),
-//   warn: jest.fn(),
-//   info: jest.fn(),
-//   debug: jest.fn(),
-// };
+global.console = {
+  ...global.console,
+  log: jest.fn(),
+  warn: jest.fn(),
+  info: jest.fn(),
+  debug: jest.fn(),
+};
 
 // mock ResizeObserver
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
