@@ -18,6 +18,7 @@ describe("Virtual rendered CourseClassEditView", () => {
     state: ({ mockedApi }) => ({
       taxes: { items: mockedApi.db.getPlainTaxesFormatted() },
       export: { contracts: mockedApi.db.getAvetmissExportPlainListFormatted() },
+      location: mockedApi.db.location
     }),
     render: ({
       screen, initialValues, formRoleName, fireEvent

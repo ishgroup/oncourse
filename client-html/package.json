@@ -133,16 +133,18 @@
     "coverageDirectory": "build/reports/test",
     "moduleDirectories": [
       "node_modules",
+      "build",
       "src"
     ],
     "moduleNameMapper": {
-      "@api/model": "<rootDir>/build/generated-sources/swagger-js/api.ts",
-      "@aql/AqlLexer": "<rootDir>/build/generated-sources/aql-parser/AqlLexer.ts",
-      "@aql/AqlParser": "<rootDir>/build/generated-sources/aql-parser/AqlParser.ts",
-      "@aql/queryLanguageModel": "<rootDir>/build/generated-sources/aql-model/queryLanguageModel.ts",
       "ace-builds": "<rootDir>/node_modules/ace-builds",
-      "uuid": "<rootDir>/node_modules/uuid",
-      "^d3-(.*)$": "<rootDir>/node_modules/d3-$1/dist/d3-$1"
+      "\\@aql/AqlLexer": "<rootDir>/build/generated-sources/aql-parser/AqlLexer.ts",
+      "\\@aql/AqlParser": "<rootDir>/build/generated-sources/aql-parser/AqlParser.ts",
+      "\\@aql/queryLanguageModel": "<rootDir>/build/generated-sources/aql-model/queryLanguageModel.ts",
+      "\\@api/model": "<rootDir>/build/generated-sources/swagger-js/api.ts",
+      "\\@api/configuration": "<rootDir>/build/generated-sources/swagger-js/configuration.ts",
+      "\\@src(.*);": "<rootDir>/src$1",
+      "\\@t$": "<rootDir>/src/js/common/utils/translation.ts"
     }
   }
 }

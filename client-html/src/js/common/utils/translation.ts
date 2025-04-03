@@ -10,7 +10,7 @@ import translationSourceDefault from '../../../../translate/translation_AU.json'
 import PreferencesService from '../../containers/preferences/services/PreferencesService';
 
 class TranslationServiceBase {
-  private translationSource = {};
+  private translationSource = translationSourceDefault;
 
   constructor() {
     PreferencesService.getLocation()
