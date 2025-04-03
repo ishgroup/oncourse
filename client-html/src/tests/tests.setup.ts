@@ -6,7 +6,6 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-
 // Disable useLayoutEffect warnings
 jest.mock('react', () => ({
   ...jest.requireActual('react') as any,
@@ -14,13 +13,13 @@ jest.mock('react', () => ({
 }));
 
 // Show only console errors
-global.console = {
-  ...global.console,
-  log: jest.fn(),
-  warn: jest.fn(),
-  info: jest.fn(),
-  debug: jest.fn(),
-};
+// global.console = {
+//   ...global.console,
+//   log: jest.fn(),
+//   warn: jest.fn(),
+//   info: jest.fn(),
+//   debug: jest.fn(),
+// };
 
 // mock ResizeObserver
 global.ResizeObserver = jest.fn().mockImplementation(() => ({

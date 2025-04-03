@@ -1,6 +1,7 @@
 import { Epic, StateObservable } from "redux-observable";
 import { filter, toArray } from "rxjs/operators";
 import { Subject, from } from "rxjs";
+import { State } from '../../js/reducers/state';
 import { mockedAPI } from "../TestEntry";
 import { FETCH_FINISH, FETCH_START } from "../../js/common/actions";
 import TestStore from "../../js/constants/Store";
@@ -8,7 +9,7 @@ import TestStore from "../../js/constants/Store";
 interface Props {
   action: any;
   epic: Epic<any, any>,
-  processData: (mockedApi: any, state?: any) => any;
+  processData: (mockedApi, state?: State) => any;
   beforeProcess?: () => void;
   store?: ({ mockedApi, values }) => Object;
   initialValues?: ({ mockedApi }) => Object;
