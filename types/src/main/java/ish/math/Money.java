@@ -591,7 +591,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isGreaterThan(@Nullable MonetaryAmount amount) {
-		return Objects.isNull(amount) || toMoneta().isGreaterThan(amount);
+		return Objects.isNull(amount) || compareTo(amount) > 0;
 	}
 
 	/**
@@ -610,7 +610,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isGreaterThanOrEqualTo(@Nullable MonetaryAmount amount) {
-		return Objects.isNull(amount) || toMoneta().isGreaterThanOrEqualTo(amount);
+		return Objects.isNull(amount) || compareTo(amount) >= 0;
 	}
 
 	/**
@@ -629,7 +629,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isLessThan(@Nullable MonetaryAmount amount) {
-		return !Objects.isNull(amount) && toMoneta().isLessThan(amount);
+		return !Objects.isNull(amount) && compareTo(amount) < 0;
 	}
 
 	/**
@@ -648,7 +648,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isLessThanOrEqualTo(@Nullable MonetaryAmount amount) {
-		return !Objects.isNull(amount) && toMoneta().isLessThanOrEqualTo(amount);
+		return !Objects.isNull(amount) && compareTo(amount) <= 0;
 	}
 
 	/**
@@ -667,7 +667,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isEqualTo(@Nullable MonetaryAmount amount) {
-		return !Objects.isNull(amount) && toMoneta().isEqualTo(amount);
+		return !Objects.isNull(amount) && compareTo(amount) == 0;
 	}
 
 	@Override
