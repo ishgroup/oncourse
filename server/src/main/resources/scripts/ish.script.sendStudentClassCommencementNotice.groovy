@@ -1,6 +1,7 @@
 def classesQuery = "isCancelled is false and startDateTime not is null and startDateTime is today"
-if(!number_of_days.equals("0"))
-    classesQuery = classesQuery + " + ${number_of_days} days"
+number_of_days_int = number_of_days.toInteger()
+if (number_of_days_int > 0)
+    classesQuery = classesQuery + " + ${number_of_days_int} days"
 def classesStartingTomorrow = query {
     entity "CourseClass"
     query classesQuery
