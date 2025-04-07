@@ -16,6 +16,7 @@ import {
   differenceInMinutes,
   isWeekend
 } from 'date-fns';
+import { Decimal } from 'decimal.js-light';
 import { appendTimezone, decimalMul, decimalPlus, EntityType, openInternalLink } from 'ish-ui';
 import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
 import uniqid from '../../../../common/utils/uniqid';
@@ -183,8 +184,8 @@ export const getClassCostTypes = (
           const defaultOnCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
           const onCostToUse = typeof value.onCostRate === "number" ? value.onCostRate : defaultOnCostRate;
 
-          item.max = decimalMul(item.max, decimalPlus(onCostToUse, 1));
-          item.projected = decimalMul(item.projected, decimalPlus(onCostToUse, 1));
+          item.max = decimalMul(item.max, new Decimal(onCostToUse).plus(1).toNumber());
+          item.projected = decimalMul(item.projected, new Decimal(onCostToUse).plus(1).toNumber());
 
           types.cost.items.push(item);
           types.cost.max = decimalPlus(types.cost.max, item.max);

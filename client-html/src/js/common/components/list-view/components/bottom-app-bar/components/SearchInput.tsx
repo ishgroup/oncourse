@@ -364,7 +364,7 @@ class SearchInput extends React.PureComponent<Props, SearchInputState> {
   openHelp = () => {
     this.isActionIconHovered = false;
 
-    window.open("https://www.ish.com.au/s/onCourse/doc/latest/manual/#search-advanced", "_blank");
+    window.open("https://ishoncourse.readme.io/docs/advanced-query-language-aql", "_blank");
 
     this.onBlur();
   };
