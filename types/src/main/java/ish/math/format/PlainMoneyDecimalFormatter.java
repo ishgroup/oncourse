@@ -39,6 +39,6 @@ public class PlainMoneyDecimalFormatter implements MoneyFormatter {
 			symbols.setDecimalSeparator('.');
 			((DecimalFormat) xmlDecimal).setDecimalFormatSymbols(symbols);
 		}
-		return xmlDecimal.format(money.toDouble());
+		return xmlDecimal.format(money.toBigDecimal());
 	}
 }
