@@ -957,7 +957,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	 */
 	public Integer getFractional() {
 		// round - for cases like 4.49999
-		return round(number).remainder(BigDecimal.ONE).movePointRight(getCurrency().getDefaultFractionDigits()).intValue();
+		return number.remainder(BigDecimal.ONE).movePointRight(getCurrency().getDefaultFractionDigits()).intValue();
 	}
 
 	@Override
