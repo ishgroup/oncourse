@@ -109,10 +109,14 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
 
     Money invoicesSum = Money.ZERO
 
-    invoicesIterator.each {batch ->
-        batch.each {
-            invoicesSum = invoicesSum.add(it.totalIncTax)
+    try {
+        invoicesIterator.each { batch ->
+            batch.each {
+                invoicesSum = invoicesSum.add(it.totalIncTax)
+            }
         }
+    } finally {
+        invoicesIterator.close()
     }
 
     result.put("Income", invoicesSum.toPlainString())
@@ -127,11 +131,15 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
                     .andExp(CourseClass.ENROLMENTS.dot(Enrolment.CREATED_ON).gte(startDate.toDate()))
     ).batchIterator(context, 200)
 
-    classesIterator.each { batch ->
-        batch.each { cc ->
-            classesPlaces += cc.maximumPlaces
-            classesEnrolments += cc.actualEnrolmentCount
+    try {
+        classesIterator.each { batch ->
+            batch.each { cc ->
+                classesPlaces += cc.maximumPlaces
+                classesEnrolments += cc.actualEnrolmentCount
+            }
         }
+    } finally {
+        classesIterator.close()
     }
 
     double classesPercentage = (classesPlaces == 0 ? 0 : (double) classesEnrolments / classesPlaces) * 100
@@ -160,29 +168,37 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
 
     int slotOneCount = 0, slotTwoCount = 0, slotThreeCount = 0, slotFourCount = 0, slotFiveCount = 0
 
-    sessions.each { batch ->
-        batch.each { session ->
-            def localStartTime = LocalDateTime.ofInstant(session.startDatetime.toInstant(), session.timeZone.toZoneId())
-            def localEndTime = LocalDateTime.ofInstant(session.endDatetime.toInstant(), session.timeZone.toZoneId())
+    try {
+        sessions.each { batch ->
+            batch.each { session ->
+                def localStartTime = LocalDateTime.ofInstant(session.startDatetime.toInstant(), session.timeZone.toZoneId())
+                def localEndTime = LocalDateTime.ofInstant(session.endDatetime.toInstant(), session.timeZone.toZoneId())
 
-            def startTimeMinute = localStartTime.hour * 60 + localStartTime.minute
-            def endTimeMinute = localEndTime.hour * 60 + localEndTime.minute
+                def startTimeMinute = localStartTime.hour * 60 + localStartTime.minute
+                def endTimeMinute = localEndTime.hour * 60 + localEndTime.minute
 
 
-            if (intersects(nineThirty, elevenThirty, startTimeMinute, endTimeMinute))
-                slotOneCount++
-            if (intersects(elevenThirty, thirteenThirty, startTimeMinute, endTimeMinute))
-                slotTwoCount++
-            if (intersects(thirteenThirty, fifteenThirty, startTimeMinute, endTimeMinute))
-                slotThreeCount++
-            if (intersects(fifteenThirty, seventeenThirty, startTimeMinute, endTimeMinute))
-                slotFourCount++
-            if (intersects(seventeenThirty, nineteenThirty, startTimeMinute, endTimeMinute))
-                slotFiveCount++
+                if (intersects(nineThirty, elevenThirty, startTimeMinute, endTimeMinute))
+                    slotOneCount++
+                if (intersects(elevenThirty, thirteenThirty, startTimeMinute, endTimeMinute))
+                    slotTwoCount++
+                if (intersects(thirteenThirty, fifteenThirty, startTimeMinute, endTimeMinute))
+                    slotThreeCount++
+                if (intersects(fifteenThirty, seventeenThirty, startTimeMinute, endTimeMinute))
+                    slotFourCount++
+                if (intersects(seventeenThirty, nineteenThirty, startTimeMinute, endTimeMinute))
+                    slotFiveCount++
+            }
         }
+    } finally {
+        sessions.close()
     }
 
-    double roomsPercentage = (double) (slotOneCount + slotTwoCount + slotThreeCount + slotFourCount + slotFiveCount) / actualRooms / ChronoUnit.DAYS.between(startDate, excludeEndDate) * 100;
+    def daysBetween = ChronoUnit.DAYS.between(startDate, excludeEndDate) * 100
+    if(daysBetween == 0)
+        daysBetween = 1
+
+    double roomsPercentage = (double) (slotOneCount + slotTwoCount + slotThreeCount + slotFourCount + slotFiveCount) / actualRooms / daysBetween;
     result.put("Room capacity", df.format(roomsPercentage) + "%")
 
 
@@ -193,10 +209,16 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
             CourseClass.IS_CANCELLED.isFalse())
 
     def classesCount = 0L
-    ObjectSelect.query(CourseClass)
+    def classesCountIterator = ObjectSelect.query(CourseClass)
             .where(classesQuery)
-            .batchIterator(context, 300).each {
-        classesCount += it.findAll { it.enrolments.size() > 0 }.size()
+            .batchIterator(context, 300)
+
+    try {
+        classesCountIterator.each {
+            classesCount += it.findAll { it.enrolments.size() > 0 }.size()
+        }
+    } finally {
+        classesCountIterator.close()
     }
 
     result.put("Online / External Courses", classesCount)
