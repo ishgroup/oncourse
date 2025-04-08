@@ -1,3 +1,14 @@
+/*
+ * Copyright ish group pty ltd 2020.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License version 3 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ */
+
 import test.PrepareTestDatabase
 
 buildscript {
@@ -10,15 +21,16 @@ plugins {
     id 'java'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 11
-targetCompatibility = 11
-
 dependencies {
-
     api(project(':server-api')) {
         exclude group: 'com.google.guava'
     }
@@ -66,7 +78,7 @@ test {
     jvmArgs = ['-Xmx3000m', '-Xms3000m']
     useJUnitPlatform()
 
-    tasks.getByName('prepareTestDatabase')
+    tasks.named('prepareTestDatabase').get()
             .mustRunAfter(':server:startDaemon')
             .mustRunAfter('copyConfig')
 
