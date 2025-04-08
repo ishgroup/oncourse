@@ -849,6 +849,12 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 				return toInstance(of(number.intValue(), getFractional()).with(Monetary
 						.getRounding(RoundingQueryBuilder.of().setScale(0).set(RoundingMode.HALF_UP).build()))
 				);
+
+			case ROUNDING_EVEN:
+				// 38.005 -> 38.00
+				return toInstance(toMoneta().with(Monetary.getRounding(
+						RoundingQueryBuilder.of().setScale(2).set(RoundingMode.HALF_EVEN).build()))
+				);
 			default:
 				return toInstance(toMoneta());
 		}
