@@ -194,11 +194,11 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
         sessions.close()
     }
 
-    def daysBetween = ChronoUnit.DAYS.between(startDate, excludeEndDate) * 100
+    def daysBetween = ChronoUnit.DAYS.between(startDate, excludeEndDate)
     if(daysBetween == 0)
         daysBetween = 1
 
-    double roomsPercentage = (double) (slotOneCount + slotTwoCount + slotThreeCount + slotFourCount + slotFiveCount) / actualRooms / daysBetween;
+    double roomsPercentage = (double) (slotOneCount + slotTwoCount + slotThreeCount + slotFourCount + slotFiveCount) / actualRooms / daysBetween * 100;
     result.put("Room capacity", df.format(roomsPercentage) + "%")
 
 
