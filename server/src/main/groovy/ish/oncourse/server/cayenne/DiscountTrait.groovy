@@ -33,6 +33,10 @@ trait DiscountTrait {
 
     abstract List<String> getStudentPostcodes()
 
+    abstract List<String> getParsedStudentEmails()
+
+    abstract String getStudentEmails()
+
     abstract List<DiscountMembership> getDiscountMemberships()
 
     abstract Boolean getLimitPreviousEnrolment()
@@ -63,6 +67,7 @@ trait DiscountTrait {
                 && studenAgeDateEligibile(contact)
                 && concessionEligibile(contact)
                 && postcodesEligibile(contact)
+                && emailsEligible(contact)
                 && membershipEligibile(contact, newMemberships)
                 && previousEnrolmentEligibile(contact, courseClass)
                 && countEnrolmentsEligible(enrolledClasses)
@@ -164,6 +169,17 @@ trait DiscountTrait {
             return false
         } else {
             return contact.postcode in studentPostcodes
+        }
+    }
+
+
+    boolean emailsEligible(Contact contact) {
+        if (studentEmails == null) {
+            return true
+        } else if (StringUtils.trimToNull(contact.email) == null) {
+            return false
+        } else {
+            return contact.email in parsedStudentEmails
         }
     }
 
