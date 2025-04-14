@@ -179,7 +179,7 @@ trait DiscountTrait {
         } else if (StringUtils.trimToNull(contact.email) == null) {
             return false
         } else {
-            return contact.email in parsedStudentEmails
+            return parsedStudentEmails.any {contact.email.contains(it)}
         }
     }
 
