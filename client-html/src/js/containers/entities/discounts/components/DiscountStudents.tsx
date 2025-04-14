@@ -326,7 +326,6 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 type="text"
                 name="studentEmail"
                 label={$t("email")}
-                validate={validateEmail}
               />
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12}>
