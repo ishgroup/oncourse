@@ -151,13 +151,12 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
             .orExp(Session.END_DATETIME.gte(startDate.toDate()).andExp(Session.END_DATETIME.lt(excludeEndDate.toDate())))
 
     if(!siteNameToCheck?.isBlank()) {
-        defaultSessionsExpression = defaultSessionsExpression.andExp(Session.ROOM.dot(Room.SITE).dot(Site.NAME).eq(defaultSessionsExpression))
+        defaultSessionsExpression = defaultSessionsExpression.andExp(Session.ROOM.dot(Room.SITE).dot(Site.NAME).eq(siteNameToCheck))
     }
 
     def sessions = ObjectSelect.query(Session)
             .where(defaultSessionsExpression)
             .batchIterator(context, 500)
-
 
     def nineThirty = 9 * 60 + 30
     def elevenThirty = 11 * 60 + 30
