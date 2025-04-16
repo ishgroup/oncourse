@@ -197,7 +197,7 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
     if(daysBetween == 0)
         daysBetween = 1
 
-    double roomsPercentage = (double) (slotOneCount + slotTwoCount + slotThreeCount + slotFourCount + slotFiveCount) / actualRooms / daysBetween * 100;
+    double roomsPercentage = (double) (slotOneCount + slotTwoCount + slotThreeCount + slotFourCount + slotFiveCount) / 5 / daysBetween * 100;
     result.put("Room capacity", df.format(roomsPercentage) + "%")
 
 
