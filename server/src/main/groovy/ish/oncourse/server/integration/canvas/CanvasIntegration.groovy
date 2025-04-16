@@ -19,6 +19,7 @@ import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.api.v1.service.impl.IntegrationApiImpl
 import ish.oncourse.server.cayenne.Contact
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -31,7 +32,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 @CompileDynamic
-@Plugin(type = 8)
+@Plugin(type = IntegrationType.CANVAS)
 class CanvasIntegration implements PluginTrait {
     public static final String CANVAS_BASE_URL_KEY = "baseUrl"
     public static final String CANVAS_CLIENT_TOKEN_KEY = "clientToken"

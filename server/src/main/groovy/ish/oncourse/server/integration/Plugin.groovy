@@ -11,6 +11,8 @@
 
 package ish.oncourse.server.integration
 
+import ish.common.types.IntegrationType
+
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 
@@ -24,7 +26,7 @@ import java.lang.annotation.RetentionPolicy
     /**
     * The type of the integration, stored in the DB. Each intgration must have a unique type
     */
-    int type()
+    IntegrationType type()
 
     /**
     * If this is set to true, then only one integration of this type can be created

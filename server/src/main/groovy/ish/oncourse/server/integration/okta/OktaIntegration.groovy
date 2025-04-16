@@ -15,6 +15,7 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.api.v1.login.SsoIntegrationTrait
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
@@ -27,7 +28,7 @@ import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
 @CompileDynamic
-@Plugin(type = 20)
+@Plugin(type = IntegrationType.OKTA)
 class OktaIntegration implements SsoIntegrationTrait {
 	public static final String OKTA_CLIENT_ID = "clientId"
 	public static final String OKTA_CLIENT_SECRET = "clientSecret"

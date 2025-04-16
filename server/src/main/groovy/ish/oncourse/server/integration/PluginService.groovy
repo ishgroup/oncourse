@@ -16,6 +16,7 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import groovy.transform.CompileStatic
 import io.bootique.cayenne.CayenneModule
+import ish.common.types.IntegrationType
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 
@@ -54,11 +55,11 @@ class PluginService {
      * @param type type of the integration instance
      * @return Boolean onlyOne property value
      */
-    static boolean onlyOne(int type) {
+    static boolean onlyOne(IntegrationType type) {
         return getPluginClass(type).getAnnotation(Plugin).oneOnly()
     }
 
-    static Class<? extends PluginTrait> getPluginClass(int type) {
+    static Class<? extends PluginTrait> getPluginClass(IntegrationType type) {
         PLUGIN_CLASSES.find { it.getAnnotation(Plugin).type() == type}
     }
 
@@ -68,7 +69,7 @@ class PluginService {
      * @param type type of the integration instance
      * @return Method onSave integration handler
      */
-    static Method onSave(int type) {
+    static Method onSave(IntegrationType type) {
         return getPluginClass(type)?.getMethods()?.find {it.getAnnotation(OnSave)}
     }
     
@@ -78,7 +79,7 @@ class PluginService {
      * @param type type of the integration instance
      * @return Method getProps integration method
      */
-    static Method getProps(int type) {
+    static Method getProps(IntegrationType type) {
         return getPluginClass(type)?.getMethods()?.find {it.getAnnotation(GetProps)}
     }
 

@@ -15,13 +15,14 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 @CompileDynamic
-@Plugin(type = 13)
+@Plugin(type = IntegrationType.COASSEMBLE)
 class CoassembleIntegration implements PluginTrait {
     public static final String COASSEMBLE_BASE_URL_KEY = "baseUrl"
     public static final String COASSEMBLE_API_KEY = "apiKey"

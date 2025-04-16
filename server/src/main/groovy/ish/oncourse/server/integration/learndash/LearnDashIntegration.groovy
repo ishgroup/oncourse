@@ -16,6 +16,7 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.util.SecurityUtil
@@ -23,7 +24,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 @CompileDynamic
-@Plugin(type=15)
+@Plugin(type= IntegrationType.LEARN_DASH)
 class LearnDashIntegration implements PluginTrait {
     public static final String LEARNDASH_LOGIN = "userLogin"
     public static final String LEARNDASH_PASS = "userPassword"

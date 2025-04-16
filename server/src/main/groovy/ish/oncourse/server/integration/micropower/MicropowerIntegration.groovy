@@ -13,6 +13,7 @@ package ish.oncourse.server.integration.micropower
 
 import groovy.transform.CompileDynamic
 import ish.common.types.ConfirmationStatus
+import ish.common.types.IntegrationType
 import ish.common.types.ProductStatus
 import ish.math.Money
 import ish.oncourse.server.cayenne.Account
@@ -36,7 +37,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @CompileDynamic
-@Plugin(type = 9)
+@Plugin(type = IntegrationType.MICROPOWER)
 @CompileDynamic
 class MicropowerIntegration implements PluginTrait {
 

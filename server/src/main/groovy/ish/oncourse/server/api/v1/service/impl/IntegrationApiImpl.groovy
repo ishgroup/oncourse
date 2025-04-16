@@ -17,6 +17,7 @@ import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.login.Sso
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
+import ish.oncourse.server.api.v1.model.IntegrationTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.IntegrationApi
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -56,7 +57,7 @@ class IntegrationApiImpl implements IntegrationApi {
                 i.created = r.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
                 i.modified = r.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
                 i.name = r.name
-                i.type = r.type.toBigDecimal()
+                i.type = IntegrationTypeDTO.fromDbType(r.type)
 
                 Method getProps = PluginService.getProps(r.type)
                 List<IntegrationProperty> props

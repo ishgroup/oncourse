@@ -15,6 +15,7 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.util.LocalDateUtils
@@ -25,7 +26,7 @@ import org.apache.logging.log4j.Logger
 import java.time.LocalDate
 
 @CompileDynamic
-@Plugin(type = 2)
+@Plugin(type = IntegrationType.MAILCHIMP)
 class MailchimpIntegration implements PluginTrait {
 	public static final String MAILCHIMP_API_KEY = "apiKey"
 	public static final String MAILCHIMP_LIST_ID = "listId"

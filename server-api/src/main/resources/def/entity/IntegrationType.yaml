@@ -1,0 +1,23 @@
+type: string
+description: List of integration types
+enum:
+  - Moodle
+  - Mailchimp
+  - Survey Monkey
+  - Alchemer
+  - Xero
+  - MYOB
+  - Cloud Access
+  - Canvas
+  - Micropower
+  - USI Agency
+  - VET Student Loans
+  - Google Classroom
+  - Coassemble
+  - Talent LMS
+  - Learn Dash
+  - Amazon S3
+  - Microsoft Azure
+  - Service NSW voucher
+  - Kronos
+  - Okta

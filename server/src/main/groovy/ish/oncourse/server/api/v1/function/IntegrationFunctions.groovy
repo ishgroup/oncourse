@@ -11,7 +11,7 @@
 
 package ish.oncourse.server.api.v1.function
 
-
+import ish.common.types.IntegrationType
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -25,14 +25,13 @@ import org.apache.commons.lang3.StringUtils
 class IntegrationFunctions {
 
 
-
-
     static ValidationErrorDTO validateForCreate(ObjectContext context, IntegrationDTO data) {
         if (!data.type) {
             return new ValidationErrorDTO(data?.id, 'type', "Integration type isn't specified or incorrect")
         }
 
-        if (PluginService.onlyOne(data.type.intValue())  && hasIntegration(context, data.type.intValue()) ) {
+        def dbType = data.type.getDbType()
+        if (PluginService.onlyOne(dbType)  && hasIntegration(context, dbType) ) {
             return new ValidationErrorDTO(null, 'type', "Then only one integration of this type can be created")
         }
 
@@ -76,7 +75,9 @@ class IntegrationFunctions {
             return new ValidationErrorDTO(id, 'name', "Integration name should be unique" )
         }
 
-        if (integration.type != data.type.intValue()) {
+        def dbType = data.type.getDbType()
+
+        if (integration.type != dbType) {
             return new ValidationErrorDTO(id, 'type', "Integration type can not be changed")
         }
 
@@ -101,7 +102,7 @@ class IntegrationFunctions {
             .selectOne(context)
     }
 
-    static boolean hasIntegration(ObjectContext context, Integer type) {
+    static boolean hasIntegration(ObjectContext context, IntegrationType type) {
         return !ObjectSelect.query(IntegrationConfiguration)
                 .where(IntegrationConfiguration.TYPE.eq(type))
                 .select(context).empty
