@@ -74,9 +74,6 @@ public enum IntegrationType implements DisplayableExtendedEnumeration<Integer> {
 	MISCROSOFT_AZURE(17, "Microsoft Azure"),
 
 	@API
-	SERVICE_NSW_VOUCHER(18, "Service NSW voucher"),
-
-	@API
 	KRONOS(19, "Kronos"),
 
 	@API

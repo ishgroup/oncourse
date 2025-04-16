@@ -40,8 +40,6 @@ trait IntegrationTypeDTOTrait {
                 return IntegrationType.AMAZON_S3
             case IntegrationTypeDTO.MICROSOFT_AZURE:
                 return IntegrationType.MISCROSOFT_AZURE
-            case IntegrationTypeDTO.SERVICE_NSW_VOUCHER:
-                return IntegrationType.SERVICE_NSW_VOUCHER
             case IntegrationTypeDTO.KRONOS:
                 return IntegrationType.KRONOS
             case IntegrationTypeDTO.OKTA:
@@ -90,8 +88,6 @@ trait IntegrationTypeDTOTrait {
                 return IntegrationTypeDTO.AMAZON_S3
             case IntegrationType.MISCROSOFT_AZURE:
                 return IntegrationTypeDTO.MICROSOFT_AZURE
-            case IntegrationType.SERVICE_NSW_VOUCHER:
-                return IntegrationTypeDTO.SERVICE_NSW_VOUCHER
             case IntegrationType.KRONOS:
                 return IntegrationTypeDTO.KRONOS
             case IntegrationType.OKTA:
