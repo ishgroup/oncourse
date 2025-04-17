@@ -14,6 +14,7 @@ package ish.oncourse.server.api.service
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
 import ish.common.types.AttachmentSpecialType
+import ish.common.types.IntegrationType
 import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
 import ish.common.types.UsiStatus
@@ -657,8 +658,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
         UsiVerificationResultDTO result = new UsiVerificationResultDTO()
 
         if (isValidUsiString(usiCode)) {
-            int usiType = USIIntegration.getAnnotation(Plugin).type()
-            boolean hasUsiIntegration = ObjectSelect.query(IntegrationConfiguration).where(IntegrationConfiguration.TYPE.eq(usiType)).selectFirst(cayenneService.newContext) != null
+            boolean hasUsiIntegration = ObjectSelect.query(IntegrationConfiguration).where(IntegrationConfiguration.TYPE.eq(IntegrationType.USI_AGENCY)).selectFirst(cayenneService.newContext) != null
             boolean isAvetmissIdProvided = isNotBlank(preferenceController.getAvetmissID())
             boolean hasABN = isNotBlank(preferenceController.getCollegeABN())
             if (hasUsiIntegration && isAvetmissIdProvided && hasABN) {

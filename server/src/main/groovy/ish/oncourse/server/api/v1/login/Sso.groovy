@@ -8,15 +8,16 @@
 
 package ish.oncourse.server.api.v1.login
 
+import ish.common.types.IntegrationType
 import ish.oncourse.server.integration.okta.OktaIntegration
 
 enum Sso {
-    OKTA("okta", 20)
+    OKTA("okta", IntegrationType.OKTA)
 
     private String name
-    private Integer integrationType
+    private IntegrationType integrationType
 
-    Sso(String name, Integer integrationType) {
+    Sso(String name, IntegrationType integrationType) {
         this.name = name
         this.integrationType = integrationType
     }
@@ -25,7 +26,7 @@ enum Sso {
         return name
     }
 
-    Integer getIntegrationType() {
+    IntegrationType getIntegrationType() {
         return integrationType
     }
 
