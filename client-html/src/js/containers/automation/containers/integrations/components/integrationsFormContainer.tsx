@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Integration, IntegrationProp } from '@api/model';
+import { Integration, IntegrationProp, IntegrationType } from '@api/model';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import Grid from '@mui/material/Grid';
 import $t from '@t';
@@ -22,8 +22,7 @@ import FormField from '../../../../../common/components/form/formFields/FormFiel
 import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
 import { getManualLink } from '../../../../../common/utils/getManualLink';
 import {
-  IntegrationSchema,
-  IntegrationTypesEnum
+  IntegrationSchema
 } from '../../../../../model/automation/integrations/IntegrationSchema';
 import { State } from '../../../../../reducers/state';
 import { createIntegration, deleteIntegrationItem, updateIntegration } from '../../../actions';
@@ -68,7 +67,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
       let fields = {};
 
       // Initial fields for Okta intrgration
-      if (Number(match.params.type) === IntegrationTypesEnum.Okta) {
+      if (match.params.type === IntegrationType.Okta) {
         fields = {
           webRedirect: window.location.origin + "/login"
         };
@@ -236,7 +235,7 @@ export const parseIntegrationSchema = (schema: IntegrationSchema): Integration =
 
   return {
     id: String(schema.id),
-    type: Number(schema.type),
+    type: schema.type,
     name: schema.name,
     verificationCode: schema.verificationCode,
     props: properties

@@ -1,3 +1,4 @@
+import { IntegrationType } from '@api/model';
 import React from "react";
 import {
   AlchemerFields,
@@ -17,7 +18,7 @@ import {
 } from "./IntegrationsFields";
 
 export interface IntegrationSchema {
-  type: number;
+  type: IntegrationType;
   id: number;
   name: string;
   configured?: boolean;
@@ -50,29 +51,5 @@ export interface IntegrationTypeSchema {
   description: React.ReactNode;
 }
 
-export enum IntegrationTypesEnum {
-  'Moodle' = 1,
-  'Mailchimp',
-  'SurveyMonkey',
-  'Alchemer',
-  'Xero',
-  'MYOB',
-  'Cloud Assess',
-  'Canvas',
-  'Micropower',
-  'USI Agency',
-  'VET Student Loans',
-  'Google Classroom',
-  'Coassemble',
-  'TalentLMS',
-  'LearnDash',
-  'Amazon S3',
-  'Microsoft Azure',
-  'Service NSW voucher',
-  'Kronos',
-  'Okta'
-}
 
-export type IntegrationTypesModel = {
-  [key in IntegrationTypesEnum]: IntegrationTypeSchema
-}
+export type IntegrationTypesModel = Record<IntegrationType, IntegrationTypeSchema>
