@@ -3,26 +3,18 @@
  */
 package ish.oncourse.api.test.client;
 
-
-import com.intuit.karate.Logger;
 import com.intuit.karate.core.Config;
 import com.intuit.karate.core.ScenarioEngine;
-import com.intuit.karate.http.*;
+import com.intuit.karate.http.ApacheHttpClient;
+import com.intuit.karate.http.HttpLogger;
+import com.intuit.karate.http.HttpRequest;
 import com.intuit.karate.http.Response;
-import karate.org.apache.http.Header;
-import karate.org.apache.http.HttpException;
-import karate.org.apache.http.HttpMessage;
-import karate.org.apache.http.HttpRequestInterceptor;
-import karate.org.apache.http.protocol.HttpContext;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
-
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import javax.ws.rs.client.*;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,25 +22,18 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 
-public class KarateClient implements HttpClient, HttpRequestInterceptor {
-   
-    private final ScenarioEngine engine;
-    private final Logger logger;
-    private final HttpLogger httpLogger;
+public class KarateClient extends ApacheHttpClient {
 
-    private HttpRequest request;
-    
+    private final HttpLogger httpLogger;
     private Client client;
-    
+
     public KarateClient(ScenarioEngine engine) {
-        this.engine = engine;
-        logger = engine.logger;
-        httpLogger = new HttpLogger(logger);
+        super(engine);
+        httpLogger = new HttpLogger(engine.logger);
         configure(engine.getConfig());
     }
-    
+
     public void configure(Config config) {
-        
         ClientConfig cc = new ClientConfig();
         // support request body for DELETE (non-standard)
         cc.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
@@ -72,42 +57,9 @@ public class KarateClient implements HttpClient, HttpRequestInterceptor {
             }
         }
     }
-    
-    @Override
-    public void setConfig(Config config) {
-        configure(config);
-    }
-
-    @Override
-    public Config getConfig() {
-        return engine.getConfig();
-    }
-
-    @Override
-    public void process(karate.org.apache.http.HttpRequest hr, HttpContext hc) throws HttpException, IOException {
-        request.setHeaders(toHeaders(hr));
-        httpLogger.logRequest(getConfig(), request);
-        request.setStartTimeMillis(System.currentTimeMillis());
-    }
-
-    private static Map<String, List<String>> toHeaders(HttpMessage msg) {
-        Header[] headers = msg.getAllHeaders();
-        Map<String, List<String>> map = new LinkedHashMap(headers.length);
-        for (Header outer : headers) {
-            String name = outer.getName();
-            Header[] inner = msg.getHeaders(name);
-            List<String> list = new ArrayList(inner.length);
-            for (Header h : inner) {
-                list.add(h.getValue());
-            }
-            map.put(name, list);
-        }
-        return map;
-    }
 
     @Override
     public Response invoke(HttpRequest request) {
-        this.request = request;
         WebTarget target = client.target(request.getUrl());
         Invocation.Builder builder = target.request();
         String method = request.getMethod();
@@ -120,21 +72,19 @@ public class KarateClient implements HttpClient, HttpRequestInterceptor {
             request.getHeaders().forEach((k, vals) -> vals.forEach(v -> builder.header(k, v)));
         }
         if (request.getBody() != null) {
-            httpResp = builder.method(method, Entity.entity(request.getBody(),request.getContentType()));
+            httpResp = builder.method(method, Entity.entity(request.getBody(), request.getContentType()));
         } else {
             httpResp = builder.method(method);
         }
         Map<String, List<String>> headers = new LinkedHashMap<>();
         for (Entry<String, List<Object>> entry : httpResp.getHeaders().entrySet()) {
             List<String> values = entry.getValue().stream().map(Object::toString).collect(Collectors.toList());
-            headers.put(entry.getKey(),values);
+            headers.put(entry.getKey(), values);
         }
-        
+
         Response response = new Response(httpResp.getStatus(), headers, httpResp.readEntity(byte[].class));
-        
+
         httpLogger.logResponse(getConfig(), request, response);
-        
         return response;
     }
-    
 }
