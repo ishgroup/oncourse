@@ -29,9 +29,7 @@ import talentlms from '../../../../../images/talentlms.png';
 import usi from '../../../../../images/usi.png';
 import tsci from '../../../../../images/vet_student_loans.png';
 import xero from '../../../../../images/xero.png';
-import {
-  IntegrationTypesModel
-} from '../../../../model/automation/integrations/IntegrationSchema';
+import { IntegrationTypesModel } from '../../../../model/automation/integrations/IntegrationSchema';
 import { AlchemerForm } from './components/forms/AlchemerForm';
 import { AmazonS3Form } from './components/forms/AmazonS3Form';
 import { AzureForm } from './components/forms/AzureForm';
@@ -81,7 +79,7 @@ const types: IntegrationTypesModel = {
   [IntegrationType.Alchemer]: {
     name: IntegrationType[IntegrationType.Alchemer],
     form: AlchemerForm,
-    formName: "SurveyGizmoForm",
+    formName: 'AlchemerForm',
     image: alchemer,
     description:
       "Alchemer is an exeptionally powerful survey tool designed to make even the most advanced survey projects fun, easy & affordable."

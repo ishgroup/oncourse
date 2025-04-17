@@ -23,11 +23,11 @@ class CanvasBaseForm extends React.Component<any, any> {
     };
 
     // Initializing form with values
-    props.dispatch(initialize("CanvasForm", props.item));
+    props.dispatch(initialize(props.form, props.item));
   }
 
   componentDidMount() {
-    const { location: { search }, dispatch } = this.props;
+    const {location: {search}, dispatch, form} = this.props;
 
     if (search) {
       const params = new URLSearchParams(search);
@@ -38,8 +38,8 @@ class CanvasBaseForm extends React.Component<any, any> {
         const newValues = { ...JSON.parse(state) };
         newValues.fields.redirectUrl = window.location.origin;
 
-        dispatch(initialize("CanvasForm", newValues));
-        dispatch(change("CanvasForm", "fields.verificationCode", code));
+        dispatch(initialize(form, newValues));
+        dispatch(change(form, 'fields.verificationCode', code));
       }
     }
   }
@@ -47,7 +47,7 @@ class CanvasBaseForm extends React.Component<any, any> {
   componentDidUpdate(prevProps) {
     if (prevProps.item.id !== this.props.item.id) {
       // Reinitializing form with values
-      this.props.dispatch(initialize("CanvasForm", this.props.item));
+      this.props.dispatch(initialize(this.props.form, this.props.item));
     }
   }
 
@@ -133,11 +133,10 @@ class CanvasBaseForm extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  values: getFormValues("CanvasForm")(state)
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state)
 });
 
 export const CanvasForm = reduxForm({
-  form: "CanvasForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, null)(CanvasBaseForm));
+})(connect(mapStateToProps)(CanvasBaseForm));

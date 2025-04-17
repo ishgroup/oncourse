@@ -5,26 +5,12 @@
 
 import $t from '@t';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { initialize, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class MailchimpBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("MailchimpForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("MailchimpForm", this.props.item));
-    }
-  }
-
+class MailchimpBaseForm extends IntegrationFormBase {
   render() {
     const {
      handleSubmit, onSubmit, AppBarContent
@@ -42,6 +28,5 @@ class MailchimpBaseForm extends React.Component<any, any> {
 }
 
 export const MailchimpForm = reduxForm({
-  form: "MailchimpForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(MailchimpBaseForm));
+})(MailchimpBaseForm);

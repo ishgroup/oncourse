@@ -21,9 +21,7 @@ import RouteChangeConfirm from '../../../../../common/components/dialog/RouteCha
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
 import { getManualLink } from '../../../../../common/utils/getManualLink';
-import {
-  IntegrationSchema
-} from '../../../../../model/automation/integrations/IntegrationSchema';
+import { IntegrationSchema } from '../../../../../model/automation/integrations/IntegrationSchema';
 import { State } from '../../../../../reducers/state';
 import { createIntegration, deleteIntegrationItem, updateIntegration } from '../../../actions';
 import IntegrationTypes from '../IntegrationTypes';
@@ -205,6 +203,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
               validateNameField={this.validateNameField}
               item={item}
               AppBarContent={this.renderAppBar}
+              form={typeItem?.formName}
               {...this.props}
             />
           )}

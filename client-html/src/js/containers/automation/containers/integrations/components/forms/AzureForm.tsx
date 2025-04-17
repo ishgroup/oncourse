@@ -8,25 +8,12 @@
 
 import $t from '@t';
 import React from 'react';
-import { initialize, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class AzureFormBase extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("AzureForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("AzureForm", this.props.item));
-    }
-  }
-
+class AzureFormBase extends IntegrationFormBase {
   render() {
     const {
       handleSubmit, onSubmit, AppBarContent
@@ -45,6 +32,5 @@ class AzureFormBase extends React.Component<any, any> {
 }
 
 export const AzureForm = reduxForm({
-  form: "AzureForm",
   onSubmitFail
 })(AzureFormBase);

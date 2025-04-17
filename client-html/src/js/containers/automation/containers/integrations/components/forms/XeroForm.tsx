@@ -5,6 +5,7 @@
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -24,28 +25,28 @@ class XeroBaseForm extends React.Component<any, any> {
     };
 
     // Initializing form with values
-    props.dispatch(initialize("XeroForm", props.item));
+    props.dispatch(initialize(props.form, props.item));
   }
 
   componentDidMount() {
     const {
-     match: { params: { name } }, item, dispatch
+      match: {params: {name}}, item, dispatch, form
     } = this.props;
 
     if (name && !item.name) {
-      dispatch(change("XeroForm", "name", name));
+      dispatch(change(form, 'name', name));
     }
   }
 
   componentDidUpdate(prevProps) {
     const {
-     item, dispatch, location: { search }, history, dirty
+      item, dispatch, location: {search}, history, dirty, form
     } = this.props;
     const { hideConfig } = this.state;
 
     if (prevProps.item.id !== item.id) {
       // Reinitializing form with values
-      dispatch(initialize("XeroForm", item));
+      dispatch(initialize(form, item));
       this.setState({
         hideConfig: false
       });
@@ -66,8 +67,8 @@ class XeroBaseForm extends React.Component<any, any> {
         this.setState({
           hideConfig: true
         });
-        dispatch(change("XeroForm", "verificationCode", code));
-        dispatch(change("XeroForm", "name", name));
+        dispatch(change(form, 'verificationCode', code));
+        dispatch(change(form, 'name', name));
         params.delete('code');
 
         history.replace({
@@ -94,18 +95,17 @@ class XeroBaseForm extends React.Component<any, any> {
     const state = encodeURI(`${window.location.href}${paramsStr}`);
 
     window.open(
-      
       `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=A05FD21034974F29ABD4301FC54513BC&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/xero/auth.html&scope=accounting.transactions payroll.employees payroll.payruns payroll.payslip payroll.settings offline_access&state=${state}`,
       "_self"
     );
   };
 
   onDisconnect = () => {
-    const { dispatch } = this.props;
+    const {dispatch, form} = this.props;
     this.setState({
       hideConfig: true
     });
-    dispatch(change("XeroForm", "fields.active", "false"));
+    dispatch(change(form, 'fields.active', 'false'));
   };
 
   render() {
@@ -168,12 +168,11 @@ class XeroBaseForm extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  values: getFormValues("XeroForm")(state)
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state)
 });
 
 export const XeroForm = reduxForm({
-  form: "XeroForm",
   onSubmitFail
 })(
   connect<any, any, any>(
