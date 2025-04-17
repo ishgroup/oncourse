@@ -69,6 +69,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
                 dto.studentAge = dbDiscount.studentAge.split(' ')[1] as Integer
             }
             dto.studentPostcode = dbDiscount.studentPostcode
+            dto.studentEmail = dbDiscount.studentEmails
             dto.discountConcessionTypes = dbDiscount.discountConcessionTypes.collect { toRestConcessionType(it.concessionType) }
             dto.discountMemberships = dbDiscount.discountMemberships.collect { toRestDiscountMembership(it) }.sort { it.productId }
             dto.discountCourseClasses = getDiscountClasses(dbDiscount).collect { item ->
@@ -175,6 +176,7 @@ class DiscountApiService extends EntityApiService<DiscountDTO, Discount, Discoun
         dbDiscount.studentEnrolledWithinDays = dto.studentEnrolledWithinDays
         dbDiscount.studentAge = dto.studentAgeUnder == null ? null : "${dto.studentAgeUnder ? '<' : '>'} $dto.studentAge"
         dbDiscount.studentPostcode = dto.studentPostcode
+        dbDiscount.studentEmails = dto.studentEmail
         updateDiscountConcessionTypes(dbDiscount.context, dbDiscount, dto.discountConcessionTypes)
         updateDiscountMemberships(dbDiscount.context, dbDiscount, dto.discountMemberships)
         updateDiscountCourseClasses(dbDiscount.context, dbDiscount, dto.discountCourseClasses)

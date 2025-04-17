@@ -132,6 +132,30 @@ class Discount extends _Discount implements DiscountTrait, DiscountInterface, Qu
 		return result
 	}
 
+	/**
+	 * @return list of postcodes whose residents are eligible for this discount
+	 */
+	@Nonnull
+	@API
+	List<String> getParsedStudentEmails() {
+		List<String> result = new ArrayList<>()
+
+		String emailsString = getStudentEmails();
+		if (emailsString == null || emailsString.length() == 0) {
+			return result
+		}
+		Pattern pattern = Pattern.compile(",")
+		String[] emails = pattern.split(emailsString)
+
+		for (String email : emails) {
+			if (email != null && email.trim().length() > 0) {
+				result.add(email.trim())
+			}
+		}
+
+		return result
+	}
+
 	@Override
 	List<CorporatePassDiscount> getCorporatePassDiscount() {
 		super.getCorporatePassDiscount()

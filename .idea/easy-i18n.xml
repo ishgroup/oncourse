@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectSettingsService">
+    <option name="localesDirectory" value="$PROJECT_DIR$/client-html/translate" />
+    <option name="defaultNamespace" value="" />
+    <option name="nestedKeys" value="false" />
+    <option name="flavorTemplate" value="$t" />
+    <option name="caseFormat" value="snake_case" />
+  </component>
+</project>

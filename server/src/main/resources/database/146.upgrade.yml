@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 146-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - not:
+            - columnExists:
+                tableName: Discount
+                columnName: studentEmails
+      changes:
+        - addColumn:
+            tableName: Discount
+            columns:
+              - column:
+                  name: studentEmails
+                  type: VARCHAR(1024)
