@@ -7,7 +7,6 @@
  */
 
 import { Button, Typography } from '@mui/material';
-import Button from '@mui/material/Button';
 import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';

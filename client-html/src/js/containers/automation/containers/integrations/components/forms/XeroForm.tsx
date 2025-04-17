@@ -5,7 +5,6 @@
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, Typography } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
