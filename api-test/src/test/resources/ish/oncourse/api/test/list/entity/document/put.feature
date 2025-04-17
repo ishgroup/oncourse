@@ -366,11 +366,11 @@ Feature: Main feature for PUT request with path 'list/entity/document/'
         * def filename = karate.extract(existingDocVersion.url, '[^/]+$', 0)
         * def dir = 'build/resources/tmp/'
         * karate.exec({ line: 'curl -o ' + filename + ' ' + existingDocVersion.url, workingDir: dir })
-        * def bytes = karate.readAsBytes('file:' + dir + filename)
+        * bytes data = read('file:' + dir + filename)
 
         # Here is a workaround to fit byte array into json
         * def byteList = []
-        * karate.forEach(bytes, function(b, i){ byteList.push(b) })
+        * karate.forEach(data, function(b, i){ byteList.push(b) })
 
         Given path ishPath + '/' + docId
         And request
@@ -388,7 +388,7 @@ Feature: Main feature for PUT request with path 'list/entity/document/'
                     fileName: 'duplicateContent.txt',
                     mimeType: 'text/plain',
                     size: '10 b',
-                    content: '#(byteList)'
+                    content: '#(data)'
                 }
             ],
             description: 'some description',
