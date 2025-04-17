@@ -31,6 +31,10 @@ class IntegrationFunctions {
         }
 
         def dbType = data.type.getDbType()
+        def integrationClass = PluginService.getPluginClass(dbType)
+        if(integrationClass == null)
+            return new ValidationErrorDTO(null, 'type', "Plugin for this integration type not found")
+
         if (PluginService.onlyOne(dbType)  && hasIntegration(context, dbType) ) {
             return new ValidationErrorDTO(null, 'type', "Then only one integration of this type can be created")
         }
