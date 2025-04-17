@@ -13,6 +13,7 @@ package ish.util;
 import ish.common.payable.IInvoiceLineInterface;
 import ish.common.payable.PayableLineInterface;
 import ish.math.Money;
+import ish.math.MoneyRounding;
 import ish.oncourse.cayenne.*;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.PersistenceState;
