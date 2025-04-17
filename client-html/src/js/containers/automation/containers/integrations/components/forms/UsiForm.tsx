@@ -9,31 +9,18 @@ import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { change, initialize, reduxForm } from 'redux-form';
+import { change, reduxForm } from 'redux-form';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 import { State } from '../../../../../../reducers/state';
 import { getUSISoftwareId } from '../../../../../preferences/actions';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class XeroBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("UsiForm", props.item));
-  }
-
+class XeroBaseForm extends IntegrationFormBase {
   componentDidMount() {
     this.props.getSoftwareId();
 
     if (this.props.match.params.action === "new") {
-      this.props.dispatch(change("UsiForm", "name", "USI integration"));
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("UsiForm", this.props.item));
+      this.props.dispatch(change(this.props.form, 'name', 'USI integration'));
     }
   }
 
@@ -77,10 +64,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getSoftwareId: () => dispatch(getUSISoftwareId())
-  });
+  getSoftwareId: () => dispatch(getUSISoftwareId())
+});
 
 export const UsiForm = reduxForm({
-  form: "UsiForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, mapDispatchToProps)(XeroBaseForm));
+})(connect(mapStateToProps, mapDispatchToProps)(XeroBaseForm));

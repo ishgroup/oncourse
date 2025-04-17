@@ -16,6 +16,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.classroom.ClassroomScopes
+import ish.common.types.IntegrationType
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.integration.OnSave
@@ -27,7 +28,7 @@ import org.apache.logging.log4j.Logger
 import javax.ws.rs.ClientErrorException
 import javax.ws.rs.core.Response
 
-@Plugin(type = 12)
+@Plugin(type = IntegrationType.GOOGLE_CLASSROOM)
 class ClassRoomIntegration implements PluginTrait {
 
     public static final String CLASSROOM_CLIENT_ID = "clientId"

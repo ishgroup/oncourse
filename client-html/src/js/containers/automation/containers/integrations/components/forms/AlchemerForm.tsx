@@ -6,26 +6,12 @@
 import { FormControlLabel } from '@mui/material';
 import $t from '@t';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { initialize, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class AlchemerBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("AlchemerForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("AlchemerForm", this.props.item));
-    }
-  }
-
+class AlchemerBaseForm extends IntegrationFormBase {
   render() {
     const {
      AppBarContent, handleSubmit, onSubmit
@@ -62,6 +48,5 @@ class AlchemerBaseForm extends React.Component<any, any> {
 }
 
 export const AlchemerForm = reduxForm({
-  form: "AlchemerForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(AlchemerBaseForm));
+})(AlchemerBaseForm);

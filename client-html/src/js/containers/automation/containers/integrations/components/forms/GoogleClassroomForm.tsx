@@ -7,28 +7,15 @@ import { Button, Typography } from '@mui/material';
 import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { change, getFormValues, initialize, reduxForm } from 'redux-form';
+import { change, getFormValues, reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 import { validateSingleMandatoryField } from '../../../../../../common/utils/validation';
 import { State } from '../../../../../../reducers/state';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class GoogleClassroomBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("GoogleClassroomForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("GoogleClassroomForm", this.props.item));
-    }
-  }
-
+class GoogleClassroomBaseForm extends IntegrationFormBase {
   componentDidMount(): void {
     if (window.location.search) {
       const searchParam = new URLSearchParams(window.location.search);
@@ -55,7 +42,6 @@ class GoogleClassroomBaseForm extends React.Component<any, any> {
       id: values.fields.clientId,
       redirect: window.location.href
     };
-
     
     window.open(`https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${values.fields.clientId}&redirect_uri=${window.location.href}&state=${JSON.stringify(state)}&response_type=code&scope=https://www.googleapis.com/auth/classroom.announcements.readonly%20https://www.googleapis.com/auth/classroom.courses%20https://www.googleapis.com/auth/classroom.guardianlinks.me.readonly%20https://www.googleapis.com/auth/classroom.push-notifications%20https://www.googleapis.com/auth/classroom.rosters.readonly%20https://www.googleapis.com/auth/classroom.student-submissions.students.readonly%20https://www.googleapis.com/auth/classroom.coursework.me.readonly%20https://www.googleapis.com/auth/classroom.rosters%20https://www.googleapis.com/auth/classroom.student-submissions.me.readonly%20https://www.googleapis.com/auth/classroom.coursework.me%20https://www.googleapis.com/auth/classroom.courses.readonly%20https://www.googleapis.com/auth/classroom.coursework.students%20https://www.googleapis.com/auth/classroom.guardianlinks.students.readonly%20https://www.googleapis.com/auth/classroom.profile.emails%20https://www.googleapis.com/auth/classroom.coursework.students.readonly%20https://www.googleapis.com/auth/classroom.guardianlinks.students%20https://www.googleapis.com/auth/classroom.profile.photos%20https://www.googleapis.com/auth/classroom.announcements`,
       "_self");
@@ -102,4 +88,4 @@ const mapStateToProps = (state: State) => ({
 export const GoogleClassroomForm = reduxForm({
   form: "GoogleClassroomForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, null)(GoogleClassroomBaseForm));
+})(connect(mapStateToProps)(GoogleClassroomBaseForm));

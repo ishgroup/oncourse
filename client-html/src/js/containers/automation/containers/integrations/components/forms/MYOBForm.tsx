@@ -23,12 +23,12 @@ class MYOBBaseForm extends React.Component<any, any> {
       loading: false
     };
     // Initializing form with values
-    props.dispatch(initialize("MYOBForm", props.item));
+    props.dispatch(initialize(props.form, props.item));
   }
 
   componentDidMount() {
     const {
-      match: { params: { name } }, location: { search }, history, item, dispatch
+      match: {params: {name}}, location: {search}, history, item, dispatch, form
     } = this.props;
 
     const { hideConfig } = this.state;
@@ -54,8 +54,8 @@ class MYOBBaseForm extends React.Component<any, any> {
       this.updateValue('owner', "myobUser", owner);
       this.updateValue('file', "myobFileName", file);
 
-      this.props.dispatch(change("MYOBForm", "fields.myobPassword", password));
-      this.props.dispatch(change("MYOBForm", "name", fName));
+      this.props.dispatch(change(form, 'fields.myobPassword', password));
+      this.props.dispatch(change(form, 'name', fName));
       params.delete('values');
 
       if (code) {
@@ -75,12 +75,12 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   componentDidUpdate(prevProps) {
     const {
-      item, dispatch, dirty
+      item, dispatch, dirty, form
     } = this.props;
 
     if (prevProps.item.id !== item.id) {
       // Reinitializing form with values
-      dispatch(initialize("MYOBForm", item));
+      dispatch(initialize(form, item));
       this.setState({
         hideConfig: false
       });
@@ -95,7 +95,7 @@ class MYOBBaseForm extends React.Component<any, any> {
 
   updateValue(name: string, fieldKey: string, value: string) {
     if (value) {
-      this.props.dispatch(change("MYOBForm", "fields." + fieldKey, value));
+      this.props.dispatch(change(this.props.form, 'fields.' + fieldKey, value));
     }
   }
 
@@ -141,11 +141,11 @@ class MYOBBaseForm extends React.Component<any, any> {
   }
 
   onDisconnect = () => {
-    const { dispatch } = this.props;
+    const {dispatch, form} = this.props;
     this.setState({
       hideConfig: true
     });
-    dispatch(change("MYOBForm", "fields.active", "false"));
+    dispatch(change(form, 'fields.active', 'false'));
   };
 
   render() {
@@ -212,12 +212,11 @@ class MYOBBaseForm extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  values: getFormValues("MYOBForm")(state)
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state)
 });
 
 export const MYOBForm = reduxForm({
-  form: "MYOBForm",
   onSubmitFail
 })(
   connect<any, any, any>(

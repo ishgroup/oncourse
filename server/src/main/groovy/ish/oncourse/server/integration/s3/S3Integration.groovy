@@ -17,6 +17,7 @@ import com.amazonaws.services.s3.model.GroupGrantee
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.Permission
 import com.amazonaws.services.s3.model.PutObjectRequest
+import ish.common.types.IntegrationType
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.messaging.DocumentParam
@@ -25,7 +26,7 @@ import java.nio.file.Files
 
 import static java.nio.file.Path.of
 
-@Plugin(type=16)
+@Plugin(type = IntegrationType.AMAZON_S3)
 class S3Integration implements PluginTrait {
     public static final String S3_ACCOUNT = "account"
     public static final String S3_KEY = "key"

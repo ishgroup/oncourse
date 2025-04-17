@@ -6,26 +6,12 @@
 import { FormControlLabel } from '@mui/material';
 import $t from '@t';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { initialize, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class SurveyMonkeyBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("SurveyMonkeyForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("SurveyMonkeyForm", this.props.item));
-    }
-  }
-
+class SurveyMonkeyBaseForm extends IntegrationFormBase {
   render() {
     const {
       AppBarContent, handleSubmit, onSubmit
@@ -60,6 +46,5 @@ class SurveyMonkeyBaseForm extends React.Component<any, any> {
 }
 
 export const SurveyMonkeyForm = reduxForm({
-  form: "SurveyMonkeyForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(SurveyMonkeyBaseForm));
+})(SurveyMonkeyBaseForm);

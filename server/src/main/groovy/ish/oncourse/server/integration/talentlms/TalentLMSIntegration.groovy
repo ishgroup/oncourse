@@ -16,6 +16,7 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
 import ish.oncourse.server.integration.Plugin
@@ -23,7 +24,7 @@ import ish.oncourse.server.integration.PluginTrait
 import ish.util.SecurityUtil
 
 @CompileDynamic
-@Plugin(type = 14)
+@Plugin(type = IntegrationType.TALENT_LMS)
 class TalentLMSIntegration implements PluginTrait {
     public static final String TALENT_LMS_API_KEY = "apiKey"
     public static final String TALENT_LMS_URL = "baseUrl"

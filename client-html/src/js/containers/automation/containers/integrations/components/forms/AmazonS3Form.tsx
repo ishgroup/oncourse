@@ -8,24 +8,12 @@
 
 import $t from '@t';
 import React from 'react';
-import { initialize, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class AmazonS3FormBase extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-    // Initializing form with values
-    props.dispatch(initialize("AmazonS3Form", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("AmazonS3Form", this.props.item));
-    }
-  }
-
+class AmazonS3FormBase extends IntegrationFormBase {
   render() {
     const {
       handleSubmit, onSubmit, AppBarContent
@@ -45,6 +33,5 @@ class AmazonS3FormBase extends React.Component<any, any> {
 }
 
 export const AmazonS3Form = reduxForm({
-  form: "AmazonS3Form",
   onSubmitFail
 })(AmazonS3FormBase);

@@ -11,6 +11,7 @@ package ish.oncourse.server.integration.azureStorage
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobContainerClientBuilder
 import com.azure.storage.blob.specialized.BlockBlobClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.integration.Plugin
 import ish.oncourse.server.integration.PluginTrait
 import ish.oncourse.server.messaging.DocumentParam
@@ -18,7 +19,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import com.azure.storage.common.StorageSharedKeyCredential
 
-@Plugin(type=17)
+@Plugin(type= IntegrationType.MISCROSOFT_AZURE)
 class AzureStorageIntegration implements PluginTrait {
     public static final String AZURE_ACCOUNT = "account"
     public static final String AZURE_KEY = "key"

@@ -4,10 +4,7 @@ properties:
     type: string
     description: Unique integration identifier
   type:
-    type: number
-    required: true
-    description: integration type
-    example: 12
+    $ref: './IntegrationType.yaml'
   name:
     type: string
     description: Integration name

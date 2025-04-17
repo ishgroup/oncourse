@@ -10,7 +10,7 @@ get:
       schema:
         type: array
         items:
-          type: integer
+          $ref: './def/entity/IntegrationType.yaml'
     default:
       description: Unexpected error
   x-permission:

@@ -13,6 +13,7 @@ package ish.oncourse.server.integration.usi
 
 
 import groovyx.net.http.HTTPBuilder
+import ish.common.types.IntegrationType
 import ish.common.types.USIFieldStatus
 import ish.common.types.USIVerificationResult
 import ish.common.types.USIVerificationStatus
@@ -27,7 +28,7 @@ import org.apache.logging.log4j.Logger
 
 import java.time.LocalDate
 
-@Plugin(type = 10, oneOnly = true)
+@Plugin(type = IntegrationType.USI_AGENCY, oneOnly = true)
 class USIIntegration implements PluginTrait {
 
     private static final Logger logger = LogManager.getLogger(USIIntegration)

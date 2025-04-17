@@ -4,26 +4,12 @@
  */
 import $t from '@t';
 import React from 'react';
-import { connect } from 'react-redux';
-import { initialize, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class TalentLMSFormBase extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("TalentLMSForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("TalentLMSForm", this.props.item));
-    }
-  }
-
+class TalentLMSFormBase extends IntegrationFormBase {
   render() {
     const {
       handleSubmit, onSubmit, AppBarContent
@@ -41,6 +27,5 @@ class TalentLMSFormBase extends React.Component<any, any> {
 }
 
 export const TalentLMSForm = reduxForm({
-  form: "TalentLMSForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(TalentLMSFormBase));
+})(TalentLMSFormBase);

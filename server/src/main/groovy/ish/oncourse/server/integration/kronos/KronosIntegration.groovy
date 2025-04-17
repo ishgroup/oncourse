@@ -12,6 +12,7 @@ import groovy.transform.CompileDynamic
 import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 import groovyx.net.http.RESTClient
+import ish.common.types.IntegrationType
 import ish.oncourse.server.api.v1.function.CustomFieldFunctions
 import ish.oncourse.server.cayenne.TutorAttendance
 import ish.oncourse.server.integration.Plugin
@@ -24,7 +25,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 @CompileDynamic
-@Plugin(type = 19)
+@Plugin(type = IntegrationType.KRONOS)
 class KronosIntegration implements PluginTrait {
     public static final String KRONOS_USERNAME_KEY = "username"
     public static final String KRONOS_PASSWORD_KEY = "password"

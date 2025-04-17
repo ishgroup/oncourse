@@ -11,6 +11,7 @@
 package ish.oncourse.server.integration
 
 import com.google.inject.Injector
+import ish.common.types.IntegrationType
 import ish.oncourse.aql.AqlService
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.PreferenceController
@@ -66,9 +67,9 @@ trait PluginTrait {
 	String name
 
 	/**
-	 * id of the integration type
+	 * integration type
 	 */
-	int type
+	IntegrationType type
 
 	void loadConfig(Map args) {
 		loggedInUser = args.get("loggedInUser") as SystemUser

@@ -28,7 +28,7 @@ export function mockIntegrations(): Integration[] {
 
   return [
     {
-      type: 1,
+      type: 'Moodle',
       id: "123",
       name: "Moodle Integration",
       props: [
@@ -43,7 +43,7 @@ export function mockIntegrations(): Integration[] {
       modified: new Date().toISOString()
     },
     {
-      type: 2,
+      type: 'Mailchimp',
       id: "23",
       name: "Mailchimp Integration",
 
@@ -56,7 +56,7 @@ export function mockIntegrations(): Integration[] {
       modified: new Date().toISOString()
     },
     {
-      type: 3,
+      type: 'Survey Monkey',
       id: "66",
       name: "SurveyMonkey Integration",
       props: [
@@ -72,7 +72,7 @@ export function mockIntegrations(): Integration[] {
       modified: new Date().toISOString()
     },
     {
-      type: 6,
+      type: 'MYOB',
       id: "9999",
       name: "MYOB Integration",
       props: [
@@ -85,7 +85,7 @@ export function mockIntegrations(): Integration[] {
       modified: new Date().toISOString()
     },
     {
-      type: 5,
+      type: 'Xero',
       id: "w5w45435",
       name: "Xero Integration",
       props: [],
