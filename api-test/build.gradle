@@ -13,7 +13,7 @@ import test.LocalStack
  */
 
 ext {
-    karateVersion = '1.4.1'
+    karateVersion = '1.0.1'
 }
 
 dependencies {
