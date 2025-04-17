@@ -77,13 +77,13 @@ public enum IntegrationType implements DisplayableExtendedEnumeration<Integer> {
 	KRONOS(19, "Kronos"),
 
 	@API
-	OKTA(20, "Okta"),
+	OKTA(20, "Okta");
 
 
 	private String displayName
 	private int value
 
-	private InvoiceType(int value, String displayName) {
+	private IntegrationType(int value, String displayName) {
 		this.value = value
 		this.displayName = displayName
 	}
