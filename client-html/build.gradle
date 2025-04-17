@@ -12,11 +12,14 @@ plugins {
 
 apply from: "$rootDir/nodeSetup.gradle"
 
+sourceSets {
+    main.resources.srcDirs 'src/js', 'build/generated-sources/swagger-js', 'build/generated-sources/aql-model', 'build/generated-sources/aql-parser'
+}
 
 task webpack(type: NpmTask, dependsOn: 'queryGrammar') {
     inputs.files("webpack.config.js", "tsconfig.json", "package-lock.json", "package.json", "jest.config.js")
     inputs.dir("src")
-    outputs.dir("$buildDir/assets")
+    outputs.dir("${layout.buildDirectory.get()}/assets")
     inputs.property('version', version)
     npmCommand = ['run']
     args = ['build:prod', "BUILD_NUMBER=${version ?: '99-SNAPSHOT'}"]
@@ -35,7 +38,7 @@ task npm_outdated(type: NpmTask) {
 
 task queryGrammar(type: NpmTask, dependsOn: [':server-api:swagger', 'npmInstall', 'generateQueryLanguageModel']) {
     inputs.dir("$rootDir/buildSrc/aql/src/main/resources/")
-    outputs.dir("$buildDir/generated-sources/aql-parser")
+    outputs.dir("${layout.buildDirectory.get()}/generated-sources/aql-parser")
     npmCommand = ['run']
     args = ['antlr4ts']
 }
@@ -59,7 +62,18 @@ generateQueryLanguageModel {
             .plus(fileTree("$rootDir/types/src/main/java"))
             .plus(fileTree("$rootDir/server/src/main/java"))
 
-    destinationDir = file("$buildDir/generated-sources/aql-model")
+    destinationDir = file("${layout.buildDirectory.get()}/generated-sources/aql-model")
 }
 
-processResources.dependsOn(':server-api:swagger', "generateQueryLanguageModel")
+tasks.named('test') {
+    dependsOn jest
+}
+
+tasks.named('build') {
+    dependsOn webpack
+}
+
+tasks.named('processResources') {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    dependsOn(':server-api:swagger', "generateQueryLanguageModel", "queryGrammar")
+}
