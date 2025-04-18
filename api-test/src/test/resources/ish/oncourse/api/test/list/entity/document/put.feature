@@ -388,7 +388,7 @@ Feature: Main feature for PUT request with path 'list/entity/document/'
                     fileName: 'duplicateContent.txt',
                     mimeType: 'text/plain',
                     size: '10 b',
-                    content: '#(data)'
+                    content: '#(byteList)'
                 }
             ],
             description: 'some description',
