@@ -10,14 +10,13 @@ import com.intuit.karate.Runner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
-import java.util.TimeZone;
 
 
 public class CourseClassTimetableApiTest {
     @Test
     public void test() {
-        System.out.println("Local timezone: " + TimeZone.getDefault());
         Results results = Runner.builder().clientFactory(ish.oncourse.api.test.client.KarateClient::new).path(  "classpath:ish/oncourse/api/test/list/entity/courseClass/timetable/").tags("~@ignore").parallel(1);
         Assertions.assertEquals(results.getFailCount(), 0, results.getErrorMessages());
     }
 }
+
