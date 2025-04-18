@@ -5,6 +5,9 @@ describe("Virtual rendered EnrolmentEditView", () => {
   mockedEditView({
     entity: "Enrolment",
     EditView: EnrolmentEditView,
+    state: ({mockedApi}) => ({
+      location: mockedApi.db.location
+    }),
     record: mockecApi => mockecApi.db.getEnrolment(1),
     render: ({ screen, initialValues, formRoleName }) => {
       expect(screen.getByRole(formRoleName)).toHaveFormValues({

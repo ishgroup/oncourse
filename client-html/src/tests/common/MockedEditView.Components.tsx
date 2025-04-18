@@ -1,22 +1,23 @@
 import * as React from "react";
+import EditView from '../../js/common/components/list-view/components/edit-view/EditView';
 import { LIST_EDIT_VIEW_FORM_NAME } from "../../js/common/components/list-view/constants";
 import ListEditView, { editViewFormRole } from "../../js/common/components/list-view/components/edit-view/EditView";
+import { State } from '../../js/reducers/state';
 import { defaultComponents } from "./Default.Components";
 
 interface Props {
   entity: string;
   EditView: any;
-  record: (mockedApi: any) => object;
+  record: (mockedApi) => object;
   render: ({
     screen, initialValues, formRoleName, mockedApi, fireEvent
   }) => any;
-  state?: (mockedApi: any) => object;
+  state?: ({ mockedApi, viewProps }) => Partial<State>;
 }
 
-export const mockedEditView = (props: Props) => {
-  const {
-    entity, EditView, record, render, state
-  } = props;
+export const mockedEditView = ({
+ entity, EditView, record, render, state
+}: Props) => {
 
   defaultComponents({
     entity,
