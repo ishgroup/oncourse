@@ -1,6 +1,7 @@
 def timeQueryValue = "today"
-if(!number_of_days.equals("0"))
-    timeQueryValue = timeQueryValue + " + ${number_of_days} days"
+number_of_days_int = number_of_days.toInteger()
+if (number_of_days_int > 0)
+    timeQueryValue = timeQueryValue + " + ${number_of_days_int} days"
 if (send_before_each_session) {
 
     records = query {
