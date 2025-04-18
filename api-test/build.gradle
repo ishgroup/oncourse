@@ -1,4 +1,5 @@
 import test.PrepareTestDatabase
+import test.LocalStack
 
 /*
  * Copyright ish group pty ltd 2020.
@@ -32,36 +33,73 @@ dependencies {
 sourceCompatibility = 11
 targetCompatibility = 11
 
-task copyConfig(type: Copy) {
+tasks.register('startLocalstack', LocalStack.Start) {
+    bucketName = 'test-bucket'
+    propertiesFilePath = "${buildDir}/localstack.properties"
+    doFirst {
+        System.setProperty('testcontainers.ryuk.disabled', 'true')
+    }
+}
+
+tasks.register('stopLocalstack', LocalStack.Stop)
+
+tasks.register('copyConfig', Copy) {
     from("$rootDir/api-test/src/test/resources/") {
         include 'onCourse.yml'
         include 'logSetup.xml'
     }
     into "$rootDir/server/build"
-    def dbUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
-    expand(dbUrl: dbUrl)
+
+    doFirst {
+        def props = new Properties()
+        file("${buildDir}/localstack.properties").withInputStream { props.load(it) }
+
+        def dbUrl = project.hasProperty('dbUrl')
+                ? project.property('dbUrl')
+                : 'jdbc:mariadb://localhost/angel_api_test'
+
+        expand(
+                dbUrl: dbUrl,
+                document: [
+                        accessKeyId    : props.getProperty('document.accessKeyId'),
+                        accessSecretKey: props.getProperty('document.accessSecretKey'),
+                        bucket         : props.getProperty('document.bucket'),
+                        region         : props.getProperty('document.region'),
+                        endpoint       : props.getProperty('document.endpoint')
+                ]
+        )
+    }
 }
 
-task prepareTestDatabase (type: PrepareTestDatabase) {
-    databaseUrl = project.hasProperty('dbUrl')?project.getProperty('dbUrl'):'jdbc:mariadb://localhost/angel_api_test'
+tasks.register('prepareTestDatabase', PrepareTestDatabase) {
+    databaseUrl = project.hasProperty('dbUrl') ? project.property('dbUrl') : 'jdbc:mariadb://localhost/angel_api_test'
     dataSetPath = "$rootDir/api-test/src/test/resources/test-dataset.xml"
 }
 
+tasks.named('copyConfig') {
+    mustRunAfter('startLocalstack')
+}
+
+tasks.named('prepareTestDatabase') {
+    mustRunAfter(':server:startDaemon')
+    mustRunAfter('copyConfig')
+}
+
 test {
+    finalizedBy(stopLocalstack)
     testLogging {
-        events "failed", "standardOut"
+        events 'failed', 'standardOut'
     }
 
-    tasks.getByName('prepareTestDatabase').mustRunAfter(':server:startDaemon').mustRunAfter('copyConfig')
+    dependsOn ':server:startDaemon'
+    dependsOn copyConfig
+    dependsOn startLocalstack
+    dependsOn prepareTestDatabase
 
-    dependsOn "copyConfig"
-    dependsOn ":server:startDaemon"
-    dependsOn "prepareTestDatabase"
     // pull cucumber options into the cucumber jvm
-    systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
+    systemProperty 'cucumber.options', System.properties.getProperty('cucumber.options')
     // pull karate options into the jvm
-    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    systemProperty 'karate.env', System.properties.getProperty('karate.env')
     // ensure tests are always run
     outputs.upToDateWhen { false }
-
 }
