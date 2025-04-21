@@ -8,6 +8,7 @@ import Delete from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Grid, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
+import $t from '@t';
 import { AddButton, AppTheme, SelectItemDefault, useHoverShowStyles, YYYY_MM_DD_MINUSED } from 'ish-ui';
 import React, { useCallback, useMemo } from 'react';
 import { Dispatch } from 'redux';
@@ -277,7 +278,7 @@ const Bindings = React.memo<BindingsProps>( props => {
       <Grid container>
         {defaultVariables && (
           <Grid item xs={12} className="mb-3">
-            <Typography variant="caption">Built in variables</Typography>
+            <Typography variant="caption">{$t('built_in_variables')}</Typography>
             {defaultVariables.map((i, n) => <BindingsItem key={n} item={i as Binding} type="label" infoLink={getInfoLink(i.type)} />)}
           </Grid>
         )}

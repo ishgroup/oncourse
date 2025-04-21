@@ -62,10 +62,10 @@
 	<sortField name="classCost.courseClass.startDateTime" order="Ascending"/>
 	<sortField name="dateFor" order="Ascending"/>
 	<variable name="total" class="java.math.BigDecimal" resetType="Group" resetGroup="payslip" calculation="Sum">
-		<variableExpression><![CDATA[$F{payLine}.value.multiply($F{payLine}.quantity)]]></variableExpression>
+		<variableExpression><![CDATA[$F{payLine}.value.multiply($F{payLine}.quantity).toBigDecimal()]]></variableExpression>
 	</variable>
 	<variable name="totalSum" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{payLine}.value.multiply($F{payLine}.quantity)]]></variableExpression>
+		<variableExpression><![CDATA[$F{payLine}.value.multiply($F{payLine}.quantity).toBigDecimal()]]></variableExpression>
 	</variable>
 	<group name="payslip">
 		<groupExpression><![CDATA[$F{payLine}.payslip.contact.id]]></groupExpression>
@@ -196,7 +196,7 @@
 			<textField evaluationTime="Report" isBlankWhenNull="true">
 				<reportElement style="header 2" x="456" y="0" width="78" height="25"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[new Money($V{totalSum})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[Money.of($V{totalSum})]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

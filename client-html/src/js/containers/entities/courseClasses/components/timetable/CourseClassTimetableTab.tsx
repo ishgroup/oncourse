@@ -3,15 +3,19 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { CourseClassTutor, CourseClassType, SessionWarning, TutorAttendance } from '@api/model';
+import { CourseClassTutor, CourseClassType, Room, SessionWarning, TutorAttendance } from '@api/model';
+import { CSSObject } from '@emotion/serialize';
 import Settings from '@mui/icons-material/Settings';
 import { FormControlLabel, Grid, MenuItem } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
+import $t from '@t';
+import clsx from 'clsx';
 import { addDays, addHours, addMinutes, differenceInMinutes, subDays } from 'date-fns';
 import {
   appendTimezone,
+  AppTheme,
   normalizeNumber,
   normalizeNumberToPositive,
   SelectItemDefault,
@@ -49,7 +53,7 @@ import CourseClassBulkChangeSession from './CourseClassBulkChangeSession';
 import CourseClassExpandableSession from './CourseClassExpandableSession';
 import CourseClassTimetableService from './services/CourseClassTimetableService';
 
-const styles = (theme, p, classes) => ({
+const styles = (theme: AppTheme, p, classes): CSSObject => ({
     root: {
       width: "100%"
     },
@@ -79,12 +83,37 @@ const styles = (theme, p, classes) => ({
     },
     sessionItemFormControlRoot: {
       marginRight: 0
+    },
+    siteFields: {
+      transition: theme.transitions.create(["grid-template-rows", "grid-template-columns"], {
+        easing: theme.transitions.easing.easeInOut
+      }),
+      display: 'grid',
+      gridTemplateRows: '1fr 0fr',
+      gridTemplateColumns: '1fr',
+      overflow: 'hidden',
+      '&.twoColumn': {
+        gridTemplateRows: '1fr',
+        gridTemplateColumns: '1fr 0fr',
+      }
+    },
+    roomIdField: {
+      minWidth: '0px',
+      minHeight: '0px'
+    },
+    roomIdVisible: {
+      gap: theme.spacing(2, 3),
+      gridTemplateRows: '1fr 1fr',
+      '&.twoColumn': {
+        gridTemplateRows: '1fr',
+        gridTemplateColumns: '1fr 1fr',
+      }
     }
   });
 
 interface Props extends Partial<EditViewProps<CourseClassExtended>> {
   classes?: any;
-  virualSites?: SelectItemDefault[];
+  virualSites?: (SelectItemDefault & { rooms: Room[] })[];
   sessionWarnings?: SessionWarning[];
   sessionSelection?: any[];
   bulkSessionModalOpened?: boolean;
@@ -170,6 +199,8 @@ const CourseClassTimetableTab = ({
   const [openCopyDialog, setOpenCopyDialog] = React.useState({ open: false, session: { id: -1 } });
   const [months, setMonths] = useState<TimetableMonth[]>([]);
   const [sessionMenu, setSessionMenu] = useState(null);
+  
+  const virualRooms = useMemo(() => values.virtualSiteId ? virualSites?.find(s => s.value === values.virtualSiteId)?.rooms : [], [virualSites, values.virtualSiteId]);
 
   const onSelfPacedChange = (e, value) => {
     e.preventDefault();
@@ -659,6 +690,10 @@ const CourseClassTimetableTab = ({
     dispatch(courseClassSelectSingleSession(session));
   }, []);
 
+  const onVirtualSiteChange = id => {
+    dispatch(change(form, 'roomId', id ? virualSites?.find(s => s.value === id)?.rooms[0]?.id : null));
+  };
+  
   const renderedMonths = useMemo(
     () => months.map((m, i) => (
       <CalendarMonthBase key={i} fullWidth showYear {...m}>
@@ -732,7 +767,7 @@ const CourseClassTimetableTab = ({
             debounced={false}
           />
         )}
-        label="Hybrid"
+        label={$t('hybrid')}
         labelPlacement="start"
       />
     </div>
@@ -800,7 +835,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label="Hybrid class start date"
+                    label={$t('hybrid_class_start_date')}
                     name="startDateTime"
                     validate={validateStartDate}
                     timezone={values.sessions[0]?.siteTimezone}
@@ -810,7 +845,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="dateTime"
-                    label="Hybrid class end date"
+                    label={$t('hybrid_class_end_date')}
                     name="endDateTime"
                     validate={validateEndDate}
                     timezone={values.sessions[values.sessions?.length - 1]?.siteTimezone}
@@ -820,7 +855,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
-                    label="Minimum sessions to complete"
+                    label={$t('minimum_sessions_to_complete')}
                     name="minimumSessionsToComplete"
                     step="1"
                     normalize={normalizeNumberToPositive}
@@ -833,7 +868,7 @@ const CourseClassTimetableTab = ({
                 <Grid item xs={twoColumn ? 3 : 12}>
                   <FormField
                     type="number"
-                    label="Maximum days to complete"
+                    label={$t('maximum_days_to_complete')}
                     name="maximumDays"
                     min="1"
                     max="99"
@@ -846,7 +881,7 @@ const CourseClassTimetableTab = ({
               <Grid item xs={twoColumn ? 3 : 12}>
                 <FormField
                   type="number"
-                  label="Expected study hours"
+                  label={$t('expected_study_hours')}
                   name="expectedHours"
                   min="1"
                   max="99"
@@ -857,14 +892,27 @@ const CourseClassTimetableTab = ({
                 />
               </Grid>
               <Grid item xs={twoColumn ? 6 : 12}>
-                <FormField
-                  type="select"
-                  label="Virtual site"
-                  name="virtualSiteId"
-                  items={virualSites}
-                  allowEmpty
-                />
+                <div className={clsx(classes.siteFields, values.virtualSiteId && classes.roomIdVisible, { twoColumn })}>
+                  <FormField
+                    type="select"
+                    label={$t('virtual_site')}
+                    name="virtualSiteId"
+                    items={virualSites}
+                    onChange={onVirtualSiteChange}
+                    allowEmpty
+                  />
+                  <FormField
+                    type="select"
+                    name="roomId"
+                    selectValueMark="id"
+                    selectLabelMark="name"
+                    className={classes.roomIdField}
+                    label={$t('virtual_room')}
+                    items={virualRooms}
+                  />
+                </div>
               </Grid>
+
             </Grid>
           )}
           {["With Sessions", "Hybrid"].includes(values.type) && <>

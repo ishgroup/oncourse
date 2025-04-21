@@ -6,18 +6,19 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Course, Faculty } from "@api/model";
-import React, { useMemo } from "react";
-import { change } from "redux-form";
+import { Course, Faculty } from '@api/model';
+import $t from '@t';
+import React, { useMemo } from 'react';
+import { change } from 'redux-form';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import NestedList, { NestedListItem } from "../../../../common/components/form/nestedList/NestedList";
-import { useAppSelector } from "../../../../common/utils/hooks";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { EditViewProps } from "../../../../model/common/ListView";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import NestedList, { NestedListItem } from '../../../../common/components/form/nestedList/NestedList';
+import { useAppSelector } from '../../../../common/utils/hooks';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { EditViewProps } from '../../../../model/common/ListView';
 
 const transformCourse = (course: Course): NestedListItem => ({
   id: course.id.toString(),
@@ -71,7 +72,7 @@ function FacultyCoursesTab(
   return <div className="pl-3 pr-3 pt-2">
     <NestedList
       formId={values.id}
-      title="Relations"
+      title={$t('relations')}
       values={courseItemsTransformed}
       searchValues={courseSearchItemsTransformed}
       pending={plainCourses.loading}

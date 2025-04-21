@@ -16,12 +16,12 @@ import {
   OpenInNew,
   SupervisorAccount
 } from '@mui/icons-material';
-import { Alert, AlertTitle, CardContent, Collapse, FormControlLabel, Typography } from '@mui/material';
+import { Alert, AlertTitle, Card, CardContent, Collapse, FormControlLabel, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
+import $t from '@t';
 import clsx from 'clsx';
 import { makeAppStyles, openInternalLink, StyledCheckbox, Switch } from 'ish-ui';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -222,7 +222,7 @@ const DocumentShare: React.FC<Props> = ({
     if (!documentSource.attachmentRelations || !documentSource.attachmentRelations.length) {
       return (
         <Typography>
-          No attachments
+          {$t('no_attachments')}
         </Typography>
       );
     }
@@ -301,7 +301,7 @@ const DocumentShare: React.FC<Props> = ({
                   onChange={onSharedChange}
                 />
               )}
-              label="Attach only to this record"
+              label={$t('attach_only_to_this_record')}
             />
           )}
       </div>
@@ -337,7 +337,7 @@ const DocumentShare: React.FC<Props> = ({
   return (
     <div>
       <Alert severity="info" className="mb-2" ref={summaryRef}>
-        <AlertTitle>Who can view this document</AlertTitle>
+        <AlertTitle>{$t('who_can_view_this_document')}</AlertTitle>
         {SummaryLabel}
       </Alert>
       <Card className="mb-2" elevation={cardsElevation}>
@@ -348,7 +348,7 @@ const DocumentShare: React.FC<Props> = ({
               <Attachment/>
             </Avatar>
           )}
-          title="Attached to"
+          title={$t('attached_to')}
         />
         <CardContent className={noPaper && "pl-0"} ref={attachmentRef}>
           {AttachmentRelations}
@@ -373,7 +373,7 @@ const DocumentShare: React.FC<Props> = ({
                       onChange={onPortalSharingChange}
                     />
                   )}
-                  label="Shared in portal"
+                  label={$t('shared_in_portal')}
                 />
               )}
               avatar={(
@@ -381,14 +381,14 @@ const DocumentShare: React.FC<Props> = ({
                   <Directions/>
                 </Avatar>
               )}
-              title="Skills onCourse"
+              title={$t('skills_oncourse')}
             />
             {contactRelated
               ? (
                 <Collapse in={tutorsAndStudents}>
                   <CardContent className={noPaper && "pl-0"}>
                     <Typography>
-                      Shared with
+                      {$t('shared_with')}
                       {" "}
                       {documentSource.attachmentRelations[0].relatedContacts.map(c => c.name)}
                       {" "}
@@ -414,7 +414,7 @@ const DocumentShare: React.FC<Props> = ({
                                 onChange={onTutorsChange}
                               />
                             )}
-                            label="Show to tutors"
+                            label={$t('show_to_tutors')}
                           />
                           <FormControlLabel
                             classes={{
@@ -427,7 +427,7 @@ const DocumentShare: React.FC<Props> = ({
                                 onChange={onTutorsAndStudentsChange}
                               />
                             )}
-                            label="Show to students"
+                            label={$t('show_to_students')}
                           />
                         </CardContent>
                       </Collapse>
@@ -453,7 +453,7 @@ const DocumentShare: React.FC<Props> = ({
                   onChange={onLinkChange}
                 />
               )}
-              label="Shared by link"
+              label={$t('shared_by_link')}
             />
           )}
           avatar={(
@@ -461,7 +461,7 @@ const DocumentShare: React.FC<Props> = ({
               <Link/>
             </Avatar>
           )}
-          title="Shareable link"
+          title={$t('shareable_link')}
         />
         <Collapse in={validUrl && linkOrPublic}>
           <CardContent className={noPaper && "pl-0"}>
@@ -470,7 +470,7 @@ const DocumentShare: React.FC<Props> = ({
                 <input ref={linkInput} readOnly className="codeArea" type="text" value={validUrl}/>
               </Typography>
               <Button color="primary" className="text-nowrap" onClick={onCopyLink}>
-                Copy Link
+                {$t('copy_link')}
               </Button>
             </div>
           </CardContent>
@@ -478,7 +478,7 @@ const DocumentShare: React.FC<Props> = ({
         <Collapse in={!linkOrPublic}>
           <CardContent className={noPaper && "pl-0"}>
             <Alert severity="warning" icon={<LockOutlined/>}>
-              Document can not be accessed by direct link
+              {$t('document_can_not_be_accessed_by_direct_link')}
             </Alert>
           </CardContent>
         </Collapse>
@@ -504,7 +504,7 @@ const DocumentShare: React.FC<Props> = ({
                       onChange={onWebsiteChange}
                     />
                   )}
-                  label="Shared with website visitors"
+                  label={$t('shared_with_website_visitors')}
                 />
               )}
               avatar={(
@@ -512,7 +512,7 @@ const DocumentShare: React.FC<Props> = ({
                   <Language/>
                 </Avatar>
               )}
-              title="Website"
+              title={$t('website')}
             />
           </Card>
         )}

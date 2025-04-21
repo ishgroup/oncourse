@@ -7,7 +7,7 @@ on:
 
 jobs:
   selenium-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       matrix:
@@ -48,7 +48,7 @@ jobs:
       - run: chrome --version
 
       - name: Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             **/node_modules

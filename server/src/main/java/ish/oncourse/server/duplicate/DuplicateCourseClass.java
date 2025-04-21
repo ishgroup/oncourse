@@ -277,11 +277,11 @@ public class DuplicateCourseClass {
                         .filter(cc -> ClassCostFlowType.INCOME.equals(cc.getFlowType()))
                         .findFirst().get();
                 classCost.setDescription(classCostDTO.getDescription());
-                classCost.setPerUnitAmountExTax(Money.valueOf(classCostDTO.getPerUnitAmountExTax()));
+                classCost.setPerUnitAmountExTax(Money.of(classCostDTO.getPerUnitAmountExTax()));
 
                 Tax tax = SelectById.query(Tax.class, classCostDTO.getTaxId()).selectOne(context);
-                Money incTax = Money.valueOf(classCostDTO.getPerUnitAmountIncTax());
-                Money exTax = Money.valueOf(classCostDTO.getPerUnitAmountExTax());
+                Money incTax = Money.of(classCostDTO.getPerUnitAmountIncTax());
+                Money exTax = Money.of(classCostDTO.getPerUnitAmountExTax());
                 Money taxAdjustment =  MoneyUtil.calculateTaxAdjustment(incTax, exTax, tax.getRate());
                 classCost.setTax(tax);
                 classCost.setTaxAdjustment(taxAdjustment);
@@ -293,7 +293,7 @@ public class DuplicateCourseClass {
                 classCostDTO.getPaymentPlan().forEach(line -> {
                     CourseClassPaymentPlanLine newLine = context.newObject(CourseClassPaymentPlanLine.class);
                     newLine.setDayOffset(line.getDayOffset());
-                    newLine.setAmount(Money.valueOf(line.getAmount()));
+                    newLine.setAmount(Money.of(line.getAmount()));
                     newLine.setCourseClass(newClass);
                 });
             }

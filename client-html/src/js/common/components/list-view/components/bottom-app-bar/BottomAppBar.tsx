@@ -12,6 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { alpha, darken } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
 import clsx from 'clsx';
 import { makeAppStyles, openInternalLink } from 'ish-ui';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -297,7 +298,7 @@ const BottomAppBar = (
           root: "listItemPadding errorColor"
         }}
       >
-        Delete record
+        {$t('delete_record')}
       </MenuItem>
     )].filter(i => i);
 
@@ -333,7 +334,7 @@ const BottomAppBar = (
             rootEntity={rootEntity}
             changeQueryView={changeQueryView}
             searchMenuItemsRenderer={searchMenuItemsRenderer}
-            placeholder="Find..."
+            placeholder={$t('find2')}
           />
 
           <div className={clsx("centeredFlex", !querySearch && "flex-fill")}>
@@ -373,11 +374,7 @@ const BottomAppBar = (
                   root: "listItemPadding"
                 }}
               >
-                Find related to
-                {' '}
-                {selection.length}
-                {' '}
-                record
+                {$t('find_related_to_record',[selection.length])}
                 {selection.length > 1 ? "s" : ""}
               </MenuItem>
 
@@ -395,7 +392,7 @@ const BottomAppBar = (
 
             <div className={clsx("flex-fill text-center", { "d-none": querySearch })} />
             <div className={classes.actionArea}>
-              <Tooltip title="Add record" disableFocusListener>
+              <Tooltip title={$t('add_record')} disableFocusListener>
                 <div>
                   <IconButton
                     color="inherit"
@@ -419,7 +416,7 @@ const BottomAppBar = (
                 disabled={fetch.pending}
               />
 
-              <Tooltip title="Share" disableFocusListener>
+              <Tooltip title={$t('share')} disableFocusListener>
                 <div>
                   <IconButton
                     onClick={toggleExportDrawer}
@@ -434,7 +431,7 @@ const BottomAppBar = (
                   </IconButton>
                 </div>
               </Tooltip>
-              <Tooltip title="More Options" disableFocusListener>
+              <Tooltip title={$t('more_options')} disableFocusListener>
                 <div>
                   <IconButton
                     classes={{

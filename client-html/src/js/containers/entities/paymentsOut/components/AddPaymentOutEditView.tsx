@@ -6,27 +6,28 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { Currency, PaymentMethod } from "@api/model";
-import { Grid } from "@mui/material";
-import { compareAsc, format as formatDate } from "date-fns";
-import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, LinkAdornment, openInternalLink } from "ish-ui";
-import React, { useCallback, useEffect, useMemo } from "react";
-import { connect } from "react-redux";
-import { change, FieldArray } from "redux-form";
-import { ContactLinkAdornment } from "../../../../common/components/form/formFields/FieldAdornments";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import Uneditable from "../../../../common/components/form/formFields/Uneditable";
-import NestedTable from "../../../../common/components/list-view/components/list/ReactTableNestedList";
-import { greaterThanNullValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { NestedTableColumn } from "../../../../model/common/NestedTable";
-import { State } from "../../../../reducers/state";
-import { defaultCurrencySymbol } from "../../common/bankingPaymentUtils";
-import { SiteState } from "../../sites/reducers/state";
-import { getAdminCenterLabel, openSiteLink } from "../../sites/utils";
-import { PaymentOutModel } from "../reducers/state";
-import { getAmountToAllocate, getInitialTotalOutstanding, getInitialTotalOwing, getTotalOutstanding } from "../utils";
-import ChequeSummaryRenderer from "./ChequeSummaryRenderer";
+import { Currency, PaymentMethod } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import { compareAsc, format as formatDate } from 'date-fns';
+import { D_MMM_YYYY, III_DD_MMM_YYYY_HH_MM, LinkAdornment, openInternalLink } from 'ish-ui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { change, FieldArray } from 'redux-form';
+import { ContactLinkAdornment } from '../../../../common/components/form/formFields/FieldAdornments';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import Uneditable from '../../../../common/components/form/formFields/Uneditable';
+import NestedTable from '../../../../common/components/list-view/components/list/ReactTableNestedList';
+import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { NestedTableColumn } from '../../../../model/common/NestedTable';
+import { State } from '../../../../reducers/state';
+import { defaultCurrencySymbol } from '../../common/bankingPaymentUtils';
+import { SiteState } from '../../sites/reducers/state';
+import { getAdminCenterLabel, openSiteLink } from '../../sites/utils';
+import { PaymentOutModel } from '../reducers/state';
+import { getAmountToAllocate, getInitialTotalOutstanding, getInitialTotalOwing, getTotalOutstanding } from '../utils';
+import ChequeSummaryRenderer from './ChequeSummaryRenderer';
 
 const addPaymentOutColumnsBase: NestedTableColumn[] = [
   {
@@ -293,7 +294,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
     <div className="p-3 h-100 flex-column">
       <Grid container columnSpacing={3} rowSpacing={2}>
         <Grid item xs={12}>
-          <Uneditable value={values.payeeName} label="Payment to" labelAdornment={
+          <Uneditable value={values.payeeName} label={$t('payment_to')} labelAdornment={
             <ContactLinkAdornment id={values.payeeId} />
           } />
         </Grid>
@@ -302,7 +303,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           <FormField
             type="select"
             name="paymentMethodId"
-            label="Type"
+            label={$t('type')}
             items={paymentTypes}
             validate={[validateSingleMandatoryField, validatePaymentMethodField]}
             onChange={handlePaymentMethodChange}
@@ -314,7 +315,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           <FormField
             type="select"
             name="administrationCenterId"
-            label="Site"
+            label={$t('site')}
             defaultValue={values.administrationCenterName}
             selectLabelCondition={getAdminCenterLabel}
             validate={
@@ -334,7 +335,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
             <FormField
               type="select"
               name="refundableId"
-              label="Refundable payment"
+              label={$t('refundable_payment')}
               items={refundablePaymentRecords}
               required
             />
@@ -347,13 +348,13 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           <FormField
             type="money"
             name="amount"
-            label="Amount paid"
+            label={$t('amount_paid')}
             validate={[validateSingleMandatoryField, greaterThanNullValidation, validateAmountField]}
             onBlur={setPayableInvoices}
           />
         </Grid>
         <Grid item xs={4}>
-          <FormField type="text" name="account" label="Account" disabled />
+          <FormField type="text" name="account" label={$t('account')} disabled />
         </Grid>
         <Grid item xs={4} />
 
@@ -361,28 +362,28 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
           <FormField
             type="date"
             name="datePayed"
-            label="Date paid"
+            label={$t('date_paid')}
             validate={validateLockedDate}
           />
         </Grid>
         <Grid item xs={4}>
-          <Uneditable value={initialTotalOutstanding} money label="Total outstanding" />
+          <Uneditable value={initialTotalOutstanding} money label={$t('total_outstanding')} />
         </Grid>
 
         <Grid item xs={4} />
 
         <Grid item xs={4}>
-          <FormField type="date" name="dateBanked" label="Date banked" disabled />
+          <FormField type="date" name="dateBanked" label={$t('date_banked')} disabled />
         </Grid>
 
         <Grid item xs={4}>
-          <Uneditable value={initialTotalOwing} money label="Total owing" />
+          <Uneditable value={initialTotalOwing} money label={$t('total_owing')} />
         </Grid>
 
         <Grid item xs={4} />
 
         <Grid item xs={12}>
-          <FormField type="multilineText" name="privateNotes" label="Private notes"  />
+          <FormField type="multilineText" name="privateNotes" label={$t('private_notes')}  />
         </Grid>
       </Grid>
 
@@ -408,7 +409,7 @@ const AddPaymentOutEditView: React.FunctionComponent<AddPaymentOutEditViewProps>
 const mapStateToProps = (state: State) => ({
   paymentOutMethods: state.paymentsOut.paymentOutMethods,
   refundablePayments: state.paymentsOut.refundablePayments,
-  currency: state.currency,
+  currency: state.location.currency,
   accountItems: state.plainSearchRecords.Account.items,
   adminSites: state.sites.adminSites,
   lockedDate: state.lockedDate,

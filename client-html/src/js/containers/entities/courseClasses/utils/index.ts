@@ -3,7 +3,8 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { AssessmentClass, Session } from "@api/model";
+import { AssessmentClass, Session } from '@api/model';
+import $t from '@t';
 import {
   addBusinessDays,
   addDays,
@@ -14,10 +15,11 @@ import {
   addYears,
   differenceInMinutes,
   isWeekend
-} from "date-fns";
-import { appendTimezone, decimalMul, decimalPlus, EntityType, openInternalLink } from "ish-ui";
-import { LIST_EDIT_VIEW_FORM_NAME } from "../../../../common/components/list-view/constants";
-import uniqid from "../../../../common/utils/uniqid";
+} from 'date-fns';
+import { Decimal } from 'decimal.js-light';
+import { appendTimezone, decimalMul, decimalPlus, EntityType, openInternalLink } from 'ish-ui';
+import { LIST_EDIT_VIEW_FORM_NAME } from '../../../../common/components/list-view/constants';
+import uniqid from '../../../../common/utils/uniqid';
 import {
   ClassCostExtended,
   ClassCostItem,
@@ -25,59 +27,66 @@ import {
   CourseClassStatus,
   CourseClassTutorExtended,
   SessionRepeatTypes
-} from "../../../../model/entities/CourseClass";
-import { TimetableSession } from "../../../../model/timetable";
-import { State } from "../../../../reducers/state";
-import CourseClassAssessmentService from "../components/assessments/services/CourseClassAssessmentService";
-import CourseClassAttendanceService from "../components/attendance/services/CourseClassAttendanceService";
-import CourseClassCostService from "../components/budget/services/ClassCostService";
-import { getClassCostFee } from "../components/budget/utils";
-import CourseClassTimetableService from "../components/timetable/services/CourseClassTimetableService";
-import CourseClassTutorService from "../components/tutors/services/CourseClassTutorService";
+} from '../../../../model/entities/CourseClass';
+import { TimetableSession } from '../../../../model/timetable';
+import { State } from '../../../../reducers/state';
+import CourseClassAssessmentService from '../components/assessments/services/CourseClassAssessmentService';
+import CourseClassAttendanceService from '../components/attendance/services/CourseClassAttendanceService';
+import CourseClassCostService from '../components/budget/services/ClassCostService';
+import { getClassCostFee } from '../components/budget/utils';
+import CourseClassTimetableService from '../components/timetable/services/CourseClassTimetableService';
+import CourseClassTutorService from '../components/tutors/services/CourseClassTutorService';
 
 export const openCourseClassLink = (classId: number) => openInternalLink(`/class/${classId}`);
 
 export const getNestedCourseClassItem = (status: CourseClassStatus, count: number, id: number): EntityType => {
   switch (status) {
+    case 'Hybrid':
+      return {
+        name: $t("Hybrid"),
+        count,
+        link: `/class?search=course.id is ${id}&filter=@Hybrid_classes`,
+        timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.type is HYBRID and courseClass.isCancelled is false`
+      };
     case "Current":
       return {
-        name: "Current",
+        name: $t("Current"),
         count,
         link: `/class?search=course.id is ${id}&filter=@Current_classes`,
-        // eslint-disable-next-line max-len
+
         timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime < tomorrow and courseClass.endDateTime >= today and courseClass.isCancelled is false`
       };
     case "Future":
       return {
-        name: "Future",
+        name: $t("Future"),
         count,
         link: `/class?search=course.id is ${id}&filter=@Future_classes`,
-        // eslint-disable-next-line max-len
+
         timetableLink: `/timetable/search?search=courseClass.course.id=${id} and courseClass.startDateTime >= tomorrow and courseClass.endDateTime >= tomorrow and courseClass.isCancelled is false`
       };
-    case "Self Paced":
+    case "Self-Paced":
       return {
-        name: "Self Paced",
+        name: $t("Self-paced"),
         count,
         link: `/class?search=course.id is ${id}&filter=@Self_paced_classes`
       };
     case "Unscheduled":
       return {
-        name: "Unscheduled",
+        name: $t("Unscheduled"),
         count,
         link: `/class?search=course.id is ${id}&filter=@Unscheduled_classes`
       };
     case "Finished":
       return {
-        name: "Finished",
+        name: $t("Finished"),
         count,
         link: `/class?search=course.id is ${id}&filter=@Finished_classes`,
-        // eslint-disable-next-line max-len
+
         timetableLink: `/timetable?search=courseClass.course.id=${id} and courseClass.isCancelled is false and courseClass.endDateTime before today`
       };
     case "Cancelled":
       return {
-        name: "Cancelled",
+        name: $t("Cancelled"),
         count,
         link: `/class?search=course.id is ${id}&filter=@Cancelled_classes`,
         grayOut: true
@@ -175,8 +184,8 @@ export const getClassCostTypes = (
           const defaultOnCostRate = (role && role["currentPayrate.oncostRate"]) ? parseFloat(role["currentPayrate.oncostRate"]) : 0;
           const onCostToUse = typeof value.onCostRate === "number" ? value.onCostRate : defaultOnCostRate;
 
-          item.max = decimalMul(item.max, decimalPlus(onCostToUse, 1));
-          item.projected = decimalMul(item.projected, decimalPlus(onCostToUse, 1));
+          item.max = decimalMul(item.max, new Decimal(onCostToUse).plus(1).toNumber());
+          item.projected = decimalMul(item.projected, new Decimal(onCostToUse).plus(1).toNumber());
 
           types.cost.items.push(item);
           types.cost.max = decimalPlus(types.cost.max, item.max);

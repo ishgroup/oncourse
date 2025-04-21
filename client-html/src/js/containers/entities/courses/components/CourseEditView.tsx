@@ -55,8 +55,9 @@ const styles = () =>
 
 const CourseEditView = props => {
   const hasVetPermissions = useSelector<State, any>(state => state.access["VET_COURSE"]);
+  const hideAUSReporting = useSelector<State, any>(state => state.location.countryCode !== 'AU');
 
-  const usedItems = useMemo(() => (hasVetPermissions ? items : items.filter(i => i.label !== "Vet")), [
+  const usedItems = useMemo(() => (hasVetPermissions && !hideAUSReporting ? items : items.filter(i => i.label !== "Vet")), [
     hasVetPermissions
   ]);
 

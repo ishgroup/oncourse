@@ -76,7 +76,7 @@ class MailchimpIntegration implements PluginTrait {
 				return result
 			}
 			response.failure = { resp, result ->
-				logger.error("Mailchimp subscribe to list failed: ${result.status} - ${result.title}: ${result.detail}. More information at: ${result.type}.")
+				logger.error("Mailchimp subscribe to list failed: ${result.status} - ${result.title}: ${result.detail}, ${result.errors}. More information at: ${result.type}.")
 			}
 		}
 

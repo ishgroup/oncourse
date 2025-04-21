@@ -3,13 +3,13 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Outcome } from "@api/model";
-import React, { useEffect } from "react";
-import { change } from "redux-form";
-import EntityService from "../../../../common/services/EntityService";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { getContactFullName } from "../../contacts/utils";
-import OutcomeEditFields from "./OutcomeEditFields";
+import { Outcome } from '@api/model';
+import React, { useEffect } from 'react';
+import { change } from 'redux-form';
+import EntityService from '../../../../common/services/EntityService';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { getContactFullName } from '../../contacts/utils';
+import OutcomeEditFields from './OutcomeEditFields';
 
 const getFieldName = name => name;
 
@@ -27,7 +27,7 @@ const OutcomeEditView = React.memo<EditViewProps<Outcome>>(props => {
       if (enrolmentId && !isNaN(enrolmentId)) {
           EntityService.getPlainRecords(
             "Enrolment",
-            // eslint-disable-next-line max-len
+            
             "fundingSource,vetPurchasingContractID,vetFundingSourceStateID,courseClass.vetPurchasingContractScheduleID,courseClass.deliveryMode,courseClass.reportableHours,student.contact.id,student.contact.firstName,student.contact.lastName",
             `id is ${enrolmentId}`,
             1

@@ -6,11 +6,12 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { initialize, reduxForm } from "redux-form";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import { onSubmitFail } from "../../../../../../common/utils/highlightFormErrors";
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { initialize, reduxForm } from 'redux-form';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 
 class MicropowerBaseForm extends React.Component<any, any> {
   constructor(props) {
@@ -35,10 +36,10 @@ class MicropowerBaseForm extends React.Component<any, any> {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarContent>
-          <FormField name="fields.identity" label="Identity" type="text" className="mb-2" />
-          <FormField name="fields.signature" label="Signature" type="text" className="mb-2" />
-          <FormField name="fields.clientId" label="Client Id" type="text" className="mb-2" />
-          <FormField name="fields.productSku" label="Product SKU" type="text" className="mb-2" />
+          <FormField name="fields.identity" label={$t('identity')} type="text" className="mb-2" />
+          <FormField name="fields.signature" label={$t('signature')} type="text" className="mb-2" />
+          <FormField name="fields.clientId" label={$t('client_id2')} type="text" className="mb-2" />
+          <FormField name="fields.productSku" label={$t('product_sku')} type="text" className="mb-2" />
         </AppBarContent>
       </form>
     );

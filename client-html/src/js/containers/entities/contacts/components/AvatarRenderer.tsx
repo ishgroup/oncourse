@@ -9,6 +9,7 @@ import { FormHelperText, Grid } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
 import clsx from 'clsx';
 import { FilePreview, makeAppStyles } from 'ish-ui';
 import React, { useCallback, useRef } from 'react';
@@ -136,7 +137,7 @@ const AvatarRenderer: React.FC<any> = props => {
                 {!disabled && (
                   <div className={classes.avatarBackdrop}>
                     <div className="centeredFlex">
-                      <Tooltip title="Upload" placement="top">
+                      <Tooltip title={$t('upload')} placement="top">
                         <IconButton color="inherit" size="medium">
                           <UploadIcon fontSize="small" />
                         </IconButton>
@@ -147,7 +148,7 @@ const AvatarRenderer: React.FC<any> = props => {
                 <Gravatar email={email || ""} options={{ size, default: 'mp' }}>
                   {url => (
                     <Avatar
-                      alt="Profile picture"
+                      alt={$t('profile_picture')}
                       src={url}
                       sx={{ width: size, height: size }}
                       onError={handleGravatarError}

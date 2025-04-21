@@ -3,31 +3,32 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { ConcessionType, Discount, DiscountMembership } from "@api/model";
-import { Collapse, FormControlLabel, Grid } from "@mui/material";
-import clsx from "clsx";
-import { CheckboxField, LinkAdornment, normalizeNumber } from "ish-ui";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { change } from "redux-form";
+import { ConcessionType, Discount, DiscountMembership } from '@api/model';
+import { Collapse, FormControlLabel, Grid } from '@mui/material';
+import $t from '@t';
+import clsx from 'clsx';
+import { CheckboxField, LinkAdornment, normalizeNumber } from 'ish-ui';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { change } from 'redux-form';
 import {
   clearCommonPlainRecords,
   getCommonPlainRecords,
   setCommonPlainSearch
-} from "../../../../common/actions/CommonPlainRecordsActions";
-import FormField from "../../../../common/components/form/formFields/FormField";
-import { PanelItemChangedMessage } from "../../../../common/components/form/nestedList/components/PaperListRenderer";
+} from '../../../../common/actions/CommonPlainRecordsActions';
+import FormField from '../../../../common/components/form/formFields/FormField';
+import { PanelItemChangedMessage } from '../../../../common/components/form/nestedList/components/PaperListRenderer';
 import NestedList, {
   NestedListItem,
   NestedListPanelItem
-} from "../../../../common/components/form/nestedList/NestedList";
-import Subtitle from "../../../../common/components/layout/Subtitle";
-import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from "../../../../common/utils/validation";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../constants/Config";
-import { State } from "../../../../reducers/state";
-import CourseItemRenderer from "../../courses/components/CourseItemRenderer";
-import { courseFilterCondition, openCourseLink } from "../../courses/utils";
+} from '../../../../common/components/form/nestedList/NestedList';
+import Subtitle from '../../../../common/components/layout/Subtitle';
+import { greaterThanZeroIncludeValidation, validateSingleMandatoryField } from '../../../../common/utils/validation';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../constants/Config';
+import { State } from '../../../../reducers/state';
+import CourseItemRenderer from '../../courses/components/CourseItemRenderer';
+import { courseFilterCondition, openCourseLink } from '../../courses/utils';
 
 interface DiscountStudentsProps {
   twoColumn?: boolean;
@@ -249,7 +250,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
     return (
       <div className="pt-3 pl-3 pr-3">
         <div className="mb-2">
-          <Subtitle label="STUDENTS" />
+          <Subtitle label={$t('students2')} />
         </div>
         <FormControlLabel
           className="checkbox pr-3 mb-2"
@@ -263,7 +264,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               color="secondary"
             />
           )}
-          label="Restrict this discount to certain students"
+          label={$t('restrict_this_discount_to_certain_students')}
         />
         <Collapse in={this.state.limited}>
           <Grid container rowSpacing={2} columnSpacing={3}>
@@ -271,7 +272,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               <FormField
                 type="number"
                 name="studentEnrolledWithinDays"
-                label="Enrolled within (days)"
+                label={$t('enrolled_within_days')}
                 parse={normalizeNumber}
                 validate={greaterThanZeroIncludeValidation}
                 debounced={false}
@@ -282,7 +283,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 type="select"
                 name="studentAgeUnder"
                 onChange={this.onChangeStudentAgeUnder}
-                label="Age"
+                label={$t('age')}
                 items={[
                   {
                     value: true,
@@ -301,7 +302,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 <FormField
                   type="number"
                   name="studentAge"
-                  label="Years"
+                  label={$t('years')}
                   parse={normalizeNumber}
                   validate={[validateSingleMandatoryField, greaterThanZeroIncludeValidation]}
                   debounced={false}
@@ -312,7 +313,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               <FormField
                 type="text"
                 name="studentPostcode"
-                label="Postcode"
+                label={$t('postcode')}
                 validate={validatePostcode}
               />
             </Grid>
@@ -320,7 +321,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               <FormControlLabel
                 className="checkbox"
                 control={<FormField type="checkbox" name="limitPreviousEnrolment" color="secondary" />}
-                label="Limit to students previously enrolled in same course"
+                label={$t('limit_to_students_previously_enrolled_in_same_cour')}
               />
             </Grid>
             <Grid item xs={twoColumn ? 6 : 12}>
@@ -329,7 +330,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
                 entity="Course"
                 aqlFilter="currentlyOffered is true"
                 name="courseIdMustEnrol"
-                label="Must have completed enrolment in"
+                label={$t('must_have_completed_enrolment_in')}
                 selectValueMark="id"
                 selectLabelMark="name"
                 selectFilterCondition={courseFilterCondition}
@@ -352,7 +353,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
               <FormField
                 type="number"
                 name="minEnrolmentsForAnyCourses"
-                label="Minimal completed enrolments in any course"
+                label={$t('minimal_completed_enrolments_in_any_course')}
                 parse={normalizeNumber}
                 validate={greaterThanZeroIncludeValidation}
                 debounced={false}
@@ -362,7 +363,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
           <div className={clsx("mb-2 mt-2", twoColumn && "mw-400")}>
             <NestedList
               formId={values.id}
-              title="LIMIT TO STUDENTS WITH CONCESSION"
+              title={$t('limit_to_students_with_concession')}
               titleCaption="This discount will only be available with the following concession types"
               searchPlaceholder="Find concession types"
               values={concessionTypes}
@@ -384,7 +385,7 @@ class DiscountStudents extends React.PureComponent<DiscountStudentsProps, Discou
           <div className={twoColumn ? "mb-2 mw-400" : "mb-2"}>
             <NestedList
               formId={values.id}
-              title="LIMIT TO STUDENTS WITH MEMBERSHIP"
+              title={$t('limit_to_students_with_membership')}
               titleCaption="This discount will only apply to classes commencing while one of these memberships is valid"
               searchPlaceholder="Add memberships"
               values={membershipToNestedListItem(values.discountMemberships)}

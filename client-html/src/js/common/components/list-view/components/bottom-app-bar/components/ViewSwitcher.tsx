@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { VerticalSplit, ViewHeadline } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import clsx from "clsx";
-import React from "react";
+import { VerticalSplit, ViewHeadline } from '@mui/icons-material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import $t from '@t';
+import clsx from 'clsx';
+import React from 'react';
 
 export default ({
  threeColumn, switchLayout, classes, disabled
 }) => (
-  <Tooltip title="Change columns mode">
+  <Tooltip title={$t('change_columns_mode')}>
     <span>
       <IconButton
         color="inherit"
@@ -35,4 +36,4 @@ export default ({
       </IconButton>
     </span>
   </Tooltip>
-    )
+    );

@@ -3,16 +3,17 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import * as Entities from "@aql/queryLanguageModel";
-import { CircularProgress, Grid, Typography } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import { mapSelectItems } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback, useEffect, useState } from "react";
-import FormField from "../../../../../../common/components/form/formFields/FormField";
-import EntityService from "../../../../../../common/services/EntityService";
-import { getPluralSuffix } from "../../../../../../common/utils/strings";
-import { PLAIN_LIST_MAX_PAGE_SIZE } from "../../../../../../constants/Config";
+import * as Entities from '@aql/queryLanguageModel';
+import { CircularProgress, Grid, Typography } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
+import $t from '@t';
+import { mapSelectItems } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useEffect, useState } from 'react';
+import FormField from '../../../../../../common/components/form/formFields/FormField';
+import EntityService from '../../../../../../common/services/EntityService';
+import { getPluralSuffix } from '../../../../../../common/utils/strings';
+import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../../constants/Config';
 
 const records = Object.keys(Entities)
   .filter(i => Entities[i].constructor.name !== "Enum")
@@ -86,7 +87,7 @@ const QueryCardContent = props => {
         <FormField
           type="select"
           name={`${name}.entity`}
-          label="Entity"
+          label={$t('entity')}
           items={records}
           className="d-flex mt-2"
           disabled={disabled}
@@ -105,8 +106,8 @@ const QueryCardContent = props => {
             <FormField
               type="aql"
               name={`${name}.query`}
-              label="Query"
-              placeholder="All records"
+              label={$t('query')}
+              placeholder={$t('all_records')}
               rootEntity={field.entity}
               disabled={!field.entity || disabled}
               validate={validateExpression}
@@ -120,7 +121,7 @@ const QueryCardContent = props => {
           <FormField
             name={`${name}.queryClosureReturnValue`}
             type="text"
-            label="Returned results name"
+            label={$t('returned_results_name')}
             validate={validateQueryClosureReturnValue}
           />
         </Grid>
@@ -130,11 +131,7 @@ const QueryCardContent = props => {
           {!queryResultsPending && !hideQueryResults && (
           <Typography variant="caption" color="textSecondary">
             {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
-            {' '}
-            record
-            {getPluralSuffix(queryResults)}
-            {' '}
-            found
+            {$t('record_found', [getPluralSuffix(queryResults)])}
           </Typography>
             )}
         </Grid>

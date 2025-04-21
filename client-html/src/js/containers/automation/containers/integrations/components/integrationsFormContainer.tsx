@@ -6,6 +6,7 @@
 import { Integration, IntegrationProp } from '@api/model';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import Grid from '@mui/material/Grid';
+import $t from '@t';
 import clsx from 'clsx';
 import { ShowConfirmCaller } from 'ish-ui';
 import * as React from 'react';
@@ -158,7 +159,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
             <FormField
               type="text"
               name="name"
-              label="Name"
+              label={$t('name')}
               validate={this.validateNameField}
               disabled={disableName}
             />

@@ -1,7 +1,8 @@
-import { Sale } from "@api/model";
-import { EditInPlaceSearchSelect, stubFunction } from "ish-ui";
-import React, { useMemo } from "react";
-import { change } from "redux-form";
+import { Sale } from '@api/model';
+import $t from '@t';
+import { EditInPlaceSearchSelect, stubFunction } from 'ish-ui';
+import React, { useMemo } from 'react';
+import { change } from 'redux-form';
 
 export default (
   {
@@ -66,7 +67,7 @@ export default (
             value: getSelectedRelation()
           }}
           returnType="object"
-          placeholder="Select relation"
+          placeholder={$t('select_relation')}
           inline
         />
       )}

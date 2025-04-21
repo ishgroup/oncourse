@@ -46,7 +46,7 @@ import { voucherProductReducer } from '../containers/entities/voucherProducts/re
 import { loginReducer, systemUserReducer } from '../containers/login/reducers';
 import {
   countriesReducer,
-  currencyReducer,
+  locationReducer,
   enumsReducer,
   languagesReducer,
   lockedDateReducer,
@@ -71,7 +71,7 @@ export const combinedReducers: Reducer<State,IAction> = combineReducers({
   countries: countriesReducer,
   courseClass: courseClassReducer,
   courseClassesBulkSession: courseClassesBulkSessionReducer,
-  currency: currencyReducer,
+  location: locationReducer,
   customFieldTypes: customFieldTypesReducer,
   dashboard: dashboardReducer,
   discounts: discountsReducer,

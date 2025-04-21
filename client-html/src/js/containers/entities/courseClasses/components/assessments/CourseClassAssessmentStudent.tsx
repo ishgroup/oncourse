@@ -8,6 +8,7 @@
 
 import { CourseClassTutor, GradingItem, GradingType } from '@api/model';
 import { Grid, } from '@mui/material';
+import $t from '@t';
 import clsx from 'clsx';
 import { EditInPlaceDateTimeField, EditInPlaceSearchSelect, stubFunction } from 'ish-ui';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -137,7 +138,7 @@ const CourseClassAssessmentStudent: React.FC<Props> = (
                     onBlur: stubFunction,
                     value: elem.submission.markedById
                   }}
-                  placeholder="No assessor"
+                  placeholder={$t('no_assessor')}
                   items={tutors}
                   allowEmpty
                   inline
