@@ -34,7 +34,7 @@ LocalDate firstDayOfMonth2 = firstDayOfMonth3
         .plusMonths(-1)
         .withDayOfMonth(1)
 
-LocalDate firstDayOfMonth1 = firstDayOfMonth2.plusMonths(-2)
+LocalDate firstDayOfMonth1 = firstDayOfMonth3.plusMonths(-2)
         .withDayOfMonth(1)
 
 LocalDate firstDayOfMonth4 = firstDayOfMonth3.plusMonths(1)
@@ -42,15 +42,16 @@ LocalDate firstDayOfMonth4 = firstDayOfMonth3.plusMonths(1)
 
 LocalDate yearToDate = firstDayOfMonth3.withMonth(1)
 
-LocalDate previousYearStart = firstDayOfMonth3.minusYears(1)
+LocalDate previousYearStart = yearToDate.minusYears(1)
+LocalDate previousYearIntervalEnd = firstDayOfMonth4.minusYears(1)
 
 
-def dataForIntervals = new ArrayList<Map<String, Object>>();
+def dataForIntervals = new ArrayList<Map<String, Object>>()
 dataForIntervals.add(buildDataForInterval("month1", firstDayOfMonth1, firstDayOfMonth2, context))
 dataForIntervals.add(buildDataForInterval("month2", firstDayOfMonth2, firstDayOfMonth3, context))
 dataForIntervals.add(buildDataForInterval("month3", firstDayOfMonth3, firstDayOfMonth4, context))
-dataForIntervals.add(buildDataForInterval("yearToDate", yearToDate, firstDayOfMonth3, context))
-dataForIntervals.add(buildDataForInterval("lastYear", previousYearStart, firstDayOfMonth3, context))
+dataForIntervals.add(buildDataForInterval("yearToDate", yearToDate, firstDayOfMonth4, context))
+dataForIntervals.add(buildDataForInterval("lastYear", previousYearStart, previousYearIntervalEnd, context))
 
 
 def result = new ArrayList<Map<String, Object>>();
