@@ -59,6 +59,11 @@
     <field name="lastYear" class="java.lang.String"/>
     <field name="yearToDate" class="java.lang.String"/>
     <field name="rowName" class="java.lang.String"/>
+    <field name="firstMonthName" class="java.lang.String"/>
+    <field name="secondMonthName" class="java.lang.String"/>
+    <field name="thirdMonthName" class="java.lang.String"/>
+    <field name="yearToDateName" class="java.lang.Integer"/>
+    <field name="previousYearName" class="java.lang.Integer"/>
 
     <background>
         <band splitType="Stretch"/>
@@ -66,26 +71,26 @@
     <pageHeader>
         <band height="40" splitType="Stretch">
             <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-            <staticText>
+            <textField>
                 <reportElement key="staticText-2" style="crosstab" x="200" y="15" width="100" height="25" uuid="424de109-3f6d-4f14-9ebd-f4e8c4a85306"/>
-                <text><![CDATA[month1]]></text>
-            </staticText>
-            <staticText>
+                <textFieldExpression><![CDATA[$F{firstMonthName}]]></textFieldExpression>
+            </textField>
+            <textField>
                 <reportElement key="staticText-3" style="crosstab" x="300" y="15" width="100" height="25" uuid="7d91d8d7-4f25-4cae-a82e-0f93e984dcc8"/>
-                <text><![CDATA[month2]]></text>
-            </staticText>
-            <staticText>
+                <textFieldExpression><![CDATA[$F{secondMonthName}]]></textFieldExpression>
+            </textField>
+            <textField>
                 <reportElement key="staticText-4" style="crosstab" x="400" y="15" width="100" height="25" uuid="6d248445-2327-48df-934c-70c50d60415a"/>
-                <text><![CDATA[month3]]></text>
-            </staticText>
-            <staticText>
+                <textFieldExpression><![CDATA[$F{thirdMonthName}]]></textFieldExpression>
+            </textField>
+            <textField>
                 <reportElement key="staticText-5" style="crosstab" x="500" y="15" width="100" height="25" uuid="6d248445-2327-48df-934c-70c50d60415a"/>
-                <text><![CDATA[yearToDate]]></text>
-            </staticText>
-            <staticText>
+                <textFieldExpression><![CDATA[$F{yearToDateName} +" (until " + $F{thirdMonthName}+")"]]></textFieldExpression>
+            </textField>
+            <textField>
                 <reportElement key="staticText-9" style="crosstab" x="600" y="15" width="100" height="25" uuid="6d248445-2327-48df-934c-70c50d60415a"/>
-                <text><![CDATA[lastYear]]></text>
-            </staticText>
+                <textFieldExpression><![CDATA[$F{previousYearName}]]></textFieldExpression>
+            </textField>
         </band>
     </pageHeader>
 

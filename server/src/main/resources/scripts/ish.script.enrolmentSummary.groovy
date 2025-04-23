@@ -23,6 +23,7 @@ import org.apache.cayenne.query.SQLSelect
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
 
 def enrolment = ObjectSelect.query(Enrolment).selectFirst(context)
@@ -43,7 +44,6 @@ LocalDate firstDayOfMonth4 = firstDayOfMonth3.plusMonths(1)
 LocalDate yearToDate = firstDayOfMonth3.withMonth(1)
 
 LocalDate previousYearStart = yearToDate.minusYears(1)
-LocalDate previousYearIntervalEnd = firstDayOfMonth4.minusYears(1)
 
 
 def dataForIntervals = new ArrayList<Map<String, Object>>()
@@ -51,7 +51,7 @@ dataForIntervals.add(buildDataForInterval("month1", firstDayOfMonth1, firstDayOf
 dataForIntervals.add(buildDataForInterval("month2", firstDayOfMonth2, firstDayOfMonth3, context))
 dataForIntervals.add(buildDataForInterval("month3", firstDayOfMonth3, firstDayOfMonth4, context))
 dataForIntervals.add(buildDataForInterval("yearToDate", yearToDate, firstDayOfMonth4, context))
-dataForIntervals.add(buildDataForInterval("lastYear", previousYearStart, previousYearIntervalEnd, context))
+dataForIntervals.add(buildDataForInterval("lastYear", previousYearStart, yearToDate, context))
 
 
 def result = new ArrayList<Map<String, Object>>();
@@ -70,6 +70,12 @@ result.each { resultMap ->
     dataForIntervals.each { intervalMap ->
         resultMap.put(intervalMap["key"] as String, intervalMap.get(column))
     }
+
+    resultMap.put("firstMonthName", firstDayOfMonth1.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH))
+    resultMap.put("secondMonthName", firstDayOfMonth2.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH))
+    resultMap.put("thirdMonthName", firstDayOfMonth3.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH))
+    resultMap.put("yearToDateName", firstDayOfMonth3.getYear())
+    resultMap.put("previousYearName", previousYearStart.getYear())
 }
 
 report {
@@ -83,7 +89,6 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
     def result = new LinkedHashMap<String, Object>();
 
     result.put("key", key)
-
     def enrolmentsCount = ObjectSelect.query(Enrolment)
             .where(Enrolment.CREATED_ON.gte(startDate.toDate()).andExp(Enrolment.CREATED_ON.lt(excludeEndDate.toDate()))
                     .andExp(Enrolment.STATUS.in(EnrolmentStatus.STATUSES_LEGIT)))
