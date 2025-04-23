@@ -8,7 +8,7 @@ on:
 jobs:
 
   api-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       matrix:
@@ -30,9 +30,10 @@ jobs:
           paths_ignore: '["client-html/**", "api-doc/**"]'
 
       - name: Setup timezone
-        uses: zcong1993/setup-timezone@v1.1.1
-        with:
-          timezone: "Australia/Sydney"
+        run: |
+          TIMEZONE="Australia/Sydney"
+          echo "TZ=$TIMEZONE" >> $GITHUB_ENV
+          echo "JAVA_TOOL_OPTIONS=-Duser.timezone=$TIMEZONE" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v2
