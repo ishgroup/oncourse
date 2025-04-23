@@ -4,8 +4,8 @@
  */
 
 import { Epic, ofType } from 'redux-observable';
-import { interval, Observable } from 'rxjs';
-import { debounce, mergeMap } from 'rxjs/operators';
+import { debounceTime, Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { State } from '../../../../reducers/state';
 import {
   CHECKOUT_ADD_CONTACT,
@@ -28,7 +28,7 @@ export const EpicTriggerPricesUpdate: Epic<any, any, State> = (action$: Observab
       CHECKOUT_UPDATE_RELATED_ITEMS,
       CHECKOUT_TRIGGER_UPDATE_SUMMARY_PRICES
     ),
-    debounce(() => interval(1000)),
+    debounceTime(1000),
     mergeMap(() => {
       if (state$.value.checkout.contacts.length) {
         return [{
