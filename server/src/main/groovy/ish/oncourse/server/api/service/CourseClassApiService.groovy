@@ -339,6 +339,14 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             validator.throwClientErrorException(id, "portalDocAccess", "Hybrid class cannot have doc control fields")
         }
 
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.startDateTime && !dto.endDateTime) {
+            validator.throwClientErrorException(id, "endDateTime", "Self paced class if has start date must have end date")
+        }
+
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.endDateTime && !dto.startDateTime) {
+            validator.throwClientErrorException(id, "startDateTime", "Self paced class if has end date must have start date")
+        }
+
         if (dto.virtualSiteId != null) {
             Site virtualSite = siteApiService.getEntityAndValidateExistence(context, dto.virtualSiteId)
             if (dto.roomId != null) {
