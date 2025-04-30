@@ -215,10 +215,12 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING) {
                 courseClass.maximumDays = dto.maximumDays
             }
+
+            courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
+            courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
+
             if (dto.type == CourseClassTypeDTO.HYBRID) {
                 courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
-                courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
-                courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
             }
         }
 
