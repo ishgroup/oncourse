@@ -534,9 +534,11 @@ const CheckoutSelectionForm = React.memo<Props>(props => {
         onClearItemsSearch(true);
         break;
     }
-    setTimeout(() => {
-      checkoutUpdateSummaryClassesDiscounts();
-    }, 500);
+    if (type !== 'course') {
+      setTimeout(() => {
+        checkoutUpdateSummaryClassesDiscounts();
+      }, 500);
+    }
   };
 
   useEffect(() => {
