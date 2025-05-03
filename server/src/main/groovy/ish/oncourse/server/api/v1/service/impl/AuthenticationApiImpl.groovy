@@ -165,7 +165,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
-                .where(IntegrationConfiguration.TYPE.eq(sso.integrationType.intValue()))
+                .where(IntegrationConfiguration.TYPE.eq(sso.integrationType))
                 .selectFirst(cayenneService.newReadonlyContext)
 
         if(!configuration){
@@ -374,7 +374,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
         def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
-                .where(IntegrationConfiguration.TYPE.eq(sso.integrationType.intValue()))
+                .where(IntegrationConfiguration.TYPE.eq(sso.integrationType))
                 .selectFirst(cayenneService.newReadonlyContext)
 
         def ssoProvider = sso.getSsoProvider(configuration: configuration, cayenneService: cayenneService)

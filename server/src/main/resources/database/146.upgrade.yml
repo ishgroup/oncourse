@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 146-1
+      author: dmitriy
+      preConditions:
+        - onFail: HALT
+        - columnExists:
+            tableName: IntegrationConfiguration
+            columnName: type
+        - tableExists:
+            tableName: IntegrationProperty
+      changes:
+        - sql: 'delete from IntegrationProperty where integrationConfigurationId in (select ic.id from IntegrationConfiguration ic where ic.type = 18);'
+        - sql: 'delete from IntegrationConfiguration where type = 18;'

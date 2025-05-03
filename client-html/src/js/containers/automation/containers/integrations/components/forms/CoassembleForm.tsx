@@ -6,26 +6,13 @@
 import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { getFormValues, initialize, reduxForm } from 'redux-form';
+import { getFormValues, reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 import { State } from '../../../../../../reducers/state';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class CoassembleBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("CoassembleForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("CoassembleForm", this.props.item));
-    }
-  }
-
+class CoassembleBaseForm extends IntegrationFormBase {
   render() {
     const {
       handleSubmit, onSubmit, AppBarContent
@@ -43,12 +30,10 @@ class CoassembleBaseForm extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  values: getFormValues("CoassembleForm")(state)
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state)
 });
 
 export const CoassembleForm = reduxForm({
-  form: "CoassembleForm",
-  onSubmitFail
-})(connect<any, any, any>(mapStateToProps, null)(CoassembleBaseForm));
-
+  onSubmitFail,
+})(connect(mapStateToProps)(CoassembleBaseForm));

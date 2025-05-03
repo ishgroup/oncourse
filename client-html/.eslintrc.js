@@ -23,6 +23,7 @@ module.exports = {
         "import/no-extraneous-dependencies": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
+        '@typescript-eslint/no-redeclare': "off",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/no-shadow": "off",

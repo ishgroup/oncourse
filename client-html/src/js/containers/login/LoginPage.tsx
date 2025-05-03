@@ -9,7 +9,7 @@
  * See the GNU Affero General Public License for more details.
  */
 
-import { LoginRequest } from '@api/model';
+import { IntegrationType, LoginRequest } from '@api/model';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { Button, darken, Grid, Typography } from '@mui/material';
@@ -210,7 +210,7 @@ interface Props extends LoginState {
   createPasswordRequest: (token: string, password: string) => void;
   email?: string;
   eulaUrl?: string;
-  ssoTypes?: number[];
+  ssoTypes?: IntegrationType[];
 }
 
 export class LoginPageBase extends React.PureComponent<Props & DecoratedFormProps, any> {

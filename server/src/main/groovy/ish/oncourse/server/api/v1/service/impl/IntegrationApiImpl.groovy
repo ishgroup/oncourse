@@ -13,10 +13,12 @@ package ish.oncourse.server.api.v1.service.impl
 
 import com.google.inject.Inject
 import groovy.transform.CompileStatic
+import ish.common.types.IntegrationType
 import ish.oncourse.server.ICayenneService
 import ish.oncourse.server.api.v1.login.Sso
 import ish.oncourse.server.api.v1.model.IntegrationDTO
 import ish.oncourse.server.api.v1.model.IntegrationPropDTO
+import ish.oncourse.server.api.v1.model.IntegrationTypeDTO
 import ish.oncourse.server.api.v1.model.ValidationErrorDTO
 import ish.oncourse.server.api.v1.service.IntegrationApi
 import ish.oncourse.server.cayenne.IntegrationConfiguration
@@ -56,7 +58,7 @@ class IntegrationApiImpl implements IntegrationApi {
                 i.created = r.createdOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
                 i.modified = r.modifiedOn.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
                 i.name = r.name
-                i.type = r.type.toBigDecimal()
+                i.type = IntegrationTypeDTO.values()[0].fromDbType(r.type)
 
                 Method getProps = PluginService.getProps(r.type)
                 List<IntegrationProperty> props
@@ -77,10 +79,11 @@ class IntegrationApiImpl implements IntegrationApi {
     }
 
     @Override
-    List<Integer> getSsoPluginTypes() {
+    List<IntegrationTypeDTO> getSsoPluginTypes() {
         return ObjectSelect.columnQuery(IntegrationConfiguration, IntegrationConfiguration.TYPE)
                 .where(IntegrationConfiguration.TYPE.in(Sso.values().collect {it.integrationType}))
                 .select(cayenneService.newReadonlyContext)
+                .collect {IntegrationTypeDTO.values()[0].fromDbType(it)}
     }
 
     @Override
@@ -104,7 +107,7 @@ class IntegrationApiImpl implements IntegrationApi {
                     Response.status(Response.Status.BAD_REQUEST).entity(error).build())
         }
 
-        Integer type = data.type.intValue()
+        IntegrationType type = data.type.getDbType()
         IntegrationConfiguration integration = createIntegration(type)
         updateIntegration(integration, data)
         integration.context.commitChanges()
@@ -127,7 +130,7 @@ class IntegrationApiImpl implements IntegrationApi {
         }
     }
 
-    private IntegrationConfiguration createIntegration(Integer type) {
+    private IntegrationConfiguration createIntegration(IntegrationType type) {
         ObjectContext context = cayenneService.newContext
         IntegrationConfiguration integration = context.newObject(IntegrationConfiguration)
         integration.type = type

@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Integration, IntegrationProp } from '@api/model';
+import { Integration, IntegrationProp, IntegrationType } from '@api/model';
 import DeleteForever from '@mui/icons-material/DeleteForever';
 import Grid from '@mui/material/Grid';
 import $t from '@t';
@@ -21,10 +21,7 @@ import RouteChangeConfirm from '../../../../../common/components/dialog/RouteCha
 import FormField from '../../../../../common/components/form/formFields/FormField';
 import AppBarContainer from '../../../../../common/components/layout/AppBarContainer';
 import { getManualLink } from '../../../../../common/utils/getManualLink';
-import {
-  IntegrationSchema,
-  IntegrationTypesEnum
-} from '../../../../../model/automation/integrations/IntegrationSchema';
+import { IntegrationSchema } from '../../../../../model/automation/integrations/IntegrationSchema';
 import { State } from '../../../../../reducers/state';
 import { createIntegration, deleteIntegrationItem, updateIntegration } from '../../../actions';
 import IntegrationTypes from '../IntegrationTypes';
@@ -68,7 +65,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
       let fields = {};
 
       // Initial fields for Okta intrgration
-      if (Number(match.params.type) === IntegrationTypesEnum.Okta) {
+      if (match.params.type === IntegrationType.Okta) {
         fields = {
           webRedirect: window.location.origin + "/login"
         };
@@ -206,6 +203,7 @@ class FormContainer extends React.Component<Props & RouteComponentProps<any>, an
               validateNameField={this.validateNameField}
               item={item}
               AppBarContent={this.renderAppBar}
+              form={typeItem?.formName}
               {...this.props}
             />
           )}
@@ -236,7 +234,7 @@ export const parseIntegrationSchema = (schema: IntegrationSchema): Integration =
 
   return {
     id: String(schema.id),
-    type: Number(schema.type),
+    type: schema.type,
     name: schema.name,
     verificationCode: schema.verificationCode,
     props: properties

@@ -6,13 +6,13 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
+import { IntegrationType } from '@api/model';
 import { Button, Typography } from '@mui/material';
 import $t from '@t';
 import React, { useCallback, useEffect } from 'react';
 import okta from '../../../../../../images/okta.svg';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import { useAppDispatch } from '../../../../../common/utils/hooks';
-import { IntegrationTypesEnum } from '../../../../../model/automation/integrations/IntegrationSchema';
 import { postSsoAuthenticationRequest } from '../../../../login/actions';
 import LoginService from '../../../../login/services/LoginService';
 
@@ -47,14 +47,14 @@ export const OktaButton = () => {
 };
 
 interface SSOProvidersProps {
-  providers: number[]
+  providers: IntegrationType[]
 }
 
 export const SSOProviders = ({ providers }: SSOProvidersProps) => {
   
-  const getProvider = useCallback((provider: number) => {
+  const getProvider = useCallback((provider: IntegrationType) => {
     switch (provider) {
-      case IntegrationTypesEnum.Okta:
+      case IntegrationType.Okta:
         return <OktaButton key={provider} />;
       default:
         return null;

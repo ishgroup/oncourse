@@ -12,13 +12,14 @@
 package ish.oncourse.server.services
 
 import groovy.transform.CompileStatic
+import ish.common.types.IntegrationType
 import ish.oncourse.server.cayenne.IntegrationConfiguration
 import ish.oncourse.server.cayenne.IntegrationProperty
 import ish.oncourse.server.integration.*
 import org.apache.cayenne.ObjectContext
 
 @CompileStatic
-@Plugin(type = 1000, oneOnly = true)
+@Plugin(type = IntegrationType.MOODLE, oneOnly = true)
 class TestPluginIntegration implements PluginTrait {
 
     public static final String FIRST_PROPERTY = "firstProperty"

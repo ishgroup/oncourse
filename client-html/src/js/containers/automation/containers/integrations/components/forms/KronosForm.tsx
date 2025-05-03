@@ -6,27 +6,14 @@
 import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { getFormValues, initialize, reduxForm } from 'redux-form';
+import { getFormValues, reduxForm } from 'redux-form';
 import RouteChangeConfirm from '../../../../../../common/components/dialog/RouteChangeConfirm';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 import { State } from '../../../../../../reducers/state';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class KronosBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("KronosForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("KronosForm", this.props.item));
-    }
-  }
-
+class KronosBaseForm extends IntegrationFormBase {
   render() {
     const {
       handleSubmit, onSubmit, AppBarContent, dirty, form
@@ -47,12 +34,11 @@ class KronosBaseForm extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  values: getFormValues("KronosForm")(state)
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state)
 });
 
 export const KronosForm = reduxForm({
-  form: "KronosForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, null)(KronosBaseForm));
+})(connect(mapStateToProps)(KronosBaseForm));
 

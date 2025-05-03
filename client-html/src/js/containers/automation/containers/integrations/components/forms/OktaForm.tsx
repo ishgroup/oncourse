@@ -9,27 +9,14 @@
 import $t from '@t';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { getFormValues, initialize, reduxForm } from 'redux-form';
+import { getFormValues, reduxForm } from 'redux-form';
 import RouteChangeConfirm from '../../../../../../common/components/dialog/RouteChangeConfirm';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
 import { State } from '../../../../../../reducers/state';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class OktaBaseForm extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("OktaForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("OktaForm", this.props.item));
-    }
-  }
-
+class OktaBaseForm extends IntegrationFormBase {
   render() {
     const {
       handleSubmit, onSubmit, AppBarContent, dirty, form
@@ -49,11 +36,10 @@ class OktaBaseForm extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: State) => ({
-  values: getFormValues("OktaForm")(state)
+const mapStateToProps = (state: State, ownProps) => ({
+  values: getFormValues(ownProps.form)(state)
 });
 
 export const OktaForm = reduxForm({
-  form: "OktaForm",
   onSubmitFail
-})(connect<any, any, any>(mapStateToProps, null)(OktaBaseForm));
+})(connect(mapStateToProps)(OktaBaseForm));

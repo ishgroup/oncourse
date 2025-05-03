@@ -10,6 +10,7 @@
  */
 package ish.oncourse.server.upgrades.liquibase.change;
 
+import ish.common.types.IntegrationType;
 import ish.liquibase.IshTaskChange;
 import ish.oncourse.server.cayenne.IntegrationConfiguration;
 import ish.oncourse.server.cayenne.IntegrationProperty;
@@ -33,7 +34,7 @@ public class DeleteUnnecessaryCloudAssessProperties extends IshTaskChange {
         List<IntegrationProperty> integrationProperties;
         do {
             integrationProperties = ObjectSelect.query(IntegrationProperty.class)
-                    .where(IntegrationProperty.INTEGRATION_CONFIGURATION.dot(IntegrationConfiguration.TYPE).eq(7)
+                    .where(IntegrationProperty.INTEGRATION_CONFIGURATION.dot(IntegrationConfiguration.TYPE).eq(IntegrationType.CLOUD_ACCESS)
                     .andExp(IntegrationProperty.KEY_CODE.in("orgId","username")))
                     .limit(1000)
                     .select(context);

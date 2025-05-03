@@ -4,26 +4,12 @@
  */
 import $t from '@t';
 import React from 'react';
-import { connect } from 'react-redux';
-import { initialize, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import { onSubmitFail } from '../../../../../../common/utils/highlightFormErrors';
+import IntegrationFormBase from './IntegrationFormBase';
 
-class LearnDashFormBase extends React.Component<any, any> {
-  constructor(props) {
-    super(props);
-
-    // Initializing form with values
-    props.dispatch(initialize("LearnDashForm", props.item));
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.item.id !== this.props.item.id) {
-      // Reinitializing form with values
-      this.props.dispatch(initialize("LearnDashForm", this.props.item));
-    }
-  }
-
+class LearnDashFormBase extends IntegrationFormBase {
   render() {
     const {
       handleSubmit, onSubmit, AppBarContent
@@ -47,6 +33,5 @@ class LearnDashFormBase extends React.Component<any, any> {
 }
 
 export const LearnDashForm = reduxForm({
-  form: "LearnDashForm",
   onSubmitFail
-})(connect<any, any, any>(null, null)(LearnDashFormBase));
+})(LearnDashFormBase);
