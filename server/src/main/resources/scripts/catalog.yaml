@@ -997,7 +997,3 @@
     - name: monthToCheck
       label: month to check
       dataType: NUMBER
-  options:
-    - name: siteNameToCheck
-      value: ""
-      dataType: TEXT

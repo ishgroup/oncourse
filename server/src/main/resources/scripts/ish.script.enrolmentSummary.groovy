@@ -153,59 +153,6 @@ Map<String, Object> buildDataForInterval(String key, LocalDate startDate, LocalD
 
     result.put("Course capacity", df.format(classesPercentage) + "%")
 
-    def defaultSessionsExpression = Session.START_DATETIME.gte(startDate.toDate()).andExp(Session.START_DATETIME.lt(excludeEndDate.toDate()))
-            .orExp(Session.END_DATETIME.gte(startDate.toDate()).andExp(Session.END_DATETIME.lt(excludeEndDate.toDate())))
-
-    if(!siteNameToCheck?.isBlank()) {
-        defaultSessionsExpression = defaultSessionsExpression.andExp(Session.ROOM.dot(Room.SITE).dot(Site.NAME).eq(siteNameToCheck))
-    }
-
-    def sessions = ObjectSelect.query(Session)
-            .where(defaultSessionsExpression)
-            .batchIterator(context, 500)
-
-    def nineThirty = 9 * 60 + 30
-    def elevenThirty = 11 * 60 + 30
-    def thirteenThirty = 13 * 60 + 30
-    def fifteenThirty = 15 * 60 + 30
-    def seventeenThirty = 17 * 60 + 30
-    def nineteenThirty = 19 * 60 + 30
-
-    int slotOneCount = 0, slotTwoCount = 0, slotThreeCount = 0, slotFourCount = 0, slotFiveCount = 0
-
-    try {
-        sessions.each { batch ->
-            batch.each { session ->
-                def localStartTime = LocalDateTime.ofInstant(session.startDatetime.toInstant(), session.timeZone.toZoneId())
-                def localEndTime = LocalDateTime.ofInstant(session.endDatetime.toInstant(), session.timeZone.toZoneId())
-
-                def startTimeMinute = localStartTime.hour * 60 + localStartTime.minute
-                def endTimeMinute = localEndTime.hour * 60 + localEndTime.minute
-
-
-                if (intersects(nineThirty, elevenThirty, startTimeMinute, endTimeMinute))
-                    slotOneCount++
-                if (intersects(elevenThirty, thirteenThirty, startTimeMinute, endTimeMinute))
-                    slotTwoCount++
-                if (intersects(thirteenThirty, fifteenThirty, startTimeMinute, endTimeMinute))
-                    slotThreeCount++
-                if (intersects(fifteenThirty, seventeenThirty, startTimeMinute, endTimeMinute))
-                    slotFourCount++
-                if (intersects(seventeenThirty, nineteenThirty, startTimeMinute, endTimeMinute))
-                    slotFiveCount++
-            }
-        }
-    } finally {
-        sessions.close()
-    }
-
-    def daysBetween = ChronoUnit.DAYS.between(startDate, excludeEndDate)
-    if(daysBetween == 0)
-        daysBetween = 1
-
-    double roomsPercentage = (double) (slotOneCount + slotTwoCount + slotThreeCount + slotFourCount + slotFiveCount) / 5 / daysBetween * 100;
-    result.put("Room capacity", df.format(roomsPercentage) + "%")
-
 
     Expression classesQuery = ExpressionFactory.and(CourseClass.START_DATE_TIME.gte(startDate.toDate())
             .andExp(CourseClass.START_DATE_TIME.lt(excludeEndDate.toDate()))
