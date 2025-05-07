@@ -20,6 +20,7 @@ import ish.oncourse.function.CalculateOutcomeReportableHours
 import ish.oncourse.server.api.v1.function.CartFunctions
 import ish.oncourse.server.cayenne.glue._Enrolment
 import ish.validation.EnrolmentStatusValidator
+import org.apache.cayenne.ObjectContext
 import org.apache.cayenne.PersistenceState
 import org.apache.cayenne.query.ObjectSelect
 import org.apache.logging.log4j.LogManager
@@ -827,5 +828,13 @@ class Enrolment extends _Enrolment implements EnrolmentTrait, EnrolmentInterface
 	@Override
 	String getVetPurchasingContractScheduleID() {
 		return super.getVetPurchasingContractScheduleID()
+	}
+
+	@Override
+	void validateObject(ObjectContext atomicContext) {
+		def invoiceLines = getInvoiceLines()
+		if (invoiceLines.isEmpty()) {
+			throw new ReplicationException(getClass().simpleName + " has no related " + INVOICE_LINES.name)
+		}
 	}
 }
