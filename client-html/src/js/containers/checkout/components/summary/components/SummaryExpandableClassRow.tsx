@@ -133,6 +133,7 @@ const SummaryExpandableClassRow = React.memo<Props>(props => {
       onChange={handleChange}
       classes={{ root: classes.summaryPanelRoot, expanded: classes.panelExpanded }}
       className={clsx(classes.panel, classes.tableTab)}
+      slotProps={{ transition: { mountOnEnter: true } }}
     >
       <AccordionSummary
         classes={{
