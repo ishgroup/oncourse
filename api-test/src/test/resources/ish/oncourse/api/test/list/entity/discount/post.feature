@@ -106,7 +106,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "relationDiscount":false,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -160,7 +161,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":null,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -222,7 +224,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "relationDiscount":false,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -275,7 +278,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":null,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -337,7 +341,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "relationDiscount":false,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -396,7 +401,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":null,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -455,7 +461,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "relationDiscount":false,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -511,7 +518,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":null,
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -558,7 +566,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -605,7 +614,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -653,7 +663,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -697,7 +708,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -741,7 +753,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -788,7 +801,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -836,7 +850,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -888,7 +903,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
@@ -940,7 +956,8 @@ Feature: Main feature for all POST requests with path 'list/entity/discount'
         "validToOffset":"5",
         "courseIdMustEnrol":null,
         "courseNameMustEnrol":null,
-        "minEnrolmentsForAnyCourses":null
+        "minEnrolmentsForAnyCourses":null,
+        "studentEmail":null
         }
         """
 
