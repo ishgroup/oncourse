@@ -536,6 +536,7 @@
 		<db-attribute name="studentConcession" type="INTEGER"/>
 		<db-attribute name="studentEnrolledWithinDays" type="INTEGER"/>
 		<db-attribute name="studentPostcode" type="VARCHAR" length="500"/>
+		<db-attribute name="studentEmails" type="VARCHAR" length="1024"/>
 		<db-attribute name="validFrom" type="TIMESTAMP"/>
 		<db-attribute name="validFromOffset" type="INTEGER"/>
 		<db-attribute name="validTo" type="TIMESTAMP"/>
@@ -2287,6 +2288,7 @@
 		<obj-attribute name="studentConcessionObsolete" type="java.lang.Integer" db-attribute-path="studentConcession"/>
 		<obj-attribute name="studentEnrolledWithinDays" type="java.lang.Integer" db-attribute-path="studentEnrolledWithinDays"/>
 		<obj-attribute name="studentPostcode" type="java.lang.String" db-attribute-path="studentPostcode"/>
+		<obj-attribute name="studentEmails" type="java.lang.String" db-attribute-path="studentEmails"/>
 		<obj-attribute name="validFrom" type="java.util.Date" db-attribute-path="validFrom"/>
 		<obj-attribute name="validFromOffset" type="java.lang.Integer" db-attribute-path="validFromOffset"/>
 		<obj-attribute name="validTo" type="java.util.Date" db-attribute-path="validTo"/>
