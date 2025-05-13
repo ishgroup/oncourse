@@ -124,16 +124,16 @@ let pendingSessionActionArgs = null;
 
 const validateStartDate = (value, allValues: CourseClassExtended) => {
   if (allValues.type === 'Distant Learning') {
-    return allValues.endDateTime && !value && $t("start_date_is_required_is_end_date_is_set");
+    return (allValues.endDateTime && !value && $t("start_date_is_required_is_end_date_is_set")) || validateMinMaxDate(value, '', allValues.endDateTime, '', $t("start_date_cannot_be_set_after_the_end_date"));
   }
-  return validateMinMaxDate(value, '', allValues?.sessions[0]?.start, '', 'Start date cannot be after the first session');
+  return validateMinMaxDate(value, '', allValues?.sessions && allValues.sessions[0]?.start, '', 'Start date cannot be after the first session');
 };
 
 const validateEndDate = (value, allValues: CourseClassExtended) => {
   if (allValues.type === 'Distant Learning') {
-    return allValues.endDateTime && !value && $t("end_date_is_required_is_start_date_is_set");
+    return (allValues.startDateTime && !value && $t("end_date_is_required_is_start_date_is_set")) || validateMinMaxDate(value, allValues.startDateTime, '', $t("end_date_cannot_be_set_before_the_start_date"));
   }
-  return validateMinMaxDate(value, allValues?.sessions[allValues?.sessions?.length - 1]?.start, '', 'End date cannot be before the last session');
+  return validateMinMaxDate(value, allValues?.sessions && allValues.sessions[allValues.sessions.length - 1]?.start, '', 'End date cannot be before the last session');
 };
 
 const validateSessionUpdate = (id: number, sessions: TimetableSession[], dispatch, form) => {
