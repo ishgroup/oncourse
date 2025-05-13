@@ -349,6 +349,11 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             validator.throwClientErrorException(id, "startDateTime", "Self paced class if has end date must have start date")
         }
 
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.startDateTime
+                && (dto.endDateTime.isBefore(dto.startDateTime) || dto.endDateTime.equals(dto.startDateTime))) {
+            validator.throwClientErrorException(id, "startDateTime", "Self paced class end date must be after start date")
+        }
+
         if (dto.virtualSiteId != null) {
             Site virtualSite = siteApiService.getEntityAndValidateExistence(context, dto.virtualSiteId)
             if (dto.roomId != null) {
