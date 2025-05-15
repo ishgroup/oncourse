@@ -161,7 +161,7 @@ class AuthenticationApiImpl implements AuthenticationApi {
     }
 
     @Override
-    LoginResponseDTO loginSso(String ssoType, String authorizationCode) {
+    LoginResponseDTO loginSso(String ssoType, String authorizationCode, Boolean kickOut) {
         def sso = getSsoByType(ssoType)
 
         def configuration = ObjectSelect.query(IntegrationConfiguration)
