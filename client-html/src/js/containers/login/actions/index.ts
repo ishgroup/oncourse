@@ -6,8 +6,8 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import { LoginRequest } from "@api/model";
-import { _toRequestType, FULFILLED } from "../../../common/actions/ActionUtils";
+import { LoginRequest } from '@api/model';
+import { _toRequestType, FULFILLED } from '../../../common/actions/ActionUtils';
 
 export const POST_CREATE_PASSWORD_REQUEST = _toRequestType("post/user/createPassword");
 export const POST_CREATE_PASSWORD_FULFILLED = FULFILLED(POST_CREATE_PASSWORD_REQUEST);
@@ -58,9 +58,9 @@ export const postLoginRequest = (body: LoginRequest, host, port) => ({
   payload: { body, host, port }
 });
 
-export const postSsoAuthenticationRequest = (ssoType: string, code: string) => ({
+export const postSsoAuthenticationRequest = (ssoType: string, code: string, kickOut?: boolean) => ({
   type: POST_SSO_AUTHENTICATION_REQUEST,
-  payload: { ssoType, code }
+  payload: { ssoType, code, kickOut }
 });
 
 export const getSystemUserData = () => ({
