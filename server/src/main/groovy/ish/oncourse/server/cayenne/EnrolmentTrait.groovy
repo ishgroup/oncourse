@@ -12,6 +12,7 @@
 package ish.oncourse.server.cayenne
 
 import ish.common.types.AttendanceType
+import ish.common.types.CourseClassType
 import ish.common.types.EnrolmentStatus
 import ish.math.Money
 import ish.oncourse.API
@@ -25,6 +26,8 @@ trait EnrolmentTrait {
     abstract Student getStudent()
 
     abstract List<InvoiceLine> getInvoiceLines()
+
+    abstract Date getCreatedOn()
 
     /**
      * @return display status name
@@ -43,9 +46,14 @@ trait EnrolmentTrait {
      */
     @API
     boolean isCompleted() {
-        return EnrolmentStatus.SUCCESS == getStatus() && getCourseClass().endDateTime != null && getCourseClass().endDateTime.before(new Date()) &&
-                (!getCourseClass().isHybrid ||
-                        getCourseClass().isHybrid && getAttendances().findAll { it.attendanceType.equals(AttendanceType.ATTENDED) }.size() >= getCourseClass().minimumSessionsToComplete)
+        def courseClass = getCourseClass()
+        boolean classEndDateCompleted = courseClass.endDateTime != null && courseClass.endDateTime.before(new Date())
+        boolean selfPacedClassCompleted = courseClass.type == CourseClassType.DISTANT_LEARNING &&
+                courseClass.maximumDays && this.getCreatedOn().plus(courseClass.maximumDays).before(new Date())
+
+        return EnrolmentStatus.SUCCESS == getStatus() && (selfPacedClassCompleted || classEndDateCompleted) &&
+                (!courseClass.isHybrid ||
+                        courseClass.isHybrid && getAttendances().findAll { it.attendanceType.equals(AttendanceType.ATTENDED) }.size() >= courseClass.minimumSessionsToComplete)
     }
 
     /**
