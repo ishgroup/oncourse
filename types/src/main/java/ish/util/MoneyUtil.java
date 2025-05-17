@@ -11,6 +11,7 @@
 package ish.util;
 
 import ish.math.Money;
+import ish.math.MoneyRounding;
 
 import java.math.BigDecimal;
 
@@ -69,7 +70,7 @@ public final class MoneyUtil {
 			return result;
 		}
 
-		return result.add(taxAdjustment);
+		return result.add(taxAdjustment).round(MoneyRounding.ROUNDING_EVEN);
 	}
 
 	/**

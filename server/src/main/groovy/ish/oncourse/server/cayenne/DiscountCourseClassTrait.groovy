@@ -23,7 +23,7 @@ trait DiscountCourseClassTrait {
             BigDecimal discountedCount =  (enrolments*.invoiceLines.flatten() as List<InvoiceLine>)
                     .findAll {il -> discount.id in il.invoiceLineDiscounts*.discount*.id}
                     .size().toBigDecimal()
-            return (discountedCount*100/totalCount).setScale(2, RoundingMode.HALF_UP)
+            return (discountedCount*100/totalCount).setScale(2, RoundingMode.HALF_EVEN)
         } else {
             return BigDecimal.ZERO
         }
