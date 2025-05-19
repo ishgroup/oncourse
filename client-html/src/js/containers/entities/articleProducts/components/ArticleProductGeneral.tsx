@@ -3,25 +3,31 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Account, ArticleProduct, ProductStatus, Tag, Tax } from "@api/model";
-import { Grid } from "@mui/material";
-import { Decimal } from "decimal.js-light";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { change, FieldArray } from "redux-form";
-import DocumentsRenderer from "../../../../common/components/form/documents/DocumentsRenderer";
-import { FormEditorField } from "../../../../common/components/form/formFields/FormEditor";
-import FormField from "../../../../common/components/form/formFields/FormField";
+import { Account, ArticleProduct, ProductStatus, Tag, Tax } from '@api/model';
+import { Grid } from '@mui/material';
+import $t from '@t';
+import React, { useCallback, useMemo } from 'react';
+import { connect } from 'react-redux';
+import { FieldArray } from 'redux-form';
+import DocumentsRenderer from '../../../../common/components/form/documents/DocumentsRenderer';
+import { FormEditorField } from '../../../../common/components/form/formFields/FormEditor';
+import FormField from '../../../../common/components/form/formFields/FormField';
 import FullScreenStickyHeader
-  from "../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader";
-import { normalizeString } from "../../../../common/utils/strings";
-import { EditViewProps } from "../../../../model/common/ListView";
-import { State } from "../../../../reducers/state";
-import { PreferencesState } from "../../../preferences/reducers/state";
-import { EntityChecklists } from "../../../tags/components/EntityChecklists";
-import { useTagGroups } from "../../../tags/utils/useTagGroups";
-import RelationsCommon from "../../common/components/RelationsCommon";
-import CustomFields from "../../customFieldTypes/components/CustomFieldsTypes";
+  from '../../../../common/components/list-view/components/full-screen-edit-view/FullScreenStickyHeader';
+import { normalizeString } from '../../../../common/utils/strings';
+import { EditViewProps } from '../../../../model/common/ListView';
+import { State } from '../../../../reducers/state';
+import { PreferencesState } from '../../../preferences/reducers/state';
+import { EntityChecklists } from '../../../tags/components/EntityChecklists';
+import { useTagGroups } from '../../../tags/utils/useTagGroups';
+import RelationsCommon from '../../common/components/RelationsCommon';
+import {
+  handleChangeProductAccount,
+  handleChangeProductFeeExTax,
+  handleChangeProductFeeIncTax,
+  handleChangeProductTax
+} from '../../common/utils';
+import CustomFields from '../../customFieldTypes/components/CustomFieldsTypes';
 
 interface ArticleProductGeneralProps extends EditViewProps<ArticleProduct> {
   accounts?: Account[];
@@ -34,33 +40,6 @@ const validateNonNegative = value => (value < 0 ? "Must be non negative" : undef
 
 const productStatusItems = Object.keys(ProductStatus).map(value => ({ value }));
 
-const handleChangeFeeExTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === values.taxId);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal((value || 0) * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-};
-
-const handleChangeFeeIncTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === values.taxId);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "feeExTax", new Decimal(value / (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-};
-
-const handleChangeTax = (values: ArticleProduct, taxes: Tax[], dispatch, form) => value => {
-  const tax = taxes.find(item => item.id === value);
-  const taxRate = tax ? tax.rate : 0;
-  dispatch(change(form, "totalFee", new Decimal(values.feeExTax * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-};
-
-const handleChangeAccount = (values: ArticleProduct, taxes: Tax[], accounts: Account[], dispatch, form) => value => {
-  const account = accounts.find(item => item.id === value);
-  const tax = taxes.find(item => item.id === Number(account["tax.id"]));
-  if (tax.id !== values.taxId) {
-    const taxRate = tax ? tax.rate : 0;
-    dispatch(change(form, "taxId", tax.id));
-    dispatch(change(form, "totalFee", new Decimal(values.feeExTax * (1 + taxRate)).toDecimalPlaces(2).toNumber()));
-  }
-};
 
 const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
   const {
@@ -76,8 +55,9 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
 
   const validateIncomeAccount = useCallback(value => (accounts.find((item: Account) => item.id === value) ? undefined : `Income account is mandatory`), [accounts]);
 
-  return (
+  const taxRate = useMemo(() => taxes.find(t => t.id === values.taxId)?.rate, [taxes, values.taxId]);
 
+  return (
     <Grid container columnSpacing={3} rowSpacing={2} className="pt-3 pl-3 pr-3">
       <Grid item container xs={12}>
         <FullScreenStickyHeader
@@ -107,7 +87,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
               <Grid item xs={twoColumn ? 2 : 12}>
                 <FormField
                   type="text"
-                  label="SKU"
+                  label={$t('sku')}
                   name="code"
                   required
                 />
@@ -115,7 +95,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
               <Grid item xs={twoColumn ? 4 : 12}>
                 <FormField
                   type="text"
-                  label="Name"
+                  label={$t('name')}
                   name="name"
                   required
                 />
@@ -149,9 +129,9 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="select"
           name="incomeAccountId"
-          label="Income account"
+          label={$t('income_account')}
           validate={validateIncomeAccount}
-          onChange={handleChangeAccount(values, taxes, accounts, dispatch, form)}
+          onChange={handleChangeProductAccount(values, taxes, accounts, dispatch, form)}
           debounced={false}
           items={accounts}
           selectValueMark="id"
@@ -163,9 +143,9 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="money"
           name="feeExTax"
-          label="Fee ex tax"
+          label={$t('fee_ex_tax')}
           validate={validateNonNegative}
-          onChange={handleChangeFeeExTax(values, taxes, dispatch, form)}
+          onChange={handleChangeProductFeeExTax(taxRate, dispatch, form)}
           debounced={false}
           required
         />
@@ -174,18 +154,18 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="money"
           name="totalFee"
-          label="Total fee"
+          label={$t('total_fee')}
           validate={validateNonNegative}
-          onChange={handleChangeFeeIncTax(values, taxes, dispatch, form)}
+          onChange={handleChangeProductFeeIncTax(taxRate, dispatch, form)}
           debounced={false}
         />
       </Grid>
       <Grid item {...gridItemProps}>
         <FormField
           type="select"
-          label="Tax"
+          label={$t('tax')}
           name="taxId"
-          onChange={handleChangeTax(values, taxes, dispatch, form)}
+          onChange={handleChangeProductTax(taxes, dispatch, form, values.feeExTax)}
           debounced={false}
           items={taxes}
           selectValueMark="id"
@@ -198,7 +178,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="select"
           name="status"
-          label="Status"
+          label={$t('status')}
           items={productStatusItems}
           selectLabelMark="value"
         />
@@ -207,7 +187,7 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
         <FormField
           type="select"
           name="dataCollectionRuleId"
-          label="Data collection rule"
+          label={$t('data_collection_rule')}
           selectValueMark="id"
           selectLabelMark="name"
           items={dataCollectionRules || []}
@@ -226,13 +206,13 @@ const ArticleProductGeneral: React.FC<ArticleProductGeneralProps> = props => {
       />
 
       <Grid item xs={12}>
-        <FormEditorField name="description" label="Description" />
+        <FormEditorField name="description" label={$t('description')} />
       </Grid>
 
       <Grid item xs={12} className="mb-3">
         <FieldArray
           name="documents"
-          label="Documents"
+          label={$t('documents')}
           entity="ArticleProduct"
           component={DocumentsRenderer}
           xsGrid={12}

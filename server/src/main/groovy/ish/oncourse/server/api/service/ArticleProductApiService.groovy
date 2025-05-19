@@ -28,7 +28,6 @@ import ish.oncourse.server.cayenne.Product
 import ish.oncourse.server.cayenne.ArticleProductAttachmentRelation
 import ish.oncourse.server.document.DocumentService
 
-import static ish.oncourse.server.api.function.MoneyFunctions.toMoneyValue
 import static ish.oncourse.server.api.v1.function.CustomFieldFunctions.updateCustomFields
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.toRestDocument
 import static ish.oncourse.server.api.v1.function.DocumentFunctions.updateDocuments
@@ -38,7 +37,6 @@ import static ish.oncourse.server.api.v1.function.ProductFunctions.updateCorpora
 import ish.oncourse.server.api.v1.model.ArticleProductCorporatePassDTO
 import ish.oncourse.server.api.v1.model.ArticleProductDTO
 
-import static ish.oncourse.server.api.v1.function.TagFunctions.toRestTagMinimized
 import static ish.oncourse.server.api.v1.function.TagFunctions.updateTags
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE
 import static ish.oncourse.server.api.v1.model.ProductStatusDTO.CAN_BE_PURCHASED_IN_OFFICE_ONLINE
@@ -54,7 +52,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank
 import static org.apache.commons.lang3.StringUtils.trimToNull
 
 import java.time.ZoneId
-
 class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, ArticleProduct, ArticleProductDao> {
 
     @Inject
@@ -121,10 +118,10 @@ class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, Art
         articleProduct.name = trimToNull(articleProductDTO.name)
         articleProduct.sku = trimToNull(articleProductDTO.code)
         articleProduct.description = trimToNull(articleProductDTO.description)
-        articleProduct.priceExTax = toMoneyValue(articleProductDTO.feeExTax)
+        articleProduct.priceExTax = Money.exactOf(articleProductDTO.feeExTax)
         articleProduct.tax = taxDao.getById(articleProduct.context, articleProductDTO.taxId.toLong())
         articleProduct.incomeAccount = accountDao.getById(articleProduct.context, articleProductDTO.incomeAccountId.toLong())
-        articleProduct.taxAdjustment = calculateTaxAdjustment(toMoneyValue(articleProductDTO.totalFee), articleProduct.priceExTax, articleProduct.tax.rate)
+        articleProduct.taxAdjustment = calculateTaxAdjustment(Money.exactOf(articleProductDTO.totalFee), articleProduct.priceExTax, articleProduct.tax.rate)
         articleProduct.isOnSale = articleProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE || articleProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE
         articleProduct.isWebVisible = articleProductDTO.status == CAN_BE_PURCHASED_IN_OFFICE_ONLINE
         articleProduct.fieldConfigurationScheme = articleProductDTO.dataCollectionRuleId ?
@@ -172,7 +169,7 @@ class ArticleProductApiService extends TaggableApiService<ArticleProductDTO, Art
             if (!tax) {
                 validator.throwClientErrorException(id, 'tax', "Tax with id=${articleProductDTO.taxId} doesn't exist.")
             }
-            Money adjustment = calculateTaxAdjustment(toMoneyValue(articleProductDTO.totalFee), toMoneyValue(articleProductDTO.feeExTax), tax.rate)
+            Money adjustment = calculateTaxAdjustment(Money.exactOf(articleProductDTO.totalFee), Money.exactOf(articleProductDTO.feeExTax), tax.rate)
             if (adjustment.toBigDecimal().abs() > 0.01) {
                 validator.throwClientErrorException(id, 'tax', "Incorrect money values for product price.")
             }

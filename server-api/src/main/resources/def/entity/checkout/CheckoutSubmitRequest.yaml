@@ -1,0 +1,29 @@
+type: object
+properties:
+  onCoursePaymentSessionId:
+    type: string
+    required: true
+    description: session id
+  paymentMethodId:
+    type: string
+    required: false
+    description: Set this to the payment method id from the successful Payment system create payment request to submit it on server
+  transactionId:
+    type: string
+    required: false
+    description: if 3d secure is required, configured on client transaction will be passed to server for submit
+  secureCode:
+    type: string
+    required: false
+    description: if 3d secure is required and must be performed on server, secure code will be passed
+  cardDataToken:
+    type: string
+    required: false
+    description: for eway payment system should contain card data, recieved on client
+  origin:
+    type: string
+    required: false
+    description: return url for new payment intents created
+  merchantReference:
+    type: string
+    description: server side generated reference on x-validate step. Required for complte request.

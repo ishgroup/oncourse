@@ -174,7 +174,7 @@ public class StatsService {
 			c.add(Calendar.DATE, -i);
 
 			dataEnrolments.add(new Day(c.getTime()), enrolmentsCount);
-			dataRevenue.add(new Day(c.getTime()), revenue);
+			dataRevenue.add(new Day(c.getTime()), revenue.getNumber());
 
 			enrolmentsCountList.add(0,enrolmentsCount);
 			ravenueList.add(0,revenue);

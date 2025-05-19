@@ -1,3 +1,4 @@
+import $t from '@t';
 import clsx from 'clsx';
 import * as React from 'react';
 import { useState } from 'react';
@@ -86,7 +87,7 @@ const SideBar = (props: Props) => {
             />
           ))}
 
-          {savingFilter && !hasCustomFilters && <div className="heading mt-2">Custom Filters</div>}
+          {savingFilter && !hasCustomFilters && <div className="heading mt-2">{$t('custom_filters')}</div>}
 
           {savingFilter && <StubFilterItem rootEntity={rootEntity} savingFilter={savingFilter} filterEntity={filterEntity} />}
 

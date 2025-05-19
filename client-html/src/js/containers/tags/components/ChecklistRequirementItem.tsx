@@ -11,6 +11,7 @@ import Delete from '@mui/icons-material/Delete';
 import { Collapse, FormControlLabel } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { makeAppStyles, Switch, useHoverShowStyles } from 'ish-ui';
 import debounce from 'lodash.debounce';
@@ -99,7 +100,7 @@ const ChecklistRequirementItem = (props: Props) => {
       <FormControlLabel
         className="justify-content-end"
         control={<Switch checked={showDisplayRule} onChange={onSwitchDisplayRule} />}
-        label="Add display rule"
+        label={$t('add_display_rule')}
         labelPlacement="start"
       />
 
@@ -116,7 +117,7 @@ const ChecklistRequirementItem = (props: Props) => {
         <FormField
           type="aql"
           name={`${parent}.displayRule`}
-          label="Display when"
+          label={$t('display_when')}
           rootEntity={item.type}
           validate={validateExpression}
           className="mt-2 mb-2"

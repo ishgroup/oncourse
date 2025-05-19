@@ -3,6 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
+import $t from '@t';
 import { History } from 'history';
 import { makeAppStyles } from 'ish-ui';
 import React from 'react';
@@ -46,13 +47,13 @@ const TagSidebar = ({
     <div className={classes.root}>
       <SideBarHeader
         selected={selected === 1}
-        label="Tag groups"
+        label={$t('tag_groups')}
         onClick={selectHandler("/tags/tagGroups")}
       />
 
       <SideBarHeader
         selected={selected === 2}
-        label="Checklists"
+        label={$t('checklists')}
         onClick={selectHandler("/tags/checklists")}
       />
     </div>

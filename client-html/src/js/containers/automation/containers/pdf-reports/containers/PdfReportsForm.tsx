@@ -17,6 +17,7 @@ import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import { FilePreview, InfoPill, NumberArgFunction, ShowConfirmCaller, usePrevious } from 'ish-ui';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Dispatch } from 'redux';
@@ -270,7 +271,7 @@ const PdfReportsForm = React.memo<Props>(
                 <FormField
                   type="text"
                   name="name"
-                  label="Name"
+                  label={$t('name')}
                   validate={validateReportName}
                   disabled={isInternal}
                   required
@@ -296,7 +297,7 @@ const PdfReportsForm = React.memo<Props>(
 
                 {isInternal && (
                   <Grow in={isInternal}>
-                    <Tooltip title="Save as new PDF report">
+                    <Tooltip title={$t('save_as_new_pdf_report')}>
                       <IconButton onClick={onInternalSaveClick} color="inherit">
                         <FileCopy color="primary" />
                       </IconButton>
@@ -313,7 +314,7 @@ const PdfReportsForm = React.memo<Props>(
                   name="shortDescription"
                   disabled={isInternal}
                   className="overflow-hidden mb-1"
-                  placeholder="Short description"
+                  placeholder={$t('short_description')}
                 />
                 <Typography variant="caption" fontSize="13px">
                   <FormField
@@ -321,7 +322,7 @@ const PdfReportsForm = React.memo<Props>(
                     name="description"
                     disabled={isInternal}
                     className="overflow-hidden mb-1"
-                    placeholder="Description"
+                    placeholder={$t('description')}
                     fieldClasses={{
                       text: "fw300 fsInherit"
                     }}
@@ -330,7 +331,7 @@ const PdfReportsForm = React.memo<Props>(
               </Grid>
               <Grid item container columnSpacing={3} rowSpacing={2} xs={7} className="pr-3">
                 <Grid item xs={12}>
-                  <div className="heading">Type</div>
+                  <div className="heading">{$t('type')}</div>
                   <FormField
                     name="entity"
                     type="select"
@@ -349,13 +350,13 @@ const PdfReportsForm = React.memo<Props>(
                 />
 
                 <Grid item xs={12}>
-                  <FormField label="Sort On" name="sortOn" type="text" disabled={isInternal} />
+                  <FormField label={$t('sort_on')} name="sortOn" type="text" disabled={isInternal} />
                 </Grid>
 
                 <Grid item xs={12}>
                   <FormField
                     type="select"
-                    label="PDF background"
+                    label={$t('pdf_background')}
                     name="backgroundId"
                     selectValueMark="id"
                     selectLabelMark="title"
@@ -369,7 +370,7 @@ const PdfReportsForm = React.memo<Props>(
                 <Grid item xs={12}>
                   <FormField
                     type="text"
-                    label="Keycode"
+                    label={$t('keycode')}
                     name="keyCode"
                     validate={isNew || !isInternal ? validateKeycode : undefined}
                     disabled={!isNew}
@@ -380,25 +381,25 @@ const PdfReportsForm = React.memo<Props>(
                 <Grid item xs={12}>
                   {!isNew && (
                     <Button variant="outlined" color="secondary" onClick={handleEdit} disabled={isInternal}>
-                      Edit
+                      {$t('edit')}
                     </Button>
                   )}
                 </Grid>
                 
                 <Grid item xs={12}>
                   <Button variant="outlined" color="secondary" onClick={handleUploadClick} disabled={isInternal}>
-                    Upload New Version
+                    {$t('upload_new_version')}
                   </Button>
                 </Grid>
 
                 <Grid item xs={12}>
-                  {chosenFileName && <Uneditable value={chosenFileName} label="Chosen file" />}
+                  {chosenFileName && <Uneditable value={chosenFileName} label={$t('chosen_file')} />}
                 </Grid>
 
                 <Grid item xs={12}>
                   {isNew && !values.body && (
                     <Typography id="body" variant="caption" color="error" className="shakingError" paragraph>
-                      Report body is required. Press &quot;Upload New Version&quot; to attach xml
+                      {$t('report_body_is_required_press_upload_new_version_t')}
                     </Typography>
                   )}
                 </Grid>
@@ -406,7 +407,7 @@ const PdfReportsForm = React.memo<Props>(
               <Grid item xs={5}>
                 <div>
                   <FormField
-                    label="Enabled"
+                    label={$t('enabled')}
                     type="switch"
                     name="status"
                     color="primary"
@@ -420,7 +421,7 @@ const PdfReportsForm = React.memo<Props>(
                     dispatch={dispatch}
                     form={form}
                     name="variables"
-                    label="Variables"
+                    label={$t('variables')}
                     itemsType="label"
                     disabled={isInternal}
                   />
@@ -431,14 +432,14 @@ const PdfReportsForm = React.memo<Props>(
                     form={form}
                     itemsType="component"
                     name="options"
-                    label="Options"
+                    label={$t('options')}
                     disabled={isInternal}
                   />
                 </div>
                 <div className="mt-3">
                   {!isNew && (
                     <FilePreview
-                      label="Preview"
+                      label={$t('preview')}
                       actions={[
                         {
                           actionLabel: "Clear preview",

@@ -13,7 +13,6 @@
       <option name="INDENT_CHAINED_CALLS" value="false" />
       <option name="IMPORT_SORT_MODULE_NAME" value="true" />
       <option name="IMPORT_PREFER_ABSOLUTE_PATH" value="TRUE" />
-      <option name="USE_PATH_MAPPING" value="DIFFERENT_PATHS" />
     </JSCodeStyleSettings>
     <LessCodeStyleSettings>
       <option name="USE_DOUBLE_QUOTES" value="false" />

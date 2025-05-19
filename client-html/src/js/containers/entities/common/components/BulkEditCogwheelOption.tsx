@@ -4,11 +4,12 @@
  */
 
 import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
 import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { State } from '../../../../reducers/state';
 
-export default memo<{menuItemClass?, closeMenu?, toggleBulkEditDrawer?, selection?}>(({
+export default memo<{ menuItemClass?, closeMenu?, toggleBulkEditDrawer?, selection? }>(({
  menuItemClass, closeMenu, toggleBulkEditDrawer, selection
 }) => {
   const hasAql = useSelector<State, any>(state => state.list.searchQuery
@@ -22,7 +23,7 @@ export default memo<{menuItemClass?, closeMenu?, toggleBulkEditDrawer?, selectio
   return (
     <>
       <MenuItem className={menuItemClass} onClick={onBulkEditClick} disabled={!selection.length && !hasAql}>
-        Bulk edit...
+        {$t('bulk_edit2')}
       </MenuItem>
     </>
   );

@@ -622,6 +622,7 @@ class ContactApiService extends TaggableApiService<ContactDTO, Contact, ContactD
             tutor.selfPacedclassesCount = count.selfPacedClassesCount
             tutor.unscheduledClasseCount = count.unscheduledClassesCount
             tutor.passedClasseCount = count.passedClassesCount
+            tutor.hybridClassesCount = count.hybridClassesCount
             tutor.cancelledClassesCount = count.cancelledClassesCount
             tutor.customFields = dbTutor?.customFields?.collectEntries { [(it.customFieldType.key) : it.value] }
             if(!tutor.customFields)

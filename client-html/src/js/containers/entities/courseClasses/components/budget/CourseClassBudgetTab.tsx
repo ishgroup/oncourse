@@ -9,14 +9,12 @@
 import { ClassCost, CourseClassTutor, Discount, Tax } from '@api/model';
 import { Grid, Popover, Typography } from '@mui/material';
 import { darken } from '@mui/material/styles';
+import $t from '@t';
 import { isAfter, isBefore, isEqual } from 'date-fns';
 import Decimal from 'decimal.js-light';
 import {
   AppTheme,
   BooleanArgFunction,
-  decimalMinus,
-  decimalMul,
-  decimalPlus,
   formatCurrency,
   stopEventPropagation,
   StringArgFunction,
@@ -37,6 +35,7 @@ import { IAction } from '../../../../../common/actions/IshAction';
 import instantFetchErrorHandler from '../../../../../common/api/fetch-errors-handlers/InstantFetchErrorHandler';
 import NestedList from '../../../../../common/components/form/nestedList/NestedList';
 import ExpandableContainer from '../../../../../common/components/layout/expandable/ExpandableContainer';
+import { getCurrentTax, getTotalByFeeExTax } from '../../../../../common/utils/financial';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../constants/Config';
 import history from '../../../../../constants/History';
 import { EditViewProps } from '../../../../../model/common/ListView';
@@ -52,7 +51,6 @@ import {
   mapPlainDiscounts,
   transformDiscountForNestedList
 } from '../../../discounts/utils';
-import { getCurrentTax } from '../../../taxes/utils';
 import { setCourseClassBudgetModalOpened } from '../../actions';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../constants';
 import { classCostInitial } from '../../CourseClasses';
@@ -220,23 +218,23 @@ const MouseOverPopover = ({
         disableRestoreFocus
       >
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Enrolments:</span>
+          <span className="mr-1">{$t('enrolments2')}</span>
           <span>{enrolments}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Income:</span>
+          <span className="mr-1">{$t('income')}</span>
           <span>{income}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Discounts:</span>
+          <span className="mr-1">{$t('discounts2')}</span>
           <span>{discounts}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Costs:</span>
+          <span className="mr-1">{$t('costs')}</span>
           <span>{costs}</span>
         </Typography>
         <Typography component="div" variant="body2" color="textSecondary" noWrap>
-          <span className="mr-1">Profit:</span>
+          <span className="mr-1">{$t('profit')}</span>
           <span>{profit}</span>
         </Typography>
       </Popover>
@@ -463,13 +461,13 @@ const CourseClassBudgetTab = React.memo<Props>(
               dispatch(change(form, "taxId", postData.taxId));
 
               const currentTax = getCurrentTax(taxes, postData.taxId);
-              const feeWithTax = decimalMul(postData.perUnitAmountExTax, decimalPlus(1, currentTax.rate));
+              const feeWithTax = getTotalByFeeExTax(currentTax?.rate, postData.perUnitAmountExTax);
 
               classCostTypes.discount.items.forEach(d => {
                 const isPersent = d.value.courseClassDiscount.discount.discountType === "Percent";
                 const isFeeOverride = d.value.courseClassDiscount.discount.discountType === "Fee override";
 
-                const taxMul = decimalPlus(1, currentTax.rate);
+                const taxMul = new Decimal(1).mul(currentTax.rate === 0 ? 1 : currentTax.rate);
 
                 if ((isPersent || isFeeOverride) && d.value.courseClassDiscount.discountOverride === null) {
                   const discountValue = new Decimal(feeWithTax)
@@ -477,8 +475,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                       isPersent
                         ? getRoundingByType(
                             d.value.courseClassDiscount.discount.rounding,
-                            new Decimal(feeWithTax).mul(
-                              decimalMinus(1, d.value.courseClassDiscount.discount.discountPercent)
+                            new Decimal(feeWithTax).mul(new Decimal(1).minus(d.value.courseClassDiscount.discount.discountPercent)
                             )
                           )
                         : getRoundingByType(
@@ -487,7 +484,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                           )
                     )
                     .div(taxMul)
-                    .toDecimalPlaces(2)
+                    .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
                     .toNumber();
 
                   dispatch(change(form, `budget[${d.value.index}].perUnitAmountExTax`, discountValue));
@@ -659,7 +656,7 @@ const CourseClassBudgetTab = React.memo<Props>(
               />
 
               <Typography variant="caption" color="textSecondary" className="pt-1">
-                Please save your new class before adding budget fees
+                {$t('please_save_your_new_class_before_adding_budget_fe')}
               </Typography>
             </div>
           ) : (
@@ -714,7 +711,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                     <div onClick={stopEventPropagation}>
                       <NestedList
                         formId={values.id}
-                        title="Discounts"
+                        title={$t('discounts')}
                         searchPlaceholder="Find discounts"
                         values={[]}
                         searchValues={searchValues}
@@ -760,9 +757,7 @@ const CourseClassBudgetTab = React.memo<Props>(
                 {values.enrolmentsToProfitLeftCount > 0 && (
                   <Typography variant="body2" color="textSecondary" className="pl-3 pt-2">
                     {values.enrolmentsToProfitLeftCount}
-                    {' '}
-                    more enrolments required before running costs are covered and
-                    class should proceed
+                    {$t('more_enrolments_required_before_running_costs_are')}
                   </Typography>
                 )}
               </div>

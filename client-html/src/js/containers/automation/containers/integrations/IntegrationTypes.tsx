@@ -6,48 +6,52 @@
  *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  */
 
-import React from "react";
-import alchemer from "../../../../../images/alchemer.png";
-import amazons3 from "../../../../../images/amazons3.png";
-import azure from "../../../../../images/azure.png";
-import canvas from "../../../../../images/canvas.png";
-import cloudassess from "../../../../../images/cloudassess.png";
-import coassemble from "../../../../../images/coassemble.png";
-import googleclassroom from "../../../../../images/google_classroom.png";
-import kronos from "../../../../../images/kronos.png";
-import learndash from "../../../../../images/learndash.png";
-import mailchimp from "../../../../../images/mailchimp.png";
-import micropower from "../../../../../images/micropower.png";
-import moodle from "../../../../../images/moodle.png";
-import myob from "../../../../../images/myob.png";
-import servicensw from "../../../../../images/servicensw.svg";
-import surveymonkey from "../../../../../images/surveymonkey.png";
-import talentlms from "../../../../../images/talentlms.png";
-import usi from "../../../../../images/usi.png";
-import tsci from "../../../../../images/vet_student_loans.png";
-import xero from "../../../../../images/xero.png";
-import okta from "../../../../../images/okta.svg";
-import { IntegrationTypesEnum, IntegrationTypesModel } from "../../../../model/automation/integrations/IntegrationSchema";
-import { AlchemerForm } from "./components/forms/AlchemerForm";
-import { AmazonS3Form } from "./components/forms/AmazonS3Form";
-import { AzureForm } from "./components/forms/AzureForm";
-import { CanvasForm } from "./components/forms/CanvasForm";
-import { CloudAssessForm } from "./components/forms/CloudAssessForm";
-import { CoassembleForm } from "./components/forms/CoassembleForm";
-import { GoogleClassroomForm } from "./components/forms/GoogleClassroomForm";
-import { KronosForm } from "./components/forms/KronosForm";
-import { LearnDashForm } from "./components/forms/LearnDashForm";
-import { MailchimpForm } from "./components/forms/MailchimpForm";
-import { MicropowerForm } from "./components/forms/MicropowerForm";
-import { MoodleForm } from "./components/forms/MoodleForm";
-import { MYOBForm } from "./components/forms/MYOBForm";
-import { NSWForm } from "./components/forms/NSWForm";
-import { OktaForm } from "./components/forms/OktaForm";
-import { SurveyMonkeyForm } from "./components/forms/SurveyMonkeyForm";
-import { TalentLMSForm } from "./components/forms/TalentLMSForm";
-import { UsiForm } from "./components/forms/UsiForm";
-import { VetStudentLoansForm } from "./components/forms/VetStudentLoansForm";
-import { XeroForm } from "./components/forms/XeroForm";
+import $t from '@t';
+import React from 'react';
+import alchemer from '../../../../../images/alchemer.png';
+import amazons3 from '../../../../../images/amazons3.png';
+import azure from '../../../../../images/azure.png';
+import canvas from '../../../../../images/canvas.png';
+import cloudassess from '../../../../../images/cloudassess.png';
+import coassemble from '../../../../../images/coassemble.png';
+import googleclassroom from '../../../../../images/google_classroom.png';
+import kronos from '../../../../../images/kronos.png';
+import learndash from '../../../../../images/learndash.png';
+import mailchimp from '../../../../../images/mailchimp.png';
+import micropower from '../../../../../images/micropower.png';
+import moodle from '../../../../../images/moodle.png';
+import myob from '../../../../../images/myob.png';
+import okta from '../../../../../images/okta.svg';
+import servicensw from '../../../../../images/servicensw.svg';
+import surveymonkey from '../../../../../images/surveymonkey.png';
+import talentlms from '../../../../../images/talentlms.png';
+import usi from '../../../../../images/usi.png';
+import tsci from '../../../../../images/vet_student_loans.png';
+import xero from '../../../../../images/xero.png';
+import {
+  IntegrationTypesEnum,
+  IntegrationTypesModel
+} from '../../../../model/automation/integrations/IntegrationSchema';
+import { AlchemerForm } from './components/forms/AlchemerForm';
+import { AmazonS3Form } from './components/forms/AmazonS3Form';
+import { AzureForm } from './components/forms/AzureForm';
+import { CanvasForm } from './components/forms/CanvasForm';
+import { CloudAssessForm } from './components/forms/CloudAssessForm';
+import { CoassembleForm } from './components/forms/CoassembleForm';
+import { GoogleClassroomForm } from './components/forms/GoogleClassroomForm';
+import { KronosForm } from './components/forms/KronosForm';
+import { LearnDashForm } from './components/forms/LearnDashForm';
+import { MailchimpForm } from './components/forms/MailchimpForm';
+import { MicropowerForm } from './components/forms/MicropowerForm';
+import { MoodleForm } from './components/forms/MoodleForm';
+import { MYOBForm } from './components/forms/MYOBForm';
+import { NSWForm } from './components/forms/NSWForm';
+import { OktaForm } from './components/forms/OktaForm';
+import { SurveyMonkeyForm } from './components/forms/SurveyMonkeyForm';
+import { TalentLMSForm } from './components/forms/TalentLMSForm';
+import { UsiForm } from './components/forms/UsiForm';
+import { VetStudentLoansForm } from './components/forms/VetStudentLoansForm';
+import { XeroForm } from './components/forms/XeroForm';
 
 const types: IntegrationTypesModel = {
   [IntegrationTypesEnum.Moodle]: {
@@ -192,8 +196,7 @@ const types: IntegrationTypesModel = {
     image: servicensw,
     description: (
       <span>
-        Automatically verify and redeem the NSW Government creative kids and active kids vouchers.
-        <br />
+        {$t('automatically_verify_and_redeem_the_nsw_government')}
         <a className="d-block mt-1" href="https://www.service.nsw.gov.au/campaign/creative-kids">
           https://www.service.nsw.gov.au/campaign/creative-kids
         </a>

@@ -43,7 +43,7 @@ class DepositTransactionsBuilderTest {
         PaymentOut paymentOut = mock(PaymentOut)
         when(paymentOut.undepositedFundsAccount).thenReturn(undepositAccountOut)
         when(paymentOut.accountOut).thenReturn(depositAccountOut)
-        amountOut = new Money(666.0)
+        amountOut = Money.of(666.0)
         pOutId = 23L
         paymentOutLine = mock(PaymentOutLine)
         when(paymentOutLine.paymentOut).thenReturn(paymentOut)
@@ -58,7 +58,7 @@ class DepositTransactionsBuilderTest {
         PaymentIn paymentIn = mock(PaymentIn)
         when(paymentIn.undepositedFundsAccount).thenReturn(undepositAccountIn)
         when(paymentIn.accountIn).thenReturn(depositAccountIn)
-        amountIn = new Money(555.0)
+        amountIn = Money.of(555.0)
         pInId = 24L
         paymentInLine = mock(PaymentInLine)
         when(paymentInLine.paymentIn).thenReturn(paymentIn)

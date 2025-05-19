@@ -3,22 +3,23 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { StringArgFunction } from "ish-ui";
-import debounce from "lodash.debounce";
-import React, { useCallback } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getFormValues } from "redux-form";
-import { State } from "../../../../../reducers/state";
+import $t from '@t';
+import { StringArgFunction } from 'ish-ui';
+import debounce from 'lodash.debounce';
+import React, { useCallback } from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getFormValues } from 'redux-form';
+import { State } from '../../../../../reducers/state';
 import {
   checkoutGetPromoCode,
   checkoutRemoveDiscount,
   checkoutRemoveVoucher,
   checkoutUpdateSummaryClassesDiscounts
-} from "../../../actions/checkoutSummary";
-import { CheckoutPage } from "../../../constants";
-import HeaderField from "../../HeaderField";
-import SelectedPromoCodesRenderer from "./SelectedPromoCodesRenderer";
+} from '../../../actions/checkoutSummary';
+import { CheckoutPage } from '../../../constants';
+import HeaderField from '../../HeaderField';
+import SelectedPromoCodesRenderer from './SelectedPromoCodesRenderer';
 
 export interface Props {
   setActiveField?: (field: any) => void;
@@ -76,7 +77,7 @@ const CheckoutPromoCodesHeaderField = React.memo<any>(props => {
     <HeaderField
       heading="Discounts"
       name={CheckoutPage.promocodes}
-      placeholder="Find promotions..."
+      placeholder={$t('find_promotions')}
       onFocus={handleFocusCallback}
       items={discounts}
       SelectedItemView={(

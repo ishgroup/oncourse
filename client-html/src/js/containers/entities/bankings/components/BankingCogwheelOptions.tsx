@@ -1,9 +1,10 @@
-import MenuItem from "@mui/material/MenuItem";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { CogwhelAdornmentProps } from "../../../../model/common/ListView";
-import { reconcileBanking } from "../actions";
+import MenuItem from '@mui/material/MenuItem';
+import $t from '@t';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { CogwhelAdornmentProps } from '../../../../model/common/ListView';
+import { reconcileBanking } from '../actions';
 
 class BankingCogwheelOptions extends React.PureComponent<CogwhelAdornmentProps & { reconcileBanking: any }, any> {
   reconcileBanking = () => {
@@ -30,11 +31,7 @@ class BankingCogwheelOptions extends React.PureComponent<CogwhelAdornmentProps &
 
     return (
       <MenuItem disabled={!hasSelected} className={menuItemClass} role="Completed" onClick={this.reconcileBanking}>
-        Reconcile
-        {' '}
-        {selection.length}
-        {' '}
-        banking deposit
+        {$t('reconcile_banking_deposit', [selection.length])}
         {suffix}
       </MenuItem>
     );

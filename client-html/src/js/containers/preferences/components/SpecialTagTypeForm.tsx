@@ -8,9 +8,9 @@
 
 import { Tag } from '@api/model';
 import DragIndicator from '@mui/icons-material/DragIndicator';
-import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid';
+import { Card, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import $t from '@t';
 import clsx from 'clsx';
 import { makeAppStyles } from 'ish-ui';
 import React, { useEffect, useMemo } from 'react';
@@ -142,7 +142,7 @@ function SpecialTagTypeForm(
           </DragDropContext>
         </Grid> : <div className="noRecordsMessage h-100">
           <Typography variant="h6" color="inherit" align="center">
-            No data
+            {$t('no_data')}
           </Typography>
         </div>}
       </AppBarContainer>

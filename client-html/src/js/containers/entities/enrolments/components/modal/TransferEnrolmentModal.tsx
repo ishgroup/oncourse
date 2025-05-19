@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import $t from '@t';
 import { BooleanArgFunction, WarningMessage } from 'ish-ui';
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
@@ -193,19 +194,17 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
           <Grid container columnSpacing={3}>
             <Grid item xs={12}>
               <div className="centeredFlex">
-                <div className="heading mt-2 mb-2">Transfer Enrolment</div>
+                <div className="heading mt-2 mb-2">{$t('transfer_enrolment')}</div>
               </div>
 
               <Typography variant="body2">
                 {plainEnrolmentRecord.studentName}
                 {' '}
-                is currently enrolled in
+                {$t('is currently enrolled in')}
                 {plainEnrolmentRecord.courseClassName}
                 {" "}
                 {plainEnrolmentRecord.courseClassCode}
-                . This enrolment will be cancelled and a credit note created (if
-                selected below). Quick Enrol will then open and allow you to complete the enrolment into the new class,
-                using the credit created here.
+                . {$t('this_enrolment_will_be_cancelled')}
               </Typography>
 
               <FormControlLabel
@@ -239,11 +238,11 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 
         <DialogActions className="p-1">
           <Button color="primary" onClick={onClose}>
-            Cancel
+            {$t('cancel')}
           </Button>
 
           <LoadingButton variant="contained" color="primary" type="submit" loading={processing}>
-            Proceed
+            {$t('proceed')}
           </LoadingButton>
         </DialogActions>
       </form>

@@ -9,13 +9,14 @@ import CollapseMenuList from '../../../common/components/layout/side-bar-list/Co
 import { LICENSE_ACCESS_CONTROL_KEY, SPECIAL_TYPES_DISPLAY_KEY } from '../../../constants/Config';
 import { SidebarSharedProps } from '../../../model/common/sidebar';
 import { State } from '../../../reducers/state';
+import Avetmiss from '../containers/avetmiss/Avetmiss';
 import ClassTypes from '../containers/class-types/ClassTypes';
 import CourseTypes from '../containers/course-types/CourseTypes';
-import CollectionForms from "../containers/data-collection-forms/CollectionFormContainer";
-import CollectionRules from "../containers/data-collection-rules/CollectionRuleFormContainer";
+import CollectionForms from '../containers/data-collection-forms/CollectionFormContainer';
+import CollectionRules from '../containers/data-collection-rules/CollectionRuleFormContainer';
 import LDAP from '../containers/ldap/LDAP';
 import Subjects from '../containers/subjects/Subjects';
-import TutorRoleForm from "../containers/tutor-roles/TutorRoleFormContainer";
+import TutorRoleForm from '../containers/tutor-roles/TutorRoleFormContainer';
 import routes from '../routes';
 
 const formTypes = Object.keys(DataCollectionType).map(type => {
@@ -46,7 +47,7 @@ const DataCollectionTypesMenu = React.memo<{ anchorEl, history, onClose }>(({ an
 
 const SideBar = React.memo<any>(
   ({
- search, history, match, collectionForms, collectionRules, activeFiltersConditions, tutorRoles, accessLicense, accessTypes, onInit
+ search, history, match, hideAUSReporting, collectionForms, collectionRules, activeFiltersConditions, tutorRoles, accessLicense, accessTypes, onInit
 }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     useEffect(onInit, []);
@@ -82,6 +83,8 @@ const SideBar = React.memo<any>(
           case CourseTypes:
           case Subjects:
             return accessTypes;
+          case Avetmiss:
+            return !hideAUSReporting;
         }
         return true;
       })
@@ -138,9 +141,10 @@ const mapStateToProps = (state: State) => ({
   collectionRules: state.preferences.dataCollectionRules,
   tutorRoles: state.preferences.tutorRoles,
   accessLicense: state.userPreferences[LICENSE_ACCESS_CONTROL_KEY] === 'true',
-  accessTypes: state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true'
+  accessTypes: state.userPreferences[SPECIAL_TYPES_DISPLAY_KEY] === 'true',
+  hideAUSReporting: state.location.countryCode !== 'AU'
 });
-
+ 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onInit: () => {
     dispatch(getUserPreferences([LICENSE_ACCESS_CONTROL_KEY]));

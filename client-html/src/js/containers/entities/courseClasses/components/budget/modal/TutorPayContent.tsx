@@ -8,10 +8,10 @@ import Lock from '@mui/icons-material/Lock';
 import LockOpen from '@mui/icons-material/LockOpen';
 import { Collapse, Divider, FormControlLabel, Grid, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
+import $t from '@t';
+import { Decimal } from 'decimal.js-light';
 import {
   decimalMinus,
-  decimalMul,
-  decimalPlus,
   formatCurrency,
   formatFieldPercent,
   normalizeNumberToZero,
@@ -21,35 +21,16 @@ import {
 } from 'ish-ui';
 import React, { useCallback, useMemo, useState } from 'react';
 import { change } from 'redux-form';
-import { withStyles } from 'tss-react/mui';
 import { ContactLinkAdornment } from '../../../../../../common/components/form/formFields/FieldAdornments';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import Uneditable from '../../../../../../common/components/form/formFields/Uneditable';
+import { getTotalByFeeExTax } from '../../../../../../common/utils/financial';
 import { greaterThanNullValidation, validateSingleMandatoryField } from '../../../../../../common/utils/validation';
 import { BudgetCostModalContentProps } from '../../../../../../model/entities/CourseClass';
 import { DefinedTutorRoleExtended } from '../../../../../../model/preferences/TutorRole';
 import { COURSE_CLASS_COST_DIALOG_FORM } from '../../../constants';
 import { getClassCostFee } from '../utils';
 import { PayRateTypes, validatePayRateTypes } from './BudgetCostModal';
-
-const styles = theme => ({
-  divider: {
-    borderBottom: `1px solid ${theme.palette.divider}`
-  },
-  textRight: {
-    textAlign: "right"
-  },
-  textTopMargin: {
-    marginTop: "20px"
-  },
-  modalAction: {
-    paddingRight: "20px"
-  },
-  onCostRate: {
-    position: "relative",
-    left: "-5px"
-  }
-});
 
 interface Props extends BudgetCostModalContentProps {
   tutorRoles?: DefinedTutorRoleExtended[];
@@ -66,13 +47,14 @@ const TutorPayContent: React.FC<Props> = ({
   hasMinMaxFields,
   hasCountField,
   dispatch,
-  defaultOnCostRate,
-  classes
+  defaultOnCostRate
 }) => {
-  const [onCostLocked, setOnCostLocked] = useState(values.onCostRate === null);
+  const [onCostLocked, setOnCostLocked] = useState(true);
   const onLockClick = () => {
     setOnCostLocked(prev => {
-      dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", prev ? defaultOnCostRate : 0));
+      if (!prev) {
+        dispatch(change(COURSE_CLASS_COST_DIALOG_FORM, "onCostRate", defaultOnCostRate));
+      }
       return !prev;
     });
   };
@@ -109,9 +91,10 @@ const TutorPayContent: React.FC<Props> = ({
   const budgetedCostLabel = useMemo(() => formatCurrency(budgetedCost, currencySymbol), [budgetedCost, currencySymbol]);
 
   const budgetedIncOnCost = useMemo(
-    () => decimalMul(budgetedCost, decimalPlus(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate, 1)),
+    () => getTotalByFeeExTax(values.onCostRate === 0 ? 0 : values.onCostRate || defaultOnCostRate, budgetedCost),
     [budgetedCost, values.onCostRate, defaultOnCostRate]
   );
+
   const budgetedIncOnCostLabel = useMemo(() => formatCurrency(budgetedIncOnCost, currencySymbol), [
     budgetedIncOnCost,
     currencySymbol
@@ -138,7 +121,7 @@ const TutorPayContent: React.FC<Props> = ({
     <Grid container columnSpacing={3}>
       <Grid item xs={6}>
         <Uneditable
-          label="Contact"
+          label={$t('Contact')}
           value={values.contactName}
           labelAdornment={
             <ContactLinkAdornment id={values.contactId} />
@@ -149,28 +132,28 @@ const TutorPayContent: React.FC<Props> = ({
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isSunk" color="secondary"  />}
-          label="Sunk cost (not recoverable if class cancelled)"
+          label={$t('sunk_cost_not_recoverable_if_class_cancelled')}
         />
       </Grid>
       <Grid item xs={12} className="pb-2">
         <FormControlLabel
           className="checkbox"
           control={<FormField type="checkbox" name="isOverriden" disabled={isNaN(rate)} />}
-          label="Override assigned role pay rate."
+          label={$t('override_assigned_role_pay_rate')}
         />
       </Grid>
       <Grid item xs={12}>
         <Collapse in={values.isOverriden}>
           <Grid container columnSpacing={3}>
             <Grid item xs={4}>
-              <Uneditable label="Tutor Role" value={tutor.roleName} url={`/preferences/tutorRoles/${tutor.roleId}`} />
+              <Uneditable label={$t('tutor_role')} value={tutor.roleName} url={`/preferences/tutorRoles/${tutor.roleId}`} />
               {isNaN(rate) && <WarningMessage warning="The chosen role has no defined rate for class period" />}
             </Grid>
             <Grid item xs={4}>
               <FormField
                 type="select"
                 name="repetitionType"
-                label="Type"
+                label={$t('type')}
                 items={PayRateTypes}
                 onChange={onRepetitionChange}
                 debounced={false}
@@ -186,7 +169,7 @@ const TutorPayContent: React.FC<Props> = ({
                 <FormField
                   type="number"
                   name="unitCount"
-                  label="Count"
+                  label={$t('count')}
                   validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                   normalize={normalizeNumberToZero}
                   debounced={false}
@@ -222,7 +205,7 @@ const TutorPayContent: React.FC<Props> = ({
               <FormField
                 type="number"
                 name="unitCount"
-                label="Count"
+                label={$t('count')}
                 validate={[greaterThanNullValidation, validateSingleMandatoryField]}
                 normalize={normalizeNumberToZero}
                 debounced={false}
@@ -236,7 +219,7 @@ const TutorPayContent: React.FC<Props> = ({
           </Typography>
         </Grid>
         <Grid item xs={6} className="centeredFlex">
-          <Typography variant="body1" className={classes.onCostRate}>
+          <Typography variant="body1" className="relative">
             <FormField
               type="number"
               name="onCostRate"
@@ -248,7 +231,7 @@ const TutorPayContent: React.FC<Props> = ({
               debounced={false}
               inline
             />
-            <span>% oncost</span>
+            <span>{$t('oncost')}</span>
             <span className="pl-1">
               <IconButton className="inputAdornmentButton" onClick={onLockClick}>
                 {!onCostLocked && <LockOpen className="inputAdornmentIcon" />}
@@ -263,7 +246,7 @@ const TutorPayContent: React.FC<Props> = ({
           </Typography>
         </Grid>
         <Grid item xs={6} className="centeredFlex">
-          <Typography variant="body1">Total</Typography>
+          <Typography variant="body1">{$t('total')}</Typography>
         </Grid>
         <Grid item xs={6} className="centeredFlex">
           <Typography variant="body1" className="money pt-1">
@@ -278,10 +261,10 @@ const TutorPayContent: React.FC<Props> = ({
         <Collapse in={hasMinMaxFields}>
           <Grid container columnSpacing={3}>
             <Grid item xs={6}>
-              <FormField type="money" name="minimumCost" label="Minimum pay for this class" />
+              <FormField type="money" name="minimumCost" label={$t('minimum_pay_for_this_class')} />
             </Grid>
             <Grid item xs={6}>
-              <FormField type="money" name="maximumCost" label="Maximum pay for this class" />
+              <FormField type="money" name="maximumCost" label={$t('maximum_pay_for_this_class')} />
             </Grid>
           </Grid>
         </Collapse>
@@ -290,4 +273,4 @@ const TutorPayContent: React.FC<Props> = ({
   );
 };
 
-export default withStyles(TutorPayContent, styles);
+export default TutorPayContent;

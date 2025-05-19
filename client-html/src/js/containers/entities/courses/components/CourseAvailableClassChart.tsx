@@ -8,6 +8,7 @@
 
 import { Grid, Paper, Typography } from '@mui/material';
 import { green } from '@mui/material/colors';
+import $t from '@t';
 import { differenceInDays, format, parseISO } from 'date-fns';
 import { III_DD_MMM_YYYY_HH_MM, makeAppStyles, useAppTheme } from 'ish-ui';
 import React, { useEffect, useState } from 'react';
@@ -32,13 +33,13 @@ const CustomizedTooltip = (props: any) => {
       return dataPayload.classCreated.map(classCreated => (
         <div key={classCreated.uniqueCode} className="mb-1">
           <Typography component="div" variant="body2" noWrap>
-            <span className="fontWeight600">Class {classCreated.uniqueCode} published</span>
+            <span className="fontWeight600">{$t('class_published', classCreated.uniqueCode)}</span>
           </Typography>
           <Typography component="div" variant="body2" noWrap>
             <span className="fontWeight600">{format(parseISO(classCreated.createdOn), III_DD_MMM_YYYY_HH_MM)}</span>
           </Typography>
           <Typography component="div" variant="body2" noWrap>
-            <span>{classCreated.maximumPlaces} places added</span>
+            <span>{classCreated.maximumPlaces} {$t('places_added')}</span>
           </Typography>
         </div>
       ));
@@ -48,13 +49,13 @@ const CustomizedTooltip = (props: any) => {
       return dataPayload.classStarted.map(classStarted => (
         <div key={classStarted.uniqueCode} className="mb-1">
           <Typography component="div" variant="body2" noWrap>
-            <span className="fontWeight600">Class {classStarted.uniqueCode} started</span>
+            <span className="fontWeight600">{$t('class_started', classStarted.uniqueCode)}</span>
           </Typography>
           <Typography component="div" variant="body2" noWrap>
             <span className="fontWeight600">{format(parseISO(classStarted.startDateTime), III_DD_MMM_YYYY_HH_MM)}</span>
           </Typography>
           <Typography component="div" variant="body2" noWrap>
-            {classStarted.availablePlacesOnStartDate === 0 ? (<span>No unfilled places</span>) : (
+            {classStarted.availablePlacesOnStartDate === 0 ? (<span>{$t('no_unfilled_places')}</span>) : (
               <span>
                 {`${classStarted.availablePlacesOnStartDate} unfilled 
                 ${classStarted.availablePlacesOnStartDate === 1 ? "place" : "places"} lost`}
@@ -95,7 +96,6 @@ const CustomizedAxisTick: React.FC<any> = (props: any) => {
     </g>
   );
 };
-
 
 const CourseAvailableClassChart = (props: any) => {
   const theme = useAppTheme();

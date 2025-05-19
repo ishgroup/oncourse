@@ -3,12 +3,12 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Country, Currency, Language } from "@api/model";
-import { GET_MESSAGE_QUEUED_FULFILLED } from "../../../common/actions";
-import { IAction } from "../../../common/actions/IshAction";
-import getTimestamps from "../../../common/utils/timestamps/getTimestamps";
-import { Categories } from "../../../model/preferences";
-import { POST_AUTHENTICATION_FULFILLED } from "../../login/actions";
+import { Country, Currency, Language, Location } from '@api/model';
+import { GET_LOGO_FULFILLED, GET_MESSAGE_QUEUED_FULFILLED } from '../../../common/actions';
+import { IAction } from '../../../common/actions/IshAction';
+import getTimestamps from '../../../common/utils/timestamps/getTimestamps';
+import { Categories } from '../../../model/preferences';
+import { POST_AUTHENTICATION_FULFILLED } from '../../login/actions';
 
 import {
   CREATE_DATA_COLLECTION_FORM_FULFILLED,
@@ -27,7 +27,6 @@ import {
   GET_CONCESSION_TYPES_FULFILLED,
   GET_CONTACT_RELATION_TYPES_FULFILLED,
   GET_COUNTRIES_REQUEST_FULFILLED,
-  GET_CURRENCY_FULFILLED,
   GET_CUSTOM_FIELDS_FULFILLED,
   GET_DATA_COLLECTION_FORM_FIELD_TYPES_FULFILLED,
   GET_DATA_COLLECTION_FORMS_FULFILLED,
@@ -38,6 +37,7 @@ import {
   GET_HOLIDAYS_FULFILLED,
   GET_IS_LOGGED_FULFILLED,
   GET_LANGUAGES_REQUEST_FULFILLED,
+  GET_LOCATION_FULFILLED,
   GET_PAYMENT_TYPES_FULFILLED,
   GET_PREFERENCES_BY_KEYS_FULFILLED,
   GET_PREFERENCES_FULFILLED,
@@ -55,16 +55,23 @@ import {
   UPDATE_ENTITY_RELATION_TYPES_FULFILLED,
   UPDATE_PAYMENT_TYPES_FULFILLED,
   UPDATE_TAX_TYPES_FULFILLED
-} from "../actions";
+} from '../actions';
 import {
   DELETE_FUNDING_CONTACT_FULFILLED,
   GET_FUNDING_CONTACTS_FULFILLED,
   SAVE_FUNDING_CONTACTS_FULFILLED
-} from "../containers/funding-contracts/actions";
-import { PreferencesState } from "./state";
+} from '../containers/funding-contracts/actions';
+import { PreferencesState } from './state';
 
 export const preferencesReducer = (state: PreferencesState = {}, action: IAction<any>): PreferencesState => {
   switch (action.type) {
+    case GET_LOGO_FULFILLED: {
+      return {
+        ...state,
+        logo: action.payload
+      };
+    }
+    
     case GET_COMPLEX_PASS_FILLED: {
       const complexPass = action.payload;
       return {
@@ -259,17 +266,25 @@ export const preferencesReducer = (state: PreferencesState = {}, action: IAction
   }
 };
 
-const initialCurrency: Currency = {
+const initialCurrency: Location = {
+  id: null,
   name: null,
-  shortCurrencySymbol: null,
-  currencySymbol: null
+  currency: {
+    name: null,
+    shortCurrencySymbol: null,
+    currencySymbol: null,
+  },
+  countryCode: null,
+  languageCode: null
 };
 
-export const currencyReducer = (state: Currency = { ...initialCurrency }, action: IAction<any>): Currency => {
+export const locationReducer = (state: Location = { ...initialCurrency }, action: IAction<any>): Currency => {
   switch (action.type) {
-    case GET_CURRENCY_FULFILLED: {
-      const { currency } = action.payload;
-      return currency;
+    case GET_LOCATION_FULFILLED: {
+      return {
+        ...state,
+        ...action.payload
+      };
     }
 
     default:
