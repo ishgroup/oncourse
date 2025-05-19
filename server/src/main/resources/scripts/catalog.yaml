@@ -629,7 +629,7 @@
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.studentNoticeOfClassCommencement"
     - name: number_of_days
-      dataType: TEXT
+      dataType: NUMBER
       value: "0"
       description: Set the number of days from class start that you'd like the notification to be sent. Setting this to 0 will send it on the day of the class.
 
@@ -679,7 +679,7 @@
       dataType: BOOLEAN
       value: "false"
     - name: number_of_days
-      dataType: TEXT
+      dataType: NUMBER
       value: "0"
     - name: sessionCommencementTemplate
       dataType: MESSAGE_TEMPLATE
@@ -979,3 +979,28 @@
   short: Send portal password notification for contacts
   category: Notifications
   tag:
+
+- name: Print enrolment summary report
+  keyCode: ish.script.enrolmentSummary
+  body: ish.script.enrolmentSummary.groovy
+  status: NOT_INSTALLED
+  triggerType: ON_DEMAND
+  description: Print enrolment summary report with statistic for months
+  short: Print enrolment summary report with statistic for months
+  category: Marketing
+  outputType: PDF
+  tag:
+  variables:
+    - name: yearToCheck
+      label: year to check
+      dataType: NUMBER
+    - name: monthToCheck
+      label: month to check
+      dataType: NUMBER
+    - name: actualRooms
+      label: actual room number for interval
+      dataType: NUMBER
+  options:
+    - name: siteNameToCheck
+      value: ""
+      dataType: TEXT

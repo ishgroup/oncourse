@@ -21,9 +21,14 @@ class EndDateCalculator implements DateCalculator{
     @CompileStatic(TypeCheckingMode.SKIP)
     Date getDateIfNoSessions(Enrolment enrolment) {
         def courseClass = enrolment.courseClass
-        Date endDate
+        Date endDate = null
         use(TimeCategory) {
-            endDate = courseClass.maximumDays ? enrolment.createdOn + courseClass.maximumDays.day : enrolment.createdOn + 365.day
+            if(courseClass.maximumDays)
+                endDate = enrolment.createdOn + courseClass.maximumDays.day
+            else if(courseClass.isDistantLearningCourse && courseClass.endDateTime)
+                endDate = courseClass.endDateTime
+            else
+                endDate = enrolment.createdOn + 365.day
         }
         return endDate
     }
