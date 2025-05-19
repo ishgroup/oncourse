@@ -12,6 +12,7 @@ import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useState } from 'react';
 import FormField from '../../../../../../common/components/form/formFields/FormField';
 import EntityService from '../../../../../../common/services/EntityService';
+import { getPluralSuffix } from '../../../../../../common/utils/strings';
 import { PLAIN_LIST_MAX_PAGE_SIZE } from '../../../../../../constants/Config';
 
 const records = Object.keys(Entities)
@@ -130,7 +131,7 @@ const QueryCardContent = props => {
           {!queryResultsPending && !hideQueryResults && (
           <Typography variant="caption" color="textSecondary">
             {queryResults === PLAIN_LIST_MAX_PAGE_SIZE ? `more than ${queryResults}` : queryResults}
-            {$t('record_found')}
+            {$t('record_found', [getPluralSuffix(queryResults)])}
           </Typography>
             )}
         </Grid>

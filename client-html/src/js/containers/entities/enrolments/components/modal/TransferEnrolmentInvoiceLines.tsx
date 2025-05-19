@@ -3,8 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Typography from '@mui/material/Typography';
+import { FormControlLabel, Typography } from '@mui/material';
 import $t from '@t';
 import { Decimal } from 'decimal.js-light';
 import { formatCurrency, WarningMessage } from 'ish-ui';
@@ -17,11 +16,11 @@ import { accountLabelCondition } from '../../../accounts/utils';
 const FORM: string = "TRANSFER_ENROLMENT_MODAL_FORM";
 const CANCEL_FEE_AMOUNT_WARNING_MESSAGE = "The cancellation fee is greater than the fee paid";
 
-const roundCancellationFeeExTax = val => val && new Decimal(val || 0).toDecimalPlaces(2).toNumber();
+const roundCancellationFeeExTax = val => val && new Decimal(val || 0).toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN).toNumber();
 
 const addInvoiceLineTax = (cancellationFeeExTax: number, taxRate: number) => new Decimal(cancellationFeeExTax || 0)
   .mul(taxRate)
-  .toDecimalPlaces(2)
+  .toDecimalPlaces(2, Decimal.ROUND_HALF_EVEN)
   .plus(new Decimal(cancellationFeeExTax || 0))
   .toNumber();
 
@@ -62,7 +61,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
     return (field.finalPriceToPayIncTax < field.chargedFee ? CANCEL_FEE_AMOUNT_WARNING_MESSAGE : null);
   };
 
-  const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+  const currencySymbol = useAppSelector(state => state.location.currency.shortCurrencySymbol);
 
   return (
     <div>
@@ -73,7 +72,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
         return (
           <div className="pt-2" key={field.id}>
             <Typography variant="body2" className="normalHeading">
-              {$t('invoice')}
+              {$t('Invoice')}
+              {' '}
+              {field && field.invoiceNumber}
             </Typography>
             <FormControlLabel
               control={(
@@ -87,7 +88,9 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
               )}
               label={
                 <>
-                  {$t('money2')} {field && field.contactName}
+                  {$t('Create credit note to reverse the enrolment fee of')} <span className="money">
+                  {formatCurrency(field.finalPriceToPayIncTax, currencySymbol)}
+                  </span> to {field && field.contactName}
                 </>
               }
             />
@@ -98,7 +101,7 @@ const TransferEnrolmentInvoiceLines: React.FC<any> = ({
               control={<FormField type="checkbox" name={`${item}.isChargeFee`} color="secondary"  />}
               label={
                 <>
-                  {$t('charge_an_administrative_fee_of')}
+                  {$t('charge_an_administrative_fee_of', [field && field.contactName])}
                   {" "}
                   <FormField
                     type="number"

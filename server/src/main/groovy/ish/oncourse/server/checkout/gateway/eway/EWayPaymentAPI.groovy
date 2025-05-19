@@ -37,7 +37,6 @@ class EWayPaymentAPI {
 
     private static final String  TRX_PURCHASE_TYPE = "Purchase"
     private static final String  TRX_RECURRING_TYPE = "Recurring"
-    private static final String  COUNTRY_CODE_AU = "AU"
     private static final String  METHOD_PROCESS_PAYMENT = "ProcessPayment"
     private static final String  METHOD_TOKEN_PAYMENT = "TokenPayment"
 
@@ -103,7 +102,7 @@ class EWayPaymentAPI {
                                         Customer           : [
                                                                 firstName: contact.firstName,
                                                                 lastName: contact.lastName,
-                                                                country: COUNTRY_CODE_AU,
+                                                                country: amount.getCurrencyContext().locale.country,
                                                                 email: contact.email,
                                                                 phone: contact.mobilePhone
                                         ],

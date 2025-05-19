@@ -65,11 +65,27 @@ jobs:
         tag: ${{ env.NEXT_VERSION }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Sync version with Jira
+    - name: Sync Jira CS version
       uses: fjogeleit/http-request-action@v1
       with:
-        url: 'https://automation.atlassian.com/pro/hooks/7d15dffd9e447f7d16e7676f3e300f42ee773090'
-        method: 'POST'
-        username: ${{ secrets.JIRA_USERNAME }}
-        password: ${{ secrets.JIRA_PASSWORD }}
-        data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'
+       url: 'https://api-private.atlassian.com/automation/webhooks/jira/a/de4b6a09-1369-4e27-9ae9-a9e5bf95fe88/0194ac19-5566-7ca2-a281-fb8b7ef1d15c'
+       method: 'POST'
+       customHeaders: '{ "X-Automation-Webhook-Token": "${{ secrets.JIRA_CST_HOOK_SECRET }}" }'
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'
+
+    - name: Sync Jira SST version
+      uses: fjogeleit/http-request-action@v1
+      with:
+       url: 'https://api-private.atlassian.com/automation/webhooks/jira/a/de4b6a09-1369-4e27-9ae9-a9e5bf95fe88/019488f3-16c8-7c2d-81c4-efa4a2e2a5b6'
+       method: 'POST'
+       customHeaders: '{ "X-Automation-Webhook-Token": "${{ secrets.JIRA_SST_HOOK_SECRET }}" }'
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'
+
+    - name: Sync Jira OD version
+      uses: fjogeleit/http-request-action@v1
+      with:
+       url: 'https://automation.atlassian.com/pro/hooks/7d15dffd9e447f7d16e7676f3e300f42ee773090'
+       method: 'POST'
+       username: ${{ secrets.JIRA_USERNAME }}
+       password: ${{ secrets.JIRA_PASSWORD }}
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'

@@ -34,10 +34,10 @@ class PayslipCogwheelOptions extends React.PureComponent<any, any> {
       <>
         <BulkEditCogwheelOption {...this.props} />
         <MenuItem disabled={hoSelectedOrNew} className={menuItemClass} role="Completed" onClick={this.executePayslip}>
-          {$t('mark_tutor_pay_as_completed')}
+          {$t('mark_tutor_pay_as_completed',[selection.length])}
         </MenuItem>
         <MenuItem disabled={hoSelectedOrNew} className={menuItemClass} role="Approved" onClick={this.executePayslip}>
-          {$t('mark_tutor_pay_as_approved')}
+          {$t('mark_tutor_pay_as_approved',[selection.length])}
         </MenuItem>
         <MenuItem
           disabled={hoSelectedOrNew}
@@ -45,7 +45,11 @@ class PayslipCogwheelOptions extends React.PureComponent<any, any> {
           role="Paid/Exported"
           onClick={this.executePayslip}
         >
-          {$t('finalise_tutor_pay')}
+          {$t('Finalise')}
+          {' '}
+          {selection.length}
+          {' '}
+          {$t('tutor pay')}
         </MenuItem>
 
         <PayslipGenerateCogwheelAction

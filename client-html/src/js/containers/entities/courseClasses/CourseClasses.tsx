@@ -52,12 +52,7 @@ import EntityService from '../../../common/services/EntityService';
 import { fieldUpdateHandler } from '../../../common/utils/actionsQueue';
 import { getManualLink } from '../../../common/utils/getManualLink';
 import uniqid from '../../../common/utils/uniqid';
-import {
-  courseClassBudgetPath,
-  courseClassCancelPath,
-  courseClassTimetablePath,
-  plainEnrolmentPath
-} from '../../../constants/Api';
+import { courseClassCancelPath, courseClassTimetablePath } from '../../../constants/Api';
 import {
   DEFAULT_DELIVERY_MODE_KEY,
   DEFAULT_FUNDING_SOURCE_KEY,
@@ -218,8 +213,8 @@ const filterGroups: FilterGroup[] = [
         active: true
       },
       {
-        name: "Self paced classes",
-        expression: "type is DISTANT_LEARNING and isCancelled is false",
+        name: "Self-paced classes",
+        expression: "type is DISTANT_LEARNING and isCancelled is false and (endDateTime is null or endDateTime >= today)",
         active: true
       },
       {
@@ -375,8 +370,8 @@ const formatSelfPaced = (v, row, columns) => {
   if (selfPacedIndex !== -1) {
     const type: CourseClassType = row.values[selfPacedIndex];
 
-    if (type === "Distant Learning" ) return "Self paced";
-    if (type === "Hybrid") return  dateValue || "Hybrid";
+    if (type === "Distant Learning" ) return $t("Self-paced");
+    if (type === "Hybrid") return  dateValue || $t("Hybrid");
   }
 
   return dateValue;
@@ -778,10 +773,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => ({
     dispatch(getGradingTypes());
     dispatch(getActiveFundingContracts(true));
     dispatch(checkPermissions({ keyCode: "ENROLMENT_CREATE" }));
-    dispatch(checkPermissions({ path: courseClassBudgetPath, method: "GET" }));
     dispatch(checkPermissions({ path: courseClassTimetablePath, method: "POST" }));
     dispatch(checkPermissions({ path: courseClassCancelPath, method: "POST" }));
-    dispatch(checkPermissions({ path: plainEnrolmentPath, method: "GET" }));
     dispatch(
       getUserPreferences([
         DEFAULT_DELIVERY_MODE_KEY,

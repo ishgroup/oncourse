@@ -10,9 +10,11 @@ import {
   FieldType,
   FundingSource,
   GradingType,
-  PaymentMethod, Tag,
+  Logo,
+  PaymentMethod,
+  Tag,
   Tax
-} from "@api/model";
+} from '@api/model';
 
 export interface PreferencesState {
   contact?: any;
@@ -49,4 +51,5 @@ export interface PreferencesState {
   columnWidth?: ColumnWidth;
   product?: any;
   plugins?: string;
+  logo?: Logo;
 }

@@ -31,24 +31,24 @@ import java.util.stream.Collectors;
 
 
 public class KarateClient implements HttpClient, HttpRequestInterceptor {
-   
+
     private final ScenarioEngine engine;
     private final Logger logger;
     private final HttpLogger httpLogger;
 
     private HttpRequest request;
-    
+
     private Client client;
-    
+
     public KarateClient(ScenarioEngine engine) {
         this.engine = engine;
         logger = engine.logger;
         httpLogger = new HttpLogger(logger);
         configure(engine.getConfig());
     }
-    
+
     public void configure(Config config) {
-        
+
         ClientConfig cc = new ClientConfig();
         // support request body for DELETE (non-standard)
         cc.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
@@ -72,7 +72,7 @@ public class KarateClient implements HttpClient, HttpRequestInterceptor {
             }
         }
     }
-    
+
     @Override
     public void setConfig(Config config) {
         configure(config);
@@ -129,12 +129,12 @@ public class KarateClient implements HttpClient, HttpRequestInterceptor {
             List<String> values = entry.getValue().stream().map(Object::toString).collect(Collectors.toList());
             headers.put(entry.getKey(),values);
         }
-        
+
         Response response = new Response(httpResp.getStatus(), headers, httpResp.readEntity(byte[].class));
-        
+
         httpLogger.logResponse(getConfig(), request, response);
-        
+
         return response;
     }
-    
+
 }

@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Country, Currency, Language, User } from '@api/model';
+import { Country, Location, Language, User } from '@api/model';
 import { ConfirmState } from 'ish-ui';
 import { DocumentsState } from '../common/components/form/documents/reducers/state';
 import { GoogleApiResponse } from '../common/components/google-maps/reducers';
@@ -79,7 +79,7 @@ export interface State {
   payrolls?: PayrollsState;
   contacts?: ContactsState;
   certificates?: CertificatesState;
-  currency?: Currency;
+  location?: Location;
   usiSoftwareId?: string;
   banking?: BankingState;
   lockedDate?: string;

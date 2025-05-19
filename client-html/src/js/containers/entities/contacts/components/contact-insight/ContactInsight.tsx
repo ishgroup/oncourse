@@ -101,7 +101,8 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
       return (
         <span>
           {name}
-          {$t('fontweight60015')}
+          {' '}
+          <span className="fontWeight600">{$t('message')} </span>
         </span>
       );
     }
@@ -109,7 +110,10 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
       return (
         <span>
           {name}
-          {$t('fontweight60014')}
+          {' '}
+          <span className="fontWeight600">{$t('document')} </span>
+          {' '}
+          {$t('added')}
         </span>
       );
     }
@@ -118,7 +122,7 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "Article": {
       return (
         <span>
-          <span className="fontWeight600">{$t('purchased')} </span>
+          <span className="fontWeight600">{$t('Purchased')} </span>
           {name}
         </span>
       );
@@ -126,33 +130,48 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
     case "Payslip": {
       return (
         <span>
-          {$t('fontweight60013')}
+          <span className="fontWeight600">{$t('Tutor pay')} </span>
+          {$t('processed')}
         </span>
       );
     }
     case "Survey":
       return (
         <span>
-          {$t('fontweight60012')}
+          <span className="fontWeight600">{$t('Feedback')} </span>
+          {$t('submitted for')}
+          {' '}
+          {name}
         </span>
       );
     case "Certificate":
       return (
         <span>
-          {$t('fontweight60011')}
+          <span className="fontWeight600">{$t('Certificate')} </span>
+          {$t('in')}
+          {' '}
+          {name}
+          {' '}
+          {$t('created')}
         </span>
       );
     case "AssessmentSubmission":
       return (
         <span>
-          {$t('fontweight60010')}
+          {$t('Submitted')}
+          <span className="fontWeight600"> {$t('assessment')} </span>
+          {$t('for')}
+          {' '}
+          {name}
         </span>
       );
     case "Quote":
       return (
         <span>
           {name}
-          {$t('fontweight6009')}
+          {' '}
+          <span className="fontWeight600">{$t('quote')} </span>
+          {$t('created')}
         </span>
       );
     case "Invoice":
@@ -160,7 +179,9 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
         <span className="money">
           {currencySymbol}
           {name}
-          {$t('fontweight6008')}
+          {' '}
+          <span className="fontWeight600">{$t("invoice")} </span>
+          {$t("created")}
         </span>
       );
     case "PaymentIn":
@@ -168,7 +189,8 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
         <span className="money">
           {currencySymbol}
           {name}
-          {$t('fontweight6007')}
+          {' '}
+          <span className="fontWeight600">{$t("payment")}</span>
         </span>
       );
     case "PaymentOut":
@@ -176,37 +198,52 @@ const getEntityLabel = (entity: string, name: string, currencySymbol?: string) =
         <span className="money">
           {currencySymbol}
           {name}
-          {$t('fontweight6006')}
+          {' '}
+          <span className="fontWeight600">{$t("refund")} </span>
+          {$t("received")}
         </span>
       );
     case "Note":
       return (
         <span>
-          {$t('fontweight6005')}
+          <span className="fontWeight600">{$t("Note")} </span>
+          {$t("added by")}
+          {' '}
+          {name}
         </span>
       );
     case "Application":
       return (
         <span>
-          {$t('fontweight6004')}
+          <span className="fontWeight600">{$t('Applied for')} </span>
+          {' '}
+          {name}
         </span>
       );
     case "WaitingList":
       return (
         <span>
-          {$t('fontweight6003')}
+          {$t('Joined')}
+          <span className="fontWeight600"> {$t('waiting list')} </span>
+          {$t('for')}
+          {' '}
+          {name}
         </span>
       );
     case "Lead":
       return (
         <span>
-          {$t('fontweight6002')}
+          <span className="fontWeight600">{$t('Lead')} </span>
+          {$t('created')}
         </span>
       );
     case "Enrolment":
       return (
         <span>
-          {$t('fontweight600')}
+          <span className="fontWeight600">{$t('Enrolled')} </span>
+          {$t('in')}
+          {' '}
+          {name}
         </span>
       );  
     default:
@@ -317,7 +354,7 @@ const ContactInsight = (
   const [dateValue, setDateValue] = useState<string>(null);
   const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>(null);
 
-  const currencySymbol = useAppSelector(state => state.currency.shortCurrencySymbol);
+  const currencySymbol = useAppSelector(state => state.location.currency.shortCurrencySymbol);
   const recepients = useAppSelector(state => state.list.recepients);
   const emailFrom = useAppSelector(state => state.userPreferences[EMAIL_FROM_KEY]);
   const fetchPending = useAppSelector(state => state.fetch.pending);
@@ -472,6 +509,8 @@ const ContactInsight = (
                     <div className="heading flex-fill">{$t('overview')}</div>
                     <Typography variant="caption" sx={{ fontSize: "10px" }} color="textSecondary">
                       {$t('first_seen')}
+                      {' '}
+                      {formatDistanceStrict(new Date(data.overview.firstSeen || undefined), new Date(), { addSuffix: true })}
                     </Typography>
                   </div>
 
@@ -540,7 +579,7 @@ const ContactInsight = (
                 </div>
 
                 <div className={clsx("mt-3", classes.box)}>
-                  <div className="heading mb-2">{$t('contact')}</div>
+                  <div className="heading mb-2">{$t('Contact')}</div>
                   {data.workPhone && <PhoneLabel label={$t('work')} phone={data.workPhone} />}
                   {data.homePhone && <PhoneLabel label={$t('home')} phone={data.homePhone} />}
                   {data.mobilePhone && <PhoneLabel label={$t('mobile')} phone={data.mobilePhone} />}
@@ -638,7 +677,11 @@ const ContactInsight = (
                   {hasLastInteractions && (
                     <Box component="div" className="d-flex justify-content-center">
                       <Button variant="text" color="primary" sx={{ textTransform: "initial" }} size="small" onClick={() => setShowLast(prev => !prev)}>
-                        {$t('view')}
+                        {$t('View')}
+                        {' '}
+                        {lastInteractions.length}
+                        {' '}
+                        {showLast ? $t('less')  :  $t('more')}
                       </Button>
                     </Box>
                   )}

@@ -61,7 +61,7 @@ Feature: Main feature for all POST requests with path 'list/entity/application'
         "enrolBy":"2033-01-01",
         "createdBy":"onCourse Administrator",
         "reason":"Some reason 100",
-        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":null,"versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":null,"thumbnail":null,"content":null,current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
+        "documents":[{"attachedRecordsCount":"#ignore", "id":200,"name":"defaultPrivateDocument","added":"#ignore","tags":[],"thumbnail":null,"urlWithoutVersionId":"#string","versions":[{"id":200,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPrivateDocument.txt","mimeType":"text/plain","size":"22 b","url":"#string","thumbnail":null,"content":null,current:true}],"description":"Private description","access":"Private","shared":true,"createdOn":"#ignore","modifiedOn":"#ignore","removed":false,"attachmentRelations":"#ignore"}],
         "tags":[224],
         "customFields":{},
         "createdOn":"#ignore",
@@ -342,5 +342,3 @@ Feature: Main feature for all POST requests with path 'list/entity/application'
         When method POST
         Then status 403
         And match $.errorMessage == "Sorry, you have no permissions to create application. Please contact your administrator"
-
-

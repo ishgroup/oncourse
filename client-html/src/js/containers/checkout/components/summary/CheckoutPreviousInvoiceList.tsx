@@ -178,7 +178,7 @@ const CheckoutPreviousInvoiceList: React.FC<Props> = props => {
 };
 
 const mapStateToProps = (state: State) => ({
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol
 });
 
 const mapDispatchToProps = dispatch => ({

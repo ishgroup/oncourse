@@ -28,7 +28,7 @@ const WaitingListCogWheel = memo<any>(props => {
     <>
       {hoSelectedOrNew ? null : (
         <MenuItem className={menuItemClass} onClick={onQuickEnrolment} disabled={!hasQePermissions}>
-          {$t('enrol_highlighted_student')}
+          {$t('enrol_highlighted_student', [selection.length])}
           {selection.length > 1 && "s"}
         </MenuItem>
       )}

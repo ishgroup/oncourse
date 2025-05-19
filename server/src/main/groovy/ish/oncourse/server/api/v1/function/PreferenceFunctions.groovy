@@ -41,16 +41,12 @@ class PreferenceFunctions {
         Object value = controller.getValueForKey(key)
 
         if (value != null) {
-
-
+            if (value instanceof Country) {
+                return (value as Country).displayName
+            }
             if (value instanceof DisplayableExtendedEnumeration) {
                 return (value as DisplayableExtendedEnumeration).databaseValue.toString()
             }
-
-            if (value instanceof Country) {
-                return (value as Country).currencyCode()
-            }
-
             return value.toString()
         }
         return null
@@ -87,6 +83,7 @@ class PreferenceFunctions {
             case AUTO_DISABLE_INACTIVE_ACCOUNT:
             case PASSWORD_COMPLEXITY:
             case EXTENDED_SEARCH_TYPES:
+            case AUS_REPORTING:
                 return Boolean.valueOf(value)
             case SERVICES_INFO_REPLICATION_VERSION:
             case LDAP_SERVERPORT:
@@ -106,8 +103,8 @@ class PreferenceFunctions {
                 return TypesUtil.getEnumForDatabaseValue(Integer.valueOf(value), ExportJurisdiction)
             case TWO_FACTOR_AUTHENTICATION:
                 return TypesUtil.getEnumForDatabaseValue(value, TwoFactorAuthorizationStatus)
-            case ACCOUNT_CURRENCY:
-                return Country.forCurrencySymbol(value)
+            case ACCOUNT_COUNTRY:
+                return Country.fromDatabaseValue(value)
             default:
                 return value
         }

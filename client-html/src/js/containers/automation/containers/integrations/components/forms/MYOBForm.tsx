@@ -128,7 +128,7 @@ class MYOBBaseForm extends React.Component<any, any> {
     const state = encodeURI(`${window.location.href}${params}`);
 
     window.open(
-      // eslint-disable-next-line max-len
+      
       `https://secure.myob.com/oauth2/account/authorize?client_id=07545d14-9a95-4398-b907-75af3b3841ae&redirect_uri=https://secure-payment.oncourse.net.au/services/s/integrations/myob/auth.html&response_type=code&scope=CompanyFile&state=${state}`,
       "_self"
     );

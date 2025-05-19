@@ -35,6 +35,10 @@ public class DefaultMoneyFormatter implements MoneyFormatter {
         this.formatter = initializeFormatter(locale, currencySymbol);
     }
 
+    public DefaultMoneyFormatter(String pattern, String currencySymbol) {
+        this.formatter = initializeFormatter(pattern, currencySymbol);
+    }
+
     /**
      * Formats {@code Money} into a string representation.
      *
@@ -60,6 +64,24 @@ public class DefaultMoneyFormatter implements MoneyFormatter {
     private NumberFormat initializeFormatter(Locale locale, String currencySymbol) {
         // formatTemplate defines which formatting structure will be used
         DecimalFormat formatTemplate = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
+        DecimalFormatSymbols formatSymbols = formatTemplate.getDecimalFormatSymbols();
+        formatSymbols.setMonetaryDecimalSeparator(MONEY_DECIMAL_SEPARATOR);
+        formatSymbols.setGroupingSeparator(MONEY_THOUSAND_SEPARATOR);
+        formatSymbols.setCurrencySymbol(currencySymbol);
+        formatTemplate.setDecimalFormatSymbols(formatSymbols);
+        return formatTemplate;
+    }
+
+    /**
+     * Initializes formatter of values for {@code Money} type based on the prvided value pattern and currency symbol.
+     *
+     * @param pattern value pattern used for formatting.
+     * @param currencySymbol symbol that used for formatting.
+     * @return a localized {@code NumberFormat} instance for money formatting.
+     */
+    private NumberFormat initializeFormatter(String pattern, String currencySymbol) {
+        // formatTemplate defines which formatting structure will be used
+        DecimalFormat formatTemplate = new DecimalFormat(pattern);
         DecimalFormatSymbols formatSymbols = formatTemplate.getDecimalFormatSymbols();
         formatSymbols.setMonetaryDecimalSeparator(MONEY_DECIMAL_SEPARATOR);
         formatSymbols.setGroupingSeparator(MONEY_THOUSAND_SEPARATOR);

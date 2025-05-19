@@ -19,11 +19,12 @@ import { toggleSwipeableDrawer } from '../actions';
 interface Props {
   opened?: boolean;
   variant?: string;
+  liteBackground?: boolean;
   toggleSwipeableDrawer?: () => void;
 }
 
 const HamburgerMenu = React.memo<Props>(props => {
-  const { opened, toggleSwipeableDrawer } = props;
+  const { opened, liteBackground, toggleSwipeableDrawer } = props;
 
   return (
     <div className="centeredFlex mr-3">
@@ -38,13 +39,7 @@ const HamburgerMenu = React.memo<Props>(props => {
         {opened ? <CloseIcon/> : <MenuIcon/>}
       </IconButton>
       <Divider orientation="vertical" variant="middle" flexItem/>
-      {/* <img*/}
-      {/*  src={theme.palette.mode === "dark" ? onCourseLogoLight : onCourseLogoDark}*/}
-      {/*  alt="Logo"*/}
-      {/*  height={36}*/}
-      {/* />*/}
-
-      <Logo className="ml-2" whiteBackgound={opened}  />
+      <Logo className="ml-2" whiteBackgound={opened || liteBackground}  />
     </div>
   );
 });
@@ -57,4 +52,4 @@ const mapStateToDispatch = (dispatch: Dispatch<IAction>, props: Props) => ({
   toggleSwipeableDrawer: () => dispatch(toggleSwipeableDrawer(props.variant))
 });
 
-export default connect<any, any, any>(mapStateToProps, mapStateToDispatch)(HamburgerMenu);
+export default connect(mapStateToProps, mapStateToDispatch)(HamburgerMenu);

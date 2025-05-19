@@ -17,7 +17,7 @@
       "@t": ["src/js/common/utils/translation.ts"]
     },
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop":true,
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "sourceMap": true,
     "experimentalDecorators": true,
@@ -27,7 +27,7 @@
     "resolveJsonModule": true,
     "module": "esnext",
     "skipLibCheck": true,
-    "target": "es2015",
+    "target": "es2017",
     "jsx": "react",
     "lib": [
       "dom",

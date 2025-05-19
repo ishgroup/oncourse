@@ -3,7 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { FormControlLabel, Tooltip } from "@mui/material";
+import { FormControlLabel, Tooltip } from '@mui/material';
 import {
   CheckboxField,
   EditInPlaceDateTimeField,
@@ -12,11 +12,11 @@ import {
   EditInPlaceMoneyField,
   EditInPlaceSearchSelect,
   FormSwitch
-} from "ish-ui";
-import React from "react";
-import { COMMON_PLACEHOLDER } from "../../../constants/Forms";
-import { useAppSelector } from "../../utils/hooks";
-import EditInPlaceRemoteDataSearchSelect from "./formFields/EditInPlaceRemoteDataSearchSelect";
+} from 'ish-ui';
+import React from 'react';
+import { COMMON_PLACEHOLDER } from '../../../constants/Forms';
+import { useAppSelector } from '../../utils/hooks';
+import EditInPlaceRemoteDataSearchSelect from './formFields/EditInPlaceRemoteDataSearchSelect';
 
 interface Props {
   type: string;
@@ -25,7 +25,7 @@ interface Props {
 const DataTypeRenderer = React.memo<Props & any>(props => {
   const { type, ...rest } = props;
 
-  const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+  const currencySymbol = useAppSelector(state => state.location.currency?.shortCurrencySymbol);
   const processActionId = useAppSelector(state => state.fieldProcessing[rest.name]);
 
   switch (type) {

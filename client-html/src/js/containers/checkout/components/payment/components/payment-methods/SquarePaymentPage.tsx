@@ -61,7 +61,7 @@ const SquarePaymentPage: React.FC<CreditCardPaymentPageProps> = props => {
   const [payments, setPayments] = useState<any>(null);
   const { classes, theme } = useStyles();
 
-  const currencyCode = useAppSelector(state => state.currency.currencySymbol);
+  const currencyCode = useAppSelector(state => state.location.currency.currencySymbol);
   
   const init = async () => {
     try {

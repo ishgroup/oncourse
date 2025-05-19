@@ -58,7 +58,7 @@ const CheckoutSummaryHeaderField = React.memo<Props>(props => {
 const mapStateToProps = (state: State) => ({
   summaryList: state.checkout.summary.list,
   summaryFinalTotal: state.checkout.summary.finalTotal,
-  currencySymbol: state.currency && state.currency.shortCurrencySymbol
+  currencySymbol: state.location.currency && state.location.currency.shortCurrencySymbol
 });
 
 export default connect<any, any, any>(mapStateToProps, null)(CheckoutSummaryHeaderField);

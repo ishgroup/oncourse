@@ -32,7 +32,7 @@
 "2018-09-01T00:00:00","226","2018-09-01T00:00:00","security.password.complexity","NULL","NULL","NULL","false","security.password.complexity"
 "2018-09-01T00:00:00","227","2018-09-01T00:00:00","security.tfa.status","NULL","NULL","NULL","disabled","security.tfa.status"
 "2018-09-01T00:00:00","228","2018-09-01T00:00:00","security.tfa.expiry.period","NULL","NULL","NULL","16","security.tfa.expiry.period"
-"2020-09-29T16:40:10","229","2020-09-29T16:40:10","default.currency","NULL","NULL","NULL","AUD","default.currency"
+"2020-09-29T16:40:10","229","2020-09-29T16:40:10","default.country","NULL","NULL","NULL","AUD","default.country"
 "2020-09-29T16:40:13","230","2020-09-29T16:40:13","account.default.debtors.id","NULL","NULL","NULL","2","account.default.debtors.id"
 "2020-09-29T16:40:13","231","2020-09-29T16:40:13","account.default.gst.id","NULL","NULL","NULL","3","account.default.gst.id"
 "2020-09-29T16:40:13","232","2020-09-29T16:40:13","account.prepaidFees.id","NULL","NULL","NULL","4","account.prepaidFees.id"

@@ -170,7 +170,7 @@ const CourseClassCogWheel = memo<any>(props => {
       />
       {!isTraneeship && (
         <MenuItem disabled={!selectedAndNotNew} className={menuItemClass} role="Duplicate" onClick={onClick}>
-          {$t('duplicate2')}
+          {$t('duplicate2', [classesCountLabel])}
         </MenuItem>
       )}
 

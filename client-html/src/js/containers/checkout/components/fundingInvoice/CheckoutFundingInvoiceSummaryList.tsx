@@ -3,8 +3,7 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Grid, Typography } from '@mui/material';
 import $t from '@t';
 import { AppTheme } from 'ish-ui';
 import React from 'react';
@@ -151,7 +150,7 @@ const CheckoutFundingInvoiceSummaryList = React.memo<Props>(props => {
 });
 
 const mapStateToProps = (state: State) => ({
-  currency: state.currency
+  currency: state.location.currency
 });
 
 export default connect<any, any, any>(

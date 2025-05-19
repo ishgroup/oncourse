@@ -156,6 +156,7 @@ class CheckoutApiService {
     CheckoutResponseDTO submitPayment(CheckoutModelDTO checkoutModelDTO) {
         def checkout = processPaymentTypeChoice(checkoutModelDTO, false)
         paymentService.saveCheckout(checkout)
+        postEnrolmentSuccessfulEvents(checkout)
         return paymentService.fillResponse(checkout)
     }
 

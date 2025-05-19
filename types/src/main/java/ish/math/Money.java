@@ -20,7 +20,6 @@ import javax.money.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -592,7 +591,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isGreaterThan(@Nullable MonetaryAmount amount) {
-		return Objects.isNull(amount) || toMoneta().isGreaterThan(amount);
+		return Objects.isNull(amount) || compareTo(amount) > 0;
 	}
 
 	/**
@@ -611,7 +610,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isGreaterThanOrEqualTo(@Nullable MonetaryAmount amount) {
-		return Objects.isNull(amount) || toMoneta().isGreaterThanOrEqualTo(amount);
+		return Objects.isNull(amount) || compareTo(amount) >= 0;
 	}
 
 	/**
@@ -630,7 +629,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isLessThan(@Nullable MonetaryAmount amount) {
-		return !Objects.isNull(amount) && toMoneta().isLessThan(amount);
+		return !Objects.isNull(amount) && compareTo(amount) < 0;
 	}
 
 	/**
@@ -649,7 +648,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isLessThanOrEqualTo(@Nullable MonetaryAmount amount) {
-		return !Objects.isNull(amount) && toMoneta().isLessThanOrEqualTo(amount);
+		return !Objects.isNull(amount) && compareTo(amount) <= 0;
 	}
 
 	/**
@@ -668,7 +667,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@API
 	@Override
 	public boolean isEqualTo(@Nullable MonetaryAmount amount) {
-		return !Objects.isNull(amount) && toMoneta().isEqualTo(amount);
+		return !Objects.isNull(amount) && compareTo(amount) == 0;
 	}
 
 	@Override
@@ -693,19 +692,35 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 
 	@Override
 	public Money[] divideAndRemainder(long l) {
-		return Arrays.stream(toMoneta().divideAndRemainder(l)).map(this::toInstance).toArray(Money[]::new);
+		// not use lambda and method reference because DSL compile everything as Groovy and Groovy doesn't support Java lambda and '::' syntax
+		org.javamoney.moneta.Money[] divideAndRemainderData = toMoneta().divideAndRemainder(l);
+		Money[] result = new Money[divideAndRemainderData.length];
+		for (int i = 0; i < divideAndRemainderData.length; i++) {
+			result[i] = toInstance(divideAndRemainderData[i]);
+		}
+		return result;
 	}
 
 	@Override
 	public Money[] divideAndRemainder(double v) {
-		return Arrays.stream(toMoneta().divideAndRemainder(v)).map(this::toInstance).toArray(Money[]::new);
+		// not use lambda and method reference because DSL compile everything as Groovy and Groovy doesn't support Java lambda and '::' syntax
+		org.javamoney.moneta.Money[] divideAndRemainderData = toMoneta().divideAndRemainder(v);
+		Money[] result = new Money[divideAndRemainderData.length];
+		for (int i = 0; i < divideAndRemainderData.length; i++) {
+			result[i] = toInstance(divideAndRemainderData[i]);
+		}
+		return result;
 	}
 
 	@Override
 	public Money[] divideAndRemainder(@Nullable Number amount) {
-		return Objects.isNull(amount) ?
-				new Money[]{ this } :
-				Arrays.stream(toMoneta().divideAndRemainder(amount)).map(this::toInstance).toArray(Money[]::new);
+		// not use lambda and method reference because DSL compile everything as Groovy and Groovy doesn't support Java lambda and '::' syntax
+		org.javamoney.moneta.Money[] divideAndRemainderData = toMoneta().divideAndRemainder(amount);
+		Money[] result = new Money[divideAndRemainderData.length];
+		for (int i = 0; i < divideAndRemainderData.length; i++) {
+			result[i] = toInstance(divideAndRemainderData[i]);
+		}
+		return result;
 	}
 
 	@Override
@@ -782,6 +797,11 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	@Override
 	public Money plus() {
 		return toInstance(toMoneta().plus());
+	}
+
+	// Support for Groovy.sum() method
+	public Money plus(Money money) {
+		return this.add(money);
 	}
 
 	@Override
@@ -1036,7 +1056,7 @@ final public class Money implements MonetaryAmount, Comparable<MonetaryAmount>, 
 	}
 
 	private BigDecimal round(BigDecimal value) {
-		RoundingMode mode = RoundingMode.HALF_UP;
+		RoundingMode mode = RoundingMode.HALF_EVEN;
 		int scale = getCurrency().getDefaultFractionDigits();
 		return value.setScale(scale, mode);
 	}

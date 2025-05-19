@@ -199,7 +199,12 @@ const TransferEnrolmentModalForm = React.memo<TransferEnrolmentModalProps & Inje
 
               <Typography variant="body2">
                 {plainEnrolmentRecord.studentName}
-                {$t('is_currently_enrolled_in_this_enrolment_will_be_ca')}
+                {' '}
+                {$t('is currently enrolled in')}
+                {plainEnrolmentRecord.courseClassName}
+                {" "}
+                {plainEnrolmentRecord.courseClassCode}
+                . {$t('this_enrolment_will_be_cancelled')}
               </Typography>
 
               <FormControlLabel

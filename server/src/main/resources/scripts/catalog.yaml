@@ -123,6 +123,7 @@
   description: For each enrolment, check for outcomes which have been modified in the previous 24 hrs. If any outcomes attached to the enrolment are not yet marked, skip this enrolment. For students with at least one successful outcome, create the certificate record (statement of attainment or qualification, based on the isFullQual flag at the course level). If the outcome is already joined to a certificate, do not create a new certificate containing that outcome
   short: Automatically generate the appropriate VET certificate for all VET enrolments with outcomes that were marked in the last 24hrs.
   category: Compliance
+  locale: aus
   tag:
 
 - name: LearnDash course enrolment
@@ -459,6 +460,7 @@
   description: Print and upload to the portal VET certifcates where the student meets the requirements for certification, including having supplied their USI. Send an email to notify the student that their certificate is available in the portal. certificateReportTemplate is the base VET certificate template, vetSoaBackground, vetQualificationBackground and vetSkillsetBackground set the background PDF for each type of VET certificate and certificateMessageTemplate is the message sent to students as a notification.
   short: Where students have completed their course and had a certificate generated, upload that certificate to the portal and notify the students via email that it's available for download.
   category: Compliance
+  locale: aus
   tag: Popular
   options:
     - name: certificateReportTemplate
@@ -627,7 +629,7 @@
       dataType: MESSAGE_TEMPLATE
       value: "ish.email.studentNoticeOfClassCommencement"
     - name: number_of_days
-      dataType: TEXT
+      dataType: NUMBER
       value: "0"
       description: Set the number of days from class start that you'd like the notification to be sent. Setting this to 0 will send it on the day of the class.
 
@@ -677,7 +679,7 @@
       dataType: BOOLEAN
       value: "false"
     - name: number_of_days
-      dataType: TEXT
+      dataType: NUMBER
       value: "0"
     - name: sessionCommencementTemplate
       dataType: MESSAGE_TEMPLATE
@@ -695,6 +697,7 @@
   description: Send a weekly reminder email to students who haven't supplied a USI number to you, but are required to do so. usiReminderTemplate is the defined message template, usiRequiredDate is the date from which the script will start to look for missing USI numbers.
   short: For students who are required to provide you with their USI number but haven't yet, send them a reminder.
   category: Compliance
+  locale: aus
   tag:
   options:
     - name: usiReminderTemplate
@@ -713,6 +716,7 @@
   description: Send the completion survey defined in vetCourseSurveyTemplate to all VET students who have recently passed the timing threshold for the release of the survey. You can alter the timing of this release within your survey data collection forms.
   short: Invite VET students to complete the survey data collection form upon completion.
   category: Marketing
+  locale: aus
   tag:
   options:
     - name: vetCourseSurveyTemplate
@@ -975,3 +979,28 @@
   short: Send portal password notification for contacts
   category: Notifications
   tag:
+
+- name: Print enrolment summary report
+  keyCode: ish.script.enrolmentSummary
+  body: ish.script.enrolmentSummary.groovy
+  status: NOT_INSTALLED
+  triggerType: ON_DEMAND
+  description: Print enrolment summary report with statistic for months
+  short: Print enrolment summary report with statistic for months
+  category: Marketing
+  outputType: PDF
+  tag:
+  variables:
+    - name: yearToCheck
+      label: year to check
+      dataType: NUMBER
+    - name: monthToCheck
+      label: month to check
+      dataType: NUMBER
+    - name: actualRooms
+      label: actual room number for interval
+      dataType: NUMBER
+  options:
+    - name: siteNameToCheck
+      value: ""
+      dataType: TEXT

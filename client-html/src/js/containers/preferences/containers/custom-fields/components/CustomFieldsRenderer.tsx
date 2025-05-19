@@ -129,7 +129,7 @@ const validateListMap = (value, dataType) => {
 const CustomFieldsResolver = React.memo<{ field: CustomFieldType & { uniqid: string }, classes: any }>(
   ({ classes, field, ...props }) => {
 
-    const currencySymbol = useAppSelector(state => state.currency?.shortCurrencySymbol);
+    const currencySymbol = useAppSelector(state => state.location.currency?.shortCurrencySymbol);
 
     switch (field.dataType) {
       case "Checkbox":

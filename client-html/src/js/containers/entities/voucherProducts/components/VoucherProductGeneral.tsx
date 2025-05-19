@@ -385,7 +385,11 @@ const VoucherProductGeneral: React.FC<VoucherProductGeneralProps> = props => {
           />
         </div>
         <Typography color="inherit" component="div">
-          {$t('money')}
+          {$t('Current class fee price range')}:
+          {' '}
+          <span className="money">{formatCurrency(minFee)}</span>
+          {' '}
+          {$t('to')}
           {" "}
           <span className="money">{formatCurrency(maxFee)}</span>
         </Typography>
@@ -485,7 +489,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 const mapStateToProps = (state: State) => ({
   accounts: state.plainSearchRecords.Account.items,
-  currency: state.currency,
+  currency: state.location.currency,
   minFee: state.voucherProducts.minFee,
   maxFee: state.voucherProducts.maxFee,
   foundCourses: state.plainSearchRecords["Course"].items,
