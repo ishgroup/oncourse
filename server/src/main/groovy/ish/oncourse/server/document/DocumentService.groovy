@@ -68,6 +68,7 @@ class DocumentService {
 	private String accessKeyId = null
 	private String accessSecretKey
 	private String region
+	private String endpoint
 	private Long storageLimit
 
 	@BQConfigProperty
@@ -88,6 +89,11 @@ class DocumentService {
 	@BQConfigProperty
 	void setRegion(String region) {
 		this.region = region
+	}
+
+	@BQConfigProperty
+	void setEndpoint(String endpoint) {
+		this.endpoint = endpoint
 	}
 
 	@BQConfigProperty
@@ -124,6 +130,10 @@ class DocumentService {
 
 	String getRegion() {
 		return region
+	}
+
+	String getEndpoint() {
+		return endpoint
 	}
 
 	Long getStorageLimit() {
