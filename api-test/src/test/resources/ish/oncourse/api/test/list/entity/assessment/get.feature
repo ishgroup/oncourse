@@ -96,7 +96,20 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
             "added":"#ignore",
             "tags":[],
             "thumbnail":null,
-            "versions":[{"id":201,"added":"#ignore","createdBy":"onCourse Administrator","fileName":"defaultPublicDocument.txt","mimeType":"text/plain","size":"21 b","url":null,"thumbnail":null, content:null, current:true}],
+            "versions":[
+                {
+                    "id":201,
+                    "added":"#ignore",
+                    "createdBy":"onCourse Administrator",
+                    "fileName":"defaultPublicDocument.txt",
+                    "mimeType":"text/plain",
+                    "size":"21 b",
+                    "url":"#string",
+                    "thumbnail":null,
+                    "content":null,
+                    "current":true
+                }
+            ],
             "description":"Public description",
             "access":"Public",
             "shared":true,
@@ -104,9 +117,7 @@ Feature: Main feature for all GET requests with path 'list/entity/assessment'
             "attachmentRelations": "#ignore",
             "createdOn":"#ignore",
             "modifiedOn":"#ignore",
-            "urlWithoutVersionId":null
+            "urlWithoutVersionId":"#string"
             }]
         }
         """
-
-        
