@@ -88,4 +88,4 @@ jobs:
        method: 'POST'
        username: ${{ secrets.JIRA_USERNAME }}
        password: ${{ secrets.JIRA_PASSWORD }}
-       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}''
+       data: '{"component": "angel", "version": "${{ steps.format.outputs.value }} angel"}'

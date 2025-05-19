@@ -215,10 +215,12 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
             if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING) {
                 courseClass.maximumDays = dto.maximumDays
             }
+
+            courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
+            courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
+
             if (dto.type == CourseClassTypeDTO.HYBRID) {
                 courseClass.minimumSessionsToComplete = dto.minimumSessionsToComplete
-                courseClass.startDateTime = LocalDateUtils.timeValueToDate(dto.startDateTime)
-                courseClass.endDateTime = LocalDateUtils.timeValueToDate(dto.endDateTime)
             }
         }
 
@@ -337,6 +339,19 @@ class CourseClassApiService extends TaggableApiService<CourseClassDTO, CourseCla
 
         if (dto.type == CourseClassTypeDTO.HYBRID && (dto.portalDocAccessStart || dto.portalDocAccessEnd)) {
             validator.throwClientErrorException(id, "portalDocAccess", "Hybrid class cannot have doc control fields")
+        }
+
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.startDateTime && !dto.endDateTime) {
+            validator.throwClientErrorException(id, "endDateTime", "Self paced class if has start date must have end date")
+        }
+
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.endDateTime && !dto.startDateTime) {
+            validator.throwClientErrorException(id, "startDateTime", "Self paced class if has end date must have start date")
+        }
+
+        if (dto.type == CourseClassTypeDTO.DISTANT_LEARNING && dto.startDateTime
+                && (dto.endDateTime.isBefore(dto.startDateTime) || dto.endDateTime.equals(dto.startDateTime))) {
+            validator.throwClientErrorException(id, "startDateTime", "Self paced class end date must be after start date")
         }
 
         if (dto.virtualSiteId != null) {

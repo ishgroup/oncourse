@@ -3,18 +3,18 @@
  * No copying or use of this code is allowed without permission in writing from ish.
  */
 
-import { Contact } from "@api/model";
-import { initialize } from "redux-form";
-import { Epic } from "redux-observable";
-import { FETCH_SUCCESS } from "../../../../common/actions";
-import FetchErrorHandler from "../../../../common/api/fetch-errors-handlers/FetchErrorHandler";
-import * as EpicUtils from "../../../../common/epics/EpicUtils";
-import { CheckoutContact } from "../../../../model/checkout";
-import { createEntityItem } from "../../../entities/common/entityItemsService";
-import { CHECKOUT_ADD_CONTACT } from "../../actions";
-import { CHECKOUT_CREATE_CONTACT } from "../../actions/checkoutContact";
-import { CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS } from "../../actions/checkoutSummary";
-import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from "../../components/contact/CheckoutContactEditView";
+import { Contact } from '@api/model';
+import { initialize } from 'redux-form';
+import { Epic } from 'redux-observable';
+import { FETCH_SUCCESS } from '../../../../common/actions';
+import FetchErrorHandler from '../../../../common/api/fetch-errors-handlers/FetchErrorHandler';
+import * as EpicUtils from '../../../../common/epics/EpicUtils';
+import { CheckoutContact } from '../../../../model/checkout';
+import { createEntityItem } from '../../../entities/common/entityItemsService';
+import { CHECKOUT_ADD_CONTACT } from '../../actions';
+import { CHECKOUT_CREATE_CONTACT } from '../../actions/checkoutContact';
+import { checkoutUpdateSummaryClassesDiscounts } from '../../actions/checkoutSummary';
+import { CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME } from '../../components/contact/CheckoutContactEditView';
 
 const request: EpicUtils.Request<any, Contact> = {
   type: CHECKOUT_CREATE_CONTACT,
@@ -47,9 +47,7 @@ const request: EpicUtils.Request<any, Contact> = {
         type: CHECKOUT_ADD_CONTACT,
         payload: { contact }
       },
-      {
-        type: CHECKOUT_UPDATE_SUMMARY_CLASSES_DISCOUNTS
-      },
+      checkoutUpdateSummaryClassesDiscounts(),
       initialize(CHECKOUT_CONTACT_EDIT_VIEW_FORM_NAME, null)
     ];
   },
